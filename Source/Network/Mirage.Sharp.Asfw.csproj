@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <ApplicationVersion>0.10.0.0</ApplicationVersion>
+    <RootNamespace>$(AssemblyFileVersion)</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Asfw-NoTCPDelay</Title>
+    <Description>ArchaicSoft FrameWork is currently an incomplete, yet useful mini-library useful toward online game development containing a premade Client/Server objects which handle all the nitty gritty in the background for you while delivering high performance, as well as containing some powerful serialization, xml/json and flatfile handlers.</Description>
+    <Copyright>Copyright ©2022 ArchaicSoft</Copyright>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/aeirex/Asfw-Networking</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>C# VB ArchaicSoft</PackageTags>
+    <PackageReleaseNotes>.NET 6.0 release</PackageReleaseNotes>
+    <PackageProjectUrl>https://pokemonblood.com</PackageProjectUrl>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <PackageId>$(AssemblyName)-NoTCPDelay</PackageId>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Version>$(VersionPrefix)</Version>
+    <AssemblyVersion>$(AssemblyVersion)</AssemblyVersion>
+    <FileVersion>$(AssemblyFileVersion)</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>
