@@ -1329,8 +1329,8 @@ Module C_Graphics
             startX = GetPlayerX(Myindex) - ScreenMapx
             startY = GetPlayerY(Myindex) - ScreenMapy
         Else
-            startX = Math.Floor(GetPlayerX(Myindex) - ((ScreenMapx + 1) \ 2) - 1)
-            startY = Math.Floor(GetPlayerY(Myindex) - ((ScreenMapy + 1) \ 2) - 1)
+            startX = GetPlayerX(Myindex) - ((ScreenMapx + 1) / 2) - 1
+            startY = GetPlayerY(Myindex) - ((ScreenMapy + 1) / 2) - 1
         End If
 
         If startX < 0 Then
@@ -1360,10 +1360,10 @@ Module C_Graphics
         endX = startX + (ScreenMapx + 1) + 1
         endY = startY + (ScreenMapy + 1) + 1
 
-        If endX >= Map.MaxX Then
+        If endX > Map.MaxX Then
             offsetX = 32
 
-            If endX = Map.MaxX Then
+            If endX = Map.MaxX + 1 Then
                 If Player(Myindex).XOffset < 0 Then
                     offsetX = Player(Myindex).XOffset + PicX
                 End If
@@ -1373,10 +1373,10 @@ Module C_Graphics
             startX = endX - ScreenMapx - 1
         End If
 
-        If endY >= Map.MaxY Then
+        If endY > Map.MaxY Then
             offsetY = 32
 
-            If endY = Map.MaxY Then
+            If endY = Map.MaxY + 1 Then
                 If Player(Myindex).YOffset < 0 Then
                     offsetY = Player(Myindex).YOffset + PicY
                 End If
@@ -1395,14 +1395,14 @@ Module C_Graphics
 
         With Camera
             .Y = offsetY
-            If Settings.CameraType = 1 Then
-                .Height = .Top + ScreenY
-                .Width = .Left + ScreenX
-            Else
-                .Height = ScreenY
-                .Width = ScreenX
-            End If
             .X = offsetX
+            If Settings.CameraType = 1 Then
+                .Height = .Top + ScreenY + PicY
+                .Width = .Left + ScreenX + PicX
+            Else
+                .Height = ScreenY + PicY
+                .Width = ScreenX + PicX
+            End If
         End With
 
         UpdateDrawMapName()
