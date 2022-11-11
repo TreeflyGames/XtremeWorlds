@@ -17,20 +17,5 @@ namespace Mirage.Sharp.Asfw.IO
       using (StreamReader streamReader = new StreamReader(path))
         return (T) new XmlSerializer(typeof (T)).Deserialize((TextReader) streamReader);
     }
-
-    public static byte[] FromObject(object obj)
-    {
-      using (MemoryStream serializationStream = new MemoryStream())
-      {
-        new BinaryFormatter().Serialize((Stream) serializationStream, obj);
-        return serializationStream.GetBuffer();
-      }
-    }
-
-    public static object ToObject(byte[] bytes)
-    {
-      using (MemoryStream serializationStream = new MemoryStream(bytes))
-        return new BinaryFormatter().Deserialize((Stream) serializationStream);
-    }
   }
 }

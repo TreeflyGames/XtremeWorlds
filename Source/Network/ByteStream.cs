@@ -72,18 +72,6 @@ namespace Mirage.Sharp.Asfw
       return dst;
     }
 
-    public object ReadObject()
-    {
-      byte[] buffer = this.ReadBytes();
-      if (buffer.Length == 0)
-        return (object) null;
-      using (MemoryStream serializationStream = new MemoryStream(buffer))
-        return new BinaryFormatter()
-        {
-          Binder = ((SerializationBinder) new ByteStream.AsfwBinder())
-        }.Deserialize((Stream) serializationStream);
-    }
-
     public byte[] ReadBytes()
     {
       if (this.Head + 4 > this.Data.Length)
@@ -222,15 +210,6 @@ namespace Mirage.Sharp.Asfw
       this.CheckSize(size);
       Buffer.BlockCopy((Array) bytes, offset, (Array) this.Data, this.Head, size);
       this.Head += size;
-    }
-
-    public void WriteObject(object value)
-    {
-      using (MemoryStream serializationStream = new MemoryStream())
-      {
-        new BinaryFormatter().Serialize((Stream) serializationStream, value);
-        this.WriteBytes(serializationStream.GetBuffer());
-      }
     }
 
     public void WriteBytes(byte[] value, int offset, int size)

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <StartupObject>Mirage.Basic.Client.My.MyApplication</StartupObject>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
@@ -897,12 +897,12 @@
     <Content Include="Resources\ScreenShot.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DarkUI-NET6" Version="1.0.0" />
     <PackageReference Include="SFML.Audio" Version="2.5.0" />
     <PackageReference Include="SFML.Graphics" Version="2.5.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Mirage.Basic.Engine.vbproj" />
+    <ProjectReference Include="..\DarkUI\DarkUI.csproj" />
     <ProjectReference Include="..\Network\Mirage.Sharp.Asfw.csproj" />
   </ItemGroup>
   <ItemGroup>

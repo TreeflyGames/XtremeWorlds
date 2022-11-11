@@ -1,0 +1,103 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <OutputType>Library</OutputType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Controls\DarkCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkDropdownList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkNumericUpDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkTitle.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkScrollBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkContextMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkMenuStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkScrollBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkScrollView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkSectionPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkSeparator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DarkToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Docking\DarkDockContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Docking\DarkDockGroup.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Docking\DarkDockPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Docking\DarkDockRegion.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Docking\DarkDocument.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Docking\DarkToolWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.336902">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+  </ItemGroup>
+</Project>
