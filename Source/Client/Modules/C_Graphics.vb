@@ -3628,4 +3628,90 @@ NextLoop:
     Public Sub DrawCursor()
         RenderSprite(CursorSprite, GameWindow, CurMouseX, CurMouseY, 0, 0, CursorInfo.Width, CursorInfo.Height)
     End Sub
+
+      Sub DrawHotbar()
+        Dim i As Integer, num As Integer, pic As Integer
+        Dim rec As Rectangle, recPos As Rectangle
+
+        RenderSprite(HotBarSprite, GameWindow, HotbarX, HotbarY, 0, 0, HotBarGfxInfo.Width, HotBarGfxInfo.Height)
+
+        For i = 1 To MAX_HOTBAR
+            If Player(Myindex).Hotbar(i).SlotType = 1 Then
+                num = Player(Myindex).Skill(Player(Myindex).Hotbar(i).Slot).Num
+
+                If Num > 0 Then
+                    StreamSkill(num)
+                    pic = Skill(num).Icon
+
+                    If SkillIconsGfxInfo(pic).IsLoaded = False Then
+                        LoadTexture(pic, 9)
+                    End If
+
+                    'seeying we still use it, lets update timer
+                    With SkillIconsGfxInfo(pic)
+                        .TextureTimer = GetTickCount() + 100000
+                    End With
+
+                    With rec
+                        .Y = 0
+                        .Height = 32
+                        .X = 0
+                        .Width = 32
+                    End With
+
+                    If Not Player(Myindex).Skill(i).CD = 0 Then
+                        rec.X = 32
+                        rec.Width = 32
+                    End If
+
+                    With recPos
+                        .Y = HotbarY + HotbarTop
+                        .Height = PicY
+                        .X = HotbarX + HotbarLeft + ((HotbarOffsetX + 32) * (((i - 1))))
+                        .Width = PicX
+                    End With
+
+                    RenderSprite(SkillIconsSprite(pic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                End If
+
+            ElseIf Player(Myindex).Hotbar(i).SlotType = 2 Then
+                num = Player(Myindex).Inv(Player(Myindex).Hotbar(i).Slot).Num
+
+                If num > 0 Then
+                    If num > 0 and Item(num).Name = "" And Item_Changed(num) = False Then
+                        Item_Changed(num) = True
+                        SendRequestItem(num)
+                    End If
+                    pic = Item(num).Pic
+
+                    If ItemsGfxInfo(pic).IsLoaded = False Then
+                        LoadTexture(pic, 4)
+                    End If
+
+                    'seeying we still use it, lets update timer
+                    With ItemsGfxInfo(pic)
+                        .TextureTimer = GetTickCount() + 100000
+                    End With
+
+                    With rec
+                        .Y = 0
+                        .Height = 32
+                        .X = 0
+                        .Width = 32
+                    End With
+
+                    With recPos
+                        .Y = HotbarY + HotbarTop
+                        .Height = PicY
+                        .X = HotbarX + HotbarLeft + ((HotbarOffsetX + 32) * (((i - 1))))
+                        .Width = PicX
+                    End With
+
+                    RenderSprite(ItemsSprite(pic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                End If
+            End If
+        Next
+
+    End Sub
+
 End Module

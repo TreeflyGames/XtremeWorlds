@@ -1278,6 +1278,28 @@ Friend Module C_Gui
         End If
     End Function
 
+    Friend Function IsHotBarSlot(x As Single, y As Single) As Integer
+        Dim tempRec As RectStruct
+        Dim i As Integer
+
+        For i = 1 To MAX_HOTBAR
+            With tempRec
+                .Top = HotbarY + HotbarTop
+                .Bottom = .Top + PicY
+                .Left = HotbarX + HotbarLeft + ((HotbarOffsetX + 32) * (((i - 1) Mod MAX_HOTBAR)))
+                .Right = .Left + PicX
+            End With
+
+            If x >= tempRec.Left AndAlso x <= tempRec.Right Then
+                If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
+                    IsHotBarSlot = i
+                    Exit Function
+                End If
+            End If
+        Next
+
+    End Function
+
 #End Region
 
 End Module
