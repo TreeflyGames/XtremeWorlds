@@ -306,18 +306,6 @@ Module C_Text
 
     Friend SplitChars As Char() = New Char() {" "c, "-"c, ControlChars.Tab}
 
-    Friend Enum WrapMode
-        Characters
-        Font
-    End Enum
-
-    Friend Enum WrapType
-        None
-        BreakWord
-        Whitespace
-        Smart
-    End Enum
-
     Friend Function WordWrap(ByRef str As String, ByRef width As Integer, Optional ByRef mode As WrapMode = WrapMode.Font, Optional ByRef type As WrapType = WrapType.Smart, Optional ByRef size As Byte = FontSize) As List(Of String)
         Dim lines As New List(Of String)
         Dim line As String = ""

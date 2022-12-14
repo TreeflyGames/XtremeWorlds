@@ -391,4 +391,16 @@
         NW = 4
     End Enum
 
+    Public Enum WrapMode
+        Characters
+        Font
+    End Enum
+
+    Public Enum WrapType
+        None
+        BreakWord
+        Whitespace
+        Smart
+    End Enum
+
 End Module
