@@ -34,7 +34,5 @@
     Public Const MAX_SWITCHES As Integer = 100
     Public Const NAX_VARIABLES As Integer = 100
     Public const MAX_POINTS As Byte = 255
-    Public const MAX_STRING_LENGTH As Byte = 21
-    Public const MIN_STRING_LENGTH As Byte = 3
     Public const MAX_CHARACTERS As Byte = 3
 End Module

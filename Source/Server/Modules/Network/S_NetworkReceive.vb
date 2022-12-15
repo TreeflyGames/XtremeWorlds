@@ -1,12 +1,14 @@
 ﻿Imports System.IO
+Imports System.Net
 Imports System.Net.Mime.MediaTypeNames
 Imports System.Reflection.PortableExecutable
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
+Imports System.Net.Http
+Imports System.Net.Http.Headers
 
 Module S_NetworkReceive
-
     Friend Sub PacketRouter()
         Socket.PacketId(ClientPackets.CCheckPing) = AddressOf Packet_Ping
         Socket.PacketId(ClientPackets.CNewAccount) = AddressOf Packet_NewAccount
@@ -166,16 +168,6 @@ Module S_NetworkReceive
             End If
 
             ' Prevent hacking
-            If username.Trim.Length < MIN_STRING_LENGTH OrElse password.Trim.Length < MIN_STRING_LENGTH Then
-                AlertMsg(index, "Your username and password must be at least " & MIN_STRING_LENGTH & " characters in length")
-                Exit Sub
-            End If
-
-            If username.Trim.Length > MAX_STRING_LENGTH OrElse password.Trim.Length > MAX_STRING_LENGTH Then
-                AlertMsg(index, "Your name and password must be " & MAX_STRING_LENGTH & " characters or less!")
-            End If
-
-            ' Prevent hacking
             For i = 1 To Len(username)
                 n = Microsoft.VisualBasic.Strings.AscW(Microsoft.VisualBasic.Strings.Mid$(username, i, 1))
 
@@ -259,15 +251,6 @@ Module S_NetworkReceive
                 If EKeyPair.DecryptString(buffer.ReadString) <> Settings.Version Then
                     AlertMsg(index, "Version outdated, please visit " & Settings.Website)
                     Exit Sub
-                End If
-
-                If name.Trim.Length < MIN_STRING_LENGTH OrElse password.Trim.Length < MIN_STRING_LENGTH Then
-                    AlertMsg(index, "Your name and password must be at least " & MIN_STRING_LENGTH & " characters in length")
-                    Exit Sub
-                End If
-
-                If name.Trim.Length > MAX_STRING_LENGTH OrElse password.Trim.Length > MAX_STRING_LENGTH Then
-                    AlertMsg(index, "Your name and password must be " & MAX_STRING_LENGTH & " characters or less!")
                 End If
 
                 If Not AccountExist(name) Then
