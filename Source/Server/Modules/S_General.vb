@@ -109,10 +109,6 @@ Module S_General
     ' Pinvoke
     Private Delegate Function ConsoleEventDelegate(eventType As Integer) As Boolean
 
-    <Runtime.InteropServices.DllImport("kernel32.dll", SetLastError:=True)>
-    Private Function SetConsoleCtrlHandler(callback As ConsoleEventDelegate, add As Boolean) As Boolean
-    End Function
-
     Sub UpdateCaption()
         Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Settings.GameName, MyIPAddress, Settings.Port, GetPlayersOnline(), ErrorCount, Time.Instance.ToString())
     End Sub
