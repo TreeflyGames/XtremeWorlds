@@ -9,8 +9,8 @@ Public Class LanguageDef
     Public Class LoadDef
 
         Public Loading As String = "Loading..."
-        Public Graphics As String = "Initialising Graphics.."
-        Public Network As String = "Initialising Network..."
+        Public Graphics As String = "Initializing Graphics.."
+        Public Network As String = "Initializing Network..."
         Public Starting As String = "Starting Game..."
 
     End Class
@@ -84,7 +84,7 @@ Public Class LanguageDef
         Public PingSync As String = "Sync"
         Public PingLocal As String = "Local"
 
-        Public MapReceive As String = "Recieving map..."
+        Public MapReceive As String = "Receiving map..."
         Public DataReceive As String = "Receiving game data..."
 
         Public MapCurMap As String = "Map # {0}"
