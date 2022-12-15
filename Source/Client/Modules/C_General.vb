@@ -197,69 +197,6 @@ Module C_General
 
     End Function
 
-    Friend Sub RePositionGui(width As Integer, height As Integer)        
-        ScreenMapx = (width / 32) - 1
-        ScreenMapy = (height / 32) - 1
-
-        'then the window
-        FrmGame.ClientSize = New Drawing.Size((ScreenMapx) * PicX + PicX, (ScreenMapy) * PicY + PicY)
-        FrmGame.picscreen.Width = (ScreenMapx) * PicX + PicX
-        FrmGame.picscreen.Height = (ScreenMapy) * PicY + PicY
-
-        HalfX = ((ScreenMapx) \ 2) * PicX
-        HalfY = ((ScreenMapy) \ 2) * PicY
-        ScreenX = (ScreenMapx) * PicX
-        ScreenY = (ScreenMapy) * PicY
-
-        GameWindow.SetView(New SFML.Graphics.View(New SFML.Graphics.FloatRect(0, 0, (ScreenMapx) * PicX + PicX, (ScreenMapy) * PicY + PicY)))
-
-        'Then we can recalculate the positions
-
-        'chatwindow
-        ChatWindowX = 1
-        ChatWindowY = FrmGame.Height - ChatWindowGfxInfo.Height - 65
-
-        MyChatX = 24
-        MyChatY = FrmGame.Height - 60
-
-        'hotbar
-        'If Settings.ScreenSize = 0 Then
-        HotbarX = HudWindowX + HudPanelGfxInfo.Width + 20
-        HotbarY = 5
-
-        'petbar
-        PetbarX = HotbarX
-        PetbarY = HotbarY + 34
-        'Else
-        '    HotbarX = ChatWindowX + MyChatWindowGfxInfo.Width + 75
-        '    HotbarY = FrmGame.Height - HotBarGfxInfo.Height - 45
-
-        'petbar
-        '    PetbarX = HotbarX
-        '    PetbarY = HotbarY - 34
-        'End If
-
-        'action panel
-        ActionPanelX = FrmGame.Width - ActionPanelGfxInfo.Width - 25
-        ActionPanelY = FrmGame.Height - ActionPanelGfxInfo.Height - 45
-
-        'Char Window
-        CharWindowX = FrmGame.Width - CharPanelGfxInfo.Width - 26
-        CharWindowY = FrmGame.Height - CharPanelGfxInfo.Height - ActionPanelGfxInfo.Height - 50
-
-        'inv Window
-        InvWindowX = FrmGame.Width - InvPanelGfxInfo.Width - 26
-        InvWindowY = FrmGame.Height - InvPanelGfxInfo.Height - ActionPanelGfxInfo.Height - 50
-
-        'skill window
-        SkillWindowX = FrmGame.Width - SkillPanelGfxInfo.Width - 26
-        SkillWindowY = FrmGame.Height - SkillPanelGfxInfo.Height - ActionPanelGfxInfo.Height - 50
-
-        'petstat window
-        PetStatX = PetbarX
-        PetStatY = PetbarY - PetStatsGfxInfo.Height - 10
-    End Sub
-
     Friend Sub DestroyGame()
         ' break out of GameLoop
         InGame = False
