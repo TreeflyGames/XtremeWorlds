@@ -30,7 +30,7 @@ Module S_General
 
         Time.Instance.GameSpeed = Settings.TimeSpeed
 
-        Console.Title = "MirageBasic Server"
+        Console.Title = "MirageWorlds Server"
 
         time1 = GetTimeMs()
 
@@ -59,7 +59,7 @@ Module S_General
         LoadGameData()
         Console.WriteLine("Spawning Map Items...")
         SpawnAllMapsItems()
-        Console.WriteLine("Spawning Map Npcs...")
+        Console.WriteLine("Spawning Map NPCs...")
         SpawnAllMapNpcs()
 
         InitTime()
@@ -68,14 +68,14 @@ Module S_General
         time2 = GetTimeMs()
 
         Console.Clear()
-        Console.WriteLine(" __  __ _____ _____            _____ ______ _               _       ")
-        Console.WriteLine("|  \/  |_   _|  __ \     /\   / ____|  ____| |             (_)      ")
-        Console.WriteLine("| \  / | | | | |__) |   /  \ | |  __| |__  | |__   __ _ ___ _  ___  ")
-        Console.WriteLine("| |\/| | | | |  _  /   / /\ \| | |_ |  __| | '_ \ / _` / __| |/ __| ")
-        Console.WriteLine("| |  | |_| |_| | \ \  / ____ \ |__| | |____| |_) | (_| \__ \ | (__  ")
-        Console.WriteLine("|_|  |_|_____|_|  \_\/_/    \_\_____|______|_.__/ \__,_|___/_|\___| ")
-
-        Console.WriteLine("")
+        Console.WriteLine("___  ____                       _    _            _     _     ")
+        Console.WriteLine("|  \/  (_)                     | |  | |          | |   | |    ")
+        Console.WriteLine("| .  . |_ _ __ __ _  __ _  ___ | |  | | ___  _ __| | __| |___ ")
+        Console.WriteLine("| |\/| | | '__/ _` |/ _` |/ _ \| |/\| |/ _ \| '__| |/ _` / __|")
+        Console.WriteLine("| |  | | | | | (_| | (_| |  __/\  /\  / (_) | |  | | (_| \__ \")
+        Console.WriteLine("\_|  |_/_|_|  \__,_|\__, |\___| \/  \/ \___/|_|  |_|\__,_|___/")
+        Console.WriteLine("                     __/ |                                    ")
+        Console.WriteLine("                    |___/                                     ")
 
         Console.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.")
         Console.WriteLine("")

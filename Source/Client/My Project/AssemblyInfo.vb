@@ -7,12 +7,12 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("MirageBasic Client")>
+<Assembly: AssemblyTitle("MirageWorlds Client")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("MirageBasic Client")>
-<Assembly: AssemblyCopyright("Copyright ©  2015 - 2016")>
-<Assembly: AssemblyTrademark("Damian666")>
+<Assembly: AssemblyProduct("MirageWorlds Client")>
+<Assembly: AssemblyCopyright("Copyright ©  2015 - 2022")>
+<Assembly: AssemblyTrademark("Damian666 and Ituaki")>
 
 <Assembly: ComVisible(False)>
 

@@ -7,7 +7,7 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("MirageBasic Server")>
+<Assembly: AssemblyTitle("MirageWorlds Server")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
 <Assembly: AssemblyProduct("EO.Net Server")>

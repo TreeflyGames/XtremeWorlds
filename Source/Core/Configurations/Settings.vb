@@ -26,12 +26,12 @@ Public Class SettingsDef
     Public Ip As String = "127.0.0.1"
     Public Port As Integer = 7001
 
-    <XmlIgnore()> Public GameName As String = "MirageBasic"
+    <XmlIgnore()> Public GameName As String = "MirageWorlds"
     <XmlIgnore()> Public Website As String = "https://miragebasic.net/"
 
-    <XmlIgnore()> Public Version As String = "1.5.4"
+    <XmlIgnore()> Public Version As String = "1.5.5"
 
-    Public Welcome As String = "Welcome to MirageBasic, enjoy your stay!"
+    Public Welcome As String = "Welcome to MirageWorlds, enjoy your stay!"
 
     Public TimeSpeed As Integer = 1
 End Class
