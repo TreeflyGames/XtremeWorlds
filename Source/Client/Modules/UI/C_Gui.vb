@@ -1300,7 +1300,7 @@ Friend Module C_Gui
 
     End Function
 
-        Friend Sub RePositionGui(width As Integer, height As Integer)        
+    Friend Sub RePositionGui(width As Integer, height As Integer)        
         ScreenMapx = (width / 32) - 1
         ScreenMapy = (height / 32) - 1
 
