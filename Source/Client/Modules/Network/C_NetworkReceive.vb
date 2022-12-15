@@ -1186,4 +1186,16 @@ Module C_NetworkReceive
 
         buffer.Dispose()
     End Sub
+
+    Friend Sub Packet_Hotbar(ByRef data() As Byte)
+        Dim i As Integer
+        Dim buffer As New ByteStream(data)
+
+        For i = 1 To MAX_HOTBAR
+            Player(Myindex).Hotbar(i).Slot = buffer.ReadInt32
+            Player(Myindex).Hotbar(i).SlotType = buffer.ReadInt32
+        Next
+
+        buffer.Dispose()
+    End Sub
 End Module

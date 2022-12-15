@@ -285,6 +285,15 @@ Module C_UpdateUI
     Friend CraftPanelX As Integer = 25
     Friend CraftPanelY As Integer = 25
 
+    Friend SelHotbarSlot As Integer
+    Friend SelSkillSlot As Boolean
+
+    'hotbar constants
+    Friend Const HotbarTop As Byte = 2
+
+    Friend Const HotbarLeft As Byte = 2
+    Friend Const HotbarOffsetX As Byte = 2
+
 #End Region
 
     Sub UpdateUi()

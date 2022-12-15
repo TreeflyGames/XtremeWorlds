@@ -722,4 +722,38 @@ Module C_NetworkSend
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()
     End Sub
+
+    Friend Sub SendSetHotbarSlot(slot As Integer, num As Integer, type As Integer)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CSetHotbarSlot)
+
+        buffer.WriteInt32(slot)
+        buffer.WriteInt32(num)
+        buffer.WriteInt32(type)
+
+        Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
+
+    Friend Sub SendDeleteHotbar(slot As Integer)
+        Dim buffer As New ByteStream(4)
+        buffer.WriteInt32(ClientPackets.CDeleteHotbarSlot)
+
+        buffer.WriteInt32(slot)
+
+        Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
+
+    Friend Sub SendUseHotbarSlot(slot As Integer)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CUseHotbarSlot)
+
+        buffer.WriteInt32(slot)
+
+        Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
 End Module

@@ -103,34 +103,6 @@ Module C_Text
 
         ' Draw name
         DrawText(textX, textY, Trim$(name), color, backcolor, GameWindow)
-
-        'For i = 1 To MAX_QUESTS
-        '    'check if the npc is the starter to any quest: [!] symbol
-        '    'can accept the quest as a new one?
-        '    If Player(MyIndex).PlayerQuest(i).Status = QuestStatusType.NotStarted OrElse Player(MyIndex).PlayerQuest(i).Status = QuestStatusType.Repeatable OrElse (Player(MyIndex).PlayerQuest(i).Status = QuestStatusType.Completed AndAlso Quest(i).Repeat = 1) Then
-        '        'the npc gives this quest?
-        '        If Map.MapEvents(Index).questnum = i Then
-        '            Name = "[!]"
-        '            TextX = ConvertMapX(Map.MapEvents(Index).X * PicX) + Map.MapEvents(Index).XOffset + (PicX \ 2) - GetTextWidth((Trim$("[!]"))) + 8
-        '            TextY = TextY - 16
-        '            If Quest(i).Repeat = 1 Then
-        '                DrawText(TextX, TextY, Trim$(Name), Color.White, backcolor, GameWindow)
-        '            Else
-        '                DrawText(TextX, TextY, Trim$(Name), color, backcolor, GameWindow)
-        '            End If
-        '            Exit For
-        '        End If
-        '    ElseIf Player(MyIndex).PlayerQuest(i).Status = QuestStatusType.Started Then
-        '        If Map.MapEvents(Index).questnum = i Then
-        '            Name = "[*]"
-        '            TextX = ConvertMapX(Map.MapEvents(Index).X * PicX) + Map.MapEvents(Index).XOffset + (PicX \ 2) - GetTextWidth((Trim$("[*]"))) + 8
-        '            TextY = TextY - 16
-        '            DrawText(TextX, TextY, Trim$(Name), color, backcolor, GameWindow)
-        '            Exit For
-        '        End If
-        '    End If
-        'Next
-
     End Sub
 
     Public Sub DrawMapAttributes()
@@ -248,17 +220,17 @@ Module C_Text
     Friend Sub AddText(msg As String, color As Integer)
         If TxtChatAdd = "" Then
             TxtChatAdd = TxtChatAdd & msg
-            AddChatRec(msg, color)
+            AddChat(msg, color)
         Else
             For Each str As String In WordWrap(msg, MyChatWindowGfxInfo.Width - ChatboxPadding, WrapMode.Font)
                 TxtChatAdd = TxtChatAdd & vbCrLf & str
-                AddChatRec(str, color)
+                AddChat(str, color)
             Next
 
         End If
     End Sub
 
-    Friend Sub AddChatRec(msg As String, color As Integer)
+    Friend Sub AddChat(msg As String, color As Integer)
         Dim chatMsg As ChatStruct
         chatMsg.Text = msg
         chatMsg.Color = color
