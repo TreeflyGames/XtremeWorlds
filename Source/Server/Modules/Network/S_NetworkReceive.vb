@@ -7,6 +7,7 @@ Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
 Imports System.Net.Http
 Imports System.Net.Http.Headers
+Imports Mirage.Basic.Engine.Network
 
 Module S_NetworkReceive
     Friend Sub PacketRouter()
@@ -252,6 +253,8 @@ Module S_NetworkReceive
                     AlertMsg(index, "Version outdated, please visit " & Settings.Website)
                     Exit Sub
                 End If
+
+                if Engine.Network.Api.
 
                 If Not AccountExist(name) Then
                     AlertMsg(index, "That account name does not exist.")
