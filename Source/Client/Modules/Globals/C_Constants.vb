@@ -25,7 +25,6 @@ Module C_Constants
     Friend Const GfxExt As String = ".png"
 
     ' Menu states
-    Friend Const MenuStateNewAccount As Byte = 0
     Friend Const MenuStateLogin As Byte = 1
     Friend Const MenuStateGetchars As Byte = 2
     Friend Const MenuStateNewchar As Byte = 3

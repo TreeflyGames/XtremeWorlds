@@ -12,7 +12,6 @@ Imports Mirage.Basic.Engine.Network
 Module S_NetworkReceive
     Friend Sub PacketRouter()
         Socket.PacketId(ClientPackets.CCheckPing) = AddressOf Packet_Ping
-        Socket.PacketId(ClientPackets.CNewAccount) = AddressOf Packet_NewAccount
         Socket.PacketId(ClientPackets.CLogin) = AddressOf Packet_Login
         Socket.PacketId(ClientPackets.CAddChar) = AddressOf Packet_AddChar
         Socket.PacketId(ClientPackets.CUseChar) = AddressOf Packet_UseChar
@@ -150,73 +149,6 @@ Module S_NetworkReceive
         TempPlayer(index).DataPackets = TempPlayer(index).DataPackets + 1
     End Sub
 
-    Private Sub Packet_NewAccount(index As Integer, ByRef data() As Byte)
-        Dim username As String, password As String
-        Dim i As Integer, n As Integer, IP As String
-        Dim buffer As New ByteStream(data)
-
-        AddDebug("Recieved CMSG: CNewAccount")
-
-        If Not IsPlaying(index) AndAlso Not IsLoggedIn(index) Then
-            'Get the Data
-            username = EKeyPair.DecryptString(buffer.ReadString).ToLower
-            password = EKeyPair.DecryptString(buffer.ReadString)
-
-            ' Check versions
-            If EKeyPair.DecryptString(buffer.ReadString) <> Settings.Version Then
-                AlertMsg(index, "Version outdated, please visit " & Settings.Website)
-                Exit Sub
-            End If
-
-            ' Prevent hacking
-            For i = 1 To Len(username)
-                n = Microsoft.VisualBasic.Strings.AscW(Microsoft.VisualBasic.Strings.Mid$(username, i, 1))
-
-                If Not IsNameLegal(n) Then
-                    AlertMsg(index, "Invalid username, only letters, numbers, and spaces allowed in usernames.")
-                    Exit Sub
-                End If
-            Next
-
-            'banned ip?
-
-            ' Cut off last portion of ip
-            IP = Socket.ClientIp(index)
-
-            For i = IP.Length To 1 Step -1
-
-                If Microsoft.VisualBasic.Strings.Mid(IP, i, 1) = "." Then
-                    Exit For
-                End If
-
-            Next
-
-            IP = Microsoft.VisualBasic.Strings.Mid$(IP, 1, i)
-            If IsBanned(IP) Then
-                AlertMsg(index, "You are banned, have a nice day!")
-            End If
-
-            ' Check to see if account already exists
-            If Not AccountExist(username) Then
-                AddAccount(index, username, password)
-
-                Console.WriteLine("Account " & username & " has been created.")
-                Addlog("Account " & username & " has been created.", PLAYER_LOG)
-
-                SendJobs(index)
-                SendLoginOk(index)
-
-                ' Show the player up on the socket status
-                Addlog(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
-                Console.WriteLine(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".")
-            Else
-                AlertMsg(index, "Sorry, that account username is already taken!")
-            End If
-
-            buffer.Dispose()
-        End If
-    End Sub
-
     Private Sub Packet_Login(index As Integer, ByRef data() As Byte)
         Dim name As String, IP As String
         Dim password As String, i As Integer
@@ -254,16 +186,14 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
-                if Engine.Network.Api.
-
-                If Not AccountExist(name) Then
-                    AlertMsg(index, "That account name does not exist.")
+                Dim Response As New Engine.Network.Api
+                If Response.Auth(name, password) = False Then
+                    AlertMsg(index, "Invalid username or password.")
                     Exit Sub
                 End If
 
-                If Not PasswordOK(name, password) Then
-                    AlertMsg(index, "Incorrect password.")
-                    Exit Sub
+                If Not AccountExist(name) Then
+                    AddAccount(index, name, password)
                 End If
 
                 If IsMultiAccounts(index, name) Then
@@ -335,16 +265,6 @@ Module S_NetworkReceive
             name = buffer.ReadString
             sexNum = buffer.ReadInt32
             jobNum = buffer.ReadInt32 + 1
-
-            ' Prevent hacking
-            If Len(name.Trim) < MIN_STRING_LENGTH Then
-                AlertMsg(index, "Character name must be at least " & MIN_STRING_LENGTH & " characters in length.")
-                Exit Sub
-            End If
-
-            If name.Trim.Length > MAX_STRING_LENGTH Then
-                AlertMsg(index, "Your name and password must be " & MAX_STRING_LENGTH & " characters or less!")
-            End If
 
             For i = 1 To Len(name)
                 n = AscW(Mid$(name, i, 1))

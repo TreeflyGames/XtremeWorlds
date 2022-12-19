@@ -992,20 +992,9 @@ Module modDatabase
         Return File.Exists(Paths.Database & "Accounts//" & Name.Trim & ".bin")
     End Function
 
-    Function PasswordOK(Name As String, Password As String) As Boolean
-        If Not AccountExist(Name) Then Return False
-        Dim reader As New ByteStream()
-        ByteFile.Load(Paths.Database & "Accounts//" & Name.Trim & ".bin", reader)
-        If reader.ReadString().Trim <> Name.Trim Then Return False
-        Return reader.ReadString().Trim.ToUpper = Password.Trim.ToUpper
-    End Function
-
     Sub AddAccount(index As Integer, name As String, password As String)
-        ClearPlayer(index)
-
         SetPlayerLogin(index, name)
         SetPlayerPassword(index, password)
-
         SavePlayer(index)
     End Sub
 

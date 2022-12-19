@@ -3,19 +3,6 @@ Imports Mirage.Sharp.Asfw
 Imports Mirage.Basic.Engine
 
 Module C_NetworkSend
-
-    Friend Sub SendNewAccount(name As String, password As String)
-        Dim buffer As New ByteStream(4)
-
-        buffer.WriteInt32(Packets.ClientPackets.CNewAccount)
-        buffer.WriteString((EKeyPair.EncryptString(name)))
-        buffer.WriteString((EKeyPair.EncryptString(password)))
-        buffer.WriteString((EKeyPair.EncryptString(Settings.Version)))
-        Socket.SendData(buffer.Data, buffer.Head)
-
-        buffer.Dispose()
-    End Sub
-
     Friend Sub SendAddChar(slot As Integer, name As String, sexNum As Integer, jobNum As Integer)
         Dim buffer As New ByteStream(4)
 

@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Basic.Engine
+Imports System.Security.Policy
 
 Friend Class FrmMenu
     Inherits Form
@@ -125,7 +126,7 @@ Friend Class FrmMenu
                 filename = Paths.Graphics & "characters\" & Job(NewCharJob).MaleSprite & GfxExt
             Else
                 filename = Paths.Graphics & "characters\" & Job(NewCharJob).FemaleSprite & GfxExt
-            End If
+End If
 
             If File.Exists(filename) = False Then Exit sub
             Dim charsprite As Bitmap = New Bitmap(filename)
@@ -392,13 +393,7 @@ Friend Class FrmMenu
     ''' Handle Register button press.
     ''' </summary>
     Private Sub BtnRegister_Click(sender As Object, e As EventArgs) Handles btnRegister.Click
-        If Socket.IsConnected() = True Then
-            PlaySound("Click.ogg")
-            PnlRegisterVisible = True
-            PnlLoginVisible = False
-            PnlCharCreateVisible = False
-            PnlCreditsVisible = False
-        End If
+        Process.Start("explorer.exe", Settings.Website)
     End Sub
 
     ''' <summary>
@@ -441,9 +436,7 @@ Friend Class FrmMenu
     ''' Handles Login button press.
     ''' </summary>
     Private Sub BtnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
-        If IsLoginLegal(txtLogin.Text, txtPassword.Text) Then
-            MenuState(MenuStateLogin)
-        End If
+        MenuState(MenuStateLogin)
     End Sub
 
     ''' <summary>
@@ -458,30 +451,6 @@ Friend Class FrmMenu
     ''' </summary>
     Private Sub BtnLogin_MouseLeave(sender As Object, e As EventArgs) Handles btnLogin.MouseLeave
         btnLogin.Image = Image.FromFile(Paths.Gui & "Menu\btn_login" & GfxExt)
-    End Sub
-
-    ''' <summary>
-    ''' Handles CreateAccount button press.
-    ''' </summary>
-    Private Sub BtnCreateAccount_Click(sender As Object, e As EventArgs) Handles btnCreateAccount.Click
-        Dim name As String
-        Dim password As String
-        Dim passwordAgain As String
-
-        name = Trim$(txtRuser.Text)
-        password = Trim$(txtRPass.Text)
-        passwordAgain = Trim$(txtRPass2.Text)
-
-        If IsLoginLegal(name, password) Then
-            If password <> passwordAgain Then
-                MsgBox("Passwords don't match.")
-                Exit Sub
-            End If
-
-            If Not IsStringLegal(name) Then Exit Sub
-
-            MenuState(MenuStateNewaccount)
-        End If
     End Sub
 
     ''' <summary>

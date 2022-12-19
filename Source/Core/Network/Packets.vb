@@ -2,8 +2,7 @@
 
     ' Packets sent by client to server
     Public Enum ClientPackets
-        CNewAccount = 1
-        CLogin
+        CLogin = 1
         CAddChar
         CUseChar
         CDelChar

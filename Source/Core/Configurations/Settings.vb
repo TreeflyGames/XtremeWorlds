@@ -27,7 +27,7 @@ Public Class SettingsDef
     Public Port As Integer = 7001
 
     <XmlIgnore()> Public GameName As String = "MirageWorlds"
-    <XmlIgnore()> Public Website As String = "https://miragebasic.net/"
+    <XmlIgnore()> Public Website As String = "https://pokemonblood.com/"
 
     <XmlIgnore()> Public Version As String = "1.5.5"
 

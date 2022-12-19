@@ -86,10 +86,6 @@ Module C_General
         CheckTilesets()
     End Sub
 
-    Friend Function IsLoginLegal(username As String, password As String) As Boolean
-        Return Len(Trim$(username)) >= MIN_STRING_LENGTH AndAlso Len(Trim$(password)) >= MIN_STRING_LENGTH And Len(Trim$(username)) <= MAX_STRING_LENGTH And Len(Trim$(password)) <= MAX_STRING_LENGTH
-    End Function
-
     Friend Function IsStringLegal(sInput As String) As Boolean
         Dim i As Integer
 
@@ -137,17 +133,6 @@ Module C_General
                     Else
                         SendAddChar(SelectedChar, FrmMenu.txtCharName.Text, SexType.Female, FrmMenu.cmbJob.SelectedIndex)
                     End If
-                End If
-
-            Case MenuStateNewAccount
-                PnlLoginVisible = False
-                PnlCharCreateVisible = False
-                PnlRegisterVisible = False
-                PnlCreditsVisible = False
-                PnlLoginVisible = True
-
-                If ConnectToServer(1) Then
-                    SendNewAccount(FrmMenu.txtRuser.Text, FrmMenu.txtRPass.Text)
                 End If
 
             Case MenuStateLogin
