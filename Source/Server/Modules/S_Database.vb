@@ -994,7 +994,6 @@ Module modDatabase
 
     Sub AddAccount(index As Integer, name As String, password As String)
         SetPlayerLogin(index, name)
-        SetPlayerPassword(index, password)
         SavePlayer(index)
     End Sub
 
@@ -1041,7 +1040,6 @@ Module modDatabase
         ByteFile.Load(filename, reader)
 
         SetPlayerLogin(index, reader.ReadString())
-        SetPlayerPassword(index, reader.ReadString())
         SetPlayerAccess(index, reader.ReadByte())
         Account(index).Index = reader.ReadByte()
 
@@ -1053,7 +1051,6 @@ Module modDatabase
     Sub ClearAccount(index As Integer)
         Account(index).Access = AdminType.Player
         SetPlayerLogin(index, "")
-        SetPlayerPassword(index, "")
         ReDim Account(index).Character(MAX_CHARACTERS)
 
         For i = 1 To MAX_CHARACTERS

@@ -150,7 +150,7 @@ Module S_NetworkReceive
     End Sub
 
     Private Sub Packet_Login(index As Integer, ByRef data() As Byte)
-        Dim name As String, IP As String
+        Dim username As String, IP As String
         Dim password As String, i As Integer
         Dim buffer As New ByteStream(data)
 
@@ -177,7 +177,7 @@ Module S_NetworkReceive
                 End If
 
                 ' Get the data
-                name = EKeyPair.DecryptString(buffer.ReadString()).ToLower
+                username = EKeyPair.DecryptString(buffer.ReadString()).ToLower
                 password = EKeyPair.DecryptString(buffer.ReadString())
 
                 ' Check versions
@@ -187,22 +187,21 @@ Module S_NetworkReceive
                 End If
 
                 Dim Response As New Engine.Network.Api
-                If Response.Auth(name, password) = False Then
+                If Response.Auth(username, password) = False Then
                     AlertMsg(index, "Invalid username or password.")
                     Exit Sub
                 End If
 
-                If Not AccountExist(name) Then
-                    AddAccount(index, name, password)
+                If Not AccountExist(username) Then
+                    AddAccount(index, username, password)
                 End If
 
-                If IsMultiAccounts(index, name) Then
+                If IsMultiAccounts(index, username) Then
                     AlertMsg(index, "Multiple account logins is not authorized.")
                     Exit Sub
                 End If
 
                 ' Load the player
-                SetPlayerLogin(index, name)
                 LoadAccount(index)
                 LoadBank(index)
 
