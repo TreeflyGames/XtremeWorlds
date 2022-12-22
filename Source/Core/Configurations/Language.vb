@@ -263,7 +263,7 @@ Public Module modLanguage
         Dim x As New XmlSerializer(GetType(LanguageDef), New XmlRootAttribute("Language"))
 
         Directory.CreateDirectory(cf)
-        cf += "language.xml"
+        cf += "Language.xml"
 
         If Not File.Exists(cf) Then
             File.Create(cf).Dispose()
