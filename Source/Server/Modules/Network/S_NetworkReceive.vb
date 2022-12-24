@@ -186,8 +186,8 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
-                Dim Response As New Engine.Network.Api
-                If Response.Auth(username, password) = False Then
+                Dim Api As New Engine.Network.Api
+                If Api.Auth(username, password) = False Then
                     AlertMsg(index, "Invalid username or password.")
                     Exit Sub
                 End If
