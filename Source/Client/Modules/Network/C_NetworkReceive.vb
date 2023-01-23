@@ -344,8 +344,6 @@ Module C_NetworkReceive
         Next
 
         ' changes to inventory, need to clear any drop menu
-        FrmGame.pnlCurrency.Visible = False
-        FrmGame.txtCurrency.Text = ""
         TmpCurrencyItem = 0
         CurrencyMenu = 0 ' clear
 
@@ -361,8 +359,6 @@ Module C_NetworkReceive
         SetPlayerInvItemValue(Myindex, n, buffer.ReadInt32)
 
         ' changes, clear drop menu
-        FrmGame.pnlCurrency.Visible = False
-        FrmGame.txtCurrency.Text = ""
         TmpCurrencyItem = 0
         CurrencyMenu = 0 ' clear
 
@@ -378,8 +374,6 @@ Module C_NetworkReceive
         Next
 
         ' changes to inventory, need to clear any drop menu
-        FrmGame.pnlCurrency.Visible = False
-        FrmGame.txtCurrency.Text = ""
         TmpCurrencyItem = 0
         CurrencyMenu = 0 ' clear
 
@@ -503,16 +497,16 @@ Module C_NetworkReceive
     End Sub
 
     Private Sub Packet_PlayerMessage(ByRef data() As Byte)
-        Dim msg As String, colour As Integer
+        Dim msg As String, Color As Integer
         Dim buffer As New ByteStream(data)
 
         msg = Trim(buffer.ReadString)
 
-        colour = buffer.ReadInt32
+        Color = buffer.ReadInt32
 
         buffer.Dispose()
 
-        AddText(msg, colour)
+        AddText(msg, Color)
     End Sub
 
     Private Sub Packet_SpawnNPC(ByRef data() As Byte)
@@ -845,8 +839,6 @@ Module C_NetworkReceive
         Next
 
         ' changes to inventory, need to clear any drop menu
-        FrmGame.pnlCurrency.Visible = False
-        FrmGame.txtCurrency.Text = ""
         TmpCurrencyItem = 0
         CurrencyMenu = 0 ' clear
 
@@ -1097,14 +1089,14 @@ Module C_NetworkReceive
     End Sub
 
     Private Sub Packet_ChatBubble(ByRef data() As Byte)
-        Dim targetType As Integer, target As Integer, message As String, colour As Integer
+        Dim targetType As Integer, target As Integer, message As String, Color As Integer
         Dim buffer As New ByteStream(data)
 
         target = buffer.ReadInt32
         targetType = buffer.ReadInt32
         message = Trim(buffer.ReadString)
-        colour = buffer.ReadInt32
-        AddChatBubble(target, targetType, message, colour)
+        Color = buffer.ReadInt32
+        AddChatBubble(target, targetType, message, Color)
 
         buffer.Dispose()
 

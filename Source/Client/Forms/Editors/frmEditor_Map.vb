@@ -1164,13 +1164,10 @@ Public Class frmEditor_Map
 #Region "Drawing"
 
     Public Sub DrawTileset()
-        'Dim height As Integer
-        'Dim width As Integer
         Dim tileset As Byte
 
         ' find tileset number
         tileset = cmbTileSets.SelectedIndex + 1
-        TilesetWindow.Clear(ToSfmlColor(picBackSelect.BackColor))
 
         Dim rec2 As New RectangleShape With {
             .OutlineColor = New SFML.Graphics.Color(SFML.Graphics.Color.Red),
@@ -1181,6 +1178,7 @@ Public Class frmEditor_Map
         If TileSetTextureInfo(tileset).IsLoaded = False Then
             LoadTexture(tileset, 1)
         End If
+
         ' we use it, lets update timer
         With TileSetTextureInfo(tileset)
             .TextureTimer = GetTickCount() + 100000
@@ -1211,15 +1209,14 @@ Public Class frmEditor_Map
         End If
 
         If TileSetTextureInfo(tileset).Width < picBackSelect.Width Or TileSetTextureInfo(tileset).Height < picBackSelect.Height Then
-            RenderSprite(TileSetSprite(tileset), TilesetWindow, 0, 0, 0, 0, TileSetTextureInfo(tileset).Width, TileSetTextureInfo(tileset).Height)
+            RenderTexture(TileSetSprite(tileset), TilesetWindow, 0, 0, 0, 0, TileSetTextureInfo(tileset).Width, TileSetTextureInfo(tileset).Height, TileSetTextureInfo(tileset).Width, TileSetTextureInfo(tileset).Height)
         Else
-            RenderSprite(TileSetSprite(tileset), TilesetWindow, 0, 0, 0, 0, picBackSelect.Width, picBackSelect.Height)
+            RenderTexture(TileSetSprite(tileset), TilesetWindow, 0, 0, 0, 0, picBackSelect.Width, picBackSelect.Height, TileSetTextureInfo(tileset).Width, TileSetTextureInfo(tileset).Height)
         End If
 
         rec2.Size = New Vector2f(EditorTileWidth * PicX, EditorTileHeight * PicY)
         rec2.Position = New Vector2f((EditorTileSelStart.X * PicX), (EditorTileSelStart.Y * PicY))
 
-        'Me.picBackSelect.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "tilesets\" & tileset * GfxExt)
         TilesetWindow.Draw(rec2)
 
         'and finally show everything on screen
@@ -1228,6 +1225,7 @@ Public Class frmEditor_Map
 
     Public Sub EditorMap_DrawItem()
         Dim itemnum As Integer
+
         itemnum = Item(Me.scrlMapItem.Value).Pic
 
         If itemnum <= 0 OrElse itemnum > NumItems Then

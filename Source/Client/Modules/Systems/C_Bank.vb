@@ -102,19 +102,19 @@ Module C_Banks
         Dim i As Integer, x As Integer, y As Integer, itemnum As Integer
         Dim amount As String
         Dim sRect As Rectangle, dRect As Rectangle
-        Dim sprite As Integer, colour As SFML.Graphics.Color
+        Dim sprite As Integer, Color As SFML.Graphics.Color
 
         BankWindowX =  GameWindow.Size.X / 2 - BankPanelGfxInfo.Width / 2
         BankWindowY = GameWindow.Size.Y / 2 - BankPanelGfxInfo.Height / 2
 
         'first render panel
-        RenderSprite(BankPanelSprite, GameWindow, BankWindowX, BankWindowY, 0, 0, BankPanelGfxInfo.Width, BankPanelGfxInfo.Height)
+        RenderTexture(BankPanelSprite, GameWindow, BankWindowX, BankWindowY, 0, 0, BankPanelGfxInfo.Width, BankPanelGfxInfo.Height)
 
         'Headertext
-        DrawText(BankWindowX + 140, BankWindowY + 6, "Your Bank", SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 15)
+        RenderText("Your Bank", GameWindow, BankWindowX + 140, BankWindowY + 6, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
 
         'close
-        DrawText(BankWindowX + 140, BankWindowY + BankPanelGfxInfo.Height - 20, "Close Bank", SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 15)
+        RenderText("Close Bank", GameWindow, BankWindowX + 140, BankWindowY + BankPanelGfxInfo.Height - 20, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
 
        For i = 1 To MAX_BANK
             itemnum = GetBankItemNum(i)
@@ -145,7 +145,7 @@ Module C_Banks
                     .Width = PicX
                 End With
 
-                RenderSprite(ItemsSprite(sprite), GameWindow, dRect.X, dRect.Y, sRect.X, sRect.Y, sRect.Width, sRect.Height)
+                RenderTexture(ItemsSprite(sprite), GameWindow, dRect.X, dRect.Y, sRect.X, sRect.Y, sRect.Width, sRect.Height)
 
                 ' If item is a stack - draw the amount you have
                 If GetBankItemValue(i) > 1 Then
@@ -153,17 +153,17 @@ Module C_Banks
                     x = dRect.Left - 4
 
                     amount = GetBankItemValue(i)
-                    colour = SFML.Graphics.Color.White
+                    Color = SFML.Graphics.Color.White
                     ' Draw currency but with k, m, b etc. using a convertion function
                     If CLng(amount) < 1000000 Then
-                        colour = SFML.Graphics.Color.White
+                        Color = SFML.Graphics.Color.White
                     ElseIf CLng(amount) > 1000000 AndAlso CLng(amount) < 10000000 Then
-                        colour = SFML.Graphics.Color.Yellow
+                        Color = SFML.Graphics.Color.Yellow
                     ElseIf CLng(amount) > 10000000 Then
-                        colour = SFML.Graphics.Color.Green
+                        Color = SFML.Graphics.Color.Green
                     End If
 
-                    DrawText(x, y, ConvertCurrency(amount), colour, SFML.Graphics.Color.Black, GameWindow)
+                    RenderText(ConvertCurrency(amount), GameWindow, x, y, Color, SFML.Graphics.Color.Black)
                 End If
             End If
         Next
@@ -198,7 +198,7 @@ Module C_Banks
             End With
         End If
 
-        RenderSprite(ItemsSprite(sprite), GameWindow, x + 16, y + 16, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(ItemsSprite(sprite), GameWindow, x + 16, y + 16, rec.X, rec.Y, rec.Width, rec.Height)
 
     End Sub
 

@@ -26,7 +26,7 @@ Module C_Types
 
     Public Structure ChatBubbleStruct
         Dim Msg As String
-        Dim Colour As Integer
+        Dim Color As Integer
         Dim Target As Integer
         Dim TargetType As Byte
         Dim Timer As Integer

@@ -1187,7 +1187,7 @@ newlist:
             Case EventType.AddText
                 IsEdit = True
                 FrmEditor_Events.txtAddText_Text.Text = TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text1
-                'frmEditor_Events.scrlAddText_Colour.Value = tmpEvent.Pages(curPageNum).CommandList(curlist).Commands(curslot).Data1
+                'frmEditor_Events.scrlAddText_Color.Value = tmpEvent.Pages(curPageNum).CommandList(curlist).Commands(curslot).Data1
                 Select Case TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data2
                     Case 0
                         FrmEditor_Events.optAddText_Player.Checked = True
@@ -1750,7 +1750,7 @@ newlist:
         Select Case TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Index
             Case EventType.AddText
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text1 = FrmEditor_Events.txtAddText_Text.Text
-                'tmpEvent.Pages(curPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.scrlAddText_Colour.Value
+                'tmpEvent.Pages(curPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.scrlAddText_Color.Value
                 If FrmEditor_Events.optAddText_Player.Checked = True Then
                     TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data2 = 0
                 ElseIf FrmEditor_Events.optAddText_Map.Checked = True Then
@@ -2569,7 +2569,7 @@ newlist:
                 Case 0
                     tX = ((x) - 4) + (PicX * 0.5)
                     tY = ((y) - 7) + (PicY * 0.5)
-                    DrawText(tX, tY, "EV", (SFML.Graphics.Color.Green), (SFML.Graphics.Color.Black), GameWindow)
+                    RenderText("EV", GameWindow, tX, tY, (SFML.Graphics.Color.Green), (SFML.Graphics.Color.Black))
                 Case 1
                     If Map.Events(i).Pages(1).Graphic > 0 AndAlso Map.Events(i).Pages(1).Graphic <= NumCharacters Then
                         If CharacterGfxInfo(Map.Events(i).Pages(1).Graphic).IsLoaded = False Then
@@ -2627,9 +2627,9 @@ newlist:
                         End With
 
                         If rec.Height > 32 Then
-                            RenderSprite(TileSetSprite(Map.Events(i).Pages(1).Graphic), GameWindow, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY) - PicY, rec.X, rec.Y, rec.Width, rec.Height)
+                            RenderTexture(TileSetSprite(Map.Events(i).Pages(1).Graphic), GameWindow, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY) - PicY, rec.X, rec.Y, rec.Width, rec.Height)
                         Else
-                            RenderSprite(TileSetSprite(Map.Events(i).Pages(1).Graphic), GameWindow, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY), rec.X, rec.Y, rec.Width, rec.Height)
+                            RenderTexture(TileSetSprite(Map.Events(i).Pages(1).Graphic), GameWindow, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY), rec.X, rec.Y, rec.Width, rec.Height)
                         End If
                     Else
                         With rec
@@ -2747,9 +2747,9 @@ nextevent:
                 y = y - (sRect.Bottom - sRect.Top) + 32
 
                 If Map.MapEvents(id).GraphicY2 > 1 Then
-                    RenderSprite(TileSetSprite(Map.MapEvents(id).Graphic), GameWindow, ConvertMapX(Map.MapEvents(id).X * PicX), ConvertMapY(Map.MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
+                    RenderTexture(TileSetSprite(Map.MapEvents(id).Graphic), GameWindow, ConvertMapX(Map.MapEvents(id).X * PicX), ConvertMapY(Map.MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 Else
-                    RenderSprite(TileSetSprite(Map.MapEvents(id).Graphic), GameWindow, ConvertMapX(Map.MapEvents(id).X * PicX), ConvertMapY(Map.MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
+                    RenderTexture(TileSetSprite(Map.MapEvents(id).Graphic), GameWindow, ConvertMapX(Map.MapEvents(id).X * PicX), ConvertMapY(Map.MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 End If
         End Select
 
@@ -2760,7 +2760,7 @@ nextevent:
         Dim tmpY As Integer = 0
 
         'first render panel
-        RenderSprite(EventChatSprite, GameWindow, EventChatX, EventChatY, 0, 0, EventChatGfxInfo.Width, EventChatGfxInfo.Height)
+        RenderTexture(EventChatSprite, GameWindow, EventChatX, EventChatY, 0, 0, EventChatGfxInfo.Width, EventChatGfxInfo.Height)
 
         With FrmGame
             'face
@@ -2774,18 +2774,18 @@ nextevent:
                 With FacesGfxInfo(EventChatFace)
                     .TextureTimer = GetTickCount() + 100000
                 End With
-                RenderSprite(FacesSprite(EventChatFace), GameWindow, EventChatX + 12, EventChatY + 14, 0, 0, FacesGfxInfo(EventChatFace).Width, FacesGfxInfo(EventChatFace).Height)
+                RenderTexture(FacesSprite(EventChatFace), GameWindow, EventChatX + 12, EventChatY + 14, 0, 0, FacesGfxInfo(EventChatFace).Width, FacesGfxInfo(EventChatFace).Height)
                 EventChatTextX = 113
             Else
                 EventChatTextX = 14
             End If
 
             'EventPrompt
-            txtArray = WordWrap(EventText, 45, WrapMode.Characters, WrapType.BreakWord)
+            txtArray = WordWrap(EventText, 45, WrapModeType.Characters, WrapType.BreakWord)
             For i = 0 To txtArray.Count
                 If i = txtArray.Count Then Exit For
                 'draw text
-                DrawText(EventChatX + EventChatTextX, EventChatY + EventChatTextY + tmpY, Trim$(txtArray(i).Replace(vbCrLf, "")), SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 13)
+                RenderText(txtArray(i).Replace(vbCrLf, ""), GameWindow, EventChatX + EventChatTextX, EventChatY + EventChatTextY + tmpY, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
                 tmpY = tmpY + 20
             Next
 
@@ -2794,29 +2794,29 @@ nextevent:
                 If EventChoiceVisible(1) Then
                     'Response1
                     temptext = EventChoices(0)
-                    DrawText(EventChatX + 10, EventChatY + 124, Trim(temptext), SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 13)
+                    RenderText(temptext, GameWindow, EventChatX + 10, EventChatY + 124, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
                 End If
 
                 If EventChoiceVisible(2) Then
                     'Response2
                     temptext = EventChoices(1)
-                    DrawText(EventChatX + 10, EventChatY + 146, Trim(temptext), SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 13)
+                    RenderText(temptext, GameWindow, EventChatX + 10, EventChatY + 146, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
                 End If
 
                 If EventChoiceVisible(3) Then
                     'Response3
                     temptext = EventChoices(2)
-                    DrawText(EventChatX + 226, EventChatY + 124, Trim(temptext), SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 13)
+                    RenderText(temptext, GameWindow, EventChatX + 226, EventChatY + 124, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
                 End If
 
                 If EventChoiceVisible(4) Then
                     'Response4
                     temptext = EventChoices(3)
-                    DrawText(EventChatX + 226, EventChatY + 146, Trim(temptext), SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 13)
+                    RenderText(temptext, GameWindow, EventChatX + 226, EventChatY + 146, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
                 End If
             Else
                 temptext = Language.Events.OptContinue
-                DrawText(EventChatX + 410, EventChatY + 156, Trim(temptext), SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 13)
+                RenderText(temptext, GameWindow, EventChatX + 410, EventChatY + 156, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
             End If
 
         End With

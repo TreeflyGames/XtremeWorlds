@@ -121,7 +121,7 @@ Public Class LanguageDef
         Public Admin2 As String = "Available Commands: /admin, /who, /access, /loc, 
                                    /warpmeto, /warptome, /warpto, 
                                    /sprite, /mapreport, /kick, 
-                                   /ban, /respawn, /welcome, /questreset"
+                                   /ban, /respawn, /welcome"
 
         Public Welcome As String = "Usage : /welcome [message]"
         Public Access As String = "Usage : /access [player] [access]"
@@ -132,8 +132,6 @@ Public Class LanguageDef
         Public WarpMeTo As String = "Usage : /warpmeto [player]"
         Public WarpToMe As String = "Usage : /warptome [player]"
         Public WarpTo As String = "Usage : /warpto [map index]"
-
-        Public ResetQuest As String = "Usage : /questreset [index]"
 
         Public InvalidMap As String = "Invalid map index."
         Public InvalidQuest As String = "Invalid quest index."

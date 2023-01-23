@@ -122,12 +122,12 @@ Module C_Shops
         Dim i As Integer, x As Integer, y As Integer, itemnum As Integer, itempic As Integer
         Dim amount As String
         Dim rec As Rectangle, recPos As Rectangle
-        Dim colour As SFML.Graphics.Color
+        Dim Color As SFML.Graphics.Color
 
         If Not InGame OrElse PnlShopVisible = False Then Exit Sub
 
         'first render panel
-        RenderSprite(ShopPanelSprite, GameWindow, ShopWindowX, ShopWindowY, 0, 0, ShopPanelGfxInfo.Width, ShopPanelGfxInfo.Height)
+        RenderTexture(ShopPanelSprite, GameWindow, ShopWindowX, ShopWindowY, 0, 0, ShopPanelGfxInfo.Width, ShopPanelGfxInfo.Height)
 
         if InShop = 0 Then Exit Sub
 
@@ -143,14 +143,14 @@ Module C_Shops
             With FacesGfxInfo(Shop(InShop).Face)
                 .TextureTimer = GetTickCount() + 100000
             End With
-            RenderSprite(FacesSprite(Shop(InShop).Face), GameWindow, ShopWindowX + ShopFaceX, ShopWindowY + ShopFaceY, 0, 0, FacesGfxInfo(Shop(InShop).Face).Width, FacesGfxInfo(Shop(InShop).Face).Height)
+            RenderTexture(FacesSprite(Shop(InShop).Face), GameWindow, ShopWindowX + ShopFaceX, ShopWindowY + ShopFaceY, 0, 0, FacesGfxInfo(Shop(InShop).Face).Width, FacesGfxInfo(Shop(InShop).Face).Height)
         End If
 
         'draw text
-        DrawText(ShopWindowX + ShopLeft, ShopWindowY + 10, Trim(Shop(InShop).Name), SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 15)
+        RenderText(Shop(InShop).Name, GameWindow, ShopWindowX + ShopLeft, ShopWindowY + 10, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
 
-        DrawText(ShopWindowX + 10, ShopWindowY + 10, "Hello, and welcome", SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 15)
-        DrawText(ShopWindowX + 10, ShopWindowY + 25, "to the shop!", SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 15)
+        RenderText("Hello, and welcome", GameWindow, ShopWindowX + 10, ShopWindowY + 10, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
+        RenderText("to the shop!", GameWindow, ShopWindowX + 10, ShopWindowY + 25, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
 
         'render buy button
         If CurMouseX > ShopWindowX + ShopButtonBuyX AndAlso CurMouseX < ShopWindowX + ShopButtonBuyX + ButtonGfxInfo.Width And
@@ -206,24 +206,24 @@ Module C_Shops
                         .Width = PicX
                     End With
 
-                    RenderSprite(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                    RenderTexture(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
 
                     ' If item is a stack - draw the amount you have
                     If Shop(InShop).TradeItem(i).ItemValue > 1 Then
                         y = recPos.Top + 22
                         x = recPos.Left - 4
                         amount = Shop(InShop).TradeItem(i).ItemValue
-                        colour = SFML.Graphics.Color.White
+                        Color = SFML.Graphics.Color.White
                         ' Draw currency but with k, m, b etc. using a convertion function
                         If CLng(amount) < 1000000 Then
-                            colour = SFML.Graphics.Color.White
+                            Color = SFML.Graphics.Color.White
                         ElseIf CLng(amount) > 1000000 AndAlso CLng(amount) < 10000000 Then
-                            colour = SFML.Graphics.Color.Yellow
+                            Color = SFML.Graphics.Color.Yellow
                         ElseIf CLng(amount) > 10000000 Then
-                            colour = SFML.Graphics.Color.Green
+                            Color = SFML.Graphics.Color.Green
                         End If
 
-                        DrawText(x, y, ConvertCurrency(amount), colour, SFML.Graphics.Color.Black, GameWindow)
+                        RenderText(ConvertCurrency(amount), GameWindow, x, y, Color, SFML.Graphics.Color.Black)
                     End If
                 End If
             End If

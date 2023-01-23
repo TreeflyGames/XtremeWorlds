@@ -15,7 +15,8 @@ Public Class SettingsDef
     Public Sound As Boolean = True
     Public Volume As Single = 100.0F
 
-    Public ScreenSize As String = "1024x768"
+    Public Width As String = "1024"
+    Public Height As String = "768"
     Public Vsync As Byte = 1
     Public ShowNpcBar As Byte = 1
     Public CameraType As Byte = 0

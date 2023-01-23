@@ -1,4 +1,5 @@
 ﻿Imports System.Configuration
+Imports System.Windows.Forms.Design.AxImporter
 Imports Mirage.Basic.Engine
 Module C_UpdateUI
 
@@ -324,7 +325,7 @@ Module C_UpdateUI
             DrawChar = True
         End If
 
-        If Not cmbJob Is Nothing Then
+        If Not CmbJob Is Nothing Then
             FrmMenu.cmbJob.Items.Clear()
 
             For i = 1 To UBound(CmbJob)
@@ -563,20 +564,19 @@ Module C_UpdateUI
 
             ShowRClick = False
         End If
-
         If InitMapEditor = True Then
-            FrmEditor_Map.MapEditorInit()
+            frmEditor_Map.MapEditorInit()
             InitMapEditor = False
         End If
 
         If InitMapProperties = True Then
-            FrmEditor_Map.MapPropertiesInit()
+            frmEditor_Map.MapPropertiesInit()
             InitMapProperties = False
         End If
 
         If InitEventEditorForm = True Then
             ' populate form
-            With FrmEditor_Events     
+            With FrmEditor_Events
                 .Show()
             End With
             InitEventEditorForm = False
@@ -584,13 +584,13 @@ Module C_UpdateUI
 
         If OptionsVisible = True Then
             ' show in GUI
-            If Settings.Music = true Then
+            If Settings.Music = True Then
                 FrmOptions.optMOn.Checked = True
             Else
                 FrmOptions.optMOff.Checked = True
             End If
 
-            If Settings.Sound = true Then
+            If Settings.Sound = True Then
                 FrmOptions.optSOn.Checked = True
             Else
                 FrmOptions.optSOff.Checked = True
@@ -599,7 +599,7 @@ Module C_UpdateUI
             FrmOptions.lblVolume.Text = "Volume: " & Settings.Volume
             FrmOptions.scrlVolume.Value = Settings.Volume
 
-            FrmOptions.cmbScreenSize.SelectedItem = Settings.ScreenSize
+            FrmOptions.cmbScreenSize.Text = Settings.Width & "x" & Settings.Height
 
             If Settings.Vsync = 1 Then
                 FrmOptions.chkVsync.Checked = True

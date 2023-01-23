@@ -283,7 +283,7 @@ Module C_Animations
 
         If sRect.Width < 0 OrElse sRect.Height < 0 Then Exit Sub
 
-        RenderSprite(AnimationsSprite(sprite), GameWindow, x, y, sRect.X, sRect.Y, sRect.Width, sRect.Height)
+        RenderTexture(AnimationsSprite(sprite), GameWindow, x, y, sRect.X, sRect.Y, sRect.Width, sRect.Height)
 
     End Sub
 

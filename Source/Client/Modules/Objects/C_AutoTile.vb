@@ -791,11 +791,8 @@ Friend Module C_AutoTiles
         End If
     End Function
 
-    Friend Sub DrawAutoTile(layerNum As Integer, destX As Integer, destY As Integer, quarterNum As Integer, x As Integer, y As Integer, Optional forceFrame As Integer = 0, Optional strict As Boolean = True)
+    Friend Sub DrawAutoTile(layerNum As Integer, dX As Integer, dY As Integer, quarterNum As Integer, x As Integer, y As Integer, Optional forceFrame As Integer = 0, Optional strict As Boolean = True)
         Dim yOffset As Integer, xOffset As Integer
-        'Dim tmpSprite As Sprite
-
-        If GettingMap Then Exit Sub
 
         ' calculate the offset
         If forceFrame > 0 Then
@@ -827,13 +824,8 @@ Friend Module C_AutoTiles
                 yOffset = -32
         End Select
 
-        ' Draw the quarter
-        'TileSetSprite(Map.Tile(X, Y).Layer(layerNum).Tileset).TextureRect = New IntRect(Autotile(X, Y).Layer(layerNum).srcX(quarterNum) + XOffset, Autotile(X, Y).Layer(layerNum).srcY(quarterNum) + YOffset, 16, 16)
-        'TileSetSprite(Map.Tile(X, Y).Layer(layerNum).Tileset).Position = New SFML.Window.Vector2f(destX, destY)
-
-        'GameWindow.Draw(TileSetSprite(Map.Tile(X, Y).Layer(layerNum).Tileset))
         If Map.Tile(x, y).Layer Is Nothing Then Exit Sub
-        RenderSprite(TileSetSprite(Map.Tile(x, y).Layer(layerNum).Tileset), GameWindow, destX, destY, Autotile(x, y).Layer(layerNum).SrcX(quarterNum) + xOffset, Autotile(x, y).Layer(layerNum).SrcY(quarterNum) + yOffset, 16, 16)
+        RenderTexture(TileSetSprite(Map.Tile(x, y).Layer(layerNum).Tileset), GameWindow, dX, dY, Autotile(x, y).Layer(layerNum).SrcX(quarterNum) + xOffset, Autotile(x, y).Layer(layerNum).SrcY(quarterNum) + yOffset, 16, 16)
     End Sub
 
 End Module

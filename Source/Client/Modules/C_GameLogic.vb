@@ -197,7 +197,6 @@ Module C_GameLogic
 
                 ' Process input before rendering, otherwise input will be behind by 1 frame
                 If walkTimer < tick Then
-
                     For i = 1 To MAX_PLAYERS
                         If IsPlaying(i) Then
                             ProcessMovement(i)
@@ -269,7 +268,7 @@ Module C_GameLogic
                 iF Editor = EditorType.Animation Then EditorAnim_DrawAnim()
 
                 If GettingMap Then
-                    Dim font As New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + FontName, FontSize)
+                    Dim font As New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia, FontSize)
                     g.DrawString(Language.Game.MapReceive, font, Brushes.DarkCyan, FrmGame.picscreen.Width - 130, 5)
                 End If
             End If
@@ -789,6 +788,7 @@ Module C_GameLogic
                     End If
 
                     SendSetAccess(command(1), CLng(command(2)))
+                Case ""
                 Case Else
                     AddText(Language.Chat.InvalidCmd, QColorType.AlertColor)
             End Select
@@ -1073,7 +1073,7 @@ Continue1:
         g.Dispose()
     End Sub
 
-    Friend Sub AddChatBubble(target As Integer, targetType As Byte, msg As String, colour As Integer)
+    Friend Sub AddChatBubble(target As Integer, targetType As Byte, msg As String, Color As Integer)
         Dim i As Integer, index As Integer
 
         ' set the global index
@@ -1098,7 +1098,7 @@ Continue1:
             .Target = target
             .TargetType = targetType
             .Msg = msg
-            .Colour = colour
+            .Color = Color
             .Timer = GetTickCount()
             .Active = True
         End With

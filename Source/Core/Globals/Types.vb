@@ -1,5 +1,6 @@
 ﻿
 Imports Mirage.Basic.Engine.Database
+Imports SFML.Graphics
 
 Public Module Types
     ' Common data structure arrays
@@ -28,6 +29,7 @@ Public Module Types
     Public Party As PartyStruct
     Public MapResource() As MapResourceStruct
     Public CharactersList As CharacterList
+
 
     ' Common data structures
     Public Structure ResourceTypeStruct
@@ -882,5 +884,59 @@ Public Module Types
         Dim xOffset As Byte
         Dim yOffset As Byte
         Dim EventId As Integer
+    End Structure
+
+    Public Structure EntityStruct
+        Dim Name As String
+        Dim Type As Byte
+        Dim Top As Long
+        Dim Left As Long
+        Dim Width As Long
+        Dim Height As Long
+        Dim Enabled As Boolean
+        Dim Visible As Boolean
+        Dim CanDrag As Boolean
+        Dim Max As Long
+        Dim Min As Long
+        Dim Value As Long
+        Dim Text As String
+        Dim Image() As Long
+        Dim Design() As Long
+        Dim Alpha As Long
+        Dim ClickThrough As Boolean
+        Dim Icon As Long
+        Dim xOffset As Long
+        Dim yOffset As Long
+        Dim Align As Byte
+        Dim Font As String
+        Dim zChange As Byte
+        Dim OnDraw As Long
+        Dim OrigLeft As Long
+        Dim OrigTop As Long
+        Dim Tooltip As String
+        Dim Group As Long
+        Dim List() As String
+        Dim Activated As Boolean
+        Dim LinkedToWin As Long
+        Dim LinkedToCon As Long
+        Dim State As entState
+        Dim movedX As Long
+        Dim movedY As Long
+        Dim zOrder As Long
+        Dim Callback As String
+    End Structure
+
+    Public Structure EntityPartStruct
+        Dim Type As PartType
+        Dim Origin As PartOriginType
+        Dim Value As Long
+        Dim Slot As Long
+    End Structure
+
+    Public Structure WindowStruct
+        Dim Window As EntityStruct
+        Dim Controls() As EntityStruct
+        Dim ControlCount As Long
+        Dim ActiveControl As Long
     End Structure
 End Module

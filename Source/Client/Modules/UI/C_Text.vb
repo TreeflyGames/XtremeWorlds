@@ -1,4 +1,5 @@
-﻿Imports Mirage.Basic.Engine
+﻿Imports System.Speech.Synthesis.TtsEngine
+Imports Mirage.Basic.Engine
 Imports SFML.Graphics
 Imports SFML.System
 Imports SFML.Window
@@ -15,26 +16,29 @@ Module C_Text
     Friend LastLineindex As Integer = 0
     Friend ScrollMod As Integer = 0
 
-    Friend Sub DrawText(x As Integer, y As Integer, text As String, color As Color, backColor As Color, ByRef target As RenderWindow, Optional textSize As Byte = FontSize)
-        Dim backString As Text = New Text(text, SfmlGameFont)
-        Dim frontString As Text = New Text(text, SfmlGameFont)
+    Friend Sub RenderText(text As String, ByRef target As RenderWindow, x As Integer, y As Integer, color As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
+        Dim backString As Text
+        Dim frontString As Text
+
+        Select Case fontName
+            Case Georgia
+                backString = New Text(text, Fonts(0))
+                frontString = New Text(text, Fonts(0))                
+
+            Case Rockwell
+                backString = New Text(text, Fonts(1))
+                frontString = New Text(text, Fonts(1))
+        End Select
+
         backString.CharacterSize = textSize
-        frontString.CharacterSize = textSize
-
         backString.Color = backColor
-        backString.Position = New Vector2f(x - 1, y - 1)
+        backString.LetterSpacing = 2
+        backString.Position = New Vector2f(x , y)
         target.Draw(backString)
 
-        backString.Position = New Vector2f(x - 1, y + 1)
-        target.Draw(backString)
-
-        backString.Position = New Vector2f(x + 1, y + 1)
-        target.Draw(backString)
-
-        backString.Position = New Vector2f(x + 1, y - 1)
-        target.Draw(backString)
-
+        frontString.CharacterSize = textSize
         frontString.Color = color
+        frontString.LetterSpacing = 2
         frontString.Position = New Vector2f(x, y)
         target.Draw(frontString)
     End Sub
@@ -67,7 +71,7 @@ Module C_Text
         End If
 
         ' Draw name
-        DrawText(textX, textY, Trim$(Npc(npcNum).Name), color, backcolor, GameWindow)
+        RenderText(Npc(npcNum).Name, GameWindow, textX, textY, color, backcolor)
     End Sub
 
     Friend Sub DrawEventName(index As Integer)
@@ -102,7 +106,7 @@ Module C_Text
         End If
 
         ' Draw name
-        DrawText(textX, textY, Trim$(name), color, backcolor, GameWindow)
+        RenderText(name, GameWindow, textX, textY, color, backcolor)
     End Sub
 
     Public Sub DrawMapAttributes()
@@ -120,29 +124,29 @@ Module C_Text
                             tY = ((ConvertMapY(y * PicY)) - 7) + (PicY * 0.5)
                             Select Case .Type
                                 Case TileType.Blocked
-                                    DrawText(tX, tY, "B", (Color.Red), (Color.Black), GameWindow)
+                                    RenderText("B", GameWindow, tX, tY, (Color.Red), (Color.Black))
                                 Case TileType.Warp
-                                    DrawText(tX, tY, "W", (Color.Blue), (Color.Black), GameWindow)
+                                    RenderText("W", GameWindow, tX, tY, (Color.Blue), (Color.Black))
                                 Case TileType.Item
-                                    DrawText(tX, tY, "I", (Color.White), (Color.Black), GameWindow)
+                                    RenderText("I", GameWindow, tX, tY, (Color.White), (Color.Black))
                                 Case TileType.NpcAvoid
-                                    DrawText(tX, tY, "N", (Color.White), (Color.Black), GameWindow)
+                                    RenderText("N", GameWindow, tX, tY, (Color.White), (Color.Black))
                                 Case TileType.Resource
-                                    DrawText(tX, tY, "R", (Color.Green), (Color.Black), GameWindow)
+                                    RenderText("R", GameWindow, tX, tY, (Color.Green), (Color.Black))
                                 Case TileType.NpcSpawn
-                                    DrawText(tX, tY, "S", (Color.Yellow), (Color.Black), GameWindow)
+                                    RenderText( "S", GameWindow, tX, tY, (Color.Yellow), (Color.Black))
                                 Case TileType.Shop
-                                    DrawText(tX, tY, "SH", (Color.Blue), (Color.Black), GameWindow)
+                                    RenderText("SH", GameWindow, tX, tY, (Color.Blue), (Color.Black))
                                 Case TileType.Bank
-                                    DrawText(tX, tY, "BA", (Color.Blue), (Color.Black), GameWindow)
+                                    RenderText("BA", GameWindow, tX, tY, (Color.Blue), (Color.Black))
                                 Case TileType.Heal
-                                    DrawText(tX, tY, "H", (Color.Green), (Color.Black), GameWindow)
+                                    RenderText("H", GameWindow, tX, tY, (Color.Green), (Color.Black))
                                 Case TileType.Trap
-                                    DrawText(tX, tY, "T", (Color.Red), (Color.Black), GameWindow)
+                                    RenderText("T", GameWindow, tX, tY, (Color.Red), (Color.Black))
                                 Case TileType.Light
-                                    DrawText(tX, tY, "L", (Color.Yellow), (Color.Black), GameWindow)
+                                    RenderText("L", GameWindow, tX, tY, (Color.Yellow), (Color.Black))
                                 Case TileType.Animation
-                                    DrawText(tX, tY, "A", (Color.Red), (Color.Black), GameWindow)
+                                    RenderText("A", GameWindow, tX, tY, (Color.Red), (Color.Black))
                             End Select
                         End With
                     End If
@@ -202,19 +206,25 @@ Module C_Text
         y = ConvertMapY(y)
 
         If GetTickCount() < ActionMsg(index).Created + time Then
-            DrawText(x, y, ActionMsg(index).Message, GetSfmlColor(ActionMsg(index).Color), (Color.Black), GameWindow)
+            RenderText(ActionMsg(index).Message, GameWindow, x, y, GetSfmlColor(ActionMsg(index).Color), (Color.Black))
         Else
             ClearActionMsg(index)
         End If
 
     End Sub
 
-    Private ReadOnly WidthTester As Text = New Text("", SfmlGameFont)
+    Private ReadOnly FontTester As Text = New Text("", Fonts(FontType.Goergia))
 
     Friend Function GetTextWidth(text As String, Optional textSize As Byte = FontSize) As Integer
-        WidthTester.DisplayedString = text
-        WidthTester.CharacterSize = textSize
-        Return WidthTester.GetLocalBounds().Width
+        FontTester.DisplayedString = text
+        FontTester.CharacterSize = textSize
+        Return FontTester.GetLocalBounds().Width
+    End Function
+
+    Friend Function GetTextHeight(text As String, Optional textSize As Byte = FontSize) As Integer
+        FontTester.DisplayedString = text
+        FontTester.CharacterSize = textSize
+        Return FontTester.GetLocalBounds().Height
     End Function
 
     Friend Sub AddText(msg As String, color As Integer)
@@ -222,7 +232,7 @@ Module C_Text
             TxtChatAdd = TxtChatAdd & msg
             AddChat(msg, color)
         Else
-            For Each str As String In WordWrap(msg, MyChatWindowGfxInfo.Width - ChatboxPadding, WrapMode.Font)
+            For Each str As String In WordWrap(msg, MyChatWindowGfxInfo.Width - ChatboxPadding, WrapModeType.Font)
                 TxtChatAdd = TxtChatAdd & vbCrLf & str
                 AddChat(str, color)
             Next
@@ -278,7 +288,7 @@ Module C_Text
 
     Friend SplitChars As Char() = New Char() {" "c, "-"c, ControlChars.Tab}
 
-    Friend Function WordWrap(ByRef str As String, ByRef width As Integer, Optional ByRef mode As WrapMode = WrapMode.Font, Optional ByRef type As WrapType = WrapType.Smart, Optional ByRef size As Byte = FontSize) As List(Of String)
+    Friend Function WordWrap(ByRef str As String, ByRef width As Integer, Optional ByRef mode As WrapModeType = WrapModeType.Font, Optional ByRef type As WrapType = WrapType.Smart, Optional ByRef size As Byte = FontSize) As List(Of String)
         Dim lines As New List(Of String)
         Dim line As String = ""
         Dim nextLine As String = ""
@@ -292,7 +302,7 @@ Module C_Text
                     Dim newLine = If(nextLine.Length < 1, baseLine + trim, nextLine)
                     nextLine = ""
 
-                    Select Case If(mode = WrapMode.Font, GetTextWidth(newLine, size), newLine.Length)
+                    Select Case If(mode = WrapModeType.Font, GetTextWidth(newLine, size), newLine.Length)
                         Case < width
                             line = newLine
                             Exit Select
@@ -316,7 +326,7 @@ Module C_Text
                                 Case WrapType.BreakWord
                                     Dim remaining = trim
                                     Do
-                                        If If(mode = WrapMode.Font, GetTextWidth(baseLine, size), baseLine.Length) > width Then
+                                        If If(mode = WrapModeType.Font, GetTextWidth(baseLine, size), baseLine.Length) > width Then
                                             lines.Add(line)
                                             baseLine = ""
                                             line = ""
@@ -325,13 +335,13 @@ Module C_Text
                                         Dim i = remaining.Length - 1
                                         While (-1 < i)
                                             Select Case mode
-                                                Case WrapMode.Font
+                                                Case WrapModeType.Font
                                                     If Not (width < GetTextWidth(baseLine + remaining.Substring(0, i) + "-", size)) Then
                                                         Exit While
                                                     End If
                                                     Exit Select
 
-                                                Case WrapMode.Characters
+                                                Case WrapModeType.Characters
                                                     If Not (width < (baseLine + remaining.Substring(0, i) + "-").Length) Then
                                                         Exit While
                                                     End If
@@ -345,12 +355,12 @@ Module C_Text
                                         line = ""
                                         baseLine = ""
                                         remaining = remaining.Substring(i + 1)
-                                    Loop While (remaining.Length > 0) AndAlso (width < If(mode = WrapMode.Font, GetTextWidth(remaining, size), remaining.Length))
+                                    Loop While (remaining.Length > 0) AndAlso (width < If(mode = WrapModeType.Font, GetTextWidth(remaining, size), remaining.Length))
                                     line = remaining
                                     Exit Select
 
                                 Case WrapType.Smart
-                                    If (line.Length < 1) OrElse (width < If(mode = WrapMode.Font, GetTextWidth(trim, size), trim.Length)) Then
+                                    If (line.Length < 1) OrElse (width < If(mode = WrapModeType.Font, GetTextWidth(trim, size), trim.Length)) Then
                                         currentType = WrapType.BreakWord
                                     Else
                                         currentType = WrapType.Whitespace
@@ -372,6 +382,63 @@ Module C_Text
 
         Return lines
     End Function
+
+    Public Sub WordWrap_Array(ByVal Text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
+        Dim lineCount As Long, i As Long, size As Long, lastSpace As Long, b As Long, tmpNum As Long
+
+        'Too small of text
+        If Len(Text) < 2 Then
+            ReDim theArray(1)
+            theArray(1) = Text
+            Exit Sub
+        End If
+
+        ' default values
+        b = 1
+        lastSpace = 1
+        size = 0
+        tmpNum = Len(Text)
+
+        For i = 1 To tmpNum
+            ' if it's a space, store it
+            Select Case Mid$(Text, i, 1)
+                Case " ": lastSpace = i
+            End Select
+
+            'Add up the size
+            size = size + GetTextWidth(Asc(Mid$(Text, i, 1)))
+
+            'Check for too large of a size
+            If size > MaxLineLen Then
+                'Check if the last space was too far back
+                If i - lastSpace > 12 Then
+                    'Too far away to the last space, so break at the last character
+                    lineCount = lineCount + 1
+                    ReDim Preserve theArray(lineCount)
+                    theArray(lineCount) = Trim$(Mid$(Text, b, (i - 1) - b))
+                    b = i - 1
+                    size = 0
+                Else
+                    'Break at the last space to preserve the word
+                    lineCount = lineCount + 1
+                    ReDim Preserve theArray(lineCount)
+                    theArray(lineCount) = Trim$(Mid$(Text, b, lastSpace - b))
+                    b = lastSpace + 1
+                    'Count all the words we ignored (the ones that weren't printed, but are before "i")
+                    size = GetTextWidth(Mid$(Text, lastSpace, i - lastSpace))
+                End If
+            End If
+
+            ' Remainder
+            If i = Len(Text) Then
+                If b <> i Then
+                    lineCount = lineCount + 1
+                    ReDim Preserve theArray(lineCount)
+                    theArray(lineCount) = theArray(lineCount) & Mid$(Text, b, i)
+                End If
+            End If
+        Next
+    End Sub
 
     Friend Function Explode(str As String, splitChars As Char()) As String()
 
@@ -424,7 +491,7 @@ Module C_Text
                 y = ConvertMapY((Map.MapEvents(.Target).Y * 32) + Map.MapEvents(.Target).YOffset) - 40
             End If
             ' word wrap the text
-            theArray = WordWrap(.Msg, ChatBubbleWidth, WrapMode.Font)
+            theArray = WordWrap(.Msg, ChatBubbleWidth, WrapModeType.Font)
             ' find max width
             For i = 0 To theArray.Count - 1
                 If GetTextWidth(theArray(i)) > maxWidth Then maxWidth = GetTextWidth(theArray(i))
@@ -458,7 +525,7 @@ Module C_Text
 
             ' render each line centralised
             For i = 0 To theArray.Count - 1
-                DrawText(x - (GetTextWidth(theArray(i)) / 2), y2, theArray(i), ToSfmlColor(Drawing.ColorTranslator.FromOle(QBColor(.Colour))), Color.Black, GameWindow)
+                RenderText(theArray(i), GameWindow, x - (GetTextWidth(theArray(i)) / 2), y2, ToSfmlColor(Drawing.ColorTranslator.FromOle(QBColor(.Color))), Color.Black)
                 y2 = y2 + 12
             Next
 

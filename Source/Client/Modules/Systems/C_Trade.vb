@@ -169,20 +169,20 @@ Module C_Trade
         Dim i As Integer, x As Integer, y As Integer, itemnum As Integer, itempic As Integer
         Dim amount As String
         Dim rec As Rectangle, recPos As Rectangle
-        Dim colour As SFML.Graphics.Color
+        Dim Color As SFML.Graphics.Color
 
         amount = 0
-        colour = SFML.Graphics.Color.White
+        Color = SFML.Graphics.Color.White
 
         If Not InGame Then Exit Sub
 
         'first render panel
-        RenderSprite(TradePanelSprite, GameWindow, TradeWindowX, TradeWindowY, 0, 0, TradePanelGfxInfo.Width, TradePanelGfxInfo.Height)
+        RenderTexture(TradePanelSprite, GameWindow, TradeWindowX, TradeWindowY, 0, 0, TradePanelGfxInfo.Width, TradePanelGfxInfo.Height)
 
         'Headertext
-        DrawText(TradeWindowX + 70, TradeWindowY + 6, "Your Offer", SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 15)
+        RenderText("Your Offer", GameWindow, TradeWindowX + 70, TradeWindowY + 6, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
 
-        DrawText(TradeWindowX + 260, TradeWindowY + 6, Tradername & "'s Offer.", SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 15)
+        RenderText(Tradername & "'s Offer.", GameWindow, TradeWindowX + 260, TradeWindowY + 6, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
 
        For i = 1 To MAX_INV
             ' blt your own offer
@@ -218,7 +218,7 @@ Module C_Trade
                         .Width = PicX
                     End With
 
-                    RenderSprite(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                    RenderTexture(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
 
                     ' If item is a stack - draw the amount you have
                     If TradeYourOffer(i).Value >= 1 Then
@@ -227,21 +227,21 @@ Module C_Trade
 
                         ' Draw currency but with k, m, b etc. using a convertion function
                         If amount < 1000000 Then
-                            colour = SFML.Graphics.Color.White
+                            Color = SFML.Graphics.Color.White
                         ElseIf amount > 1000000 AndAlso CLng(amount) < 10000000 Then
-                            colour = SFML.Graphics.Color.Yellow
+                            Color = SFML.Graphics.Color.Yellow
                         ElseIf amount > 10000000 Then
-                            colour = SFML.Graphics.Color.Green
+                            Color = SFML.Graphics.Color.Green
                         End If
 
                         amount = TradeYourOffer(i).Value
-                        DrawText(x, y, ConvertCurrency(amount), colour, SFML.Graphics.Color.Black, GameWindow)
+                        RenderText(ConvertCurrency(amount), GameWindow, x, y, Color, SFML.Graphics.Color.Black)
                     End If
                 End If
             End If
         Next
 
-        DrawText(TradeWindowX + 8, TradeWindowY + 288, YourWorth, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 13)
+        RenderText(YourWorth, GameWindow, TradeWindowX + 8, TradeWindowY + 288, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
 
        For i = 1 To MAX_INV
             ' blt their offer
@@ -274,7 +274,7 @@ Module C_Trade
                         .Width = PicX
                     End With
 
-                    RenderSprite(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                    RenderTexture(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
 
                     ' If item is a stack - draw the amount they have
                     If TradeTheirOffer(i).Value >= 1 Then
@@ -283,21 +283,21 @@ Module C_Trade
 
                         ' Draw currency but with k, m, b etc. using a convertion function
                         If amount < 1000000 Then
-                            colour = SFML.Graphics.Color.White
+                            Color = SFML.Graphics.Color.White
                         ElseIf amount > 1000000 AndAlso CLng(amount) < 10000000 Then
-                            colour = SFML.Graphics.Color.Yellow
+                            Color = SFML.Graphics.Color.Yellow
                         ElseIf amount > 10000000 Then
-                            colour = SFML.Graphics.Color.Green
+                            Color = SFML.Graphics.Color.Green
                         End If
 
                         amount = TradeTheirOffer(i).Value
-                        DrawText(x, y, amount, colour, SFML.Graphics.Color.Black, GameWindow)
+                        RenderText(amount, GameWindow, x, y, Color, SFML.Graphics.Color.Black)
                     End If
                 End If
             End If
         Next
 
-        DrawText(TradeWindowX + 208, TradeWindowY + 288, TheirWorth, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow, 13)
+        RenderText(TheirWorth, GameWindow, TradeWindowX + 208, TradeWindowY + 288, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
 
         'render accept button
         DrawButton("Accept Trade", TradeWindowX + TradeButtonAcceptX, TradeWindowY + TradeButtonAcceptY, 0)

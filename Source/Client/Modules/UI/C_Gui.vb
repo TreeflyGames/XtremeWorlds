@@ -599,12 +599,7 @@ Friend Module C_Gui
                     If InBank Then
                         If Item(GetPlayerInvItemNum(Myindex, invNum)).Type = ItemType.Currency OrElse Item(GetPlayerInvItemNum(Myindex, invNum)).Stackable = 1 Then
                             CurrencyMenu = 2 ' deposit
-                            FrmGame.lblCurrency.Text = "How many do you want to deposit?"
                             TmpCurrencyItem = invNum
-                            FrmGame.txtCurrency.Text = ""
-                            FrmGame.pnlCurrency.Visible = True
-                            FrmGame.pnlCurrency.BringToFront()
-                            FrmGame.txtCurrency.Focus()
                             Exit Function
                         End If
                         DepositItem(invNum, 0)
@@ -621,12 +616,7 @@ Friend Module C_Gui
                         Next
                         If Item(GetPlayerInvItemNum(Myindex, invNum)).Type = ItemType.Currency OrElse Item(GetPlayerInvItemNum(Myindex, invNum)).Stackable = 1 Then
                             CurrencyMenu = 4 ' trade
-                            FrmGame.lblCurrency.Text = "How many do you want to trade?"
                             TmpCurrencyItem = invNum
-                            FrmGame.txtCurrency.Text = ""
-                            FrmGame.pnlCurrency.Visible = True
-                            FrmGame.pnlCurrency.BringToFront()
-                            FrmGame.txtCurrency.Focus()
                             Exit Function
                         End If
                         TradeItem(invNum, 0)
@@ -663,11 +653,7 @@ Friend Module C_Gui
                 If bankItem <> 0 Then
                     If Item(GetBankItemNum(bankItem)).Type = ItemType.Currency OrElse Item(GetBankItemNum(bankItem)).Stackable = 1 Then
                         CurrencyMenu = 3 ' withdraw
-                        FrmGame.lblCurrency.Text = "How many do you want to withdraw?"
                         TmpCurrencyItem = bankItem
-                        FrmGame.txtCurrency.Text = ""
-                        FrmGame.pnlCurrency.Visible = True
-                        FrmGame.txtCurrency.Focus()
                         Exit Function
                     End If
 
@@ -831,11 +817,7 @@ Friend Module C_Gui
                             If Item(GetPlayerInvItemNum(Myindex, invNum)).Type = ItemType.Currency OrElse Item(GetPlayerInvItemNum(Myindex, invNum)).Stackable = 1 Then
                                 If GetPlayerInvItemValue(Myindex, invNum) > 0 Then
                                     CurrencyMenu = 1 ' drop
-                                    FrmGame.lblCurrency.Text = "How many do you want to drop?"
                                     TmpCurrencyItem = invNum
-                                    FrmGame.txtCurrency.Text = ""
-                                    FrmGame.pnlCurrency.Visible = True
-                                    FrmGame.txtCurrency.Focus()
                                 End If
                             Else
                                 SendDropItem(invNum, 0)

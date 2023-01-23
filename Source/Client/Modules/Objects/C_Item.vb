@@ -122,8 +122,6 @@ Module C_Items
         buffer.Dispose()
 
         ' changes to inventory, need to clear any drop menu
-        FrmGame.pnlCurrency.Visible = False
-        FrmGame.txtCurrency.Text = ""
         TmpCurrencyItem = 0
         CurrencyMenu = 0 ' clear
     End Sub

@@ -131,6 +131,39 @@ Module C_Database
 
     End Sub
 
+    Friend Sub ChecKInterface()
+        Dim i As Integer
+        i = 1
+
+        While File.Exists(Paths.Gui & i & GfxExt)
+            NumInterface = NumInterface + 1
+            i = i + 1
+        End While
+
+    End Sub
+
+    Friend Sub CheckGradients()
+        Dim i As Integer
+        i = 1
+
+        While File.Exists(Paths.Gui & "gradients\" & i & GfxExt)
+            NumGradients = NumGradients + 1
+            i = i + 1
+        End While
+
+    End Sub
+
+    Friend Sub CheckDesigns()
+        Dim i As Integer
+        i = 1
+
+        While File.Exists(Paths.Gui & "designs\" & i & GfxExt)
+            NumDesigns = NumDesigns + 1
+            i = i + 1
+        End While
+
+    End Sub
+
     Friend Sub CacheMusic()
         ReDim MusicCache(Directory.GetFiles(Paths.Music, "*.ogg").Count)
         Dim files As String() = Directory.GetFiles(Paths.Music, "*.ogg")

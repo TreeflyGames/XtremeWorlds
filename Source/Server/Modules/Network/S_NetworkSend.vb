@@ -29,11 +29,11 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub PlayerMsg(index As Integer, Msg As String, Colour As Integer)
+    Sub PlayerMsg(index As Integer, Msg As String, Color As Integer)
         Dim buffer As New ByteStream(4)
         buffer.WriteInt32(ServerPackets.SPlayerMsg)
         buffer.WriteString((Msg))
-        buffer.WriteInt32(Colour)
+        buffer.WriteInt32(Color)
 
         AddDebug("Sent SMSG: SPlayerMsg")
 
@@ -805,7 +805,7 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub SayMsg_Map(mapNum As Integer, index As Integer, Message As String, SayColour As Integer)
+    Sub SayMsg_Map(mapNum As Integer, index As Integer, Message As String, SayColor As Integer)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SSayMsg)
@@ -814,7 +814,7 @@ Module S_NetworkSend
         buffer.WriteInt32(GetPlayerPK(index))
         buffer.WriteString(Message.Trim)
         buffer.WriteString(("[Map] "))
-        buffer.WriteInt32(SayColour)
+        buffer.WriteInt32(SayColor)
 
         AddDebug("Sent SMSG: SSayMsg")
 
@@ -823,7 +823,7 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub SayMsg_Global(index As Integer, Message As String, SayColour As Integer)
+    Sub SayMsg_Global(index As Integer, Message As String, SayColor As Integer)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SSayMsg)
@@ -832,7 +832,7 @@ Module S_NetworkSend
         buffer.WriteInt32(GetPlayerPK(index))
         buffer.WriteString(Message.Trim)
         buffer.WriteString(("[Global] "))
-        buffer.WriteInt32(SayColour)
+        buffer.WriteInt32(SayColor)
 
         AddDebug("Sent SMSG: SSayMsg Global")
 
@@ -1231,7 +1231,7 @@ End Sub
         buffer.Dispose()
     End Sub
 
-    Sub SendChatBubble(mapNum As Integer, Target As Integer, TargetType As Integer, Message As String, Colour As Integer)
+    Sub SendChatBubble(mapNum As Integer, Target As Integer, TargetType As Integer, Message As String, Color As Integer)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SChatBubble)
@@ -1241,7 +1241,7 @@ End Sub
         buffer.WriteInt32(Target)
         buffer.WriteInt32(TargetType)
         buffer.WriteString(Message.Trim)
-        buffer.WriteInt32(Colour)
+        buffer.WriteInt32(Color)
         SendDataToMap(mapNum, buffer.Data, buffer.Head)
 
         buffer.Dispose()

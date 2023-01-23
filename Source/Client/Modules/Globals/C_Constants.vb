@@ -14,9 +14,9 @@ Module C_Constants
     Friend Const EffectTypeTint As Integer = 6
 
     ' Font variables
-    Friend Const FontName As String = "Arial.ttf"
-
-    Friend Const FontSize As Byte = 13
+    Friend Const Georgia As String = "Georgia.ttf"
+    Friend Const Rockwell As String = "ROCK.TTF"
+    Friend Const FontSize As Byte = 11
 
     ' Log Path and variables
     Friend Const LogDebug As String = "debug.txt"

@@ -3258,20 +3258,20 @@ Module S_Pets
 
     Friend Sub SkillPet_Effect(vital As Byte, increment As Boolean, index As Integer, damage As Integer, skillnum As Integer)
         Dim sSymbol As String
-        Dim colour As Integer
+        Dim Color As Integer
 
         If damage > 0 Then
             If increment Then
                 sSymbol = "+"
-                If vital = VitalType.HP Then colour = ColorType.BrightGreen
-                If vital = VitalType.MP Then colour = ColorType.BrightBlue
+                If vital = VitalType.HP Then Color = ColorType.BrightGreen
+                If vital = VitalType.MP Then Color = ColorType.BrightBlue
             Else
                 sSymbol = "-"
-                colour = ColorType.Blue
+                Color = ColorType.Blue
             End If
 
             SendAnimation(GetPlayerMap(index), Skill(skillnum).SkillAnim, 0, 0, TargetType.Pet, index)
-            SendActionMsg(GetPlayerMap(index), sSymbol & damage, colour, ActionMsgType.Scroll, GetPetX(index) * 32, GetPetY(index) * 32)
+            SendActionMsg(GetPlayerMap(index), sSymbol & damage, Color, ActionMsgType.Scroll, GetPetX(index) * 32, GetPetY(index) * 32)
 
             ' send the sound
             'SendMapSound(Index, Player(index).Pet.x, Player(index).Pet.y, SoundEntity.seSpell, Skillnum)

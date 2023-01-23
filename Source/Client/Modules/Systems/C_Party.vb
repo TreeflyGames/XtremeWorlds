@@ -152,7 +152,7 @@ Module C_Parties
             ' draw name
             y = 100
             x = 10
-            DrawText(x, y, theName, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
+            RenderText(theName, GameWindow, x, y, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
 
             ' draw hp
             If Player(playerNum).Vital(VitalType.HP) > 0 Then
@@ -190,7 +190,7 @@ Module C_Parties
                         ' draw name
                         y = 100 + ((I - 1) * 30)
 
-                        DrawText(x, y, theName, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow)
+                        RenderText(theName, GameWindow, x, y, SFML.Graphics.Color.White, SFML.Graphics.Color.Black)
                         ' draw hp
                         y = 115 + ((I - 1) * 30)
 

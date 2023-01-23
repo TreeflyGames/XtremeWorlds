@@ -989,10 +989,10 @@ Module modDatabase
 #Region "Accounts"
 
     Function AccountExist(Name As String) As Boolean
-        Return File.Exists(Paths.Database & "Accounts//" & Name.Trim & ".bin")
+        Return File.Exists(Paths.Database & "Accounts//" & Name.Trim & "//.bin")
     End Function
 
-    Sub AddAccount(index As Integer, name As String, password As String)
+    Sub AddAccount(index As Integer, name As String)
         SetPlayerLogin(index, name)
         SavePlayer(index)
     End Sub
@@ -1005,20 +1005,17 @@ Module modDatabase
         For i = 1 To GetPlayersOnline()
             If Not IsPlaying(i) Then Continue For
             SavePlayer(i)
-            SaveBank(i)
         Next
     End Sub
 
     Sub SavePlayer(index As Integer)
-        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & ".bin"
+        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//.bin"
 
         ' Create path to character folder
         CheckDir(Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//")
 
         Dim writer As New ByteStream(Account.Length)
 
-        writer.WriteString(GetPlayerLogin(index))
-        writer.WriteString(GetPlayerPassword(index))
         writer.WriteByte(GetPlayerAccess(index))
         writer.WriteByte(Account(index).Index)
 
@@ -1029,23 +1026,26 @@ Module modDatabase
         ByteFile.Save(filename, writer)
 
         SaveCharacter(index, Account(index).Index)
+        SaveBank(index)
     End Sub
 
-    Sub LoadAccount(index As Integer)
-        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & ".bin"
-        Dim reader As New ByteStream(100)
+    Sub LoadAccount(index As Integer, username As String)
+        Dim filename As String = Paths.Database & "Accounts//" & username & "//.bin"
+        Dim reader As New ByteStream(Account.Length)
 
         ClearPlayer(index)
 
         ByteFile.Load(filename, reader)
 
-        SetPlayerLogin(index, reader.ReadString())
+        SetPlayerLogin(index, username)
         SetPlayerAccess(index, reader.ReadByte())
         Account(index).Index = reader.ReadByte()
 
         For i = 1 To MAX_CHARACTERS
             SetPlayerCharName(index, i, reader.ReadString())
         Next
+
+        LoadBank(index)
     End Sub
 
     Sub ClearAccount(index As Integer)
@@ -1073,6 +1073,7 @@ Module modDatabase
         ReDim TempPlayer(index).PetSkillCd(4)
         TempPlayer(index).Editor = -1
 
+        ClearBank(index)
         ClearCharacter(index)
     End Sub
 
@@ -1081,7 +1082,7 @@ Module modDatabase
 #Region "Bank"
 
     Friend Sub LoadBank(index As Integer)
-        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "_Bank.bin"
+        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//Bank.bin"
 
         ClearBank(index)
 
@@ -1100,7 +1101,8 @@ Module modDatabase
     End Sub
 
     Sub SaveBank(index As Integer)
-        Dim filename = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "_Bank.bin"
+        If GetPlayerLogin(index) =  "" Then Exit Sub
+        Dim filename = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//Bank.bin"
         Dim writer As New ByteStream(Bank.Length)
 
         For i = 1 To MAX_BANK
@@ -1124,6 +1126,7 @@ Module modDatabase
 
 #Region "Characters"
     Sub ClearCharacter(index As Integer)
+        Player(index).Name = ""
         Player(index).Job = 0
         Player(index).Dir = 0
 
@@ -1227,6 +1230,7 @@ Module modDatabase
         Dim reader As New ByteStream(Player.Length)
         ByteFile.Load(filename, reader)
 
+        Player(index).Name = reader.ReadString()
         Player(index).Job = reader.ReadByte()
         Player(index).Dir = reader.ReadByte()
         Player(index).Sprite = reader.ReadInt32()
@@ -1319,6 +1323,7 @@ Module modDatabase
 
         Dim writer As New ByteStream(Player.Length)
 
+        writer.WriteString(GetCharName(index, charNum))
         writer.WriteByte(Player(index).Job)
         writer.WriteByte(Player(index).Dir)
         writer.WriteInt32(Player(index).Sprite)

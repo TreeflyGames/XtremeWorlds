@@ -1116,7 +1116,7 @@ Module modLoop
 
     Friend Sub SkillPlayer_Effect(vital As Byte, increment As Boolean, index As Integer, damage As Integer, skillnum As Integer)
         Dim sSymbol As String
-        Dim colour As Integer
+        Dim Color As Integer
 
         If damage > 0 Then
             ' Calculate for Magic Resistance.
@@ -1124,17 +1124,17 @@ Module modLoop
 
             If increment Then
                 sSymbol = "+"
-                If vital = VitalType.HP Then colour = ColorType.BrightGreen
-                If vital = VitalType.MP Then colour = ColorType.BrightBlue
+                If vital = VitalType.HP Then Color = ColorType.BrightGreen
+                If vital = VitalType.MP Then Color = ColorType.BrightBlue
             Else
                 sSymbol = "-"
-                colour = ColorType.BrightRed
+                Color = ColorType.BrightRed
             End If
 
             ' Deal with stun effects.
             If Skill(skillnum).StunDuration > 0 Then StunPlayer(index, skillnum)
 
-            SendActionMsg(GetPlayerMap(index), sSymbol & damage, colour, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
+            SendActionMsg(GetPlayerMap(index), sSymbol & damage, Color, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
             If increment Then SetPlayerVital(index, vital, GetPlayerVital(index, vital) + damage)
             If Not increment Then SetPlayerVital(index, vital, GetPlayerVital(index, vital) - damage)
             SendVital(index, vital)

@@ -60,7 +60,7 @@ Module S_Instances
         'Re-Cache Resource
         CacheResources(slot + MAX_MAPS)
 
-        If Not (Map(slot + MAX_MAPS).Name = vbNullString) Then Map(slot + MAX_MAPS).Name = Map(slot + MAX_MAPS).Name & INSTANCED_MAP_SUFFIX
+        If Not (Map(slot + MAX_MAPS).Name = "") Then Map(slot + MAX_MAPS).Name = Map(slot + MAX_MAPS).Name & INSTANCED_MAP_SUFFIX
         CreateInstance = slot
         Exit Function
     End Function

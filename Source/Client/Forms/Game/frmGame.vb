@@ -9,9 +9,8 @@ Friend Class FrmGame
         Dim resolution As String()
 
         If Settings.Fullscreen = 0 Then
-            resolution = Settings.ScreenSize.ToLower.ToString.Split("x")
-            screenWidth = resolution(0)
-            screenHeight = resolution(1)
+            screenWidth = Settings.Width
+            screenHeight = Settings.Height
         Else
             FormBorderStyle = 0
         End If
@@ -140,26 +139,6 @@ Friend Class FrmGame
             If Inputs.Settings(e.KeyCode) Then FrmOptions.Visible = Not FrmOptions.Visible
         End If
 
-    End Sub
-
-    Private Sub LblCurrencyOk_Click(sender As Object, e As EventArgs) Handles lblCurrencyOk.Click
-        If IsNumeric(txtCurrency.Text) Then
-            Select Case CurrencyMenu
-                Case 1 ' drop item
-                    SendDropItem(TmpCurrencyItem, Val(txtCurrency.Text))
-                Case 2 ' deposit item
-                    DepositItem(TmpCurrencyItem, Val(txtCurrency.Text))
-                Case 3 ' withdraw item
-                    WithdrawItem(TmpCurrencyItem, Val(txtCurrency.Text))
-                Case 4 ' trade item
-                    TradeItem(TmpCurrencyItem, Val(txtCurrency.Text))
-            End Select
-        End If
-
-        pnlCurrency.Visible = False
-        TmpCurrencyItem = 0
-        txtCurrency.Text = ""
-        CurrencyMenu = 0 ' clear
     End Sub
 
 #End Region

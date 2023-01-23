@@ -5,7 +5,7 @@ Imports SFML.Graphics
 Imports SFML.System
 Imports Mirage.Basic.Engine
 Imports Time = Mirage.Basic.Engine.Time
-Imports SFML.Window
+Imports System.Drawing.Design
 
 Module C_Graphics
 
@@ -18,7 +18,7 @@ Module C_Graphics
     Friend EditorAnimation_Anim1 As RenderWindow
     Friend EditorAnimation_Anim2 As RenderWindow
 
-    Friend SfmlGameFont As Font
+    Friend Fonts(1) as Font
 
     Friend CursorGfx As Texture
     Friend CursorSprite As Sprite
@@ -160,6 +160,17 @@ Module C_Graphics
     Friend ButtonHoverSprite As Sprite
     Friend ButtonHoverGfxInfo As GraphicInfo
 
+    'GUI
+    Friend InterfaceGfx() as Texture
+    Friend InterfaceSprite() as Sprite
+    Friend InterfaceGfxInfo() As GraphicInfo
+    Friend DesignGfx() as Texture
+    Friend DesignSprite() as Sprite
+    Friend DesignGfxInfo() As GraphicInfo
+    Friend GradientGfx() as Texture
+    Friend GradientSprite() as Sprite
+    Friend GradientGfxInfo() As GraphicInfo
+
     'Hud
     Friend HudPanelGfx As Texture
 
@@ -259,7 +270,7 @@ Module C_Graphics
     Friend PetBarSprite As Sprite
     Friend PetbarGfxInfo As GraphicInfo
 
-    Friend MapTintGfx As New RenderTexture(3860, 2160)
+    Friend MapTintGfx As Texture
     Friend MapTintSprite As Sprite
 
     Friend MapFadeSprite As Sprite
@@ -278,9 +289,12 @@ Module C_Graphics
     Friend NumPanorama As Integer
     Friend NumParallax As Integer
     Friend NumPictures As Integer
+    Friend NumInterface As Integer
+    Friend NumGradients As Integer
+    Friend NumDesigns As Integer
 
     ' Day/Night
-    Friend NightGfx As New RenderTexture(3860, 2160)
+    Friend NightGfx As Texture
     Friend NightSprite As Sprite
     Friend LightGfx As Texture
     Friend LightDynamicGfx As Texture
@@ -311,10 +325,10 @@ Module C_Graphics
     Sub InitGraphics()
 
         GameWindow = New RenderWindow(FrmGame.picscreen.Handle)
-        SfmlGameFont = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + FontName)
+        Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
+        'Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Rockwell)
 
-        'this stuff only loads when needed :)
-        ReDim TileSetImgsGFX(0 To NumTileSets)
+        ReDim TileSetImgsGFX(NumTileSets)
         ReDim TileSetTexture(NumTileSets)
         ReDim TileSetSprite(NumTileSets)
         ReDim TileSetTextureInfo(NumTileSets)
@@ -370,6 +384,18 @@ Module C_Graphics
         ReDim PictureGfx(NumPictures)
         ReDim PictureSprite(NumPictures)
         ReDim PictureGfxInfo(NumPictures)
+
+        ReDim InterfaceGfx(NumInterface)
+        ReDim InterfaceSprite(NumInterface)
+        ReDim InterfaceGfxInfo(NumInterface)
+
+        ReDim DesignGfx(NumDesigns)
+        ReDim DesignSprite(NumDesigns)
+        ReDim DesignGfxInfo(NumDesigns)
+
+        ReDim GradientGfx(NumGradients)
+        ReDim GradientSprite(NumGradients)
+        ReDim GradientGfxInfo(NumGradients)
 
         'sadly, gui shit is always needed, so we preload it :/
         CursorInfo = New GraphicInfo
@@ -730,6 +756,18 @@ Module C_Graphics
             LightGfxInfo.Width = LightGfx.Size.X
             LightGfxInfo.Height = LightGfx.Size.Y
         End If
+
+        For i = 1 To NumInterface
+            LoadTexture(i, 15)
+        Next
+
+        For i = 1 To NumGradients
+            LoadTexture(i, 16)
+        Next
+
+        For i = 1 To NumDesigns
+            LoadTexture(i, 17)
+        Next
     End Sub
 
     Friend Sub LoadTexture(index As Integer, texType As Byte)
@@ -869,9 +907,7 @@ Module C_Graphics
                 .TextureTimer = GetTickCount() + 100000
             End With
 
-        ElseIf texType = 10 Then
-
-        ElseIf texType = 11 Then 'projectiles
+        ElseIf texType = 10 Then 'projectiles
             If index <= 0 OrElse index > NumProjectiles Then Exit Sub
 
             'Load texture first, dont care about memory streams (just use the filename)
@@ -886,7 +922,7 @@ Module C_Graphics
                 .TextureTimer = GetTickCount() + 100000
             End With
 
-        ElseIf texType = 12 Then 'emotes
+        ElseIf texType = 11 Then 'emotes
             If index <= 0 OrElse index > NumEmotes Then Exit Sub
 
             'Load texture first, dont care about memory streams (just use the filename)
@@ -901,7 +937,7 @@ Module C_Graphics
                 .TextureTimer = GetTickCount() + 100000
             End With
 
-        ElseIf texType = 13 Then 'Panoramas
+        ElseIf texType = 12 Then 'Panoramas
             If index <= 0 OrElse index > NumPanorama Then Exit Sub
 
             'Load texture first, dont care about memory streams (just use the filename)
@@ -915,7 +951,7 @@ Module C_Graphics
                 .IsLoaded = True
                 .TextureTimer = GetTickCount() + 100000
             End With
-        ElseIf texType = 14 Then 'Parallax
+        ElseIf texType = 13 Then 'Parallax
             If index <= 0 OrElse index > NumParallax Then Exit Sub
 
             'Load texture first, dont care about memory streams (just use the filename)
@@ -929,7 +965,7 @@ Module C_Graphics
                 .IsLoaded = True
                 .TextureTimer = GetTickCount() + 100000
             End With
-        ElseIf texType = 15 Then 'Pictures
+        ElseIf texType = 14 Then 'Pictures
             If index <= 0 OrElse index > NumPictures Then Exit Sub
 
             'Load texture first, dont care about memory streams (just use the filename)
@@ -943,6 +979,48 @@ Module C_Graphics
                 .IsLoaded = True
                 .TextureTimer = GetTickCount() + 100000
             End With
+        ElseIf texType = 15 Then 'Interfaces
+            If index <= 0 OrElse index > NumInterface Then Exit Sub
+
+            'Load texture first, dont care about memory streams (just use the filename)
+            InterfaceGfx(index) = New Texture(Paths.Gui & index & GfxExt)
+            InterfaceSprite(index) = New Sprite(InterfaceGfx(index))
+
+            'Cache the width and height
+            With InterfaceGfxInfo(index)
+                .Width = InterfaceGfx(index).Size.X
+                .Height = InterfaceGfx(index).Size.Y
+                .IsLoaded = True
+                .TextureTimer = GetTickCount() + 100000
+            End With
+        ElseIf texType = 16 Then 'Gradients
+            If index <= 0 OrElse index > NumGradients Then Exit Sub
+
+            'Load texture first, dont care about memory streams (just use the filename)
+            GradientGfx(index) = New Texture(Paths.Gui & "gradients\" & index & GfxExt)
+            GradientSprite(index) = New Sprite(GradientGfx(index))
+
+            'Cache the width and height
+            With GradientGfxInfo(index)
+                .Width = GradientGfx(index).Size.X
+                .Height = GradientGfx(index).Size.Y
+                .IsLoaded = True
+                .TextureTimer = GetTickCount() + 100000
+            End With
+        ElseIf texType = 17 Then 'Designs
+            If index <= 0 OrElse index > NumDesigns Then Exit Sub
+
+            'Load texture first, dont care about memory streams (just use the filename)
+            DesignGfx(index) = New Texture(Paths.Gui & "designs\" & index & GfxExt)
+            DesignSprite(index) = New Sprite(DesignGfx(index))
+
+            'Cache the width and height
+            With DesignGfxInfo(index)
+                .Width = DesignGfx(index).Size.X
+                .Height = DesignGfx(index).Size.Y
+                .IsLoaded = True
+                .TextureTimer = GetTickCount() + 100000
+            End With
         End If
     End Sub
 
@@ -951,15 +1029,13 @@ Module C_Graphics
     Friend Sub DrawEmotes(x2 As Integer, y2 As Integer, sprite As Integer)
         Dim rec As Rectangle
         Dim x As Integer, y As Integer, anim As Integer
-        'Dim width As Integer, height As Integer
 
         If sprite < 1 OrElse sprite > NumEmotes Then Exit Sub
 
         If EmotesGfxInfo(sprite).IsLoaded = False Then
-            LoadTexture(sprite, 12)
+            LoadTexture(sprite, 11)
         End If
 
-        'seeying we still use it, lets update timer
         With EmotesGfxInfo(sprite)
             .TextureTimer = GetTickCount() + 100000
         End With
@@ -980,7 +1056,7 @@ Module C_Graphics
         x = ConvertMapX(x2)
         y = ConvertMapY(y2) - (PicY + 16)
 
-        RenderSprite(EmotesSprite(sprite), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(EmotesSprite(sprite), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Sub DrawChat()
@@ -988,7 +1064,7 @@ Module C_Graphics
         Dim text As String
 
         'first draw back image
-        RenderSprite(ChatWindowSprite, GameWindow, ChatWindowX, ChatWindowY - 2, 0, 0, ChatWindowGfxInfo.Width,
+        RenderTexture(ChatWindowSprite, GameWindow, ChatWindowX, ChatWindowY - 2, 0, 0, ChatWindowGfxInfo.Width,
                      ChatWindowGfxInfo.Height)
 
         y = 45
@@ -1008,15 +1084,13 @@ Module C_Graphics
             text = Chat(i).Text
 
             If text <> "" Then ' or not
-                DrawText(ChatWindowX + x, ChatWindowY + y, text, GetSfmlColor(Chat(i).Color), Color.Black, GameWindow)
+                RenderText(text, GameWindow, ChatWindowX + x, ChatWindowY + y, GetSfmlColor(Chat(i).Color), Color.Black)
                 y = y + ChatLineSpacing + 1
             End If
 
         Next
 
-        'My Text
-        'first draw back image
-        RenderSprite(MyChatWindowSprite, GameWindow, MyChatX, MyChatY - 5, 0, 0, MyChatWindowGfxInfo.Width,
+        RenderTexture(MyChatWindowSprite, GameWindow, MyChatX, MyChatY - 5, 0, 0, MyChatWindowGfxInfo.Width,
                      MyChatWindowGfxInfo.Height)
 
         If Len(ChatInput.CurrentMessage) > 0 Then
@@ -1024,43 +1098,47 @@ Module C_Graphics
             While GetTextWidth(subText) > MyChatWindowGfxInfo.Width - ChatEntryPadding
                 subText = subText.Substring(1)
             End While
-            DrawText(MyChatX + 5, MyChatY - 3, subText, Color.White, Color.Black, GameWindow)
+            RenderText(subText, GameWindow, MyChatX + 5, MyChatY - 3, Color.White, Color.White)
         End If
     End Sub
 
-    Friend Sub DrawButton(text As String, destX As Integer, destY As Integer, hover As Byte)
+    Friend Sub DrawButton(text As String, dX As Integer, dY As Integer, hover As Byte)
         If hover = 0 Then
-            RenderSprite(ButtonSprite, GameWindow, destX, destY, 0, 0, ButtonGfxInfo.Width, ButtonGfxInfo.Height)
+            RenderTexture(ButtonSprite, GameWindow, dX, dY, 0, 0, ButtonGfxInfo.Width, ButtonGfxInfo.Height)
 
-            DrawText(destX + (ButtonGfxInfo.Width \ 2) - (GetTextWidth(text) \ 2),
-                     destY + (ButtonGfxInfo.Height \ 2) - (FontSize \ 2), text, Color.White, Color.Black, GameWindow)
+            RenderText(text, GameWindow, dX + (ButtonGfxInfo.Width \ 2) - (GetTextWidth(text) \ 2),
+                     dY + (ButtonGfxInfo.Height \ 2) - (FontSize \ 2), Color.White, Color.White)
         Else
-            RenderSprite(ButtonHoverSprite, GameWindow, destX, destY, 0, 0, ButtonHoverGfxInfo.Width,
+            RenderTexture(ButtonHoverSprite, GameWindow, dX, dY, 0, 0, ButtonHoverGfxInfo.Width,
                          ButtonHoverGfxInfo.Height)
 
-            DrawText(destX + (ButtonHoverGfxInfo.Width \ 2) - (GetTextWidth(text) \ 2),
-                     destY + (ButtonHoverGfxInfo.Height \ 2) - (FontSize \ 2), text, Color.White, Color.Black, GameWindow)
+            RenderText(text, GameWindow, dX + (ButtonHoverGfxInfo.Width \ 2) - (GetTextWidth(text) \ 2),
+                     dY + (ButtonHoverGfxInfo.Height \ 2) - (FontSize \ 2), Color.White, Color.White)
         End If
     End Sub
 
-    Friend Sub RenderSprite(tmpSprite As Sprite, target As RenderWindow, destX As Integer, destY As Integer,
-                            sourceX As Integer, sourceY As Integer,
-                            sourceWidth As Integer, sourceHeight As Integer, Optional red As Byte = 255, Optional green As Byte = 255, Optional blue As Byte = 255, Optional alpha As Byte = 255)
+    Friend Sub RenderTexture(tmpSprite As Sprite, target As RenderWindow, dX As Integer, dY As Integer,
+                            sX As Integer, sY As Integer, dW As Integer, dH As Integer, Optional sW As Integer = 1, Optional sH As Integer = 1, Optional alpha As Byte = 255, Optional red As Byte = 255, Optional green As Byte = 255, Optional blue As Byte = 255)
 
         If tmpSprite Is Nothing Then Exit Sub
 
-        tmpSprite.TextureRect = New IntRect(sourceX, sourceY, sourceWidth, sourceHeight)
-        tmpSprite.Position = New Vector2f(destX, destY)
+        tmpSprite.TextureRect = New IntRect(sX, sY, sW, sH)
+        tmpSprite.Scale = New Vector2f(dW / sW, dH / sH)
+        tmpSprite.Position = New Vector2f(dX, dY)
         tmpSprite.Color = New Color(red, green, blue, alpha)
         target.Draw(tmpSprite)
     End Sub
 
-    Friend Sub RenderTextures(txture As Texture, target As RenderWindow, dX As Single, dY As Single, sx As Single,
-                              sy As Single, dWidth As Single, dHeight As Single, sWidth As Single, sHeight As Single)
-        Dim tmpImage = New Sprite(txture) With {
-                .TextureRect = New IntRect(sx, sy, sWidth, sHeight),
-                .Scale = New Vector2f(dWidth / sWidth, dHeight / sHeight),
-                .Position = New Vector2f(dX, dY)
+    Friend Sub RenderTextures(tex As Texture, target As RenderWindow, dX As Integer, dY As Integer, sX As Integer,
+                              sY As Integer, dW As Integer, dH As Integer, Optional sW As Integer = 1, Optional sH As Integer = 1, Optional alpha As Byte = 255, Optional red As Byte = 255, Optional green As Byte = 255, Optional blue As Byte = 255)
+        
+        If tex Is Nothing Then Exit Sub
+
+        Dim tmpImage = New Sprite(tex) With {
+                .TextureRect = New IntRect(sX, sY, sW, sH),
+                .Scale = New Vector2f(dW / sW, dH / sH),
+                .Position = New Vector2f(dX, dY),
+                .Color = New Color(red, green, blue, alpha)
                 }
         target.Draw(tmpImage)
     End Sub
@@ -1073,7 +1151,7 @@ Module C_Graphics
         rec.X = 0
         rec.Width = 32
         rec.Height = 32
-        RenderSprite(DirectionsSprite, GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rec.X, rec.Y, rec.Width,
+        RenderTexture(DirectionsSprite, GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rec.X, rec.Y, rec.Width,
                      rec.Height)
 
         ' render dir blobs
@@ -1088,7 +1166,7 @@ Module C_Graphics
             End If
             rec.Height = 8
 
-            RenderSprite(DirectionsSprite, GameWindow, ConvertMapX(x * PicX) + DirArrowX(i),
+            RenderTexture(DirectionsSprite, GameWindow, ConvertMapX(x * PicX) + DirArrowX(i),
                          ConvertMapY(y * PicY) + DirArrowY(i), rec.X, rec.Y, rec.Width, rec.Height)
         Next
     End Sub
@@ -1129,7 +1207,7 @@ Module C_Graphics
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderSprite(PaperDollSprite(sprite), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(PaperDollSprite(sprite), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawNpc(mapNpcNum As Integer)
@@ -1151,6 +1229,10 @@ Module C_Graphics
         sprite = Npc(MapNpc(mapNpcNum).Num).Sprite
 
         If sprite < 1 OrElse sprite > NumCharacters Then Exit Sub
+
+        If CharacterGfxInfo(sprite).IsLoaded = False Then
+            LoadTexture(sprite, 2)
+        End If
 
         attackspeed = 1000
 
@@ -1253,7 +1335,7 @@ Module C_Graphics
         x = ConvertMapX(MapItem(itemnum).X * PicX)
         y = ConvertMapY(MapItem(itemnum).Y * PicY)
 
-        RenderSprite(ItemsSprite(picNum), GameWindow, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
+        RenderTexture(ItemsSprite(picNum), GameWindow, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
     End Sub
 
     Friend Sub DrawCharacter(sprite As Integer, x2 As Integer, y2 As Integer, rec As Rectangle)
@@ -1278,7 +1360,7 @@ Module C_Graphics
         width = (rec.Width)
         height = (rec.Height)
 
-        RenderSprite(CharacterSprite(sprite), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(CharacterSprite(sprite), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawBlood(index As Integer)
@@ -1302,7 +1384,7 @@ Module C_Graphics
 
             destrec = New Rectangle(ConvertMapX(.X * PicX), ConvertMapY(.Y * PicY), PicX, PicY)
 
-            RenderSprite(BloodSprite, GameWindow, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
+            RenderTexture(BloodSprite, GameWindow, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
 
         End With
     End Sub
@@ -1516,7 +1598,6 @@ Module C_Graphics
             End If
         Next
 
-
         'clear Projectiles
         For i = 0 To NumProjectiles
             If ProjectileGfxInfo(i).IsLoaded Then
@@ -1671,7 +1752,7 @@ Module C_Graphics
                 Next
 
                 ' Npcs
-                For i = 1 To MAX_MAP_NPCS
+                For I = 1 To MAX_MAP_NPCS
                     If MapNpc(I).Y = y Then
                         DrawNpc(I)
                     End If
@@ -1745,7 +1826,7 @@ Module C_Graphics
 
         'projectiles
         If NumProjectiles > 0 Then
-            For i = 1 To MAX_PROJECTILES
+            For I = 1 To MAX_PROJECTILES
                 If MapProjectile(I).ProjectileNum > 0 Then
                     DrawProjectile(I)
                 End If
@@ -1794,21 +1875,20 @@ Module C_Graphics
 
         If Editor = EditorType.Map Then
             DrawTileOutline()
-            If EyeDropper = True Then 
+            If EyeDropper = True Then
                 DrawEyeDropper()
             End If
         End If
 
         ' draw cursor, player X and Y locations
         If BLoc Then
-            DrawText(1, HudWindowY + HudPanelGfxInfo.Height + 1,
-                     Trim$(String.Format(Language.Game.MapCurLoc, CurX, CurY)), Color.Yellow, Color.Black, GameWindow)
-            DrawText(1, HudWindowY + HudPanelGfxInfo.Height + 15,
-                     Trim$(String.Format(Language.Game.MapLoc, GetPlayerX(Myindex), GetPlayerY(Myindex))), Color.Yellow,
-                     Color.Black, GameWindow)
-            DrawText(1, HudWindowY + HudPanelGfxInfo.Height + 30,
-                     Trim$(String.Format(Language.Game.MapCurMap, GetPlayerMap(Myindex))), Color.Yellow, Color.Black,
-                     GameWindow)
+            RenderText(Trim$(String.Format(Language.Game.MapCurLoc, CurX, CurY)), GameWindow, 1, HudWindowY + HudPanelGfxInfo.Height + 1,
+                    Color.Yellow, Color.Black)
+            RenderText(Trim$(String.Format(Language.Game.MapLoc, GetPlayerX(Myindex), GetPlayerY(Myindex))), GameWindow, 1, HudWindowY + HudPanelGfxInfo.Height + 15,
+                    Color.Yellow,
+                    Color.Black)
+            RenderText(Trim$(String.Format(Language.Game.MapCurMap, GetPlayerMap(Myindex))), GameWindow, 1, HudWindowY + HudPanelGfxInfo.Height + 30,
+                    Color.Yellow, Color.Black)
         End If
 
         ' draw player names
@@ -1831,7 +1911,7 @@ Module C_Graphics
         Next
 
         ' draw npc names
-        For i = 1 To MAX_MAP_NPCS
+        For I = 1 To MAX_MAP_NPCS
             If MapNpc(I).Num > 0 Then
                 DrawNpcName(I)
             End If
@@ -1886,7 +1966,7 @@ Module C_Graphics
         If index < 1 OrElse index > NumParallax Then Exit Sub
 
         If PanoramasGfxInfo(index).IsLoaded = False Then
-            LoadTexture(index, 13)
+            LoadTexture(index, 12)
         End If
 
         ' we use it, lets update timer
@@ -2075,7 +2155,7 @@ Module C_Graphics
     End Sub
 
     Sub DrawMapName()
-        DrawText(DrawMapNameX, DrawMapNameY, Language.Game.MapName & Map.Name, DrawMapNameColor, Color.Black, GameWindow)
+        RenderText(Language.Game.MapName & Map.Name, GameWindow, DrawMapNameX, DrawMapNameY, DrawMapNameColor, Color.Black)
     End Sub
 
     Friend Sub DrawGrid()
@@ -2126,16 +2206,16 @@ Module C_Graphics
             End With
 
             If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then
-                RenderSprite(TileSetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), GameWindow, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height)
+                RenderTexture(TileSetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), GameWindow, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height)
 
                 rec2.Size = New Vector2f(rec.Width, rec.Height)
             Else
                 If frmEditor_Map.cmbAutoTile.SelectedIndex > 0 Then
-                    RenderSprite(TileSetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), GameWindow, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height)
+                    RenderTexture(TileSetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), GameWindow, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height)
 
                     rec2.Size = New Vector2f(rec.Width, rec.Height)
                 Else
-                    RenderSprite(TileSetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), GameWindow, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
+                    RenderTexture(TileSetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), GameWindow, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
 
                     rec2.Size = New Vector2f(EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
                 End If
@@ -2164,15 +2244,11 @@ Module C_Graphics
 
         If Map.HasMapTint = 0 Then Exit Sub
 
-        MapTintGfx.Clear(New Color(CurrentTintR, CurrentTintG, CurrentTintB, CurrentTintA))
-
-        'MapTintSprite.Color = New SFML.Graphics.Color(CurrentTintR, CurrentTintG, CurrentTintB, CurrentTintA)
-        MapTintSprite = New Sprite(MapTintGfx.Texture) With {
+        MapTintSprite = New Sprite(New Texture(New Image(GameWindow.Size.X, GameWindow.Size.Y, Color.Black))) With {
+            .Color = New Color(CurrentTintR, CurrentTintG, CurrentTintB, CurrentTintA),
             .TextureRect = New IntRect(0, 0, GameWindow.Size.X, GameWindow.Size.Y),
             .Position = New Vector2f(0, 0)
             }
-
-        MapTintGfx.Display()
 
         GameWindow.Draw(MapTintSprite)
     End Sub
@@ -2190,97 +2266,105 @@ Module C_Graphics
     End Sub
 
     Sub DestroyGraphics()
-        Try
-            For i = 0 To NumAnimations
-                If Not AnimationsGfx(i) Is Nothing Then AnimationsGfx(i).Dispose()
-            Next i
+        For i = 0 To NumAnimations
+            If Not AnimationsGfx(i) Is Nothing Then AnimationsGfx(i).Dispose()
+        Next i
 
-            For i = 0 To NumCharacters
-                If Not CharacterGfx(i) Is Nothing Then CharacterGfx(i).Dispose()
-            Next
+        For i = 0 To NumCharacters
+            If Not CharacterGfx(i) Is Nothing Then CharacterGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumItems
-                If Not ItemsGfx(i) Is Nothing Then ItemsGfx(i).Dispose()
-            Next
+        For i = 0 To NumItems
+            If Not ItemsGfx(i) Is Nothing Then ItemsGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumPaperdolls
-                If Not PaperDollGfx(i) Is Nothing Then PaperDollGfx(i).Dispose()
-            Next
+        For i = 0 To NumPaperdolls
+            If Not PaperDollGfx(i) Is Nothing Then PaperDollGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumResources
-                If Not ResourcesGfx(i) Is Nothing Then ResourcesGfx(i).Dispose()
-            Next
+        For i = 0 To NumResources
+            If Not ResourcesGfx(i) Is Nothing Then ResourcesGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumSkillIcons
-                If Not SkillIconsGfx(i) Is Nothing Then SkillIconsGfx(i).Dispose()
-            Next
+        For i = 0 To NumSkillIcons
+            If Not SkillIconsGfx(i) Is Nothing Then SkillIconsGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumTileSets
-                If Not TileSetTexture(i) Is Nothing Then TileSetTexture(i).Dispose()
-            Next i
+        For i = 0 To NumTileSets
+            If Not TileSetTexture(i) Is Nothing Then TileSetTexture(i).Dispose()
+        Next i
 
-            For i = 0 To NumFaces
-                If Not FacesGfx(i) Is Nothing Then FacesGfx(i).Dispose()
-            Next
+        For i = 0 To NumFaces
+            If Not FacesGfx(i) Is Nothing Then FacesGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumFogs
-                If Not FogGfx(i) Is Nothing Then FogGfx(i).Dispose()
-            Next
+        For i = 0 To NumFogs
+            If Not FogGfx(i) Is Nothing Then FogGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumProjectiles
-                If Not ProjectileGfx(i) Is Nothing Then ProjectileGfx(i).Dispose()
-            Next
+        For i = 0 To NumProjectiles
+            If Not ProjectileGfx(i) Is Nothing Then ProjectileGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumEmotes
-                If Not EmotesGfx(i) Is Nothing Then EmotesGfx(i).Dispose()
-            Next
+        For i = 0 To NumEmotes
+            If Not EmotesGfx(i) Is Nothing Then EmotesGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumPanorama
-                If Not PanoramasGfx(i) Is Nothing Then PanoramasGfx(i).Dispose()
-            Next
+        For i = 0 To NumPanorama
+            If Not PanoramasGfx(i) Is Nothing Then PanoramasGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumParallax
-                If Not ParallaxGfx(i) Is Nothing Then ParallaxGfx(i).Dispose()
-            Next
+        For i = 0 To NumParallax
+            If Not ParallaxGfx(i) Is Nothing Then ParallaxGfx(i).Dispose()
+        Next
 
-            For i = 0 To NumPictures
-                If Not PictureGfx(i) Is Nothing Then PictureGfx(i).Dispose()
-            Next
+        For i = 0 To NumPictures
+            If Not PictureGfx(i) Is Nothing Then PictureGfx(i).Dispose()
+        Next
 
-            If Not CursorGfx Is Nothing Then CursorGfx.Dispose()
-            If Not BloodGfx Is Nothing Then BloodGfx.Dispose()
-            If Not DirectionsGfx Is Nothing Then DirectionsGfx.Dispose()
-            If Not ActionPanelGfx Is Nothing Then ActionPanelGfx.Dispose()
-            If Not InvPanelGfx Is Nothing Then InvPanelGfx.Dispose()
-            If Not XpBarPanelGfx Is Nothing Then XpBarPanelGfx.Dispose()
-            If Not CharPanelGfx Is Nothing Then CharPanelGfx.Dispose()
-            If Not CharPanelPlusGfx Is Nothing Then CharPanelPlusGfx.Dispose()
-            If Not CharPanelMinGfx Is Nothing Then CharPanelMinGfx.Dispose()
-            If Not TargetGfx Is Nothing Then TargetGfx.Dispose()
-            If Not WeatherGfx Is Nothing Then WeatherGfx.Dispose()
-            If Not HotBarGfx Is Nothing Then HotBarGfx.Dispose()
-            If Not ChatWindowGfx Is Nothing Then ChatWindowGfx.Dispose()
-            If Not BankPanelGfx Is Nothing Then BankPanelGfx.Dispose()
-            If Not ShopPanelGfx Is Nothing Then ShopPanelGfx.Dispose()
-            If Not TradePanelGfx Is Nothing Then TradePanelGfx.Dispose()
-            If Not EventChatGfx Is Nothing Then EventChatGfx.Dispose()
-            If Not RClickGfx Is Nothing Then RClickGfx.Dispose()
-            If Not ButtonGfx Is Nothing Then ButtonGfx.Dispose()
-            If Not ButtonHoverGfx Is Nothing Then ButtonHoverGfx.Dispose()
-            If Not QuestGfx Is Nothing Then QuestGfx.Dispose()
-            If Not CraftGfx Is Nothing Then CraftGfx.Dispose()
-            If Not ProgBarGfx Is Nothing Then ProgBarGfx.Dispose()
-            If Not ChatBubbleGfx Is Nothing Then ChatBubbleGfx.Dispose()
+        For i = 0 To NumInterface
+            If Not InterfaceGfx(i) Is Nothing Then InterfaceGfx(i).Dispose()
+        Next
 
-            If Not HpBarGfx Is Nothing Then HpBarGfx.Dispose()
-            If Not MpBarGfx Is Nothing Then MpBarGfx.Dispose()
-            If Not ExpBarGfx Is Nothing Then ExpBarGfx.Dispose()
+        For i = 0 To NumGradients
+            If Not GradientGfx(i) Is Nothing Then GradientGfx(i).Dispose()
+        Next
 
-            If Not LightGfx Is Nothing Then LightGfx.Dispose()
-            If Not NightGfx Is Nothing Then NightGfx.Dispose()
-        Catch ex As Exception
+        For i = 0 To NumDesigns
+            If Not DesignGfx(i) Is Nothing Then DesignGfx(i).Dispose()
+        Next
 
-        End Try
+        If Not CursorGfx Is Nothing Then CursorGfx.Dispose()
+        If Not BloodGfx Is Nothing Then BloodGfx.Dispose()
+        If Not DirectionsGfx Is Nothing Then DirectionsGfx.Dispose()
+        If Not ActionPanelGfx Is Nothing Then ActionPanelGfx.Dispose()
+        If Not InvPanelGfx Is Nothing Then InvPanelGfx.Dispose()
+        If Not XpBarPanelGfx Is Nothing Then XpBarPanelGfx.Dispose()
+        If Not CharPanelGfx Is Nothing Then CharPanelGfx.Dispose()
+        If Not CharPanelPlusGfx Is Nothing Then CharPanelPlusGfx.Dispose()
+        If Not CharPanelMinGfx Is Nothing Then CharPanelMinGfx.Dispose()
+        If Not TargetGfx Is Nothing Then TargetGfx.Dispose()
+        If Not WeatherGfx Is Nothing Then WeatherGfx.Dispose()
+        If Not HotBarGfx Is Nothing Then HotBarGfx.Dispose()
+        If Not ChatWindowGfx Is Nothing Then ChatWindowGfx.Dispose()
+        If Not BankPanelGfx Is Nothing Then BankPanelGfx.Dispose()
+        If Not ShopPanelGfx Is Nothing Then ShopPanelGfx.Dispose()
+        If Not TradePanelGfx Is Nothing Then TradePanelGfx.Dispose()
+        If Not EventChatGfx Is Nothing Then EventChatGfx.Dispose()
+        If Not RClickGfx Is Nothing Then RClickGfx.Dispose()
+        If Not ButtonGfx Is Nothing Then ButtonGfx.Dispose()
+        If Not ButtonHoverGfx Is Nothing Then ButtonHoverGfx.Dispose()
+        If Not QuestGfx Is Nothing Then QuestGfx.Dispose()
+        If Not CraftGfx Is Nothing Then CraftGfx.Dispose()
+        If Not ProgBarGfx Is Nothing Then ProgBarGfx.Dispose()
+        If Not ChatBubbleGfx Is Nothing Then ChatBubbleGfx.Dispose()
+
+        If Not HpBarGfx Is Nothing Then HpBarGfx.Dispose()
+        If Not MpBarGfx Is Nothing Then MpBarGfx.Dispose()
+        If Not ExpBarGfx Is Nothing Then ExpBarGfx.Dispose()
+
+        If Not LightGfx Is Nothing Then LightGfx.Dispose()
+        If Not NightGfx Is Nothing Then NightGfx.Dispose()
     End Sub
 
     Sub DrawHud()
@@ -2294,7 +2378,7 @@ Module C_Graphics
             .Width = HudPanelGfxInfo.Width
         End With
 
-        RenderSprite(HudPanelSprite, GameWindow, HudWindowX, HudWindowY, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(HudPanelSprite, GameWindow, HudWindowX, HudWindowY, rec.X, rec.Y, rec.Width, rec.Height)
 
         If Player(Myindex).Sprite <= NumFaces Then
             Dim tmpSprite = New Sprite(FacesGfx(Player(Myindex).Sprite))
@@ -2316,20 +2400,20 @@ Module C_Graphics
                 .Width = FacesGfxInfo(Player(Myindex).Sprite).Width
             End With
 
-            RenderSprite(FacesSprite(Player(Myindex).Sprite), GameWindow, HudFaceX, HudFaceY, rec.X, rec.Y, rec.Width,
+            RenderTexture(FacesSprite(Player(Myindex).Sprite), GameWindow, HudFaceX, HudFaceY, rec.X, rec.Y, rec.Width,
                          rec.Height)
         End If
 
         'HP Bar etc
         DrawStatBars()
 
-        DrawText(FrmGame.Width - 120, 10, Language.Game.Fps & Fps, Color.White, Color.Black, GameWindow)
-        DrawText(FrmGame.Width - 120, 30, Language.Game.Ping & PingToDraw, Color.White, Color.Black, GameWindow)
-        DrawText(FrmGame.Width - 120, 50, Language.Game.Time & Time.Instance.ToString("h:mm"),
-                 Color.White, Color.Black, GameWindow)
+        RenderText(Language.Game.Fps & Fps, GameWindow, FrmGame.Width - 120, 10, Color.White, Color.White)
+        RenderText(Language.Game.Ping & PingToDraw, GameWindow, FrmGame.Width - 120, 30, Color.White, Color.White)
+        RenderText(Language.Game.Time & Time.Instance.ToString("h:mm"), GameWindow, FrmGame.Width - 120, 50,
+                 Color.White, Color.White)
 
         If Blps Then
-            DrawText(FrmGame.Width - 120, 70, Language.Game.Lps & Lps, Color.White, Color.Black, GameWindow)
+            RenderText(Language.Game.Lps & Lps, GameWindow, FrmGame.Width - 120, 70, Color.White, Color.White)
         End If
 
         ' Draw map name
@@ -2351,12 +2435,12 @@ Module C_Graphics
         End With
 
         'then render full ontop of it
-        RenderSprite(HpBarSprite, GameWindow, HudWindowX + HudhpBarX, HudWindowY + HudhpBarY + 4, rec.X, rec.Y,
+        RenderTexture(HpBarSprite, GameWindow, HudWindowX + HudhpBarX, HudWindowY + HudhpBarY + 4, rec.X, rec.Y,
                      rec.Width, rec.Height)
 
         'then draw the text onto that
-        DrawText(HudWindowX + HudhpBarX + 65, HudWindowY + HudhpBarY + 4,
-                 LblHpText, Color.White, Color.Black, GameWindow)
+        RenderText(LblHpText, GameWindow, HudWindowX + HudhpBarX + 65, HudWindowY + HudhpBarY + 4,
+                Color.White, Color.White)
 
         '==============================
 
@@ -2371,12 +2455,12 @@ Module C_Graphics
             .Width = curMp * MpBarGfxInfo.Width / 100
         End With
 
-        RenderSprite(MpBarSprite, GameWindow, HudWindowX + HudmpBarX, HudWindowY + HudmpBarY + 4, rec.X, rec.Y,
+        RenderTexture(MpBarSprite, GameWindow, HudWindowX + HudmpBarX, HudWindowY + HudmpBarY + 4, rec.X, rec.Y,
                      rec.Width, rec.Height)
 
         'draw text onto that
-        DrawText(HudWindowX + HudmpBarX + 45, HudWindowY + HudmpBarY + 4,
-                 LblManaText, Color.White, Color.Black, GameWindow)
+        RenderText(LblManaText, GameWindow, HudWindowX + HudmpBarX + 45, HudWindowY + HudmpBarY + 4,
+                Color.White, Color.White)
 
         '====================================================
         'EXP Bar
@@ -2391,16 +2475,16 @@ Module C_Graphics
         End With
 
         If GameWindow.Size.X >= 1336 Then
-            RenderSprite(XpBarPanelSprite, GameWindow, GameWindow.Size.X / 2 - XpBarPanelGfxInfo.Width / 2, GameWindow.Size.Y - XpBarPanelGfxInfo.Height, 0, 0, XpBarPanelGfxInfo.Width,
+            RenderTexture(XpBarPanelSprite, GameWindow, GameWindow.Size.X / 2 - XpBarPanelGfxInfo.Width / 2, GameWindow.Size.Y - XpBarPanelGfxInfo.Height, 0, 0, XpBarPanelGfxInfo.Width,
                          XpBarPanelGfxInfo.Height)
 
-            RenderSprite(ExpBarSprite, GameWindow, GameWindow.Size.X / 2 - ExpBarGfxInfo.Width / 2, GameWindow.Size.Y - ExpBarGfxInfo.Height - 7, rec.X, rec.Y,
+            RenderTexture(ExpBarSprite, GameWindow, GameWindow.Size.X / 2 - ExpBarGfxInfo.Width / 2, GameWindow.Size.Y - ExpBarGfxInfo.Height - 7, rec.X, rec.Y,
                          rec.Width, rec.Height)
         Else
-            RenderSprite(XpBarPanelSprite, GameWindow, GameWindow.Size.X - XpBarPanelGfxInfo.Width, 0, 0, 0, XpBarPanelGfxInfo.Width,
+            RenderTexture(XpBarPanelSprite, GameWindow, GameWindow.Size.X - XpBarPanelGfxInfo.Width, 0, 0, 0, XpBarPanelGfxInfo.Width,
                          XpBarPanelGfxInfo.Height)
 
-            RenderSprite(ExpBarSprite, GameWindow, GameWindow.Size.X - ExpBarGfxInfo.Width - 12, 0 + ExpBarGfxInfo.Height, rec.X, rec.Y,
+            RenderTexture(ExpBarSprite, GameWindow, GameWindow.Size.X - ExpBarGfxInfo.Width - 12, 0 + ExpBarGfxInfo.Height, rec.X, rec.Y,
                          rec.Width, rec.Height)
         End If
     End Sub
@@ -2416,7 +2500,7 @@ Module C_Graphics
             .Width = ActionPanelGfxInfo.Width
         End With
 
-        RenderSprite(ActionPanelSprite, GameWindow, ActionPanelX + 20, ActionPanelY, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(ActionPanelSprite, GameWindow, ActionPanelX + 20, ActionPanelY, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawInventoryItem(x As Integer, y As Integer)
@@ -2446,7 +2530,7 @@ Module C_Graphics
                 .Width = PicX
             End With
 
-            RenderSprite(ItemsSprite(itempic), GameWindow, x + 16, y + 16, rec.X, rec.Y, rec.Width, rec.Height)
+            RenderTexture(ItemsSprite(itempic), GameWindow, x + 16, y + 16, rec.X, rec.Y, rec.Width, rec.Height)
         End If
     End Sub
 
@@ -2454,10 +2538,10 @@ Module C_Graphics
         Dim i As Integer, x As Integer, y As Integer, itemnum As Integer, itempic As Integer
         Dim amount As String
         Dim rec As Rectangle, recPos As Rectangle
-        Dim colour As Color
+        Dim Color As Color
 
         'first render panel
-        RenderSprite(InvPanelSprite, GameWindow, InvWindowX, InvWindowY, 0, 0, InvPanelGfxInfo.Width,
+        RenderTexture(InvPanelSprite, GameWindow, InvWindowX, InvWindowY, 0, 0, InvPanelGfxInfo.Width,
                      InvPanelGfxInfo.Height)
 
         For i = 1 To MAX_INV
@@ -2503,7 +2587,7 @@ Module C_Graphics
                             .Width = PicX
                         End With
 
-                        RenderSprite(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width,
+                        RenderTexture(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width,
                                      rec.Height)
 
                         ' If item is a stack - draw the amount you have
@@ -2512,18 +2596,18 @@ Module C_Graphics
                             x = recPos.Left - 4
                             amount = GetPlayerInvItemValue(Myindex, i)
 
-                            colour = Color.White
+                            Color = Color.White
 
                             ' Draw currency but with k, m, b etc. using a convertion function
                             If CLng(amount) < 1000000 Then
-                                colour = Color.White
+                                Color = Color.White
                             ElseIf CLng(amount) > 1000000 AndAlso CLng(amount) < 10000000 Then
-                                colour = Color.Yellow
+                                Color = Color.Yellow
                             ElseIf CLng(amount) > 10000000 Then
-                                colour = Color.Green
+                                Color = Color.Green
                             End If
 
-                            DrawText(x, y, ConvertCurrency(amount), colour, Color.Black, GameWindow)
+                            RenderText(ConvertCurrency(amount), GameWindow, x, y, Color, Color.Black)
 
                         End If
                     End If
@@ -2608,7 +2692,7 @@ NextLoop:
                         End With
 
                         ' We'll now re-draw the item, and place the currency value over it again :P
-                        RenderSprite(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width,
+                        RenderTexture(ItemsSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width,
                                      rec.Height)
 
                         ' If item is a stack - draw the amount you have
@@ -2617,7 +2701,7 @@ NextLoop:
                             x = recPos.Left - 4
                             amount = CStr(GetPlayerInvItemValue(Myindex, i))
                             ' Draw currency but with k, m, b etc. using a convertion function
-                            DrawText(x, y, ConvertCurrency(amount), Color.Yellow, Color.Black, GameWindow)
+                            RenderText(ConvertCurrency(amount), GameWindow, x, y, Color.Yellow, Color.Black)
 
                         End If
                     End If
@@ -2654,7 +2738,7 @@ NextLoop:
                 .Width = PicX
             End With
 
-            RenderSprite(SkillIconsSprite(skillpic), GameWindow, x + 16, y + 16, rec.X, rec.Y, rec.Width, rec.Height)
+            RenderTexture(SkillIconsSprite(skillpic), GameWindow, x + 16, y + 16, rec.X, rec.Y, rec.Width, rec.Height)
         End If
     End Sub
 
@@ -2665,7 +2749,7 @@ NextLoop:
         If Not InGame Then Exit Sub
 
         'first render panel
-        RenderSprite(SkillPanelSprite, GameWindow, SkillWindowX, SkillWindowY, 0, 0, SkillPanelGfxInfo.Width,
+        RenderTexture(SkillPanelSprite, GameWindow, SkillWindowX, SkillWindowY, 0, 0, SkillPanelGfxInfo.Width,
                      SkillPanelGfxInfo.Height)
 
         For i = 1 To MAX_PLAYER_SKILLS
@@ -2705,7 +2789,7 @@ NextLoop:
                         .Width = PicX
                     End With
 
-                    RenderSprite(SkillIconsSprite(skillicon), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width,
+                    RenderTexture(SkillIconsSprite(skillicon), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width,
                                  rec.Height)
                 End If
             End If
@@ -2733,7 +2817,7 @@ NextLoop:
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderSprite(TargetSprite, GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(TargetSprite, GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawHover(x2 As Integer, y2 As Integer)
@@ -2752,7 +2836,7 @@ NextLoop:
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderSprite(TargetSprite, GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(TargetSprite, GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawItemDesc()
@@ -2782,58 +2866,57 @@ NextLoop:
         End If
 
         'first render panel
-        RenderSprite(DescriptionSprite, GameWindow, xoffset - DescriptionGfxInfo.Width, yoffset, 0, 0,
+        RenderTexture(DescriptionSprite, GameWindow, xoffset - DescriptionGfxInfo.Width, yoffset, 0, 0,
                      DescriptionGfxInfo.Width, DescriptionGfxInfo.Height)
 
         'name
-        For Each str As String In WordWrap(ItemDescName, 22, WrapMode.Characters, WrapType.BreakWord)
+        For Each str As String In WordWrap(ItemDescName, 22, WrapModeType.Characters, WrapType.BreakWord)
             'description
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 12 + y, str, ItemDescRarityColor,
-                     ItemDescRarityBackColor, GameWindow)
+            RenderText(str, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 12 + y, ItemDescRarityColor,
+                     ItemDescRarityBackColor)
             y += 15
         Next
 
         If VbKeyShift Then
             'info
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 56, ItemDescInfo, Color.White, Color.Black,
-                     GameWindow)
+            RenderText(ItemDescInfo, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 56, Color.White, Color.White)
 
             'cost
-            'DrawText(Xoffset - DescriptionGFXInfo.width + 10, Yoffset + 74, "Worth: " & ItemDescCost, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow)
+            'RenderText(Xoffset - DescriptionGFXInfo.width + 10, Yoffset + 74, "Worth: " & ItemDescCost, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow)
             'type
-            'DrawText(Xoffset - DescriptionGFXInfo.width + 10, Yoffset + 90, "Type: " & ItemDescType, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow)
+            'RenderText(Xoffset - DescriptionGFXInfo.width + 10, Yoffset + 90, "Type: " & ItemDescType, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow)
             'speed
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 74, "Speed: " & ItemDescSpeed, Color.White,
-                     Color.Black, GameWindow)
+            RenderText("Speed: " & ItemDescSpeed, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 74, Color.White,
+                     Color.Black)
             'level
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 90, "Level Required: " & ItemDescLevel,
-                     Color.White, Color.Black, GameWindow)
+            RenderText("Level Required: " & ItemDescLevel, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 90,
+                     Color.White, Color.White)
             'bonuses
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 118, "Bonuses", Color.White, Color.Black,
-                     GameWindow)
+            RenderText("Bonuses", GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 118, Color.White, Color.White)
+
             'strength
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 134, "Strenght: " & ItemDescStr, Color.White,
-                     Color.Black, GameWindow)
+            RenderText("Strength: " & ItemDescStr, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 134, Color.White, Color.White)
+
             'vitality
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 150, "Vitality: " & ItemDescVit, Color.White,
-                     Color.Black, GameWindow)
+            RenderText("Vitality: " & ItemDescVit, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 150, Color.White,
+                     Color.Black)
+
             'intelligence
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 166, "Intelligence: " & ItemDescInt, Color.White,
-                     Color.Black, GameWindow)
+            RenderText("Intelligence: " & ItemDescInt, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 166, Color.White,
+                     Color.Black)
             'endurance
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 182, "Endurance: " & ItemDescEnd, Color.White,
-                     Color.Black, GameWindow)
+            RenderText("Endurance: " & ItemDescEnd, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 182, Color.White,
+                     Color.Black)
             'luck
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 198, "Luck: " & ItemDescLuck, Color.White,
-                     Color.Black, GameWindow)
+            RenderText("Luck: " & ItemDescLuck, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 198, Color.White,
+                     Color.Black)
             'spirit
-            DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 214, "Spirit: " & ItemDescSpr, Color.White,
-                     Color.Black, GameWindow)
+            RenderText("Spirit: " & ItemDescSpr, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 214, Color.White,
+                     Color.Black)
         Else
-            For Each str As String In WordWrap(ItemDescDescription, 22, WrapMode.Characters, WrapType.BreakWord)
+            For Each str As String In WordWrap(ItemDescDescription, 22, WrapModeType.Characters, WrapType.BreakWord)
                 'description
-                DrawText(xoffset - DescriptionGfxInfo.Width + 10, yoffset + 44 + y, str, Color.White, Color.Black,
-                         GameWindow)
+                RenderText(str, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 44 + y, Color.White, Color.White)
                 y += 15
             Next
         End If
@@ -2841,61 +2924,61 @@ NextLoop:
 
     Friend Sub DrawSkillDesc()
         'first render panel
-        RenderSprite(DescriptionSprite, GameWindow, SkillWindowX - DescriptionGfxInfo.Width, SkillWindowY, 0, 0,
+        RenderTexture(DescriptionSprite, GameWindow, SkillWindowX - DescriptionGfxInfo.Width, SkillWindowY, 0, 0,
                      DescriptionGfxInfo.Width, DescriptionGfxInfo.Height)
 
         'name
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 12, SkillDescName, Color.White,
-                 Color.Black, GameWindow)
+        RenderText(SkillDescName, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 12, Color.White,
+                 Color.Black)
         'type
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 28, SkillDescInfo, Color.White,
-                 Color.Black, GameWindow)
+        RenderText(SkillDescInfo, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 28, Color.White,
+                 Color.Black)
         'cast time
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 44, "Cast Time: " & SkillDescCastTime,
-                 Color.White, Color.Black, GameWindow)
+        RenderText("Cast Time: " & SkillDescCastTime, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 44,
+                 Color.White, Color.White)
         'cool down
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 58, "CoolDown: " & SkillDescCoolDown,
-                 Color.White, Color.Black, GameWindow)
+        RenderText("Cooldown: " & SkillDescCoolDown, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 58,
+                 Color.White, Color.White)
         'Damage
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 74, "Damage: " & SkillDescDamage,
-                 Color.White, Color.Black, GameWindow)
+        RenderText("Damage: " & SkillDescDamage, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 74,
+                 Color.White, Color.White)
         'AOE
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 90, "Aoe: " & SkillDescAoe, Color.White,
-                 Color.Black, GameWindow)
+        RenderText("Aoe: " & SkillDescAoe, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 90, Color.White,
+                 Color.Black)
         'range
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 104, "Range: " & SkillDescRange,
-                 Color.White, Color.Black, GameWindow)
+        RenderText("Range: " & SkillDescRange, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 104,
+                 Color.White, Color.White)
 
         'requirements
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 128, "=Requirements=", Color.White,
-                 Color.Black, GameWindow)
+        RenderText("Requirements:", GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 128, Color.White,
+                 Color.Black)
         'MP
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 144, "MP: " & SkillDescReqMp, Color.White,
-                 Color.Black, GameWindow)
+        RenderText("MP: " & SkillDescReqMp, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 144, Color.White,
+                 Color.Black)
         'level
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 160, "Level: " & SkillDescReqLvl,
-                 Color.White, Color.Black, GameWindow)
+        RenderText("Level: " & SkillDescReqLvl, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 160,
+                 Color.White, Color.White)
         'Access
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 176, "Access: " & SkillDescReqAccess,
-                 Color.White, Color.Black, GameWindow)
+        RenderText("Access: " & SkillDescReqAccess, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 176,
+                 Color.White, Color.White)
         'Class
-        DrawText(SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 192, "Job: " & SkillDescReqClass,
-                 Color.White, Color.Black, GameWindow)
+        RenderText("Job: " & SkillDescReqClass, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 192,
+                 Color.White, Color.White)
     End Sub
 
     Friend Sub DrawDialogPanel()
         'first render panel
-        RenderSprite(EventChatSprite, GameWindow, DialogPanelX, DialogPanelY, 0, 0, EventChatGfxInfo.Width,
+        RenderTexture(EventChatSprite, GameWindow, DialogPanelX, DialogPanelY, 0, 0, EventChatGfxInfo.Width,
                      EventChatGfxInfo.Height)
 
-        DrawText(DialogPanelX + 175, DialogPanelY + 10, Trim(DialogMsg1), Color.White, Color.Black, GameWindow)
+        RenderText(Trim(DialogMsg1), GameWindow, DialogPanelX + 175, DialogPanelY + 10, Color.White, Color.White)
 
         If Len(DialogMsg2) > 0 Then
-            DrawText(DialogPanelX + 60, DialogPanelY + 30, Trim(DialogMsg2), Color.White, Color.Black, GameWindow)
+            RenderText(Trim(DialogMsg2), GameWindow, DialogPanelX + 60, DialogPanelY + 30, Color.White, Color.White)
         End If
 
         If Len(DialogMsg3) > 0 Then
-            DrawText(DialogPanelX + 60, DialogPanelY + 50, Trim(DialogMsg3), Color.White, Color.Black, GameWindow)
+            RenderText(Trim(DialogMsg3), GameWindow, DialogPanelX + 60, DialogPanelY + 50, Color.White, Color.White)
         End If
 
         'render ok button
@@ -2907,21 +2990,20 @@ NextLoop:
 
     Friend Sub DrawRClick()
         'first render panel
-        RenderSprite(RClickSprite, GameWindow, RClickX, RClickY, 0, 0, RClickGfxInfo.Width, RClickGfxInfo.Height)
+        RenderTexture(RClickSprite, GameWindow, RClickX, RClickY, 0, 0, RClickGfxInfo.Width, RClickGfxInfo.Height)
 
-        DrawText(RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth(RClickname) \ 2), RClickY + 10, RClickname, Color.White,
-                 Color.Black, GameWindow)
+        RenderText(RClickname, GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth(RClickname) \ 2), RClickY + 10, Color.White,
+                 Color.Black)
 
-        DrawText(RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth("Invite to Trade") \ 2), RClickY + 35,
-                 "Invite to Trade", Color.White, Color.Black, GameWindow)
+        RenderText("Invite to Trade", GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth("Invite to Trade") \ 2), RClickY + 35,
+                 Color.White, Color.White)
 
-        DrawText(RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth("Invite to Party") \ 2), RClickY + 60,
-                 "Invite to Party", Color.White, Color.Black, GameWindow)
+        RenderText("Invite to Party", GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth("Invite to Party") \ 2), RClickY + 60,
+                 Color.White, Color.White)
 
     End Sub
 
     Friend Sub DrawGui()
-        'hide GUI when mapping...
         If HideGui = True Then Exit Sub
 
         If HudVisible = True Then
@@ -2983,6 +3065,9 @@ NextLoop:
         If DragSkillSlotNum > 0 Then
             DrawSkillItem(CurMouseX, CurMouseY)
         End If
+
+        ' Render entities
+        If Editor <> EditorType.Map And Not HideGui Then RenderEntities()
 
         'draw cursor
         'DrawCursor()
@@ -3098,20 +3183,7 @@ NextLoop:
         If Editor = EditorType.Map And Night = False Then Exit Sub
 
         If Map.Moral = CByte(MapMoralType.Indoors) Then
-            NightGfx.Clear(New Color(CByte(0), CByte(0), CByte(0), CByte(Map.Brightness)))
             Exit Sub
-        End If
-
-        If Map.Brightness > 0 Then
-            NightGfx.Clear(New Color(CByte(0), CByte(0), CByte(0), CByte(Map.Brightness)))
-        ElseIf Time.Instance.TimeOfDay = TimeOfDay.Dawn Then
-            NightGfx.Clear(New Color(CByte(0), CByte(0), CByte(0), CByte(100)))
-        ElseIf Time.Instance.TimeOfDay = TimeOfDay.Dusk Then
-            NightGfx.Clear(New Color(CByte(0), CByte(0), CByte(0), CByte(150)))
-        ElseIf Time.Instance.TimeOfDay = TimeOfDay.Night Then
-            NightGfx.Clear(New Color(CByte(0), CByte(0), CByte(0), CByte(200)))
-        Else
-            Return
         End If
 
         If tempTileLights Is Nothing Then
@@ -3147,7 +3219,7 @@ NextLoop:
                                                 (ConvertMapY(tile.Y * 32) - (LightGfx.Size.Y / 2 * LightSprite.Scale.Y) + 16))
                                         Dim dist = CByte(((Math.Abs(x - tile.X) + Math.Abs(y - tile.Y))))
                                         LightSprite.Color = New Color(0, 0, 0, 255)
-                                        NightGfx.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
+                                        GameWindow.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
                                     Next
 
                                     tempTileLights.Add(New LightTileStruct() With {
@@ -3171,7 +3243,7 @@ NextLoop:
                                         Dim dist = CByte(((Math.Abs(x - tile.X) + Math.Abs(y - tile.Y))))
                                         LightDynamicSprite.Color = New Color(0, 0, 0,
                                                                              CByte(Clamp((alphaBump * dist), 0, 255)))
-                                        NightGfx.Draw(LightDynamicSprite, New RenderStates(BlendMode.Multiply))
+                                        GameWindow.Draw(LightDynamicSprite, New RenderStates(BlendMode.Multiply))
                                     Next
 
                                     tempTileLights.Add(New LightTileStruct() With {
@@ -3203,7 +3275,7 @@ NextLoop:
                                                       .scale =
                                                       New Vector2f(0.3F * Map.Tile(x, y).Data1, 0.3F * Map.Tile(x, y).Data1)
                                                       })
-                                NightGfx.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
+                                GameWindow.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
                             End If
                         End If
                     End If
@@ -3230,7 +3302,7 @@ NextLoop:
                                          (ConvertMapY(tile.Y * 32) - (LightGfx.Size.Y / 2 * LightSprite.Scale.Y) + 16))
                         Dim dist = CByte(((Math.Abs(x - tile.X) + Math.Abs(y - tile.Y))))
                         LightSprite.Color = New Color(0, 0, 0, 255)
-                        NightGfx.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
+                        GameWindow.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
                     Else
                         Dim alphaBump As Byte
 
@@ -3245,7 +3317,7 @@ NextLoop:
                         LightDynamicSprite.Position = New Vector2f((ConvertMapX(tile.X * 32)), (ConvertMapY(tile.Y * 32)))
                         Dim dist = CByte(((Math.Abs(x - tile.X) + Math.Abs(y - tile.Y))))
                         LightDynamicSprite.Color = New Color(0, 0, 0, CByte(Clamp((alphaBump * dist), 0, 255)))
-                        NightGfx.Draw(LightDynamicSprite, New RenderStates(BlendMode.Multiply))
+                        GameWindow.Draw(LightDynamicSprite, New RenderStates(BlendMode.Multiply))
                     End If
                 Next
             Next
@@ -3256,9 +3328,8 @@ NextLoop:
         LightSprite.Position = New Vector2f(CSng(x2), CSng(y2))
         LightSprite.Color = Color.Red
         LightSprite.Scale = New Vector2f(0.7F, 0.7F)
-        NightGfx.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
-        NightSprite = New Sprite(NightGfx.Texture)
-        NightGfx.Display()
+        GameWindow.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
+        NightSprite = New Sprite(NightGfx)
         GameWindow.Draw(NightSprite)
     End Sub
 
@@ -3295,7 +3366,7 @@ NextLoop:
 
         EditorSkill_Icon.Clear(ToSfmlColor(frmEditor_Skill.picSprite.BackColor))
 
-        RenderSprite(SkillIconsSprite(iconnum), EditorSkill_Icon, dRECT.X, dRECT.Y, sRECT.X, sRECT.Y, sRECT.Width,
+        RenderTexture(SkillIconsSprite(iconnum), EditorSkill_Icon, dRECT.X, dRECT.Y, sRECT.X, sRECT.Y, sRECT.Width,
                      sRECT.Height)
 
         EditorSkill_Icon.Display()
@@ -3361,7 +3432,7 @@ NextLoop:
                     End With
 
                     EditorAnimation_Anim1.Clear(ToSfmlColor(FrmEditor_Animation.picSprite0.BackColor))
-                    RenderSprite(AnimationsSprite(Animationnum), EditorAnimation_Anim1, dRECT.X, dRECT.Y, sRECT.X,
+                    RenderTexture(AnimationsSprite(Animationnum), EditorAnimation_Anim1, dRECT.X, dRECT.Y, sRECT.X,
                                  sRECT.Y, sRECT.Width, sRECT.Height)
                     EditorAnimation_Anim1.Display()
                 End If
@@ -3419,7 +3490,7 @@ NextLoop:
                     End With
 
                     EditorAnimation_Anim2.Clear(ToSfmlColor(FrmEditor_Animation.picSprite1.BackColor))
-                    RenderSprite(AnimationsSprite(Animationnum), EditorAnimation_Anim2, dRECT.X, dRECT.Y, sRECT.X,
+                    RenderTexture(AnimationsSprite(Animationnum), EditorAnimation_Anim2, dRECT.X, dRECT.Y, sRECT.X,
                                  sRECT.Y, sRECT.Width, sRECT.Height)
                     EditorAnimation_Anim2.Display()
                 End If
@@ -3543,16 +3614,16 @@ NextLoop:
                 If cell.X > xOrigin Then
 
                     If cell.Y > yOrigin Then
-                        PostProcessFovQuadrant(_inFov, cell.X, cell.Y, Quadrant.SE)
+                        PostProcessFovQuadrant(_inFov, cell.X, cell.Y, QuadrantType.SE)
                     ElseIf cell.Y < yOrigin Then
-                        PostProcessFovQuadrant(_inFov, cell.X, cell.Y, Quadrant.NE)
+                        PostProcessFovQuadrant(_inFov, cell.X, cell.Y, QuadrantType.NE)
                     End If
                 ElseIf cell.X < xOrigin Then
 
                     If cell.Y > yOrigin Then
-                        PostProcessFovQuadrant(_inFov, cell.X, cell.Y, Quadrant.SW)
+                        PostProcessFovQuadrant(_inFov, cell.X, cell.Y, QuadrantType.SW)
                     ElseIf cell.Y < yOrigin Then
-                        PostProcessFovQuadrant(_inFov, cell.X, cell.Y, Quadrant.NW)
+                        PostProcessFovQuadrant(_inFov, cell.X, cell.Y, QuadrantType.NW)
                     End If
                 End If
             Next
@@ -3562,7 +3633,7 @@ NextLoop:
     End Function
 
     Private Sub PostProcessFovQuadrant(ByRef _inFov As List(Of Vector2i), x As Integer, y As Integer,
-                                       quadrant As Quadrant)
+                                       quadrant As QuadrantType)
         Dim x1 As Integer = x
         Dim y1 As Integer = y
         Dim x2 As Integer = x
@@ -3626,20 +3697,20 @@ NextLoop:
     End Function
 
     Public Sub DrawCursor()
-        RenderSprite(CursorSprite, GameWindow, CurMouseX, CurMouseY, 0, 0, CursorInfo.Width, CursorInfo.Height)
+        RenderTexture(CursorSprite, GameWindow, CurMouseX, CurMouseY, 0, 0, CursorInfo.Width, CursorInfo.Height)
     End Sub
 
-      Sub DrawHotbar()
+    Sub DrawHotbar()
         Dim i As Integer, num As Integer, pic As Integer
         Dim rec As Rectangle, recPos As Rectangle
 
-        RenderSprite(HotBarSprite, GameWindow, HotbarX, HotbarY, 0, 0, HotBarGfxInfo.Width, HotBarGfxInfo.Height)
+        RenderTexture(HotBarSprite, GameWindow, HotbarX, HotbarY, 0, 0, HotBarGfxInfo.Width, HotBarGfxInfo.Height)
 
         For i = 1 To MAX_HOTBAR
             If Player(Myindex).Hotbar(i).SlotType = 1 Then
                 num = Player(Myindex).Skill(Player(Myindex).Hotbar(i).Slot).Num
 
-                If Num > 0 Then
+                If num > 0 Then
                     StreamSkill(num)
                     pic = Skill(num).Icon
 
@@ -3671,14 +3742,14 @@ NextLoop:
                         .Width = PicX
                     End With
 
-                    RenderSprite(SkillIconsSprite(pic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                    RenderTexture(SkillIconsSprite(pic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
                 End If
 
             ElseIf Player(Myindex).Hotbar(i).SlotType = 2 Then
                 num = Player(Myindex).Inv(Player(Myindex).Hotbar(i).Slot).Num
 
                 If num > 0 Then
-                    If num > 0 and Item(num).Name = "" And Item_Changed(num) = False Then
+                    If num > 0 And Item(num).Name = "" And Item_Changed(num) = False Then
                         Item_Changed(num) = True
                         SendRequestItem(num)
                     End If
@@ -3707,7 +3778,7 @@ NextLoop:
                         .Width = PicX
                     End With
 
-                    RenderSprite(ItemsSprite(pic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                    RenderTexture(ItemsSprite(pic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
                 End If
             End If
         Next

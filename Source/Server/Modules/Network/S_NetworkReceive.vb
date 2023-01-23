@@ -192,18 +192,16 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
-                If Not AccountExist(username) Then
-                    AddAccount(index, username, password)
-                End If
-
                 If IsMultiAccounts(index, username) Then
                     AlertMsg(index, "Multiple account logins is not authorized.")
                     Exit Sub
                 End If
 
-                ' Load the player
-                LoadAccount(index)
-                LoadBank(index)
+                If Not AccountExist(username) Then
+                    AddAccount(index, username)
+                Else
+                    LoadAccount(index, username)
+                End If
 
                 ' Show the player up on the socket status
                 Addlog(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
@@ -1792,7 +1790,6 @@ Module S_NetworkReceive
     Sub Packet_CloseBank(index As Integer, ByRef data() As Byte)
         AddDebug("Recieved CMSG: CCloseBank")
 
-        SaveBank(index)
         SavePlayer(index)
 
         TempPlayer(index).InBank = False

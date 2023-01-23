@@ -139,7 +139,6 @@ Module S_General
 
         For i = 1 To MAX_PLAYERS
             ClearPlayer(i)
-            ClearBank(i)
         Next
 
         ClearParties()

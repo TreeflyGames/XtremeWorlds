@@ -13,6 +13,7 @@
 
     Public Function GetCharName(index As Integer, charNum As Integer) As String
         If charNum = 0 Then charNum = 1
+        If Account(index).Character(charNum).Trim = "Bank" Then Exit Function
         GetCharName = Account(index).Character(charNum).Trim 
     End Function
 

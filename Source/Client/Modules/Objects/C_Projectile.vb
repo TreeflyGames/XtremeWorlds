@@ -247,7 +247,7 @@ Friend Module C_Projectiles
         If sprite < 1 OrElse sprite > NumProjectiles Then Exit Sub
 
         If ProjectileGfxInfo(sprite).IsLoaded = False Then
-            LoadTexture(sprite, 11)
+            LoadTexture(sprite, 10)
         End If
 
         'seeying we still use it, lets update timer

@@ -5,6 +5,8 @@ Imports System.Windows.Forms
 Imports Mirage.Basic.Engine
 
 Module C_General
+    Public Declare Function entCallBack Lib "user32.dll" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal Window As Long, ByRef Control As Long, ByVal forced As Long, ByVal lParam As Long) As Long
+
     Friend Started As Boolean
 
     Friend Function GetTickCount() As Integer
@@ -27,6 +29,7 @@ Module C_General
         FrmMenu.Visible = True
         Frmmenuvisible = True
         Ping = -1
+        InitGUI()
     End Sub
 
     Friend Sub LoadGraphics()
@@ -84,6 +87,9 @@ Module C_General
         CheckResources()
         CheckSkillIcons()
         CheckTilesets()
+        ChecKInterface()
+        CheckGradients()
+        CheckDesigns()
     End Sub
 
     Friend Function IsStringLegal(sInput As String) As Boolean

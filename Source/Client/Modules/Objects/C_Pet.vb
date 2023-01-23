@@ -447,6 +447,10 @@ Module C_Pets
 
         If sprite < 1 OrElse sprite > NumCharacters Then Exit Sub
 
+        If CharacterGfxInfo(sprite).IsLoaded = False Then
+            LoadTexture(sprite, 2)
+        End If
+
         attackspeed = 1000
 
         ' Reset frame
@@ -547,6 +551,7 @@ Module C_Pets
         End If
 
         name = Trim$(GetPlayerName(index)) & "'s " & Trim$(Pet(Player(index).Pet.Num).Name)
+
         ' calc pos
         textX = ConvertMapX(Player(index).Pet.X * PicX) + Player(index).Pet.XOffset + (PicX \ 2) - GetTextWidth(name) / 2
         If Pet(Player(index).Pet.Num).Sprite < 1 OrElse Pet(Player(index).Pet.Num).Sprite > NumCharacters Then
@@ -557,8 +562,7 @@ Module C_Pets
         End If
 
         ' Draw name
-        DrawText(textX, textY, Trim$(name), color, backcolor, GameWindow)
-
+        RenderText(name, GameWindow, textX, textY, color, backcolor)
     End Sub
 
     Sub DrawPetBar()
@@ -568,9 +572,9 @@ Module C_Pets
         If Not HasPet(Myindex) Then Exit Sub
 
         If Not PetAlive(Myindex) Then
-            RenderSprite(PetBarSprite, GameWindow, PetbarX, PetbarY, 0, 0, 32, PetbarGfxInfo.Height)
+            RenderTexture(PetBarSprite, GameWindow, PetbarX, PetbarY, 0, 0, 32, PetbarGfxInfo.Height)
         Else
-            RenderSprite(PetBarSprite, GameWindow, PetbarX, PetbarY, 0, 0, PetbarGfxInfo.Width, PetbarGfxInfo.Height)
+            RenderTexture(PetBarSprite, GameWindow, PetbarX, PetbarY, 0, 0, PetbarGfxInfo.Width, PetbarGfxInfo.Height)
 
             For i = 1 To 4
                 skillnum = Player(Myindex).Pet.Skill(i)
@@ -606,7 +610,7 @@ Module C_Pets
                         .Width = PicX
                     End With
 
-                    RenderSprite(SkillIconsSprite(skillpic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                    RenderTexture(SkillIconsSprite(skillpic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
                 End If
             Next
         End If
@@ -621,7 +625,7 @@ Module C_Pets
         If Not ShowPetStats Then Exit Sub
 
         'draw panel
-        RenderSprite(PetStatsSprite, GameWindow, PetStatX, PetStatY, 0, 0, PetStatsGfxInfo.Width, PetStatsGfxInfo.Height)
+        RenderTexture(PetStatsSprite, GameWindow, PetStatX, PetStatY, 0, 0, PetStatsGfxInfo.Width, PetStatsGfxInfo.Height)
 
         'lets get player sprite to render
         sprite = Pet(Player(Myindex).Pet.Num).Sprite
@@ -635,20 +639,19 @@ Module C_Pets
 
         Dim petname As String = Trim$(Pet(Player(Myindex).Pet.Num).Name)
 
-        DrawText(PetStatX + 70, PetStatY + 10, petname & " Lvl: " & Player(Myindex).Pet.Level, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
-
-        RenderSprite(CharacterSprite(sprite), GameWindow, PetStatX + 10, PetStatY + 10 + (PetStatsGfxInfo.Height / 4) - (rec.Height / 2), rec.X, rec.Y, rec.Width, rec.Height)
+        RenderText(petname & " Lvl: " & Player(Myindex).Pet.Level, GameWindow, PetStatX + 70, PetStatY + 10, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
+        RenderTexture(CharacterSprite(sprite), GameWindow, PetStatX + 10, PetStatY + 10 + (PetStatsGfxInfo.Height / 4) - (rec.Height / 2), rec.X, rec.Y, rec.Width, rec.Height)
 
         'stats
-        DrawText(PetStatX + 65, PetStatY + 50, "Strength: " & Player(Myindex).Pet.Stat(StatType.Strength), SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
-        DrawText(PetStatX + 65, PetStatY + 65, "Endurance: " & Player(Myindex).Pet.Stat(StatType.Endurance), SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
-        DrawText(PetStatX + 65, PetStatY + 80, "Vitality: " & Player(Myindex).Pet.Stat(StatType.Vitality), SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
+        RenderText("Strength: " & Player(Myindex).Pet.Stat(StatType.Strength), GameWindow, PetStatX + 65, PetStatY + 50, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
+        RenderText("Endurance: " & Player(Myindex).Pet.Stat(StatType.Endurance), GameWindow, PetStatX + 65, PetStatY + 65, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
+        RenderText("Vitality: " & Player(Myindex).Pet.Stat(StatType.Vitality), GameWindow, PetStatX + 65, PetStatY + 80, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
 
-        DrawText(PetStatX + 165, PetStatY + 50, "Luck: " & Player(Myindex).Pet.Stat(StatType.Luck), SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
-        DrawText(PetStatX + 165, PetStatY + 65, "Intelligence: " & Player(Myindex).Pet.Stat(StatType.Intelligence), SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
-        DrawText(PetStatX + 165, PetStatY + 80, "Spirit: " & Player(Myindex).Pet.Stat(StatType.Spirit), SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
+        RenderText("Luck: " & Player(Myindex).Pet.Stat(StatType.Luck), GameWindow, PetStatX + 165, PetStatY + 50, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
+        RenderText("Intelligence: " & Player(Myindex).Pet.Stat(StatType.Intelligence), GameWindow, PetStatX + 165, PetStatY + 65, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
+        RenderText("Spirit: " & Player(Myindex).Pet.Stat(StatType.Spirit), GameWindow, PetStatX + 165, PetStatY + 80, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
 
-        DrawText(PetStatX + 65, PetStatY + 95, "Experience: " & Player(Myindex).Pet.Exp & "/" & Player(Myindex).Pet.Tnl, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black, GameWindow)
+        RenderText("Experience: " & Player(Myindex).Pet.Exp & "/" & Player(Myindex).Pet.Tnl, GameWindow, PetStatX + 65, PetStatY + 95, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
     End Sub
 
 #End Region

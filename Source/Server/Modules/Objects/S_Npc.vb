@@ -955,20 +955,20 @@ Module S_Npc
 
     Friend Sub SpellNpc_Effect(Vital As Byte, increment As Boolean, index As Integer, Damage As Integer, Skillnum As Integer, mapNum As Integer)
         Dim sSymbol As String
-        Dim Colour As Integer
+        Dim Color As Integer
 
         If Damage > 0 Then
             If increment Then
                 sSymbol = "+"
-                If Vital = VitalType.HP Then Colour = ColorType.BrightGreen
-                If Vital = VitalType.MP Then Colour = ColorType.BrightBlue
+                If Vital = VitalType.HP Then Color = ColorType.BrightGreen
+                If Vital = VitalType.MP Then Color = ColorType.BrightBlue
             Else
                 sSymbol = "-"
-                Colour = ColorType.Blue
+                Color = ColorType.Blue
             End If
 
             SendAnimation(mapNum, Skill(Skillnum).SkillAnim, 0, 0, TargetType.Npc, index)
-            SendActionMsg(mapNum, sSymbol & Damage, Colour, ActionMsgType.Scroll, MapNpc(mapNum).Npc(index).X * 32, MapNpc(mapNum).Npc(index).Y * 32)
+            SendActionMsg(mapNum, sSymbol & Damage, Color, ActionMsgType.Scroll, MapNpc(mapNum).Npc(index).X * 32, MapNpc(mapNum).Npc(index).Y * 32)
 
             ' send the sound
             'SendMapSound(Index, MapNpc(MapNum).Npc(Index).x, MapNpc(MapNum).Npc(Index).y, SoundEntity.seSpell, Skillnum)

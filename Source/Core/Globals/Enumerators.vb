@@ -384,14 +384,14 @@
         Projectile
     End Enum
 
-    Public Enum Quadrant
+    Public Enum QuadrantType
         NE = 1
-        SE = 2
-        SW = 3
-        NW = 4
+        SE
+        SW
+        NW
     End Enum
 
-    Public Enum WrapMode
+    Public Enum WrapModeType
         Characters
         Font
     End Enum
@@ -401,6 +401,103 @@
         BreakWord
         Whitespace
         Smart
+    End Enum
+
+    Public Enum EntityType
+        EntLabel = 1
+        EntWindow
+        EntButton
+        EntTextBox
+        EntScrollbar
+        EntPictureBox
+        EntCheckbox
+        EntCombobox
+        EntCombomenu
+    End Enum
+
+    Public Enum DesignType
+        ' Boxes
+        Wood = 1
+        Wood_Small
+        Wood_Empty
+        Green
+        Green_Hover
+        Green_Click
+        Red
+        Red_Hover
+        Red_Click
+        Blue
+        Blue_Hover
+        Blue_Click
+        Orange
+        Orange_Hover
+        Orange_Click
+        Grey
+        DescPic
+        ' Windows
+        Win_Black
+        Win_Norm
+        Win_NoBar
+        Win_Empty
+        Win_Desc
+        Win_Shadow
+        Win_Party
+        ' Pictures
+        Parchment
+        BlackOval
+        ' Textboxes
+        TextBlack
+        TextWhite
+        TextBlack_Sq
+        ' Checkboxes
+        ChkNorm
+        ChkChat
+        ChkCustom_Buying
+        ChkCustom_Selling
+        ' Right-click Menu
+        MenuHeader
+        MenuOption
+        ' Comboboxes
+        ComboNorm
+        ComboMenuNorm
+        ' tile Selection
+        TileBox
+    End Enum
+
+    Public Enum EntState
+        Normal = 0
+        Hover
+        MouseDown
+        MouseMove
+        MouseUp
+        DblClick
+        Enter
+        ' Count
+        State_Count
+    End Enum
+
+    Public Enum AlignmentType
+        AlignLeft = 0
+        AlignRight
+        AlignCentre
+    End Enum
+
+    Public Enum PartType
+        None = 0
+        Item
+        Spell
+    End Enum
+
+    Public Enum PartOriginType
+        None = 0
+        Inventory
+        Hotbar
+        Spells
+    End Enum
+
+    Public Enum FontType
+        Goergia = 0
+        Rockwell = 1
     End Enum
 
 End Module

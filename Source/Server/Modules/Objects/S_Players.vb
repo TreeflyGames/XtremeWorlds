@@ -471,20 +471,20 @@ Module S_Players
 
     Friend Sub SpellPlayer_Effect(Vital As Byte, increment As Boolean, index As Integer, Damage As Integer, Skillnum As Integer)
         Dim sSymbol As String
-        Dim Colour As Integer
+        Dim Color As Integer
 
         If Damage > 0 Then
             If increment Then
                 sSymbol = "+"
-                If Vital = VitalType.HP Then Colour = ColorType.BrightGreen
-                If Vital = VitalType.MP Then Colour = ColorType.BrightBlue
+                If Vital = VitalType.HP Then Color = ColorType.BrightGreen
+                If Vital = VitalType.MP Then Color = ColorType.BrightBlue
             Else
                 sSymbol = "-"
-                Colour = ColorType.Blue
+                Color = ColorType.Blue
             End If
 
             SendAnimation(GetPlayerMap(index), Skill(Skillnum).SkillAnim, 0, 0, TargetType.Player, index)
-            SendActionMsg(GetPlayerMap(index), sSymbol & Damage, Colour, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
+            SendActionMsg(GetPlayerMap(index), sSymbol & Damage, Color, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
 
             ' send the sound
             'SendMapSound Index, GetPlayerX(Index), GetPlayerY(Index), SoundEntity.seSpell, Spellnum
@@ -998,7 +998,7 @@ Module S_Players
         Dim x As Integer, y As Integer, begineventprocessing As Boolean
         Dim Moved As Boolean, DidWarp As Boolean
         Dim NewMapX As Byte, NewMapY As Byte
-        Dim VitalType As Integer, Colour As Integer, amount As Integer
+        Dim VitalType As Integer, Color As Integer, amount As Integer
 
         ' Check for subscript out of range
         If Dir < DirectionType.Up OrElse Dir > DirectionType.Right OrElse Movement < MovementType.Standing OrElse Movement > MovementType.Running Then
@@ -1178,11 +1178,11 @@ Module S_Players
                 amount = .Data2
                 If Not GetPlayerVital(index, VitalType) = GetPlayerMaxVital(index, VitalType) Then
                     If VitalType = Engine.VitalType.HP Then
-                        Colour = ColorType.BrightGreen
+                        Color = ColorType.BrightGreen
                     Else
-                        Colour = ColorType.BrightBlue
+                        Color = ColorType.BrightBlue
                     End If
-                    SendActionMsg(GetPlayerMap(index), "+" & amount, Colour, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1)
+                    SendActionMsg(GetPlayerMap(index), "+" & amount, Color, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1)
                     SetPlayerVital(index, VitalType, GetPlayerVital(index, VitalType) + amount)
                     PlayerMsg(index, "You feel rejuvinating forces coarsing through your body.", ColorType.BrightGreen)
                     SendVital(index, VitalType)
@@ -1360,7 +1360,7 @@ Module S_Players
         mapNum = GetPlayerMap(index)
 
         ' no lock or locked to player?
-        If MapItem(mapNum, mapItemNum).PlayerName = vbNullString Or MapItem(mapNum, mapItemNum).PlayerName = GetPlayerName(index).Trim Then
+        If MapItem(mapNum, mapItemNum).PlayerName = "" Or MapItem(mapNum, mapItemNum).PlayerName = GetPlayerName(index).Trim Then
             CanPlayerPickupItem = True
             Exit Function
         End If
@@ -2110,7 +2110,6 @@ Module S_Players
 
             ReCallPet(index)
             SavePlayer(index)
-            SaveBank(index)
 
             ' Send a global message that he/she left
             GlobalMsg(String.Format("{0} has left {1}!", GetPlayerName(index), Settings.GameName))
@@ -2423,9 +2422,7 @@ Module S_Players
             End If
         End If
 
-        SaveBank(index)
         SavePlayer(index)
-        SendBank(index)
 
     End Sub
 
