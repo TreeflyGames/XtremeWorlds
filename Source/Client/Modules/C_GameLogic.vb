@@ -562,7 +562,6 @@ Module C_GameLogic
                     AddText(Language.Chat.Help5, ColorType.Yellow)
 
                 Case "/info"
-
                     ' Checks to make sure we have more than one string in the array
                     If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
                         AddText(Language.Chat.Info, ColorType.Yellow)
@@ -596,6 +595,7 @@ Module C_GameLogic
                     buffer.WriteInt32(ClientPackets.CGetStats)
                     Socket.SendData(buffer.Data, buffer.Head)
                     buffer.Dispose()
+
                 Case "/party"
                     ' Make sure they are actually sending something
                     If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
@@ -626,6 +626,7 @@ Module C_GameLogic
                     AddText(Language.Chat.Admin2, ColorType.Yellow)
                     AddText(Language.Chat.AdminGblMsg, ColorType.Yellow)
                     AddText(Language.Chat.AdminPvtMsg, ColorType.Yellow)
+
                 ' Kicking a player
                 Case "/kick"
 
@@ -640,6 +641,7 @@ Module C_GameLogic
                     End If
 
                     SendKick(command(1))
+
                 ' // Mapper Admin Commands //
                 ' Location
                 Case "/loc"
@@ -650,6 +652,7 @@ Module C_GameLogic
                     End If
 
                     BLoc = Not BLoc
+
                 ' Warping to a player
                 Case "/warpmeto"
 
@@ -664,6 +667,7 @@ Module C_GameLogic
                     End If
 
                     WarpMeTo(command(1))
+
                 ' Warping a player to you
                 Case "/warptome"
 
@@ -678,6 +682,7 @@ Module C_GameLogic
                     End If
 
                     WarpToMe(command(1))
+
                 ' Warping to a map
                 Case "/warpto"
 
@@ -714,6 +719,7 @@ Module C_GameLogic
                     End If
 
                     SendSetSprite(command(1))
+
                 ' Map report
                 Case "/mapreport"
 
@@ -723,6 +729,7 @@ Module C_GameLogic
                     End If
 
                     SendRequestMapReport()
+
                 ' Respawn request
                 Case "/respawn"
 
@@ -732,10 +739,21 @@ Module C_GameLogic
                     End If
 
                     SendMapRespawn()
+
+                Case "/editmap"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditMap
+
+                ' // Moderator Commands //
                 ' Welcome change
                 Case "/welcome"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(Myindex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
                         GoTo Continue1
                     End If
@@ -746,19 +764,21 @@ Module C_GameLogic
                     End If
 
                     SendMotdChange(Right$(chatText, Len(chatText) - 5))
+
                 ' Check the ban list
                 Case "/banlist"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(Myindex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
                         GoTo Continue1
                     End If
 
                     SendBanList()
+
                 ' Banning a player
                 Case "/ban"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(Myindex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
                         GoTo Continue1
                     End If
@@ -769,12 +789,18 @@ Module C_GameLogic
                     End If
 
                     SendBan(command(1))
-                ' // Developer Admin Commands //
 
                 ' // Creator Admin Commands //
                 ' Giving another player access
-                Case "/access"
+                Case "/bandestroy"
+                    If GetPlayerAccess(Myindex) < AdminType.Creator Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
 
+                    SendBanDestroy
+
+                Case "/access"
                     If GetPlayerAccess(Myindex) < AdminType.Creator Then
                         AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
                         GoTo Continue1
@@ -788,7 +814,90 @@ Module C_GameLogic
                     End If
 
                     SendSetAccess(command(1), CLng(command(2)))
+
+                ' // Developer Admin Commands //
+                Case "/editresource"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditResource
+                    
+                Case "/editanimation"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditAnimation
+
+                Case "/editpet"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditPet
+
+                Case "/edititem"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditItem
+
+                Case "/editprojectile"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditProjectile
+
+                Case "/editnpc"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditNpc
+
+                Case "/editjob"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditJob
+
+                Case "/editskill"
+
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditSkill
+
+                Case "/editshop"
+                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                        AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
+                        GoTo Continue1
+                    End If
+
+                    SendRequestEditShop
+
                 Case ""
+
                 Case Else
                     AddText(Language.Chat.InvalidCmd, QColorType.AlertColor)
             End Select

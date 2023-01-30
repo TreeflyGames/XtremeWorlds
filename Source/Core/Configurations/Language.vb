@@ -121,7 +121,11 @@ Public Class LanguageDef
         Public Admin2 As String = "Available Commands: /admin, /who, /access, /loc, 
                                    /warpmeto, /warptome, /warpto, 
                                    /sprite, /mapreport, /kick, 
-                                   /ban, /respawn, /welcome"
+                                   /ban, /respawn, /welcome,
+                                   /editmap, /edititem, /editresource,
+                                   /editskill, /editpet, /editshop
+                                   /editprojectile, /editnpc, /editjob
+                                   /editjob"
 
         Public Welcome As String = "Usage : /welcome [message]"
         Public Access As String = "Usage : /access [player] [access]"

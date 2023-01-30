@@ -1037,7 +1037,7 @@ Module S_NetworkReceive
         AddDebug("Recieved CMSG: CKickPlayer")
 
         ' Prevent hacking
-        If GetPlayerAccess(index) <= 0 Then
+        If GetPlayerAccess(index) < AdminType.Moderator Then
             Exit Sub
         End If
 
@@ -1066,7 +1066,7 @@ Module S_NetworkReceive
         AddDebug("Recieved CMSG: CBanList")
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then
+        If GetPlayerAccess(index) < AdminType.Moderator Then
             Exit Sub
         End If
 
@@ -1095,7 +1095,7 @@ Module S_NetworkReceive
         AddDebug("Recieved CMSG: CBanPlayer")
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AdminType.Moderator Then Exit Sub
 
         ' The player index
         n = FindPlayer(buffer.ReadString)

@@ -1,6 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Basic.Engine
+Imports System.Reflection.Metadata
 
 Module C_NetworkSend
     Friend Sub SendAddChar(slot As Integer, name As String, sexNum As Integer, jobNum As Integer)
@@ -255,6 +256,15 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CBanList)
 
         Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
+
+    Friend Sub SendBanDestroy()
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CBanDestroy)
+        
+        Socket.SendData(buffer.data, buffer.Head)
         buffer.Dispose()
     End Sub
 
