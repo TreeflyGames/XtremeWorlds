@@ -400,8 +400,6 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
-
-
     Friend Sub SendUseEmote(emote As Integer)
         Dim buffer As New ByteStream(4)
 
@@ -411,7 +409,6 @@ Module C_NetworkSend
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()
     End Sub
-
 
     Friend Sub SendRequestEditResource()
         Dim buffer As New ByteStream(4)

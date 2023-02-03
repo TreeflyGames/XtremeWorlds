@@ -49,9 +49,6 @@ Module C_GameLogic
                 End If
             End If
 
-            'Update the UI
-            UpdateUi()
-
             If GameStarted() = True Then
                 tick = GetTickCount()
                 ElapsedTime = tick - frameTime ' Set the time difference for time-based movement
@@ -116,15 +113,13 @@ Module C_GameLogic
                 End If
 
                 If tmr10000 < tick Then
-                    ClearGfx()
-                    GetPing()
-                    DrawPing()
-
                     tmr10000 = tick + 10000
                 End If
 
                 If tmr1000 < tick Then
                     Time.Instance.Tick()
+                    GetPing()
+                    DrawPing()
 
                     tmr1000 = tick + 1000
                 End If
@@ -180,7 +175,7 @@ Module C_GameLogic
                         SkillBuffer = 0
                         SkillBufferTimer = 0
                     End If
-                End If
+                End If 
 
                 ' check if we need to unlock the pets's spell casting restriction
                 If PetSkillBuffer > 0 Then
@@ -793,6 +788,7 @@ Module C_GameLogic
                 ' // Creator Admin Commands //
                 ' Giving another player access
                 Case "/bandestroy"
+
                     If GetPlayerAccess(Myindex) < AdminType.Creator Then
                         AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
                         GoTo Continue1
@@ -801,6 +797,7 @@ Module C_GameLogic
                     SendBanDestroy
 
                 Case "/access"
+
                     If GetPlayerAccess(Myindex) < AdminType.Creator Then
                         AddText(Language.Chat.AccessAlert, QColorType.AlertColor)
                         GoTo Continue1
@@ -1191,7 +1188,7 @@ Continue1:
         ' default to new bubble
         index = ChatBubbleindex
         ' loop through and see if that player/npc already has a chat bubble
-       For i = 0 To Byte.MaxValue
+        For i = 0 To Byte.MaxValue
             If ChatBubble(i).TargetType = targetType Then
                 If ChatBubble(i).Target = target Then
                     ' reset master index

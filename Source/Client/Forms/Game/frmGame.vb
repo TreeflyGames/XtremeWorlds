@@ -219,7 +219,7 @@ Friend Class FrmGame
                         frmEditor_Map.cmbTileSets.SelectedIndex = frmEditor_Map.cmbTileSets.SelectedIndex + 1
                     End If
                 End If
-            End If 
+            End If
         End If
     End Sub
 

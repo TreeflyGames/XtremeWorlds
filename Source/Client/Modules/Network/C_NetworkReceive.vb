@@ -72,7 +72,7 @@ Module C_NetworkReceive
         Socket.PacketId(ServerPackets.STradeStatus) = AddressOf Packet_TradeStatus
 
         Socket.PacketId(ServerPackets.SGameData) = AddressOf Packet_GameData
-        Socket.PacketId(ServerPackets.SMapReport) = AddressOf Packet_Mapreport
+        Socket.PacketId(ServerPackets.SMapReport) = AddressOf Packet_MapReport
         Socket.PacketId(ServerPackets.STarget) = AddressOf Packet_Target
 
         Socket.PacketId(ServerPackets.SAdmin) = AddressOf Packet_Admin
@@ -1027,10 +1027,11 @@ Module C_NetworkReceive
         buffer.Dispose()
     End Sub
 
-    Private Sub Packet_Mapreport(ByRef data() As Byte)
+    Private Sub Packet_MapReport(ByRef data() As Byte)
         Dim i As Integer
         Dim buffer As New ByteStream(data)
-       For i = 1 To MAX_MAPS
+
+        For i = 1 To MAX_MAPS
             MapNames(I) = Trim(buffer.ReadString())
         Next
 
