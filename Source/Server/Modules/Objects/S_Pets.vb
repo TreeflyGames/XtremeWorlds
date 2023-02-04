@@ -3199,7 +3199,7 @@ Module S_Pets
                             vitalType = Engine.VitalType.MP
                             increment = True
                         ElseIf Skill(skillnum).Type = SkillType.HealHp Then
-                            vitalType = Enumerations.VitalType.HP
+                            vitalType = Enumerator.VitalType.HP
                             increment = True
                         End If
 

@@ -4,7 +4,7 @@ Imports SFML.Graphics
 Imports SFML.Window
 Imports Mirage.Basic.Engine
 Imports SFML.System
-Imports Mirage.Basic.Engine.Enumerations
+Imports Mirage.Basic.Engine.Enumerator
 Imports System.Drawing.Imaging
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
 

@@ -49,6 +49,8 @@ Module C_GameLogic
                 End If
             End If
 
+            UpdateUi()
+
             If GameStarted() = True Then
                 tick = GetTickCount()
                 ElapsedTime = tick - frameTime ' Set the time difference for time-based movement

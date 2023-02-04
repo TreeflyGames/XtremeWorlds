@@ -3,7 +3,7 @@ Imports System.Runtime
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar
 Imports DarkUI.Config
 Imports Mirage.Basic.Engine
-Imports Mirage.Basic.Engine.Enumerations
+Imports Mirage.Basic.Engine.Enumerator
 Imports Mirage.Basic.Engine.Types
 Imports SFML.Graphics
 
@@ -239,11 +239,10 @@ Module C_Interface
                     
                     ' calculate the vertical centre
                     height = GetTextHeight(.Text)
-                    
                     If height > .Height Then
                         ver_centre = .Top + yO
                     Else
-                        ver_centre = .Top + yO + ((.Height - height) \ 2) - 1
+                        ver_centre = .Top + yO + ((.Height - height) \ 2)
                     End If
                     
                     ' calculate the horizontal centre
@@ -251,7 +250,7 @@ Module C_Interface
                     If width > .Width Then
                         hor_centre = .Left + xO + xOffset
                     Else
-                        hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2) - 2
+                        hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2)
                     End If
 
                     RenderText(.Text, GameWindow, hor_centre, ver_centre, Color.White, Color.White)
@@ -479,7 +478,7 @@ Module C_Interface
     End Sub
 
     Public Sub RenderDesign(design As Long, left As Long, top As Long, width As Long, height As Long, Optional alpha As Long = 255)
-        Dim bs As Long, sprite As Long
+        Dim bs As Long
 
         Select Case design
             Case DesignType.MenuHeader
@@ -702,7 +701,6 @@ Module C_Interface
         ReDim Preserve Windows(winIndex).Controls(controlIndex).List(count + 1)
         Windows(winIndex).Controls(controlIndex).List(count + 1) = text
     End Sub
-
 
     Public Sub CreateWindow(name As String, caption As String, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long, _
        Optional visible As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
@@ -978,12 +976,12 @@ Module C_Interface
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , ,)
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 68, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click)
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click)
         CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click)
         
         ' Labels
-        CreateLabel(WindowCount, "lblUsername", 66, 39, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
-        CreateLabel(WindowCount, "lblPassword", 66, 75, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
+        CreateLabel(WindowCount, "lblUsername", 72, 40, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
+        CreateLabel(WindowCount, "lblPassword", 72, 76, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
         
         ' Textboxes
         CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , 5, 3)

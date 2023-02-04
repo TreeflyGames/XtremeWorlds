@@ -16,7 +16,7 @@ Module C_Text
     Friend LastLineindex As Integer = 0
     Friend ScrollMod As Integer = 0
 
-    Friend Sub RenderText(text As String, ByRef target As RenderWindow, x As Integer, y As Integer, color As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
+    Friend Sub RenderText(text As String, ByRef target As RenderWindow, x As Integer, y As Integer, frontColor As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
         Dim backString As Text
         Dim frontString As Text
 
@@ -32,13 +32,13 @@ Module C_Text
 
         backString.CharacterSize = textSize
         backString.Color = backColor
-        backString.LetterSpacing = 2
+        backString.LetterSpacing = 1
         backString.Position = New Vector2f(x , y)
         target.Draw(backString)
 
         frontString.CharacterSize = textSize
-        frontString.Color = color
-        frontString.LetterSpacing = 2
+        frontString.Color = frontColor
+        frontString.LetterSpacing = 1
         frontString.Position = New Vector2f(x, y)
         target.Draw(frontString)
     End Sub

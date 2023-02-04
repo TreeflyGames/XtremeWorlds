@@ -1,4 +1,4 @@
-﻿Public Module Enumerations
+﻿Public Module Enumerator
 
     ''' <Summary> Text Color Contstant </Summary>
     Enum ColorType As Byte
@@ -92,9 +92,9 @@
     ''' <Summary> Direction Constant </Summary>
     Enum DirectionType As Byte
         Up = 1
+        Right
         Down
         Left
-        Right
     End Enum
 
     ''' <Summary> Movement Constant </Summary>

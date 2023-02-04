@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
-Imports Mirage.Basic.Engine.Enumerations
+Imports Mirage.Basic.Engine.Enumerator
 Imports SFML.Graphics
 Imports SFML.System
 Imports Mirage.Basic.Engine
@@ -1328,8 +1328,7 @@ Module C_Graphics
             destrec = New Rectangle(ConvertMapX(MapItem(itemnum).X * PicX), ConvertMapY(MapItem(itemnum).Y * PicY), 32, 32)
         Else
             srcrec = New Rectangle(0, 0, PicX, PicY)
-            destrec = New Rectangle(ConvertMapX(MapItem(itemnum).X * PicX), ConvertMapY(MapItem(itemnum).Y * PicY), PicX,
-                                    PicY)
+            destrec = New Rectangle(ConvertMapX(MapItem(itemnum).X * PicX), ConvertMapY(MapItem(itemnum).Y * PicY), PicX, PicY)
         End If
 
         x = ConvertMapX(MapItem(itemnum).X * PicX)
@@ -1396,6 +1395,7 @@ Module C_Graphics
         If y < 0 Then Exit Function
         If x > Map.MaxX Then Exit Function
         If y > Map.MaxY Then Exit Function
+
         IsValidMapPoint = True
     End Function
 

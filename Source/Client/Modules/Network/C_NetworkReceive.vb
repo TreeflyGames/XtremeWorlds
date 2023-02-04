@@ -512,6 +512,7 @@ Module C_NetworkReceive
     Private Sub Packet_SpawnNPC(ByRef data() As Byte)
         Dim i As Integer
         Dim buffer As New ByteStream(data)
+
         i = buffer.ReadInt32
 
         With MapNpc(i)
@@ -535,6 +536,7 @@ Module C_NetworkReceive
     Private Sub Packet_NpcDead(ByRef data() As Byte)
         Dim i As Integer
         Dim buffer As New ByteStream(data)
+
         i = buffer.ReadInt32
         ClearMapNpc(i)
 
