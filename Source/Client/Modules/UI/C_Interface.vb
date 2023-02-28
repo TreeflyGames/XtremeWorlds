@@ -973,11 +973,11 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , ,)
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , , "DestroyGame")
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click)
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click)
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , "MenuState(MenuStateLogin)")
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , , , "DestroyGame")
         
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 72, 40, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
@@ -1008,6 +1008,314 @@ Module C_Interface
         ' Menu
         CreateWindow_Login
     End Sub
+
+    Public Function MouseX(Optional ByVal hWnd As Long) As Long
+    Dim lpPoint As POINTAPI
+    GetCursorPos lpPoint
+
+    If hWnd Then ScreenToClient hWnd, lpPoint
+    MouseX = lpPoint.X
+End Function
+
+Public Function MouseY(Optional ByVal hWnd As Long) As Long
+    Dim lpPoint As POINTAPI
+    GetCursorPos lpPoint
+
+    If hWnd Then ScreenToClient hWnd, lpPoint
+    MouseY = lpPoint.Y
+End Function
+
+Public Sub HandleMouseInput()
+    Dim entState As entStates, i As Long, X As Long
+
+    ' exit out if we're playing video
+    If videoPlaying Then Exit Sub
+
+    ' set values
+    lastMouseX = currMouseX
+    lastMouseY = currMouseY
+    currMouseX = MouseX(frmMain.hWnd)
+    currMouseY = MouseY(frmMain.hWnd)
+    GlobalX = currMouseX
+    GlobalY = currMouseY
+    lastMouseClick(VK_LBUTTON) = mouseClick(VK_LBUTTON)
+    lastMouseClick(VK_RBUTTON) = mouseClick(VK_RBUTTON)
+    mouseClick(VK_LBUTTON) = GetAsyncKeyState(VK_LBUTTON)
+    mouseClick(VK_RBUTTON) = GetAsyncKeyState(VK_RBUTTON)
+
+    ' Hover
+    entState = entStates.Hover
+
+    ' MouseDown
+    If (mouseClick(VK_LBUTTON) And lastMouseClick(VK_LBUTTON) = 0) Or (mouseClick(VK_RBUTTON) And lastMouseClick(VK_RBUTTON) = 0) Then
+        clickedX = currMouseX
+        clickedY = currMouseY
+        entState = entStates.MouseDown
+        ' MouseUp
+    ElseIf (mouseClick(VK_LBUTTON) = 0 And lastMouseClick(VK_LBUTTON)) Or (mouseClick(VK_RBUTTON) = 0 And lastMouseClick(VK_RBUTTON)) Then
+        entState = entStates.MouseUp
+        ' MouseMove
+    ElseIf (currMouseX <> lastMouseX) Or (currMouseY <> lastMouseY) Then
+        entState = entStates.MouseMove
+    End If
+
+    ' Handle everything else
+    If Not HandleGuiMouse(entState) Then
+        ' reset /all/ control mouse events
+        For i = 1 To WindowCount
+            For X = 1 To Windows(i).ControlCount
+                Windows(i).Controls(X).State = Normal
+            Next
+        Next
+        If InGame Then
+            If entState = entStates.MouseDown Then
+                ' Handle events
+                If currMouseX >= 0 And currMouseX <= frmMain.ScaleWidth Then
+                    If currMouseY >= 0 And currMouseY <= frmMain.ScaleHeight Then
+                        If InMapEditor Then
+                            If (mouseClick(VK_LBUTTON) And lastMouseClick(VK_LBUTTON) = 0) Then
+                                If frmEditor_Map.optEvents.Value Then
+                                    selTileX = CurX
+                                    selTileY = CurY
+                                Else
+                                    Call MapEditorMouseDown(vbLeftButton, GlobalX, GlobalY, False)
+                                End If
+                            ElseIf (mouseClick(VK_RBUTTON) And lastMouseClick(VK_RBUTTON) = 0) Then
+                                If Not frmEditor_Map.optEvents.Value Then Call MapEditorMouseDown(vbRightButton, GlobalX, GlobalY, False)
+                            End If
+                        Else
+                            ' left click
+                            If (mouseClick(VK_LBUTTON) And lastMouseClick(VK_LBUTTON) = 0) Then
+                                ' targetting
+                                FindTarget
+                                ' right click
+                            ElseIf (mouseClick(VK_RBUTTON) And lastMouseClick(VK_RBUTTON) = 0) Then
+                                If ShiftDown Then
+                                    ' admin warp if we're pressing shift and right clicking
+                                    If GetPlayerAccess(MyIndex) >= 2 Then AdminWarp CurX, CurY
+                                    Exit Sub
+                                End If
+                                ' right-click menu
+                                For i = 1 To MAX_PLAYERS
+                                    If IsPlaying(i) Then
+                                        If GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
+                                            If GetPlayerX(i) = CurX And GetPlayerY(i) = CurY Then
+                                                ShowPlayerMenu i, currMouseX, currMouseY
+                                            End If
+                                        End If
+                                    End If
+                                Next
+                            End If
+                        End If
+                    End If
+                End If
+            ElseIf entState = entStates.MouseMove Then
+                GlobalX_Map = GlobalX + (TileView.left * PIC_X) + Camera.left
+                GlobalY_Map = GlobalY + (TileView.top * PIC_Y) + Camera.top
+                ' Handle the events
+                CurX = TileView.left + ((currMouseX + Camera.left) \ PIC_X)
+                CurY = TileView.top + ((currMouseY + Camera.top) \ PIC_Y)
+
+                If InMapEditor Then
+                    If (mouseClick(VK_LBUTTON)) Then
+                        If Not frmEditor_Map.optEvents.Value Then Call MapEditorMouseDown(vbLeftButton, CurX, CurY, False)
+                    ElseIf (mouseClick(VK_RBUTTON)) Then
+                        If Not frmEditor_Map.optEvents.Value Then Call MapEditorMouseDown(vbRightButton, CurX, CurY, False)
+                    End If
+                End If
+            End If
+        End If
+    End If
+End Sub
+
+Public Function HandleGuiMouse(entState As entStates) As Boolean
+    Dim i As Long, curWindow As Long, curControl As Long, callBack As Long, X As Long
+
+    ' if hiding gui
+    If HideGUI = True Or InMapEditor Then Exit Function
+
+    ' Find the container
+    For i = 1 To WindowCount
+        With Windows(i).Window
+            If .enabled And .Visible Then
+                If .State <> entStates.MouseDown Then .State = entStates.Normal
+                If currMouseX >= .left And currMouseX <= .Width + .left Then
+                    If currMouseY >= .top And currMouseY <= .Height + .top Then
+                        ' set the combomenu
+                        If .design(0) = DesignTypes.desComboMenuNorm Then
+                            ' set the hover menu
+                            If entState = MouseMove Or entState = Hover Then
+                                ComboMenu_MouseMove i
+                            ElseIf entState = MouseDown Then
+                                ComboMenu_MouseDown i
+                            End If
+                        End If
+                        ' everything else
+                        If curWindow = 0 Then curWindow = i
+                        If .zOrder > Windows(curWindow).Window.zOrder Then curWindow = i
+                    End If
+                End If
+                If entState = entStates.MouseMove Then
+                    If .canDrag Then
+                        If .State = entStates.MouseDown Then
+                            .left = Clamp(.left + ((currMouseX - .left) - .movedX), 0, ScreenWidth - .Width)
+                            .top = Clamp(.top + ((currMouseY - .top) - .movedY), 0, ScreenHeight - .Height)
+                        End If
+                    End If
+                End If
+            End If
+        End With
+    Next
+
+    ' Handle any controls first
+    If curWindow Then
+        ' reset /all other/ control mouse events
+        For i = 1 To WindowCount
+            If i <> curWindow Then
+                For X = 1 To Windows(i).ControlCount
+                    Windows(i).Controls(X).State = Normal
+                Next
+            End If
+        Next
+        For i = 1 To Windows(curWindow).ControlCount
+            With Windows(curWindow).Controls(i)
+                If .enabled And .Visible Then
+                    If .State <> entStates.MouseDown Then .State = entStates.Normal
+                    If currMouseX >= .left + Windows(curWindow).Window.left And currMouseX <= .left + .Width + Windows(curWindow).Window.left Then
+                        If currMouseY >= .top + Windows(curWindow).Window.top And currMouseY <= .top + .Height + Windows(curWindow).Window.top Then
+                            If curControl = 0 Then curControl = i
+                            If .zOrder > Windows(curWindow).Controls(curControl).zOrder Then curControl = i
+                        End If
+                    End If
+                    If entState = entStates.MouseMove Then
+                        If .canDrag Then
+                            If .State = entStates.MouseDown Then
+                                .left = Clamp(.left + ((currMouseX - .left) - .movedX), 0, Windows(curWindow).Window.Width - .Width)
+                                .top = Clamp(.top + ((currMouseY - .top) - .movedY), 0, Windows(curWindow).Window.Height - .Height)
+                            End If
+                        End If
+                    End If
+                End If
+            End With
+        Next
+        ' Handle control
+        If curControl Then
+            HandleGuiMouse = True
+            With Windows(curWindow).Controls(curControl)
+                If .State <> entStates.MouseDown Then
+                    If entState <> entStates.MouseMove Then
+                        .State = entState
+                    Else
+                        .State = entStates.Hover
+                    End If
+                End If
+                If entState = entStates.MouseDown Then
+                    If .canDrag Then
+                        .movedX = clickedX - .left
+                        .movedY = clickedY - .top
+                    End If
+                    ' toggle boxes
+                    Select Case .Type
+                    Case EntityTypes.entCheckbox
+                        ' grouped boxes
+                        If .group > 0 Then
+                            If .Value = 0 Then
+                                For i = 1 To Windows(curWindow).ControlCount
+                                    If Windows(curWindow).Controls(i).Type = EntityTypes.entCheckbox Then
+                                        If Windows(curWindow).Controls(i).group = .group Then
+                                            Windows(curWindow).Controls(i).Value = 0
+                                        End If
+                                    End If
+                                Next
+                                .Value = 1
+                            End If
+                        Else
+                            If .Value = 0 Then
+                                .Value = 1
+                            Else
+                                .Value = 0
+                            End If
+                        End If
+                    Case EntityTypes.entCombobox
+                        ShowComboMenu curWindow, curControl
+                    End Select
+                    ' set active input
+                    SetActiveControl curWindow, curControl
+                End If
+                callBack = .EntCallBack(entState)
+            End With
+        Else
+            ' Handle container
+            With Windows(curWindow).Window
+                HandleGuiMouse = True
+                If .State <> entStates.MouseDown Then
+                    If entState <> entStates.MouseMove Then
+                        .State = entState
+                    Else
+                        .State = entStates.Hover
+                    End If
+                End If
+                If entState = entStates.MouseDown Then
+                    If .canDrag Then
+                        .movedX = clickedX - .left
+                        .movedY = clickedY - .top
+                    End If
+                End If
+                callBack = .EntCallBack(entState)
+            End With
+        End If
+        ' bring to front
+        If entState = entStates.MouseDown Then
+            UpdateZOrder curWindow
+            activeWindow = curWindow
+        End If
+        ' call back
+        If callBack <> 0 Then EntCallBack callBack, curWindow, curControl, 0, 0
+    End If
+
+    ' Reset
+    If entState = entStates.MouseUp Then ResetMouseDown
+End Function
+
+Public Sub ResetGUI()
+    Dim i As Long, X As Long
+
+    For i = 1 To WindowCount
+
+        If Windows(i).Window.State <> MouseDown Then Windows(i).Window.State = Normal
+
+        For X = 1 To Windows(i).ControlCount
+
+            If Windows(i).Controls(X).State <> MouseDown Then Windows(i).Controls(X).State = Normal
+        Next
+    Next
+
+End Sub
+
+Public Sub ResetMouseDown()
+    Dim callBack As Long
+    Dim i As Long, X As Long
+
+    For i = 1 To WindowCount
+
+        With Windows(i)
+            .Window.State = EntState.Normal
+            callBack = .Window.CallBack(EntState.Normal)
+
+            If callBack <> 0 Then EntCallBack(callBack, i, 0, 0, 0)
+
+            For X = 1 To .ControlCount
+                .Controls(X).State = entStates.Normal
+                callBack = .Controls(X).EntCallBack(entStates.Normal)
+
+                If callBack <> 0 Then EntCallBack callBack, i, X, 0, 0
+            Next
+
+        End With
+
+    Next
+
+End Sub
 
 End Module
 

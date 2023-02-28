@@ -5,8 +5,6 @@ Imports System.Windows.Forms
 Imports Mirage.Basic.Engine
 
 Module C_General
-    Public Declare Function entCallBack Lib "user32.dll" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal Window As Long, ByRef Control As Long, ByVal forced As Long, ByVal lParam As Long) As Long
-
     Friend Started As Boolean
 
     Friend Function GetTickCount() As Integer
