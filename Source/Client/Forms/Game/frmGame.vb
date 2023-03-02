@@ -50,6 +50,7 @@ Friend Class FrmGame
             If Inputs.Run(e.KeyCode) Then VbKeyShift = True
             If Inputs.Loot(e.KeyCode) Then CheckMapGetItem()
         End If
+
     End Sub
 
     Private Sub FrmMainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
@@ -61,6 +62,8 @@ Friend Class FrmGame
         If Inputs.MoveRight(e.KeyCode) Then VbKeyRight = False
         If Inputs.Attack(e.KeyCode) Then VbKeyControl = False
         If Inputs.Run(e.KeyCode) Then VbKeyShift = False
+
+        If e.KeyCode = Keys.Enter Then HandleInterfaceEvents(EntState.Enter)
 
         'hotbar
         If Inputs.HotBar1(e.KeyCode) Then
@@ -154,6 +157,7 @@ Friend Class FrmGame
 
             ' left click
             If e.Button = MouseButtons.Left Then
+                HandleInterfaceEvents(EntState.MouseDown)
 
                 ' if we're in the middle of choose the trade target or not
                 If Not TradeRequest Then
@@ -223,10 +227,12 @@ Friend Class FrmGame
         End If
     End Sub
 
-    Private Sub Picscreen_DoubleClick(sender As Object, e As MouseEventArgs) Handles picscreen.DoubleClick
+    Private Sub PicScreen_DoubleClick(sender As Object, e As MouseEventArgs) Handles picscreen.DoubleClick
         If Not CheckGuiDoubleClick(e.X, e.Y, e) And IsDescWindowActive(e.X, e.y) = False Then
             If GetPlayerAccess(Myindex) >= 2 Then AdminWarp(CurX, CurY)
         End If
+
+        If e.Button = MouseButtons.Left Then HandleInterfaceEvents(EntState.DblClick)
     End Sub
 
     Private Overloads Sub Picscreen_Paint(sender As Object, e As PaintEventArgs) Handles picscreen.Paint
@@ -240,6 +246,7 @@ Friend Class FrmGame
         CurMouseX = e.Location.X
         CurMouseY = e.Location.Y
         CheckGuiMove(e.X, e.Y)
+        If e.Button = MouseButtons.Left Then HandleInterfaceEvents(EntState.MouseMove)
 
         If Editor = EditorType.Map Then
             If e.Button = MouseButtons.Left OrElse e.Button = MouseButtons.Right Then
@@ -252,6 +259,7 @@ Friend Class FrmGame
         CurX = TileView.Left + ((e.Location.X + Camera.Left) \ PicX)
         CurY = TileView.Top + ((e.Location.Y + Camera.Top) \ PicY)
         CheckGuiMouseUp(e.X, e.Y, e)
+        If e.Button = MouseButtons.Left Then HandleInterfaceEvents(EntState.MouseUp)
     End Sub
 
     Private Sub Picscreen_KeyDown(sender As Object, e As KeyEventArgs) Handles picscreen.KeyDown

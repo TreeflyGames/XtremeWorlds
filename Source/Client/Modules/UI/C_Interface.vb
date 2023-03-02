@@ -1,5 +1,6 @@
 ﻿Imports System.Configuration
 Imports System.Runtime
+Imports System.Security.Cryptography
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar
 Imports DarkUI.Config
 Imports Mirage.Basic.Engine
@@ -20,10 +21,10 @@ Module C_Interface
     Private zOrder_Win As Long
     Private zOrder_Con As Long
 
-    Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, _
+    Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() as Task, _
        Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
        Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0,
-       Optional onDraw As Long = 0, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional callback As String = "")
+       Optional onDraw As Task = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0)
 
         Dim i As Long
 
@@ -45,11 +46,13 @@ Module C_Interface
 
             ReDim .Design(EntState.State_Count - 1)
             ReDim .Image(EntState.State_Count - 1)
+            Redim .callback(EntState.State_Count - 1)
 
             ' loop through states
             For i = 0 To EntState.State_Count - 1
                 .Design(i) = design(i)
                 .Image(i) = image(i)
+                .callback(i) = callback(i)
             Next
 
             .Left = left
@@ -76,7 +79,6 @@ Module C_Interface
             .OnDraw = onDraw
             .Tooltip = tooltip
             .Group = group
-            .Callback = callback
             ReDim .List(0)
         End With
 
@@ -382,16 +384,14 @@ Module C_Interface
                     End Select
             End Select
 
-            ' callback draw
-            callBack = .OnDraw
+            If Not .OnDraw Is Nothing Then .OnDraw.Start
 
-            If callBack <> 0 Then entCallBack(callBack, winNum, entNum, 0, 0)
         End With
 
     End Sub
 
     Public Sub RenderWindow(winNum As Long)
-        Dim width As Long, height As Long, callBack As Long, x As Long, y As Long, i As Long, left As Long
+        Dim width As Long, height As Long, x As Long, y As Long, i As Long, left As Long
 
         ' check if the window exists
         If winNum <= 0 Or winNum > WindowCount Then
@@ -469,10 +469,7 @@ Module C_Interface
                     RenderDesign(DesignType.Win_Party, .Left, .Top, .Width, .Height)
             End Select
 
-            ' OnDraw call back
-            callBack = .OnDraw
-
-            If callBack <> 0 Then entCallBack(callBack, winNum, 0, 0, 0)
+            If Not .OnDraw Is Nothing Then .OnDraw.Start
         End With
 
     End Sub
@@ -705,12 +702,13 @@ Module C_Interface
     Public Sub CreateWindow(name As String, caption As String, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long, _
        Optional visible As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
-       Optional canDrag As Boolean = True, Optional zChange As Byte = True, Optional onDraw As Long = 0,
-       Optional isActive As Boolean = True, Optional clickThrough As Boolean = False, Optional callback As String = "")
+       Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing, _
+       Optional canDrag As Boolean = True, Optional zChange As Byte = True, Optional onDraw As Task = Nothing, Optional isActive As Boolean = True, Optional clickThrough As Boolean = False)
 
         Dim i As Long
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
+        Dim callback(0 To EntState.State_Count - 1) As Task
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -723,6 +721,11 @@ Module C_Interface
         image(EntState.MouseDown) = image_mousedown
         image(EntState.DblClick) = image_norm
         image(EntState.MouseUp) = image_norm
+        callback(EntState.Normal) = callback_norm
+        callback(EntState.Hover) = callback_hover
+        callback(EntState.MouseDown) = callback_mousedown
+        callback(EntState.MouseMove) = callback_mousemove
+        callback(EntState.DblClick) = callback_dblclick
 
         ' redim the windows
         WindowCount = WindowCount + 1
@@ -735,11 +738,13 @@ Module C_Interface
 
             ReDim .Design(EntState.State_Count - 1)
             ReDim .Image(EntState.State_Count - 1)
+            ReDim .Callback(EntState.State_Count - 1)
 
             ' loop through states
             For i = 0 To EntState.State_Count - 1
                 .Design(i) = design(i)
                 .Image(i) = image(i)
+                .callback(i) = callback(i)
             Next
 
             .Left = left
@@ -759,7 +764,6 @@ Module C_Interface
             .zOrder = zOrder
             .OnDraw = onDraw
             .ClickThrough = clickThrough
-            .Callback = callback
 
             ' set active
             If .Visible Then activeWindow = WindowCount
@@ -770,12 +774,13 @@ Module C_Interface
     End Sub
 
     Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, _
-        Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional image_norm As Long = 0,
+        Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
         Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
-        Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional callback As String = "")
+        Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing, Optional ByRef callback_enter As Task = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
+        Dim callback(EntState.State_Count - 1) as Task
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -784,17 +789,25 @@ Module C_Interface
         image(EntState.Normal) = image_norm
         image(EntState.Hover) = image_hover
         image(EntState.MouseDown) = image_mousedown
+        callback(EntState.Normal) = callback_norm
+        callback(EntState.Hover) = callback_hover
+        callback(EntState.MouseDown) = callback_mousedown
+        callback(EntState.MouseMove) = callback_mousemove
+        callback(EntState.DblClick) = callback_dblclick
+        callback(EntState.Enter) = callback_enter
 
         ' create the textbox
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entTextBox, design, image, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , , isActive, , , callback)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entTextBox, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , , isActive)
     End Sub
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
-       Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0,
-       Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional onDraw As Long = 0, Optional callback As String = "")
+       Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
+       Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, _
+       Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing, Optional ByRef onDraw As Task = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
+        Dim callback(EntState.State_Count - 1) As Task
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -803,18 +816,25 @@ Module C_Interface
         image(EntState.Normal) = image_norm
         image(EntState.Hover) = image_hover
         image(EntState.MouseDown) = image_mousedown
+        callback(EntState.Normal) = callback_norm
+        callback(EntState.Hover) = callback_hover
+        callback(EntState.MouseDown) = callback_mousedown
+        callback(EntState.MouseMove) = callback_mousemove
+        callback(EntState.DblClick) = callback_dblclick
 
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entPictureBox, design, image, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , , onDraw, , , callback)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entPictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , onDraw)
     End Sub
 
     Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, _
        Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
-       Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional xOffset As Long = 0,
-       Optional yOffset As Long = 0, Optional tooltip As String = "", Optional callback As String = "")
+       Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, _
+       Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing, _
+       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "")
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
+        Dim callback(EntState.State_Count - 1) As Task
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -823,43 +843,66 @@ Module C_Interface
         image(EntState.Normal) = image_norm
         image(EntState.Hover) = image_hover
         image(EntState.MouseDown) = image_mousedown
+        callback(EntState.Normal) = callback_norm
+        callback(EntState.Hover) = callback_hover
+        callback(EntState.MouseDown) = callback_mousedown
+        callback(entState.MouseMove) = callback_mousemove
+        callback(EntState.DblClick) = callback_dblclick
 
         ' create the button 
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entButton, design, image, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, , , , tooltip, , callback)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entButton, design, image, callback, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, , , , tooltip)
     End Sub
 
     Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String, _
-       Optional align As Byte = AlignmentType.alignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional callback As String = "")
+       Optional align As Byte = AlignmentType.alignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, _
+       Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
+        Dim callback(EntState.State_Count - 1) As Task
+
+         ' fill temp arrays
+        callback(EntState.Normal) = callback_norm
+        callback(EntState.Hover) = callback_hover
+        callback(EntState.MouseDown) = callback_mousedown
+        callback(EntState.MouseMove) = callback_mousemove
+        callback(EntState.DblClick) = callback_dblclick
 
         ' create the label
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entLabel, design, image, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , , , , , callback)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entLabel, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough)
     End Sub
 
     Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, text As String, font As String, _
         Optional height As Long = 15, Optional value As Long = 0, Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255,
-        Optional theDesign As Long = 0, Optional group As Long = 0, Optional callback As String = "")
+        Optional theDesign As Long = 0, Optional group As Long = 0, _
+        Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
+        Dim callback(EntState.State_Count - 1) As Task
 
-        ' fill temp array
         design(0) = theDesign
 
+        ' fill temp arrays
+        callback(EntState.Normal) = callback_norm
+        callback(EntState.Hover) = callback_hover
+        callback(EntState.MouseDown) = callback_mousedown
+        callback(EntState.MouseMove) = callback_mousemove
+        callback(EntState.DblClick) = callback_dblclick
+
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entCheckbox, design, image, left, top, width, height, visible, , , , value, text, align, font, alpha, , , , , , , , group, callback)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entCheckbox, design, image, callback, left, top, width, height, visible, , , , value, text, align, font, alpha, , , , , , , , group)
     End Sub
 
-    Public Sub CreateComboBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, design As Long, Optional callback As String = "")
+    Public Sub CreateComboBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, design As Long)
         Dim theDesign(EntState.state_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-
+        Dim callback(EntState.State_Count - 1) As Task
+        
         theDesign(0) = design
-
+        
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entCombobox, theDesign, image, left, top, width, height, , , , , , , , , , , , , , , , , , callback)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entCombobox, theDesign, image, callback, left, top, width, height)
     End Sub
 
     Public Function GetWindowIndex(winName As String) As Long
@@ -973,19 +1016,19 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , , "DestroyGame")
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Task(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , "MenuState(MenuStateLogin)")
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , , , "DestroyGame")
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click)
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , , New Task(AddressOf DestroyGame))
         
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 72, 40, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
         CreateLabel(WindowCount, "lblPassword", 72, 76, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
         
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , 5, 3)
-        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", , AlignmentType.AlignLeft, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , 5, 3)
+        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , 5, 3, , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", , AlignmentType.AlignLeft, , , , 5, 3, DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         
         ' Checkbox
         CreateCheckbox(WindowCount, "chkSavePass", 67, 114, 142, "Save Password?", Georgia, ,  , , , , DesignType.ChkNorm)
@@ -999,8 +1042,7 @@ Module C_Interface
     End Sub
 
     ' Rendering & Initialisation
-    Public Sub InitGUI()
-
+    Public Sub InitInterface()
         ' Starter values
         zOrder_Win = 1
         zOrder_Con = 1
@@ -1009,314 +1051,200 @@ Module C_Interface
         CreateWindow_Login
     End Sub
 
-    Public Function MouseX(Optional ByVal hWnd As Long) As Long
-    Dim lpPoint As POINTAPI
-    GetCursorPos lpPoint
+    Public Function HandleInterfaceEvents(entState As EntState) As Boolean
+        Dim i As Long, curWindow As Long, curControl As Long, callBack As Task, x As Long
+    
+        ' if hiding gui
+        If hideGUI = True Or Editor = EditorType.Map Then Exit Function
 
-    If hWnd Then ScreenToClient hWnd, lpPoint
-    MouseX = lpPoint.X
-End Function
-
-Public Function MouseY(Optional ByVal hWnd As Long) As Long
-    Dim lpPoint As POINTAPI
-    GetCursorPos lpPoint
-
-    If hWnd Then ScreenToClient hWnd, lpPoint
-    MouseY = lpPoint.Y
-End Function
-
-Public Sub HandleMouseInput()
-    Dim entState As entStates, i As Long, X As Long
-
-    ' exit out if we're playing video
-    If videoPlaying Then Exit Sub
-
-    ' set values
-    lastMouseX = currMouseX
-    lastMouseY = currMouseY
-    currMouseX = MouseX(frmMain.hWnd)
-    currMouseY = MouseY(frmMain.hWnd)
-    GlobalX = currMouseX
-    GlobalY = currMouseY
-    lastMouseClick(VK_LBUTTON) = mouseClick(VK_LBUTTON)
-    lastMouseClick(VK_RBUTTON) = mouseClick(VK_RBUTTON)
-    mouseClick(VK_LBUTTON) = GetAsyncKeyState(VK_LBUTTON)
-    mouseClick(VK_RBUTTON) = GetAsyncKeyState(VK_RBUTTON)
-
-    ' Hover
-    entState = entStates.Hover
-
-    ' MouseDown
-    If (mouseClick(VK_LBUTTON) And lastMouseClick(VK_LBUTTON) = 0) Or (mouseClick(VK_RBUTTON) And lastMouseClick(VK_RBUTTON) = 0) Then
-        clickedX = currMouseX
-        clickedY = currMouseY
-        entState = entStates.MouseDown
-        ' MouseUp
-    ElseIf (mouseClick(VK_LBUTTON) = 0 And lastMouseClick(VK_LBUTTON)) Or (mouseClick(VK_RBUTTON) = 0 And lastMouseClick(VK_RBUTTON)) Then
-        entState = entStates.MouseUp
-        ' MouseMove
-    ElseIf (currMouseX <> lastMouseX) Or (currMouseY <> lastMouseY) Then
-        entState = entStates.MouseMove
-    End If
-
-    ' Handle everything else
-    If Not HandleGuiMouse(entState) Then
-        ' reset /all/ control mouse events
+        ' Find the container
         For i = 1 To WindowCount
-            For X = 1 To Windows(i).ControlCount
-                Windows(i).Controls(X).State = Normal
-            Next
-        Next
-        If InGame Then
-            If entState = entStates.MouseDown Then
-                ' Handle events
-                If currMouseX >= 0 And currMouseX <= frmMain.ScaleWidth Then
-                    If currMouseY >= 0 And currMouseY <= frmMain.ScaleHeight Then
-                        If InMapEditor Then
-                            If (mouseClick(VK_LBUTTON) And lastMouseClick(VK_LBUTTON) = 0) Then
-                                If frmEditor_Map.optEvents.Value Then
-                                    selTileX = CurX
-                                    selTileY = CurY
-                                Else
-                                    Call MapEditorMouseDown(vbLeftButton, GlobalX, GlobalY, False)
+            With Windows(i).Window
+                If .enabled And .visible Then
+                    If .state <> EntState.MouseDown Then .state = EntState.Normal
+                    If CurMouseX >= .left And CurMouseX <= .width + .left Then
+                        If CurMouseY >= .top And CurMouseY <= .height + .top Then
+                            ' set the combomenu
+                            If .design(0) = DesignType.ComboMenuNorm Then
+                                ' set the hover menu
+                                If entState = EntState.MouseMove Or entState = EntState.Hover Then
+                                    'ComboMenu_MouseMove(i)
+                                ElseIf entState = EntState.MouseDown Then
+                                    'ComboMenu_MouseDown i
                                 End If
-                            ElseIf (mouseClick(VK_RBUTTON) And lastMouseClick(VK_RBUTTON) = 0) Then
-                                If Not frmEditor_Map.optEvents.Value Then Call MapEditorMouseDown(vbRightButton, GlobalX, GlobalY, False)
                             End If
-                        Else
-                            ' left click
-                            If (mouseClick(VK_LBUTTON) And lastMouseClick(VK_LBUTTON) = 0) Then
-                                ' targetting
-                                FindTarget
-                                ' right click
-                            ElseIf (mouseClick(VK_RBUTTON) And lastMouseClick(VK_RBUTTON) = 0) Then
-                                If ShiftDown Then
-                                    ' admin warp if we're pressing shift and right clicking
-                                    If GetPlayerAccess(MyIndex) >= 2 Then AdminWarp CurX, CurY
-                                    Exit Sub
-                                End If
-                                ' right-click menu
-                                For i = 1 To MAX_PLAYERS
-                                    If IsPlaying(i) Then
-                                        If GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
-                                            If GetPlayerX(i) = CurX And GetPlayerY(i) = CurY Then
-                                                ShowPlayerMenu i, currMouseX, currMouseY
-                                            End If
-                                        End If
-                                    End If
-                                Next
-                            End If
+
+                            ' everything else
+                            If curWindow = 0 Then curWindow = i
+                            If .zOrder > Windows(curWindow).Window.zOrder Then curWindow = i
                         End If
                     End If
-                End If
-            ElseIf entState = entStates.MouseMove Then
-                GlobalX_Map = GlobalX + (TileView.left * PIC_X) + Camera.left
-                GlobalY_Map = GlobalY + (TileView.top * PIC_Y) + Camera.top
-                ' Handle the events
-                CurX = TileView.left + ((currMouseX + Camera.left) \ PIC_X)
-                CurY = TileView.top + ((currMouseY + Camera.top) \ PIC_Y)
 
-                If InMapEditor Then
-                    If (mouseClick(VK_LBUTTON)) Then
-                        If Not frmEditor_Map.optEvents.Value Then Call MapEditorMouseDown(vbLeftButton, CurX, CurY, False)
-                    ElseIf (mouseClick(VK_RBUTTON)) Then
-                        If Not frmEditor_Map.optEvents.Value Then Call MapEditorMouseDown(vbRightButton, CurX, CurY, False)
-                    End If
-                End If
-            End If
-        End If
-    End If
-End Sub
-
-Public Function HandleGuiMouse(entState As entStates) As Boolean
-    Dim i As Long, curWindow As Long, curControl As Long, callBack As Long, X As Long
-
-    ' if hiding gui
-    If HideGUI = True Or InMapEditor Then Exit Function
-
-    ' Find the container
-    For i = 1 To WindowCount
-        With Windows(i).Window
-            If .enabled And .Visible Then
-                If .State <> entStates.MouseDown Then .State = entStates.Normal
-                If currMouseX >= .left And currMouseX <= .Width + .left Then
-                    If currMouseY >= .top And currMouseY <= .Height + .top Then
-                        ' set the combomenu
-                        If .design(0) = DesignTypes.desComboMenuNorm Then
-                            ' set the hover menu
-                            If entState = MouseMove Or entState = Hover Then
-                                ComboMenu_MouseMove i
-                            ElseIf entState = MouseDown Then
-                                ComboMenu_MouseDown i
-                            End If
-                        End If
-                        ' everything else
-                        If curWindow = 0 Then curWindow = i
-                        If .zOrder > Windows(curWindow).Window.zOrder Then curWindow = i
-                    End If
-                End If
-                If entState = entStates.MouseMove Then
-                    If .canDrag Then
-                        If .State = entStates.MouseDown Then
-                            .left = Clamp(.left + ((currMouseX - .left) - .movedX), 0, ScreenWidth - .Width)
-                            .top = Clamp(.top + ((currMouseY - .top) - .movedY), 0, ScreenHeight - .Height)
-                        End If
-                    End If
-                End If
-            End If
-        End With
-    Next
-
-    ' Handle any controls first
-    If curWindow Then
-        ' reset /all other/ control mouse events
-        For i = 1 To WindowCount
-            If i <> curWindow Then
-                For X = 1 To Windows(i).ControlCount
-                    Windows(i).Controls(X).State = Normal
-                Next
-            End If
-        Next
-        For i = 1 To Windows(curWindow).ControlCount
-            With Windows(curWindow).Controls(i)
-                If .enabled And .Visible Then
-                    If .State <> entStates.MouseDown Then .State = entStates.Normal
-                    If currMouseX >= .left + Windows(curWindow).Window.left And currMouseX <= .left + .Width + Windows(curWindow).Window.left Then
-                        If currMouseY >= .top + Windows(curWindow).Window.top And currMouseY <= .top + .Height + Windows(curWindow).Window.top Then
-                            If curControl = 0 Then curControl = i
-                            If .zOrder > Windows(curWindow).Controls(curControl).zOrder Then curControl = i
-                        End If
-                    End If
-                    If entState = entStates.MouseMove Then
+                    If entState = EntState.MouseMove Then
                         If .canDrag Then
-                            If .State = entStates.MouseDown Then
-                                .left = Clamp(.left + ((currMouseX - .left) - .movedX), 0, Windows(curWindow).Window.Width - .Width)
-                                .top = Clamp(.top + ((currMouseY - .top) - .movedY), 0, Windows(curWindow).Window.Height - .Height)
+                            If .state = EntState.MouseDown Then
+                                .left = Math.Clamp(.left + ((CurMouseX - .left) - .movedX), 0, Settings.Width - .width)
+                                .top = Math.Clamp(.top + ((CurMouseY - .top) - .movedY), 0, Settings.Height - .height)
                             End If
                         End If
                     End If
                 End If
             End With
         Next
-        ' Handle control
-        If curControl Then
-            HandleGuiMouse = True
-            With Windows(curWindow).Controls(curControl)
-                If .State <> entStates.MouseDown Then
-                    If entState <> entStates.MouseMove Then
-                        .State = entState
-                    Else
-                        .State = entStates.Hover
-                    End If
+
+        ' Handle any controls first
+        If curWindow Then
+            ' reset /all other/ control mouse events
+            For i = 1 To WindowCount
+                If i <> curWindow Then
+                    For x = 1 To Windows(i).ControlCount
+                        Windows(i).Controls(x).state = EntState.Normal
+                    Next
                 End If
-                If entState = entStates.MouseDown Then
-                    If .canDrag Then
-                        .movedX = clickedX - .left
-                        .movedY = clickedY - .top
-                    End If
-                    ' toggle boxes
-                    Select Case .Type
-                    Case EntityTypes.entCheckbox
-                        ' grouped boxes
-                        If .group > 0 Then
-                            If .Value = 0 Then
-                                For i = 1 To Windows(curWindow).ControlCount
-                                    If Windows(curWindow).Controls(i).Type = EntityTypes.entCheckbox Then
-                                        If Windows(curWindow).Controls(i).group = .group Then
-                                            Windows(curWindow).Controls(i).Value = 0
-                                        End If
-                                    End If
-                                Next
-                                .Value = 1
-                            End If
-                        Else
-                            If .Value = 0 Then
-                                .Value = 1
-                            Else
-                                .Value = 0
-                            End If
-                        End If
-                    Case EntityTypes.entCombobox
-                        ShowComboMenu curWindow, curControl
-                    End Select
-                    ' set active input
-                    SetActiveControl curWindow, curControl
-                End If
-                callBack = .EntCallBack(entState)
-            End With
-        Else
-            ' Handle container
-            With Windows(curWindow).Window
-                HandleGuiMouse = True
-                If .State <> entStates.MouseDown Then
-                    If entState <> entStates.MouseMove Then
-                        .State = entState
-                    Else
-                        .State = entStates.Hover
-                    End If
-                End If
-                If entState = entStates.MouseDown Then
-                    If .canDrag Then
-                        .movedX = clickedX - .left
-                        .movedY = clickedY - .top
-                    End If
-                End If
-                callBack = .EntCallBack(entState)
-            End With
-        End If
-        ' bring to front
-        If entState = entStates.MouseDown Then
-            UpdateZOrder curWindow
-            activeWindow = curWindow
-        End If
-        ' call back
-        If callBack <> 0 Then EntCallBack callBack, curWindow, curControl, 0, 0
-    End If
-
-    ' Reset
-    If entState = entStates.MouseUp Then ResetMouseDown
-End Function
-
-Public Sub ResetGUI()
-    Dim i As Long, X As Long
-
-    For i = 1 To WindowCount
-
-        If Windows(i).Window.State <> MouseDown Then Windows(i).Window.State = Normal
-
-        For X = 1 To Windows(i).ControlCount
-
-            If Windows(i).Controls(X).State <> MouseDown Then Windows(i).Controls(X).State = Normal
-        Next
-    Next
-
-End Sub
-
-Public Sub ResetMouseDown()
-    Dim callBack As Long
-    Dim i As Long, X As Long
-
-    For i = 1 To WindowCount
-
-        With Windows(i)
-            .Window.State = EntState.Normal
-            callBack = .Window.CallBack(EntState.Normal)
-
-            If callBack <> 0 Then EntCallBack(callBack, i, 0, 0, 0)
-
-            For X = 1 To .ControlCount
-                .Controls(X).State = entStates.Normal
-                callBack = .Controls(X).EntCallBack(entStates.Normal)
-
-                If callBack <> 0 Then EntCallBack callBack, i, X, 0, 0
             Next
 
-        End With
+            For i = 1 To Windows(curWindow).ControlCount
+                With Windows(curWindow).Controls(i)
+                    If .enabled And .visible Then
+                        If .state <> EntState.MouseDown Then .state = EntState.Normal
+                        If CurMouseX >= .left + Windows(curWindow).Window.left And CurMouseX <= .left + .width + Windows(curWindow).Window.left Then
+                            If CurMouseY >= .top + Windows(curWindow).Window.top And CurMouseY <= .top + .height + Windows(curWindow).Window.top Then
+                                If curControl = 0 Then curControl = i
+                                If .zOrder > Windows(curWindow).Controls(curControl).zOrder Then curControl = i
+                            End If
+                        End If
 
-    Next
+                        If entState = EntState.MouseMove Then
+                            If .canDrag Then
+                                If .state = EntState.MouseDown Then
+                                    .left = Math.Clamp(.left + ((CurMouseX - .left) - .movedX), 0, Windows(curWindow).Window.width - .width)
+                                    .top = Math.Clamp(.top + ((CurMouseY - .top) - .movedY), 0, Windows(curWindow).Window.height - .height)
+                                End If
+                            End If
+                        End If
+                    End If
+                End With
+            Next
 
-End Sub
+            ' Handle control
+            If curControl Then
+                With Windows(curWindow).Controls(curControl)
+                    If .state <> EntState.MouseDown Then
+                        If entState <> EntState.MouseMove Then
+                            .state = entState
+                        Else
+                            .state = EntState.Hover
+                        End If
+                    End If
 
+                    If entState = EntState.MouseDown Then
+                        If .canDrag Then
+                            .movedX = CurMouseX - .left
+                            .movedY = CurMouseY - .top
+                        End If
+
+                        ' toggle boxes
+                        Select Case .Type
+                            Case EntityType.entCheckbox
+                                ' grouped boxes
+                                If .group > 0 Then
+                                    If .value = 0 Then
+                                        For i = 1 To Windows(curWindow).ControlCount
+                                            If Windows(curWindow).Controls(i).Type = EntityType.EntCheckbox Then
+                                                If Windows(curWindow).Controls(i).group = .group Then
+                                                    Windows(curWindow).Controls(i).value = 0
+                                                End If
+                                            End If
+                                        Next
+                                        .value = 1
+                                    End If
+                                Else
+                                    If .value = 0 Then
+                                        .value = 1
+                                    Else
+                                        .value = 0
+                                    End If
+                                End If
+                            Case EntityType.entCombobox
+                                'ShowComboMenu curWindow, curControl
+                        End Select
+
+                        ' set active input
+                        SetActiveControl(curWindow, curControl)
+                    End If
+                    callBack = .CallBack(entState)
+                End With
+            Else
+                ' Handle container
+                With Windows(curWindow).Window
+                    If .state <> EntState.MouseDown Then
+                        If entState <> EntState.MouseMove Then
+                            .state = entState
+                        Else
+                            .state = EntState.Hover
+                        End If
+                    End If
+
+                    If entState = EntState.MouseDown Then
+                        If .canDrag Then
+                            .movedX = CurMouseX - .left
+                            .movedY = CurMouseY - .top
+                        End If
+                    End If
+                    callBack = .CallBack(entState)
+                End With
+            End If
+
+            ' bring to front
+            If entState = EntState.MouseDown Then
+                UpdateZOrder(curWindow)
+                activeWindow = curWindow
+            End If
+
+            ' call back
+            If Not callBack Is Nothing Then callBack.Start()
+        End If
+
+        ' Reset
+        If entState = EntState.MouseUp Then ResetMouseDown
+    End Function
+
+    Public Sub ResetGUI()
+        Dim i As Long, x As Long
+
+        For i = 1 To WindowCount
+            If Windows(i).Window.state <> EntState.MouseDown Then Windows(i).Window.state = EntState.Normal
+
+            For x = 1 To Windows(i).ControlCount
+                If Windows(i).Controls(x).state <> EntState.MouseDown Then Windows(i).Controls(x).state = EntState.Normal
+            Next
+        Next
+
+    End Sub
+
+    Public Sub ResetMouseDown()
+        Dim callBack As Task
+        Dim i As Long, x As Long
+
+        For i = 1 To WindowCount
+
+            With Windows(i)
+                .Window.state = EntState.Normal
+                callBack = .Window.CallBack(EntState.Normal)
+
+                If Not callback Is Nothing Then callBack.Start()
+
+                For x = 1 To .ControlCount
+                    .Controls(x).state = EntState.Normal
+                    callBack = .Controls(x).CallBack(EntState.Normal)
+
+                    If Not callback Is Nothing Then callBack.Start()
+                Next
+
+            End With
+
+        Next
+
+    End Sub
 End Module
-
 

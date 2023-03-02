@@ -23,11 +23,11 @@ Module C_General
         LoadInputs()
         LoadGraphics()
         InitNetwork()
+        InitInterface()
         FrmMenu.Text = Settings.GameName
         FrmMenu.Visible = True
         Frmmenuvisible = True
         Ping = -1
-        InitGUI()
     End Sub
 
     Friend Sub LoadGraphics()
