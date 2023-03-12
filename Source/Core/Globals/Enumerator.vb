@@ -404,15 +404,15 @@
     End Enum
 
     Public Enum EntityType
-        EntLabel = 1
-        EntWindow
-        EntButton
-        EntTextBox
-        EntScrollbar
-        EntPictureBox
-        EntCheckbox
-        EntCombobox
-        EntCombomenu
+        entLabel = 1
+        entWindow
+        entButton
+        entTextBox
+        entScrollbar
+        entPictureBox
+        entCheckbox
+        entCombobox
+        entCombomenu
     End Enum
 
     Public Enum DesignType
