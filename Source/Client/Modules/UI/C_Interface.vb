@@ -1007,7 +1007,7 @@ Module C_Interface
 
         ' Set the index for spawning controls
         zOrder_Con = 1
-        
+
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 150, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
         
@@ -1027,8 +1027,8 @@ Module C_Interface
         CreateLabel(WindowCount, "lblPassword", 72, 76, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
         
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , 5, 3, , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", , AlignmentType.AlignLeft, , , , 5, 3, DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , 5, 3, , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         
         ' Checkbox
         CreateCheckbox(WindowCount, "chkSavePass", 67, 114, 142, "Save Password?", Georgia, ,  , , , , DesignType.ChkNorm)
@@ -1070,7 +1070,7 @@ Module C_Interface
                                 If entState = EntState.MouseMove Or entState = EntState.Hover Then
                                     'ComboMenu_MouseMove(i)
                                 ElseIf entState = EntState.MouseDown Then
-                                    'ComboMenu_MouseDown i
+                                    'ComboMenu_MouseDown(i)
                                 End If
                             End If
 
@@ -1150,7 +1150,7 @@ Module C_Interface
                                 If .group > 0 Then
                                     If .value = 0 Then
                                         For i = 1 To Windows(curWindow).ControlCount
-                                            If Windows(curWindow).Controls(i).Type = EntityType.EntCheckbox Then
+                                            If Windows(curWindow).Controls(i).Type = EntityType.entCheckbox Then
                                                 If Windows(curWindow).Controls(i).group = .group Then
                                                     Windows(curWindow).Controls(i).value = 0
                                                 End If
@@ -1166,7 +1166,7 @@ Module C_Interface
                                     End If
                                 End If
                             Case EntityType.entCombobox
-                                'ShowComboMenu curWindow, curControl
+                                'ShowComboMenu(curWindow, curControl)
                         End Select
 
                         ' set active input
@@ -1209,7 +1209,7 @@ Module C_Interface
         If entState = EntState.MouseUp Then ResetMouseDown
     End Function
 
-    Public Sub ResetGUI()
+    Public Sub ResetInterface()
         Dim i As Long, x As Long
 
         For i = 1 To WindowCount
@@ -1245,6 +1245,16 @@ Module C_Interface
 
         Next
 
+    End Sub
+
+    Sub CloseComboMenu()
+        HideWindow(GetWindowIndex("winComboMenuBG"))
+        HideWindow(GetWindowIndex("winComboMenu"))
+    End Sub
+
+    Sub ShowComboMenu()
+        ShowWindow(GetWindowIndex("winComboMenuBG"))
+        ShowWindow(GetWindowIndex("winComboMenu"))
     End Sub
 End Module
 
