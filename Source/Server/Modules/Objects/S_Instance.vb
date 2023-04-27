@@ -1,6 +1,6 @@
 ﻿Imports Mirage.Basic.Engine
 
-Module S_Instances
+Module S_Instance
     'Consts
     Friend Const INSTANCED_MAP_MASK As Integer = 16777216 '1 << 24
     Friend Const MAP_NUMBER_MASK As Integer = INSTANCED_MAP_MASK - 1

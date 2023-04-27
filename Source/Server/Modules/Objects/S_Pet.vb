@@ -5,7 +5,7 @@ Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
 
 
-Module S_Pets
+Module S_Pet
 
 #Region "Declarations"
 

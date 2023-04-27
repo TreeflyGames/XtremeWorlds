@@ -4,7 +4,7 @@ Imports Mirage.Basic.Engine.Serialization
 Imports Mirage.Basic.Engine
 Imports System.Drawing
 
-Friend Module S_Events
+Friend Module S_Event
 
 #Region "Globals"
 

@@ -3,7 +3,7 @@ Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
 
-Friend Module S_Projectiles
+Friend Module S_Projectile
 
 #Region "Defines"
 

@@ -3,7 +3,7 @@ Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
 
-Friend Module S_Resources
+Friend Module S_Resource
 
 #Region "Database"
 

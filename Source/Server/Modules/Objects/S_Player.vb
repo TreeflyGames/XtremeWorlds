@@ -2,7 +2,7 @@
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Basic.Engine
 
-Module S_Players
+Module S_Player
 
 #Region "PlayerCombat"
 

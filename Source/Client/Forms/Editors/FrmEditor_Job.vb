@@ -178,6 +178,10 @@ Friend Class frmEditor_Job
 
     End Sub
 
+    Private Sub nudMaleSprite_ValueChanged(sender As Object, e As EventArgs) Handles nudMaleSprite.ValueChanged
+
+    End Sub
+
 #End Region
 
 End Class

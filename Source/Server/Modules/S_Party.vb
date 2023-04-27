@@ -1,7 +1,7 @@
 ﻿Imports Mirage.Sharp.Asfw
 Imports Mirage.Basic.Engine
 
-Module S_Parties
+Module S_Party
 
 #Region "Types and Globals"
 

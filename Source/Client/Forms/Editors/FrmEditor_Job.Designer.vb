@@ -22,691 +22,690 @@ Partial Class frmEditor_Job
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.DarkGroupBox1 = New DarkUI.Controls.DarkGroupBox()
-        Me.lstIndex = New System.Windows.Forms.ListBox()
-        Me.DarkGroupBox2 = New DarkUI.Controls.DarkGroupBox()
-        Me.DarkGroupBox7 = New DarkUI.Controls.DarkGroupBox()
-        Me.nudStartY = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel15 = New DarkUI.Controls.DarkLabel()
-        Me.nudStartX = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel14 = New DarkUI.Controls.DarkLabel()
-        Me.nudStartMap = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel13 = New DarkUI.Controls.DarkLabel()
-        Me.DarkGroupBox6 = New DarkUI.Controls.DarkGroupBox()
-        Me.btnItemAdd = New DarkUI.Controls.DarkButton()
-        Me.nudItemAmount = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel12 = New DarkUI.Controls.DarkLabel()
-        Me.cmbItems = New DarkUI.Controls.DarkComboBox()
-        Me.DarkLabel11 = New DarkUI.Controls.DarkLabel()
-        Me.lstStartItems = New System.Windows.Forms.ListBox()
-        Me.DarkGroupBox5 = New DarkUI.Controls.DarkGroupBox()
-        Me.nudBaseExp = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel10 = New DarkUI.Controls.DarkLabel()
-        Me.nudSpirit = New DarkUI.Controls.DarkNumericUpDown()
-        Me.nudEndurance = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel8 = New DarkUI.Controls.DarkLabel()
-        Me.DarkLabel9 = New DarkUI.Controls.DarkLabel()
-        Me.nudVitality = New DarkUI.Controls.DarkNumericUpDown()
-        Me.nudLuck = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel6 = New DarkUI.Controls.DarkLabel()
-        Me.DarkLabel7 = New DarkUI.Controls.DarkLabel()
-        Me.nudIntelligence = New DarkUI.Controls.DarkNumericUpDown()
-        Me.nudStrength = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel5 = New DarkUI.Controls.DarkLabel()
-        Me.DarkLabel3 = New DarkUI.Controls.DarkLabel()
-        Me.DarkGroupBox4 = New DarkUI.Controls.DarkGroupBox()
-        Me.nudFemaleSprite = New DarkUI.Controls.DarkNumericUpDown()
-        Me.DarkLabel4 = New DarkUI.Controls.DarkLabel()
-        Me.picFemale = New System.Windows.Forms.PictureBox()
-        Me.DarkGroupBox3 = New DarkUI.Controls.DarkGroupBox()
-        Me.nudMaleSprite = New DarkUI.Controls.DarkNumericUpDown()
-        Me.lblMaleSprite = New DarkUI.Controls.DarkLabel()
-        Me.picMale = New System.Windows.Forms.PictureBox()
-        Me.txtDescription = New DarkUI.Controls.DarkTextBox()
-        Me.DarkLabel2 = New DarkUI.Controls.DarkLabel()
-        Me.txtName = New DarkUI.Controls.DarkTextBox()
-        Me.DarkLabel1 = New DarkUI.Controls.DarkLabel()
-        Me.btnCancel = New DarkUI.Controls.DarkButton()
-        Me.btnSave = New DarkUI.Controls.DarkButton()
-        Me.btnDelete = New DarkUI.Controls.DarkButton()
-        Me.DarkGroupBox1.SuspendLayout
-        Me.DarkGroupBox2.SuspendLayout
-        Me.DarkGroupBox7.SuspendLayout
-        CType(Me.nudStartY,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.nudStartX,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.nudStartMap,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.DarkGroupBox6.SuspendLayout
-        CType(Me.nudItemAmount,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.DarkGroupBox5.SuspendLayout
-        CType(Me.nudBaseExp,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.nudSpirit,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.nudEndurance,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.nudVitality,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.nudLuck,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.nudIntelligence,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.nudStrength,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.DarkGroupBox4.SuspendLayout
-        CType(Me.nudFemaleSprite,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.picFemale,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.DarkGroupBox3.SuspendLayout
-        CType(Me.nudMaleSprite,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.picMale,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
-        '
-        'DarkGroupBox1
-        '
-        Me.DarkGroupBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(45,Byte),Integer), CType(CType(45,Byte),Integer), CType(CType(48,Byte),Integer))
-        Me.DarkGroupBox1.BorderColor = System.Drawing.Color.FromArgb(CType(CType(90,Byte),Integer), CType(CType(90,Byte),Integer), CType(CType(90,Byte),Integer))
-        Me.DarkGroupBox1.Controls.Add(Me.lstIndex)
-        Me.DarkGroupBox1.ForeColor = System.Drawing.Color.Gainsboro
-        Me.DarkGroupBox1.Location = New System.Drawing.Point(1, 2)
-        Me.DarkGroupBox1.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox1.Name = "DarkGroupBox1"
-        Me.DarkGroupBox1.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox1.Size = New System.Drawing.Size(202, 439)
-        Me.DarkGroupBox1.TabIndex = 0
-        Me.DarkGroupBox1.TabStop = False
-        Me.DarkGroupBox1.Text = "Job List"
-        '
-        'lstIndex
-        '
-        Me.lstIndex.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.lstIndex.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lstIndex.ForeColor = System.Drawing.Color.Gainsboro
-        Me.lstIndex.FormattingEnabled = True
-        Me.lstIndex.ItemHeight = 15
-        Me.lstIndex.Location = New System.Drawing.Point(7, 18)
-        Me.lstIndex.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.lstIndex.Name = "lstIndex"
-        Me.lstIndex.Size = New System.Drawing.Size(186, 407)
-        Me.lstIndex.TabIndex = 0
-        '
-        'DarkGroupBox2
-        '
-        Me.DarkGroupBox2.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.DarkGroupBox2.BorderColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer))
-        Me.DarkGroupBox2.Controls.Add(Me.DarkGroupBox7)
-        Me.DarkGroupBox2.Controls.Add(Me.DarkGroupBox6)
-        Me.DarkGroupBox2.Controls.Add(Me.DarkGroupBox5)
-        Me.DarkGroupBox2.Controls.Add(Me.DarkGroupBox4)
-        Me.DarkGroupBox2.Controls.Add(Me.DarkGroupBox3)
-        Me.DarkGroupBox2.Controls.Add(Me.txtDescription)
-        Me.DarkGroupBox2.Controls.Add(Me.DarkLabel2)
-        Me.DarkGroupBox2.Controls.Add(Me.txtName)
-        Me.DarkGroupBox2.Controls.Add(Me.DarkLabel1)
-        Me.DarkGroupBox2.ForeColor = System.Drawing.Color.Gainsboro
-        Me.DarkGroupBox2.Location = New System.Drawing.Point(211, 2)
-        Me.DarkGroupBox2.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox2.Name = "DarkGroupBox2"
-        Me.DarkGroupBox2.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox2.Size = New System.Drawing.Size(398, 545)
-        Me.DarkGroupBox2.TabIndex = 1
-        Me.DarkGroupBox2.TabStop = False
-        Me.DarkGroupBox2.Text = "Settings"
-        '
-        'DarkGroupBox7
-        '
-        Me.DarkGroupBox7.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.DarkGroupBox7.BorderColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer))
-        Me.DarkGroupBox7.Controls.Add(Me.nudStartY)
-        Me.DarkGroupBox7.Controls.Add(Me.DarkLabel15)
-        Me.DarkGroupBox7.Controls.Add(Me.nudStartX)
-        Me.DarkGroupBox7.Controls.Add(Me.DarkLabel14)
-        Me.DarkGroupBox7.Controls.Add(Me.nudStartMap)
-        Me.DarkGroupBox7.Controls.Add(Me.DarkLabel13)
-        Me.DarkGroupBox7.ForeColor = System.Drawing.Color.Gainsboro
-        Me.DarkGroupBox7.Location = New System.Drawing.Point(7, 487)
-        Me.DarkGroupBox7.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox7.Name = "DarkGroupBox7"
-        Me.DarkGroupBox7.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox7.Size = New System.Drawing.Size(383, 50)
-        Me.DarkGroupBox7.TabIndex = 8
-        Me.DarkGroupBox7.TabStop = False
-        Me.DarkGroupBox7.Text = "Starting Point"
-        '
-        'nudStartY
-        '
-        Me.nudStartY.Location = New System.Drawing.Point(320, 16)
-        Me.nudStartY.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudStartY.Name = "nudStartY"
-        Me.nudStartY.Size = New System.Drawing.Size(56, 23)
-        Me.nudStartY.TabIndex = 5
-        '
-        'DarkLabel15
-        '
-        Me.DarkLabel15.AutoSize = True
-        Me.DarkLabel15.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel15.Location = New System.Drawing.Point(264, 18)
-        Me.DarkLabel15.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel15.Name = "DarkLabel15"
-        Me.DarkLabel15.Size = New System.Drawing.Size(37, 15)
-        Me.DarkLabel15.TabIndex = 4
-        Me.DarkLabel15.Text = "Start :"
-        '
-        'nudStartX
-        '
-        Me.nudStartX.Location = New System.Drawing.Point(196, 16)
-        Me.nudStartX.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudStartX.Name = "nudStartX"
-        Me.nudStartX.Size = New System.Drawing.Size(56, 23)
-        Me.nudStartX.TabIndex = 3
-        '
-        'DarkLabel14
-        '
-        Me.DarkLabel14.AutoSize = True
-        Me.DarkLabel14.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel14.Location = New System.Drawing.Point(140, 18)
-        Me.DarkLabel14.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel14.Name = "DarkLabel14"
-        Me.DarkLabel14.Size = New System.Drawing.Size(44, 15)
-        Me.DarkLabel14.TabIndex = 2
-        Me.DarkLabel14.Text = "Start X:"
-        '
-        'nudStartMap
-        '
-        Me.nudStartMap.Location = New System.Drawing.Point(79, 16)
-        Me.nudStartMap.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudStartMap.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudStartMap.Name = "nudStartMap"
-        Me.nudStartMap.Size = New System.Drawing.Size(54, 23)
-        Me.nudStartMap.TabIndex = 1
-        Me.nudStartMap.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'DarkLabel13
-        '
-        Me.DarkLabel13.AutoSize = True
-        Me.DarkLabel13.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel13.Location = New System.Drawing.Point(7, 18)
-        Me.DarkLabel13.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel13.Name = "DarkLabel13"
-        Me.DarkLabel13.Size = New System.Drawing.Size(61, 15)
-        Me.DarkLabel13.TabIndex = 0
-        Me.DarkLabel13.Text = "Start Map:"
-        '
-        'DarkGroupBox6
-        '
-        Me.DarkGroupBox6.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.DarkGroupBox6.BorderColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer))
-        Me.DarkGroupBox6.Controls.Add(Me.btnItemAdd)
-        Me.DarkGroupBox6.Controls.Add(Me.nudItemAmount)
-        Me.DarkGroupBox6.Controls.Add(Me.DarkLabel12)
-        Me.DarkGroupBox6.Controls.Add(Me.cmbItems)
-        Me.DarkGroupBox6.Controls.Add(Me.DarkLabel11)
-        Me.DarkGroupBox6.Controls.Add(Me.lstStartItems)
-        Me.DarkGroupBox6.ForeColor = System.Drawing.Color.Gainsboro
-        Me.DarkGroupBox6.Location = New System.Drawing.Point(7, 358)
-        Me.DarkGroupBox6.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox6.Name = "DarkGroupBox6"
-        Me.DarkGroupBox6.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox6.Size = New System.Drawing.Size(383, 122)
-        Me.DarkGroupBox6.TabIndex = 7
-        Me.DarkGroupBox6.TabStop = False
-        Me.DarkGroupBox6.Text = "Starting Items"
-        '
-        'btnItemAdd
-        '
-        Me.btnItemAdd.Location = New System.Drawing.Point(214, 84)
-        Me.btnItemAdd.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.btnItemAdd.Name = "btnItemAdd"
-        Me.btnItemAdd.Padding = New System.Windows.Forms.Padding(6)
-        Me.btnItemAdd.Size = New System.Drawing.Size(162, 30)
-        Me.btnItemAdd.TabIndex = 6
-        Me.btnItemAdd.Text = "Update"
-        '
-        'nudItemAmount
-        '
-        Me.nudItemAmount.Location = New System.Drawing.Point(274, 58)
-        Me.nudItemAmount.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudItemAmount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudItemAmount.Name = "nudItemAmount"
-        Me.nudItemAmount.Size = New System.Drawing.Size(102, 23)
-        Me.nudItemAmount.TabIndex = 5
-        Me.nudItemAmount.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'DarkLabel12
-        '
-        Me.DarkLabel12.AutoSize = True
-        Me.DarkLabel12.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel12.Location = New System.Drawing.Point(214, 60)
-        Me.DarkLabel12.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel12.Name = "DarkLabel12"
-        Me.DarkLabel12.Size = New System.Drawing.Size(54, 15)
-        Me.DarkLabel12.TabIndex = 4
-        Me.DarkLabel12.Text = "Amount:"
-        '
-        'cmbItems
-        '
-        Me.cmbItems.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.cmbItems.FormattingEnabled = True
-        Me.cmbItems.Location = New System.Drawing.Point(214, 27)
-        Me.cmbItems.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.cmbItems.Name = "cmbItems"
-        Me.cmbItems.Size = New System.Drawing.Size(162, 24)
-        Me.cmbItems.TabIndex = 3
-        '
-        'DarkLabel11
-        '
-        Me.DarkLabel11.AutoSize = True
-        Me.DarkLabel11.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel11.Location = New System.Drawing.Point(214, 8)
-        Me.DarkLabel11.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel11.Name = "DarkLabel11"
-        Me.DarkLabel11.Size = New System.Drawing.Size(58, 15)
-        Me.DarkLabel11.TabIndex = 2
-        Me.DarkLabel11.Text = "Start Item"
-        '
-        'lstStartItems
-        '
-        Me.lstStartItems.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.lstStartItems.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lstStartItems.ForeColor = System.Drawing.Color.Gainsboro
-        Me.lstStartItems.FormattingEnabled = True
-        Me.lstStartItems.ItemHeight = 15
-        Me.lstStartItems.Items.AddRange(New Object() {"1", "2", "3", "4", "5"})
-        Me.lstStartItems.Location = New System.Drawing.Point(7, 22)
-        Me.lstStartItems.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.lstStartItems.Name = "lstStartItems"
-        Me.lstStartItems.Size = New System.Drawing.Size(199, 92)
-        Me.lstStartItems.TabIndex = 1
-        '
-        'DarkGroupBox5
-        '
-        Me.DarkGroupBox5.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.DarkGroupBox5.BorderColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer))
-        Me.DarkGroupBox5.Controls.Add(Me.nudBaseExp)
-        Me.DarkGroupBox5.Controls.Add(Me.DarkLabel10)
-        Me.DarkGroupBox5.Controls.Add(Me.nudSpirit)
-        Me.DarkGroupBox5.Controls.Add(Me.nudEndurance)
-        Me.DarkGroupBox5.Controls.Add(Me.DarkLabel8)
-        Me.DarkGroupBox5.Controls.Add(Me.DarkLabel9)
-        Me.DarkGroupBox5.Controls.Add(Me.nudVitality)
-        Me.DarkGroupBox5.Controls.Add(Me.nudLuck)
-        Me.DarkGroupBox5.Controls.Add(Me.DarkLabel6)
-        Me.DarkGroupBox5.Controls.Add(Me.DarkLabel7)
-        Me.DarkGroupBox5.Controls.Add(Me.nudIntelligence)
-        Me.DarkGroupBox5.Controls.Add(Me.nudStrength)
-        Me.DarkGroupBox5.Controls.Add(Me.DarkLabel5)
-        Me.DarkGroupBox5.Controls.Add(Me.DarkLabel3)
-        Me.DarkGroupBox5.ForeColor = System.Drawing.Color.Gainsboro
-        Me.DarkGroupBox5.Location = New System.Drawing.Point(7, 235)
-        Me.DarkGroupBox5.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox5.Name = "DarkGroupBox5"
-        Me.DarkGroupBox5.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox5.Size = New System.Drawing.Size(383, 115)
-        Me.DarkGroupBox5.TabIndex = 6
-        Me.DarkGroupBox5.TabStop = False
-        Me.DarkGroupBox5.Text = "Start Stats"
-        '
-        'nudBaseExp
-        '
-        Me.nudBaseExp.Location = New System.Drawing.Point(119, 81)
-        Me.nudBaseExp.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudBaseExp.Name = "nudBaseExp"
-        Me.nudBaseExp.Size = New System.Drawing.Size(120, 23)
-        Me.nudBaseExp.TabIndex = 13
-        '
-        'DarkLabel10
-        '
-        Me.DarkLabel10.AutoSize = True
-        Me.DarkLabel10.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel10.Location = New System.Drawing.Point(7, 83)
-        Me.DarkLabel10.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel10.Name = "DarkLabel10"
-        Me.DarkLabel10.Size = New System.Drawing.Size(94, 15)
-        Me.DarkLabel10.TabIndex = 12
-        Me.DarkLabel10.Text = "Base Experience:"
-        '
-        'nudSpirit
-        '
-        Me.nudSpirit.Location = New System.Drawing.Point(323, 46)
-        Me.nudSpirit.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudSpirit.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudSpirit.Name = "nudSpirit"
-        Me.nudSpirit.Size = New System.Drawing.Size(52, 23)
-        Me.nudSpirit.TabIndex = 11
-        Me.nudSpirit.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'nudEndurance
-        '
-        Me.nudEndurance.Location = New System.Drawing.Point(323, 16)
-        Me.nudEndurance.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudEndurance.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
-        Me.nudEndurance.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudEndurance.Name = "nudEndurance"
-        Me.nudEndurance.Size = New System.Drawing.Size(52, 23)
-        Me.nudEndurance.TabIndex = 10
-        Me.nudEndurance.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'DarkLabel8
-        '
-        Me.DarkLabel8.AutoSize = True
-        Me.DarkLabel8.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel8.Location = New System.Drawing.Point(246, 48)
-        Me.DarkLabel8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel8.Name = "DarkLabel8"
-        Me.DarkLabel8.Size = New System.Drawing.Size(37, 15)
-        Me.DarkLabel8.TabIndex = 9
-        Me.DarkLabel8.Text = "Spirit:"
-        '
-        'DarkLabel9
-        '
-        Me.DarkLabel9.AutoSize = True
-        Me.DarkLabel9.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel9.Location = New System.Drawing.Point(246, 18)
-        Me.DarkLabel9.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel9.Name = "DarkLabel9"
-        Me.DarkLabel9.Size = New System.Drawing.Size(66, 15)
-        Me.DarkLabel9.TabIndex = 8
-        Me.DarkLabel9.Text = "Endurance:"
-        '
-        'nudVitality
-        '
-        Me.nudVitality.Location = New System.Drawing.Point(187, 46)
-        Me.nudVitality.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudVitality.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudVitality.Name = "nudVitality"
-        Me.nudVitality.Size = New System.Drawing.Size(52, 23)
-        Me.nudVitality.TabIndex = 7
-        Me.nudVitality.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'nudLuck
-        '
-        Me.nudLuck.Location = New System.Drawing.Point(187, 16)
-        Me.nudLuck.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudLuck.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
-        Me.nudLuck.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudLuck.Name = "nudLuck"
-        Me.nudLuck.Size = New System.Drawing.Size(52, 23)
-        Me.nudLuck.TabIndex = 6
-        Me.nudLuck.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'DarkLabel6
-        '
-        Me.DarkLabel6.AutoSize = True
-        Me.DarkLabel6.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel6.Location = New System.Drawing.Point(140, 48)
-        Me.DarkLabel6.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel6.Name = "DarkLabel6"
-        Me.DarkLabel6.Size = New System.Drawing.Size(46, 15)
-        Me.DarkLabel6.TabIndex = 5
-        Me.DarkLabel6.Text = "Vitality:"
-        '
-        'DarkLabel7
-        '
-        Me.DarkLabel7.AutoSize = True
-        Me.DarkLabel7.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel7.Location = New System.Drawing.Point(140, 18)
-        Me.DarkLabel7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel7.Name = "DarkLabel7"
-        Me.DarkLabel7.Size = New System.Drawing.Size(35, 15)
-        Me.DarkLabel7.TabIndex = 4
-        Me.DarkLabel7.Text = "Luck:"
-        '
-        'nudIntelligence
-        '
-        Me.nudIntelligence.Location = New System.Drawing.Point(80, 46)
-        Me.nudIntelligence.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudIntelligence.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudIntelligence.Name = "nudIntelligence"
-        Me.nudIntelligence.Size = New System.Drawing.Size(52, 23)
-        Me.nudIntelligence.TabIndex = 3
-        Me.nudIntelligence.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'nudStrength
-        '
-        Me.nudStrength.Location = New System.Drawing.Point(80, 16)
-        Me.nudStrength.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudStrength.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
-        Me.nudStrength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudStrength.Name = "nudStrength"
-        Me.nudStrength.Size = New System.Drawing.Size(52, 23)
-        Me.nudStrength.TabIndex = 2
-        Me.nudStrength.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'DarkLabel5
-        '
-        Me.DarkLabel5.AutoSize = True
-        Me.DarkLabel5.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel5.Location = New System.Drawing.Point(7, 48)
-        Me.DarkLabel5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel5.Name = "DarkLabel5"
-        Me.DarkLabel5.Size = New System.Drawing.Size(71, 15)
-        Me.DarkLabel5.TabIndex = 1
-        Me.DarkLabel5.Text = "Intelligence:"
-        '
-        'DarkLabel3
-        '
-        Me.DarkLabel3.AutoSize = True
-        Me.DarkLabel3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel3.Location = New System.Drawing.Point(7, 18)
-        Me.DarkLabel3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel3.Name = "DarkLabel3"
-        Me.DarkLabel3.Size = New System.Drawing.Size(55, 15)
-        Me.DarkLabel3.TabIndex = 0
-        Me.DarkLabel3.Text = "Strength:"
-        '
-        'DarkGroupBox4
-        '
-        Me.DarkGroupBox4.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.DarkGroupBox4.BorderColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer))
-        Me.DarkGroupBox4.Controls.Add(Me.nudFemaleSprite)
-        Me.DarkGroupBox4.Controls.Add(Me.DarkLabel4)
-        Me.DarkGroupBox4.Controls.Add(Me.picFemale)
-        Me.DarkGroupBox4.ForeColor = System.Drawing.Color.Gainsboro
-        Me.DarkGroupBox4.Location = New System.Drawing.Point(202, 100)
-        Me.DarkGroupBox4.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox4.Name = "DarkGroupBox4"
-        Me.DarkGroupBox4.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox4.Size = New System.Drawing.Size(188, 128)
-        Me.DarkGroupBox4.TabIndex = 5
-        Me.DarkGroupBox4.TabStop = False
-        Me.DarkGroupBox4.Text = "Female Sprite"
-        '
-        'nudFemaleSprite
-        '
-        Me.nudFemaleSprite.Location = New System.Drawing.Point(56, 97)
-        Me.nudFemaleSprite.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudFemaleSprite.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudFemaleSprite.Name = "nudFemaleSprite"
-        Me.nudFemaleSprite.Size = New System.Drawing.Size(64, 23)
-        Me.nudFemaleSprite.TabIndex = 18
-        Me.nudFemaleSprite.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'DarkLabel4
-        '
-        Me.DarkLabel4.AutoSize = True
-        Me.DarkLabel4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel4.Location = New System.Drawing.Point(8, 99)
-        Me.DarkLabel4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel4.Name = "DarkLabel4"
-        Me.DarkLabel4.Size = New System.Drawing.Size(40, 15)
-        Me.DarkLabel4.TabIndex = 17
-        Me.DarkLabel4.Text = "Sprite:"
-        '
-        'picFemale
-        '
-        Me.picFemale.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.picFemale.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.picFemale.Location = New System.Drawing.Point(125, 12)
-        Me.picFemale.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.picFemale.Name = "picFemale"
-        Me.picFemale.Size = New System.Drawing.Size(56, 74)
-        Me.picFemale.TabIndex = 14
-        Me.picFemale.TabStop = False
-        '
-        'DarkGroupBox3
-        '
-        Me.DarkGroupBox3.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.DarkGroupBox3.BorderColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer))
-        Me.DarkGroupBox3.Controls.Add(Me.nudMaleSprite)
-        Me.DarkGroupBox3.Controls.Add(Me.lblMaleSprite)
-        Me.DarkGroupBox3.Controls.Add(Me.picMale)
-        Me.DarkGroupBox3.ForeColor = System.Drawing.Color.Gainsboro
-        Me.DarkGroupBox3.Location = New System.Drawing.Point(7, 100)
-        Me.DarkGroupBox3.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox3.Name = "DarkGroupBox3"
-        Me.DarkGroupBox3.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox3.Size = New System.Drawing.Size(188, 128)
-        Me.DarkGroupBox3.TabIndex = 4
-        Me.DarkGroupBox3.TabStop = False
-        Me.DarkGroupBox3.Text = "Male Sprite"
-        '
-        'nudMaleSprite
-        '
-        Me.nudMaleSprite.Location = New System.Drawing.Point(56, 97)
-        Me.nudMaleSprite.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.nudMaleSprite.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.nudMaleSprite.Name = "nudMaleSprite"
-        Me.nudMaleSprite.Size = New System.Drawing.Size(64, 23)
-        Me.nudMaleSprite.TabIndex = 12
-        Me.nudMaleSprite.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'lblMaleSprite
-        '
-        Me.lblMaleSprite.AutoSize = True
-        Me.lblMaleSprite.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.lblMaleSprite.Location = New System.Drawing.Point(8, 99)
-        Me.lblMaleSprite.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.lblMaleSprite.Name = "lblMaleSprite"
-        Me.lblMaleSprite.Size = New System.Drawing.Size(40, 15)
-        Me.lblMaleSprite.TabIndex = 11
-        Me.lblMaleSprite.Text = "Sprite:"
-        '
-        'picMale
-        '
-        Me.picMale.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.picMale.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.picMale.Location = New System.Drawing.Point(125, 12)
-        Me.picMale.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.picMale.Name = "picMale"
-        Me.picMale.Size = New System.Drawing.Size(56, 74)
-        Me.picMale.TabIndex = 8
-        Me.picMale.TabStop = False
-        '
-        'txtDescription
-        '
-        Me.txtDescription.BackColor = System.Drawing.Color.FromArgb(CType(CType(69, Byte), Integer), CType(CType(73, Byte), Integer), CType(CType(74, Byte), Integer))
-        Me.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtDescription.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.txtDescription.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.txtDescription.Location = New System.Drawing.Point(88, 54)
-        Me.txtDescription.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.txtDescription.Multiline = True
-        Me.txtDescription.Name = "txtDescription"
-        Me.txtDescription.Size = New System.Drawing.Size(302, 39)
-        Me.txtDescription.TabIndex = 3
-        '
-        'DarkLabel2
-        '
-        Me.DarkLabel2.AutoSize = True
-        Me.DarkLabel2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel2.Location = New System.Drawing.Point(8, 66)
-        Me.DarkLabel2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel2.Name = "DarkLabel2"
-        Me.DarkLabel2.Size = New System.Drawing.Size(70, 15)
-        Me.DarkLabel2.TabIndex = 2
-        Me.DarkLabel2.Text = "Description:"
-        '
-        'txtName
-        '
-        Me.txtName.BackColor = System.Drawing.Color.FromArgb(CType(CType(69, Byte), Integer), CType(CType(73, Byte), Integer), CType(CType(74, Byte), Integer))
-        Me.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.txtName.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.txtName.Location = New System.Drawing.Point(58, 16)
-        Me.txtName.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.txtName.Name = "txtName"
-        Me.txtName.Size = New System.Drawing.Size(331, 22)
-        Me.txtName.TabIndex = 1
-        '
-        'DarkLabel1
-        '
-        Me.DarkLabel1.AutoSize = True
-        Me.DarkLabel1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
-        Me.DarkLabel1.Location = New System.Drawing.Point(7, 18)
-        Me.DarkLabel1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel1.Name = "DarkLabel1"
-        Me.DarkLabel1.Size = New System.Drawing.Size(42, 15)
-        Me.DarkLabel1.TabIndex = 0
-        Me.DarkLabel1.Text = "Name:"
-        '
-        'btnCancel
-        '
-        Me.btnCancel.Location = New System.Drawing.Point(8, 512)
-        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Padding = New System.Windows.Forms.Padding(6)
-        Me.btnCancel.Size = New System.Drawing.Size(186, 27)
-        Me.btnCancel.TabIndex = 4
-        Me.btnCancel.Text = "Cancel"
-        '
-        'btnSave
-        '
-        Me.btnSave.Location = New System.Drawing.Point(8, 447)
-        Me.btnSave.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.btnSave.Name = "btnSave"
-        Me.btnSave.Padding = New System.Windows.Forms.Padding(6)
-        Me.btnSave.Size = New System.Drawing.Size(186, 27)
-        Me.btnSave.TabIndex = 5
-        Me.btnSave.Text = "Save"
-        '
-        'btnDelete
-        '
-        Me.btnDelete.Location = New System.Drawing.Point(8, 479)
-        Me.btnDelete.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Padding = New System.Windows.Forms.Padding(6)
-        Me.btnDelete.Size = New System.Drawing.Size(186, 27)
-        Me.btnDelete.TabIndex = 6
-        Me.btnDelete.Text = "Delete"
-        '
-        'frmEditor_Job
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(7!, 15!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.AutoSize = true
-        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(45,Byte),Integer), CType(CType(45,Byte),Integer), CType(CType(48,Byte),Integer))
-        Me.ClientSize = New System.Drawing.Size(608, 549)
-        Me.Controls.Add(Me.btnDelete)
-        Me.Controls.Add(Me.btnSave)
-        Me.Controls.Add(Me.btnCancel)
-        Me.Controls.Add(Me.DarkGroupBox2)
-        Me.Controls.Add(Me.DarkGroupBox1)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
-        Me.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.Name = "frmEditor_Job"
-        Me.Text = "Job Editor"
-        Me.DarkGroupBox1.ResumeLayout(false)
-        Me.DarkGroupBox2.ResumeLayout(false)
-        Me.DarkGroupBox2.PerformLayout
-        Me.DarkGroupBox7.ResumeLayout(false)
-        Me.DarkGroupBox7.PerformLayout
-        CType(Me.nudStartY,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.nudStartX,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.nudStartMap,System.ComponentModel.ISupportInitialize).EndInit
-        Me.DarkGroupBox6.ResumeLayout(false)
-        Me.DarkGroupBox6.PerformLayout
-        CType(Me.nudItemAmount,System.ComponentModel.ISupportInitialize).EndInit
-        Me.DarkGroupBox5.ResumeLayout(false)
-        Me.DarkGroupBox5.PerformLayout
-        CType(Me.nudBaseExp,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.nudSpirit,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.nudEndurance,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.nudVitality,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.nudLuck,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.nudIntelligence,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.nudStrength,System.ComponentModel.ISupportInitialize).EndInit
-        Me.DarkGroupBox4.ResumeLayout(false)
-        Me.DarkGroupBox4.PerformLayout
-        CType(Me.nudFemaleSprite,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.picFemale,System.ComponentModel.ISupportInitialize).EndInit
-        Me.DarkGroupBox3.ResumeLayout(false)
-        Me.DarkGroupBox3.PerformLayout
-        CType(Me.nudMaleSprite,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.picMale,System.ComponentModel.ISupportInitialize).EndInit
-        Me.ResumeLayout(false)
-
-End Sub
+        DarkGroupBox1 = New DarkUI.Controls.DarkGroupBox()
+        lstIndex = New ListBox()
+        DarkGroupBox2 = New DarkUI.Controls.DarkGroupBox()
+        DarkGroupBox7 = New DarkUI.Controls.DarkGroupBox()
+        nudStartY = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel15 = New DarkUI.Controls.DarkLabel()
+        nudStartX = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel14 = New DarkUI.Controls.DarkLabel()
+        nudStartMap = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel13 = New DarkUI.Controls.DarkLabel()
+        DarkGroupBox6 = New DarkUI.Controls.DarkGroupBox()
+        btnItemAdd = New DarkUI.Controls.DarkButton()
+        nudItemAmount = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel12 = New DarkUI.Controls.DarkLabel()
+        cmbItems = New DarkUI.Controls.DarkComboBox()
+        DarkLabel11 = New DarkUI.Controls.DarkLabel()
+        lstStartItems = New ListBox()
+        DarkGroupBox5 = New DarkUI.Controls.DarkGroupBox()
+        nudBaseExp = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel10 = New DarkUI.Controls.DarkLabel()
+        nudSpirit = New DarkUI.Controls.DarkNumericUpDown()
+        nudEndurance = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel8 = New DarkUI.Controls.DarkLabel()
+        DarkLabel9 = New DarkUI.Controls.DarkLabel()
+        nudVitality = New DarkUI.Controls.DarkNumericUpDown()
+        nudLuck = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel6 = New DarkUI.Controls.DarkLabel()
+        DarkLabel7 = New DarkUI.Controls.DarkLabel()
+        nudIntelligence = New DarkUI.Controls.DarkNumericUpDown()
+        nudStrength = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel5 = New DarkUI.Controls.DarkLabel()
+        DarkLabel3 = New DarkUI.Controls.DarkLabel()
+        DarkGroupBox4 = New DarkUI.Controls.DarkGroupBox()
+        nudFemaleSprite = New DarkUI.Controls.DarkNumericUpDown()
+        DarkLabel4 = New DarkUI.Controls.DarkLabel()
+        picFemale = New PictureBox()
+        DarkGroupBox3 = New DarkUI.Controls.DarkGroupBox()
+        nudMaleSprite = New DarkUI.Controls.DarkNumericUpDown()
+        lblMaleSprite = New DarkUI.Controls.DarkLabel()
+        picMale = New PictureBox()
+        txtDescription = New DarkUI.Controls.DarkTextBox()
+        DarkLabel2 = New DarkUI.Controls.DarkLabel()
+        txtName = New DarkUI.Controls.DarkTextBox()
+        DarkLabel1 = New DarkUI.Controls.DarkLabel()
+        btnCancel = New DarkUI.Controls.DarkButton()
+        btnSave = New DarkUI.Controls.DarkButton()
+        btnDelete = New DarkUI.Controls.DarkButton()
+        DarkGroupBox1.SuspendLayout()
+        DarkGroupBox2.SuspendLayout()
+        DarkGroupBox7.SuspendLayout()
+        CType(nudStartY, ComponentModel.ISupportInitialize).BeginInit()
+        CType(nudStartX, ComponentModel.ISupportInitialize).BeginInit()
+        CType(nudStartMap, ComponentModel.ISupportInitialize).BeginInit()
+        DarkGroupBox6.SuspendLayout()
+        CType(nudItemAmount, ComponentModel.ISupportInitialize).BeginInit()
+        DarkGroupBox5.SuspendLayout()
+        CType(nudBaseExp, ComponentModel.ISupportInitialize).BeginInit()
+        CType(nudSpirit, ComponentModel.ISupportInitialize).BeginInit()
+        CType(nudEndurance, ComponentModel.ISupportInitialize).BeginInit()
+        CType(nudVitality, ComponentModel.ISupportInitialize).BeginInit()
+        CType(nudLuck, ComponentModel.ISupportInitialize).BeginInit()
+        CType(nudIntelligence, ComponentModel.ISupportInitialize).BeginInit()
+        CType(nudStrength, ComponentModel.ISupportInitialize).BeginInit()
+        DarkGroupBox4.SuspendLayout()
+        CType(nudFemaleSprite, ComponentModel.ISupportInitialize).BeginInit()
+        CType(picFemale, ComponentModel.ISupportInitialize).BeginInit()
+        DarkGroupBox3.SuspendLayout()
+        CType(nudMaleSprite, ComponentModel.ISupportInitialize).BeginInit()
+        CType(picMale, ComponentModel.ISupportInitialize).BeginInit()
+        SuspendLayout()
+        ' 
+        ' DarkGroupBox1
+        ' 
+        DarkGroupBox1.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        DarkGroupBox1.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
+        DarkGroupBox1.Controls.Add(lstIndex)
+        DarkGroupBox1.ForeColor = Color.Gainsboro
+        DarkGroupBox1.Location = New Point(3, 6)
+        DarkGroupBox1.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox1.Name = "DarkGroupBox1"
+        DarkGroupBox1.Padding = New Padding(11, 10, 11, 10)
+        DarkGroupBox1.Size = New Size(577, 1405)
+        DarkGroupBox1.TabIndex = 0
+        DarkGroupBox1.TabStop = False
+        DarkGroupBox1.Text = "Job List"
+        ' 
+        ' lstIndex
+        ' 
+        lstIndex.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        lstIndex.BorderStyle = BorderStyle.FixedSingle
+        lstIndex.ForeColor = Color.Gainsboro
+        lstIndex.FormattingEnabled = True
+        lstIndex.ItemHeight = 48
+        lstIndex.Location = New Point(20, 58)
+        lstIndex.Margin = New Padding(11, 10, 11, 10)
+        lstIndex.Name = "lstIndex"
+        lstIndex.Size = New Size(528, 1298)
+        lstIndex.TabIndex = 0
+        ' 
+        ' DarkGroupBox2
+        ' 
+        DarkGroupBox2.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        DarkGroupBox2.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
+        DarkGroupBox2.Controls.Add(DarkGroupBox7)
+        DarkGroupBox2.Controls.Add(DarkGroupBox6)
+        DarkGroupBox2.Controls.Add(DarkGroupBox5)
+        DarkGroupBox2.Controls.Add(DarkGroupBox4)
+        DarkGroupBox2.Controls.Add(DarkGroupBox3)
+        DarkGroupBox2.Controls.Add(txtDescription)
+        DarkGroupBox2.Controls.Add(DarkLabel2)
+        DarkGroupBox2.Controls.Add(txtName)
+        DarkGroupBox2.Controls.Add(DarkLabel1)
+        DarkGroupBox2.ForeColor = Color.Gainsboro
+        DarkGroupBox2.Location = New Point(603, 6)
+        DarkGroupBox2.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox2.Name = "DarkGroupBox2"
+        DarkGroupBox2.Padding = New Padding(11, 10, 11, 10)
+        DarkGroupBox2.Size = New Size(1137, 1744)
+        DarkGroupBox2.TabIndex = 1
+        DarkGroupBox2.TabStop = False
+        DarkGroupBox2.Text = "Settings"
+        ' 
+        ' DarkGroupBox7
+        ' 
+        DarkGroupBox7.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        DarkGroupBox7.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
+        DarkGroupBox7.Controls.Add(nudStartY)
+        DarkGroupBox7.Controls.Add(DarkLabel15)
+        DarkGroupBox7.Controls.Add(nudStartX)
+        DarkGroupBox7.Controls.Add(DarkLabel14)
+        DarkGroupBox7.Controls.Add(nudStartMap)
+        DarkGroupBox7.Controls.Add(DarkLabel13)
+        DarkGroupBox7.ForeColor = Color.Gainsboro
+        DarkGroupBox7.Location = New Point(20, 1558)
+        DarkGroupBox7.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox7.Name = "DarkGroupBox7"
+        DarkGroupBox7.Padding = New Padding(11, 10, 11, 10)
+        DarkGroupBox7.Size = New Size(1094, 160)
+        DarkGroupBox7.TabIndex = 8
+        DarkGroupBox7.TabStop = False
+        DarkGroupBox7.Text = "Starting Point"
+        ' 
+        ' nudStartY
+        ' 
+        nudStartY.Location = New Point(914, 51)
+        nudStartY.Margin = New Padding(11, 10, 11, 10)
+        nudStartY.Name = "nudStartY"
+        nudStartY.Size = New Size(160, 55)
+        nudStartY.TabIndex = 5
+        ' 
+        ' DarkLabel15
+        ' 
+        DarkLabel15.AutoSize = True
+        DarkLabel15.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel15.Location = New Point(754, 58)
+        DarkLabel15.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel15.Name = "DarkLabel15"
+        DarkLabel15.Size = New Size(111, 48)
+        DarkLabel15.TabIndex = 4
+        DarkLabel15.Text = "Start :"
+        ' 
+        ' nudStartX
+        ' 
+        nudStartX.Location = New Point(560, 51)
+        nudStartX.Margin = New Padding(11, 10, 11, 10)
+        nudStartX.Name = "nudStartX"
+        nudStartX.Size = New Size(160, 55)
+        nudStartX.TabIndex = 3
+        ' 
+        ' DarkLabel14
+        ' 
+        DarkLabel14.AutoSize = True
+        DarkLabel14.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel14.Location = New Point(400, 58)
+        DarkLabel14.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel14.Name = "DarkLabel14"
+        DarkLabel14.Size = New Size(132, 48)
+        DarkLabel14.TabIndex = 2
+        DarkLabel14.Text = "Start X:"
+        ' 
+        ' nudStartMap
+        ' 
+        nudStartMap.Location = New Point(226, 51)
+        nudStartMap.Margin = New Padding(11, 10, 11, 10)
+        nudStartMap.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudStartMap.Name = "nudStartMap"
+        nudStartMap.Size = New Size(154, 55)
+        nudStartMap.TabIndex = 1
+        nudStartMap.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' DarkLabel13
+        ' 
+        DarkLabel13.AutoSize = True
+        DarkLabel13.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel13.Location = New Point(20, 58)
+        DarkLabel13.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel13.Name = "DarkLabel13"
+        DarkLabel13.Size = New Size(182, 48)
+        DarkLabel13.TabIndex = 0
+        DarkLabel13.Text = "Start Map:"
+        ' 
+        ' DarkGroupBox6
+        ' 
+        DarkGroupBox6.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        DarkGroupBox6.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
+        DarkGroupBox6.Controls.Add(btnItemAdd)
+        DarkGroupBox6.Controls.Add(nudItemAmount)
+        DarkGroupBox6.Controls.Add(DarkLabel12)
+        DarkGroupBox6.Controls.Add(cmbItems)
+        DarkGroupBox6.Controls.Add(DarkLabel11)
+        DarkGroupBox6.Controls.Add(lstStartItems)
+        DarkGroupBox6.ForeColor = Color.Gainsboro
+        DarkGroupBox6.Location = New Point(20, 1146)
+        DarkGroupBox6.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox6.Name = "DarkGroupBox6"
+        DarkGroupBox6.Padding = New Padding(11, 10, 11, 10)
+        DarkGroupBox6.Size = New Size(1094, 390)
+        DarkGroupBox6.TabIndex = 7
+        DarkGroupBox6.TabStop = False
+        DarkGroupBox6.Text = "Starting Items"
+        ' 
+        ' btnItemAdd
+        ' 
+        btnItemAdd.Location = New Point(611, 269)
+        btnItemAdd.Margin = New Padding(11, 10, 11, 10)
+        btnItemAdd.Name = "btnItemAdd"
+        btnItemAdd.Padding = New Padding(17, 19, 17, 19)
+        btnItemAdd.Size = New Size(463, 96)
+        btnItemAdd.TabIndex = 6
+        btnItemAdd.Text = "Update"
+        ' 
+        ' nudItemAmount
+        ' 
+        nudItemAmount.Location = New Point(783, 186)
+        nudItemAmount.Margin = New Padding(11, 10, 11, 10)
+        nudItemAmount.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudItemAmount.Name = "nudItemAmount"
+        nudItemAmount.Size = New Size(291, 55)
+        nudItemAmount.TabIndex = 5
+        nudItemAmount.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' DarkLabel12
+        ' 
+        DarkLabel12.AutoSize = True
+        DarkLabel12.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel12.Location = New Point(611, 192)
+        DarkLabel12.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel12.Name = "DarkLabel12"
+        DarkLabel12.Size = New Size(155, 48)
+        DarkLabel12.TabIndex = 4
+        DarkLabel12.Text = "Amount:"
+        ' 
+        ' cmbItems
+        ' 
+        cmbItems.DrawMode = DrawMode.OwnerDrawFixed
+        cmbItems.FormattingEnabled = True
+        cmbItems.Location = New Point(611, 86)
+        cmbItems.Margin = New Padding(11, 10, 11, 10)
+        cmbItems.Name = "cmbItems"
+        cmbItems.Size = New Size(455, 56)
+        cmbItems.TabIndex = 3
+        ' 
+        ' DarkLabel11
+        ' 
+        DarkLabel11.AutoSize = True
+        DarkLabel11.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel11.Location = New Point(611, 26)
+        DarkLabel11.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel11.Name = "DarkLabel11"
+        DarkLabel11.Size = New Size(175, 48)
+        DarkLabel11.TabIndex = 2
+        DarkLabel11.Text = "Start Item"
+        ' 
+        ' lstStartItems
+        ' 
+        lstStartItems.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        lstStartItems.BorderStyle = BorderStyle.FixedSingle
+        lstStartItems.ForeColor = Color.Gainsboro
+        lstStartItems.FormattingEnabled = True
+        lstStartItems.ItemHeight = 48
+        lstStartItems.Items.AddRange(New Object() {"1", "2", "3", "4", "5"})
+        lstStartItems.Location = New Point(20, 70)
+        lstStartItems.Margin = New Padding(11, 10, 11, 10)
+        lstStartItems.Name = "lstStartItems"
+        lstStartItems.Size = New Size(565, 290)
+        lstStartItems.TabIndex = 1
+        ' 
+        ' DarkGroupBox5
+        ' 
+        DarkGroupBox5.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        DarkGroupBox5.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
+        DarkGroupBox5.Controls.Add(nudBaseExp)
+        DarkGroupBox5.Controls.Add(DarkLabel10)
+        DarkGroupBox5.Controls.Add(nudSpirit)
+        DarkGroupBox5.Controls.Add(nudEndurance)
+        DarkGroupBox5.Controls.Add(DarkLabel8)
+        DarkGroupBox5.Controls.Add(DarkLabel9)
+        DarkGroupBox5.Controls.Add(nudVitality)
+        DarkGroupBox5.Controls.Add(nudLuck)
+        DarkGroupBox5.Controls.Add(DarkLabel6)
+        DarkGroupBox5.Controls.Add(DarkLabel7)
+        DarkGroupBox5.Controls.Add(nudIntelligence)
+        DarkGroupBox5.Controls.Add(nudStrength)
+        DarkGroupBox5.Controls.Add(DarkLabel5)
+        DarkGroupBox5.Controls.Add(DarkLabel3)
+        DarkGroupBox5.ForeColor = Color.Gainsboro
+        DarkGroupBox5.Location = New Point(20, 752)
+        DarkGroupBox5.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox5.Name = "DarkGroupBox5"
+        DarkGroupBox5.Padding = New Padding(11, 10, 11, 10)
+        DarkGroupBox5.Size = New Size(1094, 368)
+        DarkGroupBox5.TabIndex = 6
+        DarkGroupBox5.TabStop = False
+        DarkGroupBox5.Text = "Start Stats"
+        ' 
+        ' nudBaseExp
+        ' 
+        nudBaseExp.Location = New Point(340, 259)
+        nudBaseExp.Margin = New Padding(11, 10, 11, 10)
+        nudBaseExp.Name = "nudBaseExp"
+        nudBaseExp.Size = New Size(343, 55)
+        nudBaseExp.TabIndex = 13
+        ' 
+        ' DarkLabel10
+        ' 
+        DarkLabel10.AutoSize = True
+        DarkLabel10.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel10.Location = New Point(20, 266)
+        DarkLabel10.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel10.Name = "DarkLabel10"
+        DarkLabel10.Size = New Size(283, 48)
+        DarkLabel10.TabIndex = 12
+        DarkLabel10.Text = "Base Experience:"
+        ' 
+        ' nudSpirit
+        ' 
+        nudSpirit.Location = New Point(923, 147)
+        nudSpirit.Margin = New Padding(11, 10, 11, 10)
+        nudSpirit.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudSpirit.Name = "nudSpirit"
+        nudSpirit.Size = New Size(149, 55)
+        nudSpirit.TabIndex = 11
+        nudSpirit.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' nudEndurance
+        ' 
+        nudEndurance.Location = New Point(923, 51)
+        nudEndurance.Margin = New Padding(11, 10, 11, 10)
+        nudEndurance.Maximum = New [Decimal](New Integer() {255, 0, 0, 0})
+        nudEndurance.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudEndurance.Name = "nudEndurance"
+        nudEndurance.Size = New Size(149, 55)
+        nudEndurance.TabIndex = 10
+        nudEndurance.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' DarkLabel8
+        ' 
+        DarkLabel8.AutoSize = True
+        DarkLabel8.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel8.Location = New Point(703, 154)
+        DarkLabel8.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel8.Name = "DarkLabel8"
+        DarkLabel8.Size = New Size(111, 48)
+        DarkLabel8.TabIndex = 9
+        DarkLabel8.Text = "Spirit:"
+        ' 
+        ' DarkLabel9
+        ' 
+        DarkLabel9.AutoSize = True
+        DarkLabel9.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel9.Location = New Point(703, 58)
+        DarkLabel9.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel9.Name = "DarkLabel9"
+        DarkLabel9.Size = New Size(194, 48)
+        DarkLabel9.TabIndex = 8
+        DarkLabel9.Text = "Endurance:"
+        ' 
+        ' nudVitality
+        ' 
+        nudVitality.Location = New Point(534, 147)
+        nudVitality.Margin = New Padding(11, 10, 11, 10)
+        nudVitality.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudVitality.Name = "nudVitality"
+        nudVitality.Size = New Size(149, 55)
+        nudVitality.TabIndex = 7
+        nudVitality.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' nudLuck
+        ' 
+        nudLuck.Location = New Point(534, 51)
+        nudLuck.Margin = New Padding(11, 10, 11, 10)
+        nudLuck.Maximum = New [Decimal](New Integer() {255, 0, 0, 0})
+        nudLuck.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudLuck.Name = "nudLuck"
+        nudLuck.Size = New Size(149, 55)
+        nudLuck.TabIndex = 6
+        nudLuck.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' DarkLabel6
+        ' 
+        DarkLabel6.AutoSize = True
+        DarkLabel6.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel6.Location = New Point(400, 154)
+        DarkLabel6.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel6.Name = "DarkLabel6"
+        DarkLabel6.Size = New Size(136, 48)
+        DarkLabel6.TabIndex = 5
+        DarkLabel6.Text = "Vitality:"
+        ' 
+        ' DarkLabel7
+        ' 
+        DarkLabel7.AutoSize = True
+        DarkLabel7.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel7.Location = New Point(400, 58)
+        DarkLabel7.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel7.Name = "DarkLabel7"
+        DarkLabel7.Size = New Size(100, 48)
+        DarkLabel7.TabIndex = 4
+        DarkLabel7.Text = "Luck:"
+        ' 
+        ' nudIntelligence
+        ' 
+        nudIntelligence.Location = New Point(229, 147)
+        nudIntelligence.Margin = New Padding(11, 10, 11, 10)
+        nudIntelligence.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudIntelligence.Name = "nudIntelligence"
+        nudIntelligence.Size = New Size(149, 55)
+        nudIntelligence.TabIndex = 3
+        nudIntelligence.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' nudStrength
+        ' 
+        nudStrength.Location = New Point(229, 51)
+        nudStrength.Margin = New Padding(11, 10, 11, 10)
+        nudStrength.Maximum = New [Decimal](New Integer() {255, 0, 0, 0})
+        nudStrength.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudStrength.Name = "nudStrength"
+        nudStrength.Size = New Size(149, 55)
+        nudStrength.TabIndex = 2
+        nudStrength.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' DarkLabel5
+        ' 
+        DarkLabel5.AutoSize = True
+        DarkLabel5.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel5.Location = New Point(20, 154)
+        DarkLabel5.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel5.Name = "DarkLabel5"
+        DarkLabel5.Size = New Size(212, 48)
+        DarkLabel5.TabIndex = 1
+        DarkLabel5.Text = "Intelligence:"
+        ' 
+        ' DarkLabel3
+        ' 
+        DarkLabel3.AutoSize = True
+        DarkLabel3.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel3.Location = New Point(20, 58)
+        DarkLabel3.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel3.Name = "DarkLabel3"
+        DarkLabel3.Size = New Size(163, 48)
+        DarkLabel3.TabIndex = 0
+        DarkLabel3.Text = "Strength:"
+        ' 
+        ' DarkGroupBox4
+        ' 
+        DarkGroupBox4.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        DarkGroupBox4.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
+        DarkGroupBox4.Controls.Add(nudFemaleSprite)
+        DarkGroupBox4.Controls.Add(DarkLabel4)
+        DarkGroupBox4.Controls.Add(picFemale)
+        DarkGroupBox4.ForeColor = Color.Gainsboro
+        DarkGroupBox4.Location = New Point(577, 320)
+        DarkGroupBox4.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox4.Name = "DarkGroupBox4"
+        DarkGroupBox4.Padding = New Padding(11, 10, 11, 10)
+        DarkGroupBox4.Size = New Size(537, 410)
+        DarkGroupBox4.TabIndex = 5
+        DarkGroupBox4.TabStop = False
+        DarkGroupBox4.Text = "Female Sprite"
+        ' 
+        ' nudFemaleSprite
+        ' 
+        nudFemaleSprite.Location = New Point(160, 310)
+        nudFemaleSprite.Margin = New Padding(11, 10, 11, 10)
+        nudFemaleSprite.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudFemaleSprite.Name = "nudFemaleSprite"
+        nudFemaleSprite.Size = New Size(183, 55)
+        nudFemaleSprite.TabIndex = 18
+        nudFemaleSprite.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' DarkLabel4
+        ' 
+        DarkLabel4.AutoSize = True
+        DarkLabel4.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel4.Location = New Point(23, 317)
+        DarkLabel4.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel4.Name = "DarkLabel4"
+        DarkLabel4.Size = New Size(121, 48)
+        DarkLabel4.TabIndex = 17
+        DarkLabel4.Text = "Sprite:"
+        ' 
+        ' picFemale
+        ' 
+        picFemale.BackColor = Color.FromArgb(CByte(64), CByte(64), CByte(64))
+        picFemale.BackgroundImageLayout = ImageLayout.None
+        picFemale.Location = New Point(357, 38)
+        picFemale.Margin = New Padding(11, 10, 11, 10)
+        picFemale.Name = "picFemale"
+        picFemale.Size = New Size(160, 237)
+        picFemale.TabIndex = 14
+        picFemale.TabStop = False
+        ' 
+        ' DarkGroupBox3
+        ' 
+        DarkGroupBox3.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        DarkGroupBox3.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
+        DarkGroupBox3.Controls.Add(nudMaleSprite)
+        DarkGroupBox3.Controls.Add(lblMaleSprite)
+        DarkGroupBox3.Controls.Add(picMale)
+        DarkGroupBox3.ForeColor = Color.Gainsboro
+        DarkGroupBox3.Location = New Point(20, 320)
+        DarkGroupBox3.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox3.Name = "DarkGroupBox3"
+        DarkGroupBox3.Padding = New Padding(11, 10, 11, 10)
+        DarkGroupBox3.Size = New Size(537, 410)
+        DarkGroupBox3.TabIndex = 4
+        DarkGroupBox3.TabStop = False
+        DarkGroupBox3.Text = "Male Sprite"
+        ' 
+        ' nudMaleSprite
+        ' 
+        nudMaleSprite.Location = New Point(160, 310)
+        nudMaleSprite.Margin = New Padding(11, 10, 11, 10)
+        nudMaleSprite.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudMaleSprite.Name = "nudMaleSprite"
+        nudMaleSprite.Size = New Size(183, 55)
+        nudMaleSprite.TabIndex = 12
+        nudMaleSprite.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        ' 
+        ' lblMaleSprite
+        ' 
+        lblMaleSprite.AutoSize = True
+        lblMaleSprite.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        lblMaleSprite.Location = New Point(23, 317)
+        lblMaleSprite.Margin = New Padding(11, 0, 11, 0)
+        lblMaleSprite.Name = "lblMaleSprite"
+        lblMaleSprite.Size = New Size(121, 48)
+        lblMaleSprite.TabIndex = 11
+        lblMaleSprite.Text = "Sprite:"
+        ' 
+        ' picMale
+        ' 
+        picMale.BackColor = Color.FromArgb(CByte(64), CByte(64), CByte(64))
+        picMale.BackgroundImageLayout = ImageLayout.None
+        picMale.Location = New Point(357, 38)
+        picMale.Margin = New Padding(11, 10, 11, 10)
+        picMale.Name = "picMale"
+        picMale.Size = New Size(160, 237)
+        picMale.TabIndex = 8
+        picMale.TabStop = False
+        ' 
+        ' txtDescription
+        ' 
+        txtDescription.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
+        txtDescription.BorderStyle = BorderStyle.FixedSingle
+        txtDescription.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point)
+        txtDescription.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        txtDescription.Location = New Point(251, 173)
+        txtDescription.Margin = New Padding(11, 10, 11, 10)
+        txtDescription.Multiline = True
+        txtDescription.Name = "txtDescription"
+        txtDescription.Size = New Size(859, 120)
+        txtDescription.TabIndex = 3
+        ' 
+        ' DarkLabel2
+        ' 
+        DarkLabel2.AutoSize = True
+        DarkLabel2.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel2.Location = New Point(23, 211)
+        DarkLabel2.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel2.Name = "DarkLabel2"
+        DarkLabel2.Size = New Size(209, 48)
+        DarkLabel2.TabIndex = 2
+        DarkLabel2.Text = "Description:"
+        ' 
+        ' txtName
+        ' 
+        txtName.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
+        txtName.BorderStyle = BorderStyle.FixedSingle
+        txtName.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point)
+        txtName.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        txtName.Location = New Point(166, 51)
+        txtName.Margin = New Padding(11, 10, 11, 10)
+        txtName.Name = "txtName"
+        txtName.Size = New Size(942, 51)
+        txtName.TabIndex = 1
+        ' 
+        ' DarkLabel1
+        ' 
+        DarkLabel1.AutoSize = True
+        DarkLabel1.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel1.Location = New Point(20, 58)
+        DarkLabel1.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel1.Name = "DarkLabel1"
+        DarkLabel1.Size = New Size(123, 48)
+        DarkLabel1.TabIndex = 0
+        DarkLabel1.Text = "Name:"
+        ' 
+        ' btnCancel
+        ' 
+        btnCancel.Location = New Point(23, 1638)
+        btnCancel.Margin = New Padding(11, 10, 11, 10)
+        btnCancel.Name = "btnCancel"
+        btnCancel.Padding = New Padding(17, 19, 17, 19)
+        btnCancel.Size = New Size(531, 86)
+        btnCancel.TabIndex = 4
+        btnCancel.Text = "Cancel"
+        ' 
+        ' btnSave
+        ' 
+        btnSave.Location = New Point(23, 1430)
+        btnSave.Margin = New Padding(11, 10, 11, 10)
+        btnSave.Name = "btnSave"
+        btnSave.Padding = New Padding(17, 19, 17, 19)
+        btnSave.Size = New Size(531, 86)
+        btnSave.TabIndex = 5
+        btnSave.Text = "Save"
+        ' 
+        ' btnDelete
+        ' 
+        btnDelete.Location = New Point(23, 1533)
+        btnDelete.Margin = New Padding(11, 10, 11, 10)
+        btnDelete.Name = "btnDelete"
+        btnDelete.Padding = New Padding(17, 19, 17, 19)
+        btnDelete.Size = New Size(531, 86)
+        btnDelete.TabIndex = 6
+        btnDelete.Text = "Delete"
+        ' 
+        ' frmEditor_Job
+        ' 
+        AutoScaleDimensions = New SizeF(20F, 48F)
+        AutoScaleMode = AutoScaleMode.Font
+        AutoSize = True
+        BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
+        ClientSize = New Size(1737, 1757)
+        Controls.Add(btnDelete)
+        Controls.Add(btnSave)
+        Controls.Add(btnCancel)
+        Controls.Add(DarkGroupBox2)
+        Controls.Add(DarkGroupBox1)
+        FormBorderStyle = FormBorderStyle.FixedToolWindow
+        Margin = New Padding(11, 10, 11, 10)
+        Name = "frmEditor_Job"
+        Text = "Job Editor"
+        DarkGroupBox1.ResumeLayout(False)
+        DarkGroupBox2.ResumeLayout(False)
+        DarkGroupBox2.PerformLayout()
+        DarkGroupBox7.ResumeLayout(False)
+        DarkGroupBox7.PerformLayout()
+        CType(nudStartY, ComponentModel.ISupportInitialize).EndInit()
+        CType(nudStartX, ComponentModel.ISupportInitialize).EndInit()
+        CType(nudStartMap, ComponentModel.ISupportInitialize).EndInit()
+        DarkGroupBox6.ResumeLayout(False)
+        DarkGroupBox6.PerformLayout()
+        CType(nudItemAmount, ComponentModel.ISupportInitialize).EndInit()
+        DarkGroupBox5.ResumeLayout(False)
+        DarkGroupBox5.PerformLayout()
+        CType(nudBaseExp, ComponentModel.ISupportInitialize).EndInit()
+        CType(nudSpirit, ComponentModel.ISupportInitialize).EndInit()
+        CType(nudEndurance, ComponentModel.ISupportInitialize).EndInit()
+        CType(nudVitality, ComponentModel.ISupportInitialize).EndInit()
+        CType(nudLuck, ComponentModel.ISupportInitialize).EndInit()
+        CType(nudIntelligence, ComponentModel.ISupportInitialize).EndInit()
+        CType(nudStrength, ComponentModel.ISupportInitialize).EndInit()
+        DarkGroupBox4.ResumeLayout(False)
+        DarkGroupBox4.PerformLayout()
+        CType(nudFemaleSprite, ComponentModel.ISupportInitialize).EndInit()
+        CType(picFemale, ComponentModel.ISupportInitialize).EndInit()
+        DarkGroupBox3.ResumeLayout(False)
+        DarkGroupBox3.PerformLayout()
+        CType(nudMaleSprite, ComponentModel.ISupportInitialize).EndInit()
+        CType(picMale, ComponentModel.ISupportInitialize).EndInit()
+        ResumeLayout(False)
+    End Sub
 
     Friend WithEvents DarkGroupBox1 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents DarkGroupBox2 As DarkUI.Controls.DarkGroupBox
