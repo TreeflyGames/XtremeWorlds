@@ -174,14 +174,6 @@ Friend Class frmEditor_Job
         DrawPreview
     End Sub
 
-    Private Sub lstIndex_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstIndex.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub nudMaleSprite_ValueChanged(sender As Object, e As EventArgs) Handles nudMaleSprite.ValueChanged
-
-    End Sub
-
 #End Region
 
 End Class
