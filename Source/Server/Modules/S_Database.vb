@@ -5,7 +5,7 @@ Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
 
-Module modDatabase
+Module S_Database
 
 #Region "Job"
 

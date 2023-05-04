@@ -2,7 +2,7 @@
 Imports System.Threading
 Imports Mirage.Basic.Engine
 
-Module modLoop
+Module S_Loop
 
     Sub ServerLoop()
         Dim tick As Integer
