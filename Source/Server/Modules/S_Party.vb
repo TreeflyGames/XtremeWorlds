@@ -145,7 +145,7 @@ Module S_Party
 
 #End Region
 
-    Sub ClearParties()
+    Sub ClearParty()
         Dim i As Integer
 
         For i = 1 To MAX_PARTIES

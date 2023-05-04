@@ -141,7 +141,7 @@ Module S_General
             ClearPlayer(i)
         Next
 
-        ClearParties()
+        ClearParty()
 
         Console.WriteLine("Clearing Jobs...") : ClearJobs()
         Console.WriteLine("Clearing Maps...") : ClearMaps()
