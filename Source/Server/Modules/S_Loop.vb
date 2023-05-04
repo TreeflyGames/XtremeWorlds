@@ -74,7 +74,7 @@ Module modLoop
             End If
 
             If tick > tmr1000 Then
-                Time.Instance.Tick()
+                Engine.Time.Instance.Tick()
 
                 ' Move the timer up 1000ms.
                 tmr1000 = GetTimeMs() + 1000

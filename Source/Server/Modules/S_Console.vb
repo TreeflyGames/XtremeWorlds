@@ -149,10 +149,10 @@ Module S_Console
 
                     Dim speed As Double
                     Double.TryParse(parts(1), speed)
-                    Time.Instance.GameSpeed = speed
+                    Engine.Time.Instance.GameSpeed = speed
                     Settings.TimeSpeed = speed
                     SaveSettings()
-                    Console.WriteLine("Set GameSpeed to " & Time.Instance.GameSpeed & " secs per seconds")
+                    Console.WriteLine("Set GameSpeed to " & Engine.Time.Instance.GameSpeed & " secs per seconds")
 
 #End Region
 

@@ -28,7 +28,7 @@ Module S_General
 
         LoadSettings()
 
-        Time.Instance.GameSpeed = Settings.TimeSpeed
+        Engine.Time.Instance.GameSpeed = Settings.TimeSpeed
 
         Console.Title = "MirageWorlds Server"
 
@@ -110,7 +110,7 @@ Module S_General
     Private Delegate Function ConsoleEventDelegate(eventType As Integer) As Boolean
 
     Sub UpdateCaption()
-        Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Settings.GameName, MyIPAddress, Settings.Port, GetPlayersOnline(), ErrorCount, Time.Instance.ToString())
+        Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Settings.GameName, MyIPAddress, Settings.Port, GetPlayersOnline(), ErrorCount, Engine.Time.Instance.ToString())
     End Sub
 
     Sub DestroyServer()

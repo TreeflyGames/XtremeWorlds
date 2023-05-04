@@ -34,7 +34,7 @@ Module S_Npc
         npcNum = Map(mapNum).Npc(mapNpcNum)
 
         If npcNum > 0 Then
-            If Not Npc(npcNum).SpawnTime = Time.Instance.TimeOfDay And Npc(npcNum).SpawnTime <> 0 Then
+            If Not Npc(npcNum).SpawnTime = Engine.Time.Instance.TimeOfDay And Npc(npcNum).SpawnTime <> 0 Then
                 ClearMapNpc(mapNpcNum, mapNum)
                 SendMapNpcsToMap(mapNum)
                 Exit Sub
