@@ -2108,16 +2108,13 @@ Module S_Player
                 SendCloseTrade(tradeTarget)
             End If
 
-            ReCallPet(index)
-            SavePlayer(index)
-
             ' Send a global message that he/she left
             GlobalMsg(String.Format("{0} has left {1}!", GetPlayerName(index), Settings.GameName))
 
             Console.WriteLine(String.Format("{0} has left {1}!", GetPlayerName(index), Settings.GameName))
 
-            ReDim TempPlayer(i).SkillCd(MAX_PLAYER_SKILLS)
-            ReDim TempPlayer(i).TradeOffer(MAX_INV)
+            ReCallPet(index)
+            SavePlayer(index)
         End If
 
         ClearPlayer(index)
