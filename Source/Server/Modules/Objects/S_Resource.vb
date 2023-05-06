@@ -2,49 +2,25 @@
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
 
 Friend Module S_Resource
 
 #Region "Database"
 
-    Sub SaveResources()
-        Dim i As Integer
+    Sub SaveResource(resourceNum As Integer)
+        Dim json As String = JsonConvert.SerializeObject(Resource(resourceNum)).ToString()
 
-        For i = 1 To MAX_RESOURCES
-            SaveResource(i)
-        Next
-
-    End Sub
-
-    Sub SaveResource(ResourceNum As Integer)
-        Dim filename As String
-
-        filename = Paths.Resource(ResourceNum)
-
-        Dim writer As New ByteStream(100)
-
-        writer.WriteString(Resource(ResourceNum).Name)
-        writer.WriteString(Resource(ResourceNum).SuccessMessage)
-        writer.WriteString(Resource(ResourceNum).EmptyMessage)
-        writer.WriteInt32(Resource(ResourceNum).ResourceType)
-        writer.WriteInt32(Resource(ResourceNum).ResourceImage)
-        writer.WriteInt32(Resource(ResourceNum).ExhaustedImage)
-        writer.WriteInt32(Resource(ResourceNum).ExpReward)
-        writer.WriteInt32(Resource(ResourceNum).ItemReward)
-        writer.WriteInt32(Resource(ResourceNum).LvlRequired)
-        writer.WriteInt32(Resource(ResourceNum).ToolRequired)
-        writer.WriteInt32(Resource(ResourceNum).Health)
-        writer.WriteInt32(Resource(ResourceNum).RespawnTime)
-        writer.WriteBoolean(Resource(ResourceNum).Walkthrough)
-        writer.WriteInt32(Resource(ResourceNum).Animation)
-
-        ByteFile.Save(filename, writer)
+        If RowExists(resourceNum, "resource")
+            UpdateRow(resourceNum, json, "resource")
+        Else
+            InsertRow("resource", json)
+        End If
     End Sub
 
     Sub LoadResources()
         Dim i As Integer
-
-        Call CheckResources()
 
         For i = 1 To MAX_RESOURCES
             LoadResource(i)
@@ -52,43 +28,18 @@ Friend Module S_Resource
 
     End Sub
 
-    Sub LoadResource(ResourceNum As Integer)
-        Dim filename As String
+    Sub LoadResource(resourceNum As Integer)
+        Dim data As JObject
 
-        filename = Paths.Resource(ResourceNum)
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
+        data = SelectRow("resource", "data", resourceNum)
 
-        Resource(ResourceNum).Name = reader.ReadString()
-        Resource(ResourceNum).SuccessMessage = reader.ReadString()
-        Resource(ResourceNum).EmptyMessage = reader.ReadString()
-        Resource(ResourceNum).ResourceType = reader.ReadInt32()
-        Resource(ResourceNum).ResourceImage = reader.ReadInt32()
-        Resource(ResourceNum).ExhaustedImage = reader.ReadInt32()
-        Resource(ResourceNum).ExpReward = reader.ReadInt32()
-        Resource(ResourceNum).ItemReward = reader.ReadInt32()
-        Resource(ResourceNum).LvlRequired = reader.ReadInt32()
-        Resource(ResourceNum).ToolRequired = reader.ReadInt32()
-        Resource(ResourceNum).Health = reader.ReadInt32()
-        Resource(ResourceNum).RespawnTime = reader.ReadInt32()
-        Resource(ResourceNum).Walkthrough = reader.ReadBoolean()
-        Resource(ResourceNum).Animation = reader.ReadInt32()
+        If data Is Nothing Then
+            ClearResource(resourceNum)
+            Exit Sub
+        End If
 
-        If Resource(ResourceNum).Name Is Nothing Then Resource(ResourceNum).Name = ""
-        If Resource(ResourceNum).EmptyMessage Is Nothing Then Resource(ResourceNum).EmptyMessage = ""
-        If Resource(ResourceNum).SuccessMessage Is Nothing Then Resource(ResourceNum).SuccessMessage = ""
-
-    End Sub
-
-    Sub CheckResources()
-        For i = 1 To MAX_RESOURCES
-
-            If Not File.Exists(Paths.Resource(i)) Then
-                SaveResource(i)
-            End If
-
-        Next
-
+        Dim resourceData = JObject.FromObject(data).toObject(Of ResourceStruct)()
+        Resource(resourceNum) = resourceData
     End Sub
 
     Sub ClearResource(index As Integer)
@@ -194,8 +145,6 @@ Friend Module S_Resource
     Sub Packet_EditResource(index As Integer, ByRef data() As Byte)
         Dim Buffer As New ByteStream(4)
 
-        AddDebug("Recieved EMSG: RequestEditResource")
-
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
         If TempPlayer(index).Editor > -1 Then  Exit Sub
@@ -218,16 +167,12 @@ Friend Module S_Resource
         Buffer.WriteInt32(ServerPackets.SResourceEditor)
         Socket.SendDataTo(index, Buffer.Data, Buffer.Head)
 
-        AddDebug("Sent SMSG: SResourceEditor")
-
         Buffer.Dispose()
     End Sub
 
     Sub Packet_SaveResource(index As Integer, ByRef data() As Byte)
         Dim resourcenum As Integer
         Dim buffer As New ByteStream(data)
-
-        AddDebug("Recieved EMSG: SaveResource")
 
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
@@ -262,8 +207,6 @@ Friend Module S_Resource
     End Sub
 
     Sub Packet_RequestResource(index As Integer, ByRef data() As Byte)
-        AddDebug("Recieved CMSG: CRequestResource")
-
         Dim Buffer = New ByteStream(data), n As Integer
 
         n = Buffer.ReadInt32
@@ -286,8 +229,6 @@ Friend Module S_Resource
         buffer.WriteInt32(ServerPackets.SMapResource)
         buffer.WriteInt32(MapResource(mapnum).ResourceCount)
 
-        AddDebug("Sent SMSG: SResourcesCache")
-
         If MapResource(mapnum).ResourceCount > 0 Then
 
             For i = 1 To MapResource(mapnum).ResourceCount
@@ -308,8 +249,6 @@ Friend Module S_Resource
 
         buffer.WriteInt32(ServerPackets.SMapResource)
         buffer.WriteInt32(MapResource(mapNum).ResourceCount)
-
-        AddDebug("Sent SMSG: SMapResource")
 
         If MapResource(mapNum).ResourceCount > 0 Then
 
@@ -345,8 +284,6 @@ Friend Module S_Resource
 
         buffer.WriteBlock(ResourceData(ResourceNum))
 
-        AddDebug("Sent SMSG: SUpdateResources")
-
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
         buffer.Dispose()
     End Sub
@@ -357,8 +294,6 @@ Friend Module S_Resource
         buffer.WriteInt32(ServerPackets.SUpdateResource)
 
         buffer.WriteBlock(ResourceData(ResourceNum))
-
-        AddDebug("Sent SMSG: SUpdateResource")
 
         SendDataToAll(buffer.Data, buffer.Head)
         buffer.Dispose()

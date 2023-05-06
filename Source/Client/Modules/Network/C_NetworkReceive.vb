@@ -550,35 +550,35 @@ Module C_NetworkReceive
         i = buffer.ReadInt32
 
         ' Update the Npc
-        Npc(i).Animation = buffer.ReadInt32()
-        Npc(i).AttackSay = buffer.ReadString()
-        Npc(i).Behaviour = buffer.ReadByte()
+        NPC(i).Animation = buffer.ReadInt32()
+        NPC(i).AttackSay = buffer.ReadString()
+        NPC(i).Behaviour = buffer.ReadByte()
 
         For x = 1 To MAX_DROP_ITEMS
-            Npc(i).DropChance(x) = buffer.ReadInt32()
-            Npc(i).DropItem(x) = buffer.ReadInt32()
-            Npc(i).DropItemValue(x) = buffer.ReadInt32()
+            NPC(i).DropChance(x) = buffer.ReadInt32()
+            NPC(i).DropItem(x) = buffer.ReadInt32()
+            NPC(i).DropItemValue(x) = buffer.ReadInt32()
         Next
 
-        Npc(i).Exp = buffer.ReadInt32()
-        Npc(i).Faction = buffer.ReadByte()
-        Npc(i).HP = buffer.ReadInt32()
-        Npc(i).Name = buffer.ReadString()
-        Npc(i).Range = buffer.ReadByte()
-        Npc(i).SpawnTime = buffer.ReadByte()
-        Npc(i).SpawnSecs = buffer.ReadInt32()
-        Npc(i).Sprite = buffer.ReadInt32()
+        NPC(i).Exp = buffer.ReadInt32()
+        NPC(i).Faction = buffer.ReadByte()
+        NPC(i).HP = buffer.ReadInt32()
+        NPC(i).Name = buffer.ReadString()
+        NPC(i).Range = buffer.ReadByte()
+        NPC(i).SpawnTime = buffer.ReadByte()
+        NPC(i).SpawnSecs = buffer.ReadInt32()
+        NPC(i).Sprite = buffer.ReadInt32()
 
         For x = 1 To StatType.Count - 1
-            Npc(i).Stat(x) = buffer.ReadByte()
+            NPC(i).Stat(x) = buffer.ReadByte()
         Next
 
         For x = 1 To MAX_NPC_SKILLS
-            Npc(i).Skill(x) = buffer.ReadByte()
+            NPC(i).Skill(x) = buffer.ReadByte()
         Next
 
-        Npc(i).Level = buffer.ReadInt32()
-        Npc(i).Damage = buffer.ReadInt32()
+        NPC(i).Level = buffer.ReadInt32()
+        NPC(i).Damage = buffer.ReadInt32()
 
         buffer.Dispose()
     End Sub
@@ -885,36 +885,36 @@ Module C_NetworkReceive
         For i = 0 To x
             n = buffer.ReadInt32
             ' Update the Npc
-            Npc(n).Animation = buffer.ReadInt32()
-            Npc(n).AttackSay = buffer.ReadString()
-            Npc(n).Behaviour = buffer.ReadByte()
+            NPC(n).Animation = buffer.ReadInt32()
+            NPC(n).AttackSay = buffer.ReadString()
+            NPC(n).Behaviour = buffer.ReadByte()
 
             For z = 0 To 5
-                Npc(n).DropChance(z) = buffer.ReadInt32()
-                Npc(n).DropItem(z) = buffer.ReadInt32()
-                Npc(n).DropItemValue(z) = buffer.ReadInt32()
+                NPC(n).DropChance(z) = buffer.ReadInt32()
+                NPC(n).DropItem(z) = buffer.ReadInt32()
+                NPC(n).DropItemValue(z) = buffer.ReadInt32()
             Next
 
-            Npc(n).Exp = buffer.ReadInt32()
-            Npc(n).Faction = buffer.ReadByte()
-            Npc(n).HP = buffer.ReadInt32()
-            Npc(n).Name = buffer.ReadString()
-            Npc(n).Range = buffer.ReadByte()
-            Npc(n).SpawnTime = buffer.ReadByte()
-            Npc(n).SpawnSecs = buffer.ReadInt32()
-            Npc(n).Sprite = buffer.ReadInt32()
+            NPC(n).Exp = buffer.ReadInt32()
+            NPC(n).Faction = buffer.ReadByte()
+            NPC(n).HP = buffer.ReadInt32()
+            NPC(n).Name = buffer.ReadString()
+            NPC(n).Range = buffer.ReadByte()
+            NPC(n).SpawnTime = buffer.ReadByte()
+            NPC(n).SpawnSecs = buffer.ReadInt32()
+            NPC(n).Sprite = buffer.ReadInt32()
 
             For z = 1 To StatType.Count - 1
-                Npc(n).Stat(z) = buffer.ReadByte()
+                NPC(n).Stat(z) = buffer.ReadByte()
             Next
 
-            ReDim Npc(n).Skill(MAX_NPC_SKILLS)
+            ReDim NPC(n).Skill(MAX_NPC_SKILLS)
             For z = 1 To MAX_NPC_SKILLS
-                Npc(n).Skill(z) = buffer.ReadByte()
+                NPC(n).Skill(z) = buffer.ReadByte()
             Next
 
-            Npc(i).Level = buffer.ReadInt32()
-            Npc(i).Damage = buffer.ReadInt32()
+            NPC(i).Level = buffer.ReadInt32()
+            NPC(i).Damage = buffer.ReadInt32()
         Next
 
         i = 0

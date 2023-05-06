@@ -46,17 +46,30 @@ Module S_General
         CheckDir(Paths.Resources)
         CheckDir(Paths.Animations)
         CheckDir(Paths.Logs)
-        CheckDir(Paths.Quests)
         CheckDir(Paths.Pets)
         CheckDir(Paths.Projectiles)
-        CheckDir(Paths.Quests)
 
         EKeyPair.GenerateKeys()
         InitNetwork()
 
-        ' Serves as a constructor
+        CreateDatabase("mirage")
+        CreateTable("job")
+        CreateTable("item")
+        CreateTable("map")
+        CreateTable("npc")
+        CreateTable("shop")
+        CreateTable("skill")
+        CreateTable("resource")
+        CreateTable("animation")
+        CreateTable("pet")
+        CreateTable("projectile")
+        CreateTable("player")
+        CreateTable("account")
+        CreateTable("bank")
+
         ClearGameData()
         LoadGameData()
+
         Console.WriteLine("Spawning Map Items...")
         SpawnAllMapsItems()
         Console.WriteLine("Spawning Map NPCs...")
@@ -83,9 +96,6 @@ Module S_General
 
         UpdateCaption()
 
-        ' reset shutdown value
-        isShuttingDown = False
-
         ' Start listener now that everything is loaded
         Socket.StartListening(Settings.Port, 5)
 
@@ -100,7 +110,6 @@ Module S_General
             'cleanup and close
             DestroyServer()
         End If
-        Return False
     End Function
 
     Private handler As ConsoleEventDelegate

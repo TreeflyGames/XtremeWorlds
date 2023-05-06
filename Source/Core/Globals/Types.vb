@@ -6,7 +6,7 @@ Public Module Types
     ' Common data structure arrays
     Public Job(MAX_JOBS) As JobStruct
     Public Item(MAX_ITEMS) As ItemStruct
-    Public Npc(MAX_NPCS) As NpcStruct
+    Public NPC(MAX_NPCS) As NpcStruct
     Public Shop(MAX_SHOPS) As ShopStruct
     Public Skill(MAX_SKILLS) As SkillStruct
     Public Resource(MAX_RESOURCES) As ResourceStruct
@@ -14,7 +14,7 @@ Public Module Types
     Public Map(MAX_CACHED_MAPS) As MapStruct
     Public PlayersOnMap(MAX_CACHED_MAPS) As Boolean
     Public MapItem(MAX_CACHED_MAPS, MAX_MAP_ITEMS) As MapItemStruct
-    Public MapNpc(MAX_MAP_NPCS) As MapDataStruct
+    Public MapNPC(MAX_MAP_NPCS) As MapDataStruct
     Public Bank(MAX_PLAYERS) As BankStruct
     Public TempPlayer(MAX_PLAYERS) As TempPlayerStruct
     Public Account(MAX_PLAYERS) as AccountStruct
@@ -23,7 +23,7 @@ Public Module Types
     Public CharSelection() As CharSelStruct
     Public Quest(MAX_QUESTS) As QuestStruct
     Public Projectile(MAX_PROJECTILES) As ProjectileStruct
-    Public MapProjectile(MAX_PROJECTILES) As MapProjectileStruct
+    Public MapProjectile(MAX_MAPS, MAX_PROJECTILES) As MapProjectileStruct
     Public TradeYourOffer(MAX_INV) As PlayerInvStruct
     Public TradeTheirOffer(MAX_INV) As PlayerInvStruct
     Public Party As PartyStruct

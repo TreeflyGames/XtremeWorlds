@@ -1,25 +1,209 @@
 ﻿Imports System
 Imports System.Data
 Imports System.IO
+Imports System.Text
+Imports System.Text.RegularExpressions
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
+Imports Mirage.Basic.Engine.Network
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
+Imports Npgsql
+Imports NpgsqlTypes
 
 Module S_Database
+    Dim connectionString As String = "Host=localhost;Port=5432;Username=postgres;Password=mirage;Database=mirage"
+
+    Public Function StringToHex(input As String) As String
+        Dim byteArray() As Byte = Encoding.UTF8.GetBytes(input)
+        Dim hex As New StringBuilder(byteArray.Length * 2)
+
+        For Each b As Byte In byteArray
+            hex.AppendFormat("{0:x2}", b)
+        Next
+
+        Return hex.ToString()
+    End Function
+
+    Public Function HexToNumber(hexString As String) As Integer
+        If String.IsNullOrWhiteSpace(hexString) OrElse Not Regex.IsMatch(hexString, "^[0-9a-fA-F]+$") Then
+            Return 0
+        End If
+
+        Return Convert.ToInt32(hexString, 16)
+    End Function
+
+    Public Sub ExecuteSql(connectionString As String, sql As String)
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.ExecuteNonQuery()
+            End Using
+        End Using
+    End Sub
+    
+    Function DatabaseExists(databaseName As String) As Boolean
+        Dim sql As String = "SELECT 1 FROM pg_database WHERE datname = @databaseName;"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@databaseName", databaseName)
+
+                Using reader As NpgsqlDataReader = command.ExecuteReader()
+                    If reader.Read() Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                End Using
+            End Using
+        End Using
+    End Function
+
+    Public Sub CreateDatabase(databaseName As String)
+        If Not DatabaseExists("mirage") Then
+            Dim sql As String = $"CREATE DATABASE {databaseName};"
+
+            ' Connect to the "postgres" maintenance database
+            Dim builder As New NpgsqlConnectionStringBuilder(connectionString)
+            builder.Database = "postgres"
+
+            Dim maintenanceConnectionString As String = builder.ConnectionString
+
+            ExecuteSql(maintenanceConnectionString, sql)
+        End If
+    End Sub
+
+    Function TableExists(schemaName As String, tableName As String) As Boolean
+        Dim sql As String = "SELECT 1 FROM information_schema.tables WHERE table_schema = @schemaName AND table_name = @tableName;"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@schemaName", schemaName)
+                command.Parameters.AddWithValue("@tableName", tableName)
+
+                Using reader As NpgsqlDataReader = command.ExecuteReader()
+                    If reader.Read() Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                End Using
+            End Using
+        End Using
+    End Function
+
+    Sub UpdateRow(id As Integer, data As String, table As String)
+        Dim sql As String = $"UPDATE {table} SET data = @data WHERE id = @id;"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                Dim jsonString As String = data.ToString()
+                command.Parameters.AddWithValue("@data", NpgsqlDbType.Jsonb, jsonString)
+                command.Parameters.AddWithValue("@id", id)
+
+                command.ExecuteNonQuery()
+            End Using
+        End Using
+    End Sub
+    
+    Public Sub CreateTable(tableName As String)
+        If TableExists("public", tableName) Then
+            Exit Sub
+        End If
+
+        Dim sql As String = $"
+        CREATE TABLE {tableName} (
+            id SERIAL PRIMARY KEY,
+            data jsonb
+        );"
+
+        ExecuteSql(connectionString, sql)
+    End Sub
+
+    Public Function RowExists(id As Integer, table As String) As Boolean
+        Dim sql As String = $"SELECT EXISTS (SELECT 1 FROM {table} WHERE id = @id);"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@id", id)
+
+                Using reader As NpgsqlDataReader = command.ExecuteReader()
+                    If reader.Read() Then
+                        Return reader.GetBoolean(0)
+                    Else
+                        Return False
+                    End If
+                End Using
+            End Using
+        End Using
+    End Function
+
+    Public Sub InsertRow(table As String, data As String)
+        Dim sql As String = $"INSERT INTO {table} (data) VALUES (@data);"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@data", NpgsqlDbType.Jsonb, data)
+
+                command.ExecuteNonQuery()
+            End Using
+        End Using
+    End Sub
+
+    Public Sub InsertRowByid(table As String, id As Integer, data As String)
+        Dim sql As String = $"INSERT INTO {table} (id, data) VALUES (@id, @data);"
+
+        If id = 0 Then
+            Exit Sub
+        End If
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@id", id)
+                command.Parameters.AddWithValue("@data", NpgsqlDbType.Jsonb, data)
+
+                command.ExecuteNonQuery()
+            End Using
+        
+        End Using
+    End Sub
+
+    Public Function SelectRow(tableName As String, columnName As String, id As Integer) As JObject
+        Dim sql As String = $"SELECT {columnName} FROM {tableName} WHERE id = @id;"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@id", id)
+
+                Using reader As NpgsqlDataReader = command.ExecuteReader()
+                    If reader.Read() Then
+                        Dim jsonbData As String = reader.GetString(0)
+                        Dim jsonObject As JObject = JObject.Parse(jsonbData)
+                        Return jsonObject
+                    Else
+                        Return Nothing
+                    End If
+                End Using
+            End Using
+        End Using
+    End Function
 
 #Region "Job"
-
-    Sub CheckJobs()
-        Dim i As Integer
-
-        For i = 1 To MAX_JOBS
-
-            If Not File.Exists(Paths.Job(i)) Then
-                SaveJob(i)
-            End If
-
-        Next
-    End Sub
 
     Sub ClearJobs()
         Dim i As Integer
@@ -48,37 +232,21 @@ Module S_Database
     End Sub
 
     Sub LoadJob(jobNum As Integer)
-        Dim filename As String, i As Integer
+        Dim data As JObject
+            
+        data = SelectRow("job", "data", jobNum)
 
-        filename = Paths.Job(jobNum)
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
+        If data Is Nothing Then
+            ClearJob(jobNum)
+            Exit Sub
+        End If
 
-        Job(jobNum).Name = reader.ReadString()
-        Job(jobNum).Desc = reader.ReadString()
-
-        Job(jobNum).MaleSprite = reader.ReadInt32
-        Job(jobNum).FemaleSprite = reader.ReadInt32
-
-        For i = 1 To StatType.Count - 1
-            Job(jobNum).Stat(i) = reader.ReadByte
-        Next
-
-        For i = 1 To 5
-            Job(jobNum).StartItem(i) = reader.ReadInt32
-            Job(jobNum).StartValue(i) = reader.ReadInt32
-        Next
-
-        Job(jobNum).StartMap = reader.ReadInt32
-        Job(jobNum).StartX = reader.ReadByte
-        Job(jobNum).StartY = reader.ReadByte
-        Job(jobNum).BaseExp = reader.ReadInt32
+        Dim jobData = JObject.FromObject(data).toObject(Of JobStruct)()
+        Job(jobNum) = jobData
     End Sub
 
     Sub LoadJobs()
         Dim i As Integer
-
-        CheckJobs()
 
         For i = 1 To MAX_JOBS
             LoadJob(i)
@@ -86,34 +254,13 @@ Module S_Database
     End Sub
 
     Sub SaveJob(jobNum As Integer)
-        Dim filename As String
-        Dim x As Integer
+        Dim json As String = JsonConvert.SerializeObject(Job(jobNum)).ToString()
 
-        filename = Paths.Job(jobNum)
-
-        Dim writer As New ByteStream(100)
-
-        writer.WriteString(Job(jobNum).Name)
-        writer.WriteString(Job(jobNum).Desc)
-
-        writer.WriteInt32(Job(jobNum).MaleSprite)
-        writer.WriteInt32(Job(jobNum).FemaleSprite)
-
-        For x = 1 To StatType.Count - 1
-            writer.WriteByte(Job(jobNum).Stat(x))
-        Next
-
-        For x = 1 To 5
-            writer.WriteInt32(Job(jobNum).StartItem(x))
-            writer.WriteInt32(Job(jobNum).StartValue(x))
-        Next
-
-        writer.WriteInt32(Job(jobNum).StartMap)
-        writer.WriteByte(Job(jobNum).StartX)
-        writer.WriteByte(Job(jobNum).StartY)
-        writer.WriteInt32(Job(jobNum).BaseExp)
-
-        ByteFile.Save(filename, writer)
+        If RowExists(jobNum, "job")
+            UpdateRow(jobNum, json, "job")
+        Else
+            InsertRow("job", json)
+        End If
     End Sub
 
     Sub SaveJobs()
@@ -127,21 +274,12 @@ Module S_Database
 
 #Region "Maps"
 
-    Sub CheckMaps()
-        For i = 1 To MAX_MAPS
-            If Not File.Exists(Paths.Map(i)) Then
-                SaveMap(i)
-            End If
-        Next
-
-    End Sub
-
     Sub ClearMaps()
         ReDim Map(MAX_CACHED_MAPS)
-        ReDim MapNpc(MAX_CACHED_MAPS)
+        ReDim MapNPC(MAX_CACHED_MAPS)
 
         For i = 1 To MAX_CACHED_MAPS
-            ReDim MapNpc(i).Npc(MAX_MAP_NPCS)
+            ReDim MapNPC(i).Npc(MAX_MAP_NPCS)
             ReDim Map(i).Npc(MAX_MAP_NPCS)
         Next
 
@@ -183,331 +321,18 @@ Module S_Database
         Map(mapNum).MaxY = MAX_MAPY
     End Sub
 
-    Sub SaveMaps()
-        Dim i As Integer
+    Public Sub SaveMap(mapNum As Integer)
+        Dim json As String = JsonConvert.SerializeObject(Map(mapNum)).ToString()
 
-        For i = 1 To MAX_MAPS
-            SaveMap(i)
-            SaveMapEvent(i)
-        Next
-
-    End Sub
-
-    Sub SaveMap(mapNum As Integer)
-        Dim filename As String
-        Dim x As Integer, y As Integer, l As Integer
-        Dim writer As New ByteStream(100)
-
-        filename = Paths.Map(mapNum)
-
-        writer.WriteString(Map(mapNum).Name)
-        writer.WriteString(Map(mapNum).Music)
-        writer.WriteInt32(Map(mapNum).Revision)
-        writer.WriteByte(Map(mapNum).Moral)
-        writer.WriteInt32(Map(mapNum).Tileset)
-        writer.WriteInt32(Map(mapNum).Up)
-        writer.WriteInt32(Map(mapNum).Down)
-        writer.WriteInt32(Map(mapNum).Left)
-        writer.WriteInt32(Map(mapNum).Right)
-        writer.WriteInt32(Map(mapNum).BootMap)
-        writer.WriteByte(Map(mapNum).BootX)
-        writer.WriteByte(Map(mapNum).BootY)
-        writer.WriteByte(Map(mapNum).MaxX)
-        writer.WriteByte(Map(mapNum).MaxY)
-        writer.WriteByte(Map(mapNum).WeatherType)
-        writer.WriteInt32(Map(mapNum).Fogindex)
-        writer.WriteInt32(Map(mapNum).WeatherIntensity)
-        writer.WriteByte(Map(mapNum).FogAlpha)
-        writer.WriteByte(Map(mapNum).FogSpeed)
-        writer.WriteByte(Map(mapNum).HasMapTint)
-        writer.WriteByte(Map(mapNum).MapTintR)
-        writer.WriteByte(Map(mapNum).MapTintG)
-        writer.WriteByte(Map(mapNum).MapTintB)
-        writer.WriteByte(Map(mapNum).MapTintA)
-
-        writer.WriteByte(Map(mapNum).Instanced)
-        writer.WriteByte(Map(mapNum).Panorama)
-        writer.WriteByte(Map(mapNum).Parallax)
-        writer.WriteByte(Map(mapNum).Brightness)
-
-        For x = 0 To Map(mapNum).MaxX
-            For y = 0 To Map(mapNum).MaxY
-                writer.WriteInt32(Map(mapNum).Tile(x, y).Data1)
-                writer.WriteInt32(Map(mapNum).Tile(x, y).Data2)
-                writer.WriteInt32(Map(mapNum).Tile(x, y).Data3)
-                writer.WriteByte(Map(mapNum).Tile(x, y).DirBlock)
-                For i = 1 To LayerType.Count - 1
-                    writer.WriteByte(Map(mapNum).Tile(x, y).Layer(i).Tileset)
-                    writer.WriteByte(Map(mapNum).Tile(x, y).Layer(i).X)
-                    writer.WriteByte(Map(mapNum).Tile(x, y).Layer(i).Y)
-                    writer.WriteByte(Map(mapNum).Tile(x, y).Layer(i).AutoTile)
-                Next
-                writer.WriteByte(Map(mapNum).Tile(x, y).Type)
-            Next
-        Next
-
-        For x = 1 To MAX_MAP_NPCS
-            writer.WriteInt32(Map(mapNum).Npc(x))
-        Next
-
-        ByteFile.Save(filename, writer)
-
-    End Sub
-
-    Sub SaveMapEvent(mapNum As Integer)
-        Dim filename = Paths.EventMap(mapNum)
-        Dim writer As New ByteStream(100)
-
-        writer.WriteInt32(Map(mapNum).EventCount)
-        For i = 0 To Map(mapNum).EventCount
-            With Map(mapNum).Events(i)
-                writer.WriteString(.Name)
-                writer.WriteByte(.Globals)
-                writer.WriteInt32(.X)
-                writer.WriteInt32(.Y)
-                writer.WriteInt32(.PageCount)
-            End With
-
-            If Map(mapNum).Events(i).PageCount > 0 Then
-                For x = 0 To Map(mapNum).Events(i).PageCount
-                    With Map(mapNum).Events(i).Pages(x)
-                        writer.WriteInt32(.ChkVariable)
-                        writer.WriteInt32(.Variableindex)
-                        writer.WriteInt32(.VariableCondition)
-                        writer.WriteInt32(.VariableCompare)
-
-                        writer.WriteInt32(.ChkSwitch)
-                        writer.WriteInt32(.Switchindex)
-                        writer.WriteInt32(.SwitchCompare)
-
-                        writer.WriteInt32(.ChkHasItem)
-                        writer.WriteInt32(.HasItemindex)
-                        writer.WriteInt32(.HasItemAmount)
-
-                        writer.WriteInt32(.ChkSelfSwitch)
-                        writer.WriteInt32(.SelfSwitchindex)
-                        writer.WriteInt32(.SelfSwitchCompare)
-
-                        writer.WriteByte(.GraphicType)
-                        writer.WriteInt32(.Graphic)
-                        writer.WriteInt32(.GraphicX)
-                        writer.WriteInt32(.GraphicY)
-                        writer.WriteInt32(.GraphicX2)
-                        writer.WriteInt32(.GraphicY2)
-
-                        writer.WriteByte(.MoveType)
-                        writer.WriteByte(.MoveSpeed)
-                        writer.WriteByte(.MoveFreq)
-                        writer.WriteInt32(.IgnoreMoveRoute)
-                        writer.WriteInt32(.RepeatMoveRoute)
-                        writer.WriteInt32(.MoveRouteCount)
-
-                        If .MoveRouteCount > 0 Then
-                            For y = 0 To .MoveRouteCount
-                                writer.WriteInt32(.MoveRoute(y).Index)
-                                writer.WriteInt32(.MoveRoute(y).Data1)
-                                writer.WriteInt32(.MoveRoute(y).Data2)
-                                writer.WriteInt32(.MoveRoute(y).Data3)
-                                writer.WriteInt32(.MoveRoute(y).Data4)
-                                writer.WriteInt32(.MoveRoute(y).Data5)
-                                writer.WriteInt32(.MoveRoute(y).Data6)
-                            Next
-                        End If
-
-                        writer.WriteInt32(.WalkAnim)
-                        writer.WriteInt32(.DirFix)
-                        writer.WriteInt32(.WalkThrough)
-                        writer.WriteInt32(.ShowName)
-                        writer.WriteByte(.Trigger)
-                        writer.WriteInt32(.CommandListCount)
-                        writer.WriteByte(.Position)
-                        writer.WriteInt32(.QuestNum)
-                    End With
-
-                    If Map(mapNum).Events(i).Pages(x).CommandListCount > 0 Then
-                        For y = 0 To Map(mapNum).Events(i).Pages(x).CommandListCount
-                            writer.WriteInt32(Map(mapNum).Events(i).Pages(x).CommandList(y).CommandCount)
-                            writer.WriteInt32(Map(mapNum).Events(i).Pages(x).CommandList(y).ParentList)
-
-                            If Map(mapNum).Events(i).Pages(x).CommandList(y).CommandCount > 0 Then
-                                For z = 0 To Map(mapNum).Events(i).Pages(x).CommandList(y).CommandCount
-                                    With Map(mapNum).Events(i).Pages(x).CommandList(y).Commands(z)
-                                        writer.WriteByte(.Index)
-                                        writer.WriteString(.Text1)
-                                        writer.WriteString(.Text2)
-                                        writer.WriteString(.Text3)
-                                        writer.WriteString(.Text4)
-                                        writer.WriteString(.Text5)
-                                        writer.WriteInt32(.Data1)
-                                        writer.WriteInt32(.Data2)
-                                        writer.WriteInt32(.Data3)
-                                        writer.WriteInt32(.Data4)
-                                        writer.WriteInt32(.Data5)
-                                        writer.WriteInt32(.Data6)
-                                        writer.WriteInt32(.ConditionalBranch.CommandList)
-                                        writer.WriteInt32(.ConditionalBranch.Condition)
-                                        writer.WriteInt32(.ConditionalBranch.Data1)
-                                        writer.WriteInt32(.ConditionalBranch.Data2)
-                                        writer.WriteInt32(.ConditionalBranch.Data3)
-                                        writer.WriteInt32(.ConditionalBranch.ElseCommandList)
-                                        writer.WriteInt32(.MoveRouteCount)
-
-                                        If .MoveRouteCount > 0 Then
-                                            For w = 0 To .MoveRouteCount
-                                                writer.WriteInt32(.MoveRoute(w).Index)
-                                                writer.WriteInt32(.MoveRoute(w).Data1)
-                                                writer.WriteInt32(.MoveRoute(w).Data2)
-                                                writer.WriteInt32(.MoveRoute(w).Data3)
-                                                writer.WriteInt32(.MoveRoute(w).Data4)
-                                                writer.WriteInt32(.MoveRoute(w).Data5)
-                                                writer.WriteInt32(.MoveRoute(w).Data6)
-                                            Next
-                                        End If
-                                    End With
-                                Next
-                            End If
-                        Next
-                    End If
-                Next
-            End If
-        Next
-
-        ByteFile.Save(filename, writer)
-    End Sub
-
-    Sub LoadMapEvent(mapNum As Integer)
-        Dim filename = Paths.EventMap(mapNum)
-
-        If File.Exists(filename) = False Then Exit Sub
-
-        Dim i As Integer, x As Integer, y As Integer, p As Integer
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
-
-        Map(mapNum).EventCount = reader.ReadInt32()
-        ReDim Map(mapNum).Events(Map(mapNum).EventCount)
-
-        For i = 0 To Map(mapNum).EventCount
-            With Map(mapNum).Events(i)
-                .Name = reader.ReadString()
-                .Globals = reader.ReadByte()
-                .X = reader.ReadInt32()
-                .Y = reader.ReadInt32()
-                .PageCount = reader.ReadInt32()
-            End With
-
-            If Map(mapNum).Events(i).PageCount > 0 Then
-                ReDim Map(mapNum).Events(i).Pages(Map(mapNum).Events(i).PageCount)
-                For x = 0 To Map(mapNum).Events(i).PageCount
-                    With Map(mapNum).Events(i).Pages(x)
-                        .ChkVariable = reader.ReadInt32()
-                        .Variableindex = reader.ReadInt32()
-                        .VariableCondition = reader.ReadInt32()
-                        .VariableCompare = reader.ReadInt32()
-
-                        .ChkSwitch = reader.ReadInt32()
-                        .Switchindex = reader.ReadInt32()
-                        .SwitchCompare = reader.ReadInt32()
-
-                        .ChkHasItem = reader.ReadInt32()
-                        .HasItemindex = reader.ReadInt32()
-                        .HasItemAmount = reader.ReadInt32()
-
-                        .ChkSelfSwitch = reader.ReadInt32()
-                        .SelfSwitchindex = reader.ReadInt32()
-                        .SelfSwitchCompare = reader.ReadInt32()
-
-                        .GraphicType = reader.ReadByte()
-                        .Graphic = reader.ReadInt32()
-                        .GraphicX = reader.ReadInt32()
-                        .GraphicY = reader.ReadInt32()
-                        .GraphicX2 = reader.ReadInt32()
-                        .GraphicY2 = reader.ReadInt32()
-
-                        .MoveType = reader.ReadByte()
-                        .MoveSpeed = reader.ReadByte()
-                        .MoveFreq = reader.ReadByte()
-                        .IgnoreMoveRoute = reader.ReadInt32()
-                        .RepeatMoveRoute = reader.ReadInt32()
-                        .MoveRouteCount = reader.ReadInt32()
-
-                        If .MoveRouteCount > 0 Then
-                            ReDim Preserve Map(mapNum).Events(i).Pages(x).MoveRoute(.MoveRouteCount)
-                            For y = 0 To .MoveRouteCount
-                                .MoveRoute(y).Index = reader.ReadInt32()
-                                .MoveRoute(y).Data1 = reader.ReadInt32()
-                                .MoveRoute(y).Data2 = reader.ReadInt32()
-                                .MoveRoute(y).Data3 = reader.ReadInt32()
-                                .MoveRoute(y).Data4 = reader.ReadInt32()
-                                .MoveRoute(y).Data5 = reader.ReadInt32()
-                                .MoveRoute(y).Data6 = reader.ReadInt32()
-                            Next
-                        End If
-
-                        .WalkAnim = reader.ReadInt32()
-                        .DirFix = reader.ReadInt32()
-                        .WalkThrough = reader.ReadInt32()
-                        .ShowName = reader.ReadInt32()
-                        .Trigger = reader.ReadByte()
-                        .CommandListCount = reader.ReadInt32()
-                        .Position = reader.ReadByte()
-                        .QuestNum = reader.ReadInt32()
-                    End With
-
-                    If Map(mapNum).Events(i).Pages(x).CommandListCount > 0 Then
-                        ReDim Map(mapNum).Events(i).Pages(x).CommandList(Map(mapNum).Events(i).Pages(x).CommandListCount)
-                        For y = 0 To Map(mapNum).Events(i).Pages(x).CommandListCount
-                            Map(mapNum).Events(i).Pages(x).CommandList(y).CommandCount = reader.ReadInt32()
-                            Map(mapNum).Events(i).Pages(x).CommandList(y).ParentList = reader.ReadInt32()
-                            If Map(mapNum).Events(i).Pages(x).CommandList(y).CommandCount > 0 Then
-                                ReDim Map(mapNum).Events(i).Pages(x).CommandList(y).Commands(Map(mapNum).Events(i).Pages(x).CommandList(y).CommandCount)
-                                For p = 0 To Map(mapNum).Events(i).Pages(x).CommandList(y).CommandCount
-                                    With Map(mapNum).Events(i).Pages(x).CommandList(y).Commands(p)
-                                        .Index = reader.ReadByte()
-                                        .Text1 = reader.ReadString()
-                                        .Text2 = reader.ReadString()
-                                        .Text3 = reader.ReadString()
-                                        .Text4 = reader.ReadString()
-                                        .Text5 = reader.ReadString()
-                                        .Data1 = reader.ReadInt32()
-                                        .Data2 = reader.ReadInt32()
-                                        .Data3 = reader.ReadInt32()
-                                        .Data4 = reader.ReadInt32()
-                                        .Data5 = reader.ReadInt32()
-                                        .Data6 = reader.ReadInt32()
-                                        .ConditionalBranch.CommandList = reader.ReadInt32()
-                                        .ConditionalBranch.Condition = reader.ReadInt32()
-                                        .ConditionalBranch.Data1 = reader.ReadInt32()
-                                        .ConditionalBranch.Data2 = reader.ReadInt32()
-                                        .ConditionalBranch.Data3 = reader.ReadInt32()
-                                        .ConditionalBranch.ElseCommandList = reader.ReadInt32()
-                                        .MoveRouteCount = reader.ReadInt32()
-                                        If .MoveRouteCount > 0 Then
-                                            ReDim .MoveRoute(.MoveRouteCount)
-                                            For w = 0 To .MoveRouteCount
-                                                .MoveRoute(w).Index = reader.ReadInt32()
-                                                .MoveRoute(w).Data1 = reader.ReadInt32()
-                                                .MoveRoute(w).Data2 = reader.ReadInt32()
-                                                .MoveRoute(w).Data3 = reader.ReadInt32()
-                                                .MoveRoute(w).Data4 = reader.ReadInt32()
-                                                .MoveRoute(w).Data5 = reader.ReadInt32()
-                                                .MoveRoute(w).Data6 = reader.ReadInt32()
-                                            Next
-                                        End If
-                                    End With
-                                Next
-                            End If
-                        Next
-                    End If
-                Next
-            End If
-        Next
+        If RowExists(mapNum, "map")
+            UpdateRow(mapNum, json, "map")
+        Else
+            InsertRow("map", json)
+        End If
     End Sub
 
     Sub LoadMaps()
         Dim i As Integer
-
-        CheckMaps()
 
         For i = 1 To MAX_MAPS
             LoadMap(i)
@@ -515,71 +340,20 @@ Module S_Database
     End Sub
 
     Sub LoadMap(mapNum As Integer)
-        Dim filename As String
-        Dim x As Integer
-        Dim y As Integer
-        Dim l As Integer
+        
+        Dim data As JObject
 
-        filename = Paths.Map(mapNum)
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
+        data = SelectRow("map", "data", mapNum)
 
-        Map(mapNum).Name = reader.ReadString()
-        Map(mapNum).Music = reader.ReadString()
-        Map(mapNum).Revision = reader.ReadInt32()
-        Map(mapNum).Moral = reader.ReadByte()
-        Map(mapNum).Tileset = reader.ReadInt32()
-        Map(mapNum).Up = reader.ReadInt32()
-        Map(mapNum).Down = reader.ReadInt32()
-        Map(mapNum).Left = reader.ReadInt32()
-        Map(mapNum).Right = reader.ReadInt32()
-        Map(mapNum).BootMap = reader.ReadInt32()
-        Map(mapNum).BootX = reader.ReadByte()
-        Map(mapNum).BootY = reader.ReadByte()
-        Map(mapNum).MaxX = reader.ReadByte()
-        Map(mapNum).MaxY = reader.ReadByte()
-        Map(mapNum).WeatherType = reader.ReadByte()
-        Map(mapNum).Fogindex = reader.ReadInt32()
-        Map(mapNum).WeatherIntensity = reader.ReadInt32()
-        Map(mapNum).FogAlpha = reader.ReadByte()
-        Map(mapNum).FogSpeed = reader.ReadByte()
-        Map(mapNum).HasMapTint = reader.ReadByte()
-        Map(mapNum).MapTintR = reader.ReadByte()
-        Map(mapNum).MapTintG = reader.ReadByte()
-        Map(mapNum).MapTintB = reader.ReadByte()
-        Map(mapNum).MapTintA = reader.ReadByte()
-        Map(mapNum).Instanced = reader.ReadByte()
-        Map(mapNum).Panorama = reader.ReadByte()
-        Map(mapNum).Parallax = reader.ReadByte()
-        Map(mapNum).Brightness = reader.ReadByte()
+        if data Is Nothing then
+            ClearMap(mapNum)
+            Exit Sub
+        End If
 
-        ' have to set the tile()
-        ReDim Map(mapNum).Tile(Map(mapNum).MaxX, Map(mapNum).MaxY)
-
-        For x = 0 To Map(mapNum).MaxX
-            For y = 0 To Map(mapNum).MaxY
-                Map(mapNum).Tile(x, y).Data1 = reader.ReadInt32()
-                Map(mapNum).Tile(x, y).Data2 = reader.ReadInt32()
-                Map(mapNum).Tile(x, y).Data3 = reader.ReadInt32()
-                Map(mapNum).Tile(x, y).DirBlock = reader.ReadByte()
-                ReDim Map(mapNum).Tile(x, y).Layer(LayerType.Count - 1)
-                For l = 1 To LayerType.Count - 1
-                    Map(mapNum).Tile(x, y).Layer(l).Tileset = reader.ReadByte()
-                    Map(mapNum).Tile(x, y).Layer(l).X = reader.ReadByte()
-                    Map(mapNum).Tile(x, y).Layer(l).Y = reader.ReadByte()
-                    Map(mapNum).Tile(x, y).Layer(l).AutoTile = reader.ReadByte()
-                Next
-                Map(mapNum).Tile(x, y).Type = reader.ReadByte()
-            Next
-        Next
-
-        For x = 1 To MAX_MAP_NPCS
-            Map(mapNum).Npc(x) = reader.ReadInt32()
-            MapNpc(mapNum).Npc(x).Num = Map(mapNum).Npc(x)
-        Next
+        Dim mapData = JObject.FromObject(data).toObject(Of MapStruct)()
+        Map(mapNum) = mapData
 
         CacheResources(mapNum)
-        LoadMapEvent(mapNum)
     End Sub
 
     Sub ClearMapItem(index As Integer, mapNum As Integer)
@@ -602,124 +376,44 @@ Module S_Database
 
 #Region "Npc's"
 
-    Sub SaveNpcs()
-        Dim i As Integer
+    Sub SaveNpc(npcNum As Integer)
+        Dim json As String = JsonConvert.SerializeObject(NPC(npcNum)).ToString()
 
-        For i = 1 To MAX_NPCS
-            SaveNpc(i)
-        Next
-
-    End Sub
-
-    Sub SaveNpc(NpcNum As Integer)
-        Dim filename As String
-        Dim i As Integer
-        filename = Paths.Npc(NpcNum)
-
-        Dim writer As New ByteStream(100)
-        writer.WriteString(Npc(NpcNum).Name)
-        writer.WriteString(Npc(NpcNum).AttackSay)
-        writer.WriteInt32(Npc(NpcNum).Sprite)
-        writer.WriteByte(Npc(NpcNum).SpawnTime)
-        writer.WriteInt32(Npc(NpcNum).SpawnSecs)
-        writer.WriteByte(Npc(NpcNum).Behaviour)
-        writer.WriteByte(Npc(NpcNum).Range)
-
-        For i = 1 To MAX_DROP_ITEMS
-            writer.WriteInt32(Npc(NpcNum).DropChance(i))
-            writer.WriteInt32(Npc(NpcNum).DropItem(i))
-            writer.WriteInt32(Npc(NpcNum).DropItemValue(i))
-        Next
-
-        For i = 1 To StatType.Count - 1
-            writer.WriteByte(Npc(NpcNum).Stat(i))
-        Next
-
-        writer.WriteByte(Npc(NpcNum).Faction)
-        writer.WriteInt32(Npc(NpcNum).HP)
-        writer.WriteInt32(Npc(NpcNum).Exp)
-        writer.WriteInt32(Npc(NpcNum).Animation)
-
-        For i = 1 To MAX_NPC_SKILLS
-            writer.WriteByte(Npc(NpcNum).Skill(i))
-        Next
-
-        writer.WriteInt32(Npc(NpcNum).Level)
-        writer.WriteInt32(Npc(NpcNum).Damage)
-
-        ByteFile.Save(filename, writer)
+        If RowExists(npcNum, "npc")
+            UpdateRow(npcNum, json, "npc")
+        Else
+            InsertRow("npc", json)
+        End If
     End Sub
 
     Sub LoadNpcs()
         Dim i As Integer
-
-        CheckNpcs()
 
         For i = 1 To MAX_NPCS
             LoadNpc(i)
         Next
     End Sub
 
-    Sub LoadNpc(NpcNum As Integer)
-        Dim filename As String
-        Dim n As Integer
+    Sub LoadNpc(npcNum As Integer)
+        Dim data As JObject
 
-        filename = Paths.Npc(NpcNum)
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
+        data = SelectRow("npc", "data", npcNum)
 
-        Npc(NpcNum).Name = reader.ReadString()
-        Npc(NpcNum).AttackSay = reader.ReadString()
-        Npc(NpcNum).Sprite = reader.ReadInt32()
-        Npc(NpcNum).SpawnTime = reader.ReadByte()
-        Npc(NpcNum).SpawnSecs = reader.ReadInt32()
-        Npc(NpcNum).Behaviour = reader.ReadByte()
-        Npc(NpcNum).Range = reader.ReadByte()
+        If data Is Nothing Then
+            ClearNpc(npcNum)
+            Exit Sub
+        End If
 
-        For i = 1 To MAX_DROP_ITEMS
-            Npc(NpcNum).DropChance(i) = reader.ReadInt32()
-            Npc(NpcNum).DropItem(i) = reader.ReadInt32()
-            Npc(NpcNum).DropItemValue(i) = reader.ReadInt32()
-        Next
-
-        For n = 1 To StatType.Count - 1
-            Npc(NpcNum).Stat(n) = reader.ReadByte()
-        Next
-
-        Npc(NpcNum).Faction = reader.ReadByte()
-        Npc(NpcNum).HP = reader.ReadInt32()
-        Npc(NpcNum).Exp = reader.ReadInt32()
-        Npc(NpcNum).Animation = reader.ReadInt32()
-
-        For i = 1 To MAX_NPC_SKILLS
-            Npc(NpcNum).Skill(i) = reader.ReadByte()
-        Next
-
-        Npc(NpcNum).Level = reader.ReadInt32()
-        Npc(NpcNum).Damage = reader.ReadInt32()
-
-        If Npc(NpcNum).Name Is Nothing Then Npc(NpcNum).Name = ""
-        If Npc(NpcNum).AttackSay Is Nothing Then Npc(NpcNum).AttackSay = ""
-    End Sub
-
-    Sub CheckNpcs()
-        Dim i As Integer
-
-        For i = 1 To MAX_NPCS
-            If Not File.Exists(Paths.Npc(i)) Then
-                SaveNpc(i)
-            End If
-
-        Next
-
+        Dim npcData = JObject.FromObject(data).toObject(Of NpcStruct)()
+        NPC(npcNum) = npcData
     End Sub
 
     Sub ClearMapNpc(index As Integer, mapNum As Integer)
-        MapNpc(mapNum).Npc(index).Num = 0
-        ReDim MapNpc(mapNum).Npc(index).Vital(VitalType.Count - 1)
-        ReDim MapNpc(mapNum).Npc(index).SkillCd(MAX_NPC_SKILLS)
+        MapNPC(mapNum).Npc(index).Num = 0
+        ReDim MapNPC(mapNum).Npc(index).Vital(VitalType.Count - 1)
+        ReDim MapNPC(mapNum).Npc(index).SkillCd(MAX_NPC_SKILLS)
     End Sub
-
+    
     Sub ClearAllMapNpcs()
         Dim i As Integer
 
@@ -739,14 +433,16 @@ Module S_Database
     End Sub
 
     Sub ClearNpc(index As Integer)
-        Npc(index).Name = ""
-        Npc(index).AttackSay = ""
-        ReDim Npc(index).Stat(StatType.Count - 1)
+        NPC(index).Name = ""
+        NPC(index).AttackSay = ""
+
+        ReDim NPC(index).Stat(StatType.Count - 1)
+        
         For i = 1 To MAX_DROP_ITEMS
-            ReDim Npc(index).DropChance(5)
-            ReDim Npc(index).DropItem(5)
-            ReDim Npc(index).DropItemValue(5)
-            ReDim Npc(index).Skill(MAX_NPC_SKILLS)
+            ReDim NPC(index).DropChance(5)
+            ReDim NPC(index).DropItem(5)
+            ReDim NPC(index).DropItemValue(5)
+            ReDim NPC(index).Skill(MAX_NPC_SKILLS)
         Next
     End Sub
 
@@ -761,42 +457,18 @@ Module S_Database
 
 #Region "Shops"
 
-    Sub SaveShops()
-        Dim i As Integer
-
-        For i = 1 To MAX_SHOPS
-            SaveShop(i)
-        Next
-
-    End Sub
-
     Sub SaveShop(shopNum As Integer)
-        Dim i As Integer
-        Dim filename As String
+        Dim json As String = JsonConvert.SerializeObject(Shop(shopNum)).ToString()
 
-        filename = Paths.Shop(shopNum)
-
-        Dim writer As New ByteStream(100)
-
-        writer.WriteString(Shop(shopNum).Name)
-        writer.WriteByte(Shop(shopNum).Face)
-        writer.WriteInt32(Shop(shopNum).BuyRate)
-
-        For i = 1 To MAX_TRADES
-            writer.WriteInt32(Shop(shopNum).TradeItem(i).Item)
-            writer.WriteInt32(Shop(shopNum).TradeItem(i).ItemValue)
-            writer.WriteInt32(Shop(shopNum).TradeItem(i).CostItem)
-            writer.WriteInt32(Shop(shopNum).TradeItem(i).CostValue)
-        Next
-
-        ByteFile.Save(filename, writer)
+        If RowExists(shopNum, "shop")
+            UpdateRow(shopNum, json, "shop")
+        Else
+            InsertRow("shop", json)
+        End If
     End Sub
 
     Sub LoadShops()
-
         Dim i As Integer
-
-        CheckShops()
 
         For i = 1 To MAX_SHOPS
             LoadShop(i)
@@ -804,38 +476,18 @@ Module S_Database
 
     End Sub
 
-    Sub LoadShop(ShopNum As Integer)
-        Dim filename As String
-        Dim x As Integer
+    Sub LoadShop(shopNum As Integer)
+        Dim data As JObject
 
-        filename = Paths.Shop(ShopNum)
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
+        data = SelectRow("shop", "data", shopNum)
 
-        Shop(ShopNum).Name = reader.ReadString()
-        Shop(ShopNum).Face = reader.ReadByte()
-        Shop(ShopNum).BuyRate = reader.ReadInt32()
+        If data Is Nothing Then
+            ClearShop(shopNum)
+            Exit Sub
+        End If
 
-        For x = 1 To MAX_TRADES
-            Shop(ShopNum).TradeItem(x).Item = reader.ReadInt32()
-            Shop(ShopNum).TradeItem(x).ItemValue = reader.ReadInt32()
-            Shop(ShopNum).TradeItem(x).CostItem = reader.ReadInt32()
-            Shop(ShopNum).TradeItem(x).CostValue = reader.ReadInt32()
-        Next
-
-    End Sub
-
-    Sub CheckShops()
-        Dim i As Integer
-
-        For i = 1 To MAX_SHOPS
-
-            If Not File.Exists(Paths.Shop(i)) Then
-                SaveShop(i)
-            End If
-
-        Next
-
+        Dim shopData = JObject.FromObject(data).toObject(Of ShopStruct)()
+        Shop(shopNum) = shopData
     End Sub
 
     Sub ClearShop(index As Integer)
@@ -862,58 +514,18 @@ Module S_Database
 
 #Region "Skills"
 
-    Sub SaveSkills()
-        Dim i As Integer
-        Console.WriteLine("Saving skills... ")
-
-        For i = 1 To MAX_SKILLS
-            SaveSkill(i)
-        Next
-
-    End Sub
-
     Sub SaveSkill(skillnum As Integer)
-        Dim filename As String
-        filename = Paths.Skill(skillnum)
+        Dim json As String = JsonConvert.SerializeObject(Skill(skillnum)).ToString()
 
-        Dim writer As New ByteStream(100)
-
-        writer.WriteString(Skill(skillnum).Name)
-        writer.WriteByte(Skill(skillnum).Type)
-        writer.WriteInt32(Skill(skillnum).MpCost)
-        writer.WriteInt32(Skill(skillnum).LevelReq)
-        writer.WriteInt32(Skill(skillnum).AccessReq)
-        writer.WriteInt32(Skill(skillnum).JobReq)
-        writer.WriteInt32(Skill(skillnum).CastTime)
-        writer.WriteInt32(Skill(skillnum).CdTime)
-        writer.WriteInt32(Skill(skillnum).Icon)
-        writer.WriteInt32(Skill(skillnum).Map)
-        writer.WriteInt32(Skill(skillnum).X)
-        writer.WriteInt32(Skill(skillnum).Y)
-        writer.WriteByte(Skill(skillnum).Dir)
-        writer.WriteInt32(Skill(skillnum).Vital)
-        writer.WriteInt32(Skill(skillnum).Duration)
-        writer.WriteInt32(Skill(skillnum).Interval)
-        writer.WriteInt32(Skill(skillnum).Range)
-        writer.WriteBoolean(Skill(skillnum).IsAoE)
-        writer.WriteInt32(Skill(skillnum).AoE)
-        writer.WriteInt32(Skill(skillnum).CastAnim)
-        writer.WriteInt32(Skill(skillnum).SkillAnim)
-        writer.WriteInt32(Skill(skillnum).StunDuration)
-
-        writer.WriteInt32(Skill(skillnum).IsProjectile)
-        writer.WriteInt32(Skill(skillnum).Projectile)
-
-        writer.WriteByte(Skill(skillnum).KnockBack)
-        writer.WriteByte(Skill(skillnum).KnockBackTiles)
-
-        ByteFile.Save(filename, writer)
+        If RowExists(skillnum, "skill")
+            UpdateRow(skillnum, json, "skill")
+        Else
+            InsertRow("skill", json)
+        End If
     End Sub
 
     Sub LoadSkills()
         Dim i As Integer
-
-        CheckSkills()
 
         For i = 1 To MAX_SKILLS
             LoadSkill(i)
@@ -921,80 +533,32 @@ Module S_Database
 
     End Sub
 
-    Sub LoadSkill(SkillNum As Integer)
-        Dim filename As String
+    Sub LoadSkill(skillNum As Integer)
+        Dim data As JObject
 
-        filename = Paths.Skill(SkillNum)
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
+        data = SelectRow("skill", "data", skillNum)
 
-        Skill(SkillNum).Name = reader.ReadString()
-        Skill(SkillNum).Type = reader.ReadByte()
-        Skill(SkillNum).MpCost = reader.ReadInt32()
-        Skill(SkillNum).LevelReq = reader.ReadInt32()
-        Skill(SkillNum).AccessReq = reader.ReadInt32()
-        Skill(SkillNum).JobReq = reader.ReadInt32()
-        Skill(SkillNum).CastTime = reader.ReadInt32()
-        Skill(SkillNum).CdTime = reader.ReadInt32()
-        Skill(SkillNum).Icon = reader.ReadInt32()
-        Skill(SkillNum).Map = reader.ReadInt32()
-        Skill(SkillNum).X = reader.ReadInt32()
-        Skill(SkillNum).Y = reader.ReadInt32()
-        Skill(SkillNum).Dir = reader.ReadByte()
-        Skill(SkillNum).Vital = reader.ReadInt32()
-        Skill(SkillNum).Duration = reader.ReadInt32()
-        Skill(SkillNum).Interval = reader.ReadInt32()
-        Skill(SkillNum).Range = reader.ReadInt32()
-        Skill(SkillNum).IsAoE = reader.ReadBoolean()
-        Skill(SkillNum).AoE = reader.ReadInt32()
-        Skill(SkillNum).CastAnim = reader.ReadInt32()
-        Skill(SkillNum).SkillAnim = reader.ReadInt32()
-        Skill(SkillNum).StunDuration = reader.ReadInt32()
+        If data Is Nothing Then
+            ClearSkill(skillNum)
+            Exit Sub
+        End If
 
-        Skill(SkillNum).IsProjectile = reader.ReadInt32()
-        Skill(SkillNum).Projectile = reader.ReadInt32()
-
-        Skill(SkillNum).KnockBack = reader.ReadByte()
-        Skill(SkillNum).KnockBackTiles = reader.ReadByte()
-
-    End Sub
-
-    Sub CheckSkills()
-        Dim i As Integer
-
-        For i = 1 To MAX_SKILLS
-
-            If Not File.Exists(Paths.Skill(i)) Then
-                SaveSkill(i)
-            End If
-
-        Next
-
+        Dim skillData = JObject.FromObject(data).toObject(Of SkillStruct)()
+        Skill(skillNum) = skillData
     End Sub
 
     Sub ClearSkill(index As Integer)
         Skill(index).Name = ""
-        Skill(index).LevelReq = 1 'Needs to be 1 for the skill editor
+        Skill(index).LevelReq = 1
     End Sub
 
     Sub ClearSkills()
+        Dim i As Integer
+
         For i = 1 To MAX_SKILLS
             ClearSkill(i)
         Next
 
-    End Sub
-
-#End Region
-
-#Region "Accounts"
-
-    Function AccountExist(Name As String) As Boolean
-        Return File.Exists(Paths.Database & "Accounts//" & Name.Trim & "//.bin")
-    End Function
-
-    Sub AddAccount(index As Integer, name As String)
-        SetPlayerLogin(index, name)
-        SavePlayer(index)
     End Sub
 
 #End Region
@@ -1009,41 +573,33 @@ Module S_Database
     End Sub
 
     Sub SavePlayer(index As Integer)
-        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//.bin"
+        Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
+        Dim id As Integer = HexToNumber(StringToHex(GetPlayerLogin(index)))
 
-        ' Create path to character folder
-        CheckDir(Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//")
-
-        Dim writer As New ByteStream(Account.Length)
-
-        writer.WriteByte(GetPlayerAccess(index))
-        writer.WriteByte(Account(index).Index)
-
-        For i = 1 To MAX_CHARACTERS
-            writer.WriteString(GetCharName(index, i))
-        Next
-
-        ByteFile.Save(filename, writer)
+        If RowExists(id, "account")
+            UpdateRow(id, json, "account")
+        ElseIf id > 0 Then
+            InsertRowById("account", id, json)
+        End If
 
         SaveCharacter(index, Account(index).Index)
         SaveBank(index)
     End Sub
 
     Sub LoadAccount(index As Integer, username As String)
-        Dim filename As String = Paths.Database & "Accounts//" & username & "//.bin"
-        Dim reader As New ByteStream(Account.Length)
-
-        ClearPlayer(index)
-
-        ByteFile.Load(filename, reader)
-
         SetPlayerLogin(index, username)
-        SetPlayerAccess(index, reader.ReadByte())
-        Account(index).Index = reader.ReadByte()
 
-        For i = 1 To MAX_CHARACTERS
-            SetPlayerCharName(index, i, reader.ReadString())
-        Next
+        Dim data As JObject
+
+        data = SelectRow("account", "data", HexToNumber(StringToHex(username)))
+
+        If data Is Nothing Then
+            ClearAccount(index)
+            Exit Sub
+        End If
+
+        Dim accountData = JObject.FromObject(data).toObject(Of AccountStruct)()
+        Account(index) = accountData
 
         LoadBank(index)
     End Sub
@@ -1082,35 +638,28 @@ Module S_Database
 #Region "Bank"
 
     Friend Sub LoadBank(index As Integer)
-        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//Bank.bin"
+        Dim data As JObject
 
-        ClearBank(index)
+        data = SelectRow("bank", "data", HexToNumber(StringToHex(GetPlayerName((index)))))
 
-        If Not File.Exists(filename) Then
-            SaveBank(index)
+        If data Is Nothing Then
+            ClearBank(index)
             Exit Sub
         End If
 
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
-
-        For i = 1 To MAX_BANK
-            Bank(index).Item(i).Num = reader.ReadByte()
-            Bank(index).Item(i).Value = reader.ReadInt32()
-        Next
+        Dim bankData = JObject.FromObject(data).toObject(Of BankStruct)()
+        Bank(index) = bankData
     End Sub
 
     Sub SaveBank(index As Integer)
-        If GetPlayerLogin(index) =  "" Then Exit Sub
-        Dim filename = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//Bank.bin"
-        Dim writer As New ByteStream(Bank.Length)
+        Dim json As String = JsonConvert.SerializeObject(Bank(index)).ToString()
+        Dim id As Integer = HexToNumber(StringToHex(GetPlayerLogin(index)))
 
-        For i = 1 To MAX_BANK
-            writer.WriteByte(Bank(index).Item(i).Num)
-            writer.WriteInt32(Bank(index).Item(i).Value)
-        Next
-
-        ByteFile.Save(filename, writer)
+        If RowExists(id, "bank")
+            UpdateRow(id, json, "bank")
+        ElseIf id > 0 Then
+            InsertRowByid("bank", id, json)
+        End If
     End Sub
 
     Sub ClearBank(index As Integer)
@@ -1223,187 +772,28 @@ Module S_Database
     End Sub
 
     Sub LoadCharacter(index As Integer, charNum As Integer)
-        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//" & GetCharName(index, charNum) & ".bin"
+        Dim data As JObject
 
-        ClearCharacter(index)
+        data = SelectRow("player", "data", HexToNumber(StringToHex(Account(index).Character(charNum))))
 
-        Dim reader As New ByteStream(Player.Length)
-        ByteFile.Load(filename, reader)
+        If data Is Nothing Then
+            ClearCharacter(index)
+            Exit Sub
+        End If
 
-        Player(index).Name = reader.ReadString()
-        Player(index).Job = reader.ReadByte()
-        Player(index).Dir = reader.ReadByte()
-        Player(index).Sprite = reader.ReadInt32()
-
-        For i = 1 To EquipmentType.Count - 1
-            Player(index).Equipment(i) = reader.ReadInt32()
-        Next
-
-        Player(index).Exp = reader.ReadInt32()
-
-        For i = 1 To MAX_INV
-            Player(index).Inv(i).Num = reader.ReadInt32()
-            Player(index).Inv(i).Value = reader.ReadInt32()
-        Next
-
-        Player(index).Level = reader.ReadByte()
-        Player(index).Map = reader.ReadInt32()
-        Player(index).Name = reader.ReadString()
-        Player(index).Pk = reader.ReadByte()
-        Player(index).Points = reader.ReadByte()
-        Player(index).Sex = reader.ReadByte()
-
-        For i = 1 To MAX_PLAYER_SKILLS
-            Player(index).Skill(i).Num = reader.ReadInt32()
-        Next
-
-        For i = 1 To StatType.Count - 1
-            Player(index).Stat(i) = reader.ReadByte()
-        Next
-
-        For i = 1 To VitalType.Count - 1
-            Player(index).Vital(i) = reader.ReadInt32()
-        Next
-
-        Player(index).X = reader.ReadByte()
-        Player(index).Y = reader.ReadByte()
-
-        For i = 1 To MAX_HOTBAR
-            Player(index).Hotbar(i).Slot = reader.ReadInt32()
-            Player(index).Hotbar(i).SlotType = reader.ReadByte()
-        Next
-
-        ReDim Player(index).Switches(MAX_SWITCHES)
-        For i = 1 To MAX_SWITCHES
-            Player(index).Switches(i) = reader.ReadByte()
-        Next
-        ReDim Player(index).Variables(NAX_VARIABLES)
-        For i = 1 To NAX_VARIABLES
-            Player(index).Variables(i) = reader.ReadInt32()
-        Next
-
-        ReDim Player(index).GatherSkills(ResourceType.Count - 1)
-        For i = 1 To ResourceType.Count - 1
-            Player(index).GatherSkills(i).SkillLevel = reader.ReadInt32()
-            Player(index).GatherSkills(i).SkillCurExp = reader.ReadInt32()
-            Player(index).GatherSkills(i).SkillNextLvlExp = reader.ReadInt32()
-            If Player(index).GatherSkills(i).SkillLevel = 0 Then Player(index).GatherSkills(i).SkillLevel = 1
-            If GetPlayerGatherSkillMaxExp(index, i) = 0 Then SetPlayerGatherSkillMaxExp(index, i, GetSkillNextLevel(index, i))
-        Next
-
-        'pets
-        Player(index).Pet.Num = reader.ReadInt32()
-        Player(index).Pet.Health = reader.ReadInt32()
-        Player(index).Pet.Mana = reader.ReadInt32()
-        Player(index).Pet.Level = reader.ReadInt32()
-
-        ReDim Player(index).Pet.Stat(StatType.Count - 1)
-        For i = 1 To StatType.Count - 1
-            Player(index).Pet.Stat(i) = reader.ReadByte()
-        Next
-
-        ReDim Player(index).Pet.Skill(4)
-        For i = 1 To 4
-            Player(index).Pet.Skill(i) = reader.ReadInt32()
-        Next
-
-        Player(index).Pet.X = reader.ReadInt32()
-        Player(index).Pet.Y = reader.ReadInt32()
-        Player(index).Pet.Dir = reader.ReadInt32()
-        Player(index).Pet.Alive = reader.ReadByte()
-        Player(index).Pet.AttackBehaviour = reader.ReadInt32()
-        Player(index).Pet.AdoptiveStats = reader.ReadByte()
-        Player(index).Pet.Points = reader.ReadInt32()
-        Player(index).Pet.Exp = reader.ReadInt32()
-
+        Dim playerData = JObject.FromObject(data).toObject(Of PlayerStruct)()
+        Player(index) = playerData
     End Sub
 
     Sub SaveCharacter(index As Integer, charNum As Integer)
-        Dim filename As String = Paths.Database & "Accounts//" & GetPlayerLogin(index) & "//" & GetCharName(index, charNum) & ".bin"
+        Dim json As String = JsonConvert.SerializeObject(Player(index)).ToString()
+        Dim id As Integer = HexToNumber(StringToHex(GetPlayerName(index)))
 
-        Dim writer As New ByteStream(Player.Length)
-
-        writer.WriteString(GetCharName(index, charNum))
-        writer.WriteByte(Player(index).Job)
-        writer.WriteByte(Player(index).Dir)
-        writer.WriteInt32(Player(index).Sprite)
-
-        For i = 1 To EquipmentType.Count - 1
-            writer.WriteInt32(Player(index).Equipment(i))
-        Next
-
-        writer.WriteInt32(Player(index).Exp)
-
-        For i = 1 To MAX_INV
-            writer.WriteInt32(Player(index).Inv(i).Num)
-            writer.WriteInt32(Player(index).Inv(i).Value)
-        Next
-
-        writer.WriteByte(Player(index).Level)
-        writer.WriteInt32(Player(index).Map)
-        writer.WriteString(Player(index).Name)
-        writer.WriteByte(Player(index).Pk)
-        writer.WriteByte(Player(index).Points)
-        writer.WriteByte(Player(index).Sex)
-
-        For i = 1 To MAX_PLAYER_SKILLS
-            writer.WriteInt32(Player(index).Skill(i).Num)
-        Next
-
-        For i = 1 To StatType.Count - 1
-            writer.WriteByte(Player(index).Stat(i))
-        Next
-
-        For i = 1 To VitalType.Count - 1
-            writer.WriteInt32(Player(index).Vital(i))
-        Next
-
-        writer.WriteByte(Player(index).X)
-        writer.WriteByte(Player(index).Y)
-
-        For i = 1 To MAX_HOTBAR
-            writer.WriteInt32(Player(index).Hotbar(i).Slot)
-            writer.WriteByte(Player(index).Hotbar(i).SlotType)
-        Next
-
-        For i = 1 To MAX_SWITCHES
-            writer.WriteByte(Player(index).Switches(i))
-        Next
-
-        For i = 1 To NAX_VARIABLES
-            writer.WriteInt32(Player(index).Variables(i))
-        Next
-
-        For i = 1 To ResourceType.Count - 1
-            writer.WriteInt32(Player(index).GatherSkills(i).SkillLevel)
-            writer.WriteInt32(Player(index).GatherSkills(i).SkillCurExp)
-            writer.WriteInt32(Player(index).GatherSkills(i).SkillNextLvlExp)
-        Next
-
-        'pets
-        writer.WriteInt32(Player(index).Pet.Num)
-        writer.WriteInt32(Player(index).Pet.Health)
-        writer.WriteInt32(Player(index).Pet.Mana)
-        writer.WriteInt32(Player(index).Pet.Level)
-
-        For i = 1 To StatType.Count - 1
-            writer.WriteByte(Player(index).Pet.Stat(i))
-        Next
-
-        For i = 1 To 4
-            writer.WriteInt32(Player(index).Pet.Skill(i))
-        Next
-
-        writer.WriteInt32(Player(index).Pet.X)
-        writer.WriteInt32(Player(index).Pet.Y)
-        writer.WriteInt32(Player(index).Pet.Dir)
-        writer.WriteByte(Player(index).Pet.Alive)
-        writer.WriteInt32(Player(index).Pet.AttackBehaviour)
-        writer.WriteByte(Player(index).Pet.AdoptiveStats)
-        writer.WriteInt32(Player(index).Pet.Points)
-        writer.WriteInt32(Player(index).Pet.Exp)
-
-        ByteFile.Save(filename, writer)
+        If RowExists(charNum, "player")
+            UpdateRow(charNum, json, "player")
+        ElseIf id > 0 Then
+            InsertRowByid("player", id, json)
+        End If
     End Sub
 
     Function CharExist(index As Integer, charnUm As Integer) As Boolean
@@ -1631,7 +1021,7 @@ Module S_Database
         Dim buffer As New ByteStream(4)
 
         For i = 1 To MAX_NPCS
-            If Not Len(Trim$(Npc(i).Name)) > 0 Then Continue For
+            If Not Len(Trim$(NPC(i).Name)) > 0 Then Continue For
             buffer.WriteBlock(NpcData(i))
         Next
         Return buffer.ToArray
@@ -1641,30 +1031,30 @@ Module S_Database
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(NpcNum)
-        buffer.WriteInt32(Npc(NpcNum).Animation)
-        buffer.WriteString(Npc(NpcNum).AttackSay)
-        buffer.WriteByte(Npc(NpcNum).Behaviour)
+        buffer.WriteInt32(NPC(NpcNum).Animation)
+        buffer.WriteString(NPC(NpcNum).AttackSay)
+        buffer.WriteByte(NPC(NpcNum).Behaviour)
         For i = 1 To MAX_DROP_ITEMS
-            buffer.WriteInt32(Npc(NpcNum).DropChance(i))
-            buffer.WriteInt32(Npc(NpcNum).DropItem(i))
-            buffer.WriteInt32(Npc(NpcNum).DropItemValue(i))
+            buffer.WriteInt32(NPC(NpcNum).DropChance(i))
+            buffer.WriteInt32(NPC(NpcNum).DropItem(i))
+            buffer.WriteInt32(NPC(NpcNum).DropItemValue(i))
         Next
-        buffer.WriteInt32(Npc(NpcNum).Exp)
-        buffer.WriteByte(Npc(NpcNum).Faction)
-        buffer.WriteInt32(Npc(NpcNum).HP)
-        buffer.WriteString((Npc(NpcNum).Name))
-        buffer.WriteByte(Npc(NpcNum).Range)
-        buffer.WriteByte(Npc(NpcNum).SpawnTime)
-        buffer.WriteInt32(Npc(NpcNum).SpawnSecs)
-        buffer.WriteInt32(Npc(NpcNum).Sprite)
+        buffer.WriteInt32(NPC(NpcNum).Exp)
+        buffer.WriteByte(NPC(NpcNum).Faction)
+        buffer.WriteInt32(NPC(NpcNum).HP)
+        buffer.WriteString((NPC(NpcNum).Name))
+        buffer.WriteByte(NPC(NpcNum).Range)
+        buffer.WriteByte(NPC(NpcNum).SpawnTime)
+        buffer.WriteInt32(NPC(NpcNum).SpawnSecs)
+        buffer.WriteInt32(NPC(NpcNum).Sprite)
         For i = 1 To StatType.Count - 1
-            buffer.WriteByte(Npc(NpcNum).Stat(i))
+            buffer.WriteByte(NPC(NpcNum).Stat(i))
         Next
         For i = 1 To MAX_NPC_SKILLS
-            buffer.WriteByte(Npc(NpcNum).Skill(i))
+            buffer.WriteByte(NPC(NpcNum).Skill(i))
         Next
-        buffer.WriteInt32(Npc(NpcNum).Level)
-        buffer.WriteInt32(Npc(NpcNum).Damage)
+        buffer.WriteInt32(NPC(NpcNum).Level)
+        buffer.WriteInt32(NPC(NpcNum).Damage)
         Return buffer.ToArray
     End Function
 

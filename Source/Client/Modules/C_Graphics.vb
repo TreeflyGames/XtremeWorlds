@@ -1226,7 +1226,7 @@ Module C_Graphics
 
         StreamNpc(MapNpc(mapNpcNum).Num)
 
-        sprite = Npc(MapNpc(mapNpcNum).Num).Sprite
+        sprite = NPC(MapNpc(mapNpcNum).Num).Sprite
 
         If sprite < 1 OrElse sprite > NumCharacters Then Exit Sub
 
@@ -1658,7 +1658,7 @@ Module C_Graphics
         'projectiles
         If NumProjectiles > 0 Then
             For I = 1 To MAX_PROJECTILES
-                If MapProjectile(I).ProjectileNum > 0 Then
+                If MapProjectile(Player(MyIndex).Map, I).ProjectileNum > 0 Then
                     DrawProjectile(I)
                 End If
             Next
@@ -1909,15 +1909,15 @@ Module C_Graphics
                 If Map.Npc Is Nothing Then Exit Sub
                 If Map.Npc(i) > 0 And Map.Npc(i) <= MAX_NPCS And MapNpc(i).Num > 0 And MapNpc(i).Num <= MAX_NPCS Then
                     If _
-                        Npc(MapNpc(i).Num).Behaviour = NpcBehavior.AttackOnSight OrElse
-                        Npc(MapNpc(i).Num).Behaviour = NpcBehavior.AttackWhenAttacked OrElse
-                        Npc(MapNpc(i).Num).Behaviour = NpcBehavior.Guard Then
+                        NPC(MapNpc(i).Num).Behaviour = NpcBehavior.AttackOnSight OrElse
+                        NPC(MapNpc(i).Num).Behaviour = NpcBehavior.AttackWhenAttacked OrElse
+                        NPC(MapNpc(i).Num).Behaviour = NpcBehavior.Guard Then
                         ' lock to npc
                         tmpX = MapNpc(i).X * PicX + MapNpc(i).XOffset
                         tmpY = MapNpc(i).Y * PicY + MapNpc(i).YOffset + 35
                         If MapNpc(i).Vital(VitalType.HP) > 0 Then
                             ' calculate the width to fill
-                            barWidth = ((MapNpc(i).Vital(VitalType.HP) / (Npc(MapNpc(i).Num).HP) * 32))
+                            barWidth = ((MapNpc(i).Vital(VitalType.HP) / (NPC(MapNpc(i).Num).HP) * 32))
                             ' draw bars
                             rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
                             Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
@@ -1929,7 +1929,7 @@ Module C_Graphics
                             If MapNpc(i).Vital(VitalType.MP) > 0 Then
                                 ' calculate the width to fill
                                 barWidth =
-                                    ((MapNpc(i).Vital(VitalType.MP) / (Npc(MapNpc(i).Num).Stat(StatType.Intelligence) * 2) *
+                                    ((MapNpc(i).Vital(VitalType.MP) / (NPC(MapNpc(i).Num).Stat(StatType.Intelligence) * 2) *
                                       32))
                                 ' draw bars
                                 rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)

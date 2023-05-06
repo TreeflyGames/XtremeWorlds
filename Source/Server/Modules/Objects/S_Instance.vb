@@ -55,7 +55,7 @@ Module S_Instance
         Next
 
         'Copy Map NPCs
-        MapNpc(slot + MAX_MAPS) = MapNpc(mapNum)
+        MapNPC(slot + MAX_MAPS) = MapNPC(mapNum)
 
         'Re-Cache Resource
         CacheResources(slot + MAX_MAPS)

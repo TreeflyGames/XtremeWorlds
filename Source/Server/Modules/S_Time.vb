@@ -34,10 +34,6 @@ Friend Module Time
         buffer.WriteBytes(BitConverter.GetBytes(Engine.Time.Instance.Time.Ticks))
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
-        AddDebug("Sent SMSG: SClock")
-
-        AddDebug(" Player: " & GetPlayerName(index) & " : " & " GameSpeed: " & Engine.Time.Instance.GameSpeed & " Instance Time Ticks: " & Engine.Time.Instance.Time.Ticks)
-
         buffer.Dispose()
     End Sub
 
@@ -57,10 +53,6 @@ Friend Module Time
         buffer.WriteInt32(ServerPackets.STime)
         buffer.WriteByte(Engine.Time.Instance.TimeOfDay)
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
-
-        AddDebug("Sent SMSG: STime")
-
-        AddDebug(" Player: " & GetPlayerName(index) & " : " & " Time Of Day: " & Engine.Time.Instance.TimeOfDay)
 
         buffer.Dispose()
     End Sub

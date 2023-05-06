@@ -73,7 +73,6 @@ Module C_Database
             i = i + 1
         End While
 
-        If NumFaces = 0 Then Exit Sub
     End Sub
 
     Friend Sub CheckFog()
@@ -85,7 +84,6 @@ Module C_Database
             i = i + 1
         End While
 
-        If NumFogs = 0 Then Exit Sub
     End Sub
 
     Friend Sub CheckEmotes()
@@ -214,7 +212,7 @@ Module C_Database
     Sub ClearNpcs()
         Dim i As Integer
 
-        ReDim Npc(MAX_NPCS)
+        ReDim NPC(MAX_NPCS)
 
        For i = 1 To MAX_NPCS
             ClearNpc(i)
@@ -223,17 +221,17 @@ Module C_Database
     End Sub
 
     Sub ClearNpc(index As Integer)
-        Npc(index) = Nothing
-        ReDim Npc(index).Stat(StatType.Count - 1)
-        ReDim Npc(index).DropChance(5)
-        ReDim Npc(index).DropItem(5)    
-        ReDim Npc(index).DropItemValue(5)
-        ReDim Npc(index).Skill(6)
+        NPC(index) = Nothing
+        ReDim NPC(index).Stat(StatType.Count - 1)
+        ReDim NPC(index).DropChance(5)
+        ReDim NPC(index).DropItem(5)    
+        ReDim NPC(index).DropItemValue(5)
+        ReDim NPC(index).Skill(6)
         NPC_Loaded(index) = False
     End Sub
 
     Sub StreamNpc(npcNum As Integer)
-        If npcNum > 0 and Npc(npcNum).Name = "" And NPC_Loaded(npcNum) = False Then
+        If npcNum > 0 and NPC(npcNum).Name = "" And NPC_Loaded(npcNum) = False Then
             NPC_Loaded(npcNum) = True
             SendRequestNpc(npcNum)
         End If

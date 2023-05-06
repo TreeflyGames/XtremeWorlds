@@ -34,30 +34,30 @@ Module S_Npc
         npcNum = Map(mapNum).Npc(mapNpcNum)
 
         If npcNum > 0 Then
-            If Not Npc(npcNum).SpawnTime = Engine.Time.Instance.TimeOfDay And Npc(npcNum).SpawnTime <> 0 Then
+            If Not NPC(npcNum).SpawnTime = Engine.Time.Instance.TimeOfDay And NPC(npcNum).SpawnTime <> 0 Then
                 ClearMapNpc(mapNpcNum, mapNum)
                 SendMapNpcsToMap(mapNum)
                 Exit Sub
             End If
 
-            MapNpc(mapNum).Npc(mapNpcNum).Num = npcNum
-            MapNpc(mapNum).Npc(mapNpcNum).Target = 0
-            MapNpc(mapNum).Npc(mapNpcNum).TargetType = 0 ' clear
+            MapNPC(mapNum).Npc(mapNpcNum).Num = npcNum
+            MapNPC(mapNum).Npc(mapNpcNum).Target = 0
+            MapNPC(mapNum).Npc(mapNpcNum).TargetType = 0 ' clear
 
             For i = 1 To VitalType.Count - 1
-                MapNpc(mapNum).Npc(mapNpcNum).Vital(i) = GetNpcMaxVital(npcNum, i)
+                MapNPC(mapNum).Npc(mapNpcNum).Vital(i) = GetNpcMaxVital(npcNum, i)
             Next
 
-            MapNpc(mapNum).Npc(mapNpcNum).Dir = Int(Rnd() * 4)
+            MapNPC(mapNum).Npc(mapNpcNum).Dir = Int(Rnd() * 4)
 
             'Check if theres a spawn tile for the specific npc
             For x = 0 To Map(mapNum).MaxX
                 For y = 0 To Map(mapNum).MaxY
                     If Map(mapNum).Tile(x, y).Type = TileType.NpcSpawn Then
                         If Map(mapNum).Tile(x, y).Data1 = mapNpcNum Then
-                            MapNpc(mapNum).Npc(mapNpcNum).X = x
-                            MapNpc(mapNum).Npc(mapNpcNum).Y = y
-                            MapNpc(mapNum).Npc(mapNpcNum).Dir = Map(mapNum).Tile(x, y).Data2
+                            MapNPC(mapNum).Npc(mapNpcNum).X = x
+                            MapNPC(mapNum).Npc(mapNpcNum).Y = y
+                            MapNPC(mapNum).Npc(mapNpcNum).Dir = Map(mapNum).Tile(x, y).Data2
                             spawned = True
                             Exit For
                         End If
@@ -76,8 +76,8 @@ Module S_Npc
 
                     ' Check if the tile is walkable
                     If NpcTileIsOpen(mapNum, x, y) Then
-                        MapNpc(mapNum).Npc(mapNpcNum).X = x
-                        MapNpc(mapNum).Npc(mapNpcNum).Y = y
+                        MapNPC(mapNum).Npc(mapNpcNum).X = x
+                        MapNPC(mapNum).Npc(mapNpcNum).Y = y
                         spawned = True
                         Exit While
                     End If
@@ -90,8 +90,8 @@ Module S_Npc
                 For x = 0 To Map(mapNum).MaxX
                     For y = 0 To Map(mapNum).MaxY
                         If NpcTileIsOpen(mapNum, x, y) Then
-                            MapNpc(mapNum).Npc(mapNpcNum).X = x
-                            MapNpc(mapNum).Npc(mapNpcNum).Y = y
+                            MapNPC(mapNum).Npc(mapNpcNum).X = x
+                            MapNPC(mapNum).Npc(mapNpcNum).Y = y
                             spawned = True
                         End If
                     Next
@@ -102,15 +102,13 @@ Module S_Npc
             If spawned Then
                 buffer.WriteInt32(ServerPackets.SSpawnNpc)
                 buffer.WriteInt32(mapNpcNum)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(mapNpcNum).Num)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(mapNpcNum).X)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(mapNpcNum).Y)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(mapNpcNum).Dir)
-
-                AddDebug("Recieved SMSG: SSpawnNpc")
-
+                buffer.WriteInt32(MapNPC(mapNum).Npc(mapNpcNum).Num)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(mapNpcNum).X)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(mapNpcNum).Y)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(mapNpcNum).Dir)
+                
                 For i = 1 To VitalType.Count - 1
-                    buffer.WriteInt32(MapNpc(mapNum).Npc(mapNpcNum).Vital(i))
+                    buffer.WriteInt32(MapNPC(mapNum).Npc(mapNpcNum).Vital(i))
                 Next
 
                 SendDataToMap(mapNum, buffer.Data, buffer.Head)
@@ -140,7 +138,7 @@ Module S_Npc
         End If
 
         For LoopI = 1 To MAX_MAP_NPCS
-            If MapNpc(mapNum).Npc(LoopI).Num > 0 AndAlso MapNpc(mapNum).Npc(LoopI).X = x AndAlso MapNpc(mapNum).Npc(LoopI).Y = y Then
+            If MapNPC(mapNum).Npc(LoopI).Num > 0 AndAlso MapNPC(mapNum).Npc(LoopI).X = x AndAlso MapNPC(mapNum).Npc(LoopI).Y = y Then
                 NpcTileIsOpen = False
                 Exit Function
             End If
@@ -163,8 +161,8 @@ Module S_Npc
             Exit Function
         End If
 
-        x = MapNpc(mapNum).Npc(MapNpcNum).X
-        y = MapNpc(mapNum).Npc(MapNpcNum).Y
+        x = MapNPC(mapNum).Npc(MapNpcNum).X
+        y = MapNPC(mapNum).Npc(MapNpcNum).Y
         CanNpcMove = True
 
         Select Case Dir
@@ -183,7 +181,7 @@ Module S_Npc
                     ' Check to make sure that there is not a player in the way
                     For i = 1 To GetPlayersOnline()
                         If IsPlaying(i) Then
-                            If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNpc(mapNum).Npc(MapNpcNum).X) AndAlso (GetPlayerY(i) = MapNpc(mapNum).Npc(MapNpcNum).Y - 1) Then
+                            If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNPC(mapNum).Npc(MapNpcNum).X) AndAlso (GetPlayerY(i) = MapNPC(mapNum).Npc(MapNpcNum).Y - 1) Then
                                 CanNpcMove = False
                                 Exit Function
                             End If
@@ -192,7 +190,7 @@ Module S_Npc
 
                     ' Check to make sure that there is not another npc in the way
                     For i = 1 To MAX_MAP_NPCS
-                        If (i <> MapNpcNum) AndAlso (MapNpc(mapNum).Npc(i).Num > 0) AndAlso (MapNpc(mapNum).Npc(i).X = MapNpc(mapNum).Npc(MapNpcNum).X) AndAlso (MapNpc(mapNum).Npc(i).Y = MapNpc(mapNum).Npc(MapNpcNum).Y - 1) Then
+                        If (i <> MapNpcNum) AndAlso (MapNPC(mapNum).Npc(i).Num > 0) AndAlso (MapNPC(mapNum).Npc(i).X = MapNPC(mapNum).Npc(MapNpcNum).X) AndAlso (MapNPC(mapNum).Npc(i).Y = MapNPC(mapNum).Npc(MapNpcNum).Y - 1) Then
                             CanNpcMove = False
                             Exit Function
                         End If
@@ -216,7 +214,7 @@ Module S_Npc
                     ' Check to make sure that there is not a player in the way
                     For i = 1 To GetPlayersOnline()
                         If IsPlaying(i) Then
-                            If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNpc(mapNum).Npc(MapNpcNum).X) AndAlso (GetPlayerY(i) = MapNpc(mapNum).Npc(MapNpcNum).Y + 1) Then
+                            If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNPC(mapNum).Npc(MapNpcNum).X) AndAlso (GetPlayerY(i) = MapNPC(mapNum).Npc(MapNpcNum).Y + 1) Then
                                 CanNpcMove = False
                                 Exit Function
                             End If
@@ -225,7 +223,7 @@ Module S_Npc
 
                     ' Check to make sure that there is not another npc in the way
                     For i = 1 To MAX_MAP_NPCS
-                        If (i <> MapNpcNum) AndAlso (MapNpc(mapNum).Npc(i).Num > 0) AndAlso (MapNpc(mapNum).Npc(i).X = MapNpc(mapNum).Npc(MapNpcNum).X) AndAlso (MapNpc(mapNum).Npc(i).Y = MapNpc(mapNum).Npc(MapNpcNum).Y + 1) Then
+                        If (i <> MapNpcNum) AndAlso (MapNPC(mapNum).Npc(i).Num > 0) AndAlso (MapNPC(mapNum).Npc(i).X = MapNPC(mapNum).Npc(MapNpcNum).X) AndAlso (MapNPC(mapNum).Npc(i).Y = MapNPC(mapNum).Npc(MapNpcNum).Y + 1) Then
                             CanNpcMove = False
                             Exit Function
                         End If
@@ -249,7 +247,7 @@ Module S_Npc
                     ' Check to make sure that there is not a player in the way
                     For i = 1 To GetPlayersOnline()
                         If IsPlaying(i) Then
-                            If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNpc(mapNum).Npc(MapNpcNum).X - 1) AndAlso (GetPlayerY(i) = MapNpc(mapNum).Npc(MapNpcNum).Y) Then
+                            If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNPC(mapNum).Npc(MapNpcNum).X - 1) AndAlso (GetPlayerY(i) = MapNPC(mapNum).Npc(MapNpcNum).Y) Then
                                 CanNpcMove = False
                                 Exit Function
                             End If
@@ -258,7 +256,7 @@ Module S_Npc
 
                     ' Check to make sure that there is not another npc in the way
                     For i = 1 To MAX_MAP_NPCS
-                        If (i <> MapNpcNum) AndAlso (MapNpc(mapNum).Npc(i).Num > 0) AndAlso (MapNpc(mapNum).Npc(i).X = MapNpc(mapNum).Npc(MapNpcNum).X - 1) AndAlso (MapNpc(mapNum).Npc(i).Y = MapNpc(mapNum).Npc(MapNpcNum).Y) Then
+                        If (i <> MapNpcNum) AndAlso (MapNPC(mapNum).Npc(i).Num > 0) AndAlso (MapNPC(mapNum).Npc(i).X = MapNPC(mapNum).Npc(MapNpcNum).X - 1) AndAlso (MapNPC(mapNum).Npc(i).Y = MapNPC(mapNum).Npc(MapNpcNum).Y) Then
                             CanNpcMove = False
                             Exit Function
                         End If
@@ -282,7 +280,7 @@ Module S_Npc
                     ' Check to make sure that there is not a player in the way
                     For i = 1 To GetPlayersOnline()
                         If IsPlaying(i) Then
-                            If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNpc(mapNum).Npc(MapNpcNum).X + 1) AndAlso (GetPlayerY(i) = MapNpc(mapNum).Npc(MapNpcNum).Y) Then
+                            If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNPC(mapNum).Npc(MapNpcNum).X + 1) AndAlso (GetPlayerY(i) = MapNPC(mapNum).Npc(MapNpcNum).Y) Then
                                 CanNpcMove = False
                                 Exit Function
                             End If
@@ -291,7 +289,7 @@ Module S_Npc
 
                     ' Check to make sure that there is not another npc in the way
                     For i = 1 To MAX_MAP_NPCS
-                        If (i <> MapNpcNum) AndAlso (MapNpc(mapNum).Npc(i).Num > 0) AndAlso (MapNpc(mapNum).Npc(i).X = MapNpc(mapNum).Npc(MapNpcNum).X + 1) AndAlso (MapNpc(mapNum).Npc(i).Y = MapNpc(mapNum).Npc(MapNpcNum).Y) Then
+                        If (i <> MapNpcNum) AndAlso (MapNPC(mapNum).Npc(i).Num > 0) AndAlso (MapNPC(mapNum).Npc(i).X = MapNPC(mapNum).Npc(MapNpcNum).X + 1) AndAlso (MapNPC(mapNum).Npc(i).Y = MapNPC(mapNum).Npc(MapNpcNum).Y) Then
                             CanNpcMove = False
                             Exit Function
                         End If
@@ -302,7 +300,7 @@ Module S_Npc
 
         End Select
 
-        If MapNpc(mapNum).Npc(MapNpcNum).SkillBuffer > 0 Then CanNpcMove = False
+        If MapNPC(mapNum).Npc(MapNpcNum).SkillBuffer > 0 Then CanNpcMove = False
 
     End Function
 
@@ -314,50 +312,50 @@ Module S_Npc
             Exit Sub
         End If
 
-        MapNpc(mapNum).Npc(MapNpcNum).Dir = Dir
+        MapNPC(mapNum).Npc(MapNpcNum).Dir = Dir
 
         Select Case Dir
             Case DirectionType.Up
-                MapNpc(mapNum).Npc(MapNpcNum).Y = MapNpc(mapNum).Npc(MapNpcNum).Y - 1
+                MapNPC(mapNum).Npc(MapNpcNum).Y = MapNPC(mapNum).Npc(MapNpcNum).Y - 1
 
                 buffer.WriteInt32(ServerPackets.SNpcMove)
                 buffer.WriteInt32(MapNpcNum)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).X)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Y)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Dir)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).X)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Y)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Dir)
                 buffer.WriteInt32(Movement)
 
                 SendDataToMap(mapNum, buffer.Data, buffer.Head)
             Case DirectionType.Down
-                MapNpc(mapNum).Npc(MapNpcNum).Y = MapNpc(mapNum).Npc(MapNpcNum).Y + 1
+                MapNPC(mapNum).Npc(MapNpcNum).Y = MapNPC(mapNum).Npc(MapNpcNum).Y + 1
 
                 buffer.WriteInt32(ServerPackets.SNpcMove)
                 buffer.WriteInt32(MapNpcNum)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).X)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Y)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Dir)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).X)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Y)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Dir)
                 buffer.WriteInt32(Movement)
 
                 SendDataToMap(mapNum, buffer.Data, buffer.Head)
             Case DirectionType.Left
-                MapNpc(mapNum).Npc(MapNpcNum).X = MapNpc(mapNum).Npc(MapNpcNum).X - 1
+                MapNPC(mapNum).Npc(MapNpcNum).X = MapNPC(mapNum).Npc(MapNpcNum).X - 1
 
                 buffer.WriteInt32(ServerPackets.SNpcMove)
                 buffer.WriteInt32(MapNpcNum)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).X)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Y)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Dir)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).X)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Y)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Dir)
                 buffer.WriteInt32(Movement)
 
                 SendDataToMap(mapNum, buffer.Data, buffer.Head)
             Case DirectionType.Right
-                MapNpc(mapNum).Npc(MapNpcNum).X = MapNpc(mapNum).Npc(MapNpcNum).X + 1
+                MapNPC(mapNum).Npc(MapNpcNum).X = MapNPC(mapNum).Npc(MapNpcNum).X + 1
 
                 buffer.WriteInt32(ServerPackets.SNpcMove)
                 buffer.WriteInt32(MapNpcNum)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).X)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Y)
-                buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Dir)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).X)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Y)
+                buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Dir)
                 buffer.WriteInt32(Movement)
 
                 SendDataToMap(mapNum, buffer.Data, buffer.Head)
@@ -374,7 +372,7 @@ Module S_Npc
             Exit Sub
         End If
 
-        MapNpc(mapNum).Npc(MapNpcNum).Dir = Dir
+        MapNPC(mapNum).Npc(MapNpcNum).Dir = Dir
 
         buffer.WriteInt32(ServerPackets.SNpcDir)
         buffer.WriteInt32(MapNpcNum)
@@ -397,7 +395,7 @@ Module S_Npc
 
         If CanNpcAttackPlayer(mapnpcnum, index) Then
             mapNum = GetPlayerMap(index)
-            npcnum = MapNpc(mapNum).Npc(mapnpcnum).Num
+            npcnum = MapNPC(mapNum).Npc(mapnpcnum).Num
 
             ' check if PLAYER can avoid the attack
             If CanPlayerDodge(index) Then
@@ -429,7 +427,7 @@ Module S_Npc
                 ' * 1.5 if crit hit
                 If CanNpcCrit(npcnum) Then
                     Damage = Damage * 1.5
-                    SendActionMsg(mapNum, "Critical!", ColorType.BrightCyan, 1, (MapNpc(mapNum).Npc(mapnpcnum).X * 32), (MapNpc(mapNum).Npc(mapnpcnum).Y * 32))
+                    SendActionMsg(mapNum, "Critical!", ColorType.BrightCyan, 1, (MapNPC(mapNum).Npc(mapnpcnum).X * 32), (MapNPC(mapNum).Npc(mapnpcnum).Y * 32))
                 End If
 
             End If
@@ -452,20 +450,20 @@ Module S_Npc
         End If
 
         ' Check for subscript out of range
-        If MapNpc(GetPlayerMap(index)).Npc(MapNpcNum).Num <= 0 Then
+        If MapNPC(GetPlayerMap(index)).Npc(MapNpcNum).Num <= 0 Then
             Exit Function
         End If
 
         mapNum = GetPlayerMap(index)
-        NpcNum = MapNpc(mapNum).Npc(MapNpcNum).Num
+        NpcNum = MapNPC(mapNum).Npc(MapNpcNum).Num
 
         ' Make sure the npc isn't already dead
-        If MapNpc(mapNum).Npc(MapNpcNum).Vital(VitalType.HP) <= 0 Then
+        If MapNPC(mapNum).Npc(MapNpcNum).Vital(VitalType.HP) <= 0 Then
             Exit Function
         End If
 
         ' Make sure npcs dont attack more then once a second
-        If GetTimeMs() < MapNpc(mapNum).Npc(MapNpcNum).AttackTimer + 1000 Then
+        If GetTimeMs() < MapNPC(mapNum).Npc(MapNpcNum).AttackTimer + 1000 Then
             Exit Function
         End If
 
@@ -474,26 +472,26 @@ Module S_Npc
             Exit Function
         End If
 
-        MapNpc(mapNum).Npc(MapNpcNum).AttackTimer = GetTimeMs()
+        MapNPC(mapNum).Npc(MapNpcNum).AttackTimer = GetTimeMs()
 
         ' Make sure they are on the same map
         If IsPlaying(index) Then
             If NpcNum > 0 Then
 
                 ' Check if at same coordinates
-                If (GetPlayerY(index) + 1 = MapNpc(mapNum).Npc(MapNpcNum).Y) AndAlso (GetPlayerX(index) = MapNpc(mapNum).Npc(MapNpcNum).X) Then
+                If (GetPlayerY(index) + 1 = MapNPC(mapNum).Npc(MapNpcNum).Y) AndAlso (GetPlayerX(index) = MapNPC(mapNum).Npc(MapNpcNum).X) Then
                     CanNpcAttackPlayer = True
                 Else
 
-                    If (GetPlayerY(index) - 1 = MapNpc(mapNum).Npc(MapNpcNum).Y) AndAlso (GetPlayerX(index) = MapNpc(mapNum).Npc(MapNpcNum).X) Then
+                    If (GetPlayerY(index) - 1 = MapNPC(mapNum).Npc(MapNpcNum).Y) AndAlso (GetPlayerX(index) = MapNPC(mapNum).Npc(MapNpcNum).X) Then
                         CanNpcAttackPlayer = True
                     Else
 
-                        If (GetPlayerY(index) = MapNpc(mapNum).Npc(MapNpcNum).Y) AndAlso (GetPlayerX(index) + 1 = MapNpc(mapNum).Npc(MapNpcNum).X) Then
+                        If (GetPlayerY(index) = MapNPC(mapNum).Npc(MapNpcNum).Y) AndAlso (GetPlayerX(index) + 1 = MapNPC(mapNum).Npc(MapNpcNum).X) Then
                             CanNpcAttackPlayer = True
                         Else
 
-                            If (GetPlayerY(index) = MapNpc(mapNum).Npc(MapNpcNum).Y) AndAlso (GetPlayerX(index) - 1 = MapNpc(mapNum).Npc(MapNpcNum).X) Then
+                            If (GetPlayerY(index) = MapNPC(mapNum).Npc(MapNpcNum).Y) AndAlso (GetPlayerX(index) - 1 = MapNPC(mapNum).Npc(MapNpcNum).X) Then
                                 CanNpcAttackPlayer = True
                             End If
                         End If
@@ -520,42 +518,42 @@ Module S_Npc
         End If
 
         ' Check for subscript out of range
-        If MapNpc(mapNum).Npc(Attacker).Num <= 0 Then
+        If MapNPC(mapNum).Npc(Attacker).Num <= 0 Then
             Exit Function
         End If
 
         ' Check for subscript out of range
-        If MapNpc(mapNum).Npc(Victim).Num <= 0 Then
+        If MapNPC(mapNum).Npc(Victim).Num <= 0 Then
             Exit Function
         End If
 
-        aNpcNum = MapNpc(mapNum).Npc(Attacker).Num
-        vNpcNum = MapNpc(mapNum).Npc(Victim).Num
+        aNpcNum = MapNPC(mapNum).Npc(Attacker).Num
+        vNpcNum = MapNPC(mapNum).Npc(Victim).Num
 
         If aNpcNum <= 0 Then Exit Function
         If vNpcNum <= 0 Then Exit Function
 
         ' Make sure the npcs arent already dead
-        If MapNpc(mapNum).Npc(Attacker).Vital(VitalType.HP) < 0 Then
+        If MapNPC(mapNum).Npc(Attacker).Vital(VitalType.HP) < 0 Then
             Exit Function
         End If
 
         ' Make sure the npc isn't already dead
-        If MapNpc(mapNum).Npc(Victim).Vital(VitalType.HP) < 0 Then
+        If MapNPC(mapNum).Npc(Victim).Vital(VitalType.HP) < 0 Then
             Exit Function
         End If
 
         ' Make sure npcs dont attack more then once a second
-        If GetTimeMs() < MapNpc(mapNum).Npc(Attacker).AttackTimer + 1000 Then
+        If GetTimeMs() < MapNPC(mapNum).Npc(Attacker).AttackTimer + 1000 Then
             Exit Function
         End If
 
-        MapNpc(mapNum).Npc(Attacker).AttackTimer = GetTimeMs()
+        MapNPC(mapNum).Npc(Attacker).AttackTimer = GetTimeMs()
 
-        AttackerX = MapNpc(mapNum).Npc(Attacker).X
-        AttackerY = MapNpc(mapNum).Npc(Attacker).Y
-        VictimX = MapNpc(mapNum).Npc(Victim).X
-        VictimY = MapNpc(mapNum).Npc(Victim).Y
+        AttackerX = MapNPC(mapNum).Npc(Attacker).X
+        AttackerY = MapNPC(mapNum).Npc(Attacker).Y
+        VictimX = MapNPC(mapNum).Npc(Victim).X
+        VictimY = MapNPC(mapNum).Npc(Victim).Y
 
         ' Check if at same coordinates
         If (VictimY + 1 = AttackerY) AndAlso (VictimX = AttackerX) Then
@@ -588,10 +586,10 @@ Module S_Npc
         If MapNpcNum <= 0 OrElse MapNpcNum > MAX_MAP_NPCS OrElse IsPlaying(Victim) = False Then Exit Sub
 
         ' Check for subscript out of range
-        If MapNpc(GetPlayerMap(Victim)).Npc(MapNpcNum).Num <= 0 Then Exit Sub
+        If MapNPC(GetPlayerMap(Victim)).Npc(MapNpcNum).Num <= 0 Then Exit Sub
 
         mapNum = GetPlayerMap(Victim)
-        Name = Trim$(Npc(MapNpc(mapNum).Npc(MapNpcNum).Num).Name)
+        Name = Trim$(NPC(MapNPC(mapNum).Npc(MapNpcNum).Num).Name)
 
         ' Send this packet so they can see the npc attacking
         buffer.WriteInt32(ServerPackets.SNpcAttack)
@@ -602,16 +600,16 @@ Module S_Npc
         If Damage <= 0 Then Exit Sub
 
         ' set the regen timer
-        MapNpc(mapNum).Npc(MapNpcNum).StopRegen = True
-        MapNpc(mapNum).Npc(MapNpcNum).StopRegenTimer = GetTimeMs()
+        MapNPC(mapNum).Npc(MapNpcNum).StopRegen = True
+        MapNPC(mapNum).Npc(MapNpcNum).StopRegenTimer = GetTimeMs()
 
         If Damage >= GetPlayerVital(Victim, VitalType.HP) Then
             ' Say damage
             SendActionMsg(GetPlayerMap(Victim), "-" & GetPlayerVital(Victim, VitalType.HP), ColorType.BrightRed, 1, (GetPlayerX(Victim) * 32), (GetPlayerY(Victim) * 32))
 
             ' Set NPC target to 0
-            MapNpc(mapNum).Npc(MapNpcNum).Target = 0
-            MapNpc(mapNum).Npc(MapNpcNum).TargetType = 0
+            MapNPC(mapNum).Npc(MapNpcNum).Target = 0
+            MapNPC(mapNum).Npc(MapNpcNum).TargetType = 0
 
             If GetPlayerLevel(Victim) >= 10 Then
 
@@ -675,7 +673,7 @@ Module S_Npc
             ' Player not dead, just do the damage
             SetPlayerVital(Victim, VitalType.HP, GetPlayerVital(Victim, VitalType.HP) - Damage)
             SendVital(Victim, VitalType.HP)
-            SendAnimation(mapNum, Npc(MapNpc(GetPlayerMap(Victim)).Npc(MapNpcNum).Num).Animation, 0, 0, TargetType.Player, Victim)
+            SendAnimation(mapNum, NPC(MapNPC(GetPlayerMap(Victim)).Npc(MapNpcNum).Num).Animation, 0, 0, TargetType.Player, Victim)
 
             ' send vitals to party if in one
             If TempPlayer(Victim).InParty > 0 Then SendPartyVitals(TempPlayer(Victim).InParty, Victim)
@@ -706,8 +704,8 @@ Module S_Npc
 
         If Damage <= 0 Then Exit Sub
 
-        aNpcNum = MapNpc(mapNum).Npc(Attacker).Num
-        vNpcNum = MapNpc(mapNum).Npc(Victim).Num
+        aNpcNum = MapNPC(mapNum).Npc(Attacker).Num
+        vNpcNum = MapNPC(mapNum).Npc(Victim).Num
 
         If aNpcNum <= 0 Then Exit Sub
         If vNpcNum <= 0 Then Exit Sub
@@ -718,27 +716,27 @@ Module S_Npc
         SendDataToMap(mapNum, buffer.Data, buffer.Head)
         buffer.Dispose()
 
-        If Damage >= MapNpc(mapNum).Npc(Victim).Vital(VitalType.HP) Then
-            SendActionMsg(mapNum, "-" & Damage, ColorType.BrightRed, 1, (MapNpc(mapNum).Npc(Victim).X * 32), (MapNpc(mapNum).Npc(Victim).Y * 32))
-            SendBlood(mapNum, MapNpc(mapNum).Npc(Victim).X, MapNpc(mapNum).Npc(Victim).Y)
+        If Damage >= MapNPC(mapNum).Npc(Victim).Vital(VitalType.HP) Then
+            SendActionMsg(mapNum, "-" & Damage, ColorType.BrightRed, 1, (MapNPC(mapNum).Npc(Victim).X * 32), (MapNPC(mapNum).Npc(Victim).Y * 32))
+            SendBlood(mapNum, MapNPC(mapNum).Npc(Victim).X, MapNPC(mapNum).Npc(Victim).Y)
 
             ' npc is dead.
 
             ' Set NPC target to 0
-            MapNpc(mapNum).Npc(Attacker).Target = 0
-            MapNpc(mapNum).Npc(Attacker).TargetType = 0
+            MapNPC(mapNum).Npc(Attacker).Target = 0
+            MapNPC(mapNum).Npc(Attacker).TargetType = 0
 
             ' Drop the goods if they get it
             Dim tmpitem = Random(1, 5)
-            n = Int(Rnd() * Npc(vNpcNum).DropChance(tmpitem)) + 1
+            n = Int(Rnd() * NPC(vNpcNum).DropChance(tmpitem)) + 1
             If n = 1 Then
-                SpawnItem(Npc(vNpcNum).DropItem(tmpitem), Npc(vNpcNum).DropItemValue(tmpitem), mapNum, MapNpc(mapNum).Npc(Victim).X, MapNpc(mapNum).Npc(Victim).Y)
+                SpawnItem(NPC(vNpcNum).DropItem(tmpitem), NPC(vNpcNum).DropItemValue(tmpitem), mapNum, MapNPC(mapNum).Npc(Victim).X, MapNPC(mapNum).Npc(Victim).Y)
             End If
 
             ' Reset victim's stuff so it dies in loop
-            MapNpc(mapNum).Npc(Victim).Num = 0
-            MapNpc(mapNum).Npc(Victim).SpawnWait = GetTimeMs()
-            MapNpc(mapNum).Npc(Victim).Vital(VitalType.HP) = 0
+            MapNPC(mapNum).Npc(Victim).Num = 0
+            MapNPC(mapNum).Npc(Victim).SpawnWait = GetTimeMs()
+            MapNPC(mapNum).Npc(Victim).Vital(VitalType.HP) = 0
 
             ' send npc death packet to map
             buffer = New ByteStream(4)
@@ -748,10 +746,10 @@ Module S_Npc
             buffer.Dispose()
         Else
             ' npc not dead, just do the damage
-            MapNpc(mapNum).Npc(Victim).Vital(VitalType.HP) = MapNpc(mapNum).Npc(Victim).Vital(VitalType.HP) - Damage
+            MapNPC(mapNum).Npc(Victim).Vital(VitalType.HP) = MapNPC(mapNum).Npc(Victim).Vital(VitalType.HP) - Damage
             ' Say damage
-            SendActionMsg(mapNum, "-" & Damage, ColorType.BrightRed, 1, (MapNpc(mapNum).Npc(Victim).X * 32), (MapNpc(mapNum).Npc(Victim).Y * 32))
-            SendBlood(mapNum, MapNpc(mapNum).Npc(Victim).X, MapNpc(mapNum).Npc(Victim).Y)
+            SendActionMsg(mapNum, "-" & Damage, ColorType.BrightRed, 1, (MapNPC(mapNum).Npc(Victim).X * 32), (MapNPC(mapNum).Npc(Victim).Y * 32))
+            SendBlood(mapNum, MapNPC(mapNum).Npc(Victim).X, MapNPC(mapNum).Npc(Victim).Y)
         End If
 
     End Sub
@@ -763,8 +761,8 @@ Module S_Npc
                     NpcMove(GetPlayerMap(index), NpcNum, GetPlayerDir(index), MovementType.Walking)
                 End If
             Next
-            MapNpc(GetPlayerMap(index)).Npc(NpcNum).StunDuration = 1
-            MapNpc(GetPlayerMap(index)).Npc(NpcNum).StunTimer = GetTimeMs()
+            MapNPC(GetPlayerMap(index)).Npc(NpcNum).StunDuration = 1
+            MapNPC(GetPlayerMap(index)).Npc(NpcNum).StunTimer = GetTimeMs()
         Else
             If Item(GetPlayerEquipment(index, EquipmentType.Weapon)).KnockBack = 1 Then
                 For i = 0 To Item(GetPlayerEquipment(index, EquipmentType.Weapon)).KnockBackTiles
@@ -772,8 +770,8 @@ Module S_Npc
                         NpcMove(GetPlayerMap(index), NpcNum, GetPlayerDir(index), MovementType.Walking)
                     End If
                 Next
-                MapNpc(GetPlayerMap(index)).Npc(NpcNum).StunDuration = 1
-                MapNpc(GetPlayerMap(index)).Npc(NpcNum).StunTimer = GetTimeMs()
+                MapNPC(GetPlayerMap(index)).Npc(NpcNum).StunDuration = 1
+                MapNPC(GetPlayerMap(index)).Npc(NpcNum).StunTimer = GetTimeMs()
             End If
         End If
     End Sub
@@ -783,11 +781,11 @@ Module S_Npc
 
         RandomNpcAttack = 0
 
-        If MapNpc(mapNum).Npc(MapNpcNum).SkillBuffer > 0 Then Exit Function
+        If MapNPC(mapNum).Npc(MapNpcNum).SkillBuffer > 0 Then Exit Function
 
         For i = 1 To MAX_NPC_SKILLS
-            If Npc(MapNpc(mapNum).Npc(MapNpcNum).Num).Skill(i) > 0 Then
-                SkillList.Add(Npc(MapNpc(mapNum).Npc(MapNpcNum).Num).Skill(i))
+            If NPC(MapNPC(mapNum).Npc(MapNpcNum).Num).Skill(i) > 0 Then
+                SkillList.Add(NPC(MapNPC(mapNum).Npc(MapNpcNum).Num).Skill(i))
             End If
         Next
 
@@ -800,7 +798,7 @@ Module S_Npc
     End Function
 
     Friend Function GetNpcSkill(NpcNum As Integer, skillslot As Integer) As Integer
-        GetNpcSkill = Npc(NpcNum).Skill(skillslot)
+        GetNpcSkill = NPC(NpcNum).Skill(skillslot)
     End Function
 
     Friend Sub BufferNpcSkill(mapNum As Integer, MapNpcNum As Integer, skillslot As Integer)
@@ -816,20 +814,20 @@ Module S_Npc
         ' Prevent subscript out of range
         If skillslot < 0 OrElse skillslot > MAX_NPC_SKILLS Then Exit Sub
 
-        skillnum = GetNpcSkill(MapNpc(mapNum).Npc(MapNpcNum).Num, skillslot)
+        skillnum = GetNpcSkill(MapNPC(mapNum).Npc(MapNpcNum).Num, skillslot)
 
         If skillnum <= 0 OrElse skillnum > MAX_SKILLS Then Exit Sub
 
         ' see if cooldown has finished
-        If MapNpc(mapNum).Npc(MapNpcNum).SkillCd(skillslot) > GetTimeMs() Then
-            TryNpcAttackPlayer(MapNpcNum, MapNpc(mapNum).Npc(MapNpcNum).Target)
+        If MapNPC(mapNum).Npc(MapNpcNum).SkillCd(skillslot) > GetTimeMs() Then
+            TryNpcAttackPlayer(MapNpcNum, MapNPC(mapNum).Npc(MapNpcNum).Target)
             Exit Sub
         End If
 
         MPCost = Skill(skillnum).MpCost
 
         ' Check if they have enough MP
-        If MapNpc(mapNum).Npc(MapNpcNum).Vital(VitalType.MP) < MPCost Then Exit Sub
+        If MapNPC(mapNum).Npc(MapNpcNum).Vital(VitalType.MP) < MPCost Then Exit Sub
 
         ' find out what kind of skill it is! self cast, target or AOE
         If Skill(skillnum).Range > 0 Then
@@ -847,8 +845,8 @@ Module S_Npc
             End If
         End If
 
-        TargetType = MapNpc(mapNum).Npc(MapNpcNum).TargetType
-        Target = MapNpc(mapNum).Npc(MapNpcNum).Target
+        TargetType = MapNPC(mapNum).Npc(MapNpcNum).TargetType
+        Target = MapNPC(mapNum).Npc(MapNpcNum).Target
         range = Skill(skillnum).Range
         HasBuffered = False
 
@@ -862,7 +860,7 @@ Module S_Npc
                 End If
                 If TargetType = Engine.TargetType.Player Then
                     ' if have target, check in range
-                    If Not IsInRange(range, MapNpc(mapNum).Npc(MapNpcNum).X, MapNpc(mapNum).Npc(MapNpcNum).Y, GetPlayerX(Target), GetPlayerY(Target)) Then
+                    If Not IsInRange(range, MapNPC(mapNum).Npc(MapNpcNum).X, MapNPC(mapNum).Npc(MapNpcNum).Y, GetPlayerX(Target), GetPlayerY(Target)) Then
                         Exit Sub
                     Else
                         HasBuffered = True
@@ -887,8 +885,8 @@ Module S_Npc
 
         If HasBuffered Then
             SendAnimation(mapNum, Skill(skillnum).CastAnim, 0, 0, Engine.TargetType.Player, Target)
-            MapNpc(mapNum).Npc(MapNpcNum).SkillBuffer = skillslot
-            MapNpc(mapNum).Npc(MapNpcNum).SkillBufferTimer = GetTimeMs()
+            MapNPC(mapNum).Npc(MapNpcNum).SkillBuffer = skillslot
+            MapNPC(mapNum).Npc(MapNpcNum).SkillBufferTimer = GetTimeMs()
             Exit Sub
         End If
     End Sub
@@ -900,7 +898,7 @@ Module S_Npc
 
         CanNpcBlock = False
 
-        stat = Npc(npcnum).Stat(StatType.Luck) / 5  'guessed shield agility
+        stat = NPC(npcnum).Stat(StatType.Luck) / 5  'guessed shield agility
         rate = stat / 12.08
         rndNum = Random(1, 100)
 
@@ -914,7 +912,7 @@ Module S_Npc
 
         CanNpcCrit = False
 
-        rate = Npc(npcnum).Stat(StatType.Luck) / 3
+        rate = NPC(npcnum).Stat(StatType.Luck) / 3
         rndNum = Random(1, 100)
 
         If rndNum <= rate Then CanNpcCrit = True
@@ -927,7 +925,7 @@ Module S_Npc
 
         CanNpcDodge = False
 
-        rate = Npc(npcnum).Stat(StatType.Luck) / 4
+        rate = NPC(npcnum).Stat(StatType.Luck) / 4
         rndNum = Random(1, 100)
 
         If rndNum <= rate Then CanNpcDodge = True
@@ -940,7 +938,7 @@ Module S_Npc
 
         CanNpcParry = False
 
-        rate = Npc(npcnum).Stat(StatType.Luck) / 6
+        rate = NPC(npcnum).Stat(StatType.Luck) / 6
         rndNum = Random(1, 100)
 
         If rndNum <= rate Then CanNpcParry = True
@@ -949,7 +947,7 @@ Module S_Npc
 
     Function GetNpcDamage(npcnum As Integer) As Integer
 
-        GetNpcDamage = (Npc(npcnum).Stat(StatType.Strength) * 2) + (Npc(npcnum).Damage * 2) + (Npc(npcnum).Level * 3) + Random(1, 20)
+        GetNpcDamage = (NPC(npcnum).Stat(StatType.Strength) * 2) + (NPC(npcnum).Damage * 2) + (NPC(npcnum).Level * 3) + Random(1, 20)
 
     End Function
 
@@ -968,20 +966,20 @@ Module S_Npc
             End If
 
             SendAnimation(mapNum, Skill(Skillnum).SkillAnim, 0, 0, TargetType.Npc, index)
-            SendActionMsg(mapNum, sSymbol & Damage, Color, ActionMsgType.Scroll, MapNpc(mapNum).Npc(index).X * 32, MapNpc(mapNum).Npc(index).Y * 32)
+            SendActionMsg(mapNum, sSymbol & Damage, Color, ActionMsgType.Scroll, MapNPC(mapNum).Npc(index).X * 32, MapNPC(mapNum).Npc(index).Y * 32)
 
             ' send the sound
             'SendMapSound(Index, MapNpc(MapNum).Npc(Index).x, MapNpc(MapNum).Npc(Index).y, SoundEntity.seSpell, Skillnum)
 
             If increment Then
-                MapNpc(mapNum).Npc(index).Vital(Vital) = MapNpc(mapNum).Npc(index).Vital(Vital) + Damage
+                MapNPC(mapNum).Npc(index).Vital(Vital) = MapNPC(mapNum).Npc(index).Vital(Vital) + Damage
 
                 If Skill(Skillnum).Duration > 0 Then
                     'AddHoT_Npc(MapNum, Index, Skillnum, 0)
                 End If
 
             ElseIf Not increment Then
-                MapNpc(mapNum).Npc(index).Vital(Vital) = MapNpc(mapNum).Npc(index).Vital(Vital) - Damage
+                MapNPC(mapNum).Npc(index).Vital(Vital) = MapNPC(mapNum).Npc(index).Vital(Vital) - Damage
             End If
 
         End If
@@ -991,16 +989,16 @@ Module S_Npc
     Friend Function IsNpcDead(mapNum As Integer, MapNpcNum As Integer)
         IsNpcDead = False
         If mapNum <= 0 OrElse mapNum > MAX_MAPS OrElse MapNpcNum <= 0 OrElse MapNpcNum > MAX_MAP_NPCS Then Exit Function
-        If MapNpc(mapNum).Npc(MapNpcNum).Vital(VitalType.HP) <= 0 Then IsNpcDead = True
+        If MapNPC(mapNum).Npc(MapNpcNum).Vital(VitalType.HP) <= 0 Then IsNpcDead = True
     End Function
 
     Friend Sub DropNpcItems(mapNum As Integer, MapNpcNum As Integer)
-        Dim NpcNum = MapNpc(mapNum).Npc(MapNpcNum).Num
+        Dim NpcNum = MapNPC(mapNum).Npc(MapNpcNum).Num
         Dim tmpitem = Random(1, 5)
-        Dim n = Int(Rnd() * Npc(NpcNum).DropChance(tmpitem)) + 1
+        Dim n = Int(Rnd() * NPC(NpcNum).DropChance(tmpitem)) + 1
 
         If n = 1 Then
-            SpawnItem(Npc(NpcNum).DropItem(tmpitem), Npc(NpcNum).DropItemValue(tmpitem), mapNum, MapNpc(mapNum).Npc(MapNpcNum).X, MapNpc(mapNum).Npc(MapNpcNum).Y)
+            SpawnItem(NPC(NpcNum).DropItem(tmpitem), NPC(NpcNum).DropItemValue(tmpitem), mapNum, MapNPC(mapNum).Npc(MapNpcNum).X, MapNPC(mapNum).Npc(MapNpcNum).Y)
         End If
     End Sub
 
@@ -1014,15 +1012,13 @@ Module S_Npc
 
         buffer.WriteInt32(ServerPackets.SMapNpcData)
 
-        AddDebug("Sent SMSG: SMapNpcData")
-
         For i = 1 To MAX_MAP_NPCS
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Num)
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).X)
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Y)
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Dir)
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Vital(VitalType.HP))
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Vital(VitalType.MP))
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Num)
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).X)
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Y)
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Dir)
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.HP))
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.MP))
         Next
 
         SendDataToMap(mapNum, buffer.Data, buffer.Head)
@@ -1035,8 +1031,6 @@ Module S_Npc
 #Region "Incoming Packets"
 
     Sub Packet_EditNpc(index As Integer, ByRef data() As Byte)
-        AddDebug("Recieved EMSG: RequestEditNpc")
-
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
         If TempPlayer(index).Editor > -1 Then Exit Sub
@@ -1061,8 +1055,6 @@ Module S_Npc
         Buffer.WriteInt32(ServerPackets.SNpcEditor)
         Socket.SendDataTo(index, Buffer.Data, Buffer.Head)
 
-        AddDebug("Sent SMSG: SNpcEditor")
-
         Buffer.Dispose()
     End Sub
 
@@ -1070,43 +1062,41 @@ Module S_Npc
         Dim NpcNum As Integer, i As Integer
         Dim buffer As New ByteStream(data)
 
-        AddDebug("Recieved EMSG: SaveNpc")
-
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
 
         NpcNum = buffer.ReadInt32
 
         ' Update the Npc
-        Npc(NpcNum).Animation = buffer.ReadInt32()
-        Npc(NpcNum).AttackSay = buffer.ReadString()
-        Npc(NpcNum).Behaviour = buffer.ReadByte()
+        NPC(NpcNum).Animation = buffer.ReadInt32()
+        NPC(NpcNum).AttackSay = buffer.ReadString()
+        NPC(NpcNum).Behaviour = buffer.ReadByte()
 
         For i = 1 To MAX_DROP_ITEMS
-            Npc(NpcNum).DropChance(i) = buffer.ReadInt32()
-            Npc(NpcNum).DropItem(i) = buffer.ReadInt32()
-            Npc(NpcNum).DropItemValue(i) = buffer.ReadInt32()
+            NPC(NpcNum).DropChance(i) = buffer.ReadInt32()
+            NPC(NpcNum).DropItem(i) = buffer.ReadInt32()
+            NPC(NpcNum).DropItemValue(i) = buffer.ReadInt32()
         Next
 
-        Npc(NpcNum).Exp = buffer.ReadInt32()
-        Npc(NpcNum).Faction = buffer.ReadByte()
-        Npc(NpcNum).HP = buffer.ReadInt32()
-        Npc(NpcNum).Name = buffer.ReadString()
-        Npc(NpcNum).Range = buffer.ReadByte()
-        Npc(NpcNum).SpawnTime = buffer.ReadByte()
-        Npc(NpcNum).SpawnSecs = buffer.ReadInt32()
-        Npc(NpcNum).Sprite = buffer.ReadInt32()
+        NPC(NpcNum).Exp = buffer.ReadInt32()
+        NPC(NpcNum).Faction = buffer.ReadByte()
+        NPC(NpcNum).HP = buffer.ReadInt32()
+        NPC(NpcNum).Name = buffer.ReadString()
+        NPC(NpcNum).Range = buffer.ReadByte()
+        NPC(NpcNum).SpawnTime = buffer.ReadByte()
+        NPC(NpcNum).SpawnSecs = buffer.ReadInt32()
+        NPC(NpcNum).Sprite = buffer.ReadInt32()
 
         For i = 1 To StatType.Count - 1
-            Npc(NpcNum).Stat(i) = buffer.ReadByte()
+            NPC(NpcNum).Stat(i) = buffer.ReadByte()
         Next
 
         For i = 1 To MAX_NPC_SKILLS
-            Npc(NpcNum).Skill(i) = buffer.ReadByte()
+            NPC(NpcNum).Skill(i) = buffer.ReadByte()
         Next
 
-        Npc(NpcNum).Level = buffer.ReadInt32()
-        Npc(NpcNum).Damage = buffer.ReadInt32()
+        NPC(NpcNum).Level = buffer.ReadInt32()
+        NPC(NpcNum).Damage = buffer.ReadInt32()
 
         ' Save it
         SendUpdateNpcToAll(NpcNum)
@@ -1120,7 +1110,7 @@ Module S_Npc
         Dim i As Integer
 
         For i = 1 To MAX_NPCS
-            If Len(Trim$(Npc(i).Name)) > 0 Then
+            If Len(Trim$(NPC(i).Name)) > 0 Then
                 SendUpdateNpcTo(index, i)
             End If
         Next
@@ -1129,41 +1119,40 @@ Module S_Npc
 
     Sub SendUpdateNpcTo(index As Integer, NpcNum As Integer)
         Dim buffer As ByteStream, i As Integer
+
         buffer = New ByteStream(4)
         buffer.WriteInt32(ServerPackets.SUpdateNpc)
 
-        AddDebug("Sent SMSG: SUpdateNpc")
-
         buffer.WriteInt32(NpcNum)
-        buffer.WriteInt32(Npc(NpcNum).Animation)
-        buffer.WriteString(Npc(NpcNum).AttackSay)
-        buffer.WriteByte(Npc(NpcNum).Behaviour)
+        buffer.WriteInt32(NPC(NpcNum).Animation)
+        buffer.WriteString(NPC(NpcNum).AttackSay)
+        buffer.WriteByte(NPC(NpcNum).Behaviour)
 
         For i = 1 To MAX_DROP_ITEMS
-            buffer.WriteInt32(Npc(NpcNum).DropChance(i))
-            buffer.WriteInt32(Npc(NpcNum).DropItem(i))
-            buffer.WriteInt32(Npc(NpcNum).DropItemValue(i))
+            buffer.WriteInt32(NPC(NpcNum).DropChance(i))
+            buffer.WriteInt32(NPC(NpcNum).DropItem(i))
+            buffer.WriteInt32(NPC(NpcNum).DropItemValue(i))
         Next
 
-        buffer.WriteInt32(Npc(NpcNum).Exp)
-        buffer.WriteByte(Npc(NpcNum).Faction)
-        buffer.WriteInt32(Npc(NpcNum).HP)
-        buffer.WriteString(Npc(NpcNum).Name)
-        buffer.WriteByte(Npc(NpcNum).Range)
-        buffer.WriteByte(Npc(NpcNum).SpawnTime)
-        buffer.WriteInt32(Npc(NpcNum).SpawnSecs)
-        buffer.WriteInt32(Npc(NpcNum).Sprite)
+        buffer.WriteInt32(NPC(NpcNum).Exp)
+        buffer.WriteByte(NPC(NpcNum).Faction)
+        buffer.WriteInt32(NPC(NpcNum).HP)
+        buffer.WriteString(NPC(NpcNum).Name)
+        buffer.WriteByte(NPC(NpcNum).Range)
+        buffer.WriteByte(NPC(NpcNum).SpawnTime)
+        buffer.WriteInt32(NPC(NpcNum).SpawnSecs)
+        buffer.WriteInt32(NPC(NpcNum).Sprite)
 
         For i = 1 To StatType.Count - 1
-            buffer.WriteByte(Npc(NpcNum).Stat(i))
+            buffer.WriteByte(NPC(NpcNum).Stat(i))
         Next
 
         For i = 1 To MAX_NPC_SKILLS
-            buffer.WriteByte(Npc(NpcNum).Skill(i))
+            buffer.WriteByte(NPC(NpcNum).Skill(i))
         Next
 
-        buffer.WriteInt32(Npc(NpcNum).Level)
-        buffer.WriteInt32(Npc(NpcNum).Damage)
+        buffer.WriteInt32(NPC(NpcNum).Level)
+        buffer.WriteInt32(NPC(NpcNum).Damage)
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
         buffer.Dispose()
@@ -1171,41 +1160,40 @@ Module S_Npc
 
     Sub SendUpdateNpcToAll(NpcNum As Integer)
         Dim buffer As ByteStream, i As Integer
+
         buffer = New ByteStream(4)
         buffer.WriteInt32(ServerPackets.SUpdateNpc)
 
-        AddDebug("Sent SMSG: SUpdateNpc To All")
-
         buffer.WriteInt32(NpcNum)
-        buffer.WriteInt32(Npc(NpcNum).Animation)
-        buffer.WriteString(Npc(NpcNum).AttackSay)
-        buffer.WriteByte(Npc(NpcNum).Behaviour)
+        buffer.WriteInt32(NPC(NpcNum).Animation)
+        buffer.WriteString(NPC(NpcNum).AttackSay)
+        buffer.WriteByte(NPC(NpcNum).Behaviour)
 
         For i = 1 To MAX_DROP_ITEMS
-            buffer.WriteInt32(Npc(NpcNum).DropChance(i))
-            buffer.WriteInt32(Npc(NpcNum).DropItem(i))
-            buffer.WriteInt32(Npc(NpcNum).DropItemValue(i))
+            buffer.WriteInt32(NPC(NpcNum).DropChance(i))
+            buffer.WriteInt32(NPC(NpcNum).DropItem(i))
+            buffer.WriteInt32(NPC(NpcNum).DropItemValue(i))
         Next
 
-        buffer.WriteInt32(Npc(NpcNum).Exp)
-        buffer.WriteByte(Npc(NpcNum).Faction)
-        buffer.WriteInt32(Npc(NpcNum).HP)
-        buffer.WriteString(Npc(NpcNum).Name)
-        buffer.WriteByte(Npc(NpcNum).Range)
-        buffer.WriteByte(Npc(NpcNum).SpawnTime)
-        buffer.WriteInt32(Npc(NpcNum).SpawnSecs)
-        buffer.WriteInt32(Npc(NpcNum).Sprite)
+        buffer.WriteInt32(NPC(NpcNum).Exp)
+        buffer.WriteByte(NPC(NpcNum).Faction)
+        buffer.WriteInt32(NPC(NpcNum).HP)
+        buffer.WriteString(NPC(NpcNum).Name)
+        buffer.WriteByte(NPC(NpcNum).Range)
+        buffer.WriteByte(NPC(NpcNum).SpawnTime)
+        buffer.WriteInt32(NPC(NpcNum).SpawnSecs)
+        buffer.WriteInt32(NPC(NpcNum).Sprite)
 
         For i = 1 To StatType.Count - 1
-            buffer.WriteByte(Npc(NpcNum).Stat(i))
+            buffer.WriteByte(NPC(NpcNum).Stat(i))
         Next
 
         For i = 1 To MAX_NPC_SKILLS
-            buffer.WriteByte(Npc(NpcNum).Skill(i))
+            buffer.WriteByte(NPC(NpcNum).Skill(i))
         Next
 
-        buffer.WriteInt32(Npc(NpcNum).Level)
-        buffer.WriteInt32(Npc(NpcNum).Damage)
+        buffer.WriteInt32(NPC(NpcNum).Level)
+        buffer.WriteInt32(NPC(NpcNum).Damage)
 
         SendDataToAll(buffer.Data, buffer.Head)
         buffer.Dispose()
@@ -1218,15 +1206,13 @@ Module S_Npc
 
         buffer.WriteInt32(ServerPackets.SMapNpcData)
 
-        AddDebug("Sent SMSG: SMapNpcData")
-
         For i = 1 To MAX_MAP_NPCS
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Num)
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).X)
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Y)
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Dir)
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Vital(VitalType.HP))
-            buffer.WriteInt32(MapNpc(mapNum).Npc(i).Vital(VitalType.MP))
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Num)
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).X)
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Y)
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Dir)
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.HP))
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.MP))
         Next
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
@@ -1240,11 +1226,9 @@ Module S_Npc
 
         buffer.WriteInt32(ServerPackets.SMapNpcUpdate)
 
-        AddDebug("Sent SMSG: SMapNpcUpdate")
-
         buffer.WriteInt32(MapNpcNum)
 
-        With MapNpc(mapNum).Npc(MapNpcNum)
+        With MapNPC(mapNum).Npc(MapNpcNum)
             buffer.WriteInt32(.Num)
             buffer.WriteInt32(.X)
             buffer.WriteInt32(.Y)
@@ -1265,11 +1249,9 @@ Module S_Npc
 
         buffer.WriteInt32(ServerPackets.SMapNpcVitals)
         buffer.WriteInt32(MapNpcNum)
-
-        AddDebug("Sent SMSG: SMapNpcVitals")
-
+        
         For i = 1 To VitalType.Count - 1
-            buffer.WriteInt32(MapNpc(mapNum).Npc(MapNpcNum).Vital(i))
+            buffer.WriteInt32(MapNPC(mapNum).Npc(MapNpcNum).Vital(i))
         Next
 
         SendDataToMap(mapNum, buffer.Data, buffer.Head)
@@ -1281,8 +1263,6 @@ Module S_Npc
         Dim Buffer = New ByteStream(4)
         Buffer.WriteInt32(ServerPackets.SAttack)
 
-        AddDebug("Sent SMSG: SNpcAttack")
-
         Buffer.WriteInt32(NpcNum)
         SendDataToMap(GetPlayerMap(index), Buffer.Data, Buffer.Head)
         Buffer.Dispose()
@@ -1291,8 +1271,6 @@ Module S_Npc
     Sub SendNpcDead(mapNum As Integer, index As Integer)
         Dim Buffer = New ByteStream(4)
         Buffer.WriteInt32(ServerPackets.SNpcDead)
-
-        AddDebug("Sent SMSG: SNpcDead")
 
         Buffer.WriteInt32(index)
         SendDataToMap(mapNum, Buffer.Data, Buffer.Head)

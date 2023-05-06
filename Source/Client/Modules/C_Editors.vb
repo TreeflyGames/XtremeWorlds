@@ -78,40 +78,40 @@ Module C_Editors
 
             .cmbDropSlot.SelectedIndex = 0
 
-            .txtName.Text = Npc(Editorindex).Name
-            .txtAttackSay.Text = Npc(Editorindex).AttackSay
-            .nudSprite.Value = Npc(Editorindex).Sprite
-            .nudSpawnSecs.Value = Npc(Editorindex).SpawnSecs
-            .cmbBehaviour.SelectedIndex = Npc(Editorindex).Behaviour
-            .cmbFaction.SelectedIndex = Npc(Editorindex).Faction
-            .nudRange.Value = Npc(Editorindex).Range
-            .nudChance.Value = Npc(Editorindex).DropChance(frmEditor_NPC.cmbDropSlot.SelectedIndex)
-            .cmbItem.SelectedIndex = Npc(Editorindex).DropItem(frmEditor_NPC.cmbDropSlot.SelectedIndex)
+            .txtName.Text = NPC(Editorindex).Name
+            .txtAttackSay.Text = NPC(Editorindex).AttackSay
+            .nudSprite.Value = NPC(Editorindex).Sprite
+            .nudSpawnSecs.Value = NPC(Editorindex).SpawnSecs
+            .cmbBehaviour.SelectedIndex = NPC(Editorindex).Behaviour
+            .cmbFaction.SelectedIndex = NPC(Editorindex).Faction
+            .nudRange.Value = NPC(Editorindex).Range
+            .nudChance.Value = NPC(Editorindex).DropChance(frmEditor_NPC.cmbDropSlot.SelectedIndex)
+            .cmbItem.SelectedIndex = NPC(Editorindex).DropItem(frmEditor_NPC.cmbDropSlot.SelectedIndex)
 
-            .nudAmount.Value = Npc(Editorindex).DropItemValue(frmEditor_NPC.cmbDropSlot.SelectedIndex)
+            .nudAmount.Value = NPC(Editorindex).DropItemValue(frmEditor_NPC.cmbDropSlot.SelectedIndex)
 
-            .nudHp.Value = Npc(Editorindex).HP
-            .nudExp.Value = Npc(Editorindex).Exp
-            .nudLevel.Value = Npc(Editorindex).Level
-            .nudDamage.Value = Npc(Editorindex).Damage
+            .nudHp.Value = NPC(Editorindex).HP
+            .nudExp.Value = NPC(Editorindex).Exp
+            .nudLevel.Value = NPC(Editorindex).Level
+            .nudDamage.Value = NPC(Editorindex).Damage
 
-            .cmbSpawnPeriod.SelectedIndex = Npc(Editorindex).SpawnTime
+            .cmbSpawnPeriod.SelectedIndex = NPC(Editorindex).SpawnTime
 
-            .cmbAnimation.SelectedIndex = Npc(Editorindex).Animation
+            .cmbAnimation.SelectedIndex = NPC(Editorindex).Animation
 
-            .nudStrength.Value = Npc(Editorindex).Stat(StatType.Strength)
-            .nudEndurance.Value = Npc(Editorindex).Stat(StatType.Endurance)
-            .nudIntelligence.Value = Npc(Editorindex).Stat(StatType.Intelligence)
-            .nudSpirit.Value = Npc(Editorindex).Stat(StatType.Spirit)
-            .nudLuck.Value = Npc(Editorindex).Stat(StatType.Luck)
-            .nudVitality.Value = Npc(Editorindex).Stat(StatType.Vitality)
+            .nudStrength.Value = NPC(Editorindex).Stat(StatType.Strength)
+            .nudEndurance.Value = NPC(Editorindex).Stat(StatType.Endurance)
+            .nudIntelligence.Value = NPC(Editorindex).Stat(StatType.Intelligence)
+            .nudSpirit.Value = NPC(Editorindex).Stat(StatType.Spirit)
+            .nudLuck.Value = NPC(Editorindex).Stat(StatType.Luck)
+            .nudVitality.Value = NPC(Editorindex).Stat(StatType.Vitality)
 
-            .cmbSkill1.SelectedIndex = Npc(Editorindex).Skill(1)
-            .cmbSkill2.SelectedIndex = Npc(Editorindex).Skill(2)
-            .cmbSkill3.SelectedIndex = Npc(Editorindex).Skill(3)
-            .cmbSkill4.SelectedIndex = Npc(Editorindex).Skill(4)
-            .cmbSkill5.SelectedIndex = Npc(Editorindex).Skill(5)
-            .cmbSkill6.SelectedIndex = Npc(Editorindex).Skill(6)
+            .cmbSkill1.SelectedIndex = NPC(Editorindex).Skill(1)
+            .cmbSkill2.SelectedIndex = NPC(Editorindex).Skill(2)
+            .cmbSkill3.SelectedIndex = NPC(Editorindex).Skill(3)
+            .cmbSkill4.SelectedIndex = NPC(Editorindex).Skill(4)
+            .cmbSkill5.SelectedIndex = NPC(Editorindex).Skill(5)
+            .cmbSkill6.SelectedIndex = NPC(Editorindex).Skill(6)
         End With
 
         EditorNpc_DrawSprite()

@@ -141,7 +141,7 @@ Friend Module S_Event
                     If CanEventMove = False Then Exit Function
                     ' Check to make sure that there is not another npc in the way
                     For i = 1 To MAX_MAP_NPCS
-                        If (MapNpc(mapNum).Npc(i).X = x) AndAlso (MapNpc(mapNum).Npc(i).Y = y - 1) Then
+                        If (MapNPC(mapNum).Npc(i).X = x) AndAlso (MapNPC(mapNum).Npc(i).Y = y - 1) Then
                             CanEventMove = False
                             Exit Function
                         End If
@@ -227,7 +227,7 @@ Friend Module S_Event
 
                     ' Check to make sure that there is not another npc in the way
                     For i = 1 To MAX_MAP_NPCS
-                        If (MapNpc(mapNum).Npc(i).X = x) AndAlso (MapNpc(mapNum).Npc(i).Y = y + 1) Then
+                        If (MapNPC(mapNum).Npc(i).X = x) AndAlso (MapNPC(mapNum).Npc(i).Y = y + 1) Then
                             CanEventMove = False
                             Exit Function
                         End If
@@ -313,7 +313,7 @@ Friend Module S_Event
 
                     ' Check to make sure that there is not another npc in the way
                     For i = 1 To MAX_MAP_NPCS
-                        If (MapNpc(mapNum).Npc(i).X = x - 1) AndAlso (MapNpc(mapNum).Npc(i).Y = y) Then
+                        If (MapNPC(mapNum).Npc(i).X = x - 1) AndAlso (MapNPC(mapNum).Npc(i).Y = y) Then
                             CanEventMove = False
                             Exit Function
                         End If
@@ -399,7 +399,7 @@ Friend Module S_Event
 
                     ' Check to make sure that there is not another npc in the way
                     For i = 1 To MAX_MAP_NPCS
-                        If (MapNpc(mapNum).Npc(i).X = x + 1) AndAlso (MapNpc(mapNum).Npc(i).Y = y) Then
+                        If (MapNPC(mapNum).Npc(i).X = x + 1) AndAlso (MapNPC(mapNum).Npc(i).Y = y) Then
                             CanEventMove = False
                             Exit Function
                         End If
@@ -1336,8 +1336,6 @@ Friend Module S_Event
         Dim eventId As Integer, pageId As Integer, reply As Integer, i As Integer
         Dim buffer As New ByteStream(data)
 
-        AddDebug("Recieved CMSG: CEventChatReply")
-
         eventId = buffer.ReadInt32
         pageId = buffer.ReadInt32
         reply = buffer.ReadInt32
@@ -1386,8 +1384,6 @@ Friend Module S_Event
         Dim i As Integer
         Dim buffer As New ByteStream(data)
 
-        AddDebug("Recieved CMSG: CEvent")
-
         i = buffer.ReadInt32
         buffer.Dispose()
 
@@ -1395,16 +1391,12 @@ Friend Module S_Event
     End Sub
 
     Sub Packet_RequestSwitchesAndVariables(index As Integer, ByRef data() As Byte)
-        AddDebug("Recieved CMSG: CRequestSwitchesAndVariables")
-
         SendSwitchesAndVariables(index)
     End Sub
 
     Sub Packet_SwitchesAndVariables(index As Integer, ByRef data() As Byte)
         Dim i As Integer
         Dim buffer As New ByteStream(data)
-
-        AddDebug("Recieved CMSG: CSwitchesAndVariables")
 
         For i = 1 To MAX_SWITCHES
             Switches(i) = buffer.ReadString
@@ -1431,9 +1423,7 @@ Friend Module S_Event
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SSpecialEffect)
-
-        AddDebug("Sent SMSG: SSpecialEffect")
-
+        
         Select Case effectType
             Case EffectTypeFadein
                 buffer.WriteInt32(effectType)
@@ -1468,8 +1458,6 @@ Friend Module S_Event
 
         buffer.WriteInt32(ServerPackets.SSwitchesAndVariables)
 
-        AddDebug("Sent SMSG: SSwitchesAndVariables")
-
         For i = 1 To MAX_SWITCHES
             buffer.WriteString((Trim(Switches(i))))
         Next
@@ -1494,10 +1482,6 @@ Friend Module S_Event
 
         buffer.WriteInt32(ServerPackets.SMapEventData)
         mapNum = GetPlayerMap(index)
-
-        AddDebug("Sent SMSG: SMapEventData")
-
-        'Event Data
         buffer.WriteInt32(Map(mapNum).EventCount)
 
         If Map(mapNum).EventCount > 0 Then

@@ -270,7 +270,7 @@ Public Class frmEditor_Map
 
         For n = 0 To MAX_MAP_NPCS
             If Map.Npc(n) > 0 Then
-                lstNpc.Items.Add(n & ": " & Npc(Map.Npc(n)).Name)
+                lstNpc.Items.Add(n & ": " & NPC(Map.Npc(n)).Name)
             Else
                 lstNpc.Items.Add(n)
             End If
@@ -370,7 +370,7 @@ Public Class frmEditor_Map
 
     Private Sub CmbNpcList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbNpcList.SelectedIndexChanged
         If lstMapNpc.SelectedIndex > -1 Then
-            lstMapNpc.Items.Item(lstMapNpc.SelectedIndex) = lstMapNpc.SelectedIndex + 1 & ": " & Npc(cmbNpcList.SelectedIndex + 1).Name
+            lstMapNpc.Items.Item(lstMapNpc.SelectedIndex) = lstMapNpc.SelectedIndex + 1 & ": " & NPC(cmbNpcList.SelectedIndex + 1).Name
             Map.Npc(lstMapNpc.SelectedIndex + 1) = cmbNpcList.SelectedIndex + 1
         End If
     End Sub
@@ -521,12 +521,12 @@ Public Class frmEditor_Map
         lstMapNpc.Items.Clear()
 
         For X = 1 To MAX_MAP_NPCS
-            lstMapNpc.Items.Add(X & ": " & Trim$(Npc(Map.Npc(X)).Name))
+            lstMapNpc.Items.Add(X & ": " & Trim$(NPC(Map.Npc(X)).Name))
         Next
 
         cmbNpcList.Items.Clear()
         For Y = 1 To MAX_NPCS
-            cmbNpcList.Items.Add(Y & ": " & Trim$(Npc(Y).Name))
+            cmbNpcList.Items.Add(Y & ": " & Trim$(NPC(Y).Name))
         Next
 
         cmbAnimation.Items.Clear()

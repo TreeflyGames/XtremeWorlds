@@ -144,7 +144,7 @@ Public Class FrmEditor_Events
 
         For i = 1 To MAX_MAP_NPCS
             If Map.Npc(i) > 0 Then
-                cmbSpawnNpc.Items.Add(i & ". " & Trim$(Npc(Map.Npc(i)).Name))
+                cmbSpawnNpc.Items.Add(i & ". " & Trim$(NPC(Map.Npc(i)).Name))
             Else
                 cmbSpawnNpc.Items.Add(i & ". ")
             End If
@@ -492,7 +492,7 @@ Public Class FrmEditor_Events
                 'lets populate the combobox
                 cmbSpawnNpc.Items.Clear()
                For i = 1 To MAX_NPCS
-                    cmbSpawnNpc.Items.Add(Trim(Npc(i).Name))
+                    cmbSpawnNpc.Items.Add(Trim(NPC(i).Name))
                 Next
                 cmbSpawnNpc.SelectedIndex = 0
                 fraDialogue.Visible = True
@@ -1641,7 +1641,7 @@ Public Class FrmEditor_Events
                 If Map.Npc(i) < 0 Then
                     cmbChatBubbleTarget.Items.Add(i & ". ")
                 Else
-                    cmbChatBubbleTarget.Items.Add(i & ". " & Trim$(Npc(Map.Npc(i)).Name))
+                    cmbChatBubbleTarget.Items.Add(i & ". " & Trim$(NPC(Map.Npc(i)).Name))
                 End If
             Next
             cmbChatBubbleTarget.SelectedIndex = 0

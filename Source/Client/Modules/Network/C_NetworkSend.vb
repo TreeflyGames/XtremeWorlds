@@ -457,35 +457,35 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CSaveNpc)
         buffer.WriteInt32(NpcNum)
 
-        buffer.WriteInt32(Npc(NpcNum).Animation)
-        buffer.WriteString(Npc(NpcNum).AttackSay)
-        buffer.WriteByte(Npc(NpcNum).Behaviour)
+        buffer.WriteInt32(NPC(NpcNum).Animation)
+        buffer.WriteString(NPC(NpcNum).AttackSay)
+        buffer.WriteByte(NPC(NpcNum).Behaviour)
 
         For i = 1 To MAX_DROP_ITEMS
-            buffer.WriteInt32(Npc(NpcNum).DropChance(i))
-            buffer.WriteInt32(Npc(NpcNum).DropItem(i))
-            buffer.WriteInt32(Npc(NpcNum).DropItemValue(i))
+            buffer.WriteInt32(NPC(NpcNum).DropChance(i))
+            buffer.WriteInt32(NPC(NpcNum).DropItem(i))
+            buffer.WriteInt32(NPC(NpcNum).DropItemValue(i))
         Next
 
-        buffer.WriteInt32(Npc(NpcNum).Exp)
-        buffer.WriteByte(Npc(NpcNum).Faction)
-        buffer.WriteInt32(Npc(NpcNum).HP)
-        buffer.WriteString((Npc(NpcNum).Name))
-        buffer.WriteByte(Npc(NpcNum).Range)
-        buffer.WriteByte(Npc(NpcNum).SpawnTime)
-        buffer.WriteInt32(Npc(NpcNum).SpawnSecs)
-        buffer.WriteInt32(Npc(NpcNum).Sprite)
+        buffer.WriteInt32(NPC(NpcNum).Exp)
+        buffer.WriteByte(NPC(NpcNum).Faction)
+        buffer.WriteInt32(NPC(NpcNum).HP)
+        buffer.WriteString((NPC(NpcNum).Name))
+        buffer.WriteByte(NPC(NpcNum).Range)
+        buffer.WriteByte(NPC(NpcNum).SpawnTime)
+        buffer.WriteInt32(NPC(NpcNum).SpawnSecs)
+        buffer.WriteInt32(NPC(NpcNum).Sprite)
 
         For i = 1 To StatType.Count - 1
-            buffer.WriteByte(Npc(NpcNum).Stat(i))
+            buffer.WriteByte(NPC(NpcNum).Stat(i))
         Next
 
         For i = 1 To MAX_NPC_SKILLS
-            buffer.WriteByte(Npc(NpcNum).Skill(i))
+            buffer.WriteByte(NPC(NpcNum).Skill(i))
         Next
 
-        buffer.WriteInt32(Npc(NpcNum).Level)
-        buffer.WriteInt32(Npc(NpcNum).Damage)
+        buffer.WriteInt32(NPC(NpcNum).Level)
+        buffer.WriteInt32(NPC(NpcNum).Damage)
 
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()

@@ -34,11 +34,11 @@ Module S_GameLogic
 
         Select Case Vital
             Case VitalType.HP
-                GetNpcMaxVital = Npc(NpcNum).HP
+                GetNpcMaxVital = NPC(NpcNum).HP
             Case VitalType.MP
-                GetNpcMaxVital = Npc(NpcNum).Stat(StatType.Intelligence) * 2
+                GetNpcMaxVital = NPC(NpcNum).Stat(StatType.Intelligence) * 2
             Case VitalType.SP
-                GetNpcMaxVital = Npc(NpcNum).Stat(StatType.Spirit) * 2
+                GetNpcMaxVital = NPC(NpcNum).Stat(StatType.Spirit) * 2
         End Select
 
     End Function

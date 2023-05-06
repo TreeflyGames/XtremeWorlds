@@ -2,6 +2,8 @@
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
 
 Friend Module S_Item
 
@@ -17,136 +19,36 @@ Friend Module S_Item
     End Sub
 
     Sub SaveItem(itemNum As Integer)
-        Dim filename As String
-        filename = Paths.Item(itemNum)
+        Dim json As String = JsonConvert.SerializeObject(Item(itemNum)).ToString()
 
-        Dim writer As New ByteStream(100)
-        writer.WriteString(Item(itemNum).Name)
-        writer.WriteInt32(Item(itemNum).Pic)
-        writer.WriteString(Item(itemNum).Description)
-
-        writer.WriteByte(Item(itemNum).Type)
-        writer.WriteByte(Item(itemNum).SubType)
-        writer.WriteInt32(Item(itemNum).Data1)
-        writer.WriteInt32(Item(itemNum).Data2)
-        writer.WriteInt32(Item(itemNum).Data3)
-        writer.WriteInt32(Item(itemNum).JobReq)
-        writer.WriteInt32(Item(itemNum).AccessReq)
-        writer.WriteInt32(Item(itemNum).LevelReq)
-        writer.WriteByte(Item(itemNum).Mastery)
-        writer.WriteInt32(Item(itemNum).Price)
-
-        For i = 1 To StatType.Count - 1
-            writer.WriteByte(Item(itemNum).Add_Stat(i))
-        Next
-
-        writer.WriteByte(Item(itemNum).Rarity)
-        writer.WriteInt32(Item(itemNum).Speed)
-        writer.WriteInt32(Item(itemNum).TwoHanded)
-        writer.WriteByte(Item(itemNum).BindType)
-
-        For i = 1 To StatType.Count - 1
-            writer.WriteByte(Item(itemNum).Stat_Req(i))
-        Next
-
-        writer.WriteInt32(Item(itemNum).Animation)
-        writer.WriteInt32(Item(itemNum).Paperdoll)
-
-        writer.WriteByte(Item(itemNum).KnockBack)
-        writer.WriteByte(Item(itemNum).KnockBackTiles)
-
-        writer.WriteByte(Item(itemNum).Randomize)
-        writer.WriteByte(Item(itemNum).RandomMin)
-        writer.WriteByte(Item(itemNum).RandomMax)
-
-        writer.WriteByte(Item(itemNum).Stackable)
-
-        writer.WriteByte(Item(itemNum).ItemLevel)
-
-        writer.WriteInt32(Item(itemNum).Projectile)
-        writer.WriteInt32(Item(itemNum).Ammo)
-
-        ByteFile.Save(filename, writer)
+        If RowExists(itemNum, "item")
+            UpdateRow(itemNum, json, "item")
+        Else
+            InsertRow("item", json)
+        End If
     End Sub
 
     Sub LoadItems()
         Dim i As Integer
 
-        CheckItems()
-
-       For i = 1 To MAX_ITEMS
+        For i = 1 To MAX_ITEMS
             LoadItem(i)
         Next
 
     End Sub
 
-    Sub LoadItem(ItemNum As Integer)
-        Dim filename As String
-        Dim s As Integer
+    Sub LoadItem(itemNum As Integer)
+        Dim data As JObject
 
-        filename = Paths.Item(ItemNum)
+        data = SelectRow("item", "data", itemNum)
 
-        Dim reader As New ByteStream()
-        ByteFile.Load(filename, reader)
+        If data Is Nothing Then
+            ClearItem(itemNum)
+            Exit Sub
+        End If
 
-        Item(ItemNum).Name = reader.ReadString()
-        Item(ItemNum).Pic = reader.ReadInt32()
-        Item(ItemNum).Description = reader.ReadString()
-
-        Item(ItemNum).Type = reader.ReadByte()
-        Item(ItemNum).SubType = reader.ReadByte()
-        Item(ItemNum).Data1 = reader.ReadInt32()
-        Item(ItemNum).Data2 = reader.ReadInt32()
-        Item(ItemNum).Data3 = reader.ReadInt32()
-        Item(ItemNum).JobReq = reader.ReadInt32()
-        Item(ItemNum).AccessReq = reader.ReadInt32()
-        Item(ItemNum).LevelReq = reader.ReadInt32()
-        Item(ItemNum).Mastery = reader.ReadByte()
-        Item(ItemNum).Price = reader.ReadInt32()
-
-        For s = 0 To StatType.Count - 1
-            Item(ItemNum).Add_Stat(s) = reader.ReadByte()
-        Next
-
-        Item(ItemNum).Rarity = reader.ReadByte()
-        Item(ItemNum).Speed = reader.ReadInt32()
-        Item(ItemNum).TwoHanded = reader.ReadInt32()
-        Item(ItemNum).BindType = reader.ReadByte()
-
-        For s = 0 To StatType.Count - 1
-            Item(ItemNum).Stat_Req(s) = reader.ReadByte()
-        Next
-
-        Item(ItemNum).Animation = reader.ReadInt32()
-        Item(ItemNum).Paperdoll = reader.ReadInt32()
-
-        Item(ItemNum).KnockBack = reader.ReadByte()
-        Item(ItemNum).KnockBackTiles = reader.ReadByte()
-
-        Item(ItemNum).Randomize = reader.ReadByte()
-        Item(ItemNum).RandomMin = reader.ReadByte()
-        Item(ItemNum).RandomMax = reader.ReadByte()
-
-        Item(ItemNum).Stackable = reader.ReadByte()
-
-        Item(ItemNum).ItemLevel = reader.ReadByte()
-
-        Item(ItemNum).Projectile = reader.ReadInt32()
-        Item(ItemNum).Ammo = reader.ReadInt32()
-
-    End Sub
-
-    Sub CheckItems()
-        Dim i As Integer
-
-        For i = 1 To MAX_ITEMS
-
-            If Not File.Exists(Paths.Item(i)) Then
-                SaveItem(i)
-            End If
-
-        Next
-
+        Dim itemData = JObject.FromObject(data).toObject(Of ItemStruct)()
+        Item(itemNum) = itemData
     End Sub
 
     Sub ClearItem(index As Integer)
@@ -161,26 +63,13 @@ Friend Module S_Item
 
     Sub ClearItems()
         For i = 1 To MAX_ITEMS
-            ReDim Item(i).Add_Stat(StatType.Count - 1)
-            ReDim Item(i).Stat_Req(StatType.Count - 1)
-        Next
-
-        For i = 1 To MAX_ITEMS
             ClearItem(i)
         Next
     End Sub
 
-    Function ItemsData() As Byte()
-        Dim buffer As New ByteStream(4)
-        For i = 1 To MAX_ITEMS
-            If Not Len(Trim$(Item(i).Name)) > 0 Then Continue For
-            buffer.WriteBlock(ItemData(i))
-        Next
-        Return buffer.ToArray
-    End Function
-
     Function ItemData(itemNum As Integer) As Byte()
         Dim buffer As New ByteStream(4)
+
         buffer.WriteInt32(itemNum)
         buffer.WriteInt32(Item(itemNum).AccessReq)
 
@@ -237,9 +126,7 @@ Friend Module S_Item
 
         buffer.WriteInt32(ServerPackets.SMapItemData)
 
-        AddDebug("Sent SMSG: SMapItemData")
-
-       For i = 1 To MAX_MAP_ITEMS
+        For i = 1 To MAX_MAP_ITEMS
             buffer.WriteInt32(MapItem(mapNum, i).Num)
             buffer.WriteInt32(MapItem(mapNum, i).Value)
             buffer.WriteInt32(MapItem(mapNum, i).X)
@@ -258,9 +145,7 @@ Friend Module S_Item
 
         buffer.WriteInt32(ServerPackets.SMapItemData)
 
-        AddDebug("Sent SMSG: SMapItemData To All")
-
-       For i = 1 To MAX_MAP_ITEMS
+        For i = 1 To MAX_MAP_ITEMS
             buffer.WriteInt32(MapItem(mapNum, i).Num)
             buffer.WriteInt32(MapItem(mapNum, i).Value)
             buffer.WriteInt32(MapItem(mapNum, i).X)
@@ -275,7 +160,7 @@ Friend Module S_Item
     Sub SpawnItem(itemNum As Integer, ItemVal As Integer, mapNum As Integer, x As Integer, y As Integer)
         Dim i As Integer
 
-        ' Check for subscript out of range
+' Check for subscript out of range
         If itemnum <= 0 OrElse itemNum > MAX_ITEMS OrElse mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS Then Exit Sub
 
         ' Find open map item slot
@@ -290,7 +175,7 @@ Friend Module S_Item
         Dim i As Integer
         Dim buffer As New ByteStream(4)
 
-        ' Check for subscript out of range
+' Check for subscript out of range
         If MapItemSlot < 0 OrElse MapItemSlot > MAX_MAP_ITEMS OrElse itemnum <= 0 OrElse itemNum > MAX_ITEMS OrElse mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS Then Exit Sub
 
         i = MapItemSlot
@@ -307,8 +192,6 @@ Friend Module S_Item
             buffer.WriteInt32(ItemVal)
             buffer.WriteInt32(x)
             buffer.WriteInt32(y)
-
-            AddDebug("Sent SMSG: SSpawnItem MapItemSlot")
 
             SendDataToMap(mapNum, buffer.Data, buffer.Head)
         End If
@@ -349,8 +232,8 @@ Friend Module S_Item
         ' Check for subscript out of range
         If mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS Then Exit Sub
 
-        ' Spawn what we have
-        For X = 0 To Map(mapNum).MaxX
+' Spawn what we have
+For X = 0 To Map(mapNum).MaxX
             For Y = 0 To Map(mapNum).MaxY
                 ' Check if the tile type is an item or a saved tile incase someone drops something
                 If (Map(mapNum).Tile(x, y).Type = TileType.Item) Then
@@ -376,8 +259,6 @@ Friend Module S_Item
 #Region "Incoming Packets"
 
     Sub Packet_RequestItem(index As Integer, ByRef data() As Byte)
-        AddDebug("Recieved CMSG: CRequestItem")
-
         Dim Buffer = New ByteStream(data), n As Integer
 
         n = Buffer.ReadInt32
@@ -388,8 +269,6 @@ Friend Module S_Item
     End Sub
 
     Sub Packet_EditItem(index As Integer, ByRef data() As Byte)
-        AddDebug("Recieved EMSG: RequestEditItem")
-
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
         If TempPlayer(index).Editor > -1 Then  Exit Sub
@@ -415,16 +294,12 @@ Friend Module S_Item
         Buffer.WriteInt32(ServerPackets.SItemEditor)
         Socket.SendDataTo(index, Buffer.Data, Buffer.Head)
 
-        AddDebug("Sent SMSG: SItemEditor")
-
         Buffer.Dispose()
     End Sub
 
     Sub Packet_SaveItem(index As Integer, ByRef data() As Byte)
         Dim n As Integer
         Dim buffer As New ByteStream(data)
-
-        AddDebug("Recieved EMSG: SaveItem")
 
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
@@ -486,17 +361,13 @@ Friend Module S_Item
     End Sub
 
     Sub Packet_GetItem(index As Integer, ByRef data() As Byte)
-        AddDebug("Recieved CMSG: CMapGetItem")
-
         PlayerMapGetItem(index)
     End Sub
 
     Sub Packet_DropItem(index As Integer, ByRef data() As Byte)
         Dim InvNum As Integer, Amount As Integer
         Dim buffer As New ByteStream(data)
-
-        AddDebug("Recieved CMSG: CMapDropItem")
-
+        
         InvNum = buffer.ReadInt32
         Amount = buffer.ReadInt32
         buffer.Dispose()
@@ -536,8 +407,6 @@ Friend Module S_Item
 
         buffer.WriteBlock(ItemData(itemNum))
 
-        AddDebug("Sent SMSG: SUpdateItem")
-
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
         buffer.Dispose()
     End Sub
@@ -548,8 +417,6 @@ Friend Module S_Item
         buffer.WriteInt32(ServerPackets.SUpdateItem)
 
         buffer.WriteBlock(ItemData(itemNum))
-
-        AddDebug("Sent SMSG: SUpdateItem To All")
 
         SendDataToAll(buffer.Data, buffer.Head)
         buffer.Dispose()

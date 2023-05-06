@@ -51,7 +51,7 @@ Module C_Text
 
         npcNum = MapNpc(mapNpcNum).Num
 
-        Select Case Npc(npcNum).Behaviour
+        Select Case NPC(npcNum).Behaviour
             Case 0 ' attack on sight
                 color = Color.Red
                 backcolor = Color.Black
@@ -63,15 +63,15 @@ Module C_Text
                 backcolor = Color.Black
         End Select
 
-        textX = ConvertMapX(MapNpc(mapNpcNum).X * PicX) + MapNpc(mapNpcNum).XOffset + (PicX \ 2) - (GetTextWidth((Trim$(Npc(npcNum).Name))) / 2) - 2
-        If Npc(npcNum).Sprite < 1 OrElse Npc(npcNum).Sprite > NumCharacters Then
+        textX = ConvertMapX(MapNpc(mapNpcNum).X * PicX) + MapNpc(mapNpcNum).XOffset + (PicX \ 2) - (GetTextWidth((Trim$(NPC(npcNum).Name))) / 2) - 2
+        If NPC(npcNum).Sprite < 1 OrElse NPC(npcNum).Sprite > NumCharacters Then
             textY = ConvertMapY(MapNpc(mapNpcNum).Y * PicY) + MapNpc(mapNpcNum).YOffset - 16
         Else
-            textY = ConvertMapY(MapNpc(mapNpcNum).Y * PicY) + MapNpc(mapNpcNum).YOffset - (CharacterGfxInfo(Npc(npcNum).Sprite).Height / 4) + 16
+            textY = ConvertMapY(MapNpc(mapNpcNum).Y * PicY) + MapNpc(mapNpcNum).YOffset - (CharacterGfxInfo(NPC(npcNum).Sprite).Height / 4) + 16
         End If
 
         ' Draw name
-        RenderText(Npc(npcNum).Name, GameWindow, textX, textY, color, backcolor)
+        RenderText(NPC(npcNum).Name, GameWindow, textX, textY, color, backcolor)
     End Sub
 
     Friend Sub DrawEventName(index As Integer)

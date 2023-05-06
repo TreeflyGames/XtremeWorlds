@@ -2,17 +2,10 @@
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Mirage.Basic.Engine
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
 
 Friend Module S_Projectile
-
-#Region "Defines"
-
-    Friend Const MAX_PROJECTILES As Integer = 255
-    Friend Projectile(MAX_PROJECTILES) As ProjectileRec
-    Friend MapProjectile(,) As MapProjectileRec
-
-#End Region
-
 #Region "Types"
 
     Public Structure ProjectileRec
@@ -46,52 +39,36 @@ Friend Module S_Projectile
 
     End Sub
 
-    Sub SaveProjectile(ProjectileNum As Integer)
-        Dim filename As String
+    Sub SaveProjectile(projectileNum As Integer)
+        Dim json As String = JsonConvert.SerializeObject(Projectile(projectileNum)).ToString()
 
-        filename = Paths.Projectile(ProjectileNum)
-
-        Dim writer As New ByteStream(100)
-
-        writer.WriteString(Projectile(ProjectileNum).Name)
-        writer.WriteInt32(Projectile(ProjectileNum).Sprite)
-        writer.WriteByte(Projectile(ProjectileNum).Range)
-        writer.WriteInt32(Projectile(ProjectileNum).Speed)
-        writer.WriteInt32(Projectile(ProjectileNum).Damage)
-
-        ByteFile.Save(filename, writer)
-
+        If RowExists(projectileNum, "projectile")
+            UpdateRow(projectileNum, json, "projectile")
+        Else
+            InsertRow("projectile", json)
+        End If
     End Sub
 
     Sub LoadProjectiles()
-        Dim filename As String
         Dim i As Integer
 
-        CheckProjectile()
-
         For i = 1 To MAX_PROJECTILES
-            filename = Paths.Projectile(i)
-            Dim reader As New ByteStream()
-            ByteFile.Load(filename, reader)
-
-            Projectile(i).Name = reader.ReadString()
-            Projectile(i).Sprite = reader.ReadInt32()
-            Projectile(i).Range = reader.ReadByte()
-            Projectile(i).Speed = reader.ReadInt32()
-            Projectile(i).Damage = reader.ReadInt32()
+            LoadProjectile(i)
         Next
-
     End Sub
 
-    Sub CheckProjectile()
-        Dim i As Integer
+    Sub LoadProjectile(projectileNum As Integer)
+        Dim data As JObject
 
-        For i = 1 To MAX_PROJECTILES
-            If Not File.Exists(Paths.Projectile(i)) Then
-                SaveProjectile(i)
-            End If
-        Next
+        data = SelectRow("projectile", "data", projectileNum)
 
+        If data Is Nothing Then
+            ClearProjectile(projectileNum)
+            Exit Sub
+        End If
+
+        Dim projectileData = JObject.FromObject(data).toObject(Of ProjectileStruct)()
+        Projectile(projectileNum) = projectileData
     End Sub
 
     Sub ClearMapProjectile()
@@ -173,6 +150,7 @@ Friend Module S_Projectile
     Sub HandleSaveProjectile(index As Integer, ByRef data() As Byte)
         Dim ProjectileNum As Integer
         Dim buffer As New ByteStream(data)
+
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
 
         ProjectileNum = buffer.ReadInt32
@@ -244,7 +222,7 @@ Friend Module S_Projectile
                             End If
 
                         Case TargetType.Npc
-                            npcnum = MapNpc(mapNum).Npc(Targetindex).Num
+                            npcnum = MapNPC(mapNum).Npc(Targetindex).Num
                             If CanPlayerAttackNpc(index, Targetindex, True) = True Then
                                 ' Get the damage we can do
                                 Damage = GetPlayerDamage(index) + Projectile(MapProjectile(mapNum, ProjectileNum).ProjectileNum).Damage

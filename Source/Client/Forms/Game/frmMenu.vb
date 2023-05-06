@@ -11,7 +11,7 @@ Friend Class FrmMenu
     ''' <summary>
     ''' clean up and close the game.
     ''' </summary>
-    Private Sub FrmMenu_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+    Private Sub FrmMenu_Disposed(sender As Object, e As EventArgs) Handles MyBase.Disposed
         DestroyGame()
     End Sub
 
@@ -126,7 +126,7 @@ Friend Class FrmMenu
                 filename = Paths.Graphics & "characters\" & Job(NewCharJob).MaleSprite & GfxExt
             Else
                 filename = Paths.Graphics & "characters\" & Job(NewCharJob).FemaleSprite & GfxExt
-End If
+            End If
 
             If File.Exists(filename) = False Then Exit sub
             Dim charsprite As Bitmap = New Bitmap(filename)
