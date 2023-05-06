@@ -896,7 +896,7 @@ Module C_Graphics
             If index <= 0 OrElse index > NumSkillIcons Then Exit Sub
 
             'Load texture first, dont care about memory streams (just use the filename)
-            SkillIconsGfx(index) = New Texture(Paths.Graphics & "skillicons\" & index & GfxExt)
+            SkillIconsGfx(index) = New Texture(Paths.Graphics & "skills\" & index & GfxExt)
             SkillIconsSprite(index) = New Sprite(SkillIconsGfx(index))
 
             'Cache the width and height
@@ -3168,6 +3168,7 @@ NextLoop:
         Dim iconnum As Integer
         Dim sRECT As Rectangle
         Dim dRECT As Rectangle
+
         iconnum = frmEditor_Skill.nudIcon.Value
 
         If iconnum < 1 OrElse iconnum > NumSkillIcons Then
