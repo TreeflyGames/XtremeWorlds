@@ -57,7 +57,7 @@ Module C_Database
         Dim i As Integer
         i = 1
 
-        While File.Exists(Paths.Graphics & "SkillIcons\" & i & GfxExt)
+        While File.Exists(Paths.Graphics & "Skills\" & i & GfxExt)
             NumSkillIcons = NumSkillIcons + 1
             i = i + 1
         End While

@@ -1296,13 +1296,13 @@
     <None Update="Contents\Graphics\Resources\6.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Contents\Graphics\Skillicons\1.png">
+    <None Update="Contents\Graphics\Skills\1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Contents\Graphics\Skillicons\2.png">
+    <None Update="Contents\Graphics\Skills\2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Contents\Graphics\Skillicons\3.png">
+    <None Update="Contents\Graphics\Skills\3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Contents\Graphics\Tilesets\1.png">
