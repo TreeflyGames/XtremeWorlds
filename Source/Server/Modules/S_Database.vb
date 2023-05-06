@@ -605,7 +605,7 @@ Module S_Database
     End Sub
 
     Sub ClearAccount(index As Integer)
-        Account(index).Access = AdminType.Player
+        Player(index).Access = AdminType.Player
         SetPlayerLogin(index, "")
         ReDim Account(index).Character(MAX_CHARACTERS)
 

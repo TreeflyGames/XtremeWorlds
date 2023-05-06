@@ -295,7 +295,6 @@ Public Module Types
     Public Structure AccountStruct
         Dim Login As String
         Dim Password As String
-        Dim Access As Byte
         Dim Character() As String
         Dim Index As Byte
     End Structure
@@ -308,6 +307,8 @@ Public Module Types
         Dim Sprite As Integer
         Dim Level As Byte
         Dim Exp As Integer
+
+        Dim Access As Byte
 
         Dim Pk As Byte
 

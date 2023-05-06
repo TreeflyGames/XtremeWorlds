@@ -16,7 +16,6 @@ Module C_Player
     End Sub
 
     Sub ClearAccount(i As Integer)
-        Account(i).Access = AdminType.Player
         Account(i).Login = ""
         Account(i).Password = ""
     End Sub
@@ -29,6 +28,7 @@ Module C_Player
         Player(i).AttackTimer = 0
         Player(i).Job = 1
         Player(i).Dir = 0
+        Player(i).Access = AdminType.Player
 
         ReDim Player(i).Equipment(EquipmentType.Count - 1)
         For y = 0 To EquipmentType.Count - 1

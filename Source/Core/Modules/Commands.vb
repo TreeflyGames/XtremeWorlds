@@ -53,7 +53,7 @@
     End Function
 
     Public Function GetPlayerAccess(index As Integer) As Integer
-        GetPlayerAccess = Account(index).Access
+        GetPlayerAccess = Player(index).Access
     End Function
 
     Public Function GetPlayerX(index As Integer) As Integer
@@ -196,7 +196,7 @@
     End Function
 
     Public Sub SetPlayerAccess(index As Integer, access As Integer)
-        Account(index).Access = access
+        Player(index).Access = access
     End Sub
 
     Public Sub SetPlayerPk(index As Integer, pk As Integer)
