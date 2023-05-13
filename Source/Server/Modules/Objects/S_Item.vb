@@ -1,7 +1,6 @@
-﻿Imports System.IO
+﻿
+Imports Core
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Sharp.Asfw.IO
-Imports Mirage.Basic.Engine
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
@@ -22,9 +21,9 @@ Friend Module S_Item
         Dim json As String = JsonConvert.SerializeObject(Item(itemNum)).ToString()
 
         If RowExists(itemNum, "item")
-            UpdateRow(itemNum, json, "item")
+            UpdateRow(itemNum, json, "item", "data")
         Else
-            InsertRow("item", json)
+            InsertRow(itemNum, json, "item")
         End If
     End Sub
 
@@ -47,7 +46,7 @@ Friend Module S_Item
             Exit Sub
         End If
 
-        Dim itemData = JObject.FromObject(data).toObject(Of ItemStruct)()
+        Dim itemData = JObject.FromObject(data).toObject(Of Types.ItemStruct)()
         Item(itemNum) = itemData
     End Sub
 
@@ -271,7 +270,7 @@ For X = 0 To Map(mapNum).MaxX
     Sub Packet_EditItem(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
-        If TempPlayer(index).Editor > -1 Then  Exit Sub
+        If TempPlayer(index).Editor > 0 Then  Exit Sub
 
         Dim user As String
 

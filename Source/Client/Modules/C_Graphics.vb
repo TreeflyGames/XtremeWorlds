@@ -1,11 +1,9 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
-Imports Mirage.Basic.Engine.Enumerator
+Imports Core.Enumerator
 Imports SFML.Graphics
 Imports SFML.System
-Imports Mirage.Basic.Engine
-Imports Time = Mirage.Basic.Engine.Time
-Imports System.Drawing.Design
+Imports Core
 
 Module C_Graphics
 
@@ -1247,7 +1245,7 @@ Module C_Graphics
         Else
             ' If not attacking, walk normally
             Select Case MapNpc(mapNpcNum).Dir
-                Case DirectionType.Up
+                Case Enumerator.DirectionType.Up
                     If (MapNpc(mapNpcNum).YOffset > 8) Then anim = MapNpc(mapNpcNum).Steps
                 Case DirectionType.Down
                     If (MapNpc(mapNpcNum).YOffset < -8) Then anim = MapNpc(mapNpcNum).Steps
@@ -2240,8 +2238,6 @@ Module C_Graphics
 
         RenderText(Language.Game.Fps & Fps, GameWindow, FrmGame.Width - 120, 10, Color.White, Color.White)
         RenderText(Language.Game.Ping & PingToDraw, GameWindow, FrmGame.Width - 120, 30, Color.White, Color.White)
-        RenderText(Language.Game.Time & Time.Instance.ToString("h:mm"), GameWindow, FrmGame.Width - 120, 50,
-                 Color.White, Color.White)
 
         If Blps Then
             RenderText(Language.Game.Lps & Lps, GameWindow, FrmGame.Width - 120, 70, Color.White, Color.White)

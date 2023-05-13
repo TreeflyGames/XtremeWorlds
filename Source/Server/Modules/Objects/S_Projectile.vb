@@ -1,7 +1,6 @@
-﻿Imports System.IO
+﻿
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Sharp.Asfw.IO
-Imports Mirage.Basic.Engine
+Imports Core
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
@@ -29,23 +28,13 @@ Friend Module S_Projectile
 #End Region
 
 #Region "Database"
-
-    Sub SaveProjectile()
-        Dim i As Integer
-
-        For i = 1 To MAX_PROJECTILES
-            SaveProjectile(i)
-        Next
-
-    End Sub
-
     Sub SaveProjectile(projectileNum As Integer)
         Dim json As String = JsonConvert.SerializeObject(Projectile(projectileNum)).ToString()
 
         If RowExists(projectileNum, "projectile")
-            UpdateRow(projectileNum, json, "projectile")
+            UpdateRow(projectileNum, json, "projectile", "data")
         Else
-            InsertRow("projectile", json)
+            InsertRow(projectileNum, json, "projectile")
         End If
     End Sub
 

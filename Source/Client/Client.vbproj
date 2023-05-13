@@ -3,14 +3,14 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Mirage.Basic.Client.My.MyApplication</StartupObject>
+    <StartupObject>Client.FrmMenu</StartupObject>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <MyType>WindowsForms</MyType>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>181BBD77C201FB969E61DF100063FD42A08B2BE6</ManifestCertificateThumbprint>
-    <ManifestKeyFile>Orion Client_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>MirageWorlds.pfx</ManifestKeyFile>
     <GenerateManifests>false</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>false</SignManifests>
@@ -71,7 +71,7 @@
     <Compile Update="Forms\Editors\FrmEditor_Animation.Designer.vb">
       <DependentUpon>FrmEditor_Animation.vb</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_Job.Designer.vb">
+	  <Compile Update="Forms\Editors\FrmEditor_Job.Designer.vb">
       <DependentUpon>FrmEditor_Job.vb</DependentUpon>
     </Compile>
     <Compile Update="Forms\Editors\frmEditor_Events.Designer.vb">
@@ -1323,9 +1323,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Mirage.Basic.Engine.vbproj" />
+    <ProjectReference Include="..\Core\Core.vbproj" />
     <ProjectReference Include="..\DarkUI\DarkUI.csproj" />
-    <ProjectReference Include="..\Network\Mirage.Sharp.Asfw.csproj" />
+    <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="My Project\Resources.resx">

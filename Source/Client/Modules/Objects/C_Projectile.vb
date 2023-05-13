@@ -1,10 +1,8 @@
 ﻿Imports System.IO
-Imports System.Windows.Forms
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
+Imports Core
 Imports SFML.Graphics
 Imports SFML.System
-Imports SFML.Window
 
 Friend Module C_Projectiles
 

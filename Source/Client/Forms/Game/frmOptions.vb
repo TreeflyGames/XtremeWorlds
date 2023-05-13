@@ -1,5 +1,5 @@
-﻿Imports System.Configuration
-Imports Mirage.Basic.Engine
+﻿
+Imports Core
 
 Friend Class FrmOptions
 

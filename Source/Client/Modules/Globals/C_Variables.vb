@@ -1,5 +1,5 @@
-﻿Imports Mirage.Sharp.Asfw.IO.Encryption
-Imports Mirage.Basic.Engine
+﻿Imports Core
+Imports Mirage.Sharp.Asfw.IO.Encryption
 
 Module C_Variables
 

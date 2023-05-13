@@ -1,6 +1,6 @@
 ﻿Imports System.Drawing
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
+Imports Core
 
 Module C_Trade
 

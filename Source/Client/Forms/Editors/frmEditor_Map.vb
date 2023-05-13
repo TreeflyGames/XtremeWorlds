@@ -1,12 +1,9 @@
 ﻿Imports System.IO
 Imports Mirage.Sharp.Asfw
 Imports SFML.Graphics
-Imports SFML.Window
-Imports Mirage.Basic.Engine
+Imports Core
 Imports SFML.System
-Imports Mirage.Basic.Engine.Enumerator
-Imports System.Drawing.Imaging
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
+Imports Core.Enumerator
 
 Public Class frmEditor_Map
 #Region "Frm"

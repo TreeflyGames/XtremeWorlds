@@ -1,6 +1,6 @@
 ﻿Imports System
 Imports System.Threading
-Imports Mirage.Basic.Engine
+Imports Core
 
 Module S_Console
     Private threadConsole As Thread
@@ -86,7 +86,7 @@ Module S_Console
                         Console.WriteLine("Player name is empty or invalid. [Name not found]")
                     Else
                         Select Case Power
-                            Case AdminType.Player
+                            Case Enumerator.AdminType.Player
                                 SetPlayerAccess(Pindex, Power)
                                 SendPlayerData(Pindex)
                                 PlayerMsg(Pindex, "Your PowerLevel has been set to Player Rank!", ColorType.BrightCyan)
@@ -149,10 +149,10 @@ Module S_Console
 
                     Dim speed As Double
                     Double.TryParse(parts(1), speed)
-                    Engine.Time.Instance.GameSpeed = speed
+                    Core.Time.Instance.GameSpeed = speed
                     Settings.TimeSpeed = speed
                     SaveSettings()
-                    Console.WriteLine("Set GameSpeed to " & Engine.Time.Instance.GameSpeed & " secs per seconds")
+                    Console.WriteLine("Set GameSpeed to " & Core.Time.Instance.GameSpeed & " secs per seconds")
 
 #End Region
 

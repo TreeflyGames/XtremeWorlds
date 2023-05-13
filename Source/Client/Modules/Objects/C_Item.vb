@@ -1,7 +1,6 @@
 ﻿Imports System.IO
-Imports System.Windows.Forms
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
+Imports Core
 
 Module C_Items
 

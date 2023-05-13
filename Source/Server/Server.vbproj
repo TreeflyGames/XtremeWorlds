@@ -49,7 +49,7 @@
   <OutputType>Exe</OutputType>
 </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Mirage.Basic.Engine.vbproj" />
-     <ProjectReference Include="..\Network\Mirage.Sharp.Asfw.csproj" />
+    <ProjectReference Include="..\Core\Core.vbproj" />
+     <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
 </Project>

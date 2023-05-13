@@ -1,5 +1,5 @@
-﻿Imports System.Windows.Forms.VisualStyles
-Imports Mirage.Basic.Engine
+﻿
+Imports Core
 
 Friend Class FrmAdmin
 
@@ -12,7 +12,7 @@ Friend Class FrmAdmin
 
     Private Sub BtnAdminWarpTo_Click(sender As Object, e As EventArgs) Handles btnAdminWarpTo.Click
 
-        If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+        If GetPlayerAccess(Myindex) < Enumerator.AdminType.Mapper Then
             AddText("You need to be a high enough staff member to do this!", QColorType.AlertColor)
             Exit Sub
         End If

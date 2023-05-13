@@ -1,6 +1,5 @@
-﻿Imports System.Configuration
-Imports System.Windows.Forms.Design.AxImporter
-Imports Mirage.Basic.Engine
+﻿
+Imports Core
 Module C_UpdateUI
 
 #Region "Defines"

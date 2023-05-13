@@ -2,13 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Mirage.Basic.Client", "Source\Client\Mirage.Basic.Client.vbproj", "{531B337C-BC02-44ED-90C2-C448FE5190A2}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Client", "Source\Client\Client.vbproj", "{531B337C-BC02-44ED-90C2-C448FE5190A2}"
 EndProject
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Mirage.Basic.Server", "Source\Server\Mirage.Basic.Server.vbproj", "{B554FD23-0844-49D1-A05A-D79CEAD3FA7A}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Server", "Source\Server\Server.vbproj", "{B554FD23-0844-49D1-A05A-D79CEAD3FA7A}"
 EndProject
-Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Mirage.Basic.Engine", "Source\Core\Mirage.Basic.Engine.vbproj", "{384120CA-8F90-4B6E-B38E-2A524893403F}"
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Core", "Source\Core\Core.vbproj", "{384120CA-8F90-4B6E-B38E-2A524893403F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mirage.Sharp.Asfw", "Source\Network\Mirage.Sharp.Asfw.csproj", "{1919AC79-B888-4705-AF34-56FD9A26EC3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asfw", "Source\Network\Asfw.csproj", "{1919AC79-B888-4705-AF34-56FD9A26EC3C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DarkUI", "Source\DarkUI\DarkUI.csproj", "{B967151F-A011-4B19-AA3B-1F5296854AFE}"
 EndProject

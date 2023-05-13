@@ -1,5 +1,5 @@
 ﻿Imports System.IO
-Imports Mirage.Basic.Engine
+Imports Core
 Friend Class frmEditor_Pet
 
 #Region "Basics"

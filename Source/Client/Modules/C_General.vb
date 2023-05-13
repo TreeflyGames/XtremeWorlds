@@ -1,8 +1,6 @@
-﻿Imports System.IO
-Imports System.Runtime.InteropServices
-Imports System.Threading
+﻿
 Imports System.Windows.Forms
-Imports Mirage.Basic.Engine
+Imports Core
 
 Module C_General
     Friend Started As Boolean

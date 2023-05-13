@@ -1,4 +1,4 @@
-﻿Imports Mirage.Basic.Engine
+﻿Imports Core
 Imports SFML.System
 
 Module C_Types

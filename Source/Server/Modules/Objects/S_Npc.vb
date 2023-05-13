@@ -1,5 +1,5 @@
 ﻿Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
+Imports Core
 
 Module S_Npc
 
@@ -34,7 +34,7 @@ Module S_Npc
         npcNum = Map(mapNum).Npc(mapNpcNum)
 
         If npcNum > 0 Then
-            If Not NPC(npcNum).SpawnTime = Engine.Time.Instance.TimeOfDay And NPC(npcNum).SpawnTime <> 0 Then
+            If Not NPC(npcNum).SpawnTime = Core.Time.Instance.TimeOfDay And NPC(npcNum).SpawnTime <> 0 Then
                 ClearMapNpc(mapNpcNum, mapNum)
                 SendMapNpcsToMap(mapNum)
                 Exit Sub
@@ -858,14 +858,14 @@ Module S_Npc
                 If Not Target > 0 Then
                     Exit Sub
                 End If
-                If TargetType = Engine.TargetType.Player Then
+                If TargetType = Core.TargetType.Player Then
                     ' if have target, check in range
                     If Not IsInRange(range, MapNPC(mapNum).Npc(MapNpcNum).X, MapNPC(mapNum).Npc(MapNpcNum).Y, GetPlayerX(Target), GetPlayerY(Target)) Then
                         Exit Sub
                     Else
                         HasBuffered = True
                     End If
-                ElseIf TargetType = Engine.TargetType.Npc Then
+                ElseIf TargetType = Core.TargetType.Npc Then
                     '' if have target, check in range
                     'If Not isInRange(range, GetPlayerX(Index), GetPlayerY(Index), MapNpc(MapNum).Npc(Target).x, MapNpc(MapNum).Npc(Target).y) Then
                     '    PlayerMsg(Index, "Target not in range.")
@@ -884,7 +884,7 @@ Module S_Npc
         End Select
 
         If HasBuffered Then
-            SendAnimation(mapNum, Skill(skillnum).CastAnim, 0, 0, Engine.TargetType.Player, Target)
+            SendAnimation(mapNum, Skill(skillnum).CastAnim, 0, 0, Core.TargetType.Player, Target)
             MapNPC(mapNum).Npc(MapNpcNum).SkillBuffer = skillslot
             MapNPC(mapNum).Npc(MapNpcNum).SkillBufferTimer = GetTimeMs()
             Exit Sub
@@ -1033,7 +1033,7 @@ Module S_Npc
     Sub Packet_EditNpc(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
-        If TempPlayer(index).Editor > -1 Then Exit Sub
+        If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
 

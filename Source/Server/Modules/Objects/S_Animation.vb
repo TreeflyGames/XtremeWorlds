@@ -1,7 +1,6 @@
-﻿Imports System.IO
+﻿
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Sharp.Asfw.IO
-Imports Mirage.Basic.Engine
+Imports Core
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
@@ -12,9 +11,9 @@ Friend Module S_Animation
         Dim json As String = JsonConvert.SerializeObject(Animation(animationNum)).ToString()
 
         If RowExists(animationNum, "animation")
-            UpdateRow(animationNum, json, "animation")
+            UpdateRow(animationNum, json, "animation", "data")
         Else
-            InsertRow("animation", json)
+            InsertRow(animationNum, json, "animation")
         End If
     End Sub
 
@@ -93,7 +92,7 @@ Friend Module S_Animation
     Sub Packet_EditAnimation(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
-        If TempPlayer(index).Editor > -1 Then  Exit Sub
+        If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
 

@@ -1,5 +1,5 @@
-﻿Imports Mirage.Sharp.Asfw.Network
-Imports Mirage.Basic.Engine
+﻿Imports Core
+Imports Mirage.Sharp.Asfw.Network
 
 Friend Module S_NetworkConfig
     Friend WithEvents Socket As NetworkServer

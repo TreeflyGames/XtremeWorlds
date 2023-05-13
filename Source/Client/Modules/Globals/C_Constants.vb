@@ -1,5 +1,5 @@
 ﻿Imports System.Drawing
-Imports Mirage.Basic.Engine.Types
+Imports Core
 
 Module C_Constants
 
@@ -87,7 +87,7 @@ Module C_Constants
     Public CopyMap As Boolean
     Public TmpMaxX As Byte
     Public TmpMaxY As Byte
-    Public TmpTile(,) As TileStruct
+    Public TmpTile(,) As Types.TileStruct
     Public TileHistory() as TileHistoryStruct
     Public TileHistoryHighIndex As Integer
     Public MaxTileHistory As Byte = 50

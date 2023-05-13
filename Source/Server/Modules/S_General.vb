@@ -1,12 +1,8 @@
 ﻿Imports System
-Imports System.Data
 Imports System.Diagnostics
 Imports System.IO
-Imports System.Net
-Imports System.Runtime.CompilerServices
-Imports System.Runtime.InteropServices
-Imports Mirage.Basic.Engine
-Imports Mirage.Basic.Engine.Database
+Imports Core
+Imports Core.Database
 
 Module S_General
     Friend ServerDestroyed As Boolean
@@ -28,7 +24,7 @@ Module S_General
 
         LoadSettings()
 
-        Engine.Time.Instance.GameSpeed = Settings.TimeSpeed
+        Core.Time.Instance.GameSpeed = Settings.TimeSpeed
 
         Console.Title = "MirageWorlds Server"
 
@@ -52,20 +48,11 @@ Module S_General
         EKeyPair.GenerateKeys()
         InitNetwork()
 
+        Console.WriteLine("Creating Database...")
         CreateDatabase("mirage")
-        CreateTable("job")
-        CreateTable("item")
-        CreateTable("map")
-        CreateTable("npc")
-        CreateTable("shop")
-        CreateTable("skill")
-        CreateTable("resource")
-        CreateTable("animation")
-        CreateTable("pet")
-        CreateTable("projectile")
-        CreateTable("player")
-        CreateTable("account")
-        CreateTable("bank")
+
+        Console.WriteLine("Creating Tables...")
+        CreateTables()
 
         ClearGameData()
         LoadGameData()
@@ -119,7 +106,7 @@ Module S_General
     Private Delegate Function ConsoleEventDelegate(eventType As Integer) As Boolean
 
     Sub UpdateCaption()
-        Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Settings.GameName, MyIPAddress, Settings.Port, GetPlayersOnline(), ErrorCount, Engine.Time.Instance.ToString())
+        Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Settings.GameName, MyIPAddress, Settings.Port, GetPlayersOnline(), ErrorCount, Core.Time.Instance.ToString())
     End Sub
 
     Sub DestroyServer()

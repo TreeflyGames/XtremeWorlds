@@ -1,8 +1,7 @@
-﻿Imports System.Speech.Synthesis.TtsEngine
-Imports Mirage.Basic.Engine
+﻿
+Imports Core
 Imports SFML.Graphics
 Imports SFML.System
-Imports SFML.Window
 
 Module C_Text
     Friend Const MaxChatDisplayLines As Byte = 11
@@ -123,7 +122,7 @@ Module C_Text
                             tX = ((ConvertMapX(X * PicX)) - 4) + (PicX * 0.5)
                             tY = ((ConvertMapY(y * PicY)) - 7) + (PicY * 0.5)
                             Select Case .Type
-                                Case TileType.Blocked
+                                Case Enumerator.TileType.Blocked
                                     RenderText("B", GameWindow, tX, tY, (Color.Red), (Color.Black))
                                 Case TileType.Warp
                                     RenderText("W", GameWindow, tX, tY, (Color.Blue), (Color.Black))

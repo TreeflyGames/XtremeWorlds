@@ -1,4 +1,4 @@
-﻿Imports Mirage.Basic.Engine
+﻿Imports Core
 Imports SFML.Graphics
 
 Friend Class FrmEditor_Animation

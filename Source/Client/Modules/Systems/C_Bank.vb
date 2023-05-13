@@ -1,12 +1,12 @@
 ﻿Imports System.Drawing
+Imports Core
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
 
 Module C_Banks
 
 #Region "Globals & Types"
 
-    Friend Bank As BankStruct
+    Friend Bank As Types.BankStruct
 
     ' Stores the last bank item we showed in desc
     Friend LastBankDesc As Integer

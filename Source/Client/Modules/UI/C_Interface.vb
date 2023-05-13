@@ -1,16 +1,12 @@
-﻿Imports System.Configuration
-Imports System.Runtime
-Imports System.Security.Cryptography
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar
-Imports DarkUI.Config
-Imports Mirage.Basic.Engine
-Imports Mirage.Basic.Engine.Enumerator
-Imports Mirage.Basic.Engine.Types
+﻿
+Imports Core
+Imports Core.Enumerator
+Imports Core.Types
 Imports SFML.Graphics
 
 Module C_Interface
     ' actual GUI
-    Public Windows() As WindowStruct
+    Public Windows() As Types.WindowStruct
     Public WindowCount As Long
     Public activeWindow As Long
 

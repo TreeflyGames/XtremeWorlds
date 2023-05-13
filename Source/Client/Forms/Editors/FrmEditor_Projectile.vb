@@ -1,4 +1,4 @@
-﻿Imports Mirage.Basic.Engine
+﻿Imports Core
 
 Friend Class frmEditor_Projectile
 

@@ -1,6 +1,6 @@
 ﻿Imports System.Linq
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
+Imports Core
 
 Module S_Player
 
@@ -10,7 +10,7 @@ Module S_Player
 
         If Not IsSkill Then
             ' Check attack timer
-            If GetPlayerEquipment(Attacker, Engine.EquipmentType.Weapon) > 0 Then
+            If GetPlayerEquipment(Attacker, Core.EquipmentType.Weapon) > 0 Then
                 If GetTimeMs() < TempPlayer(Attacker).AttackTimer + Item(GetPlayerEquipment(Attacker, EquipmentType.Weapon)).Speed Then Exit Function
             Else
                 If GetTimeMs() < TempPlayer(Attacker).AttackTimer + 1000 Then Exit Function
@@ -1177,7 +1177,7 @@ Module S_Player
                 VitalType = .Data1
                 amount = .Data2
                 If Not GetPlayerVital(index, VitalType) = GetPlayerMaxVital(index, VitalType) Then
-                    If VitalType = Engine.VitalType.HP Then
+                    If VitalType = Core.VitalType.HP Then
                         Color = ColorType.BrightGreen
                     Else
                         Color = ColorType.BrightBlue
@@ -1196,13 +1196,13 @@ Module S_Player
             If .Type = TileType.Trap Then
                 amount = .Data1
                 SendActionMsg(GetPlayerMap(index), "-" & amount, ColorType.BrightRed, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1)
-                If GetPlayerVital(index, Engine.VitalType.HP) - amount < 0 Then
+                If GetPlayerVital(index, Core.VitalType.HP) - amount < 0 Then
                     KillPlayer(index)
                     PlayerMsg(index, "You've been killed by a trap.", ColorType.BrightRed)
                 Else
-                    SetPlayerVital(index, Engine.VitalType.HP, GetPlayerVital(index, Engine.VitalType.HP) - amount)
+                    SetPlayerVital(index, Core.VitalType.HP, GetPlayerVital(index, Core.VitalType.HP) - amount)
                     PlayerMsg(index, "You've been injured by a trap.", ColorType.BrightRed)
-                    SendVital(index, Engine.VitalType.HP)
+                    SendVital(index, Core.VitalType.HP)
                     ' send vitals to party if in one
                     If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
                 End If

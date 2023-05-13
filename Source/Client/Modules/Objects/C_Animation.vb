@@ -1,13 +1,13 @@
 ﻿Imports System.Drawing
+Imports Core
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
 
 Module C_Animations
 
 #Region "Globals"
 
     Friend AnimationIndex As Byte
-    Friend AnimInstance() As AnimInstanceStruct
+    Friend AnimInstance() As Types.AnimInstanceStruct
 
 #End Region
 

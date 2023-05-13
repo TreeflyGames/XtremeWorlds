@@ -1,5 +1,5 @@
 ﻿Imports Mirage.Sharp.Asfw.Network
-Imports Mirage.Basic.Engine
+Imports Core
 
 Friend Module C_NetworkConfig
     Friend WithEvents Socket As NetworkClient

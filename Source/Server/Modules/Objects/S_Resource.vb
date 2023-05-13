@@ -1,7 +1,6 @@
-﻿Imports System.IO
+﻿
+Imports Core
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Sharp.Asfw.IO
-Imports Mirage.Basic.Engine
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
@@ -13,9 +12,9 @@ Friend Module S_Resource
         Dim json As String = JsonConvert.SerializeObject(Resource(resourceNum)).ToString()
 
         If RowExists(resourceNum, "resource")
-            UpdateRow(resourceNum, json, "resource")
+            UpdateRow(resourceNum, json, "resource", "data")
         Else
-            InsertRow("resource", json)
+            InsertRow(resourceNum, json, "resource")
         End If
     End Sub
 
@@ -38,7 +37,7 @@ Friend Module S_Resource
             Exit Sub
         End If
 
-        Dim resourceData = JObject.FromObject(data).toObject(Of ResourceStruct)()
+        Dim resourceData = JObject.FromObject(data).toObject(Of Types.ResourceStruct)()
         Resource(resourceNum) = resourceData
     End Sub
 
@@ -147,7 +146,7 @@ Friend Module S_Resource
 
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
-        If TempPlayer(index).Editor > -1 Then  Exit Sub
+        If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
 

@@ -1,6 +1,6 @@
-﻿Imports Mirage.Sharp.Asfw
+﻿Imports Core
+Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
-Imports Mirage.Basic.Engine
 
 Module C_NetworkReceive
 

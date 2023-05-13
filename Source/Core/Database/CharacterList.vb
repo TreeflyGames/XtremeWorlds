@@ -1,4 +1,4 @@
-﻿Imports Mirage.Basic.Engine.Serialization
+﻿Imports Core.Serialization
 
 Namespace Database
     Public Class CharacterList

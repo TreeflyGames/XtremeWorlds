@@ -1,5 +1,5 @@
-﻿Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
+﻿Imports Core
+Imports Mirage.Sharp.Asfw
 
 Module S_Party
 

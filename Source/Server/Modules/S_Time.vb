@@ -1,28 +1,28 @@
 ﻿Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
+Imports Core
 
 Friend Module Time
 
     Sub InitTime()
         ' Add handlers to time events
-        AddHandler Engine.Time.Instance.OnTimeChanged, AddressOf HandleTimeChanged
-        AddHandler Engine.Time.Instance.OnTimeOfDayChanged, AddressOf HandleTimeOfDayChanged
-        AddHandler Engine.Time.Instance.OnTimeSync, AddressOf HandleTimeSync
+        AddHandler Core.Time.Instance.OnTimeChanged, AddressOf HandleTimeChanged
+        AddHandler Core.Time.Instance.OnTimeOfDayChanged, AddressOf HandleTimeOfDayChanged
+        AddHandler Core.Time.Instance.OnTimeSync, AddressOf HandleTimeSync
 
         ' Prepare the time instance
-        Engine.Time.Instance.Time = Date.Now
-        Engine.Time.Instance.GameSpeed = 1
+        Core.Time.Instance.Time = Date.Now
+        Core.Time.Instance.GameSpeed = 1
     End Sub
 
-    Sub HandleTimeChanged(ByRef source As Engine.Time)
+    Sub HandleTimeChanged(ByRef source As Core.Time)
         UpdateCaption()
     End Sub
 
-    Sub HandleTimeOfDayChanged(ByRef source As Engine.Time)
+    Sub HandleTimeOfDayChanged(ByRef source As Core.Time)
         SendTimeToAll()
     End Sub
 
-    Sub HandleTimeSync(ByRef source As Engine.Time)
+    Sub HandleTimeSync(ByRef source As Core.Time)
         SendGameClockToAll()
     End Sub
 
@@ -30,8 +30,8 @@ Friend Module Time
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SClock)
-        buffer.WriteInt32(Engine.Time.Instance.GameSpeed)
-        buffer.WriteBytes(BitConverter.GetBytes(Engine.Time.Instance.Time.Ticks))
+        buffer.WriteInt32(Core.Time.Instance.GameSpeed)
+        buffer.WriteBytes(BitConverter.GetBytes(Core.Time.Instance.Time.Ticks))
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -51,7 +51,7 @@ Friend Module Time
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.STime)
-        buffer.WriteByte(Engine.Time.Instance.TimeOfDay)
+        buffer.WriteByte(Core.Time.Instance.TimeOfDay)
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()

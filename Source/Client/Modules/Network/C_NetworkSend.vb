@@ -1,13 +1,12 @@
-﻿Imports System.Windows.Forms
+﻿
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
-Imports System.Reflection.Metadata
+Imports Core
 
 Module C_NetworkSend
     Friend Sub SendAddChar(slot As Integer, name As String, sexNum As Integer, jobNum As Integer)
         Dim buffer As New ByteStream(4)
 
-        buffer.WriteInt32(ClientPackets.CAddChar)
+        buffer.WriteInt32(Packets.ClientPackets.CAddChar)
         buffer.WriteInt32(slot)
         buffer.WriteString((name))
         buffer.WriteInt32(sexNum)

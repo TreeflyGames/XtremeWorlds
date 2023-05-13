@@ -1,17 +1,12 @@
 ﻿Imports System.IO
-Imports System.Net
-Imports System.Net.Mime.MediaTypeNames
-Imports System.Reflection.PortableExecutable
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
-Imports Mirage.Basic.Engine
-Imports System.Net.Http
-Imports System.Net.Http.Headers
-Imports Mirage.Basic.Engine.Network
+Imports Core
+Imports Core.Network
 
 Module S_NetworkReceive
     Friend Sub PacketRouter()
-        Socket.PacketId(ClientPackets.CCheckPing) = AddressOf Packet_Ping
+        Socket.PacketId(Packets.ClientPackets.CCheckPing) = AddressOf Packet_Ping
         Socket.PacketId(ClientPackets.CLogin) = AddressOf Packet_Login
         Socket.PacketId(ClientPackets.CAddChar) = AddressOf Packet_AddChar
         Socket.PacketId(ClientPackets.CUseChar) = AddressOf Packet_UseChar
@@ -1057,7 +1052,7 @@ Module S_NetworkReceive
     Private Sub Packet_EditMapRequest(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
-        If TempPlayer(index).Editor > -1 Then Exit Sub
+        If TempPlayer(index).Editor > 0 Then Exit Sub
 
         If GetPlayerMap(index) > MAX_MAPS Then
             PlayerMsg(index, "Cant edit instanced maps!", ColorType.BrightRed)
@@ -1091,7 +1086,7 @@ Module S_NetworkReceive
     Sub Packet_EditShop(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
-        If TempPlayer(index).Editor > -1 Then Exit Sub
+        If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
 
@@ -1150,7 +1145,7 @@ Module S_NetworkReceive
     Sub Packet_EditSkill(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
-        If TempPlayer(index).Editor > -1 Then Exit Sub
+        If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
 
@@ -2046,7 +2041,7 @@ Module S_NetworkReceive
     Sub Packet_RequestEditJob(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
-        If TempPlayer(index).Editor > -1 Then Exit Sub
+        If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
 

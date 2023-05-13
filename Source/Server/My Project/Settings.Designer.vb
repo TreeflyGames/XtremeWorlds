@@ -19,9 +19,9 @@ Namespace My
     Friend Module MySettingsProperty
 
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>
-        Friend ReadOnly Property Settings() As Global.Mirage.Basic.Server.My.MySettings
+        Friend ReadOnly Property Settings() As Global.Server.My.MySettings
             Get
-                Return Global.Mirage.Basic.Server.My.Settings.Default
+                Return Global.Server.My.Settings.Default
             End Get
         End Property
     End Module

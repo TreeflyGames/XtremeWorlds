@@ -1,8 +1,4 @@
 ﻿Imports System.Net.Http
-Imports System.Net.Http.Headers
-Imports Json
-Imports Newtonsoft.Json
-Imports Newtonsoft.Json.Linq
 
 Namespace Network
     Public Module Api

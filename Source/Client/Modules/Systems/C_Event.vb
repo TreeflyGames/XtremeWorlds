@@ -1,5 +1,5 @@
-﻿Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
+﻿Imports Core
+Imports Mirage.Sharp.Asfw
 Imports SFML.Graphics
 Imports SFML.System
 
@@ -8,7 +8,7 @@ Friend Module C_EventSystem
 #Region "Globals"
 
     ' Temp event storage
-    Friend TmpEvent As EventStruct
+    Friend TmpEvent As Types.EventStruct
 
     Friend IsEdit As Boolean
 

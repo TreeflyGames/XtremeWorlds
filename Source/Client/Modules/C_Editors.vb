@@ -1,7 +1,5 @@
 ﻿Imports System.IO
-Imports Mirage.Basic.Engine
-Imports SFML.Audio
-Imports SFML.Graphics
+Imports Core
 
 Module C_Editors
 

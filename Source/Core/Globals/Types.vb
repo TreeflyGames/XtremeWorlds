@@ -1,6 +1,5 @@
 ﻿
-Imports Mirage.Basic.Engine.Database
-Imports SFML.Graphics
+Imports Core.Database
 
 Public Module Types
     ' Common data structure arrays

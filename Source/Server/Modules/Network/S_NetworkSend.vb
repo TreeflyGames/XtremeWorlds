@@ -1,8 +1,6 @@
 ﻿Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
-Imports Mirage.Basic.Engine
-Imports System.Reflection.Emit
-Imports System.Buffers
+Imports Core
 
 Module S_NetworkSend
 

@@ -859,7 +859,7 @@ Partial Class frmEditor_Map
         '
         'tsbSave
         '
-        Me.tsbSave.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Save
+        Me.tsbSave.Image = Global.Client.My.Resources.Resources.Save
         Me.tsbSave.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbSave.Name = "tsbSave"
         Me.tsbSave.Size = New System.Drawing.Size(23, 22)
@@ -867,7 +867,7 @@ Partial Class frmEditor_Map
         '
         'tsbDiscard
         '
-        Me.tsbDiscard.Image = Global.Mirage.Basic.Client.My.Resources.Resources._Exit
+        Me.tsbDiscard.Image = Global.Client.My.Resources.Resources._Exit
         Me.tsbDiscard.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbDiscard.Name = "tsbDiscard"
         Me.tsbDiscard.Size = New System.Drawing.Size(23, 22)
@@ -880,7 +880,7 @@ Partial Class frmEditor_Map
         '
         'tsbMapGrid
         '
-        Me.tsbMapGrid.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Grid
+        Me.tsbMapGrid.Image = Global.Client.My.Resources.Resources.Grid
         Me.tsbMapGrid.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbMapGrid.Name = "tsbMapGrid"
         Me.tsbMapGrid.Size = New System.Drawing.Size(23, 22)
@@ -889,7 +889,7 @@ Partial Class frmEditor_Map
         'tsbOpacity
         '
         Me.tsbOpacity.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tsbOpacity.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Opacity
+        Me.tsbOpacity.Image = Global.Client.My.Resources.Resources.Opacity
         Me.tsbOpacity.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbOpacity.Name = "tsbOpacity"
         Me.tsbOpacity.Size = New System.Drawing.Size(23, 22)
@@ -912,7 +912,7 @@ Partial Class frmEditor_Map
         '
         'tsbFill
         '
-        Me.tsbFill.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Fill
+        Me.tsbFill.Image = Global.Client.My.Resources.Resources.Fill
         Me.tsbFill.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbFill.Name = "tsbFill"
         Me.tsbFill.Size = New System.Drawing.Size(23, 22)
@@ -921,7 +921,7 @@ Partial Class frmEditor_Map
         '
         'tsbClear
         '
-        Me.tsbClear.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Clear
+        Me.tsbClear.Image = Global.Client.My.Resources.Resources.Clear
         Me.tsbClear.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbClear.Name = "tsbClear"
         Me.tsbClear.Size = New System.Drawing.Size(23, 22)
@@ -929,7 +929,7 @@ Partial Class frmEditor_Map
         '
         'tsbEyeDropper
         '
-        Me.tsbEyeDropper.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Wand
+        Me.tsbEyeDropper.Image = Global.Client.My.Resources.Resources.Wand
         Me.tsbEyeDropper.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbEyeDropper.Name = "tsbEyeDropper"
         Me.tsbEyeDropper.Size = New System.Drawing.Size(23, 22)
@@ -938,7 +938,7 @@ Partial Class frmEditor_Map
         'tsbCopyMap
         '
         Me.tsbCopyMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tsbCopyMap.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Clipboard
+        Me.tsbCopyMap.Image = Global.Client.My.Resources.Resources.Clipboard
         Me.tsbCopyMap.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbCopyMap.Name = "tsbCopyMap"
         Me.tsbCopyMap.Size = New System.Drawing.Size(23, 22)
@@ -947,7 +947,7 @@ Partial Class frmEditor_Map
         'tsbUndo
         '
         Me.tsbUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tsbUndo.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Undo
+        Me.tsbUndo.Image = Global.Client.My.Resources.Resources.Undo
         Me.tsbUndo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbUndo.Name = "tsbUndo"
         Me.tsbUndo.Size = New System.Drawing.Size(23, 22)
@@ -956,7 +956,7 @@ Partial Class frmEditor_Map
         'tsbRedo
         '
         Me.tsbRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tsbRedo.Image = Global.Mirage.Basic.Client.My.Resources.Resources.Redo
+        Me.tsbRedo.Image = Global.Client.My.Resources.Resources.Redo
         Me.tsbRedo.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbRedo.Name = "tsbRedo"
         Me.tsbRedo.Size = New System.Drawing.Size(23, 22)
@@ -965,7 +965,7 @@ Partial Class frmEditor_Map
         'tsbScreenshot
         '
         Me.tsbScreenshot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tsbScreenshot.Image = Global.Mirage.Basic.Client.My.Resources.Resources.ScreenShot
+        Me.tsbScreenshot.Image = Global.Client.My.Resources.Resources.ScreenShot
         Me.tsbScreenshot.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbScreenshot.Name = "tsbScreenshot"
         Me.tsbScreenshot.Size = New System.Drawing.Size(23, 22)

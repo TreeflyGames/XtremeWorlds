@@ -1,14 +1,14 @@
-﻿Imports System.IO
+﻿
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine.Serialization
-Imports Mirage.Basic.Engine
+Imports Core
 Imports System.Drawing
+Imports Core.Serialization
 
 Friend Module S_Event
 
 #Region "Globals"
 
-    Friend TempEventMap() As GlobalEventsStruct
+    Friend TempEventMap() As Types.GlobalEventsStruct
     Friend Switches() As String
     Friend Variables() As String
 

@@ -1,6 +1,6 @@
 ﻿Imports System.Drawing
+Imports Core
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Basic.Engine
 
 Friend Module S_EventLogic
 
@@ -1553,7 +1553,7 @@ Friend Module S_EventLogic
                                                                             .CurSlot = 1
                                                                         End If
                                                                     Case 9
-                                                                        If Engine.Time.Instance.TimeOfDay = Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).ConditionalBranch.Data1 Then
+                                                                        If Core.Time.Instance.TimeOfDay = Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).ConditionalBranch.Data1 Then
                                                                             .ListLeftOff(.CurList) = .CurSlot
                                                                             .CurList = Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).ConditionalBranch.CommandList
                                                                             .CurSlot = 1
