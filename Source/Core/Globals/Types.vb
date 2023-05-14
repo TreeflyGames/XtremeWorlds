@@ -293,7 +293,6 @@ Public Module Types
 
     Public Structure AccountStruct
         Dim Login As String
-        Dim Password As String
         Dim Character() As String
         Dim Index As Byte
     End Structure

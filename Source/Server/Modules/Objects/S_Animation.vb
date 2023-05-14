@@ -29,7 +29,7 @@ Friend Module S_Animation
     Sub LoadAnimation(animationNum As Integer)
         Dim data As JObject
 
-        data = SelectRow("animation", "data", animationNum)
+        data = SelectRow(animationNum, "animation", "data")
 
         If data Is Nothing Then
             ClearAnimation(animationNum)

@@ -30,7 +30,7 @@ Friend Module S_Resource
     Sub LoadResource(resourceNum As Integer)
         Dim data As JObject
 
-        data = SelectRow("resource", "data", resourceNum)
+        data = SelectRow(resourceNum, "resource", "data")
 
         If data Is Nothing Then
             ClearResource(resourceNum)

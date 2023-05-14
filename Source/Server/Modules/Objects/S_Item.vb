@@ -39,7 +39,7 @@ Friend Module S_Item
     Sub LoadItem(itemNum As Integer)
         Dim data As JObject
 
-        data = SelectRow("item", "data", itemNum)
+        data = SelectRow(itemNum, "item", "data")
 
         If data Is Nothing Then
             ClearItem(itemNum)

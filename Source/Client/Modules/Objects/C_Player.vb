@@ -15,93 +15,97 @@ Module C_Player
         Next
     End Sub
 
-    Sub ClearAccount(i As Integer)
-        Account(i).Login = ""
-        Account(i).Password = ""
+    Sub ClearAccount(index As Integer)
+        ReDim Account(index).Character(MAX_CHARACTERS)
+        Account(index).Login = ""
+
+        For i = 1 To MAX_CHARACTERS
+            Account(index).Character(i) = ""
+        Next
     End Sub
 
-    Sub ClearPlayer(i As Integer)
-        ClearAccount(i)
+    Sub ClearPlayer(index As Integer)
+        ClearAccount(index)
 
-        Player(i).Name = ""
-        Player(i).Attacking = 0
-        Player(i).AttackTimer = 0
-        Player(i).Job = 1
-        Player(i).Dir = 0
-        Player(i).Access = AdminType.Player
+        Player(index).Name = ""
+        Player(index).Attacking = 0
+        Player(index).AttackTimer = 0
+        Player(index).Job = 1
+        Player(index).Dir = 0
+        Player(index).Access = AdminType.Player
 
-        ReDim Player(i).Equipment(EquipmentType.Count - 1)
+        ReDim Player(index).Equipment(EquipmentType.Count - 1)
         For y = 0 To EquipmentType.Count - 1
-            Player(i).Equipment(y) = -1
+            Player(index).Equipment(y) = -1
         Next
 
-        Player(i).Exp = 0
-        Player(i).Level = 0
-        Player(i).Map = 1
-        Player(i).MapGetTimer = 0
-        Player(i).Moving = 0
-        Player(i).Pk = 0
-        Player(i).Points = 0
-        Player(i).Sprite = 0
+        Player(index).Exp = 0
+        Player(index).Level = 0
+        Player(index).Map = 1
+        Player(index).MapGetTimer = 0
+        Player(index).Moving = 0
+        Player(index).Pk = 0
+        Player(index).Points = 0
+        Player(index).Sprite = 0
 
-        ReDim Player(i).Inv(MAX_INV)
+        ReDim Player(index).Inv(MAX_INV)
         For x = 1 To MAX_INV
-            Player(i).Inv(x).Num = 0
-            Player(i).Inv(x).Value = 0
+            Player(index).Inv(x).Num = 0
+            Player(index).Inv(x).Value = 0
         Next
 
-        ReDim Player(i).Skill(MAX_SKILLS)
+        ReDim Player(index).Skill(MAX_SKILLS)
         For x = 1 To MAX_SKILLS
-            Player(i).Skill(x).Num = 0
-            Player(i).Skill(x).CD = 0
+            Player(index).Skill(x).Num = 0
+            Player(index).Skill(x).CD = 0
         Next
 
-        ReDim Player(i).Stat(StatType.Count - 1)
+        ReDim Player(index).Stat(StatType.Count - 1)
         For x = 0 To StatType.Count - 1
-            Player(i).Stat(x) = 0
+            Player(index).Stat(x) = 0
         Next
 
-        Player(i).Steps = 0
+        Player(index).Steps = 0
 
-        ReDim Player(i).Vital(VitalType.Count - 1)
+        ReDim Player(index).Vital(VitalType.Count - 1)
         For x = 0 To VitalType.Count - 1
-            Player(i).Vital(x) = 0
+            Player(index).Vital(x) = 0
         Next
 
-        Player(i).X = 0
-        Player(i).XOffset = 0
-        Player(i).Y = 0
-        Player(i).YOffset = 0
+        Player(index).X = 0
+        Player(index).XOffset = 0
+        Player(index).Y = 0
+        Player(index).YOffset = 0
 
-        ReDim Player(i).Hotbar(MAX_HOTBAR)
-        ReDim Player(i).GatherSkills(ResourceType.Count - 1)
-        ReDim Player(i).GatherSkills(ResourceType.Count - 1)
+        ReDim Player(index).Hotbar(MAX_HOTBAR)
+        ReDim Player(index).GatherSkills(ResourceType.Count - 1)
+        ReDim Player(index).GatherSkills(ResourceType.Count - 1)
 
         'pets
-        Player(i).Pet.Num = 0
-        Player(i).Pet.Health = 0
-        Player(i).Pet.Mana = 0
-        Player(i).Pet.Level = 0
+        Player(index).Pet.Num = 0
+        Player(index).Pet.Health = 0
+        Player(index).Pet.Mana = 0
+        Player(index).Pet.Level = 0
 
-        ReDim Player(i).Pet.Stat(StatType.Count - 1)
+        ReDim Player(index).Pet.Stat(StatType.Count - 1)
         For x = 0 To StatType.Count - 1
-            Player(i).Pet.Stat(x) = 0
+            Player(index).Pet.Stat(x) = 0
         Next
 
-        ReDim Player(i).Pet.Skill(4)
+        ReDim Player(index).Pet.Skill(4)
        For x = 0 To 4
-            Player(i).Pet.Skill(x) = 0
+            Player(index).Pet.Skill(x) = 0
         Next
 
-        Player(i).Pet.X = 0
-        Player(i).Pet.Y = 0
-        Player(i).Pet.Dir = 0
-        Player(i).Pet.MaxHp = 0
-        Player(i).Pet.MaxMp = 0
-        Player(i).Pet.Alive = 0
-        Player(i).Pet.AttackBehaviour = 0
-        Player(i).Pet.Exp = 0
-        Player(i).Pet.Tnl = 0
+        Player(index).Pet.X = 0
+        Player(index).Pet.Y = 0
+        Player(index).Pet.Dir = 0
+        Player(index).Pet.MaxHp = 0
+        Player(index).Pet.MaxMp = 0
+        Player(index).Pet.Alive = 0
+        Player(index).Pet.AttackBehaviour = 0
+        Player(index).Pet.Exp = 0
+        Player(index).Pet.Tnl = 0
     End Sub
 #End Region
 

@@ -1,8 +1,11 @@
 ﻿Imports System
+Imports System.Globalization
 Imports System.IO
 Imports System.Numerics
+Imports System.Runtime.InteropServices.JavaScript
 Imports System.Security.Cryptography
 Imports System.Text
+Imports System.Text.Json.Nodes
 Imports System.Text.RegularExpressions
 Imports Core
 Imports Mirage.Sharp.Asfw
@@ -13,25 +16,6 @@ Imports NpgsqlTypes
 
 Module S_Database
     Dim connectionString As String = "Host=localhost;Port=5432;Username=postgres;Password=mirage;Database=mirage"
-
-    Public Function StringToHex(input As String) As String
-        Dim byteArray() As Byte = Encoding.UTF8.GetBytes(input)
-        Dim hex As New StringBuilder(byteArray.Length * 2)
-
-        For Each b As Byte In byteArray
-            hex.AppendFormat("{0:x2}", b)
-        Next
-
-        Return hex.ToString()
-    End Function
-
-    Public Function HexToNumber(hexString As String) As Integer
-        If String.IsNullOrWhiteSpace(hexString) OrElse Not Regex.IsMatch(hexString, "^[0-9a-fA-F]+$") Then
-            Return 0
-        End If
-
-        Return Convert.ToInt32(hexString, 16)
-    End Function
 
     Public Sub ExecuteSql(connectionString As String, sql As String)
         Using connection As New NpgsqlConnection(connectionString)
@@ -96,61 +80,98 @@ Module S_Database
         End Using
     End Function
 
-    Public Function StringToUniqueId(myString As String) As BigInteger
-        Dim sha256 As SHA256 = SHA256.Create()
-        Dim inputBytes As Byte() = Encoding.ASCII.GetBytes(myString)
-        Dim hashBytes As Byte() = sha256.ComputeHash(inputBytes)
+    Public Function RowExistsByColumn(columnName As String, value As BigInteger, tableName As String) As Boolean
+        Dim sql As String = $"SELECT EXISTS (SELECT 1 FROM {tableName} WHERE {columnName} = @value);"
 
-        ' We only take the first 8 bytes (64 bits) to fit into a BigInteger
-        Dim truncatedHashBytes As Byte() = New Byte(7) {}
-        Array.Copy(hashBytes, truncatedHashBytes, 8)
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
 
-        ' Change the order of hashBytes to little-endian before converting to BigInteger.
-        Array.Reverse(truncatedHashBytes)
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@value", value)
 
-        ' Create a BigInteger from the byte array.
-        Dim uniqueId As New BigInteger(truncatedHashBytes)
-
-        ' Ensure the BigInteger is positive.
-        If uniqueId.Sign < 0 Then
-            uniqueId = BigInteger.Negate(uniqueId)
-        End If
-
-        Return uniqueId
+                Dim exists As Boolean = command.ExecuteScalar()
+                Return exists
+            End Using
+        End Using
     End Function
 
     Sub UpdateRow(id As BigInteger, data As String, table As String, columnName As String)
-    Dim sqlCheck As String = $"SELECT column_name FROM information_schema.columns WHERE table_name='{table}' AND column_name='{columnName}';"
+        Dim sqlCheck As String = $"SELECT column_name FROM information_schema.columns WHERE table_name='{table}' AND column_name='{columnName}';"
 
-    Using connection As New NpgsqlConnection(connectionString)
-        connection.Open()
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
 
-        ' Check if column exists
-        Using commandCheck As New NpgsqlCommand(sqlCheck, connection)
-            Dim result As Object = commandCheck.ExecuteScalar()
+            ' Check if column exists
+            Using commandCheck As New NpgsqlCommand(sqlCheck, connection)
+                Dim result As Object = commandCheck.ExecuteScalar()
 
-            ' If column exists, then proceed with update
-            If result IsNot Nothing Then
-                Dim sqlUpdate As String = $"UPDATE {table} SET {columnName} = @data WHERE id = @id;"
+                ' If column exists, then proceed with update
+                If result IsNot Nothing Then
+                    Dim sqlUpdate As String = $"UPDATE {table} SET {columnName} = @data WHERE id = @id;"
 
-                Using commandUpdate As New NpgsqlCommand(sqlUpdate, connection)
-                    Dim jsonString As String = data.ToString()
-                    commandUpdate.Parameters.AddWithValue("@data", NpgsqlDbType.Jsonb, jsonString)
-                    commandUpdate.Parameters.AddWithValue("@id", id)
+                    Using commandUpdate As New NpgsqlCommand(sqlUpdate, connection)
+                        Dim jsonString As String = data.ToString()
+                        commandUpdate.Parameters.AddWithValue("@data", NpgsqlDbType.Jsonb, jsonString)
+                        commandUpdate.Parameters.AddWithValue("@id", id)
 
-                    commandUpdate.ExecuteNonQuery()
-                End Using
-            Else
-                Console.WriteLine($"Column '{columnName}' does not exist in table {table}.")
-            End If
+                        commandUpdate.ExecuteNonQuery()
+                    End Using
+                Else
+                    Console.WriteLine($"Column '{columnName}' does not exist in table {table}.")
+                End If
+            End Using
         End Using
-    End Using
-End Sub
+    End Sub
+
+    Public Function StringToHex(input As String) As String
+        Dim byteArray() As Byte = Encoding.UTF8.GetBytes(input)
+        Dim hex As New StringBuilder(byteArray.Length * 2)
+
+        For Each b As Byte In byteArray
+            hex.AppendFormat("{0:x2}", b)
+        Next
+
+        Return hex.ToString()
+    End Function
+
+    Public Function HexToNumber(hexString As String) As BigInteger
+        If String.IsNullOrWhiteSpace(hexString) OrElse Not Regex.IsMatch(hexString, "^[0-9a-fA-F]+$") Then
+            Return 0
+        End If
+
+        Return BigInteger.Parse(hexString)
+    End Function
+
+    Public Function GenerateIdFromString(input As String) As BigInteger
+        Return HexToNumber(StringToHex(input))
+    End Function
+
+    Public Sub UpdateRowByColumn(columnName As String, value As BigInteger, targetColumn As String, newValue As String, tableName As String)
+        Dim sql As String = $"UPDATE {tableName} SET {targetColumn} = @newValue::jsonb WHERE {columnName} = @value;"
+
+        Dim jsonData As JObject = JObject.Parse(newValue) ' Parse the string into a JObject
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@value", value)
+                command.Parameters.AddWithValue("@newValue", jsonData.ToString()) ' Convert JObject back to string
+
+                command.ExecuteNonQuery()
+            End Using
+        End Using
+    End Sub
 
 
     Public Sub CreateTables()
         Dim dataTable As String = "id SERIAL PRIMARY KEY, data jsonb"
-        Dim playerTable As String = "id BIGINT PRIMARY KEY, data jsonb, player jsonb, bank jsonb"
+        Dim playerTable As String = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb"
+        
+        For i = 1 To MAX_CHARACTERS
+            playerTable += $", character{i} jsonb"
+        Next
+        
         Dim tableNames As String() = {"job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile"}
 
         For Each tableName In tableNames
@@ -192,7 +213,7 @@ End Sub
         End Using
     End Function
 
-    Public Sub InsertRow(id As BigInteger, data As String, table As String)
+    Public Sub InsertRow(id As BigInteger, data As String, tableName As String)
         Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
 
         Using conn As New NpgsqlConnection(connectionString)
@@ -200,7 +221,7 @@ End Sub
 
             Using cmd As New NpgsqlCommand()
                 cmd.Connection = conn
-                cmd.CommandText = $"INSERT INTO {table} (id, data) VALUES (@id, @data::jsonb);"
+                cmd.CommandText = $"INSERT INTO {tableName} (id, data) VALUES (@id, @data::jsonb);"
                 cmd.Parameters.AddWithValue("@id", id)
                 cmd.Parameters.AddWithValue("@data", jsonData.ToString()) ' Convert JObject back to string
 
@@ -209,7 +230,41 @@ End Sub
         End Using
     End Sub
 
-    Public Function SelectRow(tableName As String, columnName As String, id As BigInteger) As JObject
+    Public Sub InsertRow(id As BigInteger, data As String, tableName As String, columnName As String)
+        Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
+
+        Using conn As New NpgsqlConnection(connectionString)
+            conn.Open()
+
+            Using cmd As New NpgsqlCommand()
+                cmd.Connection = conn
+                cmd.CommandText = $"INSERT INTO {tableName} (id, data) VALUES (@id, @data::jsonb);"
+                cmd.Parameters.AddWithValue("@id", id)
+                cmd.Parameters.AddWithValue("@" + columnName, jsonData.ToString()) ' Convert JObject back to string
+
+                cmd.ExecuteNonQuery()
+            End Using
+        End Using
+    End Sub
+
+    Public Sub InsertRowByColumn(id As BigInteger, data As String, tableName As String, dataColumn As String, idColumn As String)
+        Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
+
+        Dim sql As String = $"INSERT INTO {tableName} ({idColumn}, {dataColumn}) VALUES (@id, @data::jsonb);"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@id", id)
+                command.Parameters.AddWithValue("@data", jsonData.ToString()) ' Convert JObject back to string
+
+                command.ExecuteNonQuery()
+            End Using
+        End Using
+    End Sub
+
+    Public Function SelectRow(id As BigInteger, tableName As String, columnName As String) As JObject
         Dim sql As String = $"SELECT {columnName} FROM {tableName} WHERE id = @id;"
 
         Using connection As New NpgsqlConnection(connectionString)
@@ -223,6 +278,34 @@ End Sub
                         Dim jsonbData As String = reader.GetString(0)
                         Dim jsonObject As JObject = JObject.Parse(jsonbData)
                         Return jsonObject
+                    Else
+                        Return Nothing
+                    End If
+                End Using
+            End Using
+        End Using
+    End Function
+
+    Public Function SelectRowByColumn(columnName As String, value As BigInteger, tableName As String, dataColumn As String) As JObject
+        Dim sql As String = $"SELECT {dataColumn} FROM {tableName} WHERE {columnName} = @value;"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@value", value)
+
+                Using reader As NpgsqlDataReader = command.ExecuteReader()
+                    If reader.Read() Then
+                        ' Check if the first column is not null
+                        If Not reader.IsDBNull(0) Then
+                            Dim jsonbData As String = reader.GetString(0)
+                            Dim jsonObject As JObject = JObject.Parse(jsonbData)
+                            Return jsonObject
+                        Else
+                            ' Handle null value or return null JObject...
+                            Return Nothing
+                        End If
                     Else
                         Return Nothing
                     End If
@@ -262,12 +345,12 @@ End Sub
     Sub LoadJob(jobNum As Integer)
         Dim data As JObject
             
-        data = SelectRow("job", "data", jobNum)
+        data = SelectRow(jobNum, "job", "data")
 
         If data Is Nothing Then
             ClearJob(jobNum)
-            Exit Sub
-        End If
+Exit Sub
+End If
 
         Dim jobData = JObject.FromObject(data).toObject(Of JobStruct)()
         Job(jobNum) = jobData
@@ -287,7 +370,7 @@ End Sub
         If RowExists(jobNum, "job")
             UpdateRow(jobNum, json, "job", "data")
         Else
-            InsertRow(jobNum, json, "job")
+            InsertRow(jobNum, "data", "job")
         End If
     End Sub
 
@@ -354,7 +437,7 @@ End Sub
 
         If RowExists(mapNum, "map")
             UpdateRow(mapNum, json, "map", "data")
-        Else
+Else
             InsertRow(mapNum,  json, "map")
         End If
     End Sub
@@ -371,7 +454,7 @@ End Sub
         
         Dim data As JObject
 
-        data = SelectRow("map", "data", mapNum)
+        data = SelectRow(mapNum, "map", "data")
 
         if data Is Nothing then
             ClearMap(mapNum)
@@ -425,7 +508,7 @@ End Sub
     Sub LoadNpc(npcNum As Integer)
         Dim data As JObject
 
-        data = SelectRow("npc", "data", npcNum)
+        data = SelectRow(npcNum, "npc", "data")
 
         If data Is Nothing Then
             ClearNpc(npcNum)
@@ -507,7 +590,7 @@ End Sub
     Sub LoadShop(shopNum As Integer)
         Dim data As JObject
 
-        data = SelectRow("shop", "data", shopNum)
+        data = SelectRow(shopNum, "shop", "data")
 
         If data Is Nothing Then
             ClearShop(shopNum)
@@ -564,7 +647,7 @@ End Sub
     Sub LoadSkill(skillNum As Integer)
         Dim data As JObject
 
-        data = SelectRow("skill", "data", skillNum)
+        data = SelectRow(skillNum, "skill", "data")
 
         If data Is Nothing Then
             ClearSkill(skillNum)
@@ -602,12 +685,13 @@ End Sub
 
     Sub SavePlayer(index As Integer)
         Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
-        Dim id As BigInteger = StringToUniqueId(GetPlayerLogin(index))
+        Dim username As String = GetPlayerLogin(index)
+        Dim id As BigInteger = GenerateIdFromString(username)
 
         If RowExists(id, "account")
-            UpdateRow(id, json, "account", "player")
+            UpdateRowByColumn("id", id, "data", json, "account")
         Else
-            InsertRow(id, json, "account")
+            InsertRowByColumn(id, json, "account", "data", "id")
         End If
 
         SaveCharacter(index, Account(index).Index)
@@ -615,15 +699,14 @@ End Sub
     End Sub
 
     Sub LoadAccount(index As Integer, username As String)
-        SetPlayerLogin(index, username)
-        Dim id As BigInteger = StringToUniqueId(GetPlayerLogin(index))
-
         Dim data As JObject
+        SetPlayerLogin(index, username)
 
-        data = SelectRow("account", "data", id)
+        data = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
 
         If data Is Nothing Then
             ClearAccount(index)
+            SetPlayerLogin(index, username)
             Exit Sub
         End If
 
@@ -665,12 +748,9 @@ End Sub
 #End Region
 
 #Region "Bank"
-
     Friend Sub LoadBank(index As Integer)
         Dim data As JObject
-        Dim id As BigInteger = StringToUniqueId(GetPlayerLogin(index))
-
-        data = SelectRow("account", "bank", id)
+        data = SelectRowByColumn("id", GenerateIdFromString(GetPlayerLogin(index)), "account", "bank")
 
         If data Is Nothing Then
             ClearBank(index)
@@ -682,13 +762,14 @@ End Sub
     End Sub
 
     Sub SaveBank(index As Integer)
-        Dim json As String = JsonConvert.SerializeObject(Bank(index)).ToString
-        Dim id As BigInteger = StringToUniqueId(GetPlayerLogin(index))
+        Dim json As String = JsonConvert.SerializeObject(Bank(index)).ToString()
+        Dim username As String = GetPlayerLogin(index)
+        Dim id As BigInteger = GenerateIdFromString(username)
 
-        If RowExists(id, "account")
-            UpdateRow(id, json, "account", "bank")
+        If RowExistsByColumn("id", id, "account")
+            UpdateRowByColumn("id", id, "bank", json, "account")
         Else
-            InsertRow(id, json, "bank")
+            InsertRowByColumn(id, json, "account", "bank", "id")
         End If
     End Sub
 
@@ -803,47 +884,26 @@ End Sub
 
     Sub LoadCharacter(index As Integer, charNum As Integer)
         Dim data As JObject
-        Dim id As BigInteger = StringToUniqueId(GetPlayerLogin(index))
 
-        data = SelectRow("account", "player", id)
+        data = SelectRowByColumn("id", GenerateIdFromString(GetPlayerLogin(index)), "account", "character" & charNum.ToString())
 
         If data Is Nothing Then
             ClearCharacter(index)
             Exit Sub
         End If
 
-        If TypeOf data.Item("player") Is JArray Then
-            Dim playerArray As JArray = CType(data.Item("player"), JArray)
-
-            If charNum >= 0 AndAlso charNum < playerArray.Count Then
-                Dim playerDataJObject As JObject = TryCast(playerArray.Item(charNum), JObject)
-
-                If playerDataJObject IsNot Nothing Then
-                    Dim playerData As PlayerStruct = playerDataJObject.ToObject(Of PlayerStruct)()
-
-                    ' Assuming Player is an array of PlayerStruct
-                    Player(index) = playerData
-                Else
-                    ' Handle error if the item at the index is not a JObject
-                End If
-            Else
-                ' Handle error if the index is out of bounds
-            End If
-        Else
-            ' Handle error if data("player") is not a JArray
-        End If
+        Dim characterData = JObject.FromObject(data).toObject(Of PlayerStruct)()
+        Player(index) = characterData
     End Sub
-
-
 
     Sub SaveCharacter(index As Integer, charNum As Integer)
         Dim json As String = JsonConvert.SerializeObject(Player(index)).ToString()
-        Dim id As BigInteger = StringToUniqueId(GetPlayerLogin(index))
+        Dim id As BigInteger = GenerateIdFromString(GetPlayerLogin(index))
 
-        If RowExists(id, "account") Then
-            UpdateRow(id, json, "account", "player")
+        If RowExistsByColumn("id", id, "account")
+            UpdateRowByColumn("id", id, "character" & charNum.ToString(), json, "account")
         Else
-            InsertRow(id, json, "account")
+            InsertRowByColumn(id, json, "account", "character" & charNum.ToString(), "id")
         End If
     End Sub
 
@@ -898,7 +958,7 @@ End Sub
             SetPlayerCharName(index, Account(index).Index, name)
             SavePlayer(index)
         End If
-
+        
     End Sub
 
 #End Region

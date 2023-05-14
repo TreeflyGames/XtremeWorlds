@@ -49,7 +49,7 @@ Friend Module S_Projectile
     Sub LoadProjectile(projectileNum As Integer)
         Dim data As JObject
 
-        data = SelectRow("projectile", "data", projectileNum)
+        data = SelectRow(projectileNum, "projectile", "data")
 
         If data Is Nothing Then
             ClearProjectile(projectileNum)

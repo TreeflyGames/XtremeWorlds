@@ -54,7 +54,7 @@ Module S_Pet
     Sub LoadPet(petNum As Integer)
         Dim data As JObject
 
-        data = SelectRow("pet", "data", petNum)
+        data = SelectRow(petNum, "pet", "data")
 
         If data Is Nothing Then
             ClearPet(petNum)

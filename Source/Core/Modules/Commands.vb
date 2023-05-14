@@ -7,10 +7,6 @@
         Account(index).Login = login.Trim
     End Sub
 
-    Public Function GetPlayerPassword(index As Integer) As String
-        GetPlayerPassword = Trim$(Account(index).Password)
-    End Function
-
     Public Function GetCharName(index As Integer, charNum As Integer) As String
         If charNum = 0 Then charNum = 1
         If Account(index).Character(charNum).Trim = "Bank" Then Exit Function
