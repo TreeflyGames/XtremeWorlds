@@ -349,8 +349,8 @@ Module S_Database
 
         If data Is Nothing Then
             ClearJob(jobNum)
-Exit Sub
-End If
+            Exit Sub
+        End If
 
         Dim jobData = JObject.FromObject(data).toObject(Of JobStruct)()
         Job(jobNum) = jobData
@@ -437,7 +437,7 @@ End If
 
         If RowExists(mapNum, "map")
             UpdateRow(mapNum, json, "map", "data")
-Else
+        Else
             InsertRow(mapNum,  json, "map")
         End If
     End Sub
