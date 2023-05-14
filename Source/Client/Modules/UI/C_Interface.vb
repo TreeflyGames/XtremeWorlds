@@ -1023,11 +1023,13 @@ Module C_Interface
         CreateLabel(WindowCount, "lblPassword", 72, 76, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
         
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , 5, 3, , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        
+        Dim censored As New String("*"c, Settings.Password.Length)
+        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, censored, , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSavePass", 67, 114, 142, "Save Password?", Georgia, ,  , , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkSavePass", 67, 114, 142, "Save Password?", Georgia, , Settings.SavePass , , , , DesignType.ChkNorm)
 
         ' Set the active control
         If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUser")).Text) > 0 Then
