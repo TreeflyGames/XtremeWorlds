@@ -28,6 +28,18 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Friend Sub SendLogin()
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CLogin)
+        buffer.WriteString((EKeyPair.EncryptString(Settings.Username)))
+        buffer.WriteString((EKeyPair.EncryptString(Settings.Password)))
+        buffer.WriteString((EKeyPair.EncryptString(Settings.Version)))
+        Socket.SendData(buffer.Data, buffer.Head)
+
+        buffer.Dispose()
+    End Sub
+
     Sub GetPing()
         Dim buffer As New ByteStream(4)
         PingStart = GetTickCount()

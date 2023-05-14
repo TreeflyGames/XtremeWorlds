@@ -909,7 +909,7 @@ Public Module Types
         Dim Align As Byte
         Dim Font As String
         Dim zChange As Byte
-        Dim OnDraw As Task
+        Dim OnDraw As Action
         Dim OrigLeft As Long
         Dim OrigTop As Long
         Dim Tooltip As String
@@ -922,7 +922,7 @@ Public Module Types
         Dim movedX As Long
         Dim movedY As Long
         Dim zOrder As Long
-        Dim CallBack() As Task
+        Dim CallBack() As Action
     End Structure
 
     Public Structure EntityPartStruct

@@ -17,10 +17,10 @@ Module C_Interface
     Private zOrder_Win As Long
     Private zOrder_Con As Long
 
-    Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() as Task, _
+    Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() as Action, _
        Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
        Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0,
-       Optional onDraw As Task = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0)
+       Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0)
 
         Dim i As Long
 
@@ -380,7 +380,7 @@ Module C_Interface
                     End Select
             End Select
 
-            If Not .OnDraw Is Nothing Then .OnDraw.Start
+            If Not .OnDraw Is Nothing Then Task.Factory.StartNew(.OnDraw)
 
         End With
 
@@ -465,7 +465,7 @@ Module C_Interface
                     RenderDesign(DesignType.Win_Party, .Left, .Top, .Width, .Height)
             End Select
 
-            If Not .OnDraw Is Nothing Then .OnDraw.Start
+            If Not .OnDraw Is Nothing Then Task.Factory.StartNew(.OnDraw)
         End With
 
     End Sub
@@ -698,13 +698,13 @@ Module C_Interface
     Public Sub CreateWindow(name As String, caption As String, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long, _
        Optional visible As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
-       Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing, _
-       Optional canDrag As Boolean = True, Optional zChange As Byte = True, Optional onDraw As Task = Nothing, Optional isActive As Boolean = True, Optional clickThrough As Boolean = False)
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, _
+       Optional canDrag As Boolean = True, Optional zChange As Byte = True, Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional clickThrough As Boolean = False)
 
         Dim i As Long
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-        Dim callback(0 To EntState.State_Count - 1) As Task
+        Dim callback(0 To EntState.State_Count - 1) As Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -772,11 +772,11 @@ Module C_Interface
     Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, _
         Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
         Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
-        Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing, Optional ByRef callback_enter As Task = Nothing)
+        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef callback_enter As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) as Task
+        Dim callback(EntState.State_Count - 1) as Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -798,12 +798,12 @@ Module C_Interface
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
        Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
-       Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, _
-       Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing, Optional ByRef onDraw As Task = Nothing)
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, _
+       Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef onDraw As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Task
+        Dim callback(EntState.State_Count - 1) As Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -825,12 +825,12 @@ Module C_Interface
     Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, _
        Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
        Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, _
-       Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing, _
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, _
        Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "")
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Task
+        Dim callback(EntState.State_Count - 1) As Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -851,11 +851,11 @@ Module C_Interface
 
     Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String, _
        Optional align As Byte = AlignmentType.alignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, _
-       Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing)
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Task
+        Dim callback(EntState.State_Count - 1) As Action
 
          ' fill temp arrays
         callback(EntState.Normal) = callback_norm
@@ -871,11 +871,11 @@ Module C_Interface
     Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, text As String, font As String, _
         Optional height As Long = 15, Optional value As Long = 0, Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255,
         Optional theDesign As Long = 0, Optional group As Long = 0, _
-        Optional ByRef callback_norm As Task = Nothing, Optional ByRef callback_hover As Task = Nothing, Optional ByRef callback_mousedown As Task = Nothing, Optional ByRef callback_mousemove As Task = Nothing, Optional ByRef callback_dblclick As Task = Nothing)
+        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Task
+        Dim callback(EntState.State_Count - 1) As Action
 
         design(0) = theDesign
 
@@ -893,7 +893,7 @@ Module C_Interface
     Public Sub CreateComboBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, design As Long)
         Dim theDesign(EntState.state_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Task
+        Dim callback(EntState.State_Count - 1) As Action
         
         theDesign(0) = design
         
@@ -1012,11 +1012,11 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Task(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click)
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , , New Task(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , ,  New Action(AddressOf SendLogin))
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , , New Action(AddressOf DestroyGame))
         
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 72, 40, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
@@ -1050,7 +1050,7 @@ Module C_Interface
     End Sub
 
     Public Function HandleInterfaceEvents(entState As EntState) As Boolean
-        Dim i As Long, curWindow As Long, curControl As Long, callBack As Task, x As Long
+        Dim i As Long, curWindow As Long, curControl As Long, callBack As Action, x As Long
     
         ' if hiding gui
         If hideGUI = True Or Editor = EditorType.Map Then Exit Function
@@ -1200,7 +1200,7 @@ Module C_Interface
             End If
 
             ' call back
-            If Not callBack Is Nothing Then callBack.Start()
+            If Not callBack Is Nothing Then Task.Factory.StartNew(callBack)
         End If
 
         ' Reset
@@ -1221,7 +1221,7 @@ Module C_Interface
     End Sub
 
     Public Sub ResetMouseDown()
-        Dim callBack As Task
+        Dim callBack As Action
         Dim i As Long, x As Long
 
         For i = 1 To WindowCount
@@ -1230,13 +1230,13 @@ Module C_Interface
                 .Window.state = EntState.Normal
                 callBack = .Window.CallBack(EntState.Normal)
 
-                If Not callback Is Nothing Then callBack.Start()
+                If Not callBack Is Nothing Then Task.Factory.StartNew(callBack)
 
                 For x = 1 To .ControlCount
                     .Controls(x).state = EntState.Normal
                     callBack = .Controls(x).CallBack(EntState.Normal)
 
-                    If Not callback Is Nothing Then callBack.Start()
+                    If Not callBack Is Nothing Then Task.Factory.StartNew(callBack)
                 Next
 
             End With
