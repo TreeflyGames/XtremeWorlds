@@ -160,8 +160,6 @@ Partial Class FrmEditor_Events
         Me.chkDirFix = New DarkUI.Controls.DarkCheckBox()
         Me.chkWalkAnim = New DarkUI.Controls.DarkCheckBox()
         Me.DarkGroupBox7 = New DarkUI.Controls.DarkGroupBox()
-        Me.cmbEventQuest = New DarkUI.Controls.DarkComboBox()
-        Me.DarkLabel8 = New DarkUI.Controls.DarkLabel()
         Me.DarkGroupBox5 = New DarkUI.Controls.DarkGroupBox()
         Me.cmbTrigger = New DarkUI.Controls.DarkComboBox()
         Me.DarkGroupBox4 = New DarkUI.Controls.DarkGroupBox()
@@ -985,32 +983,6 @@ Partial Class FrmEditor_Events
         Me.chkWalkAnim.Size = New System.Drawing.Size(130, 19)
         Me.chkWalkAnim.TabIndex = 0
         Me.chkWalkAnim.Text = "No Walk Animation"
-        '
-        'DarkGroupBox7
-        '
-        Me.DarkGroupBox7.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.DarkGroupBox7.BorderColor = System.Drawing.Color.FromArgb(CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(90, Byte), Integer))
-        Me.DarkGroupBox7.Controls.Add(Me.cmbEventQuest)
-        Me.DarkGroupBox7.Controls.Add(Me.DarkLabel8)
-        Me.DarkGroupBox7.ForeColor = System.Drawing.Color.Gainsboro
-        Me.DarkGroupBox7.Location = New System.Drawing.Point(214, 507)
-        Me.DarkGroupBox7.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox7.Name = "DarkGroupBox7"
-        Me.DarkGroupBox7.Padding = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.DarkGroupBox7.Size = New System.Drawing.Size(233, 52)
-        Me.DarkGroupBox7.TabIndex = 5
-        Me.DarkGroupBox7.TabStop = False
-        Me.DarkGroupBox7.Text = "Quest Icon"
-        '
-        'cmbEventQuest
-        '
-        Me.cmbEventQuest.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.cmbEventQuest.FormattingEnabled = True
-        Me.cmbEventQuest.Location = New System.Drawing.Point(59, 20)
-        Me.cmbEventQuest.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
-        Me.cmbEventQuest.Name = "cmbEventQuest"
-        Me.cmbEventQuest.Size = New System.Drawing.Size(166, 24)
-        Me.cmbEventQuest.TabIndex = 1
         '
         'DarkLabel8
         '
@@ -5292,7 +5264,6 @@ End Sub
     Friend WithEvents DarkGroupBox5 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents cmbTrigger As DarkUI.Controls.DarkComboBox
     Friend WithEvents DarkGroupBox7 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents cmbEventQuest As DarkUI.Controls.DarkComboBox
     Friend WithEvents DarkLabel8 As DarkUI.Controls.DarkLabel
     Friend WithEvents lstCommands As ListBox
     Friend WithEvents DarkGroupBox8 As DarkUI.Controls.DarkGroupBox

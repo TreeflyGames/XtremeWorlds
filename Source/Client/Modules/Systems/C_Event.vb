@@ -236,17 +236,7 @@ Friend Module C_EventSystem
             FrmEditor_Events.chkShowName.Checked = .ShowName
             FrmEditor_Events.nudPlayerVariable.Value = .VariableCondition
             FrmEditor_Events.nudGraphic.Value = .Graphic
-            If FrmEditor_Events.cmbEventQuest.Items.Count > 0 Then
-                If .QuestNum > 0 AndAlso .Questnum <= FrmEditor_Events.cmbEventQuest.Items.Count Then
-                    FrmEditor_Events.cmbEventQuest.SelectedIndex = .Questnum
-                End If
-            End If
-            If FrmEditor_Events.cmbEventQuest.SelectedIndex = -1 Then FrmEditor_Events.cmbEventQuest.SelectedIndex = 0
-            If .ChkHasItem = 0 Then
-                FrmEditor_Events.cmbHasItem.Enabled = False
-            Else
-                FrmEditor_Events.cmbHasItem.Enabled = True
-            End If
+
             If .ChkSelfSwitch = 0 Then
                 FrmEditor_Events.cmbSelfSwitch.Enabled = False
                 FrmEditor_Events.cmbSelfSwitchCompare.Enabled = False

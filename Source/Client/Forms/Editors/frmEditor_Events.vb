@@ -152,12 +152,6 @@ Public Class FrmEditor_Events
 
         cmbSpawnNpc.SelectedIndex = 0
         nudFogData0.Maximum = NumFogs
-        cmbEventQuest.Items.Clear()
-
-        For i = 1 To MAX_QUESTS
-            cmbEventQuest.Items.Add(i & ". " & Trim$(Quest(i).Name))
-        Next
-
         nudWPMap.Maximum = MAX_MAPS
 
         Width = 946
@@ -1087,14 +1081,6 @@ Public Class FrmEditor_Events
 
 #End Region
 
-#Region "Quest"
-
-    Private Sub CmbEventQuest_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbEventQuest.SelectedIndexChanged
-        TmpEvent.Pages(CurPageNum).Questnum = cmbEventQuest.SelectedIndex
-    End Sub
-
-#End Region
-
 #Region "Options"
 
     Private Sub ChkWalkAnim_CheckedChanged(sender As Object, e As EventArgs) Handles chkWalkAnim.CheckedChanged
@@ -1963,10 +1949,6 @@ Public Class FrmEditor_Events
         If Not IsEdit Then fraCommands.Visible = True Else fraCommands.Visible = False
         fraDialogue.Visible = False
         fraChangeItems.Visible = False
-    End Sub
-
-    Private Sub CmbChangeItemIndex_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbChangeItemIndex.SelectedIndexChanged
-        TmpEvent.Pages(CurPageNum).QuestNum = cmbEventQuest.SelectedIndex
     End Sub
 
 #End Region

@@ -20,7 +20,6 @@ Public Module Types
     Public Player(MAX_PLAYERS) As PlayerStruct
     Public InstancedMaps(MAX_INSTANCED_MAPS) As InstancedMap
     Public CharSelection() As CharSelStruct
-    Public Quest(MAX_QUESTS) As QuestStruct
     Public Projectile(MAX_PROJECTILES) As ProjectileStruct
     Public MapProjectile(MAX_MAPS, MAX_PROJECTILES) As MapProjectileStruct
     Public TradeYourOffer(MAX_INV) As PlayerInvStruct
@@ -804,33 +803,6 @@ Public Module Types
         Dim TaskLog As String
         Dim QuestEnd As Byte
         Dim TaskType As Integer
-    End Structure
-
-    Public Structure QuestStruct
-        Dim Name As String
-        Dim QuestLog As String
-        Dim Repeat As Byte
-        Dim Cancelable As Byte
-
-        Dim ReqCount As Integer
-        Dim Requirement() As Integer '1=item, 2=quest, 3=class
-        Dim RequirementIndex() As Integer
-
-        Dim QuestGiveItem As Integer 'Todo: make this dynamic
-        Dim QuestGiveItemValue As Integer
-        Dim QuestRemoveItem As Integer
-        Dim QuestRemoveItemValue As Integer
-
-        Dim Chat() As String
-
-        Dim RewardCount As Integer
-        Dim RewardItem() As Integer
-        Dim RewardItemAmount() As Integer
-        Dim RewardExp As Integer
-
-        Dim TaskCount As Integer
-        Dim Task() As TaskStruct
-
     End Structure
 
     Public Structure ProjectileStruct
