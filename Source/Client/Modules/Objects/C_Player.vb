@@ -655,7 +655,6 @@ Module C_Player
         End With
 
         'check for emotes
-        'Player(MyIndex).Emote = 4
         If Player(Myindex).Emote > 0 Then
             DrawEmotes(x, y, Player(Myindex).Emote)
         End If
