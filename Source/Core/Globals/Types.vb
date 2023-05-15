@@ -894,6 +894,7 @@ Public Module Types
         Dim movedX As Long
         Dim movedY As Long
         Dim zOrder As Long
+        Dim Censor As Boolean
         Dim CallBack() As Action
     End Structure
 

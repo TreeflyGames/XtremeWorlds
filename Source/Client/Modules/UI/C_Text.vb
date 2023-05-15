@@ -15,6 +15,10 @@ Module C_Text
     Friend LastLineindex As Integer = 0
     Friend ScrollMod As Integer = 0
 
+    Function CensorText(input As String) As String
+        Return New String("*"c, input.Length)
+    End Function
+
     Friend Sub RenderText(text As String, ByRef target As RenderWindow, x As Integer, y As Integer, frontColor As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
         Dim backString As Text
         Dim frontString As Text

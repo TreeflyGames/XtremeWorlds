@@ -19,7 +19,7 @@ Module C_Interface
 
     Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() as Action, _
        Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
-       Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0,
+       Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, _
        Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0)
 
         Dim i As Long
@@ -75,6 +75,7 @@ Module C_Interface
             .OnDraw = onDraw
             .Tooltip = tooltip
             .Group = group
+            .Censor = censor
             ReDim .List(0)
         End With
 
@@ -183,6 +184,9 @@ Module C_Interface
         yO = Windows(winNum).Window.Top
 
         With Windows(winNum).Controls(entNum)
+            If .Censor Then
+                .Text = CensorText(.Text)
+            End If
 
             ' find the control type
             Select Case .Type
@@ -771,7 +775,7 @@ Module C_Interface
 
     Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, _
         Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
-        Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
+        Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef callback_enter As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
@@ -793,11 +797,11 @@ Module C_Interface
         callback(EntState.Enter) = callback_enter
 
         ' create the textbox
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entTextBox, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , , isActive)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entTextBox, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , censor, , isActive)
     End Sub
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
-       Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
+       Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, _
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, _
        Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef onDraw As Action = Nothing)
 
@@ -819,14 +823,14 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entPictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , onDraw)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entPictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , , onDraw)
     End Sub
 
     Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, _
-       Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
+       Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, _
        Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, _
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, _
-       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "")
+       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional  censor As Boolean = False)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
@@ -846,11 +850,11 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the button 
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entButton, design, image, callback, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, , , , tooltip)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entButton, design, image, callback, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, censor, , , , tooltip)
     End Sub
 
     Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String, _
-       Optional align As Byte = AlignmentType.alignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, _
+       Optional align As Byte = AlignmentType.alignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional censor As Boolean = False, _
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
@@ -865,12 +869,12 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the label
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entLabel, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entLabel, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor)
     End Sub
 
     Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, text As String, font As String, _
         Optional height As Long = 15, Optional value As Long = 0, Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255,
-        Optional theDesign As Long = 0, Optional group As Long = 0, _
+        Optional theDesign As Long = 0, Optional group As Long = 0, Optional censor As Boolean = False, _
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
@@ -887,7 +891,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entCheckbox, design, image, callback, left, top, width, height, visible, , , , value, text, align, font, alpha, , , , , , , , group)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.entCheckbox, design, image, callback, left, top, width, height, visible, , , , value, text, align, font, alpha, , , , , censor, , , , group)
     End Sub
 
     Public Sub CreateComboBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, design As Long)
@@ -1015,8 +1019,8 @@ Module C_Interface
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , ,  New Action(AddressOf SendLogin))
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , ,  New Action(AddressOf SendLogin))
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , , New Action(AddressOf DestroyGame))
         
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 72, 40, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
@@ -1024,9 +1028,8 @@ Module C_Interface
         
         ' Textboxes
         CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        
-        Dim censored As New String("*"c, Settings.Password.Length)
-        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, censored, , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+
+        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, Settings.Password, , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
         
         ' Checkbox
         CreateCheckbox(WindowCount, "chkSavePass", 67, 114, 142, "Save Password?", Georgia, , Settings.SavePass , , , , DesignType.ChkNorm)
