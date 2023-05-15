@@ -42,22 +42,5 @@ Namespace Database
             Return Me
         End Function
 
-        Function Load() As CharacterList
-            Dim json As New JsonSerializer(Of List(Of String))
-
-            names = json.Read(Paths.Database & "Charlist.json")
-
-            If names Is Nothing Then Clear().Save()
-
-            Return Me
-        End Function
-
-        Function Save() As CharacterList
-            Dim json As New JsonSerializer(Of List(Of String))
-
-            json.Write(Paths.Database & "Charlist.json", names)
-
-            Return Me
-        End Function
     End Class
 End Namespace

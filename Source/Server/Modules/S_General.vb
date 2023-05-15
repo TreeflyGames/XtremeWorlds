@@ -1,8 +1,10 @@
 ﻿Imports System
 Imports System.Diagnostics
 Imports System.IO
+Imports System.Numerics
 Imports Core
 Imports Core.Database
+Imports Newtonsoft.Json.Linq
 
 Module S_General
     Friend ServerDestroyed As Boolean
@@ -53,6 +55,22 @@ Module S_General
 
         Console.WriteLine("Creating Tables...")
         CreateTables()
+
+        Console.WriteLine("Loading Character List...")
+        Dim ids As Task(Of List(Of BigInteger)) = GetData("account")
+        Dim data As JObject
+        Dim player As New PlayerStruct()
+        CharactersList = New CharacterList()
+
+        For Each id In ids.Result
+            For i = 1 To MAX_CHARACTERS
+                data = SelectRowByColumn("id", id, "account", "character" & i.ToString())
+                If data IsNot Nothing Then
+                    player = JObject.FromObject(data).toObject(Of PlayerStruct)()
+                    CharactersList.Add(player.Name.Trim())
+                End If
+            Next
+        Next
 
         ClearGameData()
         LoadGameData()
@@ -168,7 +186,6 @@ Module S_General
         Console.WriteLine("Spawning Global Events...") : SpawnAllMapGlobalEvents()
         Console.WriteLine("Loading Projectiles...") : LoadProjectiles()
         Console.WriteLine("Loading Pets...") : LoadPets()
-        Console.WriteLine("Loading Character List...") : CharactersList = New CharacterList().Load()
     End Sub
 
     ' Used for checking validity of names

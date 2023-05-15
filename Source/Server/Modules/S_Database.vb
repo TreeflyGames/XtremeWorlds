@@ -1,4 +1,5 @@
 ﻿Imports System
+Imports System.Data
 Imports System.Globalization
 Imports System.IO
 Imports System.Numerics
@@ -59,26 +60,6 @@ Module S_Database
             ExecuteSql(maintenanceConnectionString, sql)
         End If
     End Sub
-
-    Function TableExists(schemaName As String, tableName As String) As Boolean
-        Dim sql As String = "SELECT 1 FROM information_schema.tables WHERE table_schema = @schemaName AND table_name = @tableName;"
-
-        Using connection As New NpgsqlConnection(connectionString)
-            connection.Open()
-            Using command As New NpgsqlCommand(sql, connection)
-                command.Parameters.AddWithValue("@schemaName", schemaName)
-                command.Parameters.AddWithValue("@tableName", tableName)
-
-                Using reader As NpgsqlDataReader = command.ExecuteReader()
-                    If reader.Read() Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                End Using
-            End Using
-        End Using
-    End Function
 
     Public Function RowExistsByColumn(columnName As String, value As BigInteger, tableName As String) As Boolean
         Dim sql As String = $"SELECT EXISTS (SELECT 1 FROM {tableName} WHERE {columnName} = @value);"
@@ -192,6 +173,28 @@ Module S_Database
             End Using
         End Using
     End Sub
+
+    Public Async Function GetData(tableName As String) As Task(Of List(Of BigInteger))
+        Dim ids As New List(Of BigInteger)
+
+        Using conn As New NpgsqlConnection(connectionString)
+            Await conn.OpenAsync()
+
+            ' Define a query
+            Dim cmd As New NpgsqlCommand($"SELECT id FROM {tableName}", conn)
+
+            ' Execute a query
+            Using reader As NpgsqlDataReader = Await cmd.ExecuteReaderAsync()
+                ' Read all rows and output the first column in each row
+                While Await reader.ReadAsync()
+                    Dim id = Await reader.GetFieldValueAsync(Of Int32)(0) ' Get the value as a long
+                    ids.Add(new BigInteger(id)) ' Convert the long to a BigInteger and add it to the list
+                End While
+            End Using
+        End Using
+
+        Return ids
+    End Function
 
     Public Function RowExists(id As BigInteger, table As String) As Boolean
         Dim sql As String = $"SELECT EXISTS (SELECT 1 FROM {table} WHERE id = @id);"
@@ -952,7 +955,7 @@ Module S_Database
             Next
 
             ' Add name to character list.
-            CharactersList.Add(name).Save()
+            CharactersList.Add(name)
 
             Account(index).Index = charNum
             SetPlayerCharName(index, Account(index).Index, name)
