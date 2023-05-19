@@ -8,7 +8,11 @@ class Program
 { 
     static void Main(string[] args)
     {
-        var cd = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/Unpacked/";
+        var cd = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tiles/";
+
+        if (!Directory.Exists(cd))
+            Directory.CreateDirectory(cd);
+
         if (!Directory.Exists(path: cd + "Unpacked"))
             Directory.CreateDirectory(path: cd + "Unpacked");
 
