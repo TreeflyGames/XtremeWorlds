@@ -303,8 +303,8 @@ Module C_UpdateUI
 
         If UpdateNews = True Then
             FrmMenu.lblNews.Text = News
-            FrmMenu.Text = Settings.GameName
-            FrmGame.Text = Settings.GameName
+            FrmMenu.Text = Settings.Data.GameName
+            FrmGame.Text = Settings.Data.GameName
             UpdateNews = False
         End If
 
@@ -583,48 +583,48 @@ Module C_UpdateUI
 
         If OptionsVisible = True Then
             ' show in GUI
-            If Settings.Music = True Then
+            If Settings.Data.Music = True Then
                 FrmOptions.optMOn.Checked = True
             Else
                 FrmOptions.optMOff.Checked = True
             End If
 
-            If Settings.Sound = True Then
+            If Settings.Data.Sound = True Then
                 FrmOptions.optSOn.Checked = True
             Else
                 FrmOptions.optSOff.Checked = True
             End If
 
-            FrmOptions.lblVolume.Text = "Volume: " & Settings.Volume
-            FrmOptions.scrlVolume.Value = Settings.Volume
+            FrmOptions.lblVolume.Text = "Volume: " & Settings.Data.Volume
+            FrmOptions.scrlVolume.Value = Settings.Data.Volume
 
-            FrmOptions.cmbScreenSize.Text = Settings.Width & "x" & Settings.Height
+            FrmOptions.cmbScreenSize.Text = Settings.Data.Width & "x" & Settings.Data.Height
 
-            If Settings.Vsync = 1 Then
+            If Settings.Data.Vsync = 1 Then
                 FrmOptions.chkVsync.Checked = True
             Else
                 FrmOptions.chkVsync.Checked = False
             End If
 
-            If Settings.ShowNpcBar = 1 Then
+            If Settings.Data.ShowNpcBar = 1 Then
                 FrmOptions.chkNpcBars.Checked = True
             Else
                 FrmOptions.chkNpcBars.Checked = False
             End If
 
-            If Settings.Fullscreen = 1 Then
+            If Settings.Data.Fullscreen = 1 Then
                 FrmOptions.chkFullscreen.Checked = True
             Else
                 FrmOptions.chkFullscreen.Checked = False
             End If
 
-            If Settings.DynamicLightRendering = 1 Then
+            If Settings.Data.DynamicLightRendering = 1 Then
                 FrmOptions.chkDynamicLighting.Checked = True
             Else
                 FrmOptions.chkDynamicLighting.Checked = False
             End If
 
-            If Settings.OpenAdminPanelOnLogin = 1 Then
+            If Settings.Data.OpenAdminPanelOnLogin = 1 Then
                 FrmOptions.chkOpenAdminPanelOnLogin.Checked = True
             Else
                 FrmOptions.chkOpenAdminPanelOnLogin.Checked = False

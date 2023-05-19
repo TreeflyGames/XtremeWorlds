@@ -2825,10 +2825,10 @@ nextevent:
         If Map.MapEvents(id).Moving = 1 Then
             Select Case Map.MapEvents(id).Dir
                 Case DirectionType.Up
-                    Map.MapEvents(id).YOffset = Map.MapEvents(id).YOffset - ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeX))
+                    Map.MapEvents(id).YOffset = Map.MapEvents(id).YOffset - ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeY))
                     If Map.MapEvents(id).YOffset < 0 Then Map.MapEvents(id).YOffset = 0
                 Case DirectionType.Down
-                    Map.MapEvents(id).YOffset = Map.MapEvents(id).YOffset + ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeX))
+                    Map.MapEvents(id).YOffset = Map.MapEvents(id).YOffset + ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeY))
                     If Map.MapEvents(id).YOffset > 0 Then Map.MapEvents(id).YOffset = 0
                 Case DirectionType.Left
                     Map.MapEvents(id).XOffset = Map.MapEvents(id).XOffset - ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeX))

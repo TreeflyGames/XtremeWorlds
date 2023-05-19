@@ -950,8 +950,8 @@ Module C_Interface
 
     Public Sub CentralizeWindow(curWindow As Long)
         With Windows(curWindow).Window
-            .Left = (Settings.Width / 2) - (.Width / 2)
-            .Top = (Settings.Height / 2) - (.Height / 2)
+            .Left = (Settings.Data.Width / 2) - (.Width / 2)
+            .Top = (Settings.Data.Height / 2) - (.Height / 2)
             .OrigLeft = .Left
             .OrigTop = .Top
         End With
@@ -1027,12 +1027,12 @@ Module C_Interface
         CreateLabel(WindowCount, "lblPassword", 72, 76, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
         
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Username, , AlignmentType.AlignLeft , , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Settings.Data.Username, , AlignmentType.AlignLeft , , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
 
-        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, Settings.Password, , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, Settings.Data.Password, , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
         
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSavePass", 67, 114, 142, "Save Password?", Georgia, , Settings.SavePass , , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkSavePass", 67, 114, 142, "Save Password?", Georgia, , Settings.Data.SavePass , , , , DesignType.ChkNorm)
 
         ' Set the active control
         If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUser")).Text) > 0 Then
@@ -1084,8 +1084,8 @@ Module C_Interface
                     If entState = EntState.MouseMove Then
                         If .canDrag Then
                             If .state = EntState.MouseDown Then
-                                .left = Math.Clamp(.left + ((CurMouseX - .left) - .movedX), 0, Settings.Width - .width)
-                                .top = Math.Clamp(.top + ((CurMouseY - .top) - .movedY), 0, Settings.Height - .height)
+                                .left = Math.Clamp(.left + ((CurMouseX - .left) - .movedX), 0, Settings.Data.Width - .width)
+                                .top = Math.Clamp(.top + ((CurMouseY - .top) - .movedY), 0, Settings.Data.Height - .height)
                             End If
                         End If
                     End If

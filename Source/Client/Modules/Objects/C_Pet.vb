@@ -375,11 +375,11 @@ Module C_Pets
 
             Select Case Player(index).Pet.Dir
                 Case DirectionType.Up
-                    Player(index).Pet.YOffset = Player(index).Pet.YOffset - ((ElapsedTime / 1000) * (WalkSpeed * SizeX))
+                    Player(index).Pet.YOffset = Player(index).Pet.YOffset - ((ElapsedTime / 1000) * (WalkSpeed * SizeY))
                     If Player(index).Pet.YOffset < 0 Then Player(index).Pet.YOffset = 0
 
                 Case DirectionType.Down
-                    Player(index).Pet.YOffset = Player(index).Pet.YOffset + ((ElapsedTime / 1000) * (WalkSpeed * SizeX))
+                    Player(index).Pet.YOffset = Player(index).Pet.YOffset + ((ElapsedTime / 1000) * (WalkSpeed * SizeY))
                     If Player(index).Pet.YOffset > 0 Then Player(index).Pet.YOffset = 0
 
                 Case DirectionType.Left

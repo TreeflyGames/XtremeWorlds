@@ -4,6 +4,7 @@ Imports Core.Enumerator
 Imports SFML.Graphics
 Imports SFML.System
 Imports Core
+Imports SFML.Window
 
 Module C_Graphics
 
@@ -321,8 +322,12 @@ Module C_Graphics
 #Region "initialisation"
 
     Sub InitGraphics()
+        GameWindow = New RenderWindow(New VideoMode(Settings.Data.Width, Settings.Data.Height), Settings.Data.GameName)
+        GameWindow.setVerticalSyncEnabled(Settings.Data.Vsync)
+        GameWindow.SetFramerateLimit(Settings.Data.MaxFPS)
 
-        GameWindow = New RenderWindow(FrmGame.picscreen.Handle)
+        Dim iconImage As New Image(Paths.Gui + "\Menu\" + "icon.png")
+        GameWindow.seticon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
         Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
         'Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Rockwell)
 
@@ -1405,7 +1410,7 @@ Module C_Graphics
         offsetX = Player(Myindex).XOffset + PicX
         offsetY = Player(Myindex).YOffset + PicY
 
-        If Settings.CameraType = 1 Then
+        If Settings.Data.CameraType = 1 Then
             startX = GetPlayerX(Myindex) - ScreenMapx
             startY = GetPlayerY(Myindex) - ScreenMapy
         Else
@@ -1476,7 +1481,7 @@ Module C_Graphics
         With Camera
             .Y = offsetY
             .X = offsetX
-            If Settings.CameraType = 1 Then
+            If Settings.Data.CameraType = 1 Then
                 .Height = .Top + ScreenY + PicY
                 .Width = .Left + ScreenX + PicX
             Else
@@ -1774,16 +1779,15 @@ Module C_Graphics
             EditorEvent_DrawGraphic()
         End If
 
-        'draw hp and casting bars
-        DrawBars()
-
-        'party
-        DrawParty()
-
-        'Render GUI
-        DrawGui()
+        If InGame Then
+            DrawBars()
+            DrawParty()
+            DrawGui()
+        End If
 
         DrawMapFade()
+
+        If Editor <> EditorType.Map And Not HideGui Then RenderEntities()
 
         'and finally show everything on screen
         GameWindow.Display()
@@ -1901,7 +1905,7 @@ Module C_Graphics
             GameWindow.Draw(rectShape)
         End If
 
-        If Settings.ShowNpcBar = 1 Then
+        If Settings.Data.ShowNpcBar = 1 Then
             ' check for hp bar
             For i = 1 To MAX_MAP_NPCS
                 If Map.Npc Is Nothing Then Exit Sub
@@ -2893,9 +2897,6 @@ NextLoop:
             DrawSkillItem(CurMouseX, CurMouseY)
         End If
 
-        ' Render entities
-        If Editor <> EditorType.Map And Not HideGui Then RenderEntities()
-
         'draw cursor
         'DrawCursor()
     End Sub
@@ -3036,7 +3037,7 @@ NextLoop:
                                     scale = New Vector2f(0.35F, 0.35F)
                                 End If
 
-                                If Settings.DynamicLightRendering Then
+                                If Settings.Data.DynamicLightRendering Then
 
                                     For Each tile As Vector2i In tiles
                                         LightSprite.Scale = scale

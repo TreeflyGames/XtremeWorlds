@@ -19,9 +19,9 @@ Friend Class FrmMenu
     ''' </summary>
     Private Sub Frmmenu_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadMenuGraphics()
-        chkSavePass.Checked = Settings.SavePass
-        txtLogin.Text = Settings.Username
-        txtPassword.Text = Settings.Password
+        chkSavePass.Checked = Settings.Data.SavePass
+        txtLogin.Text = Settings.Data.Username
+        txtPassword.Text = Settings.Data.Password
 
         If Started = False Then Call Startup()
 
@@ -312,8 +312,8 @@ Friend Class FrmMenu
     ''' </summary>
     Private Sub ChkSavePass_CheckedChanged(sender As Object, e As EventArgs) Handles chkSavePass.CheckedChanged
         ChkSavePassChecked = chkSavePass.Checked
-        Settings.SavePass = ChkSavePassChecked
-        SaveSettings
+        Settings.Data.SavePass = ChkSavePassChecked
+        Settings.Save()
     End Sub
 
 #End Region
@@ -366,9 +366,9 @@ Friend Class FrmMenu
             PnlCreditsVisible = False
             pnlMainMenu.Visible = False
             txtLogin.Focus()
-            If Settings.SavePass = True Then
-                txtLogin.Text = Settings.Username
-                txtPassword.Text = Settings.Password
+            If Settings.Data.SavePass = True Then
+                txtLogin.Text = Settings.Data.Username
+                txtPassword.Text = Settings.Data.Password
                 chkSavePass.Checked = True
             End If
         End If
@@ -392,7 +392,7 @@ Friend Class FrmMenu
     ''' Handle Register button press.
     ''' </summary>
     Private Sub BtnRegister_Click(sender As Object, e As EventArgs) Handles btnRegister.Click
-        Process.Start("explorer.exe", Settings.Website)
+        Process.Start("explorer.exe", Settings.Data.Website)
     End Sub
 
     ''' <summary>

@@ -385,8 +385,8 @@ Module S_NetworkSend
     Sub SendWelcome(index As Integer)
 
         ' Send them welcome
-        If Settings.Welcome.Trim.Length > 0 Then
-            PlayerMsg(index, Settings.Welcome, ColorType.BrightCyan)
+        If Settings.Data.Welcome.Trim.Length > 0 Then
+            PlayerMsg(index, Settings.Data.Welcome, ColorType.BrightCyan)
         End If
 
         ' Send whos online
@@ -1082,8 +1082,8 @@ End Sub
 
         buffer.WriteInt32(ServerPackets.SNews)
 
-        buffer.WriteString(Settings.GameName.Trim)
-        buffer.WriteString(Settings.Website.Trim)
+        buffer.WriteString(Settings.Data.GameName.Trim)
+        buffer.WriteString(Settings.Data.Website.Trim)
         buffer.WriteString(GetFileContents(Paths.Database & "News.txt").Trim)
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)

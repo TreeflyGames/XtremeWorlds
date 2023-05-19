@@ -164,7 +164,7 @@ Friend Module C_Weather
 #Region "Sound"
 
     Sub PlayWeatherSound(fileName As String, Optional looped As Boolean = False)
-        If Not Settings.Sound = 1 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
+        If Not Settings.Data.Sound = 1 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
         If CurWeatherMusic = fileName Then Exit Sub
 
         Dim buffer As SoundBuffer

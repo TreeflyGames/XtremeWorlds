@@ -1047,7 +1047,7 @@ Module S_Database
 
         IP = Mid$(IP, 1, i)
         AddTextToFile(IP, "banlist.txt")
-        GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Settings.GameName & " by " & "the Server" & "!")
+        GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Settings.Data.GameName & " by " & "the Server" & "!")
         Addlog("The Server" & " has banned " & GetPlayerName(BanPlayerindex) & ".", ADMIN_LOG)
         AlertMsg(BanPlayerindex, "You have been banned by " & "The Server" & "!")
     End Sub
@@ -1096,7 +1096,7 @@ Module S_Database
 
         IP = Mid$(IP, 1, i)
         AddTextToFile(IP, "banlist.txt")
-        GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Settings.GameName & " by " & GetPlayerName(BannedByindex) & "!")
+        GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Settings.Data.GameName & " by " & GetPlayerName(BannedByindex) & "!")
         Addlog(GetPlayerName(BannedByindex) & " has banned " & GetPlayerName(BanPlayerindex) & ".", ADMIN_LOG)
         AlertMsg(BanPlayerindex, "You have been banned by " & GetPlayerName(BannedByindex) & "!")
     End Sub

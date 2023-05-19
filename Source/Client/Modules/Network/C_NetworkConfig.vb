@@ -11,7 +11,7 @@ Friend Module C_NetworkConfig
     End Sub
 
     Friend Sub Connect()
-        Socket?.Connect(Settings.Ip, Settings.Port)
+        Socket?.Connect(Settings.Data.Ip, Settings.Data.Port)
     End Sub
 
     Friend Sub DestroyNetwork()

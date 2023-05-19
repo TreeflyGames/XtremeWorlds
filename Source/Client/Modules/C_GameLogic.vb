@@ -23,6 +23,11 @@ Module C_GameLogic
         Do
             If GameDestroyed Then End
 
+            tick = GetTickCount()
+            ElapsedTime = tick - frameTime ' Set the time difference for time-based movement
+
+            frameTime = tick
+
             DirDown = VbKeyDown
             DirUp = VbKeyUp
             DirLeft = VbKeyLeft
@@ -52,10 +57,6 @@ Module C_GameLogic
             UpdateUi()
 
             If GameStarted() = True Then
-                tick = GetTickCount()
-                ElapsedTime = tick - frameTime ' Set the time difference for time-based movement
-
-                frameTime = tick
                 Frmmaingamevisible = True
 
                 'Calculate FPS
@@ -293,18 +294,8 @@ Module C_GameLogic
                 fadetmr = tick + 30
             End If
 
-            If Settings.Vsync Then
-                If rendertmr < tick Then
-                    rendertmr = tick + 5
-                    renderFrame = True
-                    tmpfps = tmpfps + 1
-                Else
-                    renderFrame = False
-                End If
-            Else                
-                renderFrame = True
-                tmpfps = tmpfps + 1
-            End If
+            renderFrame = True
+            tmpfps = tmpfps + 1
 
             If renderFrame Then
                 Render_Graphics
@@ -324,11 +315,11 @@ Module C_GameLogic
 
             Select Case MapNpc(mapNpcNum).Dir
                 Case DirectionType.Up
-                    MapNpc(mapNpcNum).YOffset = MapNpc(mapNpcNum).YOffset - ((ElapsedTime / 1000) * (WalkSpeed * SizeX))
+                    MapNpc(mapNpcNum).YOffset = MapNpc(mapNpcNum).YOffset - ((ElapsedTime / 1000) * (WalkSpeed * SizeY))
                     If MapNpc(mapNpcNum).YOffset < 0 Then MapNpc(mapNpcNum).YOffset = 0
 
                 Case DirectionType.Down
-                    MapNpc(mapNpcNum).YOffset = MapNpc(mapNpcNum).YOffset + ((ElapsedTime / 1000) * (WalkSpeed * SizeX))
+                    MapNpc(mapNpcNum).YOffset = MapNpc(mapNpcNum).YOffset + ((ElapsedTime / 1000) * (WalkSpeed * SizeY))
                     If MapNpc(mapNpcNum).YOffset > 0 Then MapNpc(mapNpcNum).YOffset = 0
 
                 Case DirectionType.Left

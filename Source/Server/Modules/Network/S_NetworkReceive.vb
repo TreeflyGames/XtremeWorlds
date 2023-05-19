@@ -174,8 +174,8 @@ Module S_NetworkReceive
                 password = EKeyPair.DecryptString(buffer.ReadString())
 
                 ' Check versions
-                If EKeyPair.DecryptString(buffer.ReadString) <> Settings.Version Then
-                    AlertMsg(index, "Version outdated, please visit " & Settings.Website)
+                If EKeyPair.DecryptString(buffer.ReadString) <> Settings.Data.Version Then
+                    AlertMsg(index, "Version outdated, please visit " & Settings.Data.Website)
                     Exit Sub
                 End If
 
@@ -985,7 +985,7 @@ Module S_NetworkReceive
         If n <> index Then
             If n > 0 Then
                 If GetPlayerAccess(n) < GetPlayerAccess(index) Then
-                    GlobalMsg(GetPlayerName(n) & " has been kicked from " & Settings.GameName & " by " & GetPlayerName(index) & "!")
+                    GlobalMsg(GetPlayerName(n) & " has been kicked from " & Settings.Data.GameName & " by " & GetPlayerName(index) & "!")
                     Addlog(GetPlayerName(index) & " has kicked " & GetPlayerName(n) & ".", ADMIN_LOG)
                     AlertMsg(n, "You have been kicked by " & GetPlayerName(index) & "!")
                 Else
@@ -1268,11 +1268,11 @@ Module S_NetworkReceive
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
 
-        Settings.Welcome = Trim$(buffer.ReadString)
-        SaveSettings()
+        Settings.Data.Welcome = Trim$(buffer.ReadString)
+        Settings.Save()
 
-        GlobalMsg("Welcome changed to: " & Settings.Welcome)
-        Addlog(GetPlayerName(index) & " changed welcome to: " & Settings.Welcome, ADMIN_LOG)
+        GlobalMsg("Welcome changed to: " & Settings.Data.Welcome)
+        Addlog(GetPlayerName(index) & " changed welcome to: " & Settings.Data.Welcome, ADMIN_LOG)
 
         buffer.Dispose()
     End Sub
@@ -1969,7 +1969,7 @@ Module S_NetworkReceive
         If index > 0 AndAlso IsPlaying(index) Then
             GlobalMsg(GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has been booted for (" & Reason & ")")
 
-            AlertMsg(index, "You have lost your connection with " & Settings.GameName & ".")
+            AlertMsg(index, "You have lost your connection with " & Settings.Data.GameName & ".")
         End If
 
     End Sub

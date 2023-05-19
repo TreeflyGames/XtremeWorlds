@@ -84,7 +84,7 @@ Module C_Variables
     Friend SOffsetY As Integer
 
     ' Used to freeze controls when getting a new map
-    Friend GettingMap As Boolean = True
+    Friend GettingMap As Boolean
 
     ' Used to check if FPS needs to be drawn
     Friend Bfps As Boolean
