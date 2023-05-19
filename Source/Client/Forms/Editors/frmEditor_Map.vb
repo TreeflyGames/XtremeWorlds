@@ -3,7 +3,7 @@ Imports Mirage.Sharp.Asfw
 Imports SFML.Graphics
 Imports Core
 Imports SFML.System
-Imports Core.Enumerator
+Imports Core.Enum
 
 Public Class frmEditor_Map
 #Region "Frm"

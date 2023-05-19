@@ -86,7 +86,7 @@ Module S_Console
                         Console.WriteLine("Player name is empty or invalid. [Name not found]")
                     Else
                         Select Case Power
-                            Case Enumerator.AdminType.Player
+                            Case Core.AdminType.Player
                                 SetPlayerAccess(Pindex, Power)
                                 SendPlayerData(Pindex)
                                 PlayerMsg(Pindex, "Your PowerLevel has been set to Player Rank!", ColorType.BrightCyan)

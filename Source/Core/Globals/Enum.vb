@@ -1,4 +1,4 @@
-﻿Public Module Enumerator
+﻿Public Module [Enum]
 
     ''' <Summary> Text Color Contstant </Summary>
     Enum ColorType As Byte

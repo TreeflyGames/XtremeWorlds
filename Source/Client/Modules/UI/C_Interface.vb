@@ -1,6 +1,6 @@
 ﻿
 Imports Core
-Imports Core.Enumerator
+Imports Core.Enum
 Imports Core.Types
 Imports SFML.Graphics
 

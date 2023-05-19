@@ -324,7 +324,7 @@ Module S_Database
 
         ReDim Job(MAX_JOBS)
         For i = 1 To MAX_JOBS
-            ReDim Job(i).Stat(Enumerator.StatType.Count - 1)
+            ReDim Job(i).Stat(Core.StatType.Count - 1)
             ReDim Job(i).StartItem(5)
             ReDim Job(i).StartValue(5)
         Next

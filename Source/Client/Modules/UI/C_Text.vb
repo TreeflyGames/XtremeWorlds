@@ -126,7 +126,7 @@ Module C_Text
                             tX = ((ConvertMapX(X * PicX)) - 4) + (PicX * 0.5)
                             tY = ((ConvertMapY(y * PicY)) - 7) + (PicY * 0.5)
                             Select Case .Type
-                                Case Enumerator.TileType.Blocked
+                                Case [Enum].TileType.Blocked
                                     RenderText("B", GameWindow, tX, tY, (Color.Red), (Color.Black))
                                 Case TileType.Warp
                                     RenderText("W", GameWindow, tX, tY, (Color.Blue), (Color.Black))

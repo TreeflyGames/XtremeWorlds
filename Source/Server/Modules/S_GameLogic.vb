@@ -26,7 +26,7 @@ Module S_GameLogic
         GetPlayersOnline = x
     End Function
 
-    Function GetNpcMaxVital(NpcNum As Integer, Vital As Enumerator.VitalType) As Integer
+    Function GetNpcMaxVital(NpcNum As Integer, Vital As [Enum].VitalType) As Integer
         GetNpcMaxVital = 0
 
         ' Prevent subscript out of range
