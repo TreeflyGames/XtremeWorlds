@@ -22,7 +22,7 @@ class Program
 
         // container info
         var t_size = 32;
-        var t_len = 480 / t_size;
+        var t_len = 512 / t_size;
 
         // render properties
         var dRect = new Rectangle(x: 0, y: 0, width: 0, height: 0);
