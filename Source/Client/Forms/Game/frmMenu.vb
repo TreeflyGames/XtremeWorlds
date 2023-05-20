@@ -81,7 +81,7 @@ Friend Class FrmMenu
         lblLogin.Text = Language.MainMenu.Login
         lblLoginName.Text = Language.MainMenu.LoginName
         lblLoginPass.Text = Language.MainMenu.LoginPass
-        chkSavePass.Text = Language.MainMenu.LoginCheckBox
+        chkRememberPassword.Text = Language.MainMenu.LoginCheckBox
 
         ' New Character
         lblNewChar.Text = Language.MainMenu.NewCharacter
@@ -307,9 +307,9 @@ Friend Class FrmMenu
     ''' <summary>
     ''' Handle the SavePas checkbox.
     ''' </summary>
-    Private Sub ChkSavePass_CheckedChanged(sender As Object, e As EventArgs) Handles chkSavePass.CheckedChanged
-        ChkSavePassChecked = chkSavePass.Checked
-        Types.Settings.RememberPassword = ChkSavePassChecked
+    Private Sub ChkRememberPassword_CheckedChanged(sender As Object, e As EventArgs) Handles chkRememberPassword.CheckedChanged
+        ChkRememberPasswordChecked = chkRememberPassword.Checked
+        Types.Settings.RememberPassword = ChkRememberPasswordChecked
         Save()
     End Sub
 
@@ -366,7 +366,7 @@ Friend Class FrmMenu
             If Types.Settings.RememberPassword = True Then
                 txtLogin.Text = Types.Settings.Username
                 txtPassword.Text = Types.Settings.Password
-                chkSavePass.Checked = True
+                chkRememberPassword.Checked = True
             End If
         End If
     End Sub

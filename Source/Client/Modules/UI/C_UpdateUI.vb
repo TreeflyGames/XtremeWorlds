@@ -15,7 +15,7 @@ Module C_UpdateUI
     Friend Lblnextcharleft As Integer
     Friend CmbJob() As String
     Friend TxtChatAdd As String
-    Friend ChkSavePassChecked As Boolean
+    Friend ChkRememberPasswordChecked As Boolean
     Friend TempUserName As String
     Friend TempPassword As String
     Friend PnlCharSelectVisible As Boolean

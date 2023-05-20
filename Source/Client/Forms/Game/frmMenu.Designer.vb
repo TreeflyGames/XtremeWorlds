@@ -26,7 +26,7 @@ Partial Class FrmMenu
         Dim resources As ComponentModel.ComponentResourceManager = New ComponentModel.ComponentResourceManager(GetType(FrmMenu))
         pnlLogin = New Panel()
         btnLogin = New PictureBox()
-        chkSavePass = New CheckBox()
+        chkRememberPassword = New CheckBox()
         txtPassword = New TextBox()
         lblLoginPass = New Label()
         txtLogin = New TextBox()
@@ -106,7 +106,7 @@ Partial Class FrmMenu
         pnlLogin.BackgroundImage = CType(resources.GetObject("pnlLogin.BackgroundImage"), Image)
         pnlLogin.BackgroundImageLayout = ImageLayout.Stretch
         pnlLogin.Controls.Add(btnLogin)
-        pnlLogin.Controls.Add(chkSavePass)
+        pnlLogin.Controls.Add(chkRememberPassword)
         pnlLogin.Controls.Add(txtPassword)
         pnlLogin.Controls.Add(lblLoginPass)
         pnlLogin.Controls.Add(txtLogin)
@@ -128,17 +128,17 @@ Partial Class FrmMenu
         btnLogin.TabIndex = 26
         btnLogin.TabStop = False
         ' 
-        ' chkSavePass
+        ' chkRememberPassword
         ' 
-        chkSavePass.AutoSize = True
-        chkSavePass.BackColor = Color.Transparent
-        chkSavePass.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point)
-        chkSavePass.Location = New Point(110, 128)
-        chkSavePass.Name = "chkSavePass"
-        chkSavePass.Size = New Size(236, 40)
-        chkSavePass.TabIndex = 25
-        chkSavePass.Text = "Save Password?"
-        chkSavePass.UseVisualStyleBackColor = False
+        chkRememberPassword.AutoSize = True
+        chkRememberPassword.BackColor = Color.Transparent
+        chkRememberPassword.Font = New Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point)
+        chkRememberPassword.Location = New Point(110, 128)
+        chkRememberPassword.Name = "chkRememberPassword"
+        chkRememberPassword.Size = New Size(236, 40)
+        chkRememberPassword.TabIndex = 25
+        chkRememberPassword.Text = "Save Password?"
+        chkRememberPassword.UseVisualStyleBackColor = False
         ' 
         ' txtPassword
         ' 
@@ -741,7 +741,7 @@ Partial Class FrmMenu
         PerformLayout()
     End Sub
     Friend WithEvents pnlLogin As System.Windows.Forms.Panel
-    Friend WithEvents chkSavePass As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRememberPassword As System.Windows.Forms.CheckBox
     Friend WithEvents txtPassword As System.Windows.Forms.TextBox
     Friend WithEvents lblLoginPass As System.Windows.Forms.Label
     Friend WithEvents txtLogin As System.Windows.Forms.TextBox
