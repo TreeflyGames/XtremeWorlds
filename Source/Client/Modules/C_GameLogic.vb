@@ -18,9 +18,11 @@ Module C_GameLogic
         Dim fadetmr As Integer, renderFrame As Boolean, rendertmr As Integer
         Dim animationtmr As Integer
 
-        starttime = GetTickCount()
-
-        Do
+            
+        ' Main game loop
+        While GameWindow.IsOpen
+            starttime = GetTickCount()
+            
             If GameDestroyed Then End
 
             tick = GetTickCount()
@@ -241,6 +243,7 @@ Module C_GameLogic
                         Case 2
                             WaterfallFrame = 0
                     End Select
+
                     ' animate autotiles
                     Select Case AutoTileFrame
                         Case 0
@@ -294,8 +297,13 @@ Module C_GameLogic
                 fadetmr = tick + 30
             End If
 
+
             renderFrame = True
             tmpfps = tmpfps + 1
+
+            If tmpfps > 60 Then
+                tmpfps = 1
+            End If
 
             If renderFrame Then
                 Render_Graphics
@@ -305,7 +313,7 @@ Module C_GameLogic
             End If
 
             Application.DoEvents()
-        Loop
+        End While
     End Sub
 
     Sub ProcessNpcMovement(mapNpcNum As Integer)

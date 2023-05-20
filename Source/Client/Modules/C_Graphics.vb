@@ -312,14 +312,67 @@ Module C_Graphics
         Dim TextureTimer As Integer
     End Structure
 
-    Public Structure GraphicsTiles
-        Dim Tile(,) As Texture
-    End Structure
-
-
 #End Region
 
-#Region "initialisation"
+#Region "initialization"
+    Private Sub GameWindow_GainedFocus(ByVal sender As Object, ByVal e As EventArgs)
+        Console.WriteLine("Window Gained Focus")
+    End Sub
+
+    Private Sub GameWindow_LostFocus(ByVal sender As Object, ByVal e As EventArgs)
+        Console.WriteLine("Window Lost Focus")
+    End Sub
+
+    Private Sub GameWindow_KeyPressed(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
+        Console.WriteLine("Key Pressed: " & e.Code.ToString())
+
+        HandleInterfaceEvents(EntState.KeyDown)
+    End Sub
+
+    Private Sub GameWindow_KeyReleased(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
+        Console.WriteLine("Key Released: " & e.Code.ToString())
+
+        HandleInterfaceEvents(EntState.KeyUp)
+    End Sub
+
+    Private Sub GameWindow_MouseButtonPressed(ByVal sender As Object, ByVal e As SFML.Window.MouseButtonEventArgs)
+        Console.WriteLine("Mouse Button Pressed: " & e.Button.ToString())
+
+        HandleInterfaceEvents(EntState.MouseDown)
+    End Sub
+
+    Private Sub GameWindow_MouseButtonReleased(ByVal sender As Object, ByVal e As SFML.Window.MouseButtonEventArgs)
+        Console.WriteLine("Mouse Button Released: " & e.Button.ToString())
+
+        HandleInterfaceEvents(EntState.MouseUp)
+    End Sub
+
+    Private Sub GameWindow_MouseWheelMoved(ByVal sender As Object, ByVal e As SFML.Window.MouseWheelScrollEventArgs)
+        Console.WriteLine("Mouse Wheel Moved: " & e.Delta.ToString())
+
+        HandleInterfaceEvents(EntState.MouseScroll)
+    End Sub
+
+    Private Sub GameWindow_MouseMoved(ByVal sender As Object, ByVal e As SFML.Window.MouseMoveEventArgs)
+        Console.WriteLine("Mouse Moved: " & e.X.ToString() & ", " & e.Y.ToString())
+
+        CurX = TileView.Left + ((e.X + Camera.Left) \ PicX)
+        CurY = TileView.Top + ((e.Y + Camera.Top) \ PicY)
+        CurMouseX = e.X
+        CurMouseY = e.Y
+
+        HandleInterfaceEvents(EntState.MouseMove)
+    End Sub
+
+    Private Sub GameWindow_TextEntered(ByVal sender As Object, ByVal e As SFML.Window.TextEventArgs)
+        Console.WriteLine("Text Entered: " & e.Unicode)
+    End Sub
+
+    Private Sub GameWindow_Closed(ByVal sender As Object, ByVal e As EventArgs)
+        Console.WriteLine("Window Closed")
+        DestroyGame()
+        GameWindow.Close()
+    End Sub
 
     Sub InitGraphics()
         GameWindow = New RenderWindow(New VideoMode(Settings.Data.Width, Settings.Data.Height), Settings.Data.GameName)
@@ -328,6 +381,18 @@ Module C_Graphics
 
         Dim iconImage As New Image(Paths.Gui + "\Menu\" + "icon.png")
         GameWindow.seticon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
+
+        ' Add other event handlers
+        AddHandler GameWindow.Closed, AddressOf GameWindow_Closed
+        AddHandler GameWindow.GainedFocus, AddressOf GameWindow_GainedFocus
+        AddHandler GameWindow.LostFocus, AddressOf GameWindow_LostFocus
+        AddHandler GameWindow.KeyPressed, AddressOf GameWindow_KeyPressed
+        AddHandler GameWindow.KeyReleased, AddressOf GameWindow_KeyReleased
+        AddHandler GameWindow.MouseButtonPressed, AddressOf GameWindow_MouseButtonPressed
+        AddHandler GameWindow.MouseButtonReleased, AddressOf GameWindow_MouseButtonReleased
+        AddHandler GameWindow.MouseMoved, AddressOf GameWindow_MouseMoved
+        AddHandler GameWindow.TextEntered, AddressOf GameWindow_TextEntered
+
         Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
         'Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Rockwell)
 
@@ -773,6 +838,8 @@ Module C_Graphics
         Next
     End Sub
 
+
+
     Friend Sub LoadTexture(index As Integer, texType As Byte)
 
         If texType = 1 Then 'tilesets
@@ -1029,6 +1096,7 @@ Module C_Graphics
 
 #End Region
 
+#Region "Drawing"
     Friend Sub DrawEmotes(x2 As Integer, y2 As Integer, sprite As Integer)
         Dim rec As Rectangle
         Dim x As Integer, y As Integer, anim As Integer
@@ -1250,7 +1318,7 @@ Module C_Graphics
         Else
             ' If not attacking, walk normally
             Select Case MapNpc(mapNpcNum).Dir
-                Case Enumerator.DirectionType.Up
+                Case DirectionType.Up
                     If (MapNpc(mapNpcNum).YOffset > 8) Then anim = MapNpc(mapNpcNum).Steps
                 Case DirectionType.Down
                     If (MapNpc(mapNpcNum).YOffset < -8) Then anim = MapNpc(mapNpcNum).Steps
@@ -3613,5 +3681,6 @@ NextLoop:
         Next
 
     End Sub
+#End Region
 
 End Module

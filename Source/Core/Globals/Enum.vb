@@ -472,6 +472,9 @@
         MouseUp
         DblClick
         Enter
+        MouseScroll
+        KeyDown
+        KeyUp
         ' Count
         State_Count
     End Enum

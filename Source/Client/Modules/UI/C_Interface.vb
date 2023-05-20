@@ -18,7 +18,7 @@ Module C_Interface
     Private zOrder_Con As Long
 
     Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() as Action, _
-       Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
+       Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
        Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, _
        Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0)
 
@@ -801,7 +801,7 @@ Module C_Interface
     End Sub
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
-       Optional visible As Boolean = True, Optional canDrag As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, _
+       Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, _
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, _
        Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef onDraw As Action = Nothing)
 
@@ -1019,8 +1019,8 @@ Module C_Interface
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , ,  New Action(AddressOf SendLogin))
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf SendLogin))
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
         
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 72, 40, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
