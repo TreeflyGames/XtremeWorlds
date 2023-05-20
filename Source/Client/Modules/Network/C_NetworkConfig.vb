@@ -37,7 +37,7 @@ Friend Module C_NetworkConfig
     End Sub
 
     Private Sub Socket_CrashReport(err As String) Handles Socket.CrashReport
-        MsgBox("There was a network error -> Report: " & err)
+        MsgBox("There was a network error: " & err)
         DestroyNetwork()
         DestroyGame()
     End Sub
