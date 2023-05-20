@@ -61,71 +61,19 @@ Friend Class FrmGame
     End Sub
 
     Private Sub Picscreen_MouseMove(sender As Object, e As MouseEventArgs) Handles picscreen.MouseMove
-        CurX = TileView.Left + ((e.Location.X + Camera.Left) \ PicX)
-        CurY = TileView.Top + ((e.Location.Y + Camera.Top) \ PicY)
-        CurMouseX = e.Location.X
-        CurMouseY = e.Location.Y
-        CheckGuiMove(e.X, e.Y)
-        If e.Button = MouseButtons.Left Then HandleInterfaceEvents(EntState.MouseMove)
 
-        If Editor = EditorType.Map Then
-            If e.Button = MouseButtons.Left OrElse e.Button = MouseButtons.Right Then
-                FrmEditor_Map.MapEditorMouseDown(e.Button, e.X, e.Y)
-            End If
-        End If
     End Sub
 
     Private Sub Picscreen_MouseUp(sender As Object, e As MouseEventArgs) Handles picscreen.MouseUp
-        CurX = TileView.Left + ((e.Location.X + Camera.Left) \ PicX)
-        CurY = TileView.Top + ((e.Location.Y + Camera.Top) \ PicY)
-        CheckGuiMouseUp(e.X, e.Y, e)
-        If e.Button = MouseButtons.Left Then HandleInterfaceEvents(EntState.MouseUp)
+ 
     End Sub
 
     Private Sub Picscreen_KeyDown(sender As Object, e As KeyEventArgs) Handles picscreen.KeyDown
-        If Inputs.MoveUp(e.KeyCode) Then VbKeyUp = True
-        If Inputs.MoveDown(e.KeyCode) Then VbKeyDown = True
-        If Inputs.MoveDown(e.KeyCode) Then VbKeyLeft = True
-        If Inputs.MoveDown(e.KeyCode) Then VbKeyRight = True
-        If Inputs.Attack(e.KeyCode) Then VbKeyControl = True
-        If Inputs.Run(e.KeyCode) Then VbKeyShift = True
-
-        'hotbar
-        If Inputs.HotBar1(e.KeyCode) AndAlso Player(Myindex).Hotbar(1).Slot <> 0 Then SendUseHotbarSlot(1)
-        If Inputs.HotBar2(e.KeyCode) AndAlso Player(Myindex).Hotbar(2).Slot <> 0 Then SendUseHotbarSlot(2)
-        If Inputs.HotBar3(e.KeyCode) AndAlso Player(Myindex).Hotbar(3).Slot <> 0 Then SendUseHotbarSlot(3)
-        If Inputs.HotBar4(e.KeyCode) AndAlso Player(Myindex).Hotbar(4).Slot <> 0 Then SendUseHotbarSlot(4)
-        If Inputs.HotBar5(e.KeyCode) AndAlso Player(Myindex).Hotbar(5).Slot <> 0 Then SendUseHotbarSlot(5)
-        If Inputs.HotBar6(e.KeyCode) AndAlso Player(Myindex).Hotbar(6).Slot <> 0 Then SendUseHotbarSlot(6)
-        If Inputs.HotBar7(e.KeyCode) AndAlso Player(Myindex).Hotbar(7).Slot <> 0 Then SendUseHotbarSlot(7)
-
-        'admin
-        If Inputs.Admin(e.KeyCode) Then
-            If GetPlayerAccess(Myindex) > 0 Then
-                SendRequestAdmin()
-            End If
-        End If
-
-        'hide gui
-        If Inputs.HudToggle(e.KeyCode) Then
-            HideGui = Not HideGui
-        End If
+   
     End Sub
 
     Private Sub Picscreen_KeyUp(sender As Object, e As KeyEventArgs) Handles picscreen.KeyUp
-        If Inputs.MoveUp(e.KeyCode) Then VbKeyUp = False
-        If Inputs.MoveDown(e.KeyCode) Then VbKeyDown = False
-        If Inputs.MoveDown(e.KeyCode) Then VbKeyLeft = False
-        If Inputs.MoveDown(e.KeyCode) Then VbKeyRight = False
-        If Inputs.Attack(e.KeyCode) Then VbKeyControl = False
-        If Inputs.Run(e.KeyCode) Then VbKeyShift = False
 
-        Dim keyData As Keys = e.KeyData
-
-        If IsAcceptable(keyData) Then
-            e.Handled = True
-            e.SuppressKeyPress = True
-        End If
     End Sub
 
 #End Region
