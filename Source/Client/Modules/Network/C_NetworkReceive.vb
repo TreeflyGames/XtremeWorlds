@@ -184,7 +184,7 @@ Module C_NetworkReceive
         Dim level As Integer, jobName As String, sex As Byte
 
         ' save options
-        Types.Settings.SavePass = ChkSavePassChecked
+        Types.Settings.RememberPassword = ChkSavePassChecked
         Types.Settings.Username = Trim$(TempUserName)
 
         If ChkSavePassChecked = False Then

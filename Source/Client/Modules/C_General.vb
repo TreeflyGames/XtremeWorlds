@@ -17,6 +17,9 @@ Module C_General
 
     Friend Sub LoadGame()
         Load()
+        frmMenu.chkSavePass.Checked = Types.Settings.RememberPassword
+        frmMenu.txtLogin.Text = Types.Settings.Username
+        frmMenu.txtPassword.Text = Types.Settings.Password
         LoadLanguage()
         LoadInputs()
         LoadGraphics()

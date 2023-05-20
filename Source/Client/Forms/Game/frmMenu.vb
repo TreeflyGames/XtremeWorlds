@@ -19,9 +19,6 @@ Friend Class FrmMenu
     ''' </summary>
     Private Sub Frmmenu_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadMenuGraphics()
-        chkSavePass.Checked = Types.Settings.SavePass
-        txtLogin.Text = Types.Settings.Username
-        txtPassword.Text = Types.Settings.Password
 
         If Started = False Then Call Startup()
 
@@ -312,7 +309,7 @@ Friend Class FrmMenu
     ''' </summary>
     Private Sub ChkSavePass_CheckedChanged(sender As Object, e As EventArgs) Handles chkSavePass.CheckedChanged
         ChkSavePassChecked = chkSavePass.Checked
-        Types.Settings.SavePass = ChkSavePassChecked
+        Types.Settings.RememberPassword = ChkSavePassChecked
         Save()
     End Sub
 
@@ -366,7 +363,7 @@ Friend Class FrmMenu
             PnlCreditsVisible = False
             pnlMainMenu.Visible = False
             txtLogin.Focus()
-            If Types.Settings.SavePass = True Then
+            If Types.Settings.RememberPassword = True Then
                 txtLogin.Text = Types.Settings.Username
                 txtPassword.Text = Types.Settings.Password
                 chkSavePass.Checked = True

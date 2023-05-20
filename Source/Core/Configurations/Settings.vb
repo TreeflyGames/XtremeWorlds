@@ -6,7 +6,7 @@ Public Class Settings
 
     Public Username As String = ""
     Public Password As String = ""
-    Public SavePass As Boolean = False
+    Public RememberPassword As Boolean = False
 
     Public MenuMusic As String = ""
     Public Music As Boolean = True
