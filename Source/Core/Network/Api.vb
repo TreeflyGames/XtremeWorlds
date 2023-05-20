@@ -1,4 +1,5 @@
-﻿Imports System.Net.Http
+﻿Imports System.Net
+Imports System.Net.Http
 
 Namespace Network
     Public Module Api
@@ -15,14 +16,16 @@ Namespace Network
 
                 client.DefaultRequestHeaders.Add("XF-Api-Key", apiKey)
 
-                Dim result As HttpResponseMessage = client.PostAsync(apiUrl,
-                                                                         New FormUrlEncodedContent(params)).Result
-                If (result.StatusCode.ToString = "200") Then
-                    Return False
-                Else
+                Dim result As HttpResponseMessage = client.PostAsync(apiUrl, 
+                                                                     New FormUrlEncodedContent(params)).Result
+                If (result.StatusCode = HttpStatusCode.OK) Then ' HttpStatusCode.OK corresponds to HTTP status 200
                     Return True
+                Else
+                    Return False
                 End If
+
             End Using
+
         End Function
         
     End Module
