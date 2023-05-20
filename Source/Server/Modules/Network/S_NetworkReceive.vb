@@ -173,6 +173,11 @@ Module S_NetworkReceive
                 username = EKeyPair.DecryptString(buffer.ReadString()).ToLower
                 password = EKeyPair.DecryptString(buffer.ReadString())
 
+                If Username = "" Then
+                    AlertMsg(Index, "You must enter a username.")
+                    Exit Sub
+                End If
+
                 ' Check versions
                 If EKeyPair.DecryptString(buffer.ReadString) <> Settings.Data.Version Then
                     AlertMsg(index, "Version outdated, please visit " & Settings.Data.Website)
