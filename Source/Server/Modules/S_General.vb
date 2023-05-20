@@ -24,9 +24,9 @@ Module S_General
 
         myStopWatch.Start()
 
-        Settings.Load()
+        Load()
 
-        Core.Time.Instance.GameSpeed = Settings.Data.TimeSpeed
+        Core.Time.Instance.GameSpeed = Types.Settings.TimeSpeed
 
         Console.Title = "MirageWorlds Server"
 
@@ -102,7 +102,7 @@ Module S_General
         UpdateCaption()
 
         ' Start listener now that everything is loaded
-        Socket.StartListening(Settings.Data.Port, 5)
+        Socket.StartListening(Types.Settings.Port, 5)
 
         ' Starts the server loop
         ServerLoop()
@@ -124,7 +124,7 @@ Module S_General
     Private Delegate Function ConsoleEventDelegate(eventType As Integer) As Boolean
 
     Sub UpdateCaption()
-        Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Settings.Data.GameName, MyIPAddress, Settings.Data.Port, GetPlayersOnline(), ErrorCount, Core.Time.Instance.ToString())
+        Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Types.Settings.GameName, MyIPAddress, Types.Settings.Port, GetPlayersOnline(), ErrorCount, Core.Time.Instance.ToString())
     End Sub
 
     Sub DestroyServer()

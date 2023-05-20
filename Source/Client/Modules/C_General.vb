@@ -16,13 +16,13 @@ Module C_General
     End Sub
 
     Friend Sub LoadGame()
-        Settings.Load()
+        Load()
         LoadLanguage()
         LoadInputs()
         LoadGraphics()
         InitNetwork()
         InitInterface()
-        FrmMenu.Text = Settings.Data.GameName
+        FrmMenu.Text = Types.Settings.GameName
         FrmMenu.Visible = True
         Frmmenuvisible = True
         Ping = -1
@@ -64,9 +64,9 @@ Module C_General
         CacheMusic()
         CacheSound()
 
-        If Settings.Data.Music = 1 AndAlso Len(Trim$(Settings.Data.MenuMusic)) > 0 Then
-            PlayMusic(Trim$(Settings.Data.MenuMusic))
-            MusicPlayer.Volume() = Settings.Data.Volume
+        If Types.Settings.Music = 1 AndAlso Len(Trim$(Types.Settings.MenuMusic)) > 0 Then
+            PlayMusic(Trim$(Types.Settings.MenuMusic))
+            MusicPlayer.Volume() = Types.Settings.Volume
         End If
 
         CheckAnimations()
@@ -95,7 +95,7 @@ Module C_General
         For i = 1 To Len(sInput)
 
             If (Asc(Mid$(sInput, i, 1))) < 32 OrElse Asc(Mid$(sInput, i, 1)) > 126 Then
-                MsgBox(Language.MainMenu.StringLegal, vbOKOnly, Settings.Data.GameName)
+                MsgBox(Language.MainMenu.StringLegal, vbOKOnly, Types.Settings.GameName)
                 IsStringLegal = False
                 Exit Function
             End If
@@ -110,7 +110,7 @@ Module C_General
         FrmGame.picscreen.Focus()
 
         ' Send a request to the server to open the admin menu if the user wants it.
-        If Settings.Data.OpenAdminPanelOnLogin = 1 Then
+        If Types.Settings.OpenAdminPanelOnLogin = 1 Then
             If GetPlayerAccess(Myindex) > 0 Then
                 SendRequestAdmin()
             End If

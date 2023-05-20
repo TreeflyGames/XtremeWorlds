@@ -862,7 +862,7 @@ Module S_Player
             ' Send an ok to client to start receiving in game data
             SendLoadCharOk(index)
             JoinGame(index)
-            Dim text = String.Format("{0} | {1} has began playing {2}.", GetPlayerLogin(index), GetPlayerName(index), Settings.Data.GameName)
+            Dim text = String.Format("{0} | {1} has began playing {2}.", GetPlayerLogin(index), GetPlayerName(index), Types.Settings.GameName)
             Addlog(text, PLAYER_LOG)
             Console.WriteLine(text)
         End If
@@ -2037,7 +2037,7 @@ Module S_Player
         TempPlayer(index).InGame = True
 
         ' Notify everyone that a player has joined the game.
-        GlobalMsg(String.Format("{0} has joined {1}!", GetPlayerName(index), Settings.Data.GameName))
+        GlobalMsg(String.Format("{0} has joined {1}!", GetPlayerName(index), Types.Settings.GameName))
 
          ' Warp the player to his saved location
         PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index))
@@ -2111,9 +2111,9 @@ Module S_Player
             End If
 
             ' Send a global message that he/she left
-            GlobalMsg(String.Format("{0} has left {1}!", GetPlayerName(index), Settings.Data.GameName))
+            GlobalMsg(String.Format("{0} has left {1}!", GetPlayerName(index), Types.Settings.GameName))
 
-            Console.WriteLine(String.Format("{0} has left {1}!", GetPlayerName(index), Settings.Data.GameName))
+            Console.WriteLine(String.Format("{0} has left {1}!", GetPlayerName(index), Types.Settings.GameName))
 
             ReCallPet(index)
             SavePlayer(index)

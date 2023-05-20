@@ -22,7 +22,7 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CLogin)
         buffer.WriteString((EKeyPair.EncryptString(name)))
         buffer.WriteString((EKeyPair.EncryptString(password)))
-        buffer.WriteString((EKeyPair.EncryptString(Settings.Data.Version)))
+        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -32,9 +32,9 @@ Module C_NetworkSend
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CLogin)
-        buffer.WriteString((EKeyPair.EncryptString(Settings.Data.Username)))
-        buffer.WriteString((EKeyPair.EncryptString(Settings.Data.Password)))
-        buffer.WriteString((EKeyPair.EncryptString(Settings.Data.Version)))
+        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Username)))
+        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Password)))
+        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()

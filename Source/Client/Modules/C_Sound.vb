@@ -19,7 +19,7 @@ Module C_Sound
     Friend MaxVolume As Single
 
     Sub PlayMusic(fileName As String)
-        If Settings.Data.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
+        If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
         If fileName = CurMusic Then Exit Sub
 
         If MusicPlayer Is Nothing Then
@@ -52,7 +52,7 @@ Module C_Sound
     End Sub
 
     Sub PlayPreview(fileName As String)
-        If Settings.Data.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
+        If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
 
         If PreviewPlayer Is Nothing Then
             Try
@@ -84,7 +84,7 @@ Module C_Sound
     End Sub
 
     Sub PlaySound(fileName As String, Optional looped As Boolean = False)
-        If Settings.Data.Sound = 0 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
+        If Types.Settings.Sound = 0 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
 
         Dim buffer As SoundBuffer
         If SoundPlayer Is Nothing Then
@@ -119,7 +119,7 @@ Module C_Sound
     End Sub
 
     Sub PlayExtraSound(fileName As String, Optional looped As Boolean = False)
-        If Settings.Data.Sound = 0 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
+        If Types.Settings.Sound = 0 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
 
         Dim buffer As SoundBuffer
         If ExtraSoundPlayer Is Nothing Then

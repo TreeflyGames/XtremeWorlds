@@ -159,7 +159,7 @@ Module C_NetworkReceive
 
         buffer.Dispose()
 
-        MsgBox(msg, vbOKOnly, Settings.Data.GameName)
+        MsgBox(msg, vbOKOnly, Types.Settings.GameName)
         DestroyGame
     End Sub
 
@@ -184,16 +184,16 @@ Module C_NetworkReceive
         Dim level As Integer, jobName As String, sex As Byte
 
         ' save options
-        Settings.Data.SavePass = ChkSavePassChecked
-        Settings.Data.Username = Trim$(TempUserName)
+        Types.Settings.SavePass = ChkSavePassChecked
+        Types.Settings.Username = Trim$(TempUserName)
 
         If ChkSavePassChecked = False Then
-            Settings.Data.Password = ""
+            Types.Settings.Password = ""
         Else
-            Settings.Data.Password = Trim$(TempPassword)
+            Types.Settings.Password = Trim$(TempPassword)
         End If
 
-        Settings.Save()
+        Save()
 
         Dim buffer As New ByteStream(data)
 
@@ -1063,8 +1063,8 @@ Module C_NetworkReceive
 
     Private Sub Packet_News(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
-        Settings.Data.GameName = buffer.ReadString
-        Settings.Data.Website = buffer.ReadString
+        Types.Settings.GameName = buffer.ReadString
+        Types.Settings.Website = buffer.ReadString
         News = buffer.ReadString
 
         UpdateNews = True

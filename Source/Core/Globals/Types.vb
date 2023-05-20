@@ -27,6 +27,7 @@ Public Module Types
     Public Party As PartyStruct
     Public MapResource() As MapResourceStruct
     Public CharactersList As CharacterList
+    Public Settings As Settings
 
 
     ' Common data structures

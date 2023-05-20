@@ -248,7 +248,7 @@ Friend Module C_Gui
                 ElseIf e.Button = MouseButtons.Right Then ' right click
                     If Player(Myindex).Hotbar(hotbarslot).Slot > 0 Then
                         'forget hotbar skill
-                        Dim result1 As DialogResult = MessageBox.Show("Want to Delete this from your hotbar?", Settings.Data.GameName, MessageBoxButtons.YesNo)
+                        Dim result1 As DialogResult = MessageBox.Show("Want to Delete this from your hotbar?", Types.Settings.GameName, MessageBoxButtons.YesNo)
                         If result1 = DialogResult.Yes Then
                             SendDeleteHotbar(IsHotBarSlot(e.Location.X, e.Location.Y))
                         End If
@@ -359,7 +359,7 @@ Friend Module C_Gui
 
                     If eqNum <> 0 Then
                         PlaySound("Click.ogg")
-                        Dim result1 As DialogResult = MessageBox.Show("Want to Unequip this?", Settings.Data.GameName, MessageBoxButtons.YesNo)
+                        Dim result1 As DialogResult = MessageBox.Show("Want to Unequip this?", Types.Settings.GameName, MessageBoxButtons.YesNo)
                         If result1 = DialogResult.Yes Then
                             SendUnequip(eqNum)
                         End If
@@ -845,7 +845,7 @@ Friend Module C_Gui
                 ElseIf e.Button = MouseButtons.Right Then ' right click
 
                     If skillnum <> 0 Then
-                        Dim result1 As DialogResult = MessageBox.Show("Want to forget this skill?", Settings.Data.GameName, MessageBoxButtons.YesNo)
+                        Dim result1 As DialogResult = MessageBox.Show("Want to forget this skill?", Types.Settings.GameName, MessageBoxButtons.YesNo)
                         If result1 = DialogResult.Yes Then
                             ForgetSkill(skillnum)
                             Exit Function

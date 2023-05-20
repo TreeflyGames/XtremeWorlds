@@ -6,11 +6,11 @@ Friend Class FrmOptions
 #Region "Options"
 
     Private Sub scrlVolume_ValueChanged(sender As Object, e As EventArgs) Handles scrlVolume.ValueChanged
-        Settings.Data.Volume = scrlVolume.Value
+        Types.Settings.Volume = scrlVolume.Value
 
-        MaxVolume = Settings.Data.Volume
+        MaxVolume = Types.Settings.Volume
 
-        lblVolume.Text = "Volume: " & Settings.Data.Volume
+        lblVolume.Text = "Volume: " & Types.Settings.Volume
 
         If Not MusicPlayer Is Nothing Then MusicPlayer.Volume() = MaxVolume
 
@@ -21,11 +21,11 @@ Friend Class FrmOptions
 
         'music
         If optMOn.Checked = True Then
-            Settings.Data.Music = True
+            Types.Settings.Music = True
             ' start music playing
             PlayMusic(Trim$(Map.Music))
         Else
-            Settings.Data.Music = False
+            Types.Settings.Music = False
             ' stop music playing
             StopMusic()
             CurMusic = ""
@@ -33,38 +33,38 @@ Friend Class FrmOptions
 
         'sound
         If optSOn.Checked = True Then
-            Settings.Data.Sound = True
+            Types.Settings.Sound = True
         Else
-            Settings.Data.Sound = False
+            Types.Settings.Sound = False
             StopSound()
         End If
 
         'screensize
-        If Settings.Data.Width & "x" & Settings.Data.Height <> cmbScreenSize.SelectedItem Then
+        If Types.Settings.Width & "x" & Types.Settings.Height <> cmbScreenSize.SelectedItem Then
             resolution = cmbScreenSize.SelectedItem.ToString.ToLower.Split("x")
-            Settings.Data.Width = resolution(0)
-            Settings.Data.Height = resolution(1)
+            Types.Settings.Width = resolution(0)
+            Types.Settings.Height = resolution(1)
         End If
 
         If chkVsync.Checked Then
-            Settings.Data.Vsync = 1
+            Types.Settings.Vsync = 1
         Else
-            Settings.Data.Vsync = 0
+            Types.Settings.Vsync = 0
         End If
 
         If chkNpcBars.Checked Then
-            Settings.Data.ShowNpcBar = 1
+            Types.Settings.ShowNpcBar = 1
         Else
-            Settings.Data.ShowNpcBar = 0
+            Types.Settings.ShowNpcBar = 0
         End If
 
         If chkFullscreen.Checked Then
-            If Settings.Data.Fullscreen = 0 Then
-                MsgBox(Language.Game.Fullscreen, vbOKOnly, Settings.Data.GameName)
+            If Types.Settings.Fullscreen = 0 Then
+                MsgBox(Language.Game.Fullscreen, vbOKOnly, Types.Settings.GameName)
             End If
-            Settings.Data.Fullscreen = 1
+            Types.Settings.Fullscreen = 1
         Else
-            If Settings.Data.Fullscreen = 1 Then
+            If Types.Settings.Fullscreen = 1 Then
                 cmbScreenSize.Enabled = False
             Else
                 resolution = cmbScreenSize.SelectedItem.ToString.ToLower.Split("x")
@@ -74,31 +74,31 @@ Friend Class FrmOptions
                 RePositionGui(Width, Height)
             End If
 
-            Settings.Data.Fullscreen = 0
+            Types.Settings.Fullscreen = 0
         End If
 
         If chkDynamicLighting.Checked Then
-            Settings.Data.DynamicLightRendering = 1
+            Types.Settings.DynamicLightRendering = 1
         Else
-            Settings.Data.DynamicLightRendering = 0
+            Types.Settings.DynamicLightRendering = 0
         End If
 
         If chkOpenAdminPanelOnLogin.Checked Then
-            Settings.Data.OpenAdminPanelOnLogin = 1
+            Types.Settings.OpenAdminPanelOnLogin = 1
         Else
-            Settings.Data.OpenAdminPanelOnLogin = 0
+            Types.Settings.OpenAdminPanelOnLogin = 0
         End If
 
         ' save to config.ini
-        Settings.Save()
+        Save()
         Me.Visible = False
     End Sub
 
     Private Sub FrmOptions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        optMOn.Checked = Settings.Data.Music
-        optSOn.Checked = Settings.Data.Sound
-        lblVolume.Text = "Volume: " & Settings.Data.Volume
-        scrlVolume.Value = Settings.Data.Volume
+        optMOn.Checked = Types.Settings.Music
+        optSOn.Checked = Types.Settings.Sound
+        lblVolume.Text = "Volume: " & Types.Settings.Volume
+        scrlVolume.Value = Types.Settings.Volume
         If GetPlayerAccess(Myindex) > 0 Then
             chkOpenAdminPanelOnLogin.Visible = True
         Else

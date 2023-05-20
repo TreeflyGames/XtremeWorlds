@@ -578,9 +578,9 @@ Module C_Graphics
     End Sub
 
     Sub InitGraphics()
-        GameWindow = New RenderWindow(New VideoMode(Settings.Data.Width, Settings.Data.Height), Settings.Data.GameName)
-        GameWindow.setVerticalSyncEnabled(Settings.Data.Vsync)
-        GameWindow.SetFramerateLimit(Settings.Data.MaxFPS)
+        GameWindow = New RenderWindow(New VideoMode(Types.Settings.Width, Types.Settings.Height), Types.Settings.GameName)
+        GameWindow.setVerticalSyncEnabled(Types.Settings.Vsync)
+        GameWindow.SetFramerateLimit(Types.Settings.MaxFPS)
 
         Dim iconImage As New Image(Paths.Gui + "\Menu\" + "icon.png")
         GameWindow.seticon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
@@ -1683,7 +1683,7 @@ Module C_Graphics
         offsetX = Player(Myindex).XOffset + PicX
         offsetY = Player(Myindex).YOffset + PicY
 
-        If Settings.Data.CameraType = 1 Then
+        If Types.Settings.CameraType = 1 Then
             startX = GetPlayerX(Myindex) - ScreenMapx
             startY = GetPlayerY(Myindex) - ScreenMapy
         Else
@@ -1754,7 +1754,7 @@ Module C_Graphics
         With Camera
             .Y = offsetY
             .X = offsetX
-            If Settings.Data.CameraType = 1 Then
+            If Types.Settings.CameraType = 1 Then
                 .Height = .Top + ScreenY + PicY
                 .Width = .Left + ScreenX + PicX
             Else
@@ -2178,7 +2178,7 @@ Module C_Graphics
             GameWindow.Draw(rectShape)
         End If
 
-        If Settings.Data.ShowNpcBar = 1 Then
+        If Types.Settings.ShowNpcBar = 1 Then
             ' check for hp bar
             For i = 1 To MAX_MAP_NPCS
                 If Map.Npc Is Nothing Then Exit Sub
@@ -3310,7 +3310,7 @@ NextLoop:
                                     scale = New Vector2f(0.35F, 0.35F)
                                 End If
 
-                                If Settings.Data.DynamicLightRendering Then
+                                If Types.Settings.DynamicLightRendering Then
 
                                     For Each tile As Vector2i In tiles
                                         LightSprite.Scale = scale

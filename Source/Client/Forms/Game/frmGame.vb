@@ -8,9 +8,9 @@ Friend Class FrmGame
         Dim screenHeight As String = Screen.PrimaryScreen.Bounds.Height.ToString()
         Dim resolution As String()
 
-        If Settings.Data.Fullscreen = 0 Then
-            screenWidth = Settings.Data.Width
-            screenHeight = Settings.Data.Height
+        If Types.Settings.Fullscreen = 0 Then
+            screenWidth = Types.Settings.Width
+            screenHeight = Types.Settings.Height
         Else
             FormBorderStyle = 0
         End If

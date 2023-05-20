@@ -1,8 +1,7 @@
 ﻿Imports System.IO
 Imports System.Xml.Serialization
 
-Public Class SettingsStruct
-
+Public Class Settings
     Public Language As String = "English"
 
     Public Username As String = ""
@@ -38,12 +37,10 @@ Public Class SettingsStruct
     Public MaxFps As Integer = 60
 End Class
 
-Public Module Settings
-    Public Data As New SettingsStruct
-
+Public Module SettingsManager
     Public Sub Load()
         Dim cf As String = Paths.Config()
-        Dim x As New XmlSerializer(GetType(SettingsStruct), New XmlRootAttribute("Settings"))
+        Dim x As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
 
         Directory.CreateDirectory(cf)
         cf += "Settings.xml"
@@ -51,12 +48,12 @@ Public Module Settings
         If Not File.Exists(cf) Then
             File.Create(cf).Dispose()
             Dim writer = New StreamWriter(cf)
-            x.Serialize(writer, Data)
+            x.Serialize(writer, Types.Settings)
             writer.Close
         End If
 
         Dim reader = New StreamReader(cf)
-        Data = x.Deserialize(reader)
+        Types.Settings = x.Deserialize(reader)
         reader.Close
     End Sub
 
@@ -66,10 +63,10 @@ Public Module Settings
         Directory.CreateDirectory(cf)
         cf += "Settings.xml"
 
-        Dim x As New XmlSerializer(GetType(SettingsStruct), New XmlRootAttribute("Settings"))
+        Dim x As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
         Dim writer = New StreamWriter(cf)
         
-        x.Serialize(writer, Data)
+        x.Serialize(writer, Types.Settings)
         writer.Close
     End Sub
 
