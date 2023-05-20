@@ -31,116 +31,10 @@ Friend Class FrmGame
     End Sub
 
     Private Sub FrmMainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
-        If (ChatInput.ProcessKey(e)) Then
-            If (e.KeyCode = Keys.Enter) Then
-                HandlePressEnter()
-            End If
-        End If
-
-        If ChatInput.Active Then
-            If (e.KeyCode = Keys.Enter) Then
-                HandlePressEnter()
-            End If
-        Else
-            If Inputs.MoveUp(e.KeyCode) Then VbKeyUp = True
-            If Inputs.MoveDown(e.KeyCode) Then VbKeyDown = True
-            If Inputs.MoveLeft(e.KeyCode) Then VbKeyLeft = True
-            If Inputs.MoveRight(e.KeyCode) Then VbKeyRight = True
-            If Inputs.Attack(e.KeyCode) Then VbKeyControl = True
-            If Inputs.Run(e.KeyCode) Then VbKeyShift = True
-            If Inputs.Loot(e.KeyCode) Then CheckMapGetItem()
-        End If
 
     End Sub
 
     Private Sub FrmMainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
-        Dim skillnum As Integer
-
-        If Inputs.MoveUp(e.KeyCode) Then VbKeyUp = False
-        If Inputs.MoveDown(e.KeyCode) Then VbKeyDown = False
-        If Inputs.MoveLeft(e.KeyCode) Then VbKeyLeft = False
-        If Inputs.MoveRight(e.KeyCode) Then VbKeyRight = False
-        If Inputs.Attack(e.KeyCode) Then VbKeyControl = False
-        If Inputs.Run(e.KeyCode) Then VbKeyShift = False
-
-        If e.KeyCode = Keys.Enter Then HandleInterfaceEvents(EntState.Enter)
-
-        'hotbar
-        If Inputs.HotBar1(e.KeyCode) Then
-            skillnum = Player(Myindex).Hotbar(1).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar2(e.KeyCode) Then
-            skillnum = Player(Myindex).Hotbar(2).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar3(e.KeyCode) Then
-            skillnum = Player(Myindex).Hotbar(3).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar4(e.KeyCode) Then
-            skillnum = Player(Myindex).Hotbar(4).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar5(e.KeyCode) Then
-            skillnum = Player(Myindex).Hotbar(5).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar6(e.KeyCode) Then
-            skillnum = Player(Myindex).Hotbar(6).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar7(e.KeyCode) Then
-            skillnum = Player(Myindex).Hotbar(7).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        'admin
-        If Inputs.Admin(e.KeyCode) Then
-            If GetPlayerAccess(Myindex) > 0 Then
-                SendRequestAdmin()
-            End If
-        End If
-        
-        'hide gui
-        If Inputs.HudToggle(e.KeyCode) Then
-            HideGui = Not HideGui
-        End If
-
-        'lets check for keys for inventory etc
-        If Not ChatInput.Active Then
-            If Inputs.Inventory(e.KeyCode) Then PnlInventoryVisible = Not PnlInventoryVisible
-            If Inputs.Character(e.KeyCode) Then PnlCharacterVisible = Not PnlCharacterVisible
-            If Inputs.skill(e.KeyCode) Then PnlSkillsVisible = Not PnlSkillsVisible
-            If Inputs.Settings(e.KeyCode) Then FrmOptions.Visible = Not FrmOptions.Visible
-        End If
 
     End Sub
 
@@ -149,90 +43,16 @@ Friend Class FrmGame
 #Region "PicScreen Code"
 
     Private Sub Picscreen_MouseDown(sender As Object, e As MouseEventArgs) Handles picscreen.MouseDown
-        If Not CheckGuiClick(e.X, e.Y, e) Then
-
-            If Editor = EditorType.Map Then
-                FrmEditor_Map.MapEditorMouseDown(e.Button, e.X, e.Y, False)
-            End If
-
-            ' left click
-            If e.Button = MouseButtons.Left Then
-                HandleInterfaceEvents(EntState.MouseDown)
-
-                ' if we're in the middle of choose the trade target or not
-                If Not TradeRequest Then
-                    If PetAlive(Myindex) Then
-                        If IsInBounds() Then
-                            PetMove(CurX, CurY)
-                        End If
-                    End If
-                    ' targetting
-                    PlayerSearch(CurX, CurY, 0)
-                Else
-                    ' trading
-                    SendTradeRequest(Player(MyTarget).Name)
-                End If
-                PnlRClickVisible = False
-                ShowPetStats = False
-
-                ' right click
-            ElseIf e.Button = MouseButtons.Right Then
-                If VbKeyShift = True Then
-                    ' admin warp if we're pressing shift and right clicking
-                    If GetPlayerAccess(Myindex) >= 2 Then AdminWarp(CurX, CurY)
-                Else
-                    ' rightclick menu
-                    If PetAlive(Myindex) Then
-                        If IsInBounds() AndAlso CurX = Player(Myindex).Pet.X And CurY = Player(Myindex).Pet.Y Then
-                            ShowPetStats = True
-                        End If
-                    Else
-                        PlayerSearch(CurX, CurY, 1)
-                    End If
-                End If
-            End If
-        End If
-
-        CheckGuiMouseDown(e.X, e.Y, e)
-
-        If Not FrmAdmin.Visible OrElse Not FrmOptions.Visible Then Focus()
+        
 
     End Sub
 
     Private Sub PicScreen_MouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles picscreen.MouseWheel
-        If Editor = EditorType.Map Then
-            If e.Delta > 0 Then
-                If Control.ModifierKeys = Keys.Shift Then
-                    If frmEditor_Map.cmbLayers.SelectedIndex + 1 < LayerType.Count - 1 Then
-                        frmEditor_Map.cmbLayers.SelectedIndex = frmEditor_Map.cmbLayers.SelectedIndex + 1
-                    End If
 
-                Else
-                    If FrmEditor_map.cmbTileSets.SelectedIndex > 0 Then
-                        frmEditor_Map.cmbTileSets.SelectedIndex = FrmEditor_map.cmbTileSets.SelectedIndex - 1
-                    End If
-                End If
-                
-            Else
-                If Control.ModifierKeys = Keys.Shift Then
-                    If FrmEditor_Map.cmbLayers.SelectedIndex > 0 Then
-                        frmEditor_Map.cmbLayers.SelectedIndex = frmEditor_Map.cmbLayers.SelectedIndex - 1
-                    End If
-                Else
-                    If frmEditor_Map.cmbTileSets.SelectedIndex + 1 < NumTileSets Then
-                        frmEditor_Map.cmbTileSets.SelectedIndex = frmEditor_Map.cmbTileSets.SelectedIndex + 1
-                    End If
-                End If
-            End If
-        End If
     End Sub
 
     Private Sub PicScreen_DoubleClick(sender As Object, e As MouseEventArgs) Handles picscreen.DoubleClick
-        If Not CheckGuiDoubleClick(e.X, e.Y, e) And IsDescWindowActive(e.X, e.y) = False Then
-            If GetPlayerAccess(Myindex) >= 2 Then AdminWarp(CurX, CurY)
-        End If
 
-        If e.Button = MouseButtons.Left Then HandleInterfaceEvents(EntState.DblClick)
     End Sub
 
     Private Overloads Sub Picscreen_Paint(sender As Object, e As PaintEventArgs) Handles picscreen.Paint

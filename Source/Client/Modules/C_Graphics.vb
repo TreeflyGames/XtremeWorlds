@@ -326,17 +326,162 @@ Module C_Graphics
     Private Sub GameWindow_KeyPressed(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
         Console.WriteLine("Key Pressed: " & e.Code.ToString())
 
+        If (ChatInput.ProcessKey(e)) Then
+            If (e.Code = Keys.Enter) Then
+                HandlePressEnter()
+            End If
+        End If
+
+        If ChatInput.Active Then
+            If (e.Code = Keys.Enter) Then
+                HandlePressEnter()
+            End If
+        Else
+            If Inputs.MoveUp(e.Code) Then VbKeyUp = True
+            If Inputs.MoveDown(e.Code) Then VbKeyDown = True
+            If Inputs.MoveLeft(e.Code) Then VbKeyLeft = True
+            If Inputs.MoveRight(e.Code) Then VbKeyRight = True
+            If Inputs.Attack(e.Code) Then VbKeyControl = True
+            If Inputs.Run(e.Code) Then VbKeyShift = True
+            If Inputs.Loot(e.Code) Then CheckMapGetItem()
+        End If
+
         HandleInterfaceEvents(EntState.KeyDown)
     End Sub
 
     Private Sub GameWindow_KeyReleased(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
+        Dim skillnum As Integer
+
         Console.WriteLine("Key Released: " & e.Code.ToString())
 
+        If Inputs.MoveUp(e.Code) Then VbKeyUp = False
+        If Inputs.MoveDown(e.Code) Then VbKeyDown = False
+        If Inputs.MoveLeft(e.Code) Then VbKeyLeft = False
+        If Inputs.MoveRight(e.Code) Then VbKeyRight = False
+        If Inputs.Attack(e.Code) Then VbKeyControl = False
+        If Inputs.Run(e.Code) Then VbKeyShift = False
+
+        'hotbar
+        If Inputs.HotBar1(e.Code) Then
+            skillnum = Player(Myindex).Hotbar(1).Slot
+
+            If skillnum <> 0 Then
+                PlayerCastSkill(skillnum)
+            End If
+        End If
+
+        If Inputs.HotBar2(e.Code) Then
+            skillnum = Player(Myindex).Hotbar(2).Slot
+
+            If skillnum <> 0 Then
+                PlayerCastSkill(skillnum)
+            End If
+        End If
+
+        If Inputs.HotBar3(e.Code) Then
+            skillnum = Player(Myindex).Hotbar(3).Slot
+
+            If skillnum <> 0 Then
+                PlayerCastSkill(skillnum)
+            End If
+        End If
+
+        If Inputs.HotBar4(e.Code) Then
+            skillnum = Player(Myindex).Hotbar(4).Slot
+
+            If skillnum <> 0 Then
+                PlayerCastSkill(skillnum)
+            End If
+        End If
+
+        If Inputs.HotBar5(e.Code) Then
+            skillnum = Player(Myindex).Hotbar(5).Slot
+
+            If skillnum <> 0 Then
+                PlayerCastSkill(skillnum)
+            End If
+        End If
+
+        If Inputs.HotBar6(e.Code) Then
+            skillnum = Player(Myindex).Hotbar(6).Slot
+
+            If skillnum <> 0 Then
+                PlayerCastSkill(skillnum)
+            End If
+        End If
+
+        If Inputs.HotBar7(e.Code) Then
+            skillnum = Player(Myindex).Hotbar(7).Slot
+
+            If skillnum <> 0 Then
+                PlayerCastSkill(skillnum)
+            End If
+        End If
+
+        'admin
+        If Inputs.Admin(e.Code) Then
+            If GetPlayerAccess(Myindex) > 0 Then
+                SendRequestAdmin()
+            End If
+        End If
+        
+        'hide gui
+        If Inputs.HudToggle(e.Code) Then
+            HideGui = Not HideGui
+        End If
+
+        'lets check for keys for inventory etc
+        If Not ChatInput.Active Then
+            If Inputs.Inventory(e.Code) Then PnlInventoryVisible = Not PnlInventoryVisible
+            If Inputs.Character(e.Code) Then PnlCharacterVisible = Not PnlCharacterVisible
+            If Inputs.skill(e.Code) Then PnlSkillsVisible = Not PnlSkillsVisible
+            If Inputs.Settings(e.Code) Then FrmOptions.Visible = Not FrmOptions.Visible
+        End If
+
+        If e.Code = Keys.Enter Then HandleInterfaceEvents(EntState.Enter)
         HandleInterfaceEvents(EntState.KeyUp)
     End Sub
 
     Private Sub GameWindow_MouseButtonPressed(ByVal sender As Object, ByVal e As SFML.Window.MouseButtonEventArgs)
         Console.WriteLine("Mouse Button Pressed: " & e.Button.ToString())
+
+        If e.Button = MouseButtons.Left Then
+            ' if we're in the middle of choose the trade target or not
+            If Not TradeRequest Then
+                If PetAlive(Myindex) Then
+                    If IsInBounds() Then
+                        PetMove(CurX, CurY)
+                    End If
+                End If
+                ' targetting
+                PlayerSearch(CurX, CurY, 0)
+            Else
+                ' trading
+                SendTradeRequest(Player(MyTarget).Name)
+            End If
+            PnlRClickVisible = False
+            ShowPetStats = False
+
+        ' right click
+        ElseIf e.Button = MouseButtons.Right Then
+            If VbKeyShift = True Then
+                ' admin warp if we're pressing shift and right clicking
+                If GetPlayerAccess(Myindex) >= 2 Then AdminWarp(CurX, CurY)
+            Else
+                ' rightclick menu
+                If PetAlive(Myindex) Then
+                    If IsInBounds() AndAlso CurX = Player(Myindex).Pet.X And CurY = Player(Myindex).Pet.Y Then
+                        ShowPetStats = True
+                    End If
+                Else
+                    PlayerSearch(CurX, CurY, 1)
+                End If
+            End If
+        End If
+
+        If Editor = EditorType.Map Then
+            FrmEditor_Map.MapEditorMouseDown(e.Button, e.X, e.Y, False)
+        End If
 
         HandleInterfaceEvents(EntState.MouseDown)
     End Sub
@@ -347,8 +492,34 @@ Module C_Graphics
         HandleInterfaceEvents(EntState.MouseUp)
     End Sub
 
-    Private Sub GameWindow_MouseWheelMoved(ByVal sender As Object, ByVal e As SFML.Window.MouseWheelScrollEventArgs)
-        Console.WriteLine("Mouse Wheel Moved: " & e.Delta.ToString())
+    Private Sub GameWindow_MouseWheelScrolled(ByVal sender As Object, ByVal e As SFML.Window.MouseWheelScrollEventArgs)
+        Console.WriteLine("Mouse Wheel Scrolled: " & e.Delta.ToString())
+
+        If Editor = EditorType.Map Then
+            If e.Delta > 0 Then
+                If Control.ModifierKeys = Keys.Shift Then
+                    If frmEditor_Map.cmbLayers.SelectedIndex + 1 < LayerType.Count - 1 Then
+                        frmEditor_Map.cmbLayers.SelectedIndex = frmEditor_Map.cmbLayers.SelectedIndex + 1
+                    End If
+
+                Else
+                    If FrmEditor_map.cmbTileSets.SelectedIndex > 0 Then
+                        frmEditor_Map.cmbTileSets.SelectedIndex = FrmEditor_map.cmbTileSets.SelectedIndex - 1
+                    End If
+                End If
+                
+            Else
+                If Control.ModifierKeys = Keys.Shift Then
+                    If FrmEditor_Map.cmbLayers.SelectedIndex > 0 Then
+                        frmEditor_Map.cmbLayers.SelectedIndex = frmEditor_Map.cmbLayers.SelectedIndex - 1
+                    End If
+                Else
+                    If frmEditor_Map.cmbTileSets.SelectedIndex + 1 < NumTileSets Then
+                        frmEditor_Map.cmbTileSets.SelectedIndex = frmEditor_Map.cmbTileSets.SelectedIndex + 1
+                    End If
+                End If
+            End If
+        End If
 
         HandleInterfaceEvents(EntState.MouseScroll)
     End Sub
@@ -374,6 +545,17 @@ Module C_Graphics
         GameWindow.Close()
     End Sub
 
+    Private Sub GameWindow_Resized(sender As Object, e As SFML.Window.SizeEventArgs)
+        Dim window As RenderWindow = DirectCast(sender, RenderWindow)
+
+        ' Here e.Width and e.Height gives you the new dimensions of the window.
+        Console.WriteLine($"Window Resized: {e.Width}, {e.Height}")
+
+        ' Adjusting the viewport
+        Dim newSize As New SFML.System.Vector2f(e.Width, e.Height)
+        window.SetView(New SFML.Graphics.View(newSize / 2F, newSize))
+    End Sub
+
     Sub InitGraphics()
         GameWindow = New RenderWindow(New VideoMode(Settings.Data.Width, Settings.Data.Height), Settings.Data.GameName)
         GameWindow.setVerticalSyncEnabled(Settings.Data.Vsync)
@@ -392,6 +574,8 @@ Module C_Graphics
         AddHandler GameWindow.MouseButtonReleased, AddressOf GameWindow_MouseButtonReleased
         AddHandler GameWindow.MouseMoved, AddressOf GameWindow_MouseMoved
         AddHandler GameWindow.TextEntered, AddressOf GameWindow_TextEntered
+        AddHandler GameWindow.MouseWheelScrolled, AddressOf GameWindow_MouseWheelScrolled
+        AddHandler GameWindow.Resized, AddressOf GameWindow_Resized
 
         Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
         'Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Rockwell)

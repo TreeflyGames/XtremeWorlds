@@ -36,11 +36,9 @@ Public Structure ChatData
         Return True
     End Function
 
-    Friend Function ProcessKey(ByRef evt As KeyEventArgs) As Boolean
+    Friend Function ProcessKey(ByRef e As SFML.Window.KeyEventArgs) As Boolean
         If Not Active Then
-            If (evt.KeyCode = Keys.Enter) Then
-                evt.Handled = True
-                evt.SuppressKeyPress = True
+            If (e.Code = Keys.Enter) Then
                 Active = True
                 Return True
             End If
@@ -50,7 +48,7 @@ Public Structure ChatData
 
         If CurrentMessage = Nothing Then CurrentMessage = ""
 
-        Select Case evt.KeyCode
+        Select Case e.Code
             Case Keys.Enter
                 History.Add(CurrentMessage)
                 If (History.Count > HistoryLimit) Then
@@ -95,11 +93,11 @@ Public Structure ChatData
                 Exit Select
 
             Case Else
-                If evt.KeyCode = Keys.V AndAlso evt.Modifiers = Keys.Control Then
+                If e.Code = Keys.V AndAlso e.Control = Keys.Control Then
                     CurrentMessage = CurrentMessage + Clipboard.GetText
                 End If
 
-                Dim keyName = [Enum].GetName(GetType(Keys), evt.KeyCode)
+                Dim keyName = [Enum].GetName(GetType(Keys), e.Code)
                 If (keyName.Length = 1) Then
                     Cursor.Y = History.Count
                 End If
