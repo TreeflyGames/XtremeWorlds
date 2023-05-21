@@ -345,14 +345,14 @@ Module C_Graphics
             If Inputs.Run(e.Code) Then VbKeyShift = True
             If Inputs.Loot(e.Code) Then CheckMapGetItem()
 
-            'hotbar
-            If Inputs.HotBar1(e.Code) AndAlso Player(Myindex).Hotbar(1).Slot <> 0 Then SendUseHotbarSlot(1)
-            If Inputs.HotBar2(e.Code) AndAlso Player(Myindex).Hotbar(2).Slot <> 0 Then SendUseHotbarSlot(2)
-            If Inputs.HotBar3(e.Code) AndAlso Player(Myindex).Hotbar(3).Slot <> 0 Then SendUseHotbarSlot(3)
-            If Inputs.HotBar4(e.Code) AndAlso Player(Myindex).Hotbar(4).Slot <> 0 Then SendUseHotbarSlot(4)
-            If Inputs.HotBar5(e.Code) AndAlso Player(Myindex).Hotbar(5).Slot <> 0 Then SendUseHotbarSlot(5)
-            If Inputs.HotBar6(e.Code) AndAlso Player(Myindex).Hotbar(6).Slot <> 0 Then SendUseHotbarSlot(6)
-            If Inputs.HotBar7(e.Code) AndAlso Player(Myindex).Hotbar(7).Slot <> 0 Then SendUseHotbarSlot(7)
+            'Hotbar
+            If Inputs.Hotbar1(e.Code) AndAlso Player(Myindex).Hotbar(1).Slot <> 0 Then SendUseHotbarSlot(1)
+            If Inputs.Hotbar2(e.Code) AndAlso Player(Myindex).Hotbar(2).Slot <> 0 Then SendUseHotbarSlot(2)
+            If Inputs.Hotbar3(e.Code) AndAlso Player(Myindex).Hotbar(3).Slot <> 0 Then SendUseHotbarSlot(3)
+            If Inputs.Hotbar4(e.Code) AndAlso Player(Myindex).Hotbar(4).Slot <> 0 Then SendUseHotbarSlot(4)
+            If Inputs.Hotbar5(e.Code) AndAlso Player(Myindex).Hotbar(5).Slot <> 0 Then SendUseHotbarSlot(5)
+            If Inputs.Hotbar6(e.Code) AndAlso Player(Myindex).Hotbar(6).Slot <> 0 Then SendUseHotbarSlot(6)
+            If Inputs.Hotbar7(e.Code) AndAlso Player(Myindex).Hotbar(7).Slot <> 0 Then SendUseHotbarSlot(7)
 
             'admin
             If Inputs.Admin(e.Code) Then
@@ -382,8 +382,8 @@ Module C_Graphics
         If Inputs.Attack(e.Code) Then VbKeyControl = False
         If Inputs.Run(e.Code) Then VbKeyShift = False
 
-        'hotbar
-        If Inputs.HotBar1(e.Code) Then
+        'Hotbar
+        If Inputs.Hotbar1(e.Code) Then
             skillnum = Player(Myindex).Hotbar(1).Slot
 
             If skillnum <> 0 Then
@@ -391,7 +391,7 @@ Module C_Graphics
             End If
         End If
 
-        If Inputs.HotBar2(e.Code) Then
+        If Inputs.Hotbar2(e.Code) Then
             skillnum = Player(Myindex).Hotbar(2).Slot
 
             If skillnum <> 0 Then
@@ -399,7 +399,7 @@ Module C_Graphics
             End If
         End If
 
-        If Inputs.HotBar3(e.Code) Then
+        If Inputs.Hotbar3(e.Code) Then
             skillnum = Player(Myindex).Hotbar(3).Slot
 
             If skillnum <> 0 Then
@@ -407,7 +407,7 @@ Module C_Graphics
             End If
         End If
 
-        If Inputs.HotBar4(e.Code) Then
+        If Inputs.Hotbar4(e.Code) Then
             skillnum = Player(Myindex).Hotbar(4).Slot
 
             If skillnum <> 0 Then

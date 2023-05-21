@@ -16,12 +16,12 @@ Module C_General
     End Sub
 
     Friend Sub LoadGame()
-        Load()
+        SettingsManager.Load()
         frmMenu.chkRememberPassword.Checked = Types.Settings.RememberPassword
         frmMenu.txtLogin.Text = Types.Settings.Username
         frmMenu.txtPassword.Text = Types.Settings.Password
         LoadLanguage()
-        LoadInputs()
+        InputManager.Load()
         LoadGraphics()
         InitNetwork()
         InitInterface()
