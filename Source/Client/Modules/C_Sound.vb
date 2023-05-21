@@ -26,7 +26,7 @@ Module C_Sound
             Try
                 MusicPlayer = New Music(Paths.Music & fileName)
                 MusicPlayer.Loop() = True
-                MusicPlayer.Volume() = 0
+                MusicPlayer.Volume() = 100
                 MusicPlayer.Play()
                 CurMusic = fileName
                 FadeInSwitch = True

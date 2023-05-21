@@ -12,6 +12,7 @@ Module C_General
     Sub Startup()
         ClearGameData()
         LoadGame()
+        PlayMusic(Trim$(Types.Settings.MenuMusic))
         GameLoop()
     End Sub
 
