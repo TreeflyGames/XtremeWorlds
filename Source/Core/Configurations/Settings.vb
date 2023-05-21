@@ -8,7 +8,7 @@ Public Class Settings
     Public Password As String = ""
     Public RememberPassword As Boolean = False
 
-    Public MenuMusic As String = ""
+    Public MenuMusic As String = "title.ogg"
     Public Music As Boolean = True
     Public Sound As Boolean = True
     Public Volume As Single = 100.0F
@@ -48,7 +48,7 @@ Public Module SettingsManager
         If Not File.Exists(cf) Then
             File.Create(cf).Dispose()
             Dim writer = New StreamWriter(cf)
-            x.Serialize(writer, Types.Settings)
+            x.Serialize(writer, New Settings)
             writer.Close
         End If
 

@@ -24,7 +24,7 @@ Module S_General
 
         myStopWatch.Start()
 
-        Load()
+        SettingsManager.Load()
 
         Core.Time.Instance.GameSpeed = Types.Settings.TimeSpeed
 
