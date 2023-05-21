@@ -2127,7 +2127,7 @@ Module C_Graphics
 
         PictureSprite(index).TextureRect = New IntRect(0, 0, GameWindow.Size.X, GameWindow.Size.Y)
 
-        Select Case Type
+        Select Case type
             Case 0 ' Top Left
                 PictureSprite(index).Position = New Vector2f(0 - Picture.xOffset, 0 - Picture.yOffset)
             Case 1 ' Center Screen
