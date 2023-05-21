@@ -567,14 +567,8 @@ Module C_Graphics
     End Sub
 
     Private Sub GameWindow_Resized(sender As Object, e As SFML.Window.SizeEventArgs)
-        Dim window As RenderWindow = DirectCast(sender, RenderWindow)
-
         ' Here e.Width and e.Height gives you the new dimensions of the window.
         Console.WriteLine($"Window Resized: {e.Width}, {e.Height}")
-
-        ' Adjusting the viewport
-        Dim newSize As New SFML.System.Vector2f(e.Width, e.Height)
-        window.SetView(New SFML.Graphics.View(newSize / 2F, newSize))
     End Sub
 
     Sub InitGraphics()
@@ -1042,8 +1036,6 @@ Module C_Graphics
             LoadTexture(i, 17)
         Next
     End Sub
-
-
 
     Friend Sub LoadTexture(index As Integer, texType As Byte)
 
@@ -1769,8 +1761,7 @@ Module C_Graphics
     Friend Sub Render_Graphics()
         Dim x As Integer, y As Integer, I As Integer
 
-        'Don't Render IF
-        If FrmGame.WindowState = FormWindowState.Minimized Then Exit Sub
+        'Don't Render if
         If GettingMap Then Exit Sub
 
         'update view around player
@@ -2060,6 +2051,10 @@ Module C_Graphics
 
         DrawMapFade()
 
+        If InGame = False Then
+            DrawMenuBG()
+        End If
+        
         If Editor <> EditorType.Map And Not HideGui Then RenderEntities()
 
         'and finally show everything on screen
@@ -2109,15 +2104,20 @@ Module C_Graphics
         GameWindow.Draw(ParallaxSprite(index))
     End Sub
 
-    Friend Sub DrawPicture()
-        Dim index As Integer
+    Friend Sub DrawPicture(Optional index As Integer = 0, Optional type As Integer = 0)
+        If index = 0 Then
+            index = Picture.Index
+        End If
 
-        index = Picture.Index
+        If type = 0 Then
+            type = Picture.SpriteType
+        End If
 
         If index < 1 Or index > NumPictures Then Exit Sub
+        If type < 0 Or type > 2 Then Exit Sub
 
         If PictureGfxInfo(index).IsLoaded = False Then
-            LoadTexture(index, 15)
+            LoadTexture(index, 14)
         End If
 
         ' we use it, lets update timer
@@ -2127,7 +2127,7 @@ Module C_Graphics
 
         PictureSprite(index).TextureRect = New IntRect(0, 0, GameWindow.Size.X, GameWindow.Size.Y)
 
-        Select Case Picture.SpriteType
+        Select Case Type
             Case 0 ' Top Left
                 PictureSprite(index).Position = New Vector2f(0 - Picture.xOffset, 0 - Picture.yOffset)
             Case 1 ' Center Screen
@@ -3885,6 +3885,36 @@ NextLoop:
             End If
         Next
 
+    End Sub
+
+    'Fundo Menu
+    Sub DrawMenuBG()
+        For i = 1 To 12
+            If PictureGfxInfo(i).IsLoaded = False Then
+                LoadTexture(i, 14)
+            End If
+
+            ' we use it, lets update timer
+            With PictureGfxInfo(i)
+                .TextureTimer = GetTickCount() + 100000
+            End With
+        Next
+
+        ' row 1
+        RenderTexture(PictureSprite(1), GameWindow, Types.Settings.Width - 512, Types.Settings.Height - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(2), GameWindow, Types.Settings.Width - 1024, Types.Settings.Height - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(3), GameWindow, Types.Settings.Width - 1536, Types.Settings.Height - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(4), GameWindow, Types.Settings.Width - 2048, Types.Settings.Height - 512, 0, 0, 512, 512, 512, 512)
+        ' row 2
+        RenderTexture(PictureSprite(5), GameWindow, Types.Settings.Width - 512, Types.Settings.Height - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(6), GameWindow, Types.Settings.Width - 1024, Types.Settings.Height - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(7), GameWindow, Types.Settings.Width - 1536, Types.Settings.Height - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(8), GameWindow, Types.Settings.Width - 2048, Types.Settings.Height - 1024, 0, 0, 512, 512, 512, 512)
+        ' row 3
+        RenderTexture(PictureSprite(9), GameWindow, Types.Settings.Width - 512, Types.Settings.Height - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(10), GameWindow, Types.Settings.Width - 1024, Types.Settings.Height - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(11), GameWindow, Types.Settings.Width - 1536, Types.Settings.Height - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(12), GameWindow, Types.Settings.Width - 2048, Types.Settings.Height - 1088, 0, 0, 512, 64, 512, 64)
     End Sub
 #End Region
 

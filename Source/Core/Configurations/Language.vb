@@ -256,7 +256,7 @@ Public Class LanguageDef
     End Class
 End Class
 
-Public Module modLanguage
+Public Module Languages
     Public Language As New LanguageDef
 
     Public Sub LoadLanguage()

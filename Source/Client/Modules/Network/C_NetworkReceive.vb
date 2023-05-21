@@ -193,7 +193,7 @@ Module C_NetworkReceive
             Types.Settings.Password = Trim$(TempPassword)
         End If
 
-        Save()
+        InputManager.Save()
 
         Dim buffer As New ByteStream(data)
 
