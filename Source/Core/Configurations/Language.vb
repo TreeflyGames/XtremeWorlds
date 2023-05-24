@@ -30,7 +30,7 @@ Public Class LanguageDef
         Public News As String = "Welcome To the MirageWorlds Client.
                                  This Is a free open source VB.Net game engine!
                                  For help Or support please visit our site at
-                                 http://miragebasic.net."
+                                 https://pokemonblood.com."
 
         ' Login Panel
         Public Login As String = "Login"
