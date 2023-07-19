@@ -15,7 +15,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>C# VB ArchaicSoft</PackageTags>
     <PackageReleaseNotes>.NET 6.0 release</PackageReleaseNotes>
-    <PackageProjectUrl>https://pokemonblood.com</PackageProjectUrl>
+    <PackageProjectUrl>https://treeflygames.com</PackageProjectUrl>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageId>$(AssemblyName)-NoTCPDelay</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
