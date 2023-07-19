@@ -20,11 +20,11 @@
     <PackageReference Include="CSFML" Version="2.5.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql" Version="7.0.4" />
-    <PackageReference Include="SFML.Audio" Version="2.5.2" />
-    <PackageReference Include="SFML.Graphics" Version="2.5.2" />
-    <PackageReference Include="SFML.Net" Version="2.5.2" />
-    <PackageReference Include="SFML.System" Version="2.5.2" />
-    <PackageReference Include="SFML.Window" Version="2.5.2" />
+    <PackageReference Include="SFML.Audio" Version="2.5.1" />
+    <PackageReference Include="SFML.Graphics" Version="2.5.1" />
+    <PackageReference Include="SFML.Net" Version="2.5.1" />
+    <PackageReference Include="SFML.System" Version="2.5.1" />
+    <PackageReference Include="SFML.Window" Version="2.5.1" />
   </ItemGroup>
 
 </Project>
