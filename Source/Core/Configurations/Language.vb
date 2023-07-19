@@ -34,16 +34,16 @@ Public Class LanguageDef
 
         ' Login Panel
         Public Login As String = "Login"
-        Public LoginName As String = "Name : "
-        Public LoginPass As String = "Password : "
+        Public LoginName As String = "Name: "
+        Public LoginPass As String = "Password: "
         Public LoginCheckBox As String = "Save Password?"
         Public LoginButton As String = "Submit"
 
         ' New Character Panel
         Public NewCharacter As String = "Create Character"
-        Public NewCharacterName As String = "Name : "
-        Public NewCharacterClass As String = "Class : "
-        Public NewCharacterGender As String = "Gender : "
+        Public NewCharacterName As String = "Name: "
+        Public NewCharacterClass As String = "Class: "
+        Public NewCharacterGender As String = "Gender: "
         Public NewCharacterMale As String = "Male"
         Public NewCharacterFemale As String = "Female"
         Public NewCharacterSprite As String = "Sprite"
