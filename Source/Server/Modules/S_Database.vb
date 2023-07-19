@@ -27,24 +27,28 @@ Module S_Database
             End Using
         End Using
     End Sub
-    
+
     Function DatabaseExists(databaseName As String) As Boolean
-        Dim sql As String = "SELECT 1 FROM pg_database WHERE datname = @databaseName;"
+        Try
+            Dim sql As String = "SELECT 1 FROM pg_database WHERE datname = @databaseName;"
 
-        Using connection As New NpgsqlConnection(connectionString)
-            connection.Open()
-            Using command As New NpgsqlCommand(sql, connection)
-                command.Parameters.AddWithValue("@databaseName", databaseName)
+            Using connection As New NpgsqlConnection(connectionString)
+                connection.Open()
+                Using command As New NpgsqlCommand(sql, connection)
+                    command.Parameters.AddWithValue("@databaseName", databaseName)
 
-                Using reader As NpgsqlDataReader = command.ExecuteReader()
-                    If reader.Read() Then
-                        Return True
-                    Else
-                        Return False
-                    End If
+                    Using reader As NpgsqlDataReader = command.ExecuteReader()
+                        If reader.Read() Then
+                            Return True
+                        Else
+                            Return False
+                        End If
+                    End Using
                 End Using
             End Using
-        End Using
+        Catch ex As Exception
+            Return False
+        End Try
     End Function
 
     Public Sub CreateDatabase(databaseName As String)
