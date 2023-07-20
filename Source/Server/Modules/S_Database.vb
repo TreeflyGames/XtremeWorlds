@@ -16,7 +16,7 @@ Imports Npgsql
 Imports NpgsqlTypes
 
 Module S_Database
-    Dim connectionString As String = "Host=localhost;Port=5432;Username=postgres;Password=mirage;Database=mirage"
+    Dim connectionString As String = "Host=167.88.168.78;Port=5432;Username=postgres;Password=mirage;Database=mirage"
 
     Public Sub ExecuteSql(connectionString As String, sql As String)
         Using connection As New NpgsqlConnection(connectionString)
