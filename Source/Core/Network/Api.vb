@@ -4,7 +4,7 @@ Imports System.Net.Http
 Namespace Network
     Public Module Api
         Const apiKey As String = "-5xPMTEPy3151vdLJKzaE04dGTnOu7vu"
-        Const apiUrl As String = "https://pokemonblood.com/forums/index.php/api/auth"
+        Const apiUrl As String = "https://giamon.com/forums/index.php/api/auth"
 
         Public Function Auth(username As String, password as String)
             Using client As System.Net.Http.HttpClient = New System.Net.Http.HttpClient()
