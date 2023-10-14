@@ -5,6 +5,7 @@ Imports SFML.Graphics
 Imports SFML.System
 Imports Core
 Imports SFML.Window
+Imports System.Management
 
 Module C_Graphics
 
@@ -566,13 +567,8 @@ Module C_Graphics
         GameWindow.Close()
     End Sub
 
-    Private Sub GameWindow_Resized(sender As Object, e As SFML.Window.SizeEventArgs)
-        ' Here e.Width and e.Height gives you the new dimensions of the window.
-        Console.WriteLine($"Window Resized: {e.Width}, {e.Height}")
-    End Sub
-
     Sub InitGraphics()
-        GameWindow = New RenderWindow(New VideoMode(Types.Settings.Width, Types.Settings.Height), Types.Settings.GameName)
+        GameWindow = New RenderWindow(New VideoMode(Types.Settings.Width, Types.Settings.Height), Types.Settings.GameName, Styles.Titlebar Or Styles.Close)
         GameWindow.setVerticalSyncEnabled(Types.Settings.Vsync)
         GameWindow.SetFramerateLimit(Types.Settings.MaxFPS)
 
@@ -590,7 +586,6 @@ Module C_Graphics
         AddHandler GameWindow.MouseMoved, AddressOf GameWindow_MouseMoved
         AddHandler GameWindow.TextEntered, AddressOf GameWindow_TextEntered
         AddHandler GameWindow.MouseWheelScrolled, AddressOf GameWindow_MouseWheelScrolled
-        AddHandler GameWindow.Resized, AddressOf GameWindow_Resized
 
         Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
         'Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Rockwell)
