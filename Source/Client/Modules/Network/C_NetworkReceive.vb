@@ -327,6 +327,7 @@ Module C_NetworkReceive
 
     Private Sub Packet_InGame(ByRef data() As Byte)
         InGame = True
+        HideWindows
         CanMoveNow = True
         Editor = -1
         GameInit()
