@@ -215,7 +215,7 @@ Module C_Interface
                     End If
 
                     ' render text
-                    RenderText(.Text, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.White)
+                    RenderText(.Text, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
 
                 ' buttons
                 Case EntityType.entButton
@@ -244,7 +244,7 @@ Module C_Interface
                     If height > .Height Then
                         ver_centre = .Top + yO
                     Else
-                        ver_centre = .Top + yO + ((.Height - height) \ 2)
+                        ver_centre = .Top + yO + ((.Height - height) \ 2) - 1
                     End If
                     
                     ' calculate the horizontal centre
@@ -255,7 +255,7 @@ Module C_Interface
                         hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2)
                     End If
 
-                    RenderText(.Text, GameWindow, hor_centre, ver_centre, Color.White, Color.White)
+                    RenderText(.Text, GameWindow, hor_centre, ver_centre, Color.White, Color.Black)
 
                 ' labels
                 Case EntityType.entLabel
@@ -271,12 +271,12 @@ Module C_Interface
                                     count = UBound(textArray)
                                     
                                     For i = 1 To count
-                                        RenderText(textArray(i), GameWindow, .Left + xO, .Top + yO + yOffset, Color.White, Color.White)
+                                        RenderText(textArray(i), GameWindow, .Left + xO, .Top + yO + yOffset, Color.White, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
-                                    RenderText(.Text, GameWindow, .Left + xO, .Top + yO, Color.White, Color.White)
+                                    RenderText(.Text, GameWindow, .Left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
 
                             Case AlignmentType.AlignRight
@@ -290,13 +290,13 @@ Module C_Interface
                                     
                                     For i = 1 To count
                                         left = .Left + .Width - GetTextWidth(textArray(i))
-                                        RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, Color.White, Color.White)
+                                        RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, Color.White, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
                                     left = .Left + .Width - GetTextWidth(.Text)
-                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.White)
+                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
                             
                             Case AlignmentType.alignCentre
@@ -310,13 +310,13 @@ Module C_Interface
 
                                     For i = 1 To count
                                         left = .Left + (.Width \ 2) - (GetTextWidth(textArray(i)) \ 2) - 4
-                                        RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, Color.White, Color.White)
+                                        RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, Color.White, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
                                     left = .Left + (.Width \ 2) - (GetTextWidth(.Text) \ 2) - 4
-                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.White)
+                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
                         End Select
                     End If
@@ -342,7 +342,7 @@ Module C_Interface
                             End Select
                             
                             ' render text
-                            RenderText(.Text, GameWindow, left, .Top + yO, Color.White, Color.White)
+                            RenderText(.Text, GameWindow, left, .Top + yO, Color.White, Color.Black)
                         
                         Case DesignType.ChkChat
                             If .Value = 0 Then .Alpha = 150 Else .Alpha = 255
@@ -354,7 +354,7 @@ Module C_Interface
                             left = .Left + (49 / 2) - (GetTextWidth(.Text) / 2) + xO
                             
                             ' render text
-                            RenderText(.Text, GameWindow, left, .Top + yO + 4, Color.White, Color.White)
+                            RenderText(.Text, GameWindow, left, .Top + yO + 4, Color.White, Color.Black)
                         
                         Case DesignType.ChkCustom_Buying
                             If .Value = 0 Then sprite = InterfaceSprite(58) Else sprite = InterfaceSprite(56)
@@ -375,7 +375,7 @@ Module C_Interface
                             ' render the text
                             If .Value > 0 Then
                                 If .Value <= UBound(.List) Then
-                                    RenderText(.List(.Value), GameWindow, .Left + xO, .Top + yO, Color.White, Color.White)
+                                    RenderText(.List(.Value), GameWindow, .Left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
                             End If
 
@@ -418,9 +418,9 @@ Module C_Interface
                             left = x + (.Width \ 2) - (GetTextWidth(.List(i)) \ 2)
                             
                             If i = .Value Or i = .Group Then                                                                                                                                                                                                                                
-                                RenderText(.List(i), GameWindow, left, y, Color.White, Color.White)
+                                RenderText(.List(i), GameWindow, left, y, Color.White, Color.Black)
                             Else
-                                RenderText(.List(i), GameWindow, left, y, Color.White, Color.White)
+                                RenderText(.List(i), GameWindow, left, y, Color.White, Color.Black)
                             End If
                             y = y + 16
                         Next
@@ -442,7 +442,7 @@ Module C_Interface
                     RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - (width - 18) + .yOffset, 0, 0, width, height, width, height)
 
                     ' render the caption
-                    RenderText(Trim$(.Text), GameWindow, .Left + height + 4, .Top + 4, Color.White, Color.White)
+                    RenderText(Trim$(.Text), GameWindow, .Left + height + 4, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_NoBar
                     ' render window
@@ -457,7 +457,7 @@ Module C_Interface
                     RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - (width - 18) + .yOffset, 0, 0, width, height, width, height)
 
                     ' render the caption
-                    RenderText(Trim$(.Text), GameWindow, .Left + height + 4, .Top + 4, Color.White, Color.White)
+                    RenderText(Trim$(.Text), GameWindow, .Left + height + 4, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_Desc
                     RenderDesign(DesignType.Win_Desc, .Left, .Top, .Width, .Height)
@@ -1023,16 +1023,15 @@ Module C_Interface
         CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
         
         ' Labels
-        CreateLabel(WindowCount, "lblUsername", 72, 40, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
-        CreateLabel(WindowCount, "lblPassword", 72, 76, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
+        CreateLabel(WindowCount, "lblUsername", 72, 39, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
+        CreateLabel(WindowCount, "lblPassword", 72, 75, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
         
         ' Textboxes
         CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Types.Settings.Username, , AlignmentType.AlignLeft , , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-
         CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, Types.Settings.Password, , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
         
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkRememberPassword", 67, 114, 142, "Remember Password?", Georgia, , Types.Settings.RememberPassword , , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Georgia, , Types.Settings.RememberPassword , , , , DesignType.ChkNorm)
 
         ' Set the active control
         If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUser")).Text) > 0 Then

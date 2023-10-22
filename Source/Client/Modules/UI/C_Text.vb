@@ -34,9 +34,9 @@ Module C_Text
         End Select
 
         backString.CharacterSize = textSize
-        backString.Color = backColor
+        backString.Color = New Color(backColor.R, backColor.G, backColor.B, 128)
         backString.LetterSpacing = 1
-        backString.Position = New Vector2f(x , y)
+        backString.Position = New Vector2f(x + 1, y + 1)
         target.Draw(backString)
 
         frontString.CharacterSize = textSize

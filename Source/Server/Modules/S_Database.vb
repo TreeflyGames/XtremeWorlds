@@ -148,7 +148,6 @@ Module S_Database
         End Using
     End Sub
 
-
     Public Sub CreateTables()
         Dim dataTable As String = "id SERIAL PRIMARY KEY, data jsonb"
         Dim playerTable As String = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb"
