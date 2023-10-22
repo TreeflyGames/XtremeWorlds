@@ -439,6 +439,9 @@ Module C_Interface
                     RenderDesign(DesignType.Green, .Left, .Top, .Width, 21)
 
                     ' render the icon
+                    If ItemsGfxInfo(.Icon).IsLoaded = False Then
+                        LoadTexture(.Icon, 4)
+                    End If
                     RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - (width - 18) + .yOffset, 0, 0, width, height, width, height)
 
                     ' render the caption
@@ -454,6 +457,9 @@ Module C_Interface
                     RenderDesign(DesignType.Green, .Left, .Top, .Width, 21)
 
                     ' render the icon
+                    If ItemsGfxInfo(.Icon).IsLoaded = False Then
+                        LoadTexture(.Icon, 4)
+                    End If
                     RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - (width - 18) + .yOffset, 0, 0, width, height, width, height)
 
                     ' render the caption

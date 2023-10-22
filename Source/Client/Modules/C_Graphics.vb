@@ -1,11 +1,9 @@
 ﻿Imports System.IO
 Imports System.Runtime.InteropServices
-Imports Core.Enumerator
 Imports SFML.Graphics
 Imports SFML.System
 Imports Core
 Imports SFML.Window
-Imports System.Management
 
 Module C_Graphics
 
