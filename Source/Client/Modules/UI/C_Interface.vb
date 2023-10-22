@@ -391,7 +391,7 @@ Module C_Interface
     End Sub
 
     Public Sub RenderWindow(winNum As Long)
-        Dim width As Long, height As Long, x As Long, y As Long, i As Long, left As Long
+        Dim x As Long, y As Long, i As Long, left As Long
 
         ' check if the window exists
         If winNum <= 0 Or winNum > WindowCount Then
@@ -442,10 +442,10 @@ Module C_Interface
                     If ItemsGfxInfo(.Icon).IsLoaded = False Then
                         LoadTexture(.Icon, 4)
                     End If
-                    RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - (width - 18) + .yOffset, 0, 0, width, height, width, height)
+                    RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - 16 + .yOffset, 0, 0, .width, .height, .width, .height)
 
                     ' render the caption
-                    RenderText(Trim$(.Text), GameWindow, .Left + height + 4, .Top + 4, Color.White, Color.Black)
+                    RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_NoBar
                     ' render window
@@ -460,10 +460,10 @@ Module C_Interface
                     If ItemsGfxInfo(.Icon).IsLoaded = False Then
                         LoadTexture(.Icon, 4)
                     End If
-                    RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - (width - 18) + .yOffset, 0, 0, width, height, width, height)
+                    RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - 16 + .yOffset, 0, 0, .width, .height, .width, .height)
 
                     ' render the caption
-                    RenderText(Trim$(.Text), GameWindow, .Left + height + 4, .Top + 4, Color.White, Color.Black)
+                    RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_Desc
                     RenderDesign(DesignType.Win_Desc, .Left, .Top, .Width, .Height)
