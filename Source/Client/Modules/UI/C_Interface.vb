@@ -1006,7 +1006,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Login()
         ' Create the window
-        CreateWindow("winLogin", "Login", zOrder_Win, 0, 0, 276, 182, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winLogin", "Login", zOrder_Win, 0, 0, 276, 212, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralise it
         CentralizeWindow(WindowCount)
@@ -1015,7 +1015,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Parchment
-        CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 150, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 180, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
         
         ' Shadows
         CreatePictureBox(WindowCount, "picShadow_1", 67, 43, 142, 9, , ,  , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
@@ -1038,6 +1038,9 @@ Module C_Interface
         
         ' Checkbox
         CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Georgia, , Types.Settings.RememberPassword , , , , DesignType.ChkNorm)
+    
+        ' Register Button
+        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Georgia, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, New Action(AddressOf RegisterLink))
 
         ' Set the active control
         If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUser")).Text) > 0 Then
