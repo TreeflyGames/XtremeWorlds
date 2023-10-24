@@ -1035,10 +1035,10 @@ Module C_Interface
         ' Textboxes
         CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Types.Settings.Username, , AlignmentType.AlignLeft , , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, Types.Settings.Password, , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
-        
+
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Georgia, , Types.Settings.RememberPassword , , , , DesignType.ChkNorm)
-    
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Georgia, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm)
+
         ' Register Button
         CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Georgia, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, New Action(AddressOf RegisterLink))
 

@@ -308,8 +308,7 @@ Friend Class FrmMenu
     ''' Handle the SavePas checkbox.
     ''' </summary>
     Private Sub ChkRememberPassword_CheckedChanged(sender As Object, e As EventArgs) Handles chkRememberPassword.CheckedChanged
-        ChkRememberPasswordChecked = chkRememberPassword.Checked
-        Types.Settings.RememberPassword = ChkRememberPasswordChecked
+        Types.Settings.SaveUsername = chkRememberPassword.Checked
         Save()
     End Sub
 
@@ -363,9 +362,8 @@ Friend Class FrmMenu
             PnlCreditsVisible = False
             pnlMainMenu.Visible = False
             txtLogin.Focus()
-            If Types.Settings.RememberPassword = True Then
+            If Types.Settings.SaveUsername = True Then
                 txtLogin.Text = Types.Settings.Username
-                txtPassword.Text = Types.Settings.Password
                 chkRememberPassword.Checked = True
             End If
         End If

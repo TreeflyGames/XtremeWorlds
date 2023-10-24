@@ -18,8 +18,8 @@ Module C_General
 
     Friend Sub LoadGame()
         SettingsManager.Load()
-        frmMenu.chkRememberPassword.Checked = Types.Settings.RememberPassword
-        frmMenu.txtLogin.Text = Types.Settings.Username
+        FrmMenu.chkRememberPassword.Checked = Types.Settings.SaveUsername
+        FrmMenu.txtLogin.Text = Types.Settings.Username
         frmMenu.txtPassword.Text = Types.Settings.Password
         LoadLanguage()
         InputManager.Load()
