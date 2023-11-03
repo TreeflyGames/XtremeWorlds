@@ -124,7 +124,11 @@ Module S_General
     Private Delegate Function ConsoleEventDelegate(eventType As Integer) As Boolean
 
     Sub UpdateCaption()
-        Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Types.Settings.GameName, MyIPAddress, Types.Settings.Port, GetPlayersOnline(), ErrorCount, Core.Time.Instance.ToString())
+        Try
+            Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Types.Settings.GameName, MyIPAddress, Types.Settings.Port, GetPlayersOnline(), ErrorCount, Core.Time.Instance.ToString())
+        Catch ex As Exception
+            Exit Sub
+        End Try
     End Sub
 
     Sub DestroyServer()
