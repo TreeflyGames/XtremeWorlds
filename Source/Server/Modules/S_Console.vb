@@ -3,12 +3,13 @@ Imports System.Threading
 Imports Core
 
 Module S_Console
+    Private consoleExit As Boolean
     Private threadConsole As Thread
 
     Sub Main()
         threadConsole = New Thread(New ThreadStart(AddressOf ConsoleThread))
         threadConsole.Start()
-       
+
         AddHandler AppDomain.CurrentDomain.ProcessExit, AddressOf ProcessExitHandler
 
         ' Spin up the server on the main thread
@@ -17,6 +18,8 @@ Module S_Console
 
     Private Sub ProcessExitHandler(ByVal sender As Object, ByVal e As EventArgs)
         UpdateSavePlayers()
+        consoleExit = True
+        threadConsole.Join()
     End Sub
 
     Private Sub ConsoleThread()
@@ -24,8 +27,12 @@ Module S_Console
 
         Console.WriteLine("Initializing Console Loop")
 
-        While (True)
-            line = Console.ReadLine()
+        While (Not consoleExit)
+            Try
+                line = Console.ReadLine()
+            Catch ex As Exception
+                Exit While
+            End Try
 
             parts = line.Split(" ") : If (parts.Length < 1) Then Continue While
 
@@ -50,12 +57,12 @@ Module S_Console
                         shutDownDuration = parts(1)
                     End If
 
-                    If shutDownTimer.IsRunning
+                    If shutDownTimer.IsRunning Then
                         shutDownTimer.Stop()
                         Console.WriteLine("Server shutdown has been cancelled!")
                         Call GlobalMsg("Server shutdown has been cancelled!")
                     Else
-                        if shutDownTimer.ElapsedTicks > 0 Then
+                        If shutDownTimer.ElapsedTicks > 0 Then
                             shutDownTimer.Restart()
                         Else
                             shutDownTimer.Start()
