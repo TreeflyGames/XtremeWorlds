@@ -480,9 +480,9 @@
     End Enum
 
     Public Enum AlignmentType
-        AlignLeft = 0
-        AlignRight
-        AlignCentre
+        Left = 0
+        Right
+        Center
     End Enum
 
     Public Enum PartType

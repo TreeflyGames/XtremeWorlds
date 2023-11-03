@@ -214,8 +214,4 @@ Module C_General
         Return result
     End Function
 
-    Public Sub RegisterLink()
-        Process.Start("explorer.exe", Types.Settings.Website)
-    End Sub
-
 End Module

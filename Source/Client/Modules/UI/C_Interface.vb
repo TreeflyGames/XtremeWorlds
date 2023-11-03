@@ -261,7 +261,7 @@ Module C_Interface
                 Case EntityType.entLabel
                     If Len(.Text) > 0 Then
                         Select Case .Align
-                            Case AlignmentType.AlignLeft
+                            Case AlignmentType.Left
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
@@ -279,7 +279,7 @@ Module C_Interface
                                     RenderText(.Text, GameWindow, .Left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
 
-                            Case AlignmentType.AlignRight
+                            Case AlignmentType.Right
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
@@ -298,8 +298,8 @@ Module C_Interface
                                     left = .Left + .Width - GetTextWidth(.Text)
                                     RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
-                            
-                            Case AlignmentType.alignCentre
+
+                            Case AlignmentType.Center
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
@@ -333,11 +333,11 @@ Module C_Interface
                             
                             ' find text position
                             Select Case .Align
-                                Case AlignmentType.AlignLeft
+                                Case AlignmentType.Left
                                     left = .Left + 18 + xO
-                                Case AlignmentType.AlignRight
+                                Case AlignmentType.Right
                                     left = .Left + 18 + (.Width - 18) - GetTextWidth(.Text) + xO
-                                Case AlignmentType.AlignCentre
+                                Case AlignmentType.Center
                                     left = .Left + 18 + ((.Width - 18) / 2) - (GetTextWidth(.Text) / 2) + xO
                             End Select
                             
@@ -779,14 +779,14 @@ Module C_Interface
         zOrder_Win = zOrder_Win + 1
     End Sub
 
-    Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, _
-        Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
+    Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String,
+        Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
         Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef callback_enter As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) as Action
+        Dim callback(EntState.State_Count - 1) As Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -859,15 +859,15 @@ Module C_Interface
         CreateEntity(winNum, zOrder_Con, name, EntityType.entButton, design, image, callback, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, censor, , , , tooltip)
     End Sub
 
-    Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String, _
-       Optional align As Byte = AlignmentType.alignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional censor As Boolean = False, _
+    Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String,
+       Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional censor As Boolean = False,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
         Dim callback(EntState.State_Count - 1) As Action
 
-         ' fill temp arrays
+        ' fill temp arrays
         callback(EntState.Normal) = callback_norm
         callback(EntState.Hover) = callback_hover
         callback(EntState.MouseDown) = callback_mousedown
@@ -878,9 +878,9 @@ Module C_Interface
         CreateEntity(winNum, zOrder_Con, name, EntityType.entLabel, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor)
     End Sub
 
-    Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, text As String, font As String, _
-        Optional height As Long = 15, Optional value As Long = 0, Optional align As Byte = AlignmentType.AlignLeft, Optional visible As Boolean = True, Optional alpha As Long = 255,
-        Optional theDesign As Long = 0, Optional group As Long = 0, Optional censor As Boolean = False, _
+    Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, text As String, font As String,
+        Optional height As Long = 15, Optional value As Long = 0, Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255,
+        Optional theDesign As Long = 0, Optional group As Long = 0, Optional censor As Boolean = False,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
@@ -1016,31 +1016,31 @@ Module C_Interface
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 180, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        
+
         ' Shadows
         CreatePictureBox(WindowCount, "picShadow_1", 67, 43, 142, 9, , ,  , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        
+
         ' Close button
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf SendLogin))
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
-        
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf SendLogin))
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", Rockwell, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
+
         ' Labels
-        CreateLabel(WindowCount, "lblUsername", 72, 39, 142, 0, "Username", Georgia, AlignmentType.AlignCentre)
-        CreateLabel(WindowCount, "lblPassword", 72, 75, 142, 0, "Password", Georgia, AlignmentType.AlignCentre)
-        
+        CreateLabel(WindowCount, "lblUsername", 72, 39, 142, 0, "Username", Rockwell, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblPassword", 72, 75, 142, 0, "Password", Rockwell, AlignmentType.Center)
+
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Types.Settings.Username, , AlignmentType.AlignLeft , , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, Types.Settings.Password, , AlignmentType.AlignLeft, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Types.Settings.Username, , AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, Types.Settings.Password, , AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Georgia, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Rockwell, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm)
 
         ' Register Button
-        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Georgia, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, New Action(AddressOf RegisterLink))
+        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
 
         ' Set the active control
         If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUser")).Text) > 0 Then
@@ -1050,6 +1050,54 @@ Module C_Interface
         End If
     End Sub
 
+    Public Sub CreateWindow_Register()
+
+        ' Create the window
+        CreateWindow("winRegister", "Register", zOrder_Win, 0, 0, 276, 302, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+
+        ' Centralise it
+        CentralizeWindow(WindowCount)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Close button
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 6, 13, 13, "", , , , , , 8, 9, 10, , , , , , New Action(AddressOf btnReturnMain_Click))
+
+        ' Parchment
+        CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 270, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+
+        ' Shadows
+        CreatePictureBox(WindowCount, "picShadow_1", 67, 43, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreatePictureBox(WindowCount, "picShadow_3", 67, 115, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreatePictureBox(WindowCount, "picShadow_4", 67, 151, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreatePictureBox(WindowCount, "picShadow_5", 67, 187, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+
+        ' Buttons
+        CreateButton(WindowCount, "btnAccept", 68, 262, 67, 22, "Create", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
+        CreateButton(WindowCount, "btnExit", 142, 262, 67, 22, "Back", Rockwell, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
+
+        ' Labels
+        CreateLabel(WindowCount, "lblUsername", 66, 39, 142, 19, "Username", Rockwell, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblPassword", 66, 75, 142, 19, "Password", Rockwell, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblPassword2", 66, 111, 142, 19, "Retype Password", Rockwell, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblCode", 66, 147, 142, 19, "Secret Code", Rockwell, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, 19, "Captcha", Rockwell, AlignmentType.Center)
+
+        ' Textboxes
+        CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, "", Rockwell, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", Rockwell, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True, , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtPass2", 67, 127, 142, 19, "", Rockwell, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True, , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, "", Rockwell, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False, , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, "", Rockwell, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False, , , New Action(AddressOf btnSendRegister_Click))
+
+        ' CreatePictureBox(WindowCount, "picCaptcha", 67, 199, 156, 30, , , , , Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+
+        SetActiveControl(GetWindowIndex("winRegister"), GetControlIndex("winRegister", "txtAccount"))
+    End Sub
+
+
     ' Rendering & Initialisation
     Public Sub InitInterface()
         ' Starter values
@@ -1057,7 +1105,9 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Menu
-        CreateWindow_Login
+        CreateWindow_Register()
+        HideWindows()
+        CreateWindow_Login()
     End Sub
 
     Public Function HandleInterfaceEvents(entState As EntState) As Boolean
@@ -1264,6 +1314,69 @@ Module C_Interface
     Sub ShowComboMenu()
         ShowWindow(GetWindowIndex("winComboMenuBG"))
         ShowWindow(GetWindowIndex("winComboMenu"))
+    End Sub
+
+    Public Sub btnRegister_Click()
+        HideWindows()
+        RenCaptcha
+        ClearRegisterTexts()
+        ShowWindow(GetWindowIndex("winRegister"))
+    End Sub
+
+    Sub ClearRegisterTexts()
+        Dim I As Long
+        With Windows(GetWindowIndex("winRegister"))
+            .Controls(GetControlIndex("winRegister", "txtAccount")).Text = ""
+            .Controls(GetControlIndex("winRegister", "txtPass")).Text = ""
+            .Controls(GetControlIndex("winRegister", "txtPass2")).Text = ""
+            .Controls(GetControlIndex("winRegister", "txtCode")).Text = ""
+            .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text = ""
+            For I = 0 To 6
+                '.Controls(GetControlIndex("winRegister", "picCaptcha")).Image(I) = Tex_Captcha(GlobalCaptcha)
+            Next
+        End With
+    End Sub
+
+    Sub RenCaptcha()
+        Dim n As Long
+        'n = Int(Rnd() * (Count_Captcha - 1)) + 1
+        'GlobalCaptcha = n
+    End Sub
+
+    Public Sub btnSendRegister_Click()
+        Dim User As String, Pass As String, pass2 As String, Code As String, Captcha As String
+
+        With Windows(GetWindowIndex("winRegister"))
+            User = .Controls(GetControlIndex("winRegister", "txtAccount")).Text
+            Pass = .Controls(GetControlIndex("winRegister", "txtPass")).Text
+            pass2 = .Controls(GetControlIndex("winRegister", "txtPass2")).Text
+            Code = .Controls(GetControlIndex("winRegister", "txtCode")).Text
+            Captcha = .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text
+        End With
+
+        If Trim$(Pass) <> Trim$(pass2) Then
+            'Call Dialogue("Register", "Falha ao criar conta.", "A confirma��o n�o confere com a senha!", TypeDELCHAR, StyleOKAY, 1)
+            Exit Sub
+        End If
+
+        If User = vbNullString Or Pass = vbNullString Or pass2 = vbNullString Or Code = vbNullString Then
+            'Call Dialogue("Register", "Falha ao criar conta.", "Nenhum campo pode ficar em branco!", TypeDELCHAR, StyleOKAY, 1)
+            Exit Sub
+        End If
+
+        'If Trim$(Captcha) <> Trim$(GetCaptcha) Then
+            RenCaptcha()
+            ClearRegisterTexts()
+            'Call Dialogue("Register", "Falha ao criar conta.", "Captcha Incorreto!", TypeDELCHAR, StyleOKAY, 1)
+            Exit Sub
+        'End If
+
+        'SendRegister User, Pass, Code
+    End Sub
+
+    Public Sub btnReturnMain_Click()
+        HideWindows()
+        ShowWindow(GetWindowIndex("winLogin"))
     End Sub
 End Module
 
