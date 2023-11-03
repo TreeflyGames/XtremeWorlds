@@ -1034,7 +1034,7 @@ Module C_Interface
 
         ' Textboxes
         CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Types.Settings.Username, , AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, Types.Settings.Password, , AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, "", , AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
         CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Rockwell, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm)

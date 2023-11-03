@@ -5,7 +5,6 @@ Public Class Settings
     Public Language As String = "English"
 
     Public Username As String = ""
-    Public Password As String = ""
     Public SaveUsername As Boolean = False
 
     Public MenuMusic As String = "title.ogg"
