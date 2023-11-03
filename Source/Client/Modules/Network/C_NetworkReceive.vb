@@ -187,12 +187,6 @@ Module C_NetworkReceive
         Types.Settings.SaveUsername = ChkSaveUsernameChecked
         Types.Settings.Username = Trim$(TempUserName)
 
-        If ChkSaveUsernameChecked = False Then
-            Types.Settings.Password = ""
-        Else
-            Types.Settings.Password = Trim$(TempPassword)
-        End If
-
         InputManager.Save()
 
         Dim buffer As New ByteStream(data)

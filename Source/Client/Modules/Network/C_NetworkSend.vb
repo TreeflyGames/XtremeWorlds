@@ -16,28 +16,30 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Friend Sub SendLogin(name As String, password As String)
+    Friend Sub SendLogin(name As String, pass As String)
         Dim buffer As New ByteStream(4)
+
+        If name = "" Then Exit Sub
+        If pass = "" Then Exit Sub
 
         buffer.WriteInt32(ClientPackets.CLogin)
         buffer.WriteString((EKeyPair.EncryptString(name)))
-        buffer.WriteString((EKeyPair.EncryptString(password)))
+        buffer.WriteString((EKeyPair.EncryptString(pass)))
         buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()
     End Sub
 
-    Friend Sub SendLogin()
-        Dim buffer As New ByteStream(4)
+    Public Sub btnLogin_Click()
+        Dim user As String, pass As String
 
-        buffer.WriteInt32(ClientPackets.CLogin)
-        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Username)))
-        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Password)))
-        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
-        Socket.SendData(buffer.Data, buffer.Head)
+        With Windows(GetWindowIndex("winLogin"))
+            user = .Controls(GetControlIndex("winLogin", "txtUsername")).Text
+            pass = .Controls(GetControlIndex("winLogin", "txtPassword")).Text
+        End With
 
-        buffer.Dispose()
+        SendLogin(user, pass)
     End Sub
 
     Sub GetPing()

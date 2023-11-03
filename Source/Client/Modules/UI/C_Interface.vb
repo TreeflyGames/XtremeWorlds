@@ -3,7 +3,6 @@ Imports Core
 Imports Core.Enum
 Imports Core.Types
 Imports SFML.Graphics
-
 Module C_Interface
     ' actual GUI
     Public Windows() As Types.WindowStruct
@@ -17,9 +16,9 @@ Module C_Interface
     Private zOrder_Win As Long
     Private zOrder_Con As Long
 
-    Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() as Action, _
+    Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() As Action,
        Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
-       Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, _
+       Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False,
        Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0)
 
         Dim i As Long
@@ -42,13 +41,13 @@ Module C_Interface
 
             ReDim .Design(EntState.State_Count - 1)
             ReDim .Image(EntState.State_Count - 1)
-            Redim .callback(EntState.State_Count - 1)
+            ReDim .CallBack(EntState.State_Count - 1)
 
             ' loop through states
             For i = 0 To EntState.State_Count - 1
                 .Design(i) = design(i)
                 .Image(i) = image(i)
-                .callback(i) = callback(i)
+                .CallBack(i) = callback(i)
             Next
 
             .Left = left
@@ -194,7 +193,7 @@ Module C_Interface
                 Case EntityType.entPictureBox
                     ' render specific designs
                     If .Design(.State) > 0 Then
-                        RenderDesign(.Design(.State), .left + xO, .top + yO, .width, .height, .alpha)
+                        RenderDesign(.Design(.State), .Left + xO, .Top + yO, .Width, .Height, .Alpha)
                     End If
 
                     ' render image
@@ -235,10 +234,10 @@ Module C_Interface
 
                     ' render icon
                     RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, ItemsGfxInfo(.Icon).Width, ItemsGfxInfo(.Icon).Height)
-                    
+
                     ' for changing the text space
                     xOffset = width
-                    
+
                     ' calculate the vertical centre
                     height = GetTextHeight(.Text)
                     If height > .Height Then
@@ -246,7 +245,7 @@ Module C_Interface
                     Else
                         ver_centre = .Top + yO + ((.Height - height) \ 2) - 1
                     End If
-                    
+
                     ' calculate the horizontal centre
                     width = GetTextWidth(.Text)
                     If width > .Width Then
@@ -266,10 +265,10 @@ Module C_Interface
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
                                     WordWrap_Array(.Text, .Width, textArray)
-                                    
+
                                     ' render text
                                     count = UBound(textArray)
-                                    
+
                                     For i = 1 To count
                                         RenderText(textArray(i), GameWindow, .Left + xO, .Top + yO + yOffset, Color.White, Color.Black)
                                         yOffset = yOffset + 14
@@ -287,7 +286,7 @@ Module C_Interface
 
                                     ' render text
                                     count = UBound(textArray)
-                                    
+
                                     For i = 1 To count
                                         left = .Left + .Width - GetTextWidth(textArray(i))
                                         RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, Color.White, Color.Black)
@@ -327,10 +326,10 @@ Module C_Interface
                         Case DesignType.ChkNorm
                             ' empty?
                             If .Value = 0 Then sprite = InterfaceSprite(2) Else sprite = InterfaceSprite(3)
-                            
+
                             ' render box
                             RenderTexture(sprite, GameWindow, .Left + xO, .Top + yO, 0, 0, 14, 14, 14, 14)
-                            
+
                             ' find text position
                             Select Case .Align
                                 Case AlignmentType.Left
@@ -340,26 +339,26 @@ Module C_Interface
                                 Case AlignmentType.Center
                                     left = .Left + 18 + ((.Width - 18) / 2) - (GetTextWidth(.Text) / 2) + xO
                             End Select
-                            
+
                             ' render text
                             RenderText(.Text, GameWindow, left, .Top + yO, Color.White, Color.Black)
-                        
+
                         Case DesignType.ChkChat
                             If .Value = 0 Then .Alpha = 150 Else .Alpha = 255
-                            
+
                             ' render box
                             RenderTexture(InterfaceSprite(51), GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 23)
-                            
+
                             ' render text
                             left = .Left + (49 / 2) - (GetTextWidth(.Text) / 2) + xO
-                            
+
                             ' render text
                             RenderText(.Text, GameWindow, left, .Top + yO + 4, Color.White, Color.Black)
-                        
+
                         Case DesignType.ChkCustom_Buying
                             If .Value = 0 Then sprite = InterfaceSprite(58) Else sprite = InterfaceSprite(56)
                             RenderTexture(sprite, GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 20, 49, 20)
-                        
+
                         Case DesignType.ChkCustom_Selling
                             If .Value = 0 Then sprite = InterfaceSprite(59) Else sprite = InterfaceSprite(57)
                             RenderTexture(sprite, GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 20, 49, 20)
@@ -371,7 +370,7 @@ Module C_Interface
                         Case DesignType.ComboNorm
                             ' draw the background
                             RenderDesign(DesignType.TextBlack, .Left + xO, .Top + yO, .Width, .Height)
-                            
+
                             ' render the text
                             If .Value > 0 Then
                                 If .Value <= UBound(.List) Then
@@ -402,7 +401,7 @@ Module C_Interface
             Select Case .Design(0)
                 Case DesignType.ComboMenuNorm
                     RenderTexture(InterfaceSprite(1), GameWindow, .Left, .Top, 0, 0, .Width, .Height, 157, 0, 0, 0)
-                    
+
                     ' text
                     If UBound(.List) > 0 Then
                         y = .Top + 2
@@ -413,11 +412,11 @@ Module C_Interface
                             If i = .Value Or i = .Group Then
                                 RenderTexture(InterfaceSprite(1), GameWindow, x, y - 1, 0, 0, .Width, 15, 255, 0, 0, 0)
                             End If
-                            
+
                             ' render text
                             left = x + (.Width \ 2) - (GetTextWidth(.List(i)) \ 2)
-                            
-                            If i = .Value Or i = .Group Then                                                                                                                                                                                                                                
+
+                            If i = .Value Or i = .Group Then
                                 RenderText(.List(i), GameWindow, left, y, Color.White, Color.Black)
                             Else
                                 RenderText(.List(i), GameWindow, left, y, Color.White, Color.Black)
@@ -442,7 +441,7 @@ Module C_Interface
                     If ItemsGfxInfo(.Icon).IsLoaded = False Then
                         LoadTexture(.Icon, 4)
                     End If
-                    RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - 16 + .yOffset, 0, 0, .width, .height, .width, .height)
+                    RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
                     RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
@@ -460,7 +459,7 @@ Module C_Interface
                     If ItemsGfxInfo(.Icon).IsLoaded = False Then
                         LoadTexture(.Icon, 4)
                     End If
-                    RenderTexture(ItemsSprite(.icon), GameWindow, .left + .xOffset, .top - 16 + .yOffset, 0, 0, .width, .height, .width, .height)
+                    RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
                     RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
@@ -490,13 +489,13 @@ Module C_Interface
 
             Case DesignType.MenuOption
                 ' render the option
-                RenderTexture(InterfaceSprite(61), GameWindow, left, top, 0, 0, Width, Height, , , 200, 98, 98, 98)
+                RenderTexture(InterfaceSprite(61), GameWindow, left, top, 0, 0, width, height, , , 200, 98, 98, 98)
 
             Case DesignType.Wood
                 bs = 4
                 ' render the wood box
                 RenderEntity_Square(DesignSprite(1), left, top, width, height, bs, alpha)
-                
+
                 ' render wood texture
                 RenderTexture(InterfaceSprite(1), GameWindow, left, top, width - (bs * 2), height - (bs * 2), width, height, , , alpha)
 
@@ -504,7 +503,7 @@ Module C_Interface
                 bs = 2
                 ' render the wood box
                 RenderEntity_Square(DesignSprite(8), left, top, width, height, bs, alpha)
-                
+
                 ' render wood texture
                 RenderTexture(InterfaceSprite(1), GameWindow, left + bs, top + bs, width - (bs * 2), height - (bs * 2), width, height)
 
@@ -517,7 +516,7 @@ Module C_Interface
                 bs = 2
                 ' render the green box
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
-                
+
                 ' render green gradient overlay
                 RenderTexture(GradientSprite(1), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -525,7 +524,7 @@ Module C_Interface
                 bs = 2
                 ' render the green box
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
-                
+
                 ' render green gradient overlay
                 RenderTexture(GradientSprite(2), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -533,7 +532,7 @@ Module C_Interface
                 bs = 2
                 ' render the green box
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
-                
+
                 ' render green gradient overlay
                 RenderTexture(GradientSprite(3), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -541,7 +540,7 @@ Module C_Interface
                 bs = 2
                 ' render the red box
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
-                
+
                 ' render red gradient overlay
                 RenderTexture(GradientSprite(4), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -549,7 +548,7 @@ Module C_Interface
                 bs = 2
                 ' render the red box
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
-                
+
                 ' render red gradient overlay
                 RenderTexture(GradientSprite(5), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -557,7 +556,7 @@ Module C_Interface
                 bs = 2
                 ' render the red box
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
-                
+
                 ' render red gradient overlay
                 RenderTexture(GradientSprite(6), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -565,7 +564,7 @@ Module C_Interface
                 bs = 2
                 ' render the Blue box
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
-                
+
                 ' render Blue gradient overlay
                 RenderTexture(GradientSprite(8), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -573,7 +572,7 @@ Module C_Interface
                 bs = 2
                 ' render the Blue box
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
-                
+
                 ' render Blue gradient overlay
                 RenderTexture(GradientSprite(9), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -581,7 +580,7 @@ Module C_Interface
                 bs = 2
                 ' render the Blue box
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
-                
+
                 ' render Blue gradient overlay
                 RenderTexture(GradientSprite(10), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -589,7 +588,7 @@ Module C_Interface
                 bs = 2
                 ' render the Orange box
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
-                
+
                 ' render Orange gradient overlay
                 RenderTexture(GradientSprite(11), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -597,7 +596,7 @@ Module C_Interface
                 bs = 2
                 ' render the Orange box
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
-                
+
                 ' render Orange gradient overlay
                 RenderTexture(GradientSprite(12), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -605,7 +604,7 @@ Module C_Interface
                 bs = 2
                 ' render the Orange box
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
-                
+
                 ' render Orange gradient overlay
                 RenderTexture(GradientSprite(13), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -613,7 +612,7 @@ Module C_Interface
                 bs = 2
                 ' render the Orange box
                 RenderEntity_Square(DesignSprite(17), left, top, width, height, bs, alpha)
-                
+
                 ' render Orange gradient overlay
                 RenderTexture(GradientSprite(14), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
 
@@ -679,25 +678,25 @@ Module C_Interface
         ' Set the border size
         bs = borderSize
         ' Draw centre
-        RenderTexture(sprite, GameWindow, X + bs, Y + bs, bs + 1, bs + 1, Width - (bs * 2), Height - (bs * 2), , , alpha)
+        RenderTexture(sprite, GameWindow, x + bs, y + bs, bs + 1, bs + 1, width - (bs * 2), height - (bs * 2), , , alpha)
         ' Draw top side
         RenderTexture(sprite, GameWindow, x + bs, y, bs, 0, width - (bs * 2), bs, 1, bs, alpha)
         ' Draw left side
-        RenderTexture(sprite, GameWindow, X, Y + bs, 0, bs, bs, Height - (bs * 2), bs, , alpha)
+        RenderTexture(sprite, GameWindow, x, y + bs, 0, bs, bs, height - (bs * 2), bs, , alpha)
         ' Draw right side
-        RenderTexture(sprite, GameWindow, X + Width - bs, Y + bs, bs + 3, bs, bs, Height - (bs * 2), bs, , alpha)
+        RenderTexture(sprite, GameWindow, x + width - bs, y + bs, bs + 3, bs, bs, height - (bs * 2), bs, , alpha)
         ' Draw bottom side
-        RenderTexture(sprite, GameWindow, X + bs, Y + Height - bs, bs, bs + 3, Width - (bs * 2), bs, 1, bs, alpha)
+        RenderTexture(sprite, GameWindow, x + bs, y + height - bs, bs, bs + 3, width - (bs * 2), bs, 1, bs, alpha)
         ' Draw top left corner
-        RenderTexture(sprite, GameWindow, X, Y, 0, 0, bs, bs, bs, bs, alpha)
+        RenderTexture(sprite, GameWindow, x, y, 0, 0, bs, bs, bs, bs, alpha)
         ' Draw top right corner
-        RenderTexture(sprite, GameWindow, X + Width - bs, Y, bs + 3, 0, bs, bs, bs, bs, alpha)
+        RenderTexture(sprite, GameWindow, x + width - bs, y, bs + 3, 0, bs, bs, bs, bs, alpha)
         ' Draw bottom left corner
-        RenderTexture(sprite, GameWindow, X, Y + Height - bs, 0, bs + 3, bs, bs, bs, bs, alpha)
+        RenderTexture(sprite, GameWindow, x, y + height - bs, 0, bs + 3, bs, bs, bs, bs, alpha)
         ' Draw bottom right corner
-        RenderTexture(sprite, GameWindow, X + Width - bs, Y + Height - bs, bs + 3, bs + 3, bs, bs, bs, bs, alpha)
+        RenderTexture(sprite, GameWindow, x + width - bs, y + height - bs, bs + 3, bs + 3, bs, bs, bs, bs, alpha)
     End Sub
-    
+
     Sub Combobox_AddItem(winIndex As Long, controlIndex As Long, text As String)
         Dim count As Long
         count = UBound(Windows(winIndex).Controls(controlIndex).List)
@@ -705,10 +704,10 @@ Module C_Interface
         Windows(winIndex).Controls(controlIndex).List(count + 1) = text
     End Sub
 
-    Public Sub CreateWindow(name As String, caption As String, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long, _
+    Public Sub CreateWindow(name As String, caption As String, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long,
        Optional visible As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
-       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, _
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing,
        Optional canDrag As Boolean = True, Optional zChange As Byte = True, Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional clickThrough As Boolean = False)
 
         Dim i As Long
@@ -744,13 +743,13 @@ Module C_Interface
 
             ReDim .Design(EntState.State_Count - 1)
             ReDim .Image(EntState.State_Count - 1)
-            ReDim .Callback(EntState.State_Count - 1)
+            ReDim .CallBack(EntState.State_Count - 1)
 
             ' loop through states
             For i = 0 To EntState.State_Count - 1
                 .Design(i) = design(i)
                 .Image(i) = image(i)
-                .callback(i) = callback(i)
+                .CallBack(i) = callback(i)
             Next
 
             .Left = left
@@ -807,8 +806,8 @@ Module C_Interface
     End Sub
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
-       Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, _
-       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, _
+       Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing,
        Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef onDraw As Action = Nothing)
 
         Dim design(EntState.State_Count - 1) As Long
@@ -832,11 +831,11 @@ Module C_Interface
         CreateEntity(winNum, zOrder_Con, name, EntityType.entPictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , , onDraw)
     End Sub
 
-    Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, _
-       Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, _
-       Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, _
-       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, _
-       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional  censor As Boolean = False)
+    Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String,
+       Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
+       Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing,
+       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False)
 
         Dim design(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
@@ -852,7 +851,7 @@ Module C_Interface
         callback(EntState.Normal) = callback_norm
         callback(EntState.Hover) = callback_hover
         callback(EntState.MouseDown) = callback_mousedown
-        callback(entState.MouseMove) = callback_mousemove
+        callback(EntState.MouseMove) = callback_mousemove
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the button 
@@ -901,12 +900,12 @@ Module C_Interface
     End Sub
 
     Public Sub CreateComboBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, design As Long)
-        Dim theDesign(EntState.state_Count - 1) As Long
+        Dim theDesign(EntState.State_Count - 1) As Long
         Dim image(EntState.State_Count - 1) As Long
         Dim callback(EntState.State_Count - 1) As Action
-        
+
         theDesign(0) = design
-        
+
         ' create the box
         CreateEntity(winNum, zOrder_Con, name, EntityType.entCombobox, theDesign, image, callback, left, top, width, height)
     End Sub
@@ -925,7 +924,7 @@ Module C_Interface
 
         GetWindowIndex = 0
     End Function
-        
+
     Public Function GetControlIndex(winName As String, controlName As String) As Long
         Dim i As Long, winIndex As Long
 
@@ -1022,10 +1021,10 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf SendLogin))
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
         CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", Rockwell, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
 
         ' Labels
@@ -1033,20 +1032,20 @@ Module C_Interface
         CreateLabel(WindowCount, "lblPassword", 72, 75, 142, 0, "Password", Rockwell, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUser", 67, 55, 142, 19, Types.Settings.Username, , AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPass", 67, 86, 142, 19, "", , AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Types.Settings.Username, Rockwell, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, "", Rockwell, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Rockwell, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Rockwell, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
 
         ' Register Button
         CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
 
         ' Set the active control
-        If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUser")).Text) > 0 Then
-            SetActiveControl(GetWindowIndex("winLogin"), GetControlIndex("winLogin", "txtUser"))
+        If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Text) > 0 Then
+            SetActiveControl(GetWindowIndex("winLogin"), GetControlIndex("winLogin", "txtUsername"))
         Else
-            SetActiveControl(GetWindowIndex("winLogin"), GetControlIndex("winLogin", "txtPass"))
+            SetActiveControl(GetWindowIndex("winLogin"), GetControlIndex("winLogin", "txtPassword"))
         End If
     End Sub
 
@@ -1112,19 +1111,19 @@ Module C_Interface
 
     Public Function HandleInterfaceEvents(entState As EntState) As Boolean
         Dim i As Long, curWindow As Long, curControl As Long, callBack As Action, x As Long
-    
+
         ' if hiding gui
-        If hideGUI = True Or Editor = EditorType.Map Then Exit Function
+        If HideGui = True Or Editor = EditorType.Map Then Exit Function
 
         ' Find the container
         For i = 1 To WindowCount
             With Windows(i).Window
-                If .enabled And .visible Then
-                    If .state <> EntState.MouseDown Then .state = EntState.Normal
-                    If CurMouseX >= .left And CurMouseX <= .width + .left Then
-                        If CurMouseY >= .top And CurMouseY <= .height + .top Then
+                If .Enabled And .Visible Then
+                    If .State <> EntState.MouseDown Then .State = EntState.Normal
+                    If CurMouseX >= .Left And CurMouseX <= .Width + .Left Then
+                        If CurMouseY >= .Top And CurMouseY <= .Height + .Top Then
                             ' set the combomenu
-                            If .design(0) = DesignType.ComboMenuNorm Then
+                            If .Design(0) = DesignType.ComboMenuNorm Then
                                 ' set the hover menu
                                 If entState = EntState.MouseMove Or entState = EntState.Hover Then
                                     'ComboMenu_MouseMove(i)
@@ -1140,10 +1139,10 @@ Module C_Interface
                     End If
 
                     If entState = EntState.MouseMove Then
-                        If .canDrag Then
-                            If .state = EntState.MouseDown Then
-                                .left = Math.Clamp(.left + ((CurMouseX - .left) - .movedX), 0, Types.Settings.Width - .width)
-                                .top = Math.Clamp(.top + ((CurMouseY - .top) - .movedY), 0, Types.Settings.Height - .height)
+                        If .CanDrag Then
+                            If .State = EntState.MouseDown Then
+                                .Left = Math.Clamp(.Left + ((CurMouseX - .Left) - .movedX), 0, Types.Settings.Width - .Width)
+                                .Top = Math.Clamp(.Top + ((CurMouseY - .Top) - .movedY), 0, Types.Settings.Height - .Height)
                             End If
                         End If
                     End If
@@ -1157,27 +1156,27 @@ Module C_Interface
             For i = 1 To WindowCount
                 If i <> curWindow Then
                     For x = 1 To Windows(i).ControlCount
-                        Windows(i).Controls(x).state = EntState.Normal
+                        Windows(i).Controls(x).State = EntState.Normal
                     Next
                 End If
             Next
 
             For i = 1 To Windows(curWindow).ControlCount
                 With Windows(curWindow).Controls(i)
-                    If .enabled And .visible Then
-                        If .state <> EntState.MouseDown Then .state = EntState.Normal
-                        If CurMouseX >= .left + Windows(curWindow).Window.left And CurMouseX <= .left + .width + Windows(curWindow).Window.left Then
-                            If CurMouseY >= .top + Windows(curWindow).Window.top And CurMouseY <= .top + .height + Windows(curWindow).Window.top Then
+                    If .Enabled And .Visible Then
+                        If .State <> EntState.MouseDown Then .State = EntState.Normal
+                        If CurMouseX >= .Left + Windows(curWindow).Window.Left And CurMouseX <= .Left + .Width + Windows(curWindow).Window.Left Then
+                            If CurMouseY >= .Top + Windows(curWindow).Window.Top And CurMouseY <= .Top + .Height + Windows(curWindow).Window.Top Then
                                 If curControl = 0 Then curControl = i
                                 If .zOrder > Windows(curWindow).Controls(curControl).zOrder Then curControl = i
                             End If
                         End If
 
                         If entState = EntState.MouseMove Then
-                            If .canDrag Then
-                                If .state = EntState.MouseDown Then
-                                    .left = Math.Clamp(.left + ((CurMouseX - .left) - .movedX), 0, Windows(curWindow).Window.width - .width)
-                                    .top = Math.Clamp(.top + ((CurMouseY - .top) - .movedY), 0, Windows(curWindow).Window.height - .height)
+                            If .CanDrag Then
+                                If .State = EntState.MouseDown Then
+                                    .Left = Math.Clamp(.Left + ((CurMouseX - .Left) - .movedX), 0, Windows(curWindow).Window.Width - .Width)
+                                    .Top = Math.Clamp(.Top + ((CurMouseY - .Top) - .movedY), 0, Windows(curWindow).Window.Height - .Height)
                                 End If
                             End If
                         End If
@@ -1188,40 +1187,40 @@ Module C_Interface
             ' Handle control
             If curControl Then
                 With Windows(curWindow).Controls(curControl)
-                    If .state <> EntState.MouseDown Then
+                    If .State <> EntState.MouseDown Then
                         If entState <> EntState.MouseMove Then
-                            .state = entState
+                            .State = entState
                         Else
-                            .state = EntState.Hover
+                            .State = EntState.Hover
                         End If
                     End If
 
                     If entState = EntState.MouseDown Then
-                        If .canDrag Then
-                            .movedX = CurMouseX - .left
-                            .movedY = CurMouseY - .top
+                        If .CanDrag Then
+                            .movedX = CurMouseX - .Left
+                            .movedY = CurMouseY - .Top
                         End If
 
                         ' toggle boxes
                         Select Case .Type
                             Case EntityType.entCheckbox
                                 ' grouped boxes
-                                If .group > 0 Then
-                                    If .value = 0 Then
+                                If .Group > 0 Then
+                                    If .Value = 0 Then
                                         For i = 1 To Windows(curWindow).ControlCount
                                             If Windows(curWindow).Controls(i).Type = EntityType.entCheckbox Then
-                                                If Windows(curWindow).Controls(i).group = .group Then
-                                                    Windows(curWindow).Controls(i).value = 0
+                                                If Windows(curWindow).Controls(i).Group = .Group Then
+                                                    Windows(curWindow).Controls(i).Value = 0
                                                 End If
                                             End If
                                         Next
-                                        .value = 1
+                                        .Value = 1
                                     End If
                                 Else
-                                    If .value = 0 Then
-                                        .value = 1
+                                    If .Value = 0 Then
+                                        .Value = 1
                                     Else
-                                        .value = 0
+                                        .Value = 0
                                     End If
                                 End If
                             Case EntityType.entCombobox
@@ -1236,18 +1235,18 @@ Module C_Interface
             Else
                 ' Handle container
                 With Windows(curWindow).Window
-                    If .state <> EntState.MouseDown Then
+                    If .State <> EntState.MouseDown Then
                         If entState <> EntState.MouseMove Then
-                            .state = entState
+                            .State = entState
                         Else
-                            .state = EntState.Hover
+                            .State = EntState.Hover
                         End If
                     End If
 
                     If entState = EntState.MouseDown Then
-                        If .canDrag Then
-                            .movedX = CurMouseX - .left
-                            .movedY = CurMouseY - .top
+                        If .CanDrag Then
+                            .movedX = CurMouseX - .Left
+                            .movedY = CurMouseY - .Top
                         End If
                     End If
                     callBack = .CallBack(entState)
@@ -1265,17 +1264,17 @@ Module C_Interface
         End If
 
         ' Reset
-        If entState = EntState.MouseUp Then ResetMouseDown
+        If entState = EntState.MouseUp Then ResetMouseDown()
     End Function
 
     Public Sub ResetInterface()
         Dim i As Long, x As Long
 
         For i = 1 To WindowCount
-            If Windows(i).Window.state <> EntState.MouseDown Then Windows(i).Window.state = EntState.Normal
+            If Windows(i).Window.State <> EntState.MouseDown Then Windows(i).Window.State = EntState.Normal
 
             For x = 1 To Windows(i).ControlCount
-                If Windows(i).Controls(x).state <> EntState.MouseDown Then Windows(i).Controls(x).state = EntState.Normal
+                If Windows(i).Controls(x).State <> EntState.MouseDown Then Windows(i).Controls(x).State = EntState.Normal
             Next
         Next
 
@@ -1288,13 +1287,13 @@ Module C_Interface
         For i = 1 To WindowCount
 
             With Windows(i)
-                .Window.state = EntState.Normal
+                .Window.State = EntState.Normal
                 callBack = .Window.CallBack(EntState.Normal)
 
                 If Not callBack Is Nothing Then Task.Factory.StartNew(callBack)
 
                 For x = 1 To .ControlCount
-                    .Controls(x).state = EntState.Normal
+                    .Controls(x).State = EntState.Normal
                     callBack = .Controls(x).CallBack(EntState.Normal)
 
                     If Not callBack Is Nothing Then Task.Factory.StartNew(callBack)
@@ -1316,9 +1315,23 @@ Module C_Interface
         ShowWindow(GetWindowIndex("winComboMenu"))
     End Sub
 
+    Public Sub chkSaveUser_Click()
+
+        With Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "chkSaveUsername"))
+            If .Value = 0 Then ' set as false
+                Types.Settings.SaveUsername = 0
+                Types.Settings.Username = ""
+                SettingsManager.Save()
+            Else
+                Types.Settings.SaveUsername = 1
+                SettingsManager.Save()
+            End If
+        End With
+    End Sub
+
     Public Sub btnRegister_Click()
         HideWindows()
-        RenCaptcha
+        RenCaptcha()
         ClearRegisterTexts()
         ShowWindow(GetWindowIndex("winRegister"))
     End Sub
@@ -1365,10 +1378,10 @@ Module C_Interface
         End If
 
         'If Trim$(Captcha) <> Trim$(GetCaptcha) Then
-            RenCaptcha()
-            ClearRegisterTexts()
-            'Call Dialogue("Register", "Falha ao criar conta.", "Captcha Incorreto!", TypeDELCHAR, StyleOKAY, 1)
-            Exit Sub
+        RenCaptcha()
+        ClearRegisterTexts()
+        'Call Dialogue("Register", "Falha ao criar conta.", "Captcha Incorreto!", TypeDELCHAR, StyleOKAY, 1)
+        Exit Sub
         'End If
 
         'SendRegister User, Pass, Code

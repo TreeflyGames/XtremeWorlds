@@ -325,6 +325,133 @@ Module C_Graphics
     Private Sub GameWindow_KeyPressed(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
         Console.WriteLine("Key Pressed: " & e.Code.ToString())
 
+        If e.Code = Keys.Escape Then
+            ' Hide options screen
+            HideWindow("winOptions")
+            CloseComboMenu()
+
+            ' If Windows("winEscMenu").Visible Then
+            ' Hide it
+            ' HideWindow("winBlank")
+            'HideWindow("winEscMenu")
+            'Else
+            ' Show them
+            '   ShowWindow("winBlank", True)
+            '  ShowWindow("winEscMenu", True)
+            'End If
+        End If
+
+        If InGame Then
+            Dim chatText As String = Windows("winChat").Controls("txtChat").Text
+            ' Do something with chatText
+        End If
+
+        ' Check for active window
+        If activeWindow > 0 Then
+            ' Ensure it's visible
+            If Windows(activeWindow).Window.Visible Then
+                ' Check for active control
+                If Windows(activeWindow).ActiveControl > 0 Then
+                    ' Handle input
+                    Dim control = Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl)
+
+                    Select Case e.Code
+                        Case Keys.Back
+                            If control.Text.Length > 0 Then
+                                control.Text = control.Text.Substring(0, control.Text.Length - 1)
+                            End If
+                        Case Keys.Enter
+                            ' Override for function callbacks
+                            If Not control.CallBack(EntState.Enter) IsNot Nothing Then
+                                control.CallBack(EntState.Enter) = Nothing
+                                Exit Sub
+                            Else
+                                Dim n As Integer = 0
+                                For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
+                                    If i > Windows(activeWindow).ActiveControl Then
+                                        If SetActiveControl(activeWindow, i) Then n = i
+                                    End If
+                                Next
+
+                                If n = 0 Then
+                                    For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
+                                        SetActiveControl(activeWindow, i)
+                                    Next
+                                End If
+                            End If
+
+                        Case Keys.Tab
+                            Dim n As Integer = 0
+                            For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
+                                If i > Windows(activeWindow).ActiveControl Then
+                                    If SetActiveControl(activeWindow, i) Then n = i
+                                End If
+                            Next
+
+                            If n = 0 Then
+                                For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
+                                    SetActiveControl(activeWindow, i)
+                                Next
+                            End If
+                        Case Else
+                            control.Text &= ChrW(e.Code)
+                    End Select
+
+                    ' Exit early if not in the chat window
+                    'If Windows(activeWindow).Name <> "winChat" Then Exit Sub
+                End If
+            End If
+        End If
+
+        ' Exit early if we're not in the game
+        If Not InGame Then Exit Sub
+
+        Select Case e.Code
+            Case Keys.Escape
+                ' Hide options screen
+                HideWindow("winOptions")
+                CloseComboMenu()
+
+                ' Hide/show chat window
+                'If Windows("winChat").Visible Then
+                '   Windows("winChat").Controls("txtChat").Text = ""
+                'HideChat()
+                'inSmallChat = True
+                'Exit Sub
+                'End If
+
+                'If Windows("winEscMenu").Visible Then
+                ' Hide it
+                'HideWindow("winBlank")
+                'HideWindow("winEscMenu")
+                'else
+                ' Show them
+                'ShowWindow("winBlank", True)
+                ' ShowWindow("winEscMenu", True)
+                'End If
+
+                ' Exit early
+                Exit Sub
+
+            Case 105
+                ' Hide/show inventory
+                'If Not Windows("winChat").Visible Then
+                ' btnMenu_Inv()
+                'End If
+
+            Case 99
+                ' Hide/show inventory
+                'If Not Windows("winChat").Visible Then
+                ' btnMenu_Char()
+               ' End If
+
+            Case 109
+                ' Hide/show skills
+                'If Not Windows("winChat").Visible Then
+                ' btnMenu_Skills()
+                ' End If
+        End Select
+
         If (ChatInput.ProcessKey(e)) Then
             If (e.Code = Keys.Enter) Then
                 HandlePressEnter()

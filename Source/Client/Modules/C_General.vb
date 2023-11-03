@@ -18,17 +18,11 @@ Module C_General
 
     Friend Sub LoadGame()
         SettingsManager.Load()
-        FrmMenu.chkRememberPassword.Checked = Types.Settings.SaveUsername
-        FrmMenu.txtLogin.Text = Types.Settings.Username
-        frmMenu.txtPassword.Text = Types.Settings.Password
         LoadLanguage()
         InputManager.Load()
         LoadGraphics()
         InitNetwork()
         InitInterface()
-        FrmMenu.Text = Types.Settings.GameName
-        FrmMenu.Visible = True
-        Frmmenuvisible = True
         Ping = -1
     End Sub
 
