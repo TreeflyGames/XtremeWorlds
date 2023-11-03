@@ -1062,7 +1062,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 6, 13, 13, "", , , , , , 8, 9, 10, , , , , , New Action(AddressOf btnReturnMain_Click))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf btnReturnMain_Click))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 270, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
