@@ -56,8 +56,6 @@ Module C_GameLogic
                 End If
             End If
 
-            UpdateUi()
-
             If GameStarted() = True Then
                 Frmmaingamevisible = True
 
@@ -296,7 +294,6 @@ Module C_GameLogic
                 End If
                 fadetmr = tick + 30
             End If
-
 
             renderFrame = True
             tmpfps = tmpfps + 1

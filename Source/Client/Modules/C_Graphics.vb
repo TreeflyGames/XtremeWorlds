@@ -353,17 +353,18 @@ Module C_Graphics
                 ' Check for active control
                 If Windows(activeWindow).ActiveControl > 0 Then
                     ' Handle input
-                    Dim control = Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl)
-
                     Select Case e.Code
-                        Case Keys.Back
-                            If control.Text.Length > 0 Then
-                                control.Text = control.Text.Substring(0, control.Text.Length - 1)
+                        Case Keyboard.Key.Escape
+
+                        Case Keyboard.Key.Backspace
+                            If Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Length > 0 Then
+                                Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text = Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Substring(0, Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Length - 1)
                             End If
-                        Case Keys.Enter
+                        
+                        Case Keyboard.Key.Enter
                             ' Override for function callbacks
-                            If Not control.CallBack(EntState.Enter) IsNot Nothing Then
-                                control.CallBack(EntState.Enter) = Nothing
+                            If Not Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) IsNot Nothing Then
+                                Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) = Nothing
                                 Exit Sub
                             Else
                                 Dim n As Integer = 0
@@ -380,7 +381,7 @@ Module C_Graphics
                                 End If
                             End If
 
-                        Case Keys.Tab
+                        Case Keyboard.Key.Tab
                             Dim n As Integer = 0
                             For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
                                 If i > Windows(activeWindow).ActiveControl Then
@@ -393,8 +394,8 @@ Module C_Graphics
                                     SetActiveControl(activeWindow, i)
                                 Next
                             End If
-                        Case Else
-                            control.Text &= ChrW(e.Code)
+                        'Case Else
+                            'Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= ChrW(e.Code)
                     End Select
 
                     ' Exit early if not in the chat window
@@ -682,8 +683,37 @@ Module C_Graphics
         HandleInterfaceEvents(EntState.MouseMove)
     End Sub
 
-    Private Sub GameWindow_TextEntered(ByVal sender As Object, ByVal e As SFML.Window.TextEventArgs)
-        Console.WriteLine("Text Entered: " & e.Unicode)
+    Private Sub GameWindow_TextEntered(sender As Object, e As TextEventArgs)
+        ' e.Unicode is a string, so no conversion is needed
+        Dim unicodeChar As String = e.Unicode
+
+        ' Get the first character of the string as a Char
+        Dim character As Char = unicodeChar(0)
+
+        ' Ignore Backspace (ChrW(8)), Enter (ChrW(13)), Tab (ChrW(9)), and Escape (ChrW(27)) keys
+        If character = ChrW(8) OrElse character = ChrW(13) OrElse character = ChrW(9) OrElse character = ChrW(27) Then
+            Return
+        End If
+
+        ' Convert the character to its UInteger Unicode code point
+        Dim unicodeValue As UInteger = Convert.ToUInt32(character)
+
+        ' Handle only ASCII characters
+        If unicodeValue < 128 Then
+            Console.WriteLine("ASCII character typed: " & character)
+        
+            ' Check for active window
+            If activeWindow > 0 Then
+                ' Ensure it's visible
+                If Windows(activeWindow).Window.Visible Then
+                    ' Check for active control
+                    If Windows(activeWindow).ActiveControl > 0 Then
+                        ' Append character to text of the active control
+                        Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= character
+                    End If
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub GameWindow_Closed(ByVal sender As Object, ByVal e As EventArgs)
@@ -1888,7 +1918,7 @@ Module C_Graphics
         UpdateCamera()
 
         'Clear each of our render targets
-        GameWindow.DispatchEvents()
+        GameWindow.WaitAndDispatchEvents()
         GameWindow.Clear(Color.Black)
 
         'If CurMouseX > 0 AndAlso CurMouseX <= GameWindow.Size.X Then
