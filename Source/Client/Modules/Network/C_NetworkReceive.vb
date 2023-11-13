@@ -145,22 +145,13 @@ Module C_NetworkReceive
         Dim msg As String
         Dim buffer As New ByteStream(data)
 
-        If FrmMenu.Visible = False Then
-            Frmmenuvisible = True
-            Frmmaingamevisible = False
-        End If
-
-        PnlCharCreateVisible = False
-        PnlLoginVisible = False
-        PnlRegisterVisible = False
-        PnlCharSelectVisible = False
-
         msg = buffer.ReadString()
 
         buffer.Dispose()
 
+        InitNetwork()
+
         MsgBox(msg, vbOKOnly, Types.Settings.GameName)
-        DestroyGame
     End Sub
 
     Private Sub Packet_KeyPair(ByRef data() As Byte)
