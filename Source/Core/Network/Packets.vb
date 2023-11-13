@@ -252,7 +252,6 @@
         SAdmin
         SMapNames
         SCritical
-        SNews
         SrClick
 
         'quests

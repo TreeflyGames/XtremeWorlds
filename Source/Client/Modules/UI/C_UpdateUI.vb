@@ -5,21 +5,7 @@ Module C_UpdateUI
 #Region "Defines"
 
     Friend GameDestroyed As Boolean
-    Friend ReloadFrmMain As Boolean
-    Friend PnlRegisterVisible As Boolean
-    Friend PnlCharCreateVisible As Boolean
-    Friend PnlLoginVisible As Boolean
-    Friend PnlCreditsVisible As Boolean
-    Friend Frmmenuvisible As Boolean
-    Friend Frmmaingamevisible As Boolean
-    Friend Lblnextcharleft As Integer
-    Friend CmbJob() As String
     Friend TxtChatAdd As String
-    Friend ChkSaveUsernameChecked As Boolean
-    Friend TempUserName As String
-    Friend TempPassword As String
-    Friend PnlCharSelectVisible As Boolean
-    Friend DrawCharSelect As Boolean
 
     'Mapreport
     Friend UpdateMapnames As Boolean
@@ -297,86 +283,6 @@ Module C_UpdateUI
 #End Region
 
     Sub UpdateUi()
-        If ReloadFrmMain = True Then
-            ReloadFrmMain = False
-        End If
-
-        If UpdateNews = True Then
-            FrmMenu.lblNews.Text = News
-            FrmMenu.Text = Types.Settings.GameName
-            FrmGame.Text = Types.Settings.GameName
-            UpdateNews = False
-        End If
-
-        If PnlRegisterVisible <> FrmMenu.pnlRegister.Visible Then
-            FrmMenu.pnlRegister.Visible = PnlRegisterVisible
-            FrmMenu.pnlRegister.BringToFront()
-        End If
-
-        If DrawChar = True Then
-            FrmMenu.DrawCharacter()
-            DrawChar = False
-        End If
-
-        If PnlCharCreateVisible <> FrmMenu.pnlNewChar.Visible Then
-            FrmMenu.pnlNewChar.Visible = PnlCharCreateVisible
-            FrmMenu.pnlNewChar.BringToFront()
-            DrawChar = True
-        End If
-
-        If Not CmbJob Is Nothing Then
-            FrmMenu.cmbJob.Items.Clear()
-
-            For i = 1 To UBound(CmbJob)
-                If CmbJob(i) <> "" Then
-                    FrmMenu.cmbJob.Items.Add(CmbJob(i))
-                End If
-            Next
-
-            If FrmMenu.cmbJob.Items.Count = 0 Then
-                FrmMenu.cmbJob.Items.Add("None")
-            End If
-
-            FrmMenu.cmbJob.SelectedIndex = 0
-
-            FrmMenu.rdoMale.Checked = True
-
-            FrmMenu.txtCharName.Focus()
-
-            CmbJob = Nothing
-        End If
-
-        If PnlLoginVisible <> FrmMenu.pnlLogin.Visible Then
-            FrmMenu.pnlLogin.Visible = PnlLoginVisible
-            If PnlLoginVisible Then
-                FrmMenu.txtLogin.Focus()
-            End If
-        End If
-
-        If PnlCreditsVisible <> FrmMenu.pnlCredits.Visible Then
-            FrmMenu.pnlCredits.Visible = PnlCreditsVisible
-        End If
-
-        If Frmmenuvisible <> FrmMenu.Visible Then
-            FrmMenu.Visible = Frmmenuvisible
-        End If
-
-        If DrawCharSelect Then
-            FrmMenu.DrawCharacterSelect()
-            DrawCharSelect = False
-        End If
-
-        If PnlCharSelectVisible <> FrmMenu.pnlCharSelect.Visible Then
-            FrmMenu.pnlCharSelect.Visible = PnlCharSelectVisible
-            If PnlCharSelectVisible Then
-                DrawCharSelect = True
-            End If
-        End If
-
-        If Frmmaingamevisible <> FrmGame.Visible Then
-            FrmGame.Visible = Frmmaingamevisible
-        End If
-
         If InitPetEditor = True Then
             With frmEditor_Pet
                 Editor = EditorType.Pet

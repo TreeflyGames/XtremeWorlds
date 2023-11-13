@@ -3,7 +3,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <TargetFramework>net6.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Client.FrmMenu</StartupObject>
+    <StartupObject>Client.FrmGame</StartupObject>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <MyType>WindowsForms</MyType>
@@ -106,9 +106,6 @@
     </Compile>
     <Compile Update="Forms\Game\frmGame.Designer.vb">
       <DependentUpon>FrmGame.vb</DependentUpon>
-    </Compile>
-    <Compile Update="Forms\Game\frmMenu.Designer.vb">
-      <DependentUpon>FrmMenu.vb</DependentUpon>
     </Compile>
     <Compile Update="Forms\Game\frmOptions.Designer.vb">
       <DependentUpon>FrmOptions.vb</DependentUpon>

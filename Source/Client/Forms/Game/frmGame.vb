@@ -8,13 +8,15 @@ Friend Class FrmGame
         Dim screenHeight As String = Screen.PrimaryScreen.Bounds.Height.ToString()
         Dim resolution As String()
 
+        Startup()
+
         If Types.Settings.Fullscreen = 0 Then
             screenWidth = Types.Settings.Width
             screenHeight = Types.Settings.Height
         Else
             FormBorderStyle = 0
         End If
-       
+
         RePositionGui(screenWidth, screenHeight)
     End Sub
 

@@ -1077,20 +1077,6 @@ End Sub
         buffer.Dispose()
     End Sub
 
-    Sub SendNews(index As Integer)
-        Dim buffer As New ByteStream(4)
-
-        buffer.WriteInt32(ServerPackets.SNews)
-
-        buffer.WriteString(Types.Settings.GameName.Trim)
-        buffer.WriteString(Types.Settings.Website.Trim)
-        buffer.WriteString(GetFileContents(Paths.Database & "News.txt").Trim)
-
-        Socket.SendDataTo(index, buffer.Data, buffer.Head)
-
-        buffer.Dispose()
-    End Sub
-
     Sub SendRightClick(index As Integer)
         Dim buffer As New ByteStream(4)
 

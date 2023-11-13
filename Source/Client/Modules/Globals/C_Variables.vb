@@ -171,11 +171,6 @@ Module C_Variables
     Friend DialogButton1Text As String
     Friend DialogButton2Text As String
 
-    'store news here
-    Friend News As String
-
-    Friend UpdateNews As Boolean
-
     Friend ShakeTimerEnabled As Boolean
     Friend ShakeTimer As Integer
     Friend ShakeCount As Byte

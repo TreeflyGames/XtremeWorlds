@@ -35,30 +35,7 @@ Module C_GameLogic
             DirLeft = VbKeyLeft
             DirRight = VbKeyRight
 
-            If Frmmenuvisible = True Then
-                If tmrconnect < GetTickCount() Then
-                    If Socket?.IsConnected() = True Then
-                        FrmMenu.lblServerStatus.ForeColor = Color.LightGreen
-                        FrmMenu.lblServerStatus.Text = Language.MainMenu.ServerOnline
-                    Else
-                        i = i + 1
-                        If i = 5 Then
-                            Connect()
-                            FrmMenu.lblServerStatus.Text = Language.MainMenu.ServerReconnect
-                            FrmMenu.lblServerStatus.ForeColor = Color.Orange
-                            i = 0
-                        Else
-                            FrmMenu.lblServerStatus.Text = Language.MainMenu.ServerOffline
-                            FrmMenu.lblServerStatus.ForeColor = Color.Red
-                        End If
-                    End If
-                    tmrconnect = GetTickCount() + 500
-                End If
-            End If
-
             If GameStarted() = True Then
-                Frmmaingamevisible = True
-
                 'Calculate FPS
                 If starttime < tick Then
                     Fps = tmpfps

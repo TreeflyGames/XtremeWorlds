@@ -79,7 +79,6 @@ Module C_NetworkReceive
         Socket.PacketId(ServerPackets.SMapNames) = AddressOf Packet_MapNames
 
         Socket.PacketId(ServerPackets.SCritical) = AddressOf Packet_Critical
-        Socket.PacketId(ServerPackets.SNews) = AddressOf Packet_News
         Socket.PacketId(ServerPackets.SrClick) = AddressOf Packet_RClick
 
         'hotbar
@@ -174,14 +173,10 @@ Module C_NetworkReceive
         Dim charName As String, sprite As Integer
         Dim level As Integer, jobName As String, sex As Byte
 
-        ' save options
-        Types.Settings.SaveUsername = ChkSaveUsernameChecked
-        Types.Settings.Username = Trim$(TempUserName)
-
-        InputManager.Save()
-
         Dim buffer As New ByteStream(data)
 
+        Types.Settings.Username = Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Value
+        SettingsManager.Save()
         SelectedChar = 1
 
         'reset for deleting chars
@@ -208,20 +203,6 @@ Module C_NetworkReceive
         Next
 
         buffer.Dispose()
-
-        ' Used for if the player is creating a new character
-        Frmmenuvisible = True
-        PnlCreditsVisible = False
-        PnlRegisterVisible = False
-        PnlCharCreateVisible = False
-        PnlLoginVisible = False
-
-        PnlCharSelectVisible = True
-
-        FrmMenu.DrawCharacter()
-
-        DrawCharSelect = True
-
     End Sub
 
     Sub Packet_NewCharJob(ByRef data() As Byte)
@@ -254,21 +235,6 @@ Module C_NetworkReceive
         Next
 
         buffer.Dispose()
-
-        ' Used for if the player is creating a new character
-        Frmmenuvisible = True
-        PnlCreditsVisible = False
-        PnlRegisterVisible = False
-        PnlCharCreateVisible = True
-        PnlLoginVisible = False
-
-        ReDim CmbJob(MAX_JOBS)
-
-        For i = 1 To MAX_JOBS
-            CmbJob(i) = Job(i).Name
-        Next
-
-        FrmMenu.DrawCharacter()
     End Sub
 
     Sub Packet_JobData(ByRef data() As Byte)
@@ -299,13 +265,6 @@ Module C_NetworkReceive
             End With
 
         Next
-
-        ReDim CmbJob(MAX_JOBS)
-        For i = 1 To MAX_JOBS
-            CmbJob(i) = Job(i).Name
-        Next
-
-        FrmMenu.DrawCharacter()
 
         buffer.Dispose()
     End Sub
@@ -1045,17 +1004,6 @@ Module C_NetworkReceive
     Private Sub Packet_Critical(ByRef data() As Byte)
         ShakeTimerEnabled = True
         ShakeTimer = GetTickCount()
-    End Sub
-
-    Private Sub Packet_News(ByRef data() As Byte)
-        Dim buffer As New ByteStream(data)
-        Types.Settings.GameName = buffer.ReadString
-        Types.Settings.Website = buffer.ReadString
-        News = buffer.ReadString
-
-        UpdateNews = True
-
-        buffer.Dispose()
     End Sub
 
     Private Sub Packet_RClick(ByRef data() As Byte)

@@ -81,7 +81,6 @@ Friend Module S_NetworkConfig
     Friend Sub Socket_ConnectionReceived(index As Integer) Handles Socket.ConnectionReceived
         Console.WriteLine("Connection received on index[" & index & "] - IP[" & Socket.ClientIp(index) & "]")
         SendKeyPair(index)
-        SendNews(index)
     End Sub
 
     Friend Sub Socket_ConnectionLost(index As Integer) Handles Socket.ConnectionLost

@@ -118,39 +118,6 @@ Module C_General
         StopMusic()
     End Sub
 
-    Friend Sub MenuState(state As Integer)
-        Frmmenuvisible = False
-        Select Case state
-            Case MenuStateAddchar
-                PnlCharCreateVisible = False
-                PnlLoginVisible = False
-                PnlRegisterVisible = False
-                PnlCreditsVisible = False
-
-                If ConnectToServer(1) Then
-                    If FrmMenu.rdoMale.Checked = True Then
-                        SendAddChar(SelectedChar, FrmMenu.txtCharName.Text, SexType.Male, FrmMenu.cmbJob.SelectedIndex)
-                    Else
-                        SendAddChar(SelectedChar, FrmMenu.txtCharName.Text, SexType.Female, FrmMenu.cmbJob.SelectedIndex)
-                    End If
-                End If
-
-            Case MenuStateLogin
-                PnlLoginVisible = False
-                PnlCharCreateVisible = False
-                PnlRegisterVisible = False
-                PnlCreditsVisible = False
-                TempUserName = FrmMenu.txtLogin.Text
-                TempPassword = FrmMenu.txtPassword.Text
-
-                If ConnectToServer(1) Then
-                    SendLogin(FrmMenu.txtLogin.Text, FrmMenu.txtPassword.Text)
-                    Exit Sub
-                End If
-        End Select
-
-    End Sub
-
     Friend Function ConnectToServer(i As Integer) As Boolean
         Dim until As Integer
         ConnectToServer = False
