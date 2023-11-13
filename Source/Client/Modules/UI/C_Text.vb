@@ -28,7 +28,7 @@ Module C_Text
                 backString = New Text(text, Fonts(0))
                 frontString = New Text(text, Fonts(0))                
 
-            Case Rockwell
+            Case Arial
                 backString = New Text(text, Fonts(1))
                 frontString = New Text(text, Fonts(1))
         End Select

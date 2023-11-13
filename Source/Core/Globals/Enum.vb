@@ -500,7 +500,7 @@
 
     Public Enum FontType
         Goergia = 0
-        Rockwell = 1
+        Arial = 1
     End Enum
 
 End Module

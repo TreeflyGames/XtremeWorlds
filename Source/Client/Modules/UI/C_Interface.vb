@@ -1024,22 +1024,22 @@ Module C_Interface
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", Rockwell, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
 
         ' Labels
-        CreateLabel(WindowCount, "lblUsername", 72, 39, 142, 0, "Username", Rockwell, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblPassword", 72, 75, 142, 0, "Password", Rockwell, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblUsername", 72, 39, 142, 0, "Username", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblPassword", 72, 75, 142, 0, "Password", Arial, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Types.Settings.Username, Rockwell, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, "", Rockwell, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Types.Settings.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Rockwell, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Arial, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
 
         ' Register Button
-        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
+        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
 
         ' Set the active control
         If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Text) > 0 Then
@@ -1074,22 +1074,22 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_5", 67, 187, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 68, 262, 67, 22, "Create", Rockwell, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
-        CreateButton(WindowCount, "btnExit", 142, 262, 67, 22, "Back", Rockwell, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
+        CreateButton(WindowCount, "btnAccept", 68, 262, 67, 22, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
+        CreateButton(WindowCount, "btnExit", 142, 262, 67, 22, "Back", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
 
         ' Labels
-        CreateLabel(WindowCount, "lblUsername", 66, 39, 142, 19, "Username", Rockwell, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblPassword", 66, 75, 142, 19, "Password", Rockwell, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblPassword2", 66, 111, 142, 19, "Retype Password", Rockwell, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblCode", 66, 147, 142, 19, "Secret Code", Rockwell, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, 19, "Captcha", Rockwell, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblUsername", 66, 39, 142, 19, "Username", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblPassword", 66, 75, 142, 19, "Password", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblPassword2", 66, 111, 142, 19, "Retype Password", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblCode", 66, 147, 142, 19, "Secret Code", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, 19, "Captcha", Arial, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, "", Rockwell, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , , , New Action(AddressOf btnSendRegister_Click))
-        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", Rockwell, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True, , , New Action(AddressOf btnSendRegister_Click))
-        CreateTextbox(WindowCount, "txtPass2", 67, 127, 142, 19, "", Rockwell, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True, , , New Action(AddressOf btnSendRegister_Click))
-        CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, "", Rockwell, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False, , , New Action(AddressOf btnSendRegister_Click))
-        CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, "", Rockwell, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False, , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True, , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtPass2", 67, 127, 142, 19, "", Arial, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True, , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, "", Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False, , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, "", Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False, , , New Action(AddressOf btnSendRegister_Click))
 
         ' CreatePictureBox(WindowCount, "picCaptcha", 67, 199, 156, 30, , , , , Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 

@@ -16,7 +16,7 @@ Module C_Graphics
     Friend EditorAnimation_Anim1 As RenderWindow
     Friend EditorAnimation_Anim2 As RenderWindow
 
-    Friend Fonts(1) as Font
+    Friend Fonts(1) As Font
 
     Friend CursorGfx As Texture
     Friend CursorSprite As Sprite
@@ -743,7 +743,7 @@ Module C_Graphics
         AddHandler GameWindow.MouseWheelScrolled, AddressOf GameWindow_MouseWheelScrolled
 
         Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
-        'Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Rockwell)
+        Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Arial)
 
         ReDim TileSetImgsGFX(NumTileSets)
         ReDim TileSetTexture(NumTileSets)

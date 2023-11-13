@@ -15,7 +15,7 @@ Module C_Constants
 
     ' Font variables
     Friend Const Georgia As String = "Georgia.ttf"
-    Friend Const Rockwell As String = "ROCK.TTF"
+    Friend Const Arial As String = "Arial.ttf"
     Friend Const FontSize As Byte = 11
 
     ' Log Path and variables
