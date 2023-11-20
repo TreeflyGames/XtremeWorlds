@@ -18,11 +18,6 @@ Module S_NetworkSend
             buffer.WriteInt32(0)
         End If
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
-
-        If kick Then
-            Call HandleCloseSocket(index)
-        End If
-
         buffer.Dispose()
     End Sub
 
@@ -856,7 +851,6 @@ End Sub
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SClearTradeTimer)
-
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -866,9 +860,7 @@ End Sub
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.STradeInvite)
-
         buffer.WriteInt32(Tradeindex)
-
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()

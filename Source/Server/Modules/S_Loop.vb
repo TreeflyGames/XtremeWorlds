@@ -571,11 +571,6 @@ Module S_Loop
 
     End Function
 
-    Friend Function HandleCloseSocket(index As Integer) As Boolean
-        Socket.Disconnect(index)
-        HandleCloseSocket = True
-    End Function
-
     Friend Function HandlePetSkill(index As Integer) As Boolean
         PetCastSkill(index, TempPlayer(index).PetskillBuffer.Skill, TempPlayer(index).PetskillBuffer.Target, TempPlayer(index).PetskillBuffer.TargetTypes, True)
         TempPlayer(index).PetskillBuffer.Skill = 0

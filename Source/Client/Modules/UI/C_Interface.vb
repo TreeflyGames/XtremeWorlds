@@ -1050,7 +1050,6 @@ Module C_Interface
     End Sub
 
     Public Sub CreateWindow_Register()
-
         ' Create the window
         CreateWindow("winRegister", "Register", zOrder_Win, 0, 0, 276, 302, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
@@ -1097,11 +1096,8 @@ Module C_Interface
     End Sub
 
     Public Sub CreateWindow_Dialogue()
-        ' Create black background
-        'CreateWindow("winBlank", "", zOrder_Win, 0, 0, 800, 600, 0, , , , DesignType.Win_Black, DesignType.Win_Black, DesignType.Win_Black, , , , , , , , , False)
-
         ' Create dialogue window
-        CreateWindow("winDialogue", "Warning", zOrder_Win, 0, 0, 348, 145, 38, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm, , , , , , , , , , False)
+        CreateWindow("winDialogue", "Warning", zOrder_Win, 0, 0, 348, 145, 38, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm, , , , , , , , , False)
 
         ' Centralise it
         CentralizeWindow(WindowCount)
@@ -1119,17 +1115,17 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow", 103, 44, 144, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         CreateLabel(WindowCount, "lblHeader", 103, 41, 144, 9, "Header", Arial, AlignmentType.Center)
 
+        ' Input
+        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, "", Arial, AlignmentType.Center, , , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
+
         ' Labels
-        CreateLabel(WindowCount, "lblBody_1", 15, 60, 314, 9, "Invalid username or password.", Arial, , AlignmentType.Center)
-        CreateLabel(WindowCount, "lblBody_2", 15, 75, 314, 9, "Please try again!", Arial, , AlignmentType.Center)
+        CreateLabel(WindowCount, "lblBody_1", 15, 60, 314, 9, "Invalid username or password.", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblBody_2", 15, 75, 314, 9, "Please try again!", Arial, AlignmentType.Center)
 
         ' Buttons
         CreateButton(WindowCount, "btnYes", 104, 98, 68, 24, "Yes", Arial, , , , False, , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Yes))
         CreateButton(WindowCount, "btnNo", 180, 98, 68, 24, "No", Arial, , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf Dialogue_No))
         CreateButton(WindowCount, "btnOkay", 140, 98, 68, 24, "Okay", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Okay))
-
-        ' Input
-        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, "", Arial, AlignmentType.Center, , , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
 
         ' Set active control
         SetActiveControl(WindowCount, GetControlIndex("winDialogue", "txtInput"))

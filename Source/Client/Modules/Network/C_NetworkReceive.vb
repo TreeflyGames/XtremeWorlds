@@ -205,7 +205,7 @@ Module C_NetworkReceive
         SettingsManager.Save()
         SelectedChar = 1
 
-        'reset for deleting chars
+        ' Reset for deleting chars
         For i = 1 To MAX_CHARACTERS
             CharSelection(i).Name = ""
             CharSelection(i).Sprite = 0

@@ -1279,7 +1279,6 @@ Continue1:
 
     Public Sub CloseDialogue()
         diaIndex = 0
-        HideWindow(GetWindowIndex("winBlank"))
         HideWindow(GetWindowIndex("winDialogue"))
     End Sub
 
@@ -1322,7 +1321,6 @@ Continue1:
         diaStyle = style
 
         ' make the windows visible
-        ShowWindow(GetWindowIndex("winBlank"), True)
         ShowWindow(GetWindowIndex("winDialogue"), True)
     End Sub
 
