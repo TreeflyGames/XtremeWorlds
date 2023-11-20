@@ -456,11 +456,11 @@ End Sub
 
     Friend WithEvents DarkGroupBox1 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents DarkGroupBox2 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstIndex As Windows.Forms.ListBox
+    Friend WithEvents lstIndex As System.Windows.Forms.ListBox
     Friend WithEvents txtName As DarkUI.Controls.DarkTextBox
     Friend WithEvents DarkLabel1 As DarkUI.Controls.DarkLabel
     Friend WithEvents DarkGroupBox3 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents picSprite0 As Windows.Forms.PictureBox
+    Friend WithEvents picSprite0 As System.Windows.Forms.PictureBox
     Friend WithEvents lblLoopCount0 As DarkUI.Controls.DarkLabel
     Friend WithEvents lblSprite0 As DarkUI.Controls.DarkLabel
     Friend WithEvents lblLoopTime0 As DarkUI.Controls.DarkLabel
@@ -470,7 +470,7 @@ End Sub
     Friend WithEvents lblFrameCount1 As DarkUI.Controls.DarkLabel
     Friend WithEvents lblLoopCount1 As DarkUI.Controls.DarkLabel
     Friend WithEvents lblSprite1 As DarkUI.Controls.DarkLabel
-    Friend WithEvents picSprite1 As Windows.Forms.PictureBox
+    Friend WithEvents picSprite1 As System.Windows.Forms.PictureBox
     Friend WithEvents btnSave As DarkUI.Controls.DarkButton
     Friend WithEvents btnDelete As DarkUI.Controls.DarkButton
     Friend WithEvents btnCancel As DarkUI.Controls.DarkButton

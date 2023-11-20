@@ -546,7 +546,7 @@ Partial Class frmEditor_Resource
 End Sub
 
     Friend WithEvents DarkGroupBox1 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstIndex As Windows.Forms.ListBox
+    Friend WithEvents lstIndex As System.Windows.Forms.ListBox
     Friend WithEvents DarkGroupBox2 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents DarkLabel3 As DarkUI.Controls.DarkLabel
     Friend WithEvents txtMessage2 As DarkUI.Controls.DarkTextBox
@@ -559,8 +559,8 @@ End Sub
     Friend WithEvents nudHealth As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel5 As DarkUI.Controls.DarkLabel
     Friend WithEvents DarkGroupBox3 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents picExhaustedPic As Windows.Forms.PictureBox
-    Friend WithEvents picNormalpic As Windows.Forms.PictureBox
+    Friend WithEvents picExhaustedPic As System.Windows.Forms.PictureBox
+    Friend WithEvents picNormalpic As System.Windows.Forms.PictureBox
     Friend WithEvents nudExhaustedPic As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents nudNormalPic As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel7 As DarkUI.Controls.DarkLabel

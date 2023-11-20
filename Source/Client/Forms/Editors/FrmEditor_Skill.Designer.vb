@@ -870,7 +870,7 @@ Partial Class frmEditor_Skill
 End Sub
 
     Friend WithEvents DarkGroupBox1 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstIndex As Windows.Forms.ListBox
+    Friend WithEvents lstIndex As System.Windows.Forms.ListBox
     Friend WithEvents DarkGroupBox2 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents DarkGroupBox3 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents txtName As DarkUI.Controls.DarkTextBox
@@ -891,7 +891,7 @@ End Sub
     Friend WithEvents nudCool As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel8 As DarkUI.Controls.DarkLabel
     Friend WithEvents DarkLabel9 As DarkUI.Controls.DarkLabel
-    Friend WithEvents picSprite As Windows.Forms.PictureBox
+    Friend WithEvents picSprite As System.Windows.Forms.PictureBox
     Friend WithEvents nudIcon As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents chkProjectile As DarkUI.Controls.DarkCheckBox
     Friend WithEvents cmbProjectile As DarkUI.Controls.DarkComboBox

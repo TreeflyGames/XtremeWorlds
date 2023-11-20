@@ -391,20 +391,20 @@ Partial Class frmEditor_Shop
 End Sub
 
     Friend WithEvents DarkGroupBox1 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstIndex As Windows.Forms.ListBox
+    Friend WithEvents lstIndex As System.Windows.Forms.ListBox
     Friend WithEvents DarkGroupBox2 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents txtName As DarkUI.Controls.DarkTextBox
     Friend WithEvents DarkLabel1 As DarkUI.Controls.DarkLabel
-    Friend WithEvents picFace As Windows.Forms.PictureBox
+    Friend WithEvents picFace As System.Windows.Forms.PictureBox
     Friend WithEvents nudFace As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel2 As DarkUI.Controls.DarkLabel
     Friend WithEvents DarkLabel4 As DarkUI.Controls.DarkLabel
     Friend WithEvents nudBuy As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel3 As DarkUI.Controls.DarkLabel
     Friend WithEvents DarkGroupBox3 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstTradeItem As Windows.Forms.ListBox
     Friend WithEvents cmbItem As DarkUI.Controls.DarkComboBox
     Friend WithEvents DarkLabel5 As DarkUI.Controls.DarkLabel
+    Friend WithEvents lstTradeItem As ListBox
     Friend WithEvents nudItemValue As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel6 As DarkUI.Controls.DarkLabel
     Friend WithEvents DarkLabel7 As DarkUI.Controls.DarkLabel

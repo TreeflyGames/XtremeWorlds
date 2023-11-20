@@ -785,11 +785,11 @@ Partial Class frmEditor_Pet
 End Sub
 
     Friend WithEvents DarkGroupBox1 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstIndex As Windows.Forms.ListBox
+    Friend WithEvents lstIndex As System.Windows.Forms.ListBox
     Friend WithEvents DarkGroupBox2 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents txtName As DarkUI.Controls.DarkTextBox
     Friend WithEvents DarkLabel1 As DarkUI.Controls.DarkLabel
-    Friend WithEvents picSprite As Windows.Forms.PictureBox
+    Friend WithEvents picSprite As System.Windows.Forms.PictureBox
     Friend WithEvents DarkLabel2 As DarkUI.Controls.DarkLabel
     Friend WithEvents nudSprite As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel3 As DarkUI.Controls.DarkLabel
@@ -797,7 +797,7 @@ End Sub
     Friend WithEvents DarkGroupBox3 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents optCustomStats As DarkUI.Controls.DarkRadioButton
     Friend WithEvents optAdoptStats As DarkUI.Controls.DarkRadioButton
-    Friend WithEvents pnlCustomStats As Windows.Forms.Panel
+    Friend WithEvents pnlCustomStats As System.Windows.Forms.Panel
     Friend WithEvents nudVitality As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel6 As DarkUI.Controls.DarkLabel
     Friend WithEvents nudEndurance As DarkUI.Controls.DarkNumericUpDown
@@ -815,7 +815,7 @@ End Sub
     Friend WithEvents DarkGroupBox4 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents optLevel As DarkUI.Controls.DarkRadioButton
     Friend WithEvents optDoNotLevel As DarkUI.Controls.DarkRadioButton
-    Friend WithEvents pnlPetlevel As Windows.Forms.Panel
+    Friend WithEvents pnlPetlevel As System.Windows.Forms.Panel
     Friend WithEvents nudPetExp As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel11 As DarkUI.Controls.DarkLabel
     Friend WithEvents DarkLabel13 As DarkUI.Controls.DarkLabel

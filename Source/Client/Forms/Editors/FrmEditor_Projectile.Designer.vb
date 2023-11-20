@@ -268,11 +268,11 @@ Partial Class frmEditor_Projectile
 End Sub
 
     Friend WithEvents DarkGroupBox1 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstIndex As Windows.Forms.ListBox
+    Friend WithEvents lstIndex As System.Windows.Forms.ListBox
     Friend WithEvents DarkGroupBox2 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents txtName As DarkUI.Controls.DarkTextBox
     Friend WithEvents DarkLabel1 As DarkUI.Controls.DarkLabel
-    Friend WithEvents picProjectile As Windows.Forms.PictureBox
+    Friend WithEvents picProjectile As System.Windows.Forms.PictureBox
     Friend WithEvents nudRange As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents nudPic As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel2 As DarkUI.Controls.DarkLabel

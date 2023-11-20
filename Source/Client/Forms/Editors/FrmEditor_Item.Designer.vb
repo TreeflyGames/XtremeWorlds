@@ -1386,7 +1386,7 @@ Partial Class frmEditor_Item
     End Sub
 
     Friend WithEvents DarkGroupBox1 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstIndex As Windows.Forms.ListBox
+    Friend WithEvents lstIndex As System.Windows.Forms.ListBox
     Friend WithEvents DarkLabel1 As DarkUI.Controls.DarkLabel
     Friend WithEvents fraEquipment As DarkUI.Controls.DarkGroupBox
     Friend WithEvents cmbTool As DarkUI.Controls.DarkComboBox
@@ -1414,7 +1414,7 @@ Partial Class frmEditor_Item
     Friend WithEvents DarkLabel22 As DarkUI.Controls.DarkLabel
     Friend WithEvents nudPaperdoll As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel23 As DarkUI.Controls.DarkLabel
-    Friend WithEvents picPaperdoll As Windows.Forms.PictureBox
+    Friend WithEvents picPaperdoll As System.Windows.Forms.PictureBox
     Friend WithEvents btnBasics As DarkUI.Controls.DarkButton
     Friend WithEvents btnRequirements As DarkUI.Controls.DarkButton
     Friend WithEvents fraRequirements As DarkUI.Controls.DarkGroupBox

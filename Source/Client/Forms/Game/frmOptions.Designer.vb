@@ -258,19 +258,19 @@ Partial Class FrmOptions
         Me.PerformLayout
 
 End Sub
-    Friend WithEvents btnSaveSettings As Windows.Forms.Button
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents cmbScreenSize As Windows.Forms.ComboBox
-    Friend WithEvents lblVolume As Windows.Forms.Label
-    Friend WithEvents scrlVolume As Windows.Forms.HScrollBar
-    Friend WithEvents GroupBox2 As Windows.Forms.GroupBox
-    Friend WithEvents optSOff As Windows.Forms.RadioButton
-    Friend WithEvents optSOn As Windows.Forms.RadioButton
-    Friend WithEvents GroupBox1 As Windows.Forms.GroupBox
-    Friend WithEvents optMOff As Windows.Forms.RadioButton
-    Friend WithEvents optMOn As Windows.Forms.RadioButton
-    Friend WithEvents chkVsync As Windows.Forms.CheckBox
-    Friend WithEvents chkNpcBars As Windows.Forms.CheckBox
+    Friend WithEvents btnSaveSettings As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents cmbScreenSize As System.Windows.Forms.ComboBox
+    Friend WithEvents lblVolume As System.Windows.Forms.Label
+    Friend WithEvents scrlVolume As System.Windows.Forms.HScrollBar
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents optSOff As System.Windows.Forms.RadioButton
+    Friend WithEvents optSOn As System.Windows.Forms.RadioButton
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents optMOff As System.Windows.Forms.RadioButton
+    Friend WithEvents optMOn As System.Windows.Forms.RadioButton
+    Friend WithEvents chkVsync As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNpcBars As System.Windows.Forms.CheckBox
     Friend WithEvents chkFullscreen As CheckBox
     Friend WithEvents chkOpenAdminPanelOnLogin As CheckBox
     Friend WithEvents chkDynamicLighting As CheckBox

@@ -713,12 +713,12 @@ Partial Class frmEditor_Job
     Friend WithEvents DarkLabel1 As DarkUI.Controls.DarkLabel
     Friend WithEvents txtDescription As DarkUI.Controls.DarkTextBox
     Friend WithEvents DarkLabel2 As DarkUI.Controls.DarkLabel
-    Friend WithEvents lstIndex As Windows.Forms.ListBox
+    Friend WithEvents lstIndex As System.Windows.Forms.ListBox
     Friend WithEvents DarkGroupBox4 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents DarkGroupBox3 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents picMale As Windows.Forms.PictureBox
+    Friend WithEvents picMale As System.Windows.Forms.PictureBox
     Friend WithEvents DarkLabel4 As DarkUI.Controls.DarkLabel
-    Friend WithEvents picFemale As Windows.Forms.PictureBox
+    Friend WithEvents picFemale As System.Windows.Forms.PictureBox
     Friend WithEvents lblMaleSprite As DarkUI.Controls.DarkLabel
     Friend WithEvents btnCancel As DarkUI.Controls.DarkButton
     Friend WithEvents btnSave As DarkUI.Controls.DarkButton
@@ -740,7 +740,7 @@ Partial Class frmEditor_Job
     Friend WithEvents nudBaseExp As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel10 As DarkUI.Controls.DarkLabel
     Friend WithEvents DarkGroupBox6 As DarkUI.Controls.DarkGroupBox
-    Friend WithEvents lstStartItems As Windows.Forms.ListBox
+    Friend WithEvents lstStartItems As System.Windows.Forms.ListBox
     Friend WithEvents cmbItems As DarkUI.Controls.DarkComboBox
     Friend WithEvents DarkLabel11 As DarkUI.Controls.DarkLabel
     Friend WithEvents nudItemAmount As DarkUI.Controls.DarkNumericUpDown
