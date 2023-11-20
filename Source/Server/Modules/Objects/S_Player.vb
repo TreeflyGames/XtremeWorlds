@@ -895,13 +895,11 @@ Module S_Player
         If IsPlaying(index) = False OrElse MapNum <= 0 OrElse MapNum > MAX_CACHED_MAPS Then Exit Sub
 
         If Map(MapNum).Instanced = 1 And NoInstance = False Then
-            MapNum = CreateInstance(MapNum) ' AndAlso MAP_NUMBER_MASK)
+            MapNum = CreateInstance(MapNum)
             If MapNum = 0 Then
-                'Couldn't create instanced map!
                 MapNum = GetPlayerMap(index)
                 X = GetPlayerX(index)
                 Y = GetPlayerY(index)
-                AlertMsg(index, "Unable to create a cached map!")
             Else
                 'store old info, for returning to entrance of instance
                 If Not TempPlayer(index).InInstance = 1 Then

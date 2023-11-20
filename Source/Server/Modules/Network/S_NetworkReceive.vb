@@ -3,6 +3,7 @@ Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Core
 Imports Core.Network
+Imports System.Numerics
 
 Module S_NetworkReceive
     Friend Sub PacketRouter()
@@ -51,7 +52,7 @@ Module S_NetworkReceive
         Socket.PacketId(ClientPackets.CUnequip) = AddressOf Packet_Unequip
         Socket.PacketId(ClientPackets.CRequestPlayerData) = AddressOf Packet_RequestPlayerData
         Socket.PacketId(ClientPackets.CRequestItem) = AddressOf Packet_RequestItem
-        Socket.PacketId(ClientPackets.CRequestNPC) = AddressOf Packet_RequestNpc
+        Socket.PacketId(ClientPackets.CRequestNPC) = AddressOf Packet_RequestNPC
         Socket.PacketId(ClientPackets.CRequestResource) = AddressOf Packet_RequestResource
         Socket.PacketId(ClientPackets.CSpawnItem) = AddressOf Packet_SpawnItem
         Socket.PacketId(ClientPackets.CTrainStat) = AddressOf Packet_TrainStat
@@ -166,7 +167,7 @@ Module S_NetworkReceive
 
                 IP = Mid$(IP, 1, i)
                 If IsBanned(IP) Then
-                    AlertMsg(index, "You are banned, have a nice day!")
+                    AlertMsg(index, DialogueMsg.BANNED)
                 End If
 
                 ' Get the data
@@ -175,25 +176,81 @@ Module S_NetworkReceive
 
                 ' Check versions
                 If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
-                    AlertMsg(index, "Version outdated, please visit " & Types.Settings.Website)
+                    AlertMsg(index, DialogueMsg.OUTDATED)
                     Exit Sub
                 End If
 
                 If Api.Auth(username, password) = False Then
-                    AlertMsg(index, "Invalid username or password.")
+                    AlertMsg(index, DialogueMsg.WRONGPASS)
                     Exit Sub
                 End If
 
                 If IsMultiAccounts(index, username) Then
-                    AlertMsg(index, "Multiple account logins is not authorized.")
+                    AlertMsg(index, DialogueMsg.MUILTI)
                     Exit Sub
                 End If
 
                 LoadAccount(index, username)
-             
+
                 ' Show the player up on the socket status
                 Addlog(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
                 Console.WriteLine(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".")
+                SendJobs(index)
+                SendLoginOk(index)
+            End If
+        End If
+    End Sub
+
+    Private Sub Packet_Register(index As Integer, ByRef data() As Byte)
+        Dim username As String, IP As String
+        Dim password As String, i As Integer
+        Dim buffer As New ByteStream(data)
+
+        If Not IsPlaying(index) Then
+            If Not IsLoggedIn(index) Then
+
+                'check if its banned
+                ' Cut off last portion of ip
+                IP = Socket.ClientIp(index)
+
+                For i = Len(IP) To 1 Step -1
+
+                    If Mid$(IP, i, 1) = "." Then
+                        Exit For
+                    End If
+
+                Next
+
+                IP = Mid$(IP, 1, i)
+                If IsBanned(IP) Then
+                    AlertMsg(index, DialogueMsg.BANNED)
+                End If
+
+                ' Get the data
+                username = EKeyPair.DecryptString(buffer.ReadString()).ToLower
+                password = EKeyPair.DecryptString(buffer.ReadString())
+
+                ' Check versions
+                If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
+                    AlertMsg(index, DialogueMsg.OUTDATED)
+                    Exit Sub
+                End If
+
+                If Api.Auth(username, password) = False Then
+                    AlertMsg(index, DialogueMsg.WRONGPASS)
+                    Exit Sub
+                End If
+
+                If IsMultiAccounts(index, username) Then
+                    AlertMsg(index, DialogueMsg.MUILTI)
+                    Exit Sub
+                End If
+
+                LoadAccount(index, username)
+
+                ' Show the player up on the socket status
+                Addlog(GetPlayerLogin(index) & " has logged In from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
+                Console.WriteLine(GetPlayerLogin(index) & " has logged In from " & Socket.ClientIp(index) & ".")
                 SendJobs(index)
                 SendLoginOk(index)
             End If
@@ -232,18 +289,20 @@ Module S_NetworkReceive
         Dim sprite As integer
         Dim i As Integer
         Dim n As Integer
-
         Dim buffer As New ByteStream(data)
-        
+
         If Not IsPlaying(index) Then
             slot = buffer.ReadInt32
-            
-            If slot < 1 Or slot > MAX_CHARACTERS Or Account(index).Character(slot) <> ""  Then
-                AlertMsg(index, "Invalid character slot. Please delete the character.")
+
+            If slot < 1 Or slot > MAX_CHARACTERS Or Account(index).Character(slot) <> "" Then Exit Sub
+
+            name = buffer.ReadString
+
+            If DoesNameExist("account", name) Then
+                AlertMsg(index, DialogueMsg.NAMETAKEN)
                 Exit Sub
             End If
 
-            name = buffer.ReadString
             sexNum = buffer.ReadInt32
             jobNum = buffer.ReadInt32 + 1
 
@@ -251,7 +310,7 @@ Module S_NetworkReceive
                 n = AscW(Mid$(name, i, 1))
 
                 If Not IsNameLegal(n) Then
-                    AlertMsg(index, "Invalid name, only letters, numbers, and spaces allowed in names.")
+                    AlertMsg(index, DialogueMsg.NAMEILLEGAL)
                     Exit Sub
                 End If
 
@@ -268,16 +327,7 @@ Module S_NetworkReceive
             End If
 
             ' Check if char already exists in slot
-            If CharExist(index, slot) Then
-                AlertMsg(index, "Character already exists!")
-                Exit Sub
-            End If
-
-            ' Check if name is already in use
-            If CharactersList.Find(name) Then
-                AlertMsg(index, "Sorry, but that name is in use!")
-                Exit Sub
-            End If
+            If CharExist(index, slot) Then Exit Sub
 
             ' Everything went ok, add the character
             AddChar(index, slot, name, sexNum, jobNum, sprite)
@@ -296,13 +346,9 @@ Module S_NetworkReceive
         If Not IsPlaying(index) Then
             slot = buffer.ReadInt32
 
-            If slot < 1 Or slot > MAX_CHARACTERS Then
-                AlertMsg(index, "Sorry, that character slot is invalid.")
-                Exit Sub
-            End If
+            If slot < 1 Or slot > MAX_CHARACTERS Then Exit Sub
 
             LoadCharacter(index, slot)
-            CharactersList.Remove(GetPlayerName(index))
             ClearCharacter(index)
             SaveCharacter(index, slot)
             Account(index).Character(slot) = ""
@@ -987,7 +1033,7 @@ Module S_NetworkReceive
                 If GetPlayerAccess(n) < GetPlayerAccess(index) Then
                     GlobalMsg(GetPlayerName(n) & " has been kicked from " & Types.Settings.GameName & " by " & GetPlayerName(index) & "!")
                     Addlog(GetPlayerName(index) & " has kicked " & GetPlayerName(n) & ".", ADMIN_LOG)
-                    AlertMsg(n, "You have been kicked by " & GetPlayerName(index) & "!")
+                    AlertMsg(n, DialogueMsg.KICKED)
                 Else
                     PlayerMsg(index, "That is a higher or same access admin then you!", ColorType.BrightRed)
                 End If
@@ -1969,7 +2015,7 @@ Module S_NetworkReceive
         If index > 0 AndAlso IsPlaying(index) Then
             GlobalMsg(GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has been booted for (" & Reason & ")")
 
-            AlertMsg(index, "You have lost your connection with " & Types.Settings.GameName & ".")
+            AlertMsg(index, DialogueMsg.CONNECTION)
         End If
 
     End Sub
@@ -2106,18 +2152,17 @@ Module S_NetworkReceive
 
         buffer.Dispose()
 
-        If GetPlayerAccess(index) > AdminType.Player Then
-            SendMapData(index, mapNum, True)
-            SendMapNames(index)
+        ' Prevent hacking 
+        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
 
-            buffer = New ByteStream(4)
-            buffer.WriteInt32(ServerPackets.SEditMap)
-            Socket.SendDataTo(index, buffer.Data, buffer.Head)
+        SendMapData(index, mapNum, True)
+        SendMapNames(index)
 
-            buffer.Dispose()
-        Else
-            AlertMsg(index, "Not Allowed!")
-        End If
+        buffer = New ByteStream(4)
+        buffer.WriteInt32(ServerPackets.SEditMap)
+        Socket.SendDataTo(index, buffer.Data, buffer.Head)
+
+        buffer.Dispose()
 
     End Sub
 

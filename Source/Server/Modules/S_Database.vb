@@ -20,7 +20,7 @@ Module S_Database
 
     Public Sub ExecuteSql(connectionString As String, sql As String)
         Using connection As New NpgsqlConnection(connectionString)
-            connection.Open()
+            connection?.Open()
 
             Using command As New NpgsqlCommand(sql, connection)
                 command.ExecuteNonQuery()
@@ -147,6 +147,26 @@ Module S_Database
             End Using
         End Using
     End Sub
+
+    Public Function DoesNameExist(tableName As String, name As String) As Boolean
+        Dim sql As String = $"SELECT EXISTS(SELECT 1 FROM {tableName} WHERE name = @name);"
+
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
+
+            Using command As New NpgsqlCommand(sql, connection)
+                command.Parameters.AddWithValue("@name", name)
+
+                Try
+                    Dim result As Object = command.ExecuteScalar()
+                    Return Convert.ToBoolean(result)
+                Catch ex As NpgsqlException
+                    ' Handle the exception appropriately
+                    Return False
+                End Try
+            End Using
+        End Using
+    End Function
 
     Public Sub CreateTables()
         Dim dataTable As String = "id SERIAL PRIMARY KEY, data jsonb"
@@ -694,7 +714,7 @@ Module S_Database
         Dim username As String = GetPlayerLogin(index)
         Dim id As BigInteger = GenerateIdFromString(username)
 
-        If RowExists(id, "account")
+        If RowExists(id, "account") Then
             UpdateRowByColumn("id", id, "data", json, "account")
         Else
             InsertRowByColumn(id, json, "account", "data", "id")
@@ -702,6 +722,11 @@ Module S_Database
 
         SaveCharacter(index, Account(index).Index)
         SaveBank(index)
+    End Sub
+
+    Sub RegisterAccount(index As Integer)
+        SavePlayer(index)
+        LoadAccount(index, GetPlayerLogin(index))
     End Sub
 
     Sub LoadAccount(index As Integer, username As String)
@@ -906,7 +931,7 @@ Module S_Database
         Dim json As String = JsonConvert.SerializeObject(Player(index)).ToString()
         Dim id As BigInteger = GenerateIdFromString(GetPlayerLogin(index))
 
-        If RowExistsByColumn("id", id, "account")
+        If RowExistsByColumn("id", id, "account") Then
             UpdateRowByColumn("id", id, "character" & charNum.ToString(), json, "account")
         Else
             InsertRowByColumn(id, json, "account", "character" & charNum.ToString(), "id")
@@ -956,9 +981,6 @@ Module S_Database
                 Player(index).GatherSkills(i).SkillCurExp = 0
                 SetPlayerGatherSkillMaxExp(index, i, GetSkillNextLevel(index, i))
             Next
-
-            ' Add name to character list.
-            CharactersList.Add(name)
 
             Account(index).Index = charNum
             SetPlayerCharName(index, Account(index).Index, name)
@@ -1052,7 +1074,7 @@ Module S_Database
         AddTextToFile(IP, "banlist.txt")
         GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Types.Settings.GameName & " by " & "the Server" & "!")
         Addlog("The Server" & " has banned " & GetPlayerName(BanPlayerindex) & ".", ADMIN_LOG)
-        AlertMsg(BanPlayerindex, "You have been banned by " & "The Server" & "!")
+        AlertMsg(BanPlayerindex, DialogueMsg.BANNED)
     End Sub
 
     Function IsBanned(IP As String) As Boolean
@@ -1101,7 +1123,7 @@ Module S_Database
         AddTextToFile(IP, "banlist.txt")
         GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Types.Settings.GameName & " by " & GetPlayerName(BannedByindex) & "!")
         Addlog(GetPlayerName(BannedByindex) & " has banned " & GetPlayerName(BanPlayerindex) & ".", ADMIN_LOG)
-        AlertMsg(BanPlayerindex, "You have been banned by " & GetPlayerName(BannedByindex) & "!")
+        AlertMsg(BanPlayerindex, DialogueMsg.BANNED)
     End Sub
 
 #End Region

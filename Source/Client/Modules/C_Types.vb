@@ -2,15 +2,13 @@
 Imports SFML.System
 
 Module C_Types
-    Friend ActionMsg(Byte.MaxValue) As ActionMsgStruct
-
-    Friend Blood(Byte.MaxValue) As BloodStruct
-
-    Friend Chat As New List(Of ChatStruct)
-
+    Public ActionMsg(Byte.MaxValue) As ActionMsgStruct
+    Public Blood(Byte.MaxValue) As BloodStruct
+    Public Chat As New List(Of ChatStruct)
     Public tempTileLights As List(Of LightTileStruct)
-
-    Friend MapNames(MAX_MAPS) As String
+    Public MapNames(MAX_MAPS) As String
+    Public TmpTile(,) As Types.TileStruct
+    Public TileHistory() As TileHistoryStruct
 
     Public Structure ChatStruct
         Dim Text As String

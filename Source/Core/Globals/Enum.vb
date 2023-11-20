@@ -503,4 +503,54 @@
         Arial = 1
     End Enum
 
+    Public Enum MenuCount
+        Main = 1
+        Login
+        Register
+        Credits
+        Classes
+        NewChar
+        Chars
+    End Enum
+
+    Public Enum DialogueMsg
+        CONNECTION = 1
+        BANNED
+        KICKED
+        OUTDATED
+        USERLENGTH
+        REBOOTING
+        NAMETAKEN
+        NAMELENGTH
+        NAMEILLEGAL
+        POSTGRESQL
+        WRONGPASS
+        ACTIVATED
+        MAXCHARS
+        DELCHAR
+        CREATED
+        MUILTI
+    End Enum
+
+    Public Enum DialogueType
+        NAME = 0
+        TRADE
+        FORGET
+        PARTY
+        LOOTITEM
+        ALERT
+        DELCHAR
+        DROPITEM
+        DEPOSITITEM
+        WITHDRAWITEM
+        TRADEAMOUNT
+        UNTRADEAMOUNT
+    End Enum
+
+    Public Enum DialogueStyle
+        OKAY = 1
+        YESNO
+        INPUT
+    End Enum
+
 End Module

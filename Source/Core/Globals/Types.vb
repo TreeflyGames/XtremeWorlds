@@ -26,7 +26,6 @@ Public Module Types
     Public TradeTheirOffer(MAX_INV) As PlayerInvStruct
     Public Party As PartyStruct
     Public MapResource() As MapResourceStruct
-    Public CharactersList As CharacterList
     Public Settings As Settings
 
 

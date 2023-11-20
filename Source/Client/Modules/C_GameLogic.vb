@@ -1138,10 +1138,6 @@ Continue1:
 
     Friend Sub UpdateDrawMapName()
         Dim g As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-        'Dim width As Integer
-        'width = g.MeasureString(Trim$(Map.Name), New Font(FONT_NAME, FONT_SIZE, FontStyle.Bold, GraphicsUnit.Pixel)).Width
-        'DrawMapNameX = ((SCREEN_MAPX + 1) * PicX / 2) - width + 32
-        'DrawMapNameY = 1
 
         Select Case Map.Moral
             Case MapMoralType.Danger
@@ -1157,24 +1153,28 @@ Continue1:
     Friend Sub AddChatBubble(target As Integer, targetType As Byte, msg As String, Color As Integer)
         Dim i As Integer, index As Integer
 
-        ' set the global index
+        ' Set the global index
         ChatBubbleindex = ChatBubbleindex + 1
         If ChatBubbleindex < 1 OrElse ChatBubbleindex > Byte.MaxValue Then ChatBubbleindex = 1
-        ' default to new bubble
+
+        ' Default to new bubble
         index = ChatBubbleindex
-        ' loop through and see if that player/npc already has a chat bubble
+
+        ' Loop through and see if that player/npc already has a chat bubble
         For i = 0 To Byte.MaxValue
             If ChatBubble(i).TargetType = targetType Then
                 If ChatBubble(i).Target = target Then
-                    ' reset master index
+                    ' Reset master index
                     If ChatBubbleindex > 1 Then ChatBubbleindex = ChatBubbleindex - 1
-                    ' we use this one now, yes?
+
+                    ' We use this one now, yes?
                     index = i
                     Exit For
                 End If
             End If
         Next
-        ' set the bubble up
+
+        ' Set the bubble up
         With ChatBubble(index)
             .Target = target
             .TargetType = targetType
@@ -1185,4 +1185,205 @@ Continue1:
         End With
 
     End Sub
+
+    Public Sub DialogueAlert(ByVal Index As Long)
+        Dim header As String, body As String, body2 As String
+
+        ' find the body/header
+        Select Case Index
+
+            Case DialogueMsg.CONNECTION
+                header = "Connection Problem"
+                body = "You lost connection to the server."
+                body2 = "Please try again later."
+
+            Case DialogueMsg.BANNED
+                header = "Banned"
+                body = "You have been banned, have a nice day!"
+                body2 = "Please send all ban appeals to an administrator."
+
+            Case DialogueMsg.KICKED
+                header = "Kicked"
+                body = "You have been kicked."
+                body2 = "Please try and behave."
+
+            Case DialogueMsg.OUTDATED
+                header = "Wrong Version"
+                body = "Your game client is the wrong version."
+                body2 = "Please re-load the game or wait for a patch."
+
+            Case DialogueMsg.USERLENGTH
+                header = "Invalid Length"
+                body = "Your username or password is too short or too long."
+                body2 = "Please enter a valid username and password."
+
+            Case DialogueMsg.REBOOTING
+                header = "Connection Refused"
+                body = "The server is currently rebooting."
+                body2 = "Please try again soon."
+
+            Case DialogueMsg.NAMETAKEN
+                header = "Invalid Name"
+                body = "This name is already in use."
+                body2 = "Please try another name."
+
+            Case DialogueMsg.NAMELENGTH
+                header = "Invalid Name"
+                body = "This name is too short or too long."
+                body2 = "Please try another name."
+
+            Case DialogueMsg.NAMEILLEGAL
+                header = "Invalid Name"
+                body = "This name contains illegal characters."
+                body2 = "Please try another name."
+
+            Case DialogueMsg.POSTGRESQL
+                header = "Connection Problem"
+                body = "Cannot connect to database."
+                body2 = "Please try again later."
+
+            Case DialogueMsg.WRONGPASS
+                header = "Invalid Login"
+                body = "Invalid username or password."
+                body2 = "Please try again."
+
+            Case DialogueMsg.ACTIVATED
+                header = "Inactive Account"
+                body = "Your account is not activated."
+                body2 = "Please activate your account then try again."
+
+            Case DialogueMsg.MAXCHARS
+                header = "Cannot Merge"
+                body = "You cannot merge a full account."
+                body2 = "Please clear a character slot."
+
+            Case DialogueMsg.DELCHAR
+                header = "Deleted Character"
+                body = "Your character was successfully deleted."
+                body2 = "Please log on to continue playing."
+
+            Case DialogueMsg.CREATED
+                header = "Account Created"
+                body = "Your Account was successfully created."
+                body2 = "Now, you can play!"
+
+            Case DialogueMsg.MUILTI
+                header = "Multiple Accounts"
+                body = "Using multiple accounts is not authorized."
+                body2 = "Please logout of your other account and try again!"
+        End Select
+
+        ' set the dialogue up!
+        Dialogue(header, body, body2, DialogueType.ALERT)
+    End Sub
+
+    Public Sub CloseDialogue()
+        diaIndex = 0
+        HideWindow(GetWindowIndex("winBlank"))
+        HideWindow(GetWindowIndex("winDialogue"))
+    End Sub
+
+    Public Sub Dialogue(ByVal header As String, ByVal body As String, ByVal body2 As String, ByVal Index As Long, Optional ByVal style As Byte = 1, Optional ByVal Data1 As Long = 0)
+        ' exit out if we've already got a dialogue open
+        If diaIndex > 0 Then Exit Sub
+
+        ' set buttons
+        With Windows(GetWindowIndex("winDialogue"))
+            If style = DialogueStyle.YESNO Then
+                .Controls(GetControlIndex("winDialogue", "btnYes")).Visible = True
+                .Controls(GetControlIndex("winDialogue", "btnNo")).Visible = True
+                .Controls(GetControlIndex("winDialogue", "btnOkay")).Visible = False
+                .Controls(GetControlIndex("winDialogue", "txtInput")).Visible = False
+                .Controls(GetControlIndex("winDialogue", "lblBody_2")).Visible = True
+            ElseIf style = DialogueStyle.OKAY Then
+                .Controls(GetControlIndex("winDialogue", "btnYes")).Visible = False
+                .Controls(GetControlIndex("winDialogue", "btnNo")).Visible = False
+                .Controls(GetControlIndex("winDialogue", "btnOkay")).Visible = True
+                .Controls(GetControlIndex("winDialogue", "txtInput")).Visible = False
+                .Controls(GetControlIndex("winDialogue", "lblBody_2")).Visible = True
+            ElseIf style = DialogueStyle.INPUT Then
+                .Controls(GetControlIndex("winDialogue", "btnYes")).Visible = False
+                .Controls(GetControlIndex("winDialogue", "btnNo")).Visible = False
+                .Controls(GetControlIndex("winDialogue", "btnOkay")).Visible = True
+                .Controls(GetControlIndex("winDialogue", "txtInput")).Visible = True
+                .Controls(GetControlIndex("winDialogue", "lblBody_2")).Visible = False
+            End If
+
+            ' set labels
+            .Controls(GetControlIndex("winDialogue", "lblHeader")).Text = header
+            .Controls(GetControlIndex("winDialogue", "lblBody_1")).Text = body
+            .Controls(GetControlIndex("winDialogue", "lblBody_2")).Text = body2
+            .Controls(GetControlIndex("winDialogue", "txtInput")).Text = vbNullString
+        End With
+
+        ' set it all up
+        diaIndex = Index
+        diaData1 = Data1
+        diaStyle = style
+
+        ' make the windows visible
+        ShowWindow(GetWindowIndex("winBlank"), True)
+        ShowWindow(GetWindowIndex("winDialogue"), True)
+    End Sub
+
+    Public Sub dialogueHandler(ByVal Index As Long)
+        Dim value As Long, diaInput As String
+
+        diaInput = Trim$(Windows(GetWindowIndex("winDialogue")).Controls(GetControlIndex("winDialogue", "txtInput")).Text)
+
+        ' Find out which button
+        If Index = 1 Then ' Okay button
+            ' Dialogue index
+            Select Case diaIndex
+                Case DialogueType.TRADEAMOUNT
+                    value = Val(diaInput)
+                    TradeItem(diaData1, value)
+                Case DialogueType.DEPOSITITEM
+                    value = Val(diaInput)
+                    DepositItem(diaData1, value)
+                Case DialogueType.WITHDRAWITEM
+                    value = Val(diaInput)
+                    WithdrawItem(diaData1, value)
+                Case DialogueType.DROPITEM
+                    value = Val(diaInput)
+                    SendDropItem(diaData1, value)
+            End Select
+
+        ElseIf Index = 2 Then ' Yes button
+            ' Dialogue index
+            Select Case diaIndex
+
+                Case DialogueType.TRADE
+                    'SendAcceptTradeRequest
+
+                Case DialogueType.FORGET
+                    'ForgetSpell(diaData1)
+
+                Case DialogueType.PARTY
+                    SendAcceptParty()
+
+                Case DialogueType.LOOTITEM
+                    CheckMapGetItem()
+
+                Case DialogueType.DELCHAR
+                    'SendDelChar(diaData1)
+            End Select
+
+        ElseIf Index = 3 Then ' No button
+            ' Dialogue index
+            Select Case diaIndex
+
+                Case DialogueType.TRADE
+                    'SendDeclineTradeRequest
+
+                Case DialogueType.PARTY
+                    SendDeclineParty()
+            End Select
+        End If
+
+        CloseDialogue()
+        diaIndex = 0
+        diaInput = ""
+    End Sub
+
 End Module

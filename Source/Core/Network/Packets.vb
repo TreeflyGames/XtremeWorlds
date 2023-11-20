@@ -3,6 +3,7 @@
     ' Packets sent by client to server
     Public Enum ClientPackets
         CLogin = 1
+        CRegister
         CAddChar
         CUseChar
         CDelChar

@@ -56,22 +56,6 @@ Module S_General
         Console.WriteLine("Creating Tables...")
         CreateTables()
 
-        Console.WriteLine("Loading Character List...")
-        Dim ids As Task(Of List(Of BigInteger)) = GetData("account")
-        Dim data As JObject
-        Dim player As New PlayerStruct()
-        CharactersList = New CharacterList()
-
-        For Each id In ids.Result
-            For i = 1 To MAX_CHARACTERS
-                data = SelectRowByColumn("id", id, "account", "character" & i.ToString())
-                If data IsNot Nothing Then
-                    player = JObject.FromObject(data).toObject(Of PlayerStruct)()
-                    CharactersList.Add(player.Name.Trim())
-                End If
-            Next
-        Next
-
         ClearGameData()
         LoadGameData()
 

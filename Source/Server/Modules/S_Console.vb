@@ -132,9 +132,9 @@ Module S_Console
                     Dim Name As String = parts(1)
                     Dim Pindex As Integer = FindPlayer(Name)
                     If Not Pindex > 0 Then
-                        Console.WriteLine("Player name is empty or invalid. [Name not found]")
+                        Console.WriteLine("Player name is empty or invalid.")
                     Else
-                        AlertMsg(Pindex, "You have been kicked by the server owner!")
+                        AlertMsg(Pindex, DialogueMsg.KICKED)
                         LeftGame(Pindex)
                     End If
 #End Region

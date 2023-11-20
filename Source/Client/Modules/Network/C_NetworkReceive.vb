@@ -1,4 +1,5 @@
-﻿Imports Core
+﻿Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports Core
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 
@@ -141,16 +142,41 @@ Module C_NetworkReceive
     End Sub
 
     Private Sub Packet_AlertMSG(ByRef data() As Byte)
-        Dim msg As String
+        Dim dialogueIndex As Integer, menuReset As Integer, kick As Integer
         Dim buffer As New ByteStream(data)
 
-        msg = buffer.ReadString()
+        dialogueIndex = buffer.ReadInt32
+        menuReset = buffer.ReadInt32()
+        kick = buffer.ReadInt32()
 
+        If menuReset > 0 Then
+            HideWindows()
+
+            Select Case menuReset
+                Case MenuCount.Login
+                    ShowWindow(GetWindowIndex("winLogin"))
+                Case MenuCount.Chars
+                    ShowWindow(GetWindowIndex("winCharacters"))
+                Case MenuCount.Classes
+                    ShowWindow(GetWindowIndex("winClasses"))
+                Case MenuCount.NewChar
+                    ShowWindow(GetWindowIndex("winNewChar"))
+                Case MenuCount.Main
+                    ShowWindow(GetWindowIndex("winLogin"))
+                Case MenuCount.Register
+                    ShowWindow(GetWindowIndex("winRegister"))
+            End Select
+        Else
+            If kick > 0 Or InGame = False Then
+                ShowWindow(GetWindowIndex("winLogin"))
+                InitNetwork()
+                DialogueAlert(dialogueIndex)
+                Exit Sub
+            End If
+        End If
+
+        DialogueAlert(dialogueIndex)
         buffer.Dispose()
-
-        InitNetwork()
-
-        MsgBox(msg, vbOKOnly, Types.Settings.GameName)
     End Sub
 
     Private Sub Packet_KeyPair(ByRef data() As Byte)
@@ -188,7 +214,7 @@ Module C_NetworkReceive
             CharSelection(i).Sex = 0
         Next
 
-       For i = 1 To MAX_CHARACTERS
+        For i = 1 To MAX_CHARACTERS
             charName = buffer.ReadString
             sprite = buffer.ReadInt32
             level = buffer.ReadInt32
@@ -209,7 +235,7 @@ Module C_NetworkReceive
         Dim i As Integer
         Dim buffer As New ByteStream(data)
 
-       For i = 1 To MAX_JOBS
+        For i = 1 To MAX_JOBS
             With Job(i)
                 .Name = buffer.ReadString
                 .Desc = buffer.ReadString
@@ -271,7 +297,7 @@ Module C_NetworkReceive
 
     Private Sub Packet_InGame(ByRef data() As Byte)
         InGame = True
-        HideWindows
+        HideWindows()
         CanMoveNow = True
         Editor = -1
         GameInit()
@@ -893,7 +919,7 @@ Module C_NetworkReceive
 
         x = buffer.ReadInt32
 
-       For i = 0 To x
+        For i = 0 To x
             n = buffer.ReadInt32
 
             Skill(n).AccessReq = buffer.ReadInt32()
@@ -935,7 +961,7 @@ Module C_NetworkReceive
 
         x = buffer.ReadInt32
 
-       For i = 0 To x
+        For i = 0 To x
             n = buffer.ReadInt32
 
             Resource(n).Animation = buffer.ReadInt32()
@@ -977,9 +1003,8 @@ Module C_NetworkReceive
     Private Sub Packet_MapReport(ByRef data() As Byte)
         Dim i As Integer
         Dim buffer As New ByteStream(data)
-
         For i = 1 To MAX_MAPS
-            MapNames(I) = Trim(buffer.ReadString())
+            MapNames(i) = Trim(buffer.ReadString())
         Next
 
         UpdateMapnames = True
@@ -994,9 +1019,8 @@ Module C_NetworkReceive
     Private Sub Packet_MapNames(ByRef data() As Byte)
         Dim i As Integer
         Dim buffer As New ByteStream(data)
-
         For i = 1 To MAX_MAPS
-            MapNames(I) = Trim(buffer.ReadString())
+            MapNames(i) = Trim(buffer.ReadString())
         Next
 
         buffer.Dispose()

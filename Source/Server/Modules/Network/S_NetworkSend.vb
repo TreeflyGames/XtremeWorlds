@@ -1,33 +1,46 @@
 ﻿Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 Imports Core
+Imports Npgsql.Replication.PgOutput
+Imports System.Buffers
 
 Module S_NetworkSend
 
-    Sub AlertMsg(index As Integer, Msg As String)
+    Sub AlertMsg(ByVal index As Long, ByVal menuNo As Integer, Optional ByVal menuReset As Integer = 0, Optional ByVal kick As Boolean = True)
         Dim buffer As New ByteStream(4)
+
         buffer.WriteInt32(Packets.ServerPackets.SAlertMsg)
-        buffer.WriteString((Msg))
+        buffer.WriteInt32(menuNo)
+        buffer.WriteInt32(menuReset)
+        If kick Then
+            buffer.WriteInt32(1)
+        Else
+            buffer.WriteInt32(0)
+        End If
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
+
+        If kick Then
+            Call HandleCloseSocket(index)
+        End If
 
         buffer.Dispose()
     End Sub
 
-    Sub GlobalMsg(Msg As String)
+    Sub GlobalMsg(msg As String)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SGlobalMsg)
-        buffer.WriteString((Msg))
+        buffer.WriteString((msg))
         SendDataToAll(buffer.Data, buffer.Head)
 
         buffer.Dispose()
     End Sub
 
-    Sub PlayerMsg(index As Integer, Msg As String, Color As Integer)
+    Sub PlayerMsg(index As Integer, msg As String, color As Integer)
         Dim buffer As New ByteStream(4)
         buffer.WriteInt32(ServerPackets.SPlayerMsg)
-        buffer.WriteString((Msg))
-        buffer.WriteInt32(Color)
+        buffer.WriteString((msg))
+        buffer.WriteInt32(color)
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
         buffer.Dispose()
@@ -102,7 +115,7 @@ Module S_NetworkSend
     End Sub
 
     Sub SendJobs(index As Integer)
-        Dim i as Integer
+        Dim i As Integer
         Dim buffer As New ByteStream(4)
         buffer.WriteInt32(ServerPackets.SJobData)
 
@@ -114,15 +127,11 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub SendJobToAll(jobNum as Integer)
+    Sub SendJobToAll(jobNum As Integer)
         Dim i As Integer
         Dim buffer As New ByteStream(4)
         buffer.WriteInt32(ServerPackets.SJobData)
-
-        For i = 1 To MAX_JOBS
-            buffer.WriteBlock(JobData(i))
-        Next
-        
+        buffer.WriteBlock(JobData(jobNum))
         SendDataToAll(buffer.Data, buffer.Head)
         buffer.Dispose()
     End Sub
@@ -190,7 +199,7 @@ Module S_NetworkSend
         buffer.WriteInt32(GetPlayerEquipment(PlayerNum, EquipmentType.Shield))
         buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Shoes))
         buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Gloves))
-        
+
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -200,11 +209,9 @@ Module S_NetworkSend
         Dim i As Integer
 
         For i = 1 To MAX_SHOPS
-
             If Shop(i).Name.Trim.Length > 0 Then
                 SendUpdateShopTo(index, i)
             End If
-
         Next
 
     End Sub
@@ -239,7 +246,7 @@ Module S_NetworkSend
         buffer.WriteInt32(Shop(shopNum).BuyRate)
         buffer.WriteString(Shop(shopNum).Name.Trim)
         buffer.WriteInt32(Shop(shopNum).Face)
-        
+
         For i = 1 To MAX_TRADES
             buffer.WriteInt32(Shop(shopNum).TradeItem(i).CostItem)
             buffer.WriteInt32(Shop(shopNum).TradeItem(i).CostValue)
@@ -701,7 +708,7 @@ Module S_NetworkSend
         buffer.WriteInt32(GetPlayerDir(index))
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
-        
+
         buffer.Dispose()
     End Sub
 
@@ -740,7 +747,7 @@ Module S_NetworkSend
         buffer.WriteInt32(MsgType)
         buffer.WriteInt32(X)
         buffer.WriteInt32(Y)
-        
+
         If PlayerOnlyNum > 0 Then
             Socket.SendDataTo(PlayerOnlyNum, buffer.Data, buffer.Head)
         Else
@@ -782,7 +789,7 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
-     Sub SendPlayerData(index As Integer)
+    Sub SendPlayerData(index As Integer)
         Dim data = PlayerData(index)
         SendDataToMap(GetPlayerMap(index), data, data.Length)
     End Sub

@@ -1,16 +1,16 @@
 ﻿Imports Mirage.Sharp.Asfw.IO.Encryption
 
-Module S_Globals
-    Friend DebugTxt As Boolean
-    Friend ErrorCount As Integer
+Public Module S_Globals
+    Public DebugTxt As Boolean
+    Public ErrorCount As Integer
 
     ' Used for closing key doors again
-    Friend KeyTimer As Integer
+    Public KeyTimer As Integer
 
     ' Used for gradually giving back npcs hp
-    Friend GiveNPCHPTimer As Integer
+    Public GiveNPCHPTimer As Integer
 
-    Friend GiveNPCMPTimer As Integer
+    Public GiveNPCMPTimer As Integer
 
-    Friend EKeyPair As New KeyPair()
+    Public EKeyPair As New KeyPair()
 End Module

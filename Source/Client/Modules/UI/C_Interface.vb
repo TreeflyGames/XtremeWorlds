@@ -1096,6 +1096,44 @@ Module C_Interface
         SetActiveControl(GetWindowIndex("winRegister"), GetControlIndex("winRegister", "txtAccount"))
     End Sub
 
+    Public Sub CreateWindow_Dialogue()
+        ' Create black background
+        'CreateWindow("winBlank", "", zOrder_Win, 0, 0, 800, 600, 0, , , , DesignType.Win_Black, DesignType.Win_Black, DesignType.Win_Black, , , , , , , , , False)
+
+        ' Create dialogue window
+        CreateWindow("winDialogue", "Warning", zOrder_Win, 0, 0, 348, 145, 38, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm, , , , , , , , , , False)
+
+        ' Centralise it
+        CentralizeWindow(WindowCount)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Close button
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf btnDialogue_Close))
+
+        ' Parchment
+        CreatePictureBox(WindowCount, "picParchment", 6, 26, 335, 113, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+
+        ' Header
+        CreatePictureBox(WindowCount, "picShadow", 103, 44, 144, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreateLabel(WindowCount, "lblHeader", 103, 41, 144, 9, "Header", Arial, AlignmentType.Center)
+
+        ' Labels
+        CreateLabel(WindowCount, "lblBody_1", 15, 60, 314, 9, "Invalid username or password.", Arial, , AlignmentType.Center)
+        CreateLabel(WindowCount, "lblBody_2", 15, 75, 314, 9, "Please try again!", Arial, , AlignmentType.Center)
+
+        ' Buttons
+        CreateButton(WindowCount, "btnYes", 104, 98, 68, 24, "Yes", Arial, , , , False, , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Yes))
+        CreateButton(WindowCount, "btnNo", 180, 98, 68, 24, "No", Arial, , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf Dialogue_No))
+        CreateButton(WindowCount, "btnOkay", 140, 98, 68, 24, "Okay", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Okay))
+
+        ' Input
+        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, "", Arial, AlignmentType.Center, , , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
+
+        ' Set active control
+        SetActiveControl(WindowCount, GetControlIndex("winDialogue", "txtInput"))
+    End Sub
 
     ' Rendering & Initialisation
     Public Sub InitInterface()
@@ -1107,6 +1145,7 @@ Module C_Interface
         CreateWindow_Register()
         HideWindows()
         CreateWindow_Login()
+        CreateWindow_Dialogue()
     End Sub
 
     Public Function HandleInterfaceEvents(entState As EntState) As Boolean
@@ -1302,7 +1341,6 @@ Module C_Interface
             End With
 
         Next
-
     End Sub
 
     Sub CloseComboMenu()
@@ -1316,7 +1354,6 @@ Module C_Interface
     End Sub
 
     Public Sub chkSaveUser_Click()
-
         With Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "chkSaveUsername"))
             If .Value = 0 Then ' set as false
                 Types.Settings.SaveUsername = 0
@@ -1390,6 +1427,29 @@ Module C_Interface
     Public Sub btnReturnMain_Click()
         HideWindows()
         ShowWindow(GetWindowIndex("winLogin"))
+    End Sub
+
+    ' #####################
+    ' ## Dialogue Window ##
+    ' #####################
+    Public Sub btnDialogue_Close()
+        If diaStyle = DialogueStyle.OKAY Then
+            dialogueHandler(1)
+        ElseIf diaStyle = DialogueStyle.YESNO Then
+            dialogueHandler(3)
+        End If
+    End Sub
+
+    Public Sub Dialogue_Okay()
+        dialogueHandler(1)
+    End Sub
+
+    Public Sub Dialogue_Yes()
+        dialogueHandler(2)
+    End Sub
+
+    Public Sub Dialogue_No()
+        dialogueHandler(3)
     End Sub
 End Module
 

@@ -31,6 +31,21 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Friend Sub SendRegister(name As String, pass As String)
+        Dim buffer As New ByteStream(4)
+
+        If name = "" Then Exit Sub
+        If pass = "" Then Exit Sub
+
+        buffer.WriteInt32(ClientPackets.CRegister)
+        buffer.WriteString((EKeyPair.EncryptString(name)))
+        buffer.WriteString((EKeyPair.EncryptString(pass)))
+        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
+        Socket.SendData(buffer.Data, buffer.Head)
+
+        buffer.Dispose()
+    End Sub
+
     Public Sub btnLogin_Click()
         Dim user As String, pass As String
 

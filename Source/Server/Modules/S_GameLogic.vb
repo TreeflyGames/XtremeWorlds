@@ -1,12 +1,11 @@
 ﻿Imports Core
 
 Module S_GameLogic
-
     Function GetTotalMapPlayers(mapNum As Integer) As Integer
         Dim i As Integer, n As Integer
         n = 0
 
-       For i = 1 To GetPlayersOnline()
+        For i = 1 To GetPlayersOnline()
             If GetPlayerMap(i) = mapNum Then
                 n = n + 1
             End If
@@ -46,7 +45,7 @@ Module S_GameLogic
     Function FindPlayer(Name As String) As Integer
         Dim i As Integer
 
-       For i = 1 To GetPlayersOnline()
+        For i = 1 To GetPlayersOnline()
             If IsPlaying(i) Then
                 ' Make sure we dont try to check a name thats to small
                 If Len(GetPlayerName(i)) >= Len(Trim$(Name)) Then
