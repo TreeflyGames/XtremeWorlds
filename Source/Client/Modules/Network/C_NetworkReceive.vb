@@ -10,6 +10,7 @@ Module C_NetworkReceive
         Socket.PacketId(ServerPackets.SKeyPair) = AddressOf Packet_KeyPair
         Socket.PacketId(ServerPackets.SLoadCharOk) = AddressOf Packet_LoadCharOk
         Socket.PacketId(ServerPackets.SLoginOk) = AddressOf Packet_LoginOk
+        Socket.PacketId(ServerPackets.SPlayerChars) = AddressOf Packet_PlayerChars
         Socket.PacketId(ServerPackets.SNewCharJob) = AddressOf Packet_NewCharJob
         Socket.PacketId(ServerPackets.SJobData) = AddressOf Packet_JobData
         Socket.PacketId(ServerPackets.SInGame) = AddressOf Packet_InGame
@@ -229,6 +230,60 @@ Module C_NetworkReceive
         Next
 
         buffer.Dispose()
+    End Sub
+
+    Sub Packet_PlayerChars(ByRef data() As Byte)
+        Dim buffer As New ByteStream(data), I As Long, winNum As Long, conNum As Long, isSlotEmpty(MAX_CHARS) As Boolean, x As Long
+
+        For I = 1 To MAX_CHARS
+            CharName(I) = Trim$(buffer.ReadString)
+            CharSprite(I) = buffer.ReadInt32
+            CharAccess(I) = buffer.ReadInt32
+            CharClass(I) = buffer.ReadInt32
+
+            ' set as empty or not
+            If Not Len(Trim$(CharName(I))) > 0 Then isSlotEmpty(I) = True
+        Next
+
+        buffer.Dispose()
+
+        HideWindows()
+        ShowWindow(GetWindowIndex("winCharacters"))
+
+        ' set GUI window up
+        winNum = GetWindowIndex("winCharacters")
+        For I = 1 To MAX_CHARS
+            conNum = GetControlIndex("winCharacters", "lblCharName_" & I)
+            With Windows(winNum).Controls(conNum)
+                If Not isSlotEmpty(I) Then
+                    .Text = CharName(I)
+                Else
+                    .Text = "Blank Slot"
+                End If
+            End With
+            ' hide/show buttons
+            If isSlotEmpty(I) Then
+                ' create button
+                conNum = GetControlIndex("winCharacters", "btnCreateChar_" & I)
+                Windows(winNum).Controls(conNum).Visible = True
+                ' select button
+                conNum = GetControlIndex("winCharacters", "btnSelectChar_" & I)
+                Windows(winNum).Controls(conNum).Visible = False
+                ' delete button
+                conNum = GetControlIndex("winCharacters", "btnDelChar_" & I)
+                Windows(winNum).Controls(conNum).Visible = False
+            Else
+                ' create button
+                conNum = GetControlIndex("winCharacters", "btnCreateChar_" & I)
+                Windows(winNum).Controls(conNum).Visible = False
+                ' select button
+                conNum = GetControlIndex("winCharacters", "btnSelectChar_" & I)
+                Windows(winNum).Controls(conNum).Visible = True
+                ' delete button
+                conNum = GetControlIndex("winCharacters", "btnDelChar_" & I)
+                Windows(winNum).Controls(conNum).Visible = True
+            End If
+        Next
     End Sub
 
     Sub Packet_NewCharJob(ByRef data() As Byte)

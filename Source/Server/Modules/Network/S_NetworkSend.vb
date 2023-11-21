@@ -42,6 +42,27 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Sub SendPlayerChars(ByVal index As Long)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ServerPackets.SPlayerChars)
+
+        ' loop through each character. clear, load, add. repeat.
+        For i = 1 To MAX_CHARS
+            Call LoadCharacter(index, i)
+
+            buffer.WriteString(Trim$(Player(index).Name))
+            buffer.WriteInt32(Player(index).Sprite)
+            buffer.WriteInt32(Player(index).Access)
+            buffer.WriteInt32(Player(index).Job)
+
+            Call ClearPlayer(index)
+        Next
+
+        Socket.SendDataTo(index, buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
+
     Sub SendNewCharJob(index As Integer)
         Dim i As Integer, n As Integer
         Dim buffer As New ByteStream(4)
@@ -96,6 +117,7 @@ Module S_NetworkSend
 
     Sub SendLoadCharOk(index As Integer)
         Dim Buffer As New ByteStream(4)
+
         Buffer.WriteInt32(ServerPackets.SLoadCharOk)
         Buffer.WriteInt32(index)
         Socket.SendDataTo(index, Buffer.Data, Buffer.Head)
@@ -105,6 +127,7 @@ Module S_NetworkSend
 
     Sub SendInGame(index As Integer)
         Dim Buffer As New ByteStream(4)
+
         Buffer.WriteInt32(ServerPackets.SInGame)
         Socket.SendDataTo(index, Buffer.Data, Buffer.Head)
 
@@ -114,6 +137,7 @@ Module S_NetworkSend
     Sub SendJobs(index As Integer)
         Dim i As Integer
         Dim buffer As New ByteStream(4)
+
         buffer.WriteInt32(ServerPackets.SJobData)
 
         For i = 1 To MAX_JOBS
@@ -127,6 +151,7 @@ Module S_NetworkSend
     Sub SendJobToAll(jobNum As Integer)
         Dim i As Integer
         Dim buffer As New ByteStream(4)
+
         buffer.WriteInt32(ServerPackets.SJobData)
         buffer.WriteBlock(JobData(jobNum))
         SendDataToAll(buffer.Data, buffer.Head)

@@ -11,12 +11,17 @@ Module C_Globals
     Public diaDataString As String
     Public diaStyle As Byte
 
-    Public CharNum As Byte
-
     ' New char
     Public newCharSprite As Long
     Public newCharJob As Long
     Public newCharGender As Long
+
+    ' chars
+    Public CharName(MAX_CHARS) As String
+    Public CharSprite(MAX_CHARS) As Long
+    Public CharAccess(MAX_CHARS) As Long
+    Public CharClass(MAX_CHARS) As Long
+    Public CharNum As Byte
 
     ' Char creation/selecting
     Public SelectedChar As Byte

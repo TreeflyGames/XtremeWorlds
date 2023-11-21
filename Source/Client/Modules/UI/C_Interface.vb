@@ -1051,7 +1051,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Register()
         ' Create the window
-        CreateWindow("winRegister", "Register", zOrder_Win, 0, 0, 276, 202, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winRegister", "Register Account", zOrder_Win, 0, 0, 276, 202, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -1113,14 +1113,14 @@ Module C_Interface
 
         ' Name
         CreatePictureBox(WindowCount, "picShadow_1", 29, 42, 124, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblName", 29, 39, 124, 9, "Name", Arial, , AlignmentType.Center)
+        CreateLabel(WindowCount, "lblName", 29, 39, 124, 9, "Name", Arial, AlignmentType.Center)
 
         ' Textbox
-        CreateTextbox(WindowCount, "txtName", 29, 55, 124, 19, , Arial, , AlignmentType.Left, , , 5, 3, , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtName", 29, 55, 124, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
 
         ' Sex
         CreatePictureBox(WindowCount, "picShadow_2", 29, 85, 124, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblGender", 29, 82, 124, 9, "Gender", Arial, , AlignmentType.Center)
+        CreateLabel(WindowCount, "lblGender", 29, 82, 124, 9, "Gender", Arial, AlignmentType.Center)
 
         ' Checkboxes
         CreateCheckbox(WindowCount, "chkMale", 29, 103, 55, "Male", Arial, , 1, AlignmentType.Center, , , DesignType.ChkNorm, , , New Action(AddressOf chkNewChar_Male))
@@ -1188,7 +1188,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Jobs()
         ' Create window
-        CreateWindow("winJobs", "Job", zOrder_Win, 0, 0, 364, 229, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winJobs", "Select Job", zOrder_Win, 0, 0, 364, 229, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)

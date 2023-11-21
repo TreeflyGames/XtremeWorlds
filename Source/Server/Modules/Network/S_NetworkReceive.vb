@@ -167,10 +167,6 @@ Module S_NetworkReceive
                 Next
 
                 IP = Mid$(IP, 1, i)
-                If IsBanned(index, IP) Then
-                    AlertMsg(index, DialogueMsg.Banned)
-                    Exit Sub
-                End If
 
                 If shutDownDuration > 0 Then
                     Call AlertMsg(index, DialogueMsg.Maintenance)
@@ -205,12 +201,20 @@ Module S_NetworkReceive
                 userData = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
 
                 If userData Is Nothing Then
-                    AlertMsg(index, DialogueMsg.Register)
+                    AlertMsg(index, DialogueMsg.Login)
                     Exit Sub
                 End If
 
                 LoadAccount(index, username)
-                SendNewCharJob(index)
+
+                If IsBanned(index, IP) Then
+                    AlertMsg(index, DialogueMsg.Banned)
+                    Exit Sub
+                End If
+
+                ' send them to the character portal
+                Call SendPlayerChars(index)
+                Call SendNewCharJob(index)
             End If
         End If
     End Sub

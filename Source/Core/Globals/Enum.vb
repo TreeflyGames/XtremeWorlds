@@ -530,7 +530,7 @@
         CreateAccount
         MultiAccount
         AccountExist
-        Register
+        Login
     End Enum
 
     Public Enum DialogueType

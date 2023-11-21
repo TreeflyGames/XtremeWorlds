@@ -176,6 +176,7 @@
         SKeyPair
         SLoadCharOk
         SLoginOk
+        SPlayerChars
         SNewCharJob
         SJobData
         SInGame

@@ -1272,8 +1272,8 @@ Continue1:
                 body = "This account already exists."
                 body2 = "Please try logging in."
 
-            Case DialogueMsg.Register
-                header = "Cannot Register"
+            Case DialogueMsg.Login
+                header = "Cannot Login"
                 body = "This account does not exist."
                 body2 = "Please try registering the account."
         End Select
@@ -1393,7 +1393,7 @@ Continue1:
     Public Sub ShowJobs()
         HideWindows()
         Windows(GetWindowIndex("winJobs")).Controls(GetControlIndex("winJobs", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
-        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text = vbNullString
+        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text = ""
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkMale")).Value = 1
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkFemale")).Value = 0
         ShowWindow(GetWindowIndex("winJobs"))
