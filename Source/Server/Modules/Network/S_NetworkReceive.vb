@@ -365,6 +365,7 @@ Module S_NetworkReceive
             If CharExist(index, slot) Then Exit Sub
 
             ' Everything went ok, add the character
+            Chars.Add(name.Trim())
             AddChar(index, slot, name, sexNum, jobNum, sprite)
             Addlog("Character " & name & " added to " & GetPlayerLogin(index) & "'s account.", PLAYER_LOG)
             HandleUseChar(index)
@@ -386,6 +387,7 @@ Module S_NetworkReceive
                 Exit Sub
             End If
 
+            Chars.Remove(Account(index).Character(slot).Trim())
             LoadCharacter(index, slot)
             ClearCharacter(index)
             SaveCharacter(index, slot)
