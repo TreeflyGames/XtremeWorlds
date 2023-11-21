@@ -188,7 +188,7 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
-                'If Api.Auth(username, password) = False Then
+                ' If Api.Auth(username, password) = False Then
                 ' AlertMsg(index, DialogueMsg.WRONGPASS)
                 ' Exit Sub
                 ' End If
@@ -206,12 +206,7 @@ Module S_NetworkReceive
                 End If
 
                 LoadAccount(index, username)
-
-                ' Show the player up on the socket status
-                Addlog(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
-                Console.WriteLine(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".")
-                SendJobs(index)
-                SendLoginOk(index)
+                SendNewCharJob(index)
             End If
         End If
     End Sub
@@ -276,7 +271,12 @@ Module S_NetworkReceive
                 End If
 
                 CreateAccount(index, username, password)
-                AlertMsg(index, DialogueMsg.AccountRegister)
+
+                ' Show the player up on the socket status
+                Addlog(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
+                Console.WriteLine(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".")
+                SendJobs(index)
+                SendLoginOk(index)
             End If
         End If
     End Sub

@@ -1276,11 +1276,6 @@ Continue1:
                 header = "Register"
                 body = "This account does not exist."
                 body2 = "Please try registering the account."
-
-            Case DialogueMsg.AccountRegister
-                header = "Account Registered"
-                body = "This account has been created."
-                body2 = "Please try logging in."
         End Select
 
         ' set the dialogue up!
@@ -1343,16 +1338,16 @@ Continue1:
         If Index = 1 Then ' Okay button
             ' Dialogue index
             Select Case diaIndex
-                Case DialogueType.TRADEAMOUNT
+                Case DialogueType.TradeAmount
                     value = Val(diaInput)
                     TradeItem(diaData1, value)
-                Case DialogueType.DEPOSITITEM
+                Case DialogueType.DepositItem
                     value = Val(diaInput)
                     DepositItem(diaData1, value)
-                Case DialogueType.WITHDRAWITEM
+                Case DialogueType.WithdrawItem
                     value = Val(diaInput)
                     WithdrawItem(diaData1, value)
-                Case DialogueType.DROPITEM
+                Case DialogueType.DropItem
                     value = Val(diaInput)
                     SendDropItem(diaData1, value)
             End Select
@@ -1361,20 +1356,20 @@ Continue1:
             ' Dialogue index
             Select Case diaIndex
 
-                Case DialogueType.TRADE
+                Case DialogueType.Trade
                     'SendAcceptTradeRequest
 
-                Case DialogueType.FORGET
+                Case DialogueType.Forget
                     'ForgetSpell(diaData1)
 
-                Case DialogueType.PARTY
+                Case DialogueType.Party
                     SendAcceptParty()
 
-                Case DialogueType.LOOTITEM
+                Case DialogueType.LootItem
                     CheckMapGetItem()
 
-                Case DialogueType.DELCHAR
-                    'SendDelChar(diaData1)
+                Case DialogueType.DelChar
+                    SendDelChar(diaData1)
             End Select
 
         ElseIf Index = 3 Then ' No button

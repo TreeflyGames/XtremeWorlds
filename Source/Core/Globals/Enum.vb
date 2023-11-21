@@ -531,7 +531,6 @@
         MultiAccount
         AccountExist
         Register
-        AccountRegister
     End Enum
 
     Public Enum DialogueType

@@ -33,6 +33,7 @@ Module S_NetworkSend
 
     Sub PlayerMsg(index As Integer, msg As String, color As Integer)
         Dim buffer As New ByteStream(4)
+
         buffer.WriteInt32(ServerPackets.SPlayerMsg)
         buffer.WriteString((msg))
         buffer.WriteInt32(color)
@@ -44,6 +45,7 @@ Module S_NetworkSend
     Sub SendNewCharJob(index As Integer)
         Dim i As Integer, n As Integer
         Dim buffer As New ByteStream(4)
+
         buffer.WriteInt32(ServerPackets.SNewCharJob)
 
         For i = 1 To MAX_JOBS
