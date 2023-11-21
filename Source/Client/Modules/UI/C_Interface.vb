@@ -266,7 +266,7 @@ Module C_Interface
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
-                                    WordWrap_Array(.Text, .Width, textArray)
+                                    WordWrap_Array(.RenderText, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
@@ -284,7 +284,7 @@ Module C_Interface
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
-                                    WordWrap_Array(.Text, .Width, textArray)
+                                    WordWrap_Array(.RenderText, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
@@ -398,6 +398,12 @@ Module C_Interface
         End If
 
         With Windows(winNum).Window
+            If .Censor Then
+                .RenderText = CensorText(.Text)
+            Else
+                .RenderText = .Text
+            End If
+
             Select Case .Design(0)
                 Case DesignType.ComboMenuNorm
                     RenderTexture(InterfaceSprite(1), GameWindow, .Left, .Top, 0, 0, .Width, .Height, 157, 0, 0, 0)

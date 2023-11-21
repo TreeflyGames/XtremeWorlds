@@ -716,16 +716,23 @@ Module S_Database
         InsertRowByColumn(id, json, "account", "data", "id")
     End Sub
 
-    Sub LoadAccount(index As Integer, username As String)
+    Function LoadAccount(index As Integer, username As String)
         Dim data As JObject
 
         data = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
+
+        If data Is Nothing Then
+            Call AlertMsg(index, DialogueMsg.Database)
+            Return False
+        End If
 
         Dim accountData = JObject.FromObject(data).ToObject(Of AccountStruct)()
         Account(index) = accountData
 
         LoadBank(index)
-    End Sub
+
+        Return True
+    End Function
 
     Sub ClearAccount(index As Integer)
         Player(index).Access = AdminType.Player

@@ -187,17 +187,15 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
-                ' If Api.Auth(username, password) = False Then
-                ' AlertMsg(index, DialogueMsg.WRONGPASS)
-                ' Exit Sub
-                ' End If
-
                 If IsMultiAccounts(index, username) Then
                     AlertMsg(index, DialogueMsg.MultiAccount)
                     Exit Sub
                 End If
 
-                LoadAccount(index, username)
+                If LoadAccount(index, username) = False Then
+                    AlertMsg(index, DialogueMsg.Database)
+                    Exit Sub
+                End If
 
                 If IsBanned(index, IP) Then
                     AlertMsg(index, DialogueMsg.Banned)
