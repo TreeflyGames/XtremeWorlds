@@ -423,7 +423,7 @@ Friend Module C_Gui
                 If x > TradeWindowX + TradeButtonAcceptX AndAlso x < TradeWindowX + TradeButtonAcceptX + ButtonGfxInfo.Width Then
                     If y > TradeWindowY + TradeButtonAcceptY AndAlso y < TradeWindowY + TradeButtonAcceptY + ButtonGfxInfo.Height Then
                         PlaySound("Click.ogg")
-                        AcceptTrade()
+                        SendAcceptTrade()
                     End If
                 End If
 
@@ -431,7 +431,7 @@ Friend Module C_Gui
                 If x > TradeWindowX + TradeButtonDeclineX AndAlso x < TradeWindowX + TradeButtonDeclineX + ButtonGfxInfo.Width Then
                     If y > TradeWindowY + TradeButtonDeclineY AndAlso y < TradeWindowY + TradeButtonDeclineY + ButtonGfxInfo.Height Then
                         PlaySound("Click.ogg")
-                        DeclineTrade()
+                        SendDeclineTrade()
                     End If
                 End If
 
@@ -440,7 +440,6 @@ Friend Module C_Gui
 
         End If
 
-        'eventchat
         If PnlEventChatVisible = True Then
             If AboveEventChat(x, y) Then
                 'Response1

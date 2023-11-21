@@ -98,7 +98,7 @@ Module C_Trade
 
 #Region "Outgoing Packets"
 
-    Friend Sub AcceptTrade()
+    Friend Sub SendAcceptTrade()
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CAcceptTrade)
@@ -107,7 +107,7 @@ Module C_Trade
         buffer.Dispose()
     End Sub
 
-    Friend Sub DeclineTrade()
+    Friend Sub SendDeclineTrade()
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CDeclineTrade)
@@ -120,7 +120,6 @@ Module C_Trade
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CTradeInvite)
-
         buffer.WriteString((name))
 
         Socket.SendData(buffer.Data, buffer.Head)
@@ -132,7 +131,6 @@ Module C_Trade
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CTradeInviteAccept)
-
         buffer.WriteInt32(awnser)
 
         Socket.SendData(buffer.Data, buffer.Head)

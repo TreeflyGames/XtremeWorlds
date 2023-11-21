@@ -1341,12 +1341,15 @@ Continue1:
                 Case DialogueType.TradeAmount
                     value = Val(diaInput)
                     TradeItem(diaData1, value)
+
                 Case DialogueType.DepositItem
                     value = Val(diaInput)
                     DepositItem(diaData1, value)
+
                 Case DialogueType.WithdrawItem
                     value = Val(diaInput)
                     WithdrawItem(diaData1, value)
+
                 Case DialogueType.DropItem
                     value = Val(diaInput)
                     SendDropItem(diaData1, value)
@@ -1357,10 +1360,10 @@ Continue1:
             Select Case diaIndex
 
                 Case DialogueType.Trade
-                    'SendAcceptTradeRequest
+                    SendAcceptTrade()
 
                 Case DialogueType.Forget
-                    'ForgetSpell(diaData1)
+                    ForgetSkill(diaData1)
 
                 Case DialogueType.Party
                     SendAcceptParty()
@@ -1376,10 +1379,10 @@ Continue1:
             ' Dialogue index
             Select Case diaIndex
 
-                Case DialogueType.TRADE
-                    'SendDeclineTradeRequest
+                Case DialogueType.Trade
+                    SendDeclineTrade()
 
-                Case DialogueType.PARTY
+                Case DialogueType.Party
                     SendDeclineParty()
             End Select
         End If
