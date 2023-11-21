@@ -158,7 +158,7 @@ Module C_NetworkReceive
                 Case MenuCount.Chars
                     ShowWindow(GetWindowIndex("winCharacters"))
                 Case MenuCount.Classes
-                    ShowWindow(GetWindowIndex("winClasses"))
+                    ShowWindow(GetWindowIndex("winJobs"))
                 Case MenuCount.NewChar
                     ShowWindow(GetWindowIndex("winNewChar"))
                 Case MenuCount.Main

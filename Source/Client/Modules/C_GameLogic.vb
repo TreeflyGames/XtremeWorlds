@@ -1273,7 +1273,7 @@ Continue1:
                 body2 = "Please try logging in."
 
             Case DialogueMsg.Register
-                header = "Register"
+                header = "Cannot Register"
                 body = "This account does not exist."
                 body2 = "Please try registering the account."
         End Select
@@ -1329,7 +1329,7 @@ Continue1:
         ShowWindow(GetWindowIndex("winDialogue"), True)
     End Sub
 
-    Public Sub dialogueHandler(ByVal Index As Long)
+    Public Sub DialogueHandler(ByVal Index As Long)
         Dim value As Long, diaInput As String
 
         diaInput = Trim$(Windows(GetWindowIndex("winDialogue")).Controls(GetControlIndex("winDialogue", "txtInput")).Text)
@@ -1388,6 +1388,23 @@ Continue1:
         CloseDialogue()
         diaIndex = 0
         diaInput = ""
+    End Sub
+
+    Public Sub ShowJobs()
+        HideWindows()
+        Windows(GetWindowIndex("winJobs")).Controls(GetControlIndex("winJobs", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
+        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text = vbNullString
+        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkMale")).Value = 1
+        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkFemale")).Value = 0
+        ShowWindow(GetWindowIndex("winJobs"))
+    End Sub
+
+    Public Sub AddChar(name As String, sex As Long, job As Long, sprite As Long)
+        If Socket.IsConnected() Then
+            Call SendAddChar(name, sex, job, sprite)
+        Else
+            Dialogue("Connection Problem", "Cannot connect to game server.", "Please try again.", DialogueType.Alert)
+        End If
     End Sub
 
 End Module

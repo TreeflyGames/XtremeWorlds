@@ -778,8 +778,8 @@ Module C_Interface
         zOrder_Win = zOrder_Win + 1
     End Sub
 
-    Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String,
-        Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
+    Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
+        Optional text As String = "", Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
         Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef callback_enter As Action = Nothing)
 
@@ -831,8 +831,8 @@ Module C_Interface
         CreateEntity(winNum, zOrder_Con, name, EntityType.PictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , , onDraw)
     End Sub
 
-    Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String,
-       Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
+    Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
+       Optional text As String = "", Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
        Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing,
        Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False)
@@ -1007,7 +1007,7 @@ Module C_Interface
         ' Create the window
         CreateWindow("winLogin", "Login", zOrder_Win, 0, 0, 276, 212, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
-        ' Centralise it
+        ' Centralize it
         CentralizeWindow(WindowCount)
 
         ' Set the index for spawning controls
@@ -1021,7 +1021,7 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
         CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
@@ -1033,7 +1033,7 @@ Module C_Interface
 
         ' Textboxes
         CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Types.Settings.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
         CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Arial, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
@@ -1053,14 +1053,14 @@ Module C_Interface
         ' Create the window
         CreateWindow("winRegister", "Register", zOrder_Win, 0, 0, 276, 202, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
-        ' Centralise it
+        ' Centralize it
         CentralizeWindow(WindowCount)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf btnReturnMain_Click))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnReturnMain_Click))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 170, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1084,15 +1084,99 @@ Module C_Interface
         'CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, 19, "Captcha", Arial, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
-        CreateTextbox(WindowCount, "txtPass2", 67, 127, 142, 19, "", Arial, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , True)
-        'CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, "", Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
-        'CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, "", Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
+        CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtPass2", 67, 127, 142, 19, , Arial, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , True)
+        'CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
+        'CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
 
         ' CreatePictureBox(WindowCount, "picCaptcha", 67, 199, 156, 30, , , , , Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
         SetActiveControl(GetWindowIndex("winRegister"), GetControlIndex("winRegister", "txtAccount"))
+    End Sub
+
+    Public Sub CreateWindow_NewChar()
+        ' Create window
+        CreateWindow("winNewChar", "Create Character", zOrder_Win, 0, 0, 291, 172, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+
+        ' Centralize it
+        CentralizeWindow(WindowCount)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Close button
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnNewChar_Cancel))
+
+        ' Parchment
+        CreatePictureBox(WindowCount, "picParchment", 6, 26, 278, 140, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+
+        ' Name
+        CreatePictureBox(WindowCount, "picShadow_1", 29, 42, 124, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreateLabel(WindowCount, "lblName", 29, 39, 124, 9, "Name", Arial, , AlignmentType.Center)
+
+        ' Textbox
+        CreateTextbox(WindowCount, "txtName", 29, 55, 124, 19, , Arial, , AlignmentType.Left, , , 5, 3, , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+
+        ' Sex
+        CreatePictureBox(WindowCount, "picShadow_2", 29, 85, 124, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreateLabel(WindowCount, "lblGender", 29, 82, 124, 9, "Gender", Arial, , AlignmentType.Center)
+
+        ' Checkboxes
+        CreateCheckbox(WindowCount, "chkMale", 29, 103, 55, "Male", Arial, , 1, AlignmentType.Center, , , DesignType.ChkNorm, , , New Action(AddressOf chkNewChar_Male))
+        CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, "Female", Arial, , 0, AlignmentType.Center, , , DesignType.ChkNorm, , , New Action(AddressOf chkNewChar_Female))
+
+        ' Buttons
+        CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, New Action(AddressOf btnNewChar_Accept))
+        CreateButton(WindowCount, "btnCancel", 93, 127, 60, 24, "Cancel", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, New Action(AddressOf btnNewChar_Cancel))
+
+        ' Sprite
+        CreatePictureBox(WindowCount, "picShadow_3", 175, 42, 76, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreateLabel(WindowCount, "lblSprite", 175, 39, 76, 9, "Sprite", Arial, AlignmentType.Center)
+
+        ' Scene
+        CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , New Action(AddressOf NewChar_OnDraw))
+
+        ' Buttons
+        CreateButton(WindowCount, "btnLeft", 163, 40, 11, 13, ,  , 12, 14, 16, , , , , , , , New Action(AddressOf btnNewChar_Left))
+        CreateButton(WindowCount, "btnRight", 252, 40, 11, 13, , , 13, 15, 17, , , , , , , , New Action(AddressOf btnNewChar_Right))
+
+        ' Set the active control
+        SetActiveControl(GetWindowIndex("winNewChar"), GetControlIndex("winNewChar", "txtName"))
+    End Sub
+
+    Public Sub CreateWindow_Jobs()
+        ' Create window
+        CreateWindow("winJobs", "Select Job", zOrder_Win, 0, 0, 364, 229, 17, , , 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+
+        ' Centralize it
+        CentralizeWindow(WindowCount)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Close button
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnJobs_Close))
+
+        ' Parchment
+        CreatePictureBox(WindowCount, "picParchment", 6, 26, 352, 197, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment, , , , , , New Action(AddressOf Jobs_DrawFace))
+
+        ' Job Name
+        CreatePictureBox(WindowCount, "picShadow", 183, 42, 98, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreateLabel(WindowCount, "lblClassName", 183, 39, 98, 9, "Warrior", Arial, AlignmentType.Center)
+
+        ' Select Buttons
+        CreateButton(WindowCount, "btnLeft", 171, 40, 11, 13, , , , , , , 12, 14, 16, , , , , , New Action(AddressOf btnJobs_Left))
+        CreateButton(WindowCount, "btnRight", 282, 40, 11, 13, , , , , , , 13, 15, 17, , , , , , New Action(AddressOf btnJobs_Right))
+
+        ' Accept Button
+        CreateButton(WindowCount, "btnAccept", 183, 185, 98, 22, "Accept", Arial, , , ,  , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnJobs_Accept))
+
+        ' Text background
+        CreatePictureBox(WindowCount, "picBackground", 127, 55, 210, 124, , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
+
+        ' Overlay
+        CreatePictureBox(WindowCount, "picOverlay", 6, 26, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Jobs_DrawText))
     End Sub
 
     Public Sub CreateWindow_Dialogue()
@@ -1106,7 +1190,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf btnDialogue_Close))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnDialogue_Close))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 335, 113, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1116,7 +1200,7 @@ Module C_Interface
         CreateLabel(WindowCount, "lblHeader", 103, 41, 144, 9, "Header", Arial, AlignmentType.Center)
 
         ' Input
-        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, "", Arial, AlignmentType.Center, , , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
+        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, , Arial, AlignmentType.Center, , , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
 
         ' Labels
         CreateLabel(WindowCount, "lblBody_1", 15, 60, 314, 9, "Invalid username or password.", Arial, AlignmentType.Center)
@@ -1141,6 +1225,8 @@ Module C_Interface
         CreateWindow_Register()
         HideWindows()
         CreateWindow_Login()
+        CreateWindow_NewChar()
+        CreateWindow_Jobs()
         CreateWindow_Dialogue()
     End Sub
 
@@ -1413,6 +1499,220 @@ Module C_Interface
         HideWindows()
         ShowWindow(GetWindowIndex("winLogin"))
     End Sub
+
+    ' #######################
+    ' ## Characters Window ##
+    ' #######################
+    Public Sub btnAcceptChar_1()
+        SendUseChar(1)
+    End Sub
+
+    Public Sub btnAcceptChar_2()
+        SendUseChar(2)
+    End Sub
+
+    Public Sub btnAcceptChar_3()
+        SendUseChar(3)
+    End Sub
+
+    Public Sub btnDelChar_1()
+        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueMsg.DelChar, DialogueStyle.YesNo, 1)
+    End Sub
+
+    Public Sub btnDelChar_2()
+        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueMsg.DelChar, DialogueStyle.YesNo, 2)
+    End Sub
+
+    Public Sub btnDelChar_3()
+        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueMsg.DelChar, DialogueStyle.YesNo, 3)
+    End Sub
+
+    Public Sub btnCreateChar_1()
+        CharNum = 1
+        ShowJobs()
+    End Sub
+
+    Public Sub btnCreateChar_2()
+        CharNum = 2
+        ShowJobs()
+    End Sub
+
+    Public Sub btnCreateChar_3()
+        CharNum = 3
+        ShowJobs()
+    End Sub
+
+    Public Sub btnCharacters_Close()
+        InitNetwork()
+        HideWindows()
+        ShowWindow(GetWindowIndex("winLogin"))
+    End Sub
+
+    ' ####################
+    ' ## Classes Window ##
+    ' ####################
+
+    Public Sub Jobs_DrawFace()
+        Dim imageFace As Long, xO As Long, yO As Long
+
+        xO = Windows(GetWindowIndex("winJobs")).Window.Left
+        yO = Windows(GetWindowIndex("winJobs")).Window.Top
+
+        If newCharJob = 0 Then newCharJob = 1
+
+        'Select Case newCharJob
+        '    Case 1 ' Warrior
+        '        imageFace = 18
+        '    Case 2 ' Wizard
+        '        imageFace = 19
+        '    Case 3 ' Whisperer
+        '        imageFace = 20
+        'End Select
+
+        ' render face
+        'RenderTexture imageFace, xO + 14, yO - 41, 0, 0, 256, 256, 256, 256
+    End Sub
+
+    Public Sub Jobs_DrawText()
+        Dim image As Long, text As String, xO As Long, yO As Long, textArray() As String, I As Long, count As Long, y As Long, x As Long
+
+        xO = Windows(GetWindowIndex("winJobs")).Window.Left
+        yO = Windows(GetWindowIndex("winJobs")).Window.Top
+
+        Select Case newCharJob
+            Case 1 ' Warrior
+                text = "The way of a warrior has never been an easy one. Skilled use of a sword is not something learnt overnight. Being able to take a decent amount of hits is important for these characters and as such they weigh a lot of importance on endurance and strength."
+            Case 2 ' Wizard
+                text = "Wizards are often mistrusted characters who have mastered the practise of using their own spirit to create elemental entities. Generally seen as playful and almost childish because of the huge amounts of pleasure they take from setting things on fire."
+            Case 3 ' Whisperer
+                text = "The art of healing is one which comes with tremendous amounts of pressure and guilt. Constantly being put under high-pressure situations where their abilities could mean the difference between life and death leads many Whisperers to insanity."
+        End Select
+
+        ' wrap text
+        'WordWrap_Array text, 200, textArray()
+
+        ' render text
+        'count = UBound(textArray)
+        'y = yO + 60
+        'For I = 1 To count
+        ' x = xO + 132 + (200 \ 2) - (TextWidth(Font(Fonts.rockwell_15), textArray(I)) \ 2)
+        ' RenderText Font(Fonts.rockwell_15), textArray(I), x, y, White
+        ' y = y + 14
+        'Next
+    End Sub
+
+    Public Sub btnJobs_Left()
+        Dim text As String
+
+        newCharJob = newCharJob - 1
+        If newCharJob <= 0 Then
+            newCharJob = MAX_JOBS
+        End If
+        Windows(GetWindowIndex("winJobs")).Controls(GetControlIndex("winJobs", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
+    End Sub
+
+    Public Sub btnJobs_Right()
+        Dim text As String
+
+        newCharJob = newCharJob + 1
+        If newCharJob > MAX_JOBS Then
+            newCharJob = 1
+        End If
+        Windows(GetWindowIndex("winJobs")).Controls(GetControlIndex("winJobs", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
+    End Sub
+
+    Public Sub btnJobs_Accept()
+        HideWindow(GetWindowIndex("winJobs"))
+        ShowWindow(GetWindowIndex("winNewChar"))
+    End Sub
+
+    Public Sub btnJobs_Close()
+        HideWindows()
+        ShowWindow(GetWindowIndex("winCharacters"))
+    End Sub
+
+    ' ###################
+    ' ## New Character ##
+    ' ###################
+    Public Sub NewChar_OnDraw()
+        Dim imageFace As Long, imageChar As Long, xO As Long, yO As Long
+
+        xO = Windows(GetWindowIndex("winNewChar")).Window.Left
+        yO = Windows(GetWindowIndex("winNewChar")).Window.Top
+
+        If newCharGender = SexType.Male Then
+            imageFace = Job(newCharJob).MaleSprite
+            imageChar = Job(newCharJob).MaleSprite
+        Else
+            imageFace = Job(newCharJob).FemaleSprite
+            imageChar = Job(newCharJob).FemaleSprite
+        End If
+
+        ' render face
+        'RenderTexture(imageFace, xO + 166, yO + 56, 0, 0, 94, 94, 94, 94)
+        ' render char
+        'RenderTexture(imageChar, xO + 166, yO + 116, 32, 0, 32, 32, 32, 32)
+    End Sub
+
+    Public Sub btnNewChar_Left()
+        Dim spriteCount As Long
+
+        If newCharGender = SexType.Male Then
+            spriteCount = Job(newCharJob).MaleSprite
+        Else
+            spriteCount = Job(newCharJob).FemaleSprite
+        End If
+
+        If newCharSprite <= 0 Then
+            newCharSprite = spriteCount
+        Else
+            newCharSprite = newCharSprite - 1
+        End If
+    End Sub
+
+    Public Sub btnNewChar_Right()
+        Dim spriteCount As Long
+
+        If newCharGender = SexType.Male Then
+            spriteCount = Job(newCharJob).MaleSprite
+        Else
+            spriteCount = Job(newCharJob).FemaleSprite
+        End If
+
+        If newCharSprite >= spriteCount Then
+            newCharSprite = 0
+        Else
+            newCharSprite = newCharSprite + 1
+        End If
+    End Sub
+
+    Public Sub chkNewChar_Male()
+        newCharSprite = 1
+        newCharGender = SexType.Male
+    End Sub
+
+    Public Sub chkNewChar_Female()
+        newCharSprite = 1
+        newCharGender = SexType.Female
+    End Sub
+
+    Public Sub btnNewChar_Cancel()
+        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text = vbNullString
+        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkMale")).Value = 1
+        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkFemale")).Value = 0
+        newCharSprite = 1
+        newCharGender = SexType.Male
+        HideWindows()
+        ShowWindow(GetWindowIndex("winJobs"))
+    End Sub
+
+    Public Sub btnNewChar_Accept()
+        Dim name As String
+        name = Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text
+        HideWindows()
+        AddChar(name, newCharGender, newCharJob, newCharSprite)
+    End Sub
+
 
     ' #####################
     ' ## Dialogue Window ##

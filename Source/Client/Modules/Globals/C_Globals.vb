@@ -11,6 +11,13 @@ Module C_Globals
     Public diaDataString As String
     Public diaStyle As Byte
 
+    Public CharNum As Byte
+
+    ' New char
+    Public newCharSprite As Long
+    Public newCharJob As Long
+    Public newCharGender As Long
+
     ' Char creation/selecting
     Public SelectedChar As Byte
 
@@ -135,21 +142,16 @@ Module C_Globals
 
     ' Pinging
     Public PingStart As Integer
-
     Public PingEnd As Integer
     Public Ping As Integer
 
-    ' indexing
+    ' Indexing
     Public ActionMsgIndex As Byte
-
     Public BloodIndex As Byte
-
-    ' New char
-    Public NewCharJob As Integer
 
     Public TempMapData() As Byte
 
-    'dialog
+    ' Dialog
     Public DialogType As Byte
 
     Public DialogMsg1 As String
@@ -191,7 +193,7 @@ Module C_Globals
     Public AnimEditorFrame(1) As Integer
     Public AnimEditorTimer(1) As Integer
 
-    'Editors
+    ' Editors
     Public InitEditor As Boolean
     Public InitMapEditor As Boolean
     Public InitPetEditor As Boolean

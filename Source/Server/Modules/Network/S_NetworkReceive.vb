@@ -7,7 +7,7 @@ Imports Newtonsoft.Json.Linq
 
 Module S_NetworkReceive
     Friend Sub PacketRouter()
-        Socket.PacketId(Packets.ClientPackets.CCheckPing) = AddressOf Packet_Ping
+        Socket.PacketId(ClientPackets.CCheckPing) = AddressOf Packet_Ping
         Socket.PacketId(ClientPackets.CLogin) = AddressOf Packet_Login
         Socket.PacketId(ClientPackets.CRegister) = AddressOf Packet_Register
         Socket.PacketId(ClientPackets.CAddChar) = AddressOf Packet_AddChar

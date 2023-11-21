@@ -16,6 +16,16 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Friend Sub SendUseChar(slot As Integer)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(Packets.ClientPackets.CUseChar)
+        buffer.WriteInt32(slot)
+        Socket.SendData(buffer.Data, buffer.Head)
+
+        buffer.Dispose()
+    End Sub
+
     Friend Sub SendDelChar(slot As Integer)
         Dim buffer As New ByteStream(4)
 
