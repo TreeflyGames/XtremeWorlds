@@ -1364,15 +1364,15 @@ Module C_Interface
 
     Public Sub btnRegister_Click()
         HideWindows()
-        RenCaptcha()
-        ClearRegisterTexts()
+        'RenCaptcha()
+        ClearPasswordTexts()
         ShowWindow(GetWindowIndex("winRegister"))
     End Sub
 
-    Sub ClearRegisterTexts()
+    Sub ClearPasswordTexts()
         Dim I As Long
         With Windows(GetWindowIndex("winRegister"))
-            .Controls(GetControlIndex("winRegister", "txtAccount")).Text = ""
+            '.Controls(GetControlIndex("winRegister", "txtAccount")).Text = ""
             .Controls(GetControlIndex("winRegister", "txtPass")).Text = ""
             .Controls(GetControlIndex("winRegister", "txtPass2")).Text = ""
             '.Controls(GetControlIndex("winRegister", "txtCode")).Text = ""
@@ -1402,7 +1402,7 @@ Module C_Interface
 
         If Pass <> pass2 Then
             Dialogue("Register", "Passwords don't match.", "Please try again.", DialogueMsg.WRONGPASS)
-            ClearRegisterTexts()
+            ClearPasswordTexts()
             Exit Sub
         End If
 
