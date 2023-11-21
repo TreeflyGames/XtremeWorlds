@@ -404,15 +404,15 @@
     End Enum
 
     Public Enum EntityType
-        entLabel = 1
-        entWindow
-        entButton
-        entTextBox
-        entScrollbar
-        entPictureBox
-        entCheckbox
-        entCombobox
-        entCombomenu
+        Label = 1
+        Window
+        Button
+        TextBox
+        Scrollbar
+        PictureBox
+        Checkbox
+        Combobox
+        Combomenu
     End Enum
 
     Public Enum DesignType
@@ -514,43 +514,45 @@
     End Enum
 
     Public Enum DialogueMsg
-        CONNECTION = 1
-        BANNED
-        KICKED
-        OUTDATED
-        USERLENGTH
-        REBOOTING
-        NAMETAKEN
-        NAMELENGTH
-        NAMEILLEGAL
-        POSTGRESQL
-        WRONGPASS
-        ACTIVATED
-        MAXCHARS
-        DELCHAR
-        CREATED
-        MUILTI
+        Connection = 1
+        Banned
+        Kicked
+        Outdated
+        Reboot
+        NameTaken
+        NameLength
+        NameIllegal
+        Database
+        WrongPass
+        Activate
+        MaxChar
+        DelChar
+        CreateAccount
+        MultiAccount
+        AccountExist
+        Register
+        AccountRegister
     End Enum
 
     Public Enum DialogueType
-        NAME = 0
-        TRADE
-        FORGET
-        PARTY
-        LOOTITEM
-        ALERT
-        DELCHAR
-        DROPITEM
-        DEPOSITITEM
-        WITHDRAWITEM
-        TRADEAMOUNT
-        UNTRADEAMOUNT
+        Name = 0
+        Trade
+        Forget
+        Party
+        LootItem
+        Alert
+        DelChar
+        DropItem
+        DepositItem
+        WithdrawItem
+        TradeAmount
+        UntradeAmount
     End Enum
 
     Public Enum DialogueStyle
-        OKAY = 1
-        YESNO
-        INPUT
+        Okay = 1
+        YesNo
+        Input
     End Enum
 
 End Module

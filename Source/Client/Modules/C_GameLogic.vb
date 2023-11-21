@@ -1192,85 +1192,95 @@ Continue1:
         ' find the body/header
         Select Case Index
 
-            Case DialogueMsg.CONNECTION
+            Case DialogueMsg.Connection
                 header = "Connection Problem"
                 body = "You lost connection to the server."
                 body2 = "Please try again later."
 
-            Case DialogueMsg.BANNED
+            Case DialogueMsg.Banned
                 header = "Banned"
                 body = "You have been banned, have a nice day!"
                 body2 = "Please send all ban appeals to an administrator."
 
-            Case DialogueMsg.KICKED
+            Case DialogueMsg.Kicked
                 header = "Kicked"
                 body = "You have been kicked."
                 body2 = "Please try and behave."
 
-            Case DialogueMsg.OUTDATED
+            Case DialogueMsg.Outdated
                 header = "Wrong Version"
                 body = "Your game client is the wrong version."
                 body2 = "Please re-load the game or wait for a patch."
 
-            Case DialogueMsg.USERLENGTH
-                header = "Invalid Length"
-                body = "Your username or password is too short or too long."
-                body2 = "Please enter a valid username and password."
-
-            Case DialogueMsg.REBOOTING
+            Case DialogueMsg.Reboot
                 header = "Connection Refused"
                 body = "The server is currently rebooting."
                 body2 = "Please try again soon."
 
-            Case DialogueMsg.NAMETAKEN
+            Case DialogueMsg.NameTaken
                 header = "Invalid Name"
                 body = "This name is already in use."
                 body2 = "Please try another name."
 
-            Case DialogueMsg.NAMELENGTH
+            Case DialogueMsg.NameLength
                 header = "Invalid Name"
                 body = "This name is too short or too long."
                 body2 = "Please try another name."
 
-            Case DialogueMsg.NAMEILLEGAL
+            Case DialogueMsg.NameIllegal
                 header = "Invalid Name"
                 body = "This name contains illegal characters."
                 body2 = "Please try another name."
 
-            Case DialogueMsg.POSTGRESQL
+            Case DialogueMsg.Database
                 header = "Connection Problem"
                 body = "Cannot connect to database."
                 body2 = "Please try again later."
 
-            Case DialogueMsg.WRONGPASS
+            Case DialogueMsg.WrongPass
                 header = "Invalid Login"
                 body = "Invalid username or password."
                 body2 = "Please try again."
 
-            Case DialogueMsg.ACTIVATED
+            Case DialogueMsg.Activate
                 header = "Inactive Account"
                 body = "Your account is not activated."
                 body2 = "Please activate your account then try again."
 
-            Case DialogueMsg.MAXCHARS
+            Case DialogueMsg.MaxChar
                 header = "Cannot Merge"
                 body = "You cannot merge a full account."
                 body2 = "Please clear a character slot."
 
-            Case DialogueMsg.DELCHAR
+            Case DialogueMsg.DelChar
                 header = "Deleted Character"
                 body = "Your character was successfully deleted."
                 body2 = "Please log on to continue playing."
 
-            Case DialogueMsg.CREATED
+            Case DialogueMsg.CreateAccount
                 header = "Account Created"
-                body = "Your Account was successfully created."
+                body = "Your account was successfully created."
                 body2 = "Now, you can play!"
 
-            Case DialogueMsg.MUILTI
+            Case DialogueMsg.MultiAccount
                 header = "Multiple Accounts"
                 body = "Using multiple accounts is not authorized."
                 body2 = "Please logout of your other account and try again!"
+
+            Case DialogueMsg.AccountExist
+                header = "Account Exists"
+                body = "This account already exists."
+                body2 = "Please try logging in."
+
+            Case DialogueMsg.Register
+                header = "Register"
+                body = "This account does not exist."
+                body2 = "Please try registering the account."
+
+            Case DialogueMsg.AccountRegister
+                header = "Account Registered"
+                body = "This account has been created."
+                body2 = "Please try logging in."
         End Select
 
         ' set the dialogue up!

@@ -148,26 +148,6 @@ Module S_Database
         End Using
     End Sub
 
-    Public Function DoesNameExist(tableName As String, name As String) As Boolean
-        Dim sql As String = $"SELECT EXISTS(SELECT 1 FROM {tableName} WHERE name = @name);"
-
-        Using connection As New NpgsqlConnection(connectionString)
-            connection.Open()
-
-            Using command As New NpgsqlCommand(sql, connection)
-                command.Parameters.AddWithValue("@name", name)
-
-                Try
-                    Dim result As Object = command.ExecuteScalar()
-                    Return Convert.ToBoolean(result)
-                Catch ex As NpgsqlException
-                    ' Handle the exception appropriately
-                    Return False
-                End Try
-            End Using
-        End Using
-    End Function
-
     Public Sub CreateTables()
         Dim dataTable As String = "id SERIAL PRIMARY KEY, data jsonb"
         Dim playerTable As String = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb"
@@ -724,24 +704,29 @@ Module S_Database
         SaveBank(index)
     End Sub
 
-    Sub RegisterAccount(index As Integer)
-        SavePlayer(index)
-        LoadAccount(index, GetPlayerLogin(index))
+    Sub CreateAccount(index As Integer, username As String, password As String)
+        Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
+
+        SetPlayerLogin(index, username)
+        SetPlayerPassword(index, password)
+
+        Dim id As BigInteger = GenerateIdFromString(username)
+
+        InsertRowByColumn(id, json, "account", "data", "id")
     End Sub
 
     Sub LoadAccount(index As Integer, username As String)
         Dim data As JObject
-        SetPlayerLogin(index, username)
 
+        SetPlayerLogin(index, username)
         data = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
 
         If data Is Nothing Then
             ClearAccount(index)
-            SetPlayerLogin(index, username)
             Exit Sub
         End If
 
-        Dim accountData = JObject.FromObject(data).toObject(Of AccountStruct)()
+        Dim accountData = JObject.FromObject(data).ToObject(Of AccountStruct)()
         Account(index) = accountData
 
         LoadBank(index)

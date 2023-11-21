@@ -190,7 +190,7 @@ Module C_Interface
             ' find the control type
             Select Case .Type
                 ' picture box
-                Case EntityType.entPictureBox
+                Case EntityType.PictureBox
                     ' render specific designs
                     If .Design(.State) > 0 Then
                         RenderDesign(.Design(.State), .Left + xO, .Top + yO, .Width, .Height, .Alpha)
@@ -202,7 +202,7 @@ Module C_Interface
                     End If
 
                 ' textbox
-                Case EntityType.entTextBox
+                Case EntityType.TextBox
                     ' render specific designs
                     If .Design(.State) > 0 Then
                         RenderDesign(.Design(.State), .Left + xO, .Top + yO, .Width, .Height, .Alpha)
@@ -217,7 +217,7 @@ Module C_Interface
                     RenderText(.Text, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
 
                 ' buttons
-                Case EntityType.entButton
+                Case EntityType.Button
                     ' render specific designs
                     If .Design(.State) > 0 Then
                         If .Design(.State) > 0 Then
@@ -257,7 +257,7 @@ Module C_Interface
                     RenderText(.Text, GameWindow, hor_centre, ver_centre, Color.White, Color.Black)
 
                 ' labels
-                Case EntityType.entLabel
+                Case EntityType.Label
                     If Len(.Text) > 0 Then
                         Select Case .Align
                             Case AlignmentType.Left
@@ -299,12 +299,12 @@ Module C_Interface
                                 End If
 
                             Case AlignmentType.Center
-                                ' check if need to word wrap
+                                ' Check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
-                                    ' wrap text
+                                    ' Wrap text
                                     WordWrap_Array(.Text, .Width, textArray)
 
-                                    ' render text
+                                    ' Render text
                                     count = UBound(textArray)
 
                                     For i = 1 To count
@@ -313,15 +313,15 @@ Module C_Interface
                                         yOffset = yOffset + 14
                                     Next
                                 Else
-                                    ' just one line
+                                    ' Just one line
                                     left = .Left + (.Width \ 2) - (GetTextWidth(.Text) \ 2) - 4
                                     RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
                         End Select
                     End If
 
-                ' checkboxes
-                Case EntityType.entCheckbox
+                ' Checkboxes
+                Case EntityType.Checkbox
                     Select Case .Design(0)
                         Case DesignType.ChkNorm
                             ' empty?
@@ -365,7 +365,7 @@ Module C_Interface
                     End Select
 
                 ' comboboxes
-                Case EntityType.entCombobox
+                Case EntityType.Combobox
                     Select Case .Design(0)
                         Case DesignType.ComboNorm
                             ' draw the background
@@ -739,7 +739,7 @@ Module C_Interface
         ' set the properties
         With Windows(WindowCount).Window
             .Name = name
-            .Type = EntityType.entWindow
+            .Type = EntityType.Window
 
             ReDim .Design(EntState.State_Count - 1)
             ReDim .Image(EntState.State_Count - 1)
@@ -802,7 +802,7 @@ Module C_Interface
         callback(EntState.Enter) = callback_enter
 
         ' create the textbox
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entTextBox, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , censor, , isActive)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.TextBox, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , censor, , isActive)
     End Sub
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
@@ -828,7 +828,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entPictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , , onDraw)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.PictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , , onDraw)
     End Sub
 
     Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String,
@@ -855,7 +855,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the button 
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entButton, design, image, callback, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, censor, , , , tooltip)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.Button, design, image, callback, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, censor, , , , tooltip)
     End Sub
 
     Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String,
@@ -874,7 +874,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the label
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entLabel, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.Label, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor)
     End Sub
 
     Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, text As String, font As String,
@@ -896,7 +896,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entCheckbox, design, image, callback, left, top, width, height, visible, , , , value, text, align, font, alpha, , , , , censor, , , , group)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.Checkbox, design, image, callback, left, top, width, height, visible, , , , value, text, align, font, alpha, , , , , censor, , , , group)
     End Sub
 
     Public Sub CreateComboBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, design As Long)
@@ -907,7 +907,7 @@ Module C_Interface
         theDesign(0) = design
 
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.entCombobox, theDesign, image, callback, left, top, width, height)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.Combobox, theDesign, image, callback, left, top, width, height)
     End Sub
 
     Public Function GetWindowIndex(winName As String) As Long
@@ -947,7 +947,7 @@ Module C_Interface
     Public Function SetActiveControl(curWindow As Long, curControl As Long) As Boolean
         ' make sure it's something which CAN be active
         Select Case Windows(curWindow).Controls(curControl).Type
-            Case EntityType.entTextBox
+            Case EntityType.TextBox
                 Windows(curWindow).ActiveControl = curControl
                 SetActiveControl = True
         End Select
@@ -1051,7 +1051,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Register()
         ' Create the window
-        CreateWindow("winRegister", "Register", zOrder_Win, 0, 0, 276, 302, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winRegister", "Register", zOrder_Win, 0, 0, 276, 202, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralise it
         CentralizeWindow(WindowCount)
@@ -1063,32 +1063,32 @@ Module C_Interface
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, "", , 8, 9, 10, , , , , , , , New Action(AddressOf btnReturnMain_Click))
 
         ' Parchment
-        CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 270, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 170, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
 
         ' Shadows
         CreatePictureBox(WindowCount, "picShadow_1", 67, 43, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         CreatePictureBox(WindowCount, "picShadow_3", 67, 115, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreatePictureBox(WindowCount, "picShadow_4", 67, 151, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreatePictureBox(WindowCount, "picShadow_5", 67, 187, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        'CreatePictureBox(WindowCount, "picShadow_4", 67, 151, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        'CreatePictureBox(WindowCount, "picShadow_5", 67, 187, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 68, 262, 67, 22, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
-        CreateButton(WindowCount, "btnExit", 142, 262, 67, 22, "Back", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
+        CreateButton(WindowCount, "btnAccept", 68, 152, 67, 22, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
+        CreateButton(WindowCount, "btnExit", 142, 152, 67, 22, "Back", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
 
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 66, 39, 142, 19, "Username", Arial, AlignmentType.Center)
         CreateLabel(WindowCount, "lblPassword", 66, 75, 142, 19, "Password", Arial, AlignmentType.Center)
         CreateLabel(WindowCount, "lblPassword2", 66, 111, 142, 19, "Retype Password", Arial, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblCode", 66, 147, 142, 19, "Secret Code", Arial, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, 19, "Captcha", Arial, AlignmentType.Center)
+        'CreateLabel(WindowCount, "lblCode", 66, 147, 142, 19, "Secret Code", Arial, AlignmentType.Center)
+        'CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, 19, "Captcha", Arial, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , , , New Action(AddressOf btnSendRegister_Click))
-        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True, , , New Action(AddressOf btnSendRegister_Click))
-        CreateTextbox(WindowCount, "txtPass2", 67, 127, 142, 19, "", Arial, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True, , , New Action(AddressOf btnSendRegister_Click))
-        CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, "", Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False, , , New Action(AddressOf btnSendRegister_Click))
-        CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, "", Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False, , , New Action(AddressOf btnSendRegister_Click))
+        CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtPass2", 67, 127, 142, 19, "", Arial, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , True)
+        'CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, "", Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
+        'CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, "", Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
 
         ' CreatePictureBox(WindowCount, "picCaptcha", 67, 199, 156, 30, , , , , Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
@@ -1238,12 +1238,12 @@ Module C_Interface
 
                         ' toggle boxes
                         Select Case .Type
-                            Case EntityType.entCheckbox
+                            Case EntityType.Checkbox
                                 ' grouped boxes
                                 If .Group > 0 Then
                                     If .Value = 0 Then
                                         For i = 1 To Windows(curWindow).ControlCount
-                                            If Windows(curWindow).Controls(i).Type = EntityType.entCheckbox Then
+                                            If Windows(curWindow).Controls(i).Type = EntityType.Checkbox Then
                                                 If Windows(curWindow).Controls(i).Group = .Group Then
                                                     Windows(curWindow).Controls(i).Value = 0
                                                 End If
@@ -1258,7 +1258,7 @@ Module C_Interface
                                         .Value = 0
                                     End If
                                 End If
-                            Case EntityType.entCombobox
+                            Case EntityType.Combobox
                                 'ShowComboMenu(curWindow, curControl)
                         End Select
 
@@ -1375,11 +1375,11 @@ Module C_Interface
             .Controls(GetControlIndex("winRegister", "txtAccount")).Text = ""
             .Controls(GetControlIndex("winRegister", "txtPass")).Text = ""
             .Controls(GetControlIndex("winRegister", "txtPass2")).Text = ""
-            .Controls(GetControlIndex("winRegister", "txtCode")).Text = ""
-            .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text = ""
-            For I = 0 To 6
-                '.Controls(GetControlIndex("winRegister", "picCaptcha")).Image(I) = Tex_Captcha(GlobalCaptcha)
-            Next
+            '.Controls(GetControlIndex("winRegister", "txtCode")).Text = ""
+            '.Controls(GetControlIndex("winRegister", "txtCaptcha")).Text = ""
+            'For I = 0 To 6
+            '.Controls(GetControlIndex("winRegister", "picCaptcha")).Image(I) = Tex_Captcha(GlobalCaptcha)
+            'Next
         End With
     End Sub
 
@@ -1396,28 +1396,17 @@ Module C_Interface
             User = .Controls(GetControlIndex("winRegister", "txtAccount")).Text
             Pass = .Controls(GetControlIndex("winRegister", "txtPass")).Text
             pass2 = .Controls(GetControlIndex("winRegister", "txtPass2")).Text
-            Code = .Controls(GetControlIndex("winRegister", "txtCode")).Text
-            Captcha = .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text
+            'Code = .Controls(GetControlIndex("winRegister", "txtCode")).Text
+            'Captcha = .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text
         End With
 
-        If Trim$(Pass) <> Trim$(pass2) Then
-            'Call Dialogue("Register", "Falha ao criar conta.", "A confirma��o n�o confere com a senha!", TypeDELCHAR, StyleOKAY, 1)
+        If Pass <> pass2 Then
+            Dialogue("Register", "Passwords don't match.", "Please try again.", DialogueMsg.WRONGPASS)
+            ClearRegisterTexts()
             Exit Sub
         End If
 
-        If User = vbNullString Or Pass = vbNullString Or pass2 = vbNullString Or Code = vbNullString Then
-            'Call Dialogue("Register", "Falha ao criar conta.", "Nenhum campo pode ficar em branco!", TypeDELCHAR, StyleOKAY, 1)
-            Exit Sub
-        End If
-
-        'If Trim$(Captcha) <> Trim$(GetCaptcha) Then
-        RenCaptcha()
-        ClearRegisterTexts()
-        'Call Dialogue("Register", "Falha ao criar conta.", "Captcha Incorreto!", TypeDELCHAR, StyleOKAY, 1)
-        Exit Sub
-        'End If
-
-        'SendRegister User, Pass, Code
+        SendRegister(User, Pass)
     End Sub
 
     Public Sub btnReturnMain_Click()

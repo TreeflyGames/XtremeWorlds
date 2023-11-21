@@ -48,12 +48,12 @@ Public Module SettingsManager
             File.Create(cf).Dispose()
             Dim writer = New StreamWriter(cf)
             x.Serialize(writer, New Settings)
-            writer.Close
+            writer.Close()
         End If
 
         Dim reader = New StreamReader(cf)
         Types.Settings = x.Deserialize(reader)
-        reader.Close
+        reader.Close()
     End Sub
 
     Public Sub Save()
@@ -64,9 +64,9 @@ Public Module SettingsManager
 
         Dim x As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
         Dim writer = New StreamWriter(cf)
-        
+
         x.Serialize(writer, Types.Settings)
-        writer.Close
+        writer.Close()
     End Sub
 
 End Module

@@ -1,14 +1,15 @@
 ﻿Imports System.IO
+Imports Core
+Imports Core.Database
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
-Imports Core
-Imports Core.Network
-Imports System.Numerics
+Imports Newtonsoft.Json.Linq
 
 Module S_NetworkReceive
     Friend Sub PacketRouter()
         Socket.PacketId(Packets.ClientPackets.CCheckPing) = AddressOf Packet_Ping
         Socket.PacketId(ClientPackets.CLogin) = AddressOf Packet_Login
+        Socket.PacketId(ClientPackets.CRegister) = AddressOf Packet_Register
         Socket.PacketId(ClientPackets.CAddChar) = AddressOf Packet_AddChar
         Socket.PacketId(ClientPackets.CUseChar) = AddressOf Packet_UseChar
         Socket.PacketId(ClientPackets.CDelChar) = AddressOf Packet_DelChar
@@ -149,6 +150,7 @@ Module S_NetworkReceive
         Dim username As String, IP As String
         Dim password As String, i As Integer
         Dim buffer As New ByteStream(data)
+        Dim userData As JObject
 
         If Not IsPlaying(index) Then
             If Not IsLoggedIn(index) Then
@@ -167,7 +169,8 @@ Module S_NetworkReceive
 
                 IP = Mid$(IP, 1, i)
                 If IsBanned(IP) Then
-                    AlertMsg(index, DialogueMsg.BANNED)
+                    AlertMsg(index, DialogueMsg.Banned)
+                    Exit Sub
                 End If
 
                 ' Get the data
@@ -176,17 +179,29 @@ Module S_NetworkReceive
 
                 ' Check versions
                 If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
-                    AlertMsg(index, DialogueMsg.OUTDATED)
+                    AlertMsg(index, DialogueMsg.Outdated)
                     Exit Sub
                 End If
 
-                If Api.Auth(username, password) = False Then
-                    AlertMsg(index, DialogueMsg.WRONGPASS)
+                If username.Length > NAME_LENGTH Or username.Length < 3 Then
+                    AlertMsg(index, DialogueMsg.NameLength)
                     Exit Sub
                 End If
+
+                'If Api.Auth(username, password) = False Then
+                ' AlertMsg(index, DialogueMsg.WRONGPASS)
+                ' Exit Sub
+                ' End If
 
                 If IsMultiAccounts(index, username) Then
-                    AlertMsg(index, DialogueMsg.MUILTI)
+                    AlertMsg(index, DialogueMsg.MultiAccount)
+                    Exit Sub
+                End If
+
+                userData = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
+
+                If userData Is Nothing Then
+                    AlertMsg(index, DialogueMsg.Register)
                     Exit Sub
                 End If
 
@@ -205,6 +220,7 @@ Module S_NetworkReceive
         Dim username As String, IP As String
         Dim password As String, i As Integer
         Dim buffer As New ByteStream(data)
+        Dim userData As JObject
 
         If Not IsPlaying(index) Then
             If Not IsLoggedIn(index) Then
@@ -223,7 +239,8 @@ Module S_NetworkReceive
 
                 IP = Mid$(IP, 1, i)
                 If IsBanned(IP) Then
-                    AlertMsg(index, DialogueMsg.BANNED)
+                    AlertMsg(index, DialogueMsg.Banned)
+                    Exit Sub
                 End If
 
                 ' Get the data
@@ -232,27 +249,34 @@ Module S_NetworkReceive
 
                 ' Check versions
                 If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
-                    AlertMsg(index, DialogueMsg.OUTDATED)
+                    AlertMsg(index, DialogueMsg.Outdated)
                     Exit Sub
                 End If
 
-                If Api.Auth(username, password) = False Then
-                    AlertMsg(index, DialogueMsg.WRONGPASS)
+                If username.Length > NAME_LENGTH Or username.Length < 3 Then
+                    AlertMsg(index, DialogueMsg.NameLength)
                     Exit Sub
                 End If
+
+                ' If Api.Auth(username, password) = False Then
+                ' AlertMsg(index, DialogueMsg.WrongPass)
+                ' Exit Sub
+                ' End If
 
                 If IsMultiAccounts(index, username) Then
-                    AlertMsg(index, DialogueMsg.MUILTI)
+                    AlertMsg(index, DialogueMsg.MultiAccount)
                     Exit Sub
                 End If
 
-                LoadAccount(index, username)
+                userData = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
 
-                ' Show the player up on the socket status
-                Addlog(GetPlayerLogin(index) & " has logged In from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
-                Console.WriteLine(GetPlayerLogin(index) & " has logged In from " & Socket.ClientIp(index) & ".")
-                SendJobs(index)
-                SendLoginOk(index)
+                If Not userData Is Nothing Then
+                    AlertMsg(index, DialogueMsg.AccountExist)
+                    Exit Sub
+                End If
+
+                CreateAccount(index, username, password)
+                AlertMsg(index, DialogueMsg.AccountRegister)
             End If
         End If
     End Sub
@@ -263,10 +287,12 @@ Module S_NetworkReceive
 
         If Not IsPlaying(index) Then
             If IsLoggedIn(index) Then
-
                 slot = buffer.ReadInt32
 
-                If slot < 1 Or slot > MAX_CHARACTERS Then slot = 1
+                If slot < 1 Or slot > MAX_CHARACTERS Then
+                    AlertMsg(index, DialogueMsg.MaxChar)
+                    Exit Sub
+                End If
 
                 LoadCharacter(index, slot)
 
@@ -294,12 +320,15 @@ Module S_NetworkReceive
         If Not IsPlaying(index) Then
             slot = buffer.ReadInt32
 
-            If slot < 1 Or slot > MAX_CHARACTERS Or Account(index).Character(slot) <> "" Then Exit Sub
+            If slot < 1 Or slot > MAX_CHARACTERS Or Account(index).Character(slot) <> "" Then
+                AlertMsg(index, DialogueMsg.MaxChar)
+                Exit Sub
+            End If
 
             name = buffer.ReadString
 
-            If DoesNameExist("account", name) Then
-                AlertMsg(index, DialogueMsg.NAMETAKEN)
+            If name.Length > NAME_LENGTH Or name.Length < 3 Then
+                AlertMsg(index, DialogueMsg.NameLength)
                 Exit Sub
             End If
 
@@ -310,11 +339,17 @@ Module S_NetworkReceive
                 n = AscW(Mid$(name, i, 1))
 
                 If Not IsNameLegal(n) Then
-                    AlertMsg(index, DialogueMsg.NAMEILLEGAL)
+                    AlertMsg(index, DialogueMsg.NameIllegal)
                     Exit Sub
                 End If
 
             Next
+
+            ' Check if name is already in use
+            If Chars.Find(name) Then
+                AlertMsg(index, DialogueMsg.NameTaken)
+                Exit Sub
+            End If
 
             If (sexNum < SexType.Male) OrElse (sexNum > SexType.Female) Then Exit Sub
 
@@ -346,7 +381,10 @@ Module S_NetworkReceive
         If Not IsPlaying(index) Then
             slot = buffer.ReadInt32
 
-            If slot < 1 Or slot > MAX_CHARACTERS Then Exit Sub
+            If slot < 1 Or slot > MAX_CHARACTERS Then
+                AlertMsg(index, DialogueMsg.MaxChar)
+                Exit Sub
+            End If
 
             LoadCharacter(index, slot)
             ClearCharacter(index)
@@ -1033,7 +1071,7 @@ Module S_NetworkReceive
                 If GetPlayerAccess(n) < GetPlayerAccess(index) Then
                     GlobalMsg(GetPlayerName(n) & " has been kicked from " & Types.Settings.GameName & " by " & GetPlayerName(index) & "!")
                     Addlog(GetPlayerName(index) & " has kicked " & GetPlayerName(n) & ".", ADMIN_LOG)
-                    AlertMsg(n, DialogueMsg.KICKED)
+                    AlertMsg(n, DialogueMsg.Kicked)
                 Else
                     PlayerMsg(index, "That is a higher or same access admin then you!", ColorType.BrightRed)
                 End If
@@ -2015,7 +2053,7 @@ Module S_NetworkReceive
         If index > 0 AndAlso IsPlaying(index) Then
             GlobalMsg(GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has been booted for (" & Reason & ")")
 
-            AlertMsg(index, DialogueMsg.CONNECTION)
+            AlertMsg(index, DialogueMsg.Connection)
         End If
 
     End Sub

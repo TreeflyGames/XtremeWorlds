@@ -19,9 +19,6 @@ Module C_NetworkSend
     Friend Sub SendLogin(name As String, pass As String)
         Dim buffer As New ByteStream(4)
 
-        If name = "" Then Exit Sub
-        If pass = "" Then Exit Sub
-
         buffer.WriteInt32(ClientPackets.CLogin)
         buffer.WriteString((EKeyPair.EncryptString(name)))
         buffer.WriteString((EKeyPair.EncryptString(pass)))
@@ -33,9 +30,6 @@ Module C_NetworkSend
 
     Friend Sub SendRegister(name As String, pass As String)
         Dim buffer As New ByteStream(4)
-
-        If name = "" Then Exit Sub
-        If pass = "" Then Exit Sub
 
         buffer.WriteInt32(ClientPackets.CRegister)
         buffer.WriteString((EKeyPair.EncryptString(name)))
