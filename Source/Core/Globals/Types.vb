@@ -296,6 +296,7 @@ Public Module Types
         Dim Password As String
         Dim Character() As String
         Dim Index As Byte
+        Dim Banned As Boolean
     End Structure
 
     Public Structure PlayerStruct

@@ -168,7 +168,7 @@ Module S_NetworkReceive
                 Next
 
                 IP = Mid$(IP, 1, i)
-                If IsBanned(IP) Then
+                If IsBanned(index, IP) Then
                     AlertMsg(index, DialogueMsg.Banned)
                     Exit Sub
                 End If
@@ -233,7 +233,7 @@ Module S_NetworkReceive
                 Next
 
                 IP = Mid$(IP, 1, i)
-                If IsBanned(IP) Then
+                If IsBanned(index, IP) Then
                     AlertMsg(index, DialogueMsg.Banned)
                     Exit Sub
                 End If
@@ -1129,7 +1129,7 @@ Module S_NetworkReceive
                 PlayerMsg(index, "Player is not online.", ColorType.BrightRed)
             End If
         Else
-            PlayerMsg(index, "You cannot ban yourself, dumbass!", ColorType.BrightRed)
+            PlayerMsg(index, "You cannot ban yourself!", ColorType.BrightRed)
         End If
 
     End Sub

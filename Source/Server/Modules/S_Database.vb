@@ -151,11 +151,11 @@ Module S_Database
     Public Sub CreateTables()
         Dim dataTable As String = "id SERIAL PRIMARY KEY, data jsonb"
         Dim playerTable As String = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb"
-        
+
         For i = 1 To MAX_CHARACTERS
             playerTable += $", character{i} jsonb"
         Next
-        
+
         Dim tableNames As String() = {"job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile"}
 
         For Each tableName In tableNames
@@ -191,7 +191,7 @@ Module S_Database
                 ' Read all rows and output the first column in each row
                 While Await reader.ReadAsync()
                     Dim id = Await reader.GetFieldValueAsync(Of Int32)(0) ' Get the value as a long
-                    ids.Add(new BigInteger(id)) ' Convert the long to a BigInteger and add it to the list
+                    ids.Add(New BigInteger(id)) ' Convert the long to a BigInteger and add it to the list
                 End While
             End Using
         End Using
@@ -350,7 +350,7 @@ Module S_Database
 
     Sub LoadJob(jobNum As Integer)
         Dim data As JObject
-            
+
         data = SelectRow(jobNum, "job", "data")
 
         If data Is Nothing Then
@@ -358,7 +358,7 @@ Module S_Database
             Exit Sub
         End If
 
-        Dim jobData = JObject.FromObject(data).toObject(Of JobStruct)()
+        Dim jobData = JObject.FromObject(data).ToObject(Of JobStruct)()
         Job(jobNum) = jobData
     End Sub
 
@@ -373,7 +373,7 @@ Module S_Database
     Sub SaveJob(jobNum As Integer)
         Dim json As String = JsonConvert.SerializeObject(Job(jobNum)).ToString()
 
-        If RowExists(jobNum, "job")
+        If RowExists(jobNum, "job") Then
             UpdateRow(jobNum, json, "job", "data")
         Else
             InsertRow(jobNum, "data", "job")
@@ -441,10 +441,10 @@ Module S_Database
     Public Sub SaveMap(mapNum As Integer)
         Dim json As String = JsonConvert.SerializeObject(Map(mapNum)).ToString()
 
-        If RowExists(mapNum, "map")
+        If RowExists(mapNum, "map") Then
             UpdateRow(mapNum, json, "map", "data")
         Else
-            InsertRow(mapNum,  json, "map")
+            InsertRow(mapNum, json, "map")
         End If
     End Sub
 
@@ -457,17 +457,17 @@ Module S_Database
     End Sub
 
     Sub LoadMap(mapNum As Integer)
-        
+
         Dim data As JObject
 
         data = SelectRow(mapNum, "map", "data")
 
-        if data Is Nothing then
+        If data Is Nothing Then
             ClearMap(mapNum)
             Exit Sub
         End If
 
-        Dim mapData = JObject.FromObject(data).toObject(Of MapStruct)()
+        Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
         Map(mapNum) = mapData
 
         CacheResources(mapNum)
@@ -496,7 +496,7 @@ Module S_Database
     Sub SaveNpc(npcNum As Integer)
         Dim json As String = JsonConvert.SerializeObject(NPC(npcNum)).ToString()
 
-        If RowExists(npcNum, "npc")
+        If RowExists(npcNum, "npc") Then
             UpdateRow(npcNum, json, "npc", "data")
         Else
             InsertRow(npcNum, json, "npc")
@@ -521,7 +521,7 @@ Module S_Database
             Exit Sub
         End If
 
-        Dim npcData = JObject.FromObject(data).toObject(Of NpcStruct)()
+        Dim npcData = JObject.FromObject(data).ToObject(Of NpcStruct)()
         NPC(npcNum) = npcData
     End Sub
 
@@ -530,7 +530,7 @@ Module S_Database
         ReDim MapNPC(mapNum).Npc(index).Vital(VitalType.Count - 1)
         ReDim MapNPC(mapNum).Npc(index).SkillCd(MAX_NPC_SKILLS)
     End Sub
-    
+
     Sub ClearAllMapNpcs()
         Dim i As Integer
 
@@ -554,7 +554,7 @@ Module S_Database
         NPC(index).AttackSay = ""
 
         ReDim NPC(index).Stat(StatType.Count - 1)
-        
+
         For i = 1 To MAX_DROP_ITEMS
             ReDim NPC(index).DropChance(5)
             ReDim NPC(index).DropItem(5)
@@ -577,7 +577,7 @@ Module S_Database
     Sub SaveShop(shopNum As Integer)
         Dim json As String = JsonConvert.SerializeObject(Shop(shopNum)).ToString()
 
-        If RowExists(shopNum, "shop")
+        If RowExists(shopNum, "shop") Then
             UpdateRow(shopNum, json, "shop", "data")
         Else
             InsertRow(shopNum, json, "shop")
@@ -603,7 +603,7 @@ Module S_Database
             Exit Sub
         End If
 
-        Dim shopData = JObject.FromObject(data).toObject(Of ShopStruct)()
+        Dim shopData = JObject.FromObject(data).ToObject(Of ShopStruct)()
         Shop(shopNum) = shopData
     End Sub
 
@@ -634,7 +634,7 @@ Module S_Database
     Sub SaveSkill(skillNum As Integer)
         Dim json As String = JsonConvert.SerializeObject(Skill(skillNum)).ToString()
 
-        If RowExists(skillNum, "skill")
+        If RowExists(skillNum, "skill") Then
             UpdateRow(skillNum, json, "skill", "data")
         Else
             InsertRow(skillNum, json, "skill")
@@ -660,7 +660,7 @@ Module S_Database
             Exit Sub
         End If
 
-        Dim skillData = JObject.FromObject(data).toObject(Of SkillStruct)()
+        Dim skillData = JObject.FromObject(data).ToObject(Of SkillStruct)()
         Skill(skillNum) = skillData
     End Sub
 
@@ -773,7 +773,7 @@ Module S_Database
             Exit Sub
         End If
 
-        Dim bankData = JObject.FromObject(data).toObject(Of BankStruct)()
+        Dim bankData = JObject.FromObject(data).ToObject(Of BankStruct)()
         Bank(index) = bankData
     End Sub
 
@@ -782,7 +782,7 @@ Module S_Database
         Dim username As String = GetPlayerLogin(index)
         Dim id As BigInteger = GenerateIdFromString(username)
 
-        If RowExistsByColumn("id", id, "account")
+        If RowExistsByColumn("id", id, "account") Then
             UpdateRowByColumn("id", id, "bank", json, "account")
         Else
             InsertRowByColumn(id, json, "account", "bank", "id")
@@ -908,7 +908,7 @@ Module S_Database
             Exit Sub
         End If
 
-        Dim characterData = JObject.FromObject(data).toObject(Of PlayerStruct)()
+        Dim characterData = JObject.FromObject(data).ToObject(Of PlayerStruct)()
         Player(index) = characterData
     End Sub
 
@@ -971,7 +971,7 @@ Module S_Database
             SetPlayerCharName(index, Account(index).Index, name)
             SavePlayer(index)
         End If
-        
+
     End Sub
 
 #End Region
@@ -1036,12 +1036,12 @@ Module S_Database
         Dim IP As String
         Dim F As Integer
         Dim i As Integer
+
         filename = Paths.Database & "banlist.txt"
 
         ' Make sure the file exists
         If Not File.Exists("data\banlist.txt") Then
             F = FreeFile()
-            'COME HERE!!!
         End If
 
         ' Cut off last portion of ip
@@ -1055,6 +1055,8 @@ Module S_Database
 
         Next
 
+        Account(BanPlayerindex).Banned = True
+
         IP = Mid$(IP, 1, i)
         AddTextToFile(IP, "banlist.txt")
         GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Types.Settings.GameName & " by " & "the Server" & "!")
@@ -1062,7 +1064,7 @@ Module S_Database
         AlertMsg(BanPlayerindex, DialogueMsg.BANNED)
     End Sub
 
-    Function IsBanned(IP As String) As Boolean
+    Function IsBanned(index As Integer, IP As String) As Boolean
         Dim filename As String, line As String
 
         filename = Paths.Database & "banlist.txt"
@@ -1075,14 +1077,18 @@ Module S_Database
         Dim sr As StreamReader = New StreamReader(filename)
 
         Do While sr.Peek() >= 0
-            'Console.WriteLine(sr.ReadLine())
             ' Is banned?
             line = sr.ReadLine()
             If Trim$(LCase$(line)) = Trim$(LCase$(Mid$(IP, 1, Len(line)))) Then
                 IsBanned = True
             End If
         Loop
+
         sr.Close()
+
+        If Account(index).Banned Then
+            IsBanned = True
+        End If
 
     End Function
 
@@ -1103,6 +1109,8 @@ Module S_Database
             End If
 
         Next
+
+        Account(BanPlayerindex).Banned = True
 
         IP = Mid$(IP, 1, i)
         AddTextToFile(IP, "banlist.txt")

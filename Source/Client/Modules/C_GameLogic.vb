@@ -1358,7 +1358,6 @@ Continue1:
         ElseIf Index = 2 Then ' Yes button
             ' Dialogue index
             Select Case diaIndex
-
                 Case DialogueType.Trade
                     SendAcceptTrade()
 
@@ -1378,7 +1377,6 @@ Continue1:
         ElseIf Index = 3 Then ' No button
             ' Dialogue index
             Select Case diaIndex
-
                 Case DialogueType.Trade
                     SendDeclineTrade()
 
