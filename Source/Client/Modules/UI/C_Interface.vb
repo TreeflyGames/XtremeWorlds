@@ -166,7 +166,7 @@ Module C_Interface
 
     Public Sub RenderEntity(winNum As Long, entNum As Long)
         Dim xO As Long, yO As Long, hor_centre As Long, ver_centre As Long, height As Long, width As Long, left As Long, sprite As Sprite, xOffset As Long
-        Dim callBack As Long, textArray() As String, count As Long, yOffset As Long, i As Long, y As Long, x As Long
+        Dim textArray() As String, count As Long, yOffset As Long, i As Long
 
         ' check if the window exists
         If winNum <= 0 Or winNum > WindowCount Then
@@ -184,7 +184,9 @@ Module C_Interface
 
         With Windows(winNum).Controls(entNum)
             If .Censor Then
-                .Text = CensorText(.Text)
+                .RenderText = CensorText(.Text)
+            Else
+                .RenderText = .Text
             End If
 
             ' find the control type
@@ -214,7 +216,7 @@ Module C_Interface
                     End If
 
                     ' render text
-                    RenderText(.Text, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
+                    RenderText(.RenderText, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
 
                 ' buttons
                 Case EntityType.Button
@@ -254,7 +256,7 @@ Module C_Interface
                         hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2)
                     End If
 
-                    RenderText(.Text, GameWindow, hor_centre, ver_centre, Color.White, Color.Black)
+                    RenderText(.RenderText, GameWindow, hor_centre, ver_centre, Color.White, Color.Black)
 
                 ' labels
                 Case EntityType.Label
@@ -275,7 +277,7 @@ Module C_Interface
                                     Next
                                 Else
                                     ' just one line
-                                    RenderText(.Text, GameWindow, .Left + xO, .Top + yO, Color.White, Color.Black)
+                                    RenderText(.RenderText, GameWindow, .Left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
 
                             Case AlignmentType.Right
@@ -295,7 +297,7 @@ Module C_Interface
                                 Else
                                     ' just one line
                                     left = .Left + .Width - GetTextWidth(.Text)
-                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
+                                    RenderText(.RenderText, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
 
                             Case AlignmentType.Center
@@ -315,7 +317,7 @@ Module C_Interface
                                 Else
                                     ' Just one line
                                     left = .Left + (.Width \ 2) - (GetTextWidth(.Text) \ 2) - 4
-                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
+                                    RenderText(.RenderText, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
                         End Select
                     End If
@@ -341,7 +343,7 @@ Module C_Interface
                             End Select
 
                             ' render text
-                            RenderText(.Text, GameWindow, left, .Top + yO, Color.White, Color.Black)
+                            RenderText(.RenderText, GameWindow, left, .Top + yO, Color.White, Color.Black)
 
                         Case DesignType.ChkChat
                             If .Value = 0 Then .Alpha = 150 Else .Alpha = 255
@@ -351,9 +353,7 @@ Module C_Interface
 
                             ' render text
                             left = .Left + (49 / 2) - (GetTextWidth(.Text) / 2) + xO
-
-                            ' render text
-                            RenderText(.Text, GameWindow, left, .Top + yO + 4, Color.White, Color.Black)
+                            RenderText(.RenderText, GameWindow, left, .Top + yO + 4, Color.White, Color.Black)
 
                         Case DesignType.ChkCustom_Buying
                             If .Value = 0 Then sprite = InterfaceSprite(58) Else sprite = InterfaceSprite(56)
@@ -444,7 +444,7 @@ Module C_Interface
                     RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
-                    RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
+                    RenderText(Trim$(.RenderText), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_NoBar
                     ' render window
@@ -462,7 +462,7 @@ Module C_Interface
                     RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
-                    RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
+                    RenderText(Trim$(.RenderText), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_Desc
                     RenderDesign(DesignType.Win_Desc, .Left, .Top, .Width, .Height)
@@ -1123,8 +1123,8 @@ Module C_Interface
         CreateLabel(WindowCount, "lblGender", 29, 82, 124, 9, "Gender", Arial, AlignmentType.Center)
 
         ' Checkboxes
-        CreateCheckbox(WindowCount, "chkMale", 29, 103, 55, "Male", Arial, , 1, AlignmentType.Center, , , DesignType.ChkNorm, , , New Action(AddressOf chkNewChar_Male))
-        CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, "Female", Arial, , 0, AlignmentType.Center, , , DesignType.ChkNorm, , , New Action(AddressOf chkNewChar_Female))
+        CreateCheckbox(WindowCount, "chkMale", 29, 103, 55, "Male", Arial, , 1, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Male))
+        CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, "Female", Arial, , 0, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Female))
 
         ' Buttons
         CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnNewChar_Accept))
@@ -1188,7 +1188,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Jobs()
         ' Create window
-        CreateWindow("winJobs", "Select Job", zOrder_Win, 0, 0, 364, 229, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winJob", "Select Job", zOrder_Win, 0, 0, 364, 229, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -1526,15 +1526,15 @@ Module C_Interface
             pass2 = .Controls(GetControlIndex("winRegister", "txtPass2")).Text
             'Code = .Controls(GetControlIndex("winRegister", "txtCode")).Text
             'Captcha = .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text
+
+            If Pass <> pass2 Then
+                Dialogue("Register", "Passwords don't match.", "Please try again.", DialogueMsg.WrongPass)
+                ClearPasswordTexts()
+                Exit Sub
+            End If
+
+            SendRegister(User, Pass)
         End With
-
-        If Pass <> pass2 Then
-            Dialogue("Register", "Passwords don't match.", "Please try again.", DialogueMsg.WRONGPASS)
-            ClearPasswordTexts()
-            Exit Sub
-        End If
-
-        SendRegister(User, Pass)
     End Sub
 
     Public Sub btnReturnMain_Click()
@@ -1617,8 +1617,8 @@ Module C_Interface
     Public Sub Jobs_DrawFace()
         Dim imageFace As Long, xO As Long, yO As Long
 
-        xO = Windows(GetWindowIndex("winJobs")).Window.Left
-        yO = Windows(GetWindowIndex("winJobs")).Window.Top
+        xO = Windows(GetWindowIndex("winJob")).Window.Left
+        yO = Windows(GetWindowIndex("winJob")).Window.Top
 
         If newCharJob = 0 Then newCharJob = 1
 
@@ -1638,8 +1638,8 @@ Module C_Interface
     Public Sub Jobs_DrawText()
         Dim image As Long, text As String, xO As Long, yO As Long, textArray() As String, I As Long, count As Long, y As Long, x As Long
 
-        xO = Windows(GetWindowIndex("winJobs")).Window.Left
-        yO = Windows(GetWindowIndex("winJobs")).Window.Top
+        xO = Windows(GetWindowIndex("winJob")).Window.Left
+        yO = Windows(GetWindowIndex("winJob")).Window.Top
 
         Select Case newCharJob
             Case 1 ' Warrior
@@ -1670,7 +1670,7 @@ Module C_Interface
         If newCharJob <= 0 Then
             newCharJob = MAX_JOBS
         End If
-        Windows(GetWindowIndex("winJobs")).Controls(GetControlIndex("winJobs", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
+        Windows(GetWindowIndex("winJob")).Controls(GetControlIndex("winJob", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
     End Sub
 
     Public Sub btnJobs_Right()
@@ -1680,11 +1680,11 @@ Module C_Interface
         If newCharJob > MAX_JOBS Then
             newCharJob = 1
         End If
-        Windows(GetWindowIndex("winJobs")).Controls(GetControlIndex("winJobs", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
+        Windows(GetWindowIndex("winJob")).Controls(GetControlIndex("winJob", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
     End Sub
 
     Public Sub btnJobs_Accept()
-        HideWindow(GetWindowIndex("winJobs"))
+        HideWindow(GetWindowIndex("winJob"))
         ShowWindow(GetWindowIndex("winNewChar"))
     End Sub
 
@@ -1751,21 +1751,27 @@ Module C_Interface
     Public Sub chkNewChar_Male()
         newCharSprite = 1
         newCharGender = SexType.Male
+        If Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkMale")).Value = 1 Then
+            Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkFemale")).Value = 0
+        End If
     End Sub
 
     Public Sub chkNewChar_Female()
         newCharSprite = 1
         newCharGender = SexType.Female
+        If Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkFemale")).Value = 1 Then
+            Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkMale")).Value = 0
+        End If
     End Sub
 
     Public Sub btnNewChar_Cancel()
-        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text = vbNullString
+        Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text = ""
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkMale")).Value = 1
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkFemale")).Value = 0
         newCharSprite = 1
         newCharGender = SexType.Male
         HideWindows()
-        ShowWindow(GetWindowIndex("winJobs"))
+        ShowWindow(GetWindowIndex("winJob"))
     End Sub
 
     Public Sub btnNewChar_Accept()

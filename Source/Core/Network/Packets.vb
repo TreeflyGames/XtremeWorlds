@@ -175,7 +175,6 @@
         SAlertMsg = 1
         SKeyPair
         SLoadCharOk
-        SLoginOk
         SPlayerChars
         SNewCharJob
         SJobData

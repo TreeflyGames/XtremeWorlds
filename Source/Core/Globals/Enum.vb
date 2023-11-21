@@ -503,12 +503,12 @@
         Arial = 1
     End Enum
 
-    Public Enum MenuCount
+    Public Enum MenuType
         Main = 1
         Login
         Register
         Credits
-        Classes
+        Job
         NewChar
         Chars
     End Enum
@@ -529,7 +529,6 @@
         DelChar
         CreateAccount
         MultiAccount
-        AccountExist
         Login
     End Enum
 

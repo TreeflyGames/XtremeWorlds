@@ -1161,22 +1161,4 @@ End Sub
         Buffer.Dispose()
     End Sub
 
-    Sub SendLoginOk(index As Integer)
-        Dim buffer As New ByteStream(4)
-        buffer.WriteInt32(Packets.ServerPackets.SLoginOk)
-
-        For i = 1 To MAX_CHARS
-            LoadCharacter(index, i)
-            buffer.WriteString(Player(index).Name)
-            buffer.WriteInt32(Player(index).Sprite)
-            buffer.WriteInt32(Player(index).Level)
-            buffer.WriteString(Job(Player(index).Job).Name)
-            buffer.WriteInt32(Player(index).Sex)
-        Next
-
-        Socket.SendDataTo(index, buffer.Data, buffer.Head)
-
-        buffer.Dispose()
-    End Sub
-
 End Module

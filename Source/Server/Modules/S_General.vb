@@ -61,6 +61,7 @@ Module S_General
         Dim ids As Task(Of List(Of BigInteger)) = GetData("account")
         Dim data As JObject
         Dim player As New PlayerStruct()
+        Chars = New CharList
 
         For Each id In ids.Result
             For i = 1 To MAX_CHARS

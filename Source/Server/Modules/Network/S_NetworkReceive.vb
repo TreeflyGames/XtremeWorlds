@@ -150,7 +150,6 @@ Module S_NetworkReceive
         Dim username As String, IP As String
         Dim password As String, i As Integer
         Dim buffer As New ByteStream(data)
-        Dim userData As JObject
 
         If Not IsPlaying(index) Then
             If Not IsLoggedIn(index) Then
@@ -198,19 +197,21 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
-                userData = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
-
-                If userData Is Nothing Then
-                    AlertMsg(index, DialogueMsg.Login)
-                    Exit Sub
-                End If
-
                 LoadAccount(index, username)
 
                 If IsBanned(index, IP) Then
                     AlertMsg(index, DialogueMsg.Banned)
                     Exit Sub
                 End If
+
+                If GetPlayerLogin(index) = "" Then
+                    AlertMsg(index, DialogueMsg.Database)
+                    Exit Sub
+                End If
+
+                ' Show the player up on the socket status
+                Addlog(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
+                Console.WriteLine(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".")
 
                 ' send them to the character portal
                 Call SendPlayerChars(index)
@@ -265,11 +266,6 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
-                ' If Api.Auth(username, password) = False Then
-                ' AlertMsg(index, DialogueMsg.WrongPass)
-                ' Exit Sub
-                ' End If
-
                 If IsMultiAccounts(index, username) Then
                     AlertMsg(index, DialogueMsg.MultiAccount)
                     Exit Sub
@@ -278,17 +274,15 @@ Module S_NetworkReceive
                 userData = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
 
                 If Not userData Is Nothing Then
-                    AlertMsg(index, DialogueMsg.AccountExist)
+                    AlertMsg(index, DialogueMsg.Database, MenuType.Register)
                     Exit Sub
                 End If
 
-                CreateAccount(index, username, password)
+                RegisterAccount(index, username, password)
 
-                ' Show the player up on the socket status
-                Addlog(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".", PLAYER_LOG)
-                Console.WriteLine(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".")
-                SendJobs(index)
-                SendLoginOk(index)
+                ' send them to the character portal
+                Call SendPlayerChars(index)
+                Call SendNewCharJob(index)
             End If
         End If
     End Sub
@@ -312,8 +306,6 @@ Module S_NetworkReceive
                 If Len(Trim$(Player(index).Name)) > 0 Then
                     ' we have a char!
                     HandleUseChar(index)
-                Else
-                    SendNewCharJob(index)
                 End If
             End If
         End If
@@ -405,7 +397,10 @@ Module S_NetworkReceive
             SaveCharacter(index, slot)
             Account(index).Character(slot) = ""
 
-            SendLoginOk(index)
+            ' send them to the character portal
+            Call SendPlayerChars(index)
+            Call SendNewCharJob(index)
+
             buffer.Dispose()
         End If
     End Sub

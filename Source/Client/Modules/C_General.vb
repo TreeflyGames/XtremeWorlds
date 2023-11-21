@@ -52,8 +52,6 @@ Module C_General
             ClearPlayer(i)
         Next
 
-        ReDim CharSelection(3)
-
         ClearAnimInstances()
         ClearAutotiles()
     End Sub

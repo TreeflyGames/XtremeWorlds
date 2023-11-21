@@ -1,13 +1,14 @@
 ﻿
 Imports Mirage.Sharp.Asfw
 Imports Core
+Imports System.Buffers
 
 Module C_NetworkSend
-    Friend Sub SendAddChar(slot As Integer, name As String, sexNum As Integer, jobNum As Integer)
+    Friend Sub SendAddChar(name As String, sexNum As Integer, jobNum As Integer)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(Packets.ClientPackets.CAddChar)
-        buffer.WriteInt32(slot)
+        buffer.WriteInt32(CharNum)
         buffer.WriteString((name))
         buffer.WriteInt32(sexNum)
         buffer.WriteInt32(jobNum)
@@ -66,9 +67,9 @@ Module C_NetworkSend
         With Windows(GetWindowIndex("winLogin"))
             user = .Controls(GetControlIndex("winLogin", "txtUsername")).Text
             pass = .Controls(GetControlIndex("winLogin", "txtPassword")).Text
-        End With
 
-        SendLogin(user, pass)
+            SendLogin(user, pass)
+        End With
     End Sub
 
     Sub GetPing()

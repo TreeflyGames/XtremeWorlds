@@ -19,7 +19,6 @@ Public Module Types
     Public Account(MAX_PLAYERS) as AccountStruct
     Public Player(MAX_PLAYERS) As PlayerStruct
     Public InstancedMaps(MAX_INSTANCED_MAPS) As InstancedMap
-    Public CharSelection() As CharSelStruct
     Public Projectile(MAX_PROJECTILES) As ProjectileStruct
     Public MapProjectile(MAX_MAPS, MAX_PROJECTILES) As MapProjectileStruct
     Public TradeYourOffer(MAX_INV) As PlayerInvStruct
@@ -781,14 +780,6 @@ Public Module Types
         Dim ListLeftOff() As Integer
     End Structure
 
-    Public Structure CharSelStruct
-        Dim Name As String
-        Dim Sprite As Integer
-        Dim Sex As Integer
-        Dim JobName As String
-        Dim Level As Integer
-    End Structure
-
     Public Structure PlayerQuestStruct
         Dim Status As Integer '0=not started, 1=started, 2=completed, 3=completed but repeatable
         Dim ActualTask As Integer
@@ -898,6 +889,7 @@ Public Module Types
         Dim movedY As Long
         Dim zOrder As Long
         Dim Censor As Boolean
+        Dim RenderText As String
         Dim CallBack() As Action
     End Structure
 

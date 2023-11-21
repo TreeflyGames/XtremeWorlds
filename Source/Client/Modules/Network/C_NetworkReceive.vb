@@ -9,7 +9,6 @@ Module C_NetworkReceive
         Socket.PacketId(Packets.ServerPackets.SAlertMsg) = AddressOf Packet_AlertMSG
         Socket.PacketId(ServerPackets.SKeyPair) = AddressOf Packet_KeyPair
         Socket.PacketId(ServerPackets.SLoadCharOk) = AddressOf Packet_LoadCharOk
-        Socket.PacketId(ServerPackets.SLoginOk) = AddressOf Packet_LoginOk
         Socket.PacketId(ServerPackets.SPlayerChars) = AddressOf Packet_PlayerChars
         Socket.PacketId(ServerPackets.SNewCharJob) = AddressOf Packet_NewCharJob
         Socket.PacketId(ServerPackets.SJobData) = AddressOf Packet_JobData
@@ -154,17 +153,17 @@ Module C_NetworkReceive
             HideWindows()
 
             Select Case menuReset
-                Case MenuCount.Login
+                Case MenuType.Login
                     ShowWindow(GetWindowIndex("winLogin"))
-                Case MenuCount.Chars
+                Case MenuType.Chars
                     ShowWindow(GetWindowIndex("winCharacters"))
-                Case MenuCount.Classes
-                    ShowWindow(GetWindowIndex("winJobs"))
-                Case MenuCount.NewChar
+                Case MenuType.Job
+                    ShowWindow(GetWindowIndex("winJob"))
+                Case MenuType.NewChar
                     ShowWindow(GetWindowIndex("winNewChar"))
-                Case MenuCount.Main
+                Case MenuType.Main
                     ShowWindow(GetWindowIndex("winLogin"))
-                Case MenuCount.Register
+                Case MenuType.Register
                     ShowWindow(GetWindowIndex("winRegister"))
             End Select
         Else
@@ -192,42 +191,6 @@ Module C_NetworkReceive
 
         ' Now we can receive game data
         Myindex = buffer.ReadInt32
-
-        buffer.Dispose()
-    End Sub
-
-    Private Sub Packet_LoginOk(ByRef data() As Byte)
-        Dim charName As String, sprite As Integer
-        Dim level As Integer, jobName As String, sex As Byte
-
-        Dim buffer As New ByteStream(data)
-
-        Types.Settings.Username = Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Value
-        SettingsManager.Save()
-        SelectedChar = 1
-
-        ' Reset for deleting chars
-        For i = 1 To MAX_CHARS
-            CharSelection(i).Name = ""
-            CharSelection(i).Sprite = 0
-            CharSelection(i).Level = 0
-            CharSelection(i).JobName = ""
-            CharSelection(i).Sex = 0
-        Next
-
-        For i = 1 To MAX_CHARS
-            charName = buffer.ReadString
-            sprite = buffer.ReadInt32
-            level = buffer.ReadInt32
-            jobName = buffer.ReadString
-            sex = buffer.ReadInt32
-
-            CharSelection(i).Name = charName
-            CharSelection(i).Sprite = sprite
-            CharSelection(i).Level = level
-            CharSelection(i).JobName = jobName
-            CharSelection(i).Sex = sex
-        Next
 
         buffer.Dispose()
     End Sub

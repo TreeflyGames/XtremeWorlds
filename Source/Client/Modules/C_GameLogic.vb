@@ -1267,11 +1267,6 @@ Continue1:
                 body = "Using multiple accounts is not authorized."
                 body2 = "Please logout of your other account and try again!"
 
-            Case DialogueMsg.AccountExist
-                header = "Account Exists"
-                body = "This account already exists."
-                body2 = "Please try logging in."
-
             Case DialogueMsg.Login
                 header = "Cannot Login"
                 body = "This account does not exist."
@@ -1392,16 +1387,16 @@ Continue1:
 
     Public Sub ShowJobs()
         HideWindows()
-        Windows(GetWindowIndex("winJobs")).Controls(GetControlIndex("winJobs", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
+        Windows(GetWindowIndex("winJob")).Controls(GetControlIndex("winJob", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text = ""
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkMale")).Value = 1
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkFemale")).Value = 0
-        ShowWindow(GetWindowIndex("winJobs"))
+        ShowWindow(GetWindowIndex("winJob"))
     End Sub
 
-    Public Sub AddChar(name As String, sex As Long, job As Long, sprite As Long)
+    Public Sub AddChar(name As String, sex As Integer, job As Integer, sprite As Integer)
         If Socket.IsConnected() Then
-            Call SendAddChar(name, sex, job, sprite)
+            Call SendAddChar(name, sex, job)
         Else
             Dialogue("Connection Problem", "Cannot connect to game server.", "Please try again.", DialogueType.Alert)
         End If

@@ -23,9 +23,6 @@ Module C_Globals
     Public CharClass(MAX_CHARS) As Long
     Public CharNum As Byte
 
-    ' Char creation/selecting
-    Public SelectedChar As Byte
-
     ' Directional blocking
     Public DirArrowX(4) As Byte
     Public DirArrowY(4) As Byte

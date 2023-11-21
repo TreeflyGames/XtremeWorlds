@@ -4,6 +4,7 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Numerics
 Imports System.Runtime.InteropServices.JavaScript
+Imports System.Runtime.InteropServices.Marshalling
 Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Text.Json.Nodes
@@ -704,11 +705,11 @@ Module S_Database
         SaveBank(index)
     End Sub
 
-    Sub CreateAccount(index As Integer, username As String, password As String)
-        Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
-
+    Sub RegisterAccount(index As Integer, username As String, password As String)
         SetPlayerLogin(index, username)
         SetPlayerPassword(index, password)
+
+        Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
 
         Dim id As BigInteger = GenerateIdFromString(username)
 
@@ -718,13 +719,7 @@ Module S_Database
     Sub LoadAccount(index As Integer, username As String)
         Dim data As JObject
 
-        SetPlayerLogin(index, username)
         data = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
-
-        If data Is Nothing Then
-            ClearAccount(index)
-            Exit Sub
-        End If
 
         Dim accountData = JObject.FromObject(data).ToObject(Of AccountStruct)()
         Account(index) = accountData
