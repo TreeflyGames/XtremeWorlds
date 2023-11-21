@@ -1057,7 +1057,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Register()
         ' Create the window
-        CreateWindow("winRegister", "Register Account", zOrder_Win, 0, 0, 276, 202, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winRegister", "Register Account", zOrder_Win, 0, 0, 276, 202, 45, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -1270,7 +1270,6 @@ Module C_Interface
 
         ' Menu
         CreateWindow_Register()
-        HideWindows()
         CreateWindow_Login()
         CreateWindow_NewChar()
         CreateWindow_Jobs()
