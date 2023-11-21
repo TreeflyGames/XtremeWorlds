@@ -16,10 +16,10 @@ Module C_Player
     End Sub
 
     Sub ClearAccount(index As Integer)
-        ReDim Account(index).Character(MAX_CHARACTERS)
+        ReDim Account(index).Character(MAX_CHARS)
         Account(index).Login = ""
 
-        For i = 1 To MAX_CHARACTERS
+        For i = 1 To MAX_CHARS
             Account(index).Character(i) = ""
         Next
     End Sub

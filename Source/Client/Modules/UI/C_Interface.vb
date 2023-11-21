@@ -1145,9 +1145,50 @@ Module C_Interface
         SetActiveControl(GetWindowIndex("winNewChar"), GetControlIndex("winNewChar", "txtName"))
     End Sub
 
+    Public Sub CreateWindow_Characters()
+        ' Create the window
+        CreateWindow("winCharacters", "Characters", zOrder_Win, 0, 0, 364, 229, 62, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+
+        ' Centralize it
+        CentralizeWindow(WindowCount)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Close button
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnCharacters_Close))
+
+        ' Parchment
+        CreatePictureBox(WindowCount, "picParchment", 6, 26, 352, 197, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+
+        ' Names
+        CreatePictureBox(WindowCount, "picShadow_1", 22, 41, 98, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreateLabel(WindowCount, "lblCharName_1", 22, 37, 98, 9, "Blank Slot", Arial, AlignmentType.Center)
+        CreatePictureBox(WindowCount, "picShadow_2", 132, 41, 98, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreateLabel(WindowCount, "lblCharName_2", 132, 37, 98, 9, "Blank Slot", Arial, AlignmentType.Center)
+        CreatePictureBox(WindowCount, "picShadow_3", 242, 41, 98, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+        CreateLabel(WindowCount, "lblCharName_3", 242, 37, 98, 9, "Blank Slot", Arial, AlignmentType.Center)
+
+        ' Scenery Boxes
+        CreatePictureBox(WindowCount, "picScene_1", 23, 55, 96, 96, , , , , 11, 11, 11)
+        CreatePictureBox(WindowCount, "picScene_2", 133, 55, 96, 96, , , , , 11, 11, 11)
+        CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , New Action(AddressOf Chars_DrawFace))
+
+        ' Create Buttons
+        CreateButton(WindowCount, "btnSelectChar_1", 22, 155, 98, 24, "Select", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_1))
+        CreateButton(WindowCount, "btnCreateChar_1", 22, 155, 98, 24, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_1))
+        CreateButton(WindowCount, "btnDelChar_1", 22, 183, 98, 24, "Delete", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_1))
+        CreateButton(WindowCount, "btnSelectChar_2", 132, 155, 98, 24, "Select", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_2))
+        CreateButton(WindowCount, "btnCreateChar_2", 132, 155, 98, 24, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_2))
+        CreateButton(WindowCount, "btnDelChar_2", 132, 183, 98, 24, "Delete", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_2))
+        CreateButton(WindowCount, "btnSelectChar_3", 242, 155, 98, 24, "Select", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click,, , New Action(AddressOf btnAcceptChar_3))
+        CreateButton(WindowCount, "btnCreateChar_3", 242, 155, 98, 24, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_3))
+        CreateButton(WindowCount, "btnDelChar_3", 242, 183, 98, 24, "Delete", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_3))
+    End Sub
+
     Public Sub CreateWindow_Jobs()
         ' Create window
-        CreateWindow("winJobs", "Select Job", zOrder_Win, 0, 0, 364, 229, 17, , , 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winJobs", "Job", zOrder_Win, 0, 0, 364, 229, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -1227,6 +1268,7 @@ Module C_Interface
         CreateWindow_Login()
         CreateWindow_NewChar()
         CreateWindow_Jobs()
+        CreateWindow_Characters()
         CreateWindow_Dialogue()
     End Sub
 
@@ -1503,6 +1545,27 @@ Module C_Interface
     ' #######################
     ' ## Characters Window ##
     ' #######################
+    Public Sub Chars_DrawFace()
+        Dim xO As Long, yO As Long, imageFace As Long, imageChar As Long, x As Long, I As Long
+
+        xO = Windows(GetWindowIndex("winCharacters")).Window.Left
+        yO = Windows(GetWindowIndex("winCharacters")).Window.Top
+
+        x = xO + 24
+        For I = 1 To MAX_CHARS
+            'If LenB(Trim$(CharName(I))) > 0 Then
+            '   If CharSprite(I) > 0 Then
+            'If Not CharSprite(I) > Count_Char And Not CharSprite(I) > Count_Face Then
+            'imageFace = CharSprite(I)
+            'imageChar = CharSprite(I)
+            'RenderTexture imageFace, x, yO + 56, 0, 0, 94, 94, 94, 94
+            'RenderTexture imageChar, x - 1, yO + 117, 32, 0, 32, 32, 32, 32
+            'End If
+            'End If
+            'End If
+            x = x + 110
+        Next
+    End Sub
     Public Sub btnAcceptChar_1()
         SendUseChar(1)
     End Sub
@@ -1549,9 +1612,8 @@ Module C_Interface
     End Sub
 
     ' ####################
-    ' ## Classes Window ##
+    ' ## Jobs Window ##
     ' ####################
-
     Public Sub Jobs_DrawFace()
         Dim imageFace As Long, xO As Long, yO As Long
 

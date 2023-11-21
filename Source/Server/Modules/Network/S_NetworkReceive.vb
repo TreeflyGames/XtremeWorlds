@@ -297,7 +297,7 @@ Module S_NetworkReceive
             If IsLoggedIn(index) Then
                 slot = buffer.ReadInt32
 
-                If slot < 1 Or slot > MAX_CHARACTERS Then
+                If slot < 1 Or slot > MAX_CHARS Then
                     AlertMsg(index, DialogueMsg.MaxChar)
                     Exit Sub
                 End If
@@ -320,7 +320,7 @@ Module S_NetworkReceive
         Dim name As String, slot As Byte
         Dim sexNum As Integer
         Dim jobNum As Integer
-        Dim sprite As integer
+        Dim sprite As Integer
         Dim i As Integer
         Dim n As Integer
         Dim buffer As New ByteStream(data)
@@ -328,7 +328,7 @@ Module S_NetworkReceive
         If Not IsPlaying(index) Then
             slot = buffer.ReadInt32
 
-            If slot < 1 Or slot > MAX_CHARACTERS Or Account(index).Character(slot) <> "" Then
+            If slot < 1 Or slot > MAX_CHARS Or Account(index).Character(slot) <> "" Then
                 AlertMsg(index, DialogueMsg.MaxChar)
                 Exit Sub
             End If
@@ -390,7 +390,7 @@ Module S_NetworkReceive
         If Not IsPlaying(index) Then
             slot = buffer.ReadInt32
 
-            If slot < 1 Or slot > MAX_CHARACTERS Then
+            If slot < 1 Or slot > MAX_CHARS Then
                 AlertMsg(index, DialogueMsg.MaxChar)
                 Exit Sub
             End If

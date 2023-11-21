@@ -206,7 +206,7 @@ Module C_NetworkReceive
         SelectedChar = 1
 
         ' Reset for deleting chars
-        For i = 1 To MAX_CHARACTERS
+        For i = 1 To MAX_CHARS
             CharSelection(i).Name = ""
             CharSelection(i).Sprite = 0
             CharSelection(i).Level = 0
@@ -214,7 +214,7 @@ Module C_NetworkReceive
             CharSelection(i).Sex = 0
         Next
 
-        For i = 1 To MAX_CHARACTERS
+        For i = 1 To MAX_CHARS
             charName = buffer.ReadString
             sprite = buffer.ReadInt32
             level = buffer.ReadInt32

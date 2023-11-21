@@ -63,7 +63,7 @@ Module S_General
         Dim player As New PlayerStruct()
 
         For Each id In ids.Result
-            For i = 1 To MAX_CHARACTERS
+            For i = 1 To MAX_CHARS
                 data = SelectRowByColumn("id", id, "account", "character" & i.ToString())
                 If data IsNot Nothing Then
                     player = JObject.FromObject(data).ToObject(Of PlayerStruct)()

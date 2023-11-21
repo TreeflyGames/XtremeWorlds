@@ -1139,8 +1139,8 @@ End Sub
     Sub SendLoginOk(index As Integer)
         Dim buffer As New ByteStream(4)
         buffer.WriteInt32(Packets.ServerPackets.SLoginOk)
-        
-        For i = 1 To MAX_CHARACTERS
+
+        For i = 1 To MAX_CHARS
             LoadCharacter(index, i)
             buffer.WriteString(Player(index).Name)
             buffer.WriteInt32(Player(index).Sprite)

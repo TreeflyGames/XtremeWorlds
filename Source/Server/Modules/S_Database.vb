@@ -152,7 +152,7 @@ Module S_Database
         Dim dataTable As String = "id SERIAL PRIMARY KEY, data jsonb"
         Dim playerTable As String = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb"
 
-        For i = 1 To MAX_CHARACTERS
+        For i = 1 To MAX_CHARS
             playerTable += $", character{i} jsonb"
         Next
 
@@ -735,9 +735,9 @@ Module S_Database
     Sub ClearAccount(index As Integer)
         Player(index).Access = AdminType.Player
         SetPlayerLogin(index, "")
-        ReDim Account(index).Character(MAX_CHARACTERS)
+        ReDim Account(index).Character(MAX_CHARS)
 
-        For i = 1 To MAX_CHARACTERS
+        For i = 1 To MAX_CHARS
             SetPlayerCharName(index, i, "")
         Next
     End Sub
