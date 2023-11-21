@@ -518,7 +518,7 @@
         Banned
         Kicked
         Outdated
-        Reboot
+        Maintenance
         NameTaken
         NameLength
         NameIllegal

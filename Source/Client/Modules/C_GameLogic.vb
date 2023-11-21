@@ -1212,9 +1212,9 @@ Continue1:
                 body = "Your game client is the wrong version."
                 body2 = "Please re-load the game or wait for a patch."
 
-            Case DialogueMsg.Reboot
+            Case DialogueMsg.Maintenance
                 header = "Connection Refused"
-                body = "The server is currently rebooting."
+                body = "The server is currently going under maintenance."
                 body2 = "Please try again soon."
 
             Case DialogueMsg.NameTaken

@@ -59,6 +59,7 @@ Module S_Console
 
                     If shutDownTimer.IsRunning Then
                         shutDownTimer.Stop()
+                        shutDownDuration = 0
                         Console.WriteLine("Server shutdown has been cancelled!")
                         Call GlobalMsg("Server shutdown has been cancelled!")
                     Else

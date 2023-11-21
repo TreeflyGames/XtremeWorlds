@@ -154,7 +154,6 @@ Module S_NetworkReceive
 
         If Not IsPlaying(index) Then
             If Not IsLoggedIn(index) Then
-
                 'check if its banned
                 ' Cut off last portion of ip
                 IP = Socket.ClientIp(index)
@@ -170,6 +169,11 @@ Module S_NetworkReceive
                 IP = Mid$(IP, 1, i)
                 If IsBanned(index, IP) Then
                     AlertMsg(index, DialogueMsg.Banned)
+                    Exit Sub
+                End If
+
+                If shutDownDuration > 0 Then
+                    Call AlertMsg(index, DialogueMsg.Maintenance)
                     Exit Sub
                 End If
 
@@ -219,7 +223,6 @@ Module S_NetworkReceive
 
         If Not IsPlaying(index) Then
             If Not IsLoggedIn(index) Then
-
                 'check if its banned
                 ' Cut off last portion of ip
                 IP = Socket.ClientIp(index)
@@ -235,6 +238,11 @@ Module S_NetworkReceive
                 IP = Mid$(IP, 1, i)
                 If IsBanned(index, IP) Then
                     AlertMsg(index, DialogueMsg.Banned)
+                    Exit Sub
+                End If
+
+                If shutDownDuration > 0 Then
+                    Call AlertMsg(index, DialogueMsg.Maintenance)
                     Exit Sub
                 End If
 
