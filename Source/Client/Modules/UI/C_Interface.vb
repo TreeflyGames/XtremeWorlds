@@ -1127,8 +1127,8 @@ Module C_Interface
         CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, "Female", Arial, , 0, AlignmentType.Center, , , DesignType.ChkNorm, , , New Action(AddressOf chkNewChar_Female))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, New Action(AddressOf btnNewChar_Accept))
-        CreateButton(WindowCount, "btnCancel", 93, 127, 60, 24, "Cancel", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, New Action(AddressOf btnNewChar_Cancel))
+        CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnNewChar_Accept))
+        CreateButton(WindowCount, "btnCancel", 93, 127, 60, 24, "Cancel", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnNewChar_Cancel))
 
         ' Sprite
         CreatePictureBox(WindowCount, "picShadow_3", 175, 42, 76, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
@@ -1147,7 +1147,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Characters()
         ' Create the window
-        CreateWindow("winCharacters", "Characters", zOrder_Win, 0, 0, 364, 229, 62, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winCharacters", "Characters", zOrder_Win, 0, 0, 364, 229, 62, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)

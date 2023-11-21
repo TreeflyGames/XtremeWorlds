@@ -18,20 +18,8 @@ Public Module C_Constants
     Public Const Arial As String = "Arial.ttf"
     Public Const FontSize As Byte = 11
 
-    ' Log Path and variables
-    Public Const LogDebug As String = "debug.txt"
-
     ' Gfx Path and variables
     Public Const GfxExt As String = ".png"
-
-    ' Menu states
-    Public Const MenuStateLogin As Byte = 1
-    Public Const MenuStateGetchars As Byte = 2
-    Public Const MenuStateNewchar As Byte = 3
-    Public Const MenuStateAddchar As Byte = 4
-    Public Const MenuStateDelchar As Byte = 5
-    Public Const MenuStateUsechar As Byte = 6
-    Public Const MenuStateInit As Byte = 7
 
     Public MapGrid As Boolean
     Public EyeDropper As Boolean
