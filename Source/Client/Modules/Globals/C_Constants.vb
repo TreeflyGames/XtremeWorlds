@@ -16,7 +16,7 @@ Public Module C_Constants
     ' Font variables
     Public Const Georgia As String = "Georgia.ttf"
     Public Const Arial As String = "Arial.ttf"
-    Public Const FontSize As Byte = 11
+    Public Const FontSize As Byte = 10
 
     ' Gfx Path and variables
     Public Const GfxExt As String = ".png"
