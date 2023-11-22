@@ -167,7 +167,7 @@ Module C_Interface
 
     Public Sub RenderEntity(winNum As Long, entNum As Long)
         Dim xO As Long, yO As Long, hor_centre As Long, ver_centre As Long, height As Long, width As Long, left As Long, sprite As Sprite, xOffset As Long
-        Dim textArray() As String, count As Long, yOffset As Long, i As Long
+        Dim textArray() As String, count As Long, yOffset As Long, i As Long, taddText As String
 
         ' check if the window exists
         If winNum <= 0 Or winNum > WindowCount Then
@@ -184,12 +184,6 @@ Module C_Interface
         yO = Windows(winNum).Window.Top
 
         With Windows(winNum).Controls(entNum)
-            If .Censor Then
-                .RenderText = CensorText(.Text)
-            Else
-                .RenderText = .Text
-            End If
-
             ' find the control type
             Select Case .Type
                 ' picture box
@@ -216,8 +210,16 @@ Module C_Interface
                         RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Alpha)
                     End If
 
+                    If activeWindow = winNum And Windows(winNum).ActiveControl = entNum Then
+                        taddText = chatShowLine
+                    End If
+
                     ' render text
-                    RenderText(.RenderText, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
+                    If Not .Censor Then
+                        RenderText(.Text & taddText, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
+                    Else
+                        RenderText(CensorText(.Text) & taddText, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
+                    End If
 
                 ' buttons
                 Case EntityType.Button
@@ -257,7 +259,7 @@ Module C_Interface
                         hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2)
                     End If
 
-                    RenderText(.RenderText, GameWindow, hor_centre, ver_centre, Color.White, Color.Black)
+                    RenderText(.Text, GameWindow, hor_centre, ver_centre, Color.White, Color.Black)
 
                 ' labels
                 Case EntityType.Label
@@ -267,7 +269,7 @@ Module C_Interface
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
-                                    WordWrap_Array(.RenderText, .Width, textArray)
+                                    WordWrap_Array(.Text, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
@@ -278,14 +280,14 @@ Module C_Interface
                                     Next
                                 Else
                                     ' just one line
-                                    RenderText(.RenderText, GameWindow, .Left + xO, .Top + yO, Color.White, Color.Black)
+                                    RenderText(.Text, GameWindow, .Left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
 
                             Case AlignmentType.Right
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
-                                    WordWrap_Array(.RenderText, .Width, textArray)
+                                    WordWrap_Array(.Text, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
@@ -298,7 +300,7 @@ Module C_Interface
                                 Else
                                     ' just one line
                                     left = .Left + .Width - GetTextWidth(.Text)
-                                    RenderText(.RenderText, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
+                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
 
                             Case AlignmentType.Center
@@ -318,7 +320,7 @@ Module C_Interface
                                 Else
                                     ' Just one line
                                     left = .Left + (.Width \ 2) - (GetTextWidth(.Text) \ 2) - 4
-                                    RenderText(.RenderText, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
+                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
                         End Select
                     End If
@@ -344,7 +346,7 @@ Module C_Interface
                             End Select
 
                             ' render text
-                            RenderText(.RenderText, GameWindow, left, .Top + yO, Color.White, Color.Black)
+                            RenderText(.Text, GameWindow, left, .Top + yO, Color.White, Color.Black)
 
                         Case DesignType.ChkChat
                             If .Value = 0 Then .Alpha = 150 Else .Alpha = 255
@@ -354,7 +356,7 @@ Module C_Interface
 
                             ' render text
                             left = .Left + (49 / 2) - (GetTextWidth(.Text) / 2) + xO
-                            RenderText(.RenderText, GameWindow, left, .Top + yO + 4, Color.White, Color.Black)
+                            RenderText(.Text, GameWindow, left, .Top + yO + 4, Color.White, Color.Black)
 
                         Case DesignType.ChkCustom_Buying
                             If .Value = 0 Then sprite = InterfaceSprite(58) Else sprite = InterfaceSprite(56)
@@ -400,9 +402,9 @@ Module C_Interface
 
         With Windows(winNum).Window
             If .Censor Then
-                .RenderText = CensorText(.Text)
+                .Text = CensorText(.Text)
             Else
-                .RenderText = .Text
+                .Text = .Text
             End If
 
             Select Case .Design(0)
@@ -451,7 +453,7 @@ Module C_Interface
                     RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
-                    RenderText(Trim$(.RenderText), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
+                    RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_NoBar
                     ' render window
@@ -469,7 +471,7 @@ Module C_Interface
                     RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
-                    RenderText(Trim$(.RenderText), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
+                    RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_Desc
                     RenderDesign(DesignType.Win_Desc, .Left, .Top, .Width, .Height)

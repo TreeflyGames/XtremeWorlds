@@ -61,6 +61,7 @@ Module C_Globals
 
     Public CurrencyMenu As Byte
     Public HideGui As Boolean
+    Public chatShowLine As String
 
     ' Player variables
     Public Myindex As Integer ' Index of actual player

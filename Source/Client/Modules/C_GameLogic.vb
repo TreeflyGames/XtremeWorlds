@@ -9,8 +9,6 @@ Module C_GameLogic
 
     Sub GameLoop()
         Dim i As Integer
-        Dim dest As Point = New Point(FrmGame.PointToScreen(FrmGame.picscreen.Location))
-        Dim g As Graphics = FrmGame.picscreen.CreateGraphics
         Dim starttime As Integer, tick As Integer, fogtmr As Integer
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
         Dim tmr10000 As Integer, tmr1000 As Integer, tmrweather As Integer
@@ -18,7 +16,6 @@ Module C_GameLogic
         Dim fadetmr As Integer, renderFrame As Boolean, rendertmr As Integer
         Dim animationtmr As Integer
 
-            
         ' Main game loop
         While GameWindow.IsOpen
             starttime = GetTickCount()
@@ -35,7 +32,7 @@ Module C_GameLogic
             DirLeft = VbKeyLeft
             DirRight = VbKeyRight
 
-            If GameStarted() = True Then
+            If GameStarted() Then
                 'Calculate FPS
                 If starttime < tick Then
                     Fps = tmpfps
@@ -66,12 +63,12 @@ Module C_GameLogic
                     For x = 0 To Map.MaxX
                         For y = 0 To Map.MaxY
                             If IsValidMapPoint(x, y) Then
-                                If  Map.Tile(x,y).Data1 > 0 And Map.Tile(x, y).Type = CByte([Enum].TileType.Animation) Then
-                                    CreateAnimation(Map.Tile(x,y).Data1, x, y)                                                                                    
-                                    If Animation(Map.Tile(x,y).Data1).LoopTime(0) > 0 Then
-                                        animationtmr = tick + Animation(Map.Tile(x,y).Data1).LoopTime(0) * Animation(Map.Tile(x,y).Data1).Frames(0) * Animation(Map.Tile(x,y).Data1).LoopCount(0)
+                                If Map.Tile(x, y).Data1 > 0 And Map.Tile(x, y).Type = CByte([Enum].TileType.Animation) Then
+                                    CreateAnimation(Map.Tile(x, y).Data1, x, y)
+                                    If Animation(Map.Tile(x, y).Data1).LoopTime(0) > 0 Then
+                                        animationtmr = tick + Animation(Map.Tile(x, y).Data1).LoopTime(0) * Animation(Map.Tile(x, y).Data1).Frames(0) * Animation(Map.Tile(x, y).Data1).LoopCount(0)
                                     Else
-                                        animationtmr = tick + Animation(Map.Tile(x,y).Data1).LoopTime(1) * Animation(Map.Tile(x,y).Data1).Frames(1) * Animation(Map.Tile(x,y).Data1).LoopCount(1)
+                                        animationtmr = tick + Animation(Map.Tile(x, y).Data1).LoopTime(1) * Animation(Map.Tile(x, y).Data1).Frames(1) * Animation(Map.Tile(x, y).Data1).LoopCount(1)
                                     End If
                                 End If
                             End If
@@ -79,7 +76,7 @@ Module C_GameLogic
                     Next
                 End If
 
-               For i = 0 To Byte.MaxValue
+                For i = 0 To Byte.MaxValue
                     CheckAnimInstance(i)
                 Next
 
@@ -138,10 +135,10 @@ Module C_GameLogic
 
                 ' check if we need to end the CD icon
                 If NumSkillIcons > 0 Then
-                   For i = 1 To MAX_PLAYER_SKILLS
+                    For i = 1 To MAX_PLAYER_SKILLS
                         If Player(Myindex).Skill(i).Num > 0 Then
                             If Player(Myindex).Skill(i).CD > 0 Then
-                                If  Player(Myindex).Skill(i).CD + (Skill(Player(Myindex).Skill(i).Num).CdTime * 1000) < tick Then
+                                If Player(Myindex).Skill(i).CD + (Skill(Player(Myindex).Skill(i).Num).CdTime * 1000) < tick Then
                                     Player(Myindex).Skill(i).CD = 0
                                 End If
                             End If
@@ -155,7 +152,7 @@ Module C_GameLogic
                         SkillBuffer = 0
                         SkillBufferTimer = 0
                     End If
-                End If 
+                End If
 
                 ' check if we need to unlock the pets's spell casting restriction
                 If PetSkillBuffer > 0 Then
@@ -229,6 +226,13 @@ Module C_GameLogic
                             AutoTileFrame = 0
                     End Select
 
+                    ' animate textbox
+                    If chatShowLine = "|" Then
+                        chatShowLine = ""
+                    Else
+                        chatShowLine = "|"
+                    End If
+
                     tmr500 = tick + 500
                 End If
 
@@ -240,14 +244,21 @@ Module C_GameLogic
                     FadeOut()
                 End If
 
-                If Editor = EditorType.Map Then FrmEditor_Map.DrawTileset()
-                iF Editor = EditorType.Animation Then EditorAnim_DrawAnim()
+                If Editor = EditorType.Map Then frmEditor_Map.DrawTileset()
+                If Editor = EditorType.Animation Then EditorAnim_DrawAnim()
+            Else
+                If tmr500 < tick Then
+                    ' animate textbox
+                    If chatShowLine = "|" Then
+                        chatShowLine = ""
+                    Else
+                        chatShowLine = "|"
+                    End If
 
-                If GettingMap Then
-                    Dim font As New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia, FontSize)
-                    g.DrawString(Language.Game.MapReceive, font, Brushes.DarkCyan, FrmGame.picscreen.Width - 130, 5)
+                    tmr500 = tick + 500
                 End If
             End If
+
 
             If tmrweather < tick Then
                 ProcessWeather()
