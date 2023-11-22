@@ -198,6 +198,9 @@ Module C_NetworkReceive
     Sub Packet_PlayerChars(ByRef data() As Byte)
         Dim buffer As New ByteStream(data), I As Long, winNum As Long, conNum As Long, isSlotEmpty(MAX_CHARS) As Boolean, x As Long
 
+        Types.Settings.Username = Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Value
+        SettingsManager.Save()
+
         For I = 1 To MAX_CHARS
             CharName(I) = Trim$(buffer.ReadString)
             CharSprite(I) = buffer.ReadInt32
