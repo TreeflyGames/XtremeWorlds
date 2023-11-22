@@ -17,6 +17,7 @@ Module S_NetworkSend
         Else
             buffer.WriteInt32(0)
         End If
+        ClearAccount(index)
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
         buffer.Dispose()
     End Sub
