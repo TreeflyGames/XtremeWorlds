@@ -722,7 +722,6 @@ Module S_Database
         data = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
 
         If data Is Nothing Then
-            Call AlertMsg(index, DialogueMsg.Database)
             Return False
         End If
 

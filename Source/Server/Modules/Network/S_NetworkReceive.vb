@@ -197,6 +197,11 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
+                If GetPlayerPassword(index) <> password Then
+                    AlertMsg(index, DialogueMsg.WrongPass)
+                    Exit Sub
+                End If
+
                 If IsBanned(index, IP) Then
                     AlertMsg(index, DialogueMsg.Banned)
                     Exit Sub
