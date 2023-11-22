@@ -1387,6 +1387,9 @@ Continue1:
 
     Public Sub ShowJobs()
         HideWindows()
+        newCharJob = 1
+        newCharSprite = 1
+        newCharGender = SexType.Male
         Windows(GetWindowIndex("winJob")).Controls(GetControlIndex("winJob", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text = ""
         Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "chkMale")).Value = 1

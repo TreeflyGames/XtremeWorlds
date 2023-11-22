@@ -1,4 +1,5 @@
 ﻿
+Imports System.Management
 Imports Core
 Imports Core.Enum
 Imports Core.Types
@@ -1523,7 +1524,7 @@ Module C_Interface
     End Sub
 
     Public Sub btnSendRegister_Click()
-        Dim User As String, Pass As String, pass2 As String, Code As String, Captcha As String
+        Dim User As String, Pass As String, pass2 As String 'Code As String, Captcha As String
 
         With Windows(GetWindowIndex("winRegister"))
             User = .Controls(GetControlIndex("winRegister", "txtAccount")).Text
@@ -1538,7 +1539,11 @@ Module C_Interface
                 Exit Sub
             End If
 
-            SendRegister(User, Pass)
+            If Socket.IsConnected() Then
+                SendRegister(User, Pass)
+            Else
+                Dialogue("Connection Problem", "Cannot connect to game server.", "Please try again.", DialogueType.Alert)
+            End If
         End With
     End Sub
 
@@ -1791,10 +1796,10 @@ Module C_Interface
     ' ## Dialogue Window ##
     ' #####################
     Public Sub btnDialogue_Close()
-        If diaStyle = DialogueStyle.OKAY Then
-            dialogueHandler(1)
-        ElseIf diaStyle = DialogueStyle.YESNO Then
-            dialogueHandler(3)
+        If diaStyle = DialogueStyle.Okay Then
+            DialogueHandler(1)
+        ElseIf diaStyle = DialogueStyle.YesNo Then
+            DialogueHandler(3)
         End If
     End Sub
 
