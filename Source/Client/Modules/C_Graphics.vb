@@ -342,7 +342,7 @@ Module C_Graphics
         End If
 
         If InGame Then
-            Dim chatText As String = Windows("winChat").Controls("txtChat").Text
+            'Dim chatText As String = Windows("winChat").Controls("txtChat").Text
             ' Do something with chatText
         End If
 
@@ -2196,7 +2196,6 @@ Module C_Graphics
         If InGame Then
             DrawBars()
             DrawParty()
-            DrawGui()
         End If
 
         DrawMapFade()
@@ -2659,12 +2658,6 @@ Module C_Graphics
             RenderTexture(FacesSprite(Player(Myindex).Sprite), GameWindow, HudFaceX, HudFaceY, rec.X, rec.Y, rec.Width,
                          rec.Height)
         End If
-
-        'HP Bar etc
-        DrawStatBars()
-
-        RenderText(Language.Game.Fps & Fps, GameWindow, FrmGame.Width - 120, 10, Color.White, Color.White)
-        RenderText(Language.Game.Ping & PingToDraw, GameWindow, FrmGame.Width - 120, 30, Color.White, Color.White)
 
         If Blps Then
             RenderText(Language.Game.Lps & Lps, GameWindow, FrmGame.Width - 120, 70, Color.White, Color.White)
@@ -3255,73 +3248,6 @@ NextLoop:
         RenderText("Invite to Party", GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth("Invite to Party") \ 2), RClickY + 60,
                  Color.White, Color.White)
 
-    End Sub
-
-    Friend Sub DrawGui()
-        If HideGui = True Then Exit Sub
-
-        If HudVisible = True Then
-            DrawHud()
-            DrawActionPanel()
-            DrawChat()
-            DrawHotbar()
-            DrawPetBar()
-            DrawPetStats()
-        End If
-
-        If PnlCharacterVisible = True Then
-            DrawEquipment()
-            If ShowItemDesc = True Then DrawItemDesc()
-        End If
-
-        If PnlInventoryVisible = True Then
-            DrawInventory()
-            If ShowItemDesc = True Then DrawItemDesc()
-        End If
-
-        If PnlSkillsVisible = True Then
-            DrawPlayerSkills()
-            If ShowSkillDesc = True Then DrawSkillDesc()
-        End If
-
-        If DialogPanelVisible = True Then
-            DrawDialogPanel()
-        End If
-
-        If PnlBankVisible = True Then
-            DrawBank()
-        End If
-
-        If PnlShopVisible = True Then
-            DrawShop()
-        End If
-
-        If PnlTradeVisible = True Then
-            DrawTrade()
-        End If
-
-        If PnlEventChatVisible = True Then
-            DrawEventChat()
-        End If
-
-        If PnlRClickVisible = True Then
-            DrawRClick()
-        End If
-
-        If DragInvSlotNum > 0 Then
-            DrawInventoryItem(CurMouseX, CurMouseY)
-        End If
-
-        If DragBankSlotNum > 0 Then
-            DrawBankItem(CurMouseX, CurMouseY)
-        End If
-
-        If DragSkillSlotNum > 0 Then
-            DrawSkillItem(CurMouseX, CurMouseY)
-        End If
-
-        'draw cursor
-        'DrawCursor()
     End Sub
 
     Friend Sub EditorItem_DrawItem()

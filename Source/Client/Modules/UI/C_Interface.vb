@@ -1092,8 +1092,8 @@ Module C_Interface
 
         ' Textboxes
         CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPass", 67, 91, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
-        CreateTextbox(WindowCount, "txtPass2", 67, 127, 142, 19, , Arial, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , True)
+        CreateTextbox(WindowCount, "txtPassword", 67, 91, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtPassword2", 67, 127, 142, 19, , Arial, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , True)
         'CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
         'CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
 
@@ -1507,13 +1507,17 @@ Module C_Interface
         Dim I As Long
         With Windows(GetWindowIndex("winRegister"))
             '.Controls(GetControlIndex("winRegister", "txtAccount")).Text = ""
-            .Controls(GetControlIndex("winRegister", "txtPass")).Text = ""
-            .Controls(GetControlIndex("winRegister", "txtPass2")).Text = ""
+            .Controls(GetControlIndex("winRegister", "txtPassword")).Text = ""
+            .Controls(GetControlIndex("winRegister", "txtPassword2")).Text = ""
             '.Controls(GetControlIndex("winRegister", "txtCode")).Text = ""
             '.Controls(GetControlIndex("winRegister", "txtCaptcha")).Text = ""
             'For I = 0 To 6
             '.Controls(GetControlIndex("winRegister", "picCaptcha")).Image(I) = Tex_Captcha(GlobalCaptcha)
             'Next
+        End With
+
+        With Windows(GetWindowIndex("winLogin"))
+            .Controls(GetControlIndex("winLogin", "txtPassword")).Text = ""
         End With
     End Sub
 
@@ -1528,8 +1532,8 @@ Module C_Interface
 
         With Windows(GetWindowIndex("winRegister"))
             User = .Controls(GetControlIndex("winRegister", "txtAccount")).Text
-            Pass = .Controls(GetControlIndex("winRegister", "txtPass")).Text
-            pass2 = .Controls(GetControlIndex("winRegister", "txtPass2")).Text
+            Pass = .Controls(GetControlIndex("winRegister", "txtPassword")).Text
+            pass2 = .Controls(GetControlIndex("winRegister", "txtPassword2")).Text
             'Code = .Controls(GetControlIndex("winRegister", "txtCode")).Text
             'Captcha = .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text
 

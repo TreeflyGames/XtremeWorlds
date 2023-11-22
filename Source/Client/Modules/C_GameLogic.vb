@@ -1241,6 +1241,7 @@ Continue1:
                 header = "Invalid Login"
                 body = "Invalid username or password."
                 body2 = "Please try again."
+                ClearPasswordTexts()
 
             Case DialogueMsg.Activate
                 header = "Inactive Account"
