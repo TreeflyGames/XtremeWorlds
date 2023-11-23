@@ -450,9 +450,6 @@ Module C_GameLogic
         Dim buffer As ByteStream
 
         chatText = Trim$(ChatInput.CurrentMessage)
-        name = ""
-
-        If Len(chatText) = 0 Then Exit Sub
         ChatInput.CurrentMessage = LCase$(chatText)
 
         If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then

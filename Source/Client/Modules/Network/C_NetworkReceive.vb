@@ -198,7 +198,7 @@ Module C_NetworkReceive
     Sub Packet_PlayerChars(ByRef data() As Byte)
         Dim buffer As New ByteStream(data), I As Long, winNum As Long, conNum As Long, isSlotEmpty(MAX_CHARS) As Boolean, x As Long
 
-        Types.Settings.Username = Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Value
+        Types.Settings.Username = Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Text
         SettingsManager.Save()
 
         For I = 1 To MAX_CHARS
@@ -321,10 +321,11 @@ Module C_NetworkReceive
         HideWindows()
         CanMoveNow = True
         Editor = -1
+
         ' show gui
-        'ShowWindow(GetWindowIndex("winBars"), , False)
-        'ShowWindow(GetWindowIndex("winMenu"), , False)
-        'ShowWindow(GetWindowIndex("winHotbar"), , False)
+        ShowWindow(GetWindowIndex("winBars"), , False)
+        ShowWindow(GetWindowIndex("winMenu"), , False)
+        ShowWindow(GetWindowIndex("winHotbar"), , False)
         ShowWindow(GetWindowIndex("winChatSmall"), , False)
         GameInit()
     End Sub

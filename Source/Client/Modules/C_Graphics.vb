@@ -325,7 +325,7 @@ Module C_Graphics
     Private Sub GameWindow_KeyPressed(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
         Console.WriteLine("Key Pressed: " & e.Code.ToString())
 
-        If e.Code = Keys.Escape Then
+        If e.Code = Keyboard.Key.Escape Then
             ' Hide options screen
             HideWindow("winOptions")
             CloseComboMenu()
@@ -366,7 +366,6 @@ Module C_Graphics
                             ' Override for function callbacks
                             If Not Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) IsNot Nothing Then
                                 Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) = Nothing
-                                'Exit Sub
                             Else
                                 Dim n As Integer = 0
                                 For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
