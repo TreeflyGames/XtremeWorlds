@@ -296,12 +296,6 @@ Module C_Trade
         Next
 
         RenderText(TheirWorth, GameWindow, TradeWindowX + 208, TradeWindowY + 288, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 13)
-
-        'render accept button
-        DrawButton("Accept Trade", TradeWindowX + TradeButtonAcceptX, TradeWindowY + TradeButtonAcceptY, 0)
-
-        'render decline button
-        DrawButton("Decline Trade", TradeWindowX + TradeButtonDeclineX, TradeWindowY + TradeButtonDeclineY, 0)
     End Sub
 
 #End Region

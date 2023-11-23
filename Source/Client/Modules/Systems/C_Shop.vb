@@ -152,31 +152,7 @@ Module C_Shops
         RenderText("Hello, and welcome", GameWindow, ShopWindowX + 10, ShopWindowY + 10, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
         RenderText("to the shop!", GameWindow, ShopWindowX + 10, ShopWindowY + 25, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 15)
 
-        'render buy button
-        If CurMouseX > ShopWindowX + ShopButtonBuyX AndAlso CurMouseX < ShopWindowX + ShopButtonBuyX + ButtonGfxInfo.Width And
-             CurMouseY > ShopWindowY + ShopButtonBuyY AndAlso CurMouseY < ShopWindowY + ShopButtonBuyY + ButtonGfxInfo.Height Then
-            DrawButton("Buy Item", ShopWindowX + ShopButtonBuyX, ShopWindowY + ShopButtonBuyY, 1)
-        Else
-            DrawButton("Buy Item", ShopWindowX + ShopButtonBuyX, ShopWindowY + ShopButtonBuyY, 0)
-        End If
-
-        'render sell button
-        If CurMouseX > ShopWindowX + ShopButtonSellX AndAlso CurMouseX < ShopWindowX + ShopButtonSellX + ButtonGfxInfo.Width And
-             CurMouseY > ShopWindowY + ShopButtonSellY AndAlso CurMouseY < ShopWindowY + ShopButtonSellY + ButtonGfxInfo.Height Then
-            DrawButton("Sell Item", ShopWindowX + ShopButtonSellX, ShopWindowY + ShopButtonSellY, 1)
-        Else
-            DrawButton("Sell Item", ShopWindowX + ShopButtonSellX, ShopWindowY + ShopButtonSellY, 0)
-        End If
-
-        'render close button
-        If CurMouseX > ShopWindowX + ShopButtonCloseX AndAlso CurMouseX < ShopWindowX + ShopButtonCloseX + ButtonGfxInfo.Width And
-             CurMouseY > ShopWindowY + ShopButtonCloseY AndAlso CurMouseY < ShopWindowY + ShopButtonCloseY + ButtonGfxInfo.Height Then
-            DrawButton("Close Shop", ShopWindowX + ShopButtonCloseX, ShopWindowY + ShopButtonCloseY, 1)
-        Else
-            DrawButton("Close Shop", ShopWindowX + ShopButtonCloseX, ShopWindowY + ShopButtonCloseY, 0)
-        End If
-
-       For i = 1 To MAX_TRADES
+        For i = 1 To MAX_TRADES
             itemnum = Shop(InShop).TradeItem(i).Item
             If itemnum > 0 AndAlso itemnum <= MAX_ITEMS Then
                 StreamItem(itemnum)

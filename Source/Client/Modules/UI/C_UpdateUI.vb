@@ -7,14 +7,6 @@ Module C_UpdateUI
     Friend GameDestroyed As Boolean
     Friend TxtChatAdd As String
 
-    'Mapreport
-    Friend UpdateMapnames As Boolean
-
-    Friend Adminvisible As Boolean
-
-    'GUI drawing
-    Friend HudVisible As Boolean = True
-
     Friend PnlCharacterVisible As Boolean
     Friend PnlInventoryVisible As Boolean
     Friend PnlSkillsVisible As Boolean
@@ -283,6 +275,16 @@ Module C_UpdateUI
 #End Region
 
     Sub UpdateUi()
+        If InitMapEditor = True Then
+            With frmEditor_Map
+                Editor = EditorType.Map
+                Editorindex = 1
+                .Show()
+                .MapEditorInit()
+            End With
+            InitMapEditor = False
+        End If
+
         If InitPetEditor = True Then
             With frmEditor_Pet
                 Editor = EditorType.Pet

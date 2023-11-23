@@ -1030,17 +1030,16 @@ Module C_NetworkReceive
     Private Sub Packet_MapReport(ByRef data() As Byte)
         Dim i As Integer
         Dim buffer As New ByteStream(data)
+
         For i = 1 To MAX_MAPS
             MapNames(i) = Trim(buffer.ReadString())
         Next
-
-        UpdateMapnames = True
 
         buffer.Dispose()
     End Sub
 
     Private Sub Packet_Admin(ByRef data() As Byte)
-        Adminvisible = True
+        FrmAdmin.Visible = True
     End Sub
 
     Private Sub Packet_MapNames(ByRef data() As Byte)

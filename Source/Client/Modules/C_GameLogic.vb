@@ -32,6 +32,8 @@ Module C_GameLogic
             DirLeft = VbKeyLeft
             DirRight = VbKeyRight
 
+            UpdateUi()
+
             If GameStarted() Then
                 'Calculate FPS
                 If starttime < tick Then
@@ -449,13 +451,8 @@ Module C_GameLogic
         Dim command() As String
         Dim buffer As ByteStream
 
-        chatText = Trim$(ChatInput.CurrentMessage)
-        ChatInput.CurrentMessage = LCase$(chatText)
-
-        If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
-            ShowChat()
-            inSmallChat = False
-            Exit Sub
+        If InGame Then
+            chatText = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text
         End If
 
         If EventChat = True Then
@@ -481,19 +478,19 @@ Module C_GameLogic
                 BroadcastMsg(chatText) '("Привет, русский чат")
             End If
 
-            ChatInput.CurrentMessage = ""
+            chatText = ""
             Exit Sub
         End If
 
         ' party message
         If Left$(chatText, 1) = "-" Then
-            ChatInput.CurrentMessage = Mid$(chatText, 2, Len(chatText) - 1)
+            chatText = Mid$(chatText, 2, Len(chatText) - 1)
 
             If Len(chatText) > 0 Then
-                SendPartyChatMsg(ChatInput.CurrentMessage)
+                SendPartyChatMsg(chatText)
             End If
 
-            ChatInput.CurrentMessage = ""
+            chatText = ""
             Exit Sub
         End If
 
@@ -503,7 +500,7 @@ Module C_GameLogic
             name = ""
 
             ' Get the desired player from the user text
-           For i = 0 To Len(chatText)
+            For i = 0 To Len(chatText)
 
                 If Mid$(chatText, i, 1) <> Space(1) Then
                     name = name & Mid$(chatText, i, 1)
@@ -513,12 +510,12 @@ Module C_GameLogic
 
             Next
 
-            ChatInput.CurrentMessage = Trim$(Mid$(chatText, i, Len(chatText) - 1))
+            chatText = Trim$(Mid$(chatText, i, Len(chatText) - 1))
 
             ' Make sure they are actually sending something
-            If Len(ChatInput.CurrentMessage) > 0 Then
+            If Len(chatText) > 0 Then
                 ' Send the message to the player
-                PlayerMsg(ChatInput.CurrentMessage, name)
+                PlayerMsg(chatText, name)
             Else
                 AddText(Language.Chat.PlayerMsg, ColorType.Yellow)
             End If
@@ -526,8 +523,8 @@ Module C_GameLogic
             GoTo Continue1
         End If
 
-        If Left$(ChatInput.CurrentMessage, 1) = "/" Then
-            command = Split(ChatInput.CurrentMessage, Space(1))
+        If Left$(chatText, 1) = "/" Then
+            command = Split(chatText, Space(1))
 
             Select Case command(0)
                 Case "/emote"
@@ -732,7 +729,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditMap
+                    SendRequestEditMap()
 
                 ' // Moderator Commands //
                 ' Welcome change
@@ -784,7 +781,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendBanDestroy
+                    SendBanDestroy()
 
                 Case "/access"
 
@@ -810,8 +807,8 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditResource
-                    
+                    SendRequestEditResource()
+
                 Case "/editanimation"
 
                     If GetPlayerAccess(Myindex) < AdminType.Developer Then
@@ -819,7 +816,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditAnimation
+                    SendRequestEditAnimation()
 
                 Case "/editpet"
 
@@ -828,7 +825,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditPet
+                    SendRequestEditPet()
 
                 Case "/edititem"
 
@@ -837,7 +834,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditItem
+                    SendRequestEditItem()
 
                 Case "/editprojectile"
 
@@ -846,7 +843,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditProjectile
+                    SendRequestEditProjectile()
 
                 Case "/editnpc"
 
@@ -855,7 +852,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditNpc
+                    SendRequestEditNpc()
 
                 Case "/editjob"
 
@@ -864,7 +861,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditJob
+                    SendRequestEditJob()
 
                 Case "/editskill"
 
@@ -873,7 +870,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditSkill
+                    SendRequestEditSkill()
 
                 Case "/editshop"
                     If GetPlayerAccess(Myindex) < AdminType.Developer Then
@@ -881,7 +878,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditShop
+                    SendRequestEditShop()
 
                 Case ""
 
@@ -894,7 +891,7 @@ Module C_GameLogic
         End If
 
 Continue1:
-        ChatInput.CurrentMessage = ""
+        Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text = ""
     End Sub
 
     Sub CheckMapGetItem()
@@ -902,11 +899,9 @@ Continue1:
         buffer = New ByteStream(4)
 
         If GetTickCount() > Player(Myindex).MapGetTimer + 250 Then
-            If Trim$(ChatInput.CurrentMessage) = "" Then
-                Player(Myindex).MapGetTimer = GetTickCount()
-                buffer.WriteInt32(ClientPackets.CMapGetItem)
-                Socket.SendData(buffer.Data, buffer.Head)
-            End If
+            Player(Myindex).MapGetTimer = GetTickCount()
+            buffer.WriteInt32(ClientPackets.CMapGetItem)
+            Socket.SendData(buffer.Data, buffer.Head)
         End If
 
         buffer.Dispose()

@@ -325,28 +325,6 @@ Module C_Graphics
     Private Sub GameWindow_KeyPressed(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
         Console.WriteLine("Key Pressed: " & e.Code.ToString())
 
-        If e.Code = Keyboard.Key.Escape Then
-            ' Hide options screen
-            HideWindow("winOptions")
-            CloseComboMenu()
-
-            ' If Windows("winEscMenu").Visible Then
-            ' Hide it
-            ' HideWindow("winBlank")
-            'HideWindow("winEscMenu")
-            'El
-            'se
-            ' Show them
-            '   ShowWindow("winBlank", True)
-            '  ShowWindow("winEscMenu", True)
-            'End If
-        End If
-
-        If InGame Then
-            'Dim chatText As String = Windows("winChat").Controls("txtChat").Text
-            ' Do something with chatText
-        End If
-
         ' Check for active window
         If activeWindow > 0 Then
             ' Ensure it's visible
@@ -361,7 +339,7 @@ Module C_Graphics
                             If Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Length > 0 Then
                                 Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text = Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Substring(0, Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Length - 1)
                             End If
-                        
+
                         Case Keyboard.Key.Enter
                             ' Override for function callbacks
                             If Not Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) IsNot Nothing Then
@@ -394,13 +372,7 @@ Module C_Graphics
                                     SetActiveControl(activeWindow, i)
                                 Next
                             End If
-
-                            'Case Else
-                            'Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= ChrW(e.Code)
                     End Select
-
-                    ' Exit early if not in the chat window
-                    'If Windows(activeWindow).Window.Name <> "winChat" Then Exit Sub
                 End If
             End If
         End If
@@ -410,51 +382,27 @@ Module C_Graphics
 
         Select Case e.Code
             Case Keyboard.Key.Enter
+                If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
+                    ShowChat()
+                    inSmallChat = False
+                    Exit Sub
+                End If
+
                 HandlePressEnter()
 
             Case Keyboard.Key.Escape
                 ' Hide options screen
-                HideWindow("winOptions")
-                CloseComboMenu()
+                'HideWindow("winOptions")
+                'CloseComboMenu()
 
-                ' Hide/show chat window
-                'If Windows("winChat").Visible Then
-                '   Windows("winChat").Controls("txtChat").Text = ""
-                'HideChat()
-                'inSmallChat = True
-                'Exit Sub
-                'End If
-
-                'If Windows("winEscMenu").Visible Then
-                ' Hide it
-                'HideWindow("winBlank")
-                'HideWindow("winEscMenu")
-                'else
-                ' Show them
-                'ShowWindow("winBlank", True)
-                ' ShowWindow("winEscMenu", True)
-                'End If
-
-                ' Exit early
-                'Exit Sub
-
-            Case 105
-                ' Hide/show inventory
-                'If Not Windows("winChat").Visible Then
-                ' btnMenu_Inv()
-                'End If
-
-            Case 99
-                ' Hide/show inventory
-                'If Not Windows("winChat").Visible Then
-                ' btnMenu_Char()
-               ' End If
-
-            Case 109
-                ' Hide/show skills
-                'If Not Windows("winChat").Visible Then
-                ' btnMenu_Skills()
-                ' End If
+                ' hide/show chat window
+                If Windows(GetWindowIndex("winChat")).Window.Visible Then
+                    Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text = ""
+                    HideChat()
+                    inSmallChat = True
+                    Exit Sub
+                End If
+                Exit Sub
         End Select
 
         HandleInterfaceEvents(EntState.KeyDown)
@@ -472,84 +420,18 @@ Module C_Graphics
         If Inputs.Attack(e.Code) Then VbKeyControl = False
         If Inputs.Run(e.Code) Then VbKeyShift = False
 
-        'Hotbar
-        If Inputs.Hotbar1(e.Code) Then
-            skillnum = Player(Myindex).Hotbar(1).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.Hotbar2(e.Code) Then
-            skillnum = Player(Myindex).Hotbar(2).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.Hotbar3(e.Code) Then
-            skillnum = Player(Myindex).Hotbar(3).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.Hotbar4(e.Code) Then
-            skillnum = Player(Myindex).Hotbar(4).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar5(e.Code) Then
-            skillnum = Player(Myindex).Hotbar(5).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar6(e.Code) Then
-            skillnum = Player(Myindex).Hotbar(6).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
-        If Inputs.HotBar7(e.Code) Then
-            skillnum = Player(Myindex).Hotbar(7).Slot
-
-            If skillnum <> 0 Then
-                PlayerCastSkill(skillnum)
-            End If
-        End If
-
         'admin
-        If Inputs.Admin(e.Code) Then
+        If e.Code = Keyboard.Key.Insert Then
             If GetPlayerAccess(Myindex) > 0 Then
                 SendRequestAdmin()
             End If
         End If
-        
+
         'hide gui
         If Inputs.HudToggle(e.Code) Then
             HideGui = Not HideGui
         End If
 
-        'lets check for keys for inventory etc
-        If Not ChatInput.Active Then
-            If Inputs.Inventory(e.Code) Then PnlInventoryVisible = Not PnlInventoryVisible
-            If Inputs.Character(e.Code) Then PnlCharacterVisible = Not PnlCharacterVisible
-            If Inputs.skill(e.Code) Then PnlSkillsVisible = Not PnlSkillsVisible
-            If Inputs.Settings(e.Code) Then FrmOptions.Visible = Not FrmOptions.Visible
-        End If
-
-        If e.Code = Keys.Enter Then HandleInterfaceEvents(EntState.Enter)
         HandleInterfaceEvents(EntState.KeyUp)
     End Sub
 
@@ -1440,64 +1322,6 @@ Module C_Graphics
         RenderTexture(EmotesSprite(sprite), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
-    Sub DrawChat()
-        Dim i As Integer, x As Integer, y As Integer
-        Dim text As String
-
-        'first draw back image
-        RenderTexture(ChatWindowSprite, GameWindow, ChatWindowX, ChatWindowY - 2, 0, 0, ChatWindowGfxInfo.Width,
-                     ChatWindowGfxInfo.Height)
-
-        y = 45
-        x = 45
-
-        FirstLineindex = (Chat.Count - MaxChatDisplayLines) - ScrollMod _
-        'First element is the 5th from the last in the list
-        If FirstLineindex < 0 Then FirstLineindex = 0 _
-        'if the list has less than 5 elements, the first is the 0th index or first element
-
-        LastLineindex = (FirstLineindex + MaxChatDisplayLines) ' - ScrollMod
-        If (LastLineindex >= Chat.Count) Then LastLineindex = Chat.Count - 1 _
-        'Based off of index 0, so the last element should be Chat.Count -1
-
-        'only loop tru last entries
-        For i = FirstLineindex To LastLineindex
-            text = Chat(i).Text
-
-            If text <> "" Then ' or not
-                RenderText(text, GameWindow, ChatWindowX + x, ChatWindowY + y, GetSfmlColor(Chat(i).Color), Color.Black)
-                y = y + ChatLineSpacing + 1
-            End If
-
-        Next
-
-        RenderTexture(MyChatWindowSprite, GameWindow, MyChatX, MyChatY - 5, 0, 0, MyChatWindowGfxInfo.Width,
-                     MyChatWindowGfxInfo.Height)
-
-        If Len(ChatInput.CurrentMessage) > 0 Then
-            Dim subText As String = ChatInput.CurrentMessage
-            While GetTextWidth(subText) > MyChatWindowGfxInfo.Width - ChatEntryPadding
-                subText = subText.Substring(1)
-            End While
-            RenderText(subText, GameWindow, MyChatX + 5, MyChatY - 3, Color.White, Color.White)
-        End If
-    End Sub
-
-    Friend Sub DrawButton(text As String, dX As Integer, dY As Integer, hover As Byte)
-        If hover = 0 Then
-            RenderTexture(ButtonSprite, GameWindow, dX, dY, 0, 0, ButtonGfxInfo.Width, ButtonGfxInfo.Height)
-
-            RenderText(text, GameWindow, dX + (ButtonGfxInfo.Width \ 2) - (GetTextWidth(text) \ 2),
-                     dY + (ButtonGfxInfo.Height \ 2) - (FontSize \ 2), Color.White, Color.White)
-        Else
-            RenderTexture(ButtonHoverSprite, GameWindow, dX, dY, 0, 0, ButtonHoverGfxInfo.Width,
-                         ButtonHoverGfxInfo.Height)
-
-            RenderText(text, GameWindow, dX + (ButtonHoverGfxInfo.Width \ 2) - (GetTextWidth(text) \ 2),
-                     dY + (ButtonHoverGfxInfo.Height \ 2) - (FontSize \ 2), Color.White, Color.White)
-        End If
-    End Sub
-
     Friend Sub RenderTexture(tmpSprite As Sprite, target As RenderWindow, dX As Integer, dY As Integer,
                             sX As Integer, sY As Integer, dW As Integer, dH As Integer, Optional sW As Integer = 1, Optional sH As Integer = 1, Optional alpha As Byte = 255, Optional red As Byte = 255, Optional green As Byte = 255, Optional blue As Byte = 255)
 
@@ -2133,13 +1957,6 @@ Module C_Graphics
         End If
 
         DrawPicture()
-
-        ' draw the messages
-        For I = 1 To Byte.MaxValue
-            If ChatBubble(I).Active Then
-                DrawChatBubble(I)
-            End If
-        Next
 
         'action msg
         For I = 1 To Byte.MaxValue
@@ -3063,12 +2880,6 @@ NextLoop:
         If Len(DialogMsg3) > 0 Then
             RenderText(Trim(DialogMsg3), GameWindow, DialogPanelX + 60, DialogPanelY + 50, Color.White, Color.White)
         End If
-
-        'render ok button
-        DrawButton(DialogButton1Text, DialogPanelX + OkButtonX, DialogPanelY + OkButtonY, 0)
-
-        'render cancel button
-        DrawButton(DialogButton2Text, DialogPanelX + CancelButtonX, DialogPanelY + CancelButtonY, 0)
     End Sub
 
     Friend Sub DrawRClick()

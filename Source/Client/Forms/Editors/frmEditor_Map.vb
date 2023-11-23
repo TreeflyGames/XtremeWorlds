@@ -567,8 +567,6 @@ Public Class frmEditor_Map
     End Sub
 
     Public Sub MapEditorInit()
-        ' we're in the map editor
-        Editor = EditorType.Map
         HideGui = True
 
         ' set the scrolly bars

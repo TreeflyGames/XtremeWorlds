@@ -1751,7 +1751,7 @@ Module C_Interface
         RenderDesign(DesignType.Win_Shadow, xO, yO, actChatWidth, actChatHeight)
 
         ' call the chat render
-        RenderChat()
+        'RenderChat()
     End Sub
 
     Public Sub chkChat_Game()

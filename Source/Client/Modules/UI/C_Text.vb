@@ -305,23 +305,7 @@ Module C_Text
     End Function
 
     Friend Sub AddText(msg As String, color As Integer)
-        If TxtChatAdd = "" Then
-            TxtChatAdd = TxtChatAdd & msg
-            AddChat(msg, color)
-        Else
-            'For Each str As String In WordWrap(msg, MyChatWindowGfxInfo.Width - ChatboxPadding, WrapModeType.Font)
-            '    TxtChatAdd = TxtChatAdd & vbCrLf & str
-            '    AddChat(str, color)
-            'Next
 
-        End If
-    End Sub
-
-    Friend Sub AddChat(msg As String, color As Integer)
-        Dim chatMsg As ChatStruct
-        chatMsg.Text = msg
-        chatMsg.Color = color
-        Chat.Add(chatMsg)
     End Sub
 
     Friend Function GetSfmlColor(color As Byte) As Color
@@ -470,71 +454,5 @@ Module C_Text
         End While
 
     End Function
-
-    Friend Sub DrawChatBubble(index As Integer)
-        Dim theArray As List(Of String), x As Integer, y As Integer, i As Integer, maxWidth As Integer, x2 As Integer, y2 As Integer
-
-        With ChatBubble(index)
-            If .TargetType = TargetType.Player Then
-                ' it's a player
-                If GetPlayerMap(.Target) = GetPlayerMap(Myindex) Then
-                    ' it's on our map - get co-ords
-                    x = ConvertMapX((Player(.Target).X * 32) + Player(.Target).XOffset) + 16
-                    y = ConvertMapY((Player(.Target).Y * 32) + Player(.Target).YOffset) - 40
-                End If
-            ElseIf .TargetType = TargetType.Npc Then
-                ' it's on our map - get co-ords
-                x = ConvertMapX((MapNpc(.Target).X * 32) + MapNpc(.Target).XOffset) + 16
-                y = ConvertMapY((MapNpc(.Target).Y * 32) + MapNpc(.Target).YOffset) - 40
-            ElseIf .TargetType = TargetType.Event Then
-                x = ConvertMapX((Map.MapEvents(.Target).X * 32) + Map.MapEvents(.Target).XOffset) + 16
-                y = ConvertMapY((Map.MapEvents(.Target).Y * 32) + Map.MapEvents(.Target).YOffset) - 40
-            End If
-            ' word wrap the text
-            'theArray = WordWrap(.Msg, ChatBubbleWidth, WrapModeType.Font)
-            ' find max width
-            For i = 0 To theArray.Count - 1
-                If GetTextWidth(theArray(i)) > maxWidth Then maxWidth = GetTextWidth(theArray(i))
-            Next
-            ' calculate the new position
-            x2 = x - (maxWidth \ 2)
-            y2 = y - (theArray.Count * 12)
-
-            ' render bubble - top left
-            RenderTextures(ChatBubbleGfx, GameWindow, x2 - 9, y2 - 5, 0, 0, 9, 5, 9, 5)
-            ' top right
-            RenderTextures(ChatBubbleGfx, GameWindow, x2 + maxWidth, y2 - 5, 119, 0, 9, 5, 9, 5)
-            ' top
-            RenderTextures(ChatBubbleGfx, GameWindow, x2, y2 - 5, 10, 0, maxWidth, 5, 5, 5)
-            ' bottom left
-            RenderTextures(ChatBubbleGfx, GameWindow, x2 - 9, y, 0, 19, 9, 6, 9, 6)
-            ' bottom right
-            RenderTextures(ChatBubbleGfx, GameWindow, x2 + maxWidth, y, 119, 19, 9, 6, 9, 6)
-            ' bottom - left half
-            RenderTextures(ChatBubbleGfx, GameWindow, x2, y, 10, 19, (maxWidth \ 2) - 5, 6, 9, 6)
-            ' bottom - right half
-            RenderTextures(ChatBubbleGfx, GameWindow, x2 + (maxWidth \ 2) + 6, y, 10, 19, (maxWidth \ 2) - 5, 6, 9, 6)
-            ' left
-            RenderTextures(ChatBubbleGfx, GameWindow, x2 - 9, y2, 0, 6, 9, (theArray.Count * 12), 9, 1)
-            ' right
-            RenderTextures(ChatBubbleGfx, GameWindow, x2 + maxWidth, y2, 119, 6, 9, (theArray.Count * 12), 9, 1)
-            ' center
-            RenderTextures(ChatBubbleGfx, GameWindow, x2, y2, 9, 5, maxWidth, (theArray.Count * 12), 1, 1)
-            ' little pointy bit
-            RenderTextures(ChatBubbleGfx, GameWindow, x - 5, y, 58, 19, 11, 11, 11, 11)
-
-            ' render each line centralised
-            For i = 0 To theArray.Count - 1
-                RenderText(theArray(i), GameWindow, x - (GetTextWidth(theArray(i)) / 2), y2, ToSfmlColor(Drawing.ColorTranslator.FromOle(QBColor(.Color))), Color.Black)
-                y2 = y2 + 12
-            Next
-
-            ' check if it's timed out - close it if so
-            If .Timer + 5000 < GetTickCount() Then
-                .Active = False
-            End If
-        End With
-
-    End Sub
 
 End Module
