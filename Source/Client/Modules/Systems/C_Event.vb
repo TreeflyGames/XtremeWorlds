@@ -2746,7 +2746,7 @@ nextevent:
     End Sub
 
     Friend Sub DrawEventChat()
-        Dim temptext As String, txtArray As New List(Of String)
+        Dim temptext As String, txtArray As List(Of String)
         Dim tmpY As Integer = 0
 
         'first render panel
@@ -2771,7 +2771,8 @@ nextevent:
             End If
 
             'EventPrompt
-            txtArray = WordWrap(EventText, 45, WrapModeType.Characters, WrapType.BreakWord)
+            'txtArray = WordWrap(EventText, 45, WrapModeType.Characters, WrapType.BreakWord)
+
             For i = 0 To txtArray.Count
                 If i = txtArray.Count Then Exit For
                 'draw text

@@ -16,7 +16,7 @@ Module C_Graphics
     Friend EditorAnimation_Anim1 As RenderWindow
     Friend EditorAnimation_Anim2 As RenderWindow
 
-    Friend Fonts(1) As Font
+    Friend Fonts([Enum].FontType.Count - 1) As Font
 
     Friend CursorGfx As Texture
     Friend CursorSprite As Sprite
@@ -334,7 +334,8 @@ Module C_Graphics
             ' Hide it
             ' HideWindow("winBlank")
             'HideWindow("winEscMenu")
-            'Else
+            'El
+            'se
             ' Show them
             '   ShowWindow("winBlank", True)
             '  ShowWindow("winEscMenu", True)
@@ -365,7 +366,7 @@ Module C_Graphics
                             ' Override for function callbacks
                             If Not Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) IsNot Nothing Then
                                 Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) = Nothing
-                                Exit Sub
+                                'Exit Sub
                             Else
                                 Dim n As Integer = 0
                                 For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
@@ -394,12 +395,13 @@ Module C_Graphics
                                     SetActiveControl(activeWindow, i)
                                 Next
                             End If
-                        'Case Else
+
+                            'Case Else
                             'Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= ChrW(e.Code)
                     End Select
 
                     ' Exit early if not in the chat window
-                    'If Windows(activeWindow).Name <> "winChat" Then Exit Sub
+                    'If Windows(activeWindow).Window.Name <> "winChat" Then Exit Sub
                 End If
             End If
         End If
@@ -408,7 +410,16 @@ Module C_Graphics
         If Not InGame Then Exit Sub
 
         Select Case e.Code
-            Case Keys.Escape
+            Case Keyboard.Key.Enter
+                If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
+                    ShowChat()
+                    inSmallChat = False
+                    Exit Sub
+                End If
+
+                HandlePressEnter()
+
+            Case Keyboard.Key.Escape
                 ' Hide options screen
                 HideWindow("winOptions")
                 CloseComboMenu()
@@ -432,7 +443,7 @@ Module C_Graphics
                 'End If
 
                 ' Exit early
-                Exit Sub
+                'Exit Sub
 
             Case 105
                 ' Hide/show inventory
@@ -452,47 +463,6 @@ Module C_Graphics
                 ' btnMenu_Skills()
                 ' End If
         End Select
-
-        If (ChatInput.ProcessKey(e)) Then
-            If (e.Code = Keys.Enter) Then
-                HandlePressEnter()
-            End If
-        End If
-
-        If ChatInput.Active Then
-            If e.Code = Keys.Enter Then
-                HandlePressEnter()
-            End If
-        Else
-            If Inputs.MoveUp(e.Code) Then VbKeyUp = True
-            If Inputs.MoveDown(e.Code) Then VbKeyDown = True
-            If Inputs.MoveLeft(e.Code) Then VbKeyLeft = True
-            If Inputs.MoveRight(e.Code) Then VbKeyRight = True
-            If Inputs.Attack(e.Code) Then VbKeyControl = True
-            If Inputs.Run(e.Code) Then VbKeyShift = True
-            If Inputs.Loot(e.Code) Then CheckMapGetItem()
-
-            'Hotbar
-            If Inputs.Hotbar1(e.Code) AndAlso Player(Myindex).Hotbar(1).Slot <> 0 Then SendUseHotbarSlot(1)
-            If Inputs.Hotbar2(e.Code) AndAlso Player(Myindex).Hotbar(2).Slot <> 0 Then SendUseHotbarSlot(2)
-            If Inputs.Hotbar3(e.Code) AndAlso Player(Myindex).Hotbar(3).Slot <> 0 Then SendUseHotbarSlot(3)
-            If Inputs.Hotbar4(e.Code) AndAlso Player(Myindex).Hotbar(4).Slot <> 0 Then SendUseHotbarSlot(4)
-            If Inputs.Hotbar5(e.Code) AndAlso Player(Myindex).Hotbar(5).Slot <> 0 Then SendUseHotbarSlot(5)
-            If Inputs.Hotbar6(e.Code) AndAlso Player(Myindex).Hotbar(6).Slot <> 0 Then SendUseHotbarSlot(6)
-            If Inputs.Hotbar7(e.Code) AndAlso Player(Myindex).Hotbar(7).Slot <> 0 Then SendUseHotbarSlot(7)
-
-            'admin
-            If Inputs.Admin(e.Code) Then
-                If GetPlayerAccess(Myindex) > 0 Then
-                    SendRequestAdmin()
-                End If
-            End If
-
-            'hide gui
-            If Inputs.HudToggle(e.Code) Then
-                HideGui = Not HideGui
-            End If
-        End If
 
         HandleInterfaceEvents(EntState.KeyDown)
     End Sub
@@ -723,7 +693,7 @@ Module C_Graphics
     End Sub
 
     Sub InitGraphics()
-        GameWindow = New RenderWindow(New VideoMode(Types.Settings.Width, Types.Settings.Height), Types.Settings.GameName, Styles.Titlebar Or Styles.Close)
+        GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Titlebar Or Styles.Close)
         GameWindow.setVerticalSyncEnabled(Types.Settings.Vsync)
         GameWindow.SetFramerateLimit(Types.Settings.MaxFPS)
 
@@ -3086,133 +3056,6 @@ NextLoop:
         RenderTexture(TargetSprite, GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
-    Friend Sub DrawItemDesc()
-        Dim xoffset As Integer, yoffset As Integer, y As Integer
-
-        y = 0
-
-        If PnlCharacterVisible = True Then
-            xoffset = CharWindowX
-            yoffset = CharWindowY
-        End If
-        If PnlInventoryVisible = True Then
-            xoffset = InvWindowX
-            yoffset = InvWindowY
-        End If
-        If PnlBankVisible = True Then
-            xoffset = BankWindowX
-            yoffset = BankWindowY
-        End If
-        If PnlShopVisible = True Then
-            xoffset = ShopWindowX
-            yoffset = ShopWindowY
-        End If
-        If PnlTradeVisible = True Then
-            xoffset = TradeWindowX
-            yoffset = TradeWindowY
-        End If
-
-        'first render panel
-        RenderTexture(DescriptionSprite, GameWindow, xoffset - DescriptionGfxInfo.Width, yoffset, 0, 0,
-                     DescriptionGfxInfo.Width, DescriptionGfxInfo.Height)
-
-        'name
-        For Each str As String In WordWrap(ItemDescName, 22, WrapModeType.Characters, WrapType.BreakWord)
-            'description
-            RenderText(str, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 12 + y, ItemDescRarityColor,
-                     ItemDescRarityBackColor)
-            y += 15
-        Next
-
-        If VbKeyShift Then
-            'info
-            RenderText(ItemDescInfo, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 56, Color.White, Color.White)
-
-            'cost
-            'RenderText(Xoffset - DescriptionGFXInfo.width + 10, Yoffset + 74, "Worth: " & ItemDescCost, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow)
-            'type
-            'RenderText(Xoffset - DescriptionGFXInfo.width + 10, Yoffset + 90, "Type: " & ItemDescType, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, GameWindow)
-            'speed
-            RenderText("Speed: " & ItemDescSpeed, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 74, Color.White,
-                     Color.Black)
-            'level
-            RenderText("Level Required: " & ItemDescLevel, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 90,
-                     Color.White, Color.White)
-            'bonuses
-            RenderText("Bonuses", GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 118, Color.White, Color.White)
-
-            'strength
-            RenderText("Strength: " & ItemDescStr, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 134, Color.White, Color.White)
-
-            'vitality
-            RenderText("Vitality: " & ItemDescVit, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 150, Color.White,
-                     Color.Black)
-
-            'intelligence
-            RenderText("Intelligence: " & ItemDescInt, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 166, Color.White,
-                     Color.Black)
-            'endurance
-            RenderText("Endurance: " & ItemDescEnd, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 182, Color.White,
-                     Color.Black)
-            'luck
-            RenderText("Luck: " & ItemDescLuck, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 198, Color.White,
-                     Color.Black)
-            'spirit
-            RenderText("Spirit: " & ItemDescSpr, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 214, Color.White,
-                     Color.Black)
-        Else
-            For Each str As String In WordWrap(ItemDescDescription, 22, WrapModeType.Characters, WrapType.BreakWord)
-                'description
-                RenderText(str, GameWindow, xoffset - DescriptionGfxInfo.Width + 10, yoffset + 44 + y, Color.White, Color.White)
-                y += 15
-            Next
-        End If
-    End Sub
-
-    Friend Sub DrawSkillDesc()
-        'first render panel
-        RenderTexture(DescriptionSprite, GameWindow, SkillWindowX - DescriptionGfxInfo.Width, SkillWindowY, 0, 0,
-                     DescriptionGfxInfo.Width, DescriptionGfxInfo.Height)
-
-        'name
-        RenderText(SkillDescName, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 12, Color.White,
-                 Color.Black)
-        'type
-        RenderText(SkillDescInfo, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 28, Color.White,
-                 Color.Black)
-        'cast time
-        RenderText("Cast Time: " & SkillDescCastTime, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 44,
-                 Color.White, Color.White)
-        'cool down
-        RenderText("Cooldown: " & SkillDescCoolDown, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 58,
-                 Color.White, Color.White)
-        'Damage
-        RenderText("Damage: " & SkillDescDamage, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 74,
-                 Color.White, Color.White)
-        'AOE
-        RenderText("Aoe: " & SkillDescAoe, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 90, Color.White,
-                 Color.Black)
-        'range
-        RenderText("Range: " & SkillDescRange, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 104,
-                 Color.White, Color.White)
-
-        'requirements
-        RenderText("Requirements:", GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 128, Color.White,
-                 Color.Black)
-        'MP
-        RenderText("MP: " & SkillDescReqMp, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 144, Color.White,
-                 Color.Black)
-        'level
-        RenderText("Level: " & SkillDescReqLvl, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 160,
-                 Color.White, Color.White)
-        'Access
-        RenderText("Access: " & SkillDescReqAccess, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 176,
-                 Color.White, Color.White)
-        'Class
-        RenderText("Job: " & SkillDescReqClass, GameWindow, SkillWindowX - DescriptionGfxInfo.Width + 10, SkillWindowY + 192,
-                 Color.White, Color.White)
-    End Sub
-
     Friend Sub DrawDialogPanel()
         'first render panel
         RenderTexture(EventChatSprite, GameWindow, DialogPanelX, DialogPanelY, 0, 0, EventChatGfxInfo.Width,
@@ -3977,20 +3820,20 @@ NextLoop:
         Next
 
         ' row 1
-        RenderTexture(PictureSprite(1), GameWindow, Types.Settings.Width - 512, Types.Settings.Height - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(2), GameWindow, Types.Settings.Width - 1024, Types.Settings.Height - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(3), GameWindow, Types.Settings.Width - 1536, Types.Settings.Height - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(4), GameWindow, Types.Settings.Width - 2048, Types.Settings.Height - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(1), GameWindow, Types.Settings.ScreenWidth - 512, Types.Settings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(2), GameWindow, Types.Settings.ScreenWidth - 1024, Types.Settings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(3), GameWindow, Types.Settings.ScreenWidth - 1536, Types.Settings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(4), GameWindow, Types.Settings.ScreenWidth - 2048, Types.Settings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
         ' row 2
-        RenderTexture(PictureSprite(5), GameWindow, Types.Settings.Width - 512, Types.Settings.Height - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(6), GameWindow, Types.Settings.Width - 1024, Types.Settings.Height - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(7), GameWindow, Types.Settings.Width - 1536, Types.Settings.Height - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(8), GameWindow, Types.Settings.Width - 2048, Types.Settings.Height - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(5), GameWindow, Types.Settings.ScreenWidth - 512, Types.Settings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(6), GameWindow, Types.Settings.ScreenWidth - 1024, Types.Settings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(7), GameWindow, Types.Settings.ScreenWidth - 1536, Types.Settings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(8), GameWindow, Types.Settings.ScreenWidth - 2048, Types.Settings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
         ' row 3
-        RenderTexture(PictureSprite(9), GameWindow, Types.Settings.Width - 512, Types.Settings.Height - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(10), GameWindow, Types.Settings.Width - 1024, Types.Settings.Height - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(11), GameWindow, Types.Settings.Width - 1536, Types.Settings.Height - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(12), GameWindow, Types.Settings.Width - 2048, Types.Settings.Height - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(9), GameWindow, Types.Settings.ScreenWidth - 512, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(10), GameWindow, Types.Settings.ScreenWidth - 1024, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(11), GameWindow, Types.Settings.ScreenWidth - 1536, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(12), GameWindow, Types.Settings.ScreenWidth - 2048, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
     End Sub
 #End Region
 

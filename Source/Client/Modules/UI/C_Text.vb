@@ -1,4 +1,5 @@
 ﻿
+Imports System.Windows.Forms.Design.AxImporter
 Imports Core
 Imports SFML.Graphics
 Imports SFML.System
@@ -26,11 +27,15 @@ Module C_Text
         Select Case fontName
             Case Georgia
                 backString = New Text(text, Fonts(0))
-                frontString = New Text(text, Fonts(0))                
+                frontString = New Text(text, Fonts(0))
 
             Case Arial
                 backString = New Text(text, Fonts(1))
                 frontString = New Text(text, Fonts(1))
+
+            Case Verdana
+                backString = New Text(text, Fonts(2))
+                frontString = New Text(text, Fonts(2))
         End Select
 
         backString.CharacterSize = textSize
@@ -86,7 +91,7 @@ Module C_Text
         color = Color.Yellow
         backcolor = Color.Black
 
-        Name = Trim$(Map.MapEvents(index).Name)
+        name = Trim$(Map.MapEvents(index).Name)
 
         ' calc pos
         textX = ConvertMapX(Map.MapEvents(index).X * PicX) + Map.MapEvents(index).XOffset + (PicX \ 2) - (GetTextWidth(Trim$(name)) \ 2) - 2
@@ -118,7 +123,7 @@ Module C_Text
         Dim tX As Integer
         Dim tY As Integer
 
-        If FrmEditor_Map.tabpages.SelectedTab Is FrmEditor_Map.tpAttributes Then
+        If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
             For X = TileView.Left To TileView.Right
                 For y = TileView.Top To TileView.Bottom
                     If IsValidMapPoint(X, y) Then
@@ -137,7 +142,7 @@ Module C_Text
                                 Case TileType.Resource
                                     RenderText("R", GameWindow, tX, tY, (Color.Green), (Color.Black))
                                 Case TileType.NpcSpawn
-                                    RenderText( "S", GameWindow, tX, tY, (Color.Yellow), (Color.Black))
+                                    RenderText("S", GameWindow, tX, tY, (Color.Yellow), (Color.Black))
                                 Case TileType.Shop
                                     RenderText("SH", GameWindow, tX, tY, (Color.Blue), (Color.Black))
                                 Case TileType.Bank
@@ -216,6 +221,75 @@ Module C_Text
 
     End Sub
 
+    Sub RenderChat()
+        Dim xO As Long, yO As Long, Color As Integer, yOffset As Long, rLines As Integer, lineCount As Integer
+        Dim tmpText As String, i As Long, isVisible As Boolean, topWidth As Integer, tmpArray() As String, x As Integer
+
+        ' set the position
+        xO = 19
+        yO = Types.Settings.ScreenHeight - 41
+
+        ' loop through chat
+        rLines = 1
+        i = 1 + ChatScroll
+
+        Do While rLines <= 8
+            If i > ChatLines Then Exit Do
+            lineCount = 0
+
+            ' exit out early if we come to a blank string
+            If Len(Chat(i).Text) = 0 Then Exit Do
+
+            ' get visible state
+            isVisible = True
+            If inSmallChat Then
+                If Not Chat(i).Visible Then isVisible = False
+            End If
+
+            If Types.Settings.ChannelState(Chat(i).Channel) = 0 Then isVisible = False
+
+            ' make sure it's visible
+            If isVisible Then
+                ' render line
+                Color = Chat(i).Color
+                ' check if we need to word wrap
+                If GetTextWidth(Chat(i).Text) > ChatWidth Then
+                    ' word wrap
+                    tmpText = WordWrap(Chat(i).Text, ChatWidth)
+
+                    ' can't have it going offscreen.
+                    If rLines + lineCount > 9 Then Exit Do
+
+                    ' continue on
+                    yOffset = yOffset - (14 * lineCount)
+                    RenderText(tmpText, GameWindow, xO, yO + yOffset, ToSfmlColor(Drawing.ColorTranslator.FromOle(QBColor(Color))), SFML.Graphics.Color.Black)
+                    rLines = rLines + lineCount
+
+                    ' set the top width
+                    tmpArray = Split(tmpText, vbNewLine)
+                    For x = 0 To UBound(tmpArray)
+                        If GetTextWidth(tmpArray(x)) > topWidth Then topWidth = GetTextWidth(tmpArray(x))
+                    Next
+                Else
+                    ' normal
+                    yOffset = yOffset - 14
+
+                    RenderText(Chat(i).Text, GameWindow, xO, yO + yOffset, ToSfmlColor(Drawing.ColorTranslator.FromOle(QBColor(Color))), SFML.Graphics.Color.Black)
+                    rLines = rLines + 1
+
+                    ' set the top width
+                    If GetTextWidth(Chat(i).Text) > topWidth Then topWidth = GetTextWidth(Chat(i).Text)
+                End If
+            End If
+            ' increment chat pointer
+            i = i + 1
+        Loop
+
+        ' get the height of the small chat box
+        SetChatHeight(rLines * 14)
+        SetChatWidth(topWidth)
+    End Sub
+
     Private ReadOnly FontTester As Text = New Text("", Fonts(FontType.Goergia))
 
     Friend Function GetTextWidth(text As String, Optional textSize As Byte = FontSize) As Integer
@@ -235,10 +309,10 @@ Module C_Text
             TxtChatAdd = TxtChatAdd & msg
             AddChat(msg, color)
         Else
-            For Each str As String In WordWrap(msg, MyChatWindowGfxInfo.Width - ChatboxPadding, WrapModeType.Font)
-                TxtChatAdd = TxtChatAdd & vbCrLf & str
-                AddChat(str, color)
-            Next
+            'For Each str As String In WordWrap(msg, MyChatWindowGfxInfo.Width - ChatboxPadding, WrapModeType.Font)
+            '    TxtChatAdd = TxtChatAdd & vbCrLf & str
+            '    AddChat(str, color)
+            'Next
 
         End If
     End Sub
@@ -291,157 +365,80 @@ Module C_Text
 
     Friend SplitChars As Char() = New Char() {" "c, "-"c, ControlChars.Tab}
 
-    Friend Function WordWrap(ByRef str As String, ByRef width As Integer, Optional ByRef mode As WrapModeType = WrapModeType.Font, Optional ByRef type As WrapType = WrapType.Smart, Optional ByRef size As Byte = FontSize) As List(Of String)
-        Dim lines As New List(Of String)
-        Dim line As String = ""
-        Dim nextLine As String = ""
-
-        If Not str = "" Then
-            For Each word In Explode(str, SplitChars)
-                Dim trim = word.Trim()
-                Dim currentType = type
-                Do
-                    Dim baseLine = If(line.Length < 1, "", line + " ")
-                    Dim newLine = If(nextLine.Length < 1, baseLine + trim, nextLine)
-                    nextLine = ""
-
-                    Select Case If(mode = WrapModeType.Font, GetTextWidth(newLine, size), newLine.Length)
-                        Case < width
-                            line = newLine
-                            Exit Select
-
-                        Case = width
-                            lines.Add(newLine)
-                            line = ""
-                            Exit Select
-
-                        Case Else
-                            Select Case currentType
-                                Case WrapType.None
-                                    line = newLine
-                                    Exit Select
-
-                                Case WrapType.Whitespace
-                                    lines.Add(If(line.Length < 1, newLine, line))
-                                    line = If(line.Length < 1, "", trim)
-                                    Exit Select
-
-                                Case WrapType.BreakWord
-                                    Dim remaining = trim
-                                    Do
-                                        If If(mode = WrapModeType.Font, GetTextWidth(baseLine, size), baseLine.Length) > width Then
-                                            lines.Add(line)
-                                            baseLine = ""
-                                            line = ""
-                                        End If
-
-                                        Dim i = remaining.Length - 1
-                                        While (-1 < i)
-                                            Select Case mode
-                                                Case WrapModeType.Font
-                                                    If Not (width < GetTextWidth(baseLine + remaining.Substring(0, i) + "-", size)) Then
-                                                        Exit While
-                                                    End If
-                                                    Exit Select
-
-                                                Case WrapModeType.Characters
-                                                    If Not (width < (baseLine + remaining.Substring(0, i) + "-").Length) Then
-                                                        Exit While
-                                                    End If
-                                                    Exit Select
-                                            End Select
-                                            i -= 1
-                                        End While
-
-                                        line = baseLine + remaining.Substring(0, i + 1) + If(remaining.Length <= i + 1, "", "-")
-                                        lines.Add(line)
-                                        line = ""
-                                        baseLine = ""
-                                        remaining = remaining.Substring(i + 1)
-                                    Loop While (remaining.Length > 0) AndAlso (width < If(mode = WrapModeType.Font, GetTextWidth(remaining, size), remaining.Length))
-                                    line = remaining
-                                    Exit Select
-
-                                Case WrapType.Smart
-                                    If (line.Length < 1) OrElse (width < If(mode = WrapModeType.Font, GetTextWidth(trim, size), trim.Length)) Then
-                                        currentType = WrapType.BreakWord
-                                    Else
-                                        currentType = WrapType.Whitespace
-                                    End If
-                                    nextLine = newLine
-
-                                    Exit Select
-
-                            End Select
-                            Exit Select
-                    End Select
-                Loop While (nextLine.Length > 0)
-            Next
-        End If
-
-        If (line.Length > 0) Then
-            lines.Add(line)
-        End If
-
-        Return lines
-    End Function
-
-    Public Sub WordWrap_Array(ByVal Text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
-        Dim lineCount As Long, i As Long, size As Long, lastSpace As Long, b As Long, tmpNum As Long
+    Public Function WordWrap(ByVal text As String, ByVal MaxLineLen As Integer, Optional ByRef lineCount As Long = 0) As String
+        Dim TempSplit() As String, TSLoop As Long, lastSpace As Long, size As Long, i As Long, b As Long, tmpNum As Long, skipCount As Long
 
         'Too small of text
-        If Len(Text) < 2 Then
-            ReDim theArray(1)
-            theArray(1) = Text
-            Exit Sub
+        If Len(text) < 2 Then
+            WordWrap = text
+            Exit Function
         End If
 
-        ' default values
-        b = 1
-        lastSpace = 1
-        size = 0
-        tmpNum = Len(Text)
+        'Check if there are any line breaks - if so, we will support them
+        TempSplit = Split(text, vbNewLine)
+        tmpNum = UBound(TempSplit)
 
-        For i = 1 To tmpNum
-            ' if it's a space, store it
-            Select Case Mid$(Text, i, 1)
-                Case " ": lastSpace = i
-            End Select
+        For TSLoop = 0 To tmpNum
+            'Clear the values for the new line
+            size = 0
+            b = 1
+            lastSpace = 1
 
-            'Add up the size
-            size = size + GetTextWidth(Asc(Mid$(Text, i, 1)))
+            'Add back in the vbNewLines
+            If TSLoop < UBound(TempSplit) Then TempSplit(TSLoop) = TempSplit(TSLoop) & vbNewLine
 
-            'Check for too large of a size
-            If size > MaxLineLen Then
-                'Check if the last space was too far back
-                If i - lastSpace > 12 Then
-                    'Too far away to the last space, so break at the last character
-                    lineCount = lineCount + 1
-                    ReDim Preserve theArray(lineCount)
-                    theArray(lineCount) = Trim$(Mid$(Text, b, (i - 1) - b))
-                    b = i - 1
-                    size = 0
-                Else
-                    'Break at the last space to preserve the word
-                    lineCount = lineCount + 1
-                    ReDim Preserve theArray(lineCount)
-                    theArray(lineCount) = Trim$(Mid$(Text, b, lastSpace - b))
-                    b = lastSpace + 1
-                    'Count all the words we ignored (the ones that weren't printed, but are before "i")
-                    size = GetTextWidth(Mid$(Text, lastSpace, i - lastSpace))
-                End If
+            'Only check lines with a space
+            If InStr(1, TempSplit(TSLoop), " ") Then
+                'Loop through all the characters
+                tmpNum = Len(TempSplit(TSLoop))
+
+                For i = 1 To tmpNum
+                    'If it is a space, store it so we can easily break at it
+                    Select Case Mid$(TempSplit(TSLoop), i, 1)
+                        Case " "
+                            lastSpace = i
+                    End Select
+
+                    If skipCount > 0 Then
+                        skipCount = skipCount - 1
+                    ElseIf TSLoop > 0 Then
+                        'Add up the size
+                        size = size + GetTextWidth(TempSplit(TSLoop))
+
+                        'Check for too large of a size
+                        If size > MaxLineLen Then
+                            'Check if the last space was too far back
+                            If i - lastSpace > 12 Then
+                                'Too far away to the last space, so break at the last character
+                                WordWrap = WordWrap & Trim$(Mid$(TempSplit(TSLoop), b, (i - 1) - b)) & vbNewLine
+                                lineCount = lineCount + 1
+                                b = i - 1
+                                size = 0
+                            Else
+                                'Break at the last space to preserve the word
+                                WordWrap = WordWrap & Trim$(Mid$(TempSplit(TSLoop), b, lastSpace - b)) & vbNewLine
+                                lineCount = lineCount + 1
+                                b = lastSpace + 1
+
+                                'Count all the words we ignored (the ones that weren't printed, but are before "i")
+                                size = GetTextWidth(Mid$(TempSplit(TSLoop), lastSpace, i - lastSpace))
+                            End If
+                        End If
+
+                        'This handles the remainder
+                        If i = Len(TempSplit(TSLoop)) Then
+                            If b <> i Then
+                                WordWrap = WordWrap & Mid$(TempSplit(TSLoop), b, i)
+                                lineCount = lineCount + 1
+                            End If
+                        End If
+                    End If
+                Next i
+            Else
+                WordWrap = WordWrap & TempSplit(TSLoop)
             End If
-
-            ' Remainder
-            If i = Len(Text) Then
-                If b <> i Then
-                    lineCount = lineCount + 1
-                    ReDim Preserve theArray(lineCount)
-                    theArray(lineCount) = theArray(lineCount) & Mid$(Text, b, i)
-                End If
-            End If
-        Next
-    End Sub
+        Next TSLoop
+    End Function
 
     Friend Function Explode(str As String, splitChars As Char()) As String()
 
@@ -494,7 +491,7 @@ Module C_Text
                 y = ConvertMapY((Map.MapEvents(.Target).Y * 32) + Map.MapEvents(.Target).YOffset) - 40
             End If
             ' word wrap the text
-            theArray = WordWrap(.Msg, ChatBubbleWidth, WrapModeType.Font)
+            'theArray = WordWrap(.Msg, ChatBubbleWidth, WrapModeType.Font)
             ' find max width
             For i = 0 To theArray.Count - 1
                 If GetTextWidth(theArray(i)) > maxWidth Then maxWidth = GetTextWidth(theArray(i))

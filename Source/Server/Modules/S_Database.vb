@@ -736,6 +736,7 @@ Module S_Database
     Sub ClearAccount(index As Integer)
         Player(index).Access = AdminType.Player
         SetPlayerLogin(index, "")
+        SetPlayerPassword(index, "")
         ReDim Account(index).Character(MAX_CHARS)
 
         For i = 1 To MAX_CHARS
@@ -744,8 +745,6 @@ Module S_Database
     End Sub
 
     Sub ClearPlayer(index As Integer)
-        ClearAccount(index)
-
         ReDim TempPlayer(MAX_PLAYERS)
 
         For i = 1 To MAX_PLAYERS

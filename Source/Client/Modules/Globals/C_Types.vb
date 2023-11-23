@@ -14,6 +14,8 @@ Module C_Types
         Dim Text As String
         Dim Color As Integer
         Dim Y As Byte
+        Dim Channel As Byte
+        Dim Visible As Boolean
     End Structure
 
     Public Structure SkillAnimStruct

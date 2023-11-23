@@ -168,7 +168,7 @@ Module S_NetworkReceive
                 IP = Mid$(IP, 1, i)
 
                 If shutDownDuration > 0 Then
-                    Call AlertMsg(index, DialogueMsg.Maintenance)
+                    Call AlertMsg(index, DialogueMsg.Maintenance, MenuType.Login)
                     Exit Sub
                 End If
 
@@ -178,7 +178,7 @@ Module S_NetworkReceive
 
                 ' Check versions
                 If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
-                    AlertMsg(index, DialogueMsg.Outdated)
+                    AlertMsg(index, DialogueMsg.Outdated, MenuType.Login)
                     Exit Sub
                 End If
 
@@ -188,27 +188,27 @@ Module S_NetworkReceive
                 End If
 
                 If IsMultiAccounts(index, username) Then
-                    AlertMsg(index, DialogueMsg.MultiAccount)
+                    AlertMsg(index, DialogueMsg.MultiAccount, MenuType.Login)
                     Exit Sub
                 End If
 
                 If LoadAccount(index, username) = False Then
-                    AlertMsg(index, DialogueMsg.Database)
+                    AlertMsg(index, DialogueMsg.Database, MenuType.Login)
                     Exit Sub
                 End If
 
                 If GetPlayerPassword(index) <> password Then
-                    AlertMsg(index, DialogueMsg.WrongPass)
+                    AlertMsg(index, DialogueMsg.WrongPass, MenuType.Login)
                     Exit Sub
                 End If
 
                 If IsBanned(index, IP) Then
-                    AlertMsg(index, DialogueMsg.Banned)
+                    AlertMsg(index, DialogueMsg.Banned, MenuType.Login)
                     Exit Sub
                 End If
 
                 If GetPlayerLogin(index) = "" Then
-                    AlertMsg(index, DialogueMsg.Database)
+                    AlertMsg(index, DialogueMsg.Database, MenuType.Login)
                     Exit Sub
                 End If
 
@@ -225,7 +225,7 @@ Module S_NetworkReceive
 
     Private Sub Packet_Register(index As Integer, ByRef data() As Byte)
         Dim username As String, IP As String
-        Dim password As String, i As Integer
+        Dim password As String, i As Integer, n As Integer
         Dim buffer As New ByteStream(data)
         Dim userData As JObject
 
@@ -244,13 +244,14 @@ Module S_NetworkReceive
                 Next
 
                 IP = Mid$(IP, 1, i)
+
                 If IsBanned(index, IP) Then
-                    AlertMsg(index, DialogueMsg.Banned)
+                    AlertMsg(index, DialogueMsg.Banned, MenuType.Register)
                     Exit Sub
                 End If
 
-                If shutDownDuration > 0 Then
-                    Call AlertMsg(index, DialogueMsg.Maintenance)
+                If shutDownTimer.IsRunning Then
+                    Call AlertMsg(index, DialogueMsg.Maintenance, MenuType.Register)
                     Exit Sub
                 End If
 
@@ -258,26 +259,36 @@ Module S_NetworkReceive
                 username = EKeyPair.DecryptString(buffer.ReadString()).ToLower
                 password = EKeyPair.DecryptString(buffer.ReadString())
 
+                For i = 1 To Len(username)
+                    n = AscW(Mid$(username, i, 1))
+
+                    If Not IsNameLegal(n) Then
+                        AlertMsg(index, DialogueMsg.NameIllegal, MenuType.Register)
+                        Exit Sub
+                    End If
+
+                Next
+
                 ' Check versions
                 If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
-                    AlertMsg(index, DialogueMsg.Outdated)
+                    AlertMsg(index, DialogueMsg.Outdated, MenuType.Register)
                     Exit Sub
                 End If
 
                 If username.Length > NAME_LENGTH Or username.Length < 3 Then
-                    AlertMsg(index, DialogueMsg.NameLength)
+                    AlertMsg(index, DialogueMsg.NameLength, MenuType.Register)
                     Exit Sub
                 End If
 
                 If IsMultiAccounts(index, username) Then
-                    AlertMsg(index, DialogueMsg.MultiAccount)
+                    AlertMsg(index, DialogueMsg.MultiAccount, MenuType.Register)
                     Exit Sub
                 End If
 
                 userData = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
 
                 If Not userData Is Nothing Then
-                    AlertMsg(index, DialogueMsg.Database, MenuType.Register)
+                    AlertMsg(index, DialogueMsg.NameTaken, MenuType.Register)
                     Exit Sub
                 End If
 
@@ -299,7 +310,7 @@ Module S_NetworkReceive
                 slot = buffer.ReadInt32
 
                 If slot < 1 Or slot > MAX_CHARS Then
-                    AlertMsg(index, DialogueMsg.MaxChar)
+                    AlertMsg(index, DialogueMsg.MaxChar, MenuType.Chars)
                     Exit Sub
                 End If
 
@@ -309,6 +320,8 @@ Module S_NetworkReceive
                 If Len(Trim$(Player(index).Name)) > 0 Then
                     ' we have a char!
                     HandleUseChar(index)
+                Else
+                    AlertMsg(index, DialogueMsg.Database, MenuType.Chars)
                 End If
             End If
         End If
@@ -326,27 +339,25 @@ Module S_NetworkReceive
 
         If Not IsPlaying(index) Then
             slot = buffer.ReadInt32
-
-            If slot < 1 Or slot > MAX_CHARS Or Account(index).Character(slot) <> "" Then
-                AlertMsg(index, DialogueMsg.MaxChar)
-                Exit Sub
-            End If
-
             name = buffer.ReadString
-
-            If name.Length > NAME_LENGTH Or name.Length < 3 Then
-                AlertMsg(index, DialogueMsg.NameLength)
-                Exit Sub
-            End If
-
             sexNum = buffer.ReadInt32
             jobNum = buffer.ReadInt32 + 1
+
+            If slot < 1 Or slot > MAX_CHARS Or Account(index).Character(slot) <> "" Then
+                AlertMsg(index, DialogueMsg.MaxChar, MenuType.Chars)
+                Exit Sub
+            End If
+
+            If name.Length > NAME_LENGTH Or name.Length < 3 Then
+                AlertMsg(index, DialogueMsg.NameLength, MenuType.NewChar)
+                Exit Sub
+            End If
 
             For i = 1 To Len(name)
                 n = AscW(Mid$(name, i, 1))
 
                 If Not IsNameLegal(n) Then
-                    AlertMsg(index, DialogueMsg.NameIllegal)
+                    AlertMsg(index, DialogueMsg.NameIllegal, MenuType.NewChar)
                     Exit Sub
                 End If
 
@@ -354,7 +365,7 @@ Module S_NetworkReceive
 
             ' Check if name is already in use
             If Chars.Find(name) Then
-                AlertMsg(index, DialogueMsg.NameTaken)
+                AlertMsg(index, DialogueMsg.NameTaken, MenuType.NewChar)
                 Exit Sub
             End If
 
@@ -390,7 +401,7 @@ Module S_NetworkReceive
             slot = buffer.ReadInt32
 
             If slot < 1 Or slot > MAX_CHARS Then
-                AlertMsg(index, DialogueMsg.MaxChar)
+                AlertMsg(index, DialogueMsg.MaxChar, MenuType.Chars)
                 Exit Sub
             End If
 

@@ -63,6 +63,14 @@ Module C_Globals
     Public HideGui As Boolean
     Public chatShowLine As String
 
+    ' chat
+    Public inSmallChat As Boolean
+    Public actChatHeight As Long
+    Public actChatWidth As Long
+    Public ChatButtonUp As Boolean
+    Public ChatButtonDown As Boolean
+    Public ChatScroll As Long
+
     ' Player variables
     Public Myindex As Integer ' Index of actual player
 

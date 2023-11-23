@@ -174,7 +174,7 @@
     Public Enum ServerPackets
         SAlertMsg = 1
         SKeyPair
-        SLoadCharOk
+        SLoginOK
         SPlayerChars
         SNewCharJob
         SJobData

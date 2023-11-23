@@ -16,7 +16,12 @@ Public Module C_Constants
     ' Font variables
     Public Const Georgia As String = "Georgia.ttf"
     Public Const Arial As String = "Arial.ttf"
+    Public Const Verdana As String = "Verdana.ttf"
     Public Const FontSize As Byte = 10
+
+    ' Chat variables
+    Public Const ChatLines As Long = 200
+    Public Const ChatWidth As Long = 316
 
     ' Gfx Path and variables
     Public Const GfxExt As String = ".png"

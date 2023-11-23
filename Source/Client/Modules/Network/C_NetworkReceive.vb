@@ -6,9 +6,9 @@ Imports Mirage.Sharp.Asfw.IO
 Module C_NetworkReceive
 
     Sub PacketRouter()
-        Socket.PacketId(Packets.ServerPackets.SAlertMsg) = AddressOf Packet_AlertMSG
+        Socket.PacketId(Packets.ServerPackets.SAlertMsg) = AddressOf Packet_AlertMsg
         Socket.PacketId(ServerPackets.SKeyPair) = AddressOf Packet_KeyPair
-        Socket.PacketId(ServerPackets.SLoadCharOk) = AddressOf Packet_LoadCharOk
+        Socket.PacketId(ServerPackets.SLoginOK) = AddressOf HandleLoginOk
         Socket.PacketId(ServerPackets.SPlayerChars) = AddressOf Packet_PlayerChars
         Socket.PacketId(ServerPackets.SNewCharJob) = AddressOf Packet_NewCharJob
         Socket.PacketId(ServerPackets.SJobData) = AddressOf Packet_JobData
@@ -141,7 +141,7 @@ Module C_NetworkReceive
         Socket.PacketId(ServerPackets.SPetEditor) = AddressOf Packet_PetEditor
     End Sub
 
-    Private Sub Packet_AlertMSG(ByRef data() As Byte)
+    Private Sub Packet_AlertMsg(ByRef data() As Byte)
         Dim dialogueIndex As Integer, menuReset As Integer, kick As Integer
         Dim buffer As New ByteStream(data)
 
@@ -186,7 +186,7 @@ Module C_NetworkReceive
         buffer.Dispose()
     End Sub
 
-    Private Sub Packet_LoadCharOk(ByRef data() As Byte)
+    Private Sub HandleLoginOk(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
         ' Now we can receive game data
@@ -321,6 +321,11 @@ Module C_NetworkReceive
         HideWindows()
         CanMoveNow = True
         Editor = -1
+        ' show gui
+        'ShowWindow(GetWindowIndex("winBars"), , False)
+        'ShowWindow(GetWindowIndex("winMenu"), , False)
+        'ShowWindow(GetWindowIndex("winHotbar"), , False)
+        ShowWindow(GetWindowIndex("winChatSmall"), , False)
         GameInit()
     End Sub
 

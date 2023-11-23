@@ -119,7 +119,7 @@ Module S_NetworkSend
     Sub SendLoadCharOk(index As Integer)
         Dim Buffer As New ByteStream(4)
 
-        Buffer.WriteInt32(ServerPackets.SLoadCharOk)
+        Buffer.WriteInt32(ServerPackets.SLoginOK)
         Buffer.WriteInt32(index)
         Socket.SendDataTo(index, Buffer.Data, Buffer.Head)
 

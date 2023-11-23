@@ -40,10 +40,10 @@ Friend Class FrmOptions
         End If
 
         'screensize
-        If Types.Settings.Width & "x" & Types.Settings.Height <> cmbScreenSize.SelectedItem Then
+        If Types.Settings.ScreenWidth & "x" & Types.Settings.ScreenHeight <> cmbScreenSize.SelectedItem Then
             resolution = cmbScreenSize.SelectedItem.ToString.ToLower.Split("x")
-            Types.Settings.Width = resolution(0)
-            Types.Settings.Height = resolution(1)
+            Types.Settings.ScreenWidth = resolution(0)
+            Types.Settings.ScreenHeight = resolution(1)
         End If
 
         If chkVsync.Checked Then

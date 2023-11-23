@@ -1,5 +1,6 @@
 ﻿
 Imports System.Management
+Imports System.Windows.Forms.Design.AxImporter
 Imports Core
 Imports Core.Enum
 Imports Core.Types
@@ -40,12 +41,12 @@ Module C_Interface
             .Name = name
             .Type = tType
 
-            ReDim .Design(EntState.State_Count - 1)
-            ReDim .Image(EntState.State_Count - 1)
-            ReDim .CallBack(EntState.State_Count - 1)
+            ReDim .Design(EntState.Count - 1)
+            ReDim .Image(EntState.Count - 1)
+            ReDim .CallBack(EntState.Count - 1)
 
             ' loop through states
-            For i = 0 To EntState.State_Count - 1
+            For i = 0 To EntState.Count - 1
                 .Design(i) = design(i)
                 .Image(i) = image(i)
                 .CallBack(i) = callback(i)
@@ -269,7 +270,7 @@ Module C_Interface
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
-                                    WordWrap_Array(.Text, .Width, textArray)
+                                    'WordWrap_Array(.Text, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
@@ -287,7 +288,7 @@ Module C_Interface
                                 ' check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' wrap text
-                                    WordWrap_Array(.Text, .Width, textArray)
+                                    'WordWrap_Array(.Text, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
@@ -307,7 +308,7 @@ Module C_Interface
                                 ' Check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' Wrap text
-                                    WordWrap_Array(.Text, .Width, textArray)
+                                    'WordWrap(.Text, .Width, textArray)
 
                                     ' Render text
                                     count = UBound(textArray)
@@ -720,9 +721,9 @@ Module C_Interface
        Optional canDrag As Boolean = True, Optional zChange As Byte = True, Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional clickThrough As Boolean = False)
 
         Dim i As Long
-        Dim design(EntState.State_Count - 1) As Long
-        Dim image(EntState.State_Count - 1) As Long
-        Dim callback(0 To EntState.State_Count - 1) As Action
+        Dim design(EntState.Count - 1) As Long
+        Dim image(EntState.Count - 1) As Long
+        Dim callback(EntState.Count - 1) As Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -750,12 +751,12 @@ Module C_Interface
             .Name = name
             .Type = EntityType.Window
 
-            ReDim .Design(EntState.State_Count - 1)
-            ReDim .Image(EntState.State_Count - 1)
-            ReDim .CallBack(EntState.State_Count - 1)
+            ReDim .Design(EntState.Count - 1)
+            ReDim .Image(EntState.Count - 1)
+            ReDim .CallBack(EntState.Count - 1)
 
             ' loop through states
-            For i = 0 To EntState.State_Count - 1
+            For i = 0 To EntState.Count - 1
                 .Design(i) = design(i)
                 .Image(i) = image(i)
                 .CallBack(i) = callback(i)
@@ -792,9 +793,9 @@ Module C_Interface
         Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef callback_enter As Action = Nothing)
 
-        Dim design(EntState.State_Count - 1) As Long
-        Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Action
+        Dim design(EntState.Count - 1) As Long
+        Dim image(EntState.Count - 1) As Long
+        Dim callback(EntState.Count - 1) As Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -819,9 +820,9 @@ Module C_Interface
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing,
        Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef onDraw As Action = Nothing)
 
-        Dim design(EntState.State_Count - 1) As Long
-        Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Action
+        Dim design(EntState.Count - 1) As Long
+        Dim image(EntState.Count - 1) As Long
+        Dim callback(EntState.Count - 1) As Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -846,9 +847,9 @@ Module C_Interface
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing,
        Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False)
 
-        Dim design(EntState.State_Count - 1) As Long
-        Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Action
+        Dim design(EntState.Count - 1) As Long
+        Dim image(EntState.Count - 1) As Long
+        Dim callback(EntState.Count - 1) As Action
 
         ' fill temp arrays
         design(EntState.Normal) = design_norm
@@ -871,9 +872,9 @@ Module C_Interface
        Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional censor As Boolean = False,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
 
-        Dim design(EntState.State_Count - 1) As Long
-        Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Action
+        Dim design(EntState.Count - 1) As Long
+        Dim image(EntState.Count - 1) As Long
+        Dim callback(EntState.Count - 1) As Action
 
         ' fill temp arrays
         callback(EntState.Normal) = callback_norm
@@ -886,14 +887,14 @@ Module C_Interface
         CreateEntity(winNum, zOrder_Con, name, EntityType.Label, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor)
     End Sub
 
-    Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, text As String, font As String,
-        Optional height As Long = 15, Optional value As Long = 0, Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255,
+    Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, Optional height As Long = 15, Optional value As Long = 0, Optional text As String = "", Optional font As String = Georgia,
+        Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255,
         Optional theDesign As Long = 0, Optional group As Long = 0, Optional censor As Boolean = False,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
 
-        Dim design(EntState.State_Count - 1) As Long
-        Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Action
+        Dim design(EntState.Count - 1) As Long
+        Dim image(EntState.Count - 1) As Long
+        Dim callback(EntState.Count - 1) As Action
 
         design(0) = theDesign
 
@@ -909,9 +910,9 @@ Module C_Interface
     End Sub
 
     Public Sub CreateComboBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, design As Long)
-        Dim theDesign(EntState.State_Count - 1) As Long
-        Dim image(EntState.State_Count - 1) As Long
-        Dim callback(EntState.State_Count - 1) As Action
+        Dim theDesign(EntState.Count - 1) As Long
+        Dim image(EntState.Count - 1) As Long
+        Dim callback(EntState.Count - 1) As Action
 
         theDesign(0) = design
 
@@ -964,8 +965,8 @@ Module C_Interface
 
     Public Sub CentralizeWindow(curWindow As Long)
         With Windows(curWindow).Window
-            .Left = (Types.Settings.Width / 2) - (.Width / 2)
-            .Top = (Types.Settings.Height / 2) - (.Height / 2)
+            .Left = (Types.Settings.ScreenWidth / 2) - (.Width / 2)
+            .Top = (Types.Settings.ScreenHeight / 2) - (.Height / 2)
             .OrigLeft = .Left
             .OrigTop = .Top
         End With
@@ -1045,7 +1046,7 @@ Module C_Interface
         CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, "Save Username?", Arial, , Types.Settings.SaveUsername, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, , Types.Settings.SaveUsername, "Save Username?", Arial, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
 
         ' Register Button
         CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
@@ -1095,7 +1096,7 @@ Module C_Interface
         ' Textboxes
         CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         CreateTextbox(WindowCount, "txtPassword", 67, 91, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
-        CreateTextbox(WindowCount, "txtPassword2", 67, 127, 142, 19, , Arial, AlignmentType.Left, , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, , True)
+        CreateTextbox(WindowCount, "txtPassword2", 67, 127, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
         'CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
         'CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
 
@@ -1132,8 +1133,8 @@ Module C_Interface
         CreateLabel(WindowCount, "lblGender", 29, 82, 124, 9, "Gender", Arial, AlignmentType.Center)
 
         ' Checkboxes
-        CreateCheckbox(WindowCount, "chkMale", 29, 103, 55, "Male", Arial, , 1, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Male))
-        CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, "Female", Arial, , 0, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Female))
+        CreateCheckbox(WindowCount, "chkMale", 29, 103, 55, , 1, "Male", Arial, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Male))
+        CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, , 0, "Female", Arial, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Female))
 
         ' Buttons
         CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnNewChar_Accept))
@@ -1277,6 +1278,8 @@ Module C_Interface
         CreateWindow_NewChar()
         CreateWindow_Jobs()
         CreateWindow_Characters()
+        CreateWindow_ChatSmall()
+        CreateWindow_Chat()
         CreateWindow_Dialogue()
     End Sub
 
@@ -1312,8 +1315,8 @@ Module C_Interface
                     If entState = EntState.MouseMove Then
                         If .CanDrag Then
                             If .State = EntState.MouseDown Then
-                                .Left = Math.Clamp(.Left + ((CurMouseX - .Left) - .movedX), 0, Types.Settings.Width - .Width)
-                                .Top = Math.Clamp(.Top + ((CurMouseY - .Top) - .movedY), 0, Types.Settings.Height - .Height)
+                                .Left = Math.Clamp(.Left + ((CurMouseX - .Left) - .movedX), 0, Types.Settings.ScreenWidth - .Width)
+                                .Top = Math.Clamp(.Top + ((CurMouseY - .Top) - .movedY), 0, Types.Settings.ScreenHeight - .Height)
                             End If
                         End If
                     End If
@@ -1709,6 +1712,94 @@ Module C_Interface
         ShowWindow(GetWindowIndex("winCharacters"))
     End Sub
 
+    ' Chat
+    Public Sub btnSay_Click()
+        'HandleKeyPresses(vbKeyReturn)
+    End Sub
+
+
+    Public Sub OnDraw_Chat()
+        Dim winIndex As Long, xO As Long, yO As Long
+
+        winIndex = GetWindowIndex("winChat")
+        xO = Windows(winIndex).Window.Left
+        yO = Windows(winIndex).Window.Top + 16
+
+        ' draw the box
+        RenderDesign(DesignType.Win_Desc, xO, yO, 352, 152)
+
+        '   draw the input box
+        RenderTexture(InterfaceSprite(46), GameWindow, xO + 7, yO + 123, 0, 0, 171, 22, 171, 22)
+        RenderTexture(InterfaceSprite(46), GameWindow, xO + 174, yO + 123, 0, 22, 171, 22, 171, 22)
+
+        ' call the chat render
+        RenderChat()
+    End Sub
+
+    Public Sub OnDraw_ChatSmall()
+        Dim winIndex As Long, xO As Long, yO As Long
+
+        winIndex = GetWindowIndex("winChatSmall")
+
+        If actChatWidth < 160 Then actChatWidth = 160
+        If actChatHeight < 10 Then actChatHeight = 10
+
+        xO = Windows(winIndex).Window.Left + 10
+        yO = Types.Settings.ScreenHeight - 16 - actChatHeight - 8
+
+        ' draw the background
+        RenderDesign(DesignType.Win_Shadow, xO, yO, actChatWidth, actChatHeight)
+
+        ' call the chat render
+        RenderChat()
+    End Sub
+
+    Public Sub chkChat_Game()
+        Types.Settings.ChannelState(ChatChannel.Game) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGame")).Value
+        UpdateChat()
+    End Sub
+
+    Public Sub chkChat_Map()
+        Types.Settings.ChannelState(ChatChannel.Map) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkMap")).Value
+        UpdateChat()
+    End Sub
+
+    Public Sub chkChat_Global()
+        Types.Settings.ChannelState(ChatChannel.Broadcast) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGlobal")).Value
+        UpdateChat()
+    End Sub
+
+    Public Sub chkChat_Party()
+        Types.Settings.ChannelState(ChatChannel.Party) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkParty")).Value
+        UpdateChat()
+    End Sub
+
+    Public Sub chkChat_Guild()
+        Types.Settings.ChannelState(ChatChannel.Guild) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGuild")).Value
+        UpdateChat()
+    End Sub
+
+    Public Sub chkChat_Private()
+        Types.Settings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPrivate")).Value
+        UpdateChat()
+    End Sub
+
+    Public Sub btnChat_Up()
+        ChatButtonUp = True
+    End Sub
+
+    Public Sub btnChat_Down()
+        ChatButtonDown = True
+    End Sub
+
+    Public Sub btnChat_Up_MouseUp()
+        ChatButtonUp = False
+    End Sub
+
+    Public Sub btnChat_Down_MouseUp()
+        ChatButtonDown = False
+    End Sub
+
     ' ###################
     ' ## New Character ##
     ' ###################
@@ -1794,6 +1885,7 @@ Module C_Interface
         Dim name As String
         name = Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text
         HideWindows()
+        If name = "" Then Exit Sub
         AddChar(name, newCharGender, newCharJob, newCharSprite)
     End Sub
 
@@ -1810,7 +1902,7 @@ Module C_Interface
     End Sub
 
     Public Sub Dialogue_Okay()
-        dialogueHandler(1)
+        DialogueHandler(1)
     End Sub
 
     Public Sub Dialogue_Yes()
@@ -1819,6 +1911,63 @@ Module C_Interface
 
     Public Sub Dialogue_No()
         dialogueHandler(3)
+    End Sub
+
+    Public Sub CreateWindow_Chat()
+        ' Create window
+        CreateWindow("winChat", "", zOrder_Win, 8, 422, 352, 152, 0, False, , , , , , , , , , , , , , False)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Channel boxes
+        CreateCheckbox(WindowCount, "chkGame", 10, 2, 49, 23, 1, "Game", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Game))
+        CreateCheckbox(WindowCount, "chkMap", 60, 2, 49, 23, 1, "Map", Arial, , , , DesignType.ChkChat, , , New Action(AddressOf chkChat_Map))
+        CreateCheckbox(WindowCount, "chkGlobal", 110, 2, 49, 23, 1, "Global", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Global))
+        CreateCheckbox(WindowCount, "chkParty", 160, 2, 49, 23, 1, "Party", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Party))
+        CreateCheckbox(WindowCount, "chkGuild", 210, 2, 49, 23, 1, "Guild", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Guild))
+        CreateCheckbox(WindowCount, "chkPrivate", 260, 2, 49, 23, 1, "Private", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Private))
+
+        ' Blank picturebox - ondraw wrapper
+        CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf OnDraw_Chat))
+
+        ' Chat button
+        CreateButton(WindowCount, "btnChat", 296, 124 + 16, 48, 20, "Say", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))
+
+        ' Chat Textbox
+        CreateTextbox(WindowCount, "txtChat", 12, 127 + 16, 286, 25, , Verdana)
+
+        ' buttons
+        CreateButton(WindowCount, "btnUp", 328, 28, 11, 13, , , 4, 52, 4, , , , , , , , New Action(AddressOf btnChat_Up))
+        CreateButton(WindowCount, "btnDown", 327, 122, 11, 13, , , 5, 53, 5, , , , , , , , New Action(AddressOf btnChat_Down))
+
+        ' Custom Handlers for mouse up
+        Windows(WindowCount).Controls(GetControlIndex("winChat", "btnUp")).CallBack(EntState.MouseUp) = New Action(AddressOf btnChat_Up_MouseUp)
+        Windows(WindowCount).Controls(GetControlIndex("winChat", "btnDown")).CallBack(EntState.MouseUp) = New Action(AddressOf btnChat_Down_MouseUp)
+
+        ' Set the active control
+        SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"))
+
+        ' sort out the tabs
+        With Windows(GetWindowIndex("winChat"))
+            .Controls(GetControlIndex("winChat", "chkGame")).Value = Types.Settings.ChannelState(ChatChannel.Game)
+            .Controls(GetControlIndex("winChat", "chkMap")).Value = Types.Settings.ChannelState(ChatChannel.Map)
+            .Controls(GetControlIndex("winChat", "chkGlobal")).Value = Types.Settings.ChannelState(ChatChannel.Broadcast)
+            .Controls(GetControlIndex("winChat", "chkParty")).Value = Types.Settings.ChannelState(ChatChannel.Party)
+            .Controls(GetControlIndex("winChat", "chkGuild")).Value = Types.Settings.ChannelState(ChatChannel.Guild)
+            .Controls(GetControlIndex("winChat", "chkPrivate")).Value = Types.Settings.ChannelState(ChatChannel.Whisper)
+        End With
+    End Sub
+
+    Public Sub CreateWindow_ChatSmall()
+        ' Create window
+        CreateWindow("winChatSmall", "", zOrder_Win, 8, 438, 0, 0, 0, False, , , , , , , , , , , , , , False, , New Action(AddressOf OnDraw_ChatSmall), , True)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Chat Label
+        CreateLabel(WindowCount, "lblMsg", 12, 127, 286, 25, "Press 'Enter' to open chatbox.", Verdana)
     End Sub
 End Module
 

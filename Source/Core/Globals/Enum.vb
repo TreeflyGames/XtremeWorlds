@@ -475,8 +475,7 @@
         MouseScroll
         KeyDown
         KeyUp
-        ' Count
-        State_Count
+        Count
     End Enum
 
     Public Enum AlignmentType
@@ -499,8 +498,10 @@
     End Enum
 
     Public Enum FontType
-        Goergia = 0
-        Arial = 1
+        Goergia = 1
+        Arial
+        Verdana
+        Count
     End Enum
 
     Public Enum MenuType
@@ -551,6 +552,16 @@
         Okay = 1
         YesNo
         Input
+    End Enum
+
+    Public Enum ChatChannel
+        Game = 0
+        Map
+        Broadcast
+        Party
+        Guild
+        Whisper
+        Count
     End Enum
 
 End Module

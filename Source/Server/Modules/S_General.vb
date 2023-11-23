@@ -157,6 +157,7 @@ Module S_General
         Console.WriteLine("Clearing Players...")
 
         For i = 1 To MAX_PLAYERS
+            ClearAccount(i)
             ClearPlayer(i)
         Next
 

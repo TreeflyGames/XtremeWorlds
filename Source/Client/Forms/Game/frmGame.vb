@@ -11,8 +11,8 @@ Friend Class FrmGame
         Startup()
 
         If Types.Settings.Fullscreen = 0 Then
-            screenWidth = Types.Settings.Width
-            screenHeight = Types.Settings.Height
+            screenWidth = Types.Settings.ScreenWidth
+            screenHeight = Types.Settings.ScreenHeight
         Else
             FormBorderStyle = 0
         End If

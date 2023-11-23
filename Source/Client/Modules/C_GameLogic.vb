@@ -448,6 +448,7 @@ Module C_GameLogic
         Dim n As Integer
         Dim command() As String
         Dim buffer As ByteStream
+
         chatText = Trim$(ChatInput.CurrentMessage)
         name = ""
 
@@ -467,6 +468,12 @@ Module C_GameLogic
                 InEvent = False
                 Exit Sub
             End If
+        End If
+
+        If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
+            ShowChat()
+            inSmallChat = False
+            Exit Sub
         End If
 
         ' Broadcast message
@@ -1414,6 +1421,47 @@ Continue1:
             Call SendAddChar(name, sex, job)
         Else
             Dialogue("Connection Problem", "Cannot connect to game server.", "Please try again.", DialogueType.Alert)
+        End If
+    End Sub
+
+    Public Sub ShowChat()
+        ShowWindow(GetWindowIndex("winChat"), , False)
+        HideWindow(GetWindowIndex("winChatSmall"))
+        ' Set the active control
+        activeWindow = GetWindowIndex("winChat")
+        SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"))
+        inSmallChat = False
+        ChatScroll = 0
+    End Sub
+
+    Public Sub HideChat()
+        ShowWindow(GetWindowIndex("winChatSmall"), , False)
+        HideWindow(GetWindowIndex("winChat"))
+        inSmallChat = True
+        ChatScroll = 0
+    End Sub
+
+    Public Sub SetChatHeight(Height As Long)
+        actChatHeight = Height
+    End Sub
+
+    Public Sub SetChatWidth(Width As Long)
+        actChatWidth = Width
+    End Sub
+
+    Public Sub UpdateChat()
+        SettingsManager.Save()
+    End Sub
+
+    Public Sub ScrollChatBox(ByVal direction As Byte)
+        If direction = 0 Then ' up
+            If ChatScroll < ChatLines Then
+                ChatScroll = ChatScroll + 1
+            End If
+        Else
+            If ChatScroll > 0 Then
+                ChatScroll = ChatScroll - 1
+            End If
         End If
     End Sub
 

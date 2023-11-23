@@ -504,7 +504,7 @@ Module C_UpdateUI
             FrmOptions.lblVolume.Text = "Volume: " & Types.Settings.Volume
             FrmOptions.scrlVolume.Value = Types.Settings.Volume
 
-            FrmOptions.cmbScreenSize.Text = Types.Settings.Width & "x" & Types.Settings.Height
+            FrmOptions.cmbScreenSize.Text = Types.Settings.ScreenWidth & "x" & Types.Settings.ScreenHeight
 
             If Types.Settings.Vsync = 1 Then
                 FrmOptions.chkVsync.Checked = True

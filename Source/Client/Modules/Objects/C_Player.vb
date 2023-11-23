@@ -8,9 +8,11 @@ Module C_Player
     Sub ClearPlayers()
         Dim i As Integer
 
+        ReDim Account(MAX_PLAYERS)
         ReDim Player(MAX_PLAYERS)
 
         For i = 1 To MAX_PLAYERS
+            ClearAccount(i)
             ClearPlayer(i)
         Next
     End Sub
@@ -93,7 +95,7 @@ Module C_Player
         Next
 
         ReDim Player(index).Pet.Skill(4)
-       For x = 0 To 4
+        For x = 0 To 4
             Player(index).Pet.Skill(x) = 0
         Next
 

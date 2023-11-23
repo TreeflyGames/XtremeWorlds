@@ -12,14 +12,15 @@ Public Class Settings
     Public Sound As Boolean = True
     Public Volume As Single = 100.0F
 
-    Public Width As String = "1024"
-    Public Height As String = "768"
+    Public ScreenWidth As String = "1024"
+    Public ScreenHeight As String = "768"
     Public Vsync As Byte = 1
     Public ShowNpcBar As Byte = 1
     Public CameraType As Byte = 0
     Public Fullscreen As Byte = 1
     Public OpenAdminPanelOnLogin As Byte = 1
     Public DynamicLightRendering As Byte = 1
+    Public ChannelState(ChatChannel.Count - 1) As Byte
 
     Public Ip As String = "127.0.0.1"
     Public Port As Integer = 7001
