@@ -455,6 +455,12 @@ Module C_GameLogic
         If Len(chatText) = 0 Then Exit Sub
         ChatInput.CurrentMessage = LCase$(chatText)
 
+        If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
+            ShowChat()
+            inSmallChat = False
+            Exit Sub
+        End If
+
         If EventChat = True Then
             If EventChatType = 0 Then
                 buffer = New ByteStream(4)
@@ -468,12 +474,6 @@ Module C_GameLogic
                 InEvent = False
                 Exit Sub
             End If
-        End If
-
-        If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
-            ShowChat()
-            inSmallChat = False
-            Exit Sub
         End If
 
         ' Broadcast message

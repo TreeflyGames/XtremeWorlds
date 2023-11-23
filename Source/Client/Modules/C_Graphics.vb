@@ -411,12 +411,6 @@ Module C_Graphics
 
         Select Case e.Code
             Case Keyboard.Key.Enter
-                If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
-                    ShowChat()
-                    inSmallChat = False
-                    Exit Sub
-                End If
-
                 HandlePressEnter()
 
             Case Keyboard.Key.Escape
