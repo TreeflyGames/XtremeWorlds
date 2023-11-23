@@ -1598,15 +1598,15 @@ Module C_Interface
     End Sub
 
     Public Sub btnDelChar_1()
-        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueMsg.DelChar, DialogueStyle.YesNo, 1)
+        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueType.DelChar, DialogueStyle.YesNo, 1)
     End Sub
 
     Public Sub btnDelChar_2()
-        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueMsg.DelChar, DialogueStyle.YesNo, 2)
+        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueType.DelChar, DialogueStyle.YesNo, 2)
     End Sub
 
     Public Sub btnDelChar_3()
-        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueMsg.DelChar, DialogueStyle.YesNo, 3)
+        Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", DialogueType.DelChar, DialogueStyle.YesNo, 3)
     End Sub
 
     Public Sub btnCreateChar_1()

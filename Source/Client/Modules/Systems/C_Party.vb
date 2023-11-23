@@ -25,7 +25,7 @@ Module C_Parties
         Dim buffer As New ByteStream(data)
         name = buffer.ReadString
 
-        DialogType = DialogueTypeParty
+        'DialogType = DialogueTypeParty
 
         DialogMsg1 = "Party Invite"
         DialogMsg2 = Trim$(name) & " has invited you to a party. Would you like to join?"

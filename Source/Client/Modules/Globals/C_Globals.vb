@@ -163,8 +163,6 @@ Module C_Globals
     Public TempMapData() As Byte
 
     ' Dialog
-    Public DialogType As Byte
-
     Public DialogMsg1 As String
     Public DialogMsg2 As String
     Public DialogMsg3 As String

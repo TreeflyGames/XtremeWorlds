@@ -1290,7 +1290,7 @@ Continue1:
         End Select
 
         ' set the dialogue up!
-        Dialogue(header, body, body2, DialogueType.ALERT)
+        Dialogue(header, body, body2, DialogueType.Alert)
     End Sub
 
     Public Sub CloseDialogue()
@@ -1298,25 +1298,25 @@ Continue1:
         HideWindow(GetWindowIndex("winDialogue"))
     End Sub
 
-    Public Sub Dialogue(ByVal header As String, ByVal body As String, ByVal body2 As String, ByVal Index As Long, Optional ByVal style As Byte = 1, Optional ByVal Data1 As Long = 0)
+    Public Sub Dialogue(ByVal header As String, ByVal body As String, ByVal body2 As String, ByVal Index As Byte, Optional ByVal style As Byte = 1, Optional ByVal Data1 As Long = 0)
         ' exit out if we've already got a dialogue open
         If diaIndex > 0 Then Exit Sub
 
         ' set buttons
         With Windows(GetWindowIndex("winDialogue"))
-            If style = DialogueStyle.YESNO Then
+            If style = DialogueStyle.YesNo Then
                 .Controls(GetControlIndex("winDialogue", "btnYes")).Visible = True
                 .Controls(GetControlIndex("winDialogue", "btnNo")).Visible = True
                 .Controls(GetControlIndex("winDialogue", "btnOkay")).Visible = False
                 .Controls(GetControlIndex("winDialogue", "txtInput")).Visible = False
                 .Controls(GetControlIndex("winDialogue", "lblBody_2")).Visible = True
-            ElseIf style = DialogueStyle.OKAY Then
+            ElseIf style = DialogueStyle.Okay Then
                 .Controls(GetControlIndex("winDialogue", "btnYes")).Visible = False
                 .Controls(GetControlIndex("winDialogue", "btnNo")).Visible = False
                 .Controls(GetControlIndex("winDialogue", "btnOkay")).Visible = True
                 .Controls(GetControlIndex("winDialogue", "txtInput")).Visible = False
                 .Controls(GetControlIndex("winDialogue", "lblBody_2")).Visible = True
-            ElseIf style = DialogueStyle.INPUT Then
+            ElseIf style = DialogueStyle.Input Then
                 .Controls(GetControlIndex("winDialogue", "btnYes")).Visible = False
                 .Controls(GetControlIndex("winDialogue", "btnNo")).Visible = False
                 .Controls(GetControlIndex("winDialogue", "btnOkay")).Visible = True
@@ -1328,7 +1328,7 @@ Continue1:
             .Controls(GetControlIndex("winDialogue", "lblHeader")).Text = header
             .Controls(GetControlIndex("winDialogue", "lblBody_1")).Text = body
             .Controls(GetControlIndex("winDialogue", "lblBody_2")).Text = body2
-            .Controls(GetControlIndex("winDialogue", "txtInput")).Text = vbNullString
+            .Controls(GetControlIndex("winDialogue", "txtInput")).Text = ""
         End With
 
         ' set it all up

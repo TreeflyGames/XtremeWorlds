@@ -31,7 +31,7 @@ Module C_Trade
         Dim buffer As New ByteStream(data)
         requester = buffer.ReadInt32
 
-        DialogType = DialogueTypeTrade
+        'DialogType = DialogueTypeTrade
 
         DialogMsg1 = String.Format(Language.Trade.Request, Trim$((Player(requester).Name)))
 
