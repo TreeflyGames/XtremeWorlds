@@ -687,6 +687,7 @@ Module S_Database
         For i = 1 To GetPlayersOnline()
             If Not IsPlaying(i) Then Continue For
             SaveCharacter(i, TempPlayer(i).Slot)
+            SaveBank(i)
         Next
     End Sub
 
