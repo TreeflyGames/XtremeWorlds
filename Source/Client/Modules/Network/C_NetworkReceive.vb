@@ -642,9 +642,6 @@ Module C_NetworkReceive
     Private Sub Packet_Ping(ByRef data() As Byte)
         PingEnd = GetTickCount()
         Ping = PingEnd - PingStart
-
-        Application.DoEvents()
-        UpdateUi()
     End Sub
 
     Private Sub Packet_ActionMessage(ByRef data() As Byte)

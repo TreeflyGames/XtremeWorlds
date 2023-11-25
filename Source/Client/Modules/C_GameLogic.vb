@@ -27,9 +27,6 @@ Module C_GameLogic
 
             frameTime = tick
 
-            UpdateUi()
-            Application.DoEvents()
-
             DirDown = VbKeyDown
             DirUp = VbKeyUp
             DirLeft = VbKeyLeft
