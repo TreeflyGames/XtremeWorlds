@@ -986,7 +986,6 @@ Partial Class FrmEditor_Events
         '
         'DarkLabel8
         '
-        Me.DarkLabel8.AutoSize = True
         Me.DarkLabel8.ForeColor = System.Drawing.Color.FromArgb(CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer), CType(CType(220, Byte), Integer))
         Me.DarkLabel8.Location = New System.Drawing.Point(8, 23)
         Me.DarkLabel8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)

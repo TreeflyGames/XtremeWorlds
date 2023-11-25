@@ -4,11 +4,11 @@ Imports SFML.Graphics
 Imports Core
 Imports SFML.System
 Imports Core.Enum
+Imports SFML.Window
 
 Public Class frmEditor_Map
 #Region "Frm"
     Private Sub FrmEditor_Map_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        cmbTileSets.SelectedIndex = 0
         pnlAttributes.BringToFront()
         pnlAttributes.Visible = False
         pnlAttributes.Left = 4
@@ -59,7 +59,7 @@ Public Class frmEditor_Map
             .Down = Val(txtDown.Text)
             .Left = Val(txtLeft.Text)
             .Right = Val(txtRight.Text)
-            .Moral = cmbMoral.SelectedIndex
+            .Moral = cmbMoral.SelectedIndex + 1
             .BootMap = Val(txtBootMap.Text)
             .BootX = Val(txtBootX.Text)
             .BootY = Val(txtBootY.Text)
@@ -600,7 +600,7 @@ Public Class frmEditor_Map
 
     Public Sub MapEditorChooseTile(ByVal Button As Integer, ByVal X As Single, ByVal Y As Single)
 
-        If Button = MouseButtons.Left Then 'Left Mouse Button
+        If Button = Mouse.Button.Left Then 'Left Mouse Button
 
             EditorTileWidth = 1
             EditorTileHeight = 1
@@ -634,7 +634,7 @@ Public Class frmEditor_Map
     End Sub
 
     Public Sub MapEditorDrag(ByVal Button As Integer, ByVal X As Single, ByVal Y As Single)
-        If Button = MouseButtons.Left Then 'Left Mouse Button
+        If Button = Mouse.Button.Left Then 'Left Mouse Button
             ' convert the pixel number to tile number
             X = (X \ PicX) + 1
             Y = (Y \ PicY) + 1
@@ -697,15 +697,15 @@ Public Class frmEditor_Map
 
         If Not IsInBounds() Then Exit Sub
 
-        If Button = MouseButtons.Left Then
+        If Button = Mouse.Button.Left Then
             If tabpages.SelectedTab Is tpTiles Then
                 If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then 'single tile
-                    MapEditorSetTile(CurX, CurY, CurLayer, False, cmbAutoTile.SelectedIndex)
+                    MapEditorSetTile(CurX, CurY, CurLayer, False, cmbAutoTile.SelectedIndex + 1)
                 Else ' multi tile!
                     If cmbAutoTile.SelectedIndex = 0 Then
                         MapEditorSetTile(CurX, CurY, CurLayer, True)
                     Else
-                        MapEditorSetTile(CurX, CurY, CurLayer, , cmbAutoTile.SelectedIndex)
+                        MapEditorSetTile(CurX, CurY, CurLayer, , cmbAutoTile.SelectedIndex + 1)
                     End If
                 End If
             ElseIf tabpages.SelectedTab Is tpAttributes Then
@@ -831,7 +831,7 @@ Public Class frmEditor_Map
             End If
         End If
 
-        If Button = MouseButtons.Right Then
+        If Button = Mouse.Button.Right Then
             If tabpages.SelectedTab Is tpTiles Then
                 If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then 'single tile
                     MapEditorSetTile(CurX, CurY, CurLayer, False, cmbAutoTile.SelectedIndex, 1)
@@ -1035,7 +1035,7 @@ Public Class frmEditor_Map
             Else
                 cmbTileSets.SelectedIndex = 1
             End If
-            MapEditorChooseTile(MouseButtons.Left, .Layer(CurLayer).X * PicX, .Layer(CurLayer).Y * PicY)
+            MapEditorChooseTile(Mouse.Button.Left, .Layer(CurLayer).X * PicX, .Layer(CurLayer).Y * PicY)
             EyeDropper = Not EyeDropper
         End With
     End Sub
@@ -1212,10 +1212,10 @@ Public Class frmEditor_Map
         rec2.Size = New Vector2f(EditorTileWidth * PicX, EditorTileHeight * PicY)
         rec2.Position = New Vector2f((EditorTileSelStart.X * PicX), (EditorTileSelStart.Y * PicY))
 
-        TilesetWindow.Draw(rec2)
+        TilesetWindow?.Draw(rec2)
 
         'and finally show everything on screen
-        TilesetWindow.Display()
+        TilesetWindow?.Display()
     End Sub
 
     Public Sub EditorMap_DrawItem()

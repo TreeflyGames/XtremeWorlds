@@ -438,7 +438,7 @@ Module C_Graphics
     Private Sub GameWindow_MouseButtonPressed(ByVal sender As Object, ByVal e As SFML.Window.MouseButtonEventArgs)
         Console.WriteLine("Mouse Button Pressed: " & e.Button.ToString())
 
-        If e.Button = MouseButtons.Left Then
+        If e.Button = Mouse.Button.Left Then
             ' if we're in the middle of choose the trade target or not
             If Not TradeRequest Then
                 If PetAlive(Myindex) Then
@@ -455,8 +455,7 @@ Module C_Graphics
             PnlRClickVisible = False
             ShowPetStats = False
 
-        ' right click
-        ElseIf e.Button = MouseButtons.Right Then
+        ElseIf e.Button = Mouse.Button.Right Then
             If VbKeyShift = True Then
                 ' admin warp if we're pressing shift and right clicking
                 If GetPlayerAccess(Myindex) >= 2 Then AdminWarp(CurX, CurY)
@@ -1910,11 +1909,6 @@ Module C_Graphics
             If EyeDropper = True Then
                 DrawEyeDropper()
             End If
-        End If
-
-        ' draw cursor, player X and Y locations
-        If BLoc Then
-
         End If
 
         ' draw player names

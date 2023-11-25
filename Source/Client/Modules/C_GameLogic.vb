@@ -13,7 +13,7 @@ Module C_GameLogic
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
         Dim tmr10000 As Integer, tmr1000 As Integer, tmrweather As Integer
         Dim tmr100 As Integer, tmr500 As Integer, tmrconnect As Integer
-        Dim fadetmr As Integer, renderFrame As Boolean, rendertmr As Integer
+        Dim fadetmr As Integer, rendertmr As Integer
         Dim animationtmr As Integer
 
         ' Main game loop
@@ -27,12 +27,13 @@ Module C_GameLogic
 
             frameTime = tick
 
+            UpdateUi()
+            Application.DoEvents()
+
             DirDown = VbKeyDown
             DirUp = VbKeyUp
             DirLeft = VbKeyLeft
             DirRight = VbKeyRight
-
-            UpdateUi()
 
             If GameStarted() Then
                 'Calculate FPS
@@ -47,6 +48,7 @@ Module C_GameLogic
                 ' Update inv animation
                 If NumItems > 0 Then
                     If tmr100 < tick Then
+                        GetPing()
 
                         If InBank Then DrawBank()
                         If InShop Then DrawShop()
@@ -95,15 +97,7 @@ Module C_GameLogic
                     tmr10000 = tick + 10000
                 End If
 
-                If tmr1000 < tick Then
-                    Time.Instance.Tick()
-                    GetPing()
-                    DrawPing()
-
-                    tmr1000 = tick + 1000
-                End If
-
-                'screenshake timer
+                ' screenshake
                 If ShakeTimerEnabled Then
                     If ShakeTimer < tick Then
                         If ShakeCount < 10 Then
@@ -242,9 +236,6 @@ Module C_GameLogic
                 If FadeOutSwitch = True Then
                     FadeOut()
                 End If
-
-                If Editor = EditorType.Map Then frmEditor_Map.DrawTileset()
-                If Editor = EditorType.Animation Then EditorAnim_DrawAnim()
             Else
                 If tmr500 < tick Then
                     ' animate textbox
@@ -282,21 +273,7 @@ Module C_GameLogic
                 fadetmr = tick + 30
             End If
 
-            renderFrame = True
-            tmpfps = tmpfps + 1
-
-            If tmpfps > 60 Then
-                tmpfps = 1
-            End If
-
-            If renderFrame Then
-                Render_Graphics()
-                Thread.Yield()
-            Else
-                Thread.Sleep(1)
-            End If
-
-            Application.DoEvents()
+            Render_Graphics()
         End While
     End Sub
 

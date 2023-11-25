@@ -1,22 +1,19 @@
-﻿Imports Core
+﻿Imports System.Threading
+Imports Core
 
 Friend Class FrmGame
 
 #Region "Frm Code"
     Private Sub FrmMainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim screenWidth As String = Screen.PrimaryScreen.Bounds.Width.ToString()
-        Dim screenHeight As String = Screen.PrimaryScreen.Bounds.Height.ToString()
-        Dim resolution As String()
+        Dim gameLogic As New Thread(AddressOf Startup)
+        gameLogic.Start()
 
-        Startup()
-
-        If Types.Settings.Fullscreen = 0 Then
-            screenWidth = Types.Settings.ScreenWidth
-            screenHeight = Types.Settings.ScreenHeight
-        Else
-            FormBorderStyle = 0
-        End If
-
+        While True
+            UpdateUi()
+            If Editor = EditorType.Map Then frmEditor_Map.DrawTileset()
+            If Editor = EditorType.Animation Then EditorAnim_DrawAnim()
+            Application.DoEvents()
+        End While
     End Sub
 
     Private Sub FrmMainGame_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing

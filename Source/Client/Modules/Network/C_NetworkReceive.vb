@@ -1,12 +1,11 @@
-﻿Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Imports Core
+﻿Imports Core
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 
 Module C_NetworkReceive
 
     Sub PacketRouter()
-        Socket.PacketId(Packets.ServerPackets.SAlertMsg) = AddressOf Packet_AlertMsg
+        Socket.PacketId(ServerPackets.SAlertMsg) = AddressOf Packet_AlertMsg
         Socket.PacketId(ServerPackets.SKeyPair) = AddressOf Packet_KeyPair
         Socket.PacketId(ServerPackets.SLoginOK) = AddressOf HandleLoginOk
         Socket.PacketId(ServerPackets.SPlayerChars) = AddressOf Packet_PlayerChars
@@ -643,6 +642,9 @@ Module C_NetworkReceive
     Private Sub Packet_Ping(ByRef data() As Byte)
         PingEnd = GetTickCount()
         Ping = PingEnd - PingStart
+
+        Application.DoEvents()
+        UpdateUi()
     End Sub
 
     Private Sub Packet_ActionMessage(ByRef data() As Byte)
