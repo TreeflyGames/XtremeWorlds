@@ -68,7 +68,12 @@ Module C_NetworkSend
             user = .Controls(GetControlIndex("winLogin", "txtUsername")).Text
             pass = .Controls(GetControlIndex("winLogin", "txtPassword")).Text
 
-            SendLogin(user, pass)
+            If Socket.IsConnected() Then
+                SendLogin(user, pass)
+            Else
+                InitNetwork()
+                Dialogue("Connection Problem", "Cannot connect to game server.", "Please try again.", DialogueType.Alert)
+            End If
         End With
     End Sub
 

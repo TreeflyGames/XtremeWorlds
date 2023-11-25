@@ -85,6 +85,7 @@ Module C_Globals
 
     ' Controls main gameloop
     Public InGame As Boolean
+    Public InMenu As Boolean
 
     Public IsLogging As Boolean
     Public MapData As Boolean

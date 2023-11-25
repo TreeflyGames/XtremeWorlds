@@ -47,31 +47,6 @@ Module C_UpdateUI
 
     Friend Tradername As String
 
-    'UI Panels Coordinates
-    Friend HudWindowX As Integer = 0
-
-    Friend HudWindowY As Integer = 0
-    Friend HudFaceX As Integer = 4
-    Friend HudFaceY As Integer = 4
-
-    'bars
-    Friend HudhpBarX As Integer = 80
-    Friend HudhpBarY As Integer = 19
-
-    Friend HudmpBarX As Integer = 82
-    Friend HudmpBarY As Integer = 46
-
-    Friend HudexpBarX As Integer = 510
-    Friend HudexpBarY As Integer = 750
-
-    'Set the Chat Position
-
-    Friend MyChatX As Integer = 1
-    Friend MyChatY As Integer = FrmGame.Height - 55
-
-    Friend ChatWindowX As Integer = 1
-    Friend ChatWindowY As Integer = 705
-
     Friend ShowItemDesc As Boolean
     Friend ItemDescItemNum As Integer
     Friend ItemDescName As String
@@ -383,10 +358,6 @@ Module C_UpdateUI
             End With
 
             InitProjectileEditor = False
-        End If
-
-        If frmEditor_Projectile.Visible Then
-            EditorProjectile_DrawProjectile()
         End If
     End Sub
 

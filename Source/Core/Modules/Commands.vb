@@ -15,17 +15,6 @@
         Account(index).Password = password.Trim
     End Sub
 
-    Public Function GetCharName(index As Integer, charNum As Integer) As String
-        If charNum = 0 Then charNum = 1
-        If Account(index).Character(charNum).Trim = "Bank" Then Exit Function
-        GetCharName = Account(index).Character(charNum).Trim 
-    End Function
-
-    Public Sub SetPlayerCharName(index As String, charNum As Integer, name As string)
-        Account(index).Character(charNum) = name.Trim
-        Player(index).Name = name.Trim
-    End Sub
-
     Public Function GetPlayerMaxVital(index As Integer, Vital As VitalType) As Integer
         GetPlayerMaxVital = 0
 

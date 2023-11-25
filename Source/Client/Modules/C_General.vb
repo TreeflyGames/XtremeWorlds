@@ -1,6 +1,8 @@
 ﻿
 Imports System.Windows.Forms
 Imports Core
+Imports SFML.Graphics
+Imports SFML.Window
 
 Module C_General
     Friend Started As Boolean
@@ -10,6 +12,7 @@ Module C_General
     End Function
 
     Sub Startup()
+        InMenu = True
         ClearGameData()
         LoadGame()
         PlayMusic(Trim$(Types.Settings.MenuMusic))
@@ -102,9 +105,6 @@ Module C_General
     End Function
 
     Sub GameInit()
-        ' Set the focus
-        FrmGame.picscreen.Focus()
-
         ' Send a request to the server to open the admin menu if the user wants it.
         If Types.Settings.OpenAdminPanelOnLogin = 1 Then
             If GetPlayerAccess(Myindex) > 0 Then

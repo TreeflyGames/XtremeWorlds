@@ -916,8 +916,6 @@ Module S_Pet
 
         SendUpdatePlayerPet(index, False)
 
-        SavePlayer(index)
-
         PlayerMsg(index, "You released your pet!", ColorType.BrightGreen)
 
         For i = 1 To MAX_MAP_NPCS
@@ -977,8 +975,6 @@ Module S_Pet
         Player(index).Pet.Exp = 0
 
         Player(index).Pet.AttackBehaviour = PetAttackBehaviourGuard 'By default it will guard but this can be changed
-
-        SavePlayer(index)
 
         SendUpdatePlayerPet(index, False)
 

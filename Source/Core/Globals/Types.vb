@@ -293,8 +293,6 @@ Public Module Types
     Public Structure AccountStruct
         Dim Login As String
         Dim Password As String
-        Dim Character() As String
-        Dim Index As Byte
         Dim Banned As Boolean
     End Structure
 
@@ -429,6 +427,8 @@ Public Module Types
         Dim PetstopRegenTimer As Integer
 
         Dim Editor As Integer
+
+        Dim Slot As Byte
 
     End Structure
 

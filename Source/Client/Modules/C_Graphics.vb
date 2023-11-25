@@ -546,7 +546,7 @@ Module C_Graphics
         ' Handle only ASCII characters
         If unicodeValue < 128 Then
             Console.WriteLine("ASCII character typed: " & character)
-        
+
             ' Check for active window
             If activeWindow > 0 Then
                 ' Ensure it's visible
@@ -568,14 +568,15 @@ Module C_Graphics
     End Sub
 
     Sub InitGraphics()
+        Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
+        Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Arial)
+        Fonts(2) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Verdana)
+
         GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Titlebar Or Styles.Close)
-        GameWindow.setVerticalSyncEnabled(Types.Settings.Vsync)
-        GameWindow.SetFramerateLimit(Types.Settings.MaxFPS)
-
+        GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
+        GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
         Dim iconImage As New Image(Paths.Gui + "\Menu\" + "icon.png")
-        GameWindow.seticon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
-
-        ' Add other event handlers
+        GameWindow.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
         AddHandler GameWindow.Closed, AddressOf GameWindow_Closed
         AddHandler GameWindow.GainedFocus, AddressOf GameWindow_GainedFocus
         AddHandler GameWindow.LostFocus, AddressOf GameWindow_LostFocus
@@ -586,9 +587,6 @@ Module C_Graphics
         AddHandler GameWindow.MouseMoved, AddressOf GameWindow_MouseMoved
         AddHandler GameWindow.TextEntered, AddressOf GameWindow_TextEntered
         AddHandler GameWindow.MouseWheelScrolled, AddressOf GameWindow_MouseWheelScrolled
-
-        Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
-        Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Arial)
 
         ReDim TileSetImgsGFX(NumTileSets)
         ReDim TileSetTexture(NumTileSets)
@@ -1568,7 +1566,6 @@ Module C_Graphics
     End Sub
 
     Friend Sub DrawBlood(index As Integer)
-        Dim dest = New Point(FrmGame.PointToScreen(FrmGame.picscreen.Location))
         Dim srcrec As Rectangle
         Dim destrec As Rectangle
         Dim x As Integer
@@ -1917,13 +1914,7 @@ Module C_Graphics
 
         ' draw cursor, player X and Y locations
         If BLoc Then
-            RenderText(Trim$(String.Format(Language.Game.MapCurLoc, CurX, CurY)), GameWindow, 1, HudWindowY + HudPanelGfxInfo.Height + 1,
-                    Color.Yellow, Color.Black)
-            RenderText(Trim$(String.Format(Language.Game.MapLoc, GetPlayerX(Myindex), GetPlayerY(Myindex))), GameWindow, 1, HudWindowY + HudPanelGfxInfo.Height + 15,
-                    Color.Yellow,
-                    Color.Black)
-            RenderText(Trim$(String.Format(Language.Game.MapCurMap, GetPlayerMap(Myindex))), GameWindow, 1, HudWindowY + HudPanelGfxInfo.Height + 30,
-                    Color.Yellow, Color.Black)
+
         End If
 
         ' draw player names
@@ -1971,6 +1962,10 @@ Module C_Graphics
         If Editor = EditorType.Map AndAlso frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpEvents Then
             DrawEvents()
             EditorEvent_DrawGraphic()
+        End If
+
+        If Editor = EditorType.Projectile Then
+            EditorProjectile_DrawProjectile()
         End If
 
         If InGame Then
@@ -2400,134 +2395,6 @@ Module C_Graphics
 
         If Not LightGfx Is Nothing Then LightGfx.Dispose()
         If Not NightGfx Is Nothing Then NightGfx.Dispose()
-    End Sub
-
-    Sub DrawHud()
-        Dim rec As Rectangle
-
-        'first render backpanel
-        With rec
-            .Y = 0
-            .Height = HudPanelGfxInfo.Height
-            .X = 0
-            .Width = HudPanelGfxInfo.Width
-        End With
-
-        RenderTexture(HudPanelSprite, GameWindow, HudWindowX, HudWindowY, rec.X, rec.Y, rec.Width, rec.Height)
-
-        If Player(Myindex).Sprite <= NumFaces Then
-            Dim tmpSprite = New Sprite(FacesGfx(Player(Myindex).Sprite))
-
-            If FacesGfxInfo(Player(Myindex).Sprite).IsLoaded = False Then
-                LoadTexture(Player(Myindex).Sprite, 7)
-            End If
-
-            'seeying we still use it, lets update timer
-            With FacesGfxInfo(Player(Myindex).Sprite)
-                .TextureTimer = GetTickCount() + 100000
-            End With
-
-            'then render face
-            With rec
-                .Y = 0
-                .Height = FacesGfxInfo(Player(Myindex).Sprite).Height
-                .X = 0
-                .Width = FacesGfxInfo(Player(Myindex).Sprite).Width
-            End With
-
-            RenderTexture(FacesSprite(Player(Myindex).Sprite), GameWindow, HudFaceX, HudFaceY, rec.X, rec.Y, rec.Width,
-                         rec.Height)
-        End If
-
-        If Blps Then
-            RenderText(Language.Game.Lps & Lps, GameWindow, FrmGame.Width - 120, 70, Color.White, Color.White)
-        End If
-
-        ' Draw map name
-        DrawMapName()
-    End Sub
-
-    Sub DrawStatBars()
-        Dim rec As Rectangle
-        Dim curHp As Integer, curMp As Integer, curExp As Integer
-
-        'HP Bar
-        curHp = (GetPlayerVital(Myindex, VitalType.HP) / GetPlayerMaxVital(Myindex, VitalType.HP)) * 100
-
-        With rec
-            .Y = 0
-            .Height = HpBarGfxInfo.Height
-            .X = 0
-            .Width = curHp * HpBarGfxInfo.Width / 100
-        End With
-
-        'then render full ontop of it
-        RenderTexture(HpBarSprite, GameWindow, HudWindowX + HudhpBarX, HudWindowY + HudhpBarY + 4, rec.X, rec.Y,
-                     rec.Width, rec.Height)
-
-        'then draw the text onto that
-        RenderText(LblHpText, GameWindow, HudWindowX + HudhpBarX + 65, HudWindowY + HudhpBarY + 4,
-                Color.White, Color.White)
-
-        '==============================
-
-        'MP Bar
-        curMp = (GetPlayerVital(Myindex, VitalType.MP) / GetPlayerMaxVital(Myindex, VitalType.MP)) * 100
-
-        'then render full ontop of it
-        With rec
-            .Y = 0
-            .Height = MpBarGfxInfo.Height
-            .X = 0
-            .Width = curMp * MpBarGfxInfo.Width / 100
-        End With
-
-        RenderTexture(MpBarSprite, GameWindow, HudWindowX + HudmpBarX, HudWindowY + HudmpBarY + 4, rec.X, rec.Y,
-                     rec.Width, rec.Height)
-
-        'draw text onto that
-        RenderText(LblManaText, GameWindow, HudWindowX + HudmpBarX + 45, HudWindowY + HudmpBarY + 4,
-                Color.White, Color.White)
-
-        '====================================================
-        'EXP Bar
-        curExp = (GetPlayerExp(Myindex) / NextlevelExp) * 100
-
-        'then render full ontop of it
-        With rec
-            .Y = 0
-            .Height = ExpBarGfxInfo.Height
-            .X = 0
-            .Width = curExp * ExpBarGfxInfo.Width / 100
-        End With
-
-        If GameWindow.Size.X >= 1336 Then
-            RenderTexture(XpBarPanelSprite, GameWindow, GameWindow.Size.X / 2 - XpBarPanelGfxInfo.Width / 2, GameWindow.Size.Y - XpBarPanelGfxInfo.Height, 0, 0, XpBarPanelGfxInfo.Width,
-                         XpBarPanelGfxInfo.Height)
-
-            RenderTexture(ExpBarSprite, GameWindow, GameWindow.Size.X / 2 - ExpBarGfxInfo.Width / 2, GameWindow.Size.Y - ExpBarGfxInfo.Height - 7, rec.X, rec.Y,
-                         rec.Width, rec.Height)
-        Else
-            RenderTexture(XpBarPanelSprite, GameWindow, GameWindow.Size.X - XpBarPanelGfxInfo.Width, 0, 0, 0, XpBarPanelGfxInfo.Width,
-                         XpBarPanelGfxInfo.Height)
-
-            RenderTexture(ExpBarSprite, GameWindow, GameWindow.Size.X - ExpBarGfxInfo.Width - 12, 0 + ExpBarGfxInfo.Height, rec.X, rec.Y,
-                         rec.Width, rec.Height)
-        End If
-    End Sub
-
-    Sub DrawActionPanel()
-        Dim rec As Rectangle
-
-        'first render backpanel
-        With rec
-            .Y = 0
-            .Height = ActionPanelGfxInfo.Height
-            .X = 0
-            .Width = ActionPanelGfxInfo.Width
-        End With
-
-        RenderTexture(ActionPanelSprite, GameWindow, ActionPanelX + 20, ActionPanelY, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawInventoryItem(x As Integer, y As Integer)

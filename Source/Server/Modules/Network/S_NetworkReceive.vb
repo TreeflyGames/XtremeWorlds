@@ -193,7 +193,7 @@ Module S_NetworkReceive
                 End If
 
                 If LoadAccount(index, username) = False Then
-                    AlertMsg(index, DialogueMsg.Database, MenuType.Login)
+                    AlertMsg(index, DialogueMsg.Login, MenuType.Login)
                     Exit Sub
                 End If
 
@@ -315,13 +315,16 @@ Module S_NetworkReceive
                 End If
 
                 LoadCharacter(index, slot)
+                LoadBank(index)
 
                 ' Check if character data has been created
                 If Len(Trim$(Player(index).Name)) > 0 Then
                     ' we have a char!
+                    TempPlayer(index).Slot = slot
                     HandleUseChar(index)
                 Else
                     AlertMsg(index, DialogueMsg.Database, MenuType.Chars)
+                    Exit Sub
                 End If
             End If
         End If
@@ -343,8 +346,13 @@ Module S_NetworkReceive
             sexNum = buffer.ReadInt32
             jobNum = buffer.ReadInt32 + 1
 
-            If slot < 1 Or slot > MAX_CHARS Or Account(index).Character(slot) <> "" Then
+            If slot < 1 Or slot > MAX_CHARS Then
                 AlertMsg(index, DialogueMsg.MaxChar, MenuType.Chars)
+                Exit Sub
+            End If
+
+            If LoadCharacter(index, slot) Then
+                SendPlayerChars(index)
                 Exit Sub
             End If
 
@@ -379,9 +387,6 @@ Module S_NetworkReceive
                 sprite = Job(jobNum).FemaleSprite
             End If
 
-            ' Check if char already exists in slot
-            If CharExist(index, slot) Then Exit Sub
-
             ' Everything went ok, add the character
             Chars.Add(name.Trim())
             AddChar(index, slot, name, sexNum, jobNum, sprite)
@@ -405,11 +410,10 @@ Module S_NetworkReceive
                 Exit Sub
             End If
 
-            Chars.Remove(Account(index).Character(slot).Trim())
             LoadCharacter(index, slot)
+            Chars.Remove(GetPlayerName(index))
             ClearCharacter(index)
             SaveCharacter(index, slot)
-            Account(index).Character(slot) = ""
 
             ' send them to the character portal
             Call SendPlayerChars(index)
@@ -1094,7 +1098,7 @@ Module S_NetworkReceive
                 If GetPlayerAccess(n) < GetPlayerAccess(index) Then
                     GlobalMsg(GetPlayerName(n) & " has been kicked from " & Types.Settings.GameName & " by " & GetPlayerName(index) & "!")
                     Addlog(GetPlayerName(index) & " has kicked " & GetPlayerName(n) & ".", ADMIN_LOG)
-                    AlertMsg(n, DialogueMsg.Kicked)
+                    AlertMsg(n, DialogueMsg.Kicked, MenuType.Login)
                 Else
                     PlayerMsg(index, "That is a higher or same access admin then you!", ColorType.BrightRed)
                 End If
@@ -1764,8 +1768,6 @@ Module S_NetworkReceive
     End Sub
 
     Sub Packet_CloseBank(index As Integer, ByRef data() As Byte)
-        SavePlayer(index)
-
         TempPlayer(index).InBank = False
     End Sub
 
@@ -2076,7 +2078,7 @@ Module S_NetworkReceive
         If index > 0 AndAlso IsPlaying(index) Then
             GlobalMsg(GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has been booted for (" & Reason & ")")
 
-            AlertMsg(index, DialogueMsg.Connection)
+            AlertMsg(index, DialogueMsg.Connection, MenuType.Login)
         End If
 
     End Sub

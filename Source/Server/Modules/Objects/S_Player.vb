@@ -860,7 +860,7 @@ Module S_Player
     Friend Sub HandleUseChar(index As Integer)
         If Not IsPlaying(index) Then
             ' Send an ok to client to start receiving in game data
-            SendLoadCharOk(index)
+            SendLoginOK(index)
             JoinGame(index)
             Dim text = String.Format("{0} | {1} has began playing {2}.", GetPlayerLogin(index), GetPlayerName(index), Types.Settings.GameName)
             Addlog(text, PLAYER_LOG)
@@ -2114,7 +2114,8 @@ Module S_Player
             Console.WriteLine(String.Format("{0} has left {1}!", GetPlayerName(index), Types.Settings.GameName))
 
             ReCallPet(index)
-            SavePlayer(index)
+            SaveCharacter(index, TempPlayer(index).Slot)
+            SaveBank(index)
         End If
 
         ClearPlayer(index)
@@ -2419,8 +2420,6 @@ Module S_Player
             End If
         End If
 
-        SavePlayer(index)
-
     End Sub
 
     Function GetPlayerBankItemNum(index As Integer, BankSlot As Byte) As Integer
@@ -2497,8 +2496,6 @@ Module S_Player
 
         End If
 
-        SaveBank(index)
-        SavePlayer(index)
         SendBank(index)
     End Sub
 

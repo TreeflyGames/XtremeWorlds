@@ -17,9 +17,9 @@ Module C_GameLogic
         Dim animationtmr As Integer
 
         ' Main game loop
-        While GameWindow.IsOpen
+        While InGame Or InMenu
             starttime = GetTickCount()
-            
+
             If GameDestroyed Then End
 
             tick = GetTickCount()
@@ -108,14 +108,11 @@ Module C_GameLogic
                     If ShakeTimer < tick Then
                         If ShakeCount < 10 Then
                             If LastDir = 0 Then
-                                FrmGame.picscreen.Location = New Point(FrmGame.picscreen.Location.X + 20, FrmGame.picscreen.Location.Y)
                                 LastDir = 1
                             Else
-                                FrmGame.picscreen.Location = New Point(FrmGame.picscreen.Location.X - 20, FrmGame.picscreen.Location.Y)
                                 LastDir = 0
                             End If
                         Else
-                            FrmGame.picscreen.Location = New Point(0, 0)
                             ShakeCount = 0
                             ShakeTimerEnabled = False
                         End If
@@ -293,7 +290,7 @@ Module C_GameLogic
             End If
 
             If renderFrame Then
-                Render_Graphics
+                Render_Graphics()
                 Thread.Yield()
             Else
                 Thread.Sleep(1)
@@ -1412,6 +1409,7 @@ Continue1:
         If Socket.IsConnected() Then
             Call SendAddChar(name, sex, job)
         Else
+            InitNetwork()
             Dialogue("Connection Problem", "Cannot connect to game server.", "Please try again.", DialogueType.Alert)
         End If
     End Sub

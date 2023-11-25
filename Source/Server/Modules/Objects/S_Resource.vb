@@ -132,7 +132,6 @@ Friend Module S_Resource
                 PlayerMsg(index, String.Format("Your {0} has gone up by {1} levels!", GetResourceSkillName(SkillSlot), level_count), ColorType.BrightGreen)
             End If
 
-            SavePlayer(index)
             SendPlayerData(index)
         End If
     End Sub

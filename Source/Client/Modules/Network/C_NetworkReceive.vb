@@ -318,6 +318,7 @@ Module C_NetworkReceive
 
     Private Sub Packet_InGame(ByRef data() As Byte)
         InGame = True
+        InMenu = False
         HideWindows()
         CanMoveNow = True
         Editor = -1
@@ -327,6 +328,7 @@ Module C_NetworkReceive
         ShowWindow(GetWindowIndex("winMenu"), , False)
         ShowWindow(GetWindowIndex("winHotbar"), , False)
         ShowWindow(GetWindowIndex("winChatSmall"), , False)
+
         GameInit()
     End Sub
 

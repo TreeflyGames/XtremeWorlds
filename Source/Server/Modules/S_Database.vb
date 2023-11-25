@@ -686,11 +686,11 @@ Module S_Database
     Sub SaveAllPlayersOnline()
         For i = 1 To GetPlayersOnline()
             If Not IsPlaying(i) Then Continue For
-            SavePlayer(i)
+            SaveCharacter(i, TempPlayer(i).Slot)
         Next
     End Sub
 
-    Sub SavePlayer(index As Integer)
+    Sub SaveAccount(index As Integer)
         Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
         Dim username As String = GetPlayerLogin(index)
         Dim id As BigInteger = GenerateIdFromString(username)
@@ -700,9 +700,6 @@ Module S_Database
         Else
             InsertRowByColumn(id, json, "account", "data", "id")
         End If
-
-        SaveCharacter(index, Account(index).Index)
-        SaveBank(index)
     End Sub
 
     Sub RegisterAccount(index As Integer, username As String, password As String)
@@ -727,24 +724,17 @@ Module S_Database
 
         Dim accountData = JObject.FromObject(data).ToObject(Of AccountStruct)()
         Account(index) = accountData
-
-        LoadBank(index)
-
         Return True
     End Function
 
     Sub ClearAccount(index As Integer)
-        Player(index).Access = AdminType.Player
         SetPlayerLogin(index, "")
         SetPlayerPassword(index, "")
-        ReDim Account(index).Character(MAX_CHARS)
-
-        For i = 1 To MAX_CHARS
-            SetPlayerCharName(index, i, "")
-        Next
+        ClearPlayer(index)
     End Sub
 
     Sub ClearPlayer(index As Integer)
+        Player(index).Access = AdminType.Player
         ReDim TempPlayer(MAX_PLAYERS)
 
         For i = 1 To MAX_PLAYERS
@@ -898,36 +888,37 @@ Module S_Database
         Player(index).Pet.Exp = 0
     End Sub
 
-    Sub LoadCharacter(index As Integer, charNum As Integer)
+    Function LoadCharacter(index As Integer, charNum As Integer) As Boolean
         Dim data As JObject
 
         data = SelectRowByColumn("id", GenerateIdFromString(GetPlayerLogin(index)), "account", "character" & charNum.ToString())
 
         If data Is Nothing Then
-            ClearCharacter(index)
-            Exit Sub
+            Return False
         End If
 
         Dim characterData = JObject.FromObject(data).ToObject(Of PlayerStruct)()
-        Player(index) = characterData
-    End Sub
 
-    Sub SaveCharacter(index As Integer, charNum As Integer)
+        If characterData.Name = "" Then
+            Return False
+        End If
+
+        Player(index) = characterData
+        Return True
+    End Function
+
+    Sub SaveCharacter(index As Integer, slot As Integer)
         Dim json As String = JsonConvert.SerializeObject(Player(index)).ToString()
         Dim id As BigInteger = GenerateIdFromString(GetPlayerLogin(index))
 
         If RowExistsByColumn("id", id, "account") Then
-            UpdateRowByColumn("id", id, "character" & charNum.ToString(), json, "account")
+            UpdateRowByColumn("id", id, "character" & slot.ToString(), json, "account")
         Else
-            InsertRowByColumn(id, json, "account", "character" & charNum.ToString(), "id")
+            InsertRowByColumn(id, json, "account", "character" & slot.ToString(), "id")
         End If
     End Sub
 
-    Function CharExist(index As Integer, charnUm As Integer) As Boolean
-        Return Account(index).Character(charnUm).Trim.Length > 0
-    End Function
-
-    Sub AddChar(index As Integer, charNum As Integer, name As String, Sex As Byte, jobNum As Byte, sprite As Integer)
+    Sub AddChar(index As Integer, slot As Integer, name As String, Sex As Byte, jobNum As Byte, sprite As Integer)
         Dim n As Integer, i As Integer
 
         If Len(Trim$(Player(index).Name)) = 0 Then
@@ -967,9 +958,7 @@ Module S_Database
                 SetPlayerGatherSkillMaxExp(index, i, GetSkillNextLevel(index, i))
             Next
 
-            Account(index).Index = charNum
-            SetPlayerCharName(index, Account(index).Index, name)
-            SavePlayer(index)
+            SaveCharacter(index, slot)
         End If
 
     End Sub
@@ -996,6 +985,7 @@ Module S_Database
         Dim contents As String
         Dim bAns = False
         Dim objReader As StreamWriter
+
         fullpath = Paths.Logs & FN
         contents = GetFileContents(fullpath)
         contents = contents & vbNewLine & strData

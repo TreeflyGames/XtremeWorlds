@@ -70,8 +70,6 @@ Friend Class FrmOptions
                 resolution = cmbScreenSize.SelectedItem.ToString.ToLower.Split("x")
                 width = resolution(0)
                 height = resolution(1)
-
-                RePositionGui(Width, Height)
             End If
 
             Types.Settings.Fullscreen = 0

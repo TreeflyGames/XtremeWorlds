@@ -120,7 +120,7 @@ Module S_Loop
             Console.WriteLine("Saving all online players...")
 
             For i = 1 To GetPlayersOnline()
-                SavePlayer(i)
+                SaveCharacter(i, TempPlayer(i).Slot)
                 SaveBank(i)
             Next
 

@@ -1551,6 +1551,7 @@ Module C_Interface
             If Socket.IsConnected() Then
                 SendRegister(User, Pass)
             Else
+                InitNetwork()
                 Dialogue("Connection Problem", "Cannot connect to game server.", "Please try again.", DialogueType.Alert)
             End If
         End With
@@ -1885,7 +1886,6 @@ Module C_Interface
         Dim name As String
         name = Windows(GetWindowIndex("winNewChar")).Controls(GetControlIndex("winNewChar", "txtName")).Text
         HideWindows()
-        If name = "" Then Exit Sub
         AddChar(name, newCharGender, newCharJob, newCharSprite)
     End Sub
 

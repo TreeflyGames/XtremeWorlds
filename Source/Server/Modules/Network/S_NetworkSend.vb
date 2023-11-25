@@ -50,14 +50,14 @@ Module S_NetworkSend
 
         ' loop through each character. clear, load, add. repeat.
         For i = 1 To MAX_CHARS
-            Call LoadCharacter(index, i)
+            LoadCharacter(index, i)
 
             buffer.WriteString(Trim$(Player(index).Name))
             buffer.WriteInt32(Player(index).Sprite)
             buffer.WriteInt32(Player(index).Access)
             buffer.WriteInt32(Player(index).Job)
 
-            Call ClearPlayer(index)
+            ClearCharacter(index)
         Next
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
@@ -116,7 +116,7 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub SendLoadCharOk(index As Integer)
+    Sub SendLoginOK(index As Integer)
         Dim Buffer As New ByteStream(4)
 
         Buffer.WriteInt32(ServerPackets.SLoginOK)
@@ -862,8 +862,8 @@ Module S_NetworkSend
         Next
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
-buffer.Dispose()
-End Sub
+        buffer.Dispose()
+    End Sub
 
     Sub SendClearSkillBuffer(index As Integer)
         Dim buffer As New ByteStream(4)
@@ -1030,7 +1030,6 @@ End Sub
         buffer.Dispose()
     End Sub
 
-    'Mapreport
     Sub SendMapReport(index As Integer)
         Dim buffer As New ByteStream(4), I As Integer
 

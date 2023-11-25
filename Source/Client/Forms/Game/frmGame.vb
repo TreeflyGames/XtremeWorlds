@@ -17,7 +17,6 @@ Friend Class FrmGame
             FormBorderStyle = 0
         End If
 
-        RePositionGui(screenWidth, screenHeight)
     End Sub
 
     Private Sub FrmMainGame_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
