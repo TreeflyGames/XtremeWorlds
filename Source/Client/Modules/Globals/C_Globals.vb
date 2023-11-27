@@ -215,4 +215,5 @@ Module C_Globals
     Public InitAnimationEditor As Boolean
     Public InitJobEditor As Boolean
     Public InitQuestEditor As Boolean
+    Public InitAdminForm As Boolean
 End Module

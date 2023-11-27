@@ -1040,7 +1040,7 @@ Module C_NetworkReceive
     End Sub
 
     Private Sub Packet_Admin(ByRef data() As Byte)
-        FrmAdmin.Visible = True
+        InitAdminForm = True
     End Sub
 
     Private Sub Packet_MapNames(ByRef data() As Byte)

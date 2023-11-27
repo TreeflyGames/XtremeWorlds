@@ -250,6 +250,12 @@ Module C_UpdateUI
 #End Region
 
     Sub UpdateUi()
+        If InitAdminForm = True Then
+            With FrmAdmin
+                .Show()
+            End With
+        End If
+
         If InitMapEditor = True Then
             With frmEditor_Map
                 Editor = EditorType.Map
