@@ -325,6 +325,13 @@ Module C_Graphics
     Private Sub GameWindow_KeyPressed(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
         Console.WriteLine("Key Pressed: " & e.Code.ToString())
 
+        If Inputs.MoveUp(e.Code) Then VbKeyUp = True
+        If Inputs.MoveDown(e.Code) Then VbKeyDown = True
+        If Inputs.MoveLeft(e.Code) Then VbKeyLeft = True
+        If Inputs.MoveRight(e.Code) Then VbKeyRight = True
+        If Inputs.Attack(e.Code) Then VbKeyControl = True
+        If Inputs.Run(e.Code) Then VbKeyShift = True
+
         ' Check for active window
         If activeWindow > 0 Then
             ' Ensure it's visible
