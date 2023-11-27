@@ -204,6 +204,11 @@ Module C_Player
             CloseBank()
         End If
 
+        If Not inSmallChat Then
+            CanMove = False
+            Exit Function
+        End If
+
         d = GetPlayerDir(Myindex)
 
         If DirUp Then
