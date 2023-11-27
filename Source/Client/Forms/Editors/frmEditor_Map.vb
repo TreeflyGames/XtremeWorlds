@@ -598,9 +598,7 @@ Public Class frmEditor_Map
     End Sub
 
     Public Sub MapEditorChooseTile(ByVal Button As Integer, ByVal X As Single, ByVal Y As Single)
-
         If Button = MouseButtons.Left Then 'Left Mouse Button
-
             EditorTileWidth = 1
             EditorTileHeight = 1
 
@@ -629,6 +627,7 @@ Public Class frmEditor_Map
 
             EditorTileSelStart = New Point(EditorTileX, EditorTileY)
             EditorTileSelEnd = New Point(EditorTileX + EditorTileWidth, EditorTileY + EditorTileHeight)
+            DrawTileset()
         End If
     End Sub
 

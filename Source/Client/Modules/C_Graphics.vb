@@ -23,11 +23,11 @@ Module C_Graphics
     Friend CursorInfo As GraphicInfo
 
     'TileSets
-    Friend TileSetTexture() As Texture
-    Friend TileSetImgsGFX() As Bitmap
+    Friend TilesetTexture() As Texture
+    Friend TilesetImgsGFX() As Bitmap
 
-    Friend TileSetSprite() As Sprite
-    Friend TileSetTextureInfo() As GraphicInfo
+    Friend TilesetSprite() As Sprite
+    Friend TilesetTextureInfo() As GraphicInfo
 
     'Characters
     Friend CharacterGfx() As Texture
