@@ -8,34 +8,8 @@ Friend Class FrmGame
         Dim gameLogic As New Thread(AddressOf Startup)
         gameLogic.Start()
 
-        While True
-            UpdateUi()
-            If Editor = EditorType.Map Then frmEditor_Map.DrawTileset()
-            If Editor = EditorType.Animation Then EditorAnim_DrawAnim()
-            Application.DoEvents()
-        End While
+        BeginInvoke(New MethodInvoker(Sub() Hide()))
     End Sub
-
-    Private Sub FrmMainGame_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing
-        Application.Exit()
-    End Sub
-
-    Private Sub FrmMainGame_KeyPress(sender As Object, e As KeyPressEventArgs) Handles MyBase.KeyPress
-        ChatInput.ProcessCharacter(e)
-    End Sub
-
-    Private Sub FrmGame_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
-        CenterToScreen()
-    End Sub
-
-    Private Sub FrmMainGame_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
-
-    End Sub
-
-    Private Sub FrmMainGame_KeyUp(sender As Object, e As KeyEventArgs) Handles MyBase.KeyUp
-
-    End Sub
-
 #End Region
 
 #Region "PicScreen Code"
@@ -49,7 +23,7 @@ Friend Class FrmGame
 
     End Sub
 
-    Private Sub PicScreen_DoubleClick(sender As Object, e As MouseEventArgs) Handles picscreen.DoubleClick
+    Private Sub PicScreen_DoubleClick(sender As Object, e As MouseEventArgs)
 
     End Sub
 

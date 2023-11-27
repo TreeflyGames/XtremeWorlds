@@ -535,9 +535,6 @@ Public Class frmEditor_Map
         txtMaxX.Text = Map.MaxX
         txtMaxY.Text = Map.MaxY
 
-        cmbTileSets.SelectedIndex = 0
-        cmbLayers.SelectedIndex = 0
-        cmbAutoTile.SelectedIndex = 0
         cmbNpcList.SelectedIndex = 0
         lstMapNpc.SelectedIndex = 0
 
@@ -580,6 +577,7 @@ Public Class frmEditor_Map
         For i = 1 To MAX_SHOPS
             cmbShop.Items.Add(i & ": " & Shop(i).Name)
         Next
+
         ' we're not in a shop
         cmbShop.SelectedIndex = 0
 
@@ -592,6 +590,7 @@ Public Class frmEditor_Map
 
         cmbTileSets.SelectedIndex = 0
         cmbLayers.SelectedIndex = 0
+        cmbAutoTile.SelectedIndex = 0
 
         InitMapProperties = True
 
@@ -600,7 +599,7 @@ Public Class frmEditor_Map
 
     Public Sub MapEditorChooseTile(ByVal Button As Integer, ByVal X As Single, ByVal Y As Single)
 
-        If Button = Mouse.Button.Left Then 'Left Mouse Button
+        If Button = MouseButtons.Left Then 'Left Mouse Button
 
             EditorTileWidth = 1
             EditorTileHeight = 1
@@ -634,7 +633,7 @@ Public Class frmEditor_Map
     End Sub
 
     Public Sub MapEditorDrag(ByVal Button As Integer, ByVal X As Single, ByVal Y As Single)
-        If Button = Mouse.Button.Left Then 'Left Mouse Button
+        If Button = MouseButtons.Left Then 'Left Mouse Button
             ' convert the pixel number to tile number
             X = (X \ PicX) + 1
             Y = (Y \ PicY) + 1
@@ -700,12 +699,12 @@ Public Class frmEditor_Map
         If Button = Mouse.Button.Left Then
             If tabpages.SelectedTab Is tpTiles Then
                 If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then 'single tile
-                    MapEditorSetTile(CurX, CurY, CurLayer, False, cmbAutoTile.SelectedIndex + 1)
+                    MapEditorSetTile(CurX, CurY, CurLayer, False, cmbAutoTile.SelectedIndex)
                 Else ' multi tile!
                     If cmbAutoTile.SelectedIndex = 0 Then
                         MapEditorSetTile(CurX, CurY, CurLayer, True)
                     Else
-                        MapEditorSetTile(CurX, CurY, CurLayer, , cmbAutoTile.SelectedIndex + 1)
+                        MapEditorSetTile(CurX, CurY, CurLayer, True, cmbAutoTile.SelectedIndex)
                     End If
                 End If
             ElseIf tabpages.SelectedTab Is tpAttributes Then
@@ -839,7 +838,7 @@ Public Class frmEditor_Map
                     If cmbAutoTile.SelectedIndex = 0 Then
                         MapEditorSetTile(CurX, CurY, CurLayer, True, 0, 1)
                     Else
-                        MapEditorSetTile(CurX, CurY, CurLayer, , cmbAutoTile.SelectedIndex, 1)
+                        MapEditorSetTile(CurX, CurY, CurLayer, True, cmbAutoTile.SelectedIndex, 1)
                     End If
                 End If
             ElseIf tabpages.SelectedTab Is tpAttributes Then
@@ -1035,7 +1034,7 @@ Public Class frmEditor_Map
             Else
                 cmbTileSets.SelectedIndex = 1
             End If
-            MapEditorChooseTile(Mouse.Button.Left, .Layer(CurLayer).X * PicX, .Layer(CurLayer).Y * PicY)
+            MapEditorChooseTile(MouseButtons.Left, .Layer(CurLayer).X * PicX, .Layer(CurLayer).Y * PicY)
             EyeDropper = Not EyeDropper
         End With
     End Sub
@@ -1160,6 +1159,8 @@ Public Class frmEditor_Map
 
     Public Sub DrawTileset()
         Dim tileset As Byte
+
+        TilesetWindow?.Clear()
 
         ' find tileset number
         tileset = cmbTileSets.SelectedIndex + 1

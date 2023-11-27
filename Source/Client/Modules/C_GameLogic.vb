@@ -246,7 +246,6 @@ Module C_GameLogic
                 End If
             End If
 
-
             If tmrweather < tick Then
                 ProcessWeather()
                 tmrweather = tick + 50
@@ -271,6 +270,9 @@ Module C_GameLogic
             End If
 
             Render_Graphics()
+
+            UpdateUi()
+            Application.DoEvents()
         End While
     End Sub
 

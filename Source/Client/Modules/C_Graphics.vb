@@ -1984,6 +1984,9 @@ Module C_Graphics
 
         'and finally show everything on screen
         GameWindow.Display()
+
+        If Editor = EditorType.Map Then frmEditor_Map.DrawTileset()
+        If Editor = EditorType.Animation Then EditorAnim_DrawAnim()
     End Sub
 
     Friend Sub DrawPanorama(index As Integer)

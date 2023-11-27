@@ -984,15 +984,6 @@ Partial Class FrmEditor_Events
         Me.chkWalkAnim.TabIndex = 0
         Me.chkWalkAnim.Text = "No Walk Animation"
         '
-        'DarkLabel8
-        '
-        Me.DarkLabel8.Location = New System.Drawing.Point(8, 23)
-        Me.DarkLabel8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.DarkLabel8.Name = "DarkLabel8"
-        Me.DarkLabel8.Size = New System.Drawing.Size(41, 15)
-        Me.DarkLabel8.TabIndex = 0
-        Me.DarkLabel8.Text = "Quest:"
-        '
         'DarkGroupBox5
         '
         Me.DarkGroupBox5.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(45, Byte), Integer), CType(CType(48, Byte), Integer))

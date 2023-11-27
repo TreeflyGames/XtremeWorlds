@@ -23,39 +23,40 @@ Partial Class FrmGame
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmGame))
-        Me.picscreen = New System.Windows.Forms.PictureBox()
-        CType(Me.picscreen,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
-        '
-        'picscreen
-        '
-        Me.picscreen.Location = New System.Drawing.Point(0, 0)
-        Me.picscreen.Margin = New System.Windows.Forms.Padding(7, 6, 7, 6)
-        Me.picscreen.Name = "picscreen"
-        Me.picscreen.Size = New System.Drawing.Size(1365, 1084)
-        Me.picscreen.TabIndex = 4
-        Me.picscreen.TabStop = false
-        '
-        'FrmGame
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(13!, 32!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(224,Byte),Integer), CType(CType(224,Byte),Integer), CType(CType(224,Byte),Integer))
-        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ClientSize = New System.Drawing.Size(1376, 1101)
-        Me.Controls.Add(Me.picscreen)
-        Me.DoubleBuffered = true
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(7, 6, 7, 6)
-        Me.MaximizeBox = false
-        Me.Name = "FrmGame"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "frmMainGame"
-        CType(Me.picscreen,System.ComponentModel.ISupportInitialize).EndInit
-        Me.ResumeLayout(false)
+        picscreen = New PictureBox()
+        CType(picscreen, ComponentModel.ISupportInitialize).BeginInit()
+        SuspendLayout()
+        ' 
+        ' picscreen
+        ' 
+        picscreen.Location = New Point(0, 0)
+        picscreen.Margin = New Padding(9, 8, 9, 8)
+        picscreen.Name = "picscreen"
+        picscreen.Size = New Size(1785, 1389)
+        picscreen.TabIndex = 4
+        picscreen.TabStop = False
+        ' 
+        ' FrmGame
+        ' 
+        AutoScaleDimensions = New SizeF(17F, 41F)
+        AutoScaleMode = AutoScaleMode.Font
+        AutoSizeMode = AutoSizeMode.GrowAndShrink
+        BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
+        BackgroundImageLayout = ImageLayout.Stretch
+        ClientSize = New Size(1799, 1411)
+        Controls.Add(picscreen)
+        DoubleBuffered = True
+        FormBorderStyle = FormBorderStyle.FixedSingle
+        Icon = CType(resources.GetObject("$this.Icon"), Icon)
+        Margin = New Padding(9, 8, 9, 8)
+        MaximizeBox = False
+        Name = "FrmGame"
+        Opacity = 0R
+        StartPosition = FormStartPosition.CenterScreen
+        Text = "frmMainGame"
+        CType(picscreen, ComponentModel.ISupportInitialize).EndInit()
+        ResumeLayout(False)
 
-End Sub
+    End Sub
     Friend WithEvents picscreen As System.Windows.Forms.PictureBox
 End Class
