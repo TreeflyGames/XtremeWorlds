@@ -842,12 +842,12 @@ Module C_Maps
 
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
-                If TileSetTextureInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
+                If TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
                     LoadTexture(Map.Tile(x, y).Layer(i).Tileset, 1)
                 End If
 
                 ' we use it, lets update timer
-                With TileSetTextureInfo(Map.Tile(x, y).Layer(i).Tileset)
+                With TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset)
                     .TextureTimer = GetTickCount() + 100000
                 End With
 
@@ -869,7 +869,7 @@ Module C_Maps
                         alpha = 255
                     End If
 
-                    RenderTexture(TileSetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), srcrect.X, srcrect.Y, srcrect.Width, srcrect.Height, , , alpha)
+                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), srcrect.X, srcrect.Y, srcrect.Width, srcrect.Height, , , alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     ' Draw autotiles
                     DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
@@ -894,12 +894,12 @@ Module C_Maps
             If Map.Tile(x, y).Layer Is Nothing Then Exit Sub
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
-                If TileSetTextureInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
+                If TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
                     LoadTexture(Map.Tile(x, y).Layer(i).Tileset, 1)
                 End If
 
                 ' we use it, lets update timer
-                With TileSetTextureInfo(Map.Tile(x, y).Layer(i).Tileset)
+                With TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset)
                     .TextureTimer = GetTickCount() + 100000
                 End With
 

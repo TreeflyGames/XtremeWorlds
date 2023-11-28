@@ -108,11 +108,11 @@ Public Class frmEditor_Map
     End Sub
 
     Private Sub TsbFill_Click(sender As Object, e As EventArgs) Handles tsbFill.Click
-        MapEditorFillLayer(cmbAutoTile.SelectedIndex)
+        MapEditorFillLayer(cmbLayers.SelectedIndex + 1, cmbAutoTile.SelectedIndex + 1)
     End Sub
 
     Private Sub TsbClear_Click(sender As Object, e As EventArgs) Handles tsbClear.Click
-        MapEditorClearLayer()
+        MapEditorClearLayer(cmbLayers.SelectedIndex + 1)
     End Sub
 
     Private Sub TsbEyeDropper_Click(sender As Object, e As EventArgs) Handles tsbEyeDropper.Click
@@ -564,8 +564,6 @@ Public Class frmEditor_Map
     End Sub
 
     Public Sub MapEditorInit()
-        HideGui = True
-
         ' set the scrolly bars
         If Map.Tileset = 0 Then Map.Tileset = 1
         If Map.Tileset > NumTileSets Then Map.Tileset = 1
@@ -653,6 +651,8 @@ Public Class frmEditor_Map
 
             EditorTileSelStart = New Point(EditorTileX, EditorTileY)
             EditorTileSelEnd = New Point(EditorTileWidth, EditorTileHeight)
+
+            DrawTileset()
         End If
 
     End Sub
@@ -862,7 +862,6 @@ Public Class frmEditor_Map
         Buffer.WriteInt32(1)
         Socket?.SendData(Buffer.Data, Buffer.Head)
         Editor = -1
-        HideGui = False
         GettingMap = True
         SendCloseEditor()
 
@@ -872,7 +871,6 @@ Public Class frmEditor_Map
     Public Sub MapEditorSend()
         SendMap()
         Editor = -1
-        HideGui = False
         GettingMap = True
         SendCloseEditor()
     End Sub
@@ -965,61 +963,12 @@ Public Class frmEditor_Map
 
     End Sub
 
-    Public Sub MapEditorClearLayer()
-        Dim X As Integer
-        Dim Y As Integer
-        Dim CurLayer As Integer
-
-        CurLayer = cmbLayers.SelectedIndex + 1
-
-        ' ask to clear layer
-        If MsgBox("Are you sure you wish to clear this layer?", vbYesNo, "MapEditor") = vbYes Then
-            For X = 0 To Map.MaxX
-                For Y = 0 To Map.MaxY
-                    With Map.Tile(X, Y)
-                        .Layer(CurLayer).X = 0
-                        .Layer(CurLayer).Y = 0
-                        .Layer(CurLayer).Tileset = 0
-                        .Layer(CurLayer).AutoTile = 0
-                        CacheRenderState(X, Y, CurLayer)
-                    End With
-                Next
-            Next
-        End If
+    Public Sub MapEditorClearLayer(ByVal LayerNum As Byte)
+        Dialogue("Map Editor", "Clear Layer: " & LayerNum, "Are you sure you wish to clear this layer?", DialogueType.ClearLayer, DialogueStyle.YesNo)
     End Sub
 
-    Public Sub MapEditorFillLayer(Optional ByVal theAutotile As Byte = 0)
-        Dim X As Integer
-        Dim Y As Integer
-        Dim CurLayer As Integer
-
-        CurLayer = cmbLayers.SelectedIndex + 1
-
-        If MsgBox("Are you sure you wish to fill this layer?", vbYesNo, "Map Editor") = vbYes Then
-            If theAutotile > 0 Then
-                For X = 0 To Map.MaxX
-                    For Y = 0 To Map.MaxY
-                        Map.Tile(X, Y).Layer(CurLayer).X = EditorTileX
-                        Map.Tile(X, Y).Layer(CurLayer).Y = EditorTileY
-                        Map.Tile(X, Y).Layer(CurLayer).Tileset = cmbTileSets.SelectedIndex + 1
-                        Map.Tile(X, Y).Layer(CurLayer).AutoTile = theAutotile
-                        CacheRenderState(X, Y, CurLayer)
-                    Next
-                Next
-
-                ' do a re-init so we can see our changes
-                InitAutotiles()
-            Else
-                For X = 0 To Map.MaxX
-                    For Y = 0 To Map.MaxY
-                        Map.Tile(X, Y).Layer(CurLayer).X = EditorTileX
-                        Map.Tile(X, Y).Layer(CurLayer).Y = EditorTileY
-                        Map.Tile(X, Y).Layer(CurLayer).Tileset = cmbTileSets.SelectedIndex + 1
-                        CacheRenderState(X, Y, CurLayer)
-                    Next
-                Next
-            End If
-        End If
+    Public Sub MapEditorFillLayer(ByVal LayerNum As Byte, Optional ByVal theAutotile As Byte = 0)
+        Dialogue("Map Editor", "Fill Layer: " & LayerNum, "Are you sure you wish to fill this layer?", DialogueType.FillLayer, DialogueStyle.YesNo)
     End Sub
 
     Public Sub MapEditorEyeDropper()
@@ -1170,12 +1119,12 @@ Public Class frmEditor_Map
             .FillColor = New SFML.Graphics.Color(SFML.Graphics.Color.Transparent)
         }
 
-        If TileSetTextureInfo(tileset).IsLoaded = False Then
+        If TilesetGfxInfo(tileset).IsLoaded = False Then
             LoadTexture(tileset, 1)
         End If
 
         ' we use it, lets update timer
-        With TileSetTextureInfo(tileset)
+        With TilesetGfxInfo(tileset)
             .TextureTimer = GetTickCount() + 100000
         End With
 
@@ -1203,10 +1152,10 @@ Public Class frmEditor_Map
             End Select
         End If
 
-        If TileSetTextureInfo(tileset).Width < picBackSelect.Width Or TileSetTextureInfo(tileset).Height < picBackSelect.Height Then
-            RenderTexture(TileSetSprite(tileset), TilesetWindow, 0, 0, 0, 0, TileSetTextureInfo(tileset).Width, TileSetTextureInfo(tileset).Height, TileSetTextureInfo(tileset).Width, TileSetTextureInfo(tileset).Height)
+        If TilesetGfxInfo(tileset).Width < picBackSelect.Width Or TilesetGfxInfo(tileset).Height < picBackSelect.Height Then
+            RenderTexture(TilesetSprite(tileset), TilesetWindow, 0, 0, 0, 0, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height)
         Else
-            RenderTexture(TileSetSprite(tileset), TilesetWindow, 0, 0, 0, 0, picBackSelect.Width, picBackSelect.Height, TileSetTextureInfo(tileset).Width, TileSetTextureInfo(tileset).Height)
+            RenderTexture(TilesetSprite(tileset), TilesetWindow, 0, 0, 0, 0, picBackSelect.Width, picBackSelect.Height, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height)
         End If
 
         rec2.Size = New Vector2f(EditorTileWidth * PicX, EditorTileHeight * PicY)

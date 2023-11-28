@@ -276,7 +276,7 @@ Friend Module C_Projectiles
         x = ConvertMapX(x * PicX)
         y = ConvertMapY(y * PicY)
 
-        Dim tmpSprite As Sprite = New Sprite(ProjectileGfx(sprite)) With {
+        Dim tmpSprite As Sprite = New Sprite(ProjectileTexture(sprite)) With {
             .TextureRect = New IntRect(rec.Left, rec.Top, 32, 32),
             .Position = New Vector2f(x, y)
         }

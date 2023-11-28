@@ -546,6 +546,8 @@
         WithdrawItem
         TradeAmount
         UntradeAmount
+        ClearLayer
+        FillLayer
     End Enum
 
     Public Enum DialogueStyle

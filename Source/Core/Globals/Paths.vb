@@ -14,7 +14,7 @@ Namespace Paths
         ''' <summary> Returns contents directory </summary>
         Public ReadOnly Property Contents As String
             Get
-                Return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) & "//Contents//"
+                Return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) & "\Contents\"
             End Get
         End Property
 
@@ -39,28 +39,28 @@ Namespace Paths
         ''' <summary> Returns graphics directory </summary>
         Public ReadOnly Property Graphics As String
             Get
-                Return Contents & "\Graphics\"
+                Return Contents & "Graphics\"
             End Get
         End Property
 
         ''' <summary> Returns gui directory </summary>
         Public ReadOnly Property Gui As String
             Get
-                Return Contents & "\Gui\"
+                Return Contents & "Gui\"
             End Get
         End Property
 
         ''' <summary> Returns music directory </summary>
         Public ReadOnly Property Music As String
             Get
-                Return Contents & "\Music\"
+                Return Contents & "Music\"
             End Get
         End Property
 
         ''' <summary> Returns sounds directory </summary>
         Public ReadOnly Property Sounds As String
             Get
-                Return Contents & "\Sounds\"
+                Return Contents & "Sounds\"
             End Get
         End Property
 

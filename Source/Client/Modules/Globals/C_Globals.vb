@@ -60,7 +60,6 @@ Module C_Globals
     Public TmpCurrencyItem As Integer
 
     Public CurrencyMenu As Byte
-    Public HideGui As Boolean
     Public chatShowLine As String
 
     ' chat

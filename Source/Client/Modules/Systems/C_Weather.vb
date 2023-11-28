@@ -90,8 +90,8 @@ Friend Module C_Weather
             .TextureTimer = GetTickCount() + 100000
         End With
 
-        FogGfx(fogNum).Repeated = True
-        FogGfx(fogNum).Smooth = True
+        FogTexture(fogNum).Repeated = True
+        FogTexture(fogNum).Smooth = True
 
         FogSprite(fogNum).Color = New Color(255, 255, 255, CurrentFogOpacity)
         FogSprite(fogNum).TextureRect = New IntRect(0, 0, GameWindow.Size.X + 200, GameWindow.Size.Y + 200)

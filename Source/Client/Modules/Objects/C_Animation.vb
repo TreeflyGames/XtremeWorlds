@@ -186,7 +186,7 @@ Module C_Animations
 
         If sprite < 1 OrElse sprite > NumAnimations Then Exit Sub
 
-        If AnimationsGfxInfo(sprite).IsLoaded = False Then
+        If AnimationGfxInfo(sprite).IsLoaded = False Then
             LoadTexture(sprite, 6)
         End If
 
@@ -195,8 +195,8 @@ Module C_Animations
         If frameCount <= 0 Then Exit Sub
 
         ' total width divided by frame count
-        width = AnimationsGfxInfo(sprite).Width / frameCount
-        height = AnimationsGfxInfo(sprite).Height
+        width = AnimationGfxInfo(sprite).Width / frameCount
+        height = AnimationGfxInfo(sprite).Height
 
         sRect.Y = 0
         sRect.Height = height
@@ -283,7 +283,7 @@ Module C_Animations
 
         If sRect.Width < 0 OrElse sRect.Height < 0 Then Exit Sub
 
-        RenderTexture(AnimationsSprite(sprite), GameWindow, x, y, sRect.X, sRect.Y, sRect.Width, sRect.Height)
+        RenderTexture(AnimationSprite(sprite), GameWindow, x, y, sRect.X, sRect.Y, sRect.Width, sRect.Height)
 
     End Sub
 

@@ -546,12 +546,10 @@ Module C_Player
     Friend Sub DrawPlayer(index As Integer)
         Dim anim As Byte, x As Integer, y As Integer
         Dim spritenum As Integer, spriteleft As Integer
-        Dim attackspeed As Integer, attackSprite As Byte
+        Dim attackspeed As Integer
         Dim srcrec As Rectangle
 
         spritenum = GetPlayerSprite(index)
-
-        attackSprite = 0
 
         If spritenum <= 0 OrElse spritenum > NumCharacters Then Exit Sub
 
@@ -568,11 +566,7 @@ Module C_Player
         ' Check for attacking animation
         If Player(index).AttackTimer + (attackspeed / 2) > GetTickCount() Then
             If Player(index).Attacking = 1 Then
-                If attackSprite = 1 Then
-                    anim = 4
-                Else
-                    anim = 3
-                End If
+                anim = 3
             End If
         Else
             ' If not attacking, walk normally
@@ -614,19 +608,6 @@ Module C_Player
                 spriteleft = 1
         End Select
 
-        If attackSprite = 1 Then
-            srcrec = New Rectangle((anim) * (CharacterGfxInfo(spritenum).Width / 5), spriteleft * (CharacterGfxInfo(spritenum).Height / 4), (CharacterGfxInfo(spritenum).Width / 5), (CharacterGfxInfo(spritenum).Height / 4))
-        Else
-            srcrec = New Rectangle((anim) * (CharacterGfxInfo(spritenum).Width / 4), spriteleft * (CharacterGfxInfo(spritenum).Height / 4), (CharacterGfxInfo(spritenum).Width / 4), (CharacterGfxInfo(spritenum).Height / 4))
-        End If
-
-        ' Calculate the X
-        If attackSprite = 1 Then
-            x = GetPlayerX(index) * PicX + Player(index).XOffset - ((CharacterGfxInfo(spritenum).Width / 5 - 32) / 2)
-        Else
-            x = GetPlayerX(index) * PicX + Player(index).XOffset - ((CharacterGfxInfo(spritenum).Width / 4 - 32) / 2)
-        End If
-
         ' Is the player's height more than 32..?
         If (CharacterGfxInfo(spritenum).Height) > 32 Then
             ' Create a 32 pixel offset for larger sprites
@@ -635,6 +616,9 @@ Module C_Player
             ' Proceed as normal
             y = GetPlayerY(index) * PicY + Player(index).YOffset
         End If
+
+        srcrec = New Rectangle((anim) * (CharacterGfxInfo(spritenum).Width / 4), spriteleft * (CharacterGfxInfo(spritenum).Height / 4),
+                               (CharacterGfxInfo(spritenum).Width / 4), (CharacterGfxInfo(spritenum).Height / 4))
 
         ' render the actual sprite
         DrawCharacter(spritenum, x, y, srcrec)
@@ -708,149 +692,6 @@ Module C_Player
         RenderText(name, GameWindow, textX, textY, color, backcolor)
     End Sub
 
-    Sub DrawEquipment()
-        Dim i As Integer, itemnum As Integer, itempic As Integer, tmprarity As Byte
-        Dim rec As Rectangle, recPos As Rectangle, playersprite As Integer
-        Dim tmpSprite2 As Sprite = New Sprite(CharPanelGfx)
-        Dim tempRarityColor As SFML.Graphics.Color
-
-        If NumItems = 0 Then Exit Sub
-
-        'first render panel
-        RenderTexture(CharPanelSprite, GameWindow, CharWindowX, CharWindowY, 0, 0, CharPanelGfxInfo.Width, CharPanelGfxInfo.Height)
-
-        'lets get player sprite to render
-        playersprite = GetPlayerSprite(Myindex)
-
-        With rec
-            .Y = 0
-            .Height = CharacterGfxInfo(playersprite).Height / 4
-            .X = 0
-            .Width = CharacterGfxInfo(playersprite).Width / 4
-        End With
-
-        RenderTexture(CharacterSprite(playersprite), GameWindow, CharWindowX + CharPanelGfxInfo.Width / 4 - rec.Width / 2, CharWindowY + CharPanelGfxInfo.Height / 2 - rec.Height / 2, rec.X, rec.Y, rec.Width, rec.Height)
-
-        For i = 1 To EquipmentType.Count - 1
-            itemnum = GetPlayerEquipment(Myindex, i)
-
-            If itemnum > 0 Then
-                StreamItem(itemnum)
-
-                itempic = Item(itemnum).Pic
-
-                If ItemsGfxInfo(itempic).IsLoaded = False Then
-                    LoadTexture(itempic, 4)
-                End If
-
-                'seeying we still use it, lets update timer
-                With ItemsGfxInfo(itempic)
-                    .TextureTimer = GetTickCount() + 100000
-                End With
-
-                With rec
-                    .Y = 0
-                    .Height = 32
-                    .X = 0
-                    .Width = 32
-                End With
-
-                With recPos
-                    .Y = CharWindowY + EqTop + ((EqOffsetY + 32) * ((i - 1) \ EqColumns))
-                    .Height = PicY
-                    .X = CharWindowX + EqLeft + 1 + ((EqOffsetX + 32 - 2) * (((i - 1) Mod EqColumns)))
-                    .Width = PicX
-                End With
-
-                If itempic > 0 Then
-                    ItemsSprite(itempic).TextureRect = New IntRect(rec.X, rec.Y, rec.Width, rec.Height)
-                    ItemsSprite(itempic).Position = New Vector2f(recPos.X, recPos.Y)
-                    GameWindow.Draw(ItemsSprite(itempic))
-                End If
-
-                ' set the name
-                tmprarity = Item(itemnum).Rarity
-
-                Select Case tmprarity
-                    Case 0 ' White
-                        tempRarityColor = ItemRarityColor0
-                    Case 1 ' green
-                        tempRarityColor = ItemRarityColor1
-                    Case 2 ' blue
-                        tempRarityColor = ItemRarityColor2
-                    Case 3 ' maroon
-                        tempRarityColor = ItemRarityColor3
-                    Case 4 ' purple
-                        tempRarityColor = ItemRarityColor4
-                    Case 5 'gold
-                        tempRarityColor = ItemRarityColor5
-                End Select
-
-                Dim rec2 As New RectangleShape With {
-                    .OutlineColor = New SFML.Graphics.Color(tempRarityColor),
-                    .OutlineThickness = 2,
-                    .FillColor = New SFML.Graphics.Color(SFML.Graphics.Color.Transparent),
-                    .Size = New Vector2f(30, 30),
-                    .Position = New Vector2f(recPos.X, recPos.Y)
-                }
-                GameWindow.Draw(rec2)
-            End If
-
-        Next
-
-        ' Set the character windows
-        'name
-        RenderText(Language.Character.PName & GetPlayerName(Myindex), GameWindow, CharWindowX + 10, CharWindowY + 14, SFML.Graphics.Color.White, SFML.Graphics.Color.Black)
-        'class
-        RenderText(Language.Character.JobType & Trim(Job(GetPlayerJob(Myindex)).Name), GameWindow, CharWindowX + 10, CharWindowY + 33, SFML.Graphics.Color.White, SFML.Graphics.Color.Black)
-        'level
-        RenderText(Language.Character.Level & GetPlayerLevel(Myindex), GameWindow, CharWindowX + 150, CharWindowY + 14, SFML.Graphics.Color.White, SFML.Graphics.Color.Black)
-        'points
-        RenderText(Language.Character.Points & GetPlayerPoints(Myindex), GameWindow, CharWindowX + 6, CharWindowY + 200, SFML.Graphics.Color.White, SFML.Graphics.Color.Black)
-
-        'Header
-        RenderText(Language.Character.StatsLabel, GameWindow, CharWindowX + 250, CharWindowY + 14, SFML.Graphics.Color.White, SFML.Graphics.Color.Black)
-
-        'strength stat
-        RenderText(Language.Character.Strength & GetPlayerStat(Myindex, StatType.Strength), GameWindow, CharWindowX + 210, CharWindowY + 30, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-        'endurance stat
-        RenderText(Language.Character.Endurance & GetPlayerStat(Myindex, StatType.Endurance), GameWindow, CharWindowX + 210, CharWindowY + 50, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-        'vitality stat
-        RenderText(Language.Character.Vitality & GetPlayerStat(Myindex, StatType.Vitality), GameWindow, CharWindowX + 210, CharWindowY + 70, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-        'intelligence stat
-        RenderText(Language.Character.Intelligence & GetPlayerStat(Myindex, StatType.Intelligence), GameWindow, CharWindowX + 210, CharWindowY + 90, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-        'luck stat
-        RenderText(Language.Character.Luck & GetPlayerStat(Myindex, StatType.Luck), GameWindow, CharWindowX + 210, CharWindowY + 110, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-        'spirit stat
-        RenderText(Language.Character.Spirit & GetPlayerStat(Myindex, StatType.Spirit), GameWindow, CharWindowX + 210, CharWindowY + 130, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-
-        If GetPlayerPoints(Myindex) > 0 Then
-            'strength upgrade
-            RenderTexture(CharPanelPlusSprite, GameWindow, CharWindowX + StrengthUpgradeX, CharWindowY + StrengthUpgradeY + 4, 0, 0, CharPanelPlusGfxInfo.Width, CharPanelPlusGfxInfo.Height)
-            'endurance upgrade
-            RenderTexture(CharPanelPlusSprite, GameWindow, CharWindowX + EnduranceUpgradeX, CharWindowY + EnduranceUpgradeY + 4, 0, 0, CharPanelPlusGfxInfo.Width, CharPanelPlusGfxInfo.Height)
-            'vitality upgrade
-            RenderTexture(CharPanelPlusSprite, GameWindow, CharWindowX + VitalityUpgradeX, CharWindowY + VitalityUpgradeY + 4, 0, 0, CharPanelPlusGfxInfo.Width, CharPanelPlusGfxInfo.Height)
-            'intelligence upgrade
-            RenderTexture(CharPanelPlusSprite, GameWindow, CharWindowX + IntellectUpgradeX, CharWindowY + IntellectUpgradeY + 4, 0, 0, CharPanelPlusGfxInfo.Width, CharPanelPlusGfxInfo.Height)
-            'willpower upgrade
-            RenderTexture(CharPanelPlusSprite, GameWindow, CharWindowX + LuckUpgradeX, CharWindowY + LuckUpgradeY + 4, 0, 0, CharPanelPlusGfxInfo.Width, CharPanelPlusGfxInfo.Height)
-            'spirit upgrade
-            RenderTexture(CharPanelPlusSprite, GameWindow, CharWindowX + SpiritUpgradeX, CharWindowY + SpiritUpgradeY + 4, 0, 0, CharPanelPlusGfxInfo.Width, CharPanelPlusGfxInfo.Height)
-        End If
-
-        'gather skills
-        'Header
-        RenderText(Language.Character.SkillLabel, GameWindow, CharWindowX + 250, CharWindowY + 145, SFML.Graphics.Color.White, SFML.Graphics.Color.Black)
-        'herbalist skill
-        RenderText(String.Format(GetResourceSkillName(0) & ": " & GetPlayerGatherSkillLvl(Myindex, ResourceType.Herbing)) & " " & Language.Character.Exp & GetPlayerGatherSkillExp(Myindex, ResourceType.Herbing) & "/" & GetPlayerGatherSkillMaxExp(Myindex, ResourceType.Herbing), GameWindow, CharWindowX + 210, CharWindowY + 164, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-        'woodcutter
-        RenderText( String.Format(GetResourceSkillName(1) & ": " & GetPlayerGatherSkillLvl(Myindex, ResourceType.Woodcutting)) & " " & Language.Character.Exp & GetPlayerGatherSkillExp(Myindex, ResourceType.Woodcutting) & "/" & GetPlayerGatherSkillMaxExp(Myindex, ResourceType.Woodcutting), GameWindow, CharWindowX + 210, CharWindowY + 184, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-        'miner
-        RenderText(String.Format(GetResourceSkillName(2) & ": " & GetPlayerGatherSkillLvl(Myindex, ResourceType.Mining)) & " " & Language.Character.Exp & GetPlayerGatherSkillExp(Myindex, ResourceType.Mining) & "/" & GetPlayerGatherSkillMaxExp(Myindex, ResourceType.Mining),  GameWindow, CharWindowX + 210, CharWindowY + 204, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-        'fisherman
-        RenderText(String.Format(GetResourceSkillName(3) & ": " & GetPlayerGatherSkillLvl(Myindex, ResourceType.Fishing)) & " " & Language.Character.Exp & GetPlayerGatherSkillExp(Myindex, ResourceType.Fishing) & "/" & GetPlayerGatherSkillMaxExp(Myindex, ResourceType.Fishing), GameWindow, CharWindowX + 210, CharWindowY + 224, SFML.Graphics.Color.White, SFML.Graphics.Color.Black, 11)
-    End Sub
 #End Region
 
 #Region "Outgoing Traffic"

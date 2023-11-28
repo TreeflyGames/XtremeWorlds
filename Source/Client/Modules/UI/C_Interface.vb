@@ -239,7 +239,7 @@ Module C_Interface
                     End If
 
                     ' render icon
-                    RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, ItemsGfxInfo(.Icon).Width, ItemsGfxInfo(.Icon).Height)
+                    RenderTexture(ItemSprite(.Icon), GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, ItemGfxInfo(.Icon).Width, ItemGfxInfo(.Icon).Height)
 
                     ' for changing the text space
                     xOffset = width
@@ -308,7 +308,7 @@ Module C_Interface
                                 ' Check if need to word wrap
                                 If GetTextWidth(.Text) > .Width Then
                                     ' Wrap text
-                                    'WordWrap(.Text, .Width, textArray)
+                                    'WordWrap_Array(.Text, .Width)
 
                                     ' Render text
                                     count = UBound(textArray)
@@ -448,10 +448,10 @@ Module C_Interface
                     RenderDesign(DesignType.Green, .Left, .Top, .Width, 21)
 
                     ' render the icon
-                    If ItemsGfxInfo(.Icon).IsLoaded = False Then
+                    If ItemGfxInfo(.Icon).IsLoaded = False Then
                         LoadTexture(.Icon, 4)
                     End If
-                    RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
+                    RenderTexture(ItemSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
                     RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
@@ -466,10 +466,10 @@ Module C_Interface
                     RenderDesign(DesignType.Green, .Left, .Top, .Width, 21)
 
                     ' render the icon
-                    If ItemsGfxInfo(.Icon).IsLoaded = False Then
+                    If ItemGfxInfo(.Icon).IsLoaded = False Then
                         LoadTexture(.Icon, 4)
                     End If
-                    RenderTexture(ItemsSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
+                    RenderTexture(ItemSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
                     RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
@@ -1286,9 +1286,6 @@ Module C_Interface
     Public Function HandleInterfaceEvents(entState As EntState) As Boolean
         Dim i As Long, curWindow As Long, curControl As Long, callBack As Action, x As Long
 
-        ' if hiding gui
-        If HideGui = True Or Editor = EditorType.Map Then Exit Function
-
         ' Find the container
         For i = 1 To WindowCount
             With Windows(i).Window
@@ -1543,7 +1540,7 @@ Module C_Interface
             'Captcha = .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text
 
             If Pass <> pass2 Then
-                Dialogue("Register", "Passwords don't match.", "Please try again.", DialogueMsg.WrongPass)
+                Dialogue("Register", "Passwords don't match.", "Please try again.", DialogueType.Alert)
                 ClearPasswordTexts()
                 Exit Sub
             End If

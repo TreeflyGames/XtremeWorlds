@@ -2577,7 +2577,7 @@ newlist:
                             .Width = .X + PicX
                         End With
 
-                        Dim tmpSprite As Sprite = New Sprite(CharacterGfx(Map.Events(i).Pages(1).Graphic)) With {
+                        Dim tmpSprite As Sprite = New Sprite(CharacterTexture(Map.Events(i).Pages(1).Graphic)) With {
                             .TextureRect = New IntRect(rec.X, rec.Y, rec.Width, rec.Height),
                             .Position = New Vector2f(ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY))
                         }
@@ -2608,18 +2608,18 @@ newlist:
                             .Height = Map.Events(i).Pages(1).GraphicY2 * 32
                         End With
 
-                        If TileSetTextureInfo(Map.Events(i).Pages(1).Graphic).IsLoaded = False Then
+                        If TilesetGfxInfo(Map.Events(i).Pages(1).Graphic).IsLoaded = False Then
                             LoadTexture(Map.Events(i).Pages(1).Graphic, 1)
                         End If
                         ' we use it, lets update timer
-                        With TileSetTextureInfo(Map.Events(i).Pages(1).Graphic)
+                        With TilesetGfxInfo(Map.Events(i).Pages(1).Graphic)
                             .TextureTimer = GetTickCount() + 100000
                         End With
 
                         If rec.Height > 32 Then
-                            RenderTexture(TileSetSprite(Map.Events(i).Pages(1).Graphic), GameWindow, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY) - PicY, rec.X, rec.Y, rec.Width, rec.Height)
+                            RenderTexture(TilesetSprite(Map.Events(i).Pages(1).Graphic), GameWindow, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY) - PicY, rec.X, rec.Y, rec.Width, rec.Height)
                         Else
-                            RenderTexture(TileSetSprite(Map.Events(i).Pages(1).Graphic), GameWindow, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY), rec.X, rec.Y, rec.Width, rec.Height)
+                            RenderTexture(TilesetSprite(Map.Events(i).Pages(1).Graphic), GameWindow, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY), rec.X, rec.Y, rec.Width, rec.Height)
                         End If
                     Else
                         With rec
@@ -2723,11 +2723,11 @@ nextevent:
                     End With
                 End If
 
-                If TileSetTextureInfo(Map.MapEvents(id).Graphic).IsLoaded = False Then
+                If TilesetGfxInfo(Map.MapEvents(id).Graphic).IsLoaded = False Then
                     LoadTexture(Map.MapEvents(id).Graphic, 1)
                 End If
                 ' we use it, lets update timer
-                With TileSetTextureInfo(Map.MapEvents(id).Graphic)
+                With TilesetGfxInfo(Map.MapEvents(id).Graphic)
                     .TextureTimer = GetTickCount() + 100000
                 End With
 

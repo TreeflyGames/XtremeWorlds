@@ -582,12 +582,12 @@ Module C_Pets
                 If skillnum > 0 Then
                     skillpic = Skill(skillnum).Icon
 
-                    If SkillIconsGfxInfo(skillpic).IsLoaded = False Then
+                    If SkillIconGfxInfo(skillpic).IsLoaded = False Then
                         LoadTexture(skillpic, 9)
                     End If
 
                     'seeying we still use it, lets update timer
-                    With SkillIconsGfxInfo(skillpic)
+                    With SkillIconGfxInfo(skillpic)
                         .TextureTimer = GetTickCount() + 100000
                     End With
 
@@ -610,7 +610,7 @@ Module C_Pets
                         .Width = PicX
                     End With
 
-                    RenderTexture(SkillIconsSprite(skillpic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
+                    RenderTexture(SkillIconSprite(skillpic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
                 End If
             Next
         End If
@@ -625,7 +625,7 @@ Module C_Pets
         If Not ShowPetStats Then Exit Sub
 
         'draw panel
-        RenderTexture(PetStatsSprite, GameWindow, PetStatX, PetStatY, 0, 0, PetStatsGfxInfo.Width, PetStatsGfxInfo.Height)
+        RenderTexture(PetStatSprite, GameWindow, PetStatX, PetStatY, 0, 0, PetStatGfxInfo.Width, PetStatGfxInfo.Height)
 
         'lets get player sprite to render
         sprite = Pet(Player(Myindex).Pet.Num).Sprite
@@ -640,7 +640,7 @@ Module C_Pets
         Dim petname As String = Trim$(Pet(Player(Myindex).Pet.Num).Name)
 
         RenderText(petname & " Lvl: " & Player(Myindex).Pet.Level, GameWindow, PetStatX + 70, PetStatY + 10, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-        RenderTexture(CharacterSprite(sprite), GameWindow, PetStatX + 10, PetStatY + 10 + (PetStatsGfxInfo.Height / 4) - (rec.Height / 2), rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(CharacterSprite(sprite), GameWindow, PetStatX + 10, PetStatY + 10 + (PetStatGfxInfo.Height / 4) - (rec.Height / 2), rec.X, rec.Y, rec.Width, rec.Height)
 
         'stats
         RenderText("Strength: " & Player(Myindex).Pet.Stat(StatType.Strength), GameWindow, PetStatX + 65, PetStatY + 50, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)

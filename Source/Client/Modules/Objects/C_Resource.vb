@@ -134,16 +134,16 @@ Module C_Resources
 
         If rec.Width < 0 OrElse rec.Height < 0 Then Exit Sub
 
-        If ResourcesGfxInfo(resource).IsLoaded = False Then
+        If ResourceGfxInfo(resource).IsLoaded = False Then
             LoadTexture(resource, 5)
         End If
 
         'seeying we still use it, lets update timer
-        With ResourcesGfxInfo(resource)
+        With ResourceGfxInfo(resource)
             .TextureTimer = GetTickCount() + 100000
         End With
 
-        RenderTexture(ResourcesSprite(resource), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(ResourceSprite(resource), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawMapResource(resourceNum As Integer)
@@ -180,14 +180,14 @@ Module C_Resources
         ' src rect
         With rec
             .Y = 0
-            .Height = ResourcesGfxInfo(resourceSprite).Height
+            .Height = ResourceGfxInfo(resourceSprite).Height
             .X = 0
-            .Width = ResourcesGfxInfo(resourceSprite).Width
+            .Width = ResourceGfxInfo(resourceSprite).Width
         End With
 
         ' Set base x + y, then the offset due to size
-        x = (MapResource(resourceNum).X * PicX) - (ResourcesGfxInfo(resourceSprite).Width / 2) + 16
-        y = (MapResource(resourceNum).Y * PicY) - ResourcesGfxInfo(resourceSprite).Height + 32
+        x = (MapResource(resourceNum).X * PicX) - (ResourceGfxInfo(resourceSprite).Width / 2) + 16
+        y = (MapResource(resourceNum).Y * PicY) - ResourceGfxInfo(resourceSprite).Height + 32
 
         DrawResource(resourceSprite, x, y, rec)
     End Sub

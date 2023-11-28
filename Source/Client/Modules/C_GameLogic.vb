@@ -45,12 +45,6 @@ Module C_GameLogic
                 ' Update inv animation
                 If NumItems > 0 Then
                     If tmr100 < tick Then
-                        GetPing()
-
-                        If InBank Then DrawBank()
-                        If InShop Then DrawShop()
-                        If InTrade Then DrawTrade()
-
                         tmr100 = tick + 100
                     End If
                 End If
@@ -91,6 +85,8 @@ Module C_GameLogic
                 End If
 
                 If tmr10000 < tick Then
+                    GetPing()
+
                     tmr10000 = tick + 10000
                 End If
 
@@ -1351,6 +1347,58 @@ Continue1:
 
                 Case DialogueType.DelChar
                     SendDelChar(diaData1)
+
+                Case DialogueType.FillLayer
+                    Dim autotile As Byte
+                    Dim X As Integer
+                    Dim Y As Integer
+                    Dim CurLayer As Integer
+
+                    autotile = frmEditor_Map.cmbAutoTile.SelectedIndex + 1
+                    CurLayer = frmEditor_Map.cmbLayers.SelectedIndex + 1
+
+                    If autotile > 0 Then
+                        For X = 0 To Map.MaxX
+                            For Y = 0 To Map.MaxY
+                                Map.Tile(X, Y).Layer(CurLayer).X = EditorTileX
+                                Map.Tile(X, Y).Layer(CurLayer).Y = EditorTileY
+                                Map.Tile(X, Y).Layer(CurLayer).Tileset = frmEditor_Map.cmbTileSets.SelectedIndex + 1
+                                Map.Tile(X, Y).Layer(CurLayer).AutoTile = autotile
+                                CacheRenderState(X, Y, CurLayer)
+                            Next
+                        Next
+
+                        ' do a re-init so we can see our changes
+                        InitAutotiles()
+                    Else
+                        For X = 0 To Map.MaxX
+                            For Y = 0 To Map.MaxY
+                                Map.Tile(X, Y).Layer(CurLayer).X = EditorTileX
+                                Map.Tile(X, Y).Layer(CurLayer).Y = EditorTileY
+                                Map.Tile(X, Y).Layer(CurLayer).Tileset = frmEditor_Map.cmbTileSets.SelectedIndex + 1
+                                CacheRenderState(X, Y, CurLayer)
+                            Next
+                        Next
+                    End If
+
+                Case DialogueType.ClearLayer
+                    Dim X As Integer
+                    Dim Y As Integer
+                    Dim CurLayer As Integer
+
+                    CurLayer = frmEditor_Map.cmbLayers.SelectedIndex + 1
+
+                    For X = 0 To Map.MaxX
+                        For Y = 0 To Map.MaxY
+                            With Map.Tile(X, Y)
+                                .Layer(CurLayer).X = 0
+                                .Layer(CurLayer).Y = 0
+                                .Layer(CurLayer).Tileset = 0
+                                .Layer(CurLayer).AutoTile = 0
+                                CacheRenderState(X, Y, CurLayer)
+                            End With
+                        Next
+                    Next
             End Select
 
         ElseIf Index = 3 Then ' No button
