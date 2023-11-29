@@ -267,7 +267,13 @@ Module C_GameLogic
 
             Render_Graphics()
 
-            If Editor = EditorType.Map Then frmEditor_Map.DrawTileset()
+            If Editor = EditorType.Map Then
+                frmEditor_Map.DrawTileset()
+            End If
+
+            If Editor = EditorType.Animation Then
+                EditorAnim_DrawAnim()
+            End If
 
             UpdateUi()
             Application.DoEvents()
@@ -437,6 +443,15 @@ Module C_GameLogic
                 buffer.Dispose()
                 ClearEventChat()
                 InEvent = False
+                Exit Sub
+            End If
+        End If
+
+        ' hide/show chat window
+        If chatText = "" Then
+            If Windows(GetWindowIndex("winChat")).Window.Visible Then
+                Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text = ""
+                HideChat()
                 Exit Sub
             End If
         End If
