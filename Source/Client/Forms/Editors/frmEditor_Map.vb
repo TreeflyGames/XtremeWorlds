@@ -513,7 +513,7 @@ Public Class frmEditor_Map
         txtDown.Text = Map.Down
         txtLeft.Text = Map.Left
         txtRight.Text = Map.Right
-        cmbMoral.SelectedIndex = Map.Moral
+        cmbMoral.SelectedIndex = Map.Moral - 1
         txtBootMap.Text = Map.BootMap
         txtBootX.Text = Map.BootX
         txtBootY.Text = Map.BootY
