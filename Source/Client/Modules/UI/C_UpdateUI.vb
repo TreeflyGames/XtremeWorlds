@@ -254,6 +254,7 @@ Module C_UpdateUI
             With FrmAdmin
                 .Show()
             End With
+            InitAdminForm = False
         End If
 
         If InitMapEditor = True Then
