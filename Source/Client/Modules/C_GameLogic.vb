@@ -1391,6 +1391,7 @@ Continue1:
                                 Map.Tile(X, Y).Layer(diaData1).X = diaData3
                                 Map.Tile(X, Y).Layer(diaData1).Y = diaData4
                                 Map.Tile(X, Y).Layer(diaData1).Tileset = diaData5
+                                Map.Tile(X, Y).Layer(diaData1).AutoTile = 0
                                 CacheRenderState(X, Y, diaData1)
                             Next
                         Next
