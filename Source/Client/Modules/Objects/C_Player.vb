@@ -204,7 +204,7 @@ Module C_Player
             CloseBank()
         End If
 
-        If Not inSmallChat Then
+        If Windows(GetWindowIndex("winChat")).Window.Visible Then
             CanMove = False
             Exit Function
         End If
