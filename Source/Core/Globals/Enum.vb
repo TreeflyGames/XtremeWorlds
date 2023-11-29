@@ -188,7 +188,6 @@
         Cover
         Fringe
         Roof
-
         Count
     End Enum
 
@@ -198,7 +197,6 @@
         Woodcutting
         Mining
         Fishing
-
         Count
     End Enum
 

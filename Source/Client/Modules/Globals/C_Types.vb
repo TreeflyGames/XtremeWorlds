@@ -7,8 +7,34 @@ Module C_Types
     Public Chat As New List(Of ChatStruct)
     Public tempTileLights As List(Of LightTileStruct)
     Public MapNames(MAX_MAPS) As String
-    Public TmpTile(,) As Types.TileStruct
+    Public TmpTile(,) As TileStruct
     Public TileHistory() As TileHistoryStruct
+
+    Friend Autotile(,) As AutotileStruct
+
+    Public Structure PointStruct
+        Dim X As Integer
+        Dim Y As Integer
+    End Structure
+
+    Public Structure QuarterTileStruct
+        Dim QuarterTile() As PointStruct
+        Dim RenderState As Byte
+        Dim SrcX() As Integer
+        Dim SrcY() As Integer
+    End Structure
+
+    Public Structure AutotileStruct
+        Dim Layer() As QuarterTileStruct
+        Dim ExLayer() As QuarterTileStruct
+    End Structure
+
+    ' autotiling
+    Friend AutoIn(4) As PointStruct
+    Friend AutoNw(4) As PointStruct
+    Friend AutoNe(4) As PointStruct
+    Friend AutoSw(4) As PointStruct
+    Friend AutoSe(4) As PointStruct
 
     Public Structure ChatStruct
         Dim Text As String

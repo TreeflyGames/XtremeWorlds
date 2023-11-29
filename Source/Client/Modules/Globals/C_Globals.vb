@@ -8,6 +8,7 @@ Module C_Globals
     Public diaBody2 As String
     Public diaIndex As Long
     Public diaData1 As Long
+    Public diaData2 As Long
     Public diaDataString As String
     Public diaStyle As Byte
 

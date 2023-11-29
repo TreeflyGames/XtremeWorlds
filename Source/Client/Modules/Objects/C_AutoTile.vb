@@ -27,37 +27,10 @@ Friend Module C_AutoTiles
     Friend Const RenderStateNormal As Integer = 1
     Friend Const RenderStateAutotile As Integer = 2
 
-    ' autotiling
-    Friend AutoIn(4) As PointRec
-
-    Friend AutoNw(4) As PointRec
-    Friend AutoNe(4) As PointRec
-    Friend AutoSw(4) As PointRec
-    Friend AutoSe(4) As PointRec
-
     ' Map animations
     Friend WaterfallFrame As Integer
 
     Friend AutoTileFrame As Integer
-
-    Friend Autotile(,) As AutotileRec
-
-    Public Structure PointRec
-        Dim X As Integer
-        Dim Y As Integer
-    End Structure
-
-    Public Structure QuarterTileRec
-        Dim QuarterTile() As PointRec '1 To 4
-        Dim RenderState As Byte
-        Dim SrcX() As Integer '1 To 4
-        Dim SrcY() As Integer '1 To 4
-    End Structure
-
-    Public Structure AutotileRec
-        Dim Layer() As QuarterTileRec '1 To MapLayer.Count - 1
-        Dim ExLayer() As QuarterTileRec '1 To ExMapLayer.Count - 1
-    End Structure
 
 #End Region
 
@@ -360,7 +333,7 @@ Friend Module C_AutoTiles
         If Map.Tile(x, y).Layer(layerNum).AutoTile = 0 Then Exit Sub
         ' Okay, we have autotiling but which one?
         Select Case Map.Tile(x, y).Layer(layerNum).AutoTile
-                ' Normal or animated - same difference
+            ' Normal or animated - same difference
             Case AutotileNormal, AutotileAnim
                 ' North West Quarter
                 CalculateNW_Normal(layerNum, x, y)
@@ -370,7 +343,7 @@ Friend Module C_AutoTiles
                 CalculateSW_Normal(layerNum, x, y)
                 ' South East Quarter
                 CalculateSE_Normal(layerNum, x, y)
-                ' Cliff
+            ' Cliff
             Case AutotileCliff
                 ' North West Quarter
                 CalculateNW_Cliff(layerNum, x, y)
@@ -380,7 +353,7 @@ Friend Module C_AutoTiles
                 CalculateSW_Cliff(layerNum, x, y)
                 ' South East Quarter
                 CalculateSE_Cliff(layerNum, x, y)
-                ' Waterfalls
+            ' Waterfalls
             Case AutotileWaterfall
                 ' North West Quarter
                 CalculateNW_Waterfall(layerNum, x, y)
@@ -392,7 +365,6 @@ Friend Module C_AutoTiles
                 CalculateSE_Waterfall(layerNum, x, y)
                 ' Anything else
         End Select
-        ' End If
 
     End Sub
 
@@ -402,22 +374,29 @@ Friend Module C_AutoTiles
         Dim situation As Byte
 
         ' North West
-
         If CheckTileMatch(layerNum, x, y, x - 1, y - 1) Then tmpTile(1) = True
+
         ' North
         If CheckTileMatch(layerNum, x, y, x, y - 1) Then tmpTile(2) = True
+
         ' West
         If CheckTileMatch(layerNum, x, y, x - 1, y) Then tmpTile(3) = True
+
         ' Calculate Situation - Inner
         If Not tmpTile(2) AndAlso Not tmpTile(3) Then situation = AutoInner
+
         ' Horizontal
         If Not tmpTile(2) AndAlso tmpTile(3) Then situation = AutoHorizontal
+
         ' Vertical
         If tmpTile(2) AndAlso Not tmpTile(3) Then situation = AutoVertical
+
         ' Outer
         If Not tmpTile(1) AndAlso tmpTile(2) AndAlso tmpTile(3) Then situation = AutoOuter
+
         ' Fill
         If tmpTile(1) AndAlso tmpTile(2) AndAlso tmpTile(3) Then situation = AutoFill
+
         ' Actually place the subtile
         Select Case situation
             Case AutoInner
@@ -439,16 +418,20 @@ Friend Module C_AutoTiles
         Dim situation As Byte
 
         ' North
-
         If CheckTileMatch(layerNum, x, y, x, y - 1) Then tmpTile(1) = True
+
         ' North East
         If CheckTileMatch(layerNum, x, y, x + 1, y - 1) Then tmpTile(2) = True
+
         ' East
         If CheckTileMatch(layerNum, x, y, x + 1, y) Then tmpTile(3) = True
+
         ' Calculate Situation - Inner
         If Not tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoInner
+
         ' Horizontal
         If Not tmpTile(1) AndAlso tmpTile(3) Then situation = AutoHorizontal
+
         ' Vertical
         If tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoVertical
         ' Outer
@@ -476,22 +459,29 @@ Friend Module C_AutoTiles
         Dim situation As Byte
 
         ' West
-
         If CheckTileMatch(layerNum, x, y, x - 1, y) Then tmpTile(1) = True
+
         ' South West
         If CheckTileMatch(layerNum, x, y, x - 1, y + 1) Then tmpTile(2) = True
+
         ' South
         If CheckTileMatch(layerNum, x, y, x, y + 1) Then tmpTile(3) = True
+
         ' Calculate Situation - Inner
         If Not tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoInner
+
         ' Horizontal
         If tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoHorizontal
+
         ' Vertical
         If Not tmpTile(1) AndAlso tmpTile(3) Then situation = AutoVertical
+
         ' Outer
         If tmpTile(1) AndAlso Not tmpTile(2) AndAlso tmpTile(3) Then situation = AutoOuter
+
         ' Fill
         If tmpTile(1) AndAlso tmpTile(2) AndAlso tmpTile(3) Then situation = AutoFill
+
         ' Actually place the subtile
         Select Case situation
             Case AutoInner
@@ -513,22 +503,29 @@ Friend Module C_AutoTiles
         Dim situation As Byte
 
         ' South
-
         If CheckTileMatch(layerNum, x, y, x, y + 1) Then tmpTile(1) = True
+
         ' South East
         If CheckTileMatch(layerNum, x, y, x + 1, y + 1) Then tmpTile(2) = True
+
         ' East
         If CheckTileMatch(layerNum, x, y, x + 1, y) Then tmpTile(3) = True
+
         ' Calculate Situation - Inner
         If Not tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoInner
+
         ' Horizontal
         If Not tmpTile(1) AndAlso tmpTile(3) Then situation = AutoHorizontal
+
         ' Vertical
         If tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoVertical
+
         ' Outer
         If tmpTile(1) AndAlso Not tmpTile(2) AndAlso tmpTile(3) Then situation = AutoOuter
+
         ' Fill
         If tmpTile(1) AndAlso tmpTile(2) AndAlso tmpTile(3) Then situation = AutoFill
+
         ' Actually place the subtile
         Select Case situation
             Case AutoInner
@@ -548,8 +545,8 @@ Friend Module C_AutoTiles
     ' Waterfall autotiling
     Friend Sub CalculateNW_Waterfall(layerNum As Integer, x As Integer, y As Integer)
         Dim tmpTile As Boolean
-        ' West
 
+        ' West
         If CheckTileMatch(layerNum, x, y, x - 1, y) Then tmpTile = True
         ' Actually place the subtile
         If tmpTile Then
@@ -564,8 +561,8 @@ Friend Module C_AutoTiles
 
     Friend Sub CalculateNE_Waterfall(layerNum As Integer, x As Integer, y As Integer)
         Dim tmpTile As Boolean
-        ' East
 
+        ' East
         If CheckTileMatch(layerNum, x, y, x + 1, y) Then tmpTile = True
         ' Actually place the subtile
         If tmpTile Then
@@ -580,8 +577,8 @@ Friend Module C_AutoTiles
 
     Friend Sub CalculateSW_Waterfall(layerNum As Integer, x As Integer, y As Integer)
         Dim tmpTile As Boolean
-        ' West
 
+        ' West
         If CheckTileMatch(layerNum, x, y, x - 1, y) Then tmpTile = True
         ' Actually place the subtile
         If tmpTile Then
@@ -596,8 +593,8 @@ Friend Module C_AutoTiles
 
     Friend Sub CalculateSE_Waterfall(layerNum As Integer, x As Integer, y As Integer)
         Dim tmpTile As Boolean
-        ' East
 
+        ' East
         If CheckTileMatch(layerNum, x, y, x + 1, y) Then tmpTile = True
         ' Actually place the subtile
         If tmpTile Then
@@ -616,21 +613,27 @@ Friend Module C_AutoTiles
         Dim situation As Byte
 
         ' North West
-
         If CheckTileMatch(layerNum, x, y, x - 1, y - 1) Then tmpTile(1) = True
+
         ' North
         If CheckTileMatch(layerNum, x, y, x, y - 1) Then tmpTile(2) = True
+
         ' West
         If CheckTileMatch(layerNum, x, y, x - 1, y) Then tmpTile(3) = True
         situation = AutoFill
+
         ' Calculate Situation - Horizontal
         If Not tmpTile(2) AndAlso tmpTile(3) Then situation = AutoHorizontal
+
         ' Vertical
         If tmpTile(2) AndAlso Not tmpTile(3) Then situation = AutoVertical
+
         ' Fill
         If tmpTile(1) AndAlso tmpTile(2) AndAlso tmpTile(3) Then situation = AutoFill
+
         ' Inner
         If Not tmpTile(2) AndAlso Not tmpTile(3) Then situation = AutoInner
+
         ' Actually place the subtile
         Select Case situation
             Case AutoInner
@@ -650,21 +653,27 @@ Friend Module C_AutoTiles
         Dim situation As Byte
 
         ' North
-
         If CheckTileMatch(layerNum, x, y, x, y - 1) Then tmpTile(1) = True
+
         ' North East
         If CheckTileMatch(layerNum, x, y, x + 1, y - 1) Then tmpTile(2) = True
+
         ' East
         If CheckTileMatch(layerNum, x, y, x + 1, y) Then tmpTile(3) = True
         situation = AutoFill
+
         ' Calculate Situation - Horizontal
         If Not tmpTile(1) AndAlso tmpTile(3) Then situation = AutoHorizontal
+
         ' Vertical
         If tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoVertical
+
         ' Fill
         If tmpTile(1) AndAlso tmpTile(2) AndAlso tmpTile(3) Then situation = AutoFill
+
         ' Inner
         If Not tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoInner
+
         ' Actually place the subtile
         Select Case situation
             Case AutoInner
@@ -684,19 +693,24 @@ Friend Module C_AutoTiles
         Dim situation As Byte
 
         ' West
-
         If CheckTileMatch(layerNum, x, y, x - 1, y) Then tmpTile(1) = True
+
         ' South West
         If CheckTileMatch(layerNum, x, y, x - 1, y + 1) Then tmpTile(2) = True
+
         ' South
         If CheckTileMatch(layerNum, x, y, x, y + 1) Then tmpTile(3) = True
         situation = AutoFill
+
         ' Calculate Situation - Horizontal
         If tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoHorizontal
+
         ' Vertical
         If Not tmpTile(1) AndAlso tmpTile(3) Then situation = AutoVertical
+
         ' Fill
         If tmpTile(1) AndAlso tmpTile(2) AndAlso tmpTile(3) Then situation = AutoFill
+
         ' Inner
         If Not tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoInner
         ' Actually place the subtile
@@ -718,21 +732,27 @@ Friend Module C_AutoTiles
         Dim situation As Byte
 
         ' South
-
         If CheckTileMatch(layerNum, x, y, x, y + 1) Then tmpTile(1) = True
+
         ' South East
         If CheckTileMatch(layerNum, x, y, x + 1, y + 1) Then tmpTile(2) = True
+
         ' East
         If CheckTileMatch(layerNum, x, y, x + 1, y) Then tmpTile(3) = True
+
         situation = AutoFill
         ' Calculate Situation -  Horizontal
         If Not tmpTile(1) AndAlso tmpTile(3) Then situation = AutoHorizontal
+
         ' Vertical
         If tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoVertical
+
         ' Fill
         If tmpTile(1) AndAlso tmpTile(2) AndAlso tmpTile(3) Then situation = AutoFill
+
         ' Inner
         If Not tmpTile(1) AndAlso Not tmpTile(3) Then situation = AutoInner
+
         ' Actually place the subtile
         Select Case situation
             Case AutoInner
@@ -748,11 +768,8 @@ Friend Module C_AutoTiles
     End Sub
 
     Friend Function CheckTileMatch(layerNum As Integer, x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer) As Boolean
-        ' we'll exit out early if true
-        'Dim exTile As Boolean
-
-        'If layerNum > MapLayer.Count - 1 Then exTile = True : layerNum = layerNum - (MapLayer.Count - 1)
         CheckTileMatch = True
+
         ' if it's off the map then set it as autotile and exit out early
         If x2 < 0 OrElse x2 > Map.MaxX OrElse y2 < 0 OrElse y2 > Map.MaxY Then
             CheckTileMatch = True
@@ -764,14 +781,12 @@ Friend Module C_AutoTiles
             CheckTileMatch = True
             Exit Function
         End If
-        ' End If
 
         ' check neighbour is an autotile
         If Map.Tile(x2, y2).Layer(layerNum).AutoTile = 0 Then
             CheckTileMatch = False
             Exit Function
         End If
-        ' End If
 
         ' check we're a matching
         If Map.Tile(x1, y1).Layer(layerNum).Tileset <> Map.Tile(x2, y2).Layer(layerNum).Tileset Then

@@ -108,11 +108,13 @@ Public Class frmEditor_Map
     End Sub
 
     Private Sub TsbFill_Click(sender As Object, e As EventArgs) Handles tsbFill.Click
-        MapEditorFillLayer(cmbLayers.SelectedIndex + 1, cmbAutoTile.SelectedIndex + 1)
+        Dim layer = CType(cmbLayers.SelectedIndex + 1, LayerType)
+        MapEditorFillLayer(layer, cmbAutoTile.SelectedIndex + 1)
     End Sub
 
     Private Sub TsbClear_Click(sender As Object, e As EventArgs) Handles tsbClear.Click
-        MapEditorClearLayer(cmbLayers.SelectedIndex + 1)
+        Dim layer = CType(cmbLayers.SelectedIndex + 1, LayerType)
+        MapEditorClearLayer(layer)
     End Sub
 
     Private Sub TsbEyeDropper_Click(sender As Object, e As EventArgs) Handles tsbEyeDropper.Click
@@ -856,8 +858,10 @@ Public Class frmEditor_Map
     End Sub
 
     Public Sub MapEditorCancel()
-        If Editor <> EditorType.Map Then Exit Sub
         Dim Buffer As ByteStream
+
+        If Editor <> EditorType.Map Then Exit Sub
+
         Buffer = New ByteStream(4)
         Buffer.WriteInt32(ClientPackets.CNeedMap)
         Buffer.WriteInt32(1)
@@ -964,12 +968,12 @@ Public Class frmEditor_Map
 
     End Sub
 
-    Public Sub MapEditorClearLayer(ByVal LayerNum As Byte)
-        Dialogue("Map Editor", "Clear Layer: " & LayerNum, "Are you sure you wish to clear this layer?", DialogueType.ClearLayer, DialogueStyle.YesNo)
+    Public Sub MapEditorClearLayer(ByVal layer As LayerType)
+        Dialogue("Map Editor", "Clear Layer: " & layer.ToString, "Are you sure you wish to clear this layer?", DialogueType.ClearLayer, DialogueStyle.YesNo, cmbLayers.SelectedIndex + 1, cmbAutoTile.SelectedIndex + 1)
     End Sub
 
-    Public Sub MapEditorFillLayer(ByVal LayerNum As Byte, Optional ByVal theAutotile As Byte = 0)
-        Dialogue("Map Editor", "Fill Layer: " & LayerNum, "Are you sure you wish to fill this layer?", DialogueType.FillLayer, DialogueStyle.YesNo)
+    Public Sub MapEditorFillLayer(ByVal layer As LayerType, Optional ByVal theAutotile As Byte = 0)
+        Dialogue("Map Editor", "Fill Layer: " & layer.ToString, "Are you sure you wish to fill this layer?", DialogueType.FillLayer, DialogueStyle.YesNo, cmbLayers.SelectedIndex + 1, cmbAutoTile.SelectedIndex + 1)
     End Sub
 
     Public Sub MapEditorEyeDropper()

@@ -1279,7 +1279,7 @@ Continue1:
         HideWindow(GetWindowIndex("winDialogue"))
     End Sub
 
-    Public Sub Dialogue(ByVal header As String, ByVal body As String, ByVal body2 As String, ByVal Index As Byte, Optional ByVal style As Byte = 1, Optional ByVal Data1 As Long = 0)
+    Public Sub Dialogue(ByVal header As String, ByVal body As String, ByVal body2 As String, ByVal Index As Byte, Optional ByVal style As Byte = 1, Optional ByVal Data1 As Long = 0, Optional ByVal Data2 As Long = 0)
         ' exit out if we've already got a dialogue open
         If diaIndex > 0 Then Exit Sub
 
@@ -1315,6 +1315,7 @@ Continue1:
         ' set it all up
         diaIndex = Index
         diaData1 = Data1
+        diaData2 = Data2
         diaStyle = style
 
         ' make the windows visible
@@ -1323,6 +1324,8 @@ Continue1:
 
     Public Sub DialogueHandler(ByVal Index As Long)
         Dim value As Long, diaInput As String
+        Dim X As Integer
+        Dim Y As Integer
 
         diaInput = Trim$(Windows(GetWindowIndex("winDialogue")).Controls(GetControlIndex("winDialogue", "txtInput")).Text)
 
@@ -1366,22 +1369,14 @@ Continue1:
                     SendDelChar(diaData1)
 
                 Case DialogueType.FillLayer
-                    Dim autotile As Byte
-                    Dim X As Integer
-                    Dim Y As Integer
-                    Dim CurLayer As Integer
-
-                    autotile = frmEditor_Map.cmbAutoTile.SelectedIndex + 1
-                    CurLayer = frmEditor_Map.cmbLayers.SelectedIndex + 1
-
-                    If autotile > 0 Then
+                    If diaData2 > 0 Then
                         For X = 0 To Map.MaxX
                             For Y = 0 To Map.MaxY
-                                Map.Tile(X, Y).Layer(CurLayer).X = EditorTileX
-                                Map.Tile(X, Y).Layer(CurLayer).Y = EditorTileY
-                                Map.Tile(X, Y).Layer(CurLayer).Tileset = frmEditor_Map.cmbTileSets.SelectedIndex + 1
-                                Map.Tile(X, Y).Layer(CurLayer).AutoTile = autotile
-                                CacheRenderState(X, Y, CurLayer)
+                                Map.Tile(X, Y).Layer(diaData1).X = EditorTileX
+                                Map.Tile(X, Y).Layer(diaData1).Y = EditorTileY
+                                Map.Tile(X, Y).Layer(diaData1).Tileset = frmEditor_Map.cmbTileSets.SelectedIndex + 1
+                                Map.Tile(X, Y).Layer(diaData1).AutoTile = diaData2
+                                CacheRenderState(X, Y, diaData1)
                             Next
                         Next
 
@@ -1390,29 +1385,23 @@ Continue1:
                     Else
                         For X = 0 To Map.MaxX
                             For Y = 0 To Map.MaxY
-                                Map.Tile(X, Y).Layer(CurLayer).X = EditorTileX
-                                Map.Tile(X, Y).Layer(CurLayer).Y = EditorTileY
-                                Map.Tile(X, Y).Layer(CurLayer).Tileset = frmEditor_Map.cmbTileSets.SelectedIndex + 1
-                                CacheRenderState(X, Y, CurLayer)
+                                Map.Tile(X, Y).Layer(diaData1).X = EditorTileX
+                                Map.Tile(X, Y).Layer(diaData1).Y = EditorTileY
+                                Map.Tile(X, Y).Layer(diaData1).Tileset = frmEditor_Map.cmbTileSets.SelectedIndex + 1
+                                CacheRenderState(X, Y, diaData1)
                             Next
                         Next
                     End If
 
                 Case DialogueType.ClearLayer
-                    Dim X As Integer
-                    Dim Y As Integer
-                    Dim CurLayer As Integer
-
-                    CurLayer = frmEditor_Map.cmbLayers.SelectedIndex + 1
-
                     For X = 0 To Map.MaxX
                         For Y = 0 To Map.MaxY
                             With Map.Tile(X, Y)
-                                .Layer(CurLayer).X = 0
-                                .Layer(CurLayer).Y = 0
-                                .Layer(CurLayer).Tileset = 0
-                                .Layer(CurLayer).AutoTile = 0
-                                CacheRenderState(X, Y, CurLayer)
+                                .Layer(diaData1).X = 0
+                                .Layer(diaData1).Y = 0
+                                .Layer(diaData1).Tileset = 0
+                                .Layer(diaData1).AutoTile = 0
+                                CacheRenderState(X, Y, diaData1)
                             End With
                         Next
                     Next
