@@ -1279,7 +1279,7 @@ Continue1:
         HideWindow(GetWindowIndex("winDialogue"))
     End Sub
 
-    Public Sub Dialogue(ByVal header As String, ByVal body As String, ByVal body2 As String, ByVal Index As Byte, Optional ByVal style As Byte = 1, Optional ByVal Data1 As Long = 0, Optional ByVal Data2 As Long = 0)
+    Public Sub Dialogue(ByVal header As String, ByVal body As String, ByVal body2 As String, ByVal Index As Byte, Optional ByVal style As Byte = 1, Optional ByVal Data1 As Long = 0, Optional ByVal Data2 As Long = 0, Optional ByVal Data3 As Long = 0, Optional ByVal Data4 As Long = 0, Optional ByVal Data5 As Long = 0)
         ' exit out if we've already got a dialogue open
         If diaIndex > 0 Then Exit Sub
 
@@ -1316,6 +1316,9 @@ Continue1:
         diaIndex = Index
         diaData1 = Data1
         diaData2 = Data2
+        diaData3 = Data3
+        diaData4 = Data4
+        diaData5 = Data5
         diaStyle = style
 
         ' make the windows visible
@@ -1369,12 +1372,12 @@ Continue1:
                     SendDelChar(diaData1)
 
                 Case DialogueType.FillLayer
-                    If diaData2 > 0 Then
+                    If diaData2 > 1 Then
                         For X = 0 To Map.MaxX
                             For Y = 0 To Map.MaxY
-                                Map.Tile(X, Y).Layer(diaData1).X = EditorTileX
-                                Map.Tile(X, Y).Layer(diaData1).Y = EditorTileY
-                                Map.Tile(X, Y).Layer(diaData1).Tileset = frmEditor_Map.cmbTileSets.SelectedIndex + 1
+                                Map.Tile(X, Y).Layer(diaData1).X = diaData3
+                                Map.Tile(X, Y).Layer(diaData1).Y = diaData4
+                                Map.Tile(X, Y).Layer(diaData1).Tileset = diaData5
                                 Map.Tile(X, Y).Layer(diaData1).AutoTile = diaData2
                                 CacheRenderState(X, Y, diaData1)
                             Next
@@ -1385,9 +1388,9 @@ Continue1:
                     Else
                         For X = 0 To Map.MaxX
                             For Y = 0 To Map.MaxY
-                                Map.Tile(X, Y).Layer(diaData1).X = EditorTileX
-                                Map.Tile(X, Y).Layer(diaData1).Y = EditorTileY
-                                Map.Tile(X, Y).Layer(diaData1).Tileset = frmEditor_Map.cmbTileSets.SelectedIndex + 1
+                                Map.Tile(X, Y).Layer(diaData1).X = diaData3
+                                Map.Tile(X, Y).Layer(diaData1).Y = diaData4
+                                Map.Tile(X, Y).Layer(diaData1).Tileset = diaData5
                                 CacheRenderState(X, Y, diaData1)
                             Next
                         Next

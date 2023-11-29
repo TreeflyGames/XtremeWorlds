@@ -9,6 +9,9 @@ Module C_Globals
     Public diaIndex As Long
     Public diaData1 As Long
     Public diaData2 As Long
+    Public diaData3 As Long
+    Public diaData4 As Long
+    Public diaData5 As Long
     Public diaDataString As String
     Public diaStyle As Byte
 
