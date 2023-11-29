@@ -12,7 +12,7 @@ Module C_Editors
             If Trim$(Animation(Editorindex).Sound) = "" Then
                 FrmEditor_Animation.cmbSound.SelectedIndex = 0
             Else
-               For i = 0 To FrmEditor_Animation.cmbSound.Items.Count
+                For i = 0 To FrmEditor_Animation.cmbSound.Items.Count
                     If FrmEditor_Animation.cmbSound.GetItemText(i) = FrmEditor_Animation.cmbSound.SelectedIndex Then
                         FrmEditor_Animation.cmbSound.SelectedIndex = i
                         Exit For

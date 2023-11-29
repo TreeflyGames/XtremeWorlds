@@ -2614,7 +2614,7 @@ Module C_Graphics
 
                     EditorAnimation_Anim1.Clear(ToSfmlColor(FrmEditor_Animation.picSprite0.BackColor))
                     RenderTexture(AnimationSprite(Animationnum), EditorAnimation_Anim1, dRECT.X, dRECT.Y, sRECT.X,
-                                 sRECT.Y, sRECT.Width, sRECT.Height)
+                                 sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Width, dRECT.Height)
                     EditorAnimation_Anim1.Display()
                 End If
             End If
@@ -2672,7 +2672,7 @@ Module C_Graphics
 
                     EditorAnimation_Anim2.Clear(ToSfmlColor(FrmEditor_Animation.picSprite1.BackColor))
                     RenderTexture(AnimationSprite(Animationnum), EditorAnimation_Anim2, dRECT.X, dRECT.Y, sRECT.X,
-                                 sRECT.Y, sRECT.Width, sRECT.Height)
+                                 sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Height, dRECT.Width)
                     EditorAnimation_Anim2.Display()
                 End If
             End If

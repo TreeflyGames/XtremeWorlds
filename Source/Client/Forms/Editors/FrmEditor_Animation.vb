@@ -48,7 +48,7 @@ Friend Class FrmEditor_Animation
         lstIndex.SelectedIndex = tmpindex
     End Sub
 
-    Private Sub LstIndex_Click(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles lstIndex.Click
+    Private Sub LstIndex_Click(sender As Object, e As MouseEventArgs)
         AnimationEditorInit()
     End Sub
 
@@ -99,7 +99,6 @@ Friend Class FrmEditor_Animation
     End Sub
 
     Private Sub FrmEditor_Animation_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        AnimationEditorCancel
+        AnimationEditorCancel()
     End Sub
-
 End Class
