@@ -592,6 +592,8 @@ Public Class frmEditor_Map
         cmbLayers.SelectedIndex = 0
         cmbAutoTile.SelectedIndex = 0
 
+        MapPropertiesInit()
+
         InitMapProperties = True
 
         If MapData = True Then GettingMap = False

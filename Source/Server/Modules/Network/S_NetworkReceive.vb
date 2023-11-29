@@ -806,10 +806,10 @@ Module S_NetworkReceive
         Dim x As Integer
         Dim y As Integer
 
-        Dim buffer As New ByteStream(Compression.DecompressBytes(data))
-
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+
+        Dim buffer As New ByteStream(Compression.DecompressBytes(data))
 
         mapNum = GetPlayerMap(index)
 

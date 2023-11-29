@@ -283,8 +283,8 @@ Module C_Maps
 
         If buffer.ReadInt32 = 1 Then
             mapNum = buffer.ReadInt32
-            Map.Name = Trim(buffer.ReadString)
-            Map.Music = Trim(buffer.ReadString)
+            Map.Name = Trim$(buffer.ReadString)
+            Map.Music = Trim$(buffer.ReadString)
             Map.Revision = buffer.ReadInt32
             Map.Moral = buffer.ReadInt32
             Map.Tileset = buffer.ReadInt32
@@ -636,6 +636,7 @@ Module C_Maps
         Dim x As Integer, y As Integer, i As Integer
         Dim data() As Byte
         Dim buffer As New ByteStream(4)
+
         CanMoveNow = False
 
         buffer.WriteString((Map.Name.Trim))
