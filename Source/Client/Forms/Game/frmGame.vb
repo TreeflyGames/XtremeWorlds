@@ -5,10 +5,7 @@ Friend Class FrmGame
 
 #Region "Frm Code"
     Private Sub FrmMainGame_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim gameLogic As New Thread(AddressOf Startup)
-        gameLogic.Start()
-        'Me.Show()
-        'Startup()
+        Startup()
         BeginInvoke(New MethodInvoker(Sub() Hide()))
     End Sub
 #End Region

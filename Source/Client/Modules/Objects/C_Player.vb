@@ -547,7 +547,7 @@ Module C_Player
         Dim anim As Byte, x As Integer, y As Integer
         Dim spritenum As Integer, spriteleft As Integer
         Dim attackspeed As Integer
-        Dim srcrec As Rectangle
+        Dim rect As Rectangle
 
         spritenum = GetPlayerSprite(index)
 
@@ -608,6 +608,9 @@ Module C_Player
                 spriteleft = 1
         End Select
 
+        ' Calculate the X
+        x = Player(index).X * PicX + Player(index).XOffset - ((CharacterGfxInfo(spritenum).Width / 4 - 32) / 2)
+
         ' Is the player's height more than 32..?
         If (CharacterGfxInfo(spritenum).Height) > 32 Then
             ' Create a 32 pixel offset for larger sprites
@@ -617,11 +620,11 @@ Module C_Player
             y = GetPlayerY(index) * PicY + Player(index).YOffset
         End If
 
-        srcrec = New Rectangle((anim) * (CharacterGfxInfo(spritenum).Width / 4), spriteleft * (CharacterGfxInfo(spritenum).Height / 4),
+        rect = New Rectangle((anim) * (CharacterGfxInfo(spritenum).Width / 4), spriteleft * (CharacterGfxInfo(spritenum).Height / 4),
                                (CharacterGfxInfo(spritenum).Width / 4), (CharacterGfxInfo(spritenum).Height / 4))
 
         ' render the actual sprite
-        DrawCharacter(spritenum, x, y, srcrec)
+        DrawCharacter(spritenum, x, y, rect)
 
         'check for paperdolling
         For i = 1 To EquipmentType.Count - 1

@@ -892,7 +892,7 @@ Module S_Database
     Function LoadCharacter(index As Integer, charNum As Integer) As Boolean
         Dim data As JObject
 
-        data = SelectRowByColumn("id", GenerateIdFromString(GetPlayerLogin(index)), "account", "character" & charNum.ToString())
+        data = SelectRowByColumn("id", GenerateIdFromString(GetPlayerLogin(index)), "account", "character" & charNum.ToString)
 
         If data Is Nothing Then
             Return False
@@ -911,6 +911,8 @@ Module S_Database
     Sub SaveCharacter(index As Integer, slot As Integer)
         Dim json As String = JsonConvert.SerializeObject(Player(index)).ToString()
         Dim id As BigInteger = GenerateIdFromString(GetPlayerLogin(index))
+
+        If slot < 1 Or slot > MAX_CHARS Then Exit Sub
 
         If RowExistsByColumn("id", id, "account") Then
             UpdateRowByColumn("id", id, "character" & slot.ToString(), json, "account")

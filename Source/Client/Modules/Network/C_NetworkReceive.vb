@@ -323,10 +323,7 @@ Module C_NetworkReceive
         Editor = -1
 
         ' show gui
-        ShowWindow(GetWindowIndex("winBars"), , False)
-        ShowWindow(GetWindowIndex("winMenu"), , False)
-        ShowWindow(GetWindowIndex("winHotbar"), , False)
-        ShowWindow(GetWindowIndex("winChatSmall"), , False)
+        HideChat()
 
         GameInit()
     End Sub

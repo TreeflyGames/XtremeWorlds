@@ -267,6 +267,8 @@ Module C_GameLogic
 
             Render_Graphics()
 
+            If Editor = EditorType.Map Then frmEditor_Map.DrawTileset()
+
             UpdateUi()
             Application.DoEvents()
         End While
@@ -1451,6 +1453,11 @@ Continue1:
     Public Sub HideChat()
         ShowWindow(GetWindowIndex("winChatSmall"), , False)
         HideWindow(GetWindowIndex("winChat"))
+
+        ' Set the active control
+        activeWindow = GetWindowIndex("winChat")
+        SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"))
+
         inSmallChat = True
         ChatScroll = 0
     End Sub

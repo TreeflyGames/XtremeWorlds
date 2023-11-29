@@ -1,4 +1,5 @@
-﻿Imports System.Drawing
+﻿Imports System.DirectoryServices.Protocols
+Imports System.Drawing
 Imports System.IO
 Imports Core
 Imports Mirage.Sharp.Asfw
@@ -137,8 +138,8 @@ Module C_Maps
         HistoryIndex = 0
         TileHistoryHighIndex = 0
 
-        For X = 0 To ScreenMapx
-            For Y = 0 To ScreenMapy
+        For x = 0 To ScreenMapx
+            For y = 0 To ScreenMapy
                 ReDim Map.Tile(x, y).Layer(LayerType.Count - 1)
 
                 For i = 1 To MaxTileHistory
@@ -180,7 +181,7 @@ Module C_Maps
     Sub ClearMapItems()
         Dim i As Integer
 
-       For i = 1 To MAX_MAP_ITEMS
+        For i = 1 To MAX_MAP_ITEMS
             ClearMapItem(i)
         Next
 
@@ -215,9 +216,9 @@ Module C_Maps
     End Sub
 
     Sub ClearMapNpcs()
-       Dim i As Integer
+        Dim i As Integer
 
-       For i = 1 To MAX_MAP_NPCS
+        For i = 1 To MAX_MAP_NPCS
             ClearMapNpc(i)
         Next
 
@@ -242,7 +243,7 @@ Module C_Maps
         GettingMap = True
 
         ' Erase all players except self
-       For i = 1 To MAX_PLAYERS
+        For i = 1 To MAX_PLAYERS
             If i <> Myindex Then
                 SetPlayerMap(i, 0)
             End If
@@ -320,8 +321,8 @@ Module C_Maps
                 Map.Npc(x) = buffer.ReadInt32
             Next
 
-            For X = 0 To Map.MaxX
-                For Y = 0 To Map.MaxY
+            For x = 0 To Map.MaxX
+                For y = 0 To Map.MaxY
                     Map.Tile(x, y).Data1 = buffer.ReadInt32
                     Map.Tile(x, y).Data2 = buffer.ReadInt32
                     Map.Tile(x, y).Data3 = buffer.ReadInt32
@@ -688,9 +689,9 @@ Module C_Maps
         buffer.WriteInt32(Map.EventCount)
 
         If Map.EventCount > 0 Then
-           For i = 0 To Map.EventCount
-                With Map.Events(i)    
-                    If .Name Is Nothing then .Name = ""
+            For i = 0 To Map.EventCount
+                With Map.Events(i)
+                    If .Name Is Nothing Then .Name = ""
                     buffer.WriteString((.Name.Trim))
                     buffer.WriteByte(.Globals)
                     buffer.WriteInt32(.X)
@@ -745,7 +746,7 @@ Module C_Maps
                             buffer.WriteByte(.Trigger)
                             buffer.WriteInt32(.CommandListCount)
                             buffer.WriteByte(.Position)
-                            buffer.WriteInt32(.Questnum)
+                            buffer.WriteInt32(.QuestNum)
                         End With
 
                         If Map.Events(i).Pages(x).CommandListCount > 0 Then
@@ -831,7 +832,7 @@ Module C_Maps
 
     Friend Sub DrawMapTile(x As Integer, y As Integer)
         Dim i As Integer, alpha As Byte
-        Dim srcrect As New Rectangle(0, 0, 0, 0)
+        Dim rect As New Rectangle(0, 0, 0, 0)
 
         If GettingMap Then Exit Sub
         If Map.Tile Is Nothing Then Exit Sub
@@ -842,24 +843,24 @@ Module C_Maps
 
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
-                If TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
+                If TilesetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
                     LoadTexture(Map.Tile(x, y).Layer(i).Tileset, 1)
                 End If
 
                 ' we use it, lets update timer
-                With TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset)
+                With TilesetGfxInfo(Map.Tile(x, y).Layer(i).Tileset)
                     .TextureTimer = GetTickCount() + 100000
                 End With
 
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
-                    With srcrect
+                    With rect
                         .X = Map.Tile(x, y).Layer(i).X * 32
                         .Y = Map.Tile(x, y).Layer(i).Y * 32
                         .Width = 32
                         .Height = 32
                     End With
 
-                    If Editor = EditorType.Map and HideLayers Then
+                    If Editor = EditorType.Map And HideLayers Then
                         If i = frmEditor_Map.cmbLayers.SelectedIndex Then
                             alpha = 255
                         Else
@@ -869,7 +870,7 @@ Module C_Maps
                         alpha = 255
                     End If
 
-                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), srcrect.X, srcrect.Y, srcrect.Width, srcrect.Height, , , alpha)
+                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha, , alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     ' Draw autotiles
                     DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
@@ -884,7 +885,7 @@ Module C_Maps
 
     Friend Sub DrawMapFringeTile(x As Integer, y As Integer)
         Dim i As Integer, alpha As Integer
-        Dim srcrect As New Rectangle(0, 0, 0, 0)
+        Dim rect As Rectangle
 
         If GettingMap Then Exit Sub
         If Map.Tile Is Nothing Then Exit Sub
@@ -905,7 +906,7 @@ Module C_Maps
 
                 ' render
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
-                    With srcrect
+                    With rect
                         .X = Map.Tile(x, y).Layer(i).X * 32
                         .Y = Map.Tile(x, y).Layer(i).Y * 32
                         .Width = 32
@@ -922,8 +923,7 @@ Module C_Maps
                         alpha = 255
                     End If
 
-                    RenderTexture(TileSetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), srcrect.X, srcrect.Y, srcrect.Width, srcrect.Height, , , alpha)
-
+                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     ' Draw autotiles
                     DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)

@@ -531,7 +531,7 @@ Public Class frmEditor_Map
             cmbAnimation.Items.Add(Y & ": " & Trim$(Animation(Y).Name))
         Next
 
-        lblMap.Text = "Current Map: "
+        lblMap.Text = "Map: "
         txtMaxX.Text = Map.MaxX
         txtMaxY.Text = Map.MaxY
 
@@ -625,6 +625,7 @@ Public Class frmEditor_Map
 
             EditorTileSelStart = New Point(EditorTileX, EditorTileY)
             EditorTileSelEnd = New Point(EditorTileX + EditorTileWidth, EditorTileY + EditorTileHeight)
+
             DrawTileset()
         End If
     End Sub

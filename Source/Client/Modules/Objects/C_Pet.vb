@@ -437,18 +437,18 @@ Module C_Pets
 
     Friend Sub DrawPet(index As Integer)
         Dim anim As Byte, x As Integer, y As Integer
-        Dim sprite As Integer, spriteleft As Integer
-        Dim srcrec As Rectangle
+        Dim spriteNum As Integer, spriteleft As Integer
+        Dim rect As Rectangle
         Dim attackspeed As Integer
 
         StreamPet(Player(index).Pet.Num)
 
-        sprite = Pet(Player(index).Pet.Num).Sprite
+        spriteNum = Pet(Player(index).Pet.Num).Sprite
 
-        If sprite < 1 OrElse sprite > NumCharacters Then Exit Sub
+        If spriteNum < 1 OrElse spriteNum > NumCharacters Then Exit Sub
 
-        If CharacterGfxInfo(sprite).IsLoaded = False Then
-            LoadTexture(sprite, 2)
+        If CharacterGfxInfo(spriteNum).IsLoaded = False Then
+            LoadTexture(spriteNum, 2)
         End If
 
         attackspeed = 1000
@@ -501,22 +501,22 @@ Module C_Pets
                 spriteleft = 1
         End Select
 
-        srcrec = New Rectangle((anim) * (CharacterGfxInfo(sprite).Width / 4), spriteleft * (CharacterGfxInfo(sprite).Height / 4), (CharacterGfxInfo(sprite).Width / 4), (CharacterGfxInfo(sprite).Height / 4))
+        rect = New Rectangle((anim) * (CharacterGfxInfo(spriteNum).Width / 4), spriteleft * (CharacterGfxInfo(spriteNum).Height / 4), (CharacterGfxInfo(spriteNum).Width / 4), (CharacterGfxInfo(spriteNum).Height / 4))
 
         ' Calculate the X
-        x = Player(index).Pet.X * PicX + Player(index).Pet.XOffset - ((CharacterGfxInfo(sprite).Width / 4 - 32) / 2)
+        x = Player(index).Pet.X * PicX + Player(index).Pet.XOffset - ((CharacterGfxInfo(spriteNum).Width / 4 - 32) / 2)
 
         ' Is the player's height more than 32..?
-        If (CharacterGfxInfo(sprite).Height / 4) > 32 Then
+        If (CharacterGfxInfo(spriteNum).Height / 4) > 32 Then
             ' Create a 32 pixel offset for larger sprites
-            y = Player(index).Pet.Y * PicY + Player(index).Pet.YOffset - ((CharacterGfxInfo(sprite).Width / 4) - 32)
+            y = Player(index).Pet.Y * PicY + Player(index).Pet.YOffset - ((CharacterGfxInfo(spriteNum).Width / 4) - 32)
         Else
             ' Proceed as normal
             y = Player(index).Pet.Y * PicY + Player(index).Pet.YOffset
         End If
 
         ' render the actual sprite
-        DrawCharacter(sprite, x, y, srcrec)
+        DrawCharacter(spriteNum, x, y, rect)
 
     End Sub
 
