@@ -1023,7 +1023,7 @@ Module C_Graphics
             rec.Width = 8
 
             ' find out whether render blocked or not
-            If Not IsDirBlocked(Map.Tile(x, y).DirBlock, (i)) Then
+            If IsDirBlocked(Map.Tile(x, y).DirBlock, i) Then
                 rec.Y = 8
             Else
                 rec.Y = 16
@@ -1590,7 +1590,7 @@ Module C_Graphics
         Next
 
         If Editor = EditorType.Map Then
-            If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock = True Then
+            If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock Then
                 For x = TileView.Left To TileView.Right
                     For y = TileView.Top To TileView.Bottom
                         If IsValidMapPoint(x, y) Then
