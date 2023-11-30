@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Windows.Forms
+Imports Core.Paths
 Imports Microsoft.VisualBasic.ApplicationServices
 
 Namespace My
@@ -13,7 +14,14 @@ Namespace My
     Partial Class MyApplication
 
         Private Sub MyApplication_UnhandledException(sender As Object, e As UnhandledExceptionEventArgs) Handles Me.UnhandledException
-            Dim myFilePath As String = System.Windows.Forms.Application.StartupPath & "\ErrorLog.log"
+            Dim myFilePath As String = Paths.Logs & "Errors.log"
+            Dim directoryPath As String = Path.GetDirectoryName(myFilePath)
+
+            ' Check if the directory exists
+            If Not Directory.Exists(directoryPath) Then
+                ' Create the directory
+                Directory.CreateDirectory(directoryPath)
+            End If
 
             Using sw As New StreamWriter(File.Open(myFilePath, FileMode.Append))
                 sw.WriteLine(DateTime.Now)
@@ -22,7 +30,6 @@ Namespace My
 
             MessageBox.Show("An unexpected error occured. Check the error log for details.")
             End
-
         End Sub
 
     End Class
