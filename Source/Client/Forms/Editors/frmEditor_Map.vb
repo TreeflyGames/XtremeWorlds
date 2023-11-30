@@ -812,8 +812,8 @@ Public Class frmEditor_Map
                 ' see if it hits an arrow
                 For i = 1 To 4
                     ' flip the value.
-                    If X >= DirArrowX(i) AndAlso X <= DirArrowX(i) + 20 Then
-                        If Y >= DirArrowY(i) AndAlso Y <= DirArrowY(i) + 20 Then
+                    If X >= DirArrowX(i) AndAlso X <= DirArrowX(i) + 26 Then
+                        If Y >= DirArrowY(i) AndAlso Y <= DirArrowY(i) + 26 Then
                             ' flip the value.
                             SetDirBlock(Map.Tile(CurX, CurY).DirBlock, i, Not IsDirBlocked(Map.Tile(CurX, CurY).DirBlock, i))
                             Exit For
