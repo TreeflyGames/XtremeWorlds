@@ -4,6 +4,7 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Numerics
 Imports System.Runtime.InteropServices.JavaScript
+Imports System.Runtime.InteropServices.JavaScript.JSType
 Imports System.Runtime.InteropServices.Marshalling
 Imports System.Security.Cryptography
 Imports System.Text
@@ -125,7 +126,7 @@ Module S_Database
             Return 0
         End If
 
-        Return BigInteger.Parse(hexString)
+        Return BigInteger.Parse(hexString, NumberStyles.HexNumber)
     End Function
 
     Public Function GenerateIdFromString(input As String) As BigInteger
