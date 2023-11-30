@@ -209,7 +209,7 @@ Module S_General
 
     Sub ErrorHandler(sender As Object, args As UnhandledExceptionEventArgs)
         Dim e As Exception = DirectCast(args.ExceptionObject, Exception)
-        Dim myFilePath As String = Paths.Logs & "ErrorLog.log"
+        Dim myFilePath As String = Paths.Logs & "Errors.log"
 
         Using sw As New StreamWriter(File.Open(myFilePath, FileMode.Append))
             sw.WriteLine(DateTime.Now)
