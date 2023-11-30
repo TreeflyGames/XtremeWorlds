@@ -41,7 +41,7 @@ Module S_Console
 
                     Console.WriteLine("/help, Shows this message.")
                     Console.WriteLine("/exit, Closes down the server.")
-                    Console.WriteLine("/access, Sets player access level, use with '/access playername level goes from 0 for player, to 4 to creator.")
+                    Console.WriteLine("/access, Sets player access level, use with '/access playername level goes from 1 for Player, to 5 to Creator.")
                     Console.WriteLine("/kick, Kicks user from server, use with '/kick playername'")
                     Console.WriteLine("/ban, Bans user from server, use with '/ban playername'")
                     Console.WriteLine("/shutdown, Shuts down the server after 60 seconds or a value you specify")
@@ -87,39 +87,39 @@ Module S_Console
 
                     Dim Name As String = parts(1)
                     Dim Pindex As Integer = FindPlayer(Name)
-                    Dim Power As Integer : Integer.TryParse(parts(2), Power)
+                    Dim Access As Integer : Integer.TryParse(parts(2), Access)
 
                     If Not Pindex > 0 Then
                         Console.WriteLine("Player name is empty or invalid. [Name not found]")
                     Else
-                        Select Case Power
+                        Select Case Access
                             Case Core.AdminType.Player
-                                SetPlayerAccess(Pindex, Power)
+                                SetPlayerAccess(Pindex, Access)
                                 SendPlayerData(Pindex)
-                                PlayerMsg(Pindex, "Your PowerLevel has been set to Player Rank!", ColorType.BrightCyan)
-                                Console.WriteLine("Successfully set the power level to " & Power & " for player " & Name)
+                                PlayerMsg(Pindex, "Your access has been set to Player!", ColorType.BrightCyan)
+                                Console.WriteLine("Successfully set the access level to " & Access & " for player " & Name)
                             Case AdminType.Moderator
-                                SetPlayerAccess(Pindex, Power)
+                                SetPlayerAccess(Pindex, Access)
                                 SendPlayerData(Pindex)
-                                PlayerMsg(Pindex, "Your PowerLevel has been set to Moderator Rank!", ColorType.BrightCyan)
-                                Console.WriteLine("Successfully set the power level to " & Power & " for player " & Name)
+                                PlayerMsg(Pindex, "Your access has been set to Moderator!", ColorType.BrightCyan)
+                                Console.WriteLine("Successfully set the access level to " & Access & " for player " & Name)
                             Case AdminType.Mapper
-                                SetPlayerAccess(Pindex, Power)
+                                SetPlayerAccess(Pindex, Access)
                                 SendPlayerData(Pindex)
-                                PlayerMsg(Pindex, "Your PowerLevel has been set to Mapper Rank!", ColorType.BrightCyan)
-                                Console.WriteLine("Successfully set the power level to " & Power & " for player " & Name)
+                                PlayerMsg(Pindex, "Your access has been set to Mapper!", ColorType.BrightCyan)
+                                Console.WriteLine("Successfully set the access level to " & Access & " for player " & Name)
                             Case AdminType.Developer
-                                SetPlayerAccess(Pindex, Power)
+                                SetPlayerAccess(Pindex, Access)
                                 SendPlayerData(Pindex)
-                                PlayerMsg(Pindex, "Your PowerLevel has been set to Developer Rank!", ColorType.BrightCyan)
-                                Console.WriteLine("Successfully set the power level to " & Power & " for player " & Name)
+                                PlayerMsg(Pindex, "Your access has been set to Developer!", ColorType.BrightCyan)
+                                Console.WriteLine("Successfully set the access level to " & Access & " for player " & Name)
                             Case AdminType.Creator
-                                SetPlayerAccess(Pindex, Power)
+                                SetPlayerAccess(Pindex, Access)
                                 SendPlayerData(Pindex)
-                                PlayerMsg(Pindex, "Your PowerLevel has been set to Creator Rank!", ColorType.BrightCyan)
-                                Console.WriteLine("Successfully set the power level to " & Power & " for player " & Name)
+                                PlayerMsg(Pindex, "Your access has been set to Creator!", ColorType.BrightCyan)
+                                Console.WriteLine("Successfully set the access level to " & Access & " for player " & Name)
                             Case Else
-                                Console.WriteLine("Failed to set the power level to " & Power & " for player " & Name)
+                                Console.WriteLine("Failed to set the access level to " & Access & " for player " & Name)
                         End Select
                     End If
 

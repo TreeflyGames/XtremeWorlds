@@ -1337,11 +1337,12 @@ Module S_NetworkReceive
 
         ' The index
         n = FindPlayer(buffer.ReadString)
+
         ' The access
         i = buffer.ReadInt32
 
         ' Check for invalid access level
-        If i >= 0 OrElse i <= 3 Then
+        If i >= 1 OrElse i <= 5 Then
 
             ' Check if player is on
             If n > 0 Then
