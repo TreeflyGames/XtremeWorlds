@@ -1013,13 +1013,15 @@ Module C_Graphics
         rec.X = 0
         rec.Width = 32
         rec.Height = 32
+
         RenderTexture(DirectionSprite, GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rec.X, rec.Y, rec.Width,
-                     rec.Height)
+                     rec.Height, rec.Width, rec.Height)
 
         ' render dir blobs
         For i = 1 To 4
             rec.X = (i - 1) * 8
             rec.Width = 8
+
             ' find out whether render blocked or not
             If Not IsDirBlocked(Map.Tile(x, y).DirBlock, (i)) Then
                 rec.Y = 8
@@ -1029,7 +1031,7 @@ Module C_Graphics
             rec.Height = 8
 
             RenderTexture(DirectionSprite, GameWindow, ConvertMapX(x * PicX) + DirArrowX(i),
-                         ConvertMapY(y * PicY) + DirArrowY(i), rec.X, rec.Y, rec.Width, rec.Height)
+                         ConvertMapY(y * PicY) + DirArrowY(i), rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
         Next
     End Sub
 
@@ -1543,16 +1545,6 @@ Module C_Graphics
             DrawGrid()
         End If
 
-        If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock Then
-            For x = TileView.Left To TileView.Right
-                For y = TileView.Top To TileView.Bottom
-                    If IsValidMapPoint(x, y) Then
-                        DrawDirections(x, y)
-                    End If
-                Next
-            Next
-        End If
-
         If Editor = EditorType.Map Then
             DrawTileOutline()
             If EyeDropper = True Then
@@ -1597,8 +1589,17 @@ Module C_Graphics
             DrawActionMsg(I)
         Next
 
-        ' Blit out map attributes
         If Editor = EditorType.Map Then
+            If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock = True Then
+                For x = TileView.Left To TileView.Right
+                    For y = TileView.Top To TileView.Bottom
+                        If IsValidMapPoint(x, y) Then
+                            Call DrawDirections(x, y)
+                        End If
+                    Next
+                Next
+            End If
+
             DrawMapAttributes()
         End If
 
