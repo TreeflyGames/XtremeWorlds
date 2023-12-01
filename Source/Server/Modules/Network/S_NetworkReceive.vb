@@ -1381,7 +1381,7 @@ Module S_NetworkReceive
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
 
         Types.Settings.Welcome = Trim$(buffer.ReadString)
-        Save()
+        SettingsManager.Save()
 
         GlobalMsg("Welcome changed to: " & Types.Settings.Welcome)
         Addlog(GetPlayerName(index) & " changed welcome to: " & Types.Settings.Welcome, ADMIN_LOG)

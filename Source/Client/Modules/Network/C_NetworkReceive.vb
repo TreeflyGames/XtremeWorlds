@@ -155,7 +155,7 @@ Module C_NetworkReceive
                 Case MenuType.Login
                     ShowWindow(GetWindowIndex("winLogin"))
                 Case MenuType.Chars
-                    ShowWindow(GetWindowIndex("winCharacters"))
+                    ShowWindow(GetWindowIndex("winChars"))
                 Case MenuType.Job
                     ShowWindow(GetWindowIndex("winJob"))
                 Case MenuType.NewChar
@@ -213,12 +213,12 @@ Module C_NetworkReceive
         buffer.Dispose()
 
         HideWindows()
-        ShowWindow(GetWindowIndex("winCharacters"))
+        ShowWindow(GetWindowIndex("winChars"))
 
         ' set GUI window up
-        winNum = GetWindowIndex("winCharacters")
+        winNum = GetWindowIndex("winChars")
         For I = 1 To MAX_CHARS
-            conNum = GetControlIndex("winCharacters", "lblCharName_" & I)
+            conNum = GetControlIndex("winChars", "lblCharName_" & I)
             With Windows(winNum).Controls(conNum)
                 If Not isSlotEmpty(I) Then
                     .Text = CharName(I)
@@ -226,26 +226,27 @@ Module C_NetworkReceive
                     .Text = "Blank Slot"
                 End If
             End With
+
             ' hide/show buttons
             If isSlotEmpty(I) Then
                 ' create button
-                conNum = GetControlIndex("winCharacters", "btnCreateChar_" & I)
+                conNum = GetControlIndex("winChars", "btnCreateChar_" & I)
                 Windows(winNum).Controls(conNum).Visible = True
                 ' select button
-                conNum = GetControlIndex("winCharacters", "btnSelectChar_" & I)
+                conNum = GetControlIndex("winChars", "btnSelectChar_" & I)
                 Windows(winNum).Controls(conNum).Visible = False
                 ' delete button
-                conNum = GetControlIndex("winCharacters", "btnDelChar_" & I)
+                conNum = GetControlIndex("winChars", "btnDelChar_" & I)
                 Windows(winNum).Controls(conNum).Visible = False
             Else
                 ' create button
-                conNum = GetControlIndex("winCharacters", "btnCreateChar_" & I)
+                conNum = GetControlIndex("winChars", "btnCreateChar_" & I)
                 Windows(winNum).Controls(conNum).Visible = False
                 ' select button
-                conNum = GetControlIndex("winCharacters", "btnSelectChar_" & I)
+                conNum = GetControlIndex("winChars", "btnSelectChar_" & I)
                 Windows(winNum).Controls(conNum).Visible = True
                 ' delete button
-                conNum = GetControlIndex("winCharacters", "btnDelChar_" & I)
+                conNum = GetControlIndex("winChars", "btnDelChar_" & I)
                 Windows(winNum).Controls(conNum).Visible = True
             End If
         Next

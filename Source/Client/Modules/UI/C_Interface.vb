@@ -1,5 +1,6 @@
 ﻿
 Imports System.Management
+Imports System.Runtime.Versioning
 Imports System.Windows.Forms.Design.AxImporter
 Imports Core
 Imports Core.Enum
@@ -196,7 +197,7 @@ Module C_Interface
 
                     ' render image
                     If .Image(.State) > 0 Then
-                        RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Alpha)
+                        RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height, .Alpha)
                     End If
 
                 ' textbox
@@ -208,7 +209,7 @@ Module C_Interface
 
                     ' render image
                     If .Image(.State) > 0 Then
-                        RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Alpha)
+                        RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height, .Alpha)
                     End If
 
                     If activeWindow = winNum And Windows(winNum).ActiveControl = entNum Then
@@ -353,7 +354,7 @@ Module C_Interface
                             If .Value = 0 Then .Alpha = 150 Else .Alpha = 255
 
                             ' render box
-                            RenderTexture(InterfaceSprite(51), GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 23)
+                            RenderTexture(InterfaceSprite(51), GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
 
                             ' render text
                             left = .Left + (49 / 2) - (GetTextWidth(.Text) / 2) + xO
@@ -387,7 +388,7 @@ Module C_Interface
                     End Select
             End Select
 
-            If Not .OnDraw Is Nothing Then Task.Factory.StartNew(.OnDraw)
+            If Not .OnDraw Is Nothing Then .OnDraw()
 
         End With
 
@@ -484,7 +485,7 @@ Module C_Interface
                     RenderDesign(DesignType.Win_Party, .Left, .Top, .Width, .Height)
             End Select
 
-            If Not .OnDraw Is Nothing Then Task.Factory.StartNew(.OnDraw)
+            If Not .OnDraw Is Nothing Then .OnDraw()
         End With
 
     End Sub
@@ -495,11 +496,11 @@ Module C_Interface
         Select Case design
             Case DesignType.MenuHeader
                 ' render the header
-                RenderTexture(InterfaceSprite(61), GameWindow, left, top, 0, 0, width, height, , , 200, 47, 77, 29)
+                RenderTexture(InterfaceSprite(61), GameWindow, left, top, 0, 0, width, height, width, height, 200, 47, 77, 29)
 
             Case DesignType.MenuOption
                 ' render the option
-                RenderTexture(InterfaceSprite(61), GameWindow, left, top, 0, 0, width, height, , , 200, 98, 98, 98)
+                RenderTexture(InterfaceSprite(61), GameWindow, left, top, 0, 0, width, height, width, height, 200, 98, 98, 98)
 
             Case DesignType.Wood
                 bs = 4
@@ -507,7 +508,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(1), left, top, width, height, bs, alpha)
 
                 ' render wood texture
-                RenderTexture(InterfaceSprite(1), GameWindow, left, top, width - (bs * 2), height - (bs * 2), width, height, , , alpha)
+                RenderTexture(InterfaceSprite(1), GameWindow, left, top, width - (bs * 2), height - (bs * 2), width, height, width, height, alpha)
 
             Case DesignType.Wood_Small
                 bs = 2
@@ -515,12 +516,12 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(8), left, top, width, height, bs, alpha)
 
                 ' render wood texture
-                RenderTexture(InterfaceSprite(1), GameWindow, left + bs, top + bs, width - (bs * 2), height - (bs * 2), width, height)
+                RenderTexture(InterfaceSprite(1), GameWindow, left + bs, top + bs, width - (bs * 2), height - (bs * 2), width, height, width, height)
 
             Case DesignType.Wood_Empty
                 bs = 4
                 ' render the wood box
-                RenderEntity_Square(DesignSprite(9), left, top, width, height, alpha)
+                RenderEntity_Square(DesignSprite(9), left, top, width, height, bs, alpha)
 
             Case DesignType.Green
                 bs = 2
@@ -688,21 +689,29 @@ Module C_Interface
         ' Set the border size
         bs = borderSize
         ' Draw centre
-        RenderTexture(sprite, GameWindow, x + bs, y + bs, bs + 1, bs + 1, width - (bs * 2), height - (bs * 2), , , alpha)
+        RenderTexture(sprite, GameWindow, x + bs, y + bs, bs + 1, bs + 1, width - (bs * 2), height - (bs * 2), , , , alpha)
+
         ' Draw top side
         RenderTexture(sprite, GameWindow, x + bs, y, bs, 0, width - (bs * 2), bs, 1, bs, alpha)
+
         ' Draw left side
         RenderTexture(sprite, GameWindow, x, y + bs, 0, bs, bs, height - (bs * 2), bs, , alpha)
+
         ' Draw right side
         RenderTexture(sprite, GameWindow, x + width - bs, y + bs, bs + 3, bs, bs, height - (bs * 2), bs, , alpha)
+
         ' Draw bottom side
         RenderTexture(sprite, GameWindow, x + bs, y + height - bs, bs, bs + 3, width - (bs * 2), bs, 1, bs, alpha)
+
         ' Draw top left corner
         RenderTexture(sprite, GameWindow, x, y, 0, 0, bs, bs, bs, bs, alpha)
+
         ' Draw top right corner
         RenderTexture(sprite, GameWindow, x + width - bs, y, bs + 3, 0, bs, bs, bs, bs, alpha)
+
         ' Draw bottom left corner
         RenderTexture(sprite, GameWindow, x, y + height - bs, 0, bs + 3, bs, bs, bs, bs, alpha)
+
         ' Draw bottom right corner
         RenderTexture(sprite, GameWindow, x + width - bs, y + height - bs, bs + 3, bs + 3, bs, bs, bs, bs, alpha)
     End Sub
@@ -1145,7 +1154,7 @@ Module C_Interface
         CreateLabel(WindowCount, "lblSprite", 175, 39, 76, 9, "Sprite", Arial, AlignmentType.Center)
 
         ' Scene
-        CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , New Action(AddressOf NewChar_OnDraw))
+        CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf NewChar_OnDraw))
 
         ' Buttons
         CreateButton(WindowCount, "btnLeft", 163, 40, 11, 13, ,  , 12, 14, 16, , , , , , , , New Action(AddressOf btnNewChar_Left))
@@ -1157,7 +1166,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Characters()
         ' Create the window
-        CreateWindow("winCharacters", "Characters", zOrder_Win, 0, 0, 364, 229, 62, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winChars", "Characters", zOrder_Win, 0, 0, 364, 229, 62, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -1182,7 +1191,7 @@ Module C_Interface
         ' Scenery Boxes
         CreatePictureBox(WindowCount, "picScene_1", 23, 55, 96, 96, , , , , 11, 11, 11)
         CreatePictureBox(WindowCount, "picScene_2", 133, 55, 96, 96, , , , , 11, 11, 11)
-        CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , New Action(AddressOf Chars_DrawFace))
+        CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf OnDraw_Chars))
 
         ' Create Buttons
         CreateButton(WindowCount, "btnSelectChar_1", 22, 155, 98, 24, "Select", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_1))
@@ -1562,27 +1571,34 @@ Module C_Interface
     ' #######################
     ' ## Characters Window ##
     ' #######################
-    Public Sub Chars_DrawFace()
-        Dim xO As Long, yO As Long, imageFace As Long, imageChar As Long, x As Long, I As Long
+    Public Sub OnDraw_Chars()
+        Dim xO As Long, yO As Long, x As Long, I As Long
 
-        xO = Windows(GetWindowIndex("winCharacters")).Window.Left
-        yO = Windows(GetWindowIndex("winCharacters")).Window.Top
+        xO = Windows(GetWindowIndex("WinChars")).Window.Left
+        yO = Windows(GetWindowIndex("WinChars")).Window.Top
 
         x = xO + 24
         For I = 1 To MAX_CHARS
-            'If LenB(Trim$(CharName(I))) > 0 Then
-            '   If CharSprite(I) > 0 Then
-            'If Not CharSprite(I) > Count_Char And Not CharSprite(I) > Count_Face Then
-            'imageFace = CharSprite(I)
-            'imageChar = CharSprite(I)
-            'RenderTexture imageFace, x, yO + 56, 0, 0, 94, 94, 94, 94
-            'RenderTexture imageChar, x - 1, yO + 117, 32, 0, 32, 32, 32, 32
-            'End If
-            'End If
-            'End If
+            If Trim$(CharName(I)) <> "" Then
+                If CharSprite(I) > 0 Then
+                    If CharacterGfxInfo(CharSprite(I)).IsLoaded = False Then
+                        LoadTexture(CharSprite(I), 2)
+                    End If
+
+                    If FaceGfxInfo(CharSprite(I)).IsLoaded = False Then
+                        LoadTexture(CharSprite(I), 7)
+                    End If
+
+                    If Not CharSprite(I) > NumCharacters And Not CharSprite(I) > NumFaces Then
+                        ' render face
+                        RenderTexture(FaceSprite(CharSprite(I)), GameWindow, xO + 30, yO + 70, 0, 0, FaceGfxInfo(CharSprite(I)).Width, FaceGfxInfo(CharSprite(I)).Height, FaceGfxInfo(CharSprite(I)).Width, FaceGfxInfo(CharSprite(I)).Height)
+                    End If
+                End If
+            End If
             x = x + 110
         Next
     End Sub
+
     Public Sub btnAcceptChar_1()
         SendUseChar(1)
     End Sub
@@ -1707,12 +1723,12 @@ Module C_Interface
 
     Public Sub btnJobs_Close()
         HideWindows()
-        ShowWindow(GetWindowIndex("winCharacters"))
+        ShowWindow(GetWindowIndex("winChars"))
     End Sub
 
     ' Chat
     Public Sub btnSay_Click()
-        'HandleKeyPresses(vbKeyReturn)
+        HandlePressEnter()
     End Sub
 
 
@@ -1815,10 +1831,23 @@ Module C_Interface
             imageChar = Job(newCharJob).FemaleSprite
         End If
 
+        If CharacterGfxInfo(imageChar).IsLoaded = False Then
+            LoadTexture(imageChar, 2)
+        End If
+
+        If FaceGfxInfo(imageFace).IsLoaded = False Then
+            LoadTexture(imageChar, 7)
+        End If
+
+        Dim rect = New Rectangle((CharacterGfxInfo(imageChar).Width / 4), (CharacterGfxInfo(imageChar).Height / 4),
+                               (CharacterGfxInfo(imageChar).Width / 4), (CharacterGfxInfo(imageChar).Height / 4))
+
+
         ' render face
-        'RenderTexture(imageFace, xO + 166, yO + 56, 0, 0, 94, 94, 94, 94)
+        RenderTexture(FaceSprite(imageFace), GameWindow, xO + 180, yO + 70, 0, 0, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height)
+
         ' render char
-        'RenderTexture(imageChar, xO + 166, yO + 116, 32, 0, 32, 32, 32, 32)
+        RenderTexture(CharacterSprite(imageChar), GameWindow, xO + 160, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
     End Sub
 
     Public Sub btnNewChar_Left()
