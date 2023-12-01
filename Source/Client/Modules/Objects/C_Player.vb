@@ -510,13 +510,13 @@ Module C_Player
         If skillslot < 0 OrElse skillslot > MAX_PLAYER_SKILLS Then Exit Sub
 
         If Player(Myindex).Skill(skillslot).CD > 0 Then
-            AddText("Skill has not cooled down yet!", ColorType.Red)
+            AddText("Skill has not cooled down yet!", QColorType.AlertColor)
             Exit Sub
         End If
 
         ' Check if player has enough MP
         If GetPlayerVital(Myindex, VitalType.MP) < Skill(Player(Myindex).Skill(skillslot).Num).MpCost Then
-            AddText("Not enough MP to cast " & Trim$(Skill(Player(Myindex).Skill(skillslot).Num).Name) & ".", ColorType.Red)
+            AddText("Not enough MP to cast " & Trim$(Skill(Player(Myindex).Skill(skillslot).Num).Name) & ".", QColorType.AlertColor)
             Exit Sub
         End If
 
@@ -532,11 +532,11 @@ Module C_Player
                     SkillBuffer = skillslot
                     SkillBufferTimer = GetTickCount()
                 Else
-                    AddText("Cannot cast while walking!", ColorType.Red)
+                    AddText("Cannot cast while walking!", QColorType.AlertColor)
                 End If
             End If
         Else
-            AddText("No skill here.", ColorType.Red)
+            AddText("No skill here.", QColorType.AlertColor)
         End If
 
     End Sub
