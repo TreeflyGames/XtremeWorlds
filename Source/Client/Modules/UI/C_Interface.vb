@@ -1226,8 +1226,8 @@ Module C_Interface
         CreateLabel(WindowCount, "lblClassName", 183, 39, 98, 9, "Warrior", Arial, AlignmentType.Center)
 
         ' Select Buttons
-        CreateButton(WindowCount, "btnLeft", 171, 40, 11, 13, , , , , , , 12, 14, 16, , , , , , New Action(AddressOf btnJobs_Left))
-        CreateButton(WindowCount, "btnRight", 282, 40, 11, 13, , , , , , , 13, 15, 17, , , , , , New Action(AddressOf btnJobs_Right))
+        CreateButton(WindowCount, "btnLeft", 171, 40, 11, 13, , , , , , , 12, 14, 16, , , , New Action(AddressOf btnJobs_Left))
+        CreateButton(WindowCount, "btnRight", 282, 40, 11, 13, , , , , , , 13, 15, 17, , , , New Action(AddressOf btnJobs_Right))
 
         ' Accept Button
         CreateButton(WindowCount, "btnAccept", 183, 185, 98, 22, "Accept", Arial, , , ,  , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnJobs_Accept))
