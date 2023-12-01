@@ -1155,7 +1155,7 @@ Module C_Interface
         CreateLabel(WindowCount, "lblSprite", 175, 39, 76, 9, "Sprite", Arial, AlignmentType.Center)
 
         ' Scene
-        CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf OnDraw_NewChar))
+        CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf NewChar_OnDraw))
 
         ' Buttons
         CreateButton(WindowCount, "btnLeft", 163, 40, 11, 13, ,  , 12, 14, 16, , , , , , , , New Action(AddressOf btnNewChar_Left))
@@ -1192,7 +1192,7 @@ Module C_Interface
         ' Scenery Boxes
         CreatePictureBox(WindowCount, "picScene_1", 23, 55, 96, 96, , , , , 11, 11, 11)
         CreatePictureBox(WindowCount, "picScene_2", 133, 55, 96, 96, , , , , 11, 11, 11)
-        CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf OnDraw_Chars))
+        CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf Chars_OnDraw))
 
         ' Create Buttons
         CreateButton(WindowCount, "btnSelectChar_1", 22, 155, 98, 24, "Select", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_1))
@@ -1589,7 +1589,7 @@ Module C_Interface
     ' #######################
     ' ## Characters Window ##
     ' #######################
-    Public Sub OnDraw_Chars()
+    Public Sub Chars_OnDraw()
         Dim xO As Long, yO As Long, x As Long, I As Long
 
         xO = Windows(GetWindowIndex("WinChars")).Window.Left
@@ -1759,7 +1759,7 @@ Module C_Interface
     End Sub
 
 
-    Public Sub OnDraw_Chat()
+    Public Sub Chat_OnDraw()
         Dim winIndex As Long, xO As Long, yO As Long
 
         winIndex = GetWindowIndex("winChat")
@@ -1841,7 +1841,7 @@ Module C_Interface
     ' ###################
     ' ## New Character ##
     ' ###################
-    Public Sub OnDraw_NewChar()
+    Public Sub NewChar_OnDraw()
         Dim imageFace As Long, imageChar As Long, xO As Long, yO As Long
 
         xO = Windows(GetWindowIndex("winNewChar")).Window.Left
@@ -2085,7 +2085,7 @@ Module C_Interface
         CreateCheckbox(WindowCount, "chkPrivate", 260, 2, 49, 23, 1, "Private", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Private))
 
         ' Blank picturebox - ondraw wrapper
-        CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf OnDraw_Chat))
+        CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
 
         ' Chat button
         CreateButton(WindowCount, "btnChat", 296, 124 + 16, 48, 20, "Say", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))

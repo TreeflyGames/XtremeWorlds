@@ -442,7 +442,6 @@ Module S_NetworkReceive
         Dim s As String
         Dim buffer As New ByteStream(data)
 
-        'msg = Buffer.ReadString
         msg = buffer.ReadString
 
         s = "[Global] " & GetPlayerName(index) & ": " & msg
