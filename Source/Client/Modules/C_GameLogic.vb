@@ -1514,8 +1514,10 @@ Continue1:
 
     Public Sub ScrollChatBox(ByVal direction As Byte)
         If direction = 0 Then ' up
-            If ChatScroll < ChatLines Then
-                ChatScroll = ChatScroll + 1
+            If Len(Chat(ChatScroll + 7).Text) > 0 Then
+                If ChatScroll < ChatLines Then
+                    ChatScroll = ChatScroll + 1
+                End If
             End If
         Else
             If ChatScroll > 0 Then

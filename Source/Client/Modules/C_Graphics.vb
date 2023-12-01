@@ -396,6 +396,12 @@ Module C_Graphics
             End If
         End If
 
+        If e.Delta > 0 Then
+            ScrollChatBox(0)
+        Else
+            ScrollChatBox(1)
+        End If
+
         HandleInterfaceEvents(EntState.MouseScroll)
     End Sub
 

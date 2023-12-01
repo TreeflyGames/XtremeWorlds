@@ -227,7 +227,7 @@ Module C_Text
 
         ' set the position
         xO = 19
-        yO = Types.Settings.ScreenHeight - 15
+        yO = Types.Settings.ScreenHeight - 75
 
         ' loop through chat
         rLines = 1
