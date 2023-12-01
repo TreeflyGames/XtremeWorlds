@@ -1,4 +1,5 @@
 ﻿
+Imports System.Diagnostics.Eventing.Reader
 Imports System.Management
 Imports System.Runtime.Versioning
 Imports System.Windows.Forms.Design.AxImporter
@@ -1226,8 +1227,8 @@ Module C_Interface
         CreateLabel(WindowCount, "lblClassName", 183, 39, 98, 9, "Warrior", Arial, AlignmentType.Center)
 
         ' Select Buttons
-        CreateButton(WindowCount, "btnLeft", 171, 40, 11, 13, , , , , , , 12, 14, 16, , , , New Action(AddressOf btnJobs_Left))
-        CreateButton(WindowCount, "btnRight", 282, 40, 11, 13, , , , , , , 13, 15, 17, , , , New Action(AddressOf btnJobs_Right))
+        CreateButton(WindowCount, "btnLeft", 171, 40, 11, 13, , , 12, 14, 16, , , , , , , , New Action(AddressOf btnJobs_Left))
+        CreateButton(WindowCount, "btnRight", 282, 40, 11, 13, , , 13, 15, 17, , , , , , , , New Action(AddressOf btnJobs_Right))
 
         ' Accept Button
         CreateButton(WindowCount, "btnAccept", 183, 185, 98, 22, "Accept", Arial, , , ,  , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnJobs_Accept))
@@ -1655,17 +1656,21 @@ Module C_Interface
 
         If newCharJob = 0 Then newCharJob = 1
 
-        'Select Case newCharJob
-        '    Case 1 ' Warrior
-        '        imageFace = 18
-        '    Case 2 ' Wizard
-        '        imageFace = 19
-        '    Case 3 ' Whisperer
-        '        imageFace = 20
-        'End Select
+        Select Case newCharJob
+            Case 1 ' Warrior
+                imageFace = 1
+            Case 2 ' Wizard
+                imageFace = 2
+            Case 3 ' Whisperer
+                imageFace = 3
+        End Select
+
+        If FaceGfxInfo(imageFace).IsLoaded = False Then
+            LoadTexture(imageFace, 7)
+        End If
 
         ' render face
-        'RenderTexture imageFace, xO + 14, yO - 41, 0, 0, 256, 256, 256, 256
+        RenderTexture(FaceSprite(imageFace), GameWindow, xO + 25, yO + 75, 0, 0, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height)
     End Sub
 
     Public Sub Jobs_DrawText()
@@ -1674,14 +1679,18 @@ Module C_Interface
         xO = Windows(GetWindowIndex("winJob")).Window.Left
         yO = Windows(GetWindowIndex("winJob")).Window.Top
 
-        Select Case newCharJob
-            Case 1 ' Warrior
-                text = "The way of a warrior has never been an easy one. Skilled use of a sword is not something learnt overnight. Being able to take a decent amount of hits is important for these characters and as such they weigh a lot of importance on endurance and strength."
-            Case 2 ' Wizard
-                text = "Wizards are often mistrusted characters who have mastered the practise of using their own spirit to create elemental entities. Generally seen as playful and almost childish because of the huge amounts of pleasure they take from setting things on fire."
-            Case 3 ' Whisperer
-                text = "The art of healing is one which comes with tremendous amounts of pressure and guilt. Constantly being put under high-pressure situations where their abilities could mean the difference between life and death leads many Whisperers to insanity."
-        End Select
+        If Job(newCharJob).Desc = "" Then
+            Select Case newCharJob
+                Case 1 ' Warrior
+                    text = "The way of a warrior has never been an easy one. Skilled use of a sword is not something learnt overnight. Being able to take a decent amount of hits is important for these characters and as such they weigh a lot of importance on endurance and strength."
+                Case 2 ' Wizard
+                    text = "Wizards are often mistrusted characters who have mastered the practise of using their own spirit to create elemental entities. Generally seen as playful and almost childish because of the huge amounts of pleasure they take from setting things on fire."
+                Case 3 ' Whisperer
+                    text = "The art of healing is one which comes with tremendous amounts of pressure and guilt. Constantly being put under high-pressure situations where their abilities could mean the difference between life and death leads many Whisperers to insanity."
+            End Select
+        Else
+            text = Job(newCharJob).Desc
+        End If
 
         ' wrap text
         WordWrap_Array(text, 400, textArray)
@@ -1700,19 +1709,21 @@ Module C_Interface
         Dim text As String
 
         newCharJob = newCharJob - 1
-        If newCharJob <= 0 Then
-            newCharJob = MAX_JOBS
+        If newCharJob <= 0 Or Job(newCharJob).Desc = "" Then
+            newCharJob = 1
         End If
+
         Windows(GetWindowIndex("winJob")).Controls(GetControlIndex("winJob", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
     End Sub
 
     Public Sub btnJobs_Right()
         Dim text As String
 
-        newCharJob = newCharJob + 1
-        If newCharJob > MAX_JOBS Then
-            newCharJob = 1
+        If newCharJob > MAX_JOBS Or (Job(newCharJob).Desc = "" And newCharJob >= 3) Then
+            Exit Sub
         End If
+
+        newCharJob = newCharJob + 1
         Windows(GetWindowIndex("winJob")).Controls(GetControlIndex("winJob", "lblClassName")).Text = Trim$(Job(newCharJob).Name)
     End Sub
 
