@@ -273,7 +273,7 @@ Module S_Loop
                                                     If distanceX <= n AndAlso distanceY <= n Then
                                                         If NPC(npcNum).Behaviour = NpcBehavior.AttackOnSight OrElse GetPlayerPK(i) = i Then
                                                             If Len(Trim$(NPC(npcNum).AttackSay)) > 0 Then
-                                                                PlayerMsg(i, Trim$(NPC(npcNum).Name) & " says: " & NPC(npcNum).AttackSay.Trim, QColorType.SayColor)
+                                                                PlayerMsg(i, Trim$(NPC(npcNum).Name) & " says: " & NPC(npcNum).AttackSay.Trim, ColorType.White)
                                                             End If
                                                             MapNPC(mapNum).Npc(x).TargetType = TargetType.Pet
                                                             MapNPC(mapNum).Npc(x).Target = i

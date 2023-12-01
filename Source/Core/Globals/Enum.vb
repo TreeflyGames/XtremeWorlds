@@ -2,7 +2,7 @@
 
     ''' <Summary> Text Color Contstant </Summary>
     Enum ColorType As Byte
-        Black
+        Black = 0
         Blue
         Green
         Cyan
@@ -18,22 +18,6 @@
         Pink
         Yellow
         White
-    End Enum
-
-    ''' <Summary> Quick Access/Constant Color References </Summary>
-    Enum QColorType As Byte
-        SayColor = ColorType.White
-        GlobalColor = ColorType.Yellow
-        BroadcastColor = ColorType.Yellow
-        TellColor = ColorType.BrightGreen
-        EmoteColor = ColorType.BrightCyan
-        AdminColor = ColorType.BrightCyan
-        HelpColor = ColorType.BrightBlue
-        WhoColor = ColorType.BrightBlue
-        JoinLeftColor = ColorType.Gray
-        NpcColor = ColorType.Brown
-        AlertColor = ColorType.BrightRed
-        NewMapColor = ColorType.BrightBlue
     End Enum
 
     ''' <Summary> Sex Constant </Summary>

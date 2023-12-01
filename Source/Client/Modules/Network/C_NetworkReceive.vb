@@ -465,7 +465,7 @@ Module C_NetworkReceive
 
         buffer.Dispose()
 
-        AddText(msg, QColorType.GlobalColor, , ChatChannel.Broadcast)
+        AddText(msg, ColorType.White, , ChatChannel.Broadcast)
     End Sub
 
     Private Sub Packet_MapMessage(ByRef data() As Byte)
@@ -476,7 +476,7 @@ Module C_NetworkReceive
 
         buffer.Dispose()
 
-        AddText(msg, QColorType.BroadcastColor, , ChatChannel.Map)
+        AddText(msg, ColorType.White, , ChatChannel.Map)
 
     End Sub
 
@@ -715,7 +715,7 @@ Module C_NetworkReceive
 
     Private Sub Packet_SayMessage(ByRef data() As Byte)
         Dim access As Integer, name As String, message As String
-        Dim header As String, pk As Integer
+        Dim header As String, pk As Integer, channelType As Byte, colorNum As Byte
         Dim buffer As New ByteStream(data)
 
         name = buffer.ReadString
@@ -724,7 +724,23 @@ Module C_NetworkReceive
         message = buffer.ReadString
         header = buffer.ReadString
 
-        AddText(header & " " & name & ": " & message, QColorType.SayColor, ChatChannel.Game)
+        ' Check access level
+        colorNum = colorType.White
+
+        If access > 0 Then colorNum = ColorType.Pink
+        If pk > 0 Then colorNum = ColorType.BrightRed
+
+        ' find channel
+        channelType = 0
+        Select Case header
+            Case "[Map]"
+                channelType = ChatChannel.Map
+            Case "[Global]"
+                channelType = ChatChannel.Broadcast
+        End Select
+
+        ' add to the chat box
+        AddText(header & name & ": " & message, colorNum, , channelType)
 
         buffer.Dispose()
     End Sub

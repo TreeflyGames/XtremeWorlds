@@ -248,7 +248,7 @@ Module C_Text
                 If Not Chat(i).Visible Then isVisible = False
             End If
 
-            If Chat(i).Channel = 0 Then isVisible = False
+            If Types.Settings.ChannelState(Chat(i).Channel) = 0 Then isVisible = False
 
             ' make sure it's visible
             If isVisible Then
