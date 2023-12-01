@@ -1709,7 +1709,7 @@ Module C_Interface
         Dim text As String
 
         newCharJob = newCharJob - 1
-        If newCharJob <= 0 Or Job(newCharJob).Desc = "" Then
+        If newCharJob <= 0 Then
             newCharJob = 1
         End If
 
