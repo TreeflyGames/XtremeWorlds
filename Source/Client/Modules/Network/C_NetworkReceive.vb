@@ -465,7 +465,7 @@ Module C_NetworkReceive
 
         buffer.Dispose()
 
-        AddText(msg, ColorType.White, , ChatChannel.Broadcast)
+        AddText(msg, ColorType.Yellow, , ChatChannel.Broadcast)
     End Sub
 
     Private Sub Packet_MapMessage(ByRef data() As Byte)
