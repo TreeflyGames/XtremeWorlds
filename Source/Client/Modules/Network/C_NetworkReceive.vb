@@ -204,7 +204,7 @@ Module C_NetworkReceive
             CharName(I) = Trim$(buffer.ReadString)
             CharSprite(I) = buffer.ReadInt32
             CharAccess(I) = buffer.ReadInt32
-            CharClass(I) = buffer.ReadInt32
+            CharJob(I) = buffer.ReadInt32
 
             ' set as empty or not
             If Not Len(Trim$(CharName(I))) > 0 Then isSlotEmpty(I) = True

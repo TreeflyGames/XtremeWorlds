@@ -24,7 +24,7 @@ Module C_Globals
     Public CharName(MAX_CHARS) As String
     Public CharSprite(MAX_CHARS) As Long
     Public CharAccess(MAX_CHARS) As Long
-    Public CharClass(MAX_CHARS) As Long
+    Public CharJob(MAX_CHARS) As Long
     Public CharNum As Byte
 
     ' Directional blocking

@@ -1154,7 +1154,7 @@ Module C_Interface
         CreateLabel(WindowCount, "lblSprite", 175, 39, 76, 9, "Sprite", Arial, AlignmentType.Center)
 
         ' Scene
-        CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf NewChar_OnDraw))
+        CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf OnDraw_NewChar))
 
         ' Buttons
         CreateButton(WindowCount, "btnLeft", 163, 40, 11, 13, ,  , 12, 14, 16, , , , , , , , New Action(AddressOf btnNewChar_Left))
@@ -1581,13 +1581,16 @@ Module C_Interface
         For I = 1 To MAX_CHARS
             If Trim$(CharName(I)) <> "" Then
                 If CharSprite(I) > 0 Then
-                    If FaceGfxInfo(CharSprite(I)).IsLoaded = False Then
-                        LoadTexture(CharSprite(I), 7)
+                    If CharacterGfxInfo(CharSprite(I)).IsLoaded = False Then
+                        LoadTexture(CharSprite(I), 2)
                     End If
 
+                    Dim rect = New Rectangle((CharacterGfxInfo(CharSprite(I)).Width / 4), (CharacterGfxInfo(CharSprite(I)).Height / 4),
+                               (CharacterGfxInfo(CharSprite(I)).Width / 4), (CharacterGfxInfo(CharSprite(I)).Height / 4))
+
                     If Not CharSprite(I) > NumCharacters And Not CharSprite(I) > NumFaces Then
-                        ' render face
-                        RenderTexture(FaceSprite(CharSprite(I)), GameWindow, xO + 30, yO + 70, 0, 0, FaceGfxInfo(CharSprite(I)).Width, FaceGfxInfo(CharSprite(I)).Height, FaceGfxInfo(CharSprite(I)).Width, FaceGfxInfo(CharSprite(I)).Height)
+                        ' render char
+                        RenderTexture(CharacterSprite(CharSprite(I)), GameWindow, x + 24, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
                     End If
                 End If
             End If
@@ -1813,7 +1816,7 @@ Module C_Interface
     ' ###################
     ' ## New Character ##
     ' ###################
-    Public Sub NewChar_OnDraw()
+    Public Sub OnDraw_NewChar()
         Dim imageFace As Long, imageChar As Long, xO As Long, yO As Long
 
         xO = Windows(GetWindowIndex("winNewChar")).Window.Left
@@ -1831,19 +1834,12 @@ Module C_Interface
             LoadTexture(imageChar, 2)
         End If
 
-        If FaceGfxInfo(imageFace).IsLoaded = False Then
-            LoadTexture(imageChar, 7)
-        End If
-
         Dim rect = New Rectangle((CharacterGfxInfo(imageChar).Width / 4), (CharacterGfxInfo(imageChar).Height / 4),
                                (CharacterGfxInfo(imageChar).Width / 4), (CharacterGfxInfo(imageChar).Height / 4))
 
 
-        ' render face
-        RenderTexture(FaceSprite(imageFace), GameWindow, xO + 180, yO + 70, 0, 0, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height)
-
         ' render char
-        RenderTexture(CharacterSprite(imageChar), GameWindow, xO + 160, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
+        RenderTexture(CharacterSprite(imageChar), GameWindow, xO + 190, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
     End Sub
 
     Public Sub btnNewChar_Left()
