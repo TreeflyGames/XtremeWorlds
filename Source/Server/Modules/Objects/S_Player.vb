@@ -2037,7 +2037,7 @@ Module S_Player
         ' Notify everyone that a player has joined the game.
         GlobalMsg(String.Format("{0} has joined {1}!", GetPlayerName(index), Types.Settings.GameName))
 
-         ' Warp the player to his saved location
+        ' Warp the player to his saved location
         PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index))
 
         ' Send all the required game data to the user.

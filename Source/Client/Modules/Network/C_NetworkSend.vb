@@ -409,13 +409,13 @@ Module C_NetworkSend
 
         ' dont let them forget a skill which is in CD
         If Player(Myindex).Skill(skillslot).CD > 0 Then
-            AddText("Cannot forget a skill which is cooling down!", QColorType.AlertColor)
+            AddText("Cannot forget a skill which is cooling down!", ColorType.Red)
             Exit Sub
         End If
 
         ' dont let them forget a skill which is buffered
         If SkillBuffer = skillslot Then
-            AddText("Cannot forget a skill which you are casting!", QColorType.AlertColor)
+            AddText("Cannot forget a skill which you are casting!", ColorType.Red)
             Exit Sub
         End If
 
@@ -424,7 +424,7 @@ Module C_NetworkSend
             buffer.WriteInt32(skillslot)
             Socket.SendData(buffer.Data, buffer.Head)
         Else
-            AddText("No skill found.", QColorType.AlertColor)
+            AddText("No skill found.", ColorType.Red)
         End If
 
         buffer.Dispose()

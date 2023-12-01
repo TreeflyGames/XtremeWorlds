@@ -433,7 +433,7 @@ Module C_GameLogic
     End Sub
 
     Friend Function IsDirBlocked(ByRef blockvar As Byte, ByRef dir As Byte) As Boolean
-        Return Not blockvar And (2 ^ dir)
+        Return blockvar And (2 ^ dir)
     End Function
 
     Friend Function ConvertCurrency(amount As Integer) As String
@@ -660,7 +660,7 @@ Module C_GameLogic
                     End If
 
                     If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
-                        AddText(Language.Chat.WarpMeTo, ColorType.Yellow)
+                        AddText(Language.Chat.WarpMeTo, QColorType.AlertColor)
                         GoTo Continue1
                     End If
 
@@ -675,7 +675,7 @@ Module C_GameLogic
                     End If
 
                     If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
-                        AddText(Language.Chat.WarpToMe, ColorType.Yellow)
+                        AddText(Language.Chat.WarpToMe, QColorType.AlertColor)
                         GoTo Continue1
                     End If
 
@@ -690,7 +690,7 @@ Module C_GameLogic
                     End If
 
                     If UBound(command) < 1 OrElse Not IsNumeric(command(1)) Then
-                        AddText(Language.Chat.WarpTo, ColorType.Yellow)
+                        AddText(Language.Chat.WarpTo, QColorType.AlertColor)
                         GoTo Continue1
                     End If
 
@@ -712,7 +712,7 @@ Module C_GameLogic
                     End If
 
                     If UBound(command) < 1 OrElse Not IsNumeric(command(1)) Then
-                        AddText(Language.Chat.Sprite, ColorType.Yellow)
+                        AddText(Language.Chat.Sprite, QColorType.AlertColor)
                         GoTo Continue1
                     End If
 
@@ -757,7 +757,7 @@ Module C_GameLogic
                     End If
 
                     If UBound(command) < 1 Then
-                        AddText(Language.Chat.Welcome, ColorType.Yellow)
+                        AddText(Language.Chat.Welcome, QColorType.AlertColor)
                         GoTo Continue1
                     End If
 
@@ -782,7 +782,7 @@ Module C_GameLogic
                     End If
 
                     If UBound(command) < 1 Then
-                        AddText(Language.Chat.Ban, ColorType.Yellow)
+                        AddText(Language.Chat.Ban, QColorType.AlertColor)
                         GoTo Continue1
                     End If
 

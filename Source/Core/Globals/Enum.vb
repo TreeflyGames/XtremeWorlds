@@ -23,8 +23,8 @@
     ''' <Summary> Quick Access/Constant Color References </Summary>
     Enum QColorType As Byte
         SayColor = ColorType.White
-        GlobalColor = ColorType.BrightBlue
-        BroadcastColor = ColorType.White
+        GlobalColor = ColorType.Yellow
+        BroadcastColor = ColorType.Yellow
         TellColor = ColorType.BrightGreen
         EmoteColor = ColorType.BrightCyan
         AdminColor = ColorType.BrightCyan
@@ -555,7 +555,7 @@
     End Enum
 
     Public Enum ChatChannel
-        Game = 0
+        Game = 1
         Map
         Broadcast
         Party

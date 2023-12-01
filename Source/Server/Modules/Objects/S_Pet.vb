@@ -2401,10 +2401,10 @@ Module S_Pet
                 If GetPlayerPK(attacker) = 0 Then
                     SetPlayerPK(attacker, 1)
                     SendPlayerData(attacker)
-                    GlobalMsg(GetPlayerName(attacker) & " has been deemed a Player Killer!!!")
+                    GlobalMsg(GetPlayerName(attacker) & " has been deemed a Player Killer")
                 End If
             Else
-                GlobalMsg(GetPlayerName(victim) & " has paid the price for being a Player Killer!!!")
+                GlobalMsg(GetPlayerName(victim) & " has paid the price for being a Player Killer!")
             End If
 
             OnDeath(victim)

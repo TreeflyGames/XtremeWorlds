@@ -1,4 +1,5 @@
-﻿Imports Core
+﻿Imports System.Threading.Channels
+Imports Core
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 
@@ -462,7 +463,7 @@ Module C_NetworkReceive
 
         buffer.Dispose()
 
-        AddText(msg, QColorType.GlobalColor)
+        AddText(msg, QColorType.GlobalColor, , ChatChannel.Broadcast)
     End Sub
 
     Private Sub Packet_MapMessage(ByRef data() As Byte)
@@ -473,7 +474,7 @@ Module C_NetworkReceive
 
         buffer.Dispose()
 
-        AddText(msg, QColorType.BroadcastColor)
+        AddText(msg, QColorType.BroadcastColor, , ChatChannel.Map)
 
     End Sub
 
@@ -503,7 +504,7 @@ Module C_NetworkReceive
 
         buffer.Dispose()
 
-        AddText(msg, Color)
+        AddText(msg, Color, , ChatChannel.Whisper)
     End Sub
 
     Private Sub Packet_SpawnNPC(ByRef data() As Byte)
@@ -715,13 +716,13 @@ Module C_NetworkReceive
         Dim header As String, pk As Integer
         Dim buffer As New ByteStream(data)
 
-        name = Trim(buffer.ReadString)
+        name = buffer.ReadString
         access = buffer.ReadInt32
         pk = buffer.ReadInt32
-        message = Trim(buffer.ReadString)
-        header = Trim(buffer.ReadString)
+        message = buffer.ReadString
+        header = buffer.ReadString
 
-        AddText(header & name & ": " & message, QColorType.SayColor)
+        AddText(header & " " & name & ": " & message, QColorType.SayColor, ChatChannel.Game)
 
         buffer.Dispose()
     End Sub

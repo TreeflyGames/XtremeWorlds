@@ -1614,7 +1614,7 @@ Friend Module S_Event
         ' give the exp
 
         SetPlayerExp(index, GetPlayerExp(index) + exp)
-        SendActionMsg(GetPlayerMap(index), "+" & exp & " Exp", ColorType.White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32))
+        SendActionMsg(GetPlayerMap(index), "+" & exp & " Exp", ColorType.BrightGreen, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32))
         ' check if we've leveled
         CheckPlayerLevelUp(index)
 
@@ -1623,7 +1623,7 @@ Friend Module S_Event
 
             If Pet(petnum).LevelingType = 1 Then
                 SetPetExp(index, GetPetExp(index) + (exp * (Pet(petnum).ExpGain / 100)))
-                SendActionMsg(GetPlayerMap(index), "+" & (exp * (Pet(petnum).ExpGain / 100)) & " Exp", ColorType.White, 1, (GetPetX(index) * 32), (GetPetY(index) * 32))
+                SendActionMsg(GetPlayerMap(index), "+" & (exp * (Pet(petnum).ExpGain / 100)) & " Exp", ColorType.BrightGreen, 1, (GetPetX(index) * 32), (GetPetY(index) * 32))
                 CheckPetLevelUp(index)
                 SendPetExp(index)
             End If

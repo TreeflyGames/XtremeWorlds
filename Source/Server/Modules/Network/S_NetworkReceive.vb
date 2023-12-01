@@ -445,7 +445,7 @@ Module S_NetworkReceive
         'msg = Buffer.ReadString
         msg = buffer.ReadString
 
-        s = "[Global]" & GetPlayerName(index) & ": " & msg
+        s = "[Global] " & GetPlayerName(index) & ": " & msg
         SayMsg_Global(index, msg, ColorType.White)
         Addlog(s, PLAYER_LOG)
         Console.WriteLine(s)
@@ -756,7 +756,7 @@ Module S_NetworkReceive
     Sub Packet_SetSprite(index As Integer, ByRef data() As Byte)
         Dim n As Integer
         Dim buffer As New ByteStream(data)
-        
+
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
 
@@ -1083,7 +1083,7 @@ Module S_NetworkReceive
     Sub Packet_KickPlayer(index As Integer, ByRef data() As Byte)
         Dim n As Integer
         Dim buffer As New ByteStream(data)
-        
+
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Moderator Then
             Exit Sub

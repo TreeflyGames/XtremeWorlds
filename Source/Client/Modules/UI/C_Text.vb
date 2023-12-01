@@ -1,6 +1,7 @@
 ﻿
 Imports System.Windows.Forms.Design.AxImporter
 Imports Core
+Imports DarkUI.Config
 Imports SFML.Graphics
 Imports SFML.System
 
@@ -71,7 +72,7 @@ Module C_Text
                 backcolor = Color.Black
         End Select
 
-        textX = ConvertMapX(MapNpc(mapNpcNum).X * PicX) + MapNpc(mapNpcNum).XOffset + (PicX \ 2) - (GetTextWidth((Trim$(NPC(npcNum).Name))) / 2) - 2
+        textX = ConvertMapX(MapNpc(mapNpcNum).X * PicX) + MapNpc(mapNpcNum).XOffset + (PicX \ 2) - (TextWidth((Trim$(NPC(npcNum).Name))) / 2) - 2
         If NPC(npcNum).Sprite < 1 OrElse NPC(npcNum).Sprite > NumCharacters Then
             textY = ConvertMapY(MapNpc(mapNpcNum).Y * PicY) + MapNpc(mapNpcNum).YOffset - 16
         Else
@@ -94,7 +95,7 @@ Module C_Text
         name = Trim$(Map.MapEvents(index).Name)
 
         ' calc pos
-        textX = ConvertMapX(Map.MapEvents(index).X * PicX) + Map.MapEvents(index).XOffset + (PicX \ 2) - (GetTextWidth(Trim$(name)) \ 2) - 2
+        textX = ConvertMapX(Map.MapEvents(index).X * PicX) + Map.MapEvents(index).XOffset + (PicX \ 2) - (TextWidth(Trim$(name)) \ 2) - 2
         If Map.MapEvents(index).GraphicType = 0 Then
             textY = ConvertMapY(Map.MapEvents(index).Y * PicY) + Map.MapEvents(index).YOffset - 16
         ElseIf Map.MapEvents(index).GraphicType = 1 Then
@@ -224,6 +225,7 @@ Module C_Text
     Sub RenderChat()
         Dim xO As Long, yO As Long, Color As Integer, yOffset As Long, rLines As Integer, lineCount As Integer
         Dim tmpText As String, i As Long, isVisible As Boolean, topWidth As Integer, tmpArray() As String, x As Integer
+        Dim Color2 As Color
 
         ' set the position
         xO = 19
@@ -246,14 +248,16 @@ Module C_Text
                 If Not Chat(i).Visible Then isVisible = False
             End If
 
-            If Types.Settings.ChannelState(Chat(i).Channel) = 0 Then isVisible = False
+            If Chat(i).Channel = 0 Then isVisible = False
 
             ' make sure it's visible
             If isVisible Then
                 ' render line
                 Color = Chat(i).Color
+                Color2 = ToSfmlColor(Drawing.ColorTranslator.FromOle(QBColor(Color)))
+
                 ' check if we need to word wrap
-                If GetTextWidth(Chat(i).Text) > ChatWidth Then
+                If TextWidth(Chat(i).Text) > ChatWidth Then
                     ' word wrap
                     tmpText = WordWrap(Chat(i).Text, ChatWidth)
 
@@ -262,23 +266,23 @@ Module C_Text
 
                     ' continue on
                     yOffset = yOffset - (14 * lineCount)
-                    RenderText(tmpText, GameWindow, xO, yO + yOffset, ToSfmlColor(Drawing.ColorTranslator.FromOle(QBColor(Color))), SFML.Graphics.Color.Black)
+                    RenderText(tmpText, GameWindow, xO, yO + yOffset, Color2, Color2)
                     rLines = rLines + lineCount
 
                     ' set the top width
                     tmpArray = Split(tmpText, vbNewLine)
                     For x = 0 To UBound(tmpArray)
-                        If GetTextWidth(tmpArray(x)) > topWidth Then topWidth = GetTextWidth(tmpArray(x))
+                        If TextWidth(tmpArray(x)) > topWidth Then topWidth = TextWidth(tmpArray(x))
                     Next
                 Else
                     ' normal
                     yOffset = yOffset - 14
 
-                    RenderText(Chat(i).Text, GameWindow, xO, yO + yOffset, ToSfmlColor(Drawing.ColorTranslator.FromOle(QBColor(Color))), SFML.Graphics.Color.Black)
+                    RenderText(Chat(i).Text, GameWindow, xO, yO + yOffset, Color2, Color2)
                     rLines = rLines + 1
 
                     ' set the top width
-                    If GetTextWidth(Chat(i).Text) > topWidth Then topWidth = GetTextWidth(Chat(i).Text)
+                    If TextWidth(Chat(i).Text) > topWidth Then topWidth = TextWidth(Chat(i).Text)
                 End If
             End If
             ' increment chat pointer
@@ -292,7 +296,7 @@ Module C_Text
 
     Private ReadOnly FontTester As Text = New Text("", Fonts(FontType.Goergia))
 
-    Friend Function GetTextWidth(text As String, Optional textSize As Byte = FontSize) As Integer
+    Friend Function TextWidth(text As String, Optional textSize As Byte = FontSize) As Integer
         FontTester.DisplayedString = text
         FontTester.CharacterSize = textSize
         Return FontTester.GetLocalBounds().Width
@@ -304,7 +308,7 @@ Module C_Text
         Return FontTester.GetLocalBounds().Height
     End Function
 
-    Public Sub AddText(ByVal text As String, ByVal Color As Long, Optional ByVal alpha As Long = 255, Optional channel As Byte = 0)
+    Public Sub AddText(ByVal text As String, ByVal Color As Integer, Optional ByVal alpha As Long = 255, Optional channel As Byte = 1)
         Dim i As Long
 
         Chat_HighIndex = 0
@@ -365,6 +369,75 @@ Module C_Text
 
     Friend SplitChars As Char() = New Char() {" "c, "-"c, ControlChars.Tab}
 
+    Public Sub WordWrap_Array(ByVal text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
+        Dim lineCount As Long, i As Long, size As Long, lastSpace As Long, b As Long, tmpNum As Long
+
+        'Too small of text
+        If Len(text) < 2 Then
+            ReDim theArray(1)
+            theArray(1) = text
+            Exit Sub
+        End If
+
+        ' default values
+        b = 1
+        lastSpace = 1
+        size = 0
+        tmpNum = Len(text)
+
+        For i = 1 To tmpNum
+
+            ' if it's a space, store it
+            Select Case Mid$(text, i, 1)
+                Case " " : lastSpace = i
+            End Select
+
+            'Add up the size
+            size = size + 12
+
+            'Check for too large of a size
+            If size > MaxLineLen Then
+                'Check if the last space was too far back
+                If i - lastSpace > 12 Then
+                    'Too far away to the last space, so break at the last character
+                    lineCount = lineCount + 1
+                    ReDim Preserve theArray(lineCount)
+                    theArray(lineCount) = Trim$(Mid$(text, b, (i - 1) - b))
+                    b = i - 1
+                    size = 0
+                Else
+                    'Break at the last space to preserve the word
+                    lineCount = lineCount + 1
+                    ReDim Preserve theArray(lineCount)
+
+                    ' Ensure b is within valid range
+                    If b < 1 Then b = 1
+                    If b > text.Length Then b = text.Length
+
+                    ' Ensure the length parameter is not negative
+                    Dim substringLength As Integer = lastSpace - b
+                    If substringLength < 0 Then substringLength = 0
+
+                    ' Extract the substring and assign it to the array
+                    theArray(lineCount) = Trim$(Mid$(text, b, substringLength))
+
+                    b = lastSpace + 1
+                    'Count all the words we ignored (the ones that weren't printed, but are before "i")
+                    size = TextWidth(Mid$(text, lastSpace, i - lastSpace))
+                End If
+            End If
+
+            ' Remainder
+            If i = Len(text) Then
+                If b <> i Then
+                    lineCount = lineCount + 1
+                    ReDim Preserve theArray(lineCount)
+                    theArray(lineCount) = theArray(lineCount) & Mid$(text, b, i)
+                End If
+            End If
+        Next
+    End Sub
+
     Public Function WordWrap(ByVal text As String, ByVal MaxLineLen As Integer, Optional ByRef lineCount As Long = 0) As String
         Dim TempSplit() As String, TSLoop As Long, lastSpace As Long, size As Long, i As Long, b As Long, tmpNum As Long, skipCount As Long
 
@@ -403,7 +476,7 @@ Module C_Text
                         skipCount = skipCount - 1
                     ElseIf TSLoop > 0 Then
                         'Add up the size
-                        size = size + GetTextWidth(TempSplit(TSLoop))
+                        size = size + TextWidth(TempSplit(TSLoop))
 
                         'Check for too large of a size
                         If size > MaxLineLen Then
@@ -421,7 +494,7 @@ Module C_Text
                                 b = lastSpace + 1
 
                                 'Count all the words we ignored (the ones that weren't printed, but are before "i")
-                                size = GetTextWidth(Mid$(TempSplit(TSLoop), lastSpace, i - lastSpace))
+                                size = TextWidth(Mid$(TempSplit(TSLoop), lastSpace, i - lastSpace))
                             End If
                         End If
 

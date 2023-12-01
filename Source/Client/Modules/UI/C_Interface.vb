@@ -254,7 +254,7 @@ Module C_Interface
                     End If
 
                     ' calculate the horizontal centre
-                    width = GetTextWidth(.Text)
+                    width = TextWidth(.Text)
                     If width > .Width Then
                         hor_centre = .Left + xO + xOffset
                     Else
@@ -269,9 +269,9 @@ Module C_Interface
                         Select Case .Align
                             Case AlignmentType.Left
                                 ' check if need to word wrap
-                                If GetTextWidth(.Text) > .Width Then
+                                If TextWidth(.Text) > .Width Then
                                     ' wrap text
-                                    'WordWrap_Array(.Text, .Width, textArray)
+                                    WordWrap_Array(.Text, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
@@ -287,41 +287,41 @@ Module C_Interface
 
                             Case AlignmentType.Right
                                 ' check if need to word wrap
-                                If GetTextWidth(.Text) > .Width Then
+                                If TextWidth(.Text) > .Width Then
                                     ' wrap text
-                                    'WordWrap_Array(.Text, .Width, textArray)
+                                    WordWrap_Array(.Text, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        left = .Left + .Width - GetTextWidth(textArray(i))
+                                        left = .Left + .Width - TextWidth(textArray(i))
                                         RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, Color.White, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
-                                    left = .Left + .Width - GetTextWidth(.Text)
+                                    left = .Left + .Width - TextWidth(.Text)
                                     RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
 
                             Case AlignmentType.Center
                                 ' Check if need to word wrap
-                                If GetTextWidth(.Text) > .Width Then
+                                If TextWidth(.Text) > .Width Then
                                     ' Wrap text
-                                    'WordWrap_Array(.Text, .Width)
+                                    WordWrap_Array(.Text, .Width, textArray)
 
                                     ' Render text
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        left = .Left + (.Width \ 2) - (GetTextWidth(textArray(i)) \ 2) - 4
+                                        left = .Left + (.Width \ 2) - (TextWidth(textArray(i)) \ 2) - 4
                                         RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, Color.White, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' Just one line
-                                    left = .Left + (.Width \ 2) - (GetTextWidth(.Text) \ 2) - 4
+                                    left = .Left + (.Width \ 2) - (TextWidth(.Text) \ 2) - 4
                                     RenderText(.Text, GameWindow, left + xO, .Top + yO, Color.White, Color.Black)
                                 End If
                         End Select
@@ -342,9 +342,9 @@ Module C_Interface
                                 Case AlignmentType.Left
                                     left = .Left + 18 + xO
                                 Case AlignmentType.Right
-                                    left = .Left + 18 + (.Width - 18) - GetTextWidth(.Text) + xO
+                                    left = .Left + 18 + (.Width - 18) - TextWidth(.Text) + xO
                                 Case AlignmentType.Center
-                                    left = .Left + 18 + ((.Width - 18) / 2) - (GetTextWidth(.Text) / 2) + xO
+                                    left = .Left + 18 + ((.Width - 18) / 2) - (TextWidth(.Text) / 2) + xO
                             End Select
 
                             ' render text
@@ -357,7 +357,7 @@ Module C_Interface
                             RenderTexture(InterfaceSprite(51), GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
 
                             ' render text
-                            left = .Left + (49 / 2) - (GetTextWidth(.Text) / 2) + xO
+                            left = .Left + (49 / 2) - (TextWidth(.Text) / 2) + xO
                             RenderText(.Text, GameWindow, left, .Top + yO + 4, Color.White, Color.Black)
 
                         Case DesignType.ChkCustom_Buying
@@ -425,7 +425,7 @@ Module C_Interface
                             End If
 
                             ' render text
-                            left = x + (.Width \ 2) - (GetTextWidth(.List(i)) \ 2)
+                            left = x + (.Width \ 2) - (TextWidth(.List(i)) \ 2)
 
                             If i = .Value Or i = .Group Then
                                 RenderText(.List(i), GameWindow, left, y, Color.White, Color.Black)
@@ -1683,16 +1683,16 @@ Module C_Interface
         End Select
 
         ' wrap text
-        'WordWrap_Array text, 200, textArray()
+        WordWrap_Array(text, 200, textArray)
 
         ' render text
-        'count = UBound(textArray)
-        'y = yO + 60
-        'For I = 1 To count
-        ' x = xO + 132 + (200 \ 2) - (TextWidth(Font(Fonts.rockwell_15), textArray(I)) \ 2)
-        ' RenderText Font(Fonts.rockwell_15), textArray(I), x, y, White
-        ' y = y + 14
-        'Next
+        count = UBound(textArray)
+        y = yO + 60
+        For I = 1 To count
+            x = xO + 132 + (200 \ 2) - (TextWidth(textArray(I)) \ 2)
+            RenderText(textArray(I), GameWindow, x, y, Color.White, Color.White)
+            y = y + 14
+        Next
     End Sub
 
     Public Sub btnJobs_Left()
@@ -1741,7 +1741,7 @@ Module C_Interface
         ' draw the box
         RenderDesign(DesignType.Win_Desc, xO, yO, 352, 152)
 
-        '   draw the input box
+        ' draw the input box
         RenderTexture(InterfaceSprite(46), GameWindow, xO + 7, yO + 123, 0, 0, 171, 22, 171, 22)
         RenderTexture(InterfaceSprite(46), GameWindow, xO + 174, yO + 123, 0, 22, 171, 22, 171, 22)
 
@@ -1761,10 +1761,7 @@ Module C_Interface
         yO = Types.Settings.ScreenHeight - 16 - actChatHeight - 8
 
         ' draw the background
-        RenderDesign(DesignType.Win_Shadow, xO, yO, actChatWidth, actChatHeight)
-
-        ' call the chat render
-        RenderChat()
+        RenderDesign(DesignType.Win_Shadow, xO, yO, actChatWidth, 10)
     End Sub
 
     Public Sub chkChat_Game()
@@ -1933,7 +1930,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Chat()
         ' Create window
-        CreateWindow("winChat", "", zOrder_Win, 8, Types.Settings.ScreenHeight - 208, 352, 152, 0, False, , , , , , , , , , , , , , False)
+        CreateWindow("winChat", "", zOrder_Win, 8, Types.Settings.ScreenHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
@@ -1985,7 +1982,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Chat Label
-        CreateLabel(WindowCount, "lblMsg", 12, 127, 286, 25, "Press 'Enter' to open chatbox.", Verdana)
+        CreateLabel(WindowCount, "lblMsg", 24, 290, 178, 25, "Press 'Enter' to open chatbox.", Verdana)
     End Sub
 End Module
 

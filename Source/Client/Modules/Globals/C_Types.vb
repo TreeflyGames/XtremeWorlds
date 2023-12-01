@@ -1,4 +1,5 @@
 ﻿Imports Core
+Imports SFML.Graphics
 Imports SFML.System
 
 Module C_Types

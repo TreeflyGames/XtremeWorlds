@@ -1029,7 +1029,7 @@ Module C_Graphics
             rec.Width = 8
 
             ' find out whether render blocked or not
-            If IsDirBlocked(Map.Tile(x, y).DirBlock, i) Then
+            If Not IsDirBlocked(Map.Tile(x, y).DirBlock, i) Then
                 rec.Y = 8
             Else
                 rec.Y = 16
@@ -2249,13 +2249,13 @@ Module C_Graphics
         'first render panel
         RenderTexture(RClickSprite, GameWindow, RClickX, RClickY, 0, 0, RClickGfxInfo.Width, RClickGfxInfo.Height)
 
-        RenderText(RClickname, GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth(RClickname) \ 2), RClickY + 10, Color.White,
+        RenderText(RClickname, GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (TextWidth(RClickname) \ 2), RClickY + 10, Color.White,
                  Color.Black)
 
-        RenderText("Invite to Trade", GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth("Invite to Trade") \ 2), RClickY + 35,
+        RenderText("Invite to Trade", GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (TextWidth("Invite to Trade") \ 2), RClickY + 35,
                  Color.White, Color.White)
 
-        RenderText("Invite to Party", GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (GetTextWidth("Invite to Party") \ 2), RClickY + 60,
+        RenderText("Invite to Party", GameWindow, RClickX + (RClickGfxInfo.Width \ 2) - (TextWidth("Invite to Party") \ 2), RClickY + 60,
                  Color.White, Color.White)
 
     End Sub

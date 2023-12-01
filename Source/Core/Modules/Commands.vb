@@ -78,7 +78,7 @@
     End Sub
 
     Public Function IsDirBlocked(ByRef Blockvar As Byte, ByRef Dir As Byte) As Boolean
-        Return Not Blockvar And (2 ^ Dir)
+        Return Blockvar And (2 ^ Dir)
     End Function
 
     Public Function GetPlayerNextLevel(index As Integer) As Integer

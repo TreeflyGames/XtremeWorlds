@@ -204,7 +204,7 @@ Module C_Player
             CloseBank()
         End If
 
-        If Windows(GetWindowIndex("winChat")).Window.Visible Then
+        If Not inSmallChat Then
             CanMove = False
             Exit Function
         End If
@@ -510,13 +510,13 @@ Module C_Player
         If skillslot < 0 OrElse skillslot > MAX_PLAYER_SKILLS Then Exit Sub
 
         If Player(Myindex).Skill(skillslot).CD > 0 Then
-            AddText("Skill has not cooled down yet!", QColorType.AlertColor)
+            AddText("Skill has not cooled down yet!", ColorType.Red)
             Exit Sub
         End If
 
         ' Check if player has enough MP
         If GetPlayerVital(Myindex, VitalType.MP) < Skill(Player(Myindex).Skill(skillslot).Num).MpCost Then
-            AddText("Not enough MP to cast " & Trim$(Skill(Player(Myindex).Skill(skillslot).Num).Name) & ".", QColorType.AlertColor)
+            AddText("Not enough MP to cast " & Trim$(Skill(Player(Myindex).Skill(skillslot).Num).Name) & ".", ColorType.Red)
             Exit Sub
         End If
 
@@ -532,11 +532,11 @@ Module C_Player
                     SkillBuffer = skillslot
                     SkillBufferTimer = GetTickCount()
                 Else
-                    AddText("Cannot cast while walking!", QColorType.AlertColor)
+                    AddText("Cannot cast while walking!", ColorType.Red)
                 End If
             End If
         Else
-            AddText("No skill here.", QColorType.AlertColor)
+            AddText("No skill here.", ColorType.Red)
         End If
 
     End Sub
@@ -682,7 +682,7 @@ Module C_Player
 
         ' calc pos
         textX = ConvertMapX(GetPlayerX(index) * PicX) + Player(index).XOffset + (PicX \ 2) - 2
-        textX = textX - (GetTextWidth((name)) / 2)
+        textX = textX - (TextWidth((name)) / 2)
 
         If GetPlayerSprite(index) < 0 OrElse GetPlayerSprite(index) > NumCharacters Then
             textY = ConvertMapY(GetPlayerY(index) * PicY) + Player(Myindex).YOffset - 16

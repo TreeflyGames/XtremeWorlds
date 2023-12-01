@@ -784,11 +784,11 @@ Module S_NetworkSend
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SSayMsg)
-        buffer.WriteString(GetPlayerName(index).Trim)
+        buffer.WriteString(GetPlayerName(index))
         buffer.WriteInt32(GetPlayerAccess(index))
         buffer.WriteInt32(GetPlayerPK(index))
         buffer.WriteString(Message.Trim)
-        buffer.WriteString(("[Map] "))
+        buffer.WriteString(("[Map]"))
         buffer.WriteInt32(SayColor)
 
         SendDataToMap(mapNum, buffer.Data, buffer.Head)
@@ -800,11 +800,11 @@ Module S_NetworkSend
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SSayMsg)
-        buffer.WriteString(GetPlayerName(index).Trim)
+        buffer.WriteString(GetPlayerName(index))
         buffer.WriteInt32(GetPlayerAccess(index))
         buffer.WriteInt32(GetPlayerPK(index))
         buffer.WriteString(Message.Trim)
-        buffer.WriteString(("[Global] "))
+        buffer.WriteString(("[Global]"))
         buffer.WriteInt32(SayColor)
 
         SendDataToAll(buffer.Data, buffer.Head)
