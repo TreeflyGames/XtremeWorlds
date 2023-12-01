@@ -1670,7 +1670,7 @@ Module C_Interface
         End If
 
         ' render face
-        RenderTexture(FaceSprite(imageFace), GameWindow, xO + 25, yO + 75, 0, 0, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height)
+        RenderTexture(FaceSprite(imageFace), GameWindow, xO + 30, yO + 75, 0, 0, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height)
     End Sub
 
     Public Sub Jobs_DrawText()
