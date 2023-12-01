@@ -489,11 +489,6 @@ Module S_NetworkReceive
         tmpY = buffer.ReadInt32
         buffer.Dispose()
 
-        ' Prevent hacking
-        If Dir < DirectionType.Up OrElse Dir > DirectionType.Right Then Exit Sub
-
-        If movement < MovementType.Standing OrElse movement > MovementType.Running Then Exit Sub
-
         ' Prevent player from moving if they have casted a skill
         If TempPlayer(index).SkillBuffer > 0 Then
             SendPlayerXY(index)
@@ -793,9 +788,6 @@ Module S_NetworkReceive
 
         dir = buffer.ReadInt32
         buffer.Dispose()
-
-        ' Prevent hacking
-        If dir < DirectionType.Up OrElse dir > DirectionType.Right Then Exit Sub
 
         PlayerMove(index, dir, 1, True)
     End Sub

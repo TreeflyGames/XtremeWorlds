@@ -877,7 +877,7 @@ Module C_Player
         End If
 
         ' Update GUI
-        UpdateStats_UI
+        UpdateStats_UI()
 
         buffer.Dispose()
     End Sub
