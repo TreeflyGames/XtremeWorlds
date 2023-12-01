@@ -594,8 +594,6 @@ Public Class frmEditor_Map
 
         MapPropertiesInit()
 
-        InitMapProperties = True
-
         If MapData = True Then GettingMap = False
     End Sub
 

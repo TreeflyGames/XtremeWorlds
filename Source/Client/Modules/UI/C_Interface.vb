@@ -1291,6 +1291,7 @@ Module C_Interface
         CreateWindow_ChatSmall()
         CreateWindow_Chat()
         CreateWindow_Hotbar()
+        CreateWindow_Bars()
         CreateWindow_Dialogue()
     End Sub
 
@@ -1568,6 +1569,21 @@ Module C_Interface
     Public Sub btnReturnMain_Click()
         HideWindows()
         ShowWindow(GetWindowIndex("winLogin"))
+    End Sub
+
+    ' ##########
+    ' ## Bars ##
+    ' ##########
+    Public Sub Bars_OnDraw()
+        Dim xO As Long, yO As Long, Width As Long
+
+        xO = Windows(GetWindowIndex("winBars")).Window.Left
+        yO = Windows(GetWindowIndex("winBars")).Window.Top
+
+        ' Bars
+        RenderTexture(InterfaceSprite(27), GameWindow, xO + 15, yO + 15, 0, 0, BarWidth_GuiHP, 13, BarWidth_GuiHP, 13)
+        RenderTexture(InterfaceSprite(28), GameWindow, xO + 15, yO + 32, 0, 0, BarWidth_GuiSP, 13, BarWidth_GuiSP, 13)
+        RenderTexture(InterfaceSprite(29), GameWindow, xO + 15, yO + 49, 0, 0, BarWidth_GuiEXP, 13, BarWidth_GuiEXP, 13)
     End Sub
 
     ' #######################
@@ -1930,8 +1946,7 @@ Module C_Interface
 
     ' ############
     ' ## Hotbar ##
-    ' ############
-
+    ' ############=
     Public Sub Hotbar_MouseDown()
         Dim slotNum As Long, winIndex As Long
 
@@ -2023,6 +2038,35 @@ Module C_Interface
 
     Public Sub Dialogue_No()
         dialogueHandler(3)
+    End Sub
+
+    Public Sub CreateWindow_Bars()
+        ' Create window
+        CreateWindow("winBars", "", zOrder_Win, 10, 10, 239, 77, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , False, , , , False)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Parchment
+        CreatePictureBox(WindowCount, "picParchment", 6, 6, 227, 65, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+
+        ' Blank Bars
+        CreatePictureBox(WindowCount, "picHP_Blank", 15, 15, 209, 13, , , , , 24, 24, 24)
+        CreatePictureBox(WindowCount, "picSP_Blank", 15, 32, 209, 13, , , , , 25, 25, 25)
+        CreatePictureBox(WindowCount, "picEXP_Blank", 15, 49, 209, 13, , , , , 26, 26, 26)
+
+        ' Draw the bars
+        CreatePictureBox(WindowCount, "picBlank", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Bars_OnDraw))
+
+        ' Bar Labels
+        CreatePictureBox(WindowCount, "picHealth", 16, 11, 44, 14, , , , , 21, 21, 21)
+        CreatePictureBox(WindowCount, "picSpirit", 16, 28, 44, 14, , , , , 22, 22, 22)
+        CreatePictureBox(WindowCount, "picExperience", 16, 45, 74, 14, , , , , 23, 23, 23)
+
+        ' Labels
+        CreateLabel(WindowCount, "lblHP", 15, 14, 209, 12, "999/999", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblMP", 15, 31, 209, 12, "999/999", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblEXP", 15, 48, 209, 12, "999/999", Arial, AlignmentType.Center)
     End Sub
 
     Public Sub CreateWindow_Chat()

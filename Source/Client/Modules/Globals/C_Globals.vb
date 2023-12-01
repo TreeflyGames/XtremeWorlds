@@ -27,6 +27,18 @@ Module C_Globals
     Public CharJob(MAX_CHARS) As Long
     Public CharNum As Byte
 
+    ' elastic bars
+    Public BarWidth_NpcHP(MAX_MAP_NPCS) As Long
+    Public BarWidth_PlayerHP(MAX_PLAYERS) As Long
+    Public BarWidth_NpcHP_Max(MAX_MAP_NPCS) As Long
+    Public BarWidth_PlayerHP_Max(MAX_PLAYERS) As Long
+    Public BarWidth_GuiHP As Long
+    Public BarWidth_GuiSP As Long
+    Public BarWidth_GuiEXP As Long
+    Public BarWidth_GuiHP_Max As Long
+    Public BarWidth_GuiSP_Max As Long
+    Public BarWidth_GuiEXP_Max As Long
+
     ' Directional blocking
     Public DirArrowX(4) As Byte
     Public DirArrowY(4) As Byte

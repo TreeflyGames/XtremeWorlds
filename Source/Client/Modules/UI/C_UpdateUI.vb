@@ -26,14 +26,6 @@ Module C_UpdateUI
     Friend VbKeyAlt As Boolean
     Friend VbKeyEnter As Boolean
 
-    Friend PicHpWidth As Integer
-    Friend PicManaWidth As Integer
-    Friend PicExpWidth As Integer
-
-    Friend LblHpText As String
-    Friend LblManaText As String
-    Friend LblExpText As String
-
     Friend UpdateCharacterPanel As Boolean
 
     Friend NeedToOpenShop As Boolean
@@ -249,14 +241,14 @@ Module C_UpdateUI
 #End Region
 
     Sub UpdateUi()
-        If InitAdminForm = True Then
+        If InitAdminForm Then
             With FrmAdmin
                 .Show()
             End With
             InitAdminForm = False
         End If
 
-        If InitMapEditor = True Then
+        If InitMapEditor Then
             With frmEditor_Map
                 Editor = EditorType.Map
                 Editorindex = 1
@@ -266,7 +258,7 @@ Module C_UpdateUI
             InitMapEditor = False
         End If
 
-        If InitPetEditor = True Then
+        If InitPetEditor Then
             With frmEditor_Pet
                 Editor = EditorType.Pet
                 Editorindex = 1
@@ -277,7 +269,7 @@ Module C_UpdateUI
             InitPetEditor = False
         End If
 
-        If InitAnimationEditor = True Then
+        If InitAnimationEditor Then
             With FrmEditor_Animation
                 Editor = EditorType.Animation
                 Editorindex = 1
@@ -288,7 +280,7 @@ Module C_UpdateUI
             InitAnimationEditor = False
         End If
 
-        If InitItemEditor = True Then
+        If InitItemEditor Then
             With frmEditor_Item
                 Editor = EditorType.Item
                 Editorindex = 1
@@ -299,7 +291,7 @@ Module C_UpdateUI
             InitItemEditor = False
         End If
 
-        If InitJobEditor = True Then
+        If InitJobEditor Then
             With frmEditor_Job
                 Editor = EditorType.Job
                 Editorindex = 1
@@ -310,7 +302,7 @@ Module C_UpdateUI
             InitJobEditor = False
         End If
 
-        If InitResourceEditor = True Then
+        If InitResourceEditor Then
             With frmEditor_Resource
                 Editor = EditorType.Resource
                 Editorindex = 1
@@ -321,7 +313,7 @@ Module C_UpdateUI
             InitResourceEditor = False
         End If
 
-        If InitNPCEditor = True Then
+        If InitNPCEditor Then
             With frmEditor_NPC
                 Editor = EditorType.NPC
                 Editorindex = 1
@@ -332,8 +324,8 @@ Module C_UpdateUI
             InitNPCEditor = False
         End If
 
-        If InitSkillEditor = True Then
-            With frmEditor_Skill
+        If InitSkillEditor Then
+            With FrmEditor_Skill
                 Editor = EditorType.Skill
                 Editorindex = 1
                 .Show()
@@ -343,7 +335,7 @@ Module C_UpdateUI
             InitSkillEditor = False
         End If
 
-        If InitShopEditor = True Then
+        If InitShopEditor Then
             With frmEditor_Shop
                 Editor = EditorType.Shop
                 Editorindex = 1
@@ -354,7 +346,7 @@ Module C_UpdateUI
             InitShopEditor = False
         End If
 
-        If InitProjectileEditor = True Then
+        If InitProjectileEditor Then
             With frmEditor_Projectile
                 Editor = EditorType.Projectile
                 Editorindex = 1

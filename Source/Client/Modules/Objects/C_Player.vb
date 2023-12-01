@@ -707,9 +707,15 @@ Module C_Player
 
         SetPlayerVital(Myindex, VitalType.HP, buffer.ReadInt32)
 
-        LblHpText = GetPlayerVital(Myindex, VitalType.HP) & "/" & GetPlayerMaxVital(Myindex, VitalType.HP)
-        ' hp bar
-        PicHpWidth = Int(((GetPlayerVital(Myindex, VitalType.HP) / 169) / (GetPlayerMaxVital(Myindex, VitalType.HP) / 169)) * 169)
+        ' set max width
+        If GetPlayerVital(Myindex, VitalType.HP) > 0 Then
+            BarWidth_GuiHP_Max = ((GetPlayerVital(Myindex, VitalType.HP) / 209) / (GetPlayerMaxVital(Myindex, VitalType.HP) / 209)) * 209
+        Else
+            BarWidth_GuiHP_Max = 0
+        End If
+
+        ' Update GUI
+        UpdateStats_UI()
 
         buffer.Dispose()
     End Sub
@@ -719,9 +725,15 @@ Module C_Player
 
         SetPlayerVital(Myindex, VitalType.MP, buffer.ReadInt32)
 
-        LblManaText = GetPlayerVital(Myindex, VitalType.MP) & "/" & GetPlayerMaxVital(Myindex, VitalType.MP)
-        ' mp bar
-        PicManaWidth = Int(((GetPlayerVital(Myindex, VitalType.MP) / 169) / (GetPlayerMaxVital(Myindex, VitalType.MP) / 169)) * 169)
+        ' set max width
+        If GetPlayerVital(Myindex, VitalType.MP) > 0 Then
+            BarWidth_GuiSP_Max = ((GetPlayerVital(Myindex, VitalType.MP) / 209) / (GetPlayerMaxVital(Myindex, VitalType.MP) / 209)) * 209
+        Else
+            BarWidth_GuiSP_Max = 0
+        End If
+
+        ' Update GUI
+        UpdateStats_UI()
 
         buffer.Dispose()
     End Sub
@@ -798,6 +810,7 @@ Module C_Player
         Dim i As Integer, x As Integer, y As Integer
         Dim dir As Integer, n As Byte
         Dim buffer As New ByteStream(data)
+
         i = buffer.ReadInt32
         x = buffer.ReadInt32
         y = buffer.ReadInt32
@@ -845,12 +858,26 @@ Module C_Player
     Sub Packet_PlayerExp(ByRef data() As Byte)
         Dim index As Integer, tnl As Integer
         Dim buffer As New ByteStream(data)
+
         index = buffer.ReadInt32
         SetPlayerExp(index, buffer.ReadInt32)
-        tnl = buffer.ReadInt32
 
-        If tnl = 0 Then tnl = 1
+        tnl = buffer.ReadInt32
         NextlevelExp = tnl
+
+        ' set max width
+        If GetPlayerLevel(Myindex) <= MAX_LEVEL Then
+            If GetPlayerExp(Myindex) > 0 Then
+                BarWidth_GuiEXP_Max = ((GetPlayerExp(Myindex) / 209) / (tnl / 209)) * 209
+            Else
+                BarWidth_GuiEXP_Max = 0
+            End If
+        Else
+            BarWidth_GuiEXP_Max = 209
+        End If
+
+        ' Update GUI
+        UpdateStats_UI
 
         buffer.Dispose()
     End Sub
@@ -858,6 +885,7 @@ Module C_Player
     Sub Packet_PlayerXY(ByRef data() As Byte)
         Dim x As Integer, y As Integer, dir As Integer
         Dim buffer As New ByteStream(data)
+
         x = buffer.ReadInt32
         y = buffer.ReadInt32
         dir = buffer.ReadInt32
