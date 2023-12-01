@@ -4,7 +4,7 @@ Imports SFML.System
 Module C_Types
     Public ActionMsg(Byte.MaxValue) As ActionMsgStruct
     Public Blood(Byte.MaxValue) As BloodStruct
-    Public Chat As New List(Of ChatStruct)
+    Public Chat(ChatLines) As ChatStruct
     Public tempTileLights As List(Of LightTileStruct)
     Public MapNames(MAX_MAPS) As String
     Public TmpTile(,) As TileStruct
@@ -39,9 +39,9 @@ Module C_Types
     Public Structure ChatStruct
         Dim Text As String
         Dim Color As Integer
-        Dim Y As Byte
         Dim Channel As Byte
         Dim Visible As Boolean
+        Dim Timer As Long
     End Structure
 
     Public Structure SkillAnimStruct

@@ -227,13 +227,13 @@ Module C_Text
 
         ' set the position
         xO = 19
-        yO = Types.Settings.ScreenHeight - 41
+        yO = Types.Settings.ScreenHeight - 15
 
         ' loop through chat
         rLines = 1
         i = 1 + ChatScroll
 
-        Do While rLines <= 8
+        Do While rLines <= 7
             If i > ChatLines Then Exit Do
             lineCount = 0
 
@@ -304,8 +304,24 @@ Module C_Text
         Return FontTester.GetLocalBounds().Height
     End Function
 
-    Friend Sub AddText(msg As String, color As Integer)
+    Public Sub AddText(ByVal text As String, ByVal Color As Long, Optional ByVal alpha As Long = 255, Optional channel As Byte = 0)
+        Dim i As Long
 
+        Chat_HighIndex = 0
+
+        ' Move the rest of it up
+        For i = (ChatLines - 1) To 1 Step -1
+            If Len(Chat(i).Text) > 0 Then
+                If i > Chat_HighIndex Then Chat_HighIndex = i + 1
+            End If
+            Chat(i + 1) = Chat(i)
+        Next
+
+        Chat(1).Text = text
+        Chat(1).Color = Color
+        Chat(1).Visible = True
+        Chat(1).Timer = GetTickCount()
+        Chat(1).Channel = channel
     End Sub
 
     Friend Function GetSfmlColor(color As Byte) As Color

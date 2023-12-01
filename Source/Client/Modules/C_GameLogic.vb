@@ -9,7 +9,7 @@ Module C_GameLogic
 
     Sub GameLoop()
         Dim i As Integer
-        Dim starttime As Integer, tick As Integer, fogtmr As Integer
+        Dim starttime As Integer, tick As Integer, fogtmr As Integer, chattmr As Integer
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
         Dim tmr10000 As Integer, tmr1000 As Integer, tmrweather As Integer
         Dim tmr100 As Integer, tmr500 As Integer, tmrconnect As Integer
@@ -176,6 +176,36 @@ Module C_GameLogic
                     Next
 
                     walkTimer = tick + 25 ' edit this value to change WalkTimer
+                End If
+
+                ' chat timer
+                If chatTmr < tick Then
+                    ' scrolling
+                    If ChatButtonUp Then
+                        ScrollChatBox(0)
+                    End If
+
+                    If ChatButtonDown Then
+                        ScrollChatBox(1)
+                    End If
+
+                    ' remove messages
+                    If chatLastRemove + CHAT_DIFFERENCE_TIMER < GetTickCount() Then
+                        ' remove timed out messages from chat
+                        For i = Chat_HighIndex To 1 Step -1
+                            If Len(Chat(i).Text) > 0 Then
+                                If Chat(i).Visible Then
+                                    If Chat(i).timer + CHAT_TIMER < tick Then
+                                        Chat(i).Visible = False
+                                        chatLastRemove = GetTickCount()
+                                        Exit For
+                                    End If
+                                End If
+                            End If
+                        Next
+                    End If
+
+                    chatTmr = tick + 50
                 End If
 
                 ' fog scrolling

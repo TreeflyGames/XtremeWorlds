@@ -2,9 +2,9 @@
 Imports Core
 
 Public Module C_Constants
-
-    'Chatbubble
     Public Const ChatBubbleWidth As Integer = 100
+
+    Public Const CHAT_TIMER As Long = 20000
 
     Public Const EffectTypeFadein As Integer = 1
     Public Const EffectTypeFadeout As Integer = 2
@@ -12,6 +12,8 @@ Public Module C_Constants
     Public Const EffectTypeFog As Integer = 4
     Public Const EffectTypeWeather As Integer = 5
     Public Const EffectTypeTint As Integer = 6
+
+    Public Const Chat_Difference_Timer As Long = 500
 
     ' Font variables
     Public Const Georgia As String = "Georgia.ttf"
@@ -90,7 +92,6 @@ Public Module C_Constants
 
     'dialog types
     Public Const DialogueTypeBuyhome As Byte = 1
-
     Public Const DialogueTypeVisit As Byte = 2
     Public Const DialogueTypeParty As Byte = 3
     Public Const DialogueTypeQuest As Byte = 4

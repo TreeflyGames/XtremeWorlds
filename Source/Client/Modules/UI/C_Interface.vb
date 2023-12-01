@@ -1933,7 +1933,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Chat()
         ' Create window
-        CreateWindow("winChat", "", zOrder_Win, 8, 422, 352, 152, 0, False, , , , , , , , , , , , , , False)
+        CreateWindow("winChat", "", zOrder_Win, 8, Types.Settings.ScreenHeight - 208, 352, 152, 0, False, , , , , , , , , , , , , , False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1

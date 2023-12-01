@@ -73,6 +73,8 @@ Module C_Globals
     Public ChatButtonUp As Boolean
     Public ChatButtonDown As Boolean
     Public ChatScroll As Long
+    Public chatLastRemove As Long
+    Public Chat_HighIndex As Long
 
     ' Player variables
     Public Myindex As Integer ' Index of actual player
