@@ -1581,10 +1581,6 @@ Module C_Interface
         For I = 1 To MAX_CHARS
             If Trim$(CharName(I)) <> "" Then
                 If CharSprite(I) > 0 Then
-                    If CharacterGfxInfo(CharSprite(I)).IsLoaded = False Then
-                        LoadTexture(CharSprite(I), 2)
-                    End If
-
                     If FaceGfxInfo(CharSprite(I)).IsLoaded = False Then
                         LoadTexture(CharSprite(I), 7)
                     End If
