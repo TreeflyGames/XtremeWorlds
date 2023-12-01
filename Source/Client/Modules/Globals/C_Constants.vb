@@ -4,7 +4,7 @@ Imports Core
 Public Module C_Constants
     Public Const ChatBubbleWidth As Integer = 100
 
-    Public Const CHAT_TIMER As Long = 20000
+    Public Const Chat_Timer As Long = 20000
 
     Public Const EffectTypeFadein As Integer = 1
     Public Const EffectTypeFadeout As Integer = 2
@@ -36,17 +36,14 @@ Public Module C_Constants
 
     ' Speed moving vars
     Public Const WalkSpeed As Byte = 6
-
     Public Const RunSpeed As Byte = 12
 
     ' Tile size constants
     Public Const PicX As Integer = 32
-
     Public Const PicY As Integer = 32
 
     ' Sprite, item, skill size constants
     Public Const SizeX As Integer = 32
-
     Public Const SizeY As Integer = 32
 
     ' ********************************************************
@@ -54,41 +51,15 @@ Public Module C_Constants
     ' ********************************************************
 
     ' Map constants
-    Public ScreenMapx As Byte = 35
+    Public Const ScreenMapx As Byte = 35
+    Public Const ScreenMapy As Byte = 26
 
-    Public ScreenMapy As Byte = 26
+    Public Const MaxTileHistory As Byte = 50
 
-    Public ItemRarityColor0 = SFML.Graphics.Color.White ' white
-    Public ItemRarityColor1 = New SFML.Graphics.Color(102, 255, 0) ' green
-    Public ItemRarityColor2 = New SFML.Graphics.Color(73, 151, 208) ' blue
-    Public ItemRarityColor3 = New SFML.Graphics.Color(255, 0, 0) ' red
-    Public ItemRarityColor4 = New SFML.Graphics.Color(159, 0, 197) ' purple
-    Public ItemRarityColor5 = New SFML.Graphics.Color(255, 215, 0) ' gold
-
-    Public EditorTileX As Integer
-    Public EditorTileY As Integer
-    Public EditorTileWidth As Integer
-    Public EditorTileHeight As Integer
-    Public EditorWarpMap As Integer
-    Public EditorWarpX As Integer
-    Public EditorWarpY As Integer
-    Public EditorShop As Integer
-    Public EditorAnimation As Integer
-    Public EditorLight As Integer
-    Public EditorShadow As Byte
-    Public EditorFlicker As Byte
-    Public EditorTileSelStart As Point
-    Public EditorTileSelEnd As Point
-    Public CopyMap As Boolean
-    Public TmpMaxX As Byte
-    Public TmpMaxY As Byte
-    Public TileHistoryHighIndex As Integer
-    Public MaxTileHistory As Byte = 50
-
-    Public HalfX As Integer = ((ScreenMapx + 1) \ 2) * PicX
-    Public HalfY As Integer = ((ScreenMapy + 1) \ 2) * PicY
-    Public ScreenX As Integer = (ScreenMapx + 1) * PicX
-    Public ScreenY As Integer = (ScreenMapy + 1) * PicY
+    Public Const HalfX As Integer = ((ScreenMapx + 1) \ 2) * PicX
+    Public Const HalfY As Integer = ((ScreenMapy + 1) \ 2) * PicY
+    Public Const ScreenX As Integer = (ScreenMapx + 1) * PicX
+    Public Const ScreenY As Integer = (ScreenMapy + 1) * PicY
 
     'dialog types
     Public Const DialogueTypeBuyhome As Byte = 1
