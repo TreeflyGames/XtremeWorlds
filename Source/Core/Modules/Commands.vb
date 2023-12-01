@@ -283,6 +283,14 @@
         GetPlayerSkill = Player(index).Skill(Skillslot).Num
     End Function
 
+    Public Function GetPlayerSkillCD(index As Integer, SkillSlot As Integer) As Integer
+        GetPlayerSkillCD = Player(index).Skill(SkillSlot).CD
+    End Function
+
+    Public Sub SetPlayerSkillCD(index As Integer, SkillSlot As Integer, Value As Integer)
+        Player(index).Skill(SkillSlot).CD = Value
+    End Sub
+
     Public Function HasSkill(index As Integer, Skillnum As Integer) As Boolean
         Dim i As Integer
 

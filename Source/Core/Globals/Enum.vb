@@ -564,4 +564,12 @@
         Count
     End Enum
 
+    Public Enum PartOriginsType
+        None = 0
+        Inventory
+        Hotbar
+        Spell
+        Bank
+    End Enum
+
 End Module

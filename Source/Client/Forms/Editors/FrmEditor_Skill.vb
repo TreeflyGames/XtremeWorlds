@@ -1,7 +1,7 @@
 ﻿Imports Core
 Imports SFML.Graphics
 
-Friend Class frmEditor_Skill
+Friend Class FrmEditor_Skill
 
     Private Sub TxtName_TextChanged(sender As Object, e As EventArgs) Handles txtName.TextChanged
         Dim tmpindex As Integer
@@ -186,6 +186,6 @@ Friend Class frmEditor_Skill
     End Sub
 
     Private Sub frmEditor_Skill_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        SkillEditorCancel
+        SkillEditorCancel()
     End Sub
 End Class

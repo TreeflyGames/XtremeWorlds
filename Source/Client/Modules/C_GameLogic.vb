@@ -1526,4 +1526,27 @@ Continue1:
         End If
     End Sub
 
+    Public Function IsHotbar(StartX As Long, StartY As Long) As Long
+        Dim tempRec As RectangleStruct
+        Dim i As Long
+
+        With tempRec
+            .Top = StartY + HotbarTop
+            .Right = .Left + PicX
+            .Bottom = .Top + PicY
+            .Left = StartX + HotbarLeft + ((i - 1) * HotbarOffsetX)
+        End With
+
+        For i = 1 To MAX_HOTBAR
+            If Hotbar(i).Slot Then
+                If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
+                    If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.Bottom Then
+                        IsHotbar = i
+                        Exit Function
+                    End If
+                End If
+            End If
+        Next
+    End Function
+
 End Module

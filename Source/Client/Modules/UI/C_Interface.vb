@@ -1289,6 +1289,7 @@ Module C_Interface
         CreateWindow_Characters()
         CreateWindow_ChatSmall()
         CreateWindow_Chat()
+        CreateWindow_Hotbar()
         CreateWindow_Dialogue()
     End Sub
 
@@ -1683,7 +1684,7 @@ Module C_Interface
         End Select
 
         ' wrap text
-        WordWrap_Array(text, 200, textArray)
+        WordWrap_Array(text, 400, textArray)
 
         ' render text
         count = UBound(textArray)
@@ -1916,6 +1917,91 @@ Module C_Interface
         End If
     End Sub
 
+    ' ############
+    ' ## Hotbar ##
+    ' ############
+
+    Public Sub Hotbar_MouseDown()
+        Dim slotNum As Long, winIndex As Long
+
+        ' is there an item?
+        slotNum = IsHotbar(Windows(GetWindowIndex("winHotbar")).Window.Left, Windows(GetWindowIndex("winHotbar")).Window.Top)
+
+        If slotNum Then
+            With DragBox
+                If Hotbar(slotNum).SlotType = 1 Then ' inventory
+                    .Type = PartOriginsType.Inventory
+                ElseIf Hotbar(slotNum).SlotType = 2 Then ' spell
+                    .Type = PartOriginsType.Spell
+                End If
+                .Value = Hotbar(slotNum).Slot
+                .Origin = PartOriginType.Hotbar
+                .Slot = slotNum
+            End With
+
+            winIndex = GetWindowIndex("winDragBox")
+            With Windows(winIndex).Window
+                .State = EntState.MouseDown
+                .Left = CurX - 16
+                .Top = CurY - 16
+                .movedX = CurX - .Left
+                .movedY = CurY - .Top
+            End With
+            ShowWindow(winIndex, , False)
+
+            ' stop dragging inventory
+            Windows(GetWindowIndex("winHotbar")).Window.State = EntState.Normal
+        End If
+
+        ' show desc. if needed
+        Hotbar_MouseMove()
+    End Sub
+
+    Public Sub Hotbar_DblClick()
+        Dim slotNum As Long
+
+        slotNum = IsHotbar(Windows(GetWindowIndex("winHotbar")).Window.Left, Windows(GetWindowIndex("winHotbar")).Window.Top)
+
+        If slotNum Then
+            SendUseHotbarSlot(slotNum)
+        End If
+
+        ' show desc. if needed
+        Hotbar_MouseMove()
+    End Sub
+
+    Public Sub Hotbar_MouseMove()
+        Dim slotNum As Long, x As Long, y As Long
+
+        ' exit out early if dragging
+        If DragBox.Type <> PartOriginsType.None Then Exit Sub
+
+        slotNum = IsHotbar(Windows(GetWindowIndex("winHotbar")).Window.Left, Windows(GetWindowIndex("winHotbar")).Window.Top)
+
+        If slotNum Then
+            ' make sure we're not dragging the item
+            If DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = slotNum Then Exit Sub
+
+            ' calc position
+            x = Windows(GetWindowIndex("winHotbar")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
+            y = Windows(GetWindowIndex("winHotbar")).Window.Top - 4
+
+            ' offscreen?
+            If x < 0 Then
+                ' switch to right
+                x = Windows(GetWindowIndex("winHotbar")).Window.Left + Windows(GetWindowIndex("winHotbar")).Window.Width
+            End If
+
+            ' go go go
+            Select Case Hotbar(slotNum).SlotType
+                Case 1 ' inventory
+                    'ShowItemDesc(x, y, Hotbar(slotNum).Slot, False)
+                Case 2 ' spells
+                    'ShowSpellDesc(x, y, Hotbar(slotNum).Slot, 0)
+            End Select
+        End If
+    End Sub
+
     Public Sub Dialogue_Okay()
         DialogueHandler(1)
     End Sub
@@ -1983,6 +2069,11 @@ Module C_Interface
 
         ' Chat Label
         CreateLabel(WindowCount, "lblMsg", 24, 290, 178, 25, "Press 'Enter' to open chatbox.", Verdana)
+    End Sub
+
+    Public Sub CreateWindow_Hotbar()
+        ' Create window
+        CreateWindow("winHotbar", "", zOrder_Win, 372, 10, 418, 36, 0, False, , , , , , , , , , , New Action(AddressOf Hotbar_MouseDown), New Action(AddressOf Hotbar_MouseMove), New Action(AddressOf Hotbar_DblClick), False, False, New Action(AddressOf DrawHotbar))
     End Sub
 End Module
 

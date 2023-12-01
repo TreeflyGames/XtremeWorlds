@@ -114,7 +114,7 @@ Partial Class FrmEditor_Animation
         DarkGroupBox2.Size = New Size(1241, 1462)
         DarkGroupBox2.TabIndex = 1
         DarkGroupBox2.TabStop = False
-        DarkGroupBox2.Text = "Animation Properties"
+        DarkGroupBox2.Text = "Properties"
         ' 
         ' cmbSound
         ' 

@@ -241,11 +241,10 @@ Module C_UpdateUI
     Friend SelHotbarSlot As Integer
     Friend SelSkillSlot As Boolean
 
-    'hotbar constants
-    Friend Const HotbarTop As Byte = 2
-
-    Friend Const HotbarLeft As Byte = 2
-    Friend Const HotbarOffsetX As Byte = 2
+    ' Hotbar constants
+    Public Const HotbarTop As Long = 0
+    Public Const HotbarLeft As Long = 8
+    Public Const HotbarOffsetX As Long = 41
 
 #End Region
 

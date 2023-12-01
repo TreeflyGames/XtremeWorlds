@@ -27,6 +27,7 @@ Public Module Types
     Public MapResource() As MapResourceStruct
     Public Settings As Settings
     Public Chars As CharList
+    Public Hotbar(MAX_HOTBAR) As HotbarStruct
 
 
     ' Common data structures

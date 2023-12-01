@@ -2912,6 +2912,59 @@ Module C_Graphics
         RenderTexture(PictureSprite(11), GameWindow, Types.Settings.ScreenWidth - 1536, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
         RenderTexture(PictureSprite(12), GameWindow, Types.Settings.ScreenWidth - 2048, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
     End Sub
+
+    Public Sub DrawHotbar()
+        Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, t As Long, sS As String
+
+        xO = Windows(GetWindowIndex("winHotbar")).Window.Left
+        yO = Windows(GetWindowIndex("winHotbar")).Window.Top
+
+        ' render start + end wood
+        RenderTexture(InterfaceSprite(31), GameWindow, xO - 1, yO + 3, 0, 0, 11, 26, 11, 26)
+        RenderTexture(InterfaceSprite(31), GameWindow, xO + 407, yO + 3, 0, 0, 11, 26, 11, 26)
+
+        For i = 1 To MAX_HOTBAR
+            xO = Windows(GetWindowIndex("winHotbar")).Window.Left + HotbarLeft + ((i - 1) * HotbarOffsetX)
+            yO = Windows(GetWindowIndex("winHotbar")).Window.Top + HotbarTop
+            Width = 36
+            Height = 36
+
+            ' don't render last one
+            If i <> 10 Then
+                ' render wood
+                RenderTexture(InterfaceSprite(32), GameWindow, xO + 30, yO + 3, 0, 0, 13, 26, 13, 26)
+            End If
+
+            ' render box
+            RenderTexture(InterfaceSprite(30), GameWindow, xO - 2, yO - 2, 0, 0, Width, Height, Width, Height)
+
+            ' render icon
+            If Not (DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = i) Then
+                Select Case Hotbar(i).SlotType
+                    Case 1 ' inventory
+                        If Len(Item(Hotbar(i).Slot).Name) > 0 And Item(Hotbar(i).Slot).Pic > 0 Then
+                            RenderTexture(ItemSprite(Item(Hotbar(i).Slot).Pic), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                        End If
+                    Case 2 ' spell
+                        If Len(Skill(Hotbar(i).Slot).Name) > 0 And Skill(Hotbar(i).Slot).Icon > 0 Then
+                            RenderTexture(SkillIconSprite(Skill(Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                            For t = 1 To MAX_PLAYER_SKILLS
+                                If GetPlayerSkill(Myindex, t) > 0 Then
+                                    If GetPlayerSkill(Myindex, t) = Hotbar(i).Slot And GetPlayerSkillCD(Myindex, t) > 0 Then
+                                        RenderTexture(SkillIconSprite(Skill(Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
+                                    End If
+                                End If
+                            Next
+                        End If
+                End Select
+            End If
+
+            ' draw the numbers
+            sS = Str(i)
+            If i = 10 Then sS = "0"
+            RenderText(sS, GameWindow, xO + 4, yO + 19, Color.White, Color.White)
+        Next
+    End Sub
 #End Region
 
 End Module
