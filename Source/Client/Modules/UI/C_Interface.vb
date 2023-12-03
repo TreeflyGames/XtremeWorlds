@@ -22,7 +22,7 @@ Module C_Interface
 
     Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() As Action,
        Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
-       Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False,
+       Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
        Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0)
 
         Dim i As Long
@@ -79,6 +79,7 @@ Module C_Interface
             .Tooltip = tooltip
             .Group = group
             .Censor = censor
+            .Icon = icon
             ReDim .List(0)
         End With
 
@@ -241,7 +242,14 @@ Module C_Interface
                     End If
 
                     ' render icon
-                    RenderTexture(ItemSprite(.Icon), GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, ItemGfxInfo(.Icon).Width, ItemGfxInfo(.Icon).Height)
+                    If .Icon > 0 Then
+                        ' render the icon
+                        If ItemGfxInfo(.Icon).IsLoaded = False Then
+                            LoadTexture(.Icon, 4)
+                        End If
+
+                        RenderTexture(ItemSprite(.Icon), GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, ItemGfxInfo(.Icon).Width, ItemGfxInfo(.Icon).Height, ItemGfxInfo(.Icon).Width, ItemGfxInfo(.Icon).Height)
+                    End If
 
                     ' for changing the text space
                     xOffset = width
@@ -800,7 +808,7 @@ Module C_Interface
 
     Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
         Optional text As String = "", Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
-        Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False,
+        Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef callback_enter As Action = Nothing)
 
         Dim design(EntState.Count - 1) As Long
@@ -822,7 +830,7 @@ Module C_Interface
         callback(EntState.Enter) = callback_enter
 
         ' create the textbox
-        CreateEntity(winNum, zOrder_Con, name, EntityType.TextBox, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , censor, , isActive)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.TextBox, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset,  , censor, icon, , isActive)
     End Sub
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
@@ -848,11 +856,11 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the box
-        CreateEntity(winNum, zOrder_Con, name, EntityType.PictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , , onDraw)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.PictureBox, design, image, callback, left, top, width, height, visible, canDrag, , , , , , , alpha, clickThrough, , , , , , onDraw)
     End Sub
 
     Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
-       Optional text As String = "", Optional font As String = "Georgia.ttf", Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
+       Optional text As String = "", Optional font As String = "Georgia.ttf", Optional icon As Long = 0, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
        Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing,
        Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False)
@@ -875,7 +883,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the button 
-        CreateEntity(winNum, zOrder_Con, name, EntityType.Button, design, image, callback, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, censor, , , , tooltip)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.Button, design, image, callback, left, top, width, height, visible, , , , , text, , font, alpha, , xOffset, yOffset, , censor, icon, , , tooltip)
     End Sub
 
     Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String,
@@ -1041,11 +1049,11 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Arial, , , ,  , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
 
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 72, 39, 142, 0, "Username", Arial, AlignmentType.Center)
@@ -1059,7 +1067,7 @@ Module C_Interface
         CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, , Types.Settings.SaveUsername, "Save Username?", Arial, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
 
         ' Register Button
-        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
+        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Arial,  , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
 
         ' Set the active control
         If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Text) > 0 Then
@@ -1080,7 +1088,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnReturnMain_Click))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnReturnMain_Click))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 170, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1093,8 +1101,8 @@ Module C_Interface
         'CreatePictureBox(WindowCount, "picShadow_5", 67, 187, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 68, 152, 67, 22, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
-        CreateButton(WindowCount, "btnExit", 142, 152, 67, 22, "Back", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
+        CreateButton(WindowCount, "btnAccept", 68, 152, 67, 22, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
+        CreateButton(WindowCount, "btnExit", 142, 152, 67, 22, "Back", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
 
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 66, 39, 142, 19, "Username", Arial, AlignmentType.Center)
@@ -1126,7 +1134,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnNewChar_Cancel))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnNewChar_Cancel))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 278, 140, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1147,8 +1155,8 @@ Module C_Interface
         CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, , 0, "Female", Arial, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Female))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnNewChar_Accept))
-        CreateButton(WindowCount, "btnCancel", 93, 127, 60, 24, "Cancel", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnNewChar_Cancel))
+        CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnNewChar_Accept))
+        CreateButton(WindowCount, "btnCancel", 93, 127, 60, 24, "Cancel", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnNewChar_Cancel))
 
         ' Sprite
         CreatePictureBox(WindowCount, "picShadow_3", 175, 42, 76, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
@@ -1158,8 +1166,8 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf NewChar_OnDraw))
 
         ' Buttons
-        CreateButton(WindowCount, "btnLeft", 163, 40, 11, 13, ,  , 12, 14, 16, , , , , , , , New Action(AddressOf btnNewChar_Left))
-        CreateButton(WindowCount, "btnRight", 252, 40, 11, 13, , , 13, 15, 17, , , , , , , , New Action(AddressOf btnNewChar_Right))
+        CreateButton(WindowCount, "btnLeft", 163, 40, 11, 13, ,  , , 12, 14, 16, , , , , , , , New Action(AddressOf btnNewChar_Left))
+        CreateButton(WindowCount, "btnRight", 252, 40, 11, 13, , , , 13, 15, 17, , , , , , , , New Action(AddressOf btnNewChar_Right))
 
         ' Set the active control
         SetActiveControl(GetWindowIndex("winNewChar"), GetControlIndex("winNewChar", "txtName"))
@@ -1176,7 +1184,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnCharacters_Close))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnCharacters_Close))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 352, 197, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1195,15 +1203,15 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf Chars_OnDraw))
 
         ' Create Buttons
-        CreateButton(WindowCount, "btnSelectChar_1", 22, 155, 98, 24, "Select", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_1))
-        CreateButton(WindowCount, "btnCreateChar_1", 22, 155, 98, 24, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_1))
-        CreateButton(WindowCount, "btnDelChar_1", 22, 183, 98, 24, "Delete", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_1))
-        CreateButton(WindowCount, "btnSelectChar_2", 132, 155, 98, 24, "Select", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_2))
-        CreateButton(WindowCount, "btnCreateChar_2", 132, 155, 98, 24, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_2))
-        CreateButton(WindowCount, "btnDelChar_2", 132, 183, 98, 24, "Delete", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_2))
-        CreateButton(WindowCount, "btnSelectChar_3", 242, 155, 98, 24, "Select", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click,, , New Action(AddressOf btnAcceptChar_3))
-        CreateButton(WindowCount, "btnCreateChar_3", 242, 155, 98, 24, "Create", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_3))
-        CreateButton(WindowCount, "btnDelChar_3", 242, 183, 98, 24, "Delete", Arial, , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_3))
+        CreateButton(WindowCount, "btnSelectChar_1", 22, 155, 98, 24, "Select", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_1))
+        CreateButton(WindowCount, "btnCreateChar_1", 22, 155, 98, 24, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_1))
+        CreateButton(WindowCount, "btnDelChar_1", 22, 183, 98, 24, "Delete", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_1))
+        CreateButton(WindowCount, "btnSelectChar_2", 132, 155, 98, 24, "Select", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_2))
+        CreateButton(WindowCount, "btnCreateChar_2", 132, 155, 98, 24, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_2))
+        CreateButton(WindowCount, "btnDelChar_2", 132, 183, 98, 24, "Delete", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_2))
+        CreateButton(WindowCount, "btnSelectChar_3", 242, 155, 98, 24, "Select", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click,, , New Action(AddressOf btnAcceptChar_3))
+        CreateButton(WindowCount, "btnCreateChar_3", 242, 155, 98, 24, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_3))
+        CreateButton(WindowCount, "btnDelChar_3", 242, 183, 98, 24, "Delete", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_3))
     End Sub
 
     Public Sub CreateWindow_Jobs()
@@ -1217,7 +1225,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnJobs_Close))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnJobs_Close))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 352, 197, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment, , , , , , New Action(AddressOf Jobs_DrawFace))
@@ -1227,11 +1235,11 @@ Module C_Interface
         CreateLabel(WindowCount, "lblClassName", 183, 39, 98, 9, "Warrior", Arial, AlignmentType.Center)
 
         ' Select Buttons
-        CreateButton(WindowCount, "btnLeft", 171, 40, 11, 13, , , 12, 14, 16, , , , , , , , New Action(AddressOf btnJobs_Left))
-        CreateButton(WindowCount, "btnRight", 282, 40, 11, 13, , , 13, 15, 17, , , , , , , , New Action(AddressOf btnJobs_Right))
+        CreateButton(WindowCount, "btnLeft", 171, 40, 11, 13, , , , 12, 14, 16, , , , , , , , New Action(AddressOf btnJobs_Left))
+        CreateButton(WindowCount, "btnRight", 282, 40, 11, 13, , , , 13, 15, 17, , , , , , , , New Action(AddressOf btnJobs_Right))
 
         ' Accept Button
-        CreateButton(WindowCount, "btnAccept", 183, 185, 98, 22, "Accept", Arial, , , ,  , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnJobs_Accept))
+        CreateButton(WindowCount, "btnAccept", 183, 185, 98, 22, "Accept", Arial, , , , ,  , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnJobs_Accept))
 
         ' Text background
         CreatePictureBox(WindowCount, "picBackground", 127, 55, 210, 124, , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
@@ -1251,7 +1259,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , 8, 9, 10, , , , , , , , New Action(AddressOf btnDialogue_Close))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnDialogue_Close))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 335, 113, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1268,9 +1276,9 @@ Module C_Interface
         CreateLabel(WindowCount, "lblBody_2", 15, 75, 314, 9, "Please try again!", Arial, AlignmentType.Center)
 
         ' Buttons
-        CreateButton(WindowCount, "btnYes", 104, 98, 68, 24, "Yes", Arial, , , , False, , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Yes))
-        CreateButton(WindowCount, "btnNo", 180, 98, 68, 24, "No", Arial, , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf Dialogue_No))
-        CreateButton(WindowCount, "btnOkay", 140, 98, 68, 24, "Okay", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Okay))
+        CreateButton(WindowCount, "btnYes", 104, 98, 68, 24, "Yes", Arial, , , , , False, , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Yes))
+        CreateButton(WindowCount, "btnNo", 180, 98, 68, 24, "No", Arial, , ,  , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf Dialogue_No))
+        CreateButton(WindowCount, "btnOkay", 140, 98, 68, 24, "Okay", Arial, ,  , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Okay))
 
         ' Set active control
         SetActiveControl(WindowCount, GetControlIndex("winDialogue", "txtInput"))
@@ -1290,6 +1298,7 @@ Module C_Interface
         CreateWindow_Characters()
         CreateWindow_ChatSmall()
         CreateWindow_Chat()
+        CreateWindow_Menu()
         CreateWindow_Hotbar()
         CreateWindow_Bars()
         CreateWindow_Dialogue()
@@ -1569,6 +1578,51 @@ Module C_Interface
     Public Sub btnReturnMain_Click()
         HideWindows()
         ShowWindow(GetWindowIndex("winLogin"))
+    End Sub
+
+    ' ##########
+    ' ## Menu ##
+    ' ##########
+    Public Sub btnMenu_Char()
+        Dim curWindow As Long
+        curWindow = GetWindowIndex("winCharacter")
+        If Windows(curWindow).Window.Visible Then
+            HideWindow(curWindow)
+        Else
+            ShowWindow(curWindow, , False)
+        End If
+    End Sub
+
+    Public Sub btnMenu_Inv()
+        Dim curWindow As Long
+        curWindow = GetWindowIndex("winInventory")
+        If Windows(curWindow).Window.Visible Then
+            HideWindow(curWindow)
+        Else
+            ShowWindow(curWindow, , False)
+        End If
+    End Sub
+
+    Public Sub btnMenu_Skills()
+        Dim curWindow As Long
+        curWindow = GetWindowIndex("winSkills")
+        If Windows(curWindow).Window.Visible Then
+            HideWindow(curWindow)
+        Else
+            ShowWindow(curWindow, , False)
+        End If
+    End Sub
+
+    Public Sub btnMenu_Map()
+        'Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+    End Sub
+
+    Public Sub btnMenu_Guild()
+        'Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+    End Sub
+
+    Public Sub btnMenu_Quest()
+        'Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
     End Sub
 
     ' ##########
@@ -2088,14 +2142,14 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
 
         ' Chat button
-        CreateButton(WindowCount, "btnChat", 296, 124 + 16, 48, 20, "Say", Arial, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))
+        CreateButton(WindowCount, "btnChat", 296, 124 + 16, 48, 20, "Say", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))
 
         ' Chat Textbox
         CreateTextbox(WindowCount, "txtChat", 12, 127 + 16, 286, 25, , Verdana)
 
         ' buttons
-        CreateButton(WindowCount, "btnUp", 328, 28, 11, 13, , , 4, 52, 4, , , , , , , , New Action(AddressOf btnChat_Up))
-        CreateButton(WindowCount, "btnDown", 327, 122, 11, 13, , , 5, 53, 5, , , , , , , , New Action(AddressOf btnChat_Down))
+        CreateButton(WindowCount, "btnUp", 328, 28, 11, 13, , , , 4, 52, 4, , , , , , , , New Action(AddressOf btnChat_Up))
+        CreateButton(WindowCount, "btnDown", 327, 122, 11, 13, , , , 5, 53, 5, , , , , , , , New Action(AddressOf btnChat_Down))
 
         ' Custom Handlers for mouse up
         Windows(WindowCount).Controls(GetControlIndex("winChat", "btnUp")).CallBack(EntState.MouseUp) = New Action(AddressOf btnChat_Up_MouseUp)
@@ -2129,6 +2183,27 @@ Module C_Interface
     Public Sub CreateWindow_Hotbar()
         ' Create window
         CreateWindow("winHotbar", "", zOrder_Win, 372, 10, 418, 36, 0, False, , , , , , , , , , , New Action(AddressOf Hotbar_MouseDown), New Action(AddressOf Hotbar_MouseMove), New Action(AddressOf Hotbar_DblClick), False, False, New Action(AddressOf DrawHotbar))
+    End Sub
+
+    Public Sub CreateWindow_Menu()
+        ' Create window
+        CreateWindow("winMenu", "", zOrder_Win, Types.Settings.ScreenWidth - 229, Types.Settings.ScreenHeight - 31, 229, 31, 0, False, , , , , , , , , , , , , , , , , False, False)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Wood part
+        CreatePictureBox(WindowCount, "picWood", 0, 5, 228, 21, , , , , , , , DesignType.Wood, DesignType.Wood, DesignType.Wood)
+        ' Buttons
+        CreateButton(WindowCount, "btnChar", 8, 1, 29, 29, , , 108, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnMenu_Char), , , -1, -2, "Character (C)")
+        CreateButton(WindowCount, "btnInv", 44, 1, 29, 29, , , 1, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnMenu_Inv), , , -1, -2, "Inventory (I)")
+        CreateButton(WindowCount, "btnSkills", 82, 1, 29, 29, , , 109, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnMenu_Skills), , , -1, -2, "Skills (M)")
+        'CreateButton WindowCount, "btnMap", 119, 1, 29, 29, , , , Tex_Item(106), , , , , , DesignTypes.desGreen, DesignTypes.desGreen_Hover, DesignTypes.desGreen_Click, , , GetAddress(AddressOf btnMenu_Map), , , -1, -2
+        'CreateButton WindowCount, "btnGuild", 155, 1, 29, 29, , , , Tex_Item(107), , , , , , DesignTypes.desGreen, DesignTypes.desGreen_Hover, DesignTypes.desGreen_Click, , , GetAddress(AddressOf btnMenu_Guild), , , -1, -1
+        'CreateButton WindowCount, "btnQuest", 191, 1, 29, 29, , , , Tex_Item(23), , , , , , DesignTypes.desGreen, DesignTypes.desGreen_Hover, DesignTypes.desGreen_Click, , , GetAddress(AddressOf btnMenu_Quest), , , -1, -2
+        CreateButton(WindowCount, "btnMap", 119, 1, 29, 29, , , 106, , , , , , DesignType.Grey, DesignType.Grey, DesignType.Grey, , , New Action(AddressOf btnMenu_Map), , , -1, -2)
+        CreateButton(WindowCount, "btnGuild", 155, 1, 29, 29, , , 107, , , , , , DesignType.Grey, DesignType.Grey, DesignType.Grey, , , New Action(AddressOf btnMenu_Guild), , , , , -1, -1)
+        CreateButton(WindowCount, "btnQuest", 191, 1, 29, 29, , , 23, , , , , , DesignType.Grey, DesignType.Grey, DesignType.Grey, , , New Action(AddressOf btnMenu_Quest), , , -1, -2)
     End Sub
 End Module
 

@@ -326,6 +326,7 @@ Module C_NetworkReceive
 
         ' show gui
         ShowWindow(GetWindowIndex("winHotbar"), , False)
+        ShowWindow(GetWindowIndex("winMenu"), , False)
         ShowWindow(GetWindowIndex("winBars"), , False)
         HideChat()
 
