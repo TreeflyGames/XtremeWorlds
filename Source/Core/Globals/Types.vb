@@ -112,6 +112,7 @@ Public Module Types
     Public Structure PlayerInvStruct
         Dim Num As Integer
         Dim Value As Integer
+        Dim Bound As Byte
     End Structure
 
     Public Structure PlayerSkillStruct

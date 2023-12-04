@@ -1549,20 +1549,17 @@ Continue1:
         Next
     End Function
 
-    Sub UpdateStats_UI()
-        ' set the bar labels
-        With Windows(GetWindowIndex("winBars"))
-            .Controls(GetControlIndex("winBars", "lblHP")).Text = GetPlayerVital(Myindex, VitalType.HP) & "/" & GetPlayerMaxVital(Myindex, VitalType.HP)
-            .Controls(GetControlIndex("winBars", "lblMP")).Text = GetPlayerVital(Myindex, VitalType.MP) & "/" & GetPlayerMaxVital(Myindex, VitalType.MP)
-            .Controls(GetControlIndex("winBars", "lblEXP")).Text = GetPlayerExp(Myindex) & "/" & NextlevelExp
-        End With
+    Public Sub ShowInvDesc(x As Long, y As Long, invNum As Long)
+        Dim soulBound As Boolean
 
-        ' update character screen
-        With Windows(GetWindowIndex("WinChars"))
-            .Controls(GetControlIndex("WinChars", "lblHealth")).Text = "Health: " & GetPlayerVital(Myindex, VitalType.HP) & "/" & GetPlayerMaxVital(Myindex, VitalType.HP)
-            .Controls(GetControlIndex("WinChars", "lblSpirit")).Text = "Spirit: " & GetPlayerVital(Myindex, VitalType.MP) & "/" & GetPlayerMaxVital(Myindex, VitalType.MP)
-            .Controls(GetControlIndex("WinChars", "lblExperience")).Text = "Experience: " & Player(Myindex).Exp & "/" & NextlevelExp
-        End With
+        ' rte9
+        If invNum <= 0 Or invNum > MAX_INV Then Exit Sub
+
+        ' show
+        If GetPlayerInvItemNum(Myindex, invNum) Then
+            If Item(GetPlayerInvItemNum(Myindex, invNum)).BindType > 0 And Player(Myindex).Inv(invNum).Bound > 0 Then soulBound = True
+            'ShowItemDesc(x, y, GetPlayerInvItemNum(Myindex, invNum), soulBound)
+        End If
     End Sub
 
 End Module

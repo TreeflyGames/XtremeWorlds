@@ -214,6 +214,15 @@ Module C_Graphics
         If Inputs.Attack(e.Code) Then VbKeyControl = True
         If Inputs.Run(e.Code) Then VbKeyShift = True
 
+        ' e.Unicode is a string, so no conversion is needed
+        Dim unicodeChar As String = e.Code.ToString
+
+        ' Get the first character of the string as a Char
+        Dim character As Char = unicodeChar(0)
+
+        ' Convert the character to its UInteger Unicode code point
+        Dim unicodeValue As UInteger = Convert.ToUInt32(character)
+
         ' Check for active window
         If activeWindow > 0 Then
             ' Ensure it's visible
@@ -260,6 +269,13 @@ Module C_Graphics
                                 For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
                                     SetActiveControl(activeWindow, i)
                                 Next
+                            End If
+
+                        Case Else
+                            ' Ensure it's visible
+                            If Windows(activeWindow).Window.Visible Then
+                                ' Append character to text of the active control
+                                Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= character
                             End If
                     End Select
                 End If
@@ -417,36 +433,7 @@ Module C_Graphics
     End Sub
 
     Private Sub GameWindow_TextEntered(sender As Object, e As TextEventArgs)
-        ' e.Unicode is a string, so no conversion is needed
-        Dim unicodeChar As String = e.Unicode
 
-        ' Get the first character of the string as a Char
-        Dim character As Char = unicodeChar(0)
-
-        ' Ignore Backspace (ChrW(8)), Enter (ChrW(13)), Tab (ChrW(9)), and Escape (ChrW(27)) keys
-        If character = ChrW(8) OrElse character = ChrW(13) OrElse character = ChrW(9) OrElse character = ChrW(27) Then
-            Return
-        End If
-
-        ' Convert the character to its UInteger Unicode code point
-        Dim unicodeValue As UInteger = Convert.ToUInt32(character)
-
-        ' Handle only ASCII characters
-        If unicodeValue < 128 Then
-            Console.WriteLine("ASCII character typed: " & character)
-
-            ' Check for active window
-            If activeWindow > 0 Then
-                ' Ensure it's visible
-                If Windows(activeWindow).Window.Visible Then
-                    ' Check for active control
-                    If Windows(activeWindow).ActiveControl > 0 Then
-                        ' Append character to text of the active control
-                        Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= character
-                    End If
-                End If
-            End If
-        End If
     End Sub
 
     Private Sub GameWindow_Closed(ByVal sender As Object, ByVal e As EventArgs)
@@ -463,7 +450,6 @@ Module C_Graphics
         GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Titlebar Or Styles.Close)
         GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
         GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
-        '
         Dim iconImage As New Image(Paths.Gui + "icon.png")
         GameWindow.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
         'GameWindow = New RenderWindow(FrmGame.picscreen.Handle)
@@ -2030,160 +2016,6 @@ Module C_Graphics
 
         If Not LightGfx Is Nothing Then LightGfx.Dispose()
         If Not NightGfx Is Nothing Then NightGfx.Dispose()
-    End Sub
-
-    Friend Sub DrawInventoryItem(x As Integer, y As Integer)
-        Dim rec As Rectangle
-        Dim itemnum As Integer, itempic As Integer
-
-        itemnum = GetPlayerInvItemNum(Myindex, DragInvSlotNum)
-
-        If itemnum > 0 AndAlso itemnum <= MAX_ITEMS Then
-
-            itempic = Item(itemnum).Pic
-            If itempic = 0 Then Exit Sub
-
-            If ItemGfxInfo(itempic).IsLoaded = False Then
-                LoadTexture(itempic, 4)
-            End If
-
-            'seeying we still use it, lets update timer
-            With ItemGfxInfo(itempic)
-                .TextureTimer = GetTickCount() + 100000
-            End With
-
-            With rec
-                .Y = 0
-                .Height = PicY
-                .X = 0
-                .Width = PicX
-            End With
-
-            RenderTexture(ItemSprite(itempic), GameWindow, x + 16, y + 16, rec.X, rec.Y, rec.Width, rec.Height)
-        End If
-    End Sub
-
-    Sub DrawAnimatedInvItems()
-        Dim i As Integer
-        Dim itemnum As Integer, itempic As Integer
-        Dim x As Integer, y As Integer
-        Dim maxFrames As Byte
-        Dim amount As Integer
-        Dim rec As Rectangle, recPos As Rectangle
-        Dim clearregion(1) As Rectangle
-        Static tmr100 As Integer
-        If tmr100 = 0 Then tmr100 = GetTickCount() + 100
-
-        If GetTickCount() > tmr100 Then
-            ' check for map animation changes#
-            For i = 1 To MAX_MAP_ITEMS
-
-                If MapItem(i).Num > 0 Then
-                    itempic = Item(MapItem(i).Num).Pic
-
-                    If itempic < 1 OrElse itempic > NumItems Then Exit Sub
-                    maxFrames = (ItemGfxInfo(itempic).Width / 2) / 32 _
-                    ' Work out how many frames there are. /2 because of inventory icons as well as ingame
-
-                    If MapItem(i).Frame < maxFrames - 1 Then
-                        MapItem(i).Frame = MapItem(i).Frame + 1
-                    Else
-                        MapItem(i).Frame = 1
-                    End If
-                End If
-            Next
-        End If
-
-        For i = 1 To MAX_INV
-            itemnum = GetPlayerInvItemNum(Myindex, i)
-
-            If itemnum > 0 AndAlso itemnum <= MAX_ITEMS Then
-                itempic = Item(itemnum).Pic
-                If itempic > 0 AndAlso itempic <= NumItems Then
-                    If ItemGfxInfo(itempic).Width > 64 Then
-
-                        maxFrames = (ItemGfxInfo(itempic).Width / 2) / 32 _
-                        ' Work out how many frames there are. /2 because of inventory icons as well as ingame
-
-                        If GetTickCount() > tmr100 Then
-                            If InvItemFrame(i) < maxFrames - 1 Then
-                                InvItemFrame(i) = InvItemFrame(i) + 1
-                            Else
-                                InvItemFrame(i) = 1
-                            End If
-                            tmr100 = GetTickCount() + 100
-                        End If
-
-                        With rec
-                            .Y = 0
-                            .Height = 32
-                            .X = (ItemGfxInfo(itempic).Width / 2) + (InvItemFrame(i) * 32) _
-                            ' middle to get the start of inv gfx, then +32 for each frame
-                            .Width = 32
-                        End With
-
-                        With recPos
-                            .Y = InvTop + ((InvOffsetY + 32) * ((i - 1) \ InvColumns))
-                            .Height = PicY
-                            .X = InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
-                            .Width = PicX
-                        End With
-                        With clearregion(1)
-                            .Y = recPos.Y
-                            .Height = recPos.Height
-                            .X = recPos.X
-                            .Width = recPos.Width
-                        End With
-
-                        ' We'll now re-draw the item, and place the currency value over it again :P
-                        RenderTexture(ItemSprite(itempic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width,
-                                     rec.Height)
-
-                        ' If item is a stack - draw the amount you have
-                        If GetPlayerInvItemValue(Myindex, i) > 1 Then
-                            y = recPos.Top + 22
-                            x = recPos.Left - 4
-                            amount = CStr(GetPlayerInvItemValue(Myindex, i))
-                            ' Draw currency but with k, m, b etc. using a convertion function
-                            RenderText(ConvertCurrency(amount), GameWindow, x, y, Color.Yellow, Color.Black)
-
-                        End If
-                    End If
-                End If
-            End If
-
-        Next
-    End Sub
-
-    Friend Sub DrawSkillItem(x As Integer, y As Integer)
-        Dim rec As Rectangle
-        Dim skillnum As Integer, skillpic As Integer
-
-        skillnum = DragSkillSlotNum
-
-        If skillnum > 0 AndAlso skillnum <= MAX_SKILLS Then
-            StreamSkill(skillnum)
-            skillpic = Skill(skillnum).Icon
-            If skillpic = 0 Then Exit Sub
-
-            If SkillIconGfxInfo(skillpic).IsLoaded = False Then
-                LoadTexture(skillpic, 9)
-            End If
-
-            'seeying we still use it, lets update timer
-            With SkillIconGfxInfo(skillnum)
-                .TextureTimer = GetTickCount() + 100000
-            End With
-
-            With rec
-                .Y = 0
-                .Height = PicY
-                .X = 0
-                .Width = PicX
-            End With
-
-            RenderTexture(SkillIconSprite(skillpic), GameWindow, x + 16, y + 16, rec.X, rec.Y, rec.Width, rec.Height)
-        End If
     End Sub
 
     Friend Function ToSfmlColor(toConvert As Drawing.Color) As Color
