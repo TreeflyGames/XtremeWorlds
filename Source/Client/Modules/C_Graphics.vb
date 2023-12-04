@@ -214,15 +214,6 @@ Module C_Graphics
         If Inputs.Attack(e.Code) Then VbKeyControl = True
         If Inputs.Run(e.Code) Then VbKeyShift = True
 
-        ' e.Unicode is a string, so no conversion is needed
-        Dim unicodeChar As String = e.Code.ToString
-
-        ' Get the first character of the string as a Char
-        Dim character As Char = unicodeChar(0)
-
-        ' Convert the character to its UInteger Unicode code point
-        Dim unicodeValue As UInteger = Convert.ToUInt32(character)
-
         ' Check for active window
         If activeWindow > 0 Then
             ' Ensure it's visible
@@ -232,6 +223,15 @@ Module C_Graphics
                     ' Handle input
                     Select Case e.Code
                         Case Keyboard.Key.Escape
+                            ' Hide options screen
+                            'HideWindow("winOptions")
+                            'CloseComboMenu()
+
+                            ' hide/show chat window
+                            If Windows(GetWindowIndex("winChat")).Window.Visible Then
+                                Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text = ""
+                                HideChat()
+                            End If
 
                         Case Keyboard.Key.Backspace
                             If Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Length > 0 Then
@@ -257,6 +257,14 @@ Module C_Graphics
                                 End If
                             End If
 
+                            If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
+                                ShowChat()
+                                inSmallChat = False
+                                Exit Sub
+                            End If
+
+                            HandlePressEnter()
+
                         Case Keyboard.Key.Tab
                             Dim n As Integer = 0
                             For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
@@ -272,6 +280,14 @@ Module C_Graphics
                             End If
 
                         Case Else
+                            ' e.Unicode is a string, so no conversion is needed
+                            Dim unicodeChar As String = e.Code.ToString
+
+                            ' Get the first character of the string as a Char
+                            Dim character As Char = unicodeChar(0)
+
+                            ' Convert the character to its UInteger Unicode code point
+                            Dim unicodeValue As UInteger = Convert.ToUInt32(character)
                             ' Ensure it's visible
                             If Windows(activeWindow).Window.Visible Then
                                 ' Append character to text of the active control
@@ -281,33 +297,6 @@ Module C_Graphics
                 End If
             End If
         End If
-
-        ' Exit early if we're not in the game
-        If Not InGame Then Exit Sub
-
-        Select Case e.Code
-            Case Keyboard.Key.Enter
-                If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
-                    ShowChat()
-                    inSmallChat = False
-                    Exit Sub
-                End If
-
-                HandlePressEnter()
-
-            Case Keyboard.Key.Escape
-                ' Hide options screen
-                'HideWindow("winOptions")
-                'CloseComboMenu()
-
-                ' hide/show chat window
-                If Windows(GetWindowIndex("winChat")).Window.Visible Then
-                    Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text = ""
-                    HideChat()
-                    Exit Sub
-                End If
-                Exit Sub
-        End Select
 
         HandleInterfaceEvents(EntState.KeyDown)
     End Sub
