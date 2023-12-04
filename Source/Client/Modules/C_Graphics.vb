@@ -280,19 +280,7 @@ Module C_Graphics
                             End If
 
                         Case Else
-                            ' e.Unicode is a string, so no conversion is needed
-                            Dim unicodeChar As String = e.Code.ToString
 
-                            ' Get the first character of the string as a Char
-                            Dim character As Char = unicodeChar(0)
-
-                            ' Convert the character to its UInteger Unicode code point
-                            Dim unicodeValue As UInteger = Convert.ToUInt32(character)
-                            ' Ensure it's visible
-                            If Windows(activeWindow).Window.Visible Then
-                                ' Append character to text of the active control
-                                Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= character
-                            End If
                     End Select
                 End If
             End If
@@ -422,6 +410,24 @@ Module C_Graphics
     End Sub
 
     Private Sub GameWindow_TextEntered(sender As Object, e As TextEventArgs)
+        ' e.Unicode is a string, so no conversion is needed
+        Dim unicodeChar As String = e.Unicode
+
+        ' Get the first character of the string as a Char
+        Dim character As Char = unicodeChar(0)
+
+        ' Ignore Backspace (ChrW(8)), Enter (ChrW(13)), Tab (ChrW(9)), and Escape (ChrW(27)) keys
+        If character = ChrW(8) OrElse character = ChrW(13) OrElse character = ChrW(9) OrElse character = ChrW(27) Then
+            Return
+        End If
+
+        ' Convert the character to its UInteger Unicode code point
+        Dim unicodeValue As UInteger = Convert.ToUInt32(character)
+        ' Ensure it's visible
+        If Windows(activeWindow).Window.Visible Then
+            ' Append character to text of the active control
+            Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= character
+        End If
 
     End Sub
 
@@ -1333,7 +1339,6 @@ Module C_Graphics
         UpdateCamera()
 
         'Clear each of our render targets
-        GameWindow.WaitAndDispatchEvents()
         GameWindow.Clear(Color.Black)
 
         'If CurMouseX > 0 AndAlso CurMouseX <= GameWindow.Size.X Then

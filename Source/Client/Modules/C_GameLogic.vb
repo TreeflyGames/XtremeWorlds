@@ -306,6 +306,7 @@ Module C_GameLogic
             End If
 
             UpdateUi()
+            GameWindow.WaitAndDispatchEvents()
             Application.DoEvents()
         End While
     End Sub
