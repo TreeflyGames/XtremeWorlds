@@ -4,6 +4,7 @@ Imports System.Text
 Imports NLua
 
 Public Class LuaScripting
+    Public Shared Event InstanceCreated As EventHandler
     Private Shared _instance As LuaScripting
 
     Public Shared Function Instance() As LuaScripting
@@ -23,9 +24,18 @@ Public Class LuaScripting
     Private ReadOnly lua As Lua
 
     Private Sub New()
+        ' Create the Lua instance.
         lua = New Lua()
-
         lua.State.Encoding = Encoding.UTF8
+
+        ' Register scripts during initialization
+        For Each script In Directory.GetFiles(Paths.Scripts)
+            Console.WriteLine($"Registering Lua script '{script}'")
+            AddScriptFromFile(script)
+        Next
+
+        ' Raise the shared event when a new instance is created
+        RaiseEvent InstanceCreated(Me, EventArgs.Empty)
     End Sub
 
     Public Function AddScript(script As String) As Object()
