@@ -1,0 +1,3 @@
+[submodule "source/NLua"]
+	path = source/NLua
+	url = https://github.com/NLua/NLua.git
