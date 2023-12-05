@@ -26,4 +26,10 @@
     <ProjectReference Include="..\NLua\build\net7.0\NLua.net7.0.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Scripting\Scripts\TestScript.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
