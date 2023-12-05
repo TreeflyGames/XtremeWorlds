@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Reflection
 Imports System.Text
 Imports NLua
 
@@ -57,6 +58,18 @@ Public Class LuaScripting
             Return lua.GetFunction(functionName).Call(args)
         Catch ex As Exception
             Throw New Exception($"Error calling Lua function: {ex.Message}")
+        End Try
+    End Function
+
+    Public Function RegisterFunction(path As String, [function] As MethodBase) As LuaFunction
+        Return RegisterFunction(path, Nothing, [function])
+    End Function
+
+    Public Function RegisterFunction(path As String, target As Object, [function] As MethodBase) As LuaFunction
+        Try
+            Return lua.RegisterFunction(path, target, [function])
+        Catch ex As Exception
+            Throw New Exception($"Error registering Lua function: {ex.Message}")
         End Try
     End Function
 End Class
