@@ -32,6 +32,13 @@ Namespace Paths
             End Get
         End Property
 
+        ''' <summary> Returns configuration directory </summary>
+        Public ReadOnly Property Scripts As String
+            Get
+                Return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) & "\Scripting\Scripts\"
+            End Get
+        End Property
+
         '############################
         '###  Unique Directories  ###
         '############################
