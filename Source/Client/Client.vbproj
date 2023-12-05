@@ -1179,6 +1179,9 @@
     <None Update="Contents\Graphics\Tilesets\1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Scripting\Scripts\TestMusicScript.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\Clear.png" />
     <Content Include="Resources\Exit.png" />
     <Content Include="Resources\Fill.png" />
