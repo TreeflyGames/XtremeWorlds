@@ -28,7 +28,7 @@ Public Class LuaScripting
         lua.State.Encoding = Encoding.UTF8
     End Sub
 
-    Public Function AddScript(script As String)
+    Public Function AddScript(script As String) As Object()
         Try
             Return lua.DoString(script)
         Catch ex As Exception
@@ -36,7 +36,7 @@ Public Class LuaScripting
         End Try
     End Function
 
-    Public Function AddScriptFromFile(filepath As String)
+    Public Function AddScriptFromFile(filepath As String) As Object()
         If String.IsNullOrWhiteSpace(filepath) Then
             Throw New Exception($"Error adding Lua script from file, no file path was provided.")
         End If
@@ -53,7 +53,7 @@ Public Class LuaScripting
         End Using
     End Function
 
-    Public Function ExecuteScript(functionName As String, ParamArray args As Object())
+    Public Function ExecuteScript(functionName As String, ParamArray args As Object()) As Object()
         Try
             Return lua.GetFunction(functionName).Call(args)
         Catch ex As Exception
