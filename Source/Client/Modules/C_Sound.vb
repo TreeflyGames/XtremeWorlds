@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports SFML.Audio
 Imports Core
+Imports System.Runtime.Intrinsics.X86
 
 Module C_Sound
 
@@ -22,11 +23,13 @@ Module C_Sound
         If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
         If fileName = CurMusic Then Exit Sub
 
+        Dim luaVolume As Single = Convert.ToSingle(LuaScripting.Instance().ExecuteScript("AdjustMusicVolume", Types.Settings.Volume)(0))
+
         If MusicPlayer Is Nothing Then
             Try
                 MusicPlayer = New Music(Paths.Music & fileName)
                 MusicPlayer.Loop() = True
-                MusicPlayer.Volume() = 100
+                MusicPlayer.Volume() = luaVolume
                 MusicPlayer.Play()
                 CurMusic = fileName
                 FadeInSwitch = True
