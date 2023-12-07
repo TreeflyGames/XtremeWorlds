@@ -18,12 +18,9 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Npgsql" Version="8.0.0" />
+    <PackageReference Include="NLua" Version="1.6.3" />
+    <PackageReference Include="Npgsql" Version="8.0.1" />
     <PackageReference Include="SFML.Net" Version="2.5.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\NLua\build\net7.0\NLua.net7.0.csproj" />
   </ItemGroup>
 
 </Project>
