@@ -891,7 +891,7 @@ Module C_Interface
 
     Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String,
        Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional censor As Boolean = False,
-       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional Locked As Boolean = True)
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional locked As Boolean = True)
 
         Dim design(EntState.Count - 1) As Long
         Dim image(EntState.Count - 1) As Long
@@ -905,7 +905,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the label
-        CreateEntity(winNum, zOrder_Con, name, EntityType.Label, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor, , , , , , Locked)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.Label, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor, , , , , , locked)
     End Sub
 
     Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, Optional height As Long = 15, Optional value As Long = 0, Optional text As String = "", Optional font As String = Georgia,
@@ -977,7 +977,7 @@ Module C_Interface
 
     Public Function SetActiveControl(curWindow As Long, curControl As Long) As Boolean
         If Windows(curWindow).Controls(curControl).Locked Then
-            Return False
+            Exit Function
         End If
 
         ' make sure it's something which CAN be active

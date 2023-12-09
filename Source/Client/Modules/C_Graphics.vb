@@ -424,6 +424,10 @@ Module C_Graphics
         Dim unicodeValue As UInteger = Convert.ToUInt32(character)
         ' Ensure it's visible
         If Windows(activeWindow).Window.Visible Then
+            If Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Locked Then
+                Exit Sub
+            End If
+
             ' Append character to text of the active control
             Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= character
         End If
