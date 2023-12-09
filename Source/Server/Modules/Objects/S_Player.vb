@@ -894,24 +894,6 @@ Module S_Player
         ' Check for subscript out of range
         If IsPlaying(index) = False OrElse MapNum <= 0 OrElse MapNum > MAX_CACHED_MAPS Then Exit Sub
 
-        If Map(MapNum).Instanced = 1 And NoInstance = False Then
-            MapNum = CreateInstance(MapNum)
-            If MapNum = 0 Then
-                MapNum = GetPlayerMap(index)
-                X = GetPlayerX(index)
-                Y = GetPlayerY(index)
-            Else
-                'store old info, for returning to entrance of instance
-                If Not TempPlayer(index).InInstance = 1 Then
-                    TempPlayer(index).TmpMap = GetPlayerMap(index)
-                    TempPlayer(index).TmpX = GetPlayerX(index)
-                    TempPlayer(index).TmpY = GetPlayerY(index)
-                    TempPlayer(index).InInstance = 1
-                End If
-                MapNum += MAX_MAPS
-            End If
-        End If
-
         ' Check if you are out of bounds
         If X > Map(MapNum).MaxX Then X = Map(MapNum).MaxX
         If Y > Map(MapNum).MaxY Then Y = Map(MapNum).MaxY
@@ -961,10 +943,6 @@ Module S_Player
         ' Now we check if there were any players left on the map the player just left, and if not stop processing npcs
         If GetTotalMapPlayers(OldMap) = 0 Then
             PlayersOnMap(OldMap) = False
-
-            If IsInstancedMap(OldMap) Then
-                DestroyInstancedMap(OldMap - MAX_MAPS)
-            End If
 
             ' Regenerate all NPCs' health
             For i = 1 To MAX_MAP_NPCS
@@ -2073,23 +2051,6 @@ Module S_Player
         If TempPlayer(index).InGame Then
             SendLeftMap(index)
             TempPlayer(index).InGame = False
-
-            ' Check if player was the only player on the map and stop npc processing if so
-            If GetPlayerMap(index) > 0 Then
-                If GetTotalMapPlayers(GetPlayerMap(index)) < 0 Then
-                    PlayersOnMap(GetPlayerMap(index)) = False
-                    If IsInstancedMap(GetPlayerMap(index)) Then
-                        DestroyInstancedMap(GetPlayerMap(index) - MAX_MAPS)
-
-                        If TempPlayer(index).InInstance = 1 Then
-                            SetPlayerMap(index, TempPlayer(index).TmpMap)
-                            SetPlayerX(index, TempPlayer(index).TmpX)
-                            SetPlayerY(index, TempPlayer(index).TmpY)
-                            TempPlayer(index).InInstance = 0
-                        End If
-                    End If
-                End If
-            End If
 
             ' Check if the player was in a party, and if so cancel it out so the other player doesn't continue to get half exp
             ' leave party.

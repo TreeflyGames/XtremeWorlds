@@ -91,7 +91,6 @@ Module C_Banks
         buffer.Dispose()
 
         InBank = False
-        PnlBankVisible = False
     End Sub
 
 #End Region

@@ -45,7 +45,6 @@ Module C_Trade
         NeedToOpenTrade = True
         buffer.ReadInt32()
         Tradername = Trim(buffer.ReadString)
-        PnlTradeVisible = True
 
         buffer.Dispose()
     End Sub

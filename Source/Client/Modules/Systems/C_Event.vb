@@ -2857,7 +2857,6 @@ nextevent:
         Else
             EventChat = False
         End If
-        PnlEventChatVisible = False
     End Sub
 
 #End Region

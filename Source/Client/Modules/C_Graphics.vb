@@ -328,7 +328,6 @@ Module C_Graphics
                 ' trading
                 SendTradeRequest(Player(MyTarget).Name)
             End If
-            PnlRClickVisible = False
             ShowPetStats = False
 
         ElseIf e.Button = Mouse.Button.Right Then

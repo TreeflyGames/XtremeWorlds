@@ -79,7 +79,6 @@ Module C_GameLogic
                     If EventText = "" Then
                         If EventChat = True Then
                             EventChat = False
-                            PnlEventChatVisible = False
                         End If
                     End If
                 End If

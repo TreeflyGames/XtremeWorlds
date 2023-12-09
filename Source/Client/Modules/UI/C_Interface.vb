@@ -1,7 +1,9 @@
 ﻿
 Imports System.Diagnostics.Eventing.Reader
 Imports System.Management
+Imports System.Reflection.Metadata.Ecma335
 Imports System.Runtime.Versioning
+Imports System.Security.AccessControl
 Imports System.Windows.Forms.Design.AxImporter
 Imports Core
 Imports Core.Enum
@@ -23,7 +25,7 @@ Module C_Interface
     Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef callback() As Action,
        Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
        Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
-       Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0)
+       Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional locked As Boolean = False)
 
         Dim i As Long
 
@@ -80,6 +82,7 @@ Module C_Interface
             .Group = group
             .Censor = censor
             .Icon = icon
+            .Locked = locked
             ReDim .List(0)
         End With
 
@@ -888,7 +891,7 @@ Module C_Interface
 
     Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String,
        Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional censor As Boolean = False,
-       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
+       Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional Locked As Boolean = True)
 
         Dim design(EntState.Count - 1) As Long
         Dim image(EntState.Count - 1) As Long
@@ -902,7 +905,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the label
-        CreateEntity(winNum, zOrder_Con, name, EntityType.Label, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor)
+        CreateEntity(winNum, zOrder_Con, name, EntityType.Label, design, image, callback, left, top, width, height, visible, , , , , text, align, font, alpha, clickThrough, , , , censor, , , , , , Locked)
     End Sub
 
     Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, Optional height As Long = 15, Optional value As Long = 0, Optional text As String = "", Optional font As String = Georgia,
@@ -973,6 +976,10 @@ Module C_Interface
     End Function
 
     Public Function SetActiveControl(curWindow As Long, curControl As Long) As Boolean
+        If Windows(curWindow).Controls(curControl).Locked Then
+            Return False
+        End If
+
         ' make sure it's something which CAN be active
         Select Case Windows(curWindow).Controls(curControl).Type
             Case EntityType.TextBox
@@ -1112,15 +1119,15 @@ Module C_Interface
         'CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, FontSize, "Captcha", Arial, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtAccount", 67, 55, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPassword", 67, 91, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
-        CreateTextbox(WindowCount, "txtPassword2", 67, 127, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, ,  , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPassword", 67, 127, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtPassword2", 67, 91, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
         'CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
         'CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
 
         ' CreatePictureBox(WindowCount, "picCaptcha", 67, 199, 156, 30, , , , , Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
-        SetActiveControl(GetWindowIndex("winRegister"), GetControlIndex("winRegister", "txtAccount"))
+        SetActiveControl(GetWindowIndex("winRegister"), GetControlIndex("winRegister", "txtUsername"))
     End Sub
 
     Public Sub CreateWindow_NewChar()

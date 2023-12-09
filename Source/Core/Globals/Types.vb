@@ -18,7 +18,6 @@ Public Module Types
     Public TempPlayer(MAX_PLAYERS) As TempPlayerStruct
     Public Account(MAX_PLAYERS) as AccountStruct
     Public Player(MAX_PLAYERS) As PlayerStruct
-    Public InstancedMaps(MAX_INSTANCED_MAPS) As InstancedMap
     Public Projectile(MAX_PROJECTILES) As ProjectileStruct
     Public MapProjectile(MAX_MAPS, MAX_PROJECTILES) As MapProjectileStruct
     Public TradeYourOffer(MAX_INV) As PlayerInvStruct
@@ -891,6 +890,7 @@ Public Module Types
         Dim movedY As Long
         Dim zOrder As Long
         Dim Censor As Boolean
+        Dim Locked As Boolean
         Dim CallBack() As Action
     End Structure
 

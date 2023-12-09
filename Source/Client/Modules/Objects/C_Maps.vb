@@ -53,8 +53,6 @@ Module C_Maps
         Dim MapTintB As Byte
         Dim MapTintA As Byte
 
-        Dim Instanced As Byte
-
         Dim Panorama As Byte
         Dim Parallax As Byte
 
@@ -307,7 +305,6 @@ Module C_Maps
             Map.MapTintG = buffer.ReadInt32
             Map.MapTintB = buffer.ReadInt32
             Map.MapTintA = buffer.ReadInt32
-            Map.Instanced = buffer.ReadInt32
             Map.Panorama = buffer.ReadByte
             Map.Parallax = buffer.ReadByte
             Map.Brightness = buffer.ReadByte
@@ -662,7 +659,6 @@ Module C_Maps
         buffer.WriteInt32(Map.MapTintG)
         buffer.WriteInt32(Map.MapTintB)
         buffer.WriteInt32(Map.MapTintA)
-        buffer.WriteInt32(Map.Instanced)
         buffer.WriteByte(Map.Panorama)
         buffer.WriteByte(Map.Parallax)
         buffer.WriteByte(Map.Brightness)

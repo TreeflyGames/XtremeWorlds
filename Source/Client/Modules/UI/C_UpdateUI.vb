@@ -7,16 +7,6 @@ Module C_UpdateUI
     Friend GameDestroyed As Boolean
     Friend TxtChatAdd As String
 
-    Friend PnlCharacterVisible As Boolean
-    Friend PnlInventoryVisible As Boolean
-    Friend PnlSkillsVisible As Boolean
-    Friend PnlBankVisible As Boolean
-    Friend PnlShopVisible As Boolean
-    Friend PnlTradeVisible As Boolean
-    Friend PnlEventChatVisible As Boolean
-    Friend PnlRClickVisible As Boolean
-    Friend OptionsVisible As Boolean
-
     Friend VbKeyRight As Boolean
     Friend VbKeyLeft As Boolean
     Friend VbKeyUp As Boolean
