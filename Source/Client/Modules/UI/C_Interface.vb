@@ -1537,7 +1537,7 @@ Module C_Interface
     Sub ClearPasswordTexts()
         Dim I As Long
         With Windows(GetWindowIndex("winRegister"))
-            '.Controls(GetControlIndex("winRegister", "txtAccount")).Text = ""
+            '.Controls(GetControlIndex("winRegister", "txtUsername")).Text = ""
             .Controls(GetControlIndex("winRegister", "txtPassword")).Text = ""
             .Controls(GetControlIndex("winRegister", "txtPassword2")).Text = ""
             '.Controls(GetControlIndex("winRegister", "txtCode")).Text = ""
@@ -1562,7 +1562,7 @@ Module C_Interface
         Dim User As String, Pass As String, pass2 As String 'Code As String, Captcha As String
 
         With Windows(GetWindowIndex("winRegister"))
-            User = .Controls(GetControlIndex("winRegister", "txtAccount")).Text
+            User = .Controls(GetControlIndex("winRegister", "txtUsername")).Text
             Pass = .Controls(GetControlIndex("winRegister", "txtPassword")).Text
             pass2 = .Controls(GetControlIndex("winRegister", "txtPassword2")).Text
             'Code = .Controls(GetControlIndex("winRegister", "txtCode")).Text
