@@ -2236,7 +2236,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Bars()
         ' Create window
-        CreateWindow("winBars", "", zOrder_Win, 10, 10, 239, 77, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , False, , , , False)
+        CreateWindow("winBars", "", zOrder_Win, 10, 10, 239, 77, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , False, , , False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
