@@ -3,6 +3,7 @@ Imports System.Threading
 Imports System.Windows.Forms
 Imports Core
 Imports Mirage.Sharp.Asfw
+Imports Color = SFML.Graphics.Color
 
 Module C_GameLogic
     Friend GameRand As New Random()
@@ -1562,6 +1563,191 @@ Continue1:
         End If
     End Sub
 
+    Public Sub ShowItemDesc(x As Long, y As Long, itemNum As Long)
+        Dim Color As Color, theName As String, className As String, levelTxt As String, i As Long
+
+        ' set globals
+        descType = 1 ' inventory
+        descItem = itemNum
+
+        ' set position
+        Windows(GetWindowIndex("winDescription")).Window.Left = x
+        Windows(GetWindowIndex("winDescription")).Window.Top = y
+
+        ' show the window
+        ShowWindow(GetWindowIndex("winDescription"), , False)
+
+        ' exit out early if last is same
+        If (descLastType = descType) And (descLastItem = descItem) Then Exit Sub
+
+        ' set last to this
+        descLastType = descType
+        descLastItem = descItem
+
+        ' show req. labels
+        Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "lblClass")).Visible = True
+        Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "lblLevel")).Visible = True
+        Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "picBar")).Visible = False
+
+        ' set variables
+        With Windows(GetWindowIndex("winDescription"))
+            ' name
+            'If Not soulBound Then
+            theName = Trim$(Item(itemNum).Name)
+            'Else
+            'theName = "(SB) " & Trim$(Item(itemNum).Name)
+            'End If
+            .Controls(GetControlIndex("winDescription", "lblName")).Text = theName
+            Select Case Item(itemNum).Rarity
+                Case 0 ' white
+                    Color = Color.White
+                Case 1 ' green
+                    Color = Color.Green
+                Case 2 ' blue
+                    Color = Color.Blue
+                Case 3 ' maroon
+                    Color = Color.Red
+                Case 4 ' purple
+                    Color = Color.Magenta
+                Case 5 ' cyan
+                    Color = Color.Cyan
+            End Select
+            .Controls(GetControlIndex("winDescription", "lblName")).Color = Color
+
+            ' class req
+            If Item(itemNum).JobReq > 0 Then
+                className = Trim$(Job(Item(itemNum).JobReq).Name)
+                ' do we match it?
+                If GetPlayerJob(Myindex) = Item(itemNum).JobReq Then
+                    Color = Color.Green
+                Else
+                    Color = Color.Red
+                End If
+            Else
+                className = "No class req."
+                Color = Color.Green
+            End If
+
+            .Controls(GetControlIndex("winDescription", "lblClass")).Text = className
+            .Controls(GetControlIndex("winDescription", "lblClass")).Color = Color
+            ' level
+            If Item(itemNum).LevelReq > 0 Then
+                levelTxt = "Level " & Item(itemNum).LevelReq
+                ' do we match it?
+                If GetPlayerLevel(Myindex) >= Item(itemNum).LevelReq Then
+                    Color = Color.Green
+                Else
+                    Color = Color.Red
+                End If
+            Else
+                levelTxt = "No level req."
+                Color = Color.Green
+            End If
+            .Controls(GetControlIndex("winDescription", "lblLevel")).Text = levelTxt
+            .Controls(GetControlIndex("winDescription", "lblLevel")).Color = Color
+        End With
+
+        ' clear
+        ReDim descText(1)
+
+        ' go through the rest of the text
+        Select Case Item(itemNum).Type
+            Case ItemType.None
+                AddDescInfo("No type", Color.White)
+            Case ItemType.Equipment
+                Select Case Item(itemNum).SubType
+                    Case EquipmentType.Weapon
+                        AddDescInfo("Weapon", Color.White)
+                    Case EquipmentType.Armor
+                        AddDescInfo("Armor", Color.White)
+                    Case EquipmentType.Helmet
+                        AddDescInfo("Helmet", Color.White)
+                    Case EquipmentType.Shield
+                        AddDescInfo("Shield", Color.White)
+                    Case EquipmentType.Shoes
+                        AddDescInfo("Shoes", Color.White)
+                    Case EquipmentType.Gloves
+                        AddDescInfo("Gloves", Color.White)
+                End Select
+            Case ItemType.Consumable
+                AddDescInfo("Consumable", Color.White)
+            Case ItemType.Currency
+                AddDescInfo("Currency", Color.White)
+            Case ItemType.Skill
+                AddDescInfo("Skill", Color.White)
+            Case ItemType.Projectile
+                AddDescInfo("Projectile", Color.White)
+            Case ItemType.Pet
+                AddDescInfo("Pet", Color.White)
+        End Select
+
+        ' more info
+        Select Case Item(itemNum).Type
+            Case ItemType.None, ItemType.Currency
+                ' binding
+                If Item(itemNum).BindType = 1 Then
+                    AddDescInfo("Bind on Pickup", Color.White)
+                ElseIf Item(itemNum).BindType = 2 Then
+                    AddDescInfo("Bind on Equip", Color.White)
+                End If
+
+                ' price
+                AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
+            Case ItemType.Equipment
+                ' Damage/defence
+                If Item(itemNum).SubType = EquipmentType.Weapon Then
+                    AddDescInfo("Damage: " & Item(itemNum).Data2, Color.White)
+                    AddDescInfo("Speed: " & (Item(itemNum).Speed / 1000) & "s", Color.White)
+                Else
+                    If Item(itemNum).Data2 > 0 Then
+                        AddDescInfo("Defence: " & Item(itemNum).Data2, Color.White)
+                    End If
+                End If
+
+                ' binding
+                If Item(itemNum).BindType = 1 Then
+                    AddDescInfo("Bind on Pickup", Color.White)
+                ElseIf Item(itemNum).BindType = 2 Then
+                    AddDescInfo("Bind on Equip", Color.White)
+                End If
+
+                ' price
+                AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
+
+                ' stat bonuses
+                If Item(itemNum).Add_Stat(StatType.Strength) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Strength) & " Str", Color.White)
+                End If
+                If Item(itemNum).Add_Stat(StatType.Endurance) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Endurance) & " End", Color.White)
+                End If
+                If Item(itemNum).Add_Stat(StatType.Vitality) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Vitality) & " Vit", Color.White)
+                End If
+                If Item(itemNum).Add_Stat(StatType.Luck) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " Luck", Color.White)
+                End If
+                If Item(itemNum).Add_Stat(StatType.Intelligence) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Intelligence) & " Int", Color.White)
+                End If
+            Case ItemType.Consumable
+                'If Item(itemNum).Add_Stat > 0 Then
+                ' AddDescInfo "+" & Item(itemNum).Add_Stat & " HP"
+                'End If
+                'If Item(itemNum).AddMP > 0 Then
+                ' AddDescInfo "+" & Item(itemNum).AddMP & " SP"
+                'End If
+                'If Item(itemNum).AddEXP > 0 Then
+                ' AddDescInfo "+" & Item(itemNum).AddEXP & " EXP"
+                'End If
+                ' price
+                AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
+            Case ItemType.Skill
+                ' price
+                AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
+        End Select
+    End Sub
+
     Public Sub ShowEqDesc(x As Long, y As Long, eqNum As Long)
         Dim soulBound As Boolean
 
@@ -1571,8 +1757,16 @@ Continue1:
         ' show
         If Player(Myindex).Equipment(eqNum) Then
             If Item(Player(Myindex).Equipment(eqNum)).BindType > 0 Then soulBound = True
-            'ShowItemDesc x, y, Player(Myindex).Equipment(eqNum), soulBound
+            ShowItemDesc(x, y, Player(Myindex).Equipment(eqNum))
         End If
+    End Sub
+
+    Public Sub AddDescInfo(text As String, color As Color)
+        Dim count As Long
+        count = UBound(descText)
+        ReDim Preserve descText(count + 1)
+        descText(count + 1).Text = text
+        descText(count + 1).Color = color
     End Sub
 
 End Module

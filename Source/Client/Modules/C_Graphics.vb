@@ -214,6 +214,16 @@ Module C_Graphics
         If Inputs.Attack(e.Code) Then VbKeyControl = True
         If Inputs.Run(e.Code) Then VbKeyShift = True
 
+        If e.Code = Keyboard.Key.Enter Then
+            If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
+                ShowChat()
+                inSmallChat = False
+                Exit Sub
+            End If
+
+            HandlePressEnter()
+        End If
+
         ' Check for active window
         If activeWindow > 0 Then
             ' Ensure it's visible
@@ -256,14 +266,6 @@ Module C_Graphics
                                     Next
                                 End If
                             End If
-
-                            If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
-                                ShowChat()
-                                inSmallChat = False
-                                Exit Sub
-                            End If
-
-                            HandlePressEnter()
 
                         Case Keyboard.Key.Tab
                             Dim n As Integer = 0
@@ -1591,6 +1593,8 @@ Module C_Graphics
 
             DrawMapAttributes()
         End If
+
+        DrawMapName()
 
         If Editor = EditorType.Map AndAlso frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpEvents Then
             DrawEvents()

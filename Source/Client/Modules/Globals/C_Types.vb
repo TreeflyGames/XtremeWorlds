@@ -91,10 +91,15 @@ Module C_Types
     End Structure
 
     Public Structure LightTileStruct
-        Public tiles As List(Of Vector2i)
-        Public isFlicker As Boolean
-        Public isSmooth As Boolean
-        Public scale As Vector2f
+        Public Tiles As List(Of Vector2i)
+        Public IsFlicker As Boolean
+        Public IsSmooth As Boolean
+        Public Scale As Vector2f
+    End Structure
+
+    Public Structure TextStruct
+        Public Text As String
+        Public Color As Color
     End Structure
 
 End Module

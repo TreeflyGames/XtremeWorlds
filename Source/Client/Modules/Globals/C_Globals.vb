@@ -15,6 +15,13 @@ Module C_Globals
     Public diaDataString As String
     Public diaStyle As Byte
 
+    ' description
+    Public descType As Byte
+    Public descItem As Long
+    Public descLastType As Byte
+    Public descLastItem As Long
+    Public descText() As TextStruct
+
     ' New char
     Public newCharSprite As Long
     Public newCharJob As Long
@@ -135,8 +142,8 @@ Module C_Globals
     Public PlayerData As Boolean
 
     ' Draw map name location
-    Public DrawMapNameX As Single = 80
-    Public DrawMapNameY As Single = 70
+    Public DrawMapNameX As Single = 10
+    Public DrawMapNameY As Single = 90
     Public DrawMapNameColor As SFML.Graphics.Color
 
     ' Game direction vars

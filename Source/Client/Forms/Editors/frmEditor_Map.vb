@@ -335,7 +335,7 @@ Public Class frmEditor_Map
     End Sub
 
     Private Sub BtnClearAttribute_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearAttribute.Click
-        MapEditorClearAttribs()
+        MapEditorClearAttributes()
     End Sub
 
     Private Sub ScrlNpcDir_Scroll(sender As Object, e As EventArgs) Handles scrlNpcDir.ValueChanged
@@ -1067,7 +1067,7 @@ Public Class frmEditor_Map
         fraTrap.Visible = False
     End Sub
 
-    Public Sub MapEditorClearAttribs()
+    Public Sub MapEditorClearAttributes()
         Dim X As Integer
         Dim Y As Integer
 

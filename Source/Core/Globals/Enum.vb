@@ -54,7 +54,8 @@
 
     ''' <Summary> Item Constant </Summary>
     Enum ItemType As Byte
-        Equipment = 1
+        None = 0
+        Equipment
         Consumable
         CommonEvent
         Currency

@@ -1308,6 +1308,7 @@ Module C_Interface
         CreateWindow_ChatSmall()
         CreateWindow_Chat()
         CreateWindow_Menu()
+        CreateWindow_Description()
         CreateWindow_Inventory()
         CreateWindow_Character()
         CreateWindow_Hotbar()
@@ -1822,8 +1823,6 @@ Module C_Interface
     Public Sub btnSay_Click()
         HandlePressEnter()
     End Sub
-
-
     Public Sub Chat_OnDraw()
         Dim winIndex As Long, xO As Long, yO As Long
 
@@ -1851,10 +1850,10 @@ Module C_Interface
         If actChatHeight < 10 Then actChatHeight = 10
 
         xO = Windows(winIndex).Window.Left + 10
-        yO = Types.Settings.ScreenHeight - 16 - actChatHeight - 8
+        yO = Types.Settings.ScreenHeight - 10
 
         ' draw the background
-        RenderDesign(DesignType.Win_Shadow, xO, yO, actChatWidth, 10)
+        RenderDesign(DesignType.Win_Shadow, xO, yO, 160, 10)
     End Sub
 
     Public Sub chkChat_Game()
@@ -1997,7 +1996,6 @@ Module C_Interface
         AddChar(name, newCharGender, newCharJob, newCharSprite)
     End Sub
 
-
     ' #####################
     ' ## Dialogue Window ##
     ' #####################
@@ -2012,7 +2010,6 @@ Module C_Interface
     ' ###############
     ' ## Inventory ##
     ' ###############
-
     Public Sub Inventory_MouseDown()
         Dim invNum As Long, winIndex As Long, I As Long
 
@@ -2035,11 +2032,13 @@ Module C_Interface
                         End If
                     End If
                 Next
+
                 ' currency handler
                 If Item(GetPlayerInvItemNum(Myindex, invNum)).Type = ItemType.Currency Then
                     Dialogue("Select Amount", "Please choose how many to offer", "", DialogueType.TradeAmount, DialogueStyle.Input, invNum)
                     Exit Sub
                 End If
+
                 ' trade the normal item
                 Call TradeItem(invNum, 0)
                 Exit Sub
@@ -2320,7 +2319,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Chat Label
-        CreateLabel(WindowCount, "lblMsg", 24, 290, 178, FontSize, "Press 'Enter' to open chatbox.", Verdana, Color.White)
+        CreateLabel(WindowCount, "lblMsg", 25, 305, 160, FontSize, "Press 'Enter' to open chatbox.", Verdana, Color.White)
     End Sub
 
     Public Sub CreateWindow_Hotbar()
@@ -2425,11 +2424,11 @@ Module C_Interface
         CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Unused Stat Points", Arial, Color.Green, AlignmentType.Right)
 
         ' Buttons
-        CreateButton(WindowCount, "btnStat_1", 15, 188, 15, 15, , , , , , , 48, 49, 50, , , , , , New Action(AddressOf Character_SpendPoint1))
-        CreateButton(WindowCount, "btnStat_2", 15, 208, 15, 15, , , , , , , 48, 49, 50, , , , , , New Action(AddressOf Character_SpendPoint2))
-        CreateButton(WindowCount, "btnStat_3", 15, 228, 15, 15, , , , , , , 48, 49, 50, , , , , , New Action(AddressOf Character_SpendPoint3))
-        CreateButton(WindowCount, "btnStat_4", 15, 248, 15, 15, , , , , , , 48, 49, 50, , , , , , New Action(AddressOf Character_SpendPoint4))
-        CreateButton(WindowCount, "btnStat_5", 15, 268, 15, 15, , , , , , , 48, 49, 50, , , , , , New Action(AddressOf Character_SpendPoint5))
+        CreateButton(WindowCount, "btnStat_1", 15, 188, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint1))
+        CreateButton(WindowCount, "btnStat_2", 15, 208, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint2))
+        CreateButton(WindowCount, "btnStat_3", 15, 228, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint3))
+        CreateButton(WindowCount, "btnStat_4", 15, 248, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint4))
+        CreateButton(WindowCount, "btnStat_5", 15, 268, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint5))
 
         ' fake buttons
         CreatePictureBox(WindowCount, "btnGreyStat_1", 15, 188, 15, 15, , , , , 47, 47, 47)
@@ -2629,6 +2628,71 @@ Module C_Interface
                 End If
             End If
         Next
+    End Sub
+
+    Public Sub CreateWindow_Description()
+        ' Create window
+        CreateWindow("winDescription", "", Georgia, zOrder_Win, 0, 0, 193, 142, 0, False, , , , , DesignType.Win_Desc, DesignType.Win_Desc, DesignType.Win_Desc, , , , , , , , False)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+
+        ' Name
+        CreateLabel(WindowCount, "lblName", 8, 12, 177, FontSize, "(SB) Flame Sword", Arial, Color.Blue, AlignmentType.Center)
+
+        ' Sprite box
+        CreatePictureBox(WindowCount, "picSprite", 18, 32, 68, 68, , , , , , , , DesignType.DescPic, DesignType.DescPic, DesignType.DescPic, , , , , , New Action(AddressOf Description_OnDraw))
+
+        ' Sep
+        CreatePictureBox(WindowCount, "picSep", 96, 28, 1, 92, , , , , 44, 44, 44)
+
+        ' Requirements
+        CreateLabel(WindowCount, "lblClass", 5, 102, 92, FontSize, "Warrior", Verdana, Color.Green, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblLevel", 5, 114, 92, FontSize, "Level 20", Verdana, Color.Red, AlignmentType.Center)
+
+        ' Bar
+        CreatePictureBox(WindowCount, "picBar", 19, 114, 66, 12, False, , , , 45, 45, 45)
+    End Sub
+
+    ' #################
+    ' ## Description ##
+    ' #################
+    Public Sub Description_OnDraw()
+        Dim xO As Long, yO As Long, texNum As Long, y As Long, I As Long, count As Long
+
+        ' exit out if we don't have a num
+        If descItem = 0 Or descType = 0 Then Exit Sub
+
+        xO = Windows(GetWindowIndex("winDescription")).Window.Left
+        yO = Windows(GetWindowIndex("winDescription")).Window.Top
+
+        Select Case descType
+            Case 1 ' Inventory Item
+                texNum = Item(descItem).Pic
+
+                ' render sprite
+                RenderTexture(ItemSprite(texNum), GameWindow, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
+            Case 2 ' Skill Icon
+                texNum = Skill(descItem).Icon
+                ' render bar
+                With Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "picBar"))
+                    If .Visible Then RenderTexture(InterfaceSprite(45), GameWindow, xO + .Left, yO + .Top, 0, 12, .Value, 12, .Value, 12)
+                End With
+
+                ' render sprite
+                RenderTexture(SkillIconSprite(texNum), GameWindow, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
+        End Select
+
+        ' render text array
+        y = 18
+        count = UBound(descText)
+        For I = 1 To count
+            RenderText(descText(I).Text, GameWindow, xO + 141 - (TextWidth(descText(I).Text) \ 2), yO + y, descText(I).Color, Color.Black)
+            y = y + 12
+        Next
+
+        ' close
+        HideWindow(GetWindowIndex("winDescription"))
     End Sub
 End Module
 
