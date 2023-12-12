@@ -726,7 +726,7 @@ Module C_NetworkReceive
         header = buffer.ReadString
 
         ' Check access level
-        colorNum = colorType.White
+        colorNum = ColorType.White
 
         If access > 0 Then colorNum = ColorType.Pink
         If pk > 0 Then colorNum = ColorType.BrightRed

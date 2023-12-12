@@ -701,9 +701,6 @@ Module S_NetworkSend
         buffer.WriteInt32(GetPlayerPoints(index))
         buffer.WriteInt32(GetPlayerSprite(index))
         buffer.WriteInt32(GetPlayerMap(index))
-        buffer.WriteInt32(GetPlayerX(index))
-        buffer.WriteInt32(GetPlayerY(index))
-        buffer.WriteInt32(GetPlayerDir(index))
         buffer.WriteInt32(GetPlayerAccess(index))
         buffer.WriteInt32(GetPlayerPK(index))
 

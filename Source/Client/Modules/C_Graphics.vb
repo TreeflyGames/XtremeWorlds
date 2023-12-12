@@ -1142,7 +1142,7 @@ Module C_Graphics
             y = MapNpc(mapNpcNum).Y * PicY + MapNpc(mapNpcNum).YOffset
         End If
 
-        DrawCharacter(sprite, x, y, rect)
+        DrawCharacterSprite(sprite, x, y, rect)
     End Sub
 
     Friend Sub DrawMapItem(itemnum As Integer)
@@ -1184,7 +1184,7 @@ Module C_Graphics
         RenderTexture(ItemSprite(picNum), GameWindow, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
     End Sub
 
-    Friend Sub DrawCharacter(sprite As Integer, x2 As Integer, y2 As Integer, sRECT As Rectangle)
+    Friend Sub DrawCharacterSprite(sprite As Integer, x2 As Integer, y2 As Integer, sRECT As Rectangle)
         Dim x As Integer
         Dim y As Integer
 
@@ -2354,10 +2354,10 @@ Module C_Graphics
         Dim sRECT As Rectangle
         Dim dRECT As Rectangle
 
-        iconnum = frmEditor_Skill.nudIcon.Value
+        iconnum = FrmEditor_Skill.nudIcon.Value
 
         If iconnum < 1 OrElse iconnum > NumSkillIcons Then
-            EditorSkill_Icon.Clear(ToSfmlColor(frmEditor_Skill.picSprite.BackColor))
+            EditorSkill_Icon.Clear(ToSfmlColor(FrmEditor_Skill.picSprite.BackColor))
             EditorSkill_Icon.Display()
             Exit Sub
         End If
@@ -2381,7 +2381,7 @@ Module C_Graphics
         'drect is the same, so just copy it
         dRECT = sRECT
 
-        EditorSkill_Icon.Clear(ToSfmlColor(frmEditor_Skill.picSprite.BackColor))
+        EditorSkill_Icon.Clear(ToSfmlColor(FrmEditor_Skill.picSprite.BackColor))
 
         RenderTexture(SkillIconSprite(iconnum), EditorSkill_Icon, dRECT.X, dRECT.Y, sRECT.X, sRECT.Y, sRECT.Width,
                      sRECT.Height)

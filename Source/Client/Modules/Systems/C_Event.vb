@@ -2704,7 +2704,7 @@ nextevent:
                     y = Map.MapEvents(id).Y * PicY + Map.MapEvents(id).YOffset
                 End If
                 ' render the actual sprite
-                DrawCharacter(Map.MapEvents(id).Graphic, x, y, sRect)
+                DrawCharacterSprite(Map.MapEvents(id).Graphic, x, y, sRect)
             Case 2
                 If Map.MapEvents(id).Graphic < 1 OrElse Map.MapEvents(id).Graphic > NumTileSets Then Exit Sub
                 If Map.MapEvents(id).GraphicY2 > 0 OrElse Map.MapEvents(id).GraphicX2 > 0 Then

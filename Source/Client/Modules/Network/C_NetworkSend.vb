@@ -311,8 +311,8 @@ Module C_NetworkSend
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CBanDestroy)
-        
-        Socket.SendData(buffer.data, buffer.Head)
+
+        Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()
     End Sub
 

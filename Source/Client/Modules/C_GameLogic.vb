@@ -178,7 +178,7 @@ Module C_GameLogic
                 End If
 
                 ' chat timer
-                If chatTmr < tick Then
+                If chattmr < tick Then
                     ' scrolling
                     If ChatButtonUp Then
                         ScrollChatBox(0)
@@ -189,12 +189,12 @@ Module C_GameLogic
                     End If
 
                     ' remove messages
-                    If chatLastRemove + CHAT_DIFFERENCE_TIMER < GetTickCount() Then
+                    If chatLastRemove + Chat_Difference_Timer < GetTickCount() Then
                         ' remove timed out messages from chat
                         For i = Chat_HighIndex To 1 Step -1
                             If Len(Chat(i).Text) > 0 Then
                                 If Chat(i).Visible Then
-                                    If Chat(i).timer + CHAT_TIMER < tick Then
+                                    If Chat(i).Timer + Chat_Timer < tick Then
                                         Chat(i).Visible = False
                                         chatLastRemove = GetTickCount()
                                         Exit For
@@ -204,7 +204,7 @@ Module C_GameLogic
                         Next
                     End If
 
-                    chatTmr = tick + 50
+                    chattmr = tick + 50
                 End If
 
                 ' fog scrolling
@@ -1559,6 +1559,19 @@ Continue1:
         If GetPlayerInvItemNum(Myindex, invNum) Then
             If Item(GetPlayerInvItemNum(Myindex, invNum)).BindType > 0 And Player(Myindex).Inv(invNum).Bound > 0 Then soulBound = True
             'ShowItemDesc(x, y, GetPlayerInvItemNum(Myindex, invNum), soulBound)
+        End If
+    End Sub
+
+    Public Sub ShowEqDesc(x As Long, y As Long, eqNum As Long)
+        Dim soulBound As Boolean
+
+        ' rte9
+        If eqNum <= 0 Or eqNum > EquipmentType.Count - 1 Then Exit Sub
+
+        ' show
+        If Player(Myindex).Equipment(eqNum) Then
+            If Item(Player(Myindex).Equipment(eqNum)).BindType > 0 Then soulBound = True
+            'ShowItemDesc x, y, Player(Myindex).Equipment(eqNum), soulBound
         End If
     End Sub
 

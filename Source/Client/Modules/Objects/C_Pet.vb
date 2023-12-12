@@ -516,7 +516,7 @@ Module C_Pets
         End If
 
         ' render the actual sprite
-        DrawCharacter(spriteNum, x, y, rect)
+        DrawCharacterSprite(spriteNum, x, y, rect)
 
     End Sub
 

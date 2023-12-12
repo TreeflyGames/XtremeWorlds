@@ -1,5 +1,6 @@
 ﻿
 Imports Core.Database
+Imports SFML.Graphics
 
 Public Module Types
     ' Common data structure arrays
@@ -16,7 +17,7 @@ Public Module Types
     Public MapNPC(MAX_MAP_NPCS) As MapDataStruct
     Public Bank(MAX_PLAYERS) As BankStruct
     Public TempPlayer(MAX_PLAYERS) As TempPlayerStruct
-    Public Account(MAX_PLAYERS) as AccountStruct
+    Public Account(MAX_PLAYERS) As AccountStruct
     Public Player(MAX_PLAYERS) As PlayerStruct
     Public Projectile(MAX_PROJECTILES) As ProjectileStruct
     Public MapProjectile(MAX_MAPS, MAX_PROJECTILES) As MapProjectileStruct
@@ -476,7 +477,7 @@ Public Module Types
 
         Dim Panorama As Byte
         Dim Parallax As Byte
-        Dim Brightness as Byte
+        Dim Brightness As Byte
     End Structure
 
     Public Structure MapItemStruct
@@ -868,6 +869,7 @@ Public Module Types
         Dim Text As String
         Dim Image() As Long
         Dim Design() As Long
+        Dim Color As Color
         Dim Alpha As Long
         Dim ClickThrough As Boolean
         Dim Icon As Long

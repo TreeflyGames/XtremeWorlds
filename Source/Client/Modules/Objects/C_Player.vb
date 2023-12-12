@@ -624,7 +624,7 @@ Module C_Player
                                (CharacterGfxInfo(spritenum).Width / 4), (CharacterGfxInfo(spritenum).Height / 4))
 
         ' render the actual sprite
-        DrawCharacter(spritenum, x, y, rect)
+        DrawCharacterSprite(spritenum, x, y, rect)
 
         'check for paperdolling
         For i = 1 To EquipmentType.Count - 1
@@ -749,11 +749,12 @@ Module C_Player
     Sub Packet_PlayerStats(ByRef data() As Byte)
         Dim i As Integer, index As Integer
         Dim buffer As New ByteStream(data)
+
         index = buffer.ReadInt32
+
         For i = 1 To StatType.Count - 1
             SetPlayerStat(index, i, buffer.ReadInt32)
         Next
-        UpdateCharacterPanel = True
 
         buffer.Dispose()
     End Sub
@@ -769,9 +770,6 @@ Module C_Player
         SetPlayerPoints(i, buffer.ReadInt32)
         SetPlayerSprite(i, buffer.ReadInt32)
         SetPlayerMap(i, buffer.ReadInt32)
-        SetPlayerX(i, buffer.ReadInt32)
-        SetPlayerY(i, buffer.ReadInt32)
-        SetPlayerDir(i, buffer.ReadInt32)
         SetPlayerAccess(i, buffer.ReadInt32)
         SetPlayerPk(i, buffer.ReadInt32)
 
@@ -785,11 +783,6 @@ Module C_Player
             Player(i).GatherSkills(x).SkillNextLvlExp = buffer.ReadInt32
         Next
 
-        ' Make sure they aren't walking
-        Player(i).Moving = 0
-        Player(i).XOffset = 0
-        Player(i).YOffset = 0
-
         ' Check if the player is the client player
         If i = Myindex Then
             ' Reset directions
@@ -798,8 +791,33 @@ Module C_Player
             DirLeft = False
             DirRight = False
 
-            UpdateCharacterPanel = True
+            ' set form
+            With Windows(GetWindowIndex("winCharacter"))
+                .Controls(GetControlIndex("winCharacter", "lblName")).Text = "Name: " & Trim$(GetPlayerName(Myindex))
+                .Controls(GetControlIndex("winCharacter", "lblClass")).Text = "Class: " & Trim$(Job(GetPlayerJob(Myindex)).Name)
+                .Controls(GetControlIndex("winCharacter", "lblLevel")).Text = "Level: " & GetPlayerLevel(Myindex)
+                .Controls(GetControlIndex("winCharacter", "lblGuild")).Text = "Guild: " & "None"
+                UpdateStats_UI()
 
+                ' stats
+                For x = 1 To StatType.Count - 1
+                    .Controls(GetControlIndex("winCharacter", "lblStat_" & x)).Text = GetPlayerStat(Myindex, x)
+                Next
+
+                ' points
+                .Controls(GetControlIndex("winCharacter", "lblPoints")).Text = GetPlayerPoints(Myindex)
+
+                ' grey out buttons
+                If GetPlayerPoints(Myindex) = 0 Then
+                    For x = 1 To StatType.Count - 1
+                        .Controls(GetControlIndex("winCharacter", "btnGreyStat_" & x)).Visible = True
+                    Next
+                Else
+                    For x = 1 To StatType.Count - 1
+                        .Controls(GetControlIndex("winCharacter", "btnGreyStat_" & x)).Visible = False
+                    Next
+                End If
+            End With
             PlayerData = True
         End If
 
