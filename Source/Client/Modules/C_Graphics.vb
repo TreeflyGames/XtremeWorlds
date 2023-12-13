@@ -1620,7 +1620,7 @@ Module C_Graphics
     End Sub
 
     Friend Sub DrawPanorama(index As Integer)
-        If Map.Moral = MapMoralType.Indoors Then Exit Sub
+        If Map.Indoors Then Exit Sub
 
         If index < 1 OrElse index > NumParallax Then Exit Sub
 
@@ -1643,7 +1643,7 @@ Module C_Graphics
         Dim horz = 0
         Dim vert = 0
 
-        If Map.Moral = MapMoralType.Indoors Then Exit Sub
+        If Map.Moral = Map.Indoors Then Exit Sub
 
         If index < 1 OrElse index > NumParallax Then Exit Sub
         If ParallaxGfxInfo(index).IsLoaded = False Then
@@ -2199,7 +2199,7 @@ Module C_Graphics
         If GettingMap Then Exit Sub
         If Editor = EditorType.Map And Night = False Then Exit Sub
 
-        If Map.Moral = CByte(MapMoralType.Indoors) Then
+        If Map.Indoors Then
             Exit Sub
         End If
 
