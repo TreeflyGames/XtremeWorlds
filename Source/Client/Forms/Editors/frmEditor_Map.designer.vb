@@ -1265,7 +1265,7 @@ Partial Class frmEditor_Map
         ' 
         cmbMoral.DropDownStyle = ComboBoxStyle.DropDownList
         cmbMoral.FormattingEnabled = True
-        cmbMoral.Items.AddRange(New Object() {"None", "Safe Zone", "Indoors"})
+        cmbMoral.Items.AddRange(New Object() {"None", "Safe Zone", "Danger Zone"})
         cmbMoral.Location = New Point(74, 23)
         cmbMoral.Margin = New Padding(6, 5, 6, 5)
         cmbMoral.Name = "cmbMoral"

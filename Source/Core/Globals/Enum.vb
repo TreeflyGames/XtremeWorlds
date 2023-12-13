@@ -28,9 +28,9 @@
 
     ''' <Summary> Map Moral Constant </Summary>
     Enum MapMoralType As Byte
-        Danger = 1
+        None = 0
         Safe
-        Indoors
+        Danger
     End Enum
 
     ''' <Summary> Tile Constant </Summary>

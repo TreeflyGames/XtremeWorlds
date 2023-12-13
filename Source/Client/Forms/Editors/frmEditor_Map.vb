@@ -533,23 +533,37 @@ Public Class frmEditor_Map
         txtDown.Text = Map.Down
         txtLeft.Text = Map.Left
         txtRight.Text = Map.Right
-        cmbMoral.SelectedIndex = Map.Moral - 1
+
+        If Map.Moral > 0 Then
+            cmbMoral.SelectedIndex = Map.Moral - 1
+        Else
+            cmbMoral.SelectedIndex = 0
+        End If
+
         txtBootMap.Text = Map.BootMap
         txtBootX.Text = Map.BootX
         txtBootY.Text = Map.BootY
 
         lstMapNpc.Items.Clear()
+        lstMapNpc.Items.Add("None")
+        lstMapNpc.SelectedIndex = 0
 
         For X = 1 To MAX_MAP_NPCS
             lstMapNpc.Items.Add(X & ": " & Trim$(NPC(Map.Npc(X)).Name))
         Next
 
         cmbNpcList.Items.Clear()
+        cmbNpcList.Items.Add("None")
+        cmbNpcList.SelectedIndex = 0
+
         For Y = 1 To MAX_NPCS
             cmbNpcList.Items.Add(Y & ": " & Trim$(NPC(Y).Name))
         Next
 
         cmbAnimation.Items.Clear()
+        cmbAnimation.Items.Add("None")
+        cmbAnimation.SelectedIndex = 0
+
         For Y = 1 To MAX_ANIMATIONS
             cmbAnimation.Items.Add(Y & ": " & Trim$(Animation(Y).Name))
         Next
@@ -558,9 +572,6 @@ Public Class frmEditor_Map
         txtMaxX.Text = Map.MaxX
         txtMaxY.Text = Map.MaxY
 
-        cmbNpcList.SelectedIndex = 0
-        lstMapNpc.SelectedIndex = 0
-
         cmbWeather.SelectedIndex = Map.WeatherType
         scrlFog.Value = Map.Fogindex
         lblFogIndex.Text = "Fog: " & scrlFog.Value
@@ -568,11 +579,17 @@ Public Class frmEditor_Map
         lblIntensity.Text = "Intensity: " & scrlIntensity.Value
 
         cmbPanorama.Items.Clear()
+        cmbPanorama.Items.Add("None")
+        cmbPanorama.SelectedIndex = 0
+
         For i = 1 To NumPanorama
             cmbPanorama.Items.Add(i)
         Next
 
         cmbParallax.Items.Clear()
+        cmbParallax.Items.Add("None")
+        cmbParallax.SelectedIndex = 0
+
         For i = 1 To NumParallax
             cmbParallax.Items.Add(i)
         Next
