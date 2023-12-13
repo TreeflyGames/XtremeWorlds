@@ -1373,16 +1373,16 @@ Module C_Graphics
 
         ' events
         If Editor <> EditorType.Map Then
-            If Map.CurrentEvents > 0 AndAlso Map.CurrentEvents <= Map.EventCount Then
-                For I = 0 To Map.CurrentEvents
-                    If Map.MapEvents(I).Position = 0 Then
+            If CurrentEvents > 0 AndAlso CurrentEvents <= Map.EventCount Then
+                For I = 0 To CurrentEvents
+                    If MapEvents(I).Position = 0 Then
                         DrawEvent(I)
                     End If
                 Next
             End If
         End If
 
-        'blood
+        ' blood
         For I = 0 To Byte.MaxValue
             DrawBlood(I)
         Next
@@ -1433,10 +1433,10 @@ Module C_Graphics
 
                 ' events
                 If Editor <> EditorType.Map Then
-                    If Map.CurrentEvents > 0 AndAlso Map.CurrentEvents <= Map.EventCount Then
-                        For I = 0 To Map.CurrentEvents
-                            If Map.MapEvents(I).Position = 1 Then
-                                If y = Map.MapEvents(I).Y Then
+                    If CurrentEvents > 0 AndAlso CurrentEvents <= Map.EventCount Then
+                        For I = 0 To CurrentEvents
+                            If MapEvents(I).Position = 1 Then
+                                If y = MapEvents(I).Y Then
                                     DrawEvent(I)
                                 End If
                             End If
@@ -1497,7 +1497,6 @@ Module C_Graphics
             Next
         End If
 
-        'projectiles
         If NumProjectiles > 0 Then
             For I = 1 To MAX_PROJECTILES
                 If MapProjectile(Player(Myindex).Map, I).ProjectileNum > 0 Then
@@ -1506,16 +1505,14 @@ Module C_Graphics
             Next
         End If
 
-        'events
-        If Map.CurrentEvents > 0 AndAlso Map.CurrentEvents <= Map.EventCount Then
-            For I = 0 To Map.CurrentEvents
-                If Map.MapEvents(I).Position = 2 Then
+        If CurrentEvents > 0 AndAlso CurrentEvents <= Map.EventCount Then
+            For I = 0 To CurrentEvents
+                If MapEvents(I).Position = 2 Then
                     DrawEvent(I)
                 End If
             Next
         End If
 
-        ' blit out upper tiles
         If NumTileSets > 0 Then
             For x = TileView.Left To TileView.Right + 1
                 For y = TileView.Top To TileView.Bottom + 1
@@ -1554,9 +1551,9 @@ Module C_Graphics
         Next
 
         'draw event names
-        For I = 0 To Map.CurrentEvents
-            If Map.MapEvents(I).Visible = 1 Then
-                If Map.MapEvents(I).ShowName = 1 Then
+        For I = 0 To CurrentEvents
+            If MapEvents(I).Visible = 1 Then
+                If MapEvents(I).ShowName = 1 Then
                     DrawEventName(I)
                 End If
             End If
@@ -1694,7 +1691,7 @@ Module C_Graphics
             Case 1 ' Center Screen
                 PictureSprite(index).Position = New Vector2f(GameWindow.Size.X / 2 - PictureGfxInfo(index).Width / 2 - Picture.xOffset, GameWindow.Size.Y / 2 - PictureGfxInfo(index).Height / 2)
             Case 2 ' Center Event
-                If Map.CurrentEvents < Picture.EventId Then
+                If CurrentEvents < Picture.EventId Then
                     Picture.EventId = 0
                     Picture.Index = 0
                     Picture.SpriteType = 0
@@ -1702,7 +1699,7 @@ Module C_Graphics
                     Picture.yOffset = 0
                     Exit Sub
                 End If
-                PictureSprite(index).Position = New Vector2f(ConvertMapX(Map.MapEvents(Picture.EventId).X * 32) / 2 - Picture.xOffset, ConvertMapY(Map.MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset)
+                PictureSprite(index).Position = New Vector2f(ConvertMapX(MapEvents(Picture.EventId).X * 32) / 2 - Picture.xOffset, ConvertMapY(MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset)
             Case 3 ' Center Player
                 PictureSprite(index).Position = New Vector2f(ConvertMapX(Player(Myindex).X * 32) / 2 - Picture.xOffset, ConvertMapY(Player(Myindex).Y * 32) / 2 - Picture.yOffset)
         End Select
@@ -1911,7 +1908,7 @@ Module C_Graphics
 
     Friend Sub DrawMapTint()
 
-        If Map.HasMapTint = 0 Then Exit Sub
+        If Map.MapTint = 0 Then Exit Sub
 
         MapTintSprite = New Sprite(New Texture(New Image(GameWindow.Size.X, GameWindow.Size.Y, Color.Black))) With {
             .Color = New Color(CurrentTintR, CurrentTintG, CurrentTintB, CurrentTintA),

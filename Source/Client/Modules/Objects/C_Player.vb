@@ -376,10 +376,10 @@ Module C_Player
             End If
         Next
 
-       For i = 0 To Map.CurrentEvents
-            If Map.MapEvents(i).Visible = 1 Then
-                If Map.MapEvents(i).X = x AndAlso Map.MapEvents(i).Y = y Then
-                    If Map.MapEvents(i).WalkThrough = 0 Then
+        For i = 0 To CurrentEvents
+            If MapEvents(i).Visible = 1 Then
+                If MapEvents(i).X = x AndAlso MapEvents(i).Y = y Then
+                    If MapEvents(i).WalkThrough = 0 Then
                         CheckDirection = True
                         Exit Function
                     End If
@@ -486,9 +486,9 @@ Module C_Player
             End Select
 
             If GetTickCount() > Player(Myindex).EventTimer Then
-                For i = 1 To Map.CurrentEvents
-                    If Map.MapEvents(i).Visible = 1 Then
-                        If Map.MapEvents(i).X = x AndAlso Map.MapEvents(i).Y = y Then
+                For i = 1 To CurrentEvents
+                    If MapEvents(i).Visible = 1 Then
+                        If MapEvents(i).X = x AndAlso MapEvents(i).Y = y Then
                             buffer = New ByteStream(4)
                             buffer.WriteInt32(ClientPackets.CEvent)
                             buffer.WriteInt32(i)

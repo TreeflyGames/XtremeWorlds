@@ -230,10 +230,11 @@ Friend Module S_Item
 
         ' Check for subscript out of range
         If mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS Then Exit Sub
+        If Map(mapNum).Respawn = False Then Exit Sub
 
-' Spawn what we have
-For X = 0 To Map(mapNum).MaxX
-            For Y = 0 To Map(mapNum).MaxY
+        ' Spawn what we have
+        For x = 0 To Map(mapNum).MaxX
+            For y = 0 To Map(mapNum).MaxY
                 ' Check if the tile type is an item or a saved tile incase someone drops something
                 If (Map(mapNum).Tile(x, y).Type = TileType.Item) Then
 

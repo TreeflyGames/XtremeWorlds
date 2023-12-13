@@ -46,6 +46,8 @@ Module C_Globals
     Public BarWidth_GuiSP_Max As Long
     Public BarWidth_GuiEXP_Max As Long
 
+    Public CurrentEvents As Integer
+
     ' Directional blocking
     Public DirArrowX(4) As Byte
     Public DirArrowY(4) As Byte

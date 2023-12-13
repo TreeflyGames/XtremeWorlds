@@ -10,7 +10,8 @@ Module C_Types
     Public MapNames(MAX_MAPS) As String
     Public TmpTile(,) As TileStruct
     Public TileHistory() As TileHistoryStruct
-    Friend Autotile(,) As AutotileStruct
+    Public Autotile(,) As AutotileStruct
+    Public MapEvents() As MapEventStruct
 
     Public Structure RectangleStruct
         Dim Top As Integer

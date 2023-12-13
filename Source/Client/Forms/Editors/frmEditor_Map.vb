@@ -5,6 +5,7 @@ Imports Core
 Imports SFML.System
 Imports Core.Enum
 Imports SFML.Window
+Imports FxResources.System
 
 Public Class frmEditor_Map
 #Region "Frm"
@@ -55,6 +56,13 @@ Public Class frmEditor_Map
             Else
                 .Music = ""
             End If
+
+            If lstShop.SelectedIndex >= 0 Then
+                .Shop = lstShop.SelectedIndex + 1
+            Else
+                .Shop = 0
+            End If
+
             .Up = Val(txtUp.Text)
             .Down = Val(txtDown.Text)
             .Left = Val(txtLeft.Text)
@@ -437,11 +445,11 @@ Public Class frmEditor_Map
         lblFogAlpha.Text = "Fog Alpha: " & scrlFogAlpha.Value
     End Sub
 
-    Private Sub ChkUseTint_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseTint.CheckedChanged
-        If chkUseTint.Checked = True Then
-            Map.HasMapTint = 1
+    Private Sub ChkUseTint_CheckedChanged(sender As Object, e As EventArgs) Handles chkTint.CheckedChanged
+        If chkTint.Checked = True Then
+            Map.MapTint = 1
         Else
-            Map.HasMapTint = 0
+            Map.MapTint = 0
         End If
     End Sub
 
@@ -492,12 +500,27 @@ Public Class frmEditor_Map
             lstMusic.Items.Add(MusicCache(i))
         Next
 
+        For i = 1 To MAX_SHOPS
+            lstShop.Items.Add(Shop(i).Name)
+        Next
+
         For i = 1 To lstMusic.Items.Count - 1
             If lstMusic.Items(i).ToString = Trim$(Map.Music) Then
                 lstMusic.SelectedIndex = i
                 Exit For
             End If
         Next
+
+        For i = 1 To lstShop.Items.Count - 1
+            If lstShop.Items(i).ToString = Trim$(Shop(i).Name) Then
+                lstShop.SelectedIndex = i
+                Exit For
+            End If
+        Next
+
+        chkTint.Checked = Map.MapTint
+        chkMapRespawn.Checked = Map.Respawn
+        chkIndoors.Checked = Map.Indoors
 
         ' rest of it
         txtUp.Text = Map.Up
@@ -508,6 +531,7 @@ Public Class frmEditor_Map
         txtBootMap.Text = Map.BootMap
         txtBootX.Text = Map.BootX
         txtBootY.Text = Map.BootY
+
         lstMapNpc.Items.Clear()
 
         For X = 1 To MAX_MAP_NPCS
@@ -973,7 +997,7 @@ Public Class frmEditor_Map
 
         With Map.Tile(CurX, CurY)
             If .Layer(CurLayer).Tileset > 0 Then
-                cmbTileSets.SelectedIndex = .Layer(CurLayer).Tileset
+                cmbTileSets.SelectedIndex = .Layer(CurLayer).Tileset - 1
             Else
                 cmbTileSets.SelectedIndex = 1
             End If
@@ -1312,8 +1336,20 @@ Public Class frmEditor_Map
         lblRadius.Text = "Radius: " & scrlLight.Value
     End Sub
 
-    Private Sub lstMapNpc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstMapNpc.SelectedIndexChanged
+    Private Sub chkRespawn_CheckedChanged(sender As Object, e As EventArgs) Handles chkMapRespawn.CheckedChanged
+        If chkMapRespawn.Checked = True Then
+            Map.Respawn = 1
+        Else
+            Map.Respawn = 0
+        End If
+    End Sub
 
+    Private Sub chkIndoors_CheckedChanged(sender As Object, e As EventArgs) Handles chkIndoors.CheckedChanged
+        If chkIndoors.Checked = True Then
+            Map.Indoors = 1
+        Else
+            Map.Indoors = 0
+        End If
     End Sub
 
 #End Region

@@ -92,25 +92,25 @@ Module C_Text
         color = Color.Yellow
         backcolor = Color.Black
 
-        name = Trim$(Map.MapEvents(index).Name)
+        name = Trim$(MapEvents(index).Name)
 
         ' calc pos
-        textX = ConvertMapX(Map.MapEvents(index).X * PicX) + Map.MapEvents(index).XOffset + (PicX \ 2) - (TextWidth(Trim$(name)) \ 2) - 2
-        If Map.MapEvents(index).GraphicType = 0 Then
-            textY = ConvertMapY(Map.MapEvents(index).Y * PicY) + Map.MapEvents(index).YOffset - 16
-        ElseIf Map.MapEvents(index).GraphicType = 1 Then
-            If Map.MapEvents(index).Graphic < 1 OrElse Map.MapEvents(index).Graphic > NumCharacters Then
-                textY = ConvertMapY(Map.MapEvents(index).Y * PicY) + Map.MapEvents(index).YOffset - 16
+        textX = ConvertMapX(MapEvents(index).X * PicX) + MapEvents(index).XOffset + (PicX \ 2) - (TextWidth(Trim$(name)) \ 2) - 2
+        If MapEvents(index).GraphicType = 0 Then
+            textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
+        ElseIf MapEvents(index).GraphicType = 1 Then
+            If MapEvents(index).Graphic < 1 OrElse MapEvents(index).Graphic > NumCharacters Then
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
             Else
                 ' Determine location for text
-                textY = ConvertMapY(Map.MapEvents(index).Y * PicY) + Map.MapEvents(index).YOffset - (CharacterGfxInfo(Map.MapEvents(index).Graphic).Height \ 4) + 16
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (CharacterGfxInfo(MapEvents(index).Graphic).Height \ 4) + 16
             End If
-        ElseIf Map.MapEvents(index).GraphicType = 2 Then
-            If Map.MapEvents(index).GraphicY2 > 0 Then
-                textX = textX + (Map.MapEvents(index).GraphicY2 * PicY) \ 2 - 16
-                textY = ConvertMapY(Map.MapEvents(index).Y * PicY) + Map.MapEvents(index).YOffset - (Map.MapEvents(index).GraphicY2 * PicY) + 16
+        ElseIf MapEvents(index).GraphicType = 2 Then
+            If MapEvents(index).GraphicY2 > 0 Then
+                textX = textX + (MapEvents(index).GraphicY2 * PicY) \ 2 - 16
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (MapEvents(index).GraphicY2 * PicY) + 16
             Else
-                textY = ConvertMapY(Map.MapEvents(index).Y * PicY) + Map.MapEvents(index).YOffset - 32 + 16
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 32 + 16
             End If
         End If
 

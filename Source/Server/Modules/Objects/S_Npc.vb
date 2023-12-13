@@ -31,6 +31,8 @@ Module S_Npc
         Dim i = 0
         Dim spawned As Boolean
 
+        If Map(mapNum).Respawn = False Then Exit Sub
+
         npcNum = Map(mapNum).Npc(mapNpcNum)
 
         If npcNum > 0 Then

@@ -117,6 +117,8 @@ Partial Class frmEditor_Map
         ComboBox23 = New ComboBox()
         tpSettings = New TabPage()
         fraMapSettings = New GroupBox()
+        Label22 = New Label()
+        lstShop = New ComboBox()
         Label8 = New Label()
         cmbMoral = New ComboBox()
         fraMapLinks = New GroupBox()
@@ -126,6 +128,8 @@ Partial Class frmEditor_Map
         txtRight = New TextBox()
         txtUp = New TextBox()
         fraBootSettings = New GroupBox()
+        chkIndoors = New CheckBox()
+        chkMapRespawn = New CheckBox()
         txtBootMap = New TextBox()
         Label5 = New Label()
         txtBootY = New TextBox()
@@ -163,7 +167,7 @@ Partial Class frmEditor_Map
         Label19 = New Label()
         cmbPanorama = New ComboBox()
         GroupBox3 = New GroupBox()
-        chkUseTint = New CheckBox()
+        chkTint = New CheckBox()
         lblMapAlpha = New Label()
         lblMapBlue = New Label()
         lblMapGreen = New Label()
@@ -220,10 +224,10 @@ Partial Class frmEditor_Map
         ' 
         ' btnClearAttribute
         ' 
-        btnClearAttribute.Location = New Point(342, 553)
-        btnClearAttribute.Margin = New Padding(4, 3, 4, 3)
+        btnClearAttribute.Location = New Point(489, 922)
+        btnClearAttribute.Margin = New Padding(6, 5, 6, 5)
         btnClearAttribute.Name = "btnClearAttribute"
-        btnClearAttribute.Size = New Size(192, 29)
+        btnClearAttribute.Size = New Size(274, 48)
         btnClearAttribute.TabIndex = 14
         btnClearAttribute.Text = "Clear All Attributes"
         btnClearAttribute.UseVisualStyleBackColor = True
@@ -231,10 +235,10 @@ Partial Class frmEditor_Map
         ' optTrap
         ' 
         optTrap.AutoSize = True
-        optTrap.Location = New Point(373, 58)
-        optTrap.Margin = New Padding(4, 3, 4, 3)
+        optTrap.Location = New Point(533, 97)
+        optTrap.Margin = New Padding(6, 5, 6, 5)
         optTrap.Name = "optTrap"
-        optTrap.Size = New Size(47, 19)
+        optTrap.Size = New Size(70, 29)
         optTrap.TabIndex = 12
         optTrap.Text = "Trap"
         optTrap.UseVisualStyleBackColor = True
@@ -242,10 +246,10 @@ Partial Class frmEditor_Map
         ' optHeal
         ' 
         optHeal.AutoSize = True
-        optHeal.Location = New Point(276, 58)
-        optHeal.Margin = New Padding(4, 3, 4, 3)
+        optHeal.Location = New Point(394, 97)
+        optHeal.Margin = New Padding(6, 5, 6, 5)
         optHeal.Name = "optHeal"
-        optHeal.Size = New Size(49, 19)
+        optHeal.Size = New Size(72, 29)
         optHeal.TabIndex = 11
         optHeal.Text = "Heal"
         optHeal.UseVisualStyleBackColor = True
@@ -253,10 +257,10 @@ Partial Class frmEditor_Map
         ' optBank
         ' 
         optBank.AutoSize = True
-        optBank.Location = New Point(118, 58)
-        optBank.Margin = New Padding(4, 3, 4, 3)
+        optBank.Location = New Point(169, 97)
+        optBank.Margin = New Padding(6, 5, 6, 5)
         optBank.Name = "optBank"
-        optBank.Size = New Size(51, 19)
+        optBank.Size = New Size(75, 29)
         optBank.TabIndex = 10
         optBank.Text = "Bank"
         optBank.UseVisualStyleBackColor = True
@@ -264,10 +268,10 @@ Partial Class frmEditor_Map
         ' optShop
         ' 
         optShop.AutoSize = True
-        optShop.Location = New Point(477, 16)
-        optShop.Margin = New Padding(4, 3, 4, 3)
+        optShop.Location = New Point(681, 27)
+        optShop.Margin = New Padding(6, 5, 6, 5)
         optShop.Name = "optShop"
-        optShop.Size = New Size(52, 19)
+        optShop.Size = New Size(79, 29)
         optShop.TabIndex = 9
         optShop.Text = "Shop"
         optShop.UseVisualStyleBackColor = True
@@ -275,10 +279,10 @@ Partial Class frmEditor_Map
         ' optNPCSpawn
         ' 
         optNPCSpawn.AutoSize = True
-        optNPCSpawn.Location = New Point(373, 16)
-        optNPCSpawn.Margin = New Padding(4, 3, 4, 3)
+        optNPCSpawn.Location = New Point(533, 27)
+        optNPCSpawn.Margin = New Padding(6, 5, 6, 5)
         optNPCSpawn.Name = "optNPCSpawn"
-        optNPCSpawn.Size = New Size(87, 19)
+        optNPCSpawn.Size = New Size(129, 29)
         optNPCSpawn.TabIndex = 8
         optNPCSpawn.Text = "NPC Spawn"
         optNPCSpawn.UseVisualStyleBackColor = True
@@ -286,10 +290,10 @@ Partial Class frmEditor_Map
         ' optResource
         ' 
         optResource.AutoSize = True
-        optResource.Location = New Point(12, 58)
-        optResource.Margin = New Padding(4, 3, 4, 3)
+        optResource.Location = New Point(17, 97)
+        optResource.Margin = New Padding(6, 5, 6, 5)
         optResource.Name = "optResource"
-        optResource.Size = New Size(73, 19)
+        optResource.Size = New Size(108, 29)
         optResource.TabIndex = 6
         optResource.Text = "Resource"
         optResource.UseVisualStyleBackColor = True
@@ -297,10 +301,10 @@ Partial Class frmEditor_Map
         ' optNPCAvoid
         ' 
         optNPCAvoid.AutoSize = True
-        optNPCAvoid.Location = New Point(276, 16)
-        optNPCAvoid.Margin = New Padding(4, 3, 4, 3)
+        optNPCAvoid.Location = New Point(394, 27)
+        optNPCAvoid.Margin = New Padding(6, 5, 6, 5)
         optNPCAvoid.Name = "optNPCAvoid"
-        optNPCAvoid.Size = New Size(83, 19)
+        optNPCAvoid.Size = New Size(123, 29)
         optNPCAvoid.TabIndex = 3
         optNPCAvoid.Text = "NPC Avoid"
         optNPCAvoid.UseVisualStyleBackColor = True
@@ -308,10 +312,10 @@ Partial Class frmEditor_Map
         ' optItem
         ' 
         optItem.AutoSize = True
-        optItem.Location = New Point(202, 16)
-        optItem.Margin = New Padding(4, 3, 4, 3)
+        optItem.Location = New Point(289, 27)
+        optItem.Margin = New Padding(6, 5, 6, 5)
         optItem.Name = "optItem"
-        optItem.Size = New Size(49, 19)
+        optItem.Size = New Size(73, 29)
         optItem.TabIndex = 2
         optItem.Text = "Item"
         optItem.UseVisualStyleBackColor = True
@@ -319,10 +323,10 @@ Partial Class frmEditor_Map
         ' optWarp
         ' 
         optWarp.AutoSize = True
-        optWarp.Location = New Point(118, 16)
-        optWarp.Margin = New Padding(4, 3, 4, 3)
+        optWarp.Location = New Point(169, 27)
+        optWarp.Margin = New Padding(6, 5, 6, 5)
         optWarp.Name = "optWarp"
-        optWarp.Size = New Size(53, 19)
+        optWarp.Size = New Size(79, 29)
         optWarp.TabIndex = 1
         optWarp.Text = "Warp"
         optWarp.UseVisualStyleBackColor = True
@@ -331,10 +335,10 @@ Partial Class frmEditor_Map
         ' 
         optBlocked.AutoSize = True
         optBlocked.Checked = True
-        optBlocked.Location = New Point(12, 16)
-        optBlocked.Margin = New Padding(4, 3, 4, 3)
+        optBlocked.Location = New Point(17, 27)
+        optBlocked.Margin = New Padding(6, 5, 6, 5)
         optBlocked.Name = "optBlocked"
-        optBlocked.Size = New Size(67, 19)
+        optBlocked.Size = New Size(99, 29)
         optBlocked.TabIndex = 0
         optBlocked.TabStop = True
         optBlocked.Text = "Blocked"
@@ -343,29 +347,29 @@ Partial Class frmEditor_Map
         ' pnlBack
         ' 
         pnlBack.Controls.Add(picBackSelect)
-        pnlBack.Location = New Point(7, 9)
-        pnlBack.Margin = New Padding(4, 3, 4, 3)
+        pnlBack.Location = New Point(10, 15)
+        pnlBack.Margin = New Padding(6, 5, 6, 5)
         pnlBack.Name = "pnlBack"
-        pnlBack.Size = New Size(526, 532)
+        pnlBack.Size = New Size(751, 887)
         pnlBack.TabIndex = 9
         ' 
         ' picBackSelect
         ' 
         picBackSelect.BackColor = Color.Black
-        picBackSelect.Location = New Point(11, 3)
-        picBackSelect.Margin = New Padding(4, 3, 4, 3)
+        picBackSelect.Location = New Point(16, 5)
+        picBackSelect.Margin = New Padding(6, 5, 6, 5)
         picBackSelect.Name = "picBackSelect"
-        picBackSelect.Size = New Size(512, 512)
+        picBackSelect.Size = New Size(731, 853)
         picBackSelect.TabIndex = 22
         picBackSelect.TabStop = False
         ' 
         ' Label1
         ' 
         Label1.AutoSize = True
-        Label1.Location = New Point(8, 544)
-        Label1.Margin = New Padding(4, 0, 4, 0)
+        Label1.Location = New Point(11, 907)
+        Label1.Margin = New Padding(6, 0, 6, 0)
         Label1.Name = "Label1"
-        Label1.Size = New Size(192, 15)
+        Label1.Size = New Size(291, 25)
         Label1.TabIndex = 11
         Label1.Text = "Drag Mouse to Select Multiple Tiles"
         ' 
@@ -380,10 +384,10 @@ Partial Class frmEditor_Map
         pnlAttributes.Controls.Add(fraResource)
         pnlAttributes.Controls.Add(fraMapItem)
         pnlAttributes.Controls.Add(fraTrap)
-        pnlAttributes.Location = New Point(555, 56)
-        pnlAttributes.Margin = New Padding(4, 3, 4, 3)
+        pnlAttributes.Location = New Point(793, 93)
+        pnlAttributes.Margin = New Padding(6, 5, 6, 5)
         pnlAttributes.Name = "pnlAttributes"
-        pnlAttributes.Size = New Size(586, 567)
+        pnlAttributes.Size = New Size(837, 945)
         pnlAttributes.TabIndex = 12
         pnlAttributes.Visible = False
         ' 
@@ -394,11 +398,11 @@ Partial Class frmEditor_Map
         fraMapLight.Controls.Add(chkShadow)
         fraMapLight.Controls.Add(chkFlicker)
         fraMapLight.Controls.Add(btnLight)
-        fraMapLight.Location = New Point(394, 147)
-        fraMapLight.Margin = New Padding(4, 3, 4, 3)
+        fraMapLight.Location = New Point(563, 245)
+        fraMapLight.Margin = New Padding(6, 5, 6, 5)
         fraMapLight.Name = "fraMapLight"
-        fraMapLight.Padding = New Padding(4, 3, 4, 3)
-        fraMapLight.Size = New Size(172, 138)
+        fraMapLight.Padding = New Padding(6, 5, 6, 5)
+        fraMapLight.Size = New Size(246, 230)
         fraMapLight.TabIndex = 19
         fraMapLight.TabStop = False
         fraMapLight.Text = "Light"
@@ -407,26 +411,27 @@ Partial Class frmEditor_Map
         ' lblRadius
         ' 
         lblRadius.AutoSize = True
-        lblRadius.Location = New Point(8, 16)
-        lblRadius.Margin = New Padding(4, 0, 4, 0)
+        lblRadius.Location = New Point(11, 27)
+        lblRadius.Margin = New Padding(6, 0, 6, 0)
         lblRadius.Name = "lblRadius"
-        lblRadius.Size = New Size(54, 15)
+        lblRadius.Size = New Size(84, 25)
         lblRadius.TabIndex = 41
         lblRadius.Text = "Radius: 0"
         ' 
         ' scrlLight
         ' 
-        scrlLight.Location = New Point(7, 31)
+        scrlLight.Location = New Point(10, 52)
         scrlLight.Name = "scrlLight"
-        scrlLight.Size = New Size(165, 17)
+        scrlLight.Size = New Size(236, 17)
         scrlLight.TabIndex = 40
         ' 
         ' chkShadow
         ' 
         chkShadow.AutoSize = True
-        chkShadow.Location = New Point(7, 73)
+        chkShadow.Location = New Point(10, 122)
+        chkShadow.Margin = New Padding(4, 5, 4, 5)
         chkShadow.Name = "chkShadow"
-        chkShadow.Size = New Size(73, 19)
+        chkShadow.Size = New Size(110, 29)
         chkShadow.TabIndex = 39
         chkShadow.Text = "Shadows"
         chkShadow.UseVisualStyleBackColor = True
@@ -434,19 +439,20 @@ Partial Class frmEditor_Map
         ' chkFlicker
         ' 
         chkFlicker.AutoSize = True
-        chkFlicker.Location = New Point(7, 51)
+        chkFlicker.Location = New Point(10, 85)
+        chkFlicker.Margin = New Padding(4, 5, 4, 5)
         chkFlicker.Name = "chkFlicker"
-        chkFlicker.Size = New Size(60, 19)
+        chkFlicker.Size = New Size(87, 29)
         chkFlicker.TabIndex = 38
         chkFlicker.Text = "Flicker"
         chkFlicker.UseVisualStyleBackColor = True
         ' 
         ' btnLight
         ' 
-        btnLight.Location = New Point(34, 98)
-        btnLight.Margin = New Padding(4, 3, 4, 3)
+        btnLight.Location = New Point(49, 163)
+        btnLight.Margin = New Padding(6, 5, 6, 5)
         btnLight.Name = "btnLight"
-        btnLight.Size = New Size(105, 32)
+        btnLight.Size = New Size(150, 53)
         btnLight.TabIndex = 6
         btnLight.Text = "Accept"
         btnLight.UseVisualStyleBackColor = True
@@ -455,11 +461,11 @@ Partial Class frmEditor_Map
         ' 
         fraAnimation.Controls.Add(cmbAnimation)
         fraAnimation.Controls.Add(brnAnimation)
-        fraAnimation.Location = New Point(214, 291)
-        fraAnimation.Margin = New Padding(4, 3, 4, 3)
+        fraAnimation.Location = New Point(306, 485)
+        fraAnimation.Margin = New Padding(6, 5, 6, 5)
         fraAnimation.Name = "fraAnimation"
-        fraAnimation.Padding = New Padding(4, 3, 4, 3)
-        fraAnimation.Size = New Size(203, 130)
+        fraAnimation.Padding = New Padding(6, 5, 6, 5)
+        fraAnimation.Size = New Size(290, 217)
         fraAnimation.TabIndex = 17
         fraAnimation.TabStop = False
         fraAnimation.Text = "Animation"
@@ -470,18 +476,18 @@ Partial Class frmEditor_Map
         cmbAnimation.DropDownStyle = ComboBoxStyle.DropDownList
         cmbAnimation.FormattingEnabled = True
         cmbAnimation.Items.AddRange(New Object() {"Heal HP", "Heal MP"})
-        cmbAnimation.Location = New Point(7, 22)
-        cmbAnimation.Margin = New Padding(4, 3, 4, 3)
+        cmbAnimation.Location = New Point(10, 37)
+        cmbAnimation.Margin = New Padding(6, 5, 6, 5)
         cmbAnimation.Name = "cmbAnimation"
-        cmbAnimation.Size = New Size(180, 23)
+        cmbAnimation.Size = New Size(255, 33)
         cmbAnimation.TabIndex = 37
         ' 
         ' brnAnimation
         ' 
-        brnAnimation.Location = New Point(43, 88)
-        brnAnimation.Margin = New Padding(4, 3, 4, 3)
+        brnAnimation.Location = New Point(61, 147)
+        brnAnimation.Margin = New Padding(6, 5, 6, 5)
         brnAnimation.Name = "brnAnimation"
-        brnAnimation.Size = New Size(105, 32)
+        brnAnimation.Size = New Size(150, 53)
         brnAnimation.TabIndex = 6
         brnAnimation.Text = "Accept"
         brnAnimation.UseVisualStyleBackColor = True
@@ -495,73 +501,73 @@ Partial Class frmEditor_Map
         fraMapWarp.Controls.Add(lblMapWarpY)
         fraMapWarp.Controls.Add(lblMapWarpX)
         fraMapWarp.Controls.Add(lblMapWarpMap)
-        fraMapWarp.Location = New Point(10, 427)
-        fraMapWarp.Margin = New Padding(4, 3, 4, 3)
+        fraMapWarp.Location = New Point(14, 712)
+        fraMapWarp.Margin = New Padding(6, 5, 6, 5)
         fraMapWarp.Name = "fraMapWarp"
-        fraMapWarp.Padding = New Padding(4, 3, 4, 3)
-        fraMapWarp.Size = New Size(294, 137)
+        fraMapWarp.Padding = New Padding(6, 5, 6, 5)
+        fraMapWarp.Size = New Size(420, 228)
         fraMapWarp.TabIndex = 0
         fraMapWarp.TabStop = False
         fraMapWarp.Text = "Map Warp"
         ' 
         ' btnMapWarp
         ' 
-        btnMapWarp.Location = New Point(93, 102)
-        btnMapWarp.Margin = New Padding(4, 3, 4, 3)
+        btnMapWarp.Location = New Point(133, 170)
+        btnMapWarp.Margin = New Padding(6, 5, 6, 5)
         btnMapWarp.Name = "btnMapWarp"
-        btnMapWarp.Size = New Size(105, 32)
+        btnMapWarp.Size = New Size(150, 53)
         btnMapWarp.TabIndex = 6
         btnMapWarp.Text = "Accept"
         btnMapWarp.UseVisualStyleBackColor = True
         ' 
         ' scrlMapWarpY
         ' 
-        scrlMapWarpY.Location = New Point(72, 73)
+        scrlMapWarpY.Location = New Point(103, 122)
         scrlMapWarpY.Name = "scrlMapWarpY"
-        scrlMapWarpY.Size = New Size(188, 18)
+        scrlMapWarpY.Size = New Size(269, 18)
         scrlMapWarpY.TabIndex = 5
         ' 
         ' scrlMapWarpX
         ' 
-        scrlMapWarpX.Location = New Point(72, 47)
+        scrlMapWarpX.Location = New Point(103, 78)
         scrlMapWarpX.Name = "scrlMapWarpX"
-        scrlMapWarpX.Size = New Size(188, 18)
+        scrlMapWarpX.Size = New Size(269, 18)
         scrlMapWarpX.TabIndex = 4
         ' 
         ' scrlMapWarpMap
         ' 
-        scrlMapWarpMap.Location = New Point(72, 23)
+        scrlMapWarpMap.Location = New Point(103, 38)
         scrlMapWarpMap.Name = "scrlMapWarpMap"
-        scrlMapWarpMap.Size = New Size(188, 18)
+        scrlMapWarpMap.Size = New Size(269, 18)
         scrlMapWarpMap.TabIndex = 3
         ' 
         ' lblMapWarpY
         ' 
         lblMapWarpY.AutoSize = True
-        lblMapWarpY.Location = New Point(8, 77)
-        lblMapWarpY.Margin = New Padding(4, 0, 4, 0)
+        lblMapWarpY.Location = New Point(11, 128)
+        lblMapWarpY.Margin = New Padding(6, 0, 6, 0)
         lblMapWarpY.Name = "lblMapWarpY"
-        lblMapWarpY.Size = New Size(26, 15)
+        lblMapWarpY.Size = New Size(41, 25)
         lblMapWarpY.TabIndex = 2
         lblMapWarpY.Text = "Y: 1"
         ' 
         ' lblMapWarpX
         ' 
         lblMapWarpX.AutoSize = True
-        lblMapWarpX.Location = New Point(8, 53)
-        lblMapWarpX.Margin = New Padding(4, 0, 4, 0)
+        lblMapWarpX.Location = New Point(11, 88)
+        lblMapWarpX.Margin = New Padding(6, 0, 6, 0)
         lblMapWarpX.Name = "lblMapWarpX"
-        lblMapWarpX.Size = New Size(26, 15)
+        lblMapWarpX.Size = New Size(42, 25)
         lblMapWarpX.TabIndex = 1
         lblMapWarpX.Text = "X: 1"
         ' 
         ' lblMapWarpMap
         ' 
         lblMapWarpMap.AutoSize = True
-        lblMapWarpMap.Location = New Point(7, 29)
-        lblMapWarpMap.Margin = New Padding(4, 0, 4, 0)
+        lblMapWarpMap.Location = New Point(10, 48)
+        lblMapWarpMap.Margin = New Padding(6, 0, 6, 0)
         lblMapWarpMap.Name = "lblMapWarpMap"
-        lblMapWarpMap.Size = New Size(43, 15)
+        lblMapWarpMap.Size = New Size(67, 25)
         lblMapWarpMap.TabIndex = 0
         lblMapWarpMap.Text = "Map: 1"
         ' 
@@ -571,11 +577,11 @@ Partial Class frmEditor_Map
         fraNpcSpawn.Controls.Add(btnNpcSpawn)
         fraNpcSpawn.Controls.Add(scrlNpcDir)
         fraNpcSpawn.Controls.Add(lblNpcDir)
-        fraNpcSpawn.Location = New Point(4, 7)
-        fraNpcSpawn.Margin = New Padding(4, 3, 4, 3)
+        fraNpcSpawn.Location = New Point(6, 12)
+        fraNpcSpawn.Margin = New Padding(6, 5, 6, 5)
         fraNpcSpawn.Name = "fraNpcSpawn"
-        fraNpcSpawn.Padding = New Padding(4, 3, 4, 3)
-        fraNpcSpawn.Size = New Size(203, 130)
+        fraNpcSpawn.Padding = New Padding(6, 5, 6, 5)
+        fraNpcSpawn.Size = New Size(290, 217)
         fraNpcSpawn.TabIndex = 11
         fraNpcSpawn.TabStop = False
         fraNpcSpawn.Text = "Npc Spawn"
@@ -584,18 +590,18 @@ Partial Class frmEditor_Map
         ' 
         lstNpc.DropDownStyle = ComboBoxStyle.DropDownList
         lstNpc.FormattingEnabled = True
-        lstNpc.Location = New Point(7, 18)
-        lstNpc.Margin = New Padding(4, 3, 4, 3)
+        lstNpc.Location = New Point(10, 30)
+        lstNpc.Margin = New Padding(6, 5, 6, 5)
         lstNpc.Name = "lstNpc"
-        lstNpc.Size = New Size(180, 23)
+        lstNpc.Size = New Size(255, 33)
         lstNpc.TabIndex = 37
         ' 
         ' btnNpcSpawn
         ' 
-        btnNpcSpawn.Location = New Point(46, 88)
-        btnNpcSpawn.Margin = New Padding(4, 3, 4, 3)
+        btnNpcSpawn.Location = New Point(66, 147)
+        btnNpcSpawn.Margin = New Padding(6, 5, 6, 5)
         btnNpcSpawn.Name = "btnNpcSpawn"
-        btnNpcSpawn.Size = New Size(105, 32)
+        btnNpcSpawn.Size = New Size(150, 53)
         btnNpcSpawn.TabIndex = 6
         btnNpcSpawn.Text = "Accept"
         btnNpcSpawn.UseVisualStyleBackColor = True
@@ -603,19 +609,19 @@ Partial Class frmEditor_Map
         ' scrlNpcDir
         ' 
         scrlNpcDir.LargeChange = 1
-        scrlNpcDir.Location = New Point(9, 63)
+        scrlNpcDir.Location = New Point(13, 105)
         scrlNpcDir.Maximum = 3
         scrlNpcDir.Name = "scrlNpcDir"
-        scrlNpcDir.Size = New Size(178, 18)
+        scrlNpcDir.Size = New Size(254, 18)
         scrlNpcDir.TabIndex = 3
         ' 
         ' lblNpcDir
         ' 
         lblNpcDir.AutoSize = True
-        lblNpcDir.Location = New Point(6, 46)
-        lblNpcDir.Margin = New Padding(4, 0, 4, 0)
+        lblNpcDir.Location = New Point(9, 77)
+        lblNpcDir.Margin = New Padding(6, 0, 6, 0)
         lblNpcDir.Name = "lblNpcDir"
-        lblNpcDir.Size = New Size(76, 15)
+        lblNpcDir.Size = New Size(115, 25)
         lblNpcDir.TabIndex = 0
         lblNpcDir.Text = "Direction: Up"
         ' 
@@ -625,29 +631,29 @@ Partial Class frmEditor_Map
         fraHeal.Controls.Add(lblHeal)
         fraHeal.Controls.Add(cmbHeal)
         fraHeal.Controls.Add(btnHeal)
-        fraHeal.Location = New Point(4, 290)
-        fraHeal.Margin = New Padding(4, 3, 4, 3)
+        fraHeal.Location = New Point(6, 483)
+        fraHeal.Margin = New Padding(6, 5, 6, 5)
         fraHeal.Name = "fraHeal"
-        fraHeal.Padding = New Padding(4, 3, 4, 3)
-        fraHeal.Size = New Size(203, 130)
+        fraHeal.Padding = New Padding(6, 5, 6, 5)
+        fraHeal.Size = New Size(290, 217)
         fraHeal.TabIndex = 15
         fraHeal.TabStop = False
         fraHeal.Text = "Heal"
         ' 
         ' scrlHeal
         ' 
-        scrlHeal.Location = New Point(5, 65)
+        scrlHeal.Location = New Point(7, 108)
         scrlHeal.Name = "scrlHeal"
-        scrlHeal.Size = New Size(181, 17)
+        scrlHeal.Size = New Size(259, 17)
         scrlHeal.TabIndex = 39
         ' 
         ' lblHeal
         ' 
         lblHeal.AutoSize = True
-        lblHeal.Location = New Point(4, 50)
-        lblHeal.Margin = New Padding(4, 0, 4, 0)
+        lblHeal.Location = New Point(6, 83)
+        lblHeal.Margin = New Padding(6, 0, 6, 0)
         lblHeal.Name = "lblHeal"
-        lblHeal.Size = New Size(63, 15)
+        lblHeal.Size = New Size(96, 25)
         lblHeal.TabIndex = 38
         lblHeal.Text = "Amount: 0"
         ' 
@@ -656,18 +662,18 @@ Partial Class frmEditor_Map
         cmbHeal.DropDownStyle = ComboBoxStyle.DropDownList
         cmbHeal.FormattingEnabled = True
         cmbHeal.Items.AddRange(New Object() {"Heal HP", "Heal MP"})
-        cmbHeal.Location = New Point(7, 22)
-        cmbHeal.Margin = New Padding(4, 3, 4, 3)
+        cmbHeal.Location = New Point(10, 37)
+        cmbHeal.Margin = New Padding(6, 5, 6, 5)
         cmbHeal.Name = "cmbHeal"
-        cmbHeal.Size = New Size(180, 23)
+        cmbHeal.Size = New Size(255, 33)
         cmbHeal.TabIndex = 37
         ' 
         ' btnHeal
         ' 
-        btnHeal.Location = New Point(43, 88)
-        btnHeal.Margin = New Padding(4, 3, 4, 3)
+        btnHeal.Location = New Point(61, 147)
+        btnHeal.Margin = New Padding(6, 5, 6, 5)
         btnHeal.Name = "btnHeal"
-        btnHeal.Size = New Size(105, 32)
+        btnHeal.Size = New Size(150, 53)
         btnHeal.TabIndex = 6
         btnHeal.Text = "Accept"
         btnHeal.UseVisualStyleBackColor = True
@@ -676,11 +682,11 @@ Partial Class frmEditor_Map
         ' 
         fraShop.Controls.Add(cmbShop)
         fraShop.Controls.Add(btnShop)
-        fraShop.Location = New Point(394, 9)
-        fraShop.Margin = New Padding(4, 3, 4, 3)
+        fraShop.Location = New Point(563, 15)
+        fraShop.Margin = New Padding(6, 5, 6, 5)
         fraShop.Name = "fraShop"
-        fraShop.Padding = New Padding(4, 3, 4, 3)
-        fraShop.Size = New Size(172, 138)
+        fraShop.Padding = New Padding(6, 5, 6, 5)
+        fraShop.Size = New Size(246, 230)
         fraShop.TabIndex = 12
         fraShop.TabStop = False
         fraShop.Text = "Shop"
@@ -689,18 +695,18 @@ Partial Class frmEditor_Map
         ' 
         cmbShop.DropDownStyle = ComboBoxStyle.DropDownList
         cmbShop.FormattingEnabled = True
-        cmbShop.Location = New Point(7, 22)
-        cmbShop.Margin = New Padding(4, 3, 4, 3)
+        cmbShop.Location = New Point(10, 37)
+        cmbShop.Margin = New Padding(6, 5, 6, 5)
         cmbShop.Name = "cmbShop"
-        cmbShop.Size = New Size(154, 23)
+        cmbShop.Size = New Size(218, 33)
         cmbShop.TabIndex = 37
         ' 
         ' btnShop
         ' 
-        btnShop.Location = New Point(34, 98)
-        btnShop.Margin = New Padding(4, 3, 4, 3)
+        btnShop.Location = New Point(49, 163)
+        btnShop.Margin = New Padding(6, 5, 6, 5)
         btnShop.Name = "btnShop"
-        btnShop.Size = New Size(105, 32)
+        btnShop.Size = New Size(150, 53)
         btnShop.TabIndex = 6
         btnShop.Text = "Accept"
         btnShop.UseVisualStyleBackColor = True
@@ -710,39 +716,39 @@ Partial Class frmEditor_Map
         fraResource.Controls.Add(btnResourceOk)
         fraResource.Controls.Add(scrlResource)
         fraResource.Controls.Add(lblResource)
-        fraResource.Location = New Point(214, 7)
-        fraResource.Margin = New Padding(4, 3, 4, 3)
+        fraResource.Location = New Point(306, 12)
+        fraResource.Margin = New Padding(6, 5, 6, 5)
         fraResource.Name = "fraResource"
-        fraResource.Padding = New Padding(4, 3, 4, 3)
-        fraResource.Size = New Size(172, 130)
+        fraResource.Padding = New Padding(6, 5, 6, 5)
+        fraResource.Size = New Size(246, 217)
         fraResource.TabIndex = 10
         fraResource.TabStop = False
         fraResource.Text = "Resource"
         ' 
         ' btnResourceOk
         ' 
-        btnResourceOk.Location = New Point(33, 88)
-        btnResourceOk.Margin = New Padding(4, 3, 4, 3)
+        btnResourceOk.Location = New Point(47, 147)
+        btnResourceOk.Margin = New Padding(6, 5, 6, 5)
         btnResourceOk.Name = "btnResourceOk"
-        btnResourceOk.Size = New Size(105, 32)
+        btnResourceOk.Size = New Size(150, 53)
         btnResourceOk.TabIndex = 6
         btnResourceOk.Text = "Accept"
         btnResourceOk.UseVisualStyleBackColor = True
         ' 
         ' scrlResource
         ' 
-        scrlResource.Location = New Point(4, 42)
+        scrlResource.Location = New Point(6, 70)
         scrlResource.Name = "scrlResource"
-        scrlResource.Size = New Size(159, 18)
+        scrlResource.Size = New Size(227, 18)
         scrlResource.TabIndex = 3
         ' 
         ' lblResource
         ' 
         lblResource.AutoSize = True
-        lblResource.Location = New Point(0, 18)
-        lblResource.Margin = New Padding(4, 0, 4, 0)
+        lblResource.Location = New Point(0, 30)
+        lblResource.Margin = New Padding(6, 0, 6, 0)
         lblResource.Name = "lblResource"
-        lblResource.Size = New Size(45, 15)
+        lblResource.Size = New Size(68, 25)
         lblResource.TabIndex = 0
         lblResource.Text = "Object:"
         ' 
@@ -753,11 +759,11 @@ Partial Class frmEditor_Map
         fraMapItem.Controls.Add(scrlMapItemValue)
         fraMapItem.Controls.Add(scrlMapItem)
         fraMapItem.Controls.Add(lblMapItem)
-        fraMapItem.Location = New Point(4, 137)
-        fraMapItem.Margin = New Padding(4, 3, 4, 3)
+        fraMapItem.Location = New Point(6, 228)
+        fraMapItem.Margin = New Padding(6, 5, 6, 5)
         fraMapItem.Name = "fraMapItem"
-        fraMapItem.Padding = New Padding(4, 3, 4, 3)
-        fraMapItem.Size = New Size(203, 137)
+        fraMapItem.Padding = New Padding(6, 5, 6, 5)
+        fraMapItem.Size = New Size(290, 228)
         fraMapItem.TabIndex = 7
         fraMapItem.TabStop = False
         fraMapItem.Text = "Map Item"
@@ -765,44 +771,44 @@ Partial Class frmEditor_Map
         ' picMapItem
         ' 
         picMapItem.BackColor = Color.Black
-        picMapItem.Location = New Point(155, 42)
-        picMapItem.Margin = New Padding(4, 3, 4, 3)
+        picMapItem.Location = New Point(221, 70)
+        picMapItem.Margin = New Padding(6, 5, 6, 5)
         picMapItem.Name = "picMapItem"
-        picMapItem.Size = New Size(37, 37)
+        picMapItem.Size = New Size(53, 62)
         picMapItem.TabIndex = 7
         picMapItem.TabStop = False
         ' 
         ' btnMapItem
         ' 
-        btnMapItem.Location = New Point(46, 97)
-        btnMapItem.Margin = New Padding(4, 3, 4, 3)
+        btnMapItem.Location = New Point(66, 162)
+        btnMapItem.Margin = New Padding(6, 5, 6, 5)
         btnMapItem.Name = "btnMapItem"
-        btnMapItem.Size = New Size(105, 32)
+        btnMapItem.Size = New Size(150, 53)
         btnMapItem.TabIndex = 6
         btnMapItem.Text = "Accept"
         btnMapItem.UseVisualStyleBackColor = True
         ' 
         ' scrlMapItemValue
         ' 
-        scrlMapItemValue.Location = New Point(10, 68)
+        scrlMapItemValue.Location = New Point(14, 113)
         scrlMapItemValue.Name = "scrlMapItemValue"
-        scrlMapItemValue.Size = New Size(140, 18)
+        scrlMapItemValue.Size = New Size(200, 18)
         scrlMapItemValue.TabIndex = 4
         ' 
         ' scrlMapItem
         ' 
-        scrlMapItem.Location = New Point(10, 43)
+        scrlMapItem.Location = New Point(14, 72)
         scrlMapItem.Name = "scrlMapItem"
-        scrlMapItem.Size = New Size(140, 18)
+        scrlMapItem.Size = New Size(200, 18)
         scrlMapItem.TabIndex = 3
         ' 
         ' lblMapItem
         ' 
         lblMapItem.AutoSize = True
-        lblMapItem.Location = New Point(7, 25)
-        lblMapItem.Margin = New Padding(4, 0, 4, 0)
+        lblMapItem.Location = New Point(10, 42)
+        lblMapItem.Margin = New Padding(6, 0, 6, 0)
         lblMapItem.Name = "lblMapItem"
-        lblMapItem.Size = New Size(51, 15)
+        lblMapItem.Size = New Size(78, 25)
         lblMapItem.TabIndex = 0
         lblMapItem.Text = "None x0"
         ' 
@@ -811,48 +817,50 @@ Partial Class frmEditor_Map
         fraTrap.Controls.Add(btnTrap)
         fraTrap.Controls.Add(scrlTrap)
         fraTrap.Controls.Add(lblTrap)
-        fraTrap.Location = New Point(214, 144)
-        fraTrap.Margin = New Padding(4, 3, 4, 3)
+        fraTrap.Location = New Point(306, 240)
+        fraTrap.Margin = New Padding(6, 5, 6, 5)
         fraTrap.Name = "fraTrap"
-        fraTrap.Padding = New Padding(4, 3, 4, 3)
-        fraTrap.Size = New Size(172, 138)
+        fraTrap.Padding = New Padding(6, 5, 6, 5)
+        fraTrap.Size = New Size(246, 230)
         fraTrap.TabIndex = 16
         fraTrap.TabStop = False
         fraTrap.Text = "Trap"
         ' 
         ' btnTrap
         ' 
-        btnTrap.Location = New Point(33, 98)
-        btnTrap.Margin = New Padding(4, 3, 4, 3)
+        btnTrap.Location = New Point(47, 163)
+        btnTrap.Margin = New Padding(6, 5, 6, 5)
         btnTrap.Name = "btnTrap"
-        btnTrap.Size = New Size(105, 32)
+        btnTrap.Size = New Size(150, 53)
         btnTrap.TabIndex = 42
         btnTrap.Text = "Accept"
         btnTrap.UseVisualStyleBackColor = True
         ' 
         ' scrlTrap
         ' 
-        scrlTrap.Location = New Point(13, 38)
+        scrlTrap.Location = New Point(19, 63)
         scrlTrap.Name = "scrlTrap"
-        scrlTrap.Size = New Size(149, 17)
+        scrlTrap.Size = New Size(213, 17)
         scrlTrap.TabIndex = 41
         ' 
         ' lblTrap
         ' 
         lblTrap.AutoSize = True
-        lblTrap.Location = New Point(7, 18)
-        lblTrap.Margin = New Padding(4, 0, 4, 0)
+        lblTrap.Location = New Point(10, 30)
+        lblTrap.Margin = New Padding(6, 0, 6, 0)
         lblTrap.Name = "lblTrap"
-        lblTrap.Size = New Size(63, 15)
+        lblTrap.Size = New Size(96, 25)
         lblTrap.TabIndex = 40
         lblTrap.Text = "Amount: 0"
         ' 
         ' ToolStrip
         ' 
+        ToolStrip.ImageScalingSize = New Size(24, 24)
         ToolStrip.Items.AddRange(New ToolStripItem() {tsbSave, tsbDiscard, ToolStripSeparator1, tsbMapGrid, tsbOpacity, tsbLight, ToolStripSeparator2, tsbFill, tsbClear, tsbEyeDropper, tsbCopyMap, tsbUndo, tsbRedo, tsbScreenshot})
         ToolStrip.Location = New Point(0, 0)
         ToolStrip.Name = "ToolStrip"
-        ToolStrip.Size = New Size(552, 25)
+        ToolStrip.Padding = New Padding(0, 0, 3, 0)
+        ToolStrip.Size = New Size(789, 33)
         ToolStrip.TabIndex = 13
         ToolStrip.Text = "ToolStrip1"
         ' 
@@ -861,7 +869,7 @@ Partial Class frmEditor_Map
         tsbSave.Image = My.Resources.Resources.Save
         tsbSave.ImageTransparentColor = Color.Magenta
         tsbSave.Name = "tsbSave"
-        tsbSave.Size = New Size(23, 22)
+        tsbSave.Size = New Size(34, 28)
         tsbSave.ToolTipText = "Save"
         ' 
         ' tsbDiscard
@@ -869,20 +877,20 @@ Partial Class frmEditor_Map
         tsbDiscard.Image = My.Resources.Resources._Exit
         tsbDiscard.ImageTransparentColor = Color.Magenta
         tsbDiscard.Name = "tsbDiscard"
-        tsbDiscard.Size = New Size(23, 22)
+        tsbDiscard.Size = New Size(34, 28)
         tsbDiscard.ToolTipText = "Discard"
         ' 
         ' ToolStripSeparator1
         ' 
         ToolStripSeparator1.Name = "ToolStripSeparator1"
-        ToolStripSeparator1.Size = New Size(6, 25)
+        ToolStripSeparator1.Size = New Size(6, 33)
         ' 
         ' tsbMapGrid
         ' 
         tsbMapGrid.Image = My.Resources.Resources.Grid
         tsbMapGrid.ImageTransparentColor = Color.Magenta
         tsbMapGrid.Name = "tsbMapGrid"
-        tsbMapGrid.Size = New Size(23, 22)
+        tsbMapGrid.Size = New Size(34, 28)
         tsbMapGrid.Tag = "Map Grid"
         ' 
         ' tsbOpacity
@@ -891,7 +899,7 @@ Partial Class frmEditor_Map
         tsbOpacity.Image = My.Resources.Resources.Opacity
         tsbOpacity.ImageTransparentColor = Color.Magenta
         tsbOpacity.Name = "tsbOpacity"
-        tsbOpacity.Size = New Size(23, 22)
+        tsbOpacity.Size = New Size(34, 28)
         tsbOpacity.Text = "ToolStripButton1"
         tsbOpacity.ToolTipText = "Opacity"
         ' 
@@ -901,20 +909,20 @@ Partial Class frmEditor_Map
         tsbLight.Image = CType(resources.GetObject("tsbLight.Image"), Image)
         tsbLight.ImageTransparentColor = Color.Magenta
         tsbLight.Name = "tsbLight"
-        tsbLight.Size = New Size(23, 22)
+        tsbLight.Size = New Size(34, 28)
         tsbLight.ToolTipText = "Light"
         ' 
         ' ToolStripSeparator2
         ' 
         ToolStripSeparator2.Name = "ToolStripSeparator2"
-        ToolStripSeparator2.Size = New Size(6, 25)
+        ToolStripSeparator2.Size = New Size(6, 33)
         ' 
         ' tsbFill
         ' 
         tsbFill.Image = My.Resources.Resources.Fill
         tsbFill.ImageTransparentColor = Color.Magenta
         tsbFill.Name = "tsbFill"
-        tsbFill.Size = New Size(23, 22)
+        tsbFill.Size = New Size(34, 28)
         tsbFill.Tag = "Fill"
         tsbFill.ToolTipText = "Fill Layer"
         ' 
@@ -923,7 +931,7 @@ Partial Class frmEditor_Map
         tsbClear.Image = My.Resources.Resources.Clear
         tsbClear.ImageTransparentColor = Color.Magenta
         tsbClear.Name = "tsbClear"
-        tsbClear.Size = New Size(23, 22)
+        tsbClear.Size = New Size(34, 28)
         tsbClear.ToolTipText = "Erase"
         ' 
         ' tsbEyeDropper
@@ -931,7 +939,7 @@ Partial Class frmEditor_Map
         tsbEyeDropper.Image = My.Resources.Resources.Wand
         tsbEyeDropper.ImageTransparentColor = Color.Magenta
         tsbEyeDropper.Name = "tsbEyeDropper"
-        tsbEyeDropper.Size = New Size(23, 22)
+        tsbEyeDropper.Size = New Size(34, 28)
         tsbEyeDropper.ToolTipText = "Eye Dropper"
         ' 
         ' tsbCopyMap
@@ -940,7 +948,7 @@ Partial Class frmEditor_Map
         tsbCopyMap.Image = My.Resources.Resources.Clipboard
         tsbCopyMap.ImageTransparentColor = Color.Magenta
         tsbCopyMap.Name = "tsbCopyMap"
-        tsbCopyMap.Size = New Size(23, 22)
+        tsbCopyMap.Size = New Size(34, 28)
         tsbCopyMap.ToolTipText = "Copy"
         ' 
         ' tsbUndo
@@ -949,7 +957,7 @@ Partial Class frmEditor_Map
         tsbUndo.Image = My.Resources.Resources.Undo
         tsbUndo.ImageTransparentColor = Color.Magenta
         tsbUndo.Name = "tsbUndo"
-        tsbUndo.Size = New Size(23, 22)
+        tsbUndo.Size = New Size(34, 28)
         tsbUndo.ToolTipText = "Undo"
         ' 
         ' tsbRedo
@@ -958,7 +966,7 @@ Partial Class frmEditor_Map
         tsbRedo.Image = My.Resources.Resources.Redo
         tsbRedo.ImageTransparentColor = Color.Magenta
         tsbRedo.Name = "tsbRedo"
-        tsbRedo.Size = New Size(23, 22)
+        tsbRedo.Size = New Size(34, 28)
         tsbRedo.ToolTipText = "Redo"
         ' 
         ' tsbScreenshot
@@ -967,7 +975,7 @@ Partial Class frmEditor_Map
         tsbScreenshot.Image = My.Resources.Resources.ScreenShot
         tsbScreenshot.ImageTransparentColor = Color.Magenta
         tsbScreenshot.Name = "tsbScreenshot"
-        tsbScreenshot.Size = New Size(23, 22)
+        tsbScreenshot.Size = New Size(34, 28)
         tsbScreenshot.ToolTipText = "Screenshot"
         ' 
         ' tabpages
@@ -979,11 +987,11 @@ Partial Class frmEditor_Map
         tabpages.Controls.Add(tpDirBlock)
         tabpages.Controls.Add(tpEvents)
         tabpages.Controls.Add(TabPage1)
-        tabpages.Location = New Point(5, 32)
-        tabpages.Margin = New Padding(4, 3, 4, 3)
+        tabpages.Location = New Point(7, 53)
+        tabpages.Margin = New Padding(6, 5, 6, 5)
         tabpages.Name = "tabpages"
         tabpages.SelectedIndex = 0
-        tabpages.Size = New Size(550, 629)
+        tabpages.Size = New Size(786, 1048)
         tabpages.TabIndex = 14
         ' 
         ' tpTiles
@@ -996,11 +1004,11 @@ Partial Class frmEditor_Map
         tpTiles.Controls.Add(cmbTileSets)
         tpTiles.Controls.Add(pnlBack)
         tpTiles.Controls.Add(Label1)
-        tpTiles.Location = New Point(4, 24)
-        tpTiles.Margin = New Padding(4, 3, 4, 3)
+        tpTiles.Location = New Point(4, 34)
+        tpTiles.Margin = New Padding(6, 5, 6, 5)
         tpTiles.Name = "tpTiles"
-        tpTiles.Padding = New Padding(4, 3, 4, 3)
-        tpTiles.Size = New Size(542, 601)
+        tpTiles.Padding = New Padding(6, 5, 6, 5)
+        tpTiles.Size = New Size(778, 1010)
         tpTiles.TabIndex = 0
         tpTiles.Text = "Tiles"
         tpTiles.UseVisualStyleBackColor = True
@@ -1010,29 +1018,29 @@ Partial Class frmEditor_Map
         cmbAutoTile.DropDownStyle = ComboBoxStyle.DropDownList
         cmbAutoTile.FormattingEnabled = True
         cmbAutoTile.Items.AddRange(New Object() {"Normal", "AutoTile (VX)", "Fake (VX)", "Animated (VX)", "Cliff (VX)", "Waterfall (VX)"})
-        cmbAutoTile.Location = New Point(428, 566)
-        cmbAutoTile.Margin = New Padding(4, 3, 4, 3)
+        cmbAutoTile.Location = New Point(611, 943)
+        cmbAutoTile.Margin = New Padding(6, 5, 6, 5)
         cmbAutoTile.Name = "cmbAutoTile"
-        cmbAutoTile.Size = New Size(110, 23)
+        cmbAutoTile.Size = New Size(155, 33)
         cmbAutoTile.TabIndex = 17
         ' 
         ' Label11
         ' 
         Label11.AutoSize = True
-        Label11.Location = New Point(364, 570)
-        Label11.Margin = New Padding(4, 0, 4, 0)
+        Label11.Location = New Point(520, 950)
+        Label11.Margin = New Padding(6, 0, 6, 0)
         Label11.Name = "Label11"
-        Label11.Size = New Size(54, 15)
+        Label11.Size = New Size(81, 25)
         Label11.TabIndex = 16
         Label11.Text = "AutoTile:"
         ' 
         ' Label10
         ' 
         Label10.AutoSize = True
-        Label10.Location = New Point(167, 570)
-        Label10.Margin = New Padding(4, 0, 4, 0)
+        Label10.Location = New Point(239, 950)
+        Label10.Margin = New Padding(6, 0, 6, 0)
         Label10.Name = "Label10"
-        Label10.Size = New Size(38, 15)
+        Label10.Size = New Size(57, 25)
         Label10.TabIndex = 15
         Label10.Text = "Layer:"
         ' 
@@ -1041,19 +1049,19 @@ Partial Class frmEditor_Map
         cmbLayers.DropDownStyle = ComboBoxStyle.DropDownList
         cmbLayers.FormattingEnabled = True
         cmbLayers.Items.AddRange(New Object() {"Ground", "Mask", "Cover", "Fringe", "Roof"})
-        cmbLayers.Location = New Point(216, 566)
-        cmbLayers.Margin = New Padding(4, 3, 4, 3)
+        cmbLayers.Location = New Point(309, 943)
+        cmbLayers.Margin = New Padding(6, 5, 6, 5)
         cmbLayers.Name = "cmbLayers"
-        cmbLayers.Size = New Size(112, 23)
+        cmbLayers.Size = New Size(158, 33)
         cmbLayers.TabIndex = 14
         ' 
         ' Label9
         ' 
         Label9.AutoSize = True
-        Label9.Location = New Point(8, 570)
-        Label9.Margin = New Padding(4, 0, 4, 0)
+        Label9.Location = New Point(11, 950)
+        Label9.Margin = New Padding(6, 0, 6, 0)
         Label9.Name = "Label9"
-        Label9.Size = New Size(43, 15)
+        Label9.Size = New Size(65, 25)
         Label9.TabIndex = 13
         Label9.Text = "Tileset:"
         ' 
@@ -1061,10 +1069,10 @@ Partial Class frmEditor_Map
         ' 
         cmbTileSets.DropDownStyle = ComboBoxStyle.DropDownList
         cmbTileSets.FormattingEnabled = True
-        cmbTileSets.Location = New Point(63, 566)
-        cmbTileSets.Margin = New Padding(4, 3, 4, 3)
+        cmbTileSets.Location = New Point(90, 943)
+        cmbTileSets.Margin = New Padding(6, 5, 6, 5)
         cmbTileSets.Name = "cmbTileSets"
-        cmbTileSets.Size = New Size(68, 23)
+        cmbTileSets.Size = New Size(95, 33)
         cmbTileSets.TabIndex = 12
         ' 
         ' tpAttributes
@@ -1082,11 +1090,11 @@ Partial Class frmEditor_Map
         tpAttributes.Controls.Add(optNPCAvoid)
         tpAttributes.Controls.Add(optNPCSpawn)
         tpAttributes.Controls.Add(optResource)
-        tpAttributes.Location = New Point(4, 24)
-        tpAttributes.Margin = New Padding(4, 3, 4, 3)
+        tpAttributes.Location = New Point(4, 34)
+        tpAttributes.Margin = New Padding(6, 5, 6, 5)
         tpAttributes.Name = "tpAttributes"
-        tpAttributes.Padding = New Padding(4, 3, 4, 3)
-        tpAttributes.Size = New Size(542, 601)
+        tpAttributes.Padding = New Padding(6, 5, 6, 5)
+        tpAttributes.Size = New Size(778, 1010)
         tpAttributes.TabIndex = 3
         tpAttributes.Text = "Attributes"
         tpAttributes.UseVisualStyleBackColor = True
@@ -1094,10 +1102,10 @@ Partial Class frmEditor_Map
         ' optAnimation
         ' 
         optAnimation.AutoSize = True
-        optAnimation.Location = New Point(448, 58)
-        optAnimation.Margin = New Padding(4, 3, 4, 3)
+        optAnimation.Location = New Point(640, 97)
+        optAnimation.Margin = New Padding(6, 5, 6, 5)
         optAnimation.Name = "optAnimation"
-        optAnimation.Size = New Size(81, 19)
+        optAnimation.Size = New Size(119, 29)
         optAnimation.TabIndex = 19
         optAnimation.Text = "Animation"
         optAnimation.UseVisualStyleBackColor = True
@@ -1105,10 +1113,10 @@ Partial Class frmEditor_Map
         ' optLight
         ' 
         optLight.AutoSize = True
-        optLight.Location = New Point(202, 58)
-        optLight.Margin = New Padding(4, 3, 4, 3)
+        optLight.Location = New Point(289, 97)
+        optLight.Margin = New Padding(6, 5, 6, 5)
         optLight.Name = "optLight"
-        optLight.Size = New Size(52, 19)
+        optLight.Size = New Size(76, 29)
         optLight.TabIndex = 18
         optLight.Text = "Light"
         optLight.UseVisualStyleBackColor = True
@@ -1116,11 +1124,11 @@ Partial Class frmEditor_Map
         ' tpNpcs
         ' 
         tpNpcs.Controls.Add(fraNpcs)
-        tpNpcs.Location = New Point(4, 24)
-        tpNpcs.Margin = New Padding(4, 3, 4, 3)
+        tpNpcs.Location = New Point(4, 34)
+        tpNpcs.Margin = New Padding(6, 5, 6, 5)
         tpNpcs.Name = "tpNpcs"
-        tpNpcs.Padding = New Padding(4, 3, 4, 3)
-        tpNpcs.Size = New Size(542, 601)
+        tpNpcs.Padding = New Padding(6, 5, 6, 5)
+        tpNpcs.Size = New Size(778, 1010)
         tpNpcs.TabIndex = 1
         tpNpcs.Text = "NPC's"
         tpNpcs.UseVisualStyleBackColor = True
@@ -1132,11 +1140,11 @@ Partial Class frmEditor_Map
         fraNpcs.Controls.Add(cmbNpcList)
         fraNpcs.Controls.Add(lstMapNpc)
         fraNpcs.Controls.Add(ComboBox23)
-        fraNpcs.Location = New Point(7, 9)
-        fraNpcs.Margin = New Padding(4, 3, 4, 3)
+        fraNpcs.Location = New Point(10, 15)
+        fraNpcs.Margin = New Padding(6, 5, 6, 5)
         fraNpcs.Name = "fraNpcs"
-        fraNpcs.Padding = New Padding(4, 3, 4, 3)
-        fraNpcs.Size = New Size(559, 492)
+        fraNpcs.Padding = New Padding(6, 5, 6, 5)
+        fraNpcs.Size = New Size(799, 820)
         fraNpcs.TabIndex = 11
         fraNpcs.TabStop = False
         fraNpcs.Text = "NPCs"
@@ -1144,50 +1152,50 @@ Partial Class frmEditor_Map
         ' Label18
         ' 
         Label18.AutoSize = True
-        Label18.Location = New Point(228, 33)
-        Label18.Margin = New Padding(4, 0, 4, 0)
+        Label18.Location = New Point(326, 55)
+        Label18.Margin = New Padding(6, 0, 6, 0)
         Label18.Name = "Label18"
-        Label18.Size = New Size(77, 15)
+        Label18.Size = New Size(116, 25)
         Label18.TabIndex = 72
         Label18.Text = "2. Select NPC"
         ' 
         ' Label17
         ' 
         Label17.AutoSize = True
-        Label17.Location = New Point(7, 33)
-        Label17.Margin = New Padding(4, 0, 4, 0)
+        Label17.Location = New Point(10, 55)
+        Label17.Margin = New Padding(6, 0, 6, 0)
         Label17.Name = "Label17"
-        Label17.Size = New Size(64, 15)
+        Label17.Size = New Size(97, 25)
         Label17.TabIndex = 71
         Label17.Text = "1. NPC LIst"
         ' 
         ' cmbNpcList
         ' 
         cmbNpcList.FormattingEnabled = True
-        cmbNpcList.Location = New Point(228, 52)
-        cmbNpcList.Margin = New Padding(4, 3, 4, 3)
+        cmbNpcList.Location = New Point(326, 87)
+        cmbNpcList.Margin = New Padding(6, 5, 6, 5)
         cmbNpcList.Name = "cmbNpcList"
-        cmbNpcList.Size = New Size(299, 23)
+        cmbNpcList.Size = New Size(425, 33)
         cmbNpcList.TabIndex = 70
         ' 
         ' lstMapNpc
         ' 
         lstMapNpc.FormattingEnabled = True
-        lstMapNpc.ItemHeight = 15
-        lstMapNpc.Location = New Point(10, 52)
-        lstMapNpc.Margin = New Padding(4, 3, 4, 3)
+        lstMapNpc.ItemHeight = 25
+        lstMapNpc.Location = New Point(14, 87)
+        lstMapNpc.Margin = New Padding(6, 5, 6, 5)
         lstMapNpc.Name = "lstMapNpc"
-        lstMapNpc.Size = New Size(210, 424)
+        lstMapNpc.Size = New Size(298, 704)
         lstMapNpc.TabIndex = 69
         ' 
         ' ComboBox23
         ' 
         ComboBox23.DropDownStyle = ComboBoxStyle.DropDownList
         ComboBox23.FormattingEnabled = True
-        ComboBox23.Location = New Point(398, 541)
-        ComboBox23.Margin = New Padding(4, 3, 4, 3)
+        ComboBox23.Location = New Point(569, 902)
+        ComboBox23.Margin = New Padding(6, 5, 6, 5)
         ComboBox23.Name = "ComboBox23"
-        ComboBox23.Size = New Size(154, 23)
+        ComboBox23.Size = New Size(218, 33)
         ComboBox23.TabIndex = 68
         ' 
         ' tpSettings
@@ -1199,35 +1207,57 @@ Partial Class frmEditor_Map
         tpSettings.Controls.Add(GroupBox2)
         tpSettings.Controls.Add(txtName)
         tpSettings.Controls.Add(Label6)
-        tpSettings.Location = New Point(4, 24)
-        tpSettings.Margin = New Padding(4, 3, 4, 3)
+        tpSettings.Location = New Point(4, 34)
+        tpSettings.Margin = New Padding(6, 5, 6, 5)
         tpSettings.Name = "tpSettings"
-        tpSettings.Padding = New Padding(4, 3, 4, 3)
-        tpSettings.Size = New Size(542, 601)
+        tpSettings.Padding = New Padding(6, 5, 6, 5)
+        tpSettings.Size = New Size(778, 1010)
         tpSettings.TabIndex = 2
         tpSettings.Text = "Settings"
         tpSettings.UseVisualStyleBackColor = True
         ' 
         ' fraMapSettings
         ' 
+        fraMapSettings.Controls.Add(Label22)
+        fraMapSettings.Controls.Add(lstShop)
         fraMapSettings.Controls.Add(Label8)
         fraMapSettings.Controls.Add(cmbMoral)
-        fraMapSettings.Location = New Point(7, 37)
-        fraMapSettings.Margin = New Padding(4, 3, 4, 3)
+        fraMapSettings.Location = New Point(10, 62)
+        fraMapSettings.Margin = New Padding(6, 5, 6, 5)
         fraMapSettings.Name = "fraMapSettings"
-        fraMapSettings.Padding = New Padding(4, 3, 4, 3)
-        fraMapSettings.Size = New Size(271, 79)
+        fraMapSettings.Padding = New Padding(6, 5, 6, 5)
+        fraMapSettings.Size = New Size(387, 132)
         fraMapSettings.TabIndex = 15
         fraMapSettings.TabStop = False
         fraMapSettings.Text = "Map Settings"
         ' 
+        ' Label22
+        ' 
+        Label22.AutoSize = True
+        Label22.Location = New Point(6, 69)
+        Label22.Margin = New Padding(6, 0, 6, 0)
+        Label22.Name = "Label22"
+        Label22.Size = New Size(58, 25)
+        Label22.TabIndex = 40
+        Label22.Text = "Shop:"
+        ' 
+        ' lstShop
+        ' 
+        lstShop.DropDownStyle = ComboBoxStyle.DropDownList
+        lstShop.FormattingEnabled = True
+        lstShop.Location = New Point(74, 66)
+        lstShop.Margin = New Padding(6, 5, 6, 5)
+        lstShop.Name = "lstShop"
+        lstShop.Size = New Size(298, 33)
+        lstShop.TabIndex = 39
+        ' 
         ' Label8
         ' 
         Label8.AutoSize = True
-        Label8.Location = New Point(4, 17)
-        Label8.Margin = New Padding(4, 0, 4, 0)
+        Label8.Location = New Point(6, 28)
+        Label8.Margin = New Padding(6, 0, 6, 0)
         Label8.Name = "Label8"
-        Label8.Size = New Size(41, 15)
+        Label8.Size = New Size(62, 25)
         Label8.TabIndex = 38
         Label8.Text = "Moral:"
         ' 
@@ -1236,10 +1266,10 @@ Partial Class frmEditor_Map
         cmbMoral.DropDownStyle = ComboBoxStyle.DropDownList
         cmbMoral.FormattingEnabled = True
         cmbMoral.Items.AddRange(New Object() {"None", "Safe Zone", "Indoors"})
-        cmbMoral.Location = New Point(52, 14)
-        cmbMoral.Margin = New Padding(4, 3, 4, 3)
+        cmbMoral.Location = New Point(74, 23)
+        cmbMoral.Margin = New Padding(6, 5, 6, 5)
         cmbMoral.Name = "cmbMoral"
-        cmbMoral.Size = New Size(210, 23)
+        cmbMoral.Size = New Size(298, 33)
         cmbMoral.TabIndex = 37
         ' 
         ' fraMapLinks
@@ -1249,132 +1279,156 @@ Partial Class frmEditor_Map
         fraMapLinks.Controls.Add(lblMap)
         fraMapLinks.Controls.Add(txtRight)
         fraMapLinks.Controls.Add(txtUp)
-        fraMapLinks.Location = New Point(7, 122)
-        fraMapLinks.Margin = New Padding(4, 3, 4, 3)
+        fraMapLinks.Location = New Point(10, 203)
+        fraMapLinks.Margin = New Padding(6, 5, 6, 5)
         fraMapLinks.Name = "fraMapLinks"
-        fraMapLinks.Padding = New Padding(4, 3, 4, 3)
-        fraMapLinks.Size = New Size(271, 129)
+        fraMapLinks.Padding = New Padding(6, 5, 6, 5)
+        fraMapLinks.Size = New Size(387, 215)
         fraMapLinks.TabIndex = 14
         fraMapLinks.TabStop = False
         fraMapLinks.Text = "Map Links"
         ' 
         ' txtDown
         ' 
-        txtDown.Location = New Point(105, 99)
-        txtDown.Margin = New Padding(4, 3, 4, 3)
+        txtDown.Location = New Point(150, 165)
+        txtDown.Margin = New Padding(6, 5, 6, 5)
         txtDown.Name = "txtDown"
-        txtDown.Size = New Size(58, 23)
+        txtDown.Size = New Size(81, 31)
         txtDown.TabIndex = 6
         txtDown.Text = "0"
         ' 
         ' txtLeft
         ' 
-        txtLeft.Location = New Point(8, 54)
-        txtLeft.Margin = New Padding(4, 3, 4, 3)
+        txtLeft.Location = New Point(11, 90)
+        txtLeft.Margin = New Padding(6, 5, 6, 5)
         txtLeft.Name = "txtLeft"
-        txtLeft.Size = New Size(50, 23)
+        txtLeft.Size = New Size(70, 31)
         txtLeft.TabIndex = 5
         txtLeft.Text = "0"
         ' 
         ' lblMap
         ' 
         lblMap.AutoSize = True
-        lblMap.Location = New Point(88, 58)
-        lblMap.Margin = New Padding(4, 0, 4, 0)
+        lblMap.Location = New Point(126, 97)
+        lblMap.Margin = New Padding(6, 0, 6, 0)
         lblMap.Name = "lblMap"
-        lblMap.Size = New Size(86, 15)
+        lblMap.Size = New Size(130, 25)
         lblMap.TabIndex = 4
         lblMap.Text = "Current Map: 0"
         ' 
         ' txtRight
         ' 
-        txtRight.Location = New Point(206, 54)
-        txtRight.Margin = New Padding(4, 3, 4, 3)
+        txtRight.Location = New Point(294, 90)
+        txtRight.Margin = New Padding(6, 5, 6, 5)
         txtRight.Name = "txtRight"
-        txtRight.Size = New Size(58, 23)
+        txtRight.Size = New Size(81, 31)
         txtRight.TabIndex = 3
         txtRight.Text = "0"
         ' 
         ' txtUp
         ' 
-        txtUp.Location = New Point(104, 12)
-        txtUp.Margin = New Padding(4, 3, 4, 3)
+        txtUp.Location = New Point(149, 20)
+        txtUp.Margin = New Padding(6, 5, 6, 5)
         txtUp.Name = "txtUp"
-        txtUp.Size = New Size(58, 23)
+        txtUp.Size = New Size(81, 31)
         txtUp.TabIndex = 1
         txtUp.Text = "0"
         ' 
         ' fraBootSettings
         ' 
+        fraBootSettings.Controls.Add(chkIndoors)
+        fraBootSettings.Controls.Add(chkMapRespawn)
         fraBootSettings.Controls.Add(txtBootMap)
         fraBootSettings.Controls.Add(Label5)
         fraBootSettings.Controls.Add(txtBootY)
         fraBootSettings.Controls.Add(Label3)
         fraBootSettings.Controls.Add(txtBootX)
         fraBootSettings.Controls.Add(Label4)
-        fraBootSettings.Location = New Point(7, 258)
-        fraBootSettings.Margin = New Padding(4, 3, 4, 3)
+        fraBootSettings.Location = New Point(10, 430)
+        fraBootSettings.Margin = New Padding(6, 5, 6, 5)
         fraBootSettings.Name = "fraBootSettings"
-        fraBootSettings.Padding = New Padding(4, 3, 4, 3)
-        fraBootSettings.Size = New Size(271, 105)
+        fraBootSettings.Padding = New Padding(6, 5, 6, 5)
+        fraBootSettings.Size = New Size(387, 209)
         fraBootSettings.TabIndex = 13
         fraBootSettings.TabStop = False
         fraBootSettings.Text = "Respawn Settings"
         ' 
+        ' chkIndoors
+        ' 
+        chkIndoors.AutoSize = True
+        chkIndoors.Location = New Point(12, 167)
+        chkIndoors.Margin = New Padding(6, 5, 6, 5)
+        chkIndoors.Name = "chkIndoors"
+        chkIndoors.Size = New Size(108, 29)
+        chkIndoors.TabIndex = 42
+        chkIndoors.Text = "Indoors?"
+        chkIndoors.UseVisualStyleBackColor = True
+        ' 
+        ' chkMapRespawn
+        ' 
+        chkMapRespawn.AutoSize = True
+        chkMapRespawn.Location = New Point(229, 167)
+        chkMapRespawn.Margin = New Padding(6, 5, 6, 5)
+        chkMapRespawn.Name = "chkMapRespawn"
+        chkMapRespawn.Size = New Size(157, 29)
+        chkMapRespawn.TabIndex = 19
+        chkMapRespawn.Text = "Map Respawn?"
+        chkMapRespawn.UseVisualStyleBackColor = True
+        ' 
         ' txtBootMap
         ' 
-        txtBootMap.Location = New Point(205, 13)
-        txtBootMap.Margin = New Padding(4, 3, 4, 3)
+        txtBootMap.Location = New Point(293, 22)
+        txtBootMap.Margin = New Padding(6, 5, 6, 5)
         txtBootMap.Name = "txtBootMap"
-        txtBootMap.Size = New Size(58, 23)
+        txtBootMap.Size = New Size(81, 31)
         txtBootMap.TabIndex = 5
         txtBootMap.Text = "0"
         ' 
         ' Label5
         ' 
         Label5.AutoSize = True
-        Label5.Location = New Point(7, 18)
-        Label5.Margin = New Padding(4, 0, 4, 0)
+        Label5.Location = New Point(10, 30)
+        Label5.Margin = New Padding(6, 0, 6, 0)
         Label5.Name = "Label5"
-        Label5.Size = New Size(84, 15)
+        Label5.Size = New Size(127, 25)
         Label5.TabIndex = 4
         Label5.Text = "Respawn Map:"
         ' 
         ' txtBootY
         ' 
-        txtBootY.Location = New Point(205, 73)
-        txtBootY.Margin = New Padding(4, 3, 4, 3)
+        txtBootY.Location = New Point(293, 122)
+        txtBootY.Margin = New Padding(6, 5, 6, 5)
         txtBootY.Name = "txtBootY"
-        txtBootY.Size = New Size(58, 23)
+        txtBootY.Size = New Size(81, 31)
         txtBootY.TabIndex = 3
         txtBootY.Text = "0"
         ' 
         ' Label3
         ' 
         Label3.AutoSize = True
-        Label3.Location = New Point(7, 75)
-        Label3.Margin = New Padding(4, 0, 4, 0)
+        Label3.Location = New Point(10, 125)
+        Label3.Margin = New Padding(6, 0, 6, 0)
         Label3.Name = "Label3"
-        Label3.Size = New Size(67, 15)
+        Label3.Size = New Size(101, 25)
         Label3.TabIndex = 2
         Label3.Text = "Respawn Y:"
         ' 
         ' txtBootX
         ' 
-        txtBootX.Location = New Point(205, 43)
-        txtBootX.Margin = New Padding(4, 3, 4, 3)
+        txtBootX.Location = New Point(293, 72)
+        txtBootX.Margin = New Padding(6, 5, 6, 5)
         txtBootX.Name = "txtBootX"
-        txtBootX.Size = New Size(58, 23)
+        txtBootX.Size = New Size(81, 31)
         txtBootX.TabIndex = 1
         txtBootX.Text = "0"
         ' 
         ' Label4
         ' 
         Label4.AutoSize = True
-        Label4.Location = New Point(7, 43)
-        Label4.Margin = New Padding(4, 0, 4, 0)
+        Label4.Location = New Point(10, 72)
+        Label4.Margin = New Padding(6, 0, 6, 0)
         Label4.Name = "Label4"
-        Label4.Size = New Size(67, 15)
+        Label4.Size = New Size(102, 25)
         Label4.TabIndex = 0
         Label4.Text = "Respawn X:"
         ' 
@@ -1384,50 +1438,50 @@ Partial Class frmEditor_Map
         fraMaxSizes.Controls.Add(Label2)
         fraMaxSizes.Controls.Add(txtMaxX)
         fraMaxSizes.Controls.Add(Label7)
-        fraMaxSizes.Location = New Point(285, 258)
-        fraMaxSizes.Margin = New Padding(4, 3, 4, 3)
+        fraMaxSizes.Location = New Point(407, 430)
+        fraMaxSizes.Margin = New Padding(6, 5, 6, 5)
         fraMaxSizes.Name = "fraMaxSizes"
-        fraMaxSizes.Padding = New Padding(4, 3, 4, 3)
-        fraMaxSizes.Size = New Size(249, 90)
+        fraMaxSizes.Padding = New Padding(6, 5, 6, 5)
+        fraMaxSizes.Size = New Size(356, 150)
         fraMaxSizes.TabIndex = 12
         fraMaxSizes.TabStop = False
         fraMaxSizes.Text = "Map Sizes"
         ' 
         ' txtMaxY
         ' 
-        txtMaxY.Location = New Point(145, 48)
-        txtMaxY.Margin = New Padding(4, 3, 4, 3)
+        txtMaxY.Location = New Point(207, 80)
+        txtMaxY.Margin = New Padding(6, 5, 6, 5)
         txtMaxY.Name = "txtMaxY"
-        txtMaxY.Size = New Size(58, 23)
+        txtMaxY.Size = New Size(81, 31)
         txtMaxY.TabIndex = 3
         txtMaxY.Text = "0"
         ' 
         ' Label2
         ' 
         Label2.AutoSize = True
-        Label2.Location = New Point(7, 52)
-        Label2.Margin = New Padding(4, 0, 4, 0)
+        Label2.Location = New Point(10, 87)
+        Label2.Margin = New Padding(6, 0, 6, 0)
         Label2.Name = "Label2"
-        Label2.Size = New Size(75, 15)
+        Label2.Size = New Size(110, 25)
         Label2.TabIndex = 2
         Label2.Text = "Maximum Y:"
         ' 
         ' txtMaxX
         ' 
-        txtMaxX.Location = New Point(145, 18)
-        txtMaxX.Margin = New Padding(4, 3, 4, 3)
+        txtMaxX.Location = New Point(207, 30)
+        txtMaxX.Margin = New Padding(6, 5, 6, 5)
         txtMaxX.Name = "txtMaxX"
-        txtMaxX.Size = New Size(58, 23)
+        txtMaxX.Size = New Size(81, 31)
         txtMaxX.TabIndex = 1
         txtMaxX.Text = "0"
         ' 
         ' Label7
         ' 
         Label7.AutoSize = True
-        Label7.Location = New Point(7, 22)
-        Label7.Margin = New Padding(4, 0, 4, 0)
+        Label7.Location = New Point(10, 37)
+        Label7.Margin = New Padding(6, 0, 6, 0)
         Label7.Name = "Label7"
-        Label7.Size = New Size(75, 15)
+        Label7.Size = New Size(111, 25)
         Label7.TabIndex = 0
         Label7.Text = "Maximum X:"
         ' 
@@ -1435,11 +1489,11 @@ Partial Class frmEditor_Map
         ' 
         GroupBox2.Controls.Add(btnPreview)
         GroupBox2.Controls.Add(lstMusic)
-        GroupBox2.Location = New Point(285, 3)
-        GroupBox2.Margin = New Padding(4, 3, 4, 3)
+        GroupBox2.Location = New Point(407, 5)
+        GroupBox2.Margin = New Padding(6, 5, 6, 5)
         GroupBox2.Name = "GroupBox2"
-        GroupBox2.Padding = New Padding(4, 3, 4, 3)
-        GroupBox2.Size = New Size(281, 249)
+        GroupBox2.Padding = New Padding(6, 5, 6, 5)
+        GroupBox2.Size = New Size(401, 415)
         GroupBox2.TabIndex = 11
         GroupBox2.TabStop = False
         GroupBox2.Text = "Music"
@@ -1448,10 +1502,10 @@ Partial Class frmEditor_Map
         ' 
         btnPreview.Image = CType(resources.GetObject("btnPreview.Image"), Image)
         btnPreview.ImageAlign = ContentAlignment.MiddleLeft
-        btnPreview.Location = New Point(57, 208)
-        btnPreview.Margin = New Padding(4, 3, 4, 3)
+        btnPreview.Location = New Point(81, 347)
+        btnPreview.Margin = New Padding(6, 5, 6, 5)
         btnPreview.Name = "btnPreview"
-        btnPreview.Size = New Size(162, 33)
+        btnPreview.Size = New Size(231, 55)
         btnPreview.TabIndex = 4
         btnPreview.Text = "Preview Music"
         btnPreview.UseVisualStyleBackColor = True
@@ -1459,40 +1513,40 @@ Partial Class frmEditor_Map
         ' lstMusic
         ' 
         lstMusic.FormattingEnabled = True
-        lstMusic.ItemHeight = 15
-        lstMusic.Location = New Point(7, 22)
-        lstMusic.Margin = New Padding(4, 3, 4, 3)
+        lstMusic.ItemHeight = 25
+        lstMusic.Location = New Point(10, 37)
+        lstMusic.Margin = New Padding(6, 5, 6, 5)
         lstMusic.Name = "lstMusic"
         lstMusic.ScrollAlwaysVisible = True
-        lstMusic.Size = New Size(242, 184)
+        lstMusic.Size = New Size(344, 304)
         lstMusic.TabIndex = 3
         ' 
         ' txtName
         ' 
-        txtName.Location = New Point(62, 7)
-        txtName.Margin = New Padding(4, 3, 4, 3)
+        txtName.Location = New Point(89, 12)
+        txtName.Margin = New Padding(6, 5, 6, 5)
         txtName.Name = "txtName"
-        txtName.Size = New Size(215, 23)
+        txtName.Size = New Size(305, 31)
         txtName.TabIndex = 10
         ' 
         ' Label6
         ' 
         Label6.AutoSize = True
-        Label6.Location = New Point(7, 10)
-        Label6.Margin = New Padding(4, 0, 4, 0)
+        Label6.Location = New Point(10, 17)
+        Label6.Margin = New Padding(6, 0, 6, 0)
         Label6.Name = "Label6"
-        Label6.Size = New Size(42, 15)
+        Label6.Size = New Size(63, 25)
         Label6.TabIndex = 9
         Label6.Text = "Name:"
         ' 
         ' tpDirBlock
         ' 
         tpDirBlock.Controls.Add(Label12)
-        tpDirBlock.Location = New Point(4, 24)
-        tpDirBlock.Margin = New Padding(4, 3, 4, 3)
+        tpDirBlock.Location = New Point(4, 34)
+        tpDirBlock.Margin = New Padding(6, 5, 6, 5)
         tpDirBlock.Name = "tpDirBlock"
-        tpDirBlock.Padding = New Padding(4, 3, 4, 3)
-        tpDirBlock.Size = New Size(542, 601)
+        tpDirBlock.Padding = New Padding(6, 5, 6, 5)
+        tpDirBlock.Size = New Size(778, 1010)
         tpDirBlock.TabIndex = 4
         tpDirBlock.Text = "Directional Block"
         tpDirBlock.UseVisualStyleBackColor = True
@@ -1500,10 +1554,10 @@ Partial Class frmEditor_Map
         ' Label12
         ' 
         Label12.AutoSize = True
-        Label12.Location = New Point(26, 27)
-        Label12.Margin = New Padding(4, 0, 4, 0)
+        Label12.Location = New Point(37, 45)
+        Label12.Margin = New Padding(6, 0, 6, 0)
         Label12.Name = "Label12"
-        Label12.Size = New Size(265, 15)
+        Label12.Size = New Size(404, 25)
         Label12.TabIndex = 0
         Label12.Text = "Just press the arrows to block that side of the tile."
         ' 
@@ -1516,11 +1570,11 @@ Partial Class frmEditor_Map
         tpEvents.Controls.Add(btnCopyEvent)
         tpEvents.Controls.Add(Label15)
         tpEvents.Controls.Add(Label13)
-        tpEvents.Location = New Point(4, 24)
-        tpEvents.Margin = New Padding(4, 3, 4, 3)
+        tpEvents.Location = New Point(4, 34)
+        tpEvents.Margin = New Padding(6, 5, 6, 5)
         tpEvents.Name = "tpEvents"
-        tpEvents.Padding = New Padding(4, 3, 4, 3)
-        tpEvents.Size = New Size(542, 601)
+        tpEvents.Padding = New Padding(6, 5, 6, 5)
+        tpEvents.Size = New Size(778, 1010)
         tpEvents.TabIndex = 5
         tpEvents.Text = "Events"
         tpEvents.UseVisualStyleBackColor = True
@@ -1528,29 +1582,29 @@ Partial Class frmEditor_Map
         ' lblPasteMode
         ' 
         lblPasteMode.AutoSize = True
-        lblPasteMode.Location = New Point(121, 197)
-        lblPasteMode.Margin = New Padding(4, 0, 4, 0)
+        lblPasteMode.Location = New Point(173, 328)
+        lblPasteMode.Margin = New Padding(6, 0, 6, 0)
         lblPasteMode.Name = "lblPasteMode"
-        lblPasteMode.Size = New Size(86, 15)
+        lblPasteMode.Size = New Size(131, 25)
         lblPasteMode.TabIndex = 6
         lblPasteMode.Text = "PasteMode Off"
         ' 
         ' lblCopyMode
         ' 
         lblCopyMode.AutoSize = True
-        lblCopyMode.Location = New Point(121, 129)
-        lblCopyMode.Margin = New Padding(4, 0, 4, 0)
+        lblCopyMode.Location = New Point(173, 215)
+        lblCopyMode.Margin = New Padding(6, 0, 6, 0)
         lblCopyMode.Name = "lblCopyMode"
-        lblCopyMode.Size = New Size(86, 15)
+        lblCopyMode.Size = New Size(132, 25)
         lblCopyMode.TabIndex = 5
         lblCopyMode.Text = "CopyMode Off"
         ' 
         ' btnPasteEvent
         ' 
-        btnPasteEvent.Location = New Point(27, 192)
-        btnPasteEvent.Margin = New Padding(4, 3, 4, 3)
+        btnPasteEvent.Location = New Point(39, 320)
+        btnPasteEvent.Margin = New Padding(6, 5, 6, 5)
         btnPasteEvent.Name = "btnPasteEvent"
-        btnPasteEvent.Size = New Size(88, 27)
+        btnPasteEvent.Size = New Size(126, 45)
         btnPasteEvent.TabIndex = 4
         btnPasteEvent.Text = "Paste Event"
         btnPasteEvent.UseVisualStyleBackColor = True
@@ -1558,19 +1612,19 @@ Partial Class frmEditor_Map
         ' Label16
         ' 
         Label16.AutoSize = True
-        Label16.Location = New Point(23, 172)
-        Label16.Margin = New Padding(4, 0, 4, 0)
+        Label16.Location = New Point(33, 287)
+        Label16.Margin = New Padding(6, 0, 6, 0)
         Label16.Name = "Label16"
-        Label16.Size = New Size(432, 15)
+        Label16.Size = New Size(653, 25)
         Label16.TabIndex = 3
         Label16.Text = "To paste a copied Event, press the paste button, then click on the map to place it."
         ' 
         ' btnCopyEvent
         ' 
-        btnCopyEvent.Location = New Point(27, 123)
-        btnCopyEvent.Margin = New Padding(4, 3, 4, 3)
+        btnCopyEvent.Location = New Point(39, 205)
+        btnCopyEvent.Margin = New Padding(6, 5, 6, 5)
         btnCopyEvent.Name = "btnCopyEvent"
-        btnCopyEvent.Size = New Size(88, 27)
+        btnCopyEvent.Size = New Size(126, 45)
         btnCopyEvent.TabIndex = 2
         btnCopyEvent.Text = "Copy Event"
         btnCopyEvent.UseVisualStyleBackColor = True
@@ -1578,20 +1632,20 @@ Partial Class frmEditor_Map
         ' Label15
         ' 
         Label15.AutoSize = True
-        Label15.Location = New Point(23, 100)
-        Label15.Margin = New Padding(4, 0, 4, 0)
+        Label15.Location = New Point(33, 167)
+        Label15.Margin = New Padding(6, 0, 6, 0)
         Label15.Name = "Label15"
-        Label15.Size = New Size(339, 15)
+        Label15.Size = New Size(511, 25)
         Label15.TabIndex = 1
         Label15.Text = "To copy a existing Event, press the copy button, then the event."
         ' 
         ' Label13
         ' 
         Label13.AutoSize = True
-        Label13.Location = New Point(23, 24)
-        Label13.Margin = New Padding(4, 0, 4, 0)
+        Label13.Location = New Point(33, 40)
+        Label13.Margin = New Padding(6, 0, 6, 0)
         Label13.Name = "Label13"
-        Label13.Size = New Size(265, 15)
+        Label13.Size = New Size(399, 25)
         Label13.TabIndex = 0
         Label13.Text = "Click on the map where you want to add a event."
         ' 
@@ -1602,11 +1656,11 @@ Partial Class frmEditor_Map
         TabPage1.Controls.Add(GroupBox4)
         TabPage1.Controls.Add(GroupBox3)
         TabPage1.Controls.Add(GroupBox1)
-        TabPage1.Location = New Point(4, 24)
-        TabPage1.Margin = New Padding(4, 3, 4, 3)
+        TabPage1.Location = New Point(4, 34)
+        TabPage1.Margin = New Padding(6, 5, 6, 5)
         TabPage1.Name = "TabPage1"
-        TabPage1.Padding = New Padding(4, 3, 4, 3)
-        TabPage1.Size = New Size(542, 601)
+        TabPage1.Padding = New Padding(6, 5, 6, 5)
+        TabPage1.Size = New Size(778, 1010)
         TabPage1.TabIndex = 6
         TabPage1.Text = "Map Effects"
         TabPage1.UseVisualStyleBackColor = True
@@ -1615,11 +1669,11 @@ Partial Class frmEditor_Map
         ' 
         GroupBox6.Controls.Add(lblMapBrightness)
         GroupBox6.Controls.Add(scrlMapBrightness)
-        GroupBox6.Location = New Point(13, 259)
-        GroupBox6.Margin = New Padding(4, 3, 4, 3)
+        GroupBox6.Location = New Point(19, 432)
+        GroupBox6.Margin = New Padding(6, 5, 6, 5)
         GroupBox6.Name = "GroupBox6"
-        GroupBox6.Padding = New Padding(4, 3, 4, 3)
-        GroupBox6.Size = New Size(275, 45)
+        GroupBox6.Padding = New Padding(6, 5, 6, 5)
+        GroupBox6.Size = New Size(393, 75)
         GroupBox6.TabIndex = 22
         GroupBox6.TabStop = False
         GroupBox6.Text = "Map Brightness"
@@ -1627,31 +1681,31 @@ Partial Class frmEditor_Map
         ' lblMapBrightness
         ' 
         lblMapBrightness.AutoSize = True
-        lblMapBrightness.Location = New Point(1, 19)
-        lblMapBrightness.Margin = New Padding(4, 0, 4, 0)
+        lblMapBrightness.Location = New Point(1, 32)
+        lblMapBrightness.Margin = New Padding(6, 0, 6, 0)
         lblMapBrightness.Name = "lblMapBrightness"
-        lblMapBrightness.Size = New Size(74, 15)
+        lblMapBrightness.Size = New Size(113, 25)
         lblMapBrightness.TabIndex = 14
         lblMapBrightness.Text = "Brightness: 0"
         ' 
         ' scrlMapBrightness
         ' 
         scrlMapBrightness.LargeChange = 1
-        scrlMapBrightness.Location = New Point(98, 19)
+        scrlMapBrightness.Location = New Point(140, 32)
         scrlMapBrightness.Maximum = 255
         scrlMapBrightness.Name = "scrlMapBrightness"
-        scrlMapBrightness.Size = New Size(169, 17)
+        scrlMapBrightness.Size = New Size(241, 17)
         scrlMapBrightness.TabIndex = 10
         ' 
         ' GroupBox5
         ' 
         GroupBox5.Controls.Add(Label20)
         GroupBox5.Controls.Add(cmbParallax)
-        GroupBox5.Location = New Point(295, 192)
-        GroupBox5.Margin = New Padding(4, 3, 4, 3)
+        GroupBox5.Location = New Point(421, 320)
+        GroupBox5.Margin = New Padding(6, 5, 6, 5)
         GroupBox5.Name = "GroupBox5"
-        GroupBox5.Padding = New Padding(4, 3, 4, 3)
-        GroupBox5.Size = New Size(275, 61)
+        GroupBox5.Padding = New Padding(6, 5, 6, 5)
+        GroupBox5.Size = New Size(393, 102)
         GroupBox5.TabIndex = 21
         GroupBox5.TabStop = False
         GroupBox5.Text = "Map Parallax"
@@ -1659,31 +1713,31 @@ Partial Class frmEditor_Map
         ' Label20
         ' 
         Label20.AutoSize = True
-        Label20.Location = New Point(0, 25)
-        Label20.Margin = New Padding(4, 0, 4, 0)
+        Label20.Location = New Point(0, 42)
+        Label20.Margin = New Padding(6, 0, 6, 0)
         Label20.Name = "Label20"
-        Label20.Size = New Size(51, 15)
+        Label20.Size = New Size(74, 25)
         Label20.TabIndex = 1
         Label20.Text = "Parallax:"
         ' 
         ' cmbParallax
         ' 
         cmbParallax.FormattingEnabled = True
-        cmbParallax.Location = New Point(53, 21)
-        cmbParallax.Margin = New Padding(4, 3, 4, 3)
+        cmbParallax.Location = New Point(76, 35)
+        cmbParallax.Margin = New Padding(6, 5, 6, 5)
         cmbParallax.Name = "cmbParallax"
-        cmbParallax.Size = New Size(186, 23)
+        cmbParallax.Size = New Size(264, 33)
         cmbParallax.TabIndex = 0
         ' 
         ' GroupBox4
         ' 
         GroupBox4.Controls.Add(Label19)
         GroupBox4.Controls.Add(cmbPanorama)
-        GroupBox4.Location = New Point(7, 192)
-        GroupBox4.Margin = New Padding(4, 3, 4, 3)
+        GroupBox4.Location = New Point(10, 320)
+        GroupBox4.Margin = New Padding(6, 5, 6, 5)
         GroupBox4.Name = "GroupBox4"
-        GroupBox4.Padding = New Padding(4, 3, 4, 3)
-        GroupBox4.Size = New Size(281, 61)
+        GroupBox4.Padding = New Padding(6, 5, 6, 5)
+        GroupBox4.Size = New Size(401, 102)
         GroupBox4.TabIndex = 20
         GroupBox4.TabStop = False
         GroupBox4.Text = "Map Panorama"
@@ -1691,25 +1745,25 @@ Partial Class frmEditor_Map
         ' Label19
         ' 
         Label19.AutoSize = True
-        Label19.Location = New Point(7, 25)
-        Label19.Margin = New Padding(4, 0, 4, 0)
+        Label19.Location = New Point(10, 42)
+        Label19.Margin = New Padding(6, 0, 6, 0)
         Label19.Name = "Label19"
-        Label19.Size = New Size(64, 15)
+        Label19.Size = New Size(95, 25)
         Label19.TabIndex = 1
         Label19.Text = "Panorama:"
         ' 
         ' cmbPanorama
         ' 
         cmbPanorama.FormattingEnabled = True
-        cmbPanorama.Location = New Point(82, 22)
-        cmbPanorama.Margin = New Padding(4, 3, 4, 3)
+        cmbPanorama.Location = New Point(117, 37)
+        cmbPanorama.Margin = New Padding(6, 5, 6, 5)
         cmbPanorama.Name = "cmbPanorama"
-        cmbPanorama.Size = New Size(192, 23)
+        cmbPanorama.Size = New Size(273, 33)
         cmbPanorama.TabIndex = 0
         ' 
         ' GroupBox3
         ' 
-        GroupBox3.Controls.Add(chkUseTint)
+        GroupBox3.Controls.Add(chkTint)
         GroupBox3.Controls.Add(lblMapAlpha)
         GroupBox3.Controls.Add(lblMapBlue)
         GroupBox3.Controls.Add(lblMapGreen)
@@ -1718,100 +1772,100 @@ Partial Class frmEditor_Map
         GroupBox3.Controls.Add(scrlMapBlue)
         GroupBox3.Controls.Add(scrlMapGreen)
         GroupBox3.Controls.Add(scrlMapRed)
-        GroupBox3.Location = New Point(295, 7)
-        GroupBox3.Margin = New Padding(4, 3, 4, 3)
+        GroupBox3.Location = New Point(421, 12)
+        GroupBox3.Margin = New Padding(6, 5, 6, 5)
         GroupBox3.Name = "GroupBox3"
-        GroupBox3.Padding = New Padding(4, 3, 4, 3)
-        GroupBox3.Size = New Size(275, 178)
+        GroupBox3.Padding = New Padding(6, 5, 6, 5)
+        GroupBox3.Size = New Size(393, 297)
         GroupBox3.TabIndex = 19
         GroupBox3.TabStop = False
         GroupBox3.Text = "Map Tint"
         ' 
-        ' chkUseTint
+        ' chkTint
         ' 
-        chkUseTint.AutoSize = True
-        chkUseTint.Location = New Point(7, 22)
-        chkUseTint.Margin = New Padding(4, 3, 4, 3)
-        chkUseTint.Name = "chkUseTint"
-        chkUseTint.Size = New Size(97, 19)
-        chkUseTint.TabIndex = 18
-        chkUseTint.Text = "Use MapTint?"
-        chkUseTint.UseVisualStyleBackColor = True
+        chkTint.AutoSize = True
+        chkTint.Location = New Point(10, 37)
+        chkTint.Margin = New Padding(6, 5, 6, 5)
+        chkTint.Name = "chkTint"
+        chkTint.Size = New Size(111, 29)
+        chkTint.TabIndex = 18
+        chkTint.Text = "MapTint?"
+        chkTint.UseVisualStyleBackColor = True
         ' 
         ' lblMapAlpha
         ' 
         lblMapAlpha.AutoSize = True
-        lblMapAlpha.Location = New Point(9, 111)
-        lblMapAlpha.Margin = New Padding(4, 0, 4, 0)
+        lblMapAlpha.Location = New Point(13, 185)
+        lblMapAlpha.Margin = New Padding(6, 0, 6, 0)
         lblMapAlpha.Name = "lblMapAlpha"
-        lblMapAlpha.Size = New Size(50, 15)
+        lblMapAlpha.Size = New Size(77, 25)
         lblMapAlpha.TabIndex = 17
         lblMapAlpha.Text = "Alpha: 0"
         ' 
         ' lblMapBlue
         ' 
         lblMapBlue.AutoSize = True
-        lblMapBlue.Location = New Point(9, 89)
-        lblMapBlue.Margin = New Padding(4, 0, 4, 0)
+        lblMapBlue.Location = New Point(13, 148)
+        lblMapBlue.Margin = New Padding(6, 0, 6, 0)
         lblMapBlue.Name = "lblMapBlue"
-        lblMapBlue.Size = New Size(42, 15)
+        lblMapBlue.Size = New Size(64, 25)
         lblMapBlue.TabIndex = 16
         lblMapBlue.Text = "Blue: 0"
         ' 
         ' lblMapGreen
         ' 
         lblMapGreen.AutoSize = True
-        lblMapGreen.Location = New Point(9, 67)
-        lblMapGreen.Margin = New Padding(4, 0, 4, 0)
+        lblMapGreen.Location = New Point(13, 112)
+        lblMapGreen.Margin = New Padding(6, 0, 6, 0)
         lblMapGreen.Name = "lblMapGreen"
-        lblMapGreen.Size = New Size(50, 15)
+        lblMapGreen.Size = New Size(77, 25)
         lblMapGreen.TabIndex = 15
         lblMapGreen.Text = "Green: 0"
         ' 
         ' lblMapRed
         ' 
         lblMapRed.AutoSize = True
-        lblMapRed.Location = New Point(7, 45)
-        lblMapRed.Margin = New Padding(4, 0, 4, 0)
+        lblMapRed.Location = New Point(10, 75)
+        lblMapRed.Margin = New Padding(6, 0, 6, 0)
         lblMapRed.Name = "lblMapRed"
-        lblMapRed.Size = New Size(39, 15)
+        lblMapRed.Size = New Size(61, 25)
         lblMapRed.TabIndex = 14
         lblMapRed.Text = "Red: 0"
         ' 
         ' scrlMapAlpha
         ' 
         scrlMapAlpha.LargeChange = 1
-        scrlMapAlpha.Location = New Point(74, 109)
+        scrlMapAlpha.Location = New Point(106, 182)
         scrlMapAlpha.Maximum = 255
         scrlMapAlpha.Name = "scrlMapAlpha"
-        scrlMapAlpha.Size = New Size(169, 17)
+        scrlMapAlpha.Size = New Size(241, 17)
         scrlMapAlpha.TabIndex = 13
         ' 
         ' scrlMapBlue
         ' 
         scrlMapBlue.LargeChange = 1
-        scrlMapBlue.Location = New Point(74, 88)
+        scrlMapBlue.Location = New Point(106, 147)
         scrlMapBlue.Maximum = 255
         scrlMapBlue.Name = "scrlMapBlue"
-        scrlMapBlue.Size = New Size(169, 17)
+        scrlMapBlue.Size = New Size(241, 17)
         scrlMapBlue.TabIndex = 12
         ' 
         ' scrlMapGreen
         ' 
         scrlMapGreen.LargeChange = 1
-        scrlMapGreen.Location = New Point(74, 64)
+        scrlMapGreen.Location = New Point(106, 107)
         scrlMapGreen.Maximum = 255
         scrlMapGreen.Name = "scrlMapGreen"
-        scrlMapGreen.Size = New Size(169, 17)
+        scrlMapGreen.Size = New Size(241, 17)
         scrlMapGreen.TabIndex = 11
         ' 
         ' scrlMapRed
         ' 
         scrlMapRed.LargeChange = 1
-        scrlMapRed.Location = New Point(74, 46)
+        scrlMapRed.Location = New Point(106, 77)
         scrlMapRed.Maximum = 255
         scrlMapRed.Name = "scrlMapRed"
-        scrlMapRed.Size = New Size(169, 17)
+        scrlMapRed.Size = New Size(241, 17)
         scrlMapRed.TabIndex = 10
         ' 
         ' GroupBox1
@@ -1826,11 +1880,11 @@ Partial Class frmEditor_Map
         GroupBox1.Controls.Add(lblFogIndex)
         GroupBox1.Controls.Add(Label14)
         GroupBox1.Controls.Add(cmbWeather)
-        GroupBox1.Location = New Point(7, 7)
-        GroupBox1.Margin = New Padding(4, 3, 4, 3)
+        GroupBox1.Location = New Point(10, 12)
+        GroupBox1.Margin = New Padding(6, 5, 6, 5)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Padding = New Padding(4, 3, 4, 3)
-        GroupBox1.Size = New Size(281, 178)
+        GroupBox1.Padding = New Padding(6, 5, 6, 5)
+        GroupBox1.Size = New Size(401, 297)
         GroupBox1.TabIndex = 18
         GroupBox1.TabStop = False
         GroupBox1.Text = "Map Weather"
@@ -1838,83 +1892,83 @@ Partial Class frmEditor_Map
         ' scrlFogAlpha
         ' 
         scrlFogAlpha.LargeChange = 1
-        scrlFogAlpha.Location = New Point(105, 143)
+        scrlFogAlpha.Location = New Point(150, 238)
         scrlFogAlpha.Maximum = 255
         scrlFogAlpha.Name = "scrlFogAlpha"
-        scrlFogAlpha.Size = New Size(169, 17)
+        scrlFogAlpha.Size = New Size(241, 17)
         scrlFogAlpha.TabIndex = 9
         ' 
         ' lblFogAlpha
         ' 
         lblFogAlpha.AutoSize = True
-        lblFogAlpha.Location = New Point(7, 145)
-        lblFogAlpha.Margin = New Padding(4, 0, 4, 0)
+        lblFogAlpha.Location = New Point(10, 242)
+        lblFogAlpha.Margin = New Padding(6, 0, 6, 0)
         lblFogAlpha.Name = "lblFogAlpha"
-        lblFogAlpha.Size = New Size(85, 15)
+        lblFogAlpha.Size = New Size(133, 25)
         lblFogAlpha.TabIndex = 8
         lblFogAlpha.Text = "Fog Alpha: 255"
         ' 
         ' scrlFogSpeed
         ' 
         scrlFogSpeed.LargeChange = 1
-        scrlFogSpeed.Location = New Point(105, 117)
+        scrlFogSpeed.Location = New Point(150, 195)
         scrlFogSpeed.Name = "scrlFogSpeed"
-        scrlFogSpeed.Size = New Size(169, 17)
+        scrlFogSpeed.Size = New Size(241, 17)
         scrlFogSpeed.TabIndex = 7
         ' 
         ' lblFogSpeed
         ' 
         lblFogSpeed.AutoSize = True
-        lblFogSpeed.Location = New Point(7, 121)
-        lblFogSpeed.Margin = New Padding(4, 0, 4, 0)
+        lblFogSpeed.Location = New Point(10, 202)
+        lblFogSpeed.Margin = New Padding(6, 0, 6, 0)
         lblFogSpeed.Name = "lblFogSpeed"
-        lblFogSpeed.Size = New Size(83, 15)
+        lblFogSpeed.Size = New Size(132, 25)
         lblFogSpeed.TabIndex = 6
         lblFogSpeed.Text = "FogSpeed: 100"
         ' 
         ' scrlIntensity
         ' 
         scrlIntensity.LargeChange = 1
-        scrlIntensity.Location = New Point(105, 59)
+        scrlIntensity.Location = New Point(150, 98)
         scrlIntensity.Name = "scrlIntensity"
-        scrlIntensity.Size = New Size(169, 17)
+        scrlIntensity.Size = New Size(241, 17)
         scrlIntensity.TabIndex = 5
         ' 
         ' lblIntensity
         ' 
         lblIntensity.AutoSize = True
-        lblIntensity.Location = New Point(7, 61)
-        lblIntensity.Margin = New Padding(4, 0, 4, 0)
+        lblIntensity.Location = New Point(10, 102)
+        lblIntensity.Margin = New Padding(6, 0, 6, 0)
         lblIntensity.Name = "lblIntensity"
-        lblIntensity.Size = New Size(76, 15)
+        lblIntensity.Size = New Size(118, 25)
         lblIntensity.TabIndex = 4
         lblIntensity.Text = "Intensity: 100"
         ' 
         ' scrlFog
         ' 
         scrlFog.LargeChange = 1
-        scrlFog.Location = New Point(105, 93)
+        scrlFog.Location = New Point(150, 155)
         scrlFog.Name = "scrlFog"
-        scrlFog.Size = New Size(169, 17)
+        scrlFog.Size = New Size(241, 17)
         scrlFog.TabIndex = 3
         ' 
         ' lblFogIndex
         ' 
         lblFogIndex.AutoSize = True
-        lblFogIndex.Location = New Point(7, 95)
-        lblFogIndex.Margin = New Padding(4, 0, 4, 0)
+        lblFogIndex.Location = New Point(10, 158)
+        lblFogIndex.Margin = New Padding(6, 0, 6, 0)
         lblFogIndex.Name = "lblFogIndex"
-        lblFogIndex.Size = New Size(39, 15)
+        lblFogIndex.Size = New Size(62, 25)
         lblFogIndex.TabIndex = 2
         lblFogIndex.Text = "Fog: 1"
         ' 
         ' Label14
         ' 
         Label14.AutoSize = True
-        Label14.Location = New Point(7, 29)
-        Label14.Margin = New Padding(4, 0, 4, 0)
+        Label14.Location = New Point(10, 48)
+        Label14.Margin = New Padding(6, 0, 6, 0)
         Label14.Name = "Label14"
-        Label14.Size = New Size(81, 15)
+        Label14.Size = New Size(123, 25)
         Label14.TabIndex = 1
         Label14.Text = "Weather Type:"
         ' 
@@ -1922,24 +1976,24 @@ Partial Class frmEditor_Map
         ' 
         cmbWeather.FormattingEnabled = True
         cmbWeather.Items.AddRange(New Object() {"None", "Rain", "Snow", "Hail", "Sand Storm", "Storm", "Fog"})
-        cmbWeather.Location = New Point(105, 25)
-        cmbWeather.Margin = New Padding(4, 3, 4, 3)
+        cmbWeather.Location = New Point(150, 42)
+        cmbWeather.Margin = New Padding(6, 5, 6, 5)
         cmbWeather.Name = "cmbWeather"
-        cmbWeather.Size = New Size(168, 23)
+        cmbWeather.Size = New Size(238, 33)
         cmbWeather.TabIndex = 0
         ' 
         ' frmEditor_Map
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(10.0F, 25.0F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = SystemColors.Control
-        ClientSize = New Size(552, 658)
+        ClientSize = New Size(789, 1097)
         Controls.Add(tabpages)
         Controls.Add(ToolStrip)
         Controls.Add(pnlAttributes)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
-        Margin = New Padding(4, 3, 4, 3)
+        Margin = New Padding(6, 5, 6, 5)
         MaximizeBox = False
         Name = "frmEditor_Map"
         Text = "Map Editor"
@@ -2114,7 +2168,7 @@ Partial Class frmEditor_Map
     Friend WithEvents lblCopyMode As System.Windows.Forms.Label
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkUseTint As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTint As System.Windows.Forms.CheckBox
     Friend WithEvents lblMapAlpha As System.Windows.Forms.Label
     Friend WithEvents lblMapBlue As System.Windows.Forms.Label
     Friend WithEvents lblMapGreen As System.Windows.Forms.Label
@@ -2164,4 +2218,8 @@ Partial Class frmEditor_Map
     Friend WithEvents chkFlicker As CheckBox
     Friend WithEvents Label21 As Label
     Friend WithEvents lblRadius As Label
+    Friend WithEvents Label22 As Label
+    Friend WithEvents lstShop As ComboBox
+    Friend WithEvents chkMapRespawn As CheckBox
+    Friend WithEvents chkIndoors As CheckBox
 End Class

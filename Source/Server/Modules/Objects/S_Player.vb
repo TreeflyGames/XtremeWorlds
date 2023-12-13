@@ -1115,16 +1115,7 @@ Module S_Player
                 x = .Data2
                 y = .Data3
 
-                'If (MapNum AndAlso INSTANCED_MAP_MASK) > 0 Then
-                If Map(mapNum).Instanced = 1 Then
-                    If TempPlayer(index).InParty Then
-                        PartyWarp(index, mapNum, x, y)
-                    Else
-                        PlayerWarp(index, mapNum, x, y)
-                    End If
-                Else
-                    PlayerWarp(index, mapNum, x, y)
-                End If
+                PlayerWarp(index, mapNum, x, y)
 
                 DidWarp = True
                 Moved = True

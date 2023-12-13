@@ -136,8 +136,8 @@ Friend Module C_EventSystem
 
         ' set the new count
         Map.EventCount = count
-        Map.CurrentEvents = count
-        ReDim Preserve Map.MapEvents(count)
+        CurrentEvents = count
+        ReDim Preserve MapEvents(count)
         ReDim Preserve Map.Events(count)
         TmpEvent = Nothing
     End Sub
@@ -1940,12 +1940,12 @@ newlist:
 
         id = buffer.ReadInt32
 
-        If id > Map.CurrentEvents Then
-            Map.CurrentEvents = id
-            ReDim Preserve Map.MapEvents(Map.CurrentEvents)
+        If id > CurrentEvents Then
+            CurrentEvents = id
+            ReDim Preserve MapEvents(CurrentEvents)
         End If
 
-        With Map.MapEvents(id)
+        With MapEvents(id)
             .Name = buffer.ReadString
             .Dir = buffer.ReadInt32
             .ShowDir = .Dir
@@ -1967,7 +1967,7 @@ newlist:
             .DirFix = buffer.ReadInt32
             .WalkThrough = buffer.ReadInt32
             .ShowName = buffer.ReadInt32
-            .Questnum = buffer.ReadInt32
+            .QuestNum = buffer.ReadInt32
         End With
 
         buffer.Dispose()
@@ -1989,9 +1989,9 @@ newlist:
         showDir = buffer.ReadInt32
         movementSpeed = buffer.ReadInt32
 
-        If id > Map.CurrentEvents Then Exit Sub
+        If id > CurrentEvents Then Exit Sub
 
-        With Map.MapEvents(id)
+        With MapEvents(id)
             .X = x
             .Y = y
             .Dir = dir
@@ -2023,9 +2023,9 @@ newlist:
         i = buffer.ReadInt32
         dir = buffer.ReadInt32
 
-        If i > Map.CurrentEvents Then Exit Sub
+        If i > CurrentEvents Then Exit Sub
 
-        With Map.MapEvents(i)
+        With MapEvents(i)
             .Dir = dir
             .ShowDir = dir
             .XOffset = 0
@@ -2316,7 +2316,7 @@ newlist:
                 CurrentWeather = buffer.ReadInt32
                 CurrentWeatherIntensity = buffer.ReadInt32
             Case EffectTypeTint
-                Map.HasMapTint = 1
+                Map.MapTint = 1
                 CurrentTintR = buffer.ReadInt32
                 CurrentTintG = buffer.ReadInt32
                 CurrentTintB = buffer.ReadInt32
@@ -2647,34 +2647,34 @@ nextevent:
     Friend Sub DrawEvent(id As Integer) ' draw on map, outside the editor
         Dim x As Integer, y As Integer, width As Integer, height As Integer, sRect As Rectangle, anim As Integer, spritetop As Integer
 
-        If Map.MapEvents(id).Visible = 0 Then Exit Sub
+        If MapEvents(id).Visible = 0 Then Exit Sub
 
-        Select Case Map.MapEvents(id).GraphicType
+        Select Case MapEvents(id).GraphicType
             Case 0
                 Exit Sub
             Case 1
-                If Map.MapEvents(id).Graphic <= 0 OrElse Map.MapEvents(id).Graphic > NumCharacters Then Exit Sub
+                If MapEvents(id).Graphic <= 0 OrElse MapEvents(id).Graphic > NumCharacters Then Exit Sub
 
                 ' Reset frame
-                If Map.MapEvents(id).Steps = 3 Then
+                If MapEvents(id).Steps = 3 Then
                     anim = 0
-                ElseIf Map.MapEvents(id).Steps = 1 Then
+                ElseIf MapEvents(id).Steps = 1 Then
                     anim = 2
                 End If
 
-                Select Case Map.MapEvents(id).Dir
+                Select Case MapEvents(id).Dir
                     Case DirectionType.Up
-                        If (Map.MapEvents(id).YOffset > 8) Then anim = Map.MapEvents(id).Steps
+                        If (MapEvents(id).YOffset > 8) Then anim = MapEvents(id).Steps
                     Case DirectionType.Down
-                        If (Map.MapEvents(id).YOffset < -8) Then anim = Map.MapEvents(id).Steps
+                        If (MapEvents(id).YOffset < -8) Then anim = MapEvents(id).Steps
                     Case DirectionType.Left
-                        If (Map.MapEvents(id).XOffset > 8) Then anim = Map.MapEvents(id).Steps
+                        If (MapEvents(id).XOffset > 8) Then anim = MapEvents(id).Steps
                     Case DirectionType.Right
-                        If (Map.MapEvents(id).XOffset < -8) Then anim = Map.MapEvents(id).Steps
+                        If (MapEvents(id).XOffset < -8) Then anim = MapEvents(id).Steps
                 End Select
 
                 ' Set the left
-                Select Case Map.MapEvents(id).ShowDir
+                Select Case MapEvents(id).ShowDir
                     Case DirectionType.Up
                         spritetop = 3
                     Case DirectionType.Right
@@ -2685,61 +2685,61 @@ nextevent:
                         spritetop = 1
                 End Select
 
-                If Map.MapEvents(id).WalkAnim = 1 Then anim = 0
-                If Map.MapEvents(id).Moving = 0 Then anim = Map.MapEvents(id).GraphicX
+                If MapEvents(id).WalkAnim = 1 Then anim = 0
+                If MapEvents(id).Moving = 0 Then anim = MapEvents(id).GraphicX
 
-                width = CharacterGfxInfo(Map.MapEvents(id).Graphic).Width / 4
-                height = CharacterGfxInfo(Map.MapEvents(id).Graphic).Height / 4
+                width = CharacterGfxInfo(MapEvents(id).Graphic).Width / 4
+                height = CharacterGfxInfo(MapEvents(id).Graphic).Height / 4
 
-                sRect = New Rectangle((anim) * (CharacterGfxInfo(Map.MapEvents(id).Graphic).Width / 4), spritetop * (CharacterGfxInfo(Map.MapEvents(id).Graphic).Height / 4), (CharacterGfxInfo(Map.MapEvents(id).Graphic).Width / 4), (CharacterGfxInfo(Map.MapEvents(id).Graphic).Height / 4))
+                sRect = New Rectangle((anim) * (CharacterGfxInfo(MapEvents(id).Graphic).Width / 4), spritetop * (CharacterGfxInfo(MapEvents(id).Graphic).Height / 4), (CharacterGfxInfo(MapEvents(id).Graphic).Width / 4), (CharacterGfxInfo(MapEvents(id).Graphic).Height / 4))
                 ' Calculate the X
-                x = Map.MapEvents(id).X * PicX + Map.MapEvents(id).XOffset - ((CharacterGfxInfo(Map.MapEvents(id).Graphic).Width / 4 - 32) / 2)
+                x = MapEvents(id).X * PicX + MapEvents(id).XOffset - ((CharacterGfxInfo(MapEvents(id).Graphic).Width / 4 - 32) / 2)
 
                 ' Is the player's height more than 32..?
-                If (CharacterGfxInfo(Map.MapEvents(id).Graphic).Height * 4) > 32 Then
+                If (CharacterGfxInfo(MapEvents(id).Graphic).Height * 4) > 32 Then
                     ' Create a 32 pixel offset for larger sprites
-                    y = Map.MapEvents(id).Y * PicY + Map.MapEvents(id).YOffset - ((CharacterGfxInfo(Map.MapEvents(id).Graphic).Height / 4) - 32)
+                    y = MapEvents(id).Y * PicY + MapEvents(id).YOffset - ((CharacterGfxInfo(MapEvents(id).Graphic).Height / 4) - 32)
                 Else
                     ' Proceed as normal
-                    y = Map.MapEvents(id).Y * PicY + Map.MapEvents(id).YOffset
+                    y = MapEvents(id).Y * PicY + MapEvents(id).YOffset
                 End If
                 ' render the actual sprite
-                DrawCharacterSprite(Map.MapEvents(id).Graphic, x, y, sRect)
+                DrawCharacterSprite(MapEvents(id).Graphic, x, y, sRect)
             Case 2
-                If Map.MapEvents(id).Graphic < 1 OrElse Map.MapEvents(id).Graphic > NumTileSets Then Exit Sub
-                If Map.MapEvents(id).GraphicY2 > 0 OrElse Map.MapEvents(id).GraphicX2 > 0 Then
+                If MapEvents(id).Graphic < 1 OrElse MapEvents(id).Graphic > NumTileSets Then Exit Sub
+                If MapEvents(id).GraphicY2 > 0 OrElse MapEvents(id).GraphicX2 > 0 Then
                     With sRect
-                        .X = Map.MapEvents(id).GraphicX * 32
-                        .Y = Map.MapEvents(id).GraphicY * 32
-                        .Width = Map.MapEvents(id).GraphicX2 * 32
-                        .Height = Map.MapEvents(id).GraphicY2 * 32
+                        .X = MapEvents(id).GraphicX * 32
+                        .Y = MapEvents(id).GraphicY * 32
+                        .Width = MapEvents(id).GraphicX2 * 32
+                        .Height = MapEvents(id).GraphicY2 * 32
                     End With
                 Else
                     With sRect
-                        .X = Map.MapEvents(id).GraphicY * 32
+                        .X = MapEvents(id).GraphicY * 32
                         .Height = .Top + 32
-                        .Y = Map.MapEvents(id).GraphicX * 32
+                        .Y = MapEvents(id).GraphicX * 32
                         .Width = .Left + 32
                     End With
                 End If
 
-                If TilesetGfxInfo(Map.MapEvents(id).Graphic).IsLoaded = False Then
-                    LoadTexture(Map.MapEvents(id).Graphic, 1)
+                If TilesetGfxInfo(MapEvents(id).Graphic).IsLoaded = False Then
+                    LoadTexture(MapEvents(id).Graphic, 1)
                 End If
                 ' we use it, lets update timer
-                With TilesetGfxInfo(Map.MapEvents(id).Graphic)
+                With TilesetGfxInfo(MapEvents(id).Graphic)
                     .TextureTimer = GetTickCount() + 100000
                 End With
 
-                x = Map.MapEvents(id).X * 32
-                y = Map.MapEvents(id).Y * 32
+                x = MapEvents(id).X * 32
+                y = MapEvents(id).Y * 32
                 x = x - ((sRect.Right - sRect.Left) / 2)
                 y = y - (sRect.Bottom - sRect.Top) + 32
 
-                If Map.MapEvents(id).GraphicY2 > 1 Then
-                    RenderTexture(TileSetSprite(Map.MapEvents(id).Graphic), GameWindow, ConvertMapX(Map.MapEvents(id).X * PicX), ConvertMapY(Map.MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
+                If MapEvents(id).GraphicY2 > 1 Then
+                    RenderTexture(TilesetSprite(MapEvents(id).Graphic), GameWindow, ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 Else
-                    RenderTexture(TileSetSprite(Map.MapEvents(id).Graphic), GameWindow, ConvertMapX(Map.MapEvents(id).X * PicX), ConvertMapY(Map.MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
+                    RenderTexture(TilesetSprite(MapEvents(id).Graphic), GameWindow, ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 End If
         End Select
 
@@ -2753,41 +2753,41 @@ nextevent:
     Sub ProcessEventMovement(id As Integer)
         If Editor = EditorType.Map Then Exit Sub
         If id > Map.EventCount Then Exit Sub
-        If id > Map.MapEvents.Length Then Exit Sub
+        If id > MapEvents.Length Then Exit Sub
 
-        If Map.MapEvents(id).Moving = 1 Then
-            Select Case Map.MapEvents(id).Dir
+        If MapEvents(id).Moving = 1 Then
+            Select Case MapEvents(id).Dir
                 Case DirectionType.Up
-                    Map.MapEvents(id).YOffset = Map.MapEvents(id).YOffset - ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeY))
-                    If Map.MapEvents(id).YOffset < 0 Then Map.MapEvents(id).YOffset = 0
+                    MapEvents(id).YOffset = MapEvents(id).YOffset - ((ElapsedTime / 1000) * (MapEvents(id).MovementSpeed * SizeY))
+                    If MapEvents(id).YOffset < 0 Then MapEvents(id).YOffset = 0
                 Case DirectionType.Down
-                    Map.MapEvents(id).YOffset = Map.MapEvents(id).YOffset + ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeY))
-                    If Map.MapEvents(id).YOffset > 0 Then Map.MapEvents(id).YOffset = 0
+                    MapEvents(id).YOffset = MapEvents(id).YOffset + ((ElapsedTime / 1000) * (MapEvents(id).MovementSpeed * SizeY))
+                    If MapEvents(id).YOffset > 0 Then MapEvents(id).YOffset = 0
                 Case DirectionType.Left
-                    Map.MapEvents(id).XOffset = Map.MapEvents(id).XOffset - ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeX))
-                    If Map.MapEvents(id).XOffset < 0 Then Map.MapEvents(id).XOffset = 0
+                    MapEvents(id).XOffset = MapEvents(id).XOffset - ((ElapsedTime / 1000) * (MapEvents(id).MovementSpeed * SizeX))
+                    If MapEvents(id).XOffset < 0 Then MapEvents(id).XOffset = 0
                 Case DirectionType.Right
-                    Map.MapEvents(id).XOffset = Map.MapEvents(id).XOffset + ((ElapsedTime / 1000) * (Map.MapEvents(id).MovementSpeed * SizeX))
-                    If Map.MapEvents(id).XOffset > 0 Then Map.MapEvents(id).XOffset = 0
+                    MapEvents(id).XOffset = MapEvents(id).XOffset + ((ElapsedTime / 1000) * (MapEvents(id).MovementSpeed * SizeX))
+                    If MapEvents(id).XOffset > 0 Then MapEvents(id).XOffset = 0
             End Select
             ' Check if completed walking over to the next tile
-            If Map.MapEvents(id).Moving > 0 Then
-                If Map.MapEvents(id).Dir = DirectionType.Right OrElse Map.MapEvents(id).Dir = DirectionType.Down Then
-                    If (Map.MapEvents(id).XOffset >= 0) AndAlso (Map.MapEvents(id).YOffset >= 0) Then
-                        Map.MapEvents(id).Moving = 0
-                        If Map.MapEvents(id).Steps = 1 Then
-                            Map.MapEvents(id).Steps = 3
+            If MapEvents(id).Moving > 0 Then
+                If MapEvents(id).Dir = DirectionType.Right OrElse MapEvents(id).Dir = DirectionType.Down Then
+                    If (MapEvents(id).XOffset >= 0) AndAlso (MapEvents(id).YOffset >= 0) Then
+                        MapEvents(id).Moving = 0
+                        If MapEvents(id).Steps = 1 Then
+                            MapEvents(id).Steps = 3
                         Else
-                            Map.MapEvents(id).Steps = 1
+                            MapEvents(id).Steps = 1
                         End If
                     End If
                 Else
-                    If (Map.MapEvents(id).XOffset <= 0) AndAlso (Map.MapEvents(id).YOffset <= 0) Then
-                        Map.MapEvents(id).Moving = 0
-                        If Map.MapEvents(id).Steps = 1 Then
-                            Map.MapEvents(id).Steps = 3
+                    If (MapEvents(id).XOffset <= 0) AndAlso (MapEvents(id).YOffset <= 0) Then
+                        MapEvents(id).Moving = 0
+                        If MapEvents(id).Steps = 1 Then
+                            MapEvents(id).Steps = 3
                         Else
-                            Map.MapEvents(id).Steps = 1
+                            MapEvents(id).Steps = 1
                         End If
                     End If
                 End If

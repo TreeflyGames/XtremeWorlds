@@ -467,17 +467,19 @@ Public Module Types
         Dim FogAlpha As Byte
         Dim FogSpeed As Byte
 
-        Dim HasMapTint As Byte
+        Dim MapTint As Boolean
         Dim MapTintR As Byte
         Dim MapTintG As Byte
         Dim MapTintB As Byte
         Dim MapTintA As Byte
 
-        Dim Instanced As Byte
-
         Dim Panorama As Byte
         Dim Parallax As Byte
         Dim Brightness As Byte
+
+        Dim Shop As Integer
+        Dim Respawn As Boolean
+        Dim Indoors As Boolean
     End Structure
 
     Public Structure MapItemStruct

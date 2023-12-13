@@ -171,7 +171,7 @@ Module C_GameLogic
                         End If
                     Next
 
-                    For i = 0 To Map.CurrentEvents
+                    For i = 1 To CurrentEvents
                         ProcessEventMovement(i)
                     Next
 

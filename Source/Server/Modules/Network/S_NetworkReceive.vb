@@ -826,16 +826,17 @@ Module S_NetworkReceive
         Map(mapNum).WeatherIntensity = buffer.ReadInt32
         Map(mapNum).FogAlpha = buffer.ReadInt32
         Map(mapNum).FogSpeed = buffer.ReadInt32
-        Map(mapNum).HasMapTint = buffer.ReadInt32
+        Map(mapNum).MapTint = buffer.ReadInt32
         Map(mapNum).MapTintR = buffer.ReadInt32
         Map(mapNum).MapTintG = buffer.ReadInt32
         Map(mapNum).MapTintB = buffer.ReadInt32
         Map(mapNum).MapTintA = buffer.ReadInt32
-
-        Map(mapNum).Instanced = buffer.ReadInt32
         Map(mapNum).Panorama = buffer.ReadByte
         Map(mapNum).Parallax = buffer.ReadByte
         Map(mapNum).Brightness = buffer.ReadByte
+        Map(mapNum).Respawn = buffer.ReadInt32
+        Map(mapNum).Indoors = buffer.ReadInt32
+        Map(mapNum).Shop = buffer.ReadInt32
 
         ReDim Map(mapNum).Tile(Map(mapNum).MaxX, Map(mapNum).MaxY)
 
@@ -1038,6 +1039,10 @@ Module S_NetworkReceive
             SendMapData(index, GetPlayerMap(index), False)
         End If
 
+        If Map(GetPlayerMap(index)).Shop > 0 Then
+            SendOpenShop(index, Map(GetPlayerMap(index)).Shop)
+        End If
+
         SpawnMapEventsFor(index, GetPlayerMap(index))
         SendJoinMap(index)
         TempPlayer(index).GettingMap = False
@@ -1172,6 +1177,7 @@ Module S_NetworkReceive
         SendNpcs(index)
         SendItems(index)
         SendAnimations(index)
+        SendShops(index)
 
         TempPlayer(index).Editor = EditorType.Map
 
@@ -2256,16 +2262,17 @@ Module S_NetworkReceive
         Map(mapNum).WeatherIntensity = buffer.ReadInt32
         Map(mapNum).FogAlpha = buffer.ReadInt32
         Map(mapNum).FogSpeed = buffer.ReadInt32
-        Map(mapNum).HasMapTint = buffer.ReadInt32
+        Map(mapNum).MapTint = buffer.ReadInt32
         Map(mapNum).MapTintR = buffer.ReadInt32
         Map(mapNum).MapTintG = buffer.ReadInt32
         Map(mapNum).MapTintB = buffer.ReadInt32
         Map(mapNum).MapTintA = buffer.ReadInt32
-
-        Map(mapNum).Instanced = buffer.ReadInt32
         Map(mapNum).Panorama = buffer.ReadByte
         Map(mapNum).Parallax = buffer.ReadByte
         Map(mapNum).Brightness = buffer.ReadByte
+        Map(mapNum).Respawn = buffer.ReadInt32
+        Map(mapNum).Indoors = buffer.ReadInt32
+        Map(mapNum).Shop = buffer.ReadInt32
 
         ReDim Map(mapNum).Tile(Map(mapNum).MaxX, Map(mapNum).MaxY)
 

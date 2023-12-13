@@ -16,53 +16,6 @@ Module C_Maps
 #End Region
 
 #Region "Structs"
-    Public Structure MapStruct
-        Dim Name As String
-        Dim Music As String
-
-        Dim Revision As Integer
-        Dim Moral As Byte
-        Dim Tileset As Integer
-
-        Dim Up As Integer
-        Dim Down As Integer
-        Dim Left As Integer
-        Dim Right As Integer
-
-        Dim BootMap As Integer
-        Dim BootX As Byte
-        Dim BootY As Byte
-
-        Dim MaxX As Byte
-        Dim MaxY As Byte
-
-        Dim Tile(,) As TileStruct
-        Dim Npc() As Integer
-        Dim EventCount As Integer
-        Dim Events() As EventStruct
-
-        Dim WeatherType As Byte
-        Dim Fogindex As Integer
-        Dim WeatherIntensity As Integer
-        Dim FogAlpha As Byte
-        Dim FogSpeed As Byte
-
-        Dim HasMapTint As Byte
-        Dim MapTintR As Byte
-        Dim MapTintG As Byte
-        Dim MapTintB As Byte
-        Dim MapTintA As Byte
-
-        Dim Panorama As Byte
-        Dim Parallax As Byte
-
-        Dim Brightness As Byte
-
-        'Client Side Only -- Temporary
-        Dim CurrentEvents As Integer
-
-        Dim MapEvents() As MapEventStruct
-    End Structure
 
     Public Structure MapItemStruct
         Dim Num As Integer
@@ -95,6 +48,164 @@ Module C_Maps
     Public Structure TileHistoryStruct
         Dim Tile(,) As TileStruct
     End Structure
+
+    Public Structure CSMapStruct
+        Dim MapData As CSMapDataStruct
+        Dim TileData As CSTileStruct
+    End Structure
+
+    Public Structure CSMapTileStruct
+        Dim EventCount As Long
+        Dim Tile() As CSTileStruct
+        Dim Events() As CSEventStruct
+    End Structure
+
+    Public Structure CSEventStruct
+        Dim name As String
+        Dim x As Long
+        Dim y As Long
+        Dim pageCount As Long
+        Dim EventPage() As CSEventPageStruct
+    End Structure
+
+    Public Structure CSEventPageStruct
+        Dim chkPlayerVar As Byte
+        Dim chkSelfSwitch As Byte
+        Dim chkHasItem As Byte
+
+        Dim PlayerVarNum As Long
+        Dim SelfSwitchNum As Long
+        Dim HasItemNum As Long
+
+        Dim PlayerVariable As Long
+
+        Dim GraphicType As Byte
+        Dim Graphic As Long
+        Dim GraphicX As Long
+        Dim GraphicY As Long
+
+        Dim MoveType As Byte
+        Dim MoveSpeed As Byte
+        Dim MoveFreq As Byte
+
+        Dim WalkAnim As Byte
+        Dim StepAnim As Byte
+        Dim DirFix As Byte
+        Dim WalkThrough As Byte
+
+        Dim Priority As Byte
+        Dim Trigger As Byte
+
+        Dim CommandCount As Long
+        Dim Commands() As CSEventCommandStruct
+    End Structure
+
+    Public Structure CSEventCommandStruct
+        Dim Type As Byte
+        Dim Text As String
+        Dim Colour As Long
+        Dim Channel As Byte
+        Dim TargetType As Byte
+        Dim Target As Long
+        Dim x As Long
+        Dim y As Long
+    End Structure
+
+    Public Structure CSTileStruct
+        Dim Layer() As CSTileDataStruct
+        Dim Autotile() As Byte
+
+        Dim Type As Byte
+        Dim Data1 As Long
+        Dim Data2 As Long
+        Dim Data3 As Long
+        Dim Data4 As Long
+        Dim Data5 As Long
+        Dim DirBlock As Byte
+    End Structure
+
+    Public Structure CSTileDataStruct
+        Dim x As Long
+        Dim y As Long
+        Dim TileSet As Long
+    End Structure
+
+    Public Structure CSMapDataStruct
+        Dim Name As String
+        Dim Music As String
+        Dim Moral As Byte
+
+        Dim Up As Long
+        Dim Down As Long
+        Dim Left As Long
+        Dim Right As Long
+
+        Dim BootMap As Long
+        Dim BootX As Byte
+        Dim BootY As Byte
+
+        Dim MaxX As Byte
+        Dim MaxY As Byte
+
+        Dim Weather As Long
+        Dim WeatherIntensity As Long
+
+        Dim Fog As Long
+        Dim FogSpeed As Long
+        Dim FogOpacity As Long
+
+        Dim Red As Long
+        Dim Green As Long
+        Dim Blue As Long
+        Dim Alpha As Long
+
+        Dim BossNpc As Long
+
+        Dim Npc() As Long
+    End Structure
+
+    Private Structure XWMapStruct
+        Dim Name As String
+        Dim Revision As Long
+        Dim Moral As Byte
+        Dim Up As Integer
+        Dim Down As Integer
+        Dim Left As Integer
+        Dim Right As Integer
+        Dim Music As Integer
+        Dim BootMap As Integer
+        Dim BootX As Byte
+        Dim BootY As Byte
+        Dim Shop As Integer
+        Dim Indoors As Byte
+        Dim Tile(,) As XWTileStruct
+        Dim NPC() As Long
+        Dim Server As Boolean
+        Dim Respawn As Byte
+        Dim Weather As Byte
+    End Structure
+
+    Public Structure XWTileStruct
+        Private Ground As Short
+        Private Mask As Short
+        Private Animation As Short
+        Private Mask2 As Short
+        Private Mask2Anim As Short
+        Private Fringe As Short
+        Private FringeAnim As Short
+        Private Roof As Short
+        Private Fringe2Anim As Short
+
+        Public Type As TileType
+        Public Type_2 As TileType
+        Private Data1 As Short
+        Private Data2 As Short
+        Private Data3 As Short
+        Private Data1_2 As Short
+        Private Data2_2 As Short
+        Private Data3_2 As Short
+    End Structure
+
 #End Region
 
 #Region "Database"
@@ -222,6 +333,48 @@ Module C_Maps
 
     End Sub
 
+    Public Sub LoadMapFromOpenFile(ByVal fileSlot As Integer)
+        Dim y As Integer, x As Integer
+
+        ' Initialize the tile data if necessary
+        'If Not tilesInitialized Then InitTiles()
+
+        Using fileStream As FileStream = File.OpenRead(fileSlot)
+            Using reader As New BinaryReader(fileStream)
+                Map.Name = ReadString(reader)
+                Map.Revision = reader.ReadInt32()
+                Map.Moral = reader.ReadByte()
+                Map.Up = reader.ReadInt32()
+                Map.Down = reader.ReadInt32()
+                Map.Left = reader.ReadInt32()
+                Map.Right = reader.ReadInt32()
+                Map.Music = ReadString(reader)
+                Map.BootMap = reader.ReadInt32()
+                Map.BootX = reader.ReadByte()
+                Map.BootY = reader.ReadByte()
+                Map.Shop = reader.ReadInt32()
+                Map.Indoors = reader.ReadByte()
+
+                ReDim Map.Tile(15, 11)
+                For y = 0 To 11
+                    For x = 0 To 15
+                        'Map.Tile(x, y) = reader
+                    Next
+                Next
+
+                'Map.Npc = reader.ReadInt32()
+                'Map.Server = reader.ReadInt32()
+                Map.Respawn = reader.ReadInt32()
+                'Map.Weather = reader.ReadByte()
+            End Using
+        End Using
+    End Sub
+
+    Private Function ReadString(reader As BinaryReader) As String
+        Dim length As Integer = reader.ReadInt32()
+        Return New String(reader.ReadChars(length))
+    End Function
+
 #End Region
 
 #Region "Incoming Packets"
@@ -300,7 +453,7 @@ Module C_Maps
             Map.WeatherIntensity = buffer.ReadInt32
             Map.FogAlpha = buffer.ReadInt32
             Map.FogSpeed = buffer.ReadInt32
-            Map.HasMapTint = buffer.ReadInt32
+            Map.MapTint = buffer.ReadInt32
             Map.MapTintR = buffer.ReadInt32
             Map.MapTintG = buffer.ReadInt32
             Map.MapTintB = buffer.ReadInt32
@@ -308,6 +461,9 @@ Module C_Maps
             Map.Panorama = buffer.ReadByte
             Map.Parallax = buffer.ReadByte
             Map.Brightness = buffer.ReadByte
+            Map.Respawn = buffer.ReadInt32
+            Map.Indoors = buffer.ReadInt32
+            Map.Shop = buffer.ReadInt32
 
             ReDim Map.Tile(Map.MaxX, Map.MaxY)
             For i = 1 To MaxTileHistory
@@ -654,7 +810,7 @@ Module C_Maps
         buffer.WriteInt32(Map.WeatherIntensity)
         buffer.WriteInt32(Map.FogAlpha)
         buffer.WriteInt32(Map.FogSpeed)
-        buffer.WriteInt32(Map.HasMapTint)
+        buffer.WriteInt32(Map.MapTint)
         buffer.WriteInt32(Map.MapTintR)
         buffer.WriteInt32(Map.MapTintG)
         buffer.WriteInt32(Map.MapTintB)
@@ -662,6 +818,9 @@ Module C_Maps
         buffer.WriteByte(Map.Panorama)
         buffer.WriteByte(Map.Parallax)
         buffer.WriteByte(Map.Brightness)
+        buffer.WriteInt32(Map.Respawn)
+        buffer.WriteInt32(Map.Indoors)
+        buffer.WriteInt32(Map.Shop)
 
         For i = 1 To MAX_MAP_NPCS
             buffer.WriteInt32(Map.Npc(i))
@@ -813,13 +972,13 @@ Module C_Maps
     End Sub
 
     Friend Sub ClearMapEvents()
-        ReDim Map.MapEvents(Map.EventCount)
+        ReDim MapEvents(Map.EventCount)
 
         For i = 0 To Map.EventCount
-            Map.MapEvents(i).Name = ""
+            MapEvents(i).Name = ""
         Next
 
-        Map.CurrentEvents = 0
+        CurrentEvents = 0
 
     End Sub
 
