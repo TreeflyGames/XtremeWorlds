@@ -58,7 +58,7 @@ Public Class frmEditor_Map
             End If
 
             If lstShop.SelectedIndex >= 0 Then
-                .Shop = lstShop.SelectedIndex + 1
+                .Shop = lstShop.SelectedIndex
             Else
                 .Shop = 0
             End If
@@ -493,15 +493,12 @@ Public Class frmEditor_Map
         ' find the music we have set
         lstMusic.Items.Clear()
         lstMusic.Items.Add("None")
+        lstMusic.SelectedIndex = 0
 
         CacheMusic()
 
         For i = 1 To UBound(MusicCache)
             lstMusic.Items.Add(MusicCache(i))
-        Next
-
-        For i = 1 To MAX_SHOPS
-            lstShop.Items.Add(Shop(i).Name)
         Next
 
         For i = 1 To lstMusic.Items.Count - 1
@@ -511,8 +508,17 @@ Public Class frmEditor_Map
             End If
         Next
 
+        ' find the shop we have set
+        lstShop.Items.Clear()
+        lstShop.Items.Add("None")
+        lstShop.SelectedIndex = 0
+
+        For i = 1 To MAX_SHOPS
+            lstShop.Items.Add(Shop(i).Name)
+        Next
+
         For i = 1 To lstShop.Items.Count - 1
-            If lstShop.Items(i).ToString = Trim$(Shop(i).Name) Then
+            If lstShop.Items(i).ToString = Trim$(Shop(Map.Shop).Name) Then
                 lstShop.SelectedIndex = i
                 Exit For
             End If

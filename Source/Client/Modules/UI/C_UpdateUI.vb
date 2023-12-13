@@ -5,7 +5,6 @@ Module C_UpdateUI
 #Region "Defines"
 
     Friend GameDestroyed As Boolean
-    Friend TxtChatAdd As String
 
     Friend VbKeyRight As Boolean
     Friend VbKeyLeft As Boolean
@@ -22,9 +21,6 @@ Module C_UpdateUI
     Friend NeedToOpenTrade As Boolean
     Friend NeedtoCloseTrade As Boolean
     Friend NeedtoUpdateTrade As Boolean
-
-    Friend InitMapProperties As Boolean
-
     Friend Tradername As String
 
     Friend ShowItemDesc As Boolean
@@ -48,26 +44,12 @@ Module C_UpdateUI
 
     'Character window Coordinates
     Friend CharWindowX As Integer = 943
-
     Friend CharWindowY As Integer = 475
     Friend Const EqTop As Byte = 85
     Friend Const EqLeft As Byte = 8
     Friend Const EqOffsetX As Byte = 125
     Friend Const EqOffsetY As Byte = 5
     Friend Const EqColumns As Byte = 2
-
-    Friend StrengthUpgradeX As Integer = 370
-    Friend StrengthUpgradeY As Integer = 33
-    Friend EnduranceUpgradeX As Integer = 370
-    Friend EnduranceUpgradeY As Integer = 53
-    Friend VitalityUpgradeX As Integer = 370
-    Friend VitalityUpgradeY As Integer = 72
-    Friend IntellectUpgradeX As Integer = 370
-    Friend IntellectUpgradeY As Integer = 91
-    Friend LuckUpgradeX As Integer = 370
-    Friend LuckUpgradeY As Integer = 110
-    Friend SpiritUpgradeX As Integer = 370
-    Friend SpiritUpgradeY As Integer = 129
 
     'Hotbar Coordinates
     Friend HotbarX As Integer = 489
@@ -144,19 +126,7 @@ Module C_UpdateUI
 
     ' shop coordinates
     Friend ShopWindowX As Integer = 250
-
     Friend ShopWindowY As Integer = 125
-    Friend ShopFaceX As Integer = 60
-    Friend ShopFaceY As Integer = 60
-
-    Friend ShopButtonBuyX As Integer = 150
-    Friend ShopButtonBuyY As Integer = 140
-
-    Friend ShopButtonSellX As Integer = 150
-    Friend ShopButtonSellY As Integer = 190
-
-    Friend ShopButtonCloseX As Integer = 10
-    Friend ShopButtonCloseY As Integer = 215
 
     ' shop constants
     Friend Const ShopTop As Byte = 46
@@ -174,12 +144,6 @@ Module C_UpdateUI
     Friend Const OurTradeY As Byte = 17
     Friend Const TheirTradeX As Integer = 201
     Friend Const TheirTradeY As Byte = 17
-
-    Friend TradeButtonAcceptX As Integer = 50
-    Friend TradeButtonAcceptY As Integer = 320
-
-    Friend TradeButtonDeclineX As Integer = 250
-    Friend TradeButtonDeclineY As Integer = 320
 
     'event chat constants
     Friend Const EventChatX As Integer = 250
