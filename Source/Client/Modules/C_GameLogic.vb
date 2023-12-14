@@ -189,22 +189,6 @@ Module C_GameLogic
                         ScrollChatBox(1)
                     End If
 
-                    ' remove messages
-                    If chatLastRemove + Chat_Difference_Timer < GetTickCount() Then
-                        ' remove timed out messages from chat
-                        For i = Chat_HighIndex To 1 Step -1
-                            If Len(Chat(i).Text) > 0 Then
-                                If Chat(i).Visible Then
-                                    If Chat(i).Timer + Chat_Timer < tick Then
-                                        Chat(i).Visible = False
-                                        chatLastRemove = GetTickCount()
-                                        Exit For
-                                    End If
-                                End If
-                            End If
-                        Next
-                    End If
-
                     chattmr = tick + 50
                 End If
 
