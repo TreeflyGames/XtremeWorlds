@@ -22,6 +22,7 @@
 
     ''' <Summary> Sex Constant </Summary>
     Enum SexType As Byte
+        None = 0
         Male = 1
         Female
     End Enum
@@ -52,6 +53,27 @@
         Count
     End Enum
 
+    Enum XWTileType As Byte
+        None = 0
+        Block = 1
+        Direction_Block = 15
+        Door = 2
+        Warp = 10
+        Item = 3
+        Npc_Avoid = 4
+        Key = 5
+        Key_Open = 6
+        Heal = 8
+        Damage = 7
+        Sign = 11
+        Shop = 13
+        Npc = 12
+        No_Xing = 19
+        Walkthru = 20
+        Arena = 9
+        Roof = 21
+    End Enum
+
     ''' <Summary> Item Constant </Summary>
     Enum ItemType As Byte
         None = 0
@@ -68,7 +90,8 @@
 
     ''' <Summary> Consumable Constant </Summary>
     Enum ConsumableType As Byte
-        HP = 1
+        None = 0
+        HP
         MP
         Sp
         Exp
@@ -76,7 +99,8 @@
 
     ''' <Summary> Direction Constant </Summary>
     Enum DirectionType As Byte
-        Up = 1
+        None = 0
+        Up
         Right
         Down
         Left
@@ -84,14 +108,16 @@
 
     ''' <Summary> Movement Constant </Summary>
     Enum MovementType As Byte
-        Standing = 1
+        None = 0
+        Standing
         Walking
         Running
     End Enum
 
     ''' <Summary> Admin Constant </Summary>
     Enum AdminType As Byte
-        Player = 1
+        None = 0
+        Player
         Moderator
         Mapper
         Developer
@@ -100,7 +126,8 @@
 
     ''' <Summary> Npc Behavior Constant </Summary>
     Enum NpcBehavior As Byte
-        AttackOnSight = 1
+        None = 0
+        AttackOnSight
         AttackWhenAttacked
         Friendly
         ShopKeeper
@@ -110,7 +137,8 @@
 
     ''' <Summary> Skill Constant </Summary>
     Enum SkillType As Byte
-        DamageHp = 1
+        None = 0
+        DamageHp
         DamageMp
         HealHp
         HealMp
@@ -120,7 +148,8 @@
 
     ''' <Summary> Target Constant </Summary>
     Enum TargetType As Byte
-        Player = 1
+        None = 0
+        Player
         Npc
         [Event]
         Pet
@@ -128,14 +157,16 @@
 
     ''' <Summary> Action Message Constant </Summary>
     Enum ActionMsgType As Byte
-        [Static] = 1
+        None = 0
+        [Static]
         Scroll
         Screen
     End Enum
 
     ''' <Summary> Stats used by Players, Npcs and Job </Summary>
     Public Enum StatType As Byte
-        Strength = 1
+        None = 0
+        Strength
         Endurance
         Vitality
         Luck
@@ -147,7 +178,8 @@
 
     ''' <Summary> Vitals used by Players, Npcs, and Job </Summary>
     Public Enum VitalType As Byte
-        HP = 1
+        None = 0
+        HP
         MP
         SP
 
@@ -156,7 +188,8 @@
 
     ''' <Summary> Equipment used by Players </Summary>
     Public Enum EquipmentType As Byte
-        Weapon = 1
+        None = 0
+        Weapon
         Armor
         Helmet
         Shield
@@ -168,7 +201,8 @@
 
     ''' <Summary> Layers in a map </Summary>
     Public Enum LayerType As Byte
-        Ground = 1
+        None = 0
+        Ground
         Mask
         Cover
         Fringe
@@ -178,7 +212,8 @@
 
     ''' <Summary> Resource Skills </Summary>
     Public Enum ResourceType As Byte
-        Herbing = 1
+        None = 0
+        Herbing
         Woodcutting
         Mining
         Fishing
@@ -481,14 +516,16 @@
     End Enum
 
     Public Enum FontType
-        Goergia = 1
+        None = 0
+        Goergia
         Arial
         Verdana
         Count
     End Enum
 
     Public Enum MenuType
-        Main = 1
+        None = 0
+        Main
         Login
         Register
         Credits
@@ -498,7 +535,8 @@
     End Enum
 
     Public Enum DialogueMsg
-        Connection = 1
+        None = 0
+        Connection
         Banned
         Kicked
         Outdated

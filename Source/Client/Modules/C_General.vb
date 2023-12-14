@@ -1,4 +1,6 @@
 ﻿
+Imports System.Runtime.InteropServices
+Imports System.Text
 Imports System.Windows.Forms
 Imports Core
 Imports SFML.Graphics
@@ -87,23 +89,6 @@ Module C_General
         CheckDesigns()
     End Sub
 
-    Friend Function IsStringLegal(sInput As String) As Boolean
-        Dim i As Integer
-
-        ' Prevent high ascii chars
-        For i = 1 To Len(sInput)
-
-            If (Asc(Mid$(sInput, i, 1))) < 32 OrElse Asc(Mid$(sInput, i, 1)) > 126 Then
-                MsgBox(Language.MainMenu.StringLegal, vbOKOnly, Types.Settings.GameName)
-                IsStringLegal = False
-                Exit Function
-            End If
-
-        Next
-
-        IsStringLegal = True
-    End Function
-
     Sub GameInit()
         ' Send a request to the server to open the admin menu if the user wants it.
         If Types.Settings.OpenAdminPanelOnLogin = 1 Then
@@ -152,12 +137,6 @@ Module C_General
         InGame = False
         Application.Exit()
         End
-    End Sub
-
-    Friend Sub CheckDir(dirPath As String)
-        If Not IO.Directory.Exists(dirPath) Then
-            IO.Directory.CreateDirectory(dirPath)
-        End If
     End Sub
 
     Friend Function GetExceptionInfo(ex As Exception) As String

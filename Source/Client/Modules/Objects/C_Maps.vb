@@ -49,163 +49,6 @@ Module C_Maps
         Dim Tile(,) As TileStruct
     End Structure
 
-    Public Structure CSMapStruct
-        Dim MapData As CSMapDataStruct
-        Dim TileData As CSTileStruct
-    End Structure
-
-    Public Structure CSMapTileStruct
-        Dim EventCount As Long
-        Dim Tile() As CSTileStruct
-        Dim Events() As CSEventStruct
-    End Structure
-
-    Public Structure CSEventStruct
-        Dim name As String
-        Dim x As Long
-        Dim y As Long
-        Dim pageCount As Long
-        Dim EventPage() As CSEventPageStruct
-    End Structure
-
-    Public Structure CSEventPageStruct
-        Dim chkPlayerVar As Byte
-        Dim chkSelfSwitch As Byte
-        Dim chkHasItem As Byte
-
-        Dim PlayerVarNum As Long
-        Dim SelfSwitchNum As Long
-        Dim HasItemNum As Long
-
-        Dim PlayerVariable As Long
-
-        Dim GraphicType As Byte
-        Dim Graphic As Long
-        Dim GraphicX As Long
-        Dim GraphicY As Long
-
-        Dim MoveType As Byte
-        Dim MoveSpeed As Byte
-        Dim MoveFreq As Byte
-
-        Dim WalkAnim As Byte
-        Dim StepAnim As Byte
-        Dim DirFix As Byte
-        Dim WalkThrough As Byte
-
-        Dim Priority As Byte
-        Dim Trigger As Byte
-
-        Dim CommandCount As Long
-        Dim Commands() As CSEventCommandStruct
-    End Structure
-
-    Public Structure CSEventCommandStruct
-        Dim Type As Byte
-        Dim Text As String
-        Dim Colour As Long
-        Dim Channel As Byte
-        Dim TargetType As Byte
-        Dim Target As Long
-        Dim x As Long
-        Dim y As Long
-    End Structure
-
-    Public Structure CSTileStruct
-        Dim Layer() As CSTileDataStruct
-        Dim Autotile() As Byte
-
-        Dim Type As Byte
-        Dim Data1 As Long
-        Dim Data2 As Long
-        Dim Data3 As Long
-        Dim Data4 As Long
-        Dim Data5 As Long
-        Dim DirBlock As Byte
-    End Structure
-
-    Public Structure CSTileDataStruct
-        Dim x As Long
-        Dim y As Long
-        Dim TileSet As Long
-    End Structure
-
-    Public Structure CSMapDataStruct
-        Dim Name As String
-        Dim Music As String
-        Dim Moral As Byte
-
-        Dim Up As Long
-        Dim Down As Long
-        Dim Left As Long
-        Dim Right As Long
-
-        Dim BootMap As Long
-        Dim BootX As Byte
-        Dim BootY As Byte
-
-        Dim MaxX As Byte
-        Dim MaxY As Byte
-
-        Dim Weather As Long
-        Dim WeatherIntensity As Long
-
-        Dim Fog As Long
-        Dim FogSpeed As Long
-        Dim FogOpacity As Long
-
-        Dim Red As Long
-        Dim Green As Long
-        Dim Blue As Long
-        Dim Alpha As Long
-
-        Dim BossNpc As Long
-
-        Dim Npc() As Long
-    End Structure
-
-    Private Structure XWMapStruct
-        Dim Name As String
-        Dim Revision As Long
-        Dim Moral As Byte
-        Dim Up As Integer
-        Dim Down As Integer
-        Dim Left As Integer
-        Dim Right As Integer
-        Dim Music As Integer
-        Dim BootMap As Integer
-        Dim BootX As Byte
-        Dim BootY As Byte
-        Dim Shop As Integer
-        Dim Indoors As Byte
-        Dim Tile(,) As XWTileStruct
-        Dim NPC() As Long
-        Dim Server As Boolean
-        Dim Respawn As Byte
-        Dim Weather As Byte
-    End Structure
-
-    Public Structure XWTileStruct
-        Private Ground As Short
-        Private Mask As Short
-        Private Animation As Short
-        Private Mask2 As Short
-        Private Mask2Anim As Short
-        Private Fringe As Short
-        Private FringeAnim As Short
-        Private Roof As Short
-        Private Fringe2Anim As Short
-
-        Public Type As TileType
-        Public Type_2 As TileType
-        Private Data1 As Short
-        Private Data2 As Short
-        Private Data3 As Short
-        Private Data1_2 As Short
-        Private Data2_2 As Short
-        Private Data3_2 As Short
-    End Structure
-
 #End Region
 
 #Region "Database"
@@ -332,48 +175,6 @@ Module C_Maps
         Next
 
     End Sub
-
-    Public Sub LoadMapFromOpenFile(ByVal fileSlot As Integer)
-        Dim y As Integer, x As Integer
-
-        ' Initialize the tile data if necessary
-        'If Not tilesInitialized Then InitTiles()
-
-        Using fileStream As FileStream = File.OpenRead(fileSlot)
-            Using reader As New BinaryReader(fileStream)
-                Map.Name = ReadString(reader)
-                Map.Revision = reader.ReadInt32()
-                Map.Moral = reader.ReadByte()
-                Map.Up = reader.ReadInt32()
-                Map.Down = reader.ReadInt32()
-                Map.Left = reader.ReadInt32()
-                Map.Right = reader.ReadInt32()
-                Map.Music = ReadString(reader)
-                Map.BootMap = reader.ReadInt32()
-                Map.BootX = reader.ReadByte()
-                Map.BootY = reader.ReadByte()
-                Map.Shop = reader.ReadInt32()
-                Map.Indoors = reader.ReadByte()
-
-                ReDim Map.Tile(15, 11)
-                For y = 0 To 11
-                    For x = 0 To 15
-                        'Map.Tile(x, y) = reader
-                    Next
-                Next
-
-                'Map.Npc = reader.ReadInt32()
-                'Map.Server = reader.ReadInt32()
-                Map.Respawn = reader.ReadInt32()
-                'Map.Weather = reader.ReadByte()
-            End Using
-        End Using
-    End Sub
-
-    Private Function ReadString(reader As BinaryReader) As String
-        Dim length As Integer = reader.ReadInt32()
-        Return New String(reader.ReadChars(length))
-    End Function
 
 #End Region
 
@@ -1010,10 +811,10 @@ Module C_Maps
 
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
                     With rect
-                        .X = Map.Tile(x, y).Layer(i).X * 32
-                        .Y = Map.Tile(x, y).Layer(i).Y * 32
-                        .Width = 32
-                        .Height = 32
+                        .X = Map.Tile(x, y).Layer(i).X * PicX
+                        .Y = Map.Tile(x, y).Layer(i).Y * PicY
+                        .Width = PicX
+                        .Height = PicY
                     End With
 
                     If Editor = EditorType.Map And HideLayers Then
@@ -1063,10 +864,10 @@ Module C_Maps
                 ' render
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
                     With rect
-                        .X = Map.Tile(x, y).Layer(i).X * 32
-                        .Y = Map.Tile(x, y).Layer(i).Y * 32
-                        .Width = 32
-                        .Height = 32
+                        .X = Map.Tile(x, y).Layer(i).X * PicX
+                        .Y = Map.Tile(x, y).Layer(i).Y * PicY
+                        .Width = PicX
+                        .Height = PicY
                     End With
 
                     If Editor = EditorType.Map And HideLayers Then
@@ -1075,7 +876,7 @@ Module C_Maps
                         Else
                             alpha = 127
                         End If
-                    Else   
+                    Else
                         alpha = 255
                     End If
 
@@ -1093,5 +894,4 @@ Module C_Maps
     End Sub
 
 #End Region
-
 End Module

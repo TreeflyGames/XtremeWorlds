@@ -125,18 +125,22 @@ Public Module Types
     End Structure
 
     Public Structure TileDataStruct
-        Dim X As Byte
-        Dim Y As Byte
+        Dim X As Integer
+        Dim Y As Integer
         Dim Tileset As Byte
         Dim AutoTile As Byte
     End Structure
 
     Public Structure TileStruct
         Dim Layer() As TileDataStruct
-        Dim Type As Byte
+        Dim Type As TileType
+        Dim Type2 As TileType
         Dim Data1 As Integer
         Dim Data2 As Integer
         Dim Data3 As Integer
+        Dim Data1_2 As Integer
+        Dim Data2_2 As Integer
+        Dim Data3_2 As Integer
         Dim DirBlock As Byte
     End Structure
 
@@ -211,7 +215,6 @@ Public Module Types
         Dim Exp As Integer
         Dim Animation As Integer
         Dim Skill() As Byte
-
         Dim Level As Integer
         Dim Damage As Integer
     End Structure
@@ -910,5 +913,105 @@ Public Module Types
         Dim Controls() As EntityStruct
         Dim ControlCount As Long
         Dim ActiveControl As Long
+    End Structure
+
+    Public Structure CSMapStruct
+        Dim MapData As CSMapDataStruct
+        Dim TileData As CSTileStruct
+    End Structure
+
+    Public Structure CSTileStruct
+        Dim Layer() As CSTileDataStruct
+        Dim Autotile() As Byte
+
+        Dim Type As Byte
+        Dim Data1 As Long
+        Dim Data2 As Long
+        Dim Data3 As Long
+        Dim Data4 As Long
+        Dim Data5 As Long
+        Dim DirBlock As Byte
+    End Structure
+
+    Public Structure CSTileDataStruct
+        Dim x As Long
+        Dim y As Long
+        Dim TileSet As Long
+    End Structure
+
+    Public Structure CSMapDataStruct
+        Dim Name As String
+        Dim Music As String
+        Dim Moral As Byte
+
+        Dim Up As Long
+        Dim Down As Long
+        Dim Left As Long
+        Dim Right As Long
+
+        Dim BootMap As Long
+        Dim BootX As Byte
+        Dim BootY As Byte
+
+        Dim MaxX As Byte
+        Dim MaxY As Byte
+
+        Dim Weather As Long
+        Dim WeatherIntensity As Long
+
+        Dim Fog As Long
+        Dim FogSpeed As Long
+        Dim FogOpacity As Long
+
+        Dim Red As Long
+        Dim Green As Long
+        Dim Blue As Long
+        Dim Alpha As Long
+
+        Dim BossNpc As Long
+
+        Dim Npc() As Long
+    End Structure
+
+    Public Structure XWMapStruct
+        Dim Name As String
+        Dim Revision As Long
+        Dim Moral As Byte
+        Dim Up As Integer
+        Dim Down As Integer
+        Dim Left As Integer
+        Dim Right As Integer
+        Dim Music As Integer
+        Dim BootMap As Integer
+        Dim BootX As Byte
+        Dim BootY As Byte
+        Dim Shop As Integer
+        Dim Indoors As Byte
+        Dim Tile(,) As XWTileStruct
+        Dim NPC() As Long
+        Dim Server As Boolean
+        Dim Respawn As Byte
+        Dim Weather As Byte
+    End Structure
+
+    Public Structure XWTileStruct
+        Dim Ground As Short
+        Dim Mask As Short
+        Dim Animation As Short
+        Dim Mask2 As Short
+        Dim Mask2Anim As Short
+        Dim Fringe As Short
+        Dim FringeAnim As Short
+        Dim Roof As Short
+        Dim Fringe2Anim As Short
+
+        Dim Type As XWTileType
+        Dim Type2 As XWTileType
+        Dim Data1 As Short
+        Dim Data2 As Short
+        Dim Data3 As Short
+        Dim Data1_2 As Short
+        Dim Data2_2 As Short
+        Dim Data3_2 As Short
     End Structure
 End Module

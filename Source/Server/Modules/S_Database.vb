@@ -11,6 +11,7 @@ Imports System.Text
 Imports System.Text.Json.Nodes
 Imports System.Text.RegularExpressions
 Imports Core
+Imports Core.Types
 Imports Mirage.Sharp.Asfw
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
@@ -459,18 +460,35 @@ Module S_Database
     End Sub
 
     Sub LoadMap(mapNum As Integer)
+        ' Get the base directory of the application
+        Dim baseDir As String = AppDomain.CurrentDomain.BaseDirectory
 
-        Dim data As JObject
+        ' Construct the path to the "maps" directory
+        Dim mapsDir As String = Path.Combine(baseDir, "maps")
 
-        data = SelectRow(mapNum, "map", "data")
+        ' Check if the directory exists
+        If Directory.Exists(mapsDir) Then
+            If Not File.Exists(mapsDir & "\map" & mapNum.ToString() & ".dat") Then
+                Dim data As JObject
 
-        If data Is Nothing Then
-            ClearMap(mapNum)
-            Exit Sub
+                data = SelectRow(mapNum, "map", "data")
+
+                Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
+                Map(mapNum) = mapData
+
+                If data Is Nothing Then
+                    ClearMap(mapNum)
+                    Exit Sub
+                End If
+            Else
+                Dim xwMap As XWMapStruct = ConvertXWMap(mapsDir & "\map" & mapNum.ToString() & ".dat")
+                Map(mapNum) = MapFromXWMap(xwMap)
+                Map(mapNum).MaxX = 15
+                Map(mapNum).MaxY = 11
+            End If
+        Else
+            Console.WriteLine("To convert XtremeWorlds or Crystalshire maps create a directory with the maps inside a maps folder. Otherwise, to ignore this message create an empty maps folder.")
         End If
-
-        Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
-        Map(mapNum) = mapData
 
         CacheResources(mapNum)
     End Sub
@@ -490,6 +508,189 @@ Module S_Database
         Next
 
     End Sub
+
+    Public Function ConvertXWMap(ByVal fileName As String) As XWMapStruct
+        Dim encoding As New ASCIIEncoding()
+        Dim xwMap As New XWMapStruct
+
+        ReDim xwMap.Tile(15, 11)
+        ReDim xwMap.NPC(14)
+
+        Using fs As New FileStream(fileName, FileMode.Open)
+            Using reader As New BinaryReader(fs)
+                'OFFSET 0: The first 20 bytes are the map name.
+                xwMap.Name = encoding.GetString(reader.ReadBytes(20))
+
+                'OFFSET 20: The revision is stored here @ 4 bytes.
+                xwMap.Revision = reader.ReadInt32()
+
+                'OFFSET 24: Contains the map moral as a byte.
+                xwMap.Moral = reader.ReadByte()
+
+                'OFFSET 25: Stored as 2 bytes, the map UP.
+                xwMap.Up = reader.ReadInt16()
+
+                'OFFSET 27: Stored as 2 bytes, the map DOWN.
+                xwMap.Down = reader.ReadInt16()
+
+                'OFFSET 29: Stored as 2 bytes, the map LEFT.
+                xwMap.Left = reader.ReadInt16()
+
+                'OFFSET 31: Stored as 2 bytes, the map RIGHT.
+                xwMap.Right = reader.ReadInt16()
+
+                'OFFSET 33: Stored as 2 bytes, the map music.
+                xwMap.Music = reader.ReadInt16()
+
+                'OFFSET 35: Stored as 2 bytes, the Boot map.
+                xwMap.BootMap = reader.ReadInt16()
+
+                'OFFSET 37: Stored as a single byte, the boot X
+                xwMap.BootX = reader.ReadByte()
+
+                'OFFSET 38: Stored as a single byte, the boot Y
+                xwMap.BootY = reader.ReadByte()
+
+                'OFFSET 39: Stored as two bytes, the Shop ID.
+                xwMap.Shop = reader.ReadInt16()
+
+                'OFFSET 41: Stored as a single byte, is the map indoors?
+                xwMap.Indoors = (reader.ReadByte() = 1)
+
+                ' Now, we decode the Tiles
+                For y As Integer = 0 To 11
+                    For x As Integer = 0 To 15
+                        xwMap.Tile(x, y).Ground = reader.ReadInt16() ' 42
+                        xwMap.Tile(x, y).Mask = reader.ReadInt16() ' 44
+                        xwMap.Tile(x, y).Animation = reader.ReadInt16() ' 46
+                        xwMap.Tile(x, y).Fringe = reader.ReadInt16() ' 48
+                        xwMap.Tile(x, y).Type = CType(reader.ReadByte(), TileType) ' 50
+                        xwMap.Tile(x, y).Data1 = reader.ReadInt16() ' 51
+                        xwMap.Tile(x, y).Data2 = reader.ReadInt16() ' 53
+                        xwMap.Tile(x, y).Data3 = reader.ReadInt16() ' 55
+                        xwMap.Tile(x, y).Type2 = CType(reader.ReadByte(), TileType) ' 57
+                        xwMap.Tile(x, y).Data1_2 = reader.ReadInt16() ' 59
+                        xwMap.Tile(x, y).Data2_2 = reader.ReadInt16() ' 61
+                        xwMap.Tile(x, y).Data3_2 = reader.ReadInt16() ' 63
+                        xwMap.Tile(x, y).Mask2 = reader.ReadInt16() ' 64
+                        xwMap.Tile(x, y).Mask2Anim = reader.ReadInt16() ' 66
+                        xwMap.Tile(x, y).FringeAnim = reader.ReadInt16() ' 68
+                        xwMap.Tile(x, y).Roof = reader.ReadInt16() ' 70
+                        xwMap.Tile(x, y).Fringe2Anim = reader.ReadInt16() ' 72
+
+                    Next
+                Next
+
+                For i As Integer = 1 To 14
+                    xwMap.NPC(i) = reader.ReadInt32
+                Next
+            End Using
+        End Using
+
+        Return xwMap
+    End Function
+
+    Private Function ConvertXWTileToTile(ByVal xwTile As XWTileStruct) As TileStruct
+        Dim tile As New TileStruct
+
+        ' Constants for the new tileset
+        Const TileWidth As Integer = 32
+        Const TileHeight As Integer = 32
+        Const TilesPerRow As Integer = 16 ' Number of tiles per row in a 512x512 tileset
+        Const TilesPerSheet As Integer = 256 ' Total tiles in a 512x512 tileset
+
+        ' Initialize the layers
+        ReDim tile.Layer(LayerType.Count - 1) ' Assuming 5 layers (0 to 4)
+
+        ' Process each layer
+        For i As Integer = LayerType.Ground To LayerType.Count - 1
+            Dim tileNumber As Integer
+
+            ' Select the appropriate tile number for each layer
+            Select Case i
+                Case 1
+                    tileNumber = xwTile.Ground
+                Case 2
+                    tileNumber = xwTile.Mask
+                Case 3
+                    tileNumber = xwTile.Mask2
+                Case 4
+                    tileNumber = xwTile.Fringe
+                Case 5
+                    tileNumber = xwTile.Roof
+            End Select
+
+            ' Ensure tileNumber is non-negative
+            If tileNumber < 0 Then tileNumber = 0
+
+            ' Calculate the tileset number based on the tile number
+            tile.Layer(i).Tileset = Math.Floor(tileNumber / TilesPerSheet) + 1
+
+            ' Calculate the position within the tileset
+            Dim positionWithinTileset As Integer = tileNumber Mod TilesPerSheet
+
+            ' Convert the position to X and Y coordinates in the tileset
+            tile.Layer(i).X = positionWithinTileset Mod TilesPerRow
+            tile.Layer(i).Y = Math.Floor(positionWithinTileset / TilesPerRow)
+        Next
+
+        ' Copy over additional data fields
+        tile.Data1 = xwTile.Data1
+        tile.Data2 = xwTile.Data2
+        tile.Data3 = xwTile.Data3
+        tile.Data1_2 = xwTile.Data1_2
+        tile.Data2_2 = xwTile.Data2_2
+        tile.Data3_2 = xwTile.Data3_2
+        tile.Type = xwTile.Type
+        tile.Type2 = xwTile.Type2
+
+        Return tile
+    End Function
+
+
+    Public Function MapFromXWMap(xwMap As XWMapStruct) As MapStruct
+        Dim mwMap As New MapStruct
+
+        ReDim mwMap.Tile(15, 11)
+        ReDim mwMap.Npc(14)
+
+        mwMap.Name = xwMap.Name.Trim()
+        mwMap.Music = "Music" & xwMap.Music.ToString() & ".mid" ' Convert to String for number
+        mwMap.Revision = CInt(xwMap.Revision) ' Convert Long to Integer
+        mwMap.Moral = xwMap.Moral
+        mwMap.Up = xwMap.Up
+        mwMap.Down = xwMap.Down
+        mwMap.Left = xwMap.Left
+        mwMap.Right = xwMap.Right
+        mwMap.BootMap = xwMap.BootMap
+        mwMap.BootX = xwMap.BootX
+        mwMap.BootY = xwMap.BootY
+        mwMap.Shop = xwMap.Shop
+
+        ' Convert Byte to Boolean (False if 0, True otherwise)
+        mwMap.Indoors = xwMap.Indoors <> 0
+
+        ' Loop through each tile in xwMap and copy the data to map
+        For x As Integer = 0 To 15
+            For y As Integer = 0 To 11
+                mwMap.Tile(x, y) = ConvertXWTileToTile(xwMap.Tile(x, y))
+            Next
+        Next
+
+        ' NPC array conversion (Long to Integer), if necessary
+        If xwMap.NPC IsNot Nothing Then
+            mwMap.Npc = Array.ConvertAll(xwMap.NPC, Function(i) CInt(i))
+        End If
+
+        mwMap.WeatherType = xwMap.Weather
+        mwMap.Respawn = xwMap.Respawn <> 0
+
+        Return mwMap
+    End Function
+
+    Private Function ReadString(reader As BinaryReader, length As Integer) As String
+        Return New String(reader.ReadChars(length)).TrimEnd(Chr(0))
+    End Function
 
 #End Region
 
@@ -1055,7 +1256,7 @@ Module S_Database
         AddTextToFile(IP, "banlist.txt")
         GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Types.Settings.GameName & " by " & "the Server" & "!")
         Addlog("The Server" & " has banned " & GetPlayerName(BanPlayerindex) & ".", ADMIN_LOG)
-        AlertMsg(BanPlayerindex, DialogueMsg.BANNED)
+        AlertMsg(BanPlayerindex, DialogueMsg.Banned)
     End Sub
 
     Function IsBanned(index As Integer, IP As String) As Boolean
@@ -1110,7 +1311,7 @@ Module S_Database
         AddTextToFile(IP, "banlist.txt")
         GlobalMsg(GetPlayerName(BanPlayerindex) & " has been banned from " & Types.Settings.GameName & " by " & GetPlayerName(BannedByindex) & "!")
         Addlog(GetPlayerName(BannedByindex) & " has banned " & GetPlayerName(BanPlayerindex) & ".", ADMIN_LOG)
-        AlertMsg(BanPlayerindex, DialogueMsg.BANNED)
+        AlertMsg(BanPlayerindex, DialogueMsg.Banned)
     End Sub
 
 #End Region

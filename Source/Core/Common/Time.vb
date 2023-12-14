@@ -22,7 +22,7 @@
 Imports System.Timers
 
 Public Enum TimeOfDay As Byte
-    None
+    None = 0
     Day
     Night
     Dawn

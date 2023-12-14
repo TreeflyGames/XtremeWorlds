@@ -13,8 +13,6 @@ Public Module C_Constants
     Public Const EffectTypeWeather As Integer = 5
     Public Const EffectTypeTint As Integer = 6
 
-    Public Const Chat_Difference_Timer As Long = 500
-
     ' Font variables
     Public Const Georgia As String = "Georgia.ttf"
     Public Const Arial As String = "Arial.ttf"
