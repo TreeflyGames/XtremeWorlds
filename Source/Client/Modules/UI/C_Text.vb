@@ -229,13 +229,13 @@ Module C_Text
 
         ' set the position
         xO = 19
-        yO = Types.Settings.ScreenHeight - 75
+        yO = Types.Settings.ScreenHeight - 40
 
         ' loop through chat
         rLines = 1
         i = 1 + ChatScroll
 
-        Do While rLines <= 7
+        Do While rLines <= 8
             If i > ChatLines Then Exit Do
             lineCount = 0
 
