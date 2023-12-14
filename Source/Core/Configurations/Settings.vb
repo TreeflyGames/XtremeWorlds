@@ -52,9 +52,13 @@ Public Module SettingsManager
             writer.Close()
         End If
 
-        Dim reader = New StreamReader(cf)
-        Types.Settings = x.Deserialize(reader)
-        reader.Close()
+        Try
+            Dim reader = New StreamReader(cf)
+            Types.Settings = x.Deserialize(reader)
+            reader.Close()
+        Catch ex As Exception
+            Types.Settings = New Settings()
+        End Try
     End Sub
 
     Public Sub Save()
@@ -64,10 +68,14 @@ Public Module SettingsManager
         cf += "Settings.xml"
 
         Dim x As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
-        Dim writer = New StreamWriter(cf)
+        Try
+            Dim writer = New StreamWriter(cf)
 
-        x.Serialize(writer, Types.Settings)
-        writer.Close()
+            x.Serialize(writer, Types.Settings)
+            writer.Close()
+        Catch ex As Exception
+            File.Delete(cf)
+        End Try
     End Sub
 
 End Module
