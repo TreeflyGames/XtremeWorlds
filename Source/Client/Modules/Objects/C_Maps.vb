@@ -850,6 +850,7 @@ Module C_Maps
 
         For i = LayerType.Fringe To LayerType.Roof
             If Map.Tile(x, y).Layer Is Nothing Then Exit Sub
+
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
                 If TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then

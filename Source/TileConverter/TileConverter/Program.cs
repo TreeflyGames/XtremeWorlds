@@ -22,7 +22,8 @@ class Program
 
         // container info
         var t_size = 32;
-        var t_len = 224 / t_size;
+        var t_height = 512 / t_size;
+        var t_width = 256 / t_size;
 
         // render properties
         var dRect = new Rectangle(x: 0, y: 0, width: 0, height: 0);
@@ -30,13 +31,10 @@ class Program
 
         while (true)
         {
-            var sheet = new Bitmap(width: 224, height: 224);
-
-            int y;
-            for (y = 0; y <= t_len; y++)
+            var sheet = new Bitmap(width: t_width * t_size, height: t_height * t_size);
+            for (var y = 0; y < t_height; y++)
             {
-                int x;
-                for (x = 0; x <= t_len; x++)
+                for (var x = 0; x < t_width; x++)
                 {
                     Console.WriteLine(value: "Ripping Current File: " + cur_file.ToString());
 
@@ -45,6 +43,7 @@ class Program
                         goto DONE_FILING;
 
                     // parse the image into our sheet
+
                     var img = new Bitmap(filename: cd + cur_file.ToString() + ".bmp");
                     using (var g = Graphics.FromImage(image: sheet))
                     {
@@ -58,8 +57,11 @@ class Program
                 }
             }
 
+            string imagePath = cd + "Unpacked/" + cur_index.ToString() + ".png";
+
             // save and increment our tilesheet index
-            sheet.Save(cd + "Unpacked/" + cur_index.ToString() + ".png", System.Drawing.Imaging.ImageFormat.Png);
+            sheet.Save(imagePath, System.Drawing.Imaging.ImageFormat.Png);
+
             cur_index += 1;
         }
 

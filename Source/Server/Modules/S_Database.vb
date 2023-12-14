@@ -558,8 +558,8 @@ Module S_Database
                 xwMap.Indoors = (reader.ReadByte() = 1)
 
                 ' Now, we decode the Tiles
-                For x As Integer = 0 To 15
-                    For y As Integer = 0 To 11
+                For y As Integer = 0 To 11
+                    For x As Integer = 0 To 15
                         xwMap.Tile(x, y).Ground = reader.ReadInt16() ' 42
                         xwMap.Tile(x, y).Mask = reader.ReadInt16() ' 44
                         xwMap.Tile(x, y).Animation = reader.ReadInt16() ' 46
@@ -595,7 +595,8 @@ Module S_Database
         ' Constants for the new tileset
         Const TileWidth As Integer = 32
         Const TileHeight As Integer = 32
-        Const TilesPerRow As Integer = 7
+        Const TilesPerRow As Integer = 8
+        Const RowsPerTileset As Integer = 16
         Const TilesPerSheet As Integer = 49
 
         ' Initialize the layers
@@ -603,31 +604,28 @@ Module S_Database
 
         ' Process each layer
         For i As Integer = LayerType.Ground To LayerType.Count - 1
-            Dim tileNumber As Integer
+            Dim tileNumber As Integer = 0
 
             ' Select the appropriate tile number for each layer
             Select Case i
-                Case 1
+                Case LayerType.Ground
                     tileNumber = xwTile.Ground
-                Case 2
+                Case LayerType.Mask
                     tileNumber = xwTile.Mask
-                Case 3
+                Case LayerType.Cover
                     tileNumber = xwTile.Mask2
-                Case 4
+                Case LayerType.Fringe
                     tileNumber = xwTile.Fringe
-                Case 5
+                Case LayerType.Roof
                     tileNumber = xwTile.Roof
             End Select
 
             ' Ensure tileNumber is non-negative
-            If tileNumber < 0 Then tileNumber = 0
-
-            ' Calculate the tileset number based on the tile number
-            tile.Layer(i).Tileset = Math.Floor(tileNumber / TilesPerSheet) + 1
-
-            ' Convert the position to X and Y coordinates in the tileset
-            tile.Layer(i).X = tileNumber / TilesPerRow
-            tile.Layer(i).Y = tileNumber / TilesPerRow
+            If tileNumber > 0 Then
+                tile.Layer(i).Tileset = Math.Floor(tileNumber / TilesPerRow / RowsPerTileset) + 1
+                tile.Layer(i).Y = Math.Floor(tileNumber / TilesPerRow) Mod RowsPerTileset
+                tile.Layer(i).X = tileNumber Mod TilesPerRow
+            End If
         Next
 
         ' Copy over additional data fields
@@ -642,7 +640,6 @@ Module S_Database
 
         Return tile
     End Function
-
 
     Public Function MapFromXWMap(xwMap As XWMapStruct) As MapStruct
         Dim mwMap As New MapStruct
@@ -667,8 +664,8 @@ Module S_Database
         mwMap.Indoors = xwMap.Indoors <> 0
 
         ' Loop through each tile in xwMap and copy the data to map
-        For x As Integer = 0 To 15
-            For y As Integer = 0 To 11
+        For y As Integer = 0 To 11
+            For x As Integer = 0 To 15
                 mwMap.Tile(x, y) = ConvertXWTileToTile(xwMap.Tile(x, y))
             Next
         Next
