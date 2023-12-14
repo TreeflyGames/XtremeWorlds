@@ -558,8 +558,8 @@ Module S_Database
                 xwMap.Indoors = (reader.ReadByte() = 1)
 
                 ' Now, we decode the Tiles
-                For y As Integer = 0 To 11
-                    For x As Integer = 0 To 15
+                For x As Integer = 0 To 15
+                    For y As Integer = 0 To 11
                         xwMap.Tile(x, y).Ground = reader.ReadInt16() ' 42
                         xwMap.Tile(x, y).Mask = reader.ReadInt16() ' 44
                         xwMap.Tile(x, y).Animation = reader.ReadInt16() ' 46
@@ -577,7 +577,6 @@ Module S_Database
                         xwMap.Tile(x, y).FringeAnim = reader.ReadInt16() ' 68
                         xwMap.Tile(x, y).Roof = reader.ReadInt16() ' 70
                         xwMap.Tile(x, y).Fringe2Anim = reader.ReadInt16() ' 72
-
                     Next
                 Next
 
@@ -630,7 +629,7 @@ Module S_Database
             Dim positionWithinTileset As Integer = tileNumber Mod TilesPerSheet
 
             ' Convert the position to X and Y coordinates in the tileset
-            tile.Layer(i).X = positionWithinTileset Mod TilesPerRow
+            tile.Layer(i).X = Math.Floor(positionWithinTileset / TilesPerRow)
             tile.Layer(i).Y = Math.Floor(positionWithinTileset / TilesPerRow)
         Next
 
