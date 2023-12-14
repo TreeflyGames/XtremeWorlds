@@ -22,7 +22,7 @@ class Program
 
         // container info
         var t_size = 32;
-        var t_len = 512 / t_size;
+        var t_len = 224 / t_size;
 
         // render properties
         var dRect = new Rectangle(x: 0, y: 0, width: 0, height: 0);
@@ -30,7 +30,7 @@ class Program
 
         while (true)
         {
-            var sheet = new Bitmap(width: 512, height: 512);
+            var sheet = new Bitmap(width: 224, height: 224);
 
             int y;
             for (y = 0; y <= t_len; y++)
