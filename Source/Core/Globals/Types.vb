@@ -127,7 +127,7 @@ Public Module Types
     Public Structure TileDataStruct
         Dim X As Integer
         Dim Y As Integer
-        Dim Tileset As Byte
+        Dim Tileset As Integer
         Dim AutoTile As Byte
     End Structure
 

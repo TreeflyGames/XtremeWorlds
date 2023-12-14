@@ -595,11 +595,11 @@ Module S_Database
         ' Constants for the new tileset
         Const TileWidth As Integer = 32
         Const TileHeight As Integer = 32
-        Const TilesPerRow As Integer = 16 ' Number of tiles per row in a 512x512 tileset
-        Const TilesPerSheet As Integer = 256 ' Total tiles in a 512x512 tileset
+        Const TilesPerRow As Integer = 7
+        Const TilesPerSheet As Integer = 49
 
         ' Initialize the layers
-        ReDim tile.Layer(LayerType.Count - 1) ' Assuming 5 layers (0 to 4)
+        ReDim tile.Layer(LayerType.Count - 1)
 
         ' Process each layer
         For i As Integer = LayerType.Ground To LayerType.Count - 1
@@ -625,12 +625,9 @@ Module S_Database
             ' Calculate the tileset number based on the tile number
             tile.Layer(i).Tileset = Math.Floor(tileNumber / TilesPerSheet) + 1
 
-            ' Calculate the position within the tileset
-            Dim positionWithinTileset As Integer = tileNumber Mod TilesPerSheet
-
             ' Convert the position to X and Y coordinates in the tileset
-            tile.Layer(i).X = Math.Floor(positionWithinTileset / TilesPerRow)
-            tile.Layer(i).Y = Math.Floor(positionWithinTileset / TilesPerRow)
+            tile.Layer(i).X = tileNumber / TilesPerRow
+            tile.Layer(i).Y = tileNumber / TilesPerRow
         Next
 
         ' Copy over additional data fields
@@ -685,10 +682,6 @@ Module S_Database
         mwMap.Respawn = xwMap.Respawn <> 0
 
         Return mwMap
-    End Function
-
-    Private Function ReadString(reader As BinaryReader, length As Integer) As String
-        Return New String(reader.ReadChars(length)).TrimEnd(Chr(0))
     End Function
 
 #End Region

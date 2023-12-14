@@ -1148,7 +1148,7 @@ Public Class frmEditor_Map
 #Region "Drawing"
 
     Public Sub DrawTileset()
-        Dim tileset As Byte
+        Dim tileset As Integer
 
         TilesetWindow?.Clear()
 

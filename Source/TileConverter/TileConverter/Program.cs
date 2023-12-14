@@ -17,7 +17,7 @@ class Program
             Directory.CreateDirectory(path: cd + "Unpacked");
 
         // file tracking
-        var cur_index = 0; // new tilesheet
+        var cur_index = 1; // new tilesheet
         var cur_file = 0;  // old tile image
 
         // container info
