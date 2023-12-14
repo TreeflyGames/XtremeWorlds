@@ -8,7 +8,7 @@ class Program
 { 
     static void Main(string[] args)
     {
-        var cd = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/tiles/";
+        var cd = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\tiles\\";
 
         if (!Directory.Exists(cd))
             Directory.CreateDirectory(cd);
@@ -59,7 +59,7 @@ class Program
             }
 
             // save and increment our tilesheet index
-            sheet.Save(cd + "Unpacked/" + cur_index.ToString() + ".bmp");
+            sheet.Save(cd + "Unpacked/" + cur_index.ToString() + ".png", System.Drawing.Imaging.ImageFormat.Png);
             cur_index += 1;
         }
 
