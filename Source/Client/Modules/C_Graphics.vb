@@ -447,7 +447,12 @@ Module C_Graphics
         Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Arial)
         Fonts(2) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Verdana)
 
-        GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Titlebar Or Styles.Close)
+        Dim settings As New ContextSettings()
+        settings.DepthBits = 24 ' 24 bits for depth buffer is a common choice
+        settings.StencilBits = 8 ' 8 bits for stencil buffer, if needed
+        settings.AntialiasingLevel = 4 ' Level of antialiasing
+
+        GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Default, settings)
         GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
         GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
         Dim iconImage As New Image(Paths.Gui + "icon.png")
