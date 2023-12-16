@@ -196,7 +196,6 @@ Module C_Database
 
 #End Region
 
-
 #Region "Blood"
 
     Sub ClearBlood()

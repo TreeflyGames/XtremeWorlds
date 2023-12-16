@@ -1032,7 +1032,7 @@ Partial Class frmEditor_Map
         Label11.Name = "Label11"
         Label11.Size = New Size(81, 25)
         Label11.TabIndex = 16
-        Label11.Text = "AutoTile:"
+        Label11.Text = "Autotile:"
         ' 
         ' Label10
         ' 

@@ -307,7 +307,8 @@
 
     End Function
 
-   Public Sub SetPlayerSkill(index As Integer, Skillslot As Integer, Skillnum As Integer)
+    Public Sub SetPlayerSkill(index As Integer, Skillslot As Integer, Skillnum As Integer)
         Player(index).Skill(Skillslot).Num = Skillnum
     End Sub
+
 End Module

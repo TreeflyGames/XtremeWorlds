@@ -69,13 +69,14 @@ Public Module SettingsManager
 
         Dim x As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
         Try
-            Dim writer = New StreamWriter(cf)
-
-            x.Serialize(writer, Types.Settings)
-            writer.Close()
+            Using writer = New StreamWriter(cf)
+                x.Serialize(writer, Types.Settings)
+            End Using ' This ensures the writer is properly disposed and the file is closed
         Catch ex As Exception
+            Threading.Thread.Sleep(1000) ' Wait for 1 second
             File.Delete(cf)
         End Try
+
     End Sub
 
 End Module
