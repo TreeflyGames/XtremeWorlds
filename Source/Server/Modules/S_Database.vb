@@ -526,29 +526,31 @@ Module S_Database
         Dim mapsDir As String = Path.Combine(baseDir, "maps")
         Directory.CreateDirectory(mapsDir)
 
+        CacheResources(mapNum)
+
+        If File.Exists(mapsDir & "\cs\map" & MapNum & ".ini" )
+            Dim csMap As CSMapStruct = LoadCSMap(mapNum)
+            Map(mapNum) = MapFromCSMap(csMap)
+            Exit Sub
+        End If
+
+        If File.Exists(mapsDir & "\xw\map" & MapNum & ".dat" )
+            Dim xwMap As XWMapStruct = LoadXWMap(mapsDir & "\xw\map" & mapNum.ToString() & ".dat")
+            Map(mapNum) = MapFromXWMap(xwMap)
+            Exit Sub
+        End If
+
         Dim data As JObject
 
         data = SelectRow(mapNum, "map", "data")
-
-        Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
-        Map(mapNum) = mapData
 
         If data Is Nothing Then
             ClearMap(mapNum)
             Exit Sub
         End If
 
-        If File.Exists(mapsDir & "\cs\map" & MapNum & ".ini" )
-            Dim csMap As CSMapStruct = LoadCSMap(mapNum)
-            Map(mapNum) = MapFromCSMap(csMap)
-        End If
-
-        If File.Exists(mapsDir & "\xw\map" & MapNum & ".dat" )
-            Dim xwMap As XWMapStruct = LoadXWMap(mapsDir & "\xw\map" & mapNum.ToString() & ".dat")
-            Map(mapNum) = MapFromXWMap(xwMap)
-        End If
-
-        CacheResources(mapNum)
+        Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
+        Map(mapNum) = mapData
     End Sub
 
     Public Function LoadCSMap(MapNum As Long) As CSMapStruct
