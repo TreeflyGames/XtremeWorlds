@@ -539,12 +539,12 @@ Module S_Database
                 Exit Sub
             End If
         Else
-            If Directory.Exists(mapsDir & "\cs\") Then
+            If File.Exists(mapsDir & "\cs\map" & MapNum & ".ini" )
                 Dim csMap As CSMapStruct = LoadCSMap(mapNum)
                 Map(mapNum) = MapFromCSMap(csMap)
             End If
 
-            If Directory.Exists(mapsDir & "\xw\") Then
+            If File.Exists(mapsDir & "\xw\map" & MapNum & ".dat" )
                 Dim xwMap As XWMapStruct = LoadXWMap(mapsDir & "\xw\map" & mapNum.ToString() & ".dat")
                 Map(mapNum) = MapFromXWMap(xwMap)
             End If
@@ -598,7 +598,9 @@ Module S_Database
         End With
 
         ' Redim the map
-        ReDim csMap.TileData.Tile(csMap.MapData.MaxX, csMap.MapData.MaxY)
+        ReDim csMap.Tile(csMap.MapData.MaxX, csMap.MapData.MaxY)
+
+        filename = AppDomain.CurrentDomain.BaseDirectory & "\maps\cs\map" & MapNum & ".dat"
 
         Using fileStream As New FileStream(filename, FileMode.Open, FileAccess.Read), 
             binaryReader As New BinaryReader(fileStream)
@@ -611,16 +613,17 @@ Module S_Database
                 For x = 0 To MAX_X
                     For y = 0 To MAX_Y
                         ' Resize arrays only once if possible
-                        ReDim csMap.TileData.Tile(x, y).Autotile(LayerType.Count - 1)
-                        ReDim csMap.TileData.Tile(x, y).Layer(LayerType.Count - 1)
+                        ReDim csMap.Tile(x, y).Autotile(LayerType.Count - 1)
+                        ReDim csMap.Tile(x, y).Layer(LayerType.Count - 1)
 
-                        With csMap.TileData.Tile(x, y)
+                        With csMap.Tile(x, y)
                             .Type = binaryReader.ReadByte()
                             .Data1 = binaryReader.ReadInt32()
                             .Data2 = binaryReader.ReadInt32()
                             .Data3 = binaryReader.ReadInt32()
                             .Data4 = binaryReader.ReadInt32()
                             .Data5 = binaryReader.ReadInt32()
+
                             For i = 1 To LayerType.Count - 1
                                 .Autotile(i) = binaryReader.ReadByte()
                             Next
@@ -835,6 +838,7 @@ Module S_Database
 
         ReDim mwMap.Npc(30)
 
+        mwMap.Name = csMap.MapData.Name
         mwMap.MaxX = csMap.MapData.MaxX
         mwMap.MaxY = csMap.MapData.MaxY
         mwMap.BootMap = csMap.MapData.BootMap
@@ -861,16 +865,19 @@ Module S_Database
         ' Loop through each tile in xwMap and copy the data to map
         For y As Integer = 0 To mwMap.MaxX
             For x As Integer = 0 To mwMap.MaxY
-                mwMap.Tile(x, y).Data1 = csMap.TileData.Tile(x, y).Data1
-                mwMap.Tile(x, y).Data2 = csMap.TileData.Tile(x, y).Data2
-                mwMap.Tile(x, y).Data3 = csMap.TileData.Tile(x, y).Data3
-                mwMap.Tile(x,y).DirBlock = csMap.TileData.Tile(x,y).DirBlock
+                ' Resize arrays only once if possible
+                ReDim mwMap.Tile(x, y).Layer(LayerType.Count - 1)
+
+                mwMap.Tile(x, y).Data1 = csMap.Tile(x, y).Data1
+                mwMap.Tile(x, y).Data2 = csMap.Tile(x, y).Data2
+                mwMap.Tile(x, y).Data3 = csMap.Tile(x, y).Data3
+                mwMap.Tile(x,y).DirBlock = csMap.Tile(x,y).DirBlock
                 
                 For i As Integer = LayerType.Ground To LayerType.Count - 1
-                    mwMap.Tile(x,y).Layer(i).X = csMap.TileData.Tile(x,y).Layer(i).x
-                    mwMap.Tile(x,y).Layer(i).y = csMap.TileData.Tile(x,y).Layer(i).y
-                    mwMap.Tile(x,y).Layer(i).Tileset = csMap.TileData.Tile(x,y).Layer(i).TileSet
-                    mwMap.Tile(x,y).Layer(i).AutoTile = csMap.TileData.Tile(x,y).Autotile(i)
+                    mwMap.Tile(x,y).Layer(i).X = csMap.Tile(x,y).Layer(i).x
+                    mwMap.Tile(x,y).Layer(i).y = csMap.Tile(x,y).Layer(i).y
+                    mwMap.Tile(x,y).Layer(i).Tileset = csMap.Tile(x,y).Layer(i).TileSet
+                    mwMap.Tile(x,y).Layer(i).AutoTile = csMap.Tile(x,y).Autotile(i)
                 Next
             Next
         Next

@@ -914,11 +914,6 @@ Public Module Types
 
     Public Structure CSMapStruct
         Dim MapData As CSMapDataStruct
-        Dim TileData As CSMapTileStruct
-    End Structure
-
-    Public Structure CSMapTileStruct
-        Dim EventCount As Long
         Dim Tile(,) As CSTileStruct
     End Structure
 
