@@ -64,7 +64,7 @@ Friend Module S_Projectile
         Dim x As Integer
         Dim y As Integer
 
-        ReDim MapProjectile(MAX_CACHED_MAPS, MAX_PROJECTILES)
+        ReDim MapProjectile(MAX_MAPS, MAX_PROJECTILES)
 
         For x = 1 To MAX_MAPS
             For y = 1 To MAX_PROJECTILES

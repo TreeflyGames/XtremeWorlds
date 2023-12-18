@@ -11,9 +11,9 @@ Public Module Types
     Public Skill(MAX_SKILLS) As SkillStruct
     Public Resource(MAX_RESOURCES) As ResourceStruct
     Public Animation(MAX_ANIMATIONS) As AnimationStruct
-    Public Map(MAX_CACHED_MAPS) As MapStruct
-    Public PlayersOnMap(MAX_CACHED_MAPS) As Boolean
-    Public MapItem(MAX_CACHED_MAPS, MAX_MAP_ITEMS) As MapItemStruct
+    Public Map(MAX_MAPS) As MapStruct
+    Public PlayersOnMap(MAX_MAPS) As Boolean
+    Public MapItem(MAX_MAPS, MAX_MAP_ITEMS) As MapItemStruct
     Public MapNPC(MAX_MAP_NPCS) As MapDataStruct
     Public Bank(MAX_PLAYERS) As BankStruct
     Public TempPlayer(MAX_PLAYERS) As TempPlayerStruct

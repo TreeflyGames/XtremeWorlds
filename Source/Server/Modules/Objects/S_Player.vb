@@ -892,7 +892,7 @@ Module S_Player
         Dim buffer As ByteStream
 
         ' Check for subscript out of range
-        If IsPlaying(index) = False OrElse MapNum <= 0 OrElse MapNum > MAX_CACHED_MAPS Then Exit Sub
+        If IsPlaying(index) = False OrElse MapNum <= 0 OrElse MapNum > MAX_MAPS Then Exit Sub
 
         ' Check if you are out of bounds
         If X > Map(MapNum).MaxX Then X = Map(MapNum).MaxX

@@ -1188,7 +1188,7 @@ Module C_Graphics
         x = ConvertMapX(MapItem(itemnum).X * PicX)
         y = ConvertMapY(MapItem(itemnum).Y * PicY)
 
-        RenderTexture(ItemSprite(picNum), GameWindow, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
+        RenderTexture(ItemSprite(picNum), GameWindow, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width, srcrec.Height)
     End Sub
 
     Friend Sub DrawCharacterSprite(sprite As Integer, x2 As Integer, y2 As Integer, sRECT As Rectangle)

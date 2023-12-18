@@ -48,8 +48,8 @@ Friend Module S_Resource
     End Sub
 
     Sub ClearResources()
-        ReDim MapResource(MAX_CACHED_MAPS)
-        ReDim MapResource(MAX_CACHED_MAPS).ResourceData(MAX_RESOURCES)
+        ReDim MapResource(MAX_MAPS)
+        ReDim MapResource(MAX_MAPS).ResourceData(MAX_RESOURCES)
 
         For i = 1 To MAX_RESOURCES
             ClearResource(i)

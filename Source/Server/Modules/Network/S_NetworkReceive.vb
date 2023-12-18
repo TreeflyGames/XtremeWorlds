@@ -740,7 +740,7 @@ Module S_NetworkReceive
         buffer.Dispose()
 
         ' Prevent hacking
-        If n <= 0 OrElse n > MAX_CACHED_MAPS Then Exit Sub
+        If n <= 0 OrElse n > MAX_MAPS Then Exit Sub
 
         PlayerWarp(index, n, GetPlayerX(index), GetPlayerY(index))
         PlayerMsg(index, "You have been warped to map #" & n, ColorType.Yellow)

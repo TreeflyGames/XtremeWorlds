@@ -395,19 +395,19 @@ Module S_Database
 #Region "Maps"
 
     Sub ClearMaps()
-        ReDim Map(MAX_CACHED_MAPS)
-        ReDim MapNPC(MAX_CACHED_MAPS)
+        ReDim Map(MAX_MAPS)
+        ReDim MapNPC(MAX_MAPS)
 
-        For i = 1 To MAX_CACHED_MAPS
+        For i = 1 To MAX_MAPS
             ReDim MapNPC(i).Npc(MAX_MAP_NPCS)
             ReDim Map(i).Npc(MAX_MAP_NPCS)
         Next
 
         ReDim Switches(MAX_SWITCHES)
         ReDim Variables(NAX_VARIABLES)
-        ReDim TempEventMap(MAX_CACHED_MAPS)
+        ReDim TempEventMap(MAX_MAPS)
 
-        For i = 1 To MAX_CACHED_MAPS
+        For i = 1 To MAX_MAPS
             ClearMap(i)
         Next
     End Sub
@@ -501,7 +501,7 @@ Module S_Database
         Dim x As Integer
         Dim y As Integer
 
-        For y = 1 To MAX_CACHED_MAPS
+        For y = 1 To MAX_MAPS
             For x = 1 To MAX_MAP_ITEMS
                 ClearMapItem(x, y)
             Next
@@ -726,7 +726,7 @@ Module S_Database
     Sub ClearAllMapNpcs()
         Dim i As Integer
 
-        For i = 1 To MAX_CACHED_MAPS
+        For i = 1 To MAX_MAPS
             ClearMapNpcs(i)
         Next
 

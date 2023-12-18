@@ -582,7 +582,7 @@ Module S_Pet
         Dim distanceX As Integer, distanceY As Integer, tmpdir As Integer
         Dim target As Integer, targetTypes As Byte, targetX As Integer, targetY As Integer, targetVerify As Boolean
 
-        For mapNum = 0 To MAX_CACHED_MAPS
+        For mapNum = 1 To MAX_MAPS
             For playerindex = 0 To GetPlayersOnline()
                 tickCount = GetTimeMs()
 

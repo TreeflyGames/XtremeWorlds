@@ -159,8 +159,8 @@ Friend Module S_Item
     Sub SpawnItem(itemNum As Integer, ItemVal As Integer, mapNum As Integer, x As Integer, y As Integer)
         Dim i As Integer
 
-' Check for subscript out of range
-        If itemnum <= 0 OrElse itemNum > MAX_ITEMS OrElse mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS Then Exit Sub
+        ' Check for subscript out of range
+        If itemnum <= 0 OrElse itemNum > MAX_ITEMS OrElse mapNum <= 0 OrElse mapNum > MAX_MAPS Then Exit Sub
 
         ' Find open map item slot
         i = FindOpenMapItemSlot(mapNum)
@@ -174,8 +174,8 @@ Friend Module S_Item
         Dim i As Integer
         Dim buffer As New ByteStream(4)
 
-' Check for subscript out of range
-        If MapItemSlot < 0 OrElse MapItemSlot > MAX_MAP_ITEMS OrElse itemnum <= 0 OrElse itemNum > MAX_ITEMS OrElse mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS Then Exit Sub
+        ' Check for subscript out of range
+        If MapItemSlot < 0 OrElse MapItemSlot > MAX_MAP_ITEMS OrElse itemnum <= 0 OrElse itemNum > MAX_ITEMS OrElse mapNum <= 0 OrElse mapNum > MAX_MAPS Then Exit Sub
 
         i = MapItemSlot
 
@@ -202,7 +202,7 @@ Friend Module S_Item
         Dim i As Integer
 
         ' Check for subscript out of range
-        If mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS Then Exit Function
+        If mapNum <= 0 OrElse mapNum > MAX_MAPS Then Exit Function
 
         FindOpenMapItemSlot = 0
 
@@ -218,7 +218,7 @@ Friend Module S_Item
     Sub SpawnAllMapsItems()
         Dim i As Integer
 
-       For i = 1 To MAX_CACHED_MAPS
+       For i = 1 To MAX_MAPS
             SpawnMapItems(i)
         Next
 
@@ -229,7 +229,7 @@ Friend Module S_Item
         Dim y As Integer
 
         ' Check for subscript out of range
-        If mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS Then Exit Sub
+        If mapNum <= 0 OrElse mapNum > MAX_MAPS Then Exit Sub
         If Map(mapNum).Respawn = False Then Exit Sub
 
         ' Spawn what we have

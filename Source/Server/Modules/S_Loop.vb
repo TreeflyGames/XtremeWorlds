@@ -135,7 +135,7 @@ Module S_Loop
         ' ///////////////////////////////////////////
         ' // This is used for respawning map items //
         ' ///////////////////////////////////////////
-        For y = 1 To MAX_CACHED_MAPS
+        For y = 1 To MAX_MAPS
 
             ' Make sure no one is on the map when it respawns
             If Not PlayersOnMap(y) Then
@@ -180,7 +180,7 @@ Module S_Loop
         Dim target As Integer, targetTypes As Byte, targetX As Integer, targetY As Integer, targetVerify As Boolean
         Dim resourceIndex As Integer
 
-        For mapNum = 0 To MAX_CACHED_MAPS
+        For mapNum = 0 To MAX_MAPS
 
             If ServerDestroyed Then Exit Sub
 

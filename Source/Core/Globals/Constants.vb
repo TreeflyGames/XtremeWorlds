@@ -21,8 +21,6 @@
     Public Const MAX_SKILLS As Integer = 255
     Public Const MAX_TRADES As Byte = 20
     Public Const NAME_LENGTH As Byte = 21
-    Public Const MAX_INSTANCED_MAPS As Integer = 100
-    Public Const MAX_CACHED_MAPS As Integer = MAX_MAPS + MAX_INSTANCED_MAPS
     Public Const MAX_HOTBAR As Byte = 10
     Public Const MAX_MAPX As Byte = 16
     Public Const MAX_MAPY As Byte = 11

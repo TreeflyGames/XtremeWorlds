@@ -8,7 +8,7 @@ Module S_Npc
     Sub SpawnAllMapNpcs()
         Dim i As Integer
 
-        For i = 1 To MAX_CACHED_MAPS
+        For i = 1 To MAX_MAPS
             SpawnMapNpcs(i)
         Next
 
@@ -159,7 +159,7 @@ Module S_Npc
         Dim y As Integer
 
         ' Check for subscript out of range
-        If mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS OrElse MapNpcNum <= 0 OrElse MapNpcNum > MAX_MAP_NPCS OrElse Dir < DirectionType.Up OrElse Dir > DirectionType.Right Then
+        If mapNum <= 0 OrElse mapNum > MAX_MAPS OrElse MapNpcNum <= 0 OrElse MapNpcNum > MAX_MAP_NPCS OrElse Dir < DirectionType.Up OrElse Dir > DirectionType.Right Then
             Exit Function
         End If
 
@@ -310,7 +310,7 @@ Module S_Npc
         Dim buffer As New ByteStream(4)
 
         ' Check for subscript out of range
-        If mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS OrElse MapNpcNum <= 0 OrElse MapNpcNum > MAX_MAP_NPCS OrElse Dir < DirectionType.Up OrElse Dir > DirectionType.Right OrElse Movement < 0 OrElse Movement > 2 Then
+        If mapNum <= 0 OrElse mapNum > MAX_MAPS OrElse MapNpcNum <= 0 OrElse MapNpcNum > MAX_MAP_NPCS OrElse Dir < DirectionType.Up OrElse Dir > DirectionType.Right OrElse Movement < 0 OrElse Movement > 2 Then
             Exit Sub
         End If
 
@@ -370,7 +370,7 @@ Module S_Npc
         Dim buffer As New ByteStream(4)
 
         ' Check for subscript out of range
-        If mapNum <= 0 OrElse mapNum > MAX_CACHED_MAPS OrElse MapNpcNum <= 0 OrElse MapNpcNum > MAX_MAP_NPCS OrElse Dir < DirectionType.Up OrElse Dir > DirectionType.Right Then
+        If mapNum <= 0 OrElse mapNum > MAX_MAPS OrElse MapNpcNum <= 0 OrElse MapNpcNum > MAX_MAP_NPCS OrElse Dir < DirectionType.Up OrElse Dir > DirectionType.Right Then
             Exit Sub
         End If
 
