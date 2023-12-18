@@ -562,7 +562,7 @@ Module S_Database
         ' Load map data
         filename = AppDomain.CurrentDomain.BaseDirectory & "\maps\cs\map" & MapNum & ".ini"
 
-        ReDim csMap.MapData.Npc(30)
+        ReDim csMap.MapData.Npc(MAX_MAP_NPCS)
 
         ' General
         With csMap.MapData
@@ -795,7 +795,7 @@ Module S_Database
         Dim mwMap As New MapStruct
 
         ReDim mwMap.Tile(15, 11)
-        ReDim mwMap.Npc(14)
+        ReDim mwMap.Npc(MAX_MAP_NPCS)
 
         mwMap.Name = xwMap.Name.Trim()
         mwMap.Music = "Music" & xwMap.Music.ToString() & ".mid"
@@ -836,7 +836,7 @@ Module S_Database
     public Function MapFromCSMap(csMap As CSMapStruct) As MapStruct
         Dim mwMap As MapStruct
 
-        ReDim mwMap.Npc(30)
+        ReDim mwMap.Npc(MAX_MAP_NPCS)
 
         mwMap.Name = csMap.MapData.Name
         mwMap.MaxX = csMap.MapData.MaxX
