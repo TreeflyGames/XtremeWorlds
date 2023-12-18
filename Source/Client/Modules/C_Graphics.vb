@@ -4,7 +4,6 @@ Imports SFML.Graphics
 Imports SFML.System
 Imports Core
 Imports SFML.Window
-Imports System.Threading
 
 Module C_Graphics
 
