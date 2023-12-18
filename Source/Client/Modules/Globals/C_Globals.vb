@@ -162,7 +162,6 @@ Module C_Globals
 
     ' Used to check if FPS needs to be drawn
     Public Bfps As Boolean
-
     Public Blps As Boolean
     Public BLoc As Boolean
 

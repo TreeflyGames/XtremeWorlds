@@ -21,14 +21,14 @@ Namespace Paths
         ''' <summary> Returns database directory </summary>
         Public ReadOnly Property Database As String
             Get
-                Return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) & "//Database//"
+                Return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) & "\Database\"
             End Get
         End Property
 
         ''' <summary> Returns configuration directory </summary>
         Public ReadOnly Property Config As String
             Get
-                Return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) & "//Configuration//"
+                Return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) & "\Configuration\"
             End Get
         End Property
 

@@ -4,6 +4,7 @@ Imports SFML.Graphics
 Imports SFML.System
 Imports Core
 Imports SFML.Window
+Imports System.Threading
 
 Module C_Graphics
 
@@ -457,7 +458,7 @@ Module C_Graphics
         GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
         Dim iconImage As New Image(Paths.Gui + "icon.png")
         GameWindow.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
-        'GameWindow = New RenderWindow(FrmGame.picscreen.Handle)
+
         AddHandler GameWindow.Closed, AddressOf GameWindow_Closed
         AddHandler GameWindow.GainedFocus, AddressOf GameWindow_GainedFocus
         AddHandler GameWindow.LostFocus, AddressOf GameWindow_LostFocus
@@ -1596,6 +1597,10 @@ Module C_Graphics
             DrawMapAttributes()
         End If
 
+        If Bfps Then
+            Call RenderText(Trim$("FPS: " & GameFps), GameWindow, Camera.Right - (Len("FPS: " & GameFps) * 8), Camera.Top + 15, Color.Yellow, Color.Black)
+        End If
+
         DrawMapName()
 
         If Editor = EditorType.Map AndAlso frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpEvents Then
@@ -1620,7 +1625,6 @@ Module C_Graphics
 
         RenderEntities()
 
-        'and finally show everything on screen
         GameWindow.Display()
     End Sub
 
@@ -2245,9 +2249,9 @@ Module C_Graphics
                                     Next
 
                                     tempTileLights.Add(New LightTileStruct() With {
-                                                          .tiles = tiles,
-                                                          .isFlicker = Map.Tile(x, y).Data2 = 1,
-                                                          .scale = New Vector2f(0.35F, 0.35F)
+.Tiles = tiles,
+.IsFlicker = Map.Tile(x, y).Data2 = 1,
+                                                          .Scale = New Vector2f(0.35F, 0.35F)
                                                           })
                                 Else
                                     Dim alphaBump As Byte
@@ -2269,10 +2273,10 @@ Module C_Graphics
                                     Next
 
                                     tempTileLights.Add(New LightTileStruct() With {
-                                                          .tiles = tiles,
-                                                          .isFlicker = Map.Tile(x, y).Data2 = 1,
-                                                          .scale = New Vector2f(0.35F, 0.35F)
-                                                          })
+                                                          .Tiles = tiles,
+.IsFlicker = Map.Tile(x, y).Data2 = 1,
+.Scale = New Vector2f(0.35F, 0.35F)
+})
                                 End If
                             Else
                                 LightSprite.Color = Color.Red
@@ -2290,13 +2294,13 @@ Module C_Graphics
                                 Dim y1 = (ConvertMapY(y * 32) + 16 - CDbl((LightGfxInfo.Height * scale.Y)) / 2)
                                 LightSprite.Position = New Vector2f(CSng(x1), CSng(y1))
                                 tempTileLights.Add(New LightTileStruct() With {
-                                                      .tiles = New List(Of Vector2i)() From {
+                                                      .Tiles = New List(Of Vector2i)() From {
                                                       New Vector2i(x, y)
                                                       },
-                                                      .isFlicker = Map.Tile(x, y).Data2 = 1,
-                                                      .scale =
+.IsFlicker = Map.Tile(x, y).Data2 = 1,
+                                                      .Scale =
                                                       New Vector2f(0.3F * Map.Tile(x, y).Data1, 0.3F * Map.Tile(x, y).Data1)
-                                                      })
+})
                                 GameWindow.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
                             End If
                         End If
@@ -2308,16 +2312,16 @@ Module C_Graphics
             For Each light As LightTileStruct In tempTileLights
                 Dim scale = New Vector2f()
 
-                If light.isFlicker Then
+                If light.IsFlicker Then
                     Dim r = CSng(RandomNumberBetween(-0.004F, 0.004F))
-                    scale = New Vector2f(light.scale.X + r, light.scale.Y + r)
+                    scale = New Vector2f(light.Scale.X + r, light.Scale.Y + r)
                 Else
-                    scale = light.scale
+                    scale = light.Scale
                 End If
 
-                For Each tile As Vector2i In light.tiles
+                For Each tile As Vector2i In light.Tiles
 
-                    If light.isSmooth = False Then
+                    If light.IsSmooth = False Then
                         LightSprite.Scale = scale
                         LightSprite.Position =
                             New Vector2f((ConvertMapX(tile.X * 32) - (LightGfx.Size.X / 2 * LightSprite.Scale.X) + 16),

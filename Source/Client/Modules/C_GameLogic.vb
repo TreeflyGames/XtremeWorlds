@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Threading
 Imports System.Windows.Forms
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar
 Imports Core
 Imports Mirage.Sharp.Asfw
 Imports Color = SFML.Graphics.Color
@@ -13,7 +14,7 @@ Module C_GameLogic
         Dim starttime As Integer, tick As Integer, fogtmr As Integer, chattmr As Integer
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
         Dim tmr10000 As Integer, tmr1000 As Integer, tmrweather As Integer
-        Dim tmr100 As Integer, tmr500 As Integer, tmrconnect As Integer
+        Dim tmr100 As Integer, tmr500 As Integer, tmrconnect As Integer, TickFPS As Integer
         Dim fadetmr As Integer, rendertmr As Integer
         Dim animationtmr As Integer
 
@@ -281,6 +282,15 @@ Module C_GameLogic
 
             Render_Graphics()
 
+            ' Calculate fps
+            If TickFPS < tick Then
+                GameFps = Fps
+                TickFPS = tick + 1000
+                Fps = 0
+            Else
+                Fps += 1
+            End If
+
             If Editor = EditorType.Map Then
                 frmEditor_Map.DrawTileset()
             End If
@@ -289,9 +299,9 @@ Module C_GameLogic
                 EditorAnim_DrawAnim()
             End If
 
-            UpdateUi()
-            GameWindow.WaitAndDispatchEvents()
+            GameWindow.DispatchEvents()
             Application.DoEvents()
+            UpdateUi()
         End While
     End Sub
 
