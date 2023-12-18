@@ -422,11 +422,11 @@ Public Class frmEditor_Map
 #Region "Map Effects"
 
     Private Sub CmbWeather_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbWeather.SelectedIndexChanged
-        Map.WeatherType = cmbWeather.SelectedIndex
+        Map.Weather = cmbWeather.SelectedIndex
     End Sub
 
     Private Sub ScrlFog_Scroll(sender As Object, e As EventArgs) Handles scrlFog.ValueChanged
-        Map.Fogindex = scrlFog.Value
+        Map.Fog = scrlFog.Value
         lblFogIndex.Text = "Fog: " & scrlFog.Value
     End Sub
 
@@ -572,8 +572,8 @@ Public Class frmEditor_Map
         txtMaxX.Text = Map.MaxX
         txtMaxY.Text = Map.MaxY
 
-        cmbWeather.SelectedIndex = Map.WeatherType
-        scrlFog.Value = Map.Fogindex
+        cmbWeather.SelectedIndex = Map.Weather
+        scrlFog.Value = Map.Fog
         lblFogIndex.Text = "Fog: " & scrlFog.Value
         scrlIntensity.Value = Map.WeatherIntensity
         lblIntensity.Text = "Intensity: " & scrlIntensity.Value

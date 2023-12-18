@@ -228,7 +228,7 @@
         Epic
     End Enum
 
-    Public Enum WeatherType
+    Public Enum Weather
         None = 0
         Rain
         Snow

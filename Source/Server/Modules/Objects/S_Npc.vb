@@ -621,7 +621,7 @@ Module S_Npc
                     End If
                 Next
 
-                For z = 0 To EquipmentType.Count - 1
+                For z = 1 To EquipmentType.Count - 1
                     If GetPlayerEquipment(Victim, z) > 0 Then
                         EqCount = EqCount + 1
                     End If
@@ -633,7 +633,7 @@ Module S_Npc
                 If z > InvCount Then
                     z = z - InvCount
 
-                    For x = 0 To EquipmentType.Count - 1
+                    For x = 1 To EquipmentType.Count - 1
 
                         If GetPlayerEquipment(Victim, x) > 0 Then
                             j = j + 1

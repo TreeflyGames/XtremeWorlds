@@ -63,7 +63,7 @@ Friend Module C_Weather
 
         For i = 0 To MaxWeatherParticles
             If WeatherParticle(i).InUse Then
-                If WeatherParticle(i).Type = WeatherType.Storm Then
+                If WeatherParticle(i).Type = Weather.Storm Then
                     spriteLeft = 0
                 Else
                     spriteLeft = WeatherParticle(i).Type - 1
@@ -109,8 +109,8 @@ Friend Module C_Weather
     Sub ProcessWeather()
         Dim i As Integer, x As Integer
 
-        If CurrentWeather > 0 And CurrentWeather < WeatherType.Fog Then
-            If CurrentWeather = WeatherType.Rain OrElse CurrentWeather = WeatherType.Storm Then
+        If CurrentWeather > 0 And CurrentWeather < Weather.Fog Then
+            If CurrentWeather = Weather.Rain OrElse CurrentWeather = Weather.Storm Then
                 PlayWeatherSound("Rain.ogg", True)
             End If
             x = Rand(1, 101 - CurrentWeatherIntensity)
@@ -138,7 +138,7 @@ Friend Module C_Weather
         Else
             StopWeatherSound()
         End If
-        If CurrentWeather = WeatherType.Storm Then
+        If CurrentWeather = Weather.Storm Then
             x = Rand(1, 400 - CurrentWeatherIntensity)
             If x = 1 Then
                 'Draw Thunder

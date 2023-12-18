@@ -323,6 +323,65 @@ Module S_Database
         End Using
     End Function
 
+    #Region "Var"
+
+    Public Function GetVar(filePath As String, section As String, key As String) As String
+        Dim isInSection As Boolean = False
+
+        For Each line As String In File.ReadAllLines(filePath)
+            If line.Trim().Equals("[" & section & "]", StringComparison.OrdinalIgnoreCase) Then
+                isInSection = True
+            ElseIf line.StartsWith("[") AndAlso line.EndsWith("]") Then
+                isInSection = False
+            ElseIf isInSection AndAlso line.Contains("=") Then
+                Dim parts() As String = line.Split(New Char() {"="c}, 2)
+                If parts(0).Trim().Equals(key, StringComparison.OrdinalIgnoreCase) Then
+                    Return parts(1).Trim()
+                End If
+            End If
+        Next
+
+        Return String.Empty ' Key not found
+    End Function
+
+    Public Sub PutVar(filePath As String, section As String, key As String, value As String)
+        Dim lines As New List(Of String)(File.ReadAllLines(filePath))
+        Dim updated As Boolean = False
+        Dim isInSection As Boolean = False
+        Dim i As Integer = 0
+
+        While i < lines.Count
+            If lines(i).Trim().Equals("[" & section & "]", StringComparison.OrdinalIgnoreCase) Then
+                isInSection = True
+                i += 1
+                While i < lines.Count AndAlso Not lines(i).StartsWith("[")
+                    If lines(i).Contains("=") Then
+                        Dim parts() As String = lines(i).Split(New Char() {"="c}, 2)
+                        If parts(0).Trim().Equals(key, StringComparison.OrdinalIgnoreCase) Then
+                            lines(i) = key & "=" & value
+                            updated = True
+                            Exit While
+                        End If
+                    End If
+                    i += 1
+                End While
+                Exit While
+            End If
+            i += 1
+        End While
+
+        If Not updated Then
+            ' Key not found, add it to the section
+            lines.Add("[" & section & "]")
+            lines.Add(key & "=" & value)
+        End If
+
+        File.WriteAllLines(filePath, lines)
+    End Sub
+
+
+#End Region
+
 #Region "Job"
 
     Sub ClearJobs()
@@ -467,31 +526,119 @@ Module S_Database
         Dim mapsDir As String = Path.Combine(baseDir, "maps")
 
         ' Check if the directory exists
-        If Directory.Exists(mapsDir) Then
-            If Not File.Exists(mapsDir & "\map" & mapNum.ToString() & ".dat") Then
-                Dim data As JObject
+        If Not Directory.Exists(mapsDir) Then
+            Dim data As JObject
 
-                data = SelectRow(mapNum, "map", "data")
+            data = SelectRow(mapNum, "map", "data")
 
-                Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
-                Map(mapNum) = mapData
+            Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
+            Map(mapNum) = mapData
 
-                If data Is Nothing Then
-                    ClearMap(mapNum)
-                    Exit Sub
-                End If
-            Else
-                Dim xwMap As XWMapStruct = ConvertXWMap(mapsDir & "\map" & mapNum.ToString() & ".dat")
-                Map(mapNum) = MapFromXWMap(xwMap)
-                Map(mapNum).MaxX = 15
-                Map(mapNum).MaxY = 11
+            If data Is Nothing Then
+                ClearMap(mapNum)
+                Exit Sub
             End If
         Else
-            Console.WriteLine("To convert XtremeWorlds or Crystalshire maps create a directory with the maps inside a maps folder. Otherwise, to ignore this message create an empty maps folder.")
+            If Directory.Exists(mapsDir & "\cs\") Then
+                Dim csMap As CSMapStruct = LoadCSMap(mapNum)
+                Map(mapNum) = MapFromCSMap(csMap)
+            End If
+
+            If Directory.Exists(mapsDir & "\xw\") Then
+                Dim xwMap As XWMapStruct = LoadXWMap(mapsDir & "\xw\map" & mapNum.ToString() & ".dat")
+                Map(mapNum) = MapFromXWMap(xwMap)
+            End If
         End If
 
         CacheResources(mapNum)
     End Sub
+
+    Public Function LoadCSMap(MapNum As Long) As CSMapStruct
+        Dim filename As String
+        Dim i As Long
+        Dim x As Long, y As Long
+        Dim csMap As CSMapStruct
+
+        ' Load map data
+        filename = AppDomain.CurrentDomain.BaseDirectory & "\maps\cs\map" & MapNum & ".ini"
+
+        ReDim csMap.MapData.Npc(30)
+
+        ' General
+        With csMap.MapData
+            .Name = GetVar(filename, "General", "Name")
+            .Music = GetVar(filename, "General", "Music")
+            .Moral = Val(GetVar(filename, "General", "Moral"))
+            .Up = Val(GetVar(filename, "General", "Up"))
+            .Down = Val(GetVar(filename, "General", "Down"))
+            .Left = Val(GetVar(filename, "General", "Left"))
+            .Right = Val(GetVar(filename, "General", "Right"))
+            .BootMap = Val(GetVar(filename, "General", "BootMap"))
+            .BootX = Val(GetVar(filename, "General", "BootX"))
+            .BootY = Val(GetVar(filename, "General", "BootY"))
+            .MaxX = Val(GetVar(filename, "General", "MaxX"))
+            .MaxY = Val(GetVar(filename, "General", "MaxY"))
+
+            .Weather = Val(GetVar(filename, "General", "Weather"))
+            .WeatherIntensity = Val(GetVar(filename, "General", "WeatherIntensity"))
+
+            .Fog = Val(GetVar(filename, "General", "Fog"))
+            .FogSpeed = Val(GetVar(filename, "General", "FogSpeed"))
+            .FogOpacity = Val(GetVar(filename, "General", "FogOpacity"))
+
+            .Red = Val(GetVar(filename, "General", "Red"))
+            .Green = Val(GetVar(filename, "General", "Green"))
+            .Blue = Val(GetVar(filename, "General", "Blue"))
+            .Alpha = Val(GetVar(filename, "General", "Alpha"))
+
+            .BossNpc = Val(GetVar(filename, "General", "BossNpc"))
+            For i = 1 To 30
+                .Npc(i) = Val(GetVar(filename, "General", "Npc" & i))
+            Next
+        End With
+
+        ' Redim the map
+        ReDim csMap.TileData.Tile(csMap.MapData.MaxX, csMap.MapData.MaxY)
+
+        Using fileStream As New FileStream(filename, FileMode.Open, FileAccess.Read), 
+            binaryReader As New BinaryReader(fileStream)
+
+            With csMap
+                ' Assuming MAX_X and MAX_Y are the dimensions of your map
+                Dim MAX_X As Integer = csMap.MapData.MaxX
+                Dim MAX_Y As Integer = csMap.MapData.MaxY
+
+                For x = 0 To MAX_X
+                    For y = 0 To MAX_Y
+                        ' Resize arrays only once if possible
+                        ReDim csMap.TileData.Tile(x, y).Autotile(LayerType.Count - 1)
+                        ReDim csMap.TileData.Tile(x, y).Layer(LayerType.Count - 1)
+
+                        With csMap.TileData.Tile(x, y)
+                            .Type = binaryReader.ReadByte()
+                            .Data1 = binaryReader.ReadInt32()
+                            .Data2 = binaryReader.ReadInt32()
+                            .Data3 = binaryReader.ReadInt32()
+                            .Data4 = binaryReader.ReadInt32()
+                            .Data5 = binaryReader.ReadInt32()
+                            For i = 1 To LayerType.Count - 1
+                                .Autotile(i) = binaryReader.ReadByte()
+                            Next
+                            .DirBlock = binaryReader.ReadByte()
+
+                            For i = 1 To LayerType.Count - 1
+                                .Layer(i).Tileset = binaryReader.ReadInt32()
+                                .Layer(i).X = binaryReader.ReadInt32()
+                                .Layer(i).Y = binaryReader.ReadInt32()
+                            Next
+                        End With
+                    Next
+                Next
+            End With
+        End Using
+
+        Return csMap
+    End Function
 
     Sub ClearMapItem(index As Integer, mapNum As Integer)
         MapItem(mapNum, index).PlayerName = ""
@@ -509,7 +656,7 @@ Module S_Database
 
     End Sub
 
-    Public Function ConvertXWMap(ByVal fileName As String) As XWMapStruct
+    Public Function LoadXWMap(ByVal fileName As String) As XWMapStruct
         Dim encoding As New ASCIIEncoding()
         Dim xwMap As New XWMapStruct
 
@@ -648,8 +795,8 @@ Module S_Database
         ReDim mwMap.Npc(14)
 
         mwMap.Name = xwMap.Name.Trim()
-        mwMap.Music = "Music" & xwMap.Music.ToString() & ".mid" ' Convert to String for number
-        mwMap.Revision = CInt(xwMap.Revision) ' Convert Long to Integer
+        mwMap.Music = "Music" & xwMap.Music.ToString() & ".mid"
+        mwMap.Revision = CInt(xwMap.Revision)
         mwMap.Moral = xwMap.Moral
         mwMap.Up = xwMap.Up
         mwMap.Down = xwMap.Down
@@ -675,8 +822,62 @@ Module S_Database
             mwMap.Npc = Array.ConvertAll(xwMap.NPC, Function(i) CInt(i))
         End If
 
-        mwMap.WeatherType = xwMap.Weather
+        mwMap.Weather = xwMap.Weather
         mwMap.Respawn = xwMap.Respawn <> 0
+        mwMap.MaxX = 15
+        mwMap.MaxY = 11
+
+        Return mwMap
+    End Function
+
+    public Function MapFromCSMap(csMap As CSMapStruct) As MapStruct
+        Dim mwMap As MapStruct
+
+        ReDim mwMap.Npc(30)
+
+        mwMap.MaxX = csMap.MapData.MaxX
+        mwMap.MaxY = csMap.MapData.MaxY
+        mwMap.BootMap = csMap.MapData.BootMap
+        mwMap.BootX = csMap.MapData.BootX
+        mwMap.BootY = csMap.MapData.BootY
+        mwMap.Moral = csMap.MapData.Moral
+        mwMap.Music = csMap.MapData.Music
+        mwMap.Fog = csMap.MapData.Fog
+        mwMap.Weather = csMap.MapData.Weather
+        mwMap.WeatherIntensity = csMap.MapData.WeatherIntensity
+        mwMap.Up = csMap.MapData.Up
+        mwMap.Down = csMap.MapData.Down
+        mwMap.Left = csMap.MapData.Left
+        mwMap.Right = csMap.MapData.Right
+        mwMap.MapTintA = csMap.MapData.Alpha
+        mwMap.MapTintR = csMap.MapData.Red
+        mwMap.MapTintG = csMap.MapData.Green
+        mwMap.MapTintB = csMap.MapData.Blue
+        mwMap.FogAlpha = csMap.MapData.FogOpacity
+        mwMap.FogSpeed = csMap.MapData.FogSpeed
+
+        ReDim mwMap.Tile(mwMap.MaxX, mwMap.MaxY)
+
+        ' Loop through each tile in xwMap and copy the data to map
+        For y As Integer = 0 To mwMap.MaxX
+            For x As Integer = 0 To mwMap.MaxY
+                mwMap.Tile(x, y).Data1 = csMap.TileData.Tile(x, y).Data1
+                mwMap.Tile(x, y).Data2 = csMap.TileData.Tile(x, y).Data2
+                mwMap.Tile(x, y).Data3 = csMap.TileData.Tile(x, y).Data3
+                mwMap.Tile(x,y).DirBlock = csMap.TileData.Tile(x,y).DirBlock
+                
+                For i As Integer = LayerType.Ground To LayerType.Count - 1
+                    mwMap.Tile(x,y).Layer(i).X = csMap.TileData.Tile(x,y).Layer(i).x
+                    mwMap.Tile(x,y).Layer(i).y = csMap.TileData.Tile(x,y).Layer(i).y
+                    mwMap.Tile(x,y).Layer(i).Tileset = csMap.TileData.Tile(x,y).Layer(i).TileSet
+                    mwMap.Tile(x,y).Layer(i).AutoTile = csMap.TileData.Tile(x,y).Autotile(i)
+                Next
+            Next
+        Next
+
+        For i As Integer = 1 To 30
+            mwMap.Npc(i) = csMap.MapData.Npc(i)
+        Next
 
         Return mwMap
     End Function
@@ -1441,6 +1642,7 @@ Module S_Database
         buffer.WriteInt32(Skill(skillnum).KnockBackTiles)
         Return buffer.ToArray
     End Function
+
 
 #End Region
 

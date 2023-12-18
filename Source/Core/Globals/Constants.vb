@@ -8,7 +8,7 @@
     Public Const MAX_LEVEL As Byte = 99
     Public Const MAX_MAPS As Integer = 100
     Public Const MAX_MAP_ITEMS As Byte = 255
-    Public Const MAX_MAP_NPCS As Byte = 14
+    Public Const MAX_MAP_NPCS As Byte = 30
     Public Const MAX_NPCS As Integer = 500
     Public Const MAX_NPC_SKILLS As Byte = 6
     Public Const MAX_PARTIES As Integer = 35

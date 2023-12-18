@@ -180,7 +180,7 @@ Module S_Loop
         Dim target As Integer, targetTypes As Byte, targetX As Integer, targetY As Integer, targetVerify As Boolean
         Dim resourceIndex As Integer
 
-        For mapNum = 0 To MAX_MAPS
+        For mapNum = 1 To MAX_MAPS
 
             If ServerDestroyed Then Exit Sub
 

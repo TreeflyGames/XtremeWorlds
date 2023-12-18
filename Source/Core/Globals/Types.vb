@@ -464,8 +464,8 @@ Public Module Types
         Dim EventCount As Integer
         Dim Events() As EventStruct
 
-        Dim WeatherType As Byte
-        Dim Fogindex As Integer
+        Dim Weather As Byte
+        Dim Fog As Integer
         Dim WeatherIntensity As Integer
         Dim FogAlpha As Byte
         Dim FogSpeed As Byte
@@ -542,10 +542,7 @@ Public Module Types
         Dim Timer As Integer
         Dim Caster As Integer
         Dim StartTime As Integer
-
-        'PET
         Dim AttackerType As Integer 'For Pets
-
     End Structure
 
     Public Structure InstancedMap
@@ -917,7 +914,12 @@ Public Module Types
 
     Public Structure CSMapStruct
         Dim MapData As CSMapDataStruct
-        Dim TileData As CSTileStruct
+        Dim TileData As CSMapTileStruct
+    End Structure
+
+    Public Structure CSMapTileStruct
+        Dim EventCount As Long
+        Dim Tile(,) As CSTileStruct
     End Structure
 
     Public Structure CSTileStruct
@@ -925,18 +927,18 @@ Public Module Types
         Dim Autotile() As Byte
 
         Dim Type As Byte
-        Dim Data1 As Long
-        Dim Data2 As Long
-        Dim Data3 As Long
-        Dim Data4 As Long
-        Dim Data5 As Long
+        Dim Data1 As Integer
+        Dim Data2 As Integer
+        Dim Data3 As Integer
+        Dim Data4 As Integer
+        Dim Data5 As Integer
         Dim DirBlock As Byte
     End Structure
 
     Public Structure CSTileDataStruct
-        Dim x As Long
-        Dim y As Long
-        Dim TileSet As Long
+        Dim x As Integer
+        Dim y As Integer
+        Dim TileSet As Integer
     End Structure
 
     Public Structure CSMapDataStruct
@@ -944,33 +946,33 @@ Public Module Types
         Dim Music As String
         Dim Moral As Byte
 
-        Dim Up As Long
-        Dim Down As Long
-        Dim Left As Long
-        Dim Right As Long
+        Dim Up As Integer
+        Dim Down As Integer
+        Dim Left As Integer
+        Dim Right As Integer
 
-        Dim BootMap As Long
+        Dim BootMap As Integer
         Dim BootX As Byte
         Dim BootY As Byte
 
         Dim MaxX As Byte
         Dim MaxY As Byte
 
-        Dim Weather As Long
-        Dim WeatherIntensity As Long
+        Dim Weather As Integer
+        Dim WeatherIntensity As Integer
 
-        Dim Fog As Long
-        Dim FogSpeed As Long
-        Dim FogOpacity As Long
+        Dim Fog As Integer
+        Dim FogSpeed As Integer
+        Dim FogOpacity As Integer
 
-        Dim Red As Long
-        Dim Green As Long
-        Dim Blue As Long
-        Dim Alpha As Long
+        Dim Red As Integer
+        Dim Green As Integer
+        Dim Blue As Integer
+        Dim Alpha As Integer
 
-        Dim BossNpc As Long
+        Dim BossNpc As Integer
 
-        Dim Npc() As Long
+        Dim Npc() As Integer
     End Structure
 
     Public Structure XWMapStruct

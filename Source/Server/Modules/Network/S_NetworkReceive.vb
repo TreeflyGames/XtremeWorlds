@@ -821,8 +821,8 @@ Module S_NetworkReceive
         Map(mapNum).BootY = buffer.ReadInt32
         Map(mapNum).MaxX = buffer.ReadInt32
         Map(mapNum).MaxY = buffer.ReadInt32
-        Map(mapNum).WeatherType = buffer.ReadInt32
-        Map(mapNum).Fogindex = buffer.ReadInt32
+        Map(mapNum).Weather = buffer.ReadInt32
+        Map(mapNum).Fog = buffer.ReadInt32
         Map(mapNum).WeatherIntensity = buffer.ReadInt32
         Map(mapNum).FogAlpha = buffer.ReadInt32
         Map(mapNum).FogSpeed = buffer.ReadInt32
@@ -2257,8 +2257,8 @@ Module S_NetworkReceive
         Map(mapNum).BootY = buffer.ReadInt32
         Map(mapNum).MaxX = buffer.ReadInt32
         Map(mapNum).MaxY = buffer.ReadInt32
-        Map(mapNum).WeatherType = buffer.ReadInt32
-        Map(mapNum).Fogindex = buffer.ReadInt32
+        Map(mapNum).Weather = buffer.ReadInt32
+        Map(mapNum).Fog = buffer.ReadInt32
         Map(mapNum).WeatherIntensity = buffer.ReadInt32
         Map(mapNum).FogAlpha = buffer.ReadInt32
         Map(mapNum).FogSpeed = buffer.ReadInt32
