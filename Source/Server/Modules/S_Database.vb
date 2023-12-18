@@ -524,30 +524,28 @@ Module S_Database
 
         ' Construct the path to the "maps" directory
         Dim mapsDir As String = Path.Combine(baseDir, "maps")
+        Directory.CreateDirectory(mapsDir)
 
-        ' Check if the directory exists
-        If Not Directory.Exists(mapsDir) Then
-            Dim data As JObject
+        Dim data As JObject
 
-            data = SelectRow(mapNum, "map", "data")
+        data = SelectRow(mapNum, "map", "data")
 
-            Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
-            Map(mapNum) = mapData
+        Dim mapData = JObject.FromObject(data).ToObject(Of MapStruct)()
+        Map(mapNum) = mapData
 
-            If data Is Nothing Then
-                ClearMap(mapNum)
-                Exit Sub
-            End If
-        Else
-            If File.Exists(mapsDir & "\cs\map" & MapNum & ".ini" )
-                Dim csMap As CSMapStruct = LoadCSMap(mapNum)
-                Map(mapNum) = MapFromCSMap(csMap)
-            End If
+        If data Is Nothing Then
+            ClearMap(mapNum)
+            Exit Sub
+        End If
 
-            If File.Exists(mapsDir & "\xw\map" & MapNum & ".dat" )
-                Dim xwMap As XWMapStruct = LoadXWMap(mapsDir & "\xw\map" & mapNum.ToString() & ".dat")
-                Map(mapNum) = MapFromXWMap(xwMap)
-            End If
+        If File.Exists(mapsDir & "\cs\map" & MapNum & ".ini" )
+            Dim csMap As CSMapStruct = LoadCSMap(mapNum)
+            Map(mapNum) = MapFromCSMap(csMap)
+        End If
+
+        If File.Exists(mapsDir & "\xw\map" & MapNum & ".dat" )
+            Dim xwMap As XWMapStruct = LoadXWMap(mapsDir & "\xw\map" & mapNum.ToString() & ".dat")
+            Map(mapNum) = MapFromXWMap(xwMap)
         End If
 
         CacheResources(mapNum)
