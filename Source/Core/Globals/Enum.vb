@@ -517,7 +517,7 @@
 
     Public Enum FontType
         None = 0
-        Goergia
+        Georgia
         Arial
         Verdana
         Count

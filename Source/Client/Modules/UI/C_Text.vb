@@ -21,36 +21,43 @@ Module C_Text
         Return New String("*"c, input.Length)
     End Function
 
-    Friend Sub RenderText(text As String, ByRef target As RenderWindow, x As Integer, y As Integer, frontColor As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
-        Dim backString As Text
-        Dim frontString As Text
+   Friend Sub RenderText(text As String, ByRef target As RenderWindow, x As Integer, y As Integer, frontColor As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
+    Dim backString As Text
+    Dim frontString As Text
 
-        Select Case fontName
-            Case Georgia
-                backString = New Text(text, Fonts(0))
-                frontString = New Text(text, Fonts(0))
+    ' Assuming Fonts is an array of sf.Font
+    ' Adjust the cases to match the actual font names or constants
+    Select Case fontName
+        Case Georgia
+            backString = New Text(text, Fonts(FontType.Georgia), textSize)
+            frontString = New Text(text, Fonts(FontType.Georgia), textSize)
 
-            Case Arial
-                backString = New Text(text, Fonts(1))
-                frontString = New Text(text, Fonts(1))
+        Case Arial
+            backString = New Text(text, Fonts(FontType.Arial), textSize)
+            frontString = New Text(text, Fonts(FontType.Arial), textSize)
 
-            Case Verdana
-                backString = New Text(text, Fonts(2))
-                frontString = New Text(text, Fonts(2))
-        End Select
+        Case Verdana
+            backString = New Text(text, Fonts(FontType.Verdana), textSize)
+            frontString = New Text(text, Fonts(FontType.Verdana), textSize)
+    End Select
 
-        backString.CharacterSize = textSize
-        backString.Color = New Color(backColor.R, backColor.G, backColor.B, 128)
-        backString.LetterSpacing = 1
-        backString.Position = New Vector2f(x + 1, y + 1)
-        target.Draw(backString)
+    ' Set properties for backString
+    backString.Color = New Color(backColor.R, backColor.G, backColor.B, 128)
+    backString.LetterSpacing = 2
+    backString.Position = New Vector2f(x + 1, y + 1)
 
-        frontString.CharacterSize = textSize
-        frontString.Color = frontColor
-        frontString.LetterSpacing = 1
-        frontString.Position = New Vector2f(x, y)
-        target.Draw(frontString)
-    End Sub
+    ' Draw backString
+    target.Draw(backString)
+
+    ' Set properties for frontString
+    frontString.Color = frontColor
+    frontString.LetterSpacing = 2
+    frontString.Position = New Vector2f(x, y)
+
+    ' Draw frontString
+    target.Draw(frontString)
+End Sub
+
 
     Friend Sub DrawNpcName(mapNpcNum As Integer)
         Dim textX As Integer
@@ -294,7 +301,7 @@ Module C_Text
         SetChatWidth(topWidth)
     End Sub
 
-    Private ReadOnly FontTester As Text = New Text("", Fonts(FontType.Goergia))
+    Private ReadOnly FontTester As Text = New Text("", Fonts(FontType.Georgia))
 
     Friend Function TextWidth(text As String, Optional textSize As Byte = FontSize) As Integer
         FontTester.DisplayedString = text

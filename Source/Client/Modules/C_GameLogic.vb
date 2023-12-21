@@ -1161,10 +1161,12 @@ Continue1:
         Dim g As Graphics = Graphics.FromImage(New Bitmap(1, 1))
 
         Select Case Map.Moral
+            Case MapMoralType.None
+                DrawMapNameColor = Color.Red
             Case MapMoralType.Danger
-                DrawMapNameColor = SFML.Graphics.Color.Red
+                DrawMapNameColor = Color.Green
             Case MapMoralType.Safe
-                DrawMapNameColor = SFML.Graphics.Color.Green
+                DrawMapNameColor = Color.Blue
             Case Else
                 DrawMapNameColor = SFML.Graphics.Color.White
         End Select
