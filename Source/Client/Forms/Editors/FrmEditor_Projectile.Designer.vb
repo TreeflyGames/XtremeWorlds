@@ -54,11 +54,11 @@ Partial Class frmEditor_Projectile
         DarkGroupBox1.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         DarkGroupBox1.Controls.Add(lstIndex)
         DarkGroupBox1.ForeColor = Color.Gainsboro
-        DarkGroupBox1.Location = New Point(10, 8)
-        DarkGroupBox1.Margin = New Padding(10, 8, 10, 8)
+        DarkGroupBox1.Location = New Point(8, 6)
+        DarkGroupBox1.Margin = New Padding(8, 6, 8, 6)
         DarkGroupBox1.Name = "DarkGroupBox1"
-        DarkGroupBox1.Padding = New Padding(10, 8, 10, 8)
-        DarkGroupBox1.Size = New Size(532, 590)
+        DarkGroupBox1.Padding = New Padding(8, 6, 8, 6)
+        DarkGroupBox1.Size = New Size(407, 460)
         DarkGroupBox1.TabIndex = 0
         DarkGroupBox1.TabStop = False
         DarkGroupBox1.Text = "Projectile List"
@@ -69,11 +69,10 @@ Partial Class frmEditor_Projectile
         lstIndex.BorderStyle = BorderStyle.FixedSingle
         lstIndex.ForeColor = Color.Gainsboro
         lstIndex.FormattingEnabled = True
-        lstIndex.ItemHeight = 41
-        lstIndex.Location = New Point(17, 55)
-        lstIndex.Margin = New Padding(10, 8, 10, 8)
+        lstIndex.Location = New Point(13, 43)
+        lstIndex.Margin = New Padding(8, 6, 8, 6)
         lstIndex.Name = "lstIndex"
-        lstIndex.Size = New Size(495, 494)
+        lstIndex.Size = New Size(379, 386)
         lstIndex.TabIndex = 1
         ' 
         ' DarkGroupBox2
@@ -92,11 +91,11 @@ Partial Class frmEditor_Projectile
         DarkGroupBox2.Controls.Add(txtName)
         DarkGroupBox2.Controls.Add(DarkLabel1)
         DarkGroupBox2.ForeColor = Color.Gainsboro
-        DarkGroupBox2.Location = New Point(559, 8)
-        DarkGroupBox2.Margin = New Padding(10, 8, 10, 8)
+        DarkGroupBox2.Location = New Point(427, 6)
+        DarkGroupBox2.Margin = New Padding(8, 6, 8, 6)
         DarkGroupBox2.Name = "DarkGroupBox2"
-        DarkGroupBox2.Padding = New Padding(10, 8, 10, 8)
-        DarkGroupBox2.Size = New Size(704, 861)
+        DarkGroupBox2.Padding = New Padding(8, 6, 8, 6)
+        DarkGroupBox2.Size = New Size(538, 672)
         DarkGroupBox2.TabIndex = 1
         DarkGroupBox2.TabStop = False
         DarkGroupBox2.Text = "Properties"
@@ -105,10 +104,10 @@ Partial Class frmEditor_Projectile
         ' 
         DarkLabel5.AutoSize = True
         DarkLabel5.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel5.Location = New Point(17, 615)
-        DarkLabel5.Margin = New Padding(10, 0, 10, 0)
+        DarkLabel5.Location = New Point(13, 480)
+        DarkLabel5.Margin = New Padding(8, 0, 8, 0)
         DarkLabel5.Name = "DarkLabel5"
-        DarkLabel5.Size = New Size(280, 41)
+        DarkLabel5.Size = New Size(224, 32)
         DarkLabel5.TabIndex = 11
         DarkLabel5.Text = "Additional Damage:"
         ' 
@@ -116,74 +115,74 @@ Partial Class frmEditor_Projectile
         ' 
         DarkLabel4.AutoSize = True
         DarkLabel4.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel4.Location = New Point(17, 533)
-        DarkLabel4.Margin = New Padding(10, 0, 10, 0)
+        DarkLabel4.Location = New Point(13, 416)
+        DarkLabel4.Margin = New Padding(8, 0, 8, 0)
         DarkLabel4.Name = "DarkLabel4"
-        DarkLabel4.Size = New Size(109, 41)
+        DarkLabel4.Size = New Size(86, 32)
         DarkLabel4.TabIndex = 10
         DarkLabel4.Text = "Speed:"
         ' 
         ' nudDamage
         ' 
-        nudDamage.Location = New Point(338, 610)
-        nudDamage.Margin = New Padding(10, 8, 10, 8)
+        nudDamage.Location = New Point(258, 476)
+        nudDamage.Margin = New Padding(8, 6, 8, 6)
         nudDamage.Name = "nudDamage"
-        nudDamage.Size = New Size(340, 47)
+        nudDamage.Size = New Size(260, 39)
         nudDamage.TabIndex = 9
         ' 
         ' nudSpeed
         ' 
-        nudSpeed.Location = New Point(338, 528)
-        nudSpeed.Margin = New Padding(10, 8, 10, 8)
+        nudSpeed.Location = New Point(258, 412)
+        nudSpeed.Margin = New Padding(8, 6, 8, 6)
         nudSpeed.Name = "nudSpeed"
-        nudSpeed.Size = New Size(340, 47)
+        nudSpeed.Size = New Size(260, 39)
         nudSpeed.TabIndex = 8
         ' 
         ' DarkLabel3
         ' 
         DarkLabel3.AutoSize = True
         DarkLabel3.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel3.Location = New Point(17, 451)
-        DarkLabel3.Margin = New Padding(10, 0, 10, 0)
+        DarkLabel3.Location = New Point(13, 352)
+        DarkLabel3.Margin = New Padding(8, 0, 8, 0)
         DarkLabel3.Name = "DarkLabel3"
-        DarkLabel3.Size = New Size(109, 41)
+        DarkLabel3.Size = New Size(86, 32)
         DarkLabel3.TabIndex = 7
         DarkLabel3.Text = "Range:"
         ' 
         ' nudRange
         ' 
-        nudRange.Location = New Point(338, 446)
-        nudRange.Margin = New Padding(10, 8, 10, 8)
+        nudRange.Location = New Point(258, 348)
+        nudRange.Margin = New Padding(8, 6, 8, 6)
         nudRange.Name = "nudRange"
-        nudRange.Size = New Size(340, 47)
+        nudRange.Size = New Size(260, 39)
         nudRange.TabIndex = 6
         ' 
         ' nudPic
         ' 
-        nudPic.Location = New Point(338, 364)
-        nudPic.Margin = New Padding(10, 8, 10, 8)
+        nudPic.Location = New Point(258, 284)
+        nudPic.Margin = New Padding(8, 6, 8, 6)
         nudPic.Name = "nudPic"
-        nudPic.Size = New Size(340, 47)
+        nudPic.Size = New Size(260, 39)
         nudPic.TabIndex = 5
         ' 
         ' DarkLabel2
         ' 
         DarkLabel2.AutoSize = True
         DarkLabel2.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel2.Location = New Point(17, 369)
-        DarkLabel2.Margin = New Padding(10, 0, 10, 0)
+        DarkLabel2.Location = New Point(13, 288)
+        DarkLabel2.Margin = New Padding(8, 0, 8, 0)
         DarkLabel2.Name = "DarkLabel2"
-        DarkLabel2.Size = New Size(116, 41)
+        DarkLabel2.Size = New Size(92, 32)
         DarkLabel2.TabIndex = 4
         DarkLabel2.Text = "Picture:"
         ' 
         ' picProjectile
         ' 
         picProjectile.BackColor = Color.Black
-        picProjectile.Location = New Point(24, 142)
-        picProjectile.Margin = New Padding(10, 8, 10, 8)
+        picProjectile.Location = New Point(18, 111)
+        picProjectile.Margin = New Padding(8, 6, 8, 6)
         picProjectile.Name = "picProjectile"
-        picProjectile.Size = New Size(651, 202)
+        picProjectile.Size = New Size(498, 158)
         picProjectile.TabIndex = 3
         picProjectile.TabStop = False
         ' 
@@ -192,67 +191,67 @@ Partial Class frmEditor_Projectile
         txtName.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtName.BorderStyle = BorderStyle.FixedSingle
         txtName.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtName.Location = New Point(272, 60)
-        txtName.Margin = New Padding(10, 8, 10, 8)
+        txtName.Location = New Point(208, 47)
+        txtName.Margin = New Padding(8, 6, 8, 6)
         txtName.Name = "txtName"
-        txtName.Size = New Size(400, 47)
+        txtName.Size = New Size(306, 39)
         txtName.TabIndex = 1
         ' 
         ' DarkLabel1
         ' 
         DarkLabel1.AutoSize = True
         DarkLabel1.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel1.Location = New Point(17, 66)
-        DarkLabel1.Margin = New Padding(10, 0, 10, 0)
+        DarkLabel1.Location = New Point(13, 52)
+        DarkLabel1.Margin = New Padding(8, 0, 8, 0)
         DarkLabel1.Name = "DarkLabel1"
-        DarkLabel1.Size = New Size(104, 41)
+        DarkLabel1.Size = New Size(83, 32)
         DarkLabel1.TabIndex = 0
         DarkLabel1.Text = "Name:"
         ' 
         ' btnSave
         ' 
-        btnSave.Location = New Point(27, 615)
-        btnSave.Margin = New Padding(10, 8, 10, 8)
+        btnSave.Location = New Point(21, 480)
+        btnSave.Margin = New Padding(8, 6, 8, 6)
         btnSave.Name = "btnSave"
-        btnSave.Padding = New Padding(15, 16, 15, 16)
-        btnSave.Size = New Size(498, 74)
+        btnSave.Padding = New Padding(11, 12, 11, 12)
+        btnSave.Size = New Size(381, 58)
         btnSave.TabIndex = 2
         btnSave.Text = "Save"
         ' 
         ' btnCancel
         ' 
-        btnCancel.Location = New Point(27, 795)
-        btnCancel.Margin = New Padding(10, 8, 10, 8)
+        btnCancel.Location = New Point(21, 620)
+        btnCancel.Margin = New Padding(8, 6, 8, 6)
         btnCancel.Name = "btnCancel"
-        btnCancel.Padding = New Padding(15, 16, 15, 16)
-        btnCancel.Size = New Size(498, 74)
+        btnCancel.Padding = New Padding(11, 12, 11, 12)
+        btnCancel.Size = New Size(381, 58)
         btnCancel.TabIndex = 3
         btnCancel.Text = "Cancel"
         ' 
         ' btnDelete
         ' 
-        btnDelete.Location = New Point(27, 705)
-        btnDelete.Margin = New Padding(10, 8, 10, 8)
+        btnDelete.Location = New Point(21, 550)
+        btnDelete.Margin = New Padding(8, 6, 8, 6)
         btnDelete.Name = "btnDelete"
-        btnDelete.Padding = New Padding(15, 16, 15, 16)
-        btnDelete.Size = New Size(498, 74)
+        btnDelete.Padding = New Padding(11, 12, 11, 12)
+        btnDelete.Size = New Size(381, 58)
         btnDelete.TabIndex = 4
         btnDelete.Text = "Delete"
         ' 
         ' frmEditor_Projectile
         ' 
-        AutoScaleDimensions = New SizeF(17F, 41F)
+        AutoScaleDimensions = New SizeF(13F, 32F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
-        ClientSize = New Size(1280, 883)
+        ClientSize = New Size(979, 689)
         Controls.Add(btnDelete)
         Controls.Add(btnCancel)
         Controls.Add(btnSave)
         Controls.Add(DarkGroupBox2)
         Controls.Add(DarkGroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
-        Margin = New Padding(10, 8, 10, 8)
+        Margin = New Padding(8, 6, 8, 6)
         Name = "frmEditor_Projectile"
         Text = "Projectile Editor"
         DarkGroupBox1.ResumeLayout(False)

@@ -1182,7 +1182,7 @@ Continue1:
         index = ChatBubbleindex
 
         ' Loop through and see if that player/npc already has a chat bubble
-        For i = 0 To Byte.MaxValue
+        For i = 1 To Byte.MaxValue
             If ChatBubble(i).TargetType = targetType Then
                 If ChatBubble(i).Target = target Then
                     ' Reset master index

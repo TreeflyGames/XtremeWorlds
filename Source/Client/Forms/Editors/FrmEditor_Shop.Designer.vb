@@ -64,11 +64,11 @@ Partial Class frmEditor_Shop
         DarkGroupBox1.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         DarkGroupBox1.Controls.Add(lstIndex)
         DarkGroupBox1.ForeColor = Color.Gainsboro
-        DarkGroupBox1.Location = New Point(6, 5)
-        DarkGroupBox1.Margin = New Padding(6, 5, 6, 5)
+        DarkGroupBox1.Location = New Point(8, 6)
+        DarkGroupBox1.Margin = New Padding(8, 6, 8, 6)
         DarkGroupBox1.Name = "DarkGroupBox1"
-        DarkGroupBox1.Padding = New Padding(6, 5, 6, 5)
-        DarkGroupBox1.Size = New Size(349, 545)
+        DarkGroupBox1.Padding = New Padding(8, 6, 8, 6)
+        DarkGroupBox1.Size = New Size(454, 715)
         DarkGroupBox1.TabIndex = 0
         DarkGroupBox1.TabStop = False
         DarkGroupBox1.Text = "Shop List"
@@ -79,11 +79,10 @@ Partial Class frmEditor_Shop
         lstIndex.BorderStyle = BorderStyle.FixedSingle
         lstIndex.ForeColor = Color.Gainsboro
         lstIndex.FormattingEnabled = True
-        lstIndex.ItemHeight = 25
-        lstIndex.Location = New Point(10, 37)
-        lstIndex.Margin = New Padding(6, 5, 6, 5)
+        lstIndex.Location = New Point(13, 47)
+        lstIndex.Margin = New Padding(8, 6, 8, 6)
         lstIndex.Name = "lstIndex"
-        lstIndex.Size = New Size(325, 502)
+        lstIndex.Size = New Size(422, 642)
         lstIndex.TabIndex = 1
         ' 
         ' DarkGroupBox2
@@ -100,11 +99,11 @@ Partial Class frmEditor_Shop
         DarkGroupBox2.Controls.Add(DarkLabel1)
         DarkGroupBox2.Controls.Add(picFace)
         DarkGroupBox2.ForeColor = Color.Gainsboro
-        DarkGroupBox2.Location = New Point(363, 5)
-        DarkGroupBox2.Margin = New Padding(6, 5, 6, 5)
+        DarkGroupBox2.Location = New Point(472, 6)
+        DarkGroupBox2.Margin = New Padding(8, 6, 8, 6)
         DarkGroupBox2.Name = "DarkGroupBox2"
-        DarkGroupBox2.Padding = New Padding(6, 5, 6, 5)
-        DarkGroupBox2.Size = New Size(690, 723)
+        DarkGroupBox2.Padding = New Padding(8, 6, 8, 6)
+        DarkGroupBox2.Size = New Size(897, 925)
         DarkGroupBox2.TabIndex = 1
         DarkGroupBox2.TabStop = False
         DarkGroupBox2.Text = "Properties"
@@ -125,51 +124,51 @@ Partial Class frmEditor_Shop
         DarkGroupBox3.Controls.Add(DarkLabel5)
         DarkGroupBox3.Controls.Add(lstTradeItem)
         DarkGroupBox3.ForeColor = Color.Gainsboro
-        DarkGroupBox3.Location = New Point(10, 234)
-        DarkGroupBox3.Margin = New Padding(6, 5, 6, 5)
+        DarkGroupBox3.Location = New Point(13, 300)
+        DarkGroupBox3.Margin = New Padding(8, 6, 8, 6)
         DarkGroupBox3.Name = "DarkGroupBox3"
-        DarkGroupBox3.Padding = New Padding(6, 5, 6, 5)
-        DarkGroupBox3.Size = New Size(669, 468)
+        DarkGroupBox3.Padding = New Padding(8, 6, 8, 6)
+        DarkGroupBox3.Size = New Size(870, 599)
         DarkGroupBox3.TabIndex = 52
         DarkGroupBox3.TabStop = False
         DarkGroupBox3.Text = "Items the Shop Sells"
         ' 
         ' btnDeleteTrade
         ' 
-        btnDeleteTrade.Location = New Point(339, 405)
-        btnDeleteTrade.Margin = New Padding(6, 5, 6, 5)
+        btnDeleteTrade.Location = New Point(441, 518)
+        btnDeleteTrade.Margin = New Padding(8, 6, 8, 6)
         btnDeleteTrade.Name = "btnDeleteTrade"
-        btnDeleteTrade.Padding = New Padding(9, 10, 9, 10)
-        btnDeleteTrade.Size = New Size(126, 45)
+        btnDeleteTrade.Padding = New Padding(12, 13, 12, 13)
+        btnDeleteTrade.Size = New Size(164, 58)
         btnDeleteTrade.TabIndex = 53
         btnDeleteTrade.Text = "Delete"
         ' 
         ' btnUpdate
         ' 
-        btnUpdate.Location = New Point(203, 405)
-        btnUpdate.Margin = New Padding(6, 5, 6, 5)
+        btnUpdate.Location = New Point(264, 518)
+        btnUpdate.Margin = New Padding(8, 6, 8, 6)
         btnUpdate.Name = "btnUpdate"
-        btnUpdate.Padding = New Padding(9, 10, 9, 10)
-        btnUpdate.Size = New Size(126, 45)
+        btnUpdate.Padding = New Padding(12, 13, 12, 13)
+        btnUpdate.Size = New Size(164, 58)
         btnUpdate.TabIndex = 52
         btnUpdate.Text = "Update"
         ' 
         ' nudCostValue
         ' 
-        nudCostValue.Location = New Point(494, 353)
-        nudCostValue.Margin = New Padding(6, 5, 6, 5)
+        nudCostValue.Location = New Point(642, 452)
+        nudCostValue.Margin = New Padding(8, 6, 8, 6)
         nudCostValue.Name = "nudCostValue"
-        nudCostValue.Size = New Size(163, 31)
+        nudCostValue.Size = New Size(212, 39)
         nudCostValue.TabIndex = 51
         ' 
         ' DarkLabel8
         ' 
         DarkLabel8.AutoSize = True
         DarkLabel8.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel8.Location = New Point(409, 359)
-        DarkLabel8.Margin = New Padding(6, 0, 6, 0)
+        DarkLabel8.Location = New Point(532, 460)
+        DarkLabel8.Margin = New Padding(8, 0, 8, 0)
         DarkLabel8.Name = "DarkLabel8"
-        DarkLabel8.Size = New Size(81, 25)
+        DarkLabel8.Size = New Size(105, 32)
         DarkLabel8.TabIndex = 50
         DarkLabel8.Text = "Amount:"
         ' 
@@ -177,39 +176,39 @@ Partial Class frmEditor_Shop
         ' 
         cmbCostItem.DrawMode = DrawMode.OwnerDrawFixed
         cmbCostItem.FormattingEnabled = True
-        cmbCostItem.Location = New Point(123, 353)
-        cmbCostItem.Margin = New Padding(6, 5, 6, 5)
+        cmbCostItem.Location = New Point(160, 452)
+        cmbCostItem.Margin = New Padding(8, 6, 8, 6)
         cmbCostItem.Name = "cmbCostItem"
-        cmbCostItem.Size = New Size(273, 32)
+        cmbCostItem.Size = New Size(354, 40)
         cmbCostItem.TabIndex = 49
         ' 
         ' DarkLabel7
         ' 
         DarkLabel7.AutoSize = True
         DarkLabel7.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel7.Location = New Point(10, 360)
-        DarkLabel7.Margin = New Padding(6, 0, 6, 0)
+        DarkLabel7.Location = New Point(13, 461)
+        DarkLabel7.Margin = New Padding(8, 0, 8, 0)
         DarkLabel7.Name = "DarkLabel7"
-        DarkLabel7.Size = New Size(93, 25)
+        DarkLabel7.Size = New Size(121, 32)
         DarkLabel7.TabIndex = 48
         DarkLabel7.Text = "Item Cost:"
         ' 
         ' nudItemValue
         ' 
-        nudItemValue.Location = New Point(494, 303)
-        nudItemValue.Margin = New Padding(6, 5, 6, 5)
+        nudItemValue.Location = New Point(642, 388)
+        nudItemValue.Margin = New Padding(8, 6, 8, 6)
         nudItemValue.Name = "nudItemValue"
-        nudItemValue.Size = New Size(163, 31)
+        nudItemValue.Size = New Size(212, 39)
         nudItemValue.TabIndex = 47
         ' 
         ' DarkLabel6
         ' 
         DarkLabel6.AutoSize = True
         DarkLabel6.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel6.Location = New Point(409, 309)
-        DarkLabel6.Margin = New Padding(6, 0, 6, 0)
+        DarkLabel6.Location = New Point(532, 396)
+        DarkLabel6.Margin = New Padding(8, 0, 8, 0)
         DarkLabel6.Name = "DarkLabel6"
-        DarkLabel6.Size = New Size(81, 25)
+        DarkLabel6.Size = New Size(105, 32)
         DarkLabel6.TabIndex = 46
         DarkLabel6.Text = "Amount:"
         ' 
@@ -217,20 +216,20 @@ Partial Class frmEditor_Shop
         ' 
         cmbItem.DrawMode = DrawMode.OwnerDrawFixed
         cmbItem.FormattingEnabled = True
-        cmbItem.Location = New Point(123, 302)
-        cmbItem.Margin = New Padding(6, 5, 6, 5)
+        cmbItem.Location = New Point(160, 387)
+        cmbItem.Margin = New Padding(8, 6, 8, 6)
         cmbItem.Name = "cmbItem"
-        cmbItem.Size = New Size(273, 32)
+        cmbItem.Size = New Size(354, 40)
         cmbItem.TabIndex = 45
         ' 
         ' DarkLabel5
         ' 
         DarkLabel5.AutoSize = True
         DarkLabel5.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel5.Location = New Point(10, 309)
-        DarkLabel5.Margin = New Padding(6, 0, 6, 0)
+        DarkLabel5.Location = New Point(13, 396)
+        DarkLabel5.Margin = New Padding(8, 0, 8, 0)
         DarkLabel5.Name = "DarkLabel5"
-        DarkLabel5.Size = New Size(106, 25)
+        DarkLabel5.Size = New Size(141, 32)
         DarkLabel5.TabIndex = 44
         DarkLabel5.Text = "Item to Sell:"
         ' 
@@ -240,60 +239,59 @@ Partial Class frmEditor_Shop
         lstTradeItem.BorderStyle = BorderStyle.FixedSingle
         lstTradeItem.ForeColor = Color.Gainsboro
         lstTradeItem.FormattingEnabled = True
-        lstTradeItem.ItemHeight = 25
         lstTradeItem.Items.AddRange(New Object() {"1.", "2.", "3.", "4.", "5.", "6.", "7.", "8."})
-        lstTradeItem.Location = New Point(10, 37)
-        lstTradeItem.Margin = New Padding(6, 5, 6, 5)
+        lstTradeItem.Location = New Point(13, 47)
+        lstTradeItem.Margin = New Padding(8, 6, 8, 6)
         lstTradeItem.Name = "lstTradeItem"
-        lstTradeItem.Size = New Size(646, 252)
+        lstTradeItem.Size = New Size(839, 322)
         lstTradeItem.TabIndex = 43
         ' 
         ' DarkLabel4
         ' 
         DarkLabel4.AutoSize = True
         DarkLabel4.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel4.Location = New Point(466, 166)
-        DarkLabel4.Margin = New Padding(6, 0, 6, 0)
+        DarkLabel4.Location = New Point(606, 212)
+        DarkLabel4.Margin = New Padding(8, 0, 8, 0)
         DarkLabel4.Name = "DarkLabel4"
-        DarkLabel4.Size = New Size(167, 25)
+        DarkLabel4.Size = New Size(225, 32)
         DarkLabel4.TabIndex = 51
         DarkLabel4.Text = "% of the Item Value"
         ' 
         ' nudBuy
         ' 
-        nudBuy.Location = New Point(321, 163)
-        nudBuy.Margin = New Padding(6, 5, 6, 5)
+        nudBuy.Location = New Point(417, 209)
+        nudBuy.Margin = New Padding(8, 6, 8, 6)
         nudBuy.Name = "nudBuy"
-        nudBuy.Size = New Size(133, 31)
+        nudBuy.Size = New Size(173, 39)
         nudBuy.TabIndex = 50
         ' 
         ' DarkLabel3
         ' 
         DarkLabel3.AutoSize = True
         DarkLabel3.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel3.Location = New Point(180, 166)
-        DarkLabel3.Margin = New Padding(6, 0, 6, 0)
+        DarkLabel3.Location = New Point(234, 212)
+        DarkLabel3.Margin = New Padding(8, 0, 8, 0)
         DarkLabel3.Name = "DarkLabel3"
-        DarkLabel3.Size = New Size(122, 25)
+        DarkLabel3.Size = New Size(162, 32)
         DarkLabel3.TabIndex = 49
         DarkLabel3.Text = "Buyback Rate:"
         ' 
         ' nudFace
         ' 
-        nudFace.Location = New Point(300, 98)
-        nudFace.Margin = New Padding(6, 5, 6, 5)
+        nudFace.Location = New Point(390, 125)
+        nudFace.Margin = New Padding(8, 6, 8, 6)
         nudFace.Name = "nudFace"
-        nudFace.Size = New Size(154, 31)
+        nudFace.Size = New Size(200, 39)
         nudFace.TabIndex = 48
         ' 
         ' DarkLabel2
         ' 
         DarkLabel2.AutoSize = True
         DarkLabel2.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel2.Location = New Point(180, 102)
-        DarkLabel2.Margin = New Padding(6, 0, 6, 0)
+        DarkLabel2.Location = New Point(234, 131)
+        DarkLabel2.Margin = New Padding(8, 0, 8, 0)
         DarkLabel2.Name = "DarkLabel2"
-        DarkLabel2.Size = New Size(50, 25)
+        DarkLabel2.Size = New Size(66, 32)
         DarkLabel2.TabIndex = 47
         DarkLabel2.Text = "Face:"
         ' 
@@ -302,20 +300,20 @@ Partial Class frmEditor_Shop
         txtName.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtName.BorderStyle = BorderStyle.FixedSingle
         txtName.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtName.Location = New Point(300, 37)
-        txtName.Margin = New Padding(6, 5, 6, 5)
+        txtName.Location = New Point(390, 47)
+        txtName.Margin = New Padding(8, 6, 8, 6)
         txtName.Name = "txtName"
-        txtName.Size = New Size(376, 31)
+        txtName.Size = New Size(488, 39)
         txtName.TabIndex = 46
         ' 
         ' DarkLabel1
         ' 
         DarkLabel1.AutoSize = True
         DarkLabel1.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel1.Location = New Point(180, 40)
-        DarkLabel1.Margin = New Padding(6, 0, 6, 0)
+        DarkLabel1.Location = New Point(234, 51)
+        DarkLabel1.Margin = New Padding(8, 0, 8, 0)
         DarkLabel1.Name = "DarkLabel1"
-        DarkLabel1.Size = New Size(63, 25)
+        DarkLabel1.Size = New Size(83, 32)
         DarkLabel1.TabIndex = 45
         DarkLabel1.Text = "Name:"
         ' 
@@ -323,56 +321,57 @@ Partial Class frmEditor_Shop
         ' 
         picFace.BackColor = Color.Black
         picFace.BackgroundImageLayout = ImageLayout.Stretch
-        picFace.Location = New Point(10, 37)
-        picFace.Margin = New Padding(6, 5, 6, 5)
+        picFace.Location = New Point(13, 47)
+        picFace.Margin = New Padding(8, 6, 8, 6)
         picFace.Name = "picFace"
-        picFace.Size = New Size(160, 185)
+        picFace.Size = New Size(208, 237)
         picFace.TabIndex = 44
         picFace.TabStop = False
         ' 
         ' btnCancel
         ' 
-        btnCancel.Location = New Point(19, 670)
-        btnCancel.Margin = New Padding(6, 5, 6, 5)
+        btnCancel.Location = New Point(21, 873)
+        btnCancel.Margin = New Padding(8, 6, 8, 6)
         btnCancel.Name = "btnCancel"
-        btnCancel.Padding = New Padding(9, 10, 9, 10)
-        btnCancel.Size = New Size(326, 45)
+        btnCancel.Padding = New Padding(12, 13, 12, 13)
+        btnCancel.Size = New Size(424, 58)
         btnCancel.TabIndex = 55
         btnCancel.Text = "Cancel"
         ' 
         ' btnDelete
         ' 
-        btnDelete.Location = New Point(19, 615)
-        btnDelete.Margin = New Padding(6, 5, 6, 5)
+        btnDelete.Location = New Point(21, 803)
+        btnDelete.Margin = New Padding(8, 6, 8, 6)
         btnDelete.Name = "btnDelete"
-        btnDelete.Padding = New Padding(9, 10, 9, 10)
-        btnDelete.Size = New Size(326, 45)
+        btnDelete.Padding = New Padding(12, 13, 12, 13)
+        btnDelete.Size = New Size(424, 58)
         btnDelete.TabIndex = 54
         btnDelete.Text = "Delete"
         ' 
         ' btnSave
         ' 
-        btnSave.Location = New Point(16, 560)
-        btnSave.Margin = New Padding(6, 5, 6, 5)
+        btnSave.Location = New Point(21, 733)
+        btnSave.Margin = New Padding(8, 6, 8, 6)
         btnSave.Name = "btnSave"
-        btnSave.Padding = New Padding(9, 10, 9, 10)
-        btnSave.Size = New Size(326, 45)
+        btnSave.Padding = New Padding(12, 13, 12, 13)
+        btnSave.Size = New Size(424, 58)
         btnSave.TabIndex = 53
         btnSave.Text = "Save"
         ' 
         ' frmEditor_Shop
         ' 
-        AutoScaleDimensions = New SizeF(10F, 25F)
+        AutoScaleDimensions = New SizeF(13F, 32F)
         AutoScaleMode = AutoScaleMode.Font
+        AutoSize = True
         BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
-        ClientSize = New Size(1057, 737)
+        ClientSize = New Size(1382, 942)
         Controls.Add(btnCancel)
         Controls.Add(DarkGroupBox2)
         Controls.Add(btnDelete)
         Controls.Add(DarkGroupBox1)
         Controls.Add(btnSave)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
-        Margin = New Padding(6, 5, 6, 5)
+        Margin = New Padding(8, 6, 8, 6)
         MaximizeBox = False
         Name = "frmEditor_Shop"
         Text = "Shop Editor"

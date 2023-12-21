@@ -862,7 +862,7 @@ Public Class FrmEditor_Events
         EditorEvent_DrawGraphic()
     End Sub
 
-    Private Sub PicGraphicSel_Click(sender As Object, e As MouseEventArgs) Handles picGraphicSel.Click
+    Private Sub PicGraphicSel_Click(sender As Object, e As MouseEventArgs)
         Dim X As Integer
         Dim Y As Integer
 
@@ -872,7 +872,7 @@ Public Class FrmEditor_Events
         Dim selW As Integer = Math.Ceiling(X \ PicX) - GraphicSelX
         Dim selH As Integer = Math.Ceiling(Y \ PicY) - GraphicSelY
 
-        If Me.cmbGraphic.SelectedIndex = 2 Then
+        If cmbGraphic.SelectedIndex = 2 Then
             If Control.ModifierKeys = Keys.Shift Then
                 If GraphicSelX > -1 AndAlso GraphicSelY > -1 Then
                     If selW >= 0 AndAlso selH >= 0 Then
@@ -886,24 +886,24 @@ Public Class FrmEditor_Events
                 GraphicSelX2 = 1
                 GraphicSelY2 = 1
             End If
-        ElseIf Me.cmbGraphic.SelectedIndex = 1 Then
+        ElseIf cmbGraphic.SelectedIndex = 1 Then
             GraphicSelX = X
             GraphicSelY = Y
             GraphicSelX2 = 0
             GraphicSelY2 = 0
-            If Me.nudGraphic.Value <= 0 OrElse Me.nudGraphic.Value > NumCharacters Then Exit Sub
+            If nudGraphic.Value <= 0 OrElse nudGraphic.Value > NumCharacters Then Exit Sub
             For i = 0 To 3
-                If GraphicSelX >= ((CharacterGfxInfo(Me.nudGraphic.Value).Width / 4) * i) AndAlso GraphicSelX < ((CharacterGfxInfo(Me.nudGraphic.Value).Width / 4) * (i + 1)) Then
+                If GraphicSelX >= CharacterGfxInfo(nudGraphic.Value).Width / 4 * i AndAlso GraphicSelX < CharacterGfxInfo(nudGraphic.Value).Width / 4 * (i + 1) Then
                     GraphicSelX = i
                 End If
             Next
             For i = 0 To 3
-                If GraphicSelY >= ((CharacterGfxInfo(Me.nudGraphic.Value).Height / 4) * i) AndAlso GraphicSelY < ((CharacterGfxInfo(Me.nudGraphic.Value).Height / 4) * (i + 1)) Then
+                If GraphicSelY >= CharacterGfxInfo(nudGraphic.Value).Height / 4 * i AndAlso GraphicSelY < CharacterGfxInfo(nudGraphic.Value).Height / 4 * (i + 1) Then
                     GraphicSelY = i
                 End If
             Next
         End If
-        EditorEvent_DrawGraphic()
+        EditorEvent_DrawGraphic
     End Sub
 
 #End Region

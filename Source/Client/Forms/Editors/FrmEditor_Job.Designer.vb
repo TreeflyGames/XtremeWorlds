@@ -99,11 +99,11 @@ Partial Class frmEditor_Job
         DarkGroupBox1.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         DarkGroupBox1.Controls.Add(lstIndex)
         DarkGroupBox1.ForeColor = Color.Gainsboro
-        DarkGroupBox1.Location = New Point(3, 6)
-        DarkGroupBox1.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox1.Location = New Point(2, 4)
+        DarkGroupBox1.Margin = New Padding(7)
         DarkGroupBox1.Name = "DarkGroupBox1"
-        DarkGroupBox1.Padding = New Padding(11, 10, 11, 10)
-        DarkGroupBox1.Size = New Size(577, 1405)
+        DarkGroupBox1.Padding = New Padding(7)
+        DarkGroupBox1.Size = New Size(375, 950)
         DarkGroupBox1.TabIndex = 0
         DarkGroupBox1.TabStop = False
         DarkGroupBox1.Text = "Job List"
@@ -114,11 +114,10 @@ Partial Class frmEditor_Job
         lstIndex.BorderStyle = BorderStyle.FixedSingle
         lstIndex.ForeColor = Color.Gainsboro
         lstIndex.FormattingEnabled = True
-        lstIndex.ItemHeight = 48
-        lstIndex.Location = New Point(20, 58)
-        lstIndex.Margin = New Padding(11, 10, 11, 10)
+        lstIndex.Location = New Point(13, 39)
+        lstIndex.Margin = New Padding(7)
         lstIndex.Name = "lstIndex"
-        lstIndex.Size = New Size(528, 1298)
+        lstIndex.Size = New Size(344, 898)
         lstIndex.TabIndex = 0
         ' 
         ' DarkGroupBox2
@@ -135,14 +134,14 @@ Partial Class frmEditor_Job
         DarkGroupBox2.Controls.Add(txtName)
         DarkGroupBox2.Controls.Add(DarkLabel1)
         DarkGroupBox2.ForeColor = Color.Gainsboro
-        DarkGroupBox2.Location = New Point(603, 6)
-        DarkGroupBox2.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox2.Location = New Point(392, 4)
+        DarkGroupBox2.Margin = New Padding(7)
         DarkGroupBox2.Name = "DarkGroupBox2"
-        DarkGroupBox2.Padding = New Padding(11, 10, 11, 10)
-        DarkGroupBox2.Size = New Size(1137, 1744)
+        DarkGroupBox2.Padding = New Padding(7)
+        DarkGroupBox2.Size = New Size(739, 1163)
         DarkGroupBox2.TabIndex = 1
         DarkGroupBox2.TabStop = False
-        DarkGroupBox2.Text = "Settings"
+        DarkGroupBox2.Text = "Properties"
         ' 
         ' DarkGroupBox7
         ' 
@@ -155,71 +154,71 @@ Partial Class frmEditor_Job
         DarkGroupBox7.Controls.Add(nudStartMap)
         DarkGroupBox7.Controls.Add(DarkLabel13)
         DarkGroupBox7.ForeColor = Color.Gainsboro
-        DarkGroupBox7.Location = New Point(20, 1558)
-        DarkGroupBox7.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox7.Location = New Point(13, 1039)
+        DarkGroupBox7.Margin = New Padding(7)
         DarkGroupBox7.Name = "DarkGroupBox7"
-        DarkGroupBox7.Padding = New Padding(11, 10, 11, 10)
-        DarkGroupBox7.Size = New Size(1094, 160)
+        DarkGroupBox7.Padding = New Padding(7)
+        DarkGroupBox7.Size = New Size(711, 107)
         DarkGroupBox7.TabIndex = 8
         DarkGroupBox7.TabStop = False
         DarkGroupBox7.Text = "Starting Point"
         ' 
         ' nudStartY
         ' 
-        nudStartY.Location = New Point(914, 51)
-        nudStartY.Margin = New Padding(11, 10, 11, 10)
+        nudStartY.Location = New Point(594, 34)
+        nudStartY.Margin = New Padding(7)
         nudStartY.Name = "nudStartY"
-        nudStartY.Size = New Size(160, 55)
+        nudStartY.Size = New Size(104, 39)
         nudStartY.TabIndex = 5
         ' 
         ' DarkLabel15
         ' 
         DarkLabel15.AutoSize = True
         DarkLabel15.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel15.Location = New Point(754, 58)
-        DarkLabel15.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel15.Location = New Point(490, 39)
+        DarkLabel15.Margin = New Padding(7, 0, 7, 0)
         DarkLabel15.Name = "DarkLabel15"
-        DarkLabel15.Size = New Size(111, 48)
+        DarkLabel15.Size = New Size(74, 32)
         DarkLabel15.TabIndex = 4
         DarkLabel15.Text = "Start :"
         ' 
         ' nudStartX
         ' 
-        nudStartX.Location = New Point(560, 51)
-        nudStartX.Margin = New Padding(11, 10, 11, 10)
+        nudStartX.Location = New Point(364, 34)
+        nudStartX.Margin = New Padding(7)
         nudStartX.Name = "nudStartX"
-        nudStartX.Size = New Size(160, 55)
+        nudStartX.Size = New Size(104, 39)
         nudStartX.TabIndex = 3
         ' 
         ' DarkLabel14
         ' 
         DarkLabel14.AutoSize = True
         DarkLabel14.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel14.Location = New Point(400, 58)
-        DarkLabel14.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel14.Location = New Point(260, 39)
+        DarkLabel14.Margin = New Padding(7, 0, 7, 0)
         DarkLabel14.Name = "DarkLabel14"
-        DarkLabel14.Size = New Size(132, 48)
+        DarkLabel14.Size = New Size(88, 32)
         DarkLabel14.TabIndex = 2
         DarkLabel14.Text = "Start X:"
         ' 
         ' nudStartMap
         ' 
-        nudStartMap.Location = New Point(226, 51)
-        nudStartMap.Margin = New Padding(11, 10, 11, 10)
-        nudStartMap.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudStartMap.Location = New Point(147, 34)
+        nudStartMap.Margin = New Padding(7)
+        nudStartMap.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudStartMap.Name = "nudStartMap"
-        nudStartMap.Size = New Size(154, 55)
+        nudStartMap.Size = New Size(100, 39)
         nudStartMap.TabIndex = 1
-        nudStartMap.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudStartMap.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' DarkLabel13
         ' 
         DarkLabel13.AutoSize = True
         DarkLabel13.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel13.Location = New Point(20, 58)
-        DarkLabel13.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel13.Location = New Point(13, 39)
+        DarkLabel13.Margin = New Padding(7, 0, 7, 0)
         DarkLabel13.Name = "DarkLabel13"
-        DarkLabel13.Size = New Size(182, 48)
+        DarkLabel13.Size = New Size(122, 32)
         DarkLabel13.TabIndex = 0
         DarkLabel13.Text = "Start Map:"
         ' 
@@ -234,43 +233,43 @@ Partial Class frmEditor_Job
         DarkGroupBox6.Controls.Add(DarkLabel11)
         DarkGroupBox6.Controls.Add(lstStartItems)
         DarkGroupBox6.ForeColor = Color.Gainsboro
-        DarkGroupBox6.Location = New Point(20, 1146)
-        DarkGroupBox6.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox6.Location = New Point(13, 764)
+        DarkGroupBox6.Margin = New Padding(7)
         DarkGroupBox6.Name = "DarkGroupBox6"
-        DarkGroupBox6.Padding = New Padding(11, 10, 11, 10)
-        DarkGroupBox6.Size = New Size(1094, 390)
+        DarkGroupBox6.Padding = New Padding(7)
+        DarkGroupBox6.Size = New Size(711, 260)
         DarkGroupBox6.TabIndex = 7
         DarkGroupBox6.TabStop = False
         DarkGroupBox6.Text = "Starting Items"
         ' 
         ' btnItemAdd
         ' 
-        btnItemAdd.Location = New Point(611, 269)
-        btnItemAdd.Margin = New Padding(11, 10, 11, 10)
+        btnItemAdd.Location = New Point(397, 179)
+        btnItemAdd.Margin = New Padding(7)
         btnItemAdd.Name = "btnItemAdd"
-        btnItemAdd.Padding = New Padding(17, 19, 17, 19)
-        btnItemAdd.Size = New Size(463, 96)
+        btnItemAdd.Padding = New Padding(11, 13, 11, 13)
+        btnItemAdd.Size = New Size(301, 64)
         btnItemAdd.TabIndex = 6
         btnItemAdd.Text = "Update"
         ' 
         ' nudItemAmount
         ' 
-        nudItemAmount.Location = New Point(783, 186)
-        nudItemAmount.Margin = New Padding(11, 10, 11, 10)
-        nudItemAmount.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudItemAmount.Location = New Point(509, 124)
+        nudItemAmount.Margin = New Padding(7)
+        nudItemAmount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudItemAmount.Name = "nudItemAmount"
-        nudItemAmount.Size = New Size(291, 55)
+        nudItemAmount.Size = New Size(189, 39)
         nudItemAmount.TabIndex = 5
-        nudItemAmount.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudItemAmount.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' DarkLabel12
         ' 
         DarkLabel12.AutoSize = True
         DarkLabel12.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel12.Location = New Point(611, 192)
-        DarkLabel12.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel12.Location = New Point(397, 128)
+        DarkLabel12.Margin = New Padding(7, 0, 7, 0)
         DarkLabel12.Name = "DarkLabel12"
-        DarkLabel12.Size = New Size(155, 48)
+        DarkLabel12.Size = New Size(105, 32)
         DarkLabel12.TabIndex = 4
         DarkLabel12.Text = "Amount:"
         ' 
@@ -278,20 +277,20 @@ Partial Class frmEditor_Job
         ' 
         cmbItems.DrawMode = DrawMode.OwnerDrawFixed
         cmbItems.FormattingEnabled = True
-        cmbItems.Location = New Point(611, 86)
-        cmbItems.Margin = New Padding(11, 10, 11, 10)
+        cmbItems.Location = New Point(397, 57)
+        cmbItems.Margin = New Padding(7)
         cmbItems.Name = "cmbItems"
-        cmbItems.Size = New Size(455, 56)
+        cmbItems.Size = New Size(297, 40)
         cmbItems.TabIndex = 3
         ' 
         ' DarkLabel11
         ' 
         DarkLabel11.AutoSize = True
         DarkLabel11.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel11.Location = New Point(611, 26)
-        DarkLabel11.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel11.Location = New Point(397, 17)
+        DarkLabel11.Margin = New Padding(7, 0, 7, 0)
         DarkLabel11.Name = "DarkLabel11"
-        DarkLabel11.Size = New Size(175, 48)
+        DarkLabel11.Size = New Size(117, 32)
         DarkLabel11.TabIndex = 2
         DarkLabel11.Text = "Start Item"
         ' 
@@ -301,12 +300,11 @@ Partial Class frmEditor_Job
         lstStartItems.BorderStyle = BorderStyle.FixedSingle
         lstStartItems.ForeColor = Color.Gainsboro
         lstStartItems.FormattingEnabled = True
-        lstStartItems.ItemHeight = 48
         lstStartItems.Items.AddRange(New Object() {"1", "2", "3", "4", "5"})
-        lstStartItems.Location = New Point(20, 70)
-        lstStartItems.Margin = New Padding(11, 10, 11, 10)
+        lstStartItems.Location = New Point(13, 47)
+        lstStartItems.Margin = New Padding(7)
         lstStartItems.Name = "lstStartItems"
-        lstStartItems.Size = New Size(565, 290)
+        lstStartItems.Size = New Size(368, 194)
         lstStartItems.TabIndex = 1
         ' 
         ' DarkGroupBox5
@@ -328,63 +326,63 @@ Partial Class frmEditor_Job
         DarkGroupBox5.Controls.Add(DarkLabel5)
         DarkGroupBox5.Controls.Add(DarkLabel3)
         DarkGroupBox5.ForeColor = Color.Gainsboro
-        DarkGroupBox5.Location = New Point(20, 752)
-        DarkGroupBox5.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox5.Location = New Point(13, 501)
+        DarkGroupBox5.Margin = New Padding(7)
         DarkGroupBox5.Name = "DarkGroupBox5"
-        DarkGroupBox5.Padding = New Padding(11, 10, 11, 10)
-        DarkGroupBox5.Size = New Size(1094, 368)
+        DarkGroupBox5.Padding = New Padding(7)
+        DarkGroupBox5.Size = New Size(711, 245)
         DarkGroupBox5.TabIndex = 6
         DarkGroupBox5.TabStop = False
         DarkGroupBox5.Text = "Start Stats"
         ' 
         ' nudBaseExp
         ' 
-        nudBaseExp.Location = New Point(340, 259)
-        nudBaseExp.Margin = New Padding(11, 10, 11, 10)
+        nudBaseExp.Location = New Point(221, 173)
+        nudBaseExp.Margin = New Padding(7)
         nudBaseExp.Name = "nudBaseExp"
-        nudBaseExp.Size = New Size(343, 55)
+        nudBaseExp.Size = New Size(223, 39)
         nudBaseExp.TabIndex = 13
         ' 
         ' DarkLabel10
         ' 
         DarkLabel10.AutoSize = True
         DarkLabel10.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel10.Location = New Point(20, 266)
-        DarkLabel10.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel10.Location = New Point(13, 177)
+        DarkLabel10.Margin = New Padding(7, 0, 7, 0)
         DarkLabel10.Name = "DarkLabel10"
-        DarkLabel10.Size = New Size(283, 48)
+        DarkLabel10.Size = New Size(190, 32)
         DarkLabel10.TabIndex = 12
         DarkLabel10.Text = "Base Experience:"
         ' 
         ' nudSpirit
         ' 
-        nudSpirit.Location = New Point(923, 147)
-        nudSpirit.Margin = New Padding(11, 10, 11, 10)
-        nudSpirit.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudSpirit.Location = New Point(600, 98)
+        nudSpirit.Margin = New Padding(7)
+        nudSpirit.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudSpirit.Name = "nudSpirit"
-        nudSpirit.Size = New Size(149, 55)
+        nudSpirit.Size = New Size(97, 39)
         nudSpirit.TabIndex = 11
-        nudSpirit.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudSpirit.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' nudEndurance
         ' 
-        nudEndurance.Location = New Point(923, 51)
-        nudEndurance.Margin = New Padding(11, 10, 11, 10)
-        nudEndurance.Maximum = New [Decimal](New Integer() {255, 0, 0, 0})
-        nudEndurance.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudEndurance.Location = New Point(600, 34)
+        nudEndurance.Margin = New Padding(7)
+        nudEndurance.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
+        nudEndurance.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudEndurance.Name = "nudEndurance"
-        nudEndurance.Size = New Size(149, 55)
+        nudEndurance.Size = New Size(97, 39)
         nudEndurance.TabIndex = 10
-        nudEndurance.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudEndurance.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' DarkLabel8
         ' 
         DarkLabel8.AutoSize = True
         DarkLabel8.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel8.Location = New Point(703, 154)
-        DarkLabel8.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel8.Location = New Point(457, 103)
+        DarkLabel8.Margin = New Padding(7, 0, 7, 0)
         DarkLabel8.Name = "DarkLabel8"
-        DarkLabel8.Size = New Size(111, 48)
+        DarkLabel8.Size = New Size(74, 32)
         DarkLabel8.TabIndex = 9
         DarkLabel8.Text = "Spirit:"
         ' 
@@ -392,42 +390,42 @@ Partial Class frmEditor_Job
         ' 
         DarkLabel9.AutoSize = True
         DarkLabel9.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel9.Location = New Point(703, 58)
-        DarkLabel9.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel9.Location = New Point(457, 39)
+        DarkLabel9.Margin = New Padding(7, 0, 7, 0)
         DarkLabel9.Name = "DarkLabel9"
-        DarkLabel9.Size = New Size(194, 48)
+        DarkLabel9.Size = New Size(131, 32)
         DarkLabel9.TabIndex = 8
         DarkLabel9.Text = "Endurance:"
         ' 
         ' nudVitality
         ' 
-        nudVitality.Location = New Point(534, 147)
-        nudVitality.Margin = New Padding(11, 10, 11, 10)
-        nudVitality.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudVitality.Location = New Point(347, 98)
+        nudVitality.Margin = New Padding(7)
+        nudVitality.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudVitality.Name = "nudVitality"
-        nudVitality.Size = New Size(149, 55)
+        nudVitality.Size = New Size(97, 39)
         nudVitality.TabIndex = 7
-        nudVitality.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudVitality.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' nudLuck
         ' 
-        nudLuck.Location = New Point(534, 51)
-        nudLuck.Margin = New Padding(11, 10, 11, 10)
-        nudLuck.Maximum = New [Decimal](New Integer() {255, 0, 0, 0})
-        nudLuck.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudLuck.Location = New Point(347, 34)
+        nudLuck.Margin = New Padding(7)
+        nudLuck.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
+        nudLuck.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudLuck.Name = "nudLuck"
-        nudLuck.Size = New Size(149, 55)
+        nudLuck.Size = New Size(97, 39)
         nudLuck.TabIndex = 6
-        nudLuck.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudLuck.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' DarkLabel6
         ' 
         DarkLabel6.AutoSize = True
         DarkLabel6.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel6.Location = New Point(400, 154)
-        DarkLabel6.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel6.Location = New Point(260, 103)
+        DarkLabel6.Margin = New Padding(7, 0, 7, 0)
         DarkLabel6.Name = "DarkLabel6"
-        DarkLabel6.Size = New Size(136, 48)
+        DarkLabel6.Size = New Size(92, 32)
         DarkLabel6.TabIndex = 5
         DarkLabel6.Text = "Vitality:"
         ' 
@@ -435,42 +433,42 @@ Partial Class frmEditor_Job
         ' 
         DarkLabel7.AutoSize = True
         DarkLabel7.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel7.Location = New Point(400, 58)
-        DarkLabel7.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel7.Location = New Point(260, 39)
+        DarkLabel7.Margin = New Padding(7, 0, 7, 0)
         DarkLabel7.Name = "DarkLabel7"
-        DarkLabel7.Size = New Size(100, 48)
+        DarkLabel7.Size = New Size(67, 32)
         DarkLabel7.TabIndex = 4
         DarkLabel7.Text = "Luck:"
         ' 
         ' nudIntelligence
         ' 
-        nudIntelligence.Location = New Point(229, 147)
-        nudIntelligence.Margin = New Padding(11, 10, 11, 10)
-        nudIntelligence.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudIntelligence.Location = New Point(149, 98)
+        nudIntelligence.Margin = New Padding(7)
+        nudIntelligence.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudIntelligence.Name = "nudIntelligence"
-        nudIntelligence.Size = New Size(149, 55)
+        nudIntelligence.Size = New Size(97, 39)
         nudIntelligence.TabIndex = 3
-        nudIntelligence.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudIntelligence.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' nudStrength
         ' 
-        nudStrength.Location = New Point(229, 51)
-        nudStrength.Margin = New Padding(11, 10, 11, 10)
-        nudStrength.Maximum = New [Decimal](New Integer() {255, 0, 0, 0})
-        nudStrength.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudStrength.Location = New Point(149, 34)
+        nudStrength.Margin = New Padding(7)
+        nudStrength.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
+        nudStrength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudStrength.Name = "nudStrength"
-        nudStrength.Size = New Size(149, 55)
+        nudStrength.Size = New Size(97, 39)
         nudStrength.TabIndex = 2
-        nudStrength.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudStrength.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' DarkLabel5
         ' 
         DarkLabel5.AutoSize = True
         DarkLabel5.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel5.Location = New Point(20, 154)
-        DarkLabel5.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel5.Location = New Point(13, 103)
+        DarkLabel5.Margin = New Padding(7, 0, 7, 0)
         DarkLabel5.Name = "DarkLabel5"
-        DarkLabel5.Size = New Size(212, 48)
+        DarkLabel5.Size = New Size(143, 32)
         DarkLabel5.TabIndex = 1
         DarkLabel5.Text = "Intelligence:"
         ' 
@@ -478,10 +476,10 @@ Partial Class frmEditor_Job
         ' 
         DarkLabel3.AutoSize = True
         DarkLabel3.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel3.Location = New Point(20, 58)
-        DarkLabel3.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel3.Location = New Point(13, 39)
+        DarkLabel3.Margin = New Padding(7, 0, 7, 0)
         DarkLabel3.Name = "DarkLabel3"
-        DarkLabel3.Size = New Size(163, 48)
+        DarkLabel3.Size = New Size(110, 32)
         DarkLabel3.TabIndex = 0
         DarkLabel3.Text = "Strength:"
         ' 
@@ -493,33 +491,33 @@ Partial Class frmEditor_Job
         DarkGroupBox4.Controls.Add(DarkLabel4)
         DarkGroupBox4.Controls.Add(picFemale)
         DarkGroupBox4.ForeColor = Color.Gainsboro
-        DarkGroupBox4.Location = New Point(577, 320)
-        DarkGroupBox4.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox4.Location = New Point(375, 213)
+        DarkGroupBox4.Margin = New Padding(7)
         DarkGroupBox4.Name = "DarkGroupBox4"
-        DarkGroupBox4.Padding = New Padding(11, 10, 11, 10)
-        DarkGroupBox4.Size = New Size(537, 410)
+        DarkGroupBox4.Padding = New Padding(7)
+        DarkGroupBox4.Size = New Size(349, 273)
         DarkGroupBox4.TabIndex = 5
         DarkGroupBox4.TabStop = False
         DarkGroupBox4.Text = "Female Sprite"
         ' 
         ' nudFemaleSprite
         ' 
-        nudFemaleSprite.Location = New Point(160, 310)
-        nudFemaleSprite.Margin = New Padding(11, 10, 11, 10)
-        nudFemaleSprite.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudFemaleSprite.Location = New Point(104, 207)
+        nudFemaleSprite.Margin = New Padding(7)
+        nudFemaleSprite.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudFemaleSprite.Name = "nudFemaleSprite"
-        nudFemaleSprite.Size = New Size(183, 55)
+        nudFemaleSprite.Size = New Size(119, 39)
         nudFemaleSprite.TabIndex = 18
-        nudFemaleSprite.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudFemaleSprite.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' DarkLabel4
         ' 
         DarkLabel4.AutoSize = True
         DarkLabel4.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel4.Location = New Point(23, 317)
-        DarkLabel4.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel4.Location = New Point(15, 211)
+        DarkLabel4.Margin = New Padding(7, 0, 7, 0)
         DarkLabel4.Name = "DarkLabel4"
-        DarkLabel4.Size = New Size(121, 48)
+        DarkLabel4.Size = New Size(81, 32)
         DarkLabel4.TabIndex = 17
         DarkLabel4.Text = "Sprite:"
         ' 
@@ -527,10 +525,10 @@ Partial Class frmEditor_Job
         ' 
         picFemale.BackColor = Color.FromArgb(CByte(64), CByte(64), CByte(64))
         picFemale.BackgroundImageLayout = ImageLayout.None
-        picFemale.Location = New Point(357, 38)
-        picFemale.Margin = New Padding(11, 10, 11, 10)
+        picFemale.Location = New Point(232, 25)
+        picFemale.Margin = New Padding(7)
         picFemale.Name = "picFemale"
-        picFemale.Size = New Size(160, 237)
+        picFemale.Size = New Size(104, 158)
         picFemale.TabIndex = 14
         picFemale.TabStop = False
         ' 
@@ -542,33 +540,33 @@ Partial Class frmEditor_Job
         DarkGroupBox3.Controls.Add(lblMaleSprite)
         DarkGroupBox3.Controls.Add(picMale)
         DarkGroupBox3.ForeColor = Color.Gainsboro
-        DarkGroupBox3.Location = New Point(20, 320)
-        DarkGroupBox3.Margin = New Padding(11, 10, 11, 10)
+        DarkGroupBox3.Location = New Point(13, 213)
+        DarkGroupBox3.Margin = New Padding(7)
         DarkGroupBox3.Name = "DarkGroupBox3"
-        DarkGroupBox3.Padding = New Padding(11, 10, 11, 10)
-        DarkGroupBox3.Size = New Size(537, 410)
+        DarkGroupBox3.Padding = New Padding(7)
+        DarkGroupBox3.Size = New Size(349, 273)
         DarkGroupBox3.TabIndex = 4
         DarkGroupBox3.TabStop = False
         DarkGroupBox3.Text = "Male Sprite"
         ' 
         ' nudMaleSprite
         ' 
-        nudMaleSprite.Location = New Point(160, 310)
-        nudMaleSprite.Margin = New Padding(11, 10, 11, 10)
-        nudMaleSprite.Minimum = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudMaleSprite.Location = New Point(104, 207)
+        nudMaleSprite.Margin = New Padding(7)
+        nudMaleSprite.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudMaleSprite.Name = "nudMaleSprite"
-        nudMaleSprite.Size = New Size(183, 55)
+        nudMaleSprite.Size = New Size(119, 39)
         nudMaleSprite.TabIndex = 12
-        nudMaleSprite.Value = New [Decimal](New Integer() {1, 0, 0, 0})
+        nudMaleSprite.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
         ' lblMaleSprite
         ' 
         lblMaleSprite.AutoSize = True
         lblMaleSprite.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        lblMaleSprite.Location = New Point(23, 317)
-        lblMaleSprite.Margin = New Padding(11, 0, 11, 0)
+        lblMaleSprite.Location = New Point(15, 211)
+        lblMaleSprite.Margin = New Padding(7, 0, 7, 0)
         lblMaleSprite.Name = "lblMaleSprite"
-        lblMaleSprite.Size = New Size(121, 48)
+        lblMaleSprite.Size = New Size(81, 32)
         lblMaleSprite.TabIndex = 11
         lblMaleSprite.Text = "Sprite:"
         ' 
@@ -576,10 +574,10 @@ Partial Class frmEditor_Job
         ' 
         picMale.BackColor = Color.FromArgb(CByte(64), CByte(64), CByte(64))
         picMale.BackgroundImageLayout = ImageLayout.None
-        picMale.Location = New Point(357, 38)
-        picMale.Margin = New Padding(11, 10, 11, 10)
+        picMale.Location = New Point(232, 25)
+        picMale.Margin = New Padding(7)
         picMale.Name = "picMale"
-        picMale.Size = New Size(160, 237)
+        picMale.Size = New Size(104, 158)
         picMale.TabIndex = 8
         picMale.TabStop = False
         ' 
@@ -587,23 +585,23 @@ Partial Class frmEditor_Job
         ' 
         txtDescription.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtDescription.BorderStyle = BorderStyle.FixedSingle
-        txtDescription.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point)
+        txtDescription.Font = New Font("Segoe UI", 8.25F)
         txtDescription.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtDescription.Location = New Point(251, 173)
-        txtDescription.Margin = New Padding(11, 10, 11, 10)
+        txtDescription.Location = New Point(163, 115)
+        txtDescription.Margin = New Padding(7)
         txtDescription.Multiline = True
         txtDescription.Name = "txtDescription"
-        txtDescription.Size = New Size(859, 120)
+        txtDescription.Size = New Size(559, 81)
         txtDescription.TabIndex = 3
         ' 
         ' DarkLabel2
         ' 
         DarkLabel2.AutoSize = True
         DarkLabel2.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel2.Location = New Point(23, 211)
-        DarkLabel2.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel2.Location = New Point(15, 141)
+        DarkLabel2.Margin = New Padding(7, 0, 7, 0)
         DarkLabel2.Name = "DarkLabel2"
-        DarkLabel2.Size = New Size(209, 48)
+        DarkLabel2.Size = New Size(140, 32)
         DarkLabel2.TabIndex = 2
         DarkLabel2.Text = "Description:"
         ' 
@@ -611,69 +609,69 @@ Partial Class frmEditor_Job
         ' 
         txtName.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtName.BorderStyle = BorderStyle.FixedSingle
-        txtName.Font = New Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point)
+        txtName.Font = New Font("Segoe UI", 8.25F)
         txtName.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtName.Location = New Point(166, 51)
-        txtName.Margin = New Padding(11, 10, 11, 10)
+        txtName.Location = New Point(108, 34)
+        txtName.Margin = New Padding(7)
         txtName.Name = "txtName"
-        txtName.Size = New Size(942, 51)
+        txtName.Size = New Size(613, 37)
         txtName.TabIndex = 1
         ' 
         ' DarkLabel1
         ' 
         DarkLabel1.AutoSize = True
         DarkLabel1.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel1.Location = New Point(20, 58)
-        DarkLabel1.Margin = New Padding(11, 0, 11, 0)
+        DarkLabel1.Location = New Point(13, 39)
+        DarkLabel1.Margin = New Padding(7, 0, 7, 0)
         DarkLabel1.Name = "DarkLabel1"
-        DarkLabel1.Size = New Size(123, 48)
+        DarkLabel1.Size = New Size(83, 32)
         DarkLabel1.TabIndex = 0
         DarkLabel1.Text = "Name:"
         ' 
         ' btnCancel
         ' 
-        btnCancel.Location = New Point(23, 1638)
-        btnCancel.Margin = New Padding(11, 10, 11, 10)
+        btnCancel.Location = New Point(16, 1110)
+        btnCancel.Margin = New Padding(7)
         btnCancel.Name = "btnCancel"
-        btnCancel.Padding = New Padding(17, 19, 17, 19)
-        btnCancel.Size = New Size(531, 86)
+        btnCancel.Padding = New Padding(11, 13, 11, 13)
+        btnCancel.Size = New Size(345, 57)
         btnCancel.TabIndex = 4
         btnCancel.Text = "Cancel"
         ' 
         ' btnSave
         ' 
-        btnSave.Location = New Point(23, 1430)
-        btnSave.Margin = New Padding(11, 10, 11, 10)
+        btnSave.Location = New Point(16, 968)
+        btnSave.Margin = New Padding(7)
         btnSave.Name = "btnSave"
-        btnSave.Padding = New Padding(17, 19, 17, 19)
-        btnSave.Size = New Size(531, 86)
+        btnSave.Padding = New Padding(11, 13, 11, 13)
+        btnSave.Size = New Size(345, 57)
         btnSave.TabIndex = 5
         btnSave.Text = "Save"
         ' 
         ' btnDelete
         ' 
-        btnDelete.Location = New Point(23, 1533)
-        btnDelete.Margin = New Padding(11, 10, 11, 10)
+        btnDelete.Location = New Point(16, 1039)
+        btnDelete.Margin = New Padding(7)
         btnDelete.Name = "btnDelete"
-        btnDelete.Padding = New Padding(17, 19, 17, 19)
-        btnDelete.Size = New Size(531, 86)
+        btnDelete.Padding = New Padding(11, 13, 11, 13)
+        btnDelete.Size = New Size(345, 57)
         btnDelete.TabIndex = 6
         btnDelete.Text = "Delete"
         ' 
         ' frmEditor_Job
         ' 
-        AutoScaleDimensions = New SizeF(20F, 48F)
+        AutoScaleDimensions = New SizeF(13F, 32F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
-        ClientSize = New Size(1737, 1757)
+        ClientSize = New Size(1143, 1178)
         Controls.Add(btnDelete)
         Controls.Add(btnSave)
         Controls.Add(btnCancel)
         Controls.Add(DarkGroupBox2)
         Controls.Add(DarkGroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
-        Margin = New Padding(11, 10, 11, 10)
+        Margin = New Padding(7)
         Name = "frmEditor_Job"
         Text = "Job Editor"
         DarkGroupBox1.ResumeLayout(False)

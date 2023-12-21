@@ -1597,8 +1597,20 @@ Module C_Graphics
         End If
 
         If Bfps Then
-            Call RenderText(Trim$("FPS: " & GameFps), GameWindow, Camera.Right - (Len("FPS: " & GameFps) * 8), Camera.Top + 15, Color.Yellow, Color.Black)
+            Dim fps As String = Trim$("FPS: " & GameFps)
+            Call RenderText(fps, GameWindow, Camera.Left - 24, Camera.Top + 60, Color.Yellow, Color.Black)
         End If
+
+        ' draw cursor, player X and Y locations
+        If BLoc Then
+            Dim Cur As String = Trim$("Cur X: " & CurX & " Y: " & CurY)
+            Dim Loc As String = Trim$("loc X: " & GetPlayerX(MyIndex) & " Y: " & GetPlayerY(MyIndex))
+            Dim Map As String = Trim$(" (Map #" & GetPlayerMap(MyIndex) & ")")
+
+            Call RenderText(Cur, GameWindow, Camera.Left  - 24, Camera.top + 75, Color.Yellow, Color.Black)
+            Call RenderText(Loc, GameWindow, Camera.Left  - 24, Camera.top + 90, Color.Yellow, Color.Black)
+            Call RenderText(Map, GameWindow, Camera.Left - 24, Camera.top + 105, Color.Yellow, Color.Black)
+    End If
 
         DrawMapName()
 
