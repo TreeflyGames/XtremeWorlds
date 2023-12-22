@@ -11,6 +11,7 @@ Module C_Graphics
 
     Friend GameWindow As RenderWindow
     Friend TilesetWindow As RenderWindow
+    Friend WindowSettings As ContextSettings
 
     Friend EditorSkill_Icon As RenderWindow
     Friend EditorAnimation_Anim1 As RenderWindow
@@ -442,33 +443,41 @@ Module C_Graphics
         GameWindow.Close()
     End Sub
 
+    Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
+        Const AspectRatio As Single = 16.0F / 9.0F
+
+        ' Calculate new dimensions while maintaining a 16:9 aspect ratio
+        Dim newWidth As Integer = CInt(e.Height * AspectRatio)
+        Dim newHeight As Integer = e.Height
+
+        ' If calculated width is greater than the actual width, adjust the height instead
+        If newWidth > e.Width Then
+            newWidth = e.Width
+            newHeight = CInt(e.Width / AspectRatio)
+        End If
+
+        ' Resize the game window
+        GameWindow.Size = New Vector2u(CUInt(newWidth), CUInt(newHeight))
+    End Sub
+
     Sub InitGraphics()
         Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
         Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Arial)
         Fonts(2) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Verdana)
 
-        Dim settings As New ContextSettings()
-        settings.DepthBits = 24 ' 24 bits for depth buffer is a common choice
-        settings.StencilBits = 8 ' 8 bits for stencil buffer, if needed
-        settings.AntialiasingLevel = 4 ' Level of antialiasing
+        WindowSettings = New ContextSettings()
+        WindowSettings.DepthBits = 24
+        WindowSettings.StencilBits = 8
+        WindowSettings.AntialiasingLevel = 4
 
-        GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Default, settings)
+        GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Default, WindowSettings)
         GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
         GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
         Dim iconImage As New Image(Paths.Gui + "icon.png")
         GameWindow.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
 
-        AddHandler GameWindow.Closed, AddressOf GameWindow_Closed
-        AddHandler GameWindow.GainedFocus, AddressOf GameWindow_GainedFocus
-        AddHandler GameWindow.LostFocus, AddressOf GameWindow_LostFocus
-        AddHandler GameWindow.KeyPressed, AddressOf GameWindow_KeyPressed
-        AddHandler GameWindow.KeyReleased, AddressOf GameWindow_KeyReleased
-        AddHandler GameWindow.MouseButtonPressed, AddressOf GameWindow_MouseButtonPressed
-        AddHandler GameWindow.MouseButtonReleased, AddressOf GameWindow_MouseButtonReleased
-        AddHandler GameWindow.MouseMoved, AddressOf GameWindow_MouseMoved
-        AddHandler GameWindow.TextEntered, AddressOf GameWindow_TextEntered
-        AddHandler GameWindow.MouseWheelScrolled, AddressOf GameWindow_MouseWheelScrolled
-
+        RegisterEvents()
+        
         ReDim TilesetTexture(NumTileSets)
         ReDim TilesetSprite(NumTileSets)
         ReDim TilesetGfxInfo(NumTileSets)
@@ -684,6 +693,20 @@ Module C_Graphics
         For i = 1 To NumDesigns
             LoadTexture(i, 17)
         Next
+    End Sub
+
+    Private Sub RegisterEvents()
+        AddHandler GameWindow.Closed, AddressOf GameWindow_Closed
+        AddHandler GameWindow.GainedFocus, AddressOf GameWindow_GainedFocus
+        AddHandler GameWindow.LostFocus, AddressOf GameWindow_LostFocus
+        AddHandler GameWindow.KeyPressed, AddressOf GameWindow_KeyPressed
+        AddHandler GameWindow.KeyReleased, AddressOf GameWindow_KeyReleased
+        AddHandler GameWindow.MouseButtonPressed, AddressOf GameWindow_MouseButtonPressed
+        AddHandler GameWindow.MouseButtonReleased, AddressOf GameWindow_MouseButtonReleased
+        AddHandler GameWindow.MouseMoved, AddressOf GameWindow_MouseMoved
+        AddHandler GameWindow.TextEntered, AddressOf GameWindow_TextEntered
+        AddHandler GameWindow.MouseWheelScrolled, AddressOf GameWindow_MouseWheelScrolled
+        AddHandler GameWindow.Resized, AddressOf GameWindow_Resized
     End Sub
 
     Friend Sub LoadTexture(index As Integer, texType As Byte)

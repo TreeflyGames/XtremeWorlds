@@ -25,8 +25,6 @@ Module C_Text
         Dim backString As Text
         Dim frontString As Text
 
-        ' Assuming Fonts is an array of sf.Font
-        ' Adjust the cases to match the actual font names or constants
         Select Case fontName
             Case Georgia
                 backString = New Text(text, Fonts(FontType.Georgia), textSize)

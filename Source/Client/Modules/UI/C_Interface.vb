@@ -701,6 +701,7 @@ Module C_Interface
 
         ' Set the border size
         bs = borderSize
+
         ' Draw centre
         RenderTexture(sprite, GameWindow, x + bs, y + bs, bs + 1, bs + 1, width - (bs * 2), height - (bs * 2), , , , alpha)
 
