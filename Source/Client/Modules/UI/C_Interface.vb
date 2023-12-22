@@ -1776,13 +1776,13 @@ Module C_Interface
         End If
 
         ' wrap text
-        WordWrap_Array(text, 400, textArray)
+        WordWrap_Array(text, 330, textArray)
 
         ' render text
         count = UBound(textArray)
         y = yO + 60
         For I = 1 To count
-            x = xO + 132 + (200 \ 2) - (TextWidth(textArray(I)) \ 2)
+            x = xO + 118 + (200 \ 2) - (TextWidth(textArray(I)) \ 2)
             RenderText(textArray(I), GameWindow, x, y, Color.White, Color.White)
             y = y + 14
         Next
