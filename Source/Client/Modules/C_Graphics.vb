@@ -458,7 +458,24 @@ Module C_Graphics
 
         ' Resize the game window
         GameWindow.Size = New Vector2u(CUInt(newWidth), CUInt(newHeight))
+        CenterWindow(GameWindow)
     End Sub
+
+    Public Sub CenterWindow(ByVal window As RenderWindow)
+        ' Get the working area of the primary screen (excluding taskbar)
+        Dim workingArea As Rectangle = Screen.PrimaryScreen.WorkingArea
+
+        ' Calculate the position to center the window within the working area
+        Dim windowPosX As Integer = workingArea.Left + (workingArea.Width - window.Size.X) \ 2
+        Dim windowPosY As Integer = (workingArea.Top + (workingArea.Height - window.Size.Y) \ 2) - GetTitleBarHeight / 2
+
+        ' Set the window's position
+        window.Position = New Vector2i(windowPosX, windowPosY)
+    End Sub
+
+    Public Function GetTitleBarHeight() As Integer
+        Return SystemInformation.CaptionHeight
+    End Function
 
     Sub InitGraphics()
         Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
