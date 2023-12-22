@@ -225,6 +225,10 @@ Module C_Graphics
             HandlePressEnter()
         End If
 
+        If e.Code = Keyboard.Key.Space Then
+            CheckMapGetItem
+        End If
+
         ' Check for active window
         If activeWindow > 0 Then
             ' Ensure it's visible

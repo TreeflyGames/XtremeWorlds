@@ -1307,6 +1307,7 @@ Module S_Player
 
                                 SendInventoryUpdate(index, n)
                                 SpawnItemSlot(i, 0, 0, GetPlayerMap(index), 0, 0)
+                                SendMapItemsToAll(index)
 
                                 SendActionMsg(GetPlayerMap(index), Msg, ColorType.White, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32))
                                 Exit For

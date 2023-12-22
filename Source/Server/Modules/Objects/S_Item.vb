@@ -175,7 +175,7 @@ Friend Module S_Item
         Dim buffer As New ByteStream(4)
 
         ' Check for subscript out of range
-        If MapItemSlot < 0 OrElse MapItemSlot > MAX_MAP_ITEMS OrElse itemnum <= 0 OrElse itemNum > MAX_ITEMS OrElse mapNum <= 0 OrElse mapNum > MAX_MAPS Then Exit Sub
+        If MapItemSlot < 0 OrElse MapItemSlot > MAX_MAP_ITEMS OrElse itemnum < 0 OrElse itemNum > MAX_ITEMS OrElse mapNum <= 0 OrElse mapNum > MAX_MAPS Then Exit Sub
 
         i = MapItemSlot
 
