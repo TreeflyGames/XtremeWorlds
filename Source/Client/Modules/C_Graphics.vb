@@ -2869,92 +2869,91 @@ Module C_Graphics
     End Sub
 
     Public Sub DrawChatBubble(ByVal Index As Long)
-    Dim theArray() As String, x As Long, y As Long, i As Long, MaxWidth As Long, x2 As Long, y2 As Long, Colour As Integer, tmpNum As Long
+        Dim theArray() As String, x As Long, y As Long, i As Long, MaxWidth As Long, x2 As Long, y2 As Long, Colour As Integer, tmpNum As Long
     
-    With chatBubble(Index)
-        ' exit out early
-        If .target = 0 Then Exit Sub
+        With chatBubble(Index)
+            ' exit out early
+            If .target = 0 Then Exit Sub
 
-        Colour = .Color
+            Colour = .Color
 
-        ' calculate position
-        Select Case .TargetType
-            Case TargetType.Player
-                ' it's a player
-                If Not GetPlayerMap(.target) = GetPlayerMap(MyIndex) Then Exit Sub
+            ' calculate position
+            Select Case .TargetType
+                Case TargetType.Player
+                    ' it's a player
+                    If Not GetPlayerMap(.target) = GetPlayerMap(MyIndex) Then Exit Sub
 
-                ' it's on our map - get co-ords
-                x = ConvertMapX((Player(.target).x * 32) + Player(.target).xOffset) + 16
-                y = ConvertMapY((Player(.target).y * 32) + Player(.target).yOffset) - 32
-            Case TargetType.Event
-                x = ConvertMapX(map.Events(.target).x * 32) + 16
-                y = ConvertMapY(map.Events(.target).y * 32) - 16
-            Case Else
-                Exit Sub
-        End Select
+                    ' it's on our map - get co-ords
+                    x = ConvertMapX((Player(.target).x * 32) + Player(.target).xOffset) + 16
+                    y = ConvertMapY((Player(.target).y * 32) + Player(.target).yOffset) - 32
+                Case TargetType.Event
+                    x = ConvertMapX(map.Events(.target).x * 32) + 16
+                    y = ConvertMapY(map.Events(.target).y * 32) - 16
+                Case Else
+                    Exit Sub
+            End Select
         
-        ' word wrap
-        WordWrap_Array(.Msg, ChatBubbleWidth, theArray)
+            ' word wrap
+            WordWrap_Array(.Msg, ChatBubbleWidth, theArray)
 
-        ' find max width
-        tmpNum = UBound(theArray)
+            ' find max width
+            tmpNum = UBound(theArray)
 
-        For i = 1 To tmpNum
-            If TextWidth(theArray(i)) > MaxWidth Then MaxWidth = TextWidth(theArray(i))
-        Next
+            For i = 1 To tmpNum
+                If TextWidth(theArray(i), 11) > MaxWidth Then MaxWidth = TextWidth(theArray(i), 11)
+            Next
 
-        ' calculate the new position
-        x2 = x - (MaxWidth \ 2)
-        y2 = y - (UBound(theArray) * 12)
+            ' calculate the new position
+            x2 = x - (MaxWidth \ 2)
+            y2 = y - (UBound(theArray) * 12)
 
-        ' render bubble - top left
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 - 9, y2 - 5, 0, 0, 9, 5, 9, 5)
+            ' render bubble - top left
+            RenderTexture(InterfaceSprite(33), GameWindow, x2 - 9, y2 - 5, 0, 0, 9, 5, 9, 5)
 
-        ' top right
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y2 - 5, 119, 0, 9, 5, 9, 5)
+            ' top right
+            RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y2 - 5, 119, 0, 9, 5, 9, 5)
 
-        ' top
-        RenderTexture(InterfaceSprite(33), GameWindow, x2, y2 - 5, 9, 0, MaxWidth, 5, 5, 5)
+            ' top
+            RenderTexture(InterfaceSprite(33), GameWindow, x2, y2 - 5, 9, 0, MaxWidth, 5, 5, 5)
 
-        ' bottom left
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 - 9, y, 0, 19, 9, 6, 9, 6)
+            ' bottom left
+            RenderTexture(InterfaceSprite(33), GameWindow, x2 - 9, y, 0, 19, 9, 6, 9, 6)
 
-        ' bottom right
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y, 119, 19, 9, 6, 9, 6)
+            ' bottom right
+            RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y, 119, 19, 9, 6, 9, 6)
 
-        ' bottom - left half
-        RenderTexture(InterfaceSprite(33), GameWindow, x2, y, 9, 19, (MaxWidth \ 2) - 5, 6, 6, 6)
+            ' bottom - left half
+            RenderTexture(InterfaceSprite(33), GameWindow, x2, y, 9, 19, (MaxWidth \ 2) - 5, 6, 6, 6)
 
-        ' bottom - right half
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 + (MaxWidth \ 2) + 6, y, 9, 19, (MaxWidth \ 2) - 5, 6, 9, 6)
+            ' bottom - right half
+            RenderTexture(InterfaceSprite(33), GameWindow, x2 + (MaxWidth \ 2) + 6, y, 9, 19, (MaxWidth \ 2) - 5, 6, 9, 6)
 
-        ' left
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 - 9, y2, 0, 6, 9, (UBound(theArray) * 12), 9, 6)
+            ' left
+            RenderTexture(InterfaceSprite(33), GameWindow, x2 - 9, y2, 0, 6, 9, (UBound(theArray) * 12), 9, 6)
 
-        ' right
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y2, 119, 6, 9, (UBound(theArray) * 12), 9, 6)
+            ' right
+            RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y2, 119, 6, 9, (UBound(theArray) * 12), 9, 6)
 
-        ' center
-        RenderTexture(InterfaceSprite(33), GameWindow, x2, y2, 9, 5, MaxWidth, (UBound(theArray) * 12), 9, 5)
+            ' center
+            RenderTexture(InterfaceSprite(33), GameWindow, x2, y2, 9, 5, MaxWidth, (UBound(theArray) * 12), 9, 5)
 
-        ' little pointy bit
-        RenderTexture(InterfaceSprite(33), GameWindow, x - 5, y, 58, 19, 11, 11, 11, 11)
+            ' little pointy bit
+            RenderTexture(InterfaceSprite(33), GameWindow, x - 5, y, 58, 19, 11, 11, 11, 11)
 
-        ' render each line centralised
-        tmpNum = UBound(theArray)
+            ' render each line centralised
+            tmpNum = UBound(theArray)
 
-        For i = 1 To tmpNum
-            x = tmpNum - 6
-            RenderText(theArray(i), GameWindow, x - (TextWidth(theArray(i)) / 2), y2, GetSfmlColor(.Color), Color.Black)
-            y2 = y2 + 12
-        Next
+            For i = 1 To tmpNum           
+                RenderText(theArray(i), GameWindow, x - (TextWidth(theArray(i)) / 2), y2, GetSfmlColor(.Color), Color.Black)
+                y2 = y2 + 12
+            Next
 
-        ' check if it's timed out - close it if so
-        If .timer + 5000 < GetTickCount Then
-            .active = False
-        End If
-    End With
-End Sub
+            ' check if it's timed out - close it if so
+            If .timer + 5000 < GetTickCount Then
+                .active = False
+            End If
+        End With
+    End Sub
 #End Region
 
 End Module
