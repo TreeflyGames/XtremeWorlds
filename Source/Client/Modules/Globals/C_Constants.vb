@@ -2,7 +2,7 @@
 Imports Core
 
 Public Module C_Constants
-    Public Const ChatBubbleWidth As Integer = 100
+    Public Const ChatBubbleWidth As Integer = 300
 
     Public Const Chat_Timer As Long = 20000
 

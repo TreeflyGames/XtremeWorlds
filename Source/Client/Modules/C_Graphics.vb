@@ -1662,7 +1662,7 @@ Module C_Graphics
             Call RenderText(Cur, GameWindow, Camera.Left  - 24, Camera.top + 75, Color.Yellow, Color.Black)
             Call RenderText(Loc, GameWindow, Camera.Left  - 24, Camera.top + 90, Color.Yellow, Color.Black)
             Call RenderText(Map, GameWindow, Camera.Left - 24, Camera.top + 105, Color.Yellow, Color.Black)
-    End If
+        End If
 
         DrawMapName()
 
@@ -2923,19 +2923,19 @@ Module C_Graphics
         RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y, 119, 19, 9, 6, 9, 6)
 
         ' bottom - left half
-        RenderTexture(InterfaceSprite(33), GameWindow, x2, y, 9, 19, (MaxWidth \ 2) - 5, 6, 9, 6)
+        RenderTexture(InterfaceSprite(33), GameWindow, x2, y, 9, 19, (MaxWidth \ 2) - 5, 6, 6, 6)
 
         ' bottom - right half
         RenderTexture(InterfaceSprite(33), GameWindow, x2 + (MaxWidth \ 2) + 6, y, 9, 19, (MaxWidth \ 2) - 5, 6, 9, 6)
 
         ' left
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 - 9, y2, 0, 6, 9, (UBound(theArray) * 12), 9, 1)
+        RenderTexture(InterfaceSprite(33), GameWindow, x2 - 9, y2, 0, 6, 9, (UBound(theArray) * 12), 9, 6)
 
         ' right
-        RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y2, 119, 6, 9, (UBound(theArray) * 12), 9, 1)
+        RenderTexture(InterfaceSprite(33), GameWindow, x2 + MaxWidth, y2, 119, 6, 9, (UBound(theArray) * 12), 9, 6)
 
         ' center
-        RenderTexture(InterfaceSprite(33), GameWindow, x2, y2, 9, 5, MaxWidth, (UBound(theArray) * 12), 1, 1)
+        RenderTexture(InterfaceSprite(33), GameWindow, x2, y2, 9, 5, MaxWidth, (UBound(theArray) * 12), 9, 5)
 
         ' little pointy bit
         RenderTexture(InterfaceSprite(33), GameWindow, x - 5, y, 58, 19, 11, 11, 11, 11)
@@ -2944,6 +2944,7 @@ Module C_Graphics
         tmpNum = UBound(theArray)
 
         For i = 1 To tmpNum
+            x = tmpNum - 6
             RenderText(theArray(i), GameWindow, x - (TextWidth(theArray(i)) / 2), y2, GetSfmlColor(.Color), Color.Black)
             y2 = y2 + 12
         Next
