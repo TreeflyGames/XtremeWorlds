@@ -397,12 +397,12 @@ Module C_Text
             End Select
 
             'Add up the size
-            size = size + 12
+            size = size + FontSize
 
             'Check for too large of a size
             If size > MaxLineLen Then
                 'Check if the last space was too far back
-                If i - lastSpace > 12 Then
+                If i - lastSpace > FontSize Then
                     'Too far away to the last space, so break at the last character
                     lineCount = lineCount + 1
                     ReDim Preserve theArray(lineCount)
