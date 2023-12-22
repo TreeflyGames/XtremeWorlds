@@ -7,10 +7,13 @@ Public Class Settings
     Public Username As String = ""
     Public SaveUsername As Boolean = False
 
-    Public MenuMusic As String = "title.ogg"
+    Public MenuMusic As String = "menu.mid"
     Public Music As Boolean = True
     Public Sound As Boolean = True
     Public Volume As Single = 100.0F
+
+    Public MusicExt As String = ".mid"
+    Public SoundExt As String = ".wav"
 
     Public ScreenWidth As String = "1024"
     Public ScreenHeight As String = "768"

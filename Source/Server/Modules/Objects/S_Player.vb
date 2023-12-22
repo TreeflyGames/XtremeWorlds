@@ -1449,6 +1449,7 @@ Module S_Player
                     MapItem(GetPlayerMap(index), i).Y = GetPlayerY(index)
                     MapItem(GetPlayerMap(index), i).PlayerName = Trim$(GetPlayerName(index))
                     MapItem(GetPlayerMap(index), i).PlayerTimer = GetTimeMs() + ITEM_SPAWN_TIME
+
                     MapItem(GetPlayerMap(index), i).CanDespawn = True
                     MapItem(GetPlayerMap(index), i).DespawnTimer = GetTimeMs() + ITEM_DESPAWN_TIME
 

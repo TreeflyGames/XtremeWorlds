@@ -163,9 +163,9 @@ Module C_Database
     End Sub
 
     Friend Sub CacheMusic()
-        ReDim MusicCache(Directory.GetFiles(Paths.Music, "*.ogg").Count)
-        Dim files As String() = Directory.GetFiles(Paths.Music, "*.ogg")
-        Dim maxNum As String = Directory.GetFiles(Paths.Music, "*.ogg").Count
+        ReDim MusicCache(Directory.GetFiles(Paths.Music, "*" & Types.Settings.MusicExt).Count)
+        Dim files As String() = Directory.GetFiles(Paths.Music, "*" & Types.Settings.MusicExt)
+        Dim maxNum As String = Directory.GetFiles(Paths.Music, "*" & Types.Settings.MusicExt).Count
         Dim counter As Integer = 0
 
         For Each FileName In files
@@ -179,9 +179,9 @@ Module C_Database
     End Sub
 
     Friend Sub CacheSound()
-        ReDim SoundCache(Directory.GetFiles(Paths.Sounds, "*.ogg").Count)
-        Dim files As String() = Directory.GetFiles(Paths.Sounds, "*.ogg")
-        Dim maxNum As String = Directory.GetFiles(Paths.Sounds, "*.ogg").Count
+        ReDim SoundCache(Directory.GetFiles(Paths.Sounds, "*" & Types.Settings.SoundExt).Count)
+        Dim files As String() = Directory.GetFiles(Paths.Sounds, "*" & Types.Settings.SoundExt)
+        Dim maxNum As String = Directory.GetFiles(Paths.Sounds,  "*" & Types.Settings.SoundExt).Count
         Dim counter As Integer = 0
 
         For Each FileName In files

@@ -486,7 +486,11 @@ Module C_Maps
         CurrentTintB = Map.MapTintB
         CurrentTintA = Map.MapTintA
 
-        PlayMusic(Trim$(Map.Music))
+        If Types.Settings.MusicExt = ".mid" Then
+            MidiPlayer.Play(Paths.Music & Map.Music)
+        Else
+            PlayMusic(Trim$(Map.Music))
+        End If
 
         UpdateDrawMapName()
 
@@ -551,7 +555,12 @@ Module C_Maps
         CurrentTintA = Map.MapTintA
 
         musicFile = Trim$(Map.Music)
-        PlayMusic(musicFile)
+
+        If Types.Settings.MusicExt = ".mid" Then
+            MidiPlayer.Play(Paths.Music & Map.Music)
+        Else
+            PlayMusic(Trim$(Map.Music))
+        End If
 
         UpdateDrawMapName()
 

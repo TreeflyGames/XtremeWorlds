@@ -1,10 +1,4 @@
-﻿
-Imports System.Runtime.InteropServices
-Imports System.Text
-Imports System.Windows.Forms
-Imports Core
-Imports SFML.Graphics
-Imports SFML.Window
+﻿Imports Core
 
 Module C_General
     Friend Started As Boolean
@@ -17,8 +11,16 @@ Module C_General
         InMenu = True
         ClearGameData()
         LoadGame()
-        PlayMusic(Trim$(Types.Settings.MenuMusic))
+        MenuMusic()
         GameLoop()
+    End Sub
+
+    Friend Sub MenuMusic
+        If Types.Settings.MusicExt = ".mid" Then
+            MidiPlayer.Play(Paths.Music & Types.Settings.MenuMusic)
+        Else
+            PlayMusic(Trim$(Types.Settings.MenuMusic))
+        End If
     End Sub
 
     Friend Sub LoadGame()
@@ -64,12 +66,6 @@ Module C_General
     Friend Sub CheckPaths()
         CacheMusic()
         CacheSound()
-
-        If Types.Settings.Music = 1 AndAlso Len(Trim$(Types.Settings.MenuMusic)) > 0 Then
-            PlayMusic(Trim$(Types.Settings.MenuMusic))
-            MusicPlayer.Volume() = Types.Settings.Volume
-        End If
-
         CheckAnimations()
         CheckCharacters()
         CheckEmotes()

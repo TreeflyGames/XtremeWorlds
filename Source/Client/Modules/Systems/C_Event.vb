@@ -2268,7 +2268,11 @@ newlist:
         Dim buffer As New ByteStream(data)
         music = buffer.ReadString
 
-        PlayMusic(music)
+        If Types.Settings.MusicExt = ".mid" Then
+            MidiPlayer.Play(Paths.Music & Map.Music)
+        Else
+            PlayMusic(Trim$(music))
+        End If
 
         buffer.Dispose()
     End Sub
