@@ -2900,7 +2900,7 @@ Module C_Graphics
             tmpNum = UBound(theArray)
 
             For i = 1 To tmpNum
-                If TextWidth(theArray(i), 11) > MaxWidth Then MaxWidth = TextWidth(theArray(i), 11)
+                If TextWidth(theArray(i), 15) > MaxWidth Then MaxWidth = TextWidth(theArray(i), 15)
             Next
 
             ' calculate the new position
@@ -2944,7 +2944,7 @@ Module C_Graphics
             tmpNum = UBound(theArray)
 
             For i = 1 To tmpNum           
-                RenderText(theArray(i), GameWindow, x - (TextWidth(theArray(i)) / 2), y2, GetSfmlColor(.Color), Color.Black)
+                RenderText(theArray(i), GameWindow, x - (theArray(i).Length / 2) - (TextWidth(theArray(i)) / 2), y2, GetSfmlColor(.Color), Color.Black)
                 y2 = y2 + 12
             Next
 
