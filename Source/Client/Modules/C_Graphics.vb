@@ -488,6 +488,7 @@ Module C_Graphics
         WindowSettings.AntialiasingLevel = 4
 
         GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Default, WindowSettings)
+        CenterWindow(GameWindow)
         GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
         GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
         Dim iconImage As New Image(Paths.Gui + "icon.png")
