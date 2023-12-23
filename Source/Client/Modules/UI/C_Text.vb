@@ -40,7 +40,7 @@ Module C_Text
         End Select
 
         ' Set properties for backString
-        backString.Color = New Color(backColor.R, backColor.G, backColor.B, 160)
+        backString.Color = New Color(backColor.R, backColor.G, backColor.B, 190)
         backString.LetterSpacing = 2
         backString.Position = New Vector2f(x + 1, y + 1)
 

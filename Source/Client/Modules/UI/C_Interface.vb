@@ -241,18 +241,21 @@ Module C_Interface
                     ' render image
                     If .Image(.State) > 0 Then
                         If .Image(.State) > 0 Then
-                            RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, InterfaceGfxInfo(.Image(.State)).Width, InterfaceGfxInfo(.Image(.State)).Height, InterfaceGfxInfo(.Image(.State)).Width, InterfaceGfxInfo(.Image(.State)).Height)
+                            RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height)
                         End If
                     End If
 
                     ' render icon
                     If .Icon > 0 Then
+                        Width =  ItemGfxInfo(.Icon).width
+                        Height =  ItemGfxInfo(.Icon).height
+
                         ' render the icon
                         If ItemGfxInfo(.Icon).IsLoaded = False Then
                             LoadTexture(.Icon, 4)
                         End If
 
-                        RenderTexture(ItemSprite(.Icon), GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, ItemGfxInfo(.Icon).Width, ItemGfxInfo(.Icon).Height, ItemGfxInfo(.Icon).Width, ItemGfxInfo(.Icon).Height)
+                        RenderTexture(ItemSprite(.Icon), GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, Width, Height, Width, Height)
                     End If
 
                     ' for changing the text space
@@ -263,13 +266,13 @@ Module C_Interface
                     If height > .Height Then
                         ver_centre = .Top + yO
                     Else
-                        ver_centre = .Top + yO + ((.Height - height) \ 2) - 1
+                        ver_centre = .Top + yO + ((.Height - height) \ 2) - 2
                     End If
 
                     ' calculate the horizontal centre
                     width = TextWidth(.Text)
                     If width > .Width Then
-                        hor_centre = .Left + xO + xOffset
+                        hor_centre = .Left + xO + xOffset - 4
                     Else
                         hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2)
                     End If
