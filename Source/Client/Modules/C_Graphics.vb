@@ -1378,7 +1378,7 @@ Module C_Graphics
             offsetY = 32
             EndY = Map.MaxY
         
-                If EndY > Map.MaxY Then
+            If EndY > Map.MaxY Then
                 If Player(MyIndex).yOffset < 0 Then
                     offsetY = Player(MyIndex).yOffset + PicY
                 End If
