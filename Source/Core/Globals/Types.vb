@@ -467,7 +467,7 @@ Public Module Types
         Dim Weather As Byte
         Dim Fog As Integer
         Dim WeatherIntensity As Integer
-        Dim FogAlpha As Byte
+        Dim FogOpacity As Byte
         Dim FogSpeed As Byte
 
         Dim MapTint As Boolean

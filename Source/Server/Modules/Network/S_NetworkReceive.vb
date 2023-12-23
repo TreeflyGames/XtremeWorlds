@@ -824,7 +824,7 @@ Module S_NetworkReceive
         Map(mapNum).Weather = buffer.ReadInt32
         Map(mapNum).Fog = buffer.ReadInt32
         Map(mapNum).WeatherIntensity = buffer.ReadInt32
-        Map(mapNum).FogAlpha = buffer.ReadInt32
+        Map(mapNum).FogOpacity = buffer.ReadInt32
         Map(mapNum).FogSpeed = buffer.ReadInt32
         Map(mapNum).MapTint = buffer.ReadInt32
         Map(mapNum).MapTintR = buffer.ReadInt32
@@ -2260,7 +2260,7 @@ Module S_NetworkReceive
         Map(mapNum).Weather = buffer.ReadInt32
         Map(mapNum).Fog = buffer.ReadInt32
         Map(mapNum).WeatherIntensity = buffer.ReadInt32
-        Map(mapNum).FogAlpha = buffer.ReadInt32
+        Map(mapNum).FogOpacity = buffer.ReadInt32
         Map(mapNum).FogSpeed = buffer.ReadInt32
         Map(mapNum).MapTint = buffer.ReadInt32
         Map(mapNum).MapTintR = buffer.ReadInt32

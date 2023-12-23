@@ -252,7 +252,7 @@ Module C_Maps
             Map.Weather = buffer.ReadInt32
             Map.Fog = buffer.ReadInt32
             Map.WeatherIntensity = buffer.ReadInt32
-            Map.FogAlpha = buffer.ReadInt32
+            Map.FogOpacity = buffer.ReadInt32
             Map.FogSpeed = buffer.ReadInt32
             Map.MapTint = buffer.ReadInt32
             Map.MapTintR = buffer.ReadInt32
@@ -480,7 +480,7 @@ Module C_Maps
         CurrentWeatherIntensity = Map.WeatherIntensity
         CurrentFog = Map.Fog
         CurrentFogSpeed = Map.FogSpeed
-        CurrentFogOpacity = Map.FogAlpha
+        CurrentFogOpacity = Map.FogOpacity
         CurrentTintR = Map.MapTintR
         CurrentTintG = Map.MapTintG
         CurrentTintB = Map.MapTintB
@@ -548,7 +548,7 @@ Module C_Maps
         CurrentWeatherIntensity = Map.WeatherIntensity
         CurrentFog = Map.Fog
         CurrentFogSpeed = Map.FogSpeed
-        CurrentFogOpacity = Map.FogAlpha
+        CurrentFogOpacity = Map.FogOpacity
         CurrentTintR = Map.MapTintR
         CurrentTintG = Map.MapTintG
         CurrentTintB = Map.MapTintB
@@ -618,7 +618,7 @@ Module C_Maps
         buffer.WriteInt32(Map.Weather)
         buffer.WriteInt32(Map.Fog)
         buffer.WriteInt32(Map.WeatherIntensity)
-        buffer.WriteInt32(Map.FogAlpha)
+        buffer.WriteInt32(Map.FogOpacity)
         buffer.WriteInt32(Map.FogSpeed)
         buffer.WriteInt32(Map.MapTint)
         buffer.WriteInt32(Map.MapTintR)

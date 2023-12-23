@@ -177,8 +177,8 @@ Partial Class frmEditor_Map
         scrlMapGreen = New HScrollBar()
         scrlMapRed = New HScrollBar()
         GroupBox1 = New GroupBox()
-        scrlFogAlpha = New HScrollBar()
-        lblFogAlpha = New Label()
+        scrlFogOpacity = New HScrollBar()
+        lblFogOpacity = New Label()
         scrlFogSpeed = New HScrollBar()
         lblFogSpeed = New Label()
         scrlIntensity = New HScrollBar()
@@ -1870,8 +1870,8 @@ Partial Class frmEditor_Map
         ' 
         ' GroupBox1
         ' 
-        GroupBox1.Controls.Add(scrlFogAlpha)
-        GroupBox1.Controls.Add(lblFogAlpha)
+        GroupBox1.Controls.Add(scrlFogOpacity)
+        GroupBox1.Controls.Add(lblFogOpacity)
         GroupBox1.Controls.Add(scrlFogSpeed)
         GroupBox1.Controls.Add(lblFogSpeed)
         GroupBox1.Controls.Add(scrlIntensity)
@@ -1889,24 +1889,24 @@ Partial Class frmEditor_Map
         GroupBox1.TabStop = False
         GroupBox1.Text = "Map Weather"
         ' 
-        ' scrlFogAlpha
+        ' scrlFogOpacity
         ' 
-        scrlFogAlpha.LargeChange = 1
-        scrlFogAlpha.Location = New Point(150, 238)
-        scrlFogAlpha.Maximum = 255
-        scrlFogAlpha.Name = "scrlFogAlpha"
-        scrlFogAlpha.Size = New Size(241, 17)
-        scrlFogAlpha.TabIndex = 9
+        scrlFogOpacity.LargeChange = 1
+        scrlFogOpacity.Location = New Point(150, 238)
+        scrlFogOpacity.Maximum = 255
+        scrlFogOpacity.Name = "scrlFogOpacity"
+        scrlFogOpacity.Size = New Size(241, 17)
+        scrlFogOpacity.TabIndex = 9
         ' 
-        ' lblFogAlpha
+        ' lblFogOpacity
         ' 
-        lblFogAlpha.AutoSize = True
-        lblFogAlpha.Location = New Point(10, 242)
-        lblFogAlpha.Margin = New Padding(6, 0, 6, 0)
-        lblFogAlpha.Name = "lblFogAlpha"
-        lblFogAlpha.Size = New Size(133, 25)
-        lblFogAlpha.TabIndex = 8
-        lblFogAlpha.Text = "Fog Alpha: 255"
+        lblFogOpacity.AutoSize = True
+        lblFogOpacity.Location = New Point(10, 242)
+        lblFogOpacity.Margin = New Padding(6, 0, 6, 0)
+        lblFogOpacity.Name = "lblFogOpacity"
+        lblFogOpacity.Size = New Size(133, 25)
+        lblFogOpacity.TabIndex = 8
+        lblFogOpacity.Text = "Fog Alpha: 255"
         ' 
         ' scrlFogSpeed
         ' 
@@ -2178,8 +2178,8 @@ Partial Class frmEditor_Map
     Friend WithEvents scrlMapGreen As System.Windows.Forms.HScrollBar
     Friend WithEvents scrlMapRed As System.Windows.Forms.HScrollBar
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents scrlFogAlpha As System.Windows.Forms.HScrollBar
-    Friend WithEvents lblFogAlpha As System.Windows.Forms.Label
+    Friend WithEvents scrlFogOpacity As System.Windows.Forms.HScrollBar
+    Friend WithEvents lblFogOpacity As System.Windows.Forms.Label
     Friend WithEvents scrlFogSpeed As System.Windows.Forms.HScrollBar
     Friend WithEvents lblFogSpeed As System.Windows.Forms.Label
     Friend WithEvents scrlIntensity As System.Windows.Forms.HScrollBar

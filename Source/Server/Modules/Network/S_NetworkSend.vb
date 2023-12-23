@@ -487,7 +487,7 @@ Module S_NetworkSend
             buffer.WriteInt32(Map(mapNum).Weather)
             buffer.WriteInt32(Map(mapNum).Fog)
             buffer.WriteInt32(Map(mapNum).WeatherIntensity)
-            buffer.WriteInt32(Map(mapNum).FogAlpha)
+            buffer.WriteInt32(Map(mapNum).FogOpacity)
             buffer.WriteInt32(Map(mapNum).FogSpeed)
             buffer.WriteInt32(Map(mapNum).MapTint)
             buffer.WriteInt32(Map(mapNum).MapTintR)

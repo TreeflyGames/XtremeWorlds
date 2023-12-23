@@ -857,7 +857,7 @@ Module S_Database
         mwMap.MapTintR = csMap.MapData.Red
         mwMap.MapTintG = csMap.MapData.Green
         mwMap.MapTintB = csMap.MapData.Blue
-        mwMap.FogAlpha = csMap.MapData.FogOpacity
+        mwMap.FogOpacity = csMap.MapData.FogOpacity
         mwMap.FogSpeed = csMap.MapData.FogSpeed
 
         ReDim mwMap.Tile(mwMap.MaxX, mwMap.MaxY)

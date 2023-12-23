@@ -445,9 +445,9 @@ Public Class frmEditor_Map
         lblFogSpeed.Text = "FogSpeed: " & scrlFogSpeed.Value
     End Sub
 
-    Private Sub ScrlFogAlpha_Scroll(sender As Object, e As EventArgs) Handles scrlFogAlpha.ValueChanged
-        Map.FogAlpha = scrlFogAlpha.Value
-        lblFogAlpha.Text = "Fog Alpha: " & scrlFogAlpha.Value
+    Private Sub ScrlFogOpacity_Scroll(sender As Object, e As EventArgs) Handles scrlFogOpacity.ValueChanged
+        Map.FogOpacity = scrlFogOpacity.Value
+        lblFogOpacity.Text = "Fog Alpha: " & scrlFogOpacity.Value
     End Sub
 
     Private Sub ChkUseTint_CheckedChanged(sender As Object, e As EventArgs) Handles chkTint.CheckedChanged
@@ -1270,8 +1270,8 @@ Public Class frmEditor_Map
             For X = 0 To Map.MaxX
                 For Y = 0 To Map.MaxY
                     With Map.Tile(X, Y)
-                        ReDim Map.Tile(X, Y).Layer(LayerType.Count - 1)
-                        ReDim Autotile(X, Y).Layer(LayerType.Count - 1)
+                        ReDim Preserve Map.Tile(X, Y).Layer(LayerType.Count - 1)
+                        ReDim Preserve Autotile(X, Y).Layer(LayerType.Count - 1)
 
                         .Data1 = TmpTile(X, Y).Data1
                         .Data2 = TmpTile(X, Y).Data2
