@@ -21,6 +21,8 @@ Public Class Settings
     Public ShowNpcBar As Byte = 1
     Public CameraType As Byte = 0
     Public Fullscreen As Byte = 1
+    Public CameraWidth As Byte = 32
+    Public CameraHeight As Byte = 24
     Public OpenAdminPanelOnLogin As Byte = 1
     Public DynamicLightRendering As Byte = 1
     Public ChannelState(ChatChannel.Count - 1) As Byte

@@ -1302,11 +1302,11 @@ Module C_Graphics
         offsetY = Player(Myindex).YOffset + PicY
 
         If Types.Settings.CameraType = 1 Then
-            startX = GetPlayerX(Myindex) - ScreenMapx
-            startY = GetPlayerY(Myindex) - ScreenMapy
+            startX = GetPlayerX(Myindex) - Types.Settings.CameraWidth
+            startY = GetPlayerY(Myindex) - Types.Settings.CameraHeight
         Else
-            startX = GetPlayerX(Myindex) - ((ScreenMapx + 1) / 2) - 1
-            startY = GetPlayerY(Myindex) - ((ScreenMapy + 1) / 2) - 1
+            startX = GetPlayerX(Myindex) - ((Types.Settings.CameraWidth + 1) / 2) - 1
+            startY = GetPlayerY(Myindex) - ((Types.Settings.CameraHeight + 1) / 2) - 1
         End If
 
         If startX < 0 Then
@@ -1333,8 +1333,8 @@ Module C_Graphics
             startY = 0
         End If
 
-        endX = startX + (ScreenMapx + 1) + 1
-        endY = startY + (ScreenMapy + 1) + 1
+        endX = startX + (Types.Settings.CameraWidth + 1) + 1
+        endY = startY + (Types.Settings.CameraHeight + 1) + 1
 
         If endX > Map.MaxX Then
             offsetX = 32
@@ -1346,7 +1346,7 @@ Module C_Graphics
             End If
 
             endX = Map.MaxX
-            startX = endX - ScreenMapx - 1
+            startX = endX - Types.Settings.CameraWidth - 1
         End If
 
         If endY > Map.MaxY Then
@@ -1359,7 +1359,7 @@ Module C_Graphics
             End If
 
             endY = Map.MaxY
-            startY = endY - ScreenMapy - 1
+            startY = endY - Types.Settings.CameraHeight - 1
         End If
 
         With TileView
@@ -1373,11 +1373,11 @@ Module C_Graphics
             .Y = offsetY
             .X = offsetX
             If Types.Settings.CameraType = 1 Then
-                .Height = .Top + ScreenY + PicY
-                .Width = .Left + ScreenX + PicX
+                .Height = .Top + Types.Settings.CameraHeight + PicY
+                .Width = .Left + Types.Settings.CameraWidth + PicX
             Else
-                .Height = ScreenY + PicY
-                .Width = ScreenX + PicX
+                .Height = Types.Settings.CameraHeight + PicY
+                .Width = Types.Settings.CameraWidth + PicX
             End If
         End With
 

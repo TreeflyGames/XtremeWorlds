@@ -43,10 +43,10 @@ Public Class frmEditor_Map
         Dim tempArr(,) As TileStruct
 
         If Not IsNumeric(txtMaxX.Text) Then txtMaxX.Text = Map.MaxX
-        If Val(txtMaxX.Text) < ScreenMapx Then txtMaxX.Text = ScreenMapx
+        If Val(txtMaxX.Text) < Types.Settings.CameraWidth Then txtMaxX.Text = Types.Settings.CameraWidth
         If Val(txtMaxX.Text) > Byte.MaxValue Then txtMaxX.Text = Byte.MaxValue
         If Not IsNumeric(txtMaxY.Text) Then txtMaxY.Text = Map.MaxY
-        If Val(txtMaxY.Text) < ScreenMapy Then txtMaxY.Text = ScreenMapy
+        If Val(txtMaxY.Text) < Types.Settings.CameraHeight Then txtMaxY.Text = Types.Settings.CameraHeight
         If Val(txtMaxY.Text) > Byte.MaxValue Then txtMaxY.Text = Byte.MaxValue
 
         With Map

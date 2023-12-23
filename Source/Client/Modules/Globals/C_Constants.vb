@@ -48,18 +48,10 @@ Public Module C_Constants
     ' * The values below must match with the server's values *
     ' ********************************************************
 
-    ' Map constants
-    Public Const ScreenMapx As Byte = 32
-    Public Const ScreenMapy As Byte = 24
-
+    ' Map
     Public Const MaxTileHistory As Byte = 50
 
-    Public Const HalfX As Integer = ((ScreenMapx + 1) \ 2) * PicX
-    Public Const HalfY As Integer = ((ScreenMapy + 1) \ 2) * PicY
-    Public Const ScreenX As Integer = (ScreenMapx + 1) * PicX
-    Public Const ScreenY As Integer = (ScreenMapy + 1) * PicY
-
-    'dialog types
+    ' Dialog types
     Public Const DialogueTypeBuyhome As Byte = 1
     Public Const DialogueTypeVisit As Byte = 2
     Public Const DialogueTypeParty As Byte = 3

@@ -68,8 +68,8 @@ Module C_Maps
 
         Map.Name = ""
         Map.Tileset = 1
-        Map.MaxX = ScreenMapx
-        Map.MaxY = ScreenMapy
+        Map.MaxX = MAX_MAPX
+        Map.MaxY = MAX_MAPY
         Map.BootMap = 0
         Map.BootX = 0
         Map.BootY = 0
@@ -90,8 +90,8 @@ Module C_Maps
         HistoryIndex = 0
         TileHistoryHighIndex = 0
 
-        For x = 0 To ScreenMapx
-            For y = 0 To ScreenMapy
+        For x = 0 To MAX_MAPX
+            For y = 0 To MAX_MAPY
                 ReDim Map.Tile(x, y).Layer(LayerType.Count - 1)
 
                 For i = 1 To MaxTileHistory
