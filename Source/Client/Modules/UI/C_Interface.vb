@@ -521,15 +521,15 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(1), left, top, width, height, bs, alpha)
 
                 ' render wood texture
-                RenderTexture(InterfaceSprite(1), GameWindow, left, top, width - (bs * 2), height - (bs * 2), width, height, width, height, alpha)
+                RenderTexture(InterfaceSprite(1), GameWindow, Left + bs, Top + bs, 100, 100, Width - (bs * 2), Height - (bs * 2), Width - (bs * 2), Height - (bs * 2), alpha)
 
             Case DesignType.Wood_Small
                 bs = 2
                 ' render the wood box
-                RenderEntity_Square(DesignSprite(8), left, top, width, height, bs, alpha)
+                RenderEntity_Square(DesignSprite(8),Left + bs, Top + bs, width, height, bs, alpha)
 
                 ' render wood texture
-                RenderTexture(InterfaceSprite(1), GameWindow, left + bs, top + bs, width - (bs * 2), height - (bs * 2), width, height, width, height)
+                RenderTexture(InterfaceSprite(1), GameWindow, left + bs, top + bs, 100, 100, Width - (bs * 2), Height - (bs * 2), Width - (bs * 2), Height - (bs * 2))
 
             Case DesignType.Wood_Empty
                 bs = 4
@@ -542,7 +542,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                RenderTexture(GradientSprite(1), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(1), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Green_Hover
                 bs = 2
@@ -550,7 +550,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                RenderTexture(GradientSprite(2), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(2), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Green_Click
                 bs = 2
@@ -558,7 +558,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                RenderTexture(GradientSprite(3), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(3), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Red
                 bs = 2
@@ -566,7 +566,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
 
                 ' render red gradient overlay
-                RenderTexture(GradientSprite(4), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(4), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Red_Hover
                 bs = 2
@@ -574,7 +574,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
 
                 ' render red gradient overlay
-                RenderTexture(GradientSprite(5), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(5), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Red_Click
                 bs = 2
@@ -582,7 +582,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
 
                 ' render red gradient overlay
-                RenderTexture(GradientSprite(6), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(6), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Blue
                 bs = 2
@@ -590,7 +590,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
 
                 ' render Blue gradient overlay
-                RenderTexture(GradientSprite(8), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(8), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Blue_Hover
                 bs = 2
@@ -598,7 +598,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
 
                 ' render Blue gradient overlay
-                RenderTexture(GradientSprite(9), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(9), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Blue_Click
                 bs = 2
@@ -606,7 +606,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
 
                 ' render Blue gradient overlay
-                RenderTexture(GradientSprite(10), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(10), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Orange
                 bs = 2
@@ -614,7 +614,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
 
                 ' render Orange gradient overlay
-                RenderTexture(GradientSprite(11), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(11), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Orange_Hover
                 bs = 2
@@ -622,7 +622,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
 
                 ' render Orange gradient overlay
-                RenderTexture(GradientSprite(12), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(12), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Orange_Click
                 bs = 2
@@ -630,7 +630,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
 
                 ' render Orange gradient overlay
-                RenderTexture(GradientSprite(13), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(13), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Grey
                 bs = 2
@@ -638,7 +638,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(17), left, top, width, height, bs, alpha)
 
                 ' render Orange gradient overlay
-                RenderTexture(GradientSprite(14), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(14), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Parchment
                 bs = 20
@@ -676,7 +676,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(12), left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                RenderTexture(GradientSprite(7), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), width, height, alpha)
+                RenderTexture(GradientSprite(7), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Win_Shadow
                 bs = 35
