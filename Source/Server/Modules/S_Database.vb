@@ -743,11 +743,8 @@ Module S_Database
         Dim tile As New TileStruct
 
         ' Constants for the new tileset
-        Const TileWidth As Integer = 32
-        Const TileHeight As Integer = 32
         Const TilesPerRow As Integer = 8
         Const RowsPerTileset As Integer = 16
-        Const TilesPerSheet As Integer = 49
 
         ' Initialize the layers
         ReDim tile.Layer(LayerType.Count - 1)
