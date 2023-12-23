@@ -272,9 +272,9 @@ Module C_Interface
                     ' calculate the horizontal centre
                     width = TextWidth(.Text)
                     If width > .Width Then
-                        hor_centre = .Left + xO + xOffset - 4
+                        hor_centre = .Left + xO + xOffset
                     Else
-                        hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2)
+                        hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2) - 2
                     End If
 
                     RenderText(.Text, GameWindow, hor_centre, ver_centre, .Color, Color.Black)
