@@ -1333,33 +1333,86 @@ Module C_Graphics
             startY = 0
         End If
 
-        endX = startX + (Types.Settings.CameraWidth + 1) + 1
-        endY = startY + (Types.Settings.CameraHeight + 1) + 1
-
-        If endX > Map.MaxX Then
-            offsetX = 32
-
-            If endX = Map.MaxX + 1 Then
-                If Player(Myindex).XOffset < 0 Then
-                    offsetX = Player(Myindex).XOffset + PicX
-                End If
+        If Not Map.MaxX = Types.Settings.CameraWidth Then
+            If Player(MyIndex).xOffset > 0 Then
+                EndX = StartX + (Types.Settings.CameraWidth + 1) + 1
+            Else
+                EndX = StartX + (Types.Settings.CameraWidth + 1)
             End If
-
-            endX = Map.MaxX
-            startX = endX - Types.Settings.CameraWidth - 1
+        Else
+            EndX = StartX + (Types.Settings.CameraWidth + 1)
         End If
 
-        If endY > Map.MaxY Then
-            offsetY = 32
+        If Not Map.MaxY = Types.Settings.CameraHeight Then
+            If Player(MyIndex).yOffset > 0 Then
+                EndY = StartY + (Types.Settings.CameraHeight + 1) + 1
+            Else
+                EndY = StartY + (Types.Settings.CameraHeight + 1)
+            End If
+        Else
+            EndY = StartY + (Types.Settings.CameraHeight + 1)
+        End If
 
-            If endY = Map.MaxY + 1 Then
-                If Player(Myindex).YOffset < 0 Then
-                    offsetY = Player(Myindex).YOffset + PicY
+        If EndX - 1 >= Map.MaxX Then
+            offsetX = 32
+            EndX = Map.MaxX
+        
+            If EndX > Map.MaxX Then
+                If Player(MyIndex).xOffset < 0 Then
+                    offsetX = Player(MyIndex).xOffset + PicX
+                End If
+            End If
+        
+            If Map.MaxX = Types.Settings.CameraWidth Then
+                If offsetX <> 0 Then
+                    StartX = EndX - Types.Settings.CameraWidth
+                Else
+                    StartX = EndX - Types.Settings.CameraWidth - 1
+                End If
+            Else
+                StartX = EndX - Types.Settings.CameraWidth - 1
+            End If
+        End If
+
+        If EndY - 1 >= Map.MaxY Then
+            offsetY = 32
+            EndY = Map.MaxY
+        
+                If EndY > Map.MaxY Then
+                If Player(MyIndex).yOffset < 0 Then
+                    offsetY = Player(MyIndex).yOffset + PicY
                 End If
             End If
 
-            endY = Map.MaxY
-            startY = endY - Types.Settings.CameraHeight - 1
+            If Map.MaxY = Types.Settings.CameraHeight Then
+                If offsetY <> 0 Then
+                    StartY = EndY - Types.Settings.CameraHeight
+                Else
+                    StartY = EndY - Types.Settings.CameraHeight - 1
+                End If
+            Else
+                StartY = EndY - Types.Settings.CameraHeight - 1
+            End If
+        End If
+
+        If Types.Settings.CameraWidth > Map.MaxX Then
+            If EndX + 1 < Types.Settings.CameraWidth Then
+                StartX = StartX + ((Types.Settings.CameraWidth - EndX) / 2)
+            End If
+        End If
+
+        If Types.Settings.CameraHeight > Map.MaxY Then
+            If EndY + 1 < Types.Settings.CameraHeight Then
+                StartY = StartY + ((Types.Settings.CameraHeight - EndY) / 2)
+            End If
+        End If
+            
+        If Types.Settings.CameraWidth = Map.MaxX Then
+            offsetX = 0
+        End If
+
+        If Types.Settings.CameraHeight = Map.MaxY Then
+            offsetY = 0
         End If
 
         With TileView
