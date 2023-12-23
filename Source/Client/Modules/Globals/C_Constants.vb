@@ -49,8 +49,8 @@ Public Module C_Constants
     ' ********************************************************
 
     ' Map constants
-    Public Const ScreenMapx As Byte = 15
-    Public Const ScreenMapy As Byte = 11
+    Public Const ScreenMapx As Byte = 32
+    Public Const ScreenMapy As Byte = 24
 
     Public Const MaxTileHistory As Byte = 50
 

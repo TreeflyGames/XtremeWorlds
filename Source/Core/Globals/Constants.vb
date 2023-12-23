@@ -22,8 +22,8 @@
     Public Const MAX_TRADES As Byte = 20
     Public Const NAME_LENGTH As Byte = 21
     Public Const MAX_HOTBAR As Byte = 10
-    Public Const MAX_MAPX As Byte = 16
-    Public Const MAX_MAPY As Byte = 11
+    Public Const MAX_MAPX As Byte = 32
+    Public Const MAX_MAPY As Byte = 24
     Public Const MAX_PROJECTILES As Integer = 255
     Public const MAX_DROP_ITEMS As Byte = 5
     Public Const MAX_SWITCHES As Integer = 100
