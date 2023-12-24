@@ -2363,8 +2363,8 @@ End Sub
             Exit Sub
         End If
 
-        If tempTileLights Is Nothing Then
-            tempTileLights = New List(Of LightTileStruct)()
+        If TileLights Is Nothing Then
+            TileLights = New List(Of LightTileStruct)()
 
             For x = 0 To Map.MaxX
 
@@ -2399,7 +2399,7 @@ End Sub
                                         GameWindow.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
                                     Next
 
-                                    tempTileLights.Add(New LightTileStruct() With {
+                                    TileLights.Add(New LightTileStruct() With {
 .Tiles = tiles,
 .IsFlicker = Map.Tile(x, y).Data2 = 1,
                                                           .Scale = New Vector2f(0.35F, 0.35F)
@@ -2423,7 +2423,7 @@ End Sub
                                         GameWindow.Draw(LightDynamicSprite, New RenderStates(BlendMode.Multiply))
                                     Next
 
-                                    tempTileLights.Add(New LightTileStruct() With {
+                                    TileLights.Add(New LightTileStruct() With {
                                                           .Tiles = tiles,
 .IsFlicker = Map.Tile(x, y).Data2 = 1,
 .Scale = New Vector2f(0.35F, 0.35F)
@@ -2444,7 +2444,7 @@ End Sub
                                 Dim x1 = (ConvertMapX(x * 32) + 16 - CDbl((LightGfxInfo.Width * scale.X)) / 2)
                                 Dim y1 = (ConvertMapY(y * 32) + 16 - CDbl((LightGfxInfo.Height * scale.Y)) / 2)
                                 LightSprite.Position = New Vector2f(CSng(x1), CSng(y1))
-                                tempTileLights.Add(New LightTileStruct() With {
+                                TileLights.Add(New LightTileStruct() With {
                                                       .Tiles = New List(Of Vector2i)() From {
                                                       New Vector2i(x, y)
                                                       },
@@ -2460,7 +2460,7 @@ End Sub
             Next
         Else
 
-            For Each light As LightTileStruct In tempTileLights
+            For Each light As LightTileStruct In TileLights
                 Dim scale = New Vector2f()
 
                 If light.IsFlicker Then

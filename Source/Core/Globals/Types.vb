@@ -29,8 +29,6 @@ Public Module Types
     Public Chars As CharList
     Public Hotbar(MAX_HOTBAR) As HotbarStruct
 
-
-    ' Common data structures
     Public Structure ResourceTypeStruct
         Dim SkillLevel As Integer
         Dim SkillCurExp As Integer

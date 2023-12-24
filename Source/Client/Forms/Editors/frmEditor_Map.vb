@@ -1234,26 +1234,26 @@ Public Class frmEditor_Map
         Dim i As Integer, X As Integer, Y As Integer
 
         If CopyMap = False Then
-            ReDim TmpTile(Map.MaxX, Map.MaxY)
+            ReDim Tile(Map.MaxX, Map.MaxY)
             TmpMaxX = Map.MaxX
             TmpMaxY = Map.MaxY
 
             For X = 0 To Map.MaxX
                 For Y = 0 To Map.MaxY
                     With Map.Tile(X, Y)
-                        ReDim TmpTile(X, Y).Layer(LayerType.Count - 1)
+                        ReDim Tile(X, Y).Layer(LayerType.Count - 1)
 
-                        TmpTile(X, Y).Data1 = .Data1
-                        TmpTile(X, Y).Data2 = .Data2
-                        TmpTile(X, Y).Data3 = .Data3
-                        TmpTile(X, Y).Type = .Type
-                        TmpTile(X, Y).DirBlock = .DirBlock
+                        Tile(X, Y).Data1 = .Data1
+                        Tile(X, Y).Data2 = .Data2
+                        Tile(X, Y).Data3 = .Data3
+                        Tile(X, Y).Type = .Type
+                        Tile(X, Y).DirBlock = .DirBlock
 
                         For i = 1 To LayerType.Count - 1
-                            TmpTile(X, Y).Layer(i).X = .Layer(i).X
-                            TmpTile(X, Y).Layer(i).Y = .Layer(i).Y
-                            TmpTile(X, Y).Layer(i).Tileset = .Layer(i).Tileset
-                            TmpTile(X, Y).Layer(i).AutoTile = .Layer(i).AutoTile
+                            Tile(X, Y).Layer(i).X = .Layer(i).X
+                            Tile(X, Y).Layer(i).Y = .Layer(i).Y
+                            Tile(X, Y).Layer(i).Tileset = .Layer(i).Tileset
+                            Tile(X, Y).Layer(i).AutoTile = .Layer(i).AutoTile
                         Next
                     End With
                 Next
@@ -1273,17 +1273,17 @@ Public Class frmEditor_Map
                         ReDim Preserve Map.Tile(X, Y).Layer(LayerType.Count - 1)
                         ReDim Preserve Autotile(X, Y).Layer(LayerType.Count - 1)
 
-                        .Data1 = TmpTile(X, Y).Data1
-                        .Data2 = TmpTile(X, Y).Data2
-                        .Data3 = TmpTile(X, Y).Data3
-                        .Type = TmpTile(X, Y).Type
-                        .DirBlock = TmpTile(X, Y).DirBlock
+                        .Data1 = Tile(X, Y).Data1
+                        .Data2 = Tile(X, Y).Data2
+                        .Data3 = Tile(X, Y).Data3
+                        .Type = Tile(X, Y).Type
+                        .DirBlock = Tile(X, Y).DirBlock
 
                         For i = 1 To LayerType.Count - 1
-                            .Layer(i).X = TmpTile(X, Y).Layer(i).X
-                            .Layer(i).Y = TmpTile(X, Y).Layer(i).Y
-                            .Layer(i).Tileset = TmpTile(X, Y).Layer(i).Tileset
-                            .Layer(i).AutoTile = TmpTile(X, Y).Layer(i).AutoTile
+                            .Layer(i).X = Tile(X, Y).Layer(i).X
+                            .Layer(i).Y = Tile(X, Y).Layer(i).Y
+                            .Layer(i).Tileset = Tile(X, Y).Layer(i).Tileset
+                            .Layer(i).AutoTile = Tile(X, Y).Layer(i).AutoTile
                             CacheRenderState(X, Y, i)
                         Next
                     End With

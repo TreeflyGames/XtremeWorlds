@@ -126,7 +126,7 @@ Module C_Maps
         Next
 
         ClearMapEvents()
-        tempTileLights = Nothing
+        TileLights = Nothing
 
     End Sub
 

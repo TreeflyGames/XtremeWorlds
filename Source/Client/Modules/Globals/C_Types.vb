@@ -6,9 +6,9 @@ Module C_Types
     Public ActionMsg(Byte.MaxValue) As ActionMsgStruct
     Public Blood(Byte.MaxValue) As BloodStruct
     Public Chat(ChatLines) As ChatStruct
-    Public tempTileLights As List(Of LightTileStruct)
+    Public TileLights As List(Of LightTileStruct)
     Public MapNames(MAX_MAPS) As String
-    Public TmpTile(,) As TileStruct
+    Public Tile(,) As TileStruct
     Public TileHistory() As TileHistoryStruct
     Public Autotile(,) As AutotileStruct
     Public MapEvents() As MapEventStruct
