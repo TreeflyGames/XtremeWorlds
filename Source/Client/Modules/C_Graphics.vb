@@ -461,20 +461,37 @@ Module C_Graphics
     Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
         Const AspectRatio As Single = 16.0F / 9.0F
 
-        ' Calculate new dimensions while maintaining a 16:9 aspect ratio
-        Dim newWidth As Integer = CInt(e.Height * AspectRatio)
-        Dim newHeight As Integer = e.Height
+        ' Calculate the aspect ratio of the new window size
+        Dim windowAspectRatio As Single = e.Width / e.Height
 
-        ' If calculated width is greater than the actual width, adjust the height instead
-        If newWidth > e.Width Then
-            newWidth = e.Width
-            newHeight = CInt(e.Width / AspectRatio)
+        ' Calculate the viewport dimensions to maintain the aspect ratio
+        Dim viewport As New FloatRect()
+
+        If windowAspectRatio > AspectRatio Then
+            ' Window is wider than the desired aspect ratio
+            Dim scale As Single = e.Height / AspectRatio
+            viewport.Top = 0.0F
+            viewport.Height = 1.0F ' Use the full height
+            viewport.Width = AspectRatio / windowAspectRatio
+            viewport.Left = (1.0F - viewport.Width) / 2.0F ' Center horizontally
+        Else
+            ' Window is taller than the desired aspect ratio
+            Dim scale As Single = e.Width * AspectRatio
+            viewport.Left = 0.0F
+            viewport.Width = 1.0F ' Use the full width
+            viewport.Height = windowAspectRatio / AspectRatio
+            viewport.Top = (1.0F - viewport.Height) / 2.0F ' Center vertically
         End If
 
-        ' Resize the game window
-        GameWindow.Size = New Vector2u(CUInt(newWidth), CUInt(newHeight))
-        CenterWindow(GameWindow)
-    End Sub
+        ' Create a new view with the same center and size but a new viewport
+        Dim view As New View(GameWindow.GetView())
+        view.Viewport = viewport
+
+        ' Set the new view to the window
+        GameWindow.SetView(view)
+End Sub
+
+
 
     Public Sub CenterWindow(ByVal window As RenderWindow)
         ' Get the working area of the primary screen (excluding taskbar)
