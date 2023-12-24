@@ -420,23 +420,23 @@ Module C_Graphics
         Const AspectRatio As Single = 16.0F / 9.0F
         Dim windowAspectRatio As Single = windowSize.X / windowSize.Y
 
-        ' Initialize scale and offset
-        Dim scale As Single = 1.0F
+        ' Initialize scale and offset for horizontal letterboxing
+        Dim scale As Single
         Dim offsetX As Single = 0
-        Dim offsetY As Single = 0
 
-        Dim TileWidth = (GameWindow.GetView.Size.X / PicX) - 1
-        Dim TileHeight = (GameWindow.GetView.Size.Y / PicY) - 1
-
-        ' Apply letterboxing only for horizontal (sides)
         If windowAspectRatio > AspectRatio Then
-            scale = windowSize.Y / TileHeight
-            offsetX = (windowSize.X - (TileWidth * scale)) / 2
+            ' Window is wider than the desired aspect ratio, adjust horizontally
+            scale = windowSize.Y / (24 * PicY)
+            offsetX = (windowSize.X - (32 * PicX) * scale) / 2
+        Else
+            ' Window aspect ratio is equal to or less than the desired aspect ratio
+            ' No horizontal adjustment needed
+            scale = 1.0F
         End If
 
         ' Adjust mouse coordinates for scaling and offset
         Dim adjustedX As Single = (e.X - offsetX) / scale
-        Dim adjustedY As Single = e.Y / scale ' No vertical adjustment
+        Dim adjustedY As Single = e.Y / scale
 
         ' Convert adjusted coordinates to game world coordinates
         CurX = TileView.Left + ((adjustedX + Camera.Left) \ PicX)
@@ -447,7 +447,8 @@ Module C_Graphics
         CurMouseY = adjustedY
 
         HandleInterfaceEvents(EntState.MouseMove)
-     End Sub
+End Sub
+
 
     Private Sub GameWindow_TextEntered(sender As Object, e As TextEventArgs)
         ' e.Unicode is a string, so no conversion is needed
