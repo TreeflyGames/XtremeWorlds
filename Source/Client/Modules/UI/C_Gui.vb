@@ -2,7 +2,6 @@
 Imports System.Windows.Forms
 Imports Mirage.Sharp.Asfw
 Imports Core
-Imports Melanchall.DryWetMidi.Interaction
 
 Friend Module C_Gui
 

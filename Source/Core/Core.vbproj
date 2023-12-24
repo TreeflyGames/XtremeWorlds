@@ -17,8 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Melanchall.DryWetMidi" Version="7.0.2" />
-    <PackageReference Include="midi-dot-net2" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLua" Version="1.6.3" />
     <PackageReference Include="Npgsql" Version="8.0.1" />
