@@ -1316,6 +1316,7 @@ Module C_Interface
         CreateWindow_Inventory()
         CreateWindow_Character()
         CreateWindow_Hotbar()
+        CreateWindow_EscMenu()
         CreateWindow_Bars()
         CreateWindow_Dialogue()
     End Sub
@@ -1560,12 +1561,6 @@ Module C_Interface
         End With
     End Sub
 
-    Sub RenCaptcha()
-        Dim n As Long
-        'n = Int(Rnd() * (Count_Captcha - 1)) + 1
-        'GlobalCaptcha = n
-    End Sub
-
     Public Sub btnSendRegister_Click()
         Dim User As String, Pass As String, pass2 As String 'Code As String, Captcha As String
 
@@ -1601,7 +1596,9 @@ Module C_Interface
     ' ##########
     Public Sub btnMenu_Char()
         Dim curWindow As Long
+
         curWindow = GetWindowIndex("winCharacter")
+
         If Windows(curWindow).Window.Visible Then
             HideWindow(curWindow)
         Else
@@ -1611,7 +1608,9 @@ Module C_Interface
 
     Public Sub btnMenu_Inv()
         Dim curWindow As Long
+
         curWindow = GetWindowIndex("winInventory")
+
         If Windows(curWindow).Window.Visible Then
             HideWindow(curWindow)
         Else
@@ -1621,7 +1620,9 @@ Module C_Interface
 
     Public Sub btnMenu_Skills()
         Dim curWindow As Long
+
         curWindow = GetWindowIndex("winSkills")
+
         If Windows(curWindow).Window.Visible Then
             HideWindow(curWindow)
         Else
@@ -1630,15 +1631,39 @@ Module C_Interface
     End Sub
 
     Public Sub btnMenu_Map()
-        'Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+        Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
     End Sub
 
     Public Sub btnMenu_Guild()
-        'Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+        Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
     End Sub
 
     Public Sub btnMenu_Quest()
-        'Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+        Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+    End Sub
+
+    ' ##############
+    ' ## Esc Menu ##
+    ' ##############
+    Public Sub btnEscMenu_Return()
+        HideWindow(GetWindowIndex("winEscMenu"))
+    End Sub
+
+    Public Sub btnEscMenu_Options()
+        HideWindow(GetWindowIndex("winEscMenu"))
+        'ShowWindow(GetWindowIndex("winOptions"), True, True)
+        FrmOptions.Show()
+    End Sub
+
+    Public Sub btnEscMenu_MainMenu()
+        HideWindows
+        ShowWindow(GetWindowIndex("winLogin")) 
+        LogoutGame
+    End Sub
+
+    Public Sub btnEscMenu_Exit()
+        HideWindow(GetWindowIndex("winEscMenu"))
+        DestroyGame
     End Sub
 
     ' ##########
@@ -2240,6 +2265,26 @@ Module C_Interface
         End With
     End Sub
 
+    Public Sub CreateWindow_EscMenu()
+        ' Create window
+        CreateWindow("winEscMenu", "", Georgia, zOrder_Win, 0, 0, 210, 156, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , False, , , False)
+
+        ' Centralize it
+        CentralizeWindow(WindowCount)
+    
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+    
+        ' Parchment
+        CreatePictureBox(WindowCount, "picParchment", 6, 6, 198, 144, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        
+        ' Buttons
+        CreateButton(WindowCount, "btnReturn", 16, 16, 178, 28, "Return to Game (Esc)", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnEscMenu_Return))
+        CreateButton(WindowCount, "btnOptions", 16, 48, 178, 28, "Options", Verdana, , , , , , , DesignType.Orange, DesignType.Orange_Hover, DesignType.Orange_Click, , , New Action(AddressOf btnEscMenu_Options))
+        CreateButton(WindowCount, "btnMainMenu", 16, 80, 178, 28, "Back to Main Menu", Verdana, , , , , , , DesignType.Blue, DesignType.Blue_Hover, DesignType.Blue_Click, , , New Action(AddressOf btnEscMenu_MainMenu))
+        CreateButton(WindowCount, "btnExit", 16, 112, 178, 28, "Exit the Game", Verdana, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnEscMenu_Exit))
+End Sub
+
     Public Sub CreateWindow_Bars()
         ' Create window
         CreateWindow("winBars", "", Georgia, zOrder_Win, 10, 10, 239, 77, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , False, , , False)
@@ -2697,6 +2742,60 @@ Module C_Interface
 
         ' close
         HideWindow(GetWindowIndex("winDescription"))
+    End Sub
+
+    Sub ResizeGUI()
+        Dim Top As Long
+
+        ' move hotbar
+        Windows(GetWindowIndex("winHotbar")).Window.Left = GameWindow.Size.X - 430
+
+        ' move chat
+        Windows(GetWindowIndex("winChat")).Window.Top = GameWindow.Size.Y - 178
+        Windows(GetWindowIndex("winChatSmall")).Window.Top = GameWindow.Size.Y - 162
+
+        ' move menu
+        Windows(GetWindowIndex("winMenu")).Window.Left = GameWindow.Size.X - 236
+        Windows(GetWindowIndex("winMenu")).Window.Top = GameWindow.Size.Y - 37
+
+        ' move invitations
+        Windows(GetWindowIndex("winInvite_Party")).Window.Left = GameWindow.Size.X - 234
+        Windows(GetWindowIndex("winInvite_Party")).Window.Top = GameWindow.Size.Y - 80
+
+        ' loop through
+        Top = GameWindow.Size.Y - 80
+
+        If Windows(GetWindowIndex("winInvite_Party")).Window.visible Then
+            Top = Top - 37
+        End If
+
+        Windows(GetWindowIndex("winInvite_Trade")).Window.Left = GameWindow.Size.X - 234
+        Windows(GetWindowIndex("winInvite_Trade")).Window.Top = Top
+
+        ' re-size right-click background
+        Windows(GetWindowIndex("winRightClickBG")).Window.Width = GameWindow.Size.X
+        Windows(GetWindowIndex("winRightClickBG")).Window.Height = GameWindow.Size.Y
+
+        ' re-size combo background
+        Windows(GetWindowIndex("winComboMenuBG")).Window.Width = GameWindow.Size.X
+        Windows(GetWindowIndex("winComboMenuBG")).Window.Height = GameWindow.Size.Y
+
+        ' centralize windows
+        CentralizeWindow(GetWindowIndex("winLogin"))
+        CentralizeWindow(GetWindowIndex("winCharacters"))
+        CentralizeWindow(GetWindowIndex("winLoading"))
+        CentralizeWindow(GetWindowIndex("winDialogue"))
+        CentralizeWindow(GetWindowIndex("winClasses"))
+        CentralizeWindow(GetWindowIndex("winNewChar"))
+        CentralizeWindow(GetWindowIndex("winEscMenu"))
+        CentralizeWindow(GetWindowIndex("winInventory"))
+        CentralizeWindow(GetWindowIndex("winCharacter"))
+        CentralizeWindow(GetWindowIndex("winSkills"))
+        CentralizeWindow(GetWindowIndex("winOptions"))
+        CentralizeWindow(GetWindowIndex("winShop"))
+        CentralizeWindow(GetWindowIndex("winNpcChat"))
+        CentralizeWindow(GetWindowIndex("winTrade"))
+        CentralizeWindow(GetWindowIndex("winGuild"))
     End Sub
 End Module
 

@@ -5,7 +5,6 @@ Friend Module C_NetworkConfig
     Friend WithEvents Socket As NetworkClient
 
     Friend Sub InitNetwork()
-        If Not Socket Is Nothing Then Return
         Socket = New NetworkClient(ServerPackets.COUNT, 8192)
         Connect()
         PacketRouter()
@@ -32,9 +31,7 @@ Friend Module C_NetworkConfig
     End Sub
 
     Private Sub Socket_ConnectionLost() Handles Socket.ConnectionLost
-        MsgBox("Connection was terminated!")
         DestroyNetwork()
-        DestroyGame()
     End Sub
 
     Private Sub Socket_CrashReport(err As String) Handles Socket.CrashReport

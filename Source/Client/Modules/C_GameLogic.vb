@@ -489,7 +489,7 @@ Module C_GameLogic
                 BroadcastMsg(chatText) '("Привет, русский чат")
             End If
 
-            chatText = ""
+            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = vbNullString
             Exit Sub
         End If
 
@@ -501,7 +501,7 @@ Module C_GameLogic
                 SendPartyChatMsg(chatText)
             End If
 
-            chatText = ""
+            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = vbNullString
             Exit Sub
         End If
 
@@ -1763,6 +1763,29 @@ Continue1:
         ReDim Preserve descText(count + 1)
         descText(count + 1).Text = text
         descText(count + 1).Color = color
+    End Sub
+
+    Public Sub LogoutGame()
+        Dim I As Long
+
+        MenuMusic
+
+        isLogging = True
+        InGame = False
+        InMenu = True
+
+        Socket.Disconnect
+        InitNetwork()
+
+        ' destroy the animations loaded
+        For I = 1 To Byte.MaxValue
+            ClearAnimInstance (I)
+        Next
+
+        ' clear chat
+        For I = 1 To ChatLines
+            Chat(I).text = vbNullString
+        Next
     End Sub
 
 End Module

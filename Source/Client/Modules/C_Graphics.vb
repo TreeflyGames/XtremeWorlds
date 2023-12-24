@@ -215,19 +215,30 @@ Module C_Graphics
         If Inputs.Attack(e.Code) Then VbKeyControl = True
         If Inputs.Run(e.Code) Then VbKeyShift = True
 
-        If e.Code = Keyboard.Key.Enter Then
-            If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
-                ShowChat()
-                inSmallChat = False
-                Exit Sub
-            End If
+        Select Case e.Code
+            Case Keyboard.Key.Escape
+                if InMenu Then Exit Sub
 
-            HandlePressEnter()
-        End If
+                If Windows(GetWindowIndex("winEscMenu")).Window.visible Then
+                    ' hide it
+                    HideWindow(GetWindowIndex("winEscMenu"))
+                Else
+                    ' show them
+                    ShowWindow(GetWindowIndex("winEscMenu"), True)
+                End If
 
-        If e.Code = Keyboard.Key.Space Then
-            CheckMapGetItem
-        End If
+            Case Keyboard.Key.Enter
+                If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
+                    ShowChat()
+                    inSmallChat = False
+                    Exit Sub
+                End If
+
+                HandlePressEnter()
+            
+            Case Keyboard.Key.Space
+                CheckMapGetItem()
+        End Select
 
         ' Check for active window
         If activeWindow > 0 Then

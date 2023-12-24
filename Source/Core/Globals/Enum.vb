@@ -221,7 +221,8 @@
     End Enum
 
     Public Enum RarityType
-        Broken = 1
+        None = 0
+        Broken
         Common
         Uncommon
         Rare
@@ -238,27 +239,17 @@
         Fog
     End Enum
 
-    Public Enum QuestType
-        Slay = 1
-        Collect
-        Talk
-        Reach
-        Give
-        Kill
-        Gather
-        Fetch
-        TalkEvent
-    End Enum
-
     Public Enum QuestStatusType
-        NotStarted = 1
+        None = 0
+        NotStarted
         Started
         Completed
         Repeatable
     End Enum
 
     Public Enum MoveRouteOpts
-        MoveUp = 1
+        None = 0
+        MoveUp
         MoveDown
         MoveLeft
         MoveRight
@@ -305,8 +296,10 @@
 
     ' Event Types
     Public Enum EventType
+        None = 0
+
         ' Message
-        AddText = 1
+        AddText
 
         ShowText
         ShowChoices
