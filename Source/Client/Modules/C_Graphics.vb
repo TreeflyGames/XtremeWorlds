@@ -423,11 +423,13 @@ Module C_Graphics
         ' Initialize scale and offset for horizontal letterboxing
         Dim scale As Single
         Dim offsetX As Single = 0
+        Dim offsetY As Single = 0
 
         If windowAspectRatio > AspectRatio Then
             ' Window is wider than the desired aspect ratio, adjust horizontally
-            scale = windowSize.Y / (24 * PicY)
-            offsetX = (windowSize.X - (32 * PicX) * scale) / 2
+            scale = windowSize.Y / (Types.Settings.CameraHeight * PicY) 
+            offsetX = (windowSize.X - (Types.Settings.CameraWidth * PicX) * scale) / 2 + (PicX * 2)
+            offsetY = (PicY * 2)
         Else
             ' Window aspect ratio is equal to or less than the desired aspect ratio
             ' No horizontal adjustment needed
@@ -436,7 +438,7 @@ Module C_Graphics
 
         ' Adjust mouse coordinates for scaling and offset
         Dim adjustedX As Single = (e.X - offsetX) / scale
-        Dim adjustedY As Single = e.Y / scale
+        Dim adjustedY As Single = (e.Y - offsetY) / scale
 
         ' Convert adjusted coordinates to game world coordinates
         CurX = TileView.Left + ((adjustedX + Camera.Left) \ PicX)
