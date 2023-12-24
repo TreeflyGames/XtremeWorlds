@@ -23,6 +23,52 @@ Public Module C_Constants
     Public Const ChatLines As Long = 200
     Public Const ChatWidth As Long = 316
 
+    ' Bank constants
+    Public Const BankTop As Long = 28
+    Public Const BankLeft As Long = 9
+    Public Const BankOffsetY As Long = 6
+    Public Const BankOffsetX As Long = 6
+    Public Const BankColumns As Long = 10
+
+    ' Inventory constants
+    Public Const InvTop As Long = 28
+    Public Const InvLeft As Long = 9
+    Public Const InvOffsetY As Long = 6
+    Public Const InvOffsetX As Long = 6
+    Public Const InvColumns As Long = 5
+
+    ' Character consts
+    Public Const EqTop As Long = 315
+    Public Const EqLeft As Long = 11
+    Public Const EqOffsetX As Long = 8
+    Public Const EqColumns As Long = 4
+
+    ' Inventory constants
+    Public Const SkillTop As Long = 28
+    Public Const SkillLeft As Long = 9
+    Public Const SkillOffsetY As Long = 6
+    Public Const SkillOffsetX As Long = 6
+    Public Const SkillColumns As Long = 5
+
+    ' Hotbar constants
+    Public Const HotbarTop As Long = 0
+    Public Const HotbarLeft As Long = 8
+    Public Const HotbarOffsetX As Long = 41
+
+    ' Shop constants
+    Public Const ShopTop As Long = 28
+    Public Const ShopLeft As Long = 9
+    Public Const ShopOffsetY As Long = 6
+    Public Const ShopOffsetX As Long = 6
+    Public Const ShopColumns As Long = 7
+
+    ' Trade
+    Public Const TradeTop As Long = 0
+    Public Const TradeLeft As Long = 0
+    Public Const TradeOffsetY As Long = 6
+    Public Const TradeOffsetX As Long = 6
+    Public Const TradeColumns As Long = 5
+
     ' Gfx Path and variables
     Public Const GfxExt As String = ".png"
 

@@ -565,95 +565,6 @@ Module C_Pets
         RenderText(name, GameWindow, textX, textY, color, backcolor)
     End Sub
 
-    Sub DrawPetBar()
-        Dim skillnum As Integer, skillpic As Integer
-        Dim rec As Rectangle, recPos As Rectangle
-
-        If Not HasPet(Myindex) Then Exit Sub
-
-        If Not PetAlive(Myindex) Then
-            RenderTexture(PetBarSprite, GameWindow, PetbarX, PetbarY, 0, 0, 32, PetbarGfxInfo.Height)
-        Else
-            RenderTexture(PetBarSprite, GameWindow, PetbarX, PetbarY, 0, 0, PetbarGfxInfo.Width, PetbarGfxInfo.Height)
-
-            For i = 1 To 4
-                skillnum = Player(Myindex).Pet.Skill(i)
-
-                If skillnum > 0 Then
-                    skillpic = Skill(skillnum).Icon
-
-                    If SkillIconGfxInfo(skillpic).IsLoaded = False Then
-                        LoadTexture(skillpic, 9)
-                    End If
-
-                    'seeying we still use it, lets update timer
-                    With SkillIconGfxInfo(skillpic)
-                        .TextureTimer = GetTickCount() + 100000
-                    End With
-
-                    With rec
-                        .Y = 0
-                        .Height = 32
-                        .X = 0
-                        .Width = 32
-                    End With
-
-                    If Not PetSkillCd(i) = 0 Then
-                        rec.X = 32
-                        rec.Width = 32
-                    End If
-
-                    With recPos
-                        .Y = PetbarY + PetbarTop
-                        .Height = PicY
-                        .X = PetbarX + PetbarLeft + ((PetbarOffsetX - 2) + 32) * (((i - 1) + 3))
-                        .Width = PicX
-                    End With
-
-                    RenderTexture(SkillIconSprite(skillpic), GameWindow, recPos.X, recPos.Y, rec.X, rec.Y, rec.Width, rec.Height)
-                End If
-            Next
-        End If
-
-    End Sub
-
-    Sub DrawPetStats()
-        Dim sprite As Integer, rec As Rectangle
-
-        If Not HasPet(Myindex) Then Exit Sub
-
-        If Not ShowPetStats Then Exit Sub
-
-        'draw panel
-        RenderTexture(PetStatSprite, GameWindow, PetStatX, PetStatY, 0, 0, PetStatGfxInfo.Width, PetStatGfxInfo.Height)
-
-        'lets get player sprite to render
-        sprite = Pet(Player(Myindex).Pet.Num).Sprite
-
-        With rec
-            .Y = 0
-            .Height = CharacterGfxInfo(sprite).Height / 4
-            .X = 0
-            .Width = CharacterGfxInfo(sprite).Width / 4
-        End With
-
-        Dim petname As String = Trim$(Pet(Player(Myindex).Pet.Num).Name)
-
-        RenderText(petname & " Lvl: " & Player(Myindex).Pet.Level, GameWindow, PetStatX + 70, PetStatY + 10, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-        RenderTexture(CharacterSprite(sprite), GameWindow, PetStatX + 10, PetStatY + 10 + (PetStatGfxInfo.Height / 4) - (rec.Height / 2), rec.X, rec.Y, rec.Width, rec.Height)
-
-        'stats
-        RenderText("Strength: " & Player(Myindex).Pet.Stat(StatType.Strength), GameWindow, PetStatX + 65, PetStatY + 50, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-        RenderText("Endurance: " & Player(Myindex).Pet.Stat(StatType.Endurance), GameWindow, PetStatX + 65, PetStatY + 65, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-        RenderText("Vitality: " & Player(Myindex).Pet.Stat(StatType.Vitality), GameWindow, PetStatX + 65, PetStatY + 80, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-
-        RenderText("Luck: " & Player(Myindex).Pet.Stat(StatType.Luck), GameWindow, PetStatX + 165, PetStatY + 50, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-        RenderText("Intelligence: " & Player(Myindex).Pet.Stat(StatType.Intelligence), GameWindow, PetStatX + 165, PetStatY + 65, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-        RenderText("Spirit: " & Player(Myindex).Pet.Stat(StatType.Spirit), GameWindow, PetStatX + 165, PetStatY + 80, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-
-        RenderText("Experience: " & Player(Myindex).Pet.Exp & "/" & Player(Myindex).Pet.Tnl, GameWindow, PetStatX + 65, PetStatY + 95, SFML.Graphics.Color.Yellow, SFML.Graphics.Color.Black)
-    End Sub
-
 #End Region
 
 #Region "Misc"
@@ -664,39 +575,6 @@ Module C_Pets
         If Player(index).Pet.Alive = 1 Then
             PetAlive = True
         End If
-
-    End Function
-
-    Friend Function HasPet(index As Integer) As Boolean
-        HasPet = False
-
-        If Player(index).Pet.Num > 0 Then
-            HasPet = True
-        End If
-    End Function
-
-    Friend Function IsPetBarSlot(x As Single, y As Single) As Integer
-        Dim tempRec As RectStruct
-        Dim i As Integer
-
-        IsPetBarSlot = 0
-
-       For i = 0 To MaxPetbar
-
-            With tempRec
-                .Top = PetbarY + PetbarTop
-                .Bottom = .Top + PicY
-                .Left = PetbarX + PetbarLeft + ((PetbarOffsetX + 32) * (((i - 1) Mod MaxPetbar)))
-                .Right = .Left + PicX
-            End With
-
-            If x >= tempRec.Left AndAlso x <= tempRec.Right Then
-                If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
-                    IsPetBarSlot = i
-                    Exit Function
-                End If
-            End If
-        Next
 
     End Function
 

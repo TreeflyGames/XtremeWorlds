@@ -2018,7 +2018,7 @@ Module C_Interface
         Dim invNum As Long, winIndex As Long, I As Long
 
         ' is there an item?
-        invNum = IsInvItem(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
+        invNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
         If invNum Then
             ' exit out if we're offering that item
@@ -2078,7 +2078,7 @@ Module C_Interface
 
         If InTrade > 0 Then Exit Sub
 
-        itemNum = IsInvItem(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
+        itemNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
         If itemNum Then
             SendUseItem(itemNum)
@@ -2094,7 +2094,7 @@ Module C_Interface
         ' exit out early if dragging
         If DragBox.Type <> PartType.None Then Exit Sub
 
-        itemNum = IsInvItem(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
+        itemNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
         If itemNum Then
             ' exit out if we're offering that item

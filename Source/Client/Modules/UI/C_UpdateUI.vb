@@ -42,50 +42,6 @@ Module C_UpdateUI
     Friend ItemDescRarityColor As SFML.Graphics.Color
     Friend ItemDescRarityBackColor As SFML.Graphics.Color
 
-    'Character window Coordinates
-    Friend CharWindowX As Integer = 943
-    Friend CharWindowY As Integer = 475
-    Friend Const EqTop As Byte = 85
-    Friend Const EqLeft As Byte = 8
-    Friend Const EqOffsetX As Byte = 125
-    Friend Const EqOffsetY As Byte = 5
-    Friend Const EqColumns As Byte = 2
-
-    'Hotbar Coordinates
-    Friend HotbarX As Integer = 489
-
-    Friend HotbarY As Integer = 825
-
-    'pet bar
-    Friend PetbarX As Integer = 489
-
-    Friend PetbarY As Integer = 800
-    Friend PetStatX As Integer = 943
-    Friend PetStatY As Integer = 575
-
-    'Inventory window Coordinates
-    Friend InvWindowX As Integer = 943
-
-    Friend InvWindowY As Integer = 475
-    Friend Const InvTop As Byte = 9
-    Friend Const InvLeft As Byte = 10
-    Friend Const InvOffsetY As Byte = 5
-    Friend Const InvOffsetX As Byte = 6
-    Friend Const InvColumns As Byte = 5
-
-    'Skill window Coordinates
-    Friend SkillWindowX As Integer = 943
-
-    Friend SkillWindowY As Integer = 475
-
-    ' skills constants
-    Friend Const SkillTop As Byte = 9
-
-    Friend Const SkillLeft As Byte = 10
-    Friend Const SkillOffsetY As Byte = 5
-    Friend Const SkillOffsetX As Byte = 6
-    Friend Const SkillColumns As Byte = 5
-
     Friend ShowSkillDesc As Boolean
     Friend SkillDescSize As Byte
     Friend SkillDescSkillNum As Integer
@@ -103,55 +59,6 @@ Module C_UpdateUI
     Friend SkillDescReqClass As String
     Friend SkillDescReqAccess As String
 
-    'dialog panel
-    Friend DialogPanelVisible As Boolean
-
-    Friend DialogPanelX As Integer = 250
-    Friend DialogPanelY As Integer = 400
-    Friend OkButtonX As Integer = 50
-    Friend OkButtonY As Integer = 130
-    Friend CancelButtonX As Integer = 200
-    Friend CancelButtonY As Integer = 130
-
-    'bank window Coordinates
-    Friend BankWindowX As Integer = 319
-    Friend BankWindowY As Integer = 105
-
-    ' Bank constants
-    Friend Const BankTop As Byte = 30
-    Friend Const BankLeft As Byte = 16
-    Friend Const BankOffsetY As Byte = 5
-    Friend Const BankOffsetX As Byte = 6
-    Friend Const BankColumns As Byte = 9
-
-    ' shop coordinates
-    Friend ShopWindowX As Integer = 250
-    Friend ShopWindowY As Integer = 125
-
-    ' shop constants
-    Friend Const ShopTop As Byte = 46
-
-    Friend Const ShopLeft As Integer = 271
-    Friend Const ShopOffsetY As Byte = 5
-    Friend Const ShopOffsetX As Byte = 5
-    Friend Const ShopColumns As Byte = 6
-
-    'trade constants
-    Friend Const TradeWindowX As Integer = 200
-
-    Friend Const TradeWindowY As Byte = 100
-    Friend Const OurTradeX As Integer = 2
-    Friend Const OurTradeY As Byte = 17
-    Friend Const TheirTradeX As Integer = 201
-    Friend Const TheirTradeY As Byte = 17
-
-    'event chat constants
-    Friend Const EventChatX As Integer = 250
-
-    Friend Const EventChatY As Byte = 210
-    Friend EventChatTextX As Integer = 113
-    Friend EventChatTextY As Integer = 14
-
     'right click menu
     Friend RClickname As String
 
@@ -160,16 +67,8 @@ Module C_UpdateUI
 
     Friend DrawChar As Boolean
 
-    Friend CraftPanelX As Integer = 25
-    Friend CraftPanelY As Integer = 25
-
     Friend SelHotbarSlot As Integer
     Friend SelSkillSlot As Boolean
-
-    ' Hotbar constants
-    Public Const HotbarTop As Long = 0
-    Public Const HotbarLeft As Long = 8
-    Public Const HotbarOffsetX As Long = 41
 
 #End Region
 

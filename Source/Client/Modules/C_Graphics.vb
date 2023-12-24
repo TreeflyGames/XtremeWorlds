@@ -2184,22 +2184,6 @@ Module C_Graphics
         RenderTexture(TargetSprite, GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
-    Friend Sub DrawDialogPanel()
-        'first render panel
-        RenderTexture(EventChatSprite, GameWindow, DialogPanelX, DialogPanelY, 0, 0, EventChatGfxInfo.Width,
-                     EventChatGfxInfo.Height)
-
-        RenderText(Trim(DialogMsg1), GameWindow, DialogPanelX + 175, DialogPanelY + 10, Color.White, Color.White)
-
-        If Len(DialogMsg2) > 0 Then
-            RenderText(Trim(DialogMsg2), GameWindow, DialogPanelX + 60, DialogPanelY + 30, Color.White, Color.White)
-        End If
-
-        If Len(DialogMsg3) > 0 Then
-            RenderText(Trim(DialogMsg3), GameWindow, DialogPanelX + 60, DialogPanelY + 50, Color.White, Color.White)
-        End If
-    End Sub
-
     Friend Sub DrawRClick()
         'first render panel
         RenderTexture(RClickSprite, GameWindow, RClickX, RClickY, 0, 0, RClickGfxInfo.Width, RClickGfxInfo.Height)

@@ -2,212 +2,145 @@
 Imports System.Windows.Forms
 Imports Mirage.Sharp.Asfw
 Imports Core
+Imports Melanchall.DryWetMidi.Interaction
 
 Friend Module C_Gui
 
 #Region "Support Functions"
 
-    Function IsEqItem(x As Single, y As Single) As Integer
+   Public Function IsEqItem(StartX As Long, StartY As Long) As Long
         Dim tempRec As RectStruct
-        Dim i As Integer
-        IsEqItem = 0
+        Dim i As Long
 
         For i = 1 To EquipmentType.Count - 1
-
-            If GetPlayerEquipment(Myindex, i) > 0 AndAlso GetPlayerEquipment(Myindex, i) <= MAX_ITEMS Then
-
+            If GetPlayerEquipment(MyIndex, i) Then
                 With tempRec
-                    .Top = CharWindowY + EqTop + ((EqOffsetY + 32) * ((i - 1) \ EqColumns))
-                    .Bottom = .Top + PicY
-                    .Left = CharWindowX + EqLeft + ((EqOffsetX + 32) * (((i - 1) Mod EqColumns)))
-                    .Right = .Left + PicX
+                .Top = StartY + EqTop + (32 * ((i - 1) \ EqColumns))
+                .bottom = .Top + PicY
+                .Left = StartX + EqLeft + ((EqOffsetX + 32) * (((i - 1) Mod EqColumns)))
+                .Right = .Left + PicX
                 End With
 
-                If x >= tempRec.Left AndAlso x <= tempRec.Right Then
-                    If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
-                        IsEqItem = i
-                        Exit Function
+                If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
+                    If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.bottom Then
+                    IsEqItem = i
+                    Exit Function
                     End If
                 End If
             End If
-
         Next
-
     End Function
-
-    Function IsInvItem(x As Single, y As Single) As Integer
+    Public Function IsInv(StartX As Long, StartY As Long) As Long
         Dim tempRec As RectStruct
-        Dim i As Integer
+        Dim i As Long
 
         For i = 1 To MAX_INV
-
-            If GetPlayerInvItemNum(Myindex, i) > 0 AndAlso GetPlayerInvItemNum(Myindex, i) <= MAX_ITEMS Then
-
+            If GetPlayerInvItemNum(MyIndex, i) Then
                 With tempRec
-                    .Top = InvWindowY + InvTop + ((InvOffsetY + 32) * ((i - 1) \ InvColumns))
-                    .Bottom = .Top + PicY
-                    .Left = InvWindowX + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
+                    .Top = StartY + InvTop + ((InvOffsetY + 32) * ((i - 1) \ InvColumns))
+                    .bottom = .Top + PicY
+                    .Left = StartX + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
                     .Right = .Left + PicX
                 End With
 
-                If x >= tempRec.Left AndAlso x <= tempRec.Right Then
-                    If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
-                        IsInvItem = i
+                If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
+                    If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.bottom Then
+                        IsInv = i
                         Exit Function
                     End If
                 End If
             End If
-
         Next
-
     End Function
 
-    Function IsPlayerSkill(x As Single, y As Single) As Integer
+    Public Function IsSkill(StartX As Long, StartY As Long) As Long
         Dim tempRec As RectStruct
-        Dim i As Integer
+        Dim i As Long
 
         For i = 1 To MAX_PLAYER_SKILLS
-
-            If Player(Myindex).Skill(i).Num > 0 AndAlso Player(Myindex).Skill(i).Num <= MAX_PLAYER_SKILLS Then
-
+            If Player(Myindex).Skill(i).Num Then
                 With tempRec
-                    .Top = SkillWindowY + SkillTop + ((SkillOffsetY + 32) * ((i - 1) \ SkillColumns))
-                    .Bottom = .Top + PicY
-                    .Left = SkillWindowX + SkillLeft + ((SkillOffsetX + 32) * (((i - 1) Mod SkillColumns)))
+                    .Top = StartY + SkillTop + ((SkillOffsetY + 32) * ((i - 1) \ SkillColumns))
+                    .bottom = .Top + PicY
+                    .Left = StartX + SkillLeft + ((SkillOffsetX + 32) * (((i - 1) Mod SkillColumns)))
                     .Right = .Left + PicX
                 End With
 
-                If x >= tempRec.Left AndAlso x <= tempRec.Right Then
-                    If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
-                        IsPlayerSkill = i
+                If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
+                    If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.bottom Then
+                        IsSkill = i
                         Exit Function
                     End If
                 End If
             End If
-
         Next
-
     End Function
 
-    Function IsBankItem(x As Single, y As Single) As Integer
+    Public Function IsBankItem(StartX As Long, StartY As Long) As Long
         Dim tempRec As RectStruct
-        Dim i As Integer
+        Dim i As Long
 
         For i = 1 To MAX_BANK
-            If GetBankItemNum(i) > 0 AndAlso GetBankItemNum(i) <= MAX_ITEMS Then
-
+            If Bank.Item(i).num > 0 Then
                 With tempRec
-                    .Top = BankWindowY + BankTop + ((BankOffsetY + 32) * ((i - 1) \ BankColumns))
-                    .Bottom = .Top + PicY
-                    .Left = BankWindowX + BankLeft + ((BankOffsetX + 32) * (((i - 1) Mod BankColumns)))
+                    .Top = StartY + BankTop + ((BankOffsetY + 32) * ((i - 1) \ BankColumns))
+                    .bottom = .Top + PicY
+                    .Left = StartX + BankLeft + ((BankOffsetX + 32) * (((i - 1) Mod BankColumns)))
                     .Right = .Left + PicX
                 End With
 
-                If x >= tempRec.Left AndAlso x <= tempRec.Right Then
-                    If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
-
+                If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
+                    If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.bottom Then
                         IsBankItem = i
                         Exit Function
                     End If
                 End If
             End If
+        
         Next
+
     End Function
 
-    Function IsShopItem(x As Single, y As Single) As Integer
-        Dim tempRec As Rectangle
-        Dim i As Integer
-
-        If InShop <= 0 Or InShop > MAX_SHOPS Then Exit Function
+  Public Function IsShop(StartX As Long, StartY As Long) As Long
+        Dim tempRec As RectStruct
+        Dim i As Long
 
         For i = 1 To MAX_TRADES
-
-            If Shop(InShop).TradeItem(i).Item > 0 AndAlso Shop(InShop).TradeItem(i).Item <= MAX_ITEMS Then
-                With tempRec
-                    .Y = ShopWindowY + ShopTop + ((ShopOffsetY + 32) * ((i - 1) \ ShopColumns))
-                    .Height = PicY
-                    .X = ShopWindowX + ShopLeft + ((ShopOffsetX + 32) * (((i - 1) Mod ShopColumns)))
-                    .Width = PicX
-                End With
-
-                If x >= tempRec.Left AndAlso x <= tempRec.Right Then
-                    If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
-                        IsShopItem = i
-                        Exit Function
-                    End If
-                End If
-            End If
-        Next
-    End Function
-
-    Function IsTradeItem(x As Single, y As Single, yours As Boolean) As Integer
-        Dim tempRec As RectStruct
-        Dim i As Integer
-        Dim itemnum As Integer
-
-        For i = 1 To MAX_INV
-
-            If yours Then
-                itemnum = GetPlayerInvItemNum(Myindex, TradeYourOffer(i).Num)
-
-                With tempRec
-                    .Top = TradeWindowY + OurTradeY + InvTop + ((InvOffsetY + 32) * ((i - 1) \ InvColumns))
-                    .Bottom = .Top + PicY
-                    .Left = TradeWindowX + OurTradeX + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
-                    .Right = .Left + PicX
-                End With
-            Else
-                itemnum = TradeTheirOffer(i).Num
-
-                With tempRec
-                    .Top = TradeWindowY + TheirTradeY + InvTop + ((InvOffsetY + 32) * ((i - 1) \ InvColumns))
-                    .Bottom = .Top + PicY
-                    .Left = TradeWindowX + TheirTradeX + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
-                    .Right = .Left + PicX
-                End With
-            End If
-
-            If itemnum > 0 AndAlso itemnum <= MAX_ITEMS Then
-
-                If x >= tempRec.Left AndAlso x <= tempRec.Right Then
-                    If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
-                        IsTradeItem = i
-                        Exit Function
-                    End If
-                End If
-
-            End If
-
-        Next
-
-    End Function
-
-    Function IsDescWindowActive(x As Integer, y As Integer) As Boolean
-        If IsInvItem(x, y) > 0 Or IsShopItem(x, y) > 0 Or IsBankItem(x, y) Or IsPlayerSkill(x, y) > 0 Or IsEqItem(x, y) > 0 Or IsTradeItem(x, y, False) > 0 Or IsTradeItem(x, y, True) > 0 Then
-            Return True
-        End If
-    End Function
-
-    Friend Function IsHotBarSlot(x As Single, y As Single) As Integer
-        Dim tempRec As RectStruct
-        Dim i As Integer
-
-        For i = 1 To MAX_HOTBAR
             With tempRec
-                .Top = HotbarY + HotbarTop
-                .Bottom = .Top + PicY
-                .Left = HotbarX + HotbarLeft + ((HotbarOffsetX + 32) * (((i - 1) Mod MAX_HOTBAR)))
+                .Top = StartY + ShopTop + ((ShopOffsetY + 32) * ((i - 1) \ ShopColumns))
+                .bottom = .Top + PicY
+                .Left = StartX + ShopLeft + ((ShopOffsetX + 32) * (((i - 1) Mod ShopColumns)))
                 .Right = .Left + PicX
             End With
 
-            If x >= tempRec.Left AndAlso x <= tempRec.Right Then
-                If y >= tempRec.Top AndAlso y <= tempRec.Bottom Then
-                    IsHotBarSlot = i
+            If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
+                If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.bottom Then
+                    IsShop = i
                     Exit Function
                 End If
             End If
         Next
+    End Function
 
+    Public Function IsTrade(StartX As Long, StartY As Long) As Long
+        Dim tempRec As RectStruct
+        Dim i As Long
+
+        For i = 1 To MAX_INV
+            With tempRec
+                .Top = StartY + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
+                .bottom = .Top + PicY
+                .Left = StartX + TradeLeft + ((TradeOffsetX + 32) * (((i - 1) Mod TradeColumns)))
+                .Right = .Left + PicX
+            End With
+
+            If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
+                If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.bottom Then
+                    IsTrade = i
+                    Exit Function
+                End If
+            End If
+        Next
     End Function
 
 #End Region
