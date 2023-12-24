@@ -872,7 +872,7 @@ Module C_Interface
        Optional text As String = "", Optional font As String = "Georgia.ttf", Optional icon As Long = 0, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
        Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing,
-       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False)
+       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False, Optional locked As Boolean = True)
 
         Dim design(EntState.Count - 1) As Long
         Dim image(EntState.Count - 1) As Long
@@ -892,7 +892,7 @@ Module C_Interface
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the button 
-        CreateEntity(winNum, zOrder_Con, name, Color.White, EntityType.Button, design, image, callback, left, top, width, height, visible, , , , , text, , font, , alpha, xOffset, yOffset, , censor, icon, , , tooltip)
+        CreateEntity(winNum, zOrder_Con, name, Color.White, EntityType.Button, design, image, callback, left, top, width, height, visible, , , , , text, , font, , alpha, xOffset, yOffset, , censor, icon, , , tooltip, , locked)
     End Sub
 
     Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String, color As Color,

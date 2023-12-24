@@ -375,14 +375,16 @@
     End Enum
 
     Public Enum CommonEventType
-        Switch = 1
+        None = 0
+        Switch
         Variable
         Key
         CustomScript
     End Enum
 
     Public Enum EditorType
-        Item = 1
+        None = 0
+        Item
         Map
         NPC
         Skill
@@ -396,26 +398,29 @@
     End Enum
 
     Public Enum QuadrantType
-        NE = 1
+        None = 0
+        NE
         SE
         SW
         NW
     End Enum
 
     Public Enum WrapModeType
+        None = 0
         Characters
         Font
     End Enum
 
     Public Enum WrapType
-        None
+        None = 0
         BreakWord
         Whitespace
         Smart
     End Enum
 
     Public Enum EntityType
-        Label = 1
+        None = 0
+        Label
         Window
         Button
         TextBox
@@ -427,6 +432,8 @@
     End Enum
 
     Public Enum DesignType
+        None = 0
+
         ' Boxes
         Wood = 1
         Wood_Small
@@ -546,6 +553,7 @@
         MultiAccount
         Login
         Crash
+        Disconnect
     End Enum
 
     Public Enum DialogueType
@@ -566,13 +574,15 @@
     End Enum
 
     Public Enum DialogueStyle
-        Okay = 1
+        None = 0
+        Okay
         YesNo
         Input
     End Enum
 
     Public Enum ChatChannel
-        Game = 1
+        None = 0
+        Game
         Map
         Broadcast
         Party

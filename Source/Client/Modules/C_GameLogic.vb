@@ -1300,6 +1300,9 @@ Continue1:
                 header = "Error"
                 body = "There was a network error."
                 body2 = "Check logs folder for details."
+
+                HideWindows
+                ShowWindow(GetWindowIndex("winLogin")) 
         End Select
 
         ' set the dialogue up!

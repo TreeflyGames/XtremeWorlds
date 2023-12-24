@@ -32,10 +32,11 @@ Friend Module C_NetworkConfig
     End Sub
 
     Private Sub Socket_ConnectionLost() Handles Socket.ConnectionLost
-        LogoutGame()
+
     End Sub
 
     Private Sub Socket_CrashReport(err As String) Handles Socket.CrashReport
+        LogoutGame()
         DialogueAlert(DialogueMsg.Crash)
 
         Dim currentDateTime As DateTime = DateTime.Now

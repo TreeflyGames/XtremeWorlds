@@ -238,7 +238,31 @@ Module C_Graphics
             
             Case Keyboard.Key.Space
                 CheckMapGetItem()
+        
+            Case Keyboard.Key.I
+                ' hide/show inventory
+                If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Inv
+            
+            Case Keyboard.Key.C
+                ' hide/show char
+                If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Char
+           
+            Case Keyboard.Key.S
+                ' hide/show skills
+                If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Skills
         End Select
+    
+        ' handles hotbar
+        If inSmallChat Then
+            For i = 1 To 9
+                If e.Code = 48 + i Then
+                    'SendHotbarUse(i)
+                End If
+                'If e.Code = 48 Then SendHotbarUse(10)
+            Next
+        End If
+
+        If Windows(GetWindowIndex("winEscMenu")).Window.visible Then Exit Sub
 
         ' Check for active window
         If activeWindow > 0 Then

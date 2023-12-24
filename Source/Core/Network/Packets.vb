@@ -2,7 +2,8 @@
 
     ' Packets sent by client to server
     Public Enum ClientPackets
-        CLogin = 1
+        None = 0
+        CLogin
         CRegister
         CAddChar
         CUseChar
@@ -172,7 +173,8 @@
 
     ' Packets sent by server to client
     Public Enum ServerPackets
-        SAlertMsg = 1
+        None = 0
+        SAlertMsg
         SKeyPair
         SLoginOK
         SPlayerChars

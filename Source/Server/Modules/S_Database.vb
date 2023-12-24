@@ -1501,11 +1501,13 @@ Module S_Database
         buffer.WriteInt32(NPC(NpcNum).Animation)
         buffer.WriteString(NPC(NpcNum).AttackSay)
         buffer.WriteByte(NPC(NpcNum).Behaviour)
+
         For i = 1 To MAX_DROP_ITEMS
             buffer.WriteInt32(NPC(NpcNum).DropChance(i))
             buffer.WriteInt32(NPC(NpcNum).DropItem(i))
             buffer.WriteInt32(NPC(NpcNum).DropItemValue(i))
         Next
+
         buffer.WriteInt32(NPC(NpcNum).Exp)
         buffer.WriteByte(NPC(NpcNum).Faction)
         buffer.WriteInt32(NPC(NpcNum).HP)
@@ -1514,12 +1516,15 @@ Module S_Database
         buffer.WriteByte(NPC(NpcNum).SpawnTime)
         buffer.WriteInt32(NPC(NpcNum).SpawnSecs)
         buffer.WriteInt32(NPC(NpcNum).Sprite)
+
         For i = 1 To StatType.Count - 1
             buffer.WriteByte(NPC(NpcNum).Stat(i))
         Next
+
         For i = 1 To MAX_NPC_SKILLS
             buffer.WriteByte(NPC(NpcNum).Skill(i))
         Next
+
         buffer.WriteInt32(NPC(NpcNum).Level)
         buffer.WriteInt32(NPC(NpcNum).Damage)
         Return buffer.ToArray
@@ -1527,6 +1532,7 @@ Module S_Database
 
     Function ShopsData() As Byte()
         Dim buffer As New ByteStream(4)
+
         For i = 1 To MAX_SHOPS
             If Not Len(Trim$(Shop(i).Name)) > 0 Then Continue For
             buffer.WriteBlock(ShopData(i))
@@ -1541,6 +1547,7 @@ Module S_Database
         buffer.WriteInt32(Shop(shopNum).BuyRate)
         buffer.WriteString((Shop(shopNum).Name))
         buffer.WriteInt32(Shop(shopNum).Face)
+
         For i = 1 To MAX_TRADES
             buffer.WriteInt32(Shop(shopNum).TradeItem(i).CostItem)
             buffer.WriteInt32(Shop(shopNum).TradeItem(i).CostValue)
