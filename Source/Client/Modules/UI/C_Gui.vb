@@ -22,13 +22,14 @@ Friend Module C_Gui
 
                 If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
                     If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.bottom Then
-                    IsEqItem = i
-                    Exit Function
+                        IsEqItem = i
+                        Exit Function
                     End If
                 End If
             End If
         Next
     End Function
+
     Public Function IsInv(StartX As Long, StartY As Long) As Long
         Dim tempRec As RectStruct
         Dim i As Long
