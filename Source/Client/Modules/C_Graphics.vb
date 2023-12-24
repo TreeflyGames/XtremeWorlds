@@ -447,8 +447,7 @@ Module C_Graphics
         CurMouseY = adjustedY
 
         HandleInterfaceEvents(EntState.MouseMove)
-End Sub
-
+    End Sub
 
     Private Sub GameWindow_TextEntered(sender As Object, e As TextEventArgs)
         ' e.Unicode is a string, so no conversion is needed
