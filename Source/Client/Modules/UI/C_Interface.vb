@@ -2279,7 +2279,7 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picParchment", 6, 6, 198, 144, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
         
         ' Buttons
-        CreateButton(WindowCount, "btnReturn", 16, 16, 178, 28, "Return to Game (Esc)", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnEscMenu_Return))
+        CreateButton(WindowCount, "btnReturn", 16, 16, 178, 28, "Return to Game", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnEscMenu_Return))
         CreateButton(WindowCount, "btnOptions", 16, 48, 178, 28, "Options", Verdana, , , , , , , DesignType.Orange, DesignType.Orange_Hover, DesignType.Orange_Click, , , New Action(AddressOf btnEscMenu_Options))
         CreateButton(WindowCount, "btnMainMenu", 16, 80, 178, 28, "Back to Main Menu", Verdana, , , , , , , DesignType.Blue, DesignType.Blue_Hover, DesignType.Blue_Click, , , New Action(AddressOf btnEscMenu_MainMenu))
         CreateButton(WindowCount, "btnExit", 16, 112, 178, 28, "Exit the Game", Verdana, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnEscMenu_Exit))
