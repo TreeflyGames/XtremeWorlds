@@ -7,7 +7,9 @@ Module C_Database
     Friend Function GetFileContents(fullPath As String, Optional ByRef errInfo As String = "") As String
         Dim strContents As String
         Dim objReader As StreamReader
+
         strContents = ""
+
         Try
             objReader = New StreamReader(fullPath)
             strContents = objReader.ReadToEnd()

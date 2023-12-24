@@ -1295,6 +1295,11 @@ Continue1:
                 header = "Cannot Login"
                 body = "This account does not exist."
                 body2 = "Please try registering the account."
+
+            Case DialogueMsg.Crash
+                header = "Error"
+                body = "There was a network error."
+                body2 = "Check logs folder for details."
         End Select
 
         ' set the dialogue up!

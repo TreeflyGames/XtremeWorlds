@@ -545,6 +545,7 @@
         CreateAccount
         MultiAccount
         Login
+        Crash
     End Enum
 
     Public Enum DialogueType

@@ -27,7 +27,8 @@ Friend Module C_NetworkConfig
     End Sub
 
     Private Sub Socket_ConnectionFailed() Handles Socket.ConnectionFailed
-
+        DestroyNetwork()
+        InitNetwork()
     End Sub
 
     Private Sub Socket_ConnectionLost() Handles Socket.ConnectionLost
@@ -35,9 +36,13 @@ Friend Module C_NetworkConfig
     End Sub
 
     Private Sub Socket_CrashReport(err As String) Handles Socket.CrashReport
-        MsgBox("There was a network error: " & err)
-        DestroyNetwork()
-        DestroyGame()
+        DialogueAlert(DialogueMsg.Crash)
+
+        Dim currentDateTime As DateTime = DateTime.Now
+        Dim timestampForFileName As String = currentDateTime.ToString("yyyyMMdd_HHmmss")
+        Dim logFileName As String = $"{timestampForFileName}.txt"
+
+        Addlog(err, logFileName)
     End Sub
 
 #If DEBUG Then

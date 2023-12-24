@@ -96,9 +96,6 @@ Module S_Party
 #Region "Incoming Packets"
 
     Friend Sub Packet_PartyRquest(index As Integer, ByRef data() As Byte)
-        Addlog("Recieved CMSG: CRequestParty", PACKET_LOG)
-        Console.WriteLine("Recieved CMSG: CRequestParty")
-
         ' Prevent partying with self
         If TempPlayer(index).Target = index Then Exit Sub
         ' make sure it's a valid target
@@ -113,30 +110,19 @@ Module S_Party
     End Sub
 
     Friend Sub Packet_AcceptParty(index As Integer, ByRef data() As Byte)
-        Addlog("Recieved CMSG: CAcceptParty", PACKET_LOG)
-        Console.WriteLine("Recieved CMSG: CAcceptParty")
-
         Party_InviteAccept(TempPlayer(index).PartyInvite, index)
     End Sub
 
     Friend Sub Packet_DeclineParty(index As Integer, ByRef data() As Byte)
-        Addlog("Recieved CMSG: CDeclineParty", PACKET_LOG)
-        Console.WriteLine("Recieved CMSG: CDeclineParty")
-
         Party_InviteDecline(TempPlayer(index).PartyInvite, index)
     End Sub
 
     Friend Sub Packet_LeaveParty(index As Integer, ByRef data() As Byte)
-        Addlog("Recieved CMSG: CLeaveParty", PACKET_LOG)
-        Console.WriteLine("Recieved CMSG: CLeaveParty")
-
         Party_PlayerLeave(index)
     End Sub
 
     Friend Sub Packet_PartyChatMsg(index As Integer, ByRef data() As Byte)  
         Dim buffer As New ByteStream(data)
-        Addlog("Recieved CMSG: CPartyChatMsg", PACKET_LOG)
-        Console.WriteLine("Recieved CMSG: CPartyChatMsg")
 
         PartyMsg(index, buffer.ReadString)
 
