@@ -2068,10 +2068,10 @@ Module S_Player
             ReCallPet(index)
             SaveCharacter(index, TempPlayer(index).Slot)
             SaveBank(index)
-
-            ClearAccount(index)
-            UpdateCaption()
         End If
+
+        ClearAccount(index)
+        UpdateCaption()
     End Sub
 
     Friend Sub KillPlayer(index As Integer)

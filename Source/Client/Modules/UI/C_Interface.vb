@@ -1062,7 +1062,7 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_2", 67, 79, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
         CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Arial, , , ,  , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
@@ -1101,7 +1101,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnReturnMain_Click))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnReturnMain_Click))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 264, 170, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1147,7 +1147,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnNewChar_Cancel))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnNewChar_Cancel))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 278, 140, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1197,7 +1197,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnCharacters_Close))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnCharacters_Close))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 352, 197, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1238,7 +1238,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnJobs_Close))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnJobs_Close))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 352, 197, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment, , , , , , New Action(AddressOf Jobs_DrawFace))
@@ -1272,7 +1272,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnDialogue_Close))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnDialogue_Close))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 335, 113, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -1314,11 +1314,13 @@ Module C_Interface
         CreateWindow_Menu()
         CreateWindow_Description()
         CreateWindow_Inventory()
+        CreateWindow_Skills()
         CreateWindow_Character()
         CreateWindow_Hotbar()
         CreateWindow_EscMenu()
         CreateWindow_Bars()
         CreateWindow_Dialogue()
+        CreateWindow_DragBox()
     End Sub
 
     Public Function HandleInterfaceEvents(entState As EntState) As Boolean
@@ -2153,6 +2155,295 @@ Module C_Interface
         End If
     End Sub
 
+' ##############
+' ## Drag Box ##
+' ##############
+
+Public Sub DragBox_OnDraw()
+    Dim xO As Long, yO As Long, texNum As Long, winIndex As Long
+
+    winIndex = GetWindowIndex("winDragBox")
+    xO = Windows(winIndex).Window.Left
+    yO = Windows(winIndex).Window.Top
+    
+    ' get texture num
+    With DragBox
+        Select Case .Type
+            Case PartType.Item
+                If .value Then
+                    texNum = Item(.value).Pic
+                    RenderTexture(ItemSprite(texNum), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                End If
+            Case PartType.Spell
+                If .value Then
+                    texNum = Skill(.value).Icon
+                    RenderTexture(SkillSprite(texNum), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                End If
+        End Select
+    End With
+End Sub
+
+    Public Sub DragBox_Check()
+    Dim winIndex As Long, I As Long, curWindow As Long, curControl As Long, tmpRec As RectStruct
+    
+    winIndex = GetWindowIndex("winDragBox")
+    
+    ' can't drag nuthin'
+    If DragBox.Type = PartType.None Then Exit Sub
+    
+    ' check for other windows
+    For I = 1 To WindowCount
+        With Windows(I).Window
+            If .visible Then
+                ' can't drag to self
+                If .name <> "winDragBox" Then
+                    If CurMouseX >= .Left And CurMouseX <= .Left + .Width Then
+                        If CurMouseY >= .Top And CurMouseY <= .Top + .Height Then
+                            If curWindow = 0 Then curWindow = I
+                            If .zOrder > Windows(curWindow).Window.zOrder Then curWindow = I
+                        End If
+                    End If
+                End If
+            End If
+        End With
+    Next
+    
+    ' we have a window - check if we can drop
+    If curWindow Then
+        Select Case Windows(curWindow).Window.name
+            Case "winBank"
+                If DragBox.Origin = PartOriginType.Bank Then
+                    ' it's from the inventory!
+                    If DragBox.Type = PartType.Item Then
+                        ' find the slot to switch with
+                        For I = 1 To MAX_BANK
+                            With tmpRec
+                                .Top = Windows(curWindow).Window.Top + BankTop + ((BankOffsetY + 32) * ((I - 1) \ BankColumns))
+                                .bottom = .Top + 32
+                                .Left = Windows(curWindow).Window.Left + BankLeft + ((BankOffsetX + 32) * (((I - 1) Mod BankColumns)))
+                                .Right = .Left + 32
+                            End With
+    
+                            If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
+                                If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
+                                    ' switch the slots
+                                    If DragBox.Slot <> I Then
+                                        ChangeBankSlots(DragBox.Slot, I)
+                                        Exit For
+                                    End If
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+                
+                ' se o item saiu do inventario
+                If DragBox.Origin = PartOriginType.Inventory Then
+                    If DragBox.Type = PartType.Item Then
+    
+                        If Item(GetPlayerInvItemNum(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
+                            DepositItem(DragBox.Slot, 1)
+                        Else
+                            Dialogue("Deposit Item", "Enter the deposit quantity.", "", DialogueType.DepositItem, DialogueStyle.Input, DragBox.Slot)
+                        End If
+    
+                    End If
+                End If
+                
+            Case "winInventory"
+                If DragBox.Origin = PartOriginType.Inventory Then
+                    ' it's from the inventory!
+                    If DragBox.Type = PartType.Item Then
+                        ' find the slot to switch with
+                        For I = 1 To MAX_INV
+                            With tmpRec
+                                .Top = Windows(curWindow).Window.Top + InvTop + ((InvOffsetY + 32) * ((I - 1) \ InvColumns))
+                                .bottom = .Top + 32
+                                .Left = Windows(curWindow).Window.Left + InvLeft + ((InvOffsetX + 32) * (((I - 1) Mod InvColumns)))
+                                .Right = .Left + 32
+                            End With
+                            
+                            If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
+                                If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
+                                    ' switch the slots
+                                    If DragBox.Slot <> I Then SendChangeInvSlots(DragBox.Slot, I)
+                                    Exit For
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+                
+                ' se o item saiu do bank
+                If DragBox.Origin = PartOriginType.Bank Then
+                    If DragBox.Type = PartType.Item Then
+    
+                        If Item(Bank.Item(DragBox.Slot).num).Type <> ItemType.Currency Then
+                            WithdrawItem(DragBox.Slot, 0)
+                        Else
+                            Dialogue("Withdraw Item", "Enter the amount you wish to withdraw.", "", DialogueType.WithdrawItem, DialogueStyle.Input, DragBox.Slot)
+                        End If
+    
+                    End If
+                End If
+
+            Case "winSkills"
+                If DragBox.Origin = PartOriginType.Spells Then
+                    ' it's from the spells!
+                    If DragBox.Type = PartType.Spell Then
+                        ' find the slot to switch with
+                        For I = 1 To MAX_PLAYER_SKILLS
+                            With tmpRec
+                                .Top = Windows(curWindow).Window.Top + SkillTop + ((SkillOffsetY + 32) * ((I - 1) \ SkillColumns))
+                                .bottom = .Top + 32
+                                .Left = Windows(curWindow).Window.Left + SkillLeft + ((SkillOffsetX + 32) * (((I - 1) Mod SkillColumns)))
+                                .Right = .Left + 32
+                            End With
+                            
+                            If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
+                                If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
+                                    ' switch the slots
+                                    'If DragBox.Slot <> I Then SendChangeSpellSlots(DragBox.Slot, I)
+                                    Exit For
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+
+            Case "winHotbar"
+                If DragBox.Origin <> PartOriginType.None Then
+                    If DragBox.Type <> PartType.None Then
+                        ' find the slot
+                        For I = 1 To MAX_HOTBAR
+                            With tmpRec
+                                .Top = Windows(curWindow).Window.Top + HotbarTop
+                                .bottom = .Top + 32
+                                .Left = Windows(curWindow).Window.Left + HotbarLeft + ((I - 1) * HotbarOffsetX)
+                                .Right = .Left + 32
+                            End With
+                            
+                            If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
+                                If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
+                                    ' set the hotbar slot
+                                    If DragBox.Origin <> PartOriginType.Hotbar Then
+                                        If DragBox.Type = PartType.Item Then
+                                            'SendHotbarChange(1, DragBox.Slot, I)
+                                        ElseIf DragBox.Type = PartType.Spell Then
+                                            'SendHotbarChange(2, DragBox.Slot, I)
+                                        End If
+                                    Else
+                                        ' SWITCH the hotbar slots
+                                        'If DragBox.Slot <> I Then SwitchHotbar(DragBox.Slot, I)
+                                    End If
+                                    ' exit early
+                                    Exit For
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+        End Select
+    Else
+        ' no windows found - dropping on bare map
+        Select Case DragBox.Origin
+            Case PartOriginType.Inventory
+                If Item(GetPlayerInvItemNum(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
+                    SendDropItem(DragBox.Slot, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
+                Else
+                    Dialogue("Drop Item", "Please choose how many to drop", "", DialogueType.DropItem, DialogueStyle.Input, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
+                End If
+            Case PartOriginType.Spells
+                ' dialogue
+            Case PartOriginType.Hotbar
+                'SendHotbarChange(0, 0, DragBox.Slot)
+        End Select
+    End If
+    
+    ' close window
+    HideWindow(winIndex)
+
+    With DragBox
+        .Type = PartType.None
+        .Slot = 0
+        .Origin = PartOriginType.None
+        .value = 0
+    End With
+End Sub
+
+' ############
+' ## Skills ##
+' ############
+Public Sub Skills_MouseDown()
+Dim slotNum As Long, winIndex As Long
+    
+    ' is there an item?
+    slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
+    
+    If slotNum Then
+        With DragBox
+            .Type = PartType.Spell
+            .value = Player(Myindex).Skill(slotNum).Num
+            .Origin = PartOriginType.Spells
+            .Slot = slotNum
+        End With
+        
+        winIndex = GetWindowIndex("winDragBox")
+        With Windows(winIndex).Window
+            .state = EntState.MouseDown
+            .Left = CurMouseX - 16
+            .Top = CurMouseY - 16
+            .movedX = CurMouseX - .Left
+            .movedY = CurMouseY - .Top
+        End With
+
+        ShowWindow(winIndex, , False)
+
+        ' stop dragging inventory
+        Windows(GetWindowIndex("winSkills")).Window.state = EntState.Normal
+    End If
+
+    ' show desc. if needed
+    Skills_MouseMove
+End Sub
+
+Public Sub Skills_DblClick()
+    Dim slotNum As Long
+
+    slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
+    
+    If slotNum Then
+        PlayerCastSkill(slotNum)
+    End If
+    
+    ' show desc. if needed
+    Skills_MouseMove
+End Sub
+
+Public Sub Skills_MouseMove()
+    Dim slotNum As Long, x As Long, y As Long
+
+    ' exit out early if dragging
+    If DragBox.Type <> PartType.None Then Exit Sub
+
+    slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
+    
+    If slotNum Then
+        ' make sure we're not dragging the item
+        If DragBox.Type = PartType.Item And DragBox.value = slotNum Then Exit Sub
+        ' calc position
+        x = Windows(GetWindowIndex("winSkills")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
+        y = Windows(GetWindowIndex("winSkills")).Window.Top - 4
+        ' offscreen?
+        If x < 0 Then
+            ' switch to right
+            x = Windows(GetWindowIndex("winSkills")).Window.Left + Windows(GetWindowIndex("winSkills")).Window.Width
+        End If
+        ' go go go
+        'ShowPlayerSpellDesc(x, y, slotNum)
+    End If
+End Sub
+
     ' ############
     ' ## Hotbar ##
     ' ############=
@@ -2408,7 +2699,7 @@ End Sub
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Inv))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Inv))
 
         ' Gold amount
         CreatePictureBox(WindowCount, "picBlank", 8, 293, 186, 18, , , , , 67, 67, 67)
@@ -2429,7 +2720,7 @@ End Sub
         zOrder_Con = 1
 
         ' Close button
-        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 4, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Char))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Char))
 
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 26, 162, 287, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
@@ -2732,7 +3023,7 @@ End Sub
                 End With
 
                 ' render sprite
-                RenderTexture(SkillIconSprite(texNum), GameWindow, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
+                RenderTexture(SkillSprite(texNum), GameWindow, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
         End Select
 
         ' render text array
@@ -2746,6 +3037,29 @@ End Sub
         ' close
         HideWindow(GetWindowIndex("winDescription"))
     End Sub
+
+    Public Sub CreateWindow_DragBox()
+        ' Create window
+        CreateWindow("winDragBox", "", Georgia, zOrder_Win, 0, 0, 32, 32, 0, false, , , , , , , , , , , New Action(AddressOf DragBox_Check), , , New Action(AddressOf DragBox_OnDraw))
+        
+        ' Need to set up unique mouseup event
+        Windows(WindowCount).Window.CallBack(entState.MouseUp) = New Action(AddressOf DragBox_Check)
+    End Sub
+
+    Public Sub CreateWindow_Skills()
+        ' Create window
+        CreateWindow("winSkills", "Skills", Georgia, zOrder_Win, 0, 0, 202, 297, 109, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Skills_MouseMove), New Action(AddressOf Skills_MouseDown), New Action(AddressOf Skills_DblClick), New Action(AddressOf DrawSkills))
+    
+        ' Centralize it
+        CentralizeWindow(WindowCount)
+    
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+    
+        ' Close button
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Skills))
+    End Sub
+
 
     Sub ResizeGUI()
         Dim Top As Long
@@ -2799,6 +3113,50 @@ End Sub
         CentralizeWindow(GetWindowIndex("winNpcChat"))
         CentralizeWindow(GetWindowIndex("winTrade"))
         CentralizeWindow(GetWindowIndex("winGuild"))
+    End Sub
+
+    Public Sub DrawSkills()
+        Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, y As Long, spellnum As Long, spellPic As Long, x As Long, Top As Long, Left As Long
+
+        xO = Windows(GetWindowIndex("winSkills")).Window.Left
+        yO = Windows(GetWindowIndex("winSkills")).Window.Top
+    
+        Width = Windows(GetWindowIndex("winSkills")).Window.Width
+        Height = Windows(GetWindowIndex("winSkills")).Window.Height
+    
+        ' render green
+        RenderTexture(InterfaceSprite(34), GameWindow, xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
+    
+        Width = 76
+        Height = 76
+    
+        y = yO + 23
+        ' render grid - row
+        For i = 1 To 4
+            If i = 4 Then Height = 42
+            RenderTexture(InterfaceSprite(35), GameWindow, xO + 4, y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), GameWindow, xO + 80, y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), GameWindow, xO + 156, y, 0, 0, 42, Height, 42, Height)
+            y = y + 76
+        Next
+    
+        ' actually draw the icons
+        For i = 1 To MAX_PLAYER_SKILLS
+            spellnum = Player(Myindex).Skill(i).Num
+            If spellnum > 0 And spellnum <= MAX_SKILLS Then
+                ' not dragging?
+                If Not (DragBox.Origin = PartOriginType.Spells And DragBox.Slot = i) Then
+                    spellPic = Skill(spellnum).Icon
+    
+                    If spellPic > 0 And spellPic <= NumSkills Then
+                        Top = yO + InvTop + ((InvOffsetY + 32) * ((i - 1) \ InvColumns))
+                        Left = xO + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
+    
+                        RenderTexture(SkillSprite(spellPic), GameWindow, Left, Top, 0, 0, 32, 32, 32, 32)
+                    End If
+                End If
+            End If
+        Next
     End Sub
 End Module
 

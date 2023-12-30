@@ -50,9 +50,9 @@ Module C_Graphics
     Friend AnimationGfxInfo() As GraphicInfo
 
     'Skills
-    Friend SkillIconTexture() As Texture
-    Friend SkillIconSprite() As Sprite
-    Friend SkillIconGfxInfo() As GraphicInfo
+    Friend SkillTexture() As Texture
+    Friend SkillSprite() As Sprite
+    Friend SkillGfxInfo() As GraphicInfo
 
     'Faces
     Friend FaceTexture() As Texture
@@ -163,7 +163,7 @@ Module C_Graphics
     Friend NumItems As Integer
     Friend NumResources As Integer
     Friend NumAnimations As Integer
-    Friend NumSkillIcons As Integer
+    Friend NumSkills As Integer
     Friend NumFaces As Integer
     Friend NumFogs As Integer
     Friend NumEmotes As Integer
@@ -208,65 +208,67 @@ Module C_Graphics
     Private Sub GameWindow_KeyPressed(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
         Console.WriteLine("Key Pressed: " & e.Code.ToString())
 
-        If Inputs.MoveUp(e.Code) Then VbKeyUp = True
-        If Inputs.MoveDown(e.Code) Then VbKeyDown = True
-        If Inputs.MoveLeft(e.Code) Then VbKeyLeft = True
-        If Inputs.MoveRight(e.Code) Then VbKeyRight = True
-        If Inputs.Attack(e.Code) Then VbKeyControl = True
-        If Inputs.Run(e.Code) Then VbKeyShift = True
+        If InGame Then
+            If Inputs.MoveUp(e.Code) Then VbKeyUp = True
+            If Inputs.MoveDown(e.Code) Then VbKeyDown = True
+            If Inputs.MoveLeft(e.Code) Then VbKeyLeft = True
+            If Inputs.MoveRight(e.Code) Then VbKeyRight = True
+            If Inputs.Attack(e.Code) Then VbKeyControl = True
+            If Inputs.Run(e.Code) Then VbKeyShift = True
 
-        Select Case e.Code
-            Case Keyboard.Key.Escape
-                if InMenu Then Exit Sub
+            Select Case e.Code
+                Case Keyboard.Key.Escape
+                    if InMenu Then Exit Sub
 
-                If Windows(GetWindowIndex("winEscMenu")).Window.visible Then
-                    ' hide it
-                    HideWindow(GetWindowIndex("winEscMenu"))
-                    Exit Sub
-                Else
-                    ' show them
-                    If Windows(GetWindowIndex("winChat")).Window.Visible = False Then
-                        ShowWindow(GetWindowIndex("winEscMenu"), True)
+                    If Windows(GetWindowIndex("winEscMenu")).Window.visible Then
+                        ' hide it
+                        HideWindow(GetWindowIndex("winEscMenu"))
+                        Exit Sub
+                    Else
+                        ' show them
+                        If Windows(GetWindowIndex("winChat")).Window.Visible = False Then
+                            ShowWindow(GetWindowIndex("winEscMenu"), True)
+                            Exit Sub
+                        End If
+                    End If
+
+                Case Keyboard.Key.Enter
+                    If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
+                        ShowChat()
+                        inSmallChat = False
                         Exit Sub
                     End If
-                End If
 
-            Case Keyboard.Key.Enter
-                If Windows(GetWindowIndex("winChatSmall")).Window.Visible Then
-                    ShowChat()
-                    inSmallChat = False
-                    Exit Sub
-                End If
-
-                HandlePressEnter()
+                    HandlePressEnter()
             
-            Case Keyboard.Key.Space
-                CheckMapGetItem()
+                Case Keyboard.Key.Space
+                    CheckMapGetItem()
         
-            Case Keyboard.Key.I
-                ' hide/show inventory
-                If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Inv
+                Case Keyboard.Key.I
+                    ' hide/show inventory
+                    If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Inv
             
-            Case Keyboard.Key.C
-                ' hide/show char
-                If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Char
+                Case Keyboard.Key.C
+                    ' hide/show char
+                    If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Char
            
-            Case Keyboard.Key.S
-                ' hide/show skills
-                If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Skills
-        End Select
+                Case Keyboard.Key.S
+                    ' hide/show skills
+                    If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Skills
+            End Select
     
-        ' handles hotbar
-        If inSmallChat Then
-            For i = 1 To 9
-                If e.Code = 48 + i Then
-                    'SendHotbarUse(i)
-                End If
-                'If e.Code = 48 Then SendHotbarUse(10)
-            Next
-        End If
+            ' handles hotbar
+            If inSmallChat Then
+                For i = 1 To 9
+                    If e.Code = 48 + i Then
+                        'SendHotbarUse(i)
+                    End If
+                    'If e.Code = 48 Then SendHotbarUse(10)
+                Next
+            End If
 
-        If Windows(GetWindowIndex("winEscMenu")).Window.visible Then Exit Sub
+            If Windows(GetWindowIndex("winEscMenu")).Window.visible Then Exit Sub
+        End If
 
         ' Check for active window
         If activeWindow > 0 Then
@@ -603,9 +605,9 @@ End Sub
         ReDim AnimationSprite(NumAnimations)
         ReDim AnimationGfxInfo(NumAnimations)
 
-        ReDim SkillIconTexture(NumSkillIcons)
-        ReDim SkillIconSprite(NumSkillIcons)
-        ReDim SkillIconGfxInfo(NumSkillIcons)
+        ReDim SkillTexture(NumSkills)
+        ReDim SkillSprite(NumSkills)
+        ReDim SkillGfxInfo(NumSkills)
 
         ReDim FaceTexture(NumFaces)
         ReDim FaceSprite(NumFaces)
@@ -933,16 +935,16 @@ End Sub
             End With
 
         ElseIf texType = 9 Then 'skill icons
-            If index <= 0 OrElse index > NumSkillIcons Then Exit Sub
+            If index <= 0 OrElse index > NumSkills Then Exit Sub
 
             'Load texture first, dont care about memory streams (just use the filename)
-            SkillIconTexture(index) = New Texture(Paths.Graphics & "skills\" & index & GfxExt)
-            SkillIconSprite(index) = New Sprite(SkillIconTexture(index))
+            SkillTexture(index) = New Texture(Paths.Graphics & "skills\" & index & GfxExt)
+            SkillSprite(index) = New Sprite(SkillTexture(index))
 
             'Cache the width and height
-            With SkillIconGfxInfo(index)
-                .Width = SkillIconTexture(index).Size.X
-                .Height = SkillIconTexture(index).Size.Y
+            With SkillGfxInfo(index)
+                .Width = SkillTexture(index).Size.X
+                .Height = SkillTexture(index).Size.Y
                 .IsLoaded = True
                 .TextureTimer = GetTickCount() + 100000
             End With
@@ -2156,8 +2158,8 @@ End Sub
             If Not ResourceTexture(i) Is Nothing Then ResourceTexture(i).Dispose()
         Next
 
-        For i = 0 To NumSkillIcons
-            If Not SkillIconTexture(i) Is Nothing Then SkillIconTexture(i).Dispose()
+        For i = 0 To NumSkills
+            If Not SkillTexture(i) Is Nothing Then SkillTexture(i).Dispose()
         Next
 
         For i = 0 To NumTileSets
@@ -2545,18 +2547,18 @@ End Sub
 
         iconnum = FrmEditor_Skill.nudIcon.Value
 
-        If iconnum < 1 OrElse iconnum > NumSkillIcons Then
+        If iconnum < 1 OrElse iconnum > NumSkills Then
             EditorSkill_Icon.Clear(ToSfmlColor(FrmEditor_Skill.picSprite.BackColor))
             EditorSkill_Icon.Display()
             Exit Sub
         End If
 
-        If SkillIconGfxInfo(iconnum).IsLoaded = False Then
+        If SkillGfxInfo(iconnum).IsLoaded = False Then
             LoadTexture(iconnum, 9)
         End If
 
         'seeying we still use it, lets update timer
-        With SkillIconGfxInfo(iconnum)
+        With SkillGfxInfo(iconnum)
             .TextureTimer = GetTickCount() + 100000
         End With
 
@@ -2572,7 +2574,7 @@ End Sub
 
         EditorSkill_Icon.Clear(ToSfmlColor(FrmEditor_Skill.picSprite.BackColor))
 
-        RenderTexture(SkillIconSprite(iconnum), EditorSkill_Icon, dRECT.X, dRECT.Y, sRECT.X, sRECT.Y, sRECT.Width,
+        RenderTexture(SkillSprite(iconnum), EditorSkill_Icon, dRECT.X, dRECT.Y, sRECT.X, sRECT.Y, sRECT.Width,
                      sRECT.Height)
 
         EditorSkill_Icon.Display()
@@ -2965,11 +2967,11 @@ End Sub
                         End If
                     Case 2 ' spell
                         If Len(Skill(Hotbar(i).Slot).Name) > 0 And Skill(Hotbar(i).Slot).Icon > 0 Then
-                            RenderTexture(SkillIconSprite(Skill(Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                            RenderTexture(SkillSprite(Skill(Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                             For t = 1 To MAX_PLAYER_SKILLS
                                 If GetPlayerSkill(Myindex, t) > 0 Then
                                     If GetPlayerSkill(Myindex, t) = Hotbar(i).Slot And GetPlayerSkillCD(Myindex, t) > 0 Then
-                                        RenderTexture(SkillIconSprite(Skill(Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
+                                        RenderTexture(SkillSprite(Skill(Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
                                     End If
                                 End If
                             Next

@@ -78,7 +78,7 @@ Module C_General
         CheckPictures()
         CheckProjectile()
         CheckResources()
-        CheckSkillIcons()
+        CheckSkills()
         CheckTilesets()
         ChecKInterface()
         CheckGradients()

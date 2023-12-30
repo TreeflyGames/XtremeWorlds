@@ -121,7 +121,7 @@ Module C_GameLogic
                 End If
 
                 ' check if we need to end the CD icon
-                If NumSkillIcons > 0 Then
+                If NumSkills > 0 Then
                     For i = 1 To MAX_PLAYER_SKILLS
                         If Player(Myindex).Skill(i).Num > 0 Then
                             If Player(Myindex).Skill(i).CD > 0 Then

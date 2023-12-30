@@ -129,7 +129,7 @@ Friend Class FrmEditor_Skill
     End Sub
 
     Private Sub FrmEditor_Skill_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        nudIcon.Maximum = NumSkillIcons
+        nudIcon.Maximum = NumSkills
         nudCast.Value = 1
         nudAoE.Maximum = Byte.MaxValue
         nudRange.Maximum = Byte.MaxValue

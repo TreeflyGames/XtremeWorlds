@@ -513,6 +513,7 @@
         Inventory
         Hotbar
         Spells
+        Bank
     End Enum
 
     Public Enum FontType

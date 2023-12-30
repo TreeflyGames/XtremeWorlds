@@ -55,12 +55,12 @@ Module C_Database
 
     End Sub
 
-    Friend Sub CheckSkillIcons()
+    Friend Sub CheckSkills()
         Dim i As Integer
         i = 1
 
         While File.Exists(Paths.Graphics & "Skills\" & i & GfxExt)
-            NumSkillIcons = NumSkillIcons + 1
+            NumSkills = NumSkills + 1
             i = i + 1
         End While
 
