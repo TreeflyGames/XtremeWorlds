@@ -312,13 +312,13 @@ Module C_Interface
 
                                     For i = 1 To count
                                         left = .Left + .Width - TextWidth(textArray(i))
-                                        RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, .Color, Color.Black)
+                                        RenderText(textArray(i), GameWindow, left + xO - FontSize, .Top + yO + yOffset, .Color, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
                                     left = .Left + .Width - TextWidth(.Text)
-                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, .Color, Color.Black)
+                                    RenderText(.Text, GameWindow, left + xO - FontSize, .Top + yO, .Color, Color.Black)
                                 End If
 
                             Case AlignmentType.Center
@@ -337,7 +337,7 @@ Module C_Interface
                                     Next
                                 Else
                                     ' Just one line
-                                    left = .Left + (.Width \ 2) - (TextWidth(.Text) \ 2) - 4
+                                    left = .Left + (.Width \ 2) - (TextWidth(.Text) \ 2) - FontSize
                                     RenderText(.Text, GameWindow, left + xO, .Top + yO, .Color, Color.Black)
                                 End If
                         End Select
@@ -2470,7 +2470,7 @@ End Sub
         CreateLabel(WindowCount, "lblLabel", 18, 228, 138, FontSize, "Intelligence", Arial, Color.Yellow, AlignmentType.Right)
         CreateLabel(WindowCount, "lblLabel", 18, 248, 138, FontSize, "Agility", Arial, Color.Yellow, AlignmentType.Right)
         CreateLabel(WindowCount, "lblLabel", 18, 268, 138, FontSize, "Willpower", Arial, Color.Yellow, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Unused Stat Points", Arial, Color.Green, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Stat Points", Arial, Color.Green, AlignmentType.Right)
 
         ' Buttons
         CreateButton(WindowCount, "btnStat_1", 15, 188, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint1))
