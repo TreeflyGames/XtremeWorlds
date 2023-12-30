@@ -252,7 +252,7 @@ Module C_Graphics
                     ' hide/show char
                     If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Char
            
-                Case Keyboard.Key.S
+                Case Keyboard.Key.K
                     ' hide/show skills
                     If Not Windows(GetWindowIndex("winChat")).Window.visible Then btnMenu_Skills
             End Select
