@@ -1913,7 +1913,7 @@ Module C_Interface
     End Sub
 
     Public Sub chkChat_Private()
-        Types.Settings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPrivate")).Value
+        Types.Settings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkWhisper")).Value
         UpdateChat()
     End Sub
 
@@ -2618,7 +2618,7 @@ End Sub
         CreateCheckbox(WindowCount, "chkGlobal", 110, 2, 49, 23, 1, "Global", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Global))
         CreateCheckbox(WindowCount, "chkParty", 160, 2, 49, 23, 1, "Party", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Party))
         CreateCheckbox(WindowCount, "chkGuild", 210, 2, 49, 23, 1, "Guild", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Guild))
-        CreateCheckbox(WindowCount, "chkPrivate", 260, 2, 49, 23, 1, "Private", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Private))
+        CreateCheckbox(WindowCount, "chkWhisper", 260, 2, 49, 23, 1, "Whisper", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Private))
 
         ' Blank picturebox - ondraw wrapper
         CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
@@ -2647,7 +2647,7 @@ End Sub
             .Controls(GetControlIndex("winChat", "chkGlobal")).Value = Types.Settings.ChannelState(ChatChannel.Broadcast)
             .Controls(GetControlIndex("winChat", "chkParty")).Value = Types.Settings.ChannelState(ChatChannel.Party)
             .Controls(GetControlIndex("winChat", "chkGuild")).Value = Types.Settings.ChannelState(ChatChannel.Guild)
-            .Controls(GetControlIndex("winChat", "chkPrivate")).Value = Types.Settings.ChannelState(ChatChannel.Whisper)
+            .Controls(GetControlIndex("winChat", "chkWhisper")).Value = Types.Settings.ChannelState(ChatChannel.Whisper)
         End With
     End Sub
 
