@@ -222,9 +222,13 @@ Module C_Graphics
                 If Windows(GetWindowIndex("winEscMenu")).Window.visible Then
                     ' hide it
                     HideWindow(GetWindowIndex("winEscMenu"))
+                    Exit Sub
                 Else
                     ' show them
-                    ShowWindow(GetWindowIndex("winEscMenu"), True)
+                    If Windows(GetWindowIndex("winChat")).Window.Visible = False Then
+                        ShowWindow(GetWindowIndex("winEscMenu"), True)
+                        Exit Sub
+                    End If
                 End If
 
             Case Keyboard.Key.Enter

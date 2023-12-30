@@ -293,7 +293,7 @@ Module C_Interface
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        RenderText(textArray(i), GameWindow, .Left + xO, .Top + yO + yOffset, .Color, Color.Black)
+                                        RenderText(textArray(i), GameWindow, .Left - xO, .Top + yO + yOffset, .Color, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
@@ -351,7 +351,7 @@ Module C_Interface
                             If .Value = 0 Then sprite = InterfaceSprite(2) Else sprite = InterfaceSprite(3)
 
                             ' render box
-                            RenderTexture(sprite, GameWindow, .Left + xO, .Top + yO, 0, 0, 14, 14, 14, 14)
+                            RenderTexture(sprite, GameWindow, .Left + xO, .Top + yO, 0, 0, 16, 16, 16, 16)
 
                             ' find text position
                             Select Case .Align
@@ -462,7 +462,7 @@ Module C_Interface
                 Case DesignType.Win_Norm
                     ' render window
                     RenderDesign(DesignType.Wood, .Left, .Top, .Width, .Height)
-                    RenderDesign(DesignType.Green, .Left, .Top, .Width, 21)
+                    RenderDesign(DesignType.Green, .Left, .Top, .Width, 23)
 
                     ' render the icon
                     If ItemGfxInfo(.Icon).IsLoaded = False Then
@@ -480,7 +480,7 @@ Module C_Interface
                 Case DesignType.Win_Empty
                     ' render window
                     RenderDesign(DesignType.Wood_Empty, .Left, .Top, .Width, .Height)
-                    RenderDesign(DesignType.Green, .Left, .Top, .Width, 21)
+                    RenderDesign(DesignType.Green, .Left, .Top, .Width, 23)
 
                     ' render the icon
                     If ItemGfxInfo(.Icon).IsLoaded = False Then
@@ -2611,12 +2611,15 @@ End Sub
             RenderTexture(InterfaceSprite(35), GameWindow, xO + 156, y, 0, 0, 42, Height, 42, Height)
             y = y + 76
         Next
+
         ' render bottom wood
         RenderTexture(InterfaceSprite(1), GameWindow, xO + 4, yO + 289, 100, 100, 194, 26, 194, 26)
 
         ' actually draw the icons
         For i = 1 To MAX_INV
             itemNum = GetPlayerInvItemNum(Myindex, i)
+            StreamItem(itemNum)
+
             If itemNum > 0 And itemNum <= MAX_ITEMS Then
                 ' not dragging?
                 If Not (DragBox.Origin = PartOriginType.Inventory And DragBox.Slot = i) Then
