@@ -679,7 +679,7 @@ Module S_NetworkSend
 
         ' Send all players on current map to index
         For i = i To GetPlayersOnline()
-            If i <> index Then
+            If IsPlaying(i) Then
                 If GetPlayerMap(i) = GetPlayerMap(index) Then
                     data = PlayerData(i)
                     Socket.SendDataTo(index, data, data.Length)
@@ -689,7 +689,7 @@ Module S_NetworkSend
 
         ' Send index's player data to everyone on the map including himself
         data = PlayerData(index)
-        SendDataToMap(GetPlayerMap(index), data, data.Length)
+        SendDataToMapBut(index, GetPlayerMap(index), data, data.Length)
     End Sub
 
     Function PlayerData(index As Integer) As Byte()
