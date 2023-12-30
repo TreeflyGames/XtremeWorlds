@@ -2415,7 +2415,7 @@ End Sub
         CreateLabel(WindowCount, "lblGold", 42, 296, 100, FontSize, "Gold", Verdana, Color.Yellow)
 
         ' Drop
-        CreateButton(WindowCount, "btnDrop", 155, 294, 38, 16, , , 36, , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , , 5, 3)
+        CreateButton(WindowCount, "btnDrop", 155, 294, 38, 16, "Drop" , , , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , , 5, 3)
     End Sub
 
     Public Sub CreateWindow_Character()
