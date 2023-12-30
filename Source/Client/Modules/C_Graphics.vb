@@ -575,7 +575,7 @@ End Sub
         GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Default, WindowSettings)
         CenterWindow(GameWindow)
         GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
-        If Not Types.Settings.Vsync Then
+        If Types.Settings.Vsync = 0 Then
             GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
         End If
         Dim iconImage As New Image(Paths.Gui + "icon.png")
