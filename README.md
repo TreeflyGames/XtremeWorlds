@@ -1,16 +1,17 @@
-MirageBasic Game Engine
+MirageWorlds Game Engine
 =================
 
 Simple 2D ORPG Game Engine written in VB.Net
-Based on the Orion+ conversion.
-
-Home: https://miragebasic.net
-
-![Main Menu](https://i.imgur.com/lW5vSBs.png)
+Based on the Orion+ conversion and MirageBasic.
 
 What is it?
 ===========
 This is a tilebased 2D ORPG game engine. It features a client and server application setup with a basic GUI on both ends.
+
+Setup
+===========
+Install PostgreSQL and use the password for the database as mirage. You can change this in the source-code.
+https://www.postgresql.org/
 
 Game Features:
 ==============
@@ -18,7 +19,6 @@ Basic Character Creation/Class Selection
 Movement/Attacking
 NPC/Computer Characters for attacking
 Items & Spells
-Housing
 Event System
 
 Creation Features:
