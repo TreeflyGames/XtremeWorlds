@@ -2412,7 +2412,7 @@ End Sub
 
         ' Gold amount
         CreatePictureBox(WindowCount, "picBlank", 8, 293, 186, 18, , , , , 67, 67, 67)
-        CreateLabel(WindowCount, "lblGold", 42, 296, 100, FontSize, "Gold", Verdana, Color.Yellow)
+        'CreateLabel(WindowCount, "lblGold", 42, 296, 100, FontSize, "Gold", Verdana, Color.Yellow)
 
         ' Drop
         CreateButton(WindowCount, "btnDrop", 155, 294, 38, 16, "Drop" , , , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , , 5, 3)
