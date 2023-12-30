@@ -331,7 +331,7 @@ namespace Mirage.Sharp.Asfw.Network
     {
       try
       {
-        this._socket.EndSend(ar);
+        this._socket?.EndSend(ar);
       }
       catch
       {

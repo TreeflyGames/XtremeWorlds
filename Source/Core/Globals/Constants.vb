@@ -14,7 +14,7 @@
     Public Const MAX_PARTIES As Integer = 35
     Public Const MAX_PARTY_MEMBERS As Integer = 4
     Public Const MAX_PETS As Integer = 100
-    Public Const MAX_PLAYERS As Integer = 100
+    Public Const MAX_PLAYERS As Integer = 300
     Public Const MAX_PLAYER_SKILLS As Byte = 20
     Public Const MAX_RESOURCES As Integer = 100
     Public Const MAX_SHOPS As Integer = 50

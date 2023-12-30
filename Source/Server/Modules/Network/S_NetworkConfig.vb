@@ -11,7 +11,7 @@ Friend Module S_NetworkConfig
             .BufferLimit = 2048000, ' <- this is 2mb max data storage
             .MinimumIndex = 1, ' <- this prevents the network from giving us 0 as an index
             .PacketAcceptLimit = 500, ' Dunno what is a reasonable cap right now so why not? :P
-            .PacketDisconnectCount = 125 ' If the other thing was even remotely reasonable, this is DEFINITELY spam count!
+            .PacketDisconnectCount = 100 ' If the other thing was even remotely reasonable, this is DEFINITELY spam count!
             }
         ' END THE ESTABLISHMENT! WOOH ANARCHY! ~SpiceyWolf
 
@@ -84,14 +84,13 @@ Friend Module S_NetworkConfig
     End Sub
 
     Friend Sub Socket_ConnectionLost(index As Integer) Handles Socket.ConnectionLost
-        Console.WriteLine("Connection lost on index[" & index & "] - IP[" & Socket.ClientIp(index) & "]")
+        Console.WriteLine("Connection lost on index [" & index & "] - IP[" & Socket.ClientIp(index) & "]")
         LeftGame(index)
     End Sub
 
     Friend Sub Socket_CrashReport(index As Integer, err As String) Handles Socket.CrashReport
-        Console.WriteLine("There was a network error index[" & index & "]")
+        Console.WriteLine("There was a network error index [" & index & "]")
         Console.WriteLine("Report: " & err)
-        LeftGame(index)
     End Sub
 
     Private Sub Socket_TrafficReceived(size As Integer, ByRef data() As Byte) Handles Socket.TrafficReceived

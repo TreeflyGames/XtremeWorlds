@@ -1310,7 +1310,6 @@ Continue1:
     End Sub
 
     Public Sub CloseDialogue()
-        diaIndex = 0
         HideWindow(GetWindowIndex("winDialogue"))
     End Sub
 
@@ -1796,7 +1795,7 @@ Continue1:
         InGame = False
         InMenu = True
 
-        Socket.Disconnect
+        DestroyNetwork()
         InitNetwork()
 
         ' destroy the animations loaded

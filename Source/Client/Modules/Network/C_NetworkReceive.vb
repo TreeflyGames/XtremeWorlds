@@ -1109,7 +1109,7 @@ Module C_NetworkReceive
     End Sub
 
     Private Sub Packet_LeftGame(ByRef data() As Byte)
-        DestroyGame()
+        LogoutGame()
     End Sub
 
     '*****************

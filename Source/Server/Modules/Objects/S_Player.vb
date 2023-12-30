@@ -2070,7 +2070,7 @@ Module S_Player
             SaveBank(index)
         End If
 
-        ClearPlayer(index)
+        ClearAccount(index)
         UpdateCaption()
     End Sub
 
