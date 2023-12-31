@@ -352,7 +352,7 @@ Partial Class frmEditor_Job
         DarkLabel10.Name = "DarkLabel10"
         DarkLabel10.Size = New Size(190, 32)
         DarkLabel10.TabIndex = 12
-        DarkLabel10.Text = "Base Experience:"
+        DarkLabel10.Text = "Base Exp:"
         ' 
         ' nudSpirit
         ' 

@@ -167,7 +167,7 @@ Partial Class frmEditor_Resource
         DarkLabel13.Name = "DarkLabel13"
         DarkLabel13.Size = New Size(134, 32)
         DarkLabel13.TabIndex = 2
-        DarkLabel13.Text = "Experience:"
+        DarkLabel13.Text = "Exp:"
         ' 
         ' cmbRewardItem
         ' 

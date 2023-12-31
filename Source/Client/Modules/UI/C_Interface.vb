@@ -2552,7 +2552,7 @@ End Sub
         With Windows(GetWindowIndex("winCharacter"))
             .Controls(GetControlIndex("winCharacter", "lblHealth")).Text = "Health: " & GetPlayerVital(Myindex, VitalType.HP) & "/" & GetPlayerMaxVital(Myindex, VitalType.HP)
             .Controls(GetControlIndex("winCharacter", "lblSpirit")).Text = "Spirit: " & GetPlayerVital(Myindex, VitalType.MP) & "/" & GetPlayerMaxVital(Myindex, VitalType.MP)
-            .Controls(GetControlIndex("winCharacter", "lblExperience")).Text = "Experience: " & Player(Myindex).Exp & "/" & NextlevelExp
+            .Controls(GetControlIndex("winCharacter", "lblExperience")).Text = "Exp: " & Player(Myindex).Exp & "/" & NextlevelExp
         End With
     End Sub
 
