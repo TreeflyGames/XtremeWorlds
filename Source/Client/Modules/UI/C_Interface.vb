@@ -2756,34 +2756,34 @@ End Sub
         CreatePictureBox(WindowCount, "picBlackBox", 13, 286, 148, 19, , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
 
         ' Labels
-        CreateLabel(WindowCount, "lblLabel", 18, 188, 138, FontSize, "Strength", Arial, Color.Yellow, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblLabel", 18, 208, 138, FontSize, "Endurance", Arial, Color.Yellow, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblLabel", 18, 228, 138, FontSize, "Intelligence", Arial, Color.Yellow, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblLabel", 18, 248, 138, FontSize, "Agility", Arial, Color.Yellow, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblLabel", 18, 268, 138, FontSize, "Willpower", Arial, Color.Yellow, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Stat Points", Arial, Color.Green, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblLabel", 18, 188, 138, FontSize, "Strength:", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 208, 138, FontSize, "Endurance:", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 228, 138, FontSize, "Intelligence:", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 248, 138, FontSize, "Agility:", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 268, 138, FontSize, "Willpower:", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Stat Points:", Arial, Color.Green)
 
         ' Buttons
-        CreateButton(WindowCount, "btnStat_1", 15, 188, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint1))
-        CreateButton(WindowCount, "btnStat_2", 15, 208, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint2))
-        CreateButton(WindowCount, "btnStat_3", 15, 228, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint3))
-        CreateButton(WindowCount, "btnStat_4", 15, 248, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint4))
-        CreateButton(WindowCount, "btnStat_5", 15, 268, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint5))
+        CreateButton(WindowCount, "btnStat_1", 144, 188, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint1))
+        CreateButton(WindowCount, "btnStat_2", 144, 208, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint2))
+        CreateButton(WindowCount, "btnStat_3", 144, 228, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint3))
+        CreateButton(WindowCount, "btnStat_4", 144, 248, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint4))
+        CreateButton(WindowCount, "btnStat_5", 144, 268, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint5))
 
         ' fake buttons
-        CreatePictureBox(WindowCount, "btnGreyStat_1", 15, 188, 15, 15, , , , , 47, 47, 47)
-        CreatePictureBox(WindowCount, "btnGreyStat_2", 15, 208, 15, 15, , , , , 47, 47, 47)
-        CreatePictureBox(WindowCount, "btnGreyStat_3", 15, 228, 15, 15, , , , , 47, 47, 47)
-        CreatePictureBox(WindowCount, "btnGreyStat_4", 15, 248, 15, 15, , , , , 47, 47, 47)
-        CreatePictureBox(WindowCount, "btnGreyStat_5", 15, 268, 15, 15, , , , , 47, 47, 47)
+        CreatePictureBox(WindowCount, "btnGreyStat_1", 144, 188, 15, 15, , , , , 47, 47, 47)
+        CreatePictureBox(WindowCount, "btnGreyStat_2", 144, 208, 15, 15, , , , , 47, 47, 47)
+        CreatePictureBox(WindowCount, "btnGreyStat_3", 144, 228, 15, 15, , , , , 47, 47, 47)
+        CreatePictureBox(WindowCount, "btnGreyStat_4", 144, 248, 15, 15, , , , , 47, 47, 47)
+        CreatePictureBox(WindowCount, "btnGreyStat_5", 144, 268, 15, 15, , , , , 47, 47, 47)
 
         ' Labels
-        CreateLabel(WindowCount, "lblStat_1", 32, 188, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblStat_2", 32, 208, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblStat_3", 32, 228, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblStat_4", 32, 248, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblStat_5", 32, 268, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblPoints", 18, 288, 100, 15, "255", Arial, Color.White)
+        CreateLabel(WindowCount, "lblStat_1", 73, 188, 100, 15, "255", Arial, Color.White)
+        CreateLabel(WindowCount, "lblStat_2", 85, 208, 100, 15, "255", Arial, Color.White)
+        CreateLabel(WindowCount, "lblStat_3", 93, 228, 100, 15, "255", Arial, Color.White)
+        CreateLabel(WindowCount, "lblStat_4", 61, 248, 100, 15, "255", Arial, Color.White)
+        CreateLabel(WindowCount, "lblStat_5", 80, 268, 100, 15, "255", Arial, Color.White)
+        CreateLabel(WindowCount, "lblPoints", 88, 288, 100, 15, "255", Arial, Color.White)
     End Sub
 
     ' ###############
