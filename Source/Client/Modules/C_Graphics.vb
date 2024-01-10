@@ -1378,7 +1378,7 @@ End Sub
 
     Friend Sub UpdateCamera()
         Dim offsetX As Integer, offsetY As Integer
-        Dim startX As Integer, startY As Integer
+        Dim startX As Double, startY As Double
         Dim endX As Integer, endY As Integer
 
         offsetX = Player(Myindex).XOffset + PicX
@@ -1388,8 +1388,8 @@ End Sub
             startX = GetPlayerX(Myindex) - Types.Settings.CameraWidth
             startY = GetPlayerY(Myindex) - Types.Settings.CameraHeight
         Else
-            startX = GetPlayerX(Myindex) - ((Types.Settings.CameraWidth) / 2)
-            startY = GetPlayerY(Myindex) - ((Types.Settings.CameraHeight) / 2)
+            startX = Math.Floor(GetPlayerX(Myindex) - ((Types.Settings.CameraWidth) / 2))
+            startY = Math.Floor(GetPlayerY(Myindex) - ((Types.Settings.CameraHeight) / 2))
         End If
 
         If startX < 0 Then
