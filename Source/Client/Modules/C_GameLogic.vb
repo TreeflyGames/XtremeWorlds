@@ -41,6 +41,7 @@ Module C_GameLogic
                     Lps = tmplps
                     tmpfps = 0
                     tmplps = 0
+                    GetPing()
                     starttime = tick + 1000
                 End If
 
@@ -84,8 +85,6 @@ Module C_GameLogic
                 End If
 
                 If tmr10000 < tick Then
-                    GetPing()
-
                     tmr10000 = tick + 10000
                 End If
 
