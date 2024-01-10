@@ -486,12 +486,6 @@ Module C_Maps
         CurrentTintB = Map.MapTintB
         CurrentTintA = Map.MapTintA
 
-        If Types.Settings.MusicExt = ".mid" Then
-            MidiPlayer.Play(Paths.Music & Map.Music)
-        Else
-            PlayMusic(Trim$(Map.Music))
-        End If
-
         UpdateDrawMapName()
 
         GettingMap = False
@@ -538,7 +532,6 @@ Module C_Maps
 
     Sub Packet_MapDone(ByRef data() As Byte)
         Dim i As Integer
-        Dim musicFile As String
 
         For i = 0 To Byte.MaxValue
             ClearActionMsg(i)
@@ -553,14 +546,6 @@ Module C_Maps
         CurrentTintG = Map.MapTintG
         CurrentTintB = Map.MapTintB
         CurrentTintA = Map.MapTintA
-
-        musicFile = Trim$(Map.Music)
-
-        If Types.Settings.MusicExt = ".mid" Then
-            MidiPlayer.Play(Paths.Music & Map.Music)
-        Else
-            PlayMusic(Trim$(Map.Music))
-        End If
 
         UpdateDrawMapName()
 

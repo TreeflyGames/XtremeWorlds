@@ -11,16 +11,7 @@ Module C_General
         InMenu = True
         ClearGameData()
         LoadGame()
-        MenuMusic()
         GameLoop()
-    End Sub
-
-    Friend Sub MenuMusic
-        If Types.Settings.MusicExt = ".mid" Then
-            MidiPlayer.Play(Paths.Music & Types.Settings.MenuMusic)
-        Else
-            PlayMusic(Trim$(Types.Settings.MenuMusic))
-        End If
     End Sub
 
     Friend Sub LoadGame()

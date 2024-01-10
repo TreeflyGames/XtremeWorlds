@@ -28,7 +28,7 @@ Friend Class FrmOptions
             Types.Settings.Music = False
             ' stop music playing
             StopMusic()
-            CurMusic = ""
+            CurrentMusic = ""
         End If
 
         'sound

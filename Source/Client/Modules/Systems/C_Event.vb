@@ -2266,19 +2266,15 @@ newlist:
     Sub Packet_PlayBGM(ByRef data() As Byte)
         Dim music As String
         Dim buffer As New ByteStream(data)
-        music = buffer.ReadString
 
-        If Types.Settings.MusicExt = ".mid" Then
-            MidiPlayer.Play(Paths.Music & Map.Music)
-        Else
-            PlayMusic(Trim$(music))
-        End If
+        music = buffer.ReadString
+        Map.Music = music
 
         buffer.Dispose()
     End Sub
 
     Sub Packet_FadeOutBGM(ByRef data() As Byte)
-        CurMusic = ""
+        CurrentMusic = ""
         FadeOutSwitch = True
     End Sub
 

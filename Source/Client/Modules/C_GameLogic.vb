@@ -14,7 +14,7 @@ Module C_GameLogic
         Dim starttime As Integer, tick As Integer, fogtmr As Integer, chattmr As Integer
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
         Dim tmr10000 As Integer, tmr1000 As Integer, tmrweather As Integer
-        Dim tmr100 As Integer, tmr500 As Integer, tmrconnect As Integer, TickFPS As Integer
+        Dim tmr25 As Integer, tmr500 As Integer, tmrconnect As Integer, TickFPS As Integer
         Dim fadetmr As Integer, rendertmr As Integer
         Dim animationtmr As Integer
 
@@ -44,11 +44,9 @@ Module C_GameLogic
                     starttime = tick + 1000
                 End If
 
-                ' Update inv animation
-                If NumItems > 0 Then
-                    If tmr100 < tick Then
-                        tmr100 = tick + 100
-                    End If
+                If tmr25 < tick Then
+                    PlayAudio()
+                    tmr25 = tick + 100
                 End If
 
                 If ShowAnimTimer < tick Then
@@ -254,6 +252,11 @@ Module C_GameLogic
                     End If
 
                     tmr500 = tick + 500
+                End If
+
+                If tmr25 < tick Then
+                    PlayAudio()
+                    tmr25 = tick + 100
                 End If
             End If
 
@@ -1788,8 +1791,6 @@ Continue1:
         frmAdmin.Dispose
         frmEditor_Animation.Dispose
         frmOptions.Dispose
-
-        MenuMusic
 
         isLogging = True
         InGame = False

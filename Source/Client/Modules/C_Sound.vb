@@ -16,12 +16,12 @@ Module C_Sound
 
     Friend FadeInSwitch As Boolean
     Friend FadeOutSwitch As Boolean
-    Friend CurMusic As String
+    Friend CurrentMusic As String
     Friend MaxVolume As Single
 
     Sub PlayMusic(fileName As String)
         If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
-        If fileName = CurMusic Then Exit Sub
+        If fileName = CurrentMusic Then Exit Sub
 
         Dim luaVolume As Single = Convert.ToSingle(LuaScripting.Instance().ExecuteScript("AdjustMusicVolume", Types.Settings.Volume)(0))
 
@@ -31,14 +31,14 @@ Module C_Sound
                 MusicPlayer.Loop() = True
                 MusicPlayer.Volume() = luaVolume
                 MusicPlayer.Play()
-                CurMusic = fileName
+                CurrentMusic = fileName
                 FadeInSwitch = True
             Catch ex As Exception
 
             End Try
         Else
             Try
-                CurMusic = fileName
+                CurrentMusic = fileName
                 FadeOutSwitch = True
             Catch ex As Exception
 
@@ -51,7 +51,18 @@ Module C_Sound
         MusicPlayer.Stop()
         MusicPlayer.Dispose()
         MusicPlayer = Nothing
-        CurMusic = ""
+        CurrentMusic = ""
+    End Sub
+
+    Sub PlayAudio()
+        If Types.Settings.MusicExt = ".mid" Then
+            If Not MidiPlayer.IsPlaying() Then
+                MidiPlayer.Play(Paths.Music & Types.Settings.MenuMusic)
+                CurrentMusic = Types.Settings.MenuMusic
+            End If
+        Else
+            PlayMusic(Types.Settings.MenuMusic)
+        End If
     End Sub
 
     Sub PlayPreview(fileName As String)
@@ -61,7 +72,7 @@ Module C_Sound
             Try
                 PreviewPlayer = New Music(Paths.Music & fileName)
                 PreviewPlayer.Loop() = True
-                PreviewPlayer.Volume() = 75
+                PreviewPlayer.Volume() = Types.Settings.Volume
                 PreviewPlayer.Play()
             Catch ex As Exception
 
@@ -71,7 +82,7 @@ Module C_Sound
                 StopPreview()
                 PreviewPlayer = New Music(Paths.Music & fileName)
                 PreviewPlayer.Loop() = True
-                PreviewPlayer.Volume() = 75
+                PreviewPlayer.Volume() = Types.Settings.Volume
                 PreviewPlayer.Play()
             Catch ex As Exception
 
@@ -171,10 +182,10 @@ Module C_Sound
 
         If MusicPlayer.Volume() = 0 OrElse MusicPlayer.Volume() < 3 Then
             FadeOutSwitch = False
-            If CurMusic = "" Then
+            If CurrentMusic = "" Then
                 StopMusic()
             Else
-                tmpmusic = CurMusic
+                tmpmusic = CurrentMusic
                 StopMusic()
                 PlayMusic(tmpmusic)
             End If

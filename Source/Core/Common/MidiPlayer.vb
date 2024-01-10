@@ -12,4 +12,10 @@ Public Class MidiPlayer
         mciSendString(command, Nothing, 0, IntPtr.Zero)
         mciSendString("play MidiSeq", Nothing, 0, IntPtr.Zero)
     End Sub
+
+    Public Shared Function IsPlaying() As Boolean
+        Dim returnData As New StringBuilder(128)
+        mciSendString("status MidiSeq mode", returnData, returnData.Capacity, IntPtr.Zero)
+        Return returnData.ToString().Equals("playing", StringComparison.OrdinalIgnoreCase)
+    End Function
 End Class
