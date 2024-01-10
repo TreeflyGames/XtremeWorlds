@@ -2550,9 +2550,13 @@ End Sub
 
         ' update character screen
         With Windows(GetWindowIndex("winCharacter"))
-            .Controls(GetControlIndex("winCharacter", "lblHealth")).Text = "Health: " & GetPlayerVital(Myindex, VitalType.HP) & "/" & GetPlayerMaxVital(Myindex, VitalType.HP)
-            .Controls(GetControlIndex("winCharacter", "lblSpirit")).Text = "Spirit: " & GetPlayerVital(Myindex, VitalType.MP) & "/" & GetPlayerMaxVital(Myindex, VitalType.MP)
-            .Controls(GetControlIndex("winCharacter", "lblExperience")).Text = "Exp: " & Player(Myindex).Exp & "/" & NextlevelExp
+            .Controls(GetControlIndex("winCharacter", "lblHealth")).Text = "Health"
+            .Controls(GetControlIndex("winCharacter", "lblSpirit")).Text = "Spirit"
+            .Controls(GetControlIndex("winCharacter", "lblExperience")).Text = "Exp"
+            .Controls(GetControlIndex("winCharacter", "lblHealth2")).Text = GetPlayerVital(Myindex, VitalType.HP) & "/" & GetPlayerMaxVital(Myindex, VitalType.HP)
+            .Controls(GetControlIndex("winCharacter", "lblSpirit2")).Text = GetPlayerVital(Myindex, VitalType.MP) & "/" & GetPlayerMaxVital(Myindex, VitalType.MP)
+            .Controls(GetControlIndex("winCharacter", "lblExperience2")).Text = Player(Myindex).Exp & "/" & NextlevelExp
+
         End With
     End Sub
 
@@ -2711,7 +2715,7 @@ End Sub
 
     Public Sub CreateWindow_Character()
         ' Create window
-        CreateWindow("winCharacter", "Character Status", Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseDown), , New Action(AddressOf DrawCharacter))
+        CreateWindow("winCharacter", "Character", Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseDown), , New Action(AddressOf DrawCharacter))
 
         ' Centralise it
         CentralizeWindow(WindowCount)
@@ -2742,10 +2746,18 @@ End Sub
         CreateLabel(WindowCount, "lblHealth", 18, 116, 147, FontSize, "Health", Arial, Color.White)
         CreateLabel(WindowCount, "lblSpirit", 18, 136, 147, FontSize, "Spirit", Arial, Color.White)
         CreateLabel(WindowCount, "lblExperience", 18, 156, 147, FontSize, "Experience", Arial, Color.White)
+        CreateLabel(WindowCount, "lblName2", 0, 36, 147, FontSize, "Name", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblClass2", 0, 56, 147, FontSize, "Class", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblLevel2", 0, 76, 147, FontSize, "Level", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblGuild2", 0, 96, 147, FontSize, "Guild", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblHealth2", 0, 116, 147, FontSize, "Health", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblSpirit2", 0, 136, 147, FontSize, "Spirit", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblExperience2", 0, 156, 147, FontSize, "Experience", Arial, Color.White, AlignmentType.Right)
+
 
         ' Attributes
         CreatePictureBox(WindowCount, "picShadow", 18, 176, 138, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblLabel", 18, 173, 138, FontSize, "Character Attributes", Arial, Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblLabel", 18, 173, 138, FontSize, "Attributes", Arial, Color.White, AlignmentType.Center)
 
         ' Black boxes
         CreatePictureBox(WindowCount, "picBlackBox", 13, 186, 148, 19, , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
@@ -2756,12 +2768,12 @@ End Sub
         CreatePictureBox(WindowCount, "picBlackBox", 13, 286, 148, 19, , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
 
         ' Labels
-        CreateLabel(WindowCount, "lblLabel", 18, 188, 138, FontSize, "Strength:", Arial, Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 208, 138, FontSize, "Endurance:", Arial, Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 228, 138, FontSize, "Intelligence:", Arial, Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 248, 138, FontSize, "Agility:", Arial, Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 268, 138, FontSize, "Willpower:", Arial, Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Stat Points:", Arial, Color.Green)
+        CreateLabel(WindowCount, "lblLabel", 18, 188, 138, FontSize, "Strength", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 208, 138, FontSize, "Endurance", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 228, 138, FontSize, "Intelligence", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 248, 138, FontSize, "Agility", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 268, 138, FontSize, "Willpower", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Stat Points", Arial, Color.Green)
 
         ' Buttons
         CreateButton(WindowCount, "btnStat_1", 144, 188, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint1))
@@ -2778,13 +2790,14 @@ End Sub
         CreatePictureBox(WindowCount, "btnGreyStat_5", 144, 268, 15, 15, , , , , 47, 47, 47)
 
         ' Labels
-        CreateLabel(WindowCount, "lblStat_1", 73, 188, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblStat_2", 85, 208, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblStat_3", 93, 228, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblStat_4", 61, 248, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblStat_5", 80, 268, 100, 15, "255", Arial, Color.White)
-        CreateLabel(WindowCount, "lblPoints", 88, 288, 100, 15, "255", Arial, Color.White)
+        CreateLabel(WindowCount, "lblStat_1", 50, 188, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_2", 50, 208, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_3", 50, 228, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_4", 50, 248, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_5", 50, 268, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblPoints", 50, 288, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
     End Sub
+
 
     ' ###############
     ' ## Character ##
@@ -2981,7 +2994,7 @@ End Sub
         zOrder_Con = 1
 
         ' Name
-        CreateLabel(WindowCount, "lblName", 8, 12, 177, FontSize, "(SB) Flame Sword", Arial, Color.Blue, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblName", 8, 12, 177, FontSize, "Flame Sword", Arial, Color.Blue, AlignmentType.Center)
 
         ' Sprite box
         CreatePictureBox(WindowCount, "picSprite", 18, 32, 68, 68, , , , , , , , DesignType.DescPic, DesignType.DescPic, DesignType.DescPic, , , , , , New Action(AddressOf Description_OnDraw))
@@ -3059,7 +3072,6 @@ End Sub
         ' Close button
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Skills))
     End Sub
-
 
     Sub ResizeGUI()
         Dim Top As Long

@@ -1388,8 +1388,8 @@ End Sub
             startX = GetPlayerX(Myindex) - Types.Settings.CameraWidth
             startY = GetPlayerY(Myindex) - Types.Settings.CameraHeight
         Else
-            startX = Math.Floor(GetPlayerX(Myindex) - ((Types.Settings.CameraWidth) / 2))
-            startY = Math.Floor(GetPlayerY(Myindex) - ((Types.Settings.CameraHeight) / 2))
+            startX = Math.Floor(GetPlayerX(Myindex) - (Types.Settings.CameraWidth) / 2)
+            startY = Math.Floor(GetPlayerY(Myindex) - (Types.Settings.CameraHeight) / 2)
         End If
 
         If startX < 0 Then

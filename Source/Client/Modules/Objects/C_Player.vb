@@ -793,10 +793,14 @@ Module C_Player
 
             ' set form
             With Windows(GetWindowIndex("winCharacter"))
-                .Controls(GetControlIndex("winCharacter", "lblName")).Text = "Name: " & Trim$(GetPlayerName(Myindex))
-                .Controls(GetControlIndex("winCharacter", "lblClass")).Text = "Class: " & Trim$(Job(GetPlayerJob(Myindex)).Name)
-                .Controls(GetControlIndex("winCharacter", "lblLevel")).Text = "Level: " & GetPlayerLevel(Myindex)
-                .Controls(GetControlIndex("winCharacter", "lblGuild")).Text = "Guild: " & "None"
+                .Controls(GetControlIndex("winCharacter", "lblName")).Text = "Name"
+                .Controls(GetControlIndex("winCharacter", "lblClass")).Text = "Class"
+                .Controls(GetControlIndex("winCharacter", "lblLevel")).Text = "Level"
+                .Controls(GetControlIndex("winCharacter", "lblGuild")).Text = "Guild"
+                .Controls(GetControlIndex("winCharacter", "lblName2")).Text = Trim$(GetPlayerName(Myindex))
+                .Controls(GetControlIndex("winCharacter", "lblClass2")).Text =Trim$(Job(GetPlayerJob(Myindex)).Name)
+                .Controls(GetControlIndex("winCharacter", "lblLevel2")).Text = GetPlayerLevel(Myindex)
+                .Controls(GetControlIndex("winCharacter", "lblGuild2")).Text = "None"
                 UpdateStats_UI()
 
                 ' stats
