@@ -1508,13 +1508,8 @@ End Sub
         With Camera
             .Y = offsetY
             .X = offsetX
-            If Types.Settings.CameraType = 1 Then
-                .Height = .Top + Types.Settings.CameraHeight * PicY
-                .Width = .Left + Types.Settings.CameraWidth * PicX
-            Else
-                .Height = Types.Settings.CameraHeight * PicY
-                .Width = Types.Settings.CameraWidth * PicX
-            End If
+            .Height = .Top + Types.Settings.CameraHeight * PicY
+            .Width = .Left + Types.Settings.CameraWidth * PicX
         End With
 
         UpdateDrawMapName()
