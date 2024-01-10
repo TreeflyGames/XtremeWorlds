@@ -22,11 +22,8 @@ Friend Class FrmOptions
         'music
         If optMOn.Checked = True Then
             Types.Settings.Music = True
-            ' start music playing
-            PlayMusic(Trim$(Map.Music))
         Else
             Types.Settings.Music = False
-            ' stop music playing
             StopMusic()
             CurrentMusic = ""
         End If
