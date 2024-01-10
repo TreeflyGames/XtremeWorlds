@@ -1207,7 +1207,7 @@ End Sub
         Dim rect As Rectangle
         Dim attackspeed As Integer
 
-        If MapNpc(mapNpcNum).Num = 0 Then Exit Sub ' no npc set
+        If MapNpc(mapNpcNum).Num = 0 Then Exit Sub
 
         If MapNpc(mapNpcNum).X < TileView.Left OrElse MapNpc(mapNpcNum).X > TileView.Right Then Exit Sub
         If MapNpc(mapNpcNum).Y < TileView.Top OrElse MapNpc(mapNpcNum).Y > TileView.Bottom Then Exit Sub
@@ -1509,11 +1509,11 @@ End Sub
             .Y = offsetY
             .X = offsetX
             If Types.Settings.CameraType = 1 Then
-                .Height = .Top + Types.Settings.CameraHeight + PicY
-                .Width = .Left + Types.Settings.CameraWidth + PicX
+                .Height = .Top + Types.Settings.CameraHeight * PicY
+                .Width = .Left + Types.Settings.CameraWidth * PicX
             Else
-                .Height = Types.Settings.CameraHeight + PicY
-                .Width = Types.Settings.CameraWidth + PicX
+                .Height = Types.Settings.CameraHeight * PicY
+                .Width = Types.Settings.CameraWidth * PicX
             End If
         End With
 
@@ -1548,8 +1548,8 @@ End Sub
 
         ' Draw lower tiles
         If NumTileSets > 0 Then
-            For x = TileView.Left To TileView.Right + 1
-                For y = TileView.Top To TileView.Bottom + 1
+            For x = TileView.Left To TileView.Right
+                For y = TileView.Top To TileView.Bottom
                     If IsValidMapPoint(x, y) Then
                         DrawMapTile(x, y)
                     End If
@@ -1700,8 +1700,8 @@ End Sub
         End If
 
         If NumTileSets > 0 Then
-            For x = TileView.Left To TileView.Right + 1
-                For y = TileView.Top To TileView.Bottom + 1
+            For x = TileView.Left To TileView.Right
+                For y = TileView.Top To TileView.Bottom
                     If IsValidMapPoint(x, y) Then
                         DrawMapFringeTile(x, y)
                     End If
@@ -2031,8 +2031,8 @@ End Sub
     End Sub
 
     Friend Sub DrawGrid()
-        For x = TileView.Left To TileView.Right ' - 1
-            For y = TileView.Top To TileView.Bottom ' - 1
+        For x = TileView.Left To TileView.Right
+            For y = TileView.Top To TileView.Bottom
                 If IsValidMapPoint(x, y) Then
 
                     Dim rec As New RectangleShape With {
