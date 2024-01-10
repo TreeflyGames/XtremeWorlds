@@ -13,7 +13,7 @@ Module C_GameLogic
         Dim i As Integer
         Dim tmr1000 As Integer, tick As Integer, fogtmr As Integer, chattmr As Integer
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
-        Dim tmr10000 As Integer, tmr1000 As Integer, tmrweather As Integer
+        Dim tmrweather As Integer
         Dim tmr25 As Integer, tmr500 As Integer, tmrconnect As Integer, TickFPS As Integer
         Dim fadetmr As Integer, rendertmr As Integer
         Dim animationtmr As Integer
@@ -80,10 +80,6 @@ Module C_GameLogic
                             EventChat = False
                         End If
                     End If
-                End If
-
-                If tmr10000 < tick Then
-                    tmr10000 = tick + 10000
                 End If
 
                 ' screenshake
