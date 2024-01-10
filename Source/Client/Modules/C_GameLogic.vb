@@ -11,7 +11,7 @@ Module C_GameLogic
 
     Sub GameLoop()
         Dim i As Integer
-        Dim starttime As Integer, tick As Integer, fogtmr As Integer, chattmr As Integer
+        Dim tmr1000 As Integer, tick As Integer, fogtmr As Integer, chattmr As Integer
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
         Dim tmr10000 As Integer, tmr1000 As Integer, tmrweather As Integer
         Dim tmr25 As Integer, tmr500 As Integer, tmrconnect As Integer, TickFPS As Integer
@@ -20,8 +20,6 @@ Module C_GameLogic
 
         ' Main game loop
         While InGame Or InMenu
-            starttime = GetTickCount()
-
             If GameDestroyed Then End
 
             tick = GetTickCount()
@@ -36,13 +34,13 @@ Module C_GameLogic
 
             If GameStarted() Then
                 'Calculate FPS
-                If starttime < tick Then
+                If tmr1000 < tick Then
                     Fps = tmpfps
                     Lps = tmplps
                     tmpfps = 0
                     tmplps = 0
                     GetPing()
-                    starttime = tick + 1000
+                    tmr1000 = tick + 1000
                 End If
 
                 If tmr25 < tick Then
