@@ -54,7 +54,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
       var rijndaelManaged2 = rijndaelManaged1;
       using (MemoryStream memoryStream = new MemoryStream())
       {
-        memoryStream.Write(this._rsa.Encrypt(rijndaelManaged2.Key, false), 0, 256);
+        memoryStream.Write(this._rsa?.Encrypt(rijndaelManaged2.Key, false), 0, 256);
         memoryStream.Write(rijndaelManaged2.IV, 0, 16);
         using (ICryptoTransform encryptor = rijndaelManaged2.CreateEncryptor())
         {
