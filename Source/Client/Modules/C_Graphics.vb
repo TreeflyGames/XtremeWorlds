@@ -450,19 +450,17 @@ Module C_Graphics
         Const AspectRatio As Single = 16.0F / 9.0F
         Dim windowAspectRatio As Single = windowSize.X / windowSize.Y
 
-        ' Initialize scale and offset for horizontal letterboxing
+        ' Initialize scale and offset for letterboxing or pillarboxing
         Dim scale As Single
         Dim offsetX As Single = 0
         Dim offsetY As Single = 0
 
         If windowAspectRatio > AspectRatio Then
-            ' Window is wider than the desired aspect ratio, adjust horizontally
-            scale = windowSize.Y / (Types.Settings.CameraHeight * PicY) 
-            offsetX = (windowSize.X - (Types.Settings.CameraWidth * PicX) * scale) / 2 + (PicX * 2)
-            offsetY = (PicY * 2)
+            ' Window is wider than the desired aspect ratio, adjust horizontally (letterboxing)
+            scale = windowSize.Y / Types.Settings.ScreenHeight
+            offsetX = (windowSize.X - Types.Settings.ScreenWidth * scale) / 2 + PicX / 2
         Else
-            ' Window aspect ratio is equal to or less than the desired aspect ratio
-            ' No horizontal adjustment needed
+            ' Window aspect ratio matches the desired aspect ratio
             scale = 1.0F
         End If
 
@@ -471,8 +469,8 @@ Module C_Graphics
         Dim adjustedY As Single = (e.Y - offsetY) / scale
 
         ' Convert adjusted coordinates to game world coordinates
-        CurX = TileView.Left + ((adjustedX + Camera.Left) \ PicX)
-        CurY = TileView.Top + ((adjustedY + Camera.Top) \ PicY)
+        CurX = TileView.Left + Math.Floor((adjustedX + Camera.Left) / PicX)
+        CurY = TileView.Top + Math.Floor((adjustedY + Camera.Top) / PicY)
 
         ' Store raw mouse coordinates for interface interactions
         CurMouseX = adjustedX
@@ -480,6 +478,7 @@ Module C_Graphics
 
         HandleInterfaceEvents(EntState.MouseMove)
     End Sub
+
 
     Private Sub GameWindow_TextEntered(sender As Object, e As TextEventArgs)
         ' e.Unicode is a string, so no conversion is needed
@@ -513,37 +512,39 @@ Module C_Graphics
         GameWindow.Close()
     End Sub
 
-  Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
-    Const AspectRatio As Single = 16.0F / 9.0F
+    Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
+        Const AspectRatio As Single = 16.0F / 9.0F
 
-    ' Calculate the aspect ratio of the new window size
-    Dim windowAspectRatio As Single = e.Width / e.Height
+        e.Height = Types.Settings.ScreenHeight
 
-    ' Calculate the viewport dimensions to maintain the aspect ratio
-    Dim viewport As New FloatRect()
+        ' Calculate the aspect ratio of the new window size
+        Dim windowAspectRatio As Single = e.Width / e.Height
 
-    If windowAspectRatio > AspectRatio Then
-        ' Window is wider than the desired aspect ratio
-        viewport.Height = 1.0F ' Use the full height
-        viewport.Width = AspectRatio / windowAspectRatio
-        viewport.Left = (1.0F - viewport.Width) / 2.0F ' Center horizontally
-        viewport.Top = 0.0F
-    Else
-        ' Window aspect ratio is equal to or less than the desired aspect ratio
-        ' Use the full window size without adjustment
-        viewport.Left = 0.0F
-        viewport.Width = 1.0F
-        viewport.Top = 0.0F
-        viewport.Height = 1.0F
-    End If
+        ' Calculate the viewport dimensions to maintain the aspect ratio
+        Dim viewport As New FloatRect()
 
-    ' Create a new view with the same center and size but a new viewport
-    Dim view As New View(GameWindow.GetView())
-    view.Viewport = viewport
+        If windowAspectRatio > AspectRatio Then
+            ' Window is wider than the desired aspect ratio
+            viewport.Height = 1.0F ' Use the full height
+            viewport.Width = AspectRatio / windowAspectRatio
+            viewport.Left = (1.0F - viewport.Width) / 2.0F ' Center horizontally
+            viewport.Top = 0.0F
+        Else
+            ' Window aspect ratio is equal to or less than the desired aspect ratio
+            ' Use the full window size without adjustment
+            viewport.Left = 0.0F
+            viewport.Width = 1.0F
+            viewport.Top = 0.0F
+            viewport.Height = 1.0F
+        End If
 
-    ' Set the new view to the window
-    GameWindow.SetView(view)
-End Sub
+        ' Create a new view with the same center and size but a new viewport
+        Dim view As New View(GameWindow.GetView())
+        view.Viewport = viewport
+
+        ' Set the new view to the window
+        GameWindow.SetView(view)
+    End Sub
 
 
     Public Sub CenterWindow(ByVal window As RenderWindow)
