@@ -476,6 +476,16 @@ Module C_Graphics
         CurMouseX = adjustedX
         CurMouseY = adjustedY
 
+        If Editor = EditorType.Map Then
+            If Mouse.IsButtonPressed(Mouse.Button.Left) Then
+                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Left, curX, curY, True)
+            End If
+
+            If Mouse.IsButtonPressed(Mouse.Button.Right) Then
+                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Right, curX, curY, True)
+            End If
+        End If
+
         HandleInterfaceEvents(EntState.MouseMove)
     End Sub
 
