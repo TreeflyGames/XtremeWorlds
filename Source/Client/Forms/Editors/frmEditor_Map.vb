@@ -581,6 +581,8 @@ Public Class frmEditor_Map
         lblFogIndex.Text = "Fog: " & scrlFog.Value
         scrlIntensity.Value = Map.WeatherIntensity
         lblIntensity.Text = "Intensity: " & scrlIntensity.Value
+        scrlFogOpacity.Value = Map.FogOpacity
+        scrlFogSpeed.Value = Map.FogSpeed
 
         cmbPanorama.Items.Clear()
         cmbPanorama.Items.Add("None")
