@@ -1836,7 +1836,7 @@ Module C_Graphics
     Friend Sub DrawPanorama(index As Integer)
         If Map.Indoors Then Exit Sub
 
-        If index < 1 OrElse index > NumParallax Then Exit Sub
+        If index < 1 OrElse index > NumPanorama Then Exit Sub
 
         If PanoramaGfxInfo(index).IsLoaded = False Then
             LoadTexture(index, 12)
