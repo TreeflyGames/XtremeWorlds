@@ -599,8 +599,8 @@ Partial Class FrmEditor_Events
         tvCommands.BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
         tvCommands.BorderStyle = BorderStyle.FixedSingle
         tvCommands.ForeColor = Color.Gainsboro
-        tvCommands.Location = New Point(13, 6)
-        tvCommands.Margin = New Padding(7, 6, 7, 6)
+        tvCommands.Location = New Point(10, 5)
+        tvCommands.Margin = New Padding(5)
         tvCommands.Name = "tvCommands"
         TreeNode1.Name = "Node1"
         TreeNode1.Text = "Show Text"
@@ -725,7 +725,7 @@ Partial Class FrmEditor_Events
         TreeNode61.Name = "Node0"
         TreeNode61.Text = "Cutscene Options"
         tvCommands.Nodes.AddRange(New TreeNode() {TreeNode5, TreeNode9, TreeNode14, TreeNode26, TreeNode33, TreeNode35, TreeNode39, TreeNode43, TreeNode48, TreeNode52, TreeNode55, TreeNode61})
-        tvCommands.Size = New Size(823, 1088)
+        tvCommands.Size = New Size(634, 850)
         tvCommands.TabIndex = 1
         ' 
         ' fraPageSetUp
@@ -741,11 +741,11 @@ Partial Class FrmEditor_Events
         fraPageSetUp.Controls.Add(txtName)
         fraPageSetUp.Controls.Add(DarkLabel1)
         fraPageSetUp.ForeColor = Color.Gainsboro
-        fraPageSetUp.Location = New Point(7, 6)
-        fraPageSetUp.Margin = New Padding(7, 6, 7, 6)
+        fraPageSetUp.Location = New Point(5, 5)
+        fraPageSetUp.Margin = New Padding(5)
         fraPageSetUp.Name = "fraPageSetUp"
-        fraPageSetUp.Padding = New Padding(7, 6, 7, 6)
-        fraPageSetUp.Size = New Size(1714, 124)
+        fraPageSetUp.Padding = New Padding(5)
+        fraPageSetUp.Size = New Size(1318, 97)
         fraPageSetUp.TabIndex = 2
         fraPageSetUp.TabStop = False
         fraPageSetUp.Text = "General"
@@ -753,60 +753,60 @@ Partial Class FrmEditor_Events
         ' chkGlobal
         ' 
         chkGlobal.AutoSize = True
-        chkGlobal.Location = New Point(607, 49)
-        chkGlobal.Margin = New Padding(7, 6, 7, 6)
+        chkGlobal.Location = New Point(467, 38)
+        chkGlobal.Margin = New Padding(5)
         chkGlobal.Name = "chkGlobal"
-        chkGlobal.Size = New Size(180, 36)
+        chkGlobal.Size = New Size(137, 29)
         chkGlobal.TabIndex = 7
         chkGlobal.Text = "Global Event"
         ' 
         ' btnClearPage
         ' 
-        btnClearPage.Location = New Point(1532, 38)
-        btnClearPage.Margin = New Padding(7, 6, 7, 6)
+        btnClearPage.Location = New Point(1178, 30)
+        btnClearPage.Margin = New Padding(5)
         btnClearPage.Name = "btnClearPage"
-        btnClearPage.Padding = New Padding(11, 13, 11, 13)
-        btnClearPage.Size = New Size(163, 58)
+        btnClearPage.Padding = New Padding(8, 10, 8, 10)
+        btnClearPage.Size = New Size(125, 45)
         btnClearPage.TabIndex = 6
         btnClearPage.Text = "Clear Page"
         ' 
         ' btnDeletePage
         ' 
-        btnDeletePage.Location = New Point(1348, 38)
-        btnDeletePage.Margin = New Padding(7, 6, 7, 6)
+        btnDeletePage.Location = New Point(1037, 30)
+        btnDeletePage.Margin = New Padding(5)
         btnDeletePage.Name = "btnDeletePage"
-        btnDeletePage.Padding = New Padding(11, 13, 11, 13)
-        btnDeletePage.Size = New Size(171, 58)
+        btnDeletePage.Padding = New Padding(8, 10, 8, 10)
+        btnDeletePage.Size = New Size(132, 45)
         btnDeletePage.TabIndex = 5
         btnDeletePage.Text = "Delete Page"
         ' 
         ' btnPastePage
         ' 
-        btnPastePage.Location = New Point(1172, 38)
-        btnPastePage.Margin = New Padding(7, 6, 7, 6)
+        btnPastePage.Location = New Point(902, 30)
+        btnPastePage.Margin = New Padding(5)
         btnPastePage.Name = "btnPastePage"
-        btnPastePage.Padding = New Padding(11, 13, 11, 13)
-        btnPastePage.Size = New Size(163, 58)
+        btnPastePage.Padding = New Padding(8, 10, 8, 10)
+        btnPastePage.Size = New Size(125, 45)
         btnPastePage.TabIndex = 4
         btnPastePage.Text = "Paste Page"
         ' 
         ' btnCopyPage
         ' 
-        btnCopyPage.Location = New Point(997, 38)
-        btnCopyPage.Margin = New Padding(7, 6, 7, 6)
+        btnCopyPage.Location = New Point(767, 30)
+        btnCopyPage.Margin = New Padding(5)
         btnCopyPage.Name = "btnCopyPage"
-        btnCopyPage.Padding = New Padding(11, 13, 11, 13)
-        btnCopyPage.Size = New Size(163, 58)
+        btnCopyPage.Padding = New Padding(8, 10, 8, 10)
+        btnCopyPage.Size = New Size(125, 45)
         btnCopyPage.TabIndex = 3
         btnCopyPage.Text = "Copy Page"
         ' 
         ' btnNewPage
         ' 
-        btnNewPage.Location = New Point(821, 38)
-        btnNewPage.Margin = New Padding(7, 6, 7, 6)
+        btnNewPage.Location = New Point(632, 30)
+        btnNewPage.Margin = New Padding(5)
         btnNewPage.Name = "btnNewPage"
-        btnNewPage.Padding = New Padding(11, 13, 11, 13)
-        btnNewPage.Size = New Size(163, 58)
+        btnNewPage.Padding = New Padding(8, 10, 8, 10)
+        btnNewPage.Size = New Size(125, 45)
         btnNewPage.TabIndex = 2
         btnNewPage.Text = "New Page"
         ' 
@@ -815,41 +815,41 @@ Partial Class FrmEditor_Events
         txtName.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtName.BorderStyle = BorderStyle.FixedSingle
         txtName.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtName.Location = New Point(182, 47)
-        txtName.Margin = New Padding(7, 6, 7, 6)
+        txtName.Location = New Point(140, 37)
+        txtName.Margin = New Padding(5)
         txtName.Name = "txtName"
-        txtName.Size = New Size(409, 39)
+        txtName.Size = New Size(315, 31)
         txtName.TabIndex = 1
         ' 
         ' DarkLabel1
         ' 
         DarkLabel1.AutoSize = True
         DarkLabel1.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel1.Location = New Point(19, 51)
-        DarkLabel1.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel1.Location = New Point(15, 40)
+        DarkLabel1.Margin = New Padding(5, 0, 5, 0)
         DarkLabel1.Name = "DarkLabel1"
-        DarkLabel1.Size = New Size(149, 32)
+        DarkLabel1.Size = New Size(111, 25)
         DarkLabel1.TabIndex = 0
         DarkLabel1.Text = "Event Name:"
         ' 
         ' tabPages
         ' 
         tabPages.Controls.Add(TabPage1)
-        tabPages.Location = New Point(26, 145)
-        tabPages.Margin = New Padding(7, 6, 7, 6)
+        tabPages.Location = New Point(20, 113)
+        tabPages.Margin = New Padding(5)
         tabPages.Name = "tabPages"
         tabPages.SelectedIndex = 0
-        tabPages.Size = New Size(1536, 47)
+        tabPages.Size = New Size(1182, 37)
         tabPages.TabIndex = 3
         ' 
         ' TabPage1
         ' 
         TabPage1.BackColor = Color.DimGray
-        TabPage1.Location = New Point(8, 46)
-        TabPage1.Margin = New Padding(7, 6, 7, 6)
+        TabPage1.Location = New Point(4, 34)
+        TabPage1.Margin = New Padding(5)
         TabPage1.Name = "TabPage1"
-        TabPage1.Padding = New Padding(7, 6, 7, 6)
-        TabPage1.Size = New Size(1520, 0)
+        TabPage1.Padding = New Padding(5)
+        TabPage1.Size = New Size(1174, 0)
         TabPage1.TabIndex = 0
         TabPage1.Text = "1"
         TabPage1.UseVisualStyleBackColor = True
@@ -868,10 +868,10 @@ Partial Class FrmEditor_Events
         pnlTabPage.Controls.Add(fraCommands)
         pnlTabPage.Controls.Add(lstCommands)
         pnlTabPage.Controls.Add(DarkGroupBox8)
-        pnlTabPage.Location = New Point(7, 198)
-        pnlTabPage.Margin = New Padding(7, 6, 7, 6)
+        pnlTabPage.Location = New Point(5, 155)
+        pnlTabPage.Margin = New Padding(5)
         pnlTabPage.Name = "pnlTabPage"
-        pnlTabPage.Size = New Size(1714, 1222)
+        pnlTabPage.Size = New Size(1318, 955)
         pnlTabPage.TabIndex = 4
         ' 
         ' DarkGroupBox2
@@ -880,11 +880,11 @@ Partial Class FrmEditor_Events
         DarkGroupBox2.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         DarkGroupBox2.Controls.Add(cmbPositioning)
         DarkGroupBox2.ForeColor = Color.Gainsboro
-        DarkGroupBox2.Location = New Point(396, 939)
-        DarkGroupBox2.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox2.Location = New Point(305, 734)
+        DarkGroupBox2.Margin = New Padding(5)
         DarkGroupBox2.Name = "DarkGroupBox2"
-        DarkGroupBox2.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox2.Size = New Size(433, 122)
+        DarkGroupBox2.Padding = New Padding(5)
+        DarkGroupBox2.Size = New Size(333, 95)
         DarkGroupBox2.TabIndex = 15
         DarkGroupBox2.TabStop = False
         DarkGroupBox2.Text = "Poisition"
@@ -894,10 +894,10 @@ Partial Class FrmEditor_Events
         cmbPositioning.DrawMode = DrawMode.OwnerDrawFixed
         cmbPositioning.FormattingEnabled = True
         cmbPositioning.Items.AddRange(New Object() {"Below Characters", "Same as Characters", "Above Characters"})
-        cmbPositioning.Location = New Point(15, 47)
-        cmbPositioning.Margin = New Padding(7, 6, 7, 6)
+        cmbPositioning.Location = New Point(12, 37)
+        cmbPositioning.Margin = New Padding(5)
         cmbPositioning.Name = "cmbPositioning"
-        cmbPositioning.Size = New Size(405, 40)
+        cmbPositioning.Size = New Size(312, 32)
         cmbPositioning.TabIndex = 1
         ' 
         ' fraGraphicPic
@@ -906,11 +906,11 @@ Partial Class FrmEditor_Events
         fraGraphicPic.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         fraGraphicPic.Controls.Add(picGraphic)
         fraGraphicPic.ForeColor = Color.Gainsboro
-        fraGraphicPic.Location = New Point(7, 333)
-        fraGraphicPic.Margin = New Padding(7, 6, 7, 6)
+        fraGraphicPic.Location = New Point(5, 260)
+        fraGraphicPic.Margin = New Padding(5)
         fraGraphicPic.Name = "fraGraphicPic"
-        fraGraphicPic.Padding = New Padding(7, 6, 7, 6)
-        fraGraphicPic.Size = New Size(375, 572)
+        fraGraphicPic.Padding = New Padding(5)
+        fraGraphicPic.Size = New Size(288, 447)
         fraGraphicPic.TabIndex = 12
         fraGraphicPic.TabStop = False
         fraGraphicPic.Text = "Graphic"
@@ -918,10 +918,10 @@ Partial Class FrmEditor_Events
         ' picGraphic
         ' 
         picGraphic.BackgroundImageLayout = ImageLayout.None
-        picGraphic.Location = New Point(13, 47)
-        picGraphic.Margin = New Padding(7, 6, 7, 6)
+        picGraphic.Location = New Point(10, 37)
+        picGraphic.Margin = New Padding(5)
         picGraphic.Name = "picGraphic"
-        picGraphic.Size = New Size(349, 510)
+        picGraphic.Size = New Size(268, 398)
         picGraphic.TabIndex = 1
         picGraphic.TabStop = False
         ' 
@@ -934,11 +934,11 @@ Partial Class FrmEditor_Events
         DarkGroupBox6.Controls.Add(chkDirFix)
         DarkGroupBox6.Controls.Add(chkWalkAnim)
         DarkGroupBox6.ForeColor = Color.Gainsboro
-        DarkGroupBox6.Location = New Point(7, 917)
-        DarkGroupBox6.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox6.Location = New Point(5, 716)
+        DarkGroupBox6.Margin = New Padding(5)
         DarkGroupBox6.Name = "DarkGroupBox6"
-        DarkGroupBox6.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox6.Size = New Size(381, 275)
+        DarkGroupBox6.Padding = New Padding(5)
+        DarkGroupBox6.Size = New Size(293, 215)
         DarkGroupBox6.TabIndex = 10
         DarkGroupBox6.TabStop = False
         DarkGroupBox6.Text = "Options"
@@ -946,40 +946,40 @@ Partial Class FrmEditor_Events
         ' chkShowName
         ' 
         chkShowName.AutoSize = True
-        chkShowName.Location = New Point(15, 218)
-        chkShowName.Margin = New Padding(7, 6, 7, 6)
+        chkShowName.Location = New Point(12, 170)
+        chkShowName.Margin = New Padding(5)
         chkShowName.Name = "chkShowName"
-        chkShowName.Size = New Size(175, 36)
+        chkShowName.Size = New Size(134, 29)
         chkShowName.TabIndex = 3
         chkShowName.Text = "Show Name"
         ' 
         ' chkWalkThrough
         ' 
         chkWalkThrough.AutoSize = True
-        chkWalkThrough.Location = New Point(15, 160)
-        chkWalkThrough.Margin = New Padding(7, 6, 7, 6)
+        chkWalkThrough.Location = New Point(12, 125)
+        chkWalkThrough.Margin = New Padding(5)
         chkWalkThrough.Name = "chkWalkThrough"
-        chkWalkThrough.Size = New Size(195, 36)
+        chkWalkThrough.Size = New Size(148, 29)
         chkWalkThrough.TabIndex = 2
         chkWalkThrough.Text = "Walk Through"
         ' 
         ' chkDirFix
         ' 
         chkDirFix.AutoSize = True
-        chkDirFix.Location = New Point(15, 102)
-        chkDirFix.Margin = New Padding(7, 6, 7, 6)
+        chkDirFix.Location = New Point(12, 80)
+        chkDirFix.Margin = New Padding(5)
         chkDirFix.Name = "chkDirFix"
-        chkDirFix.Size = New Size(206, 36)
+        chkDirFix.Size = New Size(155, 29)
         chkDirFix.TabIndex = 1
         chkDirFix.Text = "Direction Fixed"
         ' 
         ' chkWalkAnim
         ' 
         chkWalkAnim.AutoSize = True
-        chkWalkAnim.Location = New Point(15, 47)
-        chkWalkAnim.Margin = New Padding(7, 6, 7, 6)
+        chkWalkAnim.Location = New Point(12, 37)
+        chkWalkAnim.Margin = New Padding(5)
         chkWalkAnim.Name = "chkWalkAnim"
-        chkWalkAnim.Size = New Size(253, 36)
+        chkWalkAnim.Size = New Size(192, 29)
         chkWalkAnim.TabIndex = 0
         chkWalkAnim.Text = "No Walk Animation"
         ' 
@@ -987,10 +987,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkGroupBox7.BorderColor = Color.FromArgb(CByte(51), CByte(51), CByte(51))
         DarkGroupBox7.Location = New Point(0, 0)
-        DarkGroupBox7.Margin = New Padding(6, 6, 6, 6)
+        DarkGroupBox7.Margin = New Padding(5)
         DarkGroupBox7.Name = "DarkGroupBox7"
-        DarkGroupBox7.Padding = New Padding(6, 6, 6, 6)
-        DarkGroupBox7.Size = New Size(371, 213)
+        DarkGroupBox7.Padding = New Padding(5)
+        DarkGroupBox7.Size = New Size(285, 166)
         DarkGroupBox7.TabIndex = 16
         DarkGroupBox7.TabStop = False
         ' 
@@ -1000,11 +1000,11 @@ Partial Class FrmEditor_Events
         DarkGroupBox5.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         DarkGroupBox5.Controls.Add(cmbTrigger)
         DarkGroupBox5.ForeColor = Color.Gainsboro
-        DarkGroupBox5.Location = New Point(403, 798)
-        DarkGroupBox5.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox5.Location = New Point(310, 623)
+        DarkGroupBox5.Margin = New Padding(5)
         DarkGroupBox5.Name = "DarkGroupBox5"
-        DarkGroupBox5.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox5.Size = New Size(433, 122)
+        DarkGroupBox5.Padding = New Padding(5)
+        DarkGroupBox5.Size = New Size(333, 95)
         DarkGroupBox5.TabIndex = 4
         DarkGroupBox5.TabStop = False
         DarkGroupBox5.Text = "Trigger"
@@ -1014,10 +1014,10 @@ Partial Class FrmEditor_Events
         cmbTrigger.DrawMode = DrawMode.OwnerDrawFixed
         cmbTrigger.FormattingEnabled = True
         cmbTrigger.Items.AddRange(New Object() {"Action Button", "Player Touch", "Parallel Process"})
-        cmbTrigger.Location = New Point(13, 47)
-        cmbTrigger.Margin = New Padding(7, 6, 7, 6)
+        cmbTrigger.Location = New Point(10, 37)
+        cmbTrigger.Margin = New Padding(5)
         cmbTrigger.Name = "cmbTrigger"
-        cmbTrigger.Size = New Size(405, 40)
+        cmbTrigger.Size = New Size(312, 32)
         cmbTrigger.TabIndex = 0
         ' 
         ' DarkGroupBox4
@@ -1026,11 +1026,11 @@ Partial Class FrmEditor_Events
         DarkGroupBox4.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         DarkGroupBox4.Controls.Add(picGraphicSel)
         DarkGroupBox4.ForeColor = Color.Gainsboro
-        DarkGroupBox4.Location = New Point(394, 657)
-        DarkGroupBox4.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox4.Location = New Point(303, 513)
+        DarkGroupBox4.Margin = New Padding(5)
         DarkGroupBox4.Name = "DarkGroupBox4"
-        DarkGroupBox4.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox4.Size = New Size(433, 117)
+        DarkGroupBox4.Padding = New Padding(5)
+        DarkGroupBox4.Size = New Size(333, 91)
         DarkGroupBox4.TabIndex = 3
         DarkGroupBox4.TabStop = False
         DarkGroupBox4.Text = "Positioning"
@@ -1038,10 +1038,10 @@ Partial Class FrmEditor_Events
         ' picGraphicSel
         ' 
         picGraphicSel.BackgroundImageLayout = ImageLayout.None
-        picGraphicSel.Location = New Point(-409, -721)
-        picGraphicSel.Margin = New Padding(7, 6, 7, 6)
+        picGraphicSel.Location = New Point(-315, -563)
+        picGraphicSel.Margin = New Padding(5)
         picGraphicSel.Name = "picGraphicSel"
-        picGraphicSel.Size = New Size(1738, 1265)
+        picGraphicSel.Size = New Size(1337, 988)
         picGraphicSel.TabIndex = 5
         picGraphicSel.TabStop = False
         ' 
@@ -1057,11 +1057,11 @@ Partial Class FrmEditor_Events
         DarkGroupBox3.Controls.Add(cmbMoveType)
         DarkGroupBox3.Controls.Add(DarkLabel5)
         DarkGroupBox3.ForeColor = Color.Gainsboro
-        DarkGroupBox3.Location = New Point(397, 339)
-        DarkGroupBox3.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox3.Location = New Point(305, 265)
+        DarkGroupBox3.Margin = New Padding(5)
         DarkGroupBox3.Name = "DarkGroupBox3"
-        DarkGroupBox3.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox3.Size = New Size(433, 303)
+        DarkGroupBox3.Padding = New Padding(5)
+        DarkGroupBox3.Size = New Size(333, 237)
         DarkGroupBox3.TabIndex = 2
         DarkGroupBox3.TabStop = False
         DarkGroupBox3.Text = "Movement"
@@ -1070,10 +1070,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel7.AutoSize = True
         DarkLabel7.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel7.Location = New Point(13, 245)
-        DarkLabel7.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel7.Location = New Point(10, 191)
+        DarkLabel7.Margin = New Padding(5, 0, 5, 0)
         DarkLabel7.Name = "DarkLabel7"
-        DarkLabel7.Size = New Size(125, 32)
+        DarkLabel7.Size = New Size(93, 25)
         DarkLabel7.TabIndex = 6
         DarkLabel7.Text = "Frequency"
         ' 
@@ -1082,20 +1082,20 @@ Partial Class FrmEditor_Events
         cmbMoveFreq.DrawMode = DrawMode.OwnerDrawFixed
         cmbMoveFreq.FormattingEnabled = True
         cmbMoveFreq.Items.AddRange(New Object() {"Lowest", "Lower", "Normal", "Higher", "Highest"})
-        cmbMoveFreq.Location = New Point(149, 239)
-        cmbMoveFreq.Margin = New Padding(7, 6, 7, 6)
+        cmbMoveFreq.Location = New Point(115, 187)
+        cmbMoveFreq.Margin = New Padding(5)
         cmbMoveFreq.Name = "cmbMoveFreq"
-        cmbMoveFreq.Size = New Size(266, 40)
+        cmbMoveFreq.Size = New Size(206, 32)
         cmbMoveFreq.TabIndex = 5
         ' 
         ' DarkLabel6
         ' 
         DarkLabel6.AutoSize = True
         DarkLabel6.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel6.Location = New Point(13, 179)
-        DarkLabel6.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel6.Location = New Point(10, 140)
+        DarkLabel6.Margin = New Padding(5, 0, 5, 0)
         DarkLabel6.Name = "DarkLabel6"
-        DarkLabel6.Size = New Size(86, 32)
+        DarkLabel6.Size = New Size(66, 25)
         DarkLabel6.TabIndex = 4
         DarkLabel6.Text = "Speed:"
         ' 
@@ -1104,19 +1104,19 @@ Partial Class FrmEditor_Events
         cmbMoveSpeed.DrawMode = DrawMode.OwnerDrawFixed
         cmbMoveSpeed.FormattingEnabled = True
         cmbMoveSpeed.Items.AddRange(New Object() {"8x Slower", "4x Slower", "2x Slower", "Normal", "2x Faster", "4x Faster"})
-        cmbMoveSpeed.Location = New Point(149, 173)
-        cmbMoveSpeed.Margin = New Padding(7, 6, 7, 6)
+        cmbMoveSpeed.Location = New Point(115, 135)
+        cmbMoveSpeed.Margin = New Padding(5)
         cmbMoveSpeed.Name = "cmbMoveSpeed"
-        cmbMoveSpeed.Size = New Size(266, 40)
+        cmbMoveSpeed.Size = New Size(206, 32)
         cmbMoveSpeed.TabIndex = 3
         ' 
         ' btnMoveRoute
         ' 
-        btnMoveRoute.Location = New Point(258, 100)
-        btnMoveRoute.Margin = New Padding(7, 6, 7, 6)
+        btnMoveRoute.Location = New Point(198, 78)
+        btnMoveRoute.Margin = New Padding(5)
         btnMoveRoute.Name = "btnMoveRoute"
-        btnMoveRoute.Padding = New Padding(11, 13, 11, 13)
-        btnMoveRoute.Size = New Size(163, 58)
+        btnMoveRoute.Padding = New Padding(8, 10, 8, 10)
+        btnMoveRoute.Size = New Size(125, 45)
         btnMoveRoute.TabIndex = 2
         btnMoveRoute.Text = "Move Route"
         ' 
@@ -1125,20 +1125,20 @@ Partial Class FrmEditor_Events
         cmbMoveType.DrawMode = DrawMode.OwnerDrawFixed
         cmbMoveType.FormattingEnabled = True
         cmbMoveType.Items.AddRange(New Object() {"Fixed Position", "Random", "Move Route"})
-        cmbMoveType.Location = New Point(149, 34)
-        cmbMoveType.Margin = New Padding(7, 6, 7, 6)
+        cmbMoveType.Location = New Point(115, 27)
+        cmbMoveType.Margin = New Padding(5)
         cmbMoveType.Name = "cmbMoveType"
-        cmbMoveType.Size = New Size(266, 40)
+        cmbMoveType.Size = New Size(206, 32)
         cmbMoveType.TabIndex = 1
         ' 
         ' DarkLabel5
         ' 
         DarkLabel5.AutoSize = True
         DarkLabel5.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel5.Location = New Point(13, 43)
-        DarkLabel5.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel5.Location = New Point(10, 34)
+        DarkLabel5.Margin = New Padding(5, 0, 5, 0)
         DarkLabel5.Name = "DarkLabel5"
-        DarkLabel5.Size = New Size(70, 32)
+        DarkLabel5.Size = New Size(53, 25)
         DarkLabel5.TabIndex = 0
         DarkLabel5.Text = "Type:"
         ' 
@@ -1162,11 +1162,11 @@ Partial Class FrmEditor_Events
         DarkGroupBox1.Controls.Add(cmbPlayerVar)
         DarkGroupBox1.Controls.Add(chkPlayerVar)
         DarkGroupBox1.ForeColor = Color.Gainsboro
-        DarkGroupBox1.Location = New Point(7, 15)
-        DarkGroupBox1.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox1.Location = New Point(5, 12)
+        DarkGroupBox1.Margin = New Padding(5)
         DarkGroupBox1.Name = "DarkGroupBox1"
-        DarkGroupBox1.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox1.Size = New Size(823, 309)
+        DarkGroupBox1.Padding = New Padding(5)
+        DarkGroupBox1.Size = New Size(633, 241)
         DarkGroupBox1.TabIndex = 0
         DarkGroupBox1.TabStop = False
         DarkGroupBox1.Text = "Conditions"
@@ -1176,20 +1176,20 @@ Partial Class FrmEditor_Events
         cmbSelfSwitchCompare.DrawMode = DrawMode.OwnerDrawFixed
         cmbSelfSwitchCompare.FormattingEnabled = True
         cmbSelfSwitchCompare.Items.AddRange(New Object() {"False = 0", "True = 1"})
-        cmbSelfSwitchCompare.Location = New Point(483, 241)
-        cmbSelfSwitchCompare.Margin = New Padding(7, 6, 7, 6)
+        cmbSelfSwitchCompare.Location = New Point(372, 188)
+        cmbSelfSwitchCompare.Margin = New Padding(5)
         cmbSelfSwitchCompare.Name = "cmbSelfSwitchCompare"
-        cmbSelfSwitchCompare.Size = New Size(188, 40)
+        cmbSelfSwitchCompare.Size = New Size(146, 32)
         cmbSelfSwitchCompare.TabIndex = 14
         ' 
         ' DarkLabel4
         ' 
         DarkLabel4.AutoSize = True
         DarkLabel4.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel4.Location = New Point(440, 250)
-        DarkLabel4.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel4.Location = New Point(338, 195)
+        DarkLabel4.Margin = New Padding(5, 0, 5, 0)
         DarkLabel4.Name = "DarkLabel4"
-        DarkLabel4.Size = New Size(30, 32)
+        DarkLabel4.Size = New Size(24, 25)
         DarkLabel4.TabIndex = 13
         DarkLabel4.Text = "is"
         ' 
@@ -1198,19 +1198,19 @@ Partial Class FrmEditor_Events
         cmbSelfSwitch.DrawMode = DrawMode.OwnerDrawFixed
         cmbSelfSwitch.FormattingEnabled = True
         cmbSelfSwitch.Items.AddRange(New Object() {"None", "1 - A", "2 - B", "3 - C", "4 - D"})
-        cmbSelfSwitch.Location = New Point(234, 241)
-        cmbSelfSwitch.Margin = New Padding(7, 6, 7, 6)
+        cmbSelfSwitch.Location = New Point(180, 188)
+        cmbSelfSwitch.Margin = New Padding(5)
         cmbSelfSwitch.Name = "cmbSelfSwitch"
-        cmbSelfSwitch.Size = New Size(188, 40)
+        cmbSelfSwitch.Size = New Size(146, 32)
         cmbSelfSwitch.TabIndex = 12
         ' 
         ' chkSelfSwitch
         ' 
         chkSelfSwitch.AutoSize = True
-        chkSelfSwitch.Location = New Point(13, 245)
-        chkSelfSwitch.Margin = New Padding(7, 6, 7, 6)
+        chkSelfSwitch.Location = New Point(10, 191)
+        chkSelfSwitch.Margin = New Padding(5)
         chkSelfSwitch.Name = "chkSelfSwitch"
-        chkSelfSwitch.Size = New Size(162, 36)
+        chkSelfSwitch.Size = New Size(123, 29)
         chkSelfSwitch.TabIndex = 11
         chkSelfSwitch.Text = "Self Switch"
         ' 
@@ -1218,19 +1218,19 @@ Partial Class FrmEditor_Events
         ' 
         cmbHasItem.DrawMode = DrawMode.OwnerDrawFixed
         cmbHasItem.FormattingEnabled = True
-        cmbHasItem.Location = New Point(234, 175)
-        cmbHasItem.Margin = New Padding(7, 6, 7, 6)
+        cmbHasItem.Location = New Point(180, 137)
+        cmbHasItem.Margin = New Padding(5)
         cmbHasItem.Name = "cmbHasItem"
-        cmbHasItem.Size = New Size(437, 40)
+        cmbHasItem.Size = New Size(337, 32)
         cmbHasItem.TabIndex = 10
         ' 
         ' chkHasItem
         ' 
         chkHasItem.AutoSize = True
-        chkHasItem.Location = New Point(13, 179)
-        chkHasItem.Margin = New Padding(7, 6, 7, 6)
+        chkHasItem.Location = New Point(10, 140)
+        chkHasItem.Margin = New Padding(5)
         chkHasItem.Name = "chkHasItem"
-        chkHasItem.Size = New Size(211, 36)
+        chkHasItem.Size = New Size(161, 29)
         chkHasItem.TabIndex = 9
         chkHasItem.Text = "Player Has Item"
         ' 
@@ -1239,20 +1239,20 @@ Partial Class FrmEditor_Events
         cmbPlayerSwitchCompare.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayerSwitchCompare.FormattingEnabled = True
         cmbPlayerSwitchCompare.Items.AddRange(New Object() {"False = 0", "True = 1"})
-        cmbPlayerSwitchCompare.Location = New Point(483, 109)
-        cmbPlayerSwitchCompare.Margin = New Padding(7, 6, 7, 6)
+        cmbPlayerSwitchCompare.Location = New Point(372, 85)
+        cmbPlayerSwitchCompare.Margin = New Padding(5)
         cmbPlayerSwitchCompare.Name = "cmbPlayerSwitchCompare"
-        cmbPlayerSwitchCompare.Size = New Size(188, 40)
+        cmbPlayerSwitchCompare.Size = New Size(146, 32)
         cmbPlayerSwitchCompare.TabIndex = 8
         ' 
         ' DarkLabel3
         ' 
         DarkLabel3.AutoSize = True
         DarkLabel3.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel3.Location = New Point(440, 115)
-        DarkLabel3.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel3.Location = New Point(338, 90)
+        DarkLabel3.Margin = New Padding(5, 0, 5, 0)
         DarkLabel3.Name = "DarkLabel3"
-        DarkLabel3.Size = New Size(30, 32)
+        DarkLabel3.Size = New Size(24, 25)
         DarkLabel3.TabIndex = 7
         DarkLabel3.Text = "is"
         ' 
@@ -1260,28 +1260,28 @@ Partial Class FrmEditor_Events
         ' 
         cmbPlayerSwitch.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayerSwitch.FormattingEnabled = True
-        cmbPlayerSwitch.Location = New Point(234, 109)
-        cmbPlayerSwitch.Margin = New Padding(7, 6, 7, 6)
+        cmbPlayerSwitch.Location = New Point(180, 85)
+        cmbPlayerSwitch.Margin = New Padding(5)
         cmbPlayerSwitch.Name = "cmbPlayerSwitch"
-        cmbPlayerSwitch.Size = New Size(188, 40)
+        cmbPlayerSwitch.Size = New Size(146, 32)
         cmbPlayerSwitch.TabIndex = 6
         ' 
         ' chkPlayerSwitch
         ' 
         chkPlayerSwitch.AutoSize = True
-        chkPlayerSwitch.Location = New Point(13, 113)
-        chkPlayerSwitch.Margin = New Padding(7, 6, 7, 6)
+        chkPlayerSwitch.Location = New Point(10, 88)
+        chkPlayerSwitch.Margin = New Padding(5)
         chkPlayerSwitch.Name = "chkPlayerSwitch"
-        chkPlayerSwitch.Size = New Size(186, 36)
+        chkPlayerSwitch.Size = New Size(141, 29)
         chkPlayerSwitch.TabIndex = 5
         chkPlayerSwitch.Text = "Player Switch"
         ' 
         ' nudPlayerVariable
         ' 
-        nudPlayerVariable.Location = New Point(689, 45)
-        nudPlayerVariable.Margin = New Padding(7, 6, 7, 6)
+        nudPlayerVariable.Location = New Point(530, 35)
+        nudPlayerVariable.Margin = New Padding(5)
         nudPlayerVariable.Name = "nudPlayerVariable"
-        nudPlayerVariable.Size = New Size(121, 39)
+        nudPlayerVariable.Size = New Size(93, 31)
         nudPlayerVariable.TabIndex = 4
         ' 
         ' cmbPlayervarCompare
@@ -1289,20 +1289,20 @@ Partial Class FrmEditor_Events
         cmbPlayervarCompare.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayervarCompare.FormattingEnabled = True
         cmbPlayervarCompare.Items.AddRange(New Object() {"Equal To", "Great Than OrElse Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
-        cmbPlayervarCompare.Location = New Point(483, 43)
-        cmbPlayervarCompare.Margin = New Padding(7, 6, 7, 6)
+        cmbPlayervarCompare.Location = New Point(372, 34)
+        cmbPlayervarCompare.Margin = New Padding(5)
         cmbPlayervarCompare.Name = "cmbPlayervarCompare"
-        cmbPlayervarCompare.Size = New Size(188, 40)
+        cmbPlayervarCompare.Size = New Size(146, 32)
         cmbPlayervarCompare.TabIndex = 3
         ' 
         ' DarkLabel2
         ' 
         DarkLabel2.AutoSize = True
         DarkLabel2.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel2.Location = New Point(440, 58)
-        DarkLabel2.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel2.Location = New Point(338, 45)
+        DarkLabel2.Margin = New Padding(5, 0, 5, 0)
         DarkLabel2.Name = "DarkLabel2"
-        DarkLabel2.Size = New Size(30, 32)
+        DarkLabel2.Size = New Size(24, 25)
         DarkLabel2.TabIndex = 2
         DarkLabel2.Text = "is"
         ' 
@@ -1310,19 +1310,19 @@ Partial Class FrmEditor_Events
         ' 
         cmbPlayerVar.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayerVar.FormattingEnabled = True
-        cmbPlayerVar.Location = New Point(234, 43)
-        cmbPlayerVar.Margin = New Padding(7, 6, 7, 6)
+        cmbPlayerVar.Location = New Point(180, 34)
+        cmbPlayerVar.Margin = New Padding(5)
         cmbPlayerVar.Name = "cmbPlayerVar"
-        cmbPlayerVar.Size = New Size(188, 40)
+        cmbPlayerVar.Size = New Size(146, 32)
         cmbPlayerVar.TabIndex = 1
         ' 
         ' chkPlayerVar
         ' 
         chkPlayerVar.AutoSize = True
-        chkPlayerVar.Location = New Point(13, 47)
-        chkPlayerVar.Margin = New Padding(7, 6, 7, 6)
+        chkPlayerVar.Location = New Point(10, 37)
+        chkPlayerVar.Margin = New Padding(5)
         chkPlayerVar.Name = "chkPlayerVar"
-        chkPlayerVar.Size = New Size(201, 36)
+        chkPlayerVar.Size = New Size(152, 29)
         chkPlayerVar.TabIndex = 0
         chkPlayerVar.Text = "Player Variable"
         ' 
@@ -1338,11 +1338,11 @@ Partial Class FrmEditor_Events
         fraGraphic.Controls.Add(cmbGraphic)
         fraGraphic.Controls.Add(DarkLabel11)
         fraGraphic.ForeColor = Color.Gainsboro
-        fraGraphic.Location = New Point(843, 13)
-        fraGraphic.Margin = New Padding(7, 6, 7, 6)
+        fraGraphic.Location = New Point(648, 10)
+        fraGraphic.Margin = New Padding(5)
         fraGraphic.Name = "fraGraphic"
-        fraGraphic.Padding = New Padding(7, 6, 7, 6)
-        fraGraphic.Size = New Size(852, 1188)
+        fraGraphic.Padding = New Padding(5)
+        fraGraphic.Size = New Size(655, 928)
         fraGraphic.TabIndex = 14
         fraGraphic.TabStop = False
         fraGraphic.Text = "Graphic Selection"
@@ -1350,21 +1350,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnGraphicOk
         ' 
-        btnGraphicOk.Location = New Point(1413, 1404)
-        btnGraphicOk.Margin = New Padding(7, 6, 7, 6)
+        btnGraphicOk.Location = New Point(1087, 1097)
+        btnGraphicOk.Margin = New Padding(5)
         btnGraphicOk.Name = "btnGraphicOk"
-        btnGraphicOk.Padding = New Padding(11, 13, 11, 13)
-        btnGraphicOk.Size = New Size(163, 58)
+        btnGraphicOk.Padding = New Padding(8, 10, 8, 10)
+        btnGraphicOk.Size = New Size(125, 45)
         btnGraphicOk.TabIndex = 8
         btnGraphicOk.Text = "Ok"
         ' 
         ' btnGraphicCancel
         ' 
-        btnGraphicCancel.Location = New Point(1588, 1404)
-        btnGraphicCancel.Margin = New Padding(7, 6, 7, 6)
+        btnGraphicCancel.Location = New Point(1222, 1097)
+        btnGraphicCancel.Margin = New Padding(5)
         btnGraphicCancel.Name = "btnGraphicCancel"
-        btnGraphicCancel.Padding = New Padding(11, 13, 11, 13)
-        btnGraphicCancel.Size = New Size(163, 58)
+        btnGraphicCancel.Padding = New Padding(8, 10, 8, 10)
+        btnGraphicCancel.Size = New Size(125, 45)
         btnGraphicCancel.TabIndex = 7
         btnGraphicCancel.Text = "Cancel"
         ' 
@@ -1372,29 +1372,29 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel13.AutoSize = True
         DarkLabel13.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel13.Location = New Point(22, 1406)
-        DarkLabel13.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel13.Location = New Point(17, 1098)
+        DarkLabel13.Margin = New Padding(5, 0, 5, 0)
         DarkLabel13.Name = "DarkLabel13"
-        DarkLabel13.Size = New Size(368, 32)
+        DarkLabel13.Size = New Size(272, 25)
         DarkLabel13.TabIndex = 6
         DarkLabel13.Text = "Hold Shift to select multiple tiles."
         ' 
         ' nudGraphic
         ' 
-        nudGraphic.Location = New Point(225, 122)
-        nudGraphic.Margin = New Padding(7, 6, 7, 6)
+        nudGraphic.Location = New Point(173, 95)
+        nudGraphic.Margin = New Padding(5)
         nudGraphic.Name = "nudGraphic"
-        nudGraphic.Size = New Size(468, 39)
+        nudGraphic.Size = New Size(360, 31)
         nudGraphic.TabIndex = 3
         ' 
         ' DarkLabel12
         ' 
         DarkLabel12.AutoSize = True
         DarkLabel12.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel12.Location = New Point(45, 126)
-        DarkLabel12.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel12.Location = New Point(35, 98)
+        DarkLabel12.Margin = New Padding(5, 0, 5, 0)
         DarkLabel12.Name = "DarkLabel12"
-        DarkLabel12.Size = New Size(107, 32)
+        DarkLabel12.Size = New Size(81, 25)
         DarkLabel12.TabIndex = 2
         DarkLabel12.Text = "Number:"
         ' 
@@ -1403,20 +1403,20 @@ Partial Class FrmEditor_Events
         cmbGraphic.DrawMode = DrawMode.OwnerDrawFixed
         cmbGraphic.FormattingEnabled = True
         cmbGraphic.Items.AddRange(New Object() {"None", "Character", "Tileset"})
-        cmbGraphic.Location = New Point(225, 45)
-        cmbGraphic.Margin = New Padding(7, 6, 7, 6)
+        cmbGraphic.Location = New Point(173, 35)
+        cmbGraphic.Margin = New Padding(5)
         cmbGraphic.Name = "cmbGraphic"
-        cmbGraphic.Size = New Size(465, 40)
+        cmbGraphic.Size = New Size(359, 32)
         cmbGraphic.TabIndex = 1
         ' 
         ' DarkLabel11
         ' 
         DarkLabel11.AutoSize = True
         DarkLabel11.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel11.Location = New Point(45, 51)
-        DarkLabel11.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel11.Location = New Point(35, 40)
+        DarkLabel11.Margin = New Padding(5, 0, 5, 0)
         DarkLabel11.Name = "DarkLabel11"
-        DarkLabel11.Size = New Size(168, 32)
+        DarkLabel11.Size = New Size(126, 25)
         DarkLabel11.TabIndex = 0
         DarkLabel11.Text = "Graphics Type:"
         ' 
@@ -1424,20 +1424,20 @@ Partial Class FrmEditor_Events
         ' 
         fraCommands.Controls.Add(btnCancelCommand)
         fraCommands.Controls.Add(tvCommands)
-        fraCommands.Location = New Point(843, 15)
-        fraCommands.Margin = New Padding(7, 6, 7, 6)
+        fraCommands.Location = New Point(648, 12)
+        fraCommands.Margin = New Padding(5)
         fraCommands.Name = "fraCommands"
-        fraCommands.Size = New Size(851, 1186)
+        fraCommands.Size = New Size(655, 927)
         fraCommands.TabIndex = 6
         fraCommands.Visible = False
         ' 
         ' btnCancelCommand
         ' 
-        btnCancelCommand.Location = New Point(676, 1114)
-        btnCancelCommand.Margin = New Padding(7, 6, 7, 6)
+        btnCancelCommand.Location = New Point(520, 870)
+        btnCancelCommand.Margin = New Padding(5)
         btnCancelCommand.Name = "btnCancelCommand"
-        btnCancelCommand.Padding = New Padding(11, 13, 11, 13)
-        btnCancelCommand.Size = New Size(163, 58)
+        btnCancelCommand.Padding = New Padding(8, 10, 8, 10)
+        btnCancelCommand.Size = New Size(125, 45)
         btnCancelCommand.TabIndex = 2
         btnCancelCommand.Text = "Cancel"
         ' 
@@ -1447,10 +1447,11 @@ Partial Class FrmEditor_Events
         lstCommands.BorderStyle = BorderStyle.FixedSingle
         lstCommands.ForeColor = Color.Gainsboro
         lstCommands.FormattingEnabled = True
-        lstCommands.Location = New Point(843, 15)
-        lstCommands.Margin = New Padding(7, 6, 7, 6)
+        lstCommands.ItemHeight = 25
+        lstCommands.Location = New Point(648, 12)
+        lstCommands.Margin = New Padding(5)
         lstCommands.Name = "lstCommands"
-        lstCommands.Size = New Size(849, 1058)
+        lstCommands.Size = New Size(654, 827)
         lstCommands.TabIndex = 8
         ' 
         ' DarkGroupBox8
@@ -1462,82 +1463,82 @@ Partial Class FrmEditor_Events
         DarkGroupBox8.Controls.Add(btnEditCommand)
         DarkGroupBox8.Controls.Add(btnAddCommand)
         DarkGroupBox8.ForeColor = Color.Gainsboro
-        DarkGroupBox8.Location = New Point(843, 1082)
-        DarkGroupBox8.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox8.Location = New Point(648, 845)
+        DarkGroupBox8.Margin = New Padding(5)
         DarkGroupBox8.Name = "DarkGroupBox8"
-        DarkGroupBox8.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox8.Size = New Size(851, 122)
+        DarkGroupBox8.Padding = New Padding(5)
+        DarkGroupBox8.Size = New Size(655, 95)
         DarkGroupBox8.TabIndex = 9
         DarkGroupBox8.TabStop = False
         DarkGroupBox8.Text = "Commands"
         ' 
         ' btnClearCommand
         ' 
-        btnClearCommand.Location = New Point(676, 47)
-        btnClearCommand.Margin = New Padding(7, 6, 7, 6)
+        btnClearCommand.Location = New Point(520, 37)
+        btnClearCommand.Margin = New Padding(5)
         btnClearCommand.Name = "btnClearCommand"
-        btnClearCommand.Padding = New Padding(11, 13, 11, 13)
-        btnClearCommand.Size = New Size(163, 58)
+        btnClearCommand.Padding = New Padding(8, 10, 8, 10)
+        btnClearCommand.Size = New Size(125, 45)
         btnClearCommand.TabIndex = 3
         btnClearCommand.Text = "Clear"
         ' 
         ' btnDeleteCommand
         ' 
-        btnDeleteCommand.Location = New Point(459, 47)
-        btnDeleteCommand.Margin = New Padding(7, 6, 7, 6)
+        btnDeleteCommand.Location = New Point(353, 37)
+        btnDeleteCommand.Margin = New Padding(5)
         btnDeleteCommand.Name = "btnDeleteCommand"
-        btnDeleteCommand.Padding = New Padding(11, 13, 11, 13)
-        btnDeleteCommand.Size = New Size(163, 58)
+        btnDeleteCommand.Padding = New Padding(8, 10, 8, 10)
+        btnDeleteCommand.Size = New Size(125, 45)
         btnDeleteCommand.TabIndex = 2
         btnDeleteCommand.Text = "Delete"
         ' 
         ' btnEditCommand
         ' 
-        btnEditCommand.Location = New Point(234, 47)
-        btnEditCommand.Margin = New Padding(7, 6, 7, 6)
+        btnEditCommand.Location = New Point(180, 37)
+        btnEditCommand.Margin = New Padding(5)
         btnEditCommand.Name = "btnEditCommand"
-        btnEditCommand.Padding = New Padding(11, 13, 11, 13)
-        btnEditCommand.Size = New Size(163, 58)
+        btnEditCommand.Padding = New Padding(8, 10, 8, 10)
+        btnEditCommand.Size = New Size(125, 45)
         btnEditCommand.TabIndex = 1
         btnEditCommand.Text = "Edit"
         ' 
         ' btnAddCommand
         ' 
-        btnAddCommand.Location = New Point(13, 47)
-        btnAddCommand.Margin = New Padding(7, 6, 7, 6)
+        btnAddCommand.Location = New Point(10, 37)
+        btnAddCommand.Margin = New Padding(5)
         btnAddCommand.Name = "btnAddCommand"
-        btnAddCommand.Padding = New Padding(11, 13, 11, 13)
-        btnAddCommand.Size = New Size(163, 58)
+        btnAddCommand.Padding = New Padding(8, 10, 8, 10)
+        btnAddCommand.Size = New Size(125, 45)
         btnAddCommand.TabIndex = 0
         btnAddCommand.Text = "Add"
         ' 
         ' btnLabeling
         ' 
-        btnLabeling.Location = New Point(24, 1427)
-        btnLabeling.Margin = New Padding(7, 6, 7, 6)
+        btnLabeling.Location = New Point(10, 1123)
+        btnLabeling.Margin = New Padding(5)
         btnLabeling.Name = "btnLabeling"
-        btnLabeling.Padding = New Padding(11, 13, 11, 13)
-        btnLabeling.Size = New Size(381, 58)
+        btnLabeling.Padding = New Padding(8, 10, 8, 10)
+        btnLabeling.Size = New Size(293, 45)
         btnLabeling.TabIndex = 6
         btnLabeling.Text = "Edit Variables/Switches"
         ' 
         ' btnCancel
         ' 
-        btnCancel.Location = New Point(1540, 1427)
-        btnCancel.Margin = New Padding(7, 6, 7, 6)
+        btnCancel.Location = New Point(1198, 1123)
+        btnCancel.Margin = New Padding(5)
         btnCancel.Name = "btnCancel"
-        btnCancel.Padding = New Padding(11, 13, 11, 13)
-        btnCancel.Size = New Size(163, 58)
+        btnCancel.Padding = New Padding(8, 10, 8, 10)
+        btnCancel.Size = New Size(125, 45)
         btnCancel.TabIndex = 7
         btnCancel.Text = "Cancel"
         ' 
         ' btnOk
         ' 
-        btnOk.Location = New Point(1361, 1427)
-        btnOk.Margin = New Padding(7, 6, 7, 6)
+        btnOk.Location = New Point(1063, 1123)
+        btnOk.Margin = New Padding(5)
         btnOk.Name = "btnOk"
-        btnOk.Padding = New Padding(11, 13, 11, 13)
-        btnOk.Size = New Size(163, 58)
+        btnOk.Padding = New Padding(8, 10, 8, 10)
+        btnOk.Size = New Size(125, 45)
         btnOk.TabIndex = 8
         btnOk.Text = "Save"
         ' 
@@ -1553,11 +1554,11 @@ Partial Class FrmEditor_Events
         fraMoveRoute.Controls.Add(lstMoveRoute)
         fraMoveRoute.Controls.Add(cmbEvent)
         fraMoveRoute.ForeColor = Color.Gainsboro
-        fraMoveRoute.Location = New Point(1733, 30)
-        fraMoveRoute.Margin = New Padding(7, 6, 7, 6)
+        fraMoveRoute.Location = New Point(1333, 23)
+        fraMoveRoute.Margin = New Padding(5)
         fraMoveRoute.Name = "fraMoveRoute"
-        fraMoveRoute.Padding = New Padding(7, 6, 7, 6)
-        fraMoveRoute.Size = New Size(201, 209)
+        fraMoveRoute.Padding = New Padding(5)
+        fraMoveRoute.Size = New Size(155, 163)
         fraMoveRoute.TabIndex = 0
         fraMoveRoute.TabStop = False
         fraMoveRoute.Text = "Move Route"
@@ -1565,41 +1566,41 @@ Partial Class FrmEditor_Events
         ' 
         ' btnMoveRouteOk
         ' 
-        btnMoveRouteOk.Location = New Point(1391, 1060)
-        btnMoveRouteOk.Margin = New Padding(7, 6, 7, 6)
+        btnMoveRouteOk.Location = New Point(1070, 828)
+        btnMoveRouteOk.Margin = New Padding(5)
         btnMoveRouteOk.Name = "btnMoveRouteOk"
-        btnMoveRouteOk.Padding = New Padding(11, 13, 11, 13)
-        btnMoveRouteOk.Size = New Size(163, 58)
+        btnMoveRouteOk.Padding = New Padding(8, 10, 8, 10)
+        btnMoveRouteOk.Size = New Size(125, 45)
         btnMoveRouteOk.TabIndex = 7
         btnMoveRouteOk.Text = "Ok"
         ' 
         ' btnMoveRouteCancel
         ' 
-        btnMoveRouteCancel.Location = New Point(1567, 1060)
-        btnMoveRouteCancel.Margin = New Padding(7, 6, 7, 6)
+        btnMoveRouteCancel.Location = New Point(1205, 828)
+        btnMoveRouteCancel.Margin = New Padding(5)
         btnMoveRouteCancel.Name = "btnMoveRouteCancel"
-        btnMoveRouteCancel.Padding = New Padding(11, 13, 11, 13)
-        btnMoveRouteCancel.Size = New Size(163, 58)
+        btnMoveRouteCancel.Padding = New Padding(8, 10, 8, 10)
+        btnMoveRouteCancel.Size = New Size(125, 45)
         btnMoveRouteCancel.TabIndex = 6
         btnMoveRouteCancel.Text = "Cancel"
         ' 
         ' chkRepeatRoute
         ' 
         chkRepeatRoute.AutoSize = True
-        chkRepeatRoute.Location = New Point(13, 1118)
-        chkRepeatRoute.Margin = New Padding(7, 6, 7, 6)
+        chkRepeatRoute.Location = New Point(10, 873)
+        chkRepeatRoute.Margin = New Padding(5)
         chkRepeatRoute.Name = "chkRepeatRoute"
-        chkRepeatRoute.Size = New Size(188, 36)
+        chkRepeatRoute.Size = New Size(143, 29)
         chkRepeatRoute.TabIndex = 5
         chkRepeatRoute.Text = "Repeat Route"
         ' 
         ' chkIgnoreMove
         ' 
         chkIgnoreMove.AutoSize = True
-        chkIgnoreMove.Location = New Point(13, 1060)
-        chkIgnoreMove.Margin = New Padding(7, 6, 7, 6)
+        chkIgnoreMove.Location = New Point(10, 828)
+        chkIgnoreMove.Margin = New Padding(5)
         chkIgnoreMove.Name = "chkIgnoreMove"
-        chkIgnoreMove.Size = New Size(328, 36)
+        chkIgnoreMove.Size = New Size(245, 29)
         chkIgnoreMove.TabIndex = 4
         chkIgnoreMove.Text = "Ignore if event can't move"
         ' 
@@ -1609,11 +1610,11 @@ Partial Class FrmEditor_Events
         DarkGroupBox10.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         DarkGroupBox10.Controls.Add(lstvwMoveRoute)
         DarkGroupBox10.ForeColor = Color.Gainsboro
-        DarkGroupBox10.Location = New Point(440, 26)
-        DarkGroupBox10.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox10.Location = New Point(338, 20)
+        DarkGroupBox10.Margin = New Padding(5)
         DarkGroupBox10.Name = "DarkGroupBox10"
-        DarkGroupBox10.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox10.Size = New Size(1289, 1022)
+        DarkGroupBox10.Padding = New Padding(5)
+        DarkGroupBox10.Size = New Size(992, 798)
         DarkGroupBox10.TabIndex = 3
         DarkGroupBox10.TabStop = False
         DarkGroupBox10.Text = "Commands"
@@ -1694,11 +1695,11 @@ Partial Class FrmEditor_Events
         ListViewItem43.Group = ListViewGroup9
         lstvwMoveRoute.Items.AddRange(New ListViewItem() {ListViewItem1, ListViewItem2, ListViewItem3, ListViewItem4, ListViewItem5, ListViewItem6, ListViewItem7, ListViewItem8, ListViewItem9, ListViewItem10, ListViewItem11, ListViewItem12, ListViewItem13, ListViewItem14, ListViewItem15, ListViewItem16, ListViewItem17, ListViewItem18, ListViewItem19, ListViewItem20, ListViewItem21, ListViewItem22, ListViewItem23, ListViewItem24, ListViewItem25, ListViewItem26, ListViewItem27, ListViewItem28, ListViewItem29, ListViewItem30, ListViewItem31, ListViewItem32, ListViewItem33, ListViewItem34, ListViewItem35, ListViewItem36, ListViewItem37, ListViewItem38, ListViewItem39, ListViewItem40, ListViewItem41, ListViewItem42, ListViewItem43})
         lstvwMoveRoute.LabelWrap = False
-        lstvwMoveRoute.Location = New Point(7, 38)
-        lstvwMoveRoute.Margin = New Padding(7, 6, 7, 6)
+        lstvwMoveRoute.Location = New Point(5, 29)
+        lstvwMoveRoute.Margin = New Padding(5)
         lstvwMoveRoute.MultiSelect = False
         lstvwMoveRoute.Name = "lstvwMoveRoute"
-        lstvwMoveRoute.Size = New Size(1275, 977)
+        lstvwMoveRoute.Size = New Size(982, 763)
         lstvwMoveRoute.TabIndex = 5
         lstvwMoveRoute.UseCompatibleStateImageBehavior = False
         lstvwMoveRoute.View = View.Tile
@@ -1719,29 +1720,30 @@ Partial Class FrmEditor_Events
         lstMoveRoute.BorderStyle = BorderStyle.FixedSingle
         lstMoveRoute.ForeColor = Color.Gainsboro
         lstMoveRoute.FormattingEnabled = True
-        lstMoveRoute.Location = New Point(13, 113)
-        lstMoveRoute.Margin = New Padding(7, 6, 7, 6)
+        lstMoveRoute.ItemHeight = 25
+        lstMoveRoute.Location = New Point(10, 88)
+        lstMoveRoute.Margin = New Padding(5)
         lstMoveRoute.Name = "lstMoveRoute"
-        lstMoveRoute.Size = New Size(411, 930)
+        lstMoveRoute.Size = New Size(317, 727)
         lstMoveRoute.TabIndex = 2
         ' 
         ' cmbEvent
         ' 
         cmbEvent.DrawMode = DrawMode.OwnerDrawFixed
         cmbEvent.FormattingEnabled = True
-        cmbEvent.Location = New Point(13, 47)
-        cmbEvent.Margin = New Padding(7, 6, 7, 6)
+        cmbEvent.Location = New Point(10, 37)
+        cmbEvent.Margin = New Padding(5)
         cmbEvent.Name = "cmbEvent"
-        cmbEvent.Size = New Size(409, 40)
+        cmbEvent.Size = New Size(316, 32)
         cmbEvent.TabIndex = 0
         ' 
         ' pnlGraphicSel
         ' 
         pnlGraphicSel.AutoScroll = True
-        pnlGraphicSel.Location = New Point(7, 196)
-        pnlGraphicSel.Margin = New Padding(7, 6, 7, 6)
+        pnlGraphicSel.Location = New Point(5, 153)
+        pnlGraphicSel.Margin = New Padding(5)
         pnlGraphicSel.Name = "pnlGraphicSel"
-        pnlGraphicSel.Size = New Size(1714, 1222)
+        pnlGraphicSel.Size = New Size(1318, 955)
         pnlGraphicSel.TabIndex = 9
         ' 
         ' fraDialogue
@@ -1782,11 +1784,11 @@ Partial Class FrmEditor_Events
         fraDialogue.Controls.Add(fraShowPic)
         fraDialogue.Controls.Add(fraShowText)
         fraDialogue.ForeColor = Color.Gainsboro
-        fraDialogue.Location = New Point(1961, 30)
-        fraDialogue.Margin = New Padding(7, 6, 7, 6)
+        fraDialogue.Location = New Point(1508, 23)
+        fraDialogue.Margin = New Padding(5)
         fraDialogue.Name = "fraDialogue"
-        fraDialogue.Padding = New Padding(7, 6, 7, 6)
-        fraDialogue.Size = New Size(1441, 1466)
+        fraDialogue.Padding = New Padding(5)
+        fraDialogue.Size = New Size(1108, 1145)
         fraDialogue.TabIndex = 10
         fraDialogue.TabStop = False
         fraDialogue.Visible = False
@@ -1826,11 +1828,11 @@ Partial Class FrmEditor_Events
         fraConditionalBranch.Controls.Add(cmbCondition_PlayerVarIndex)
         fraConditionalBranch.Controls.Add(optCondition0)
         fraConditionalBranch.ForeColor = Color.Gainsboro
-        fraConditionalBranch.Location = New Point(13, 17)
-        fraConditionalBranch.Margin = New Padding(7, 6, 7, 6)
+        fraConditionalBranch.Location = New Point(10, 13)
+        fraConditionalBranch.Margin = New Padding(5)
         fraConditionalBranch.Name = "fraConditionalBranch"
-        fraConditionalBranch.Padding = New Padding(7, 6, 7, 6)
-        fraConditionalBranch.Size = New Size(843, 1101)
+        fraConditionalBranch.Padding = New Padding(5)
+        fraConditionalBranch.Size = New Size(648, 860)
         fraConditionalBranch.TabIndex = 0
         fraConditionalBranch.TabStop = False
         fraConditionalBranch.Text = "Conditional Branch"
@@ -1841,40 +1843,40 @@ Partial Class FrmEditor_Events
         cmbCondition_Time.DrawMode = DrawMode.OwnerDrawVariable
         cmbCondition_Time.FormattingEnabled = True
         cmbCondition_Time.Items.AddRange(New Object() {"Day", "Night", "Dawn", "Dusk"})
-        cmbCondition_Time.Location = New Point(518, 570)
-        cmbCondition_Time.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_Time.Location = New Point(398, 445)
+        cmbCondition_Time.Margin = New Padding(5)
         cmbCondition_Time.Name = "cmbCondition_Time"
-        cmbCondition_Time.Size = New Size(307, 40)
+        cmbCondition_Time.Size = New Size(237, 32)
         cmbCondition_Time.TabIndex = 33
         ' 
         ' optCondition9
         ' 
         optCondition9.AutoSize = True
-        optCondition9.Location = New Point(13, 572)
-        optCondition9.Margin = New Padding(7, 6, 7, 6)
+        optCondition9.Location = New Point(10, 447)
+        optCondition9.Margin = New Padding(5)
         optCondition9.Name = "optCondition9"
-        optCondition9.Size = New Size(203, 36)
+        optCondition9.Size = New Size(154, 29)
         optCondition9.TabIndex = 32
         optCondition9.TabStop = True
         optCondition9.Text = "Time of Day is:"
         ' 
         ' btnConditionalBranchOk
         ' 
-        btnConditionalBranchOk.Location = New Point(490, 1024)
-        btnConditionalBranchOk.Margin = New Padding(7, 6, 7, 6)
+        btnConditionalBranchOk.Location = New Point(377, 800)
+        btnConditionalBranchOk.Margin = New Padding(5)
         btnConditionalBranchOk.Name = "btnConditionalBranchOk"
-        btnConditionalBranchOk.Padding = New Padding(11, 13, 11, 13)
-        btnConditionalBranchOk.Size = New Size(163, 58)
+        btnConditionalBranchOk.Padding = New Padding(8, 10, 8, 10)
+        btnConditionalBranchOk.Size = New Size(125, 45)
         btnConditionalBranchOk.TabIndex = 31
         btnConditionalBranchOk.Text = "Ok"
         ' 
         ' btnConditionalBranchCancel
         ' 
-        btnConditionalBranchCancel.Location = New Point(665, 1024)
-        btnConditionalBranchCancel.Margin = New Padding(7, 6, 7, 6)
+        btnConditionalBranchCancel.Location = New Point(512, 800)
+        btnConditionalBranchCancel.Margin = New Padding(5)
         btnConditionalBranchCancel.Name = "btnConditionalBranchCancel"
-        btnConditionalBranchCancel.Padding = New Padding(11, 13, 11, 13)
-        btnConditionalBranchCancel.Size = New Size(163, 58)
+        btnConditionalBranchCancel.Padding = New Padding(8, 10, 8, 10)
+        btnConditionalBranchCancel.Size = New Size(125, 45)
         btnConditionalBranchCancel.TabIndex = 30
         btnConditionalBranchCancel.Text = "Cancel"
         ' 
@@ -1883,19 +1885,19 @@ Partial Class FrmEditor_Events
         cmbCondition_Gender.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_Gender.FormattingEnabled = True
         cmbCondition_Gender.Items.AddRange(New Object() {"Male", "Female"})
-        cmbCondition_Gender.Location = New Point(518, 503)
-        cmbCondition_Gender.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_Gender.Location = New Point(398, 393)
+        cmbCondition_Gender.Margin = New Padding(5)
         cmbCondition_Gender.Name = "cmbCondition_Gender"
-        cmbCondition_Gender.Size = New Size(307, 40)
+        cmbCondition_Gender.Size = New Size(237, 32)
         cmbCondition_Gender.TabIndex = 29
         ' 
         ' optCondition8
         ' 
         optCondition8.AutoSize = True
-        optCondition8.Location = New Point(13, 506)
-        optCondition8.Margin = New Padding(7, 6, 7, 6)
+        optCondition8.Location = New Point(10, 395)
+        optCondition8.Margin = New Padding(5)
         optCondition8.Name = "optCondition8"
-        optCondition8.Size = New Size(217, 36)
+        optCondition8.Size = New Size(163, 29)
         optCondition8.TabIndex = 28
         optCondition8.TabStop = True
         optCondition8.Text = "Player Gender is"
@@ -1905,20 +1907,20 @@ Partial Class FrmEditor_Events
         cmbCondition_SelfSwitchCondition.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_SelfSwitchCondition.FormattingEnabled = True
         cmbCondition_SelfSwitchCondition.Items.AddRange(New Object() {"False", "True"})
-        cmbCondition_SelfSwitchCondition.Location = New Point(568, 450)
-        cmbCondition_SelfSwitchCondition.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_SelfSwitchCondition.Location = New Point(437, 352)
+        cmbCondition_SelfSwitchCondition.Margin = New Padding(5)
         cmbCondition_SelfSwitchCondition.Name = "cmbCondition_SelfSwitchCondition"
-        cmbCondition_SelfSwitchCondition.Size = New Size(257, 40)
+        cmbCondition_SelfSwitchCondition.Size = New Size(199, 32)
         cmbCondition_SelfSwitchCondition.TabIndex = 23
         ' 
         ' DarkLabel17
         ' 
         DarkLabel17.AutoSize = True
         DarkLabel17.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel17.Location = New Point(507, 459)
-        DarkLabel17.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel17.Location = New Point(390, 359)
+        DarkLabel17.Margin = New Padding(5, 0, 5, 0)
         DarkLabel17.Name = "DarkLabel17"
-        DarkLabel17.Size = New Size(30, 32)
+        DarkLabel17.Size = New Size(24, 25)
         DarkLabel17.TabIndex = 22
         DarkLabel17.Text = "is"
         ' 
@@ -1926,38 +1928,38 @@ Partial Class FrmEditor_Events
         ' 
         cmbCondition_SelfSwitch.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_SelfSwitch.FormattingEnabled = True
-        cmbCondition_SelfSwitch.Location = New Point(232, 450)
-        cmbCondition_SelfSwitch.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_SelfSwitch.Location = New Point(178, 352)
+        cmbCondition_SelfSwitch.Margin = New Padding(5)
         cmbCondition_SelfSwitch.Name = "cmbCondition_SelfSwitch"
-        cmbCondition_SelfSwitch.Size = New Size(257, 40)
+        cmbCondition_SelfSwitch.Size = New Size(199, 32)
         cmbCondition_SelfSwitch.TabIndex = 21
         ' 
         ' optCondition6
         ' 
         optCondition6.AutoSize = True
-        optCondition6.Location = New Point(13, 452)
-        optCondition6.Margin = New Padding(7, 6, 7, 6)
+        optCondition6.Location = New Point(10, 353)
+        optCondition6.Margin = New Padding(5)
         optCondition6.Name = "optCondition6"
-        optCondition6.Size = New Size(161, 36)
+        optCondition6.Size = New Size(122, 29)
         optCondition6.TabIndex = 20
         optCondition6.TabStop = True
         optCondition6.Text = "Self Switch"
         ' 
         ' nudCondition_LevelAmount
         ' 
-        nudCondition_LevelAmount.Location = New Point(583, 386)
-        nudCondition_LevelAmount.Margin = New Padding(7, 6, 7, 6)
+        nudCondition_LevelAmount.Location = New Point(448, 302)
+        nudCondition_LevelAmount.Margin = New Padding(5)
         nudCondition_LevelAmount.Name = "nudCondition_LevelAmount"
-        nudCondition_LevelAmount.Size = New Size(245, 39)
+        nudCondition_LevelAmount.Size = New Size(188, 31)
         nudCondition_LevelAmount.TabIndex = 19
         ' 
         ' optCondition5
         ' 
         optCondition5.AutoSize = True
-        optCondition5.Location = New Point(13, 386)
-        optCondition5.Margin = New Padding(7, 6, 7, 6)
+        optCondition5.Location = New Point(10, 302)
+        optCondition5.Margin = New Padding(5)
         optCondition5.Name = "optCondition5"
-        optCondition5.Size = New Size(123, 36)
+        optCondition5.Size = New Size(93, 29)
         optCondition5.TabIndex = 18
         optCondition5.TabStop = True
         optCondition5.Text = "Level is"
@@ -1967,29 +1969,29 @@ Partial Class FrmEditor_Events
         cmbCondition_LevelCompare.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_LevelCompare.FormattingEnabled = True
         cmbCondition_LevelCompare.Items.AddRange(New Object() {"Equal To", "Great Than OrElse Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
-        cmbCondition_LevelCompare.Location = New Point(232, 384)
-        cmbCondition_LevelCompare.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_LevelCompare.Location = New Point(178, 300)
+        cmbCondition_LevelCompare.Margin = New Padding(5)
         cmbCondition_LevelCompare.Name = "cmbCondition_LevelCompare"
-        cmbCondition_LevelCompare.Size = New Size(333, 40)
+        cmbCondition_LevelCompare.Size = New Size(257, 32)
         cmbCondition_LevelCompare.TabIndex = 17
         ' 
         ' cmbCondition_LearntSkill
         ' 
         cmbCondition_LearntSkill.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_LearntSkill.FormattingEnabled = True
-        cmbCondition_LearntSkill.Location = New Point(232, 318)
-        cmbCondition_LearntSkill.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_LearntSkill.Location = New Point(178, 248)
+        cmbCondition_LearntSkill.Margin = New Padding(5)
         cmbCondition_LearntSkill.Name = "cmbCondition_LearntSkill"
-        cmbCondition_LearntSkill.Size = New Size(593, 40)
+        cmbCondition_LearntSkill.Size = New Size(457, 32)
         cmbCondition_LearntSkill.TabIndex = 16
         ' 
         ' optCondition4
         ' 
         optCondition4.AutoSize = True
-        optCondition4.Location = New Point(13, 320)
-        optCondition4.Margin = New Padding(7, 6, 7, 6)
+        optCondition4.Location = New Point(10, 250)
+        optCondition4.Margin = New Padding(5)
         optCondition4.Name = "optCondition4"
-        optCondition4.Size = New Size(164, 36)
+        optCondition4.Size = New Size(125, 29)
         optCondition4.TabIndex = 15
         optCondition4.TabStop = True
         optCondition4.Text = "Knows Skill"
@@ -1998,39 +2000,39 @@ Partial Class FrmEditor_Events
         ' 
         cmbCondition_JobIs.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_JobIs.FormattingEnabled = True
-        cmbCondition_JobIs.Location = New Point(232, 252)
-        cmbCondition_JobIs.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_JobIs.Location = New Point(178, 197)
+        cmbCondition_JobIs.Margin = New Padding(5)
         cmbCondition_JobIs.Name = "cmbCondition_JobIs"
-        cmbCondition_JobIs.Size = New Size(593, 40)
+        cmbCondition_JobIs.Size = New Size(457, 32)
         cmbCondition_JobIs.TabIndex = 14
         ' 
         ' optCondition3
         ' 
         optCondition3.AutoSize = True
-        optCondition3.Location = New Point(13, 254)
-        optCondition3.Margin = New Padding(7, 6, 7, 6)
+        optCondition3.Location = New Point(10, 198)
+        optCondition3.Margin = New Padding(5)
         optCondition3.Name = "optCondition3"
-        optCondition3.Size = New Size(105, 36)
+        optCondition3.Size = New Size(83, 29)
         optCondition3.TabIndex = 13
         optCondition3.TabStop = True
         optCondition3.Text = "Job Is"
         ' 
         ' nudCondition_HasItem
         ' 
-        nudCondition_HasItem.Location = New Point(568, 188)
-        nudCondition_HasItem.Margin = New Padding(7, 6, 7, 6)
+        nudCondition_HasItem.Location = New Point(437, 147)
+        nudCondition_HasItem.Margin = New Padding(5)
         nudCondition_HasItem.Name = "nudCondition_HasItem"
-        nudCondition_HasItem.Size = New Size(260, 39)
+        nudCondition_HasItem.Size = New Size(200, 31)
         nudCondition_HasItem.TabIndex = 12
         ' 
         ' DarkLabel16
         ' 
         DarkLabel16.AutoSize = True
         DarkLabel16.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel16.Location = New Point(507, 192)
-        DarkLabel16.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel16.Location = New Point(390, 150)
+        DarkLabel16.Margin = New Padding(5, 0, 5, 0)
         DarkLabel16.Name = "DarkLabel16"
-        DarkLabel16.Size = New Size(28, 32)
+        DarkLabel16.Size = New Size(23, 25)
         DarkLabel16.TabIndex = 11
         DarkLabel16.Text = "X"
         ' 
@@ -2038,19 +2040,19 @@ Partial Class FrmEditor_Events
         ' 
         cmbCondition_HasItem.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_HasItem.FormattingEnabled = True
-        cmbCondition_HasItem.Location = New Point(232, 186)
-        cmbCondition_HasItem.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_HasItem.Location = New Point(178, 145)
+        cmbCondition_HasItem.Margin = New Padding(5)
         cmbCondition_HasItem.Name = "cmbCondition_HasItem"
-        cmbCondition_HasItem.Size = New Size(257, 40)
+        cmbCondition_HasItem.Size = New Size(199, 32)
         cmbCondition_HasItem.TabIndex = 10
         ' 
         ' optCondition2
         ' 
         optCondition2.AutoSize = True
-        optCondition2.Location = New Point(13, 188)
-        optCondition2.Margin = New Padding(7, 6, 7, 6)
+        optCondition2.Location = New Point(10, 147)
+        optCondition2.Margin = New Padding(5)
         optCondition2.Name = "optCondition2"
-        optCondition2.Size = New Size(139, 36)
+        optCondition2.Size = New Size(108, 29)
         optCondition2.TabIndex = 9
         optCondition2.TabStop = True
         optCondition2.Text = "Has Item"
@@ -2058,10 +2060,10 @@ Partial Class FrmEditor_Events
         ' optCondition1
         ' 
         optCondition1.AutoSize = True
-        optCondition1.Location = New Point(13, 122)
-        optCondition1.Margin = New Padding(7, 6, 7, 6)
+        optCondition1.Location = New Point(10, 95)
+        optCondition1.Margin = New Padding(5)
         optCondition1.Name = "optCondition1"
-        optCondition1.Size = New Size(185, 36)
+        optCondition1.Size = New Size(140, 29)
         optCondition1.TabIndex = 8
         optCondition1.TabStop = True
         optCondition1.Text = "Player Switch"
@@ -2070,10 +2072,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel15.AutoSize = True
         DarkLabel15.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel15.Location = New Point(507, 126)
-        DarkLabel15.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel15.Location = New Point(390, 98)
+        DarkLabel15.Margin = New Padding(5, 0, 5, 0)
         DarkLabel15.Name = "DarkLabel15"
-        DarkLabel15.Size = New Size(30, 32)
+        DarkLabel15.Size = New Size(24, 25)
         DarkLabel15.TabIndex = 7
         DarkLabel15.Text = "is"
         ' 
@@ -2082,28 +2084,28 @@ Partial Class FrmEditor_Events
         cmbCondtion_PlayerSwitchCondition.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondtion_PlayerSwitchCondition.FormattingEnabled = True
         cmbCondtion_PlayerSwitchCondition.Items.AddRange(New Object() {"False", "True"})
-        cmbCondtion_PlayerSwitchCondition.Location = New Point(568, 117)
-        cmbCondtion_PlayerSwitchCondition.Margin = New Padding(7, 6, 7, 6)
+        cmbCondtion_PlayerSwitchCondition.Location = New Point(437, 91)
+        cmbCondtion_PlayerSwitchCondition.Margin = New Padding(5)
         cmbCondtion_PlayerSwitchCondition.Name = "cmbCondtion_PlayerSwitchCondition"
-        cmbCondtion_PlayerSwitchCondition.Size = New Size(257, 40)
+        cmbCondtion_PlayerSwitchCondition.Size = New Size(199, 32)
         cmbCondtion_PlayerSwitchCondition.TabIndex = 6
         ' 
         ' cmbCondition_PlayerSwitch
         ' 
         cmbCondition_PlayerSwitch.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_PlayerSwitch.FormattingEnabled = True
-        cmbCondition_PlayerSwitch.Location = New Point(232, 117)
-        cmbCondition_PlayerSwitch.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_PlayerSwitch.Location = New Point(178, 91)
+        cmbCondition_PlayerSwitch.Margin = New Padding(5)
         cmbCondition_PlayerSwitch.Name = "cmbCondition_PlayerSwitch"
-        cmbCondition_PlayerSwitch.Size = New Size(257, 40)
+        cmbCondition_PlayerSwitch.Size = New Size(199, 32)
         cmbCondition_PlayerSwitch.TabIndex = 5
         ' 
         ' nudCondition_PlayerVarCondition
         ' 
-        nudCondition_PlayerVarCondition.Location = New Point(726, 53)
-        nudCondition_PlayerVarCondition.Margin = New Padding(7, 6, 7, 6)
+        nudCondition_PlayerVarCondition.Location = New Point(558, 41)
+        nudCondition_PlayerVarCondition.Margin = New Padding(5)
         nudCondition_PlayerVarCondition.Name = "nudCondition_PlayerVarCondition"
-        nudCondition_PlayerVarCondition.Size = New Size(102, 39)
+        nudCondition_PlayerVarCondition.Size = New Size(78, 31)
         nudCondition_PlayerVarCondition.TabIndex = 4
         ' 
         ' cmbCondition_PlayerVarCompare
@@ -2111,20 +2113,20 @@ Partial Class FrmEditor_Events
         cmbCondition_PlayerVarCompare.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_PlayerVarCompare.FormattingEnabled = True
         cmbCondition_PlayerVarCompare.Items.AddRange(New Object() {"Equal To", "Great Than OrElse Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
-        cmbCondition_PlayerVarCompare.Location = New Point(511, 51)
-        cmbCondition_PlayerVarCompare.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_PlayerVarCompare.Location = New Point(393, 40)
+        cmbCondition_PlayerVarCompare.Margin = New Padding(5)
         cmbCondition_PlayerVarCompare.Name = "cmbCondition_PlayerVarCompare"
-        cmbCondition_PlayerVarCompare.Size = New Size(186, 40)
+        cmbCondition_PlayerVarCompare.Size = New Size(144, 32)
         cmbCondition_PlayerVarCompare.TabIndex = 3
         ' 
         ' DarkLabel14
         ' 
         DarkLabel14.AutoSize = True
         DarkLabel14.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel14.Location = New Point(468, 60)
-        DarkLabel14.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel14.Location = New Point(360, 47)
+        DarkLabel14.Margin = New Padding(5, 0, 5, 0)
         DarkLabel14.Name = "DarkLabel14"
-        DarkLabel14.Size = New Size(30, 32)
+        DarkLabel14.Size = New Size(24, 25)
         DarkLabel14.TabIndex = 2
         DarkLabel14.Text = "is"
         ' 
@@ -2132,19 +2134,19 @@ Partial Class FrmEditor_Events
         ' 
         cmbCondition_PlayerVarIndex.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_PlayerVarIndex.FormattingEnabled = True
-        cmbCondition_PlayerVarIndex.Location = New Point(232, 51)
-        cmbCondition_PlayerVarIndex.Margin = New Padding(7, 6, 7, 6)
+        cmbCondition_PlayerVarIndex.Location = New Point(178, 40)
+        cmbCondition_PlayerVarIndex.Margin = New Padding(5)
         cmbCondition_PlayerVarIndex.Name = "cmbCondition_PlayerVarIndex"
-        cmbCondition_PlayerVarIndex.Size = New Size(218, 40)
+        cmbCondition_PlayerVarIndex.Size = New Size(169, 32)
         cmbCondition_PlayerVarIndex.TabIndex = 1
         ' 
         ' optCondition0
         ' 
         optCondition0.AutoSize = True
-        optCondition0.Location = New Point(13, 53)
-        optCondition0.Margin = New Padding(7, 6, 7, 6)
+        optCondition0.Location = New Point(10, 41)
+        optCondition0.Margin = New Padding(5)
         optCondition0.Name = "optCondition0"
-        optCondition0.Size = New Size(200, 36)
+        optCondition0.Size = New Size(151, 29)
         optCondition0.TabIndex = 0
         optCondition0.TabStop = True
         optCondition0.Text = "Player Variable"
@@ -2158,11 +2160,11 @@ Partial Class FrmEditor_Events
         fraMoveRouteWait.Controls.Add(DarkLabel79)
         fraMoveRouteWait.Controls.Add(cmbMoveWait)
         fraMoveRouteWait.ForeColor = Color.Gainsboro
-        fraMoveRouteWait.Location = New Point(869, 1218)
-        fraMoveRouteWait.Margin = New Padding(7, 6, 7, 6)
+        fraMoveRouteWait.Location = New Point(668, 952)
+        fraMoveRouteWait.Margin = New Padding(5)
         fraMoveRouteWait.Name = "fraMoveRouteWait"
-        fraMoveRouteWait.Padding = New Padding(7, 6, 7, 6)
-        fraMoveRouteWait.Size = New Size(537, 186)
+        fraMoveRouteWait.Padding = New Padding(5)
+        fraMoveRouteWait.Size = New Size(413, 145)
         fraMoveRouteWait.TabIndex = 48
         fraMoveRouteWait.TabStop = False
         fraMoveRouteWait.Text = "Move Route Wait"
@@ -2170,21 +2172,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnMoveWaitCancel
         ' 
-        btnMoveWaitCancel.Location = New Point(362, 113)
-        btnMoveWaitCancel.Margin = New Padding(7, 6, 7, 6)
+        btnMoveWaitCancel.Location = New Point(278, 88)
+        btnMoveWaitCancel.Margin = New Padding(5)
         btnMoveWaitCancel.Name = "btnMoveWaitCancel"
-        btnMoveWaitCancel.Padding = New Padding(11, 13, 11, 13)
-        btnMoveWaitCancel.Size = New Size(163, 58)
+        btnMoveWaitCancel.Padding = New Padding(8, 10, 8, 10)
+        btnMoveWaitCancel.Size = New Size(125, 45)
         btnMoveWaitCancel.TabIndex = 26
         btnMoveWaitCancel.Text = "Cancel"
         ' 
         ' btnMoveWaitOk
         ' 
-        btnMoveWaitOk.Location = New Point(186, 113)
-        btnMoveWaitOk.Margin = New Padding(7, 6, 7, 6)
+        btnMoveWaitOk.Location = New Point(143, 88)
+        btnMoveWaitOk.Margin = New Padding(5)
         btnMoveWaitOk.Name = "btnMoveWaitOk"
-        btnMoveWaitOk.Padding = New Padding(11, 13, 11, 13)
-        btnMoveWaitOk.Size = New Size(163, 58)
+        btnMoveWaitOk.Padding = New Padding(8, 10, 8, 10)
+        btnMoveWaitOk.Size = New Size(125, 45)
         btnMoveWaitOk.TabIndex = 27
         btnMoveWaitOk.Text = "Ok"
         ' 
@@ -2192,10 +2194,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel79.AutoSize = True
         DarkLabel79.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel79.Location = New Point(15, 53)
-        DarkLabel79.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel79.Location = New Point(12, 41)
+        DarkLabel79.Margin = New Padding(5, 0, 5, 0)
         DarkLabel79.Name = "DarkLabel79"
-        DarkLabel79.Size = New Size(78, 32)
+        DarkLabel79.Size = New Size(59, 25)
         DarkLabel79.TabIndex = 1
         DarkLabel79.Text = "Event:"
         ' 
@@ -2203,10 +2205,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbMoveWait.DrawMode = DrawMode.OwnerDrawFixed
         cmbMoveWait.FormattingEnabled = True
-        cmbMoveWait.Location = New Point(110, 47)
-        cmbMoveWait.Margin = New Padding(7, 6, 7, 6)
+        cmbMoveWait.Location = New Point(85, 37)
+        cmbMoveWait.Margin = New Padding(5)
         cmbMoveWait.Name = "cmbMoveWait"
-        cmbMoveWait.Size = New Size(409, 40)
+        cmbMoveWait.Size = New Size(316, 32)
         cmbMoveWait.TabIndex = 0
         ' 
         ' fraCustomScript
@@ -2218,11 +2220,11 @@ Partial Class FrmEditor_Events
         fraCustomScript.Controls.Add(btnCustomScriptCancel)
         fraCustomScript.Controls.Add(btnCustomScriptOk)
         fraCustomScript.ForeColor = Color.Gainsboro
-        fraCustomScript.Location = New Point(869, 975)
-        fraCustomScript.Margin = New Padding(7, 6, 7, 6)
+        fraCustomScript.Location = New Point(668, 762)
+        fraCustomScript.Margin = New Padding(5)
         fraCustomScript.Name = "fraCustomScript"
-        fraCustomScript.Padding = New Padding(7, 6, 7, 6)
-        fraCustomScript.Size = New Size(537, 235)
+        fraCustomScript.Padding = New Padding(5)
+        fraCustomScript.Size = New Size(413, 184)
         fraCustomScript.TabIndex = 47
         fraCustomScript.TabStop = False
         fraCustomScript.Text = "Execute Custom Script"
@@ -2230,40 +2232,40 @@ Partial Class FrmEditor_Events
         ' 
         ' nudCustomScript
         ' 
-        nudCustomScript.Location = New Point(145, 47)
-        nudCustomScript.Margin = New Padding(7, 6, 7, 6)
+        nudCustomScript.Location = New Point(112, 37)
+        nudCustomScript.Margin = New Padding(5)
         nudCustomScript.Name = "nudCustomScript"
-        nudCustomScript.Size = New Size(366, 39)
+        nudCustomScript.Size = New Size(282, 31)
         nudCustomScript.TabIndex = 1
         ' 
         ' DarkLabel78
         ' 
         DarkLabel78.AutoSize = True
         DarkLabel78.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel78.Location = New Point(22, 51)
-        DarkLabel78.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel78.Location = New Point(17, 40)
+        DarkLabel78.Margin = New Padding(5, 0, 5, 0)
         DarkLabel78.Name = "DarkLabel78"
-        DarkLabel78.Size = New Size(69, 32)
+        DarkLabel78.Size = New Size(53, 25)
         DarkLabel78.TabIndex = 0
         DarkLabel78.Text = "Case:"
         ' 
         ' btnCustomScriptCancel
         ' 
-        btnCustomScriptCancel.Location = New Point(349, 111)
-        btnCustomScriptCancel.Margin = New Padding(7, 6, 7, 6)
+        btnCustomScriptCancel.Location = New Point(268, 87)
+        btnCustomScriptCancel.Margin = New Padding(5)
         btnCustomScriptCancel.Name = "btnCustomScriptCancel"
-        btnCustomScriptCancel.Padding = New Padding(11, 13, 11, 13)
-        btnCustomScriptCancel.Size = New Size(163, 58)
+        btnCustomScriptCancel.Padding = New Padding(8, 10, 8, 10)
+        btnCustomScriptCancel.Size = New Size(125, 45)
         btnCustomScriptCancel.TabIndex = 24
         btnCustomScriptCancel.Text = "Cancel"
         ' 
         ' btnCustomScriptOk
         ' 
-        btnCustomScriptOk.Location = New Point(173, 111)
-        btnCustomScriptOk.Margin = New Padding(7, 6, 7, 6)
+        btnCustomScriptOk.Location = New Point(133, 87)
+        btnCustomScriptOk.Margin = New Padding(5)
         btnCustomScriptOk.Name = "btnCustomScriptOk"
-        btnCustomScriptOk.Padding = New Padding(11, 13, 11, 13)
-        btnCustomScriptOk.Size = New Size(163, 58)
+        btnCustomScriptOk.Padding = New Padding(8, 10, 8, 10)
+        btnCustomScriptOk.Size = New Size(125, 45)
         btnCustomScriptOk.TabIndex = 25
         btnCustomScriptOk.Text = "Ok"
         ' 
@@ -2278,11 +2280,11 @@ Partial Class FrmEditor_Events
         fraSetWeather.Controls.Add(DarkLabel75)
         fraSetWeather.Controls.Add(CmbWeather)
         fraSetWeather.ForeColor = Color.Gainsboro
-        fraSetWeather.Location = New Point(869, 866)
-        fraSetWeather.Margin = New Padding(7, 6, 7, 6)
+        fraSetWeather.Location = New Point(668, 677)
+        fraSetWeather.Margin = New Padding(5)
         fraSetWeather.Name = "fraSetWeather"
-        fraSetWeather.Padding = New Padding(7, 6, 7, 6)
-        fraSetWeather.Size = New Size(537, 235)
+        fraSetWeather.Padding = New Padding(5)
+        fraSetWeather.Size = New Size(413, 184)
         fraSetWeather.TabIndex = 44
         fraSetWeather.TabStop = False
         fraSetWeather.Text = "Set Weather"
@@ -2290,21 +2292,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnSetWeatherOk
         ' 
-        btnSetWeatherOk.Location = New Point(100, 162)
-        btnSetWeatherOk.Margin = New Padding(7, 6, 7, 6)
+        btnSetWeatherOk.Location = New Point(77, 127)
+        btnSetWeatherOk.Margin = New Padding(5)
         btnSetWeatherOk.Name = "btnSetWeatherOk"
-        btnSetWeatherOk.Padding = New Padding(11, 13, 11, 13)
-        btnSetWeatherOk.Size = New Size(163, 58)
+        btnSetWeatherOk.Padding = New Padding(8, 10, 8, 10)
+        btnSetWeatherOk.Size = New Size(125, 45)
         btnSetWeatherOk.TabIndex = 34
         btnSetWeatherOk.Text = "Ok"
         ' 
         ' btnSetWeatherCancel
         ' 
-        btnSetWeatherCancel.Location = New Point(275, 162)
-        btnSetWeatherCancel.Margin = New Padding(7, 6, 7, 6)
+        btnSetWeatherCancel.Location = New Point(212, 127)
+        btnSetWeatherCancel.Margin = New Padding(5)
         btnSetWeatherCancel.Name = "btnSetWeatherCancel"
-        btnSetWeatherCancel.Padding = New Padding(11, 13, 11, 13)
-        btnSetWeatherCancel.Size = New Size(163, 58)
+        btnSetWeatherCancel.Padding = New Padding(8, 10, 8, 10)
+        btnSetWeatherCancel.Size = New Size(125, 45)
         btnSetWeatherCancel.TabIndex = 33
         btnSetWeatherCancel.Text = "Cancel"
         ' 
@@ -2312,29 +2314,29 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel76.AutoSize = True
         DarkLabel76.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel76.Location = New Point(17, 109)
-        DarkLabel76.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel76.Location = New Point(13, 85)
+        DarkLabel76.Margin = New Padding(5, 0, 5, 0)
         DarkLabel76.Name = "DarkLabel76"
-        DarkLabel76.Size = New Size(110, 32)
+        DarkLabel76.Size = New Size(83, 25)
         DarkLabel76.TabIndex = 32
         DarkLabel76.Text = "Intensity:"
         ' 
         ' nudWeatherIntensity
         ' 
-        nudWeatherIntensity.Location = New Point(189, 100)
-        nudWeatherIntensity.Margin = New Padding(7, 6, 7, 6)
+        nudWeatherIntensity.Location = New Point(145, 78)
+        nudWeatherIntensity.Margin = New Padding(5)
         nudWeatherIntensity.Name = "nudWeatherIntensity"
-        nudWeatherIntensity.Size = New Size(336, 39)
+        nudWeatherIntensity.Size = New Size(258, 31)
         nudWeatherIntensity.TabIndex = 31
         ' 
         ' DarkLabel75
         ' 
         DarkLabel75.AutoSize = True
         DarkLabel75.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel75.Location = New Point(13, 45)
-        DarkLabel75.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel75.Location = New Point(10, 35)
+        DarkLabel75.Margin = New Padding(5, 0, 5, 0)
         DarkLabel75.Name = "DarkLabel75"
-        DarkLabel75.Size = New Size(161, 32)
+        DarkLabel75.Size = New Size(119, 25)
         DarkLabel75.TabIndex = 1
         DarkLabel75.Text = "Weather Type"
         ' 
@@ -2343,10 +2345,10 @@ Partial Class FrmEditor_Events
         CmbWeather.DrawMode = DrawMode.OwnerDrawFixed
         CmbWeather.FormattingEnabled = True
         CmbWeather.Items.AddRange(New Object() {"None", "Rain", "Snow", "Hail", "Sand Storm", "Storm"})
-        CmbWeather.Location = New Point(186, 36)
-        CmbWeather.Margin = New Padding(7, 6, 7, 6)
+        CmbWeather.Location = New Point(143, 28)
+        CmbWeather.Margin = New Padding(5)
         CmbWeather.Name = "CmbWeather"
-        CmbWeather.Size = New Size(331, 40)
+        CmbWeather.Size = New Size(256, 32)
         CmbWeather.TabIndex = 0
         ' 
         ' fraSpawnNpc
@@ -2357,11 +2359,11 @@ Partial Class FrmEditor_Events
         fraSpawnNpc.Controls.Add(btnSpawnNpcCancel)
         fraSpawnNpc.Controls.Add(cmbSpawnNpc)
         fraSpawnNpc.ForeColor = Color.Gainsboro
-        fraSpawnNpc.Location = New Point(869, 1013)
-        fraSpawnNpc.Margin = New Padding(7, 6, 7, 6)
+        fraSpawnNpc.Location = New Point(668, 791)
+        fraSpawnNpc.Margin = New Padding(5)
         fraSpawnNpc.Name = "fraSpawnNpc"
-        fraSpawnNpc.Padding = New Padding(7, 6, 7, 6)
-        fraSpawnNpc.Size = New Size(537, 190)
+        fraSpawnNpc.Padding = New Padding(5)
+        fraSpawnNpc.Size = New Size(413, 148)
         fraSpawnNpc.TabIndex = 46
         fraSpawnNpc.TabStop = False
         fraSpawnNpc.Text = "Spawn Npc"
@@ -2369,21 +2371,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnSpawnNpcOk
         ' 
-        btnSpawnNpcOk.Location = New Point(100, 115)
-        btnSpawnNpcOk.Margin = New Padding(7, 6, 7, 6)
+        btnSpawnNpcOk.Location = New Point(77, 90)
+        btnSpawnNpcOk.Margin = New Padding(5)
         btnSpawnNpcOk.Name = "btnSpawnNpcOk"
-        btnSpawnNpcOk.Padding = New Padding(11, 13, 11, 13)
-        btnSpawnNpcOk.Size = New Size(163, 58)
+        btnSpawnNpcOk.Padding = New Padding(8, 10, 8, 10)
+        btnSpawnNpcOk.Size = New Size(125, 45)
         btnSpawnNpcOk.TabIndex = 27
         btnSpawnNpcOk.Text = "Ok"
         ' 
         ' btnSpawnNpcCancel
         ' 
-        btnSpawnNpcCancel.Location = New Point(275, 115)
-        btnSpawnNpcCancel.Margin = New Padding(7, 6, 7, 6)
+        btnSpawnNpcCancel.Location = New Point(212, 90)
+        btnSpawnNpcCancel.Margin = New Padding(5)
         btnSpawnNpcCancel.Name = "btnSpawnNpcCancel"
-        btnSpawnNpcCancel.Padding = New Padding(11, 13, 11, 13)
-        btnSpawnNpcCancel.Size = New Size(163, 58)
+        btnSpawnNpcCancel.Padding = New Padding(8, 10, 8, 10)
+        btnSpawnNpcCancel.Size = New Size(125, 45)
         btnSpawnNpcCancel.TabIndex = 26
         btnSpawnNpcCancel.Text = "Cancel"
         ' 
@@ -2391,10 +2393,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbSpawnNpc.DrawMode = DrawMode.OwnerDrawFixed
         cmbSpawnNpc.FormattingEnabled = True
-        cmbSpawnNpc.Location = New Point(13, 47)
-        cmbSpawnNpc.Margin = New Padding(7, 6, 7, 6)
+        cmbSpawnNpc.Location = New Point(10, 37)
+        cmbSpawnNpc.Margin = New Padding(5)
         cmbSpawnNpc.Name = "cmbSpawnNpc"
-        cmbSpawnNpc.Size = New Size(502, 40)
+        cmbSpawnNpc.Size = New Size(387, 32)
         cmbSpawnNpc.TabIndex = 0
         ' 
         ' fraGiveExp
@@ -2406,11 +2408,11 @@ Partial Class FrmEditor_Events
         fraGiveExp.Controls.Add(nudGiveExp)
         fraGiveExp.Controls.Add(DarkLabel77)
         fraGiveExp.ForeColor = Color.Gainsboro
-        fraGiveExp.Location = New Point(869, 866)
-        fraGiveExp.Margin = New Padding(7, 6, 7, 6)
+        fraGiveExp.Location = New Point(668, 677)
+        fraGiveExp.Margin = New Padding(5)
         fraGiveExp.Name = "fraGiveExp"
-        fraGiveExp.Padding = New Padding(7, 6, 7, 6)
-        fraGiveExp.Size = New Size(537, 179)
+        fraGiveExp.Padding = New Padding(5)
+        fraGiveExp.Size = New Size(413, 140)
         fraGiveExp.TabIndex = 45
         fraGiveExp.TabStop = False
         fraGiveExp.Text = "Give Experience"
@@ -2418,41 +2420,41 @@ Partial Class FrmEditor_Events
         ' 
         ' btnGiveExpOk
         ' 
-        btnGiveExpOk.Location = New Point(108, 111)
-        btnGiveExpOk.Margin = New Padding(7, 6, 7, 6)
+        btnGiveExpOk.Location = New Point(83, 87)
+        btnGiveExpOk.Margin = New Padding(5)
         btnGiveExpOk.Name = "btnGiveExpOk"
-        btnGiveExpOk.Padding = New Padding(11, 13, 11, 13)
-        btnGiveExpOk.Size = New Size(163, 58)
+        btnGiveExpOk.Padding = New Padding(8, 10, 8, 10)
+        btnGiveExpOk.Size = New Size(125, 45)
         btnGiveExpOk.TabIndex = 27
         btnGiveExpOk.Text = "Ok"
         ' 
         ' btnGiveExpCancel
         ' 
-        btnGiveExpCancel.Location = New Point(284, 111)
-        btnGiveExpCancel.Margin = New Padding(7, 6, 7, 6)
+        btnGiveExpCancel.Location = New Point(218, 87)
+        btnGiveExpCancel.Margin = New Padding(5)
         btnGiveExpCancel.Name = "btnGiveExpCancel"
-        btnGiveExpCancel.Padding = New Padding(11, 13, 11, 13)
-        btnGiveExpCancel.Size = New Size(163, 58)
+        btnGiveExpCancel.Padding = New Padding(8, 10, 8, 10)
+        btnGiveExpCancel.Size = New Size(125, 45)
         btnGiveExpCancel.TabIndex = 26
         btnGiveExpCancel.Text = "Cancel"
         ' 
         ' nudGiveExp
         ' 
-        nudGiveExp.Location = New Point(167, 47)
-        nudGiveExp.Margin = New Padding(7, 6, 7, 6)
+        nudGiveExp.Location = New Point(128, 37)
+        nudGiveExp.Margin = New Padding(5)
         nudGiveExp.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
         nudGiveExp.Name = "nudGiveExp"
-        nudGiveExp.Size = New Size(357, 39)
+        nudGiveExp.Size = New Size(275, 31)
         nudGiveExp.TabIndex = 20
         ' 
         ' DarkLabel77
         ' 
         DarkLabel77.AutoSize = True
         DarkLabel77.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel77.Location = New Point(13, 51)
-        DarkLabel77.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel77.Location = New Point(10, 40)
+        DarkLabel77.Margin = New Padding(5, 0, 5, 0)
         DarkLabel77.Name = "DarkLabel77"
-        DarkLabel77.Size = New Size(110, 32)
+        DarkLabel77.Size = New Size(83, 25)
         DarkLabel77.TabIndex = 0
         DarkLabel77.Text = "Give Exp:"
         ' 
@@ -2464,11 +2466,11 @@ Partial Class FrmEditor_Events
         fraEndQuest.Controls.Add(btnEndQuestCancel)
         fraEndQuest.Controls.Add(cmbEndQuest)
         fraEndQuest.ForeColor = Color.Gainsboro
-        fraEndQuest.Location = New Point(869, 1024)
-        fraEndQuest.Margin = New Padding(7, 6, 7, 6)
+        fraEndQuest.Location = New Point(668, 800)
+        fraEndQuest.Margin = New Padding(5)
         fraEndQuest.Name = "fraEndQuest"
-        fraEndQuest.Padding = New Padding(7, 6, 7, 6)
-        fraEndQuest.Size = New Size(537, 179)
+        fraEndQuest.Padding = New Padding(5)
+        fraEndQuest.Size = New Size(413, 140)
         fraEndQuest.TabIndex = 43
         fraEndQuest.TabStop = False
         fraEndQuest.Text = "End Quest"
@@ -2476,21 +2478,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnEndQuestOk
         ' 
-        btnEndQuestOk.Location = New Point(100, 109)
-        btnEndQuestOk.Margin = New Padding(7, 6, 7, 6)
+        btnEndQuestOk.Location = New Point(77, 85)
+        btnEndQuestOk.Margin = New Padding(5)
         btnEndQuestOk.Name = "btnEndQuestOk"
-        btnEndQuestOk.Padding = New Padding(11, 13, 11, 13)
-        btnEndQuestOk.Size = New Size(163, 58)
+        btnEndQuestOk.Padding = New Padding(8, 10, 8, 10)
+        btnEndQuestOk.Size = New Size(125, 45)
         btnEndQuestOk.TabIndex = 30
         btnEndQuestOk.Text = "Ok"
         ' 
         ' btnEndQuestCancel
         ' 
-        btnEndQuestCancel.Location = New Point(275, 109)
-        btnEndQuestCancel.Margin = New Padding(7, 6, 7, 6)
+        btnEndQuestCancel.Location = New Point(212, 85)
+        btnEndQuestCancel.Margin = New Padding(5)
         btnEndQuestCancel.Name = "btnEndQuestCancel"
-        btnEndQuestCancel.Padding = New Padding(11, 13, 11, 13)
-        btnEndQuestCancel.Size = New Size(163, 58)
+        btnEndQuestCancel.Padding = New Padding(8, 10, 8, 10)
+        btnEndQuestCancel.Size = New Size(125, 45)
         btnEndQuestCancel.TabIndex = 29
         btnEndQuestCancel.Text = "Cancel"
         ' 
@@ -2498,10 +2500,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbEndQuest.DrawMode = DrawMode.OwnerDrawFixed
         cmbEndQuest.FormattingEnabled = True
-        cmbEndQuest.Location = New Point(71, 36)
-        cmbEndQuest.Margin = New Padding(7, 6, 7, 6)
+        cmbEndQuest.Location = New Point(55, 28)
+        cmbEndQuest.Margin = New Padding(5)
         cmbEndQuest.Name = "cmbEndQuest"
-        cmbEndQuest.Size = New Size(403, 40)
+        cmbEndQuest.Size = New Size(311, 32)
         cmbEndQuest.TabIndex = 28
         ' 
         ' fraSetAccess
@@ -2512,11 +2514,11 @@ Partial Class FrmEditor_Events
         fraSetAccess.Controls.Add(btnSetAccessCancel)
         fraSetAccess.Controls.Add(cmbSetAccess)
         fraSetAccess.ForeColor = Color.Gainsboro
-        fraSetAccess.Location = New Point(869, 868)
-        fraSetAccess.Margin = New Padding(7, 6, 7, 6)
+        fraSetAccess.Location = New Point(668, 678)
+        fraSetAccess.Margin = New Padding(5)
         fraSetAccess.Name = "fraSetAccess"
-        fraSetAccess.Padding = New Padding(7, 6, 7, 6)
-        fraSetAccess.Size = New Size(537, 196)
+        fraSetAccess.Padding = New Padding(5)
+        fraSetAccess.Size = New Size(413, 153)
         fraSetAccess.TabIndex = 42
         fraSetAccess.TabStop = False
         fraSetAccess.Text = "Set Access"
@@ -2524,21 +2526,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnSetAccessOk
         ' 
-        btnSetAccessOk.Location = New Point(100, 117)
-        btnSetAccessOk.Margin = New Padding(7, 6, 7, 6)
+        btnSetAccessOk.Location = New Point(77, 91)
+        btnSetAccessOk.Margin = New Padding(5)
         btnSetAccessOk.Name = "btnSetAccessOk"
-        btnSetAccessOk.Padding = New Padding(11, 13, 11, 13)
-        btnSetAccessOk.Size = New Size(163, 58)
+        btnSetAccessOk.Padding = New Padding(8, 10, 8, 10)
+        btnSetAccessOk.Size = New Size(125, 45)
         btnSetAccessOk.TabIndex = 27
         btnSetAccessOk.Text = "Ok"
         ' 
         ' btnSetAccessCancel
         ' 
-        btnSetAccessCancel.Location = New Point(275, 117)
-        btnSetAccessCancel.Margin = New Padding(7, 6, 7, 6)
+        btnSetAccessCancel.Location = New Point(212, 91)
+        btnSetAccessCancel.Margin = New Padding(5)
         btnSetAccessCancel.Name = "btnSetAccessCancel"
-        btnSetAccessCancel.Padding = New Padding(11, 13, 11, 13)
-        btnSetAccessCancel.Size = New Size(163, 58)
+        btnSetAccessCancel.Padding = New Padding(8, 10, 8, 10)
+        btnSetAccessCancel.Size = New Size(125, 45)
         btnSetAccessCancel.TabIndex = 26
         btnSetAccessCancel.Text = "Cancel"
         ' 
@@ -2547,10 +2549,10 @@ Partial Class FrmEditor_Events
         cmbSetAccess.DrawMode = DrawMode.OwnerDrawFixed
         cmbSetAccess.FormattingEnabled = True
         cmbSetAccess.Items.AddRange(New Object() {"0: Player", "1: Moderator", "2: Mapper", "3: Developer", "4: Creator"})
-        cmbSetAccess.Location = New Point(71, 47)
-        cmbSetAccess.Margin = New Padding(7, 6, 7, 6)
+        cmbSetAccess.Location = New Point(55, 37)
+        cmbSetAccess.Margin = New Padding(5)
         cmbSetAccess.Name = "cmbSetAccess"
-        cmbSetAccess.Size = New Size(403, 40)
+        cmbSetAccess.Size = New Size(311, 32)
         cmbSetAccess.TabIndex = 0
         ' 
         ' fraOpenShop
@@ -2561,11 +2563,11 @@ Partial Class FrmEditor_Events
         fraOpenShop.Controls.Add(btnOpenShopCancel)
         fraOpenShop.Controls.Add(cmbOpenShop)
         fraOpenShop.ForeColor = Color.Gainsboro
-        fraOpenShop.Location = New Point(873, 533)
-        fraOpenShop.Margin = New Padding(7, 6, 7, 6)
+        fraOpenShop.Location = New Point(672, 416)
+        fraOpenShop.Margin = New Padding(5)
         fraOpenShop.Name = "fraOpenShop"
-        fraOpenShop.Padding = New Padding(7, 6, 7, 6)
-        fraOpenShop.Size = New Size(533, 194)
+        fraOpenShop.Padding = New Padding(5)
+        fraOpenShop.Size = New Size(410, 152)
         fraOpenShop.TabIndex = 39
         fraOpenShop.TabStop = False
         fraOpenShop.Text = "Open Shop"
@@ -2573,21 +2575,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnOpenShopOk
         ' 
-        btnOpenShopOk.Location = New Point(95, 115)
-        btnOpenShopOk.Margin = New Padding(7, 6, 7, 6)
+        btnOpenShopOk.Location = New Point(73, 90)
+        btnOpenShopOk.Margin = New Padding(5)
         btnOpenShopOk.Name = "btnOpenShopOk"
-        btnOpenShopOk.Padding = New Padding(11, 13, 11, 13)
-        btnOpenShopOk.Size = New Size(163, 58)
+        btnOpenShopOk.Padding = New Padding(8, 10, 8, 10)
+        btnOpenShopOk.Size = New Size(125, 45)
         btnOpenShopOk.TabIndex = 27
         btnOpenShopOk.Text = "Ok"
         ' 
         ' btnOpenShopCancel
         ' 
-        btnOpenShopCancel.Location = New Point(271, 115)
-        btnOpenShopCancel.Margin = New Padding(7, 6, 7, 6)
+        btnOpenShopCancel.Location = New Point(208, 90)
+        btnOpenShopCancel.Margin = New Padding(5)
         btnOpenShopCancel.Name = "btnOpenShopCancel"
-        btnOpenShopCancel.Padding = New Padding(11, 13, 11, 13)
-        btnOpenShopCancel.Size = New Size(163, 58)
+        btnOpenShopCancel.Padding = New Padding(8, 10, 8, 10)
+        btnOpenShopCancel.Size = New Size(125, 45)
         btnOpenShopCancel.TabIndex = 26
         btnOpenShopCancel.Text = "Cancel"
         ' 
@@ -2595,10 +2597,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbOpenShop.DrawMode = DrawMode.OwnerDrawFixed
         cmbOpenShop.FormattingEnabled = True
-        cmbOpenShop.Location = New Point(19, 49)
-        cmbOpenShop.Margin = New Padding(7, 6, 7, 6)
+        cmbOpenShop.Location = New Point(15, 38)
+        cmbOpenShop.Margin = New Padding(5)
         cmbOpenShop.Name = "cmbOpenShop"
-        cmbOpenShop.Size = New Size(485, 40)
+        cmbOpenShop.Size = New Size(374, 32)
         cmbOpenShop.TabIndex = 0
         ' 
         ' fraChangeLevel
@@ -2610,11 +2612,11 @@ Partial Class FrmEditor_Events
         fraChangeLevel.Controls.Add(DarkLabel65)
         fraChangeLevel.Controls.Add(nudChangeLevel)
         fraChangeLevel.ForeColor = Color.Gainsboro
-        fraChangeLevel.Location = New Point(869, 721)
-        fraChangeLevel.Margin = New Padding(7, 6, 7, 6)
+        fraChangeLevel.Location = New Point(668, 563)
+        fraChangeLevel.Margin = New Padding(5)
         fraChangeLevel.Name = "fraChangeLevel"
-        fraChangeLevel.Padding = New Padding(7, 6, 7, 6)
-        fraChangeLevel.Size = New Size(537, 177)
+        fraChangeLevel.Padding = New Padding(5)
+        fraChangeLevel.Size = New Size(413, 138)
         fraChangeLevel.TabIndex = 38
         fraChangeLevel.TabStop = False
         fraChangeLevel.Text = "Change Level"
@@ -2622,21 +2624,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnChangeLevelOk
         ' 
-        btnChangeLevelOk.Location = New Point(100, 111)
-        btnChangeLevelOk.Margin = New Padding(7, 6, 7, 6)
+        btnChangeLevelOk.Location = New Point(77, 87)
+        btnChangeLevelOk.Margin = New Padding(5)
         btnChangeLevelOk.Name = "btnChangeLevelOk"
-        btnChangeLevelOk.Padding = New Padding(11, 13, 11, 13)
-        btnChangeLevelOk.Size = New Size(163, 58)
+        btnChangeLevelOk.Padding = New Padding(8, 10, 8, 10)
+        btnChangeLevelOk.Size = New Size(125, 45)
         btnChangeLevelOk.TabIndex = 27
         btnChangeLevelOk.Text = "Ok"
         ' 
         ' btnChangeLevelCancel
         ' 
-        btnChangeLevelCancel.Location = New Point(275, 111)
-        btnChangeLevelCancel.Margin = New Padding(7, 6, 7, 6)
+        btnChangeLevelCancel.Location = New Point(212, 87)
+        btnChangeLevelCancel.Margin = New Padding(5)
         btnChangeLevelCancel.Name = "btnChangeLevelCancel"
-        btnChangeLevelCancel.Padding = New Padding(11, 13, 11, 13)
-        btnChangeLevelCancel.Size = New Size(163, 58)
+        btnChangeLevelCancel.Padding = New Padding(8, 10, 8, 10)
+        btnChangeLevelCancel.Size = New Size(125, 45)
         btnChangeLevelCancel.TabIndex = 26
         btnChangeLevelCancel.Text = "Cancel"
         ' 
@@ -2644,19 +2646,19 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel65.AutoSize = True
         DarkLabel65.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel65.Location = New Point(15, 51)
-        DarkLabel65.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel65.Location = New Point(12, 40)
+        DarkLabel65.Margin = New Padding(5, 0, 5, 0)
         DarkLabel65.Name = "DarkLabel65"
-        DarkLabel65.Size = New Size(74, 32)
+        DarkLabel65.Size = New Size(55, 25)
         DarkLabel65.TabIndex = 24
         DarkLabel65.Text = "Level:"
         ' 
         ' nudChangeLevel
         ' 
-        nudChangeLevel.Location = New Point(130, 47)
-        nudChangeLevel.Margin = New Padding(7, 6, 7, 6)
+        nudChangeLevel.Location = New Point(100, 37)
+        nudChangeLevel.Margin = New Padding(5)
         nudChangeLevel.Name = "nudChangeLevel"
-        nudChangeLevel.Size = New Size(260, 39)
+        nudChangeLevel.Size = New Size(200, 31)
         nudChangeLevel.TabIndex = 23
         ' 
         ' fraChangeGender
@@ -2668,11 +2670,11 @@ Partial Class FrmEditor_Events
         fraChangeGender.Controls.Add(optChangeSexFemale)
         fraChangeGender.Controls.Add(optChangeSexMale)
         fraChangeGender.ForeColor = Color.Gainsboro
-        fraChangeGender.Location = New Point(869, 896)
-        fraChangeGender.Margin = New Padding(7, 6, 7, 6)
+        fraChangeGender.Location = New Point(668, 700)
+        fraChangeGender.Margin = New Padding(5)
         fraChangeGender.Name = "fraChangeGender"
-        fraChangeGender.Padding = New Padding(7, 6, 7, 6)
-        fraChangeGender.Size = New Size(537, 177)
+        fraChangeGender.Padding = New Padding(5)
+        fraChangeGender.Size = New Size(413, 138)
         fraChangeGender.TabIndex = 37
         fraChangeGender.TabStop = False
         fraChangeGender.Text = "Change Player Gender"
@@ -2680,31 +2682,31 @@ Partial Class FrmEditor_Events
         ' 
         ' btnChangeGenderOk
         ' 
-        btnChangeGenderOk.Location = New Point(85, 102)
-        btnChangeGenderOk.Margin = New Padding(7, 6, 7, 6)
+        btnChangeGenderOk.Location = New Point(65, 80)
+        btnChangeGenderOk.Margin = New Padding(5)
         btnChangeGenderOk.Name = "btnChangeGenderOk"
-        btnChangeGenderOk.Padding = New Padding(11, 13, 11, 13)
-        btnChangeGenderOk.Size = New Size(163, 58)
+        btnChangeGenderOk.Padding = New Padding(8, 10, 8, 10)
+        btnChangeGenderOk.Size = New Size(125, 45)
         btnChangeGenderOk.TabIndex = 27
         btnChangeGenderOk.Text = "Ok"
         ' 
         ' btnChangeGenderCancel
         ' 
-        btnChangeGenderCancel.Location = New Point(260, 102)
-        btnChangeGenderCancel.Margin = New Padding(7, 6, 7, 6)
+        btnChangeGenderCancel.Location = New Point(200, 80)
+        btnChangeGenderCancel.Margin = New Padding(5)
         btnChangeGenderCancel.Name = "btnChangeGenderCancel"
-        btnChangeGenderCancel.Padding = New Padding(11, 13, 11, 13)
-        btnChangeGenderCancel.Size = New Size(163, 58)
+        btnChangeGenderCancel.Padding = New Padding(8, 10, 8, 10)
+        btnChangeGenderCancel.Size = New Size(125, 45)
         btnChangeGenderCancel.TabIndex = 26
         btnChangeGenderCancel.Text = "Cancel"
         ' 
         ' optChangeSexFemale
         ' 
         optChangeSexFemale.AutoSize = True
-        optChangeSexFemale.Location = New Point(305, 47)
-        optChangeSexFemale.Margin = New Padding(7, 6, 7, 6)
+        optChangeSexFemale.Location = New Point(235, 37)
+        optChangeSexFemale.Margin = New Padding(5)
         optChangeSexFemale.Name = "optChangeSexFemale"
-        optChangeSexFemale.Size = New Size(122, 36)
+        optChangeSexFemale.Size = New Size(93, 29)
         optChangeSexFemale.TabIndex = 1
         optChangeSexFemale.TabStop = True
         optChangeSexFemale.Text = "Female"
@@ -2712,10 +2714,10 @@ Partial Class FrmEditor_Events
         ' optChangeSexMale
         ' 
         optChangeSexMale.AutoSize = True
-        optChangeSexMale.Location = New Point(113, 47)
-        optChangeSexMale.Margin = New Padding(7, 6, 7, 6)
+        optChangeSexMale.Location = New Point(87, 37)
+        optChangeSexMale.Margin = New Padding(5)
         optChangeSexMale.Name = "optChangeSexMale"
-        optChangeSexMale.Size = New Size(98, 36)
+        optChangeSexMale.Size = New Size(75, 29)
         optChangeSexMale.TabIndex = 0
         optChangeSexMale.TabStop = True
         optChangeSexMale.Text = "Male"
@@ -2729,11 +2731,11 @@ Partial Class FrmEditor_Events
         fraGoToLabel.Controls.Add(txtGotoLabel)
         fraGoToLabel.Controls.Add(DarkLabel60)
         fraGoToLabel.ForeColor = Color.Gainsboro
-        fraGoToLabel.Location = New Point(869, 627)
-        fraGoToLabel.Margin = New Padding(7, 6, 7, 6)
+        fraGoToLabel.Location = New Point(668, 490)
+        fraGoToLabel.Margin = New Padding(5)
         fraGoToLabel.Name = "fraGoToLabel"
-        fraGoToLabel.Padding = New Padding(7, 6, 7, 6)
-        fraGoToLabel.Size = New Size(537, 179)
+        fraGoToLabel.Padding = New Padding(5)
+        fraGoToLabel.Size = New Size(413, 140)
         fraGoToLabel.TabIndex = 35
         fraGoToLabel.TabStop = False
         fraGoToLabel.Text = "GoTo Label"
@@ -2741,21 +2743,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnGoToLabelOk
         ' 
-        btnGoToLabelOk.Location = New Point(186, 109)
-        btnGoToLabelOk.Margin = New Padding(7, 6, 7, 6)
+        btnGoToLabelOk.Location = New Point(143, 85)
+        btnGoToLabelOk.Margin = New Padding(5)
         btnGoToLabelOk.Name = "btnGoToLabelOk"
-        btnGoToLabelOk.Padding = New Padding(11, 13, 11, 13)
-        btnGoToLabelOk.Size = New Size(163, 58)
+        btnGoToLabelOk.Padding = New Padding(8, 10, 8, 10)
+        btnGoToLabelOk.Size = New Size(125, 45)
         btnGoToLabelOk.TabIndex = 27
         btnGoToLabelOk.Text = "Ok"
         ' 
         ' btnGoToLabelCancel
         ' 
-        btnGoToLabelCancel.Location = New Point(362, 109)
-        btnGoToLabelCancel.Margin = New Padding(7, 6, 7, 6)
+        btnGoToLabelCancel.Location = New Point(278, 85)
+        btnGoToLabelCancel.Margin = New Padding(5)
         btnGoToLabelCancel.Name = "btnGoToLabelCancel"
-        btnGoToLabelCancel.Padding = New Padding(11, 13, 11, 13)
-        btnGoToLabelCancel.Size = New Size(163, 58)
+        btnGoToLabelCancel.Padding = New Padding(8, 10, 8, 10)
+        btnGoToLabelCancel.Size = New Size(125, 45)
         btnGoToLabelCancel.TabIndex = 26
         btnGoToLabelCancel.Text = "Cancel"
         ' 
@@ -2764,20 +2766,20 @@ Partial Class FrmEditor_Events
         txtGotoLabel.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtGotoLabel.BorderStyle = BorderStyle.FixedSingle
         txtGotoLabel.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtGotoLabel.Location = New Point(169, 45)
-        txtGotoLabel.Margin = New Padding(7, 6, 7, 6)
+        txtGotoLabel.Location = New Point(130, 35)
+        txtGotoLabel.Margin = New Padding(5)
         txtGotoLabel.Name = "txtGotoLabel"
-        txtGotoLabel.Size = New Size(353, 39)
+        txtGotoLabel.Size = New Size(272, 31)
         txtGotoLabel.TabIndex = 1
         ' 
         ' DarkLabel60
         ' 
         DarkLabel60.AutoSize = True
         DarkLabel60.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel60.Location = New Point(7, 49)
-        DarkLabel60.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel60.Location = New Point(5, 38)
+        DarkLabel60.Margin = New Padding(5, 0, 5, 0)
         DarkLabel60.Name = "DarkLabel60"
-        DarkLabel60.Size = New Size(146, 32)
+        DarkLabel60.Size = New Size(109, 25)
         DarkLabel60.TabIndex = 0
         DarkLabel60.Text = "Label Name:"
         ' 
@@ -2801,11 +2803,11 @@ Partial Class FrmEditor_Events
         fraShowChoices.Controls.Add(DarkLabel53)
         fraShowChoices.Controls.Add(nudShowChoicesFace)
         fraShowChoices.ForeColor = Color.Gainsboro
-        fraShowChoices.Location = New Point(869, 254)
-        fraShowChoices.Margin = New Padding(7, 6, 7, 6)
+        fraShowChoices.Location = New Point(668, 198)
+        fraShowChoices.Margin = New Padding(5)
         fraShowChoices.Name = "fraShowChoices"
-        fraShowChoices.Padding = New Padding(7, 6, 7, 6)
-        fraShowChoices.Size = New Size(537, 819)
+        fraShowChoices.Padding = New Padding(5)
+        fraShowChoices.Size = New Size(413, 640)
         fraShowChoices.TabIndex = 32
         fraShowChoices.TabStop = False
         fraShowChoices.Text = "Show Choices"
@@ -2816,10 +2818,10 @@ Partial Class FrmEditor_Events
         txtChoices4.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtChoices4.BorderStyle = BorderStyle.FixedSingle
         txtChoices4.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtChoices4.Location = New Point(305, 429)
-        txtChoices4.Margin = New Padding(7, 6, 7, 6)
+        txtChoices4.Location = New Point(235, 335)
+        txtChoices4.Margin = New Padding(5)
         txtChoices4.Name = "txtChoices4"
-        txtChoices4.Size = New Size(214, 39)
+        txtChoices4.Size = New Size(165, 31)
         txtChoices4.TabIndex = 34
         ' 
         ' txtChoices3
@@ -2827,10 +2829,10 @@ Partial Class FrmEditor_Events
         txtChoices3.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtChoices3.BorderStyle = BorderStyle.FixedSingle
         txtChoices3.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtChoices3.Location = New Point(13, 427)
-        txtChoices3.Margin = New Padding(7, 6, 7, 6)
+        txtChoices3.Location = New Point(10, 334)
+        txtChoices3.Margin = New Padding(5)
         txtChoices3.Name = "txtChoices3"
-        txtChoices3.Size = New Size(214, 39)
+        txtChoices3.Size = New Size(165, 31)
         txtChoices3.TabIndex = 33
         ' 
         ' txtChoices2
@@ -2838,10 +2840,10 @@ Partial Class FrmEditor_Events
         txtChoices2.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtChoices2.BorderStyle = BorderStyle.FixedSingle
         txtChoices2.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtChoices2.Location = New Point(305, 331)
-        txtChoices2.Margin = New Padding(7, 6, 7, 6)
+        txtChoices2.Location = New Point(235, 259)
+        txtChoices2.Margin = New Padding(5)
         txtChoices2.Name = "txtChoices2"
-        txtChoices2.Size = New Size(214, 39)
+        txtChoices2.Size = New Size(165, 31)
         txtChoices2.TabIndex = 32
         ' 
         ' txtChoices1
@@ -2849,20 +2851,20 @@ Partial Class FrmEditor_Events
         txtChoices1.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtChoices1.BorderStyle = BorderStyle.FixedSingle
         txtChoices1.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtChoices1.Location = New Point(13, 331)
-        txtChoices1.Margin = New Padding(7, 6, 7, 6)
+        txtChoices1.Location = New Point(10, 259)
+        txtChoices1.Margin = New Padding(5)
         txtChoices1.Name = "txtChoices1"
-        txtChoices1.Size = New Size(214, 39)
+        txtChoices1.Size = New Size(165, 31)
         txtChoices1.TabIndex = 31
         ' 
         ' DarkLabel56
         ' 
         DarkLabel56.AutoSize = True
         DarkLabel56.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel56.Location = New Point(299, 386)
-        DarkLabel56.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel56.Location = New Point(230, 302)
+        DarkLabel56.Margin = New Padding(5, 0, 5, 0)
         DarkLabel56.Name = "DarkLabel56"
-        DarkLabel56.Size = New Size(107, 32)
+        DarkLabel56.Size = New Size(80, 25)
         DarkLabel56.TabIndex = 30
         DarkLabel56.Text = "Choice 4"
         ' 
@@ -2870,10 +2872,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel57.AutoSize = True
         DarkLabel57.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel57.Location = New Point(15, 386)
-        DarkLabel57.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel57.Location = New Point(12, 302)
+        DarkLabel57.Margin = New Padding(5, 0, 5, 0)
         DarkLabel57.Name = "DarkLabel57"
-        DarkLabel57.Size = New Size(107, 32)
+        DarkLabel57.Size = New Size(80, 25)
         DarkLabel57.TabIndex = 29
         DarkLabel57.Text = "Choice 3"
         ' 
@@ -2881,10 +2883,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel55.AutoSize = True
         DarkLabel55.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel55.Location = New Point(299, 290)
-        DarkLabel55.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel55.Location = New Point(230, 227)
+        DarkLabel55.Margin = New Padding(5, 0, 5, 0)
         DarkLabel55.Name = "DarkLabel55"
-        DarkLabel55.Size = New Size(107, 32)
+        DarkLabel55.Size = New Size(80, 25)
         DarkLabel55.TabIndex = 28
         DarkLabel55.Text = "Choice 2"
         ' 
@@ -2892,10 +2894,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel54.AutoSize = True
         DarkLabel54.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel54.Location = New Point(13, 290)
-        DarkLabel54.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel54.Location = New Point(10, 227)
+        DarkLabel54.Margin = New Padding(5, 0, 5, 0)
         DarkLabel54.Name = "DarkLabel54"
-        DarkLabel54.Size = New Size(107, 32)
+        DarkLabel54.Size = New Size(80, 25)
         DarkLabel54.TabIndex = 27
         DarkLabel54.Text = "Choice 1"
         ' 
@@ -2903,10 +2905,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel52.AutoSize = True
         DarkLabel52.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel52.Location = New Point(15, 47)
-        DarkLabel52.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel52.Location = New Point(12, 37)
+        DarkLabel52.Margin = New Padding(5, 0, 5, 0)
         DarkLabel52.Name = "DarkLabel52"
-        DarkLabel52.Size = New Size(92, 32)
+        DarkLabel52.Size = New Size(72, 25)
         DarkLabel52.TabIndex = 26
         DarkLabel52.Text = "Prompt"
         ' 
@@ -2915,20 +2917,20 @@ Partial Class FrmEditor_Events
         txtChoicePrompt.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtChoicePrompt.BorderStyle = BorderStyle.FixedSingle
         txtChoicePrompt.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtChoicePrompt.Location = New Point(19, 94)
-        txtChoicePrompt.Margin = New Padding(7, 6, 7, 6)
+        txtChoicePrompt.Location = New Point(15, 73)
+        txtChoicePrompt.Margin = New Padding(5)
         txtChoicePrompt.Multiline = True
         txtChoicePrompt.Name = "txtChoicePrompt"
-        txtChoicePrompt.Size = New Size(492, 188)
+        txtChoicePrompt.Size = New Size(379, 147)
         txtChoicePrompt.TabIndex = 21
         ' 
         ' btnShowChoicesOk
         ' 
-        btnShowChoicesOk.Location = New Point(182, 751)
-        btnShowChoicesOk.Margin = New Padding(7, 6, 7, 6)
+        btnShowChoicesOk.Location = New Point(140, 587)
+        btnShowChoicesOk.Margin = New Padding(5)
         btnShowChoicesOk.Name = "btnShowChoicesOk"
-        btnShowChoicesOk.Padding = New Padding(11, 13, 11, 13)
-        btnShowChoicesOk.Size = New Size(163, 58)
+        btnShowChoicesOk.Padding = New Padding(8, 10, 8, 10)
+        btnShowChoicesOk.Size = New Size(125, 45)
         btnShowChoicesOk.TabIndex = 25
         btnShowChoicesOk.Text = "Ok"
         ' 
@@ -2936,20 +2938,20 @@ Partial Class FrmEditor_Events
         ' 
         picShowChoicesFace.BackColor = Color.Black
         picShowChoicesFace.BackgroundImageLayout = ImageLayout.Zoom
-        picShowChoicesFace.Location = New Point(13, 491)
-        picShowChoicesFace.Margin = New Padding(7, 6, 7, 6)
+        picShowChoicesFace.Location = New Point(10, 384)
+        picShowChoicesFace.Margin = New Padding(5)
         picShowChoicesFace.Name = "picShowChoicesFace"
-        picShowChoicesFace.Size = New Size(217, 228)
+        picShowChoicesFace.Size = New Size(167, 178)
         picShowChoicesFace.TabIndex = 2
         picShowChoicesFace.TabStop = False
         ' 
         ' btnShowChoicesCancel
         ' 
-        btnShowChoicesCancel.Location = New Point(357, 751)
-        btnShowChoicesCancel.Margin = New Padding(7, 6, 7, 6)
+        btnShowChoicesCancel.Location = New Point(275, 587)
+        btnShowChoicesCancel.Margin = New Padding(5)
         btnShowChoicesCancel.Name = "btnShowChoicesCancel"
-        btnShowChoicesCancel.Padding = New Padding(11, 13, 11, 13)
-        btnShowChoicesCancel.Size = New Size(163, 58)
+        btnShowChoicesCancel.Padding = New Padding(8, 10, 8, 10)
+        btnShowChoicesCancel.Size = New Size(125, 45)
         btnShowChoicesCancel.TabIndex = 24
         btnShowChoicesCancel.Text = "Cancel"
         ' 
@@ -2957,19 +2959,19 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel53.AutoSize = True
         DarkLabel53.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel53.Location = New Point(236, 674)
-        DarkLabel53.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel53.Location = New Point(182, 527)
+        DarkLabel53.Margin = New Padding(5, 0, 5, 0)
         DarkLabel53.Name = "DarkLabel53"
-        DarkLabel53.Size = New Size(66, 32)
+        DarkLabel53.Size = New Size(50, 25)
         DarkLabel53.TabIndex = 22
         DarkLabel53.Text = "Face:"
         ' 
         ' nudShowChoicesFace
         ' 
-        nudShowChoicesFace.Location = New Point(316, 670)
-        nudShowChoicesFace.Margin = New Padding(7, 6, 7, 6)
+        nudShowChoicesFace.Location = New Point(243, 523)
+        nudShowChoicesFace.Margin = New Padding(5)
         nudShowChoicesFace.Name = "nudShowChoicesFace"
-        nudShowChoicesFace.Size = New Size(199, 39)
+        nudShowChoicesFace.Size = New Size(153, 31)
         nudShowChoicesFace.TabIndex = 23
         ' 
         ' fraPlayerVariable
@@ -2992,11 +2994,11 @@ Partial Class FrmEditor_Events
         fraPlayerVariable.Controls.Add(cmbVariable)
         fraPlayerVariable.Controls.Add(DarkLabel49)
         fraPlayerVariable.ForeColor = Color.Gainsboro
-        fraPlayerVariable.Location = New Point(869, 693)
-        fraPlayerVariable.Margin = New Padding(7, 6, 7, 6)
+        fraPlayerVariable.Location = New Point(668, 541)
+        fraPlayerVariable.Margin = New Padding(5)
         fraPlayerVariable.Name = "fraPlayerVariable"
-        fraPlayerVariable.Padding = New Padding(7, 6, 7, 6)
-        fraPlayerVariable.Size = New Size(533, 380)
+        fraPlayerVariable.Padding = New Padding(5)
+        fraPlayerVariable.Size = New Size(410, 297)
         fraPlayerVariable.TabIndex = 31
         fraPlayerVariable.TabStop = False
         fraPlayerVariable.Text = "Player Variable"
@@ -3004,40 +3006,40 @@ Partial Class FrmEditor_Events
         ' 
         ' nudVariableData2
         ' 
-        nudVariableData2.Location = New Point(260, 177)
-        nudVariableData2.Margin = New Padding(7, 6, 7, 6)
+        nudVariableData2.Location = New Point(200, 138)
+        nudVariableData2.Margin = New Padding(5)
         nudVariableData2.Name = "nudVariableData2"
-        nudVariableData2.Size = New Size(260, 39)
+        nudVariableData2.Size = New Size(200, 31)
         nudVariableData2.TabIndex = 29
         ' 
         ' optVariableAction2
         ' 
         optVariableAction2.AutoSize = True
-        optVariableAction2.Location = New Point(13, 177)
-        optVariableAction2.Margin = New Padding(7, 6, 7, 6)
+        optVariableAction2.Location = New Point(10, 138)
+        optVariableAction2.Margin = New Padding(5)
         optVariableAction2.Name = "optVariableAction2"
-        optVariableAction2.Size = New Size(133, 36)
+        optVariableAction2.Size = New Size(103, 29)
         optVariableAction2.TabIndex = 28
         optVariableAction2.TabStop = True
         optVariableAction2.Text = "Subtract"
         ' 
         ' btnPlayerVarOk
         ' 
-        btnPlayerVarOk.Location = New Point(182, 305)
-        btnPlayerVarOk.Margin = New Padding(7, 6, 7, 6)
+        btnPlayerVarOk.Location = New Point(140, 238)
+        btnPlayerVarOk.Margin = New Padding(5)
         btnPlayerVarOk.Name = "btnPlayerVarOk"
-        btnPlayerVarOk.Padding = New Padding(11, 13, 11, 13)
-        btnPlayerVarOk.Size = New Size(163, 58)
+        btnPlayerVarOk.Padding = New Padding(8, 10, 8, 10)
+        btnPlayerVarOk.Size = New Size(125, 45)
         btnPlayerVarOk.TabIndex = 27
         btnPlayerVarOk.Text = "Ok"
         ' 
         ' btnPlayerVarCancel
         ' 
-        btnPlayerVarCancel.Location = New Point(357, 305)
-        btnPlayerVarCancel.Margin = New Padding(7, 6, 7, 6)
+        btnPlayerVarCancel.Location = New Point(275, 238)
+        btnPlayerVarCancel.Margin = New Padding(5)
         btnPlayerVarCancel.Name = "btnPlayerVarCancel"
-        btnPlayerVarCancel.Padding = New Padding(11, 13, 11, 13)
-        btnPlayerVarCancel.Size = New Size(163, 58)
+        btnPlayerVarCancel.Padding = New Padding(8, 10, 8, 10)
+        btnPlayerVarCancel.Size = New Size(125, 45)
         btnPlayerVarCancel.TabIndex = 26
         btnPlayerVarCancel.Text = "Cancel"
         ' 
@@ -3045,10 +3047,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel51.AutoSize = True
         DarkLabel51.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel51.Location = New Point(163, 245)
-        DarkLabel51.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel51.Location = New Point(125, 191)
+        DarkLabel51.Margin = New Padding(5, 0, 5, 0)
         DarkLabel51.Name = "DarkLabel51"
-        DarkLabel51.Size = New Size(61, 32)
+        DarkLabel51.Size = New Size(48, 25)
         DarkLabel51.TabIndex = 16
         DarkLabel51.Text = "Low:"
         ' 
@@ -3056,36 +3058,36 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel50.AutoSize = True
         DarkLabel50.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel50.Location = New Point(342, 245)
-        DarkLabel50.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel50.Location = New Point(263, 191)
+        DarkLabel50.Margin = New Padding(5, 0, 5, 0)
         DarkLabel50.Name = "DarkLabel50"
-        DarkLabel50.Size = New Size(70, 32)
+        DarkLabel50.Size = New Size(54, 25)
         DarkLabel50.TabIndex = 15
         DarkLabel50.Text = "High:"
         ' 
         ' nudVariableData4
         ' 
-        nudVariableData4.Location = New Point(425, 241)
-        nudVariableData4.Margin = New Padding(7, 6, 7, 6)
+        nudVariableData4.Location = New Point(327, 188)
+        nudVariableData4.Margin = New Padding(5)
         nudVariableData4.Name = "nudVariableData4"
-        nudVariableData4.Size = New Size(95, 39)
+        nudVariableData4.Size = New Size(73, 31)
         nudVariableData4.TabIndex = 14
         ' 
         ' nudVariableData3
         ' 
-        nudVariableData3.Location = New Point(241, 241)
-        nudVariableData3.Margin = New Padding(7, 6, 7, 6)
+        nudVariableData3.Location = New Point(185, 188)
+        nudVariableData3.Margin = New Padding(5)
         nudVariableData3.Name = "nudVariableData3"
-        nudVariableData3.Size = New Size(95, 39)
+        nudVariableData3.Size = New Size(73, 31)
         nudVariableData3.TabIndex = 13
         ' 
         ' optVariableAction3
         ' 
         optVariableAction3.AutoSize = True
-        optVariableAction3.Location = New Point(13, 241)
-        optVariableAction3.Margin = New Padding(7, 6, 7, 6)
+        optVariableAction3.Location = New Point(10, 188)
+        optVariableAction3.Margin = New Padding(5)
         optVariableAction3.Name = "optVariableAction3"
-        optVariableAction3.Size = New Size(134, 36)
+        optVariableAction3.Size = New Size(105, 29)
         optVariableAction3.TabIndex = 12
         optVariableAction3.TabStop = True
         optVariableAction3.Text = "Random"
@@ -3093,37 +3095,37 @@ Partial Class FrmEditor_Events
         ' optVariableAction1
         ' 
         optVariableAction1.AutoSize = True
-        optVariableAction1.Location = New Point(316, 113)
-        optVariableAction1.Margin = New Padding(7, 6, 7, 6)
+        optVariableAction1.Location = New Point(243, 88)
+        optVariableAction1.Margin = New Padding(5)
         optVariableAction1.Name = "optVariableAction1"
-        optVariableAction1.Size = New Size(88, 36)
+        optVariableAction1.Size = New Size(71, 29)
         optVariableAction1.TabIndex = 11
         optVariableAction1.TabStop = True
         optVariableAction1.Text = "Add"
         ' 
         ' nudVariableData1
         ' 
-        nudVariableData1.Location = New Point(425, 113)
-        nudVariableData1.Margin = New Padding(7, 6, 7, 6)
+        nudVariableData1.Location = New Point(327, 88)
+        nudVariableData1.Margin = New Padding(5)
         nudVariableData1.Name = "nudVariableData1"
-        nudVariableData1.Size = New Size(95, 39)
+        nudVariableData1.Size = New Size(73, 31)
         nudVariableData1.TabIndex = 10
         ' 
         ' nudVariableData0
         ' 
-        nudVariableData0.Location = New Point(134, 113)
-        nudVariableData0.Margin = New Padding(7, 6, 7, 6)
+        nudVariableData0.Location = New Point(103, 88)
+        nudVariableData0.Margin = New Padding(5)
         nudVariableData0.Name = "nudVariableData0"
-        nudVariableData0.Size = New Size(95, 39)
+        nudVariableData0.Size = New Size(73, 31)
         nudVariableData0.TabIndex = 9
         ' 
         ' optVariableAction0
         ' 
         optVariableAction0.AutoSize = True
-        optVariableAction0.Location = New Point(13, 113)
-        optVariableAction0.Margin = New Padding(7, 6, 7, 6)
+        optVariableAction0.Location = New Point(10, 88)
+        optVariableAction0.Margin = New Padding(5)
         optVariableAction0.Name = "optVariableAction0"
-        optVariableAction0.Size = New Size(79, 36)
+        optVariableAction0.Size = New Size(62, 29)
         optVariableAction0.TabIndex = 2
         optVariableAction0.TabStop = True
         optVariableAction0.Text = "Set"
@@ -3132,20 +3134,20 @@ Partial Class FrmEditor_Events
         ' 
         cmbVariable.DrawMode = DrawMode.OwnerDrawFixed
         cmbVariable.FormattingEnabled = True
-        cmbVariable.Location = New Point(130, 47)
-        cmbVariable.Margin = New Padding(7, 6, 7, 6)
+        cmbVariable.Location = New Point(100, 37)
+        cmbVariable.Margin = New Padding(5)
         cmbVariable.Name = "cmbVariable"
-        cmbVariable.Size = New Size(383, 40)
+        cmbVariable.Size = New Size(296, 32)
         cmbVariable.TabIndex = 1
         ' 
         ' DarkLabel49
         ' 
         DarkLabel49.AutoSize = True
         DarkLabel49.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel49.Location = New Point(13, 53)
-        DarkLabel49.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel49.Location = New Point(10, 41)
+        DarkLabel49.Margin = New Padding(5, 0, 5, 0)
         DarkLabel49.Name = "DarkLabel49"
-        DarkLabel49.Size = New Size(103, 32)
+        DarkLabel49.Size = New Size(78, 25)
         DarkLabel49.TabIndex = 0
         DarkLabel49.Text = "Variable:"
         ' 
@@ -3159,11 +3161,11 @@ Partial Class FrmEditor_Events
         fraChangeSprite.Controls.Add(nudChangeSprite)
         fraChangeSprite.Controls.Add(picChangeSprite)
         fraChangeSprite.ForeColor = Color.Gainsboro
-        fraChangeSprite.Location = New Point(869, 689)
-        fraChangeSprite.Margin = New Padding(7, 6, 7, 6)
+        fraChangeSprite.Location = New Point(668, 538)
+        fraChangeSprite.Margin = New Padding(5)
         fraChangeSprite.Name = "fraChangeSprite"
-        fraChangeSprite.Padding = New Padding(7, 6, 7, 6)
-        fraChangeSprite.Size = New Size(533, 288)
+        fraChangeSprite.Padding = New Padding(5)
+        fraChangeSprite.Size = New Size(410, 225)
         fraChangeSprite.TabIndex = 30
         fraChangeSprite.TabStop = False
         fraChangeSprite.Text = "Change Sprite"
@@ -3171,21 +3173,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnChangeSpriteOk
         ' 
-        btnChangeSpriteOk.Location = New Point(182, 220)
-        btnChangeSpriteOk.Margin = New Padding(7, 6, 7, 6)
+        btnChangeSpriteOk.Location = New Point(140, 172)
+        btnChangeSpriteOk.Margin = New Padding(5)
         btnChangeSpriteOk.Name = "btnChangeSpriteOk"
-        btnChangeSpriteOk.Padding = New Padding(11, 13, 11, 13)
-        btnChangeSpriteOk.Size = New Size(163, 58)
+        btnChangeSpriteOk.Padding = New Padding(8, 10, 8, 10)
+        btnChangeSpriteOk.Size = New Size(125, 45)
         btnChangeSpriteOk.TabIndex = 30
         btnChangeSpriteOk.Text = "Ok"
         ' 
         ' btnChangeSpriteCancel
         ' 
-        btnChangeSpriteCancel.Location = New Point(357, 220)
-        btnChangeSpriteCancel.Margin = New Padding(7, 6, 7, 6)
+        btnChangeSpriteCancel.Location = New Point(275, 172)
+        btnChangeSpriteCancel.Margin = New Padding(5)
         btnChangeSpriteCancel.Name = "btnChangeSpriteCancel"
-        btnChangeSpriteCancel.Padding = New Padding(11, 13, 11, 13)
-        btnChangeSpriteCancel.Size = New Size(163, 58)
+        btnChangeSpriteCancel.Padding = New Padding(8, 10, 8, 10)
+        btnChangeSpriteCancel.Size = New Size(125, 45)
         btnChangeSpriteCancel.TabIndex = 29
         btnChangeSpriteCancel.Text = "Cancel"
         ' 
@@ -3193,29 +3195,29 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel48.AutoSize = True
         DarkLabel48.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel48.Location = New Point(173, 164)
-        DarkLabel48.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel48.Location = New Point(133, 128)
+        DarkLabel48.Margin = New Padding(5, 0, 5, 0)
         DarkLabel48.Name = "DarkLabel48"
-        DarkLabel48.Size = New Size(76, 32)
+        DarkLabel48.Size = New Size(58, 25)
         DarkLabel48.TabIndex = 28
         DarkLabel48.Text = "Sprite"
         ' 
         ' nudChangeSprite
         ' 
-        nudChangeSprite.Location = New Point(260, 156)
-        nudChangeSprite.Margin = New Padding(7, 6, 7, 6)
+        nudChangeSprite.Location = New Point(200, 122)
+        nudChangeSprite.Margin = New Padding(5)
         nudChangeSprite.Name = "nudChangeSprite"
-        nudChangeSprite.Size = New Size(260, 39)
+        nudChangeSprite.Size = New Size(200, 31)
         nudChangeSprite.TabIndex = 27
         ' 
         ' picChangeSprite
         ' 
         picChangeSprite.BackColor = Color.Black
         picChangeSprite.BackgroundImageLayout = ImageLayout.Zoom
-        picChangeSprite.Location = New Point(13, 47)
-        picChangeSprite.Margin = New Padding(7, 6, 7, 6)
+        picChangeSprite.Location = New Point(10, 37)
+        picChangeSprite.Margin = New Padding(5)
         picChangeSprite.Name = "picChangeSprite"
-        picChangeSprite.Size = New Size(152, 228)
+        picChangeSprite.Size = New Size(117, 178)
         picChangeSprite.TabIndex = 3
         picChangeSprite.TabStop = False
         ' 
@@ -3230,11 +3232,11 @@ Partial Class FrmEditor_Events
         fraSetSelfSwitch.Controls.Add(DarkLabel46)
         fraSetSelfSwitch.Controls.Add(cmbSetSelfSwitch)
         fraSetSelfSwitch.ForeColor = Color.Gainsboro
-        fraSetSelfSwitch.Location = New Point(869, 444)
-        fraSetSelfSwitch.Margin = New Padding(7, 6, 7, 6)
+        fraSetSelfSwitch.Location = New Point(668, 347)
+        fraSetSelfSwitch.Margin = New Padding(5)
         fraSetSelfSwitch.Name = "fraSetSelfSwitch"
-        fraSetSelfSwitch.Padding = New Padding(7, 6, 7, 6)
-        fraSetSelfSwitch.Size = New Size(533, 245)
+        fraSetSelfSwitch.Padding = New Padding(5)
+        fraSetSelfSwitch.Size = New Size(410, 191)
         fraSetSelfSwitch.TabIndex = 29
         fraSetSelfSwitch.TabStop = False
         fraSetSelfSwitch.Text = "Self Switches"
@@ -3242,21 +3244,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnSelfswitchOk
         ' 
-        btnSelfswitchOk.Location = New Point(182, 179)
-        btnSelfswitchOk.Margin = New Padding(7, 6, 7, 6)
+        btnSelfswitchOk.Location = New Point(140, 140)
+        btnSelfswitchOk.Margin = New Padding(5)
         btnSelfswitchOk.Name = "btnSelfswitchOk"
-        btnSelfswitchOk.Padding = New Padding(11, 13, 11, 13)
-        btnSelfswitchOk.Size = New Size(163, 58)
+        btnSelfswitchOk.Padding = New Padding(8, 10, 8, 10)
+        btnSelfswitchOk.Size = New Size(125, 45)
         btnSelfswitchOk.TabIndex = 27
         btnSelfswitchOk.Text = "Ok"
         ' 
         ' btnSelfswitchCancel
         ' 
-        btnSelfswitchCancel.Location = New Point(357, 179)
-        btnSelfswitchCancel.Margin = New Padding(7, 6, 7, 6)
+        btnSelfswitchCancel.Location = New Point(275, 140)
+        btnSelfswitchCancel.Margin = New Padding(5)
         btnSelfswitchCancel.Name = "btnSelfswitchCancel"
-        btnSelfswitchCancel.Padding = New Padding(11, 13, 11, 13)
-        btnSelfswitchCancel.Size = New Size(163, 58)
+        btnSelfswitchCancel.Padding = New Padding(8, 10, 8, 10)
+        btnSelfswitchCancel.Size = New Size(125, 45)
         btnSelfswitchCancel.TabIndex = 26
         btnSelfswitchCancel.Text = "Cancel"
         ' 
@@ -3264,10 +3266,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel47.AutoSize = True
         DarkLabel47.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel47.Location = New Point(13, 122)
-        DarkLabel47.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel47.Location = New Point(10, 95)
+        DarkLabel47.Margin = New Padding(5, 0, 5, 0)
         DarkLabel47.Name = "DarkLabel47"
-        DarkLabel47.Size = New Size(80, 32)
+        DarkLabel47.Size = New Size(60, 25)
         DarkLabel47.TabIndex = 3
         DarkLabel47.Text = "Set To"
         ' 
@@ -3276,20 +3278,20 @@ Partial Class FrmEditor_Events
         cmbSetSelfSwitchTo.DrawMode = DrawMode.OwnerDrawFixed
         cmbSetSelfSwitchTo.FormattingEnabled = True
         cmbSetSelfSwitchTo.Items.AddRange(New Object() {"Off", "On"})
-        cmbSetSelfSwitchTo.Location = New Point(156, 113)
-        cmbSetSelfSwitchTo.Margin = New Padding(7, 6, 7, 6)
+        cmbSetSelfSwitchTo.Location = New Point(120, 88)
+        cmbSetSelfSwitchTo.Margin = New Padding(5)
         cmbSetSelfSwitchTo.Name = "cmbSetSelfSwitchTo"
-        cmbSetSelfSwitchTo.Size = New Size(359, 40)
+        cmbSetSelfSwitchTo.Size = New Size(277, 32)
         cmbSetSelfSwitchTo.TabIndex = 2
         ' 
         ' DarkLabel46
         ' 
         DarkLabel46.AutoSize = True
         DarkLabel46.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel46.Location = New Point(13, 53)
-        DarkLabel46.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel46.Location = New Point(10, 41)
+        DarkLabel46.Margin = New Padding(5, 0, 5, 0)
         DarkLabel46.Name = "DarkLabel46"
-        DarkLabel46.Size = New Size(135, 32)
+        DarkLabel46.Size = New Size(101, 25)
         DarkLabel46.TabIndex = 1
         DarkLabel46.Text = "Self Switch:"
         ' 
@@ -3297,10 +3299,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbSetSelfSwitch.DrawMode = DrawMode.OwnerDrawFixed
         cmbSetSelfSwitch.FormattingEnabled = True
-        cmbSetSelfSwitch.Location = New Point(156, 47)
-        cmbSetSelfSwitch.Margin = New Padding(7, 6, 7, 6)
+        cmbSetSelfSwitch.Location = New Point(120, 37)
+        cmbSetSelfSwitch.Margin = New Padding(5)
         cmbSetSelfSwitch.Name = "cmbSetSelfSwitch"
-        cmbSetSelfSwitch.Size = New Size(359, 40)
+        cmbSetSelfSwitch.Size = New Size(277, 32)
         cmbSetSelfSwitch.TabIndex = 0
         ' 
         ' fraMapTint
@@ -3318,11 +3320,11 @@ Partial Class FrmEditor_Events
         fraMapTint.Controls.Add(nudMapTintData0)
         fraMapTint.Controls.Add(DarkLabel45)
         fraMapTint.ForeColor = Color.Gainsboro
-        fraMapTint.Location = New Point(869, 446)
-        fraMapTint.Margin = New Padding(7, 6, 7, 6)
+        fraMapTint.Location = New Point(668, 348)
+        fraMapTint.Margin = New Padding(5)
         fraMapTint.Name = "fraMapTint"
-        fraMapTint.Padding = New Padding(7, 6, 7, 6)
-        fraMapTint.Size = New Size(533, 356)
+        fraMapTint.Padding = New Padding(5)
+        fraMapTint.Size = New Size(410, 278)
         fraMapTint.TabIndex = 28
         fraMapTint.TabStop = False
         fraMapTint.Text = "Map Tinting"
@@ -3330,21 +3332,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnMapTintOk
         ' 
-        btnMapTintOk.Location = New Point(182, 284)
-        btnMapTintOk.Margin = New Padding(7, 6, 7, 6)
+        btnMapTintOk.Location = New Point(140, 222)
+        btnMapTintOk.Margin = New Padding(5)
         btnMapTintOk.Name = "btnMapTintOk"
-        btnMapTintOk.Padding = New Padding(11, 13, 11, 13)
-        btnMapTintOk.Size = New Size(163, 58)
+        btnMapTintOk.Padding = New Padding(8, 10, 8, 10)
+        btnMapTintOk.Size = New Size(125, 45)
         btnMapTintOk.TabIndex = 45
         btnMapTintOk.Text = "Ok"
         ' 
         ' btnMapTintCancel
         ' 
-        btnMapTintCancel.Location = New Point(357, 284)
-        btnMapTintCancel.Margin = New Padding(7, 6, 7, 6)
+        btnMapTintCancel.Location = New Point(275, 222)
+        btnMapTintCancel.Margin = New Padding(5)
         btnMapTintCancel.Name = "btnMapTintCancel"
-        btnMapTintCancel.Padding = New Padding(11, 13, 11, 13)
-        btnMapTintCancel.Size = New Size(163, 58)
+        btnMapTintCancel.Padding = New Padding(8, 10, 8, 10)
+        btnMapTintCancel.Size = New Size(125, 45)
         btnMapTintCancel.TabIndex = 44
         btnMapTintCancel.Text = "Cancel"
         ' 
@@ -3352,38 +3354,38 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel42.AutoSize = True
         DarkLabel42.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel42.Location = New Point(11, 228)
-        DarkLabel42.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel42.Location = New Point(8, 178)
+        DarkLabel42.Margin = New Padding(5, 0, 5, 0)
         DarkLabel42.Name = "DarkLabel42"
-        DarkLabel42.Size = New Size(100, 32)
+        DarkLabel42.Size = New Size(77, 25)
         DarkLabel42.TabIndex = 43
         DarkLabel42.Text = "Opacity:"
         ' 
         ' nudMapTintData3
         ' 
-        nudMapTintData3.Location = New Point(206, 220)
-        nudMapTintData3.Margin = New Padding(7, 6, 7, 6)
+        nudMapTintData3.Location = New Point(158, 172)
+        nudMapTintData3.Margin = New Padding(5)
         nudMapTintData3.Name = "nudMapTintData3"
-        nudMapTintData3.Size = New Size(312, 39)
+        nudMapTintData3.Size = New Size(240, 31)
         nudMapTintData3.TabIndex = 42
         ' 
         ' nudMapTintData2
         ' 
-        nudMapTintData2.Location = New Point(206, 158)
-        nudMapTintData2.Margin = New Padding(7, 6, 7, 6)
+        nudMapTintData2.Location = New Point(158, 123)
+        nudMapTintData2.Margin = New Padding(5)
         nudMapTintData2.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudMapTintData2.Name = "nudMapTintData2"
-        nudMapTintData2.Size = New Size(312, 39)
+        nudMapTintData2.Size = New Size(240, 31)
         nudMapTintData2.TabIndex = 41
         ' 
         ' DarkLabel43
         ' 
         DarkLabel43.AutoSize = True
         DarkLabel43.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel43.Location = New Point(11, 162)
-        DarkLabel43.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel43.Location = New Point(8, 127)
+        DarkLabel43.Margin = New Padding(5, 0, 5, 0)
         DarkLabel43.Name = "DarkLabel43"
-        DarkLabel43.Size = New Size(66, 32)
+        DarkLabel43.Size = New Size(49, 25)
         DarkLabel43.TabIndex = 40
         DarkLabel43.Text = "Blue:"
         ' 
@@ -3391,39 +3393,39 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel44.AutoSize = True
         DarkLabel44.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel44.Location = New Point(9, 107)
-        DarkLabel44.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel44.Location = New Point(7, 84)
+        DarkLabel44.Margin = New Padding(5, 0, 5, 0)
         DarkLabel44.Name = "DarkLabel44"
-        DarkLabel44.Size = New Size(83, 32)
+        DarkLabel44.Size = New Size(62, 25)
         DarkLabel44.TabIndex = 39
         DarkLabel44.Text = "Green:"
         ' 
         ' nudMapTintData1
         ' 
-        nudMapTintData1.Location = New Point(206, 96)
-        nudMapTintData1.Margin = New Padding(7, 6, 7, 6)
+        nudMapTintData1.Location = New Point(158, 75)
+        nudMapTintData1.Margin = New Padding(5)
         nudMapTintData1.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudMapTintData1.Name = "nudMapTintData1"
-        nudMapTintData1.Size = New Size(312, 39)
+        nudMapTintData1.Size = New Size(240, 31)
         nudMapTintData1.TabIndex = 38
         ' 
         ' nudMapTintData0
         ' 
-        nudMapTintData0.Location = New Point(206, 34)
-        nudMapTintData0.Margin = New Padding(7, 6, 7, 6)
+        nudMapTintData0.Location = New Point(158, 27)
+        nudMapTintData0.Margin = New Padding(5)
         nudMapTintData0.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudMapTintData0.Name = "nudMapTintData0"
-        nudMapTintData0.Size = New Size(312, 39)
+        nudMapTintData0.Size = New Size(240, 31)
         nudMapTintData0.TabIndex = 37
         ' 
         ' DarkLabel45
         ' 
         DarkLabel45.AutoSize = True
         DarkLabel45.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel45.Location = New Point(11, 38)
-        DarkLabel45.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel45.Location = New Point(8, 30)
+        DarkLabel45.Margin = New Padding(5, 0, 5, 0)
         DarkLabel45.Name = "DarkLabel45"
-        DarkLabel45.Size = New Size(59, 32)
+        DarkLabel45.Size = New Size(46, 25)
         DarkLabel45.TabIndex = 36
         DarkLabel45.Text = "Red:"
         ' 
@@ -3440,11 +3442,11 @@ Partial Class FrmEditor_Events
         fraShowChatBubble.Controls.Add(txtChatbubbleText)
         fraShowChatBubble.Controls.Add(DarkLabel39)
         fraShowChatBubble.ForeColor = Color.Gainsboro
-        fraShowChatBubble.Location = New Point(869, 446)
-        fraShowChatBubble.Margin = New Padding(7, 6, 7, 6)
+        fraShowChatBubble.Location = New Point(668, 348)
+        fraShowChatBubble.Margin = New Padding(5)
         fraShowChatBubble.Name = "fraShowChatBubble"
-        fraShowChatBubble.Padding = New Padding(7, 6, 7, 6)
-        fraShowChatBubble.Size = New Size(533, 348)
+        fraShowChatBubble.Padding = New Padding(5)
+        fraShowChatBubble.Size = New Size(410, 272)
         fraShowChatBubble.TabIndex = 27
         fraShowChatBubble.TabStop = False
         fraShowChatBubble.Text = "Show ChatBubble"
@@ -3452,21 +3454,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnShowChatBubbleOk
         ' 
-        btnShowChatBubbleOk.Location = New Point(182, 275)
-        btnShowChatBubbleOk.Margin = New Padding(7, 6, 7, 6)
+        btnShowChatBubbleOk.Location = New Point(140, 215)
+        btnShowChatBubbleOk.Margin = New Padding(5)
         btnShowChatBubbleOk.Name = "btnShowChatBubbleOk"
-        btnShowChatBubbleOk.Padding = New Padding(11, 13, 11, 13)
-        btnShowChatBubbleOk.Size = New Size(163, 58)
+        btnShowChatBubbleOk.Padding = New Padding(8, 10, 8, 10)
+        btnShowChatBubbleOk.Size = New Size(125, 45)
         btnShowChatBubbleOk.TabIndex = 31
         btnShowChatBubbleOk.Text = "Ok"
         ' 
         ' btnShowChatBubbleCancel
         ' 
-        btnShowChatBubbleCancel.Location = New Point(357, 275)
-        btnShowChatBubbleCancel.Margin = New Padding(7, 6, 7, 6)
+        btnShowChatBubbleCancel.Location = New Point(275, 215)
+        btnShowChatBubbleCancel.Margin = New Padding(5)
         btnShowChatBubbleCancel.Name = "btnShowChatBubbleCancel"
-        btnShowChatBubbleCancel.Padding = New Padding(11, 13, 11, 13)
-        btnShowChatBubbleCancel.Size = New Size(163, 58)
+        btnShowChatBubbleCancel.Padding = New Padding(8, 10, 8, 10)
+        btnShowChatBubbleCancel.Size = New Size(125, 45)
         btnShowChatBubbleCancel.TabIndex = 30
         btnShowChatBubbleCancel.Text = "Cancel"
         ' 
@@ -3474,10 +3476,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel41.AutoSize = True
         DarkLabel41.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel41.Location = New Point(13, 218)
-        DarkLabel41.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel41.Location = New Point(10, 170)
+        DarkLabel41.Margin = New Padding(5, 0, 5, 0)
         DarkLabel41.Name = "DarkLabel41"
-        DarkLabel41.Size = New Size(77, 32)
+        DarkLabel41.Size = New Size(59, 25)
         DarkLabel41.TabIndex = 29
         DarkLabel41.Text = "Index:"
         ' 
@@ -3485,10 +3487,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbChatBubbleTarget.DrawMode = DrawMode.OwnerDrawFixed
         cmbChatBubbleTarget.FormattingEnabled = True
-        cmbChatBubbleTarget.Location = New Point(175, 209)
-        cmbChatBubbleTarget.Margin = New Padding(7, 6, 7, 6)
+        cmbChatBubbleTarget.Location = New Point(135, 163)
+        cmbChatBubbleTarget.Margin = New Padding(5)
         cmbChatBubbleTarget.Name = "cmbChatBubbleTarget"
-        cmbChatBubbleTarget.Size = New Size(340, 40)
+        cmbChatBubbleTarget.Size = New Size(262, 32)
         cmbChatBubbleTarget.TabIndex = 28
         ' 
         ' cmbChatBubbleTargetType
@@ -3496,20 +3498,20 @@ Partial Class FrmEditor_Events
         cmbChatBubbleTargetType.DrawMode = DrawMode.OwnerDrawFixed
         cmbChatBubbleTargetType.FormattingEnabled = True
         cmbChatBubbleTargetType.Items.AddRange(New Object() {"Player", "Npc", "Event"})
-        cmbChatBubbleTargetType.Location = New Point(175, 143)
-        cmbChatBubbleTargetType.Margin = New Padding(7, 6, 7, 6)
+        cmbChatBubbleTargetType.Location = New Point(135, 112)
+        cmbChatBubbleTargetType.Margin = New Padding(5)
         cmbChatBubbleTargetType.Name = "cmbChatBubbleTargetType"
-        cmbChatBubbleTargetType.Size = New Size(340, 40)
+        cmbChatBubbleTargetType.Size = New Size(262, 32)
         cmbChatBubbleTargetType.TabIndex = 27
         ' 
         ' DarkLabel40
         ' 
         DarkLabel40.AutoSize = True
         DarkLabel40.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel40.Location = New Point(13, 149)
-        DarkLabel40.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel40.Location = New Point(10, 116)
+        DarkLabel40.Margin = New Padding(5, 0, 5, 0)
         DarkLabel40.Name = "DarkLabel40"
-        DarkLabel40.Size = New Size(142, 32)
+        DarkLabel40.Size = New Size(106, 25)
         DarkLabel40.TabIndex = 2
         DarkLabel40.Text = "Target Type:"
         ' 
@@ -3518,20 +3520,20 @@ Partial Class FrmEditor_Events
         txtChatbubbleText.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtChatbubbleText.BorderStyle = BorderStyle.FixedSingle
         txtChatbubbleText.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtChatbubbleText.Location = New Point(13, 79)
-        txtChatbubbleText.Margin = New Padding(7, 6, 7, 6)
+        txtChatbubbleText.Location = New Point(10, 62)
+        txtChatbubbleText.Margin = New Padding(5)
         txtChatbubbleText.Name = "txtChatbubbleText"
-        txtChatbubbleText.Size = New Size(505, 39)
+        txtChatbubbleText.Size = New Size(389, 31)
         txtChatbubbleText.TabIndex = 1
         ' 
         ' DarkLabel39
         ' 
         DarkLabel39.AutoSize = True
         DarkLabel39.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel39.Location = New Point(13, 38)
-        DarkLabel39.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel39.Location = New Point(10, 30)
+        DarkLabel39.Margin = New Padding(5, 0, 5, 0)
         DarkLabel39.Name = "DarkLabel39"
-        DarkLabel39.Size = New Size(188, 32)
+        DarkLabel39.Size = New Size(138, 25)
         DarkLabel39.TabIndex = 0
         DarkLabel39.Text = "ChatBubble Text"
         ' 
@@ -3543,11 +3545,11 @@ Partial Class FrmEditor_Events
         fraPlaySound.Controls.Add(btnPlaySoundCancel)
         fraPlaySound.Controls.Add(cmbPlaySound)
         fraPlaySound.ForeColor = Color.Gainsboro
-        fraPlaySound.Location = New Point(869, 442)
-        fraPlaySound.Margin = New Padding(7, 6, 7, 6)
+        fraPlaySound.Location = New Point(668, 345)
+        fraPlaySound.Margin = New Padding(5)
         fraPlaySound.Name = "fraPlaySound"
-        fraPlaySound.Padding = New Padding(7, 6, 7, 6)
-        fraPlaySound.Size = New Size(533, 188)
+        fraPlaySound.Padding = New Padding(5)
+        fraPlaySound.Size = New Size(410, 147)
         fraPlaySound.TabIndex = 26
         fraPlaySound.TabStop = False
         fraPlaySound.Text = "Play Sound"
@@ -3555,21 +3557,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnPlaySoundOk
         ' 
-        btnPlaySoundOk.Location = New Point(182, 113)
-        btnPlaySoundOk.Margin = New Padding(7, 6, 7, 6)
+        btnPlaySoundOk.Location = New Point(140, 88)
+        btnPlaySoundOk.Margin = New Padding(5)
         btnPlaySoundOk.Name = "btnPlaySoundOk"
-        btnPlaySoundOk.Padding = New Padding(11, 13, 11, 13)
-        btnPlaySoundOk.Size = New Size(163, 58)
+        btnPlaySoundOk.Padding = New Padding(8, 10, 8, 10)
+        btnPlaySoundOk.Size = New Size(125, 45)
         btnPlaySoundOk.TabIndex = 27
         btnPlaySoundOk.Text = "Ok"
         ' 
         ' btnPlaySoundCancel
         ' 
-        btnPlaySoundCancel.Location = New Point(357, 113)
-        btnPlaySoundCancel.Margin = New Padding(7, 6, 7, 6)
+        btnPlaySoundCancel.Location = New Point(275, 88)
+        btnPlaySoundCancel.Margin = New Padding(5)
         btnPlaySoundCancel.Name = "btnPlaySoundCancel"
-        btnPlaySoundCancel.Padding = New Padding(11, 13, 11, 13)
-        btnPlaySoundCancel.Size = New Size(163, 58)
+        btnPlaySoundCancel.Padding = New Padding(8, 10, 8, 10)
+        btnPlaySoundCancel.Size = New Size(125, 45)
         btnPlaySoundCancel.TabIndex = 26
         btnPlaySoundCancel.Text = "Cancel"
         ' 
@@ -3577,10 +3579,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbPlaySound.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlaySound.FormattingEnabled = True
-        cmbPlaySound.Location = New Point(13, 47)
-        cmbPlaySound.Margin = New Padding(7, 6, 7, 6)
+        cmbPlaySound.Location = New Point(10, 37)
+        cmbPlaySound.Margin = New Padding(5)
         cmbPlaySound.Name = "cmbPlaySound"
-        cmbPlaySound.Size = New Size(502, 40)
+        cmbPlaySound.Size = New Size(387, 32)
         cmbPlaySound.TabIndex = 0
         ' 
         ' fraChangePK
@@ -3591,11 +3593,11 @@ Partial Class FrmEditor_Events
         fraChangePK.Controls.Add(btnChangePkCancel)
         fraChangePK.Controls.Add(cmbSetPK)
         fraChangePK.ForeColor = Color.Gainsboro
-        fraChangePK.Location = New Point(869, 256)
-        fraChangePK.Margin = New Padding(7, 6, 7, 6)
+        fraChangePK.Location = New Point(668, 200)
+        fraChangePK.Margin = New Padding(5)
         fraChangePK.Name = "fraChangePK"
-        fraChangePK.Padding = New Padding(7, 6, 7, 6)
-        fraChangePK.Size = New Size(533, 186)
+        fraChangePK.Padding = New Padding(5)
+        fraChangePK.Size = New Size(410, 145)
         fraChangePK.TabIndex = 25
         fraChangePK.TabStop = False
         fraChangePK.Text = "Set Player PK"
@@ -3603,21 +3605,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnChangePkOk
         ' 
-        btnChangePkOk.Location = New Point(173, 113)
-        btnChangePkOk.Margin = New Padding(7, 6, 7, 6)
+        btnChangePkOk.Location = New Point(133, 88)
+        btnChangePkOk.Margin = New Padding(5)
         btnChangePkOk.Name = "btnChangePkOk"
-        btnChangePkOk.Padding = New Padding(11, 13, 11, 13)
-        btnChangePkOk.Size = New Size(163, 58)
+        btnChangePkOk.Padding = New Padding(8, 10, 8, 10)
+        btnChangePkOk.Size = New Size(125, 45)
         btnChangePkOk.TabIndex = 27
         btnChangePkOk.Text = "Ok"
         ' 
         ' btnChangePkCancel
         ' 
-        btnChangePkCancel.Location = New Point(349, 113)
-        btnChangePkCancel.Margin = New Padding(7, 6, 7, 6)
+        btnChangePkCancel.Location = New Point(268, 88)
+        btnChangePkCancel.Margin = New Padding(5)
         btnChangePkCancel.Name = "btnChangePkCancel"
-        btnChangePkCancel.Padding = New Padding(11, 13, 11, 13)
-        btnChangePkCancel.Size = New Size(163, 58)
+        btnChangePkCancel.Padding = New Padding(8, 10, 8, 10)
+        btnChangePkCancel.Size = New Size(125, 45)
         btnChangePkCancel.TabIndex = 26
         btnChangePkCancel.Text = "Cancel"
         ' 
@@ -3626,10 +3628,10 @@ Partial Class FrmEditor_Events
         cmbSetPK.DrawMode = DrawMode.OwnerDrawFixed
         cmbSetPK.FormattingEnabled = True
         cmbSetPK.Items.AddRange(New Object() {"No", "Yes"})
-        cmbSetPK.Location = New Point(22, 47)
-        cmbSetPK.Margin = New Padding(7, 6, 7, 6)
+        cmbSetPK.Location = New Point(17, 37)
+        cmbSetPK.Margin = New Padding(5)
         cmbSetPK.Name = "cmbSetPK"
-        cmbSetPK.Size = New Size(485, 40)
+        cmbSetPK.Size = New Size(374, 32)
         cmbSetPK.TabIndex = 18
         ' 
         ' fraCreateLabel
@@ -3641,11 +3643,11 @@ Partial Class FrmEditor_Events
         fraCreateLabel.Controls.Add(txtLabelName)
         fraCreateLabel.Controls.Add(lblLabelName)
         fraCreateLabel.ForeColor = Color.Gainsboro
-        fraCreateLabel.Location = New Point(869, 324)
-        fraCreateLabel.Margin = New Padding(7, 6, 7, 6)
+        fraCreateLabel.Location = New Point(668, 253)
+        fraCreateLabel.Margin = New Padding(5)
         fraCreateLabel.Name = "fraCreateLabel"
-        fraCreateLabel.Padding = New Padding(7, 6, 7, 6)
-        fraCreateLabel.Size = New Size(533, 181)
+        fraCreateLabel.Padding = New Padding(5)
+        fraCreateLabel.Size = New Size(410, 141)
         fraCreateLabel.TabIndex = 24
         fraCreateLabel.TabStop = False
         fraCreateLabel.Text = "Create Label"
@@ -3653,21 +3655,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnCreatelabelOk
         ' 
-        btnCreatelabelOk.Location = New Point(182, 111)
-        btnCreatelabelOk.Margin = New Padding(7, 6, 7, 6)
+        btnCreatelabelOk.Location = New Point(140, 87)
+        btnCreatelabelOk.Margin = New Padding(5)
         btnCreatelabelOk.Name = "btnCreatelabelOk"
-        btnCreatelabelOk.Padding = New Padding(11, 13, 11, 13)
-        btnCreatelabelOk.Size = New Size(163, 58)
+        btnCreatelabelOk.Padding = New Padding(8, 10, 8, 10)
+        btnCreatelabelOk.Size = New Size(125, 45)
         btnCreatelabelOk.TabIndex = 27
         btnCreatelabelOk.Text = "Ok"
         ' 
         ' btnCreatelabelCancel
         ' 
-        btnCreatelabelCancel.Location = New Point(357, 111)
-        btnCreatelabelCancel.Margin = New Padding(7, 6, 7, 6)
+        btnCreatelabelCancel.Location = New Point(275, 87)
+        btnCreatelabelCancel.Margin = New Padding(5)
         btnCreatelabelCancel.Name = "btnCreatelabelCancel"
-        btnCreatelabelCancel.Padding = New Padding(11, 13, 11, 13)
-        btnCreatelabelCancel.Size = New Size(163, 58)
+        btnCreatelabelCancel.Padding = New Padding(8, 10, 8, 10)
+        btnCreatelabelCancel.Size = New Size(125, 45)
         btnCreatelabelCancel.TabIndex = 26
         btnCreatelabelCancel.Text = "Cancel"
         ' 
@@ -3676,20 +3678,20 @@ Partial Class FrmEditor_Events
         txtLabelName.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtLabelName.BorderStyle = BorderStyle.FixedSingle
         txtLabelName.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtLabelName.Location = New Point(173, 47)
-        txtLabelName.Margin = New Padding(7, 6, 7, 6)
+        txtLabelName.Location = New Point(133, 37)
+        txtLabelName.Margin = New Padding(5)
         txtLabelName.Name = "txtLabelName"
-        txtLabelName.Size = New Size(344, 39)
+        txtLabelName.Size = New Size(265, 31)
         txtLabelName.TabIndex = 1
         ' 
         ' lblLabelName
         ' 
         lblLabelName.AutoSize = True
         lblLabelName.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        lblLabelName.Location = New Point(15, 51)
-        lblLabelName.Margin = New Padding(7, 0, 7, 0)
+        lblLabelName.Location = New Point(12, 40)
+        lblLabelName.Margin = New Padding(5, 0, 5, 0)
         lblLabelName.Name = "lblLabelName"
-        lblLabelName.Size = New Size(146, 32)
+        lblLabelName.Size = New Size(109, 25)
         lblLabelName.TabIndex = 0
         lblLabelName.Text = "Label Name:"
         ' 
@@ -3702,11 +3704,11 @@ Partial Class FrmEditor_Events
         fraChangeJob.Controls.Add(cmbChangeJob)
         fraChangeJob.Controls.Add(DarkLabel38)
         fraChangeJob.ForeColor = Color.Gainsboro
-        fraChangeJob.Location = New Point(869, 269)
-        fraChangeJob.Margin = New Padding(7, 6, 7, 6)
+        fraChangeJob.Location = New Point(668, 210)
+        fraChangeJob.Margin = New Padding(5)
         fraChangeJob.Name = "fraChangeJob"
-        fraChangeJob.Padding = New Padding(7, 6, 7, 6)
-        fraChangeJob.Size = New Size(533, 188)
+        fraChangeJob.Padding = New Padding(5)
+        fraChangeJob.Size = New Size(410, 147)
         fraChangeJob.TabIndex = 23
         fraChangeJob.TabStop = False
         fraChangeJob.Text = "Change Player Job"
@@ -3714,21 +3716,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnChangeJobOk
         ' 
-        btnChangeJobOk.Location = New Point(182, 113)
-        btnChangeJobOk.Margin = New Padding(7, 6, 7, 6)
+        btnChangeJobOk.Location = New Point(140, 88)
+        btnChangeJobOk.Margin = New Padding(5)
         btnChangeJobOk.Name = "btnChangeJobOk"
-        btnChangeJobOk.Padding = New Padding(11, 13, 11, 13)
-        btnChangeJobOk.Size = New Size(163, 58)
+        btnChangeJobOk.Padding = New Padding(8, 10, 8, 10)
+        btnChangeJobOk.Size = New Size(125, 45)
         btnChangeJobOk.TabIndex = 27
         btnChangeJobOk.Text = "Ok"
         ' 
         ' btnChangeJobCancel
         ' 
-        btnChangeJobCancel.Location = New Point(357, 113)
-        btnChangeJobCancel.Margin = New Padding(7, 6, 7, 6)
+        btnChangeJobCancel.Location = New Point(275, 88)
+        btnChangeJobCancel.Margin = New Padding(5)
         btnChangeJobCancel.Name = "btnChangeJobCancel"
-        btnChangeJobCancel.Padding = New Padding(11, 13, 11, 13)
-        btnChangeJobCancel.Size = New Size(163, 58)
+        btnChangeJobCancel.Padding = New Padding(8, 10, 8, 10)
+        btnChangeJobCancel.Size = New Size(125, 45)
         btnChangeJobCancel.TabIndex = 26
         btnChangeJobCancel.Text = "Cancel"
         ' 
@@ -3736,20 +3738,20 @@ Partial Class FrmEditor_Events
         ' 
         cmbChangeJob.DrawMode = DrawMode.OwnerDrawFixed
         cmbChangeJob.FormattingEnabled = True
-        cmbChangeJob.Location = New Point(106, 47)
-        cmbChangeJob.Margin = New Padding(7, 6, 7, 6)
+        cmbChangeJob.Location = New Point(82, 37)
+        cmbChangeJob.Margin = New Padding(5)
         cmbChangeJob.Name = "cmbChangeJob"
-        cmbChangeJob.Size = New Size(409, 40)
+        cmbChangeJob.Size = New Size(316, 32)
         cmbChangeJob.TabIndex = 1
         ' 
         ' DarkLabel38
         ' 
         DarkLabel38.AutoSize = True
         DarkLabel38.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel38.Location = New Point(17, 53)
-        DarkLabel38.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel38.Location = New Point(13, 41)
+        DarkLabel38.Margin = New Padding(5, 0, 5, 0)
         DarkLabel38.Name = "DarkLabel38"
-        DarkLabel38.Size = New Size(56, 32)
+        DarkLabel38.Size = New Size(44, 25)
         DarkLabel38.TabIndex = 0
         DarkLabel38.Text = "Job:"
         ' 
@@ -3764,11 +3766,11 @@ Partial Class FrmEditor_Events
         fraChangeSkills.Controls.Add(cmbChangeSkills)
         fraChangeSkills.Controls.Add(DarkLabel37)
         fraChangeSkills.ForeColor = Color.Gainsboro
-        fraChangeSkills.Location = New Point(869, 267)
-        fraChangeSkills.Margin = New Padding(7, 6, 7, 6)
+        fraChangeSkills.Location = New Point(668, 209)
+        fraChangeSkills.Margin = New Padding(5)
         fraChangeSkills.Name = "fraChangeSkills"
-        fraChangeSkills.Padding = New Padding(7, 6, 7, 6)
-        fraChangeSkills.Size = New Size(533, 241)
+        fraChangeSkills.Padding = New Padding(5)
+        fraChangeSkills.Size = New Size(410, 188)
         fraChangeSkills.TabIndex = 22
         fraChangeSkills.TabStop = False
         fraChangeSkills.Text = "Change Player Skills"
@@ -3776,31 +3778,31 @@ Partial Class FrmEditor_Events
         ' 
         ' btnChangeSkillsOk
         ' 
-        btnChangeSkillsOk.Location = New Point(182, 164)
-        btnChangeSkillsOk.Margin = New Padding(7, 6, 7, 6)
+        btnChangeSkillsOk.Location = New Point(140, 128)
+        btnChangeSkillsOk.Margin = New Padding(5)
         btnChangeSkillsOk.Name = "btnChangeSkillsOk"
-        btnChangeSkillsOk.Padding = New Padding(11, 13, 11, 13)
-        btnChangeSkillsOk.Size = New Size(163, 58)
+        btnChangeSkillsOk.Padding = New Padding(8, 10, 8, 10)
+        btnChangeSkillsOk.Size = New Size(125, 45)
         btnChangeSkillsOk.TabIndex = 27
         btnChangeSkillsOk.Text = "Ok"
         ' 
         ' btnChangeSkillsCancel
         ' 
-        btnChangeSkillsCancel.Location = New Point(357, 164)
-        btnChangeSkillsCancel.Margin = New Padding(7, 6, 7, 6)
+        btnChangeSkillsCancel.Location = New Point(275, 128)
+        btnChangeSkillsCancel.Margin = New Padding(5)
         btnChangeSkillsCancel.Name = "btnChangeSkillsCancel"
-        btnChangeSkillsCancel.Padding = New Padding(11, 13, 11, 13)
-        btnChangeSkillsCancel.Size = New Size(163, 58)
+        btnChangeSkillsCancel.Padding = New Padding(8, 10, 8, 10)
+        btnChangeSkillsCancel.Size = New Size(125, 45)
         btnChangeSkillsCancel.TabIndex = 26
         btnChangeSkillsCancel.Text = "Cancel"
         ' 
         ' optChangeSkillsRemove
         ' 
         optChangeSkillsRemove.AutoSize = True
-        optChangeSkillsRemove.Location = New Point(319, 109)
-        optChangeSkillsRemove.Margin = New Padding(7, 6, 7, 6)
+        optChangeSkillsRemove.Location = New Point(245, 85)
+        optChangeSkillsRemove.Margin = New Padding(5)
         optChangeSkillsRemove.Name = "optChangeSkillsRemove"
-        optChangeSkillsRemove.Size = New Size(114, 36)
+        optChangeSkillsRemove.Size = New Size(89, 29)
         optChangeSkillsRemove.TabIndex = 3
         optChangeSkillsRemove.TabStop = True
         optChangeSkillsRemove.Text = "Forget"
@@ -3808,10 +3810,10 @@ Partial Class FrmEditor_Events
         ' optChangeSkillsAdd
         ' 
         optChangeSkillsAdd.AutoSize = True
-        optChangeSkillsAdd.Location = New Point(141, 109)
-        optChangeSkillsAdd.Margin = New Padding(7, 6, 7, 6)
+        optChangeSkillsAdd.Location = New Point(108, 85)
+        optChangeSkillsAdd.Margin = New Padding(5)
         optChangeSkillsAdd.Name = "optChangeSkillsAdd"
-        optChangeSkillsAdd.Size = New Size(106, 36)
+        optChangeSkillsAdd.Size = New Size(80, 29)
         optChangeSkillsAdd.TabIndex = 2
         optChangeSkillsAdd.TabStop = True
         optChangeSkillsAdd.Text = "Teach"
@@ -3820,20 +3822,20 @@ Partial Class FrmEditor_Events
         ' 
         cmbChangeSkills.DrawMode = DrawMode.OwnerDrawFixed
         cmbChangeSkills.FormattingEnabled = True
-        cmbChangeSkills.Location = New Point(89, 43)
-        cmbChangeSkills.Margin = New Padding(7, 6, 7, 6)
+        cmbChangeSkills.Location = New Point(68, 34)
+        cmbChangeSkills.Margin = New Padding(5)
         cmbChangeSkills.Name = "cmbChangeSkills"
-        cmbChangeSkills.Size = New Size(424, 40)
+        cmbChangeSkills.Size = New Size(327, 32)
         cmbChangeSkills.TabIndex = 1
         ' 
         ' DarkLabel37
         ' 
         DarkLabel37.AutoSize = True
         DarkLabel37.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel37.Location = New Point(13, 49)
-        DarkLabel37.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel37.Location = New Point(10, 38)
+        DarkLabel37.Margin = New Padding(5, 0, 5, 0)
         DarkLabel37.Name = "DarkLabel37"
-        DarkLabel37.Size = New Size(62, 32)
+        DarkLabel37.Size = New Size(47, 25)
         DarkLabel37.TabIndex = 0
         DarkLabel37.Text = "Skill:"
         ' 
@@ -3852,11 +3854,11 @@ Partial Class FrmEditor_Events
         fraPlayerWarp.Controls.Add(nudWPMap)
         fraPlayerWarp.Controls.Add(DarkLabel34)
         fraPlayerWarp.ForeColor = Color.Gainsboro
-        fraPlayerWarp.Location = New Point(869, 15)
-        fraPlayerWarp.Margin = New Padding(7, 6, 7, 6)
+        fraPlayerWarp.Location = New Point(668, 12)
+        fraPlayerWarp.Margin = New Padding(5)
         fraPlayerWarp.Name = "fraPlayerWarp"
-        fraPlayerWarp.Padding = New Padding(7, 6, 7, 6)
-        fraPlayerWarp.Size = New Size(533, 239)
+        fraPlayerWarp.Padding = New Padding(5)
+        fraPlayerWarp.Size = New Size(410, 187)
         fraPlayerWarp.TabIndex = 19
         fraPlayerWarp.TabStop = False
         fraPlayerWarp.Text = "Warp Player"
@@ -3864,21 +3866,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnPlayerWarpOk
         ' 
-        btnPlayerWarpOk.Location = New Point(180, 166)
-        btnPlayerWarpOk.Margin = New Padding(7, 6, 7, 6)
+        btnPlayerWarpOk.Location = New Point(138, 130)
+        btnPlayerWarpOk.Margin = New Padding(5)
         btnPlayerWarpOk.Name = "btnPlayerWarpOk"
-        btnPlayerWarpOk.Padding = New Padding(11, 13, 11, 13)
-        btnPlayerWarpOk.Size = New Size(163, 58)
+        btnPlayerWarpOk.Padding = New Padding(8, 10, 8, 10)
+        btnPlayerWarpOk.Size = New Size(125, 45)
         btnPlayerWarpOk.TabIndex = 46
         btnPlayerWarpOk.Text = "Ok"
         ' 
         ' btnPlayerWarpCancel
         ' 
-        btnPlayerWarpCancel.Location = New Point(355, 166)
-        btnPlayerWarpCancel.Margin = New Padding(7, 6, 7, 6)
+        btnPlayerWarpCancel.Location = New Point(273, 130)
+        btnPlayerWarpCancel.Margin = New Padding(5)
         btnPlayerWarpCancel.Name = "btnPlayerWarpCancel"
-        btnPlayerWarpCancel.Padding = New Padding(11, 13, 11, 13)
-        btnPlayerWarpCancel.Size = New Size(163, 58)
+        btnPlayerWarpCancel.Padding = New Padding(8, 10, 8, 10)
+        btnPlayerWarpCancel.Size = New Size(125, 45)
         btnPlayerWarpCancel.TabIndex = 45
         btnPlayerWarpCancel.Text = "Cancel"
         ' 
@@ -3886,10 +3888,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel31.AutoSize = True
         DarkLabel31.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel31.Location = New Point(17, 109)
-        DarkLabel31.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel31.Location = New Point(13, 85)
+        DarkLabel31.Margin = New Padding(5, 0, 5, 0)
         DarkLabel31.Name = "DarkLabel31"
-        DarkLabel31.Size = New Size(116, 32)
+        DarkLabel31.Size = New Size(87, 25)
         DarkLabel31.TabIndex = 44
         DarkLabel31.Text = "Direction:"
         ' 
@@ -3898,66 +3900,66 @@ Partial Class FrmEditor_Events
         cmbWarpPlayerDir.DrawMode = DrawMode.OwnerDrawFixed
         cmbWarpPlayerDir.FormattingEnabled = True
         cmbWarpPlayerDir.Items.AddRange(New Object() {"Retain Direction", "Up", "Down", "Left", "Right"})
-        cmbWarpPlayerDir.Location = New Point(208, 100)
-        cmbWarpPlayerDir.Margin = New Padding(7, 6, 7, 6)
+        cmbWarpPlayerDir.Location = New Point(160, 78)
+        cmbWarpPlayerDir.Margin = New Padding(5)
         cmbWarpPlayerDir.Name = "cmbWarpPlayerDir"
-        cmbWarpPlayerDir.Size = New Size(305, 40)
+        cmbWarpPlayerDir.Size = New Size(236, 32)
         cmbWarpPlayerDir.TabIndex = 43
         ' 
         ' nudWPY
         ' 
-        nudWPY.Location = New Point(433, 36)
-        nudWPY.Margin = New Padding(7, 6, 7, 6)
+        nudWPY.Location = New Point(333, 28)
+        nudWPY.Margin = New Padding(5)
         nudWPY.Name = "nudWPY"
-        nudWPY.Size = New Size(85, 39)
+        nudWPY.Size = New Size(65, 31)
         nudWPY.TabIndex = 42
         ' 
         ' DarkLabel32
         ' 
         DarkLabel32.AutoSize = True
         DarkLabel32.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel32.Location = New Point(383, 43)
-        DarkLabel32.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel32.Location = New Point(295, 34)
+        DarkLabel32.Margin = New Padding(5, 0, 5, 0)
         DarkLabel32.Name = "DarkLabel32"
-        DarkLabel32.Size = New Size(32, 32)
+        DarkLabel32.Size = New Size(26, 25)
         DarkLabel32.TabIndex = 41
         DarkLabel32.Text = "Y:"
         ' 
         ' nudWPX
         ' 
-        nudWPX.Location = New Point(282, 36)
-        nudWPX.Margin = New Padding(7, 6, 7, 6)
+        nudWPX.Location = New Point(217, 28)
+        nudWPX.Margin = New Padding(5)
         nudWPX.Name = "nudWPX"
-        nudWPX.Size = New Size(85, 39)
+        nudWPX.Size = New Size(65, 31)
         nudWPX.TabIndex = 40
         ' 
         ' DarkLabel33
         ' 
         DarkLabel33.AutoSize = True
         DarkLabel33.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel33.Location = New Point(232, 43)
-        DarkLabel33.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel33.Location = New Point(178, 34)
+        DarkLabel33.Margin = New Padding(5, 0, 5, 0)
         DarkLabel33.Name = "DarkLabel33"
-        DarkLabel33.Size = New Size(33, 32)
+        DarkLabel33.Size = New Size(27, 25)
         DarkLabel33.TabIndex = 39
         DarkLabel33.Text = "X:"
         ' 
         ' nudWPMap
         ' 
-        nudWPMap.Location = New Point(93, 36)
-        nudWPMap.Margin = New Padding(7, 6, 7, 6)
+        nudWPMap.Location = New Point(72, 28)
+        nudWPMap.Margin = New Padding(5)
         nudWPMap.Name = "nudWPMap"
-        nudWPMap.Size = New Size(126, 39)
+        nudWPMap.Size = New Size(97, 31)
         nudWPMap.TabIndex = 38
         ' 
         ' DarkLabel34
         ' 
         DarkLabel34.AutoSize = True
         DarkLabel34.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel34.Location = New Point(13, 43)
-        DarkLabel34.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel34.Location = New Point(10, 34)
+        DarkLabel34.Margin = New Padding(5, 0, 5, 0)
         DarkLabel34.Name = "DarkLabel34"
-        DarkLabel34.Size = New Size(67, 32)
+        DarkLabel34.Size = New Size(52, 25)
         DarkLabel34.TabIndex = 37
         DarkLabel34.Text = "Map:"
         ' 
@@ -3974,11 +3976,11 @@ Partial Class FrmEditor_Events
         fraSetFog.Controls.Add(nudFogData1)
         fraSetFog.Controls.Add(nudFogData0)
         fraSetFog.ForeColor = Color.Gainsboro
-        fraSetFog.Location = New Point(869, 17)
-        fraSetFog.Margin = New Padding(7, 6, 7, 6)
+        fraSetFog.Location = New Point(668, 13)
+        fraSetFog.Margin = New Padding(5)
         fraSetFog.Name = "fraSetFog"
-        fraSetFog.Padding = New Padding(7, 6, 7, 6)
-        fraSetFog.Size = New Size(533, 237)
+        fraSetFog.Padding = New Padding(5)
+        fraSetFog.Size = New Size(410, 185)
         fraSetFog.TabIndex = 18
         fraSetFog.TabStop = False
         fraSetFog.Text = "Set Fog"
@@ -3986,21 +3988,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnSetFogOk
         ' 
-        btnSetFogOk.Location = New Point(182, 164)
-        btnSetFogOk.Margin = New Padding(7, 6, 7, 6)
+        btnSetFogOk.Location = New Point(140, 128)
+        btnSetFogOk.Margin = New Padding(5)
         btnSetFogOk.Name = "btnSetFogOk"
-        btnSetFogOk.Padding = New Padding(11, 13, 11, 13)
-        btnSetFogOk.Size = New Size(163, 58)
+        btnSetFogOk.Padding = New Padding(8, 10, 8, 10)
+        btnSetFogOk.Size = New Size(125, 45)
         btnSetFogOk.TabIndex = 41
         btnSetFogOk.Text = "Ok"
         ' 
         ' btnSetFogCancel
         ' 
-        btnSetFogCancel.Location = New Point(357, 164)
-        btnSetFogCancel.Margin = New Padding(7, 6, 7, 6)
+        btnSetFogCancel.Location = New Point(275, 128)
+        btnSetFogCancel.Margin = New Padding(5)
         btnSetFogCancel.Name = "btnSetFogCancel"
-        btnSetFogCancel.Padding = New Padding(11, 13, 11, 13)
-        btnSetFogCancel.Size = New Size(163, 58)
+        btnSetFogCancel.Padding = New Padding(8, 10, 8, 10)
+        btnSetFogCancel.Size = New Size(125, 45)
         btnSetFogCancel.TabIndex = 40
         btnSetFogCancel.Text = "Cancel"
         ' 
@@ -4008,10 +4010,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel30.AutoSize = True
         DarkLabel30.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel30.Location = New Point(269, 102)
-        DarkLabel30.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel30.Location = New Point(207, 80)
+        DarkLabel30.Margin = New Padding(5, 0, 5, 0)
         DarkLabel30.Name = "DarkLabel30"
-        DarkLabel30.Size = New Size(147, 32)
+        DarkLabel30.Size = New Size(113, 25)
         DarkLabel30.TabIndex = 39
         DarkLabel30.Text = "Fog Opacity:"
         ' 
@@ -4019,10 +4021,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel29.AutoSize = True
         DarkLabel29.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel29.Location = New Point(15, 102)
-        DarkLabel29.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel29.Location = New Point(12, 80)
+        DarkLabel29.Margin = New Padding(5, 0, 5, 0)
         DarkLabel29.Name = "DarkLabel29"
-        DarkLabel29.Size = New Size(133, 32)
+        DarkLabel29.Size = New Size(102, 25)
         DarkLabel29.TabIndex = 38
         DarkLabel29.Text = "Fog Speed:"
         ' 
@@ -4030,36 +4032,36 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel28.AutoSize = True
         DarkLabel28.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel28.Location = New Point(15, 36)
-        DarkLabel28.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel28.Location = New Point(12, 28)
+        DarkLabel28.Margin = New Padding(5, 0, 5, 0)
         DarkLabel28.Name = "DarkLabel28"
-        DarkLabel28.Size = New Size(59, 32)
+        DarkLabel28.Size = New Size(47, 25)
         DarkLabel28.TabIndex = 37
         DarkLabel28.Text = "Fog:"
         ' 
         ' nudFogData2
         ' 
-        nudFogData2.Location = New Point(414, 96)
-        nudFogData2.Margin = New Padding(7, 6, 7, 6)
+        nudFogData2.Location = New Point(318, 75)
+        nudFogData2.Margin = New Padding(5)
         nudFogData2.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudFogData2.Name = "nudFogData2"
-        nudFogData2.Size = New Size(106, 39)
+        nudFogData2.Size = New Size(82, 31)
         nudFogData2.TabIndex = 36
         ' 
         ' nudFogData1
         ' 
-        nudFogData1.Location = New Point(156, 98)
-        nudFogData1.Margin = New Padding(7, 6, 7, 6)
+        nudFogData1.Location = New Point(120, 77)
+        nudFogData1.Margin = New Padding(5)
         nudFogData1.Name = "nudFogData1"
-        nudFogData1.Size = New Size(104, 39)
+        nudFogData1.Size = New Size(80, 31)
         nudFogData1.TabIndex = 35
         ' 
         ' nudFogData0
         ' 
-        nudFogData0.Location = New Point(210, 30)
-        nudFogData0.Margin = New Padding(7, 6, 7, 6)
+        nudFogData0.Location = New Point(162, 23)
+        nudFogData0.Margin = New Padding(5)
         nudFogData0.Name = "nudFogData0"
-        nudFogData0.Size = New Size(310, 39)
+        nudFogData0.Size = New Size(238, 31)
         nudFogData0.TabIndex = 34
         ' 
         ' fraAddText
@@ -4075,11 +4077,11 @@ Partial Class FrmEditor_Events
         fraAddText.Controls.Add(txtAddText_Text)
         fraAddText.Controls.Add(DarkLabel24)
         fraAddText.ForeColor = Color.Gainsboro
-        fraAddText.Location = New Point(13, 894)
-        fraAddText.Margin = New Padding(7, 6, 7, 6)
+        fraAddText.Location = New Point(10, 698)
+        fraAddText.Margin = New Padding(5)
         fraAddText.Name = "fraAddText"
-        fraAddText.Padding = New Padding(7, 6, 7, 6)
-        fraAddText.Size = New Size(505, 461)
+        fraAddText.Padding = New Padding(5)
+        fraAddText.Size = New Size(388, 360)
         fraAddText.TabIndex = 3
         fraAddText.TabStop = False
         fraAddText.Text = "Add Text"
@@ -4087,31 +4089,31 @@ Partial Class FrmEditor_Events
         ' 
         ' btnAddTextOk
         ' 
-        btnAddTextOk.Location = New Point(119, 384)
-        btnAddTextOk.Margin = New Padding(7, 6, 7, 6)
+        btnAddTextOk.Location = New Point(92, 300)
+        btnAddTextOk.Margin = New Padding(5)
         btnAddTextOk.Name = "btnAddTextOk"
-        btnAddTextOk.Padding = New Padding(11, 13, 11, 13)
-        btnAddTextOk.Size = New Size(163, 58)
+        btnAddTextOk.Padding = New Padding(8, 10, 8, 10)
+        btnAddTextOk.Size = New Size(125, 45)
         btnAddTextOk.TabIndex = 9
         btnAddTextOk.Text = "Ok"
         ' 
         ' btnAddTextCancel
         ' 
-        btnAddTextCancel.Location = New Point(295, 384)
-        btnAddTextCancel.Margin = New Padding(7, 6, 7, 6)
+        btnAddTextCancel.Location = New Point(227, 300)
+        btnAddTextCancel.Margin = New Padding(5)
         btnAddTextCancel.Name = "btnAddTextCancel"
-        btnAddTextCancel.Padding = New Padding(11, 13, 11, 13)
-        btnAddTextCancel.Size = New Size(163, 58)
+        btnAddTextCancel.Padding = New Padding(8, 10, 8, 10)
+        btnAddTextCancel.Size = New Size(125, 45)
         btnAddTextCancel.TabIndex = 8
         btnAddTextCancel.Text = "Cancel"
         ' 
         ' optAddText_Global
         ' 
         optAddText_Global.AutoSize = True
-        optAddText_Global.Location = New Point(375, 326)
-        optAddText_Global.Margin = New Padding(7, 6, 7, 6)
+        optAddText_Global.Location = New Point(288, 255)
+        optAddText_Global.Margin = New Padding(5)
         optAddText_Global.Name = "optAddText_Global"
-        optAddText_Global.Size = New Size(113, 36)
+        optAddText_Global.Size = New Size(88, 29)
         optAddText_Global.TabIndex = 5
         optAddText_Global.TabStop = True
         optAddText_Global.Text = "Global"
@@ -4119,10 +4121,10 @@ Partial Class FrmEditor_Events
         ' optAddText_Map
         ' 
         optAddText_Map.AutoSize = True
-        optAddText_Map.Location = New Point(262, 326)
-        optAddText_Map.Margin = New Padding(7, 6, 7, 6)
+        optAddText_Map.Location = New Point(202, 255)
+        optAddText_Map.Margin = New Padding(5)
         optAddText_Map.Name = "optAddText_Map"
-        optAddText_Map.Size = New Size(93, 36)
+        optAddText_Map.Size = New Size(73, 29)
         optAddText_Map.TabIndex = 4
         optAddText_Map.TabStop = True
         optAddText_Map.Text = "Map"
@@ -4130,10 +4132,10 @@ Partial Class FrmEditor_Events
         ' optAddText_Player
         ' 
         optAddText_Player.AutoSize = True
-        optAddText_Player.Location = New Point(132, 326)
-        optAddText_Player.Margin = New Padding(7, 6, 7, 6)
+        optAddText_Player.Location = New Point(102, 255)
+        optAddText_Player.Margin = New Padding(5)
         optAddText_Player.Name = "optAddText_Player"
-        optAddText_Player.Size = New Size(109, 36)
+        optAddText_Player.Size = New Size(84, 29)
         optAddText_Player.TabIndex = 3
         optAddText_Player.TabStop = True
         optAddText_Player.Text = "Player"
@@ -4142,10 +4144,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel25.AutoSize = True
         DarkLabel25.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel25.Location = New Point(13, 333)
-        DarkLabel25.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel25.Location = New Point(10, 260)
+        DarkLabel25.Margin = New Padding(5, 0, 5, 0)
         DarkLabel25.Name = "DarkLabel25"
-        DarkLabel25.Size = New Size(107, 32)
+        DarkLabel25.Size = New Size(79, 25)
         DarkLabel25.TabIndex = 2
         DarkLabel25.Text = "Channel:"
         ' 
@@ -4154,21 +4156,21 @@ Partial Class FrmEditor_Events
         txtAddText_Text.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtAddText_Text.BorderStyle = BorderStyle.FixedSingle
         txtAddText_Text.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtAddText_Text.Location = New Point(13, 77)
-        txtAddText_Text.Margin = New Padding(7, 6, 7, 6)
+        txtAddText_Text.Location = New Point(10, 60)
+        txtAddText_Text.Margin = New Padding(5)
         txtAddText_Text.Multiline = True
         txtAddText_Text.Name = "txtAddText_Text"
-        txtAddText_Text.Size = New Size(479, 232)
+        txtAddText_Text.Size = New Size(369, 182)
         txtAddText_Text.TabIndex = 1
         ' 
         ' DarkLabel24
         ' 
         DarkLabel24.AutoSize = True
         DarkLabel24.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel24.Location = New Point(13, 36)
-        DarkLabel24.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel24.Location = New Point(10, 28)
+        DarkLabel24.Margin = New Padding(5, 0, 5, 0)
         DarkLabel24.Name = "DarkLabel24"
-        DarkLabel24.Size = New Size(57, 32)
+        DarkLabel24.Size = New Size(42, 25)
         DarkLabel24.TabIndex = 0
         DarkLabel24.Text = "Text"
         ' 
@@ -4183,11 +4185,11 @@ Partial Class FrmEditor_Events
         fraPlayerSwitch.Controls.Add(cmbSwitch)
         fraPlayerSwitch.Controls.Add(DarkLabel22)
         fraPlayerSwitch.ForeColor = Color.Gainsboro
-        fraPlayerSwitch.Location = New Point(461, 960)
-        fraPlayerSwitch.Margin = New Padding(7, 6, 7, 6)
+        fraPlayerSwitch.Location = New Point(355, 750)
+        fraPlayerSwitch.Margin = New Padding(5)
         fraPlayerSwitch.Name = "fraPlayerSwitch"
-        fraPlayerSwitch.Padding = New Padding(7, 6, 7, 6)
-        fraPlayerSwitch.Size = New Size(394, 245)
+        fraPlayerSwitch.Padding = New Padding(5)
+        fraPlayerSwitch.Size = New Size(303, 191)
         fraPlayerSwitch.TabIndex = 2
         fraPlayerSwitch.TabStop = False
         fraPlayerSwitch.Text = "Change Items"
@@ -4195,21 +4197,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnSetPlayerSwitchOk
         ' 
-        btnSetPlayerSwitchOk.Location = New Point(43, 177)
-        btnSetPlayerSwitchOk.Margin = New Padding(7, 6, 7, 6)
+        btnSetPlayerSwitchOk.Location = New Point(33, 138)
+        btnSetPlayerSwitchOk.Margin = New Padding(5)
         btnSetPlayerSwitchOk.Name = "btnSetPlayerSwitchOk"
-        btnSetPlayerSwitchOk.Padding = New Padding(11, 13, 11, 13)
-        btnSetPlayerSwitchOk.Size = New Size(163, 58)
+        btnSetPlayerSwitchOk.Padding = New Padding(8, 10, 8, 10)
+        btnSetPlayerSwitchOk.Size = New Size(125, 45)
         btnSetPlayerSwitchOk.TabIndex = 9
         btnSetPlayerSwitchOk.Text = "Ok"
         ' 
         ' btnSetPlayerswitchCancel
         ' 
-        btnSetPlayerswitchCancel.Location = New Point(219, 177)
-        btnSetPlayerswitchCancel.Margin = New Padding(7, 6, 7, 6)
+        btnSetPlayerswitchCancel.Location = New Point(168, 138)
+        btnSetPlayerswitchCancel.Margin = New Padding(5)
         btnSetPlayerswitchCancel.Name = "btnSetPlayerswitchCancel"
-        btnSetPlayerswitchCancel.Padding = New Padding(11, 13, 11, 13)
-        btnSetPlayerswitchCancel.Size = New Size(163, 58)
+        btnSetPlayerswitchCancel.Padding = New Padding(8, 10, 8, 10)
+        btnSetPlayerswitchCancel.Size = New Size(125, 45)
         btnSetPlayerswitchCancel.TabIndex = 8
         btnSetPlayerswitchCancel.Text = "Cancel"
         ' 
@@ -4218,20 +4220,20 @@ Partial Class FrmEditor_Events
         cmbPlayerSwitchSet.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayerSwitchSet.FormattingEnabled = True
         cmbPlayerSwitchSet.Items.AddRange(New Object() {"False", "True"})
-        cmbPlayerSwitchSet.Location = New Point(110, 100)
-        cmbPlayerSwitchSet.Margin = New Padding(7, 6, 7, 6)
+        cmbPlayerSwitchSet.Location = New Point(85, 78)
+        cmbPlayerSwitchSet.Margin = New Padding(5)
         cmbPlayerSwitchSet.Name = "cmbPlayerSwitchSet"
-        cmbPlayerSwitchSet.Size = New Size(266, 40)
+        cmbPlayerSwitchSet.Size = New Size(206, 32)
         cmbPlayerSwitchSet.TabIndex = 3
         ' 
         ' DarkLabel23
         ' 
         DarkLabel23.AutoSize = True
         DarkLabel23.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel23.Location = New Point(13, 113)
-        DarkLabel23.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel23.Location = New Point(10, 88)
+        DarkLabel23.Margin = New Padding(5, 0, 5, 0)
         DarkLabel23.Name = "DarkLabel23"
-        DarkLabel23.Size = New Size(77, 32)
+        DarkLabel23.Size = New Size(59, 25)
         DarkLabel23.TabIndex = 2
         DarkLabel23.Text = "Set to"
         ' 
@@ -4239,20 +4241,20 @@ Partial Class FrmEditor_Events
         ' 
         cmbSwitch.DrawMode = DrawMode.OwnerDrawFixed
         cmbSwitch.FormattingEnabled = True
-        cmbSwitch.Location = New Point(110, 32)
-        cmbSwitch.Margin = New Padding(7, 6, 7, 6)
+        cmbSwitch.Location = New Point(85, 25)
+        cmbSwitch.Margin = New Padding(5)
         cmbSwitch.Name = "cmbSwitch"
-        cmbSwitch.Size = New Size(266, 40)
+        cmbSwitch.Size = New Size(206, 32)
         cmbSwitch.TabIndex = 1
         ' 
         ' DarkLabel22
         ' 
         DarkLabel22.AutoSize = True
         DarkLabel22.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel22.Location = New Point(13, 38)
-        DarkLabel22.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel22.Location = New Point(10, 30)
+        DarkLabel22.Margin = New Padding(5, 0, 5, 0)
         DarkLabel22.Name = "DarkLabel22"
-        DarkLabel22.Size = New Size(83, 32)
+        DarkLabel22.Size = New Size(63, 25)
         DarkLabel22.TabIndex = 0
         DarkLabel22.Text = "Switch"
         ' 
@@ -4269,11 +4271,11 @@ Partial Class FrmEditor_Events
         fraChangeItems.Controls.Add(cmbChangeItemIndex)
         fraChangeItems.Controls.Add(DarkLabel21)
         fraChangeItems.ForeColor = Color.Gainsboro
-        fraChangeItems.Location = New Point(13, 960)
-        fraChangeItems.Margin = New Padding(7, 6, 7, 6)
+        fraChangeItems.Location = New Point(10, 750)
+        fraChangeItems.Margin = New Padding(5)
         fraChangeItems.Name = "fraChangeItems"
-        fraChangeItems.Padding = New Padding(7, 6, 7, 6)
-        fraChangeItems.Size = New Size(405, 294)
+        fraChangeItems.Padding = New Padding(5)
+        fraChangeItems.Size = New Size(312, 230)
         fraChangeItems.TabIndex = 1
         fraChangeItems.TabStop = False
         fraChangeItems.Text = "Change Items"
@@ -4281,39 +4283,39 @@ Partial Class FrmEditor_Events
         ' 
         ' btnChangeItemsOk
         ' 
-        btnChangeItemsOk.Location = New Point(54, 224)
-        btnChangeItemsOk.Margin = New Padding(7, 6, 7, 6)
+        btnChangeItemsOk.Location = New Point(42, 175)
+        btnChangeItemsOk.Margin = New Padding(5)
         btnChangeItemsOk.Name = "btnChangeItemsOk"
-        btnChangeItemsOk.Padding = New Padding(11, 13, 11, 13)
-        btnChangeItemsOk.Size = New Size(163, 58)
+        btnChangeItemsOk.Padding = New Padding(8, 10, 8, 10)
+        btnChangeItemsOk.Size = New Size(125, 45)
         btnChangeItemsOk.TabIndex = 7
         btnChangeItemsOk.Text = "Ok"
         ' 
         ' btnChangeItemsCancel
         ' 
-        btnChangeItemsCancel.Location = New Point(230, 224)
-        btnChangeItemsCancel.Margin = New Padding(7, 6, 7, 6)
+        btnChangeItemsCancel.Location = New Point(177, 175)
+        btnChangeItemsCancel.Margin = New Padding(5)
         btnChangeItemsCancel.Name = "btnChangeItemsCancel"
-        btnChangeItemsCancel.Padding = New Padding(11, 13, 11, 13)
-        btnChangeItemsCancel.Size = New Size(163, 58)
+        btnChangeItemsCancel.Padding = New Padding(8, 10, 8, 10)
+        btnChangeItemsCancel.Size = New Size(125, 45)
         btnChangeItemsCancel.TabIndex = 6
         btnChangeItemsCancel.Text = "Cancel"
         ' 
         ' nudChangeItemsAmount
         ' 
-        nudChangeItemsAmount.Location = New Point(19, 160)
-        nudChangeItemsAmount.Margin = New Padding(7, 6, 7, 6)
+        nudChangeItemsAmount.Location = New Point(15, 125)
+        nudChangeItemsAmount.Margin = New Padding(5)
         nudChangeItemsAmount.Name = "nudChangeItemsAmount"
-        nudChangeItemsAmount.Size = New Size(373, 39)
+        nudChangeItemsAmount.Size = New Size(287, 31)
         nudChangeItemsAmount.TabIndex = 5
         ' 
         ' optChangeItemRemove
         ' 
         optChangeItemRemove.AutoSize = True
-        optChangeItemRemove.Location = New Point(262, 102)
-        optChangeItemRemove.Margin = New Padding(7, 6, 7, 6)
+        optChangeItemRemove.Location = New Point(202, 80)
+        optChangeItemRemove.Margin = New Padding(5)
         optChangeItemRemove.Name = "optChangeItemRemove"
-        optChangeItemRemove.Size = New Size(92, 36)
+        optChangeItemRemove.Size = New Size(71, 29)
         optChangeItemRemove.TabIndex = 4
         optChangeItemRemove.TabStop = True
         optChangeItemRemove.Text = "Take"
@@ -4321,10 +4323,10 @@ Partial Class FrmEditor_Events
         ' optChangeItemAdd
         ' 
         optChangeItemAdd.AutoSize = True
-        optChangeItemAdd.Location = New Point(147, 102)
-        optChangeItemAdd.Margin = New Padding(7, 6, 7, 6)
+        optChangeItemAdd.Location = New Point(113, 80)
+        optChangeItemAdd.Margin = New Padding(5)
         optChangeItemAdd.Name = "optChangeItemAdd"
-        optChangeItemAdd.Size = New Size(92, 36)
+        optChangeItemAdd.Size = New Size(71, 29)
         optChangeItemAdd.TabIndex = 3
         optChangeItemAdd.TabStop = True
         optChangeItemAdd.Text = "Give"
@@ -4332,10 +4334,10 @@ Partial Class FrmEditor_Events
         ' optChangeItemSet
         ' 
         optChangeItemSet.AutoSize = True
-        optChangeItemSet.Location = New Point(19, 102)
-        optChangeItemSet.Margin = New Padding(7, 6, 7, 6)
+        optChangeItemSet.Location = New Point(15, 80)
+        optChangeItemSet.Margin = New Padding(5)
         optChangeItemSet.Name = "optChangeItemSet"
-        optChangeItemSet.Size = New Size(108, 36)
+        optChangeItemSet.Size = New Size(84, 29)
         optChangeItemSet.TabIndex = 2
         optChangeItemSet.TabStop = True
         optChangeItemSet.Text = "Set to"
@@ -4344,20 +4346,20 @@ Partial Class FrmEditor_Events
         ' 
         cmbChangeItemIndex.DrawMode = DrawMode.OwnerDrawFixed
         cmbChangeItemIndex.FormattingEnabled = True
-        cmbChangeItemIndex.Location = New Point(91, 32)
-        cmbChangeItemIndex.Margin = New Padding(7, 6, 7, 6)
+        cmbChangeItemIndex.Location = New Point(70, 25)
+        cmbChangeItemIndex.Margin = New Padding(5)
         cmbChangeItemIndex.Name = "cmbChangeItemIndex"
-        cmbChangeItemIndex.Size = New Size(297, 40)
+        cmbChangeItemIndex.Size = New Size(229, 32)
         cmbChangeItemIndex.TabIndex = 1
         ' 
         ' DarkLabel21
         ' 
         DarkLabel21.AutoSize = True
         DarkLabel21.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel21.Location = New Point(13, 38)
-        DarkLabel21.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel21.Location = New Point(10, 30)
+        DarkLabel21.Margin = New Padding(5, 0, 5, 0)
         DarkLabel21.Name = "DarkLabel21"
-        DarkLabel21.Size = New Size(67, 32)
+        DarkLabel21.Size = New Size(52, 25)
         DarkLabel21.TabIndex = 0
         DarkLabel21.Text = "Item:"
         ' 
@@ -4369,11 +4371,11 @@ Partial Class FrmEditor_Events
         fraPlayBGM.Controls.Add(btnPlayBgmCancel)
         fraPlayBGM.Controls.Add(cmbPlayBGM)
         fraPlayBGM.ForeColor = Color.Gainsboro
-        fraPlayBGM.Location = New Point(869, 2)
-        fraPlayBGM.Margin = New Padding(7, 6, 7, 6)
+        fraPlayBGM.Location = New Point(668, 2)
+        fraPlayBGM.Margin = New Padding(5)
         fraPlayBGM.Name = "fraPlayBGM"
-        fraPlayBGM.Padding = New Padding(7, 6, 7, 6)
-        fraPlayBGM.Size = New Size(533, 186)
+        fraPlayBGM.Padding = New Padding(5)
+        fraPlayBGM.Size = New Size(410, 145)
         fraPlayBGM.TabIndex = 21
         fraPlayBGM.TabStop = False
         fraPlayBGM.Text = "Play BGM"
@@ -4381,21 +4383,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnPlayBgmOk
         ' 
-        btnPlayBgmOk.Location = New Point(100, 113)
-        btnPlayBgmOk.Margin = New Padding(7, 6, 7, 6)
+        btnPlayBgmOk.Location = New Point(77, 88)
+        btnPlayBgmOk.Margin = New Padding(5)
         btnPlayBgmOk.Name = "btnPlayBgmOk"
-        btnPlayBgmOk.Padding = New Padding(11, 13, 11, 13)
-        btnPlayBgmOk.Size = New Size(163, 58)
+        btnPlayBgmOk.Padding = New Padding(8, 10, 8, 10)
+        btnPlayBgmOk.Size = New Size(125, 45)
         btnPlayBgmOk.TabIndex = 27
         btnPlayBgmOk.Text = "Ok"
         ' 
         ' btnPlayBgmCancel
         ' 
-        btnPlayBgmCancel.Location = New Point(275, 113)
-        btnPlayBgmCancel.Margin = New Padding(7, 6, 7, 6)
+        btnPlayBgmCancel.Location = New Point(212, 88)
+        btnPlayBgmCancel.Margin = New Padding(5)
         btnPlayBgmCancel.Name = "btnPlayBgmCancel"
-        btnPlayBgmCancel.Padding = New Padding(11, 13, 11, 13)
-        btnPlayBgmCancel.Size = New Size(163, 58)
+        btnPlayBgmCancel.Padding = New Padding(8, 10, 8, 10)
+        btnPlayBgmCancel.Size = New Size(125, 45)
         btnPlayBgmCancel.TabIndex = 26
         btnPlayBgmCancel.Text = "Cancel"
         ' 
@@ -4403,10 +4405,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbPlayBGM.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayBGM.FormattingEnabled = True
-        cmbPlayBGM.Location = New Point(13, 47)
-        cmbPlayBGM.Margin = New Padding(7, 6, 7, 6)
+        cmbPlayBGM.Location = New Point(10, 37)
+        cmbPlayBGM.Margin = New Padding(5)
         cmbPlayBGM.Name = "cmbPlayBGM"
-        cmbPlayBGM.Size = New Size(500, 40)
+        cmbPlayBGM.Size = New Size(386, 32)
         cmbPlayBGM.TabIndex = 0
         ' 
         ' fraPlayAnimation
@@ -4425,11 +4427,11 @@ Partial Class FrmEditor_Events
         fraPlayAnimation.Controls.Add(DarkLabel61)
         fraPlayAnimation.Controls.Add(cmbPlayAnim)
         fraPlayAnimation.ForeColor = Color.Gainsboro
-        fraPlayAnimation.Location = New Point(869, 634)
-        fraPlayAnimation.Margin = New Padding(7, 6, 7, 6)
+        fraPlayAnimation.Location = New Point(668, 495)
+        fraPlayAnimation.Margin = New Padding(5)
         fraPlayAnimation.Name = "fraPlayAnimation"
-        fraPlayAnimation.Padding = New Padding(7, 6, 7, 6)
-        fraPlayAnimation.Size = New Size(537, 399)
+        fraPlayAnimation.Padding = New Padding(5)
+        fraPlayAnimation.Size = New Size(413, 312)
         fraPlayAnimation.TabIndex = 36
         fraPlayAnimation.TabStop = False
         fraPlayAnimation.Text = "Play Animation"
@@ -4437,21 +4439,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnPlayAnimationOk
         ' 
-        btnPlayAnimationOk.Location = New Point(186, 324)
-        btnPlayAnimationOk.Margin = New Padding(7, 6, 7, 6)
+        btnPlayAnimationOk.Location = New Point(143, 253)
+        btnPlayAnimationOk.Margin = New Padding(5)
         btnPlayAnimationOk.Name = "btnPlayAnimationOk"
-        btnPlayAnimationOk.Padding = New Padding(11, 13, 11, 13)
-        btnPlayAnimationOk.Size = New Size(163, 58)
+        btnPlayAnimationOk.Padding = New Padding(8, 10, 8, 10)
+        btnPlayAnimationOk.Size = New Size(125, 45)
         btnPlayAnimationOk.TabIndex = 36
         btnPlayAnimationOk.Text = "Ok"
         ' 
         ' btnPlayAnimationCancel
         ' 
-        btnPlayAnimationCancel.Location = New Point(362, 324)
-        btnPlayAnimationCancel.Margin = New Padding(7, 6, 7, 6)
+        btnPlayAnimationCancel.Location = New Point(278, 253)
+        btnPlayAnimationCancel.Margin = New Padding(5)
         btnPlayAnimationCancel.Name = "btnPlayAnimationCancel"
-        btnPlayAnimationCancel.Padding = New Padding(11, 13, 11, 13)
-        btnPlayAnimationCancel.Size = New Size(163, 58)
+        btnPlayAnimationCancel.Padding = New Padding(8, 10, 8, 10)
+        btnPlayAnimationCancel.Size = New Size(125, 45)
         btnPlayAnimationCancel.TabIndex = 35
         btnPlayAnimationCancel.Text = "Cancel"
         ' 
@@ -4459,10 +4461,10 @@ Partial Class FrmEditor_Events
         ' 
         lblPlayAnimY.AutoSize = True
         lblPlayAnimY.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        lblPlayAnimY.Location = New Point(284, 260)
-        lblPlayAnimY.Margin = New Padding(7, 0, 7, 0)
+        lblPlayAnimY.Location = New Point(218, 203)
+        lblPlayAnimY.Margin = New Padding(5, 0, 5, 0)
         lblPlayAnimY.Name = "lblPlayAnimY"
-        lblPlayAnimY.Size = New Size(132, 32)
+        lblPlayAnimY.Size = New Size(98, 25)
         lblPlayAnimY.TabIndex = 34
         lblPlayAnimY.Text = "Map Tile Y:"
         ' 
@@ -4470,10 +4472,10 @@ Partial Class FrmEditor_Events
         ' 
         lblPlayAnimX.AutoSize = True
         lblPlayAnimX.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        lblPlayAnimX.Location = New Point(13, 260)
-        lblPlayAnimX.Margin = New Padding(7, 0, 7, 0)
+        lblPlayAnimX.Location = New Point(10, 203)
+        lblPlayAnimX.Margin = New Padding(5, 0, 5, 0)
         lblPlayAnimX.Name = "lblPlayAnimX"
-        lblPlayAnimX.Size = New Size(133, 32)
+        lblPlayAnimX.Size = New Size(99, 25)
         lblPlayAnimX.TabIndex = 33
         lblPlayAnimX.Text = "Map Tile X:"
         ' 
@@ -4481,20 +4483,20 @@ Partial Class FrmEditor_Events
         ' 
         cmbPlayAnimEvent.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayAnimEvent.FormattingEnabled = True
-        cmbPlayAnimEvent.Location = New Point(180, 179)
-        cmbPlayAnimEvent.Margin = New Padding(7, 6, 7, 6)
+        cmbPlayAnimEvent.Location = New Point(138, 140)
+        cmbPlayAnimEvent.Margin = New Padding(5)
         cmbPlayAnimEvent.Name = "cmbPlayAnimEvent"
-        cmbPlayAnimEvent.Size = New Size(340, 40)
+        cmbPlayAnimEvent.Size = New Size(262, 32)
         cmbPlayAnimEvent.TabIndex = 32
         ' 
         ' DarkLabel62
         ' 
         DarkLabel62.AutoSize = True
         DarkLabel62.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel62.Location = New Point(9, 122)
-        DarkLabel62.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel62.Location = New Point(7, 95)
+        DarkLabel62.Margin = New Padding(5, 0, 5, 0)
         DarkLabel62.Name = "DarkLabel62"
-        DarkLabel62.Size = New Size(137, 32)
+        DarkLabel62.Size = New Size(102, 25)
         DarkLabel62.TabIndex = 31
         DarkLabel62.Text = "Target Type"
         ' 
@@ -4503,36 +4505,36 @@ Partial Class FrmEditor_Events
         cmbAnimTargetType.DrawMode = DrawMode.OwnerDrawFixed
         cmbAnimTargetType.FormattingEnabled = True
         cmbAnimTargetType.Items.AddRange(New Object() {"Player", "Event", "Tile"})
-        cmbAnimTargetType.Location = New Point(180, 113)
-        cmbAnimTargetType.Margin = New Padding(7, 6, 7, 6)
+        cmbAnimTargetType.Location = New Point(138, 88)
+        cmbAnimTargetType.Margin = New Padding(5)
         cmbAnimTargetType.Name = "cmbAnimTargetType"
-        cmbAnimTargetType.Size = New Size(340, 40)
+        cmbAnimTargetType.Size = New Size(262, 32)
         cmbAnimTargetType.TabIndex = 30
         ' 
         ' nudPlayAnimTileY
         ' 
-        nudPlayAnimTileY.Location = New Point(429, 256)
-        nudPlayAnimTileY.Margin = New Padding(7, 6, 7, 6)
+        nudPlayAnimTileY.Location = New Point(330, 200)
+        nudPlayAnimTileY.Margin = New Padding(5)
         nudPlayAnimTileY.Name = "nudPlayAnimTileY"
-        nudPlayAnimTileY.Size = New Size(95, 39)
+        nudPlayAnimTileY.Size = New Size(73, 31)
         nudPlayAnimTileY.TabIndex = 29
         ' 
         ' nudPlayAnimTileX
         ' 
-        nudPlayAnimTileX.Location = New Point(158, 256)
-        nudPlayAnimTileX.Margin = New Padding(7, 6, 7, 6)
+        nudPlayAnimTileX.Location = New Point(122, 200)
+        nudPlayAnimTileX.Margin = New Padding(5)
         nudPlayAnimTileX.Name = "nudPlayAnimTileX"
-        nudPlayAnimTileX.Size = New Size(95, 39)
+        nudPlayAnimTileX.Size = New Size(73, 31)
         nudPlayAnimTileX.TabIndex = 28
         ' 
         ' DarkLabel61
         ' 
         DarkLabel61.AutoSize = True
         DarkLabel61.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel61.Location = New Point(13, 53)
-        DarkLabel61.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel61.Location = New Point(10, 41)
+        DarkLabel61.Margin = New Padding(5, 0, 5, 0)
         DarkLabel61.Name = "DarkLabel61"
-        DarkLabel61.Size = New Size(129, 32)
+        DarkLabel61.Size = New Size(98, 25)
         DarkLabel61.TabIndex = 1
         DarkLabel61.Text = "Animation:"
         ' 
@@ -4540,10 +4542,10 @@ Partial Class FrmEditor_Events
         ' 
         cmbPlayAnim.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayAnim.FormattingEnabled = True
-        cmbPlayAnim.Location = New Point(134, 47)
-        cmbPlayAnim.Margin = New Padding(7, 6, 7, 6)
+        cmbPlayAnim.Location = New Point(103, 37)
+        cmbPlayAnim.Margin = New Padding(5)
         cmbPlayAnim.Name = "cmbPlayAnim"
-        cmbPlayAnim.Size = New Size(385, 40)
+        cmbPlayAnim.Size = New Size(297, 32)
         cmbPlayAnim.TabIndex = 0
         ' 
         ' fraSetWait
@@ -4557,11 +4559,11 @@ Partial Class FrmEditor_Events
         fraSetWait.Controls.Add(DarkLabel73)
         fraSetWait.Controls.Add(nudWaitAmount)
         fraSetWait.ForeColor = Color.Gainsboro
-        fraSetWait.Location = New Point(869, 651)
-        fraSetWait.Margin = New Padding(7, 6, 7, 6)
+        fraSetWait.Location = New Point(668, 509)
+        fraSetWait.Margin = New Padding(5)
         fraSetWait.Name = "fraSetWait"
-        fraSetWait.Padding = New Padding(7, 6, 7, 6)
-        fraSetWait.Size = New Size(537, 220)
+        fraSetWait.Padding = New Padding(5)
+        fraSetWait.Size = New Size(413, 172)
         fraSetWait.TabIndex = 41
         fraSetWait.TabStop = False
         fraSetWait.Text = "Wait..."
@@ -4569,21 +4571,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnSetWaitOk
         ' 
-        btnSetWaitOk.Location = New Point(108, 143)
-        btnSetWaitOk.Margin = New Padding(7, 6, 7, 6)
+        btnSetWaitOk.Location = New Point(83, 112)
+        btnSetWaitOk.Margin = New Padding(5)
         btnSetWaitOk.Name = "btnSetWaitOk"
-        btnSetWaitOk.Padding = New Padding(11, 13, 11, 13)
-        btnSetWaitOk.Size = New Size(163, 58)
+        btnSetWaitOk.Padding = New Padding(8, 10, 8, 10)
+        btnSetWaitOk.Size = New Size(125, 45)
         btnSetWaitOk.TabIndex = 37
         btnSetWaitOk.Text = "Ok"
         ' 
         ' btnSetWaitCancel
         ' 
-        btnSetWaitCancel.Location = New Point(284, 143)
-        btnSetWaitCancel.Margin = New Padding(7, 6, 7, 6)
+        btnSetWaitCancel.Location = New Point(218, 112)
+        btnSetWaitCancel.Margin = New Padding(5)
         btnSetWaitCancel.Name = "btnSetWaitCancel"
-        btnSetWaitCancel.Padding = New Padding(11, 13, 11, 13)
-        btnSetWaitCancel.Size = New Size(163, 58)
+        btnSetWaitCancel.Padding = New Padding(8, 10, 8, 10)
+        btnSetWaitCancel.Size = New Size(125, 45)
         btnSetWaitCancel.TabIndex = 36
         btnSetWaitCancel.Text = "Cancel"
         ' 
@@ -4591,10 +4593,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel74.AutoSize = True
         DarkLabel74.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel74.Location = New Point(152, 102)
-        DarkLabel74.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel74.Location = New Point(117, 80)
+        DarkLabel74.Margin = New Padding(5, 0, 5, 0)
         DarkLabel74.Name = "DarkLabel74"
-        DarkLabel74.Size = New Size(249, 32)
+        DarkLabel74.Size = New Size(187, 25)
         DarkLabel74.TabIndex = 35
         DarkLabel74.Text = "Hint: 1000 Ms = 1 Sec"
         ' 
@@ -4602,10 +4604,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel72.AutoSize = True
         DarkLabel72.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel72.Location = New Point(472, 58)
-        DarkLabel72.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel72.Location = New Point(363, 45)
+        DarkLabel72.Margin = New Padding(5, 0, 5, 0)
         DarkLabel72.Name = "DarkLabel72"
-        DarkLabel72.Size = New Size(46, 32)
+        DarkLabel72.Size = New Size(36, 25)
         DarkLabel72.TabIndex = 34
         DarkLabel72.Text = "Ms"
         ' 
@@ -4613,20 +4615,20 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel73.AutoSize = True
         DarkLabel73.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel73.Location = New Point(33, 58)
-        DarkLabel73.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel73.Location = New Point(25, 45)
+        DarkLabel73.Margin = New Padding(5, 0, 5, 0)
         DarkLabel73.Name = "DarkLabel73"
-        DarkLabel73.Size = New Size(61, 32)
+        DarkLabel73.Size = New Size(47, 25)
         DarkLabel73.TabIndex = 33
         DarkLabel73.Text = "Wait"
         ' 
         ' nudWaitAmount
         ' 
-        nudWaitAmount.Location = New Point(108, 47)
-        nudWaitAmount.Margin = New Padding(7, 6, 7, 6)
+        nudWaitAmount.Location = New Point(83, 37)
+        nudWaitAmount.Margin = New Padding(5)
         nudWaitAmount.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
         nudWaitAmount.Name = "nudWaitAmount"
-        nudWaitAmount.Size = New Size(353, 39)
+        nudWaitAmount.Size = New Size(272, 31)
         nudWaitAmount.TabIndex = 32
         ' 
         ' fraShowPic
@@ -4647,10 +4649,10 @@ Partial Class FrmEditor_Events
         fraShowPic.Controls.Add(picShowPic)
         fraShowPic.ForeColor = Color.Gainsboro
         fraShowPic.Location = New Point(2, 2)
-        fraShowPic.Margin = New Padding(7, 6, 7, 6)
+        fraShowPic.Margin = New Padding(5)
         fraShowPic.Name = "fraShowPic"
-        fraShowPic.Padding = New Padding(7, 6, 7, 6)
-        fraShowPic.Size = New Size(1439, 1463)
+        fraShowPic.Padding = New Padding(5)
+        fraShowPic.Size = New Size(1107, 1143)
         fraShowPic.TabIndex = 40
         fraShowPic.TabStop = False
         fraShowPic.Text = "Show Picture"
@@ -4658,21 +4660,21 @@ Partial Class FrmEditor_Events
         ' 
         ' btnShowPicOk
         ' 
-        btnShowPicOk.Location = New Point(1083, 1389)
-        btnShowPicOk.Margin = New Padding(7, 6, 7, 6)
+        btnShowPicOk.Location = New Point(833, 1085)
+        btnShowPicOk.Margin = New Padding(5)
         btnShowPicOk.Name = "btnShowPicOk"
-        btnShowPicOk.Padding = New Padding(11, 13, 11, 13)
-        btnShowPicOk.Size = New Size(163, 58)
+        btnShowPicOk.Padding = New Padding(8, 10, 8, 10)
+        btnShowPicOk.Size = New Size(125, 45)
         btnShowPicOk.TabIndex = 55
         btnShowPicOk.Text = "Ok"
         ' 
         ' btnShowPicCancel
         ' 
-        btnShowPicCancel.Location = New Point(1261, 1389)
-        btnShowPicCancel.Margin = New Padding(7, 6, 7, 6)
+        btnShowPicCancel.Location = New Point(970, 1085)
+        btnShowPicCancel.Margin = New Padding(5)
         btnShowPicCancel.Name = "btnShowPicCancel"
-        btnShowPicCancel.Padding = New Padding(11, 13, 11, 13)
-        btnShowPicCancel.Size = New Size(163, 58)
+        btnShowPicCancel.Padding = New Padding(8, 10, 8, 10)
+        btnShowPicCancel.Size = New Size(125, 45)
         btnShowPicCancel.TabIndex = 54
         btnShowPicCancel.Text = "Cancel"
         ' 
@@ -4680,10 +4682,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel71.AutoSize = True
         DarkLabel71.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel71.Location = New Point(533, 58)
-        DarkLabel71.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel71.Location = New Point(410, 45)
+        DarkLabel71.Margin = New Padding(5, 0, 5, 0)
         DarkLabel71.Name = "DarkLabel71"
-        DarkLabel71.Size = New Size(239, 32)
+        DarkLabel71.Size = New Size(181, 25)
         DarkLabel71.TabIndex = 53
         DarkLabel71.Text = "Offset from Location:"
         ' 
@@ -4691,10 +4693,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel70.AutoSize = True
         DarkLabel70.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel70.Location = New Point(241, 139)
-        DarkLabel70.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel70.Location = New Point(185, 109)
+        DarkLabel70.Margin = New Padding(5, 0, 5, 0)
         DarkLabel70.Name = "DarkLabel70"
-        DarkLabel70.Size = New Size(104, 32)
+        DarkLabel70.Size = New Size(79, 25)
         DarkLabel70.TabIndex = 52
         DarkLabel70.Text = "Location"
         ' 
@@ -4702,10 +4704,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel67.AutoSize = True
         DarkLabel67.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel67.Location = New Point(808, 115)
-        DarkLabel67.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel67.Location = New Point(622, 90)
+        DarkLabel67.Margin = New Padding(5, 0, 5, 0)
         DarkLabel67.Name = "DarkLabel67"
-        DarkLabel67.Size = New Size(32, 32)
+        DarkLabel67.Size = New Size(26, 25)
         DarkLabel67.TabIndex = 51
         DarkLabel67.Text = "Y:"
         ' 
@@ -4713,39 +4715,39 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel68.AutoSize = True
         DarkLabel68.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel68.Location = New Point(533, 119)
-        DarkLabel68.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel68.Location = New Point(410, 93)
+        DarkLabel68.Margin = New Padding(5, 0, 5, 0)
         DarkLabel68.Name = "DarkLabel68"
-        DarkLabel68.Size = New Size(33, 32)
+        DarkLabel68.Size = New Size(27, 25)
         DarkLabel68.TabIndex = 50
         DarkLabel68.Text = "X:"
         ' 
         ' nudPicOffsetY
         ' 
-        nudPicOffsetY.Location = New Point(904, 111)
-        nudPicOffsetY.Margin = New Padding(7, 6, 7, 6)
+        nudPicOffsetY.Location = New Point(695, 87)
+        nudPicOffsetY.Margin = New Padding(5)
         nudPicOffsetY.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         nudPicOffsetY.Name = "nudPicOffsetY"
-        nudPicOffsetY.Size = New Size(123, 39)
+        nudPicOffsetY.Size = New Size(95, 31)
         nudPicOffsetY.TabIndex = 49
         ' 
         ' nudPicOffsetX
         ' 
-        nudPicOffsetX.Location = New Point(624, 111)
-        nudPicOffsetX.Margin = New Padding(7, 6, 7, 6)
+        nudPicOffsetX.Location = New Point(480, 87)
+        nudPicOffsetX.Margin = New Padding(5)
         nudPicOffsetX.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         nudPicOffsetX.Name = "nudPicOffsetX"
-        nudPicOffsetX.Size = New Size(123, 39)
+        nudPicOffsetX.Size = New Size(95, 31)
         nudPicOffsetX.TabIndex = 48
         ' 
         ' DarkLabel69
         ' 
         DarkLabel69.AutoSize = True
         DarkLabel69.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel69.Location = New Point(241, 55)
-        DarkLabel69.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel69.Location = New Point(185, 43)
+        DarkLabel69.Margin = New Padding(5, 0, 5, 0)
         DarkLabel69.Name = "DarkLabel69"
-        DarkLabel69.Size = New Size(92, 32)
+        DarkLabel69.Size = New Size(69, 25)
         DarkLabel69.TabIndex = 47
         DarkLabel69.Text = "Picture:"
         ' 
@@ -4754,28 +4756,28 @@ Partial Class FrmEditor_Events
         cmbPicLoc.DrawMode = DrawMode.OwnerDrawFixed
         cmbPicLoc.FormattingEnabled = True
         cmbPicLoc.Items.AddRange(New Object() {"Top Left of Screen", "Center Screen", "Centered on Event", "Centered on Player"})
-        cmbPicLoc.Location = New Point(247, 183)
-        cmbPicLoc.Margin = New Padding(7, 6, 7, 6)
+        cmbPicLoc.Location = New Point(190, 143)
+        cmbPicLoc.Margin = New Padding(5)
         cmbPicLoc.Name = "cmbPicLoc"
-        cmbPicLoc.Size = New Size(264, 40)
+        cmbPicLoc.Size = New Size(204, 32)
         cmbPicLoc.TabIndex = 46
         ' 
         ' nudShowPicture
         ' 
-        nudShowPicture.Location = New Point(344, 51)
-        nudShowPicture.Margin = New Padding(7, 6, 7, 6)
+        nudShowPicture.Location = New Point(265, 40)
+        nudShowPicture.Margin = New Padding(5)
         nudShowPicture.Name = "nudShowPicture"
-        nudShowPicture.Size = New Size(163, 39)
+        nudShowPicture.Size = New Size(125, 31)
         nudShowPicture.TabIndex = 45
         ' 
         ' picShowPic
         ' 
         picShowPic.BackColor = Color.Black
         picShowPic.BackgroundImageLayout = ImageLayout.Stretch
-        picShowPic.Location = New Point(17, 45)
-        picShowPic.Margin = New Padding(7, 6, 7, 6)
+        picShowPic.Location = New Point(13, 35)
+        picShowPic.Margin = New Padding(5)
         picShowPic.Name = "picShowPic"
-        picShowPic.Size = New Size(217, 228)
+        picShowPic.Size = New Size(167, 178)
         picShowPic.TabIndex = 42
         picShowPic.TabStop = False
         ' 
@@ -4791,11 +4793,11 @@ Partial Class FrmEditor_Events
         fraShowText.Controls.Add(DarkLabel26)
         fraShowText.Controls.Add(nudShowTextFace)
         fraShowText.ForeColor = Color.Gainsboro
-        fraShowText.Location = New Point(13, 749)
-        fraShowText.Margin = New Padding(7, 6, 7, 6)
+        fraShowText.Location = New Point(10, 585)
+        fraShowText.Margin = New Padding(5)
         fraShowText.Name = "fraShowText"
-        fraShowText.Padding = New Padding(7, 6, 7, 6)
-        fraShowText.Size = New Size(537, 700)
+        fraShowText.Padding = New Padding(5)
+        fraShowText.Size = New Size(413, 547)
         fraShowText.TabIndex = 17
         fraShowText.TabStop = False
         fraShowText.Text = "Show Text"
@@ -4805,10 +4807,10 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel27.AutoSize = True
         DarkLabel27.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel27.Location = New Point(15, 47)
-        DarkLabel27.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel27.Location = New Point(12, 37)
+        DarkLabel27.Margin = New Padding(5, 0, 5, 0)
         DarkLabel27.Name = "DarkLabel27"
-        DarkLabel27.Size = New Size(57, 32)
+        DarkLabel27.Size = New Size(42, 25)
         DarkLabel27.TabIndex = 26
         DarkLabel27.Text = "Text"
         ' 
@@ -4817,30 +4819,30 @@ Partial Class FrmEditor_Events
         txtShowText.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtShowText.BorderStyle = BorderStyle.FixedSingle
         txtShowText.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtShowText.Location = New Point(19, 94)
-        txtShowText.Margin = New Padding(7, 6, 7, 6)
+        txtShowText.Location = New Point(15, 73)
+        txtShowText.Margin = New Padding(5)
         txtShowText.Multiline = True
         txtShowText.Name = "txtShowText"
-        txtShowText.Size = New Size(492, 256)
+        txtShowText.Size = New Size(379, 200)
         txtShowText.TabIndex = 21
         ' 
         ' btnShowTextCancel
         ' 
-        btnShowTextCancel.Location = New Point(362, 621)
-        btnShowTextCancel.Margin = New Padding(7, 6, 7, 6)
+        btnShowTextCancel.Location = New Point(278, 485)
+        btnShowTextCancel.Margin = New Padding(5)
         btnShowTextCancel.Name = "btnShowTextCancel"
-        btnShowTextCancel.Padding = New Padding(11, 13, 11, 13)
-        btnShowTextCancel.Size = New Size(163, 58)
+        btnShowTextCancel.Padding = New Padding(8, 10, 8, 10)
+        btnShowTextCancel.Size = New Size(125, 45)
         btnShowTextCancel.TabIndex = 24
         btnShowTextCancel.Text = "Cancel"
         ' 
         ' btnShowTextOk
         ' 
-        btnShowTextOk.Location = New Point(186, 621)
-        btnShowTextOk.Margin = New Padding(7, 6, 7, 6)
+        btnShowTextOk.Location = New Point(143, 485)
+        btnShowTextOk.Margin = New Padding(5)
         btnShowTextOk.Name = "btnShowTextOk"
-        btnShowTextOk.Padding = New Padding(11, 13, 11, 13)
-        btnShowTextOk.Size = New Size(163, 58)
+        btnShowTextOk.Padding = New Padding(8, 10, 8, 10)
+        btnShowTextOk.Size = New Size(125, 45)
         btnShowTextOk.TabIndex = 25
         btnShowTextOk.Text = "Ok"
         ' 
@@ -4848,10 +4850,10 @@ Partial Class FrmEditor_Events
         ' 
         picShowTextFace.BackColor = Color.Black
         picShowTextFace.BackgroundImageLayout = ImageLayout.Zoom
-        picShowTextFace.Location = New Point(15, 367)
-        picShowTextFace.Margin = New Padding(7, 6, 7, 6)
+        picShowTextFace.Location = New Point(12, 287)
+        picShowTextFace.Margin = New Padding(5)
         picShowTextFace.Name = "picShowTextFace"
-        picShowTextFace.Size = New Size(217, 228)
+        picShowTextFace.Size = New Size(167, 178)
         picShowTextFace.TabIndex = 2
         picShowTextFace.TabStop = False
         ' 
@@ -4859,29 +4861,29 @@ Partial Class FrmEditor_Events
         ' 
         DarkLabel26.AutoSize = True
         DarkLabel26.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel26.Location = New Point(238, 550)
-        DarkLabel26.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel26.Location = New Point(183, 430)
+        DarkLabel26.Margin = New Padding(5, 0, 5, 0)
         DarkLabel26.Name = "DarkLabel26"
-        DarkLabel26.Size = New Size(66, 32)
+        DarkLabel26.Size = New Size(50, 25)
         DarkLabel26.TabIndex = 22
         DarkLabel26.Text = "Face:"
         ' 
         ' nudShowTextFace
         ' 
-        nudShowTextFace.Location = New Point(319, 546)
-        nudShowTextFace.Margin = New Padding(7, 6, 7, 6)
+        nudShowTextFace.Location = New Point(245, 427)
+        nudShowTextFace.Margin = New Padding(5)
         nudShowTextFace.Name = "nudShowTextFace"
-        nudShowTextFace.Size = New Size(199, 39)
+        nudShowTextFace.Size = New Size(153, 31)
         nudShowTextFace.TabIndex = 23
         ' 
         ' pnlVariableSwitches
         ' 
         pnlVariableSwitches.Controls.Add(FraRenaming)
         pnlVariableSwitches.Controls.Add(fraLabeling)
-        pnlVariableSwitches.Location = New Point(1733, 495)
-        pnlVariableSwitches.Margin = New Padding(7, 6, 7, 6)
+        pnlVariableSwitches.Location = New Point(1333, 387)
+        pnlVariableSwitches.Margin = New Padding(5)
         pnlVariableSwitches.Name = "pnlVariableSwitches"
-        pnlVariableSwitches.Size = New Size(201, 224)
+        pnlVariableSwitches.Size = New Size(155, 175)
         pnlVariableSwitches.TabIndex = 11
         ' 
         ' FraRenaming
@@ -4890,11 +4892,11 @@ Partial Class FrmEditor_Events
         FraRenaming.Controls.Add(btnRename_Ok)
         FraRenaming.Controls.Add(fraRandom10)
         FraRenaming.ForeColor = Color.Gainsboro
-        FraRenaming.Location = New Point(511, 1056)
-        FraRenaming.Margin = New Padding(7, 6, 7, 6)
+        FraRenaming.Location = New Point(393, 825)
+        FraRenaming.Margin = New Padding(5)
         FraRenaming.Name = "FraRenaming"
-        FraRenaming.Padding = New Padding(7, 6, 7, 6)
-        FraRenaming.Size = New Size(789, 352)
+        FraRenaming.Padding = New Padding(5)
+        FraRenaming.Size = New Size(607, 275)
         FraRenaming.TabIndex = 8
         FraRenaming.TabStop = False
         FraRenaming.Text = "Renaming Variable/Switch"
@@ -4903,10 +4905,10 @@ Partial Class FrmEditor_Events
         ' btnRename_Cancel
         ' 
         btnRename_Cancel.ForeColor = Color.Black
-        btnRename_Cancel.Location = New Point(496, 252)
-        btnRename_Cancel.Margin = New Padding(7, 6, 7, 6)
+        btnRename_Cancel.Location = New Point(382, 197)
+        btnRename_Cancel.Margin = New Padding(5)
         btnRename_Cancel.Name = "btnRename_Cancel"
-        btnRename_Cancel.Size = New Size(163, 58)
+        btnRename_Cancel.Size = New Size(125, 45)
         btnRename_Cancel.TabIndex = 2
         btnRename_Cancel.Text = "Cancel"
         btnRename_Cancel.UseVisualStyleBackColor = True
@@ -4914,10 +4916,10 @@ Partial Class FrmEditor_Events
         ' btnRename_Ok
         ' 
         btnRename_Ok.ForeColor = Color.Black
-        btnRename_Ok.Location = New Point(117, 252)
-        btnRename_Ok.Margin = New Padding(7, 6, 7, 6)
+        btnRename_Ok.Location = New Point(90, 197)
+        btnRename_Ok.Margin = New Padding(5)
         btnRename_Ok.Name = "btnRename_Ok"
-        btnRename_Ok.Size = New Size(163, 58)
+        btnRename_Ok.Size = New Size(125, 45)
         btnRename_Ok.TabIndex = 1
         btnRename_Ok.Text = "Ok"
         btnRename_Ok.UseVisualStyleBackColor = True
@@ -4927,30 +4929,30 @@ Partial Class FrmEditor_Events
         fraRandom10.Controls.Add(txtRename)
         fraRandom10.Controls.Add(lblEditing)
         fraRandom10.ForeColor = Color.Gainsboro
-        fraRandom10.Location = New Point(13, 47)
-        fraRandom10.Margin = New Padding(7, 6, 7, 6)
+        fraRandom10.Location = New Point(10, 37)
+        fraRandom10.Margin = New Padding(5)
         fraRandom10.Name = "fraRandom10"
-        fraRandom10.Padding = New Padding(7, 6, 7, 6)
-        fraRandom10.Size = New Size(763, 190)
+        fraRandom10.Padding = New Padding(5)
+        fraRandom10.Size = New Size(587, 148)
         fraRandom10.TabIndex = 0
         fraRandom10.TabStop = False
         fraRandom10.Text = "Editing Variable/Switch"
         ' 
         ' txtRename
         ' 
-        txtRename.Location = New Point(13, 100)
-        txtRename.Margin = New Padding(7, 6, 7, 6)
+        txtRename.Location = New Point(10, 78)
+        txtRename.Margin = New Padding(5)
         txtRename.Name = "txtRename"
-        txtRename.Size = New Size(732, 39)
+        txtRename.Size = New Size(564, 31)
         txtRename.TabIndex = 1
         ' 
         ' lblEditing
         ' 
         lblEditing.AutoSize = True
-        lblEditing.Location = New Point(7, 62)
-        lblEditing.Margin = New Padding(7, 0, 7, 0)
+        lblEditing.Location = New Point(5, 48)
+        lblEditing.Margin = New Padding(5, 0, 5, 0)
         lblEditing.Name = "lblEditing"
-        lblEditing.Size = New Size(224, 32)
+        lblEditing.Size = New Size(168, 25)
         lblEditing.TabIndex = 0
         lblEditing.Text = "Naming Variable #1"
         ' 
@@ -4967,11 +4969,11 @@ Partial Class FrmEditor_Events
         fraLabeling.Controls.Add(btnRenameSwitch)
         fraLabeling.Controls.Add(btnLabel_Ok)
         fraLabeling.ForeColor = Color.Gainsboro
-        fraLabeling.Location = New Point(422, 70)
-        fraLabeling.Margin = New Padding(7, 6, 7, 6)
+        fraLabeling.Location = New Point(325, 55)
+        fraLabeling.Margin = New Padding(5)
         fraLabeling.Name = "fraLabeling"
-        fraLabeling.Padding = New Padding(7, 6, 7, 6)
-        fraLabeling.Size = New Size(988, 954)
+        fraLabeling.Padding = New Padding(5)
+        fraLabeling.Size = New Size(760, 745)
         fraLabeling.TabIndex = 0
         fraLabeling.TabStop = False
         fraLabeling.Text = "Label Variables and  Switches   "
@@ -4982,10 +4984,11 @@ Partial Class FrmEditor_Events
         lstSwitches.BorderStyle = BorderStyle.FixedSingle
         lstSwitches.ForeColor = Color.Gainsboro
         lstSwitches.FormattingEnabled = True
-        lstSwitches.Location = New Point(511, 96)
-        lstSwitches.Margin = New Padding(7, 6, 7, 6)
+        lstSwitches.ItemHeight = 25
+        lstSwitches.Location = New Point(393, 75)
+        lstSwitches.Margin = New Padding(5)
         lstSwitches.Name = "lstSwitches"
-        lstSwitches.Size = New Size(442, 706)
+        lstSwitches.Size = New Size(340, 552)
         lstSwitches.TabIndex = 7
         ' 
         ' lstVariables
@@ -4994,19 +4997,20 @@ Partial Class FrmEditor_Events
         lstVariables.BorderStyle = BorderStyle.FixedSingle
         lstVariables.ForeColor = Color.Gainsboro
         lstVariables.FormattingEnabled = True
-        lstVariables.Location = New Point(30, 96)
-        lstVariables.Margin = New Padding(7, 6, 7, 6)
+        lstVariables.ItemHeight = 25
+        lstVariables.Location = New Point(23, 75)
+        lstVariables.Margin = New Padding(5)
         lstVariables.Name = "lstVariables"
-        lstVariables.Size = New Size(442, 706)
+        lstVariables.Size = New Size(340, 552)
         lstVariables.TabIndex = 6
         ' 
         ' btnLabel_Cancel
         ' 
         btnLabel_Cancel.ForeColor = Color.Black
-        btnLabel_Cancel.Location = New Point(511, 838)
-        btnLabel_Cancel.Margin = New Padding(7, 6, 7, 6)
+        btnLabel_Cancel.Location = New Point(393, 655)
+        btnLabel_Cancel.Margin = New Padding(5)
         btnLabel_Cancel.Name = "btnLabel_Cancel"
-        btnLabel_Cancel.Size = New Size(163, 58)
+        btnLabel_Cancel.Size = New Size(125, 45)
         btnLabel_Cancel.TabIndex = 12
         btnLabel_Cancel.Text = "Cancel"
         btnLabel_Cancel.UseVisualStyleBackColor = True
@@ -5014,20 +5018,20 @@ Partial Class FrmEditor_Events
         ' lblRandomLabel36
         ' 
         lblRandomLabel36.AutoSize = True
-        lblRandomLabel36.Location = New Point(635, 58)
-        lblRandomLabel36.Margin = New Padding(7, 0, 7, 0)
+        lblRandomLabel36.Location = New Point(488, 45)
+        lblRandomLabel36.Margin = New Padding(5, 0, 5, 0)
         lblRandomLabel36.Name = "lblRandomLabel36"
-        lblRandomLabel36.Size = New Size(177, 32)
+        lblRandomLabel36.Size = New Size(132, 25)
         lblRandomLabel36.TabIndex = 5
         lblRandomLabel36.Text = "Player Switches"
         ' 
         ' btnRenameVariable
         ' 
         btnRenameVariable.ForeColor = Color.Black
-        btnRenameVariable.Location = New Point(30, 838)
-        btnRenameVariable.Margin = New Padding(7, 6, 7, 6)
+        btnRenameVariable.Location = New Point(23, 655)
+        btnRenameVariable.Margin = New Padding(5)
         btnRenameVariable.Name = "btnRenameVariable"
-        btnRenameVariable.Size = New Size(230, 58)
+        btnRenameVariable.Size = New Size(177, 45)
         btnRenameVariable.TabIndex = 9
         btnRenameVariable.Text = "Rename Variable"
         btnRenameVariable.UseVisualStyleBackColor = True
@@ -5035,20 +5039,20 @@ Partial Class FrmEditor_Events
         ' lblRandomLabel25
         ' 
         lblRandomLabel25.AutoSize = True
-        lblRandomLabel25.Location = New Point(173, 51)
-        lblRandomLabel25.Margin = New Padding(7, 0, 7, 0)
+        lblRandomLabel25.Location = New Point(133, 40)
+        lblRandomLabel25.Margin = New Padding(5, 0, 5, 0)
         lblRandomLabel25.Name = "lblRandomLabel25"
-        lblRandomLabel25.Size = New Size(179, 32)
+        lblRandomLabel25.Size = New Size(134, 25)
         lblRandomLabel25.TabIndex = 4
         lblRandomLabel25.Text = "Player Variables"
         ' 
         ' btnRenameSwitch
         ' 
         btnRenameSwitch.ForeColor = Color.Black
-        btnRenameSwitch.Location = New Point(719, 838)
-        btnRenameSwitch.Margin = New Padding(7, 6, 7, 6)
+        btnRenameSwitch.Location = New Point(553, 655)
+        btnRenameSwitch.Margin = New Padding(5)
         btnRenameSwitch.Name = "btnRenameSwitch"
-        btnRenameSwitch.Size = New Size(236, 58)
+        btnRenameSwitch.Size = New Size(182, 45)
         btnRenameSwitch.TabIndex = 10
         btnRenameSwitch.Text = "Rename Switch"
         btnRenameSwitch.UseVisualStyleBackColor = True
@@ -5056,20 +5060,21 @@ Partial Class FrmEditor_Events
         ' btnLabel_Ok
         ' 
         btnLabel_Ok.ForeColor = Color.Black
-        btnLabel_Ok.Location = New Point(312, 838)
-        btnLabel_Ok.Margin = New Padding(7, 6, 7, 6)
+        btnLabel_Ok.Location = New Point(240, 655)
+        btnLabel_Ok.Margin = New Padding(5)
         btnLabel_Ok.Name = "btnLabel_Ok"
-        btnLabel_Ok.Size = New Size(163, 58)
+        btnLabel_Ok.Size = New Size(125, 45)
         btnLabel_Ok.TabIndex = 11
         btnLabel_Ok.Text = "Ok"
         btnLabel_Ok.UseVisualStyleBackColor = True
         ' 
         ' FrmEditor_Events
         ' 
-        AutoScaleDimensions = New SizeF(13F, 32F)
+        AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
+        AutoSize = True
         BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
-        ClientSize = New Size(3444, 1399)
+        ClientSize = New Size(2718, 1175)
         Controls.Add(pnlVariableSwitches)
         Controls.Add(fraDialogue)
         Controls.Add(fraMoveRoute)
@@ -5082,7 +5087,7 @@ Partial Class FrmEditor_Events
         Controls.Add(pnlGraphicSel)
         ForeColor = Color.Gainsboro
         FormBorderStyle = FormBorderStyle.FixedToolWindow
-        Margin = New Padding(7, 6, 7, 6)
+        Margin = New Padding(5)
         Name = "FrmEditor_Events"
         Text = "Event Editor"
         fraPageSetUp.ResumeLayout(False)

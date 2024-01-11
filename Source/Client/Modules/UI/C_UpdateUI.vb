@@ -73,6 +73,13 @@ Module C_UpdateUI
 #End Region
 
     Sub UpdateUi()
+        if InitEventEditorForm Then
+            with FrmEditor_Events
+                .Show()
+            End With
+            InitEventEditorForm = False
+        End If
+
         If InitAdminForm Then
             With FrmAdmin
                 .Show()

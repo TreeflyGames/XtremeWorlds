@@ -2559,7 +2559,7 @@ newlist:
                 Case 0
                     tX = ((x) - 4) + (PicX * 0.5)
                     tY = ((y) - 7) + (PicY * 0.5)
-                    RenderText("EV", GameWindow, tX, tY, (SFML.Graphics.Color.Green), (SFML.Graphics.Color.Black))
+                    RenderText("E", GameWindow, tX, tY, (SFML.Graphics.Color.Green), (SFML.Graphics.Color.Black))
                 Case 1
                     If Map.Events(i).Pages(1).Graphic > 0 AndAlso Map.Events(i).Pages(1).Graphic <= NumCharacters Then
                         If CharacterGfxInfo(Map.Events(i).Pages(1).Graphic).IsLoaded = False Then
