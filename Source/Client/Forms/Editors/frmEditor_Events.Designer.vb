@@ -159,7 +159,6 @@ Partial Class frmEditor_Events
         chkWalkThrough = New DarkUI.Controls.DarkCheckBox()
         chkDirFix = New DarkUI.Controls.DarkCheckBox()
         chkWalkAnim = New DarkUI.Controls.DarkCheckBox()
-        DarkGroupBox7 = New DarkUI.Controls.DarkGroupBox()
         DarkGroupBox5 = New DarkUI.Controls.DarkGroupBox()
         cmbTrigger = New DarkUI.Controls.DarkComboBox()
         DarkGroupBox4 = New DarkUI.Controls.DarkGroupBox()
@@ -859,7 +858,6 @@ Partial Class frmEditor_Events
         pnlTabPage.Controls.Add(DarkGroupBox2)
         pnlTabPage.Controls.Add(fraGraphicPic)
         pnlTabPage.Controls.Add(DarkGroupBox6)
-        pnlTabPage.Controls.Add(DarkGroupBox7)
         pnlTabPage.Controls.Add(DarkGroupBox5)
         pnlTabPage.Controls.Add(DarkGroupBox4)
         pnlTabPage.Controls.Add(DarkGroupBox3)
@@ -982,17 +980,6 @@ Partial Class frmEditor_Events
         chkWalkAnim.Size = New Size(192, 29)
         chkWalkAnim.TabIndex = 0
         chkWalkAnim.Text = "No Walk Animation"
-        ' 
-        ' DarkGroupBox7
-        ' 
-        DarkGroupBox7.BorderColor = Color.FromArgb(CByte(51), CByte(51), CByte(51))
-        DarkGroupBox7.Location = New Point(0, 0)
-        DarkGroupBox7.Margin = New Padding(5)
-        DarkGroupBox7.Name = "DarkGroupBox7"
-        DarkGroupBox7.Padding = New Padding(5)
-        DarkGroupBox7.Size = New Size(285, 166)
-        DarkGroupBox7.TabIndex = 16
-        DarkGroupBox7.TabStop = False
         ' 
         ' DarkGroupBox5
         ' 
@@ -1514,7 +1501,7 @@ Partial Class frmEditor_Events
         ' 
         ' btnLabeling
         ' 
-        btnLabeling.Location = New Point(10, 1123)
+        btnLabeling.Location = New Point(10, 1105)
         btnLabeling.Margin = New Padding(5)
         btnLabeling.Name = "btnLabeling"
         btnLabeling.Padding = New Padding(8, 10, 8, 10)
@@ -1524,7 +1511,7 @@ Partial Class frmEditor_Events
         ' 
         ' btnCancel
         ' 
-        btnCancel.Location = New Point(1198, 1123)
+        btnCancel.Location = New Point(1182, 1105)
         btnCancel.Margin = New Padding(5)
         btnCancel.Name = "btnCancel"
         btnCancel.Padding = New Padding(8, 10, 8, 10)
@@ -1534,7 +1521,7 @@ Partial Class frmEditor_Events
         ' 
         ' btnOk
         ' 
-        btnOk.Location = New Point(1063, 1123)
+        btnOk.Location = New Point(1047, 1105)
         btnOk.Margin = New Padding(5)
         btnOk.Name = "btnOk"
         btnOk.Padding = New Padding(8, 10, 8, 10)
@@ -5261,7 +5248,6 @@ Partial Class frmEditor_Events
     Friend WithEvents DarkGroupBox4 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents DarkGroupBox5 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents cmbTrigger As DarkUI.Controls.DarkComboBox
-    Friend WithEvents DarkGroupBox7 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents DarkLabel8 As DarkUI.Controls.DarkLabel
     Friend WithEvents lstCommands As ListBox
     Friend WithEvents DarkGroupBox8 As DarkUI.Controls.DarkGroupBox
