@@ -1758,10 +1758,7 @@ Module C_Graphics
             End If
         Next
 
-        If CurrentFog > 0 Then
-            DrawFog()
-        End If
-
+        DrawFog()
         DrawPicture()
 
         'action msg
