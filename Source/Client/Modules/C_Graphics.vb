@@ -1861,7 +1861,7 @@ Module C_Graphics
 
         If index < 1 OrElse index > NumParallax Then Exit Sub
         If ParallaxGfxInfo(index).IsLoaded = False Then
-            LoadTexture(index, 14)
+            LoadTexture(index, 13)
         End If
 
         ' we use it, lets update timer
