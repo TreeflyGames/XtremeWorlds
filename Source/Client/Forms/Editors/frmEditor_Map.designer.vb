@@ -1030,7 +1030,7 @@ Partial Class frmEditor_Map
         Label11.Location = New Point(520, 950)
         Label11.Margin = New Padding(6, 0, 6, 0)
         Label11.Name = "Label11"
-        Label11.Size = New Size(81, 25)
+        Label11.Size = New Size(78, 25)
         Label11.TabIndex = 16
         Label11.Text = "Autotile:"
         ' 
@@ -1787,9 +1787,9 @@ Partial Class frmEditor_Map
         chkTint.Location = New Point(10, 37)
         chkTint.Margin = New Padding(6, 5, 6, 5)
         chkTint.Name = "chkTint"
-        chkTint.Size = New Size(111, 29)
+        chkTint.Size = New Size(98, 29)
         chkTint.TabIndex = 18
-        chkTint.Text = "MapTint?"
+        chkTint.Text = "Enable?"
         chkTint.UseVisualStyleBackColor = True
         ' 
         ' lblMapAlpha
@@ -1984,7 +1984,7 @@ Partial Class frmEditor_Map
         ' 
         ' frmEditor_Map
         ' 
-        AutoScaleDimensions = New SizeF(10.0F, 25.0F)
+        AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = SystemColors.Control

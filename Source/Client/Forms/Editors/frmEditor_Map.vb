@@ -379,8 +379,8 @@ Public Class frmEditor_Map
 
     Private Sub BtnPreview_Click(sender As Object, e As EventArgs) Handles btnPreview.Click
         If PreviewPlayer Is Nothing Then
-            If lstMusic.SelectedIndex > 0 Then            
-                If Types.Settings.MusicExt = ".mid" Then 
+            If lstMusic.SelectedIndex > 0 Then
+                If Types.Settings.MusicExt = ".mid" Then
                     MidiPlayer.Play(Paths.Music & lstMusic.Items(lstMusic.SelectedIndex).ToString)
                 Else
                     StopMusic()
@@ -601,6 +601,12 @@ Public Class frmEditor_Map
         tabpages.SelectedIndex = 0
 
         scrlMapBrightness.Value = Map.Brightness
+
+        chkTint.Checked = map.MapTint
+        scrlMapRed.Value = map.MapTintR
+        scrlMapGreen.Value = map.MapTintG
+        scrlMapBlue.Value = map.MapTintB
+        scrlMapAlpha.Value = map.MapTintA
 
         ' show the form
         Visible = True
