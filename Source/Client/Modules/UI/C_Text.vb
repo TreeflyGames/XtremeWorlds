@@ -149,9 +149,9 @@ Module C_Text
                                 Case TileType.NpcSpawn
                                     RenderText("S", GameWindow, tX, tY, (Color.Yellow), (Color.Black))
                                 Case TileType.Shop
-                                    RenderText("SH", GameWindow, tX, tY, (Color.Blue), (Color.Black))
+                                    RenderText("S", GameWindow, tX, tY, (Color.Blue), (Color.Black))
                                 Case TileType.Bank
-                                    RenderText("BA", GameWindow, tX, tY, (Color.Blue), (Color.Black))
+                                    RenderText("B", GameWindow, tX, tY, (Color.Blue), (Color.Black))
                                 Case TileType.Heal
                                     RenderText("H", GameWindow, tX, tY, (Color.Green), (Color.Black))
                                 Case TileType.Trap
