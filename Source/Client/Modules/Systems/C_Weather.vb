@@ -61,7 +61,7 @@ Friend Module C_Weather
     Friend Sub DrawWeather()
         Dim i As Integer, spriteLeft As Integer
 
-        For i = 0 To MaxWeatherParticles
+        For i = 1 To MaxWeatherParticles
             If WeatherParticle(i).InUse Then
                 If WeatherParticle(i).Type = Weather.Storm Then
                     spriteLeft = 0
