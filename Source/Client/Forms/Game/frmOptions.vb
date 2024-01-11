@@ -37,10 +37,14 @@ Friend Class FrmOptions
         End If
 
         'screensize
-        If Types.Settings.ScreenWidth & "x" & Types.Settings.ScreenHeight <> cmbScreenSize.SelectedItem Then
-            resolution = cmbScreenSize.SelectedItem.ToString.ToLower.Split("x")
-            Types.Settings.ScreenWidth = resolution(0)
-            Types.Settings.ScreenHeight = resolution(1)
+        if Not cmbScreenSize.SelectedItem = Nothing Then
+            If Types.Settings.ScreenWidth & "x" & Types.Settings.ScreenHeight <> cmbScreenSize.SelectedItem Then
+                resolution = cmbScreenSize.SelectedItem.ToString.ToLower.Split("x")
+                Types.Settings.ScreenWidth = resolution(0)
+                Types.Settings.ScreenHeight = resolution(1)
+            End If
+        Else
+
         End If
 
         If chkVsync.Checked Then
@@ -63,7 +67,7 @@ Friend Class FrmOptions
         Else
             If Types.Settings.Fullscreen = 1 Then
                 cmbScreenSize.Enabled = False
-            Else
+            ElseIf Not cmbScreenSize.SelectedItem = Nothing Then
                 resolution = cmbScreenSize.SelectedItem.ToString.ToLower.Split("x")
                 width = resolution(0)
                 height = resolution(1)
