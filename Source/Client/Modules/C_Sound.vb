@@ -2,6 +2,7 @@
 Imports SFML.Audio
 Imports Core
 Imports System.Runtime.Intrinsics.X86
+Imports Core.Paths
 
 Module C_Sound
 
@@ -26,14 +27,16 @@ Module C_Sound
         End If
 
         If Types.Settings.MusicExt = ".mid" Then
-            If Not MidiPlayer.IsPlaying() Then
+            If Not CurrentMusic = fileName Or Not MidiPlayer.IsPlaying() Then
                 MidiPlayer.Play(Paths.Music & fileName)
                 CurrentMusic = fileName
                 Exit Sub
             End If
         End If
 
-        If fileName = CurrentMusic Then Exit Sub
+        If fileName = CurrentMusic Then
+            Exit Sub
+        End If
 
         Dim luaVolume As Single = Convert.ToSingle(LuaScripting.Instance().ExecuteScript("AdjustMusicVolume", Types.Settings.Volume)(0))
 
@@ -54,13 +57,14 @@ Module C_Sound
         End Try
     End Sub
 
-    SuB StopMusic()
+    Sub StopMusic()
+        MidiPlayer.Play(Paths.Music & "blank.mid")
         If MusicPlayer Is Nothing Then Exit Sub
         MusicPlayer.Stop()
         MusicPlayer.Dispose()
         MusicPlayer = Nothing
         CurrentMusic = ""
-    End SuB
+    End Sub
 
     Sub PlayPreview(fileName As String)
         If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub

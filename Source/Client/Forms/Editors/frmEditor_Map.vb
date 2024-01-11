@@ -381,8 +381,7 @@ Public Class frmEditor_Map
         If PreviewPlayer Is Nothing Then
             If lstMusic.SelectedIndex > 0 Then            
                 If Types.Settings.MusicExt = ".mid" Then 
-                    Dim midiPlayer As New MidiPlayer()
-                    midiPlayer.Play(Paths.Music & lstMusic.Items(lstMusic.SelectedIndex).ToString)
+                    MidiPlayer.Play(Paths.Music & lstMusic.Items(lstMusic.SelectedIndex).ToString)
                 Else
                     StopMusic()
                     PlayPreview(lstMusic.Items(lstMusic.SelectedIndex).ToString)
