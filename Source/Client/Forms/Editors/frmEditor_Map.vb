@@ -584,19 +584,21 @@ Public Class frmEditor_Map
 
         cmbPanorama.Items.Clear()
         cmbPanorama.Items.Add("None")
-        cmbPanorama.SelectedIndex = 0
 
         For i = 1 To NumPanorama
             cmbPanorama.Items.Add(i)
         Next
 
+        cmbPanorama.SelectedIndex = Map.Panorama
+
         cmbParallax.Items.Clear()
         cmbParallax.Items.Add("None")
-        cmbParallax.SelectedIndex = 0
 
         For i = 1 To NumParallax
             cmbParallax.Items.Add(i)
         Next
+
+        cmbParallax.SelectedIndex = Map.Parallax
 
         tabpages.SelectedIndex = 0
 
