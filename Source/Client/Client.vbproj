@@ -68,37 +68,37 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_Animation.Designer.vb">
+    <Compile Update="Forms\Editors\frmEditor_Animation.Designer.vb">
       <DependentUpon>frmEditor_Animation.vb</DependentUpon>
     </Compile>
-	  <Compile Update="Forms\Editors\FrmEditor_Job.Designer.vb">
+	  <Compile Update="Forms\Editors\frmEditor_Job.Designer.vb">
       <DependentUpon>frmEditor_Job.vb</DependentUpon>
     </Compile>
     <Compile Update="Forms\Editors\frmEditor_Events.Designer.vb">
-      <DependentUpon>FrmEditor_Events.vb</DependentUpon>
+      <DependentUpon>frmEditor_Events.vb</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_Item.Designer.vb">
+    <Compile Update="Forms\Editors\frmEditor_Item.Designer.vb">
       <DependentUpon>frmEditor_Item.vb</DependentUpon>
     </Compile>
     <Compile Update="Forms\Editors\frmEditor_Map.designer.vb">
       <DependentUpon>frmEditor_Map.vb</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_NPC.Designer.vb">
+    <Compile Update="Forms\Editors\frmEditor_NPC.Designer.vb">
       <DependentUpon>frmEditor_NPC.vb</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_Pet.Designer.vb">
+    <Compile Update="Forms\Editors\frmEditor_Pet.Designer.vb">
       <DependentUpon>frmEditor_Pet.vb</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_Projectile.Designer.vb">
+    <Compile Update="Forms\Editors\frmEditor_Projectile.Designer.vb">
       <DependentUpon>frmEditor_Projectile.vb</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_Resource.Designer.vb">
+    <Compile Update="Forms\Editors\frmEditor_Resource.Designer.vb">
       <DependentUpon>frmEditor_Resource.vb</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_Shop.Designer.vb">
+    <Compile Update="Forms\Editors\frmEditor_Shop.Designer.vb">
       <DependentUpon>frmEditor_Shop.vb</DependentUpon>
     </Compile>
-    <Compile Update="Forms\Editors\FrmEditor_Skill.Designer.vb">
+    <Compile Update="Forms\Editors\frmEditor_Skill.Designer.vb">
       <DependentUpon>frmEditor_Skill.vb</DependentUpon>
     </Compile>
     <Compile Update="Forms\Game\frmAdmin.Designer.vb">

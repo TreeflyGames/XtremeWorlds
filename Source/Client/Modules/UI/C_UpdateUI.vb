@@ -74,7 +74,7 @@ Module C_UpdateUI
 
     Sub UpdateUi()
         if InitEventEditorForm Then
-            with FrmEditor_Events
+            with frmEditor_Events
                 .Show()
             End With
             InitEventEditorForm = False
@@ -109,7 +109,7 @@ Module C_UpdateUI
         End If
 
         If InitAnimationEditor Then
-            With FrmEditor_Animation
+            With frmEditor_Animation
                 Editor = EditorType.Animation
                 Editorindex = 1
                 .Show()
@@ -164,7 +164,7 @@ Module C_UpdateUI
         End If
 
         If InitSkillEditor Then
-            With FrmEditor_Skill
+            With frmEditor_Skill
                 Editor = EditorType.Skill
                 Editorindex = 1
                 .Show()

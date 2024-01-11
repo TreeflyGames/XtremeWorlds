@@ -1,7 +1,7 @@
 ﻿Imports Core
 Imports SFML.Graphics
 
-Friend Class FrmEditor_Skill
+Friend Class frmEditor_Skill
 
     Private Sub TxtName_TextChanged(sender As Object, e As EventArgs) Handles txtName.TextChanged
         Dim tmpindex As Integer
@@ -128,7 +128,7 @@ Friend Class FrmEditor_Skill
         Dispose()
     End Sub
 
-    Private Sub FrmEditor_Skill_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Skill_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudIcon.Maximum = NumSkills
         nudCast.Value = 1
         nudAoE.Maximum = Byte.MaxValue

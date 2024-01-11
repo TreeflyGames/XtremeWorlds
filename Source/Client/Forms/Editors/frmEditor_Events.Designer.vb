@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class FrmEditor_Events
+Partial Class frmEditor_Events
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -5068,7 +5068,7 @@ Partial Class FrmEditor_Events
         btnLabel_Ok.Text = "Ok"
         btnLabel_Ok.UseVisualStyleBackColor = True
         ' 
-        ' FrmEditor_Events
+        ' frmEditor_Events
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
@@ -5088,7 +5088,7 @@ Partial Class FrmEditor_Events
         ForeColor = Color.Gainsboro
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(5)
-        Name = "FrmEditor_Events"
+        Name = "frmEditor_Events"
         Text = "Event Editor"
         fraPageSetUp.ResumeLayout(False)
         fraPageSetUp.PerformLayout()

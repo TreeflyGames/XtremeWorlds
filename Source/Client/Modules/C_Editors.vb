@@ -6,34 +6,34 @@ Module C_Editors
 #Region "Animation Editor"
 
     Friend Sub AnimationEditorInit()
-        Editorindex = FrmEditor_Animation.lstIndex.SelectedIndex + 1
+        Editorindex = frmEditor_Animation.lstIndex.SelectedIndex + 1
 
         With Animation(Editorindex)
             If Trim$(Animation(Editorindex).Sound) = "" Then
-                FrmEditor_Animation.cmbSound.SelectedIndex = 0
+                frmEditor_Animation.cmbSound.SelectedIndex = 0
             Else
-                For i = 0 To FrmEditor_Animation.cmbSound.Items.Count
-                    If FrmEditor_Animation.cmbSound.GetItemText(i) = FrmEditor_Animation.cmbSound.SelectedIndex Then
-                        FrmEditor_Animation.cmbSound.SelectedIndex = i
+                For i = 0 To frmEditor_Animation.cmbSound.Items.Count
+                    If frmEditor_Animation.cmbSound.GetItemText(i) = frmEditor_Animation.cmbSound.SelectedIndex Then
+                        frmEditor_Animation.cmbSound.SelectedIndex = i
                         Exit For
                     End If
                 Next
             End If
-            FrmEditor_Animation.txtName.Text = Trim$(.Name)
+            frmEditor_Animation.txtName.Text = Trim$(.Name)
 
-            FrmEditor_Animation.nudSprite0.Value = .Sprite(0)
-            FrmEditor_Animation.nudFrameCount0.Value = .Frames(0)
+            frmEditor_Animation.nudSprite0.Value = .Sprite(0)
+            frmEditor_Animation.nudFrameCount0.Value = .Frames(0)
             If Animation(Editorindex).LoopCount(0) = 0 Then Animation(Editorindex).LoopCount(0) = 1
-            FrmEditor_Animation.nudLoopCount0.Value = .LoopCount(0)
+            frmEditor_Animation.nudLoopCount0.Value = .LoopCount(0)
             If Animation(Editorindex).LoopTime(0) = 0 Then Animation(Editorindex).LoopTime(0) = 1
-            FrmEditor_Animation.nudLoopTime0.Value = .LoopTime(0)
+            frmEditor_Animation.nudLoopTime0.Value = .LoopTime(0)
 
-            FrmEditor_Animation.nudSprite1.Value = .Sprite(1)
-            FrmEditor_Animation.nudFrameCount1.Value = .Frames(1)
+            frmEditor_Animation.nudSprite1.Value = .Sprite(1)
+            frmEditor_Animation.nudFrameCount1.Value = .Frames(1)
             If Animation(Editorindex).LoopCount(1) = 0 Then Animation(Editorindex).LoopCount(1) = 1
-            FrmEditor_Animation.nudLoopCount1.Value = .LoopCount(1)
+            frmEditor_Animation.nudLoopCount1.Value = .LoopCount(1)
             If Animation(Editorindex).LoopTime(1) = 0 Then Animation(Editorindex).LoopTime(1) = 1
-            FrmEditor_Animation.nudLoopTime1.Value = .LoopTime(1)
+            frmEditor_Animation.nudLoopTime1.Value = .LoopTime(1)
         End With
 
         Animation_Changed(Editorindex) = True

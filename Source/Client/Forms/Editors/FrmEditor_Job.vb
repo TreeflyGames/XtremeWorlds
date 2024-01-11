@@ -5,7 +5,7 @@ Friend Class frmEditor_Job
 
 #Region "Frm Controls"
 
-    Private Sub FrmEditor_Job_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Job_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudMaleSprite.Maximum = NumCharacters
         nudFemaleSprite.Maximum = NumCharacters
 

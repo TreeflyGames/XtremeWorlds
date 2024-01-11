@@ -4,7 +4,7 @@ Friend Class frmEditor_Pet
 
 #Region "Basics"
 
-    Private Sub FrmEditor_Pet_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Pet_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudSprite.Maximum = NumCharacters
         nudRange.Maximum = 50
         nudLevel.Maximum = MAX_LEVEL

@@ -32,7 +32,7 @@ Friend Class frmEditor_Item
         ItemEditorInit()
     End Sub
 
-    Private Sub FrmEditor_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudPic.Maximum = NumItems
         nudPaperdoll.Maximum = NumPaperdolls
 

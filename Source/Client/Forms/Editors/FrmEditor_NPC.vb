@@ -4,7 +4,7 @@ Friend Class frmEditor_NPC
 
 #Region "Form Code"
 
-    Private Sub FrmEditor_NPC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_NPC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudSprite.Maximum = NumCharacters
 
         lstIndex.Items.Clear()

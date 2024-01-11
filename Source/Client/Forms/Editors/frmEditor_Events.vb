@@ -3,7 +3,7 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports Core
 
-Public Class FrmEditor_Events
+Public Class frmEditor_Events
     Dim tmpGraphicIndex As Integer
     Dim tmpGraphicType As Byte
 
@@ -76,7 +76,7 @@ Public Class FrmEditor_Events
         cmbCondition_Time.Enabled = False
     End Sub
 
-    Private Sub FrmEditor_Events_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Events_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim i As Integer
 
         cmbSwitch.Items.Clear()
@@ -220,7 +220,7 @@ Public Class FrmEditor_Events
         EditorEvent_DrawGraphic()
     End Sub
 
-    Private Sub FrmEditor_Events_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmEditor_Events_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         TmpEvent = Nothing
     End Sub
 

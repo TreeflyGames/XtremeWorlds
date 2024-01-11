@@ -70,7 +70,7 @@ Friend Class frmEditor_Resource
         Dispose()
     End Sub
 
-    Private Sub FrmEditor_Resource_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Resource_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lstIndex.Items.Clear()
 
         ' Add the names

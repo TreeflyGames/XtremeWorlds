@@ -2371,19 +2371,19 @@ Module C_Graphics
     Friend Sub EditorEvent_DrawPicture()
         Dim Sprite As Integer
 
-        Sprite = FrmEditor_Events.nudShowPicture.Value
+        Sprite = frmEditor_Events.nudShowPicture.Value
 
         If Sprite < 1 OrElse Sprite > NumPictures Then
-            FrmEditor_Events.picShowPic.BackgroundImage = Nothing
+            frmEditor_Events.picShowPic.BackgroundImage = Nothing
             Exit Sub
         End If
 
         If File.Exists(Paths.Graphics & "pictures\" & Sprite & GfxExt) Then
-            FrmEditor_Events.picShowPic.Width =
+            frmEditor_Events.picShowPic.Width =
                 Drawing.Image.FromFile(Paths.Graphics & "pictures\" & Sprite & GfxExt).Width
-            FrmEditor_Events.picShowPic.Height =
+            frmEditor_Events.picShowPic.Height =
                 Drawing.Image.FromFile(Paths.Graphics & "pictures\" & Sprite & GfxExt).Height
-            FrmEditor_Events.picShowPic.BackgroundImage =
+            frmEditor_Events.picShowPic.BackgroundImage =
                 Drawing.Image.FromFile(Paths.Graphics & "pictures\" & Sprite & GfxExt)
         End If
     End Sub
@@ -2553,10 +2553,10 @@ Module C_Graphics
         Dim sRECT As Rectangle
         Dim dRECT As Rectangle
 
-        iconnum = FrmEditor_Skill.nudIcon.Value
+        iconnum = frmEditor_Skill.nudIcon.Value
 
         If iconnum < 1 OrElse iconnum > NumSkills Then
-            EditorSkill_Icon.Clear(ToSfmlColor(FrmEditor_Skill.picSprite.BackColor))
+            EditorSkill_Icon.Clear(ToSfmlColor(frmEditor_Skill.picSprite.BackColor))
             EditorSkill_Icon.Display()
             Exit Sub
         End If
@@ -2580,7 +2580,7 @@ Module C_Graphics
         'drect is the same, so just copy it
         dRECT = sRECT
 
-        EditorSkill_Icon.Clear(ToSfmlColor(FrmEditor_Skill.picSprite.BackColor))
+        EditorSkill_Icon.Clear(ToSfmlColor(frmEditor_Skill.picSprite.BackColor))
 
         RenderTexture(SkillSprite(iconnum), EditorSkill_Icon, dRECT.X, dRECT.Y, sRECT.X, sRECT.Y, sRECT.Width,
                      sRECT.Height)
@@ -2597,10 +2597,10 @@ Module C_Graphics
         Dim FrameCount As Integer
         Dim ShouldRender As Boolean
 
-        Animationnum = FrmEditor_Animation.nudSprite0.Value
+        Animationnum = frmEditor_Animation.nudSprite0.Value
 
         If Animationnum < 1 OrElse Animationnum > NumAnimations Then
-            EditorAnimation_Anim1.Clear(ToSfmlColor(FrmEditor_Animation.picSprite0.BackColor))
+            EditorAnimation_Anim1.Clear(ToSfmlColor(frmEditor_Animation.picSprite0.BackColor))
             EditorAnimation_Anim1.Display()
         Else
             If AnimationGfxInfo(Animationnum).IsLoaded = False Then
@@ -2612,8 +2612,8 @@ Module C_Graphics
                 .TextureTimer = GetTickCount() + 100000
             End With
 
-            looptime = FrmEditor_Animation.nudLoopTime0.Value
-            FrameCount = FrmEditor_Animation.nudFrameCount0.Value
+            looptime = frmEditor_Animation.nudLoopTime0.Value
+            FrameCount = frmEditor_Animation.nudFrameCount0.Value
 
             ShouldRender = False
 
@@ -2630,10 +2630,10 @@ Module C_Graphics
             End If
 
             If ShouldRender Then
-                If FrmEditor_Animation.nudFrameCount0.Value > 0 Then
+                If frmEditor_Animation.nudFrameCount0.Value > 0 Then
                     ' total width divided by frame count
                     height = AnimationGfxInfo(Animationnum).Height
-                    width = AnimationGfxInfo(Animationnum).Width / FrmEditor_Animation.nudFrameCount0.Value
+                    width = AnimationGfxInfo(Animationnum).Width / frmEditor_Animation.nudFrameCount0.Value
                     With sRECT
                         .Y = 0
                         .Height = height
@@ -2647,7 +2647,7 @@ Module C_Graphics
                         .Width = width
                     End With
 
-                    EditorAnimation_Anim1.Clear(ToSfmlColor(FrmEditor_Animation.picSprite0.BackColor))
+                    EditorAnimation_Anim1.Clear(ToSfmlColor(frmEditor_Animation.picSprite0.BackColor))
                     RenderTexture(AnimationSprite(Animationnum), EditorAnimation_Anim1, dRECT.X, dRECT.Y, sRECT.X,
                                  sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Width, dRECT.Height)
                     EditorAnimation_Anim1.Display()
@@ -2655,10 +2655,10 @@ Module C_Graphics
             End If
         End If
 
-        Animationnum = FrmEditor_Animation.nudSprite1.Value
+        Animationnum = frmEditor_Animation.nudSprite1.Value
 
         If Animationnum < 1 OrElse Animationnum > NumAnimations Then
-            EditorAnimation_Anim2.Clear(ToSfmlColor(FrmEditor_Animation.picSprite1.BackColor))
+            EditorAnimation_Anim2.Clear(ToSfmlColor(frmEditor_Animation.picSprite1.BackColor))
             EditorAnimation_Anim2.Display()
         Else
             If AnimationGfxInfo(Animationnum).IsLoaded = False Then
@@ -2670,8 +2670,8 @@ Module C_Graphics
                 .TextureTimer = GetTickCount() + 100000
             End With
 
-            looptime = FrmEditor_Animation.nudLoopTime1.Value
-            FrameCount = FrmEditor_Animation.nudFrameCount1.Value
+            looptime = frmEditor_Animation.nudLoopTime1.Value
+            FrameCount = frmEditor_Animation.nudFrameCount1.Value
             ShouldRender = False
 
             ' check if we need to render new frame
@@ -2687,10 +2687,10 @@ Module C_Graphics
             End If
 
             If ShouldRender Then
-                If FrmEditor_Animation.nudFrameCount1.Value > 0 Then
+                If frmEditor_Animation.nudFrameCount1.Value > 0 Then
                     ' total width divided by frame count
                     height = AnimationGfxInfo(Animationnum).Height
-                    width = AnimationGfxInfo(Animationnum).Width / FrmEditor_Animation.nudFrameCount1.Value
+                    width = AnimationGfxInfo(Animationnum).Width / frmEditor_Animation.nudFrameCount1.Value
                     With sRECT
                         .Y = 0
                         .Height = height
@@ -2705,7 +2705,7 @@ Module C_Graphics
                         .Width = width
                     End With
 
-                    EditorAnimation_Anim2.Clear(ToSfmlColor(FrmEditor_Animation.picSprite1.BackColor))
+                    EditorAnimation_Anim2.Clear(ToSfmlColor(frmEditor_Animation.picSprite1.BackColor))
                     RenderTexture(AnimationSprite(Animationnum), EditorAnimation_Anim2, dRECT.X, dRECT.Y, sRECT.X,
                                  sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Height, dRECT.Width)
                     EditorAnimation_Anim2.Display()
