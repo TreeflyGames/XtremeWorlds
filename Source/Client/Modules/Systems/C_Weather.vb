@@ -69,7 +69,7 @@ Friend Module C_Weather
                     spriteLeft = WeatherParticle(i).Type - 1
                 End If
 
-                RenderTexture(WeatherSprite, GameWindow, ConvertMapX(WeatherParticle(i).X), ConvertMapY(WeatherParticle(i).Y), spriteLeft * 32, 0, 32, 32)
+                RenderTexture(WeatherSprite, GameWindow, ConvertMapX(WeatherParticle(i).X), ConvertMapY(WeatherParticle(i).Y), spriteLeft * 32, 0, 32, 32, 32, 32)
             End If
         Next
 
