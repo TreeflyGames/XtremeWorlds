@@ -21,49 +21,43 @@ Module C_Sound
 
     Sub PlayMusic(fileName As String)
         If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
+
+        If Types.Settings.MusicExt = ".mid" Then
+            If Not MidiPlayer.IsPlaying() Then
+                MidiPlayer.Play(Paths.Music & fileName)
+                CurrentMusic = fileName
+                Exit Sub
+            End If
+        End If
+
         If fileName = CurrentMusic Then Exit Sub
 
         Dim luaVolume As Single = Convert.ToSingle(LuaScripting.Instance().ExecuteScript("AdjustMusicVolume", Types.Settings.Volume)(0))
 
-        If MusicPlayer Is Nothing Then
-            Try
+        Try
+            If MusicPlayer Is Nothing Then
                 MusicPlayer = New Music(Paths.Music & fileName)
                 MusicPlayer.Loop() = True
                 MusicPlayer.Volume() = luaVolume
                 MusicPlayer.Play()
                 CurrentMusic = fileName
                 FadeInSwitch = True
-            Catch ex As Exception
-
-            End Try
-        Else
-            Try
+            Else
                 CurrentMusic = fileName
                 FadeOutSwitch = True
-            Catch ex As Exception
+            End If
+        Catch ex As Exception
 
-            End Try
-        End If
+        End Try
     End Sub
 
-    Sub StopMusic()
+    SuB StopMusic()
         If MusicPlayer Is Nothing Then Exit Sub
         MusicPlayer.Stop()
         MusicPlayer.Dispose()
         MusicPlayer = Nothing
         CurrentMusic = ""
-    End Sub
-
-    Sub PlayAudio()
-        If Types.Settings.MusicExt = ".mid" Then
-            If Not MidiPlayer.IsPlaying() Then
-                MidiPlayer.Play(Paths.Music & Types.Settings.MenuMusic)
-                CurrentMusic = Types.Settings.MenuMusic
-            End If
-        Else
-            PlayMusic(Types.Settings.MenuMusic)
-        End If
-    End Sub
+    End SuB
 
     Sub PlayPreview(fileName As String)
         If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub

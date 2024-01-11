@@ -1,4 +1,5 @@
-﻿Imports System.Drawing
+﻿Imports System.ComponentModel.Design
+Imports System.Drawing
 Imports System.Threading
 Imports System.Windows.Forms
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar
@@ -44,8 +45,8 @@ Module C_GameLogic
                 End If
 
                 If tmr25 < tick Then
-                    PlayAudio()
-                    tmr25 = tick + 100
+                    PlayMusic(Map.Music)
+                    tmr25 = tick + 25
                 End If
 
                 If ShowAnimTimer < tick Then
@@ -248,8 +249,8 @@ Module C_GameLogic
                 End If
 
                 If tmr25 < tick Then
-                    PlayAudio()
-                    tmr25 = tick + 100
+                    PlayMusic(Types.Settings.MenuMusic)
+                    tmr25 = tick + 25
                 End If
             End If
 
