@@ -23,31 +23,8 @@ Module C_UpdateUI
     Friend NeedtoUpdateTrade As Boolean
     Friend Tradername As String
 
-    Friend ShowItemDesc As Boolean
-    Friend ItemDescItemNum As Integer
-    Friend ItemDescName As String
-    Friend ItemDescDescription As String
-    Friend ItemDescValue As Integer
-    Friend ItemDescInfo As String
-    Friend ItemDescType As String
-    Friend ItemDescCost As String
-    Friend ItemDescLevel As String
-    Friend ItemDescSpeed As String
-    Friend ItemDescStr As String
-    Friend ItemDescEnd As String
-    Friend ItemDescInt As String
-    Friend ItemDescSpr As String
-    Friend ItemDescVit As String
-    Friend ItemDescLuck As String
-    Friend ItemDescRarityColor As SFML.Graphics.Color
-    Friend ItemDescRarityBackColor As SFML.Graphics.Color
-
-    Friend ShowSkillDesc As Boolean
-    Friend SkillDescSize As Byte
-    Friend SkillDescSkillNum As Integer
     Friend SkillDescName As String
     Friend SkillDescVital As String
-    Friend SkillDescInfo As String
     Friend SkillDescType As String
     Friend SkillDescCastTime As String
     Friend SkillDescCoolDown As String
@@ -64,11 +41,6 @@ Module C_UpdateUI
 
     Friend RClickX As Integer
     Friend RClickY As Integer
-
-    Friend DrawChar As Boolean
-
-    Friend SelHotbarSlot As Integer
-    Friend SelSkillSlot As Boolean
 
 #End Region
 
