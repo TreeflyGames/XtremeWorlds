@@ -83,9 +83,6 @@ Module C_General
                 SendRequestAdmin()
             End If
         End If
-
-        'stop the song playing
-        StopMusic()
     End Sub
 
     Friend Function ConnectToServer(i As Integer) As Boolean
