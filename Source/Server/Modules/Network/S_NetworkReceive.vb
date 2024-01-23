@@ -661,9 +661,9 @@ Module S_NetworkReceive
                 PlayerMsg(index, " Stats for " & GetPlayerName(i) & " ", ColorType.Yellow)
                 PlayerMsg(index, "Level: " & GetPlayerLevel(i) & "  Exp: " & GetPlayerExp(i) & "/" & GetPlayerNextLevel(i), ColorType.Yellow)
                 PlayerMsg(index, "HP: " & GetPlayerVital(i, VitalType.HP) & "/" & GetPlayerMaxVital(i, VitalType.HP) & "  MP: " & GetPlayerVital(i, VitalType.MP) & "/" & GetPlayerMaxVital(i, VitalType.MP) & "  SP: " & GetPlayerVital(i, VitalType.SP) & "/" & GetPlayerMaxVital(i, VitalType.SP), ColorType.Yellow)
-                PlayerMsg(index, "Strength: " & GetPlayerStat(i, StatType.Strength) & "  Defense: " & GetPlayerStat(i, StatType.Endurance) & "  Magic: " & GetPlayerStat(i, StatType.Intelligence) & "  Speed: " & GetPlayerStat(i, StatType.Spirit), ColorType.Yellow)
+                PlayerMsg(index, "Strength: " & GetPlayerStat(i, StatType.Strength) & "  Defense: " & GetPlayerStat(i, StatType.Luck) & "  Magic: " & GetPlayerStat(i, StatType.Intelligence) & "  Speed: " & GetPlayerStat(i, StatType.Spirit), ColorType.Yellow)
                 n = (GetPlayerStat(i, StatType.Strength) \ 2) + (GetPlayerLevel(i) \ 2)
-                i = (GetPlayerStat(i, StatType.Endurance) \ 2) + (GetPlayerLevel(i) \ 2)
+                i = (GetPlayerStat(i, StatType.Luck) \ 2) + (GetPlayerLevel(i) \ 2)
 
                 If n > 100 Then n = 100
                 If i > 100 Then i = 100
@@ -771,9 +771,9 @@ Module S_NetworkReceive
         PlayerMsg(index, "Stats: " & GetPlayerName(index), ColorType.Yellow)
         PlayerMsg(index, "Level: " & GetPlayerLevel(index) & "  Exp: " & GetPlayerExp(index) & "/" & GetPlayerNextLevel(index), ColorType.Yellow)
         PlayerMsg(index, "HP: " & GetPlayerVital(index, VitalType.HP) & "/" & GetPlayerMaxVital(index, VitalType.HP) & "  MP: " & GetPlayerVital(index, VitalType.MP) & "/" & GetPlayerMaxVital(index, VitalType.MP) & "  SP: " & GetPlayerVital(index, VitalType.SP) & "/" & GetPlayerMaxVital(index, VitalType.SP), ColorType.Yellow)
-        PlayerMsg(index, "STR: " & GetPlayerStat(index, StatType.Strength) & "  DEF: " & GetPlayerStat(index, StatType.Endurance) & "  MAGI: " & GetPlayerStat(index, StatType.Intelligence) & "  Speed: " & GetPlayerStat(index, StatType.Spirit), ColorType.Yellow)
+        PlayerMsg(index, "STR: " & GetPlayerStat(index, StatType.Strength) & "  DEF: " & GetPlayerStat(index, StatType.Luck) & "  MAGI: " & GetPlayerStat(index, StatType.Intelligence) & "  Speed: " & GetPlayerStat(index, StatType.Spirit), ColorType.Yellow)
         n = (GetPlayerStat(index, StatType.Strength) \ 2) + (GetPlayerLevel(index) \ 2)
-        i = (GetPlayerStat(index, StatType.Endurance) \ 2) + (GetPlayerLevel(index) \ 2)
+        i = (GetPlayerStat(index, StatType.Luck) \ 2) + (GetPlayerLevel(index) \ 2)
 
         If n > 100 Then n = 100
         If i > 100 Then i = 100

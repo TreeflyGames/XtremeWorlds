@@ -110,10 +110,6 @@ End Sub
         Pet(Editorindex).Stat(StatType.Strength) = nudStrength.Value
     End Sub
 
-    Private Sub NudEndurance_ValueChanged(sender As Object, e As EventArgs) Handles nudEndurance.ValueChanged
-        Pet(Editorindex).Stat(StatType.Endurance) = nudEndurance.Value
-    End Sub
-
     Private Sub NudVitality_ValueChanged(sender As Object, e As EventArgs) Handles nudVitality.ValueChanged
         Pet(Editorindex).Stat(StatType.Vitality) = nudVitality.Value
     End Sub

@@ -96,7 +96,7 @@ Module S_Player
             n = Int(Rnd() * 2)
 
             If n = 1 Then
-                i = (GetPlayerStat(index, StatType.Endurance) \ 2) + (GetPlayerLevel(index) \ 2)
+                i = (GetPlayerStat(index, StatType.Luck) \ 2) + (GetPlayerLevel(index) \ 2)
                 n = Int(Rnd() * 100) + 1
 
                 If n <= i Then
@@ -159,7 +159,7 @@ Module S_Player
         Helm = GetPlayerEquipment(index, EquipmentType.Helmet)
         Shoes = GetPlayerEquipment(index, EquipmentType.Shoes)
         Gloves = GetPlayerEquipment(index, EquipmentType.Gloves)
-        GetPlayerProtection = (GetPlayerStat(index, StatType.Endurance) \ 5)
+        GetPlayerProtection = (GetPlayerStat(index, StatType.Luck) \ 5)
 
         If Armor > 0 Then
             GetPlayerProtection += Item(Armor).Data2

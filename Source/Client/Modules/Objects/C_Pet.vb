@@ -609,7 +609,6 @@ Module C_Pets
             .nudRange.Value = Pet(Editorindex).Range
 
             .nudStrength.Value = Pet(Editorindex).Stat(StatType.Strength)
-            .nudEndurance.Value = Pet(Editorindex).Stat(StatType.Endurance)
             .nudVitality.Value = Pet(Editorindex).Stat(StatType.Vitality)
             .nudLuck.Value = Pet(Editorindex).Stat(StatType.Luck)
             .nudIntelligence.Value = Pet(Editorindex).Stat(StatType.Intelligence)

@@ -469,7 +469,7 @@ Module S_Loop
                                 If MapNPC(mapNum).Npc(target).Num > 0 Then ' npc exists
                                     'Can the npc attack the npc?
                                     If CanNpcAttackNpc(mapNum, x, target) Then
-                                        damage = NPC(npcNum).Stat(StatType.Strength) - CLng(NPC(target).Stat(StatType.Endurance))
+                                        damage = NPC(npcNum).Stat(StatType.Strength) - CLng(NPC(target).Stat(StatType.Luck))
                                         NpcAttackNpc(mapNum, x, target, damage)
                                     End If
                                 Else

@@ -167,7 +167,6 @@
     Public Enum StatType As Byte
         None = 0
         Strength
-        Endurance
         Vitality
         Luck
         Intelligence

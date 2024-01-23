@@ -264,10 +264,6 @@ Friend Class frmEditor_Item
         Item(Editorindex).Stat_Req(StatType.Strength) = nudStrReq.Value
     End Sub
 
-    Private Sub NudEndReq_ValueChanged(sender As Object, e As EventArgs) Handles nudEndReq.Click
-        Item(Editorindex).Stat_Req(StatType.Endurance) = nudEndReq.Value
-    End Sub
-
     Private Sub NudVitReq_ValueChanged(sender As Object, e As EventArgs) Handles nudVitReq.Click
         Item(Editorindex).Stat_Req(StatType.Vitality) = nudVitReq.Value
     End Sub
@@ -313,10 +309,6 @@ Friend Class frmEditor_Item
 
     Private Sub NudLuck_ValueChanged(sender As Object, e As EventArgs) Handles nudLuck.Click
         Item(Editorindex).Add_Stat(StatType.Luck) = nudLuck.Value
-    End Sub
-
-    Private Sub NudEndurance_ValueChanged(sender As Object, e As EventArgs) Handles nudEndurance.Click
-        Item(Editorindex).Add_Stat(StatType.Endurance) = nudEndurance.Value
     End Sub
 
     Private Sub NudIntelligence_ValueChanged(sender As Object, e As EventArgs) Handles nudIntelligence.Click

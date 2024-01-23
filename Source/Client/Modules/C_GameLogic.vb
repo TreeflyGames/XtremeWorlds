@@ -1568,8 +1568,8 @@ Continue1:
                 If Item(itemNum).Add_Stat(StatType.Strength) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Strength) & " Str", Color.White)
                 End If
-                If Item(itemNum).Add_Stat(StatType.Endurance) > 0 Then
-                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Endurance) & " End", Color.White)
+                If Item(itemNum).Add_Stat(StatType.Luck) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " End", Color.White)
                 End If
                 If Item(itemNum).Add_Stat(StatType.Vitality) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Vitality) & " Vit", Color.White)

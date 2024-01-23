@@ -98,7 +98,6 @@ Module C_Editors
             .cmbAnimation.SelectedIndex = NPC(Editorindex).Animation
 
             .nudStrength.Value = NPC(Editorindex).Stat(StatType.Strength)
-            .nudEndurance.Value = NPC(Editorindex).Stat(StatType.Endurance)
             .nudIntelligence.Value = NPC(Editorindex).Stat(StatType.Intelligence)
             .nudSpirit.Value = NPC(Editorindex).Stat(StatType.Spirit)
             .nudLuck.Value = NPC(Editorindex).Stat(StatType.Luck)
@@ -400,7 +399,7 @@ Module C_Editors
 
             .nudStrength.Value = Job(Editorindex).Stat(StatType.Strength)
             .nudLuck.Value = Job(Editorindex).Stat(StatType.Luck)
-            .nudEndurance.Value = Job(Editorindex).Stat(StatType.Endurance)
+            .nudEndurance.Value = Job(Editorindex).Stat(StatType.Luck)
             .nudIntelligence.Value = Job(Editorindex).Stat(StatType.Intelligence)
             .nudVitality.Value = Job(Editorindex).Stat(StatType.Vitality)
             .nudSpirit.Value = Job(Editorindex).Stat(StatType.Spirit)
@@ -458,7 +457,6 @@ Module C_Editors
                 frmEditor_Item.nudSpeed.Value = .Speed
 
                 frmEditor_Item.nudStrength.Value = .Add_Stat(StatType.Strength)
-                frmEditor_Item.nudEndurance.Value = .Add_Stat(StatType.Endurance)
                 frmEditor_Item.nudIntelligence.Value = .Add_Stat(StatType.Intelligence)
                 frmEditor_Item.nudVitality.Value = .Add_Stat(StatType.Vitality)
                 frmEditor_Item.nudLuck.Value = .Add_Stat(StatType.Luck)
@@ -535,7 +533,7 @@ Module C_Editors
             frmEditor_Item.nudStrReq.Value = .Stat_Req(StatType.Strength)
             frmEditor_Item.nudVitReq.Value = .Stat_Req(StatType.Vitality)
             frmEditor_Item.nudLuckReq.Value = .Stat_Req(StatType.Luck)
-            frmEditor_Item.nudEndReq.Value = .Stat_Req(StatType.Endurance)
+            frmEditor_Item.nudEndReq.Value = .Stat_Req(StatType.Luck)
             frmEditor_Item.nudIntReq.Value = .Stat_Req(StatType.Intelligence)
             frmEditor_Item.nudSprReq.Value = .Stat_Req(StatType.Spirit)
 

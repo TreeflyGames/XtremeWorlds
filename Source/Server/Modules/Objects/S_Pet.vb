@@ -538,7 +538,7 @@ Module S_Pet
                 Case StatType.Strength
                     SetPetStat(index, pointType, GetPetStat(index, pointType) + 1)
                     sMes = "Strength"
-                Case StatType.Endurance
+                Case StatType.Luck
                     SetPetStat(index, pointType, GetPetStat(index, pointType) + 1)
                     sMes = "Endurance"
                 Case StatType.Intelligence
@@ -2119,7 +2119,7 @@ Module S_Pet
             damage = GetNpcDamage(npcnum)
 
             ' take away armour
-            damage -= ((GetPetStat(index, StatType.Endurance) * 2) + (GetPetLevel(index) * 2))
+            damage -= ((GetPetStat(index, StatType.Luck) * 2) + (GetPetLevel(index) * 2))
 
             ' * 1.5 if crit hit
             If CanNpcCrit(npcnum) Then
@@ -3839,7 +3839,7 @@ Module S_Pet
     Function GetPetMaxVital(index As Integer, vital As VitalType) As Integer
         Select Case vital
             Case VitalType.HP
-                GetPetMaxVital = ((Player(index).Pet.Level * 4) + (Player(index).Pet.Stat(StatType.Endurance) * 10)) + 150
+                GetPetMaxVital = ((Player(index).Pet.Level * 4) + (Player(index).Pet.Stat(StatType.Luck) * 10)) + 150
 
             Case VitalType.MP
                 GetPetMaxVital = ((Player(index).Pet.Level * 4) + (Player(index).Pet.Stat(StatType.Spirit) / 2)) * 5 + 50

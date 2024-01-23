@@ -44,8 +44,6 @@ Partial Class frmEditor_Item
         DarkLabel20 = New DarkUI.Controls.DarkLabel()
         nudLuck = New DarkUI.Controls.DarkNumericUpDown()
         DarkLabel19 = New DarkUI.Controls.DarkLabel()
-        nudEndurance = New DarkUI.Controls.DarkNumericUpDown()
-        DarkLabel18 = New DarkUI.Controls.DarkLabel()
         nudStrength = New DarkUI.Controls.DarkNumericUpDown()
         DarkLabel17 = New DarkUI.Controls.DarkLabel()
         chkRandomize = New DarkUI.Controls.DarkCheckBox()
@@ -132,7 +130,6 @@ Partial Class frmEditor_Item
         CType(nudIntelligence, ComponentModel.ISupportInitialize).BeginInit()
         CType(nudVitality, ComponentModel.ISupportInitialize).BeginInit()
         CType(nudLuck, ComponentModel.ISupportInitialize).BeginInit()
-        CType(nudEndurance, ComponentModel.ISupportInitialize).BeginInit()
         CType(nudStrength, ComponentModel.ISupportInitialize).BeginInit()
         CType(nudSpeed, ComponentModel.ISupportInitialize).BeginInit()
         CType(nudDamage, ComponentModel.ISupportInitialize).BeginInit()
@@ -167,11 +164,11 @@ Partial Class frmEditor_Item
         DarkGroupBox1.BorderColor = Color.FromArgb(CByte(90), CByte(90), CByte(90))
         DarkGroupBox1.Controls.Add(lstIndex)
         DarkGroupBox1.ForeColor = Color.Gainsboro
-        DarkGroupBox1.Location = New Point(4, 4)
-        DarkGroupBox1.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox1.Location = New Point(3, 3)
+        DarkGroupBox1.Margin = New Padding(5)
         DarkGroupBox1.Name = "DarkGroupBox1"
-        DarkGroupBox1.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox1.Size = New Size(453, 997)
+        DarkGroupBox1.Padding = New Padding(5)
+        DarkGroupBox1.Size = New Size(348, 779)
         DarkGroupBox1.TabIndex = 0
         DarkGroupBox1.TabStop = False
         DarkGroupBox1.Text = "Item List"
@@ -182,10 +179,11 @@ Partial Class frmEditor_Item
         lstIndex.BorderStyle = BorderStyle.FixedSingle
         lstIndex.ForeColor = Color.Gainsboro
         lstIndex.FormattingEnabled = True
-        lstIndex.Location = New Point(13, 34)
-        lstIndex.Margin = New Padding(7, 6, 7, 6)
+        lstIndex.ItemHeight = 25
+        lstIndex.Location = New Point(10, 27)
+        lstIndex.Margin = New Padding(5)
         lstIndex.Name = "lstIndex"
-        lstIndex.Size = New Size(422, 962)
+        lstIndex.Size = New Size(325, 752)
         lstIndex.TabIndex = 1
         ' 
         ' DarkLabel1
@@ -226,11 +224,11 @@ Partial Class frmEditor_Item
         fraEquipment.Controls.Add(cmbTool)
         fraEquipment.Controls.Add(DarkLabel14)
         fraEquipment.ForeColor = Color.Gainsboro
-        fraEquipment.Location = New Point(470, 604)
-        fraEquipment.Margin = New Padding(7, 6, 7, 6)
+        fraEquipment.Location = New Point(362, 472)
+        fraEquipment.Margin = New Padding(5)
         fraEquipment.Name = "fraEquipment"
-        fraEquipment.Padding = New Padding(7, 6, 7, 6)
-        fraEquipment.Size = New Size(975, 604)
+        fraEquipment.Padding = New Padding(5)
+        fraEquipment.Size = New Size(750, 472)
         fraEquipment.TabIndex = 2
         fraEquipment.TabStop = False
         fraEquipment.Text = "Equipment Settings"
@@ -244,11 +242,11 @@ Partial Class frmEditor_Item
         fraProjectile.Controls.Add(cmbProjectile)
         fraProjectile.Controls.Add(DarkLabel24)
         fraProjectile.ForeColor = Color.Gainsboro
-        fraProjectile.Location = New Point(260, 410)
-        fraProjectile.Margin = New Padding(7, 6, 7, 6)
+        fraProjectile.Location = New Point(200, 320)
+        fraProjectile.Margin = New Padding(5)
         fraProjectile.Name = "fraProjectile"
-        fraProjectile.Padding = New Padding(7, 6, 7, 6)
-        fraProjectile.Size = New Size(704, 171)
+        fraProjectile.Padding = New Padding(5)
+        fraProjectile.Size = New Size(542, 134)
         fraProjectile.TabIndex = 63
         fraProjectile.TabStop = False
         fraProjectile.Text = "Projectile Settings"
@@ -257,20 +255,20 @@ Partial Class frmEditor_Item
         ' 
         cmbAmmo.DrawMode = DrawMode.OwnerDrawFixed
         cmbAmmo.FormattingEnabled = True
-        cmbAmmo.Location = New Point(139, 98)
-        cmbAmmo.Margin = New Padding(7, 6, 7, 6)
+        cmbAmmo.Location = New Point(107, 77)
+        cmbAmmo.Margin = New Padding(5)
         cmbAmmo.Name = "cmbAmmo"
-        cmbAmmo.Size = New Size(546, 40)
+        cmbAmmo.Size = New Size(421, 32)
         cmbAmmo.TabIndex = 3
         ' 
         ' DarkLabel25
         ' 
         DarkLabel25.AutoSize = True
         DarkLabel25.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel25.Location = New Point(41, 107)
-        DarkLabel25.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel25.Location = New Point(32, 84)
+        DarkLabel25.Margin = New Padding(5, 0, 5, 0)
         DarkLabel25.Name = "DarkLabel25"
-        DarkLabel25.Size = New Size(90, 32)
+        DarkLabel25.Size = New Size(71, 25)
         DarkLabel25.TabIndex = 2
         DarkLabel25.Text = "Ammo:"
         ' 
@@ -278,49 +276,49 @@ Partial Class frmEditor_Item
         ' 
         cmbProjectile.DrawMode = DrawMode.OwnerDrawFixed
         cmbProjectile.FormattingEnabled = True
-        cmbProjectile.Location = New Point(139, 32)
-        cmbProjectile.Margin = New Padding(7, 6, 7, 6)
+        cmbProjectile.Location = New Point(107, 25)
+        cmbProjectile.Margin = New Padding(5)
         cmbProjectile.Name = "cmbProjectile"
-        cmbProjectile.Size = New Size(546, 40)
+        cmbProjectile.Size = New Size(421, 32)
         cmbProjectile.TabIndex = 1
         ' 
         ' DarkLabel24
         ' 
         DarkLabel24.AutoSize = True
         DarkLabel24.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel24.Location = New Point(17, 38)
-        DarkLabel24.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel24.Location = New Point(13, 30)
+        DarkLabel24.Margin = New Padding(5, 0, 5, 0)
         DarkLabel24.Name = "DarkLabel24"
-        DarkLabel24.Size = New Size(117, 32)
+        DarkLabel24.Size = New Size(87, 25)
         DarkLabel24.TabIndex = 0
         DarkLabel24.Text = "Projectile:"
         ' 
         ' nudPaperdoll
         ' 
-        nudPaperdoll.Location = New Point(143, 531)
-        nudPaperdoll.Margin = New Padding(7, 6, 7, 6)
+        nudPaperdoll.Location = New Point(110, 415)
+        nudPaperdoll.Margin = New Padding(5)
         nudPaperdoll.Name = "nudPaperdoll"
-        nudPaperdoll.Size = New Size(102, 39)
+        nudPaperdoll.Size = New Size(78, 31)
         nudPaperdoll.TabIndex = 59
         ' 
         ' DarkLabel23
         ' 
         DarkLabel23.AutoSize = True
         DarkLabel23.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel23.Location = New Point(13, 538)
-        DarkLabel23.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel23.Location = New Point(10, 420)
+        DarkLabel23.Margin = New Padding(5, 0, 5, 0)
         DarkLabel23.Name = "DarkLabel23"
-        DarkLabel23.Size = New Size(118, 32)
+        DarkLabel23.Size = New Size(90, 25)
         DarkLabel23.TabIndex = 58
         DarkLabel23.Text = "Paperdoll:"
         ' 
         ' picPaperdoll
         ' 
         picPaperdoll.BackColor = Color.Black
-        picPaperdoll.Location = New Point(15, 410)
-        picPaperdoll.Margin = New Padding(7, 6, 7, 6)
+        picPaperdoll.Location = New Point(12, 320)
+        picPaperdoll.Margin = New Padding(5)
         picPaperdoll.Name = "picPaperdoll"
-        picPaperdoll.Size = New Size(232, 117)
+        picPaperdoll.Size = New Size(178, 91)
         picPaperdoll.TabIndex = 57
         picPaperdoll.TabStop = False
         ' 
@@ -336,148 +334,126 @@ Partial Class frmEditor_Item
         DarkGroupBox2.Controls.Add(DarkLabel20)
         DarkGroupBox2.Controls.Add(nudLuck)
         DarkGroupBox2.Controls.Add(DarkLabel19)
-        DarkGroupBox2.Controls.Add(nudEndurance)
-        DarkGroupBox2.Controls.Add(DarkLabel18)
         DarkGroupBox2.Controls.Add(nudStrength)
         DarkGroupBox2.Controls.Add(DarkLabel17)
         DarkGroupBox2.Controls.Add(chkRandomize)
         DarkGroupBox2.ForeColor = Color.Gainsboro
-        DarkGroupBox2.Location = New Point(13, 209)
-        DarkGroupBox2.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox2.Location = New Point(10, 163)
+        DarkGroupBox2.Margin = New Padding(5)
         DarkGroupBox2.Name = "DarkGroupBox2"
-        DarkGroupBox2.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox2.Size = New Size(949, 188)
+        DarkGroupBox2.Padding = New Padding(5)
+        DarkGroupBox2.Size = New Size(730, 147)
         DarkGroupBox2.TabIndex = 9
         DarkGroupBox2.TabStop = False
         DarkGroupBox2.Text = "Stats"
         ' 
         ' nudSpirit
         ' 
-        nudSpirit.Location = New Point(615, 109)
-        nudSpirit.Margin = New Padding(7, 6, 7, 6)
+        nudSpirit.Location = New Point(473, 85)
+        nudSpirit.Margin = New Padding(5)
         nudSpirit.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudSpirit.Name = "nudSpirit"
-        nudSpirit.Size = New Size(108, 39)
+        nudSpirit.Size = New Size(83, 31)
         nudSpirit.TabIndex = 12
         ' 
         ' DarkLabel22
         ' 
         DarkLabel22.AutoSize = True
         DarkLabel22.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel22.Location = New Point(524, 113)
-        DarkLabel22.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel22.Location = New Point(403, 88)
+        DarkLabel22.Margin = New Padding(5, 0, 5, 0)
         DarkLabel22.Name = "DarkLabel22"
-        DarkLabel22.Size = New Size(74, 32)
+        DarkLabel22.Size = New Size(57, 25)
         DarkLabel22.TabIndex = 11
         DarkLabel22.Text = "Spirit:"
         ' 
         ' nudIntelligence
         ' 
-        nudIntelligence.Location = New Point(362, 109)
-        nudIntelligence.Margin = New Padding(7, 6, 7, 6)
+        nudIntelligence.Location = New Point(278, 85)
+        nudIntelligence.Margin = New Padding(5)
         nudIntelligence.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudIntelligence.Name = "nudIntelligence"
-        nudIntelligence.Size = New Size(108, 39)
+        nudIntelligence.Size = New Size(83, 31)
         nudIntelligence.TabIndex = 10
         ' 
         ' DarkLabel21
         ' 
         DarkLabel21.AutoSize = True
         DarkLabel21.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel21.Location = New Point(223, 113)
-        DarkLabel21.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel21.Location = New Point(172, 88)
+        DarkLabel21.Margin = New Padding(5, 0, 5, 0)
         DarkLabel21.Name = "DarkLabel21"
-        DarkLabel21.Size = New Size(143, 32)
+        DarkLabel21.Size = New Size(105, 25)
         DarkLabel21.TabIndex = 9
         DarkLabel21.Text = "Intelligence:"
         ' 
         ' nudVitality
         ' 
-        nudVitality.Location = New Point(102, 109)
-        nudVitality.Margin = New Padding(7, 6, 7, 6)
+        nudVitality.Location = New Point(78, 85)
+        nudVitality.Margin = New Padding(5)
         nudVitality.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudVitality.Name = "nudVitality"
-        nudVitality.Size = New Size(108, 39)
+        nudVitality.Size = New Size(83, 31)
         nudVitality.TabIndex = 8
         ' 
         ' DarkLabel20
         ' 
         DarkLabel20.AutoSize = True
         DarkLabel20.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel20.Location = New Point(11, 113)
-        DarkLabel20.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel20.Location = New Point(8, 88)
+        DarkLabel20.Margin = New Padding(5, 0, 5, 0)
         DarkLabel20.Name = "DarkLabel20"
-        DarkLabel20.Size = New Size(92, 32)
+        DarkLabel20.Size = New Size(69, 25)
         DarkLabel20.TabIndex = 7
         DarkLabel20.Text = "Vitality:"
         ' 
         ' nudLuck
         ' 
-        nudLuck.Location = New Point(806, 45)
-        nudLuck.Margin = New Padding(7, 6, 7, 6)
+        nudLuck.Location = New Point(473, 39)
+        nudLuck.Margin = New Padding(5)
         nudLuck.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudLuck.Name = "nudLuck"
-        nudLuck.Size = New Size(108, 39)
+        nudLuck.Size = New Size(83, 31)
         nudLuck.TabIndex = 6
         ' 
         ' DarkLabel19
         ' 
         DarkLabel19.AutoSize = True
         DarkLabel19.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel19.Location = New Point(737, 49)
-        DarkLabel19.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel19.Location = New Point(403, 41)
+        DarkLabel19.Margin = New Padding(5, 0, 5, 0)
         DarkLabel19.Name = "DarkLabel19"
-        DarkLabel19.Size = New Size(67, 32)
+        DarkLabel19.Size = New Size(51, 25)
         DarkLabel19.TabIndex = 5
         DarkLabel19.Text = "Luck:"
         ' 
-        ' nudEndurance
-        ' 
-        nudEndurance.Location = New Point(615, 45)
-        nudEndurance.Margin = New Padding(7, 6, 7, 6)
-        nudEndurance.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
-        nudEndurance.Name = "nudEndurance"
-        nudEndurance.Size = New Size(108, 39)
-        nudEndurance.TabIndex = 4
-        ' 
-        ' DarkLabel18
-        ' 
-        DarkLabel18.AutoSize = True
-        DarkLabel18.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel18.Location = New Point(483, 49)
-        DarkLabel18.Margin = New Padding(7, 0, 7, 0)
-        DarkLabel18.Name = "DarkLabel18"
-        DarkLabel18.Size = New Size(131, 32)
-        DarkLabel18.TabIndex = 3
-        DarkLabel18.Text = "Endurance:"
-        ' 
         ' nudStrength
         ' 
-        nudStrength.Location = New Point(362, 45)
-        nudStrength.Margin = New Padding(7, 6, 7, 6)
+        nudStrength.Location = New Point(278, 35)
+        nudStrength.Margin = New Padding(5)
         nudStrength.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudStrength.Name = "nudStrength"
-        nudStrength.Size = New Size(108, 39)
+        nudStrength.Size = New Size(83, 31)
         nudStrength.TabIndex = 2
         ' 
         ' DarkLabel17
         ' 
         DarkLabel17.AutoSize = True
         DarkLabel17.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel17.Location = New Point(256, 49)
-        DarkLabel17.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel17.Location = New Point(197, 38)
+        DarkLabel17.Margin = New Padding(5, 0, 5, 0)
         DarkLabel17.Name = "DarkLabel17"
-        DarkLabel17.Size = New Size(110, 32)
+        DarkLabel17.Size = New Size(83, 25)
         DarkLabel17.TabIndex = 1
         DarkLabel17.Text = "Strength:"
         ' 
         ' chkRandomize
         ' 
         chkRandomize.AutoSize = True
-        chkRandomize.Location = New Point(13, 47)
-        chkRandomize.Margin = New Padding(7, 6, 7, 6)
+        chkRandomize.Location = New Point(10, 37)
+        chkRandomize.Margin = New Padding(5)
         chkRandomize.Name = "chkRandomize"
-        chkRandomize.Size = New Size(222, 36)
+        chkRandomize.Size = New Size(170, 29)
         chkRandomize.TabIndex = 0
         chkRandomize.Text = "Randomize Stats"
         ' 
@@ -486,69 +462,69 @@ Partial Class frmEditor_Item
         cmbKnockBackTiles.DrawMode = DrawMode.OwnerDrawFixed
         cmbKnockBackTiles.FormattingEnabled = True
         cmbKnockBackTiles.Items.AddRange(New Object() {"No KnockBack", "1 Tile", "2 Tiles", "3 Tiles", "4 Tiles", "5 Tiles"})
-        cmbKnockBackTiles.Location = New Point(704, 143)
-        cmbKnockBackTiles.Margin = New Padding(7, 6, 7, 6)
+        cmbKnockBackTiles.Location = New Point(542, 112)
+        cmbKnockBackTiles.Margin = New Padding(5)
         cmbKnockBackTiles.Name = "cmbKnockBackTiles"
-        cmbKnockBackTiles.Size = New Size(253, 40)
+        cmbKnockBackTiles.Size = New Size(196, 32)
         cmbKnockBackTiles.TabIndex = 8
         ' 
         ' DarkLabel16
         ' 
         DarkLabel16.AutoSize = True
         DarkLabel16.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel16.Location = New Point(652, 149)
-        DarkLabel16.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel16.Location = New Point(502, 116)
+        DarkLabel16.Margin = New Padding(5, 0, 5, 0)
         DarkLabel16.Name = "DarkLabel16"
-        DarkLabel16.Size = New Size(40, 32)
+        DarkLabel16.Size = New Size(32, 25)
         DarkLabel16.TabIndex = 7
         DarkLabel16.Text = "Of"
         ' 
         ' chkKnockBack
         ' 
         chkKnockBack.AutoSize = True
-        chkKnockBack.Location = New Point(427, 147)
-        chkKnockBack.Margin = New Padding(7, 6, 7, 6)
+        chkKnockBack.Location = New Point(328, 115)
+        chkKnockBack.Margin = New Padding(5)
         chkKnockBack.Name = "chkKnockBack"
-        chkKnockBack.Size = New Size(206, 36)
+        chkKnockBack.Size = New Size(157, 29)
         chkKnockBack.TabIndex = 6
         chkKnockBack.Text = "Has KnockBack"
         ' 
         ' nudSpeed
         ' 
-        nudSpeed.Location = New Point(214, 145)
-        nudSpeed.Margin = New Padding(7, 6, 7, 6)
+        nudSpeed.Location = New Point(165, 113)
+        nudSpeed.Margin = New Padding(5)
         nudSpeed.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         nudSpeed.Name = "nudSpeed"
-        nudSpeed.Size = New Size(199, 39)
+        nudSpeed.Size = New Size(153, 31)
         nudSpeed.TabIndex = 5
         ' 
         ' lblSpeed
         ' 
         lblSpeed.AutoSize = True
         lblSpeed.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        lblSpeed.Location = New Point(13, 149)
-        lblSpeed.Margin = New Padding(7, 0, 7, 0)
+        lblSpeed.Location = New Point(10, 116)
+        lblSpeed.Margin = New Padding(5, 0, 5, 0)
         lblSpeed.Name = "lblSpeed"
-        lblSpeed.Size = New Size(124, 32)
+        lblSpeed.Size = New Size(95, 25)
         lblSpeed.TabIndex = 4
         lblSpeed.Text = "Speed: 0.1"
         ' 
         ' nudDamage
         ' 
-        nudDamage.Location = New Point(548, 49)
-        nudDamage.Margin = New Padding(7, 6, 7, 6)
+        nudDamage.Location = New Point(422, 38)
+        nudDamage.Margin = New Padding(5)
         nudDamage.Name = "nudDamage"
-        nudDamage.Size = New Size(260, 39)
+        nudDamage.Size = New Size(200, 31)
         nudDamage.TabIndex = 3
         ' 
         ' DarkLabel15
         ' 
         DarkLabel15.AutoSize = True
         DarkLabel15.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel15.Location = New Point(427, 53)
-        DarkLabel15.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel15.Location = New Point(328, 41)
+        DarkLabel15.Margin = New Padding(5, 0, 5, 0)
         DarkLabel15.Name = "DarkLabel15"
-        DarkLabel15.Size = New Size(108, 32)
+        DarkLabel15.Size = New Size(83, 25)
         DarkLabel15.TabIndex = 2
         DarkLabel15.Text = "Damage:"
         ' 
@@ -557,40 +533,40 @@ Partial Class frmEditor_Item
         cmbTool.DrawMode = DrawMode.OwnerDrawFixed
         cmbTool.FormattingEnabled = True
         cmbTool.Items.AddRange(New Object() {"None", "Hatchet", "Rod", "Pickaxe", "Hoe"})
-        cmbTool.Location = New Point(152, 47)
-        cmbTool.Margin = New Padding(7, 6, 7, 6)
+        cmbTool.Location = New Point(117, 37)
+        cmbTool.Margin = New Padding(5)
         cmbTool.Name = "cmbTool"
-        cmbTool.Size = New Size(257, 40)
+        cmbTool.Size = New Size(199, 32)
         cmbTool.TabIndex = 1
         ' 
         ' DarkLabel14
         ' 
         DarkLabel14.AutoSize = True
         DarkLabel14.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel14.Location = New Point(13, 53)
-        DarkLabel14.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel14.Location = New Point(10, 41)
+        DarkLabel14.Margin = New Padding(5, 0, 5, 0)
         DarkLabel14.Name = "DarkLabel14"
-        DarkLabel14.Size = New Size(122, 32)
+        DarkLabel14.Size = New Size(91, 25)
         DarkLabel14.TabIndex = 0
         DarkLabel14.Text = "Tool Type:"
         ' 
         ' btnBasics
         ' 
-        btnBasics.Location = New Point(470, 19)
-        btnBasics.Margin = New Padding(7, 6, 7, 6)
+        btnBasics.Location = New Point(362, 15)
+        btnBasics.Margin = New Padding(5)
         btnBasics.Name = "btnBasics"
-        btnBasics.Padding = New Padding(11, 13, 11, 13)
-        btnBasics.Size = New Size(163, 58)
+        btnBasics.Padding = New Padding(8, 10, 8, 10)
+        btnBasics.Size = New Size(125, 45)
         btnBasics.TabIndex = 3
         btnBasics.Text = "Basics"
         ' 
         ' btnRequirements
         ' 
-        btnRequirements.Location = New Point(646, 19)
-        btnRequirements.Margin = New Padding(7, 6, 7, 6)
+        btnRequirements.Location = New Point(497, 15)
+        btnRequirements.Margin = New Padding(5)
         btnRequirements.Name = "btnRequirements"
-        btnRequirements.Padding = New Padding(11, 13, 11, 13)
-        btnRequirements.Size = New Size(199, 58)
+        btnRequirements.Padding = New Padding(8, 10, 8, 10)
+        btnRequirements.Size = New Size(153, 45)
         btnRequirements.TabIndex = 4
         btnRequirements.Text = "Requirements"
         ' 
@@ -606,11 +582,11 @@ Partial Class frmEditor_Item
         fraRequirements.Controls.Add(cmbJobReq)
         fraRequirements.Controls.Add(DarkLabel26)
         fraRequirements.ForeColor = Color.Gainsboro
-        fraRequirements.Location = New Point(470, 92)
-        fraRequirements.Margin = New Padding(7, 6, 7, 6)
+        fraRequirements.Location = New Point(362, 72)
+        fraRequirements.Margin = New Padding(5)
         fraRequirements.Name = "fraRequirements"
-        fraRequirements.Padding = New Padding(7, 6, 7, 6)
-        fraRequirements.Size = New Size(975, 497)
+        fraRequirements.Padding = New Padding(5)
+        fraRequirements.Size = New Size(750, 388)
         fraRequirements.TabIndex = 5
         fraRequirements.TabStop = False
         fraRequirements.Text = "Requirements"
@@ -633,132 +609,132 @@ Partial Class frmEditor_Item
         DarkGroupBox4.Controls.Add(nudStrReq)
         DarkGroupBox4.Controls.Add(DarkLabel31)
         DarkGroupBox4.ForeColor = Color.Gainsboro
-        DarkGroupBox4.Location = New Point(13, 235)
-        DarkGroupBox4.Margin = New Padding(7, 6, 7, 6)
+        DarkGroupBox4.Location = New Point(10, 184)
+        DarkGroupBox4.Margin = New Padding(5)
         DarkGroupBox4.Name = "DarkGroupBox4"
-        DarkGroupBox4.Padding = New Padding(7, 6, 7, 6)
-        DarkGroupBox4.Size = New Size(949, 245)
+        DarkGroupBox4.Padding = New Padding(5)
+        DarkGroupBox4.Size = New Size(730, 191)
         DarkGroupBox4.TabIndex = 6
         DarkGroupBox4.TabStop = False
         DarkGroupBox4.Text = "Stat Requirements"
         ' 
         ' nudSprReq
         ' 
-        nudSprReq.Location = New Point(633, 158)
-        nudSprReq.Margin = New Padding(7, 6, 7, 6)
+        nudSprReq.Location = New Point(487, 123)
+        nudSprReq.Margin = New Padding(5)
         nudSprReq.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudSprReq.Name = "nudSprReq"
-        nudSprReq.Size = New Size(108, 39)
+        nudSprReq.Size = New Size(83, 31)
         nudSprReq.TabIndex = 18
         ' 
         ' DarkLabel32
         ' 
         DarkLabel32.AutoSize = True
         DarkLabel32.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel32.Location = New Point(542, 162)
-        DarkLabel32.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel32.Location = New Point(417, 127)
+        DarkLabel32.Margin = New Padding(5, 0, 5, 0)
         DarkLabel32.Name = "DarkLabel32"
-        DarkLabel32.Size = New Size(74, 32)
+        DarkLabel32.Size = New Size(57, 25)
         DarkLabel32.TabIndex = 17
         DarkLabel32.Text = "Spirit:"
         ' 
         ' nudIntReq
         ' 
-        nudIntReq.Location = New Point(379, 158)
-        nudIntReq.Margin = New Padding(7, 6, 7, 6)
+        nudIntReq.Location = New Point(292, 123)
+        nudIntReq.Margin = New Padding(5)
         nudIntReq.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudIntReq.Name = "nudIntReq"
-        nudIntReq.Size = New Size(108, 39)
+        nudIntReq.Size = New Size(83, 31)
         nudIntReq.TabIndex = 16
         ' 
         ' DarkLabel33
         ' 
         DarkLabel33.AutoSize = True
         DarkLabel33.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel33.Location = New Point(241, 162)
-        DarkLabel33.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel33.Location = New Point(185, 127)
+        DarkLabel33.Margin = New Padding(5, 0, 5, 0)
         DarkLabel33.Name = "DarkLabel33"
-        DarkLabel33.Size = New Size(143, 32)
+        DarkLabel33.Size = New Size(105, 25)
         DarkLabel33.TabIndex = 15
         DarkLabel33.Text = "Intelligence:"
         ' 
         ' nudVitReq
         ' 
-        nudVitReq.Location = New Point(119, 158)
-        nudVitReq.Margin = New Padding(7, 6, 7, 6)
+        nudVitReq.Location = New Point(92, 123)
+        nudVitReq.Margin = New Padding(5)
         nudVitReq.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudVitReq.Name = "nudVitReq"
-        nudVitReq.Size = New Size(108, 39)
+        nudVitReq.Size = New Size(83, 31)
         nudVitReq.TabIndex = 14
         ' 
         ' DarkLabel34
         ' 
         DarkLabel34.AutoSize = True
         DarkLabel34.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel34.Location = New Point(28, 162)
-        DarkLabel34.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel34.Location = New Point(22, 127)
+        DarkLabel34.Margin = New Padding(5, 0, 5, 0)
         DarkLabel34.Name = "DarkLabel34"
-        DarkLabel34.Size = New Size(92, 32)
+        DarkLabel34.Size = New Size(69, 25)
         DarkLabel34.TabIndex = 13
         DarkLabel34.Text = "Vitality:"
         ' 
         ' nudLuckReq
         ' 
-        nudLuckReq.Location = New Point(633, 53)
-        nudLuckReq.Margin = New Padding(7, 6, 7, 6)
+        nudLuckReq.Location = New Point(487, 41)
+        nudLuckReq.Margin = New Padding(5)
         nudLuckReq.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudLuckReq.Name = "nudLuckReq"
-        nudLuckReq.Size = New Size(108, 39)
+        nudLuckReq.Size = New Size(83, 31)
         nudLuckReq.TabIndex = 12
         ' 
         ' DarkLabel29
         ' 
         DarkLabel29.AutoSize = True
         DarkLabel29.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel29.Location = New Point(563, 60)
-        DarkLabel29.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel29.Location = New Point(433, 47)
+        DarkLabel29.Margin = New Padding(5, 0, 5, 0)
         DarkLabel29.Name = "DarkLabel29"
-        DarkLabel29.Size = New Size(67, 32)
+        DarkLabel29.Size = New Size(51, 25)
         DarkLabel29.TabIndex = 11
         DarkLabel29.Text = "Luck:"
         ' 
         ' nudEndReq
         ' 
-        nudEndReq.Location = New Point(379, 53)
-        nudEndReq.Margin = New Padding(7, 6, 7, 6)
+        nudEndReq.Location = New Point(292, 41)
+        nudEndReq.Margin = New Padding(5)
         nudEndReq.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudEndReq.Name = "nudEndReq"
-        nudEndReq.Size = New Size(108, 39)
+        nudEndReq.Size = New Size(83, 31)
         nudEndReq.TabIndex = 10
         ' 
         ' DarkLabel30
         ' 
         DarkLabel30.AutoSize = True
         DarkLabel30.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel30.Location = New Point(247, 60)
-        DarkLabel30.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel30.Location = New Point(190, 47)
+        DarkLabel30.Margin = New Padding(5, 0, 5, 0)
         DarkLabel30.Name = "DarkLabel30"
-        DarkLabel30.Size = New Size(131, 32)
+        DarkLabel30.Size = New Size(98, 25)
         DarkLabel30.TabIndex = 9
         DarkLabel30.Text = "Endurance:"
         ' 
         ' nudStrReq
         ' 
-        nudStrReq.Location = New Point(119, 53)
-        nudStrReq.Margin = New Padding(7, 6, 7, 6)
+        nudStrReq.Location = New Point(92, 41)
+        nudStrReq.Margin = New Padding(5)
         nudStrReq.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
         nudStrReq.Name = "nudStrReq"
-        nudStrReq.Size = New Size(108, 39)
+        nudStrReq.Size = New Size(83, 31)
         nudStrReq.TabIndex = 8
         ' 
         ' DarkLabel31
         ' 
         DarkLabel31.AutoSize = True
         DarkLabel31.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel31.Location = New Point(13, 60)
-        DarkLabel31.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel31.Location = New Point(10, 47)
+        DarkLabel31.Margin = New Padding(5, 0, 5, 0)
         DarkLabel31.Name = "DarkLabel31"
-        DarkLabel31.Size = New Size(110, 32)
+        DarkLabel31.Size = New Size(83, 25)
         DarkLabel31.TabIndex = 7
         DarkLabel31.Text = "Strength:"
         ' 
@@ -766,19 +742,19 @@ Partial Class frmEditor_Item
         ' 
         DarkLabel28.AutoSize = True
         DarkLabel28.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel28.Location = New Point(13, 166)
-        DarkLabel28.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel28.Location = New Point(10, 130)
+        DarkLabel28.Margin = New Padding(5, 0, 5, 0)
         DarkLabel28.Name = "DarkLabel28"
-        DarkLabel28.Size = New Size(218, 32)
+        DarkLabel28.Size = New Size(160, 25)
         DarkLabel28.TabIndex = 5
         DarkLabel28.Text = "Level Requirement:"
         ' 
         ' nudLevelReq
         ' 
-        nudLevelReq.Location = New Point(260, 162)
-        nudLevelReq.Margin = New Padding(7, 6, 7, 6)
+        nudLevelReq.Location = New Point(200, 127)
+        nudLevelReq.Margin = New Padding(5)
         nudLevelReq.Name = "nudLevelReq"
-        nudLevelReq.Size = New Size(260, 39)
+        nudLevelReq.Size = New Size(200, 31)
         nudLevelReq.TabIndex = 4
         ' 
         ' cmbAccessReq
@@ -786,20 +762,20 @@ Partial Class frmEditor_Item
         cmbAccessReq.DrawMode = DrawMode.OwnerDrawFixed
         cmbAccessReq.FormattingEnabled = True
         cmbAccessReq.Items.AddRange(New Object() {"Player", "Moderator", "Mapper", "Developer", "Creator"})
-        cmbAccessReq.Location = New Point(260, 96)
-        cmbAccessReq.Margin = New Padding(7, 6, 7, 6)
+        cmbAccessReq.Location = New Point(200, 75)
+        cmbAccessReq.Margin = New Padding(5)
         cmbAccessReq.Name = "cmbAccessReq"
-        cmbAccessReq.Size = New Size(379, 40)
+        cmbAccessReq.Size = New Size(292, 32)
         cmbAccessReq.TabIndex = 3
         ' 
         ' DarkLabel27
         ' 
         DarkLabel27.AutoSize = True
         DarkLabel27.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel27.Location = New Point(13, 107)
-        DarkLabel27.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel27.Location = New Point(10, 84)
+        DarkLabel27.Margin = New Padding(5, 0, 5, 0)
         DarkLabel27.Name = "DarkLabel27"
-        DarkLabel27.Size = New Size(233, 32)
+        DarkLabel27.Size = New Size(174, 25)
         DarkLabel27.TabIndex = 2
         DarkLabel27.Text = "Access Requirement:"
         ' 
@@ -807,70 +783,70 @@ Partial Class frmEditor_Item
         ' 
         cmbJobReq.DrawMode = DrawMode.OwnerDrawFixed
         cmbJobReq.FormattingEnabled = True
-        cmbJobReq.Location = New Point(260, 32)
-        cmbJobReq.Margin = New Padding(7, 6, 7, 6)
+        cmbJobReq.Location = New Point(200, 25)
+        cmbJobReq.Margin = New Padding(5)
         cmbJobReq.Name = "cmbJobReq"
-        cmbJobReq.Size = New Size(379, 40)
+        cmbJobReq.Size = New Size(292, 32)
         cmbJobReq.TabIndex = 1
         ' 
         ' DarkLabel26
         ' 
         DarkLabel26.AutoSize = True
         DarkLabel26.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel26.Location = New Point(13, 38)
-        DarkLabel26.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel26.Location = New Point(10, 30)
+        DarkLabel26.Margin = New Padding(5, 0, 5, 0)
         DarkLabel26.Name = "DarkLabel26"
-        DarkLabel26.Size = New Size(200, 32)
+        DarkLabel26.Size = New Size(149, 25)
         DarkLabel26.TabIndex = 0
         DarkLabel26.Text = "Job Requirement:"
         ' 
         ' btnSave
         ' 
-        btnSave.Location = New Point(17, 1010)
-        btnSave.Margin = New Padding(7, 6, 7, 6)
+        btnSave.Location = New Point(13, 789)
+        btnSave.Margin = New Padding(5)
         btnSave.Name = "btnSave"
-        btnSave.Padding = New Padding(11, 13, 11, 13)
-        btnSave.Size = New Size(425, 58)
+        btnSave.Padding = New Padding(8, 10, 8, 10)
+        btnSave.Size = New Size(327, 45)
         btnSave.TabIndex = 6
         btnSave.Text = "Save"
         ' 
         ' btnDelete
         ' 
-        btnDelete.Location = New Point(17, 1080)
-        btnDelete.Margin = New Padding(7, 6, 7, 6)
+        btnDelete.Location = New Point(13, 844)
+        btnDelete.Margin = New Padding(5)
         btnDelete.Name = "btnDelete"
-        btnDelete.Padding = New Padding(11, 13, 11, 13)
-        btnDelete.Size = New Size(425, 58)
+        btnDelete.Padding = New Padding(8, 10, 8, 10)
+        btnDelete.Size = New Size(327, 45)
         btnDelete.TabIndex = 7
         btnDelete.Text = "Delete"
         ' 
         ' btnCancel
         ' 
-        btnCancel.Location = New Point(17, 1150)
-        btnCancel.Margin = New Padding(7, 6, 7, 6)
+        btnCancel.Location = New Point(13, 898)
+        btnCancel.Margin = New Padding(5)
         btnCancel.Name = "btnCancel"
-        btnCancel.Padding = New Padding(11, 13, 11, 13)
-        btnCancel.Size = New Size(425, 58)
+        btnCancel.Padding = New Padding(8, 10, 8, 10)
+        btnCancel.Size = New Size(327, 45)
         btnCancel.TabIndex = 8
         btnCancel.Text = "Cancel"
         ' 
         ' btnSpawn
         ' 
-        btnSpawn.Location = New Point(860, 19)
-        btnSpawn.Margin = New Padding(7, 6, 7, 6)
+        btnSpawn.Location = New Point(662, 15)
+        btnSpawn.Margin = New Padding(5)
         btnSpawn.Name = "btnSpawn"
-        btnSpawn.Padding = New Padding(11, 13, 11, 13)
-        btnSpawn.Size = New Size(163, 58)
+        btnSpawn.Padding = New Padding(8, 10, 8, 10)
+        btnSpawn.Size = New Size(125, 45)
         btnSpawn.TabIndex = 10
         btnSpawn.Text = "Spawn"
         ' 
         ' nudSpanwAmount
         ' 
-        nudSpanwAmount.Location = New Point(1038, 26)
-        nudSpanwAmount.Margin = New Padding(7, 6, 7, 6)
+        nudSpanwAmount.Location = New Point(798, 20)
+        nudSpanwAmount.Margin = New Padding(5)
         nudSpanwAmount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudSpanwAmount.Name = "nudSpanwAmount"
-        nudSpanwAmount.Size = New Size(275, 39)
+        nudSpanwAmount.Size = New Size(212, 31)
         nudSpanwAmount.TabIndex = 11
         nudSpanwAmount.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
@@ -881,11 +857,11 @@ Partial Class frmEditor_Item
         fraSkill.Controls.Add(cmbSkills)
         fraSkill.Controls.Add(DarkLabel12)
         fraSkill.ForeColor = Color.Gainsboro
-        fraSkill.Location = New Point(527, 294)
-        fraSkill.Margin = New Padding(7, 6, 7, 6)
+        fraSkill.Location = New Point(405, 230)
+        fraSkill.Margin = New Padding(5)
         fraSkill.Name = "fraSkill"
-        fraSkill.Padding = New Padding(7, 6, 7, 6)
-        fraSkill.Size = New Size(433, 98)
+        fraSkill.Padding = New Padding(5)
+        fraSkill.Size = New Size(333, 77)
         fraSkill.TabIndex = 24
         fraSkill.TabStop = False
         fraSkill.Text = "Skills"
@@ -894,20 +870,20 @@ Partial Class frmEditor_Item
         ' 
         cmbSkills.DrawMode = DrawMode.OwnerDrawFixed
         cmbSkills.FormattingEnabled = True
-        cmbSkills.Location = New Point(89, 34)
-        cmbSkills.Margin = New Padding(7, 6, 7, 6)
+        cmbSkills.Location = New Point(68, 27)
+        cmbSkills.Margin = New Padding(5)
         cmbSkills.Name = "cmbSkills"
-        cmbSkills.Size = New Size(327, 40)
+        cmbSkills.Size = New Size(252, 32)
         cmbSkills.TabIndex = 1
         ' 
         ' DarkLabel12
         ' 
         DarkLabel12.AutoSize = True
         DarkLabel12.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel12.Location = New Point(13, 43)
-        DarkLabel12.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel12.Location = New Point(10, 34)
+        DarkLabel12.Margin = New Padding(5, 0, 5, 0)
         DarkLabel12.Name = "DarkLabel12"
-        DarkLabel12.Size = New Size(62, 32)
+        DarkLabel12.Size = New Size(47, 25)
         DarkLabel12.TabIndex = 0
         DarkLabel12.Text = "Skill:"
         ' 
@@ -918,31 +894,31 @@ Partial Class frmEditor_Item
         fraVitals.Controls.Add(nudVitalMod)
         fraVitals.Controls.Add(DarkLabel11)
         fraVitals.ForeColor = Color.Gainsboro
-        fraVitals.Location = New Point(527, 294)
-        fraVitals.Margin = New Padding(7, 6, 7, 6)
+        fraVitals.Location = New Point(405, 230)
+        fraVitals.Margin = New Padding(5)
         fraVitals.Name = "fraVitals"
-        fraVitals.Padding = New Padding(7, 6, 7, 6)
-        fraVitals.Size = New Size(433, 98)
+        fraVitals.Padding = New Padding(5)
+        fraVitals.Size = New Size(333, 77)
         fraVitals.TabIndex = 23
         fraVitals.TabStop = False
         fraVitals.Text = "Vitals"
         ' 
         ' nudVitalMod
         ' 
-        nudVitalMod.Location = New Point(145, 34)
-        nudVitalMod.Margin = New Padding(7, 6, 7, 6)
+        nudVitalMod.Location = New Point(112, 27)
+        nudVitalMod.Margin = New Padding(5)
         nudVitalMod.Name = "nudVitalMod"
-        nudVitalMod.Size = New Size(275, 39)
+        nudVitalMod.Size = New Size(212, 31)
         nudVitalMod.TabIndex = 1
         ' 
         ' DarkLabel11
         ' 
         DarkLabel11.AutoSize = True
         DarkLabel11.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel11.Location = New Point(13, 43)
-        DarkLabel11.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel11.Location = New Point(10, 34)
+        DarkLabel11.Margin = New Padding(5, 0, 5, 0)
         DarkLabel11.Name = "DarkLabel11"
-        DarkLabel11.Size = New Size(133, 32)
+        DarkLabel11.Size = New Size(101, 25)
         DarkLabel11.TabIndex = 0
         DarkLabel11.Text = "Vitals Mod:"
         ' 
@@ -951,58 +927,58 @@ Partial Class frmEditor_Item
         txtName.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtName.BorderStyle = BorderStyle.FixedSingle
         txtName.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtName.Location = New Point(158, 34)
-        txtName.Margin = New Padding(7, 6, 7, 6)
+        txtName.Location = New Point(122, 27)
+        txtName.Margin = New Padding(5)
         txtName.Name = "txtName"
-        txtName.Size = New Size(492, 39)
+        txtName.Size = New Size(379, 31)
         txtName.TabIndex = 1
         ' 
         ' DarkLabel2
         ' 
         DarkLabel2.AutoSize = True
         DarkLabel2.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel2.Location = New Point(665, 38)
-        DarkLabel2.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel2.Location = New Point(512, 30)
+        DarkLabel2.Margin = New Padding(5, 0, 5, 0)
         DarkLabel2.Name = "DarkLabel2"
-        DarkLabel2.Size = New Size(92, 32)
+        DarkLabel2.Size = New Size(69, 25)
         DarkLabel2.TabIndex = 2
         DarkLabel2.Text = "Picture:"
         ' 
         ' nudPic
         ' 
-        nudPic.Location = New Point(771, 34)
-        nudPic.Margin = New Padding(7, 6, 7, 6)
+        nudPic.Location = New Point(593, 27)
+        nudPic.Margin = New Padding(5)
         nudPic.Name = "nudPic"
-        nudPic.Size = New Size(106, 39)
+        nudPic.Size = New Size(82, 31)
         nudPic.TabIndex = 3
         ' 
         ' DarkLabel3
         ' 
         DarkLabel3.AutoSize = True
         DarkLabel3.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel3.Location = New Point(665, 107)
-        DarkLabel3.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel3.Location = New Point(512, 84)
+        DarkLabel3.Margin = New Padding(5, 0, 5, 0)
         DarkLabel3.Name = "DarkLabel3"
-        DarkLabel3.Size = New Size(79, 32)
+        DarkLabel3.Size = New Size(61, 25)
         DarkLabel3.TabIndex = 4
         DarkLabel3.Text = "Rarity:"
         ' 
         ' nudRarity
         ' 
-        nudRarity.Location = New Point(771, 98)
-        nudRarity.Margin = New Padding(7, 6, 7, 6)
+        nudRarity.Location = New Point(593, 77)
+        nudRarity.Margin = New Padding(5)
         nudRarity.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
         nudRarity.Name = "nudRarity"
-        nudRarity.Size = New Size(106, 39)
+        nudRarity.Size = New Size(82, 31)
         nudRarity.TabIndex = 5
         ' 
         ' picItem
         ' 
         picItem.BackColor = Color.Black
-        picItem.Location = New Point(890, 34)
-        picItem.Margin = New Padding(7, 6, 7, 6)
+        picItem.Location = New Point(685, 27)
+        picItem.Margin = New Padding(5)
         picItem.Name = "picItem"
-        picItem.Size = New Size(59, 68)
+        picItem.Size = New Size(45, 53)
         picItem.TabIndex = 7
         picItem.TabStop = False
         ' 
@@ -1010,10 +986,10 @@ Partial Class frmEditor_Item
         ' 
         DarkLabel4.AutoSize = True
         DarkLabel4.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel4.Location = New Point(13, 107)
-        DarkLabel4.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel4.Location = New Point(10, 84)
+        DarkLabel4.Margin = New Padding(5, 0, 5, 0)
         DarkLabel4.Name = "DarkLabel4"
-        DarkLabel4.Size = New Size(70, 32)
+        DarkLabel4.Size = New Size(53, 25)
         DarkLabel4.TabIndex = 8
         DarkLabel4.Text = "Type:"
         ' 
@@ -1022,20 +998,20 @@ Partial Class frmEditor_Item
         cmbType.DrawMode = DrawMode.OwnerDrawFixed
         cmbType.FormattingEnabled = True
         cmbType.Items.AddRange(New Object() {"None", "Equipment", "Consumable", "Common Event", "Currency", "Skill", "Projectile", "Pet"})
-        cmbType.Location = New Point(158, 98)
-        cmbType.Margin = New Padding(7, 6, 7, 6)
+        cmbType.Location = New Point(122, 77)
+        cmbType.Margin = New Padding(5)
         cmbType.Name = "cmbType"
-        cmbType.Size = New Size(257, 40)
+        cmbType.Size = New Size(199, 32)
         cmbType.TabIndex = 9
         ' 
         ' DarkLabel5
         ' 
         DarkLabel5.AutoSize = True
         DarkLabel5.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel5.Location = New Point(13, 173)
-        DarkLabel5.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel5.Location = New Point(10, 135)
+        DarkLabel5.Margin = New Padding(5, 0, 5, 0)
         DarkLabel5.Name = "DarkLabel5"
-        DarkLabel5.Size = New Size(121, 32)
+        DarkLabel5.Size = New Size(91, 25)
         DarkLabel5.TabIndex = 10
         DarkLabel5.Text = "Sub-Type:"
         ' 
@@ -1044,19 +1020,19 @@ Partial Class frmEditor_Item
         cmbSubType.DrawMode = DrawMode.OwnerDrawFixed
         cmbSubType.FormattingEnabled = True
         cmbSubType.Items.AddRange(New Object() {"None", "Weapon", "Armor", "Helmet", "Shield", "Shoes", "Gloves", "Potion Add HP", "Potion Add MP", "Potion Add SP", "Potion Sub HP", "Potion Sub MP", "Potion Sub SP", "Event", "Currency", "Skill"})
-        cmbSubType.Location = New Point(158, 164)
-        cmbSubType.Margin = New Padding(7, 6, 7, 6)
+        cmbSubType.Location = New Point(122, 128)
+        cmbSubType.Margin = New Padding(5)
         cmbSubType.Name = "cmbSubType"
-        cmbSubType.Size = New Size(257, 40)
+        cmbSubType.Size = New Size(199, 32)
         cmbSubType.TabIndex = 11
         ' 
         ' chkStackable
         ' 
         chkStackable.AutoSize = True
-        chkStackable.Location = New Point(492, 102)
-        chkStackable.Margin = New Padding(7, 6, 7, 6)
+        chkStackable.Location = New Point(378, 80)
+        chkStackable.Margin = New Padding(5)
         chkStackable.Name = "chkStackable"
-        chkStackable.Size = New Size(146, 36)
+        chkStackable.Size = New Size(112, 29)
         chkStackable.TabIndex = 12
         chkStackable.Text = "Stackable"
         ' 
@@ -1064,10 +1040,10 @@ Partial Class frmEditor_Item
         ' 
         DarkLabel6.AutoSize = True
         DarkLabel6.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel6.Location = New Point(485, 173)
-        DarkLabel6.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel6.Location = New Point(373, 135)
+        DarkLabel6.Margin = New Padding(5, 0, 5, 0)
         DarkLabel6.Name = "DarkLabel6"
-        DarkLabel6.Size = New Size(125, 32)
+        DarkLabel6.Size = New Size(93, 25)
         DarkLabel6.TabIndex = 13
         DarkLabel6.Text = "Bind Type:"
         ' 
@@ -1076,50 +1052,50 @@ Partial Class frmEditor_Item
         cmbBind.DrawMode = DrawMode.OwnerDrawFixed
         cmbBind.FormattingEnabled = True
         cmbBind.Items.AddRange(New Object() {"None", "Bind on Pickup", "Bind on Equip"})
-        cmbBind.Location = New Point(617, 164)
-        cmbBind.Margin = New Padding(7, 6, 7, 6)
+        cmbBind.Location = New Point(475, 128)
+        cmbBind.Margin = New Padding(5)
         cmbBind.Name = "cmbBind"
-        cmbBind.Size = New Size(338, 40)
+        cmbBind.Size = New Size(261, 32)
         cmbBind.TabIndex = 14
         ' 
         ' DarkLabel7
         ' 
         DarkLabel7.AutoSize = True
         DarkLabel7.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel7.Location = New Point(13, 237)
-        DarkLabel7.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel7.Location = New Point(10, 185)
+        DarkLabel7.Margin = New Padding(5, 0, 5, 0)
         DarkLabel7.Name = "DarkLabel7"
-        DarkLabel7.Size = New Size(115, 32)
+        DarkLabel7.Size = New Size(85, 25)
         DarkLabel7.TabIndex = 15
         DarkLabel7.Text = "Sell Price:"
         ' 
         ' nudPrice
         ' 
-        nudPrice.Location = New Point(158, 230)
-        nudPrice.Margin = New Padding(7, 6, 7, 6)
+        nudPrice.Location = New Point(122, 180)
+        nudPrice.Margin = New Padding(5)
         nudPrice.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         nudPrice.Name = "nudPrice"
-        nudPrice.Size = New Size(149, 39)
+        nudPrice.Size = New Size(115, 31)
         nudPrice.TabIndex = 16
         ' 
         ' DarkLabel8
         ' 
         DarkLabel8.AutoSize = True
         DarkLabel8.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel8.Location = New Point(321, 237)
-        DarkLabel8.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel8.Location = New Point(247, 185)
+        DarkLabel8.Margin = New Padding(5, 0, 5, 0)
         DarkLabel8.Name = "DarkLabel8"
-        DarkLabel8.Size = New Size(129, 32)
+        DarkLabel8.Size = New Size(96, 25)
         DarkLabel8.TabIndex = 17
         DarkLabel8.Text = "Item Level:"
         ' 
         ' nudItemLvl
         ' 
-        nudItemLvl.Location = New Point(453, 230)
-        nudItemLvl.Margin = New Padding(7, 6, 7, 6)
+        nudItemLvl.Location = New Point(348, 180)
+        nudItemLvl.Margin = New Padding(5)
         nudItemLvl.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         nudItemLvl.Name = "nudItemLvl"
-        nudItemLvl.Size = New Size(104, 39)
+        nudItemLvl.Size = New Size(80, 31)
         nudItemLvl.TabIndex = 18
         nudItemLvl.Value = New Decimal(New Integer() {1, 0, 0, 0})
         ' 
@@ -1127,10 +1103,10 @@ Partial Class frmEditor_Item
         ' 
         DarkLabel9.AutoSize = True
         DarkLabel9.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel9.Location = New Point(570, 237)
-        DarkLabel9.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel9.Location = New Point(438, 185)
+        DarkLabel9.Margin = New Padding(5, 0, 5, 0)
         DarkLabel9.Name = "DarkLabel9"
-        DarkLabel9.Size = New Size(129, 32)
+        DarkLabel9.Size = New Size(98, 25)
         DarkLabel9.TabIndex = 19
         DarkLabel9.Text = "Animation:"
         ' 
@@ -1138,20 +1114,20 @@ Partial Class frmEditor_Item
         ' 
         cmbAnimation.DrawMode = DrawMode.OwnerDrawFixed
         cmbAnimation.FormattingEnabled = True
-        cmbAnimation.Location = New Point(704, 228)
-        cmbAnimation.Margin = New Padding(7, 6, 7, 6)
+        cmbAnimation.Location = New Point(542, 178)
+        cmbAnimation.Margin = New Padding(5)
         cmbAnimation.Name = "cmbAnimation"
-        cmbAnimation.Size = New Size(251, 40)
+        cmbAnimation.Size = New Size(194, 32)
         cmbAnimation.TabIndex = 20
         ' 
         ' DarkLabel10
         ' 
         DarkLabel10.AutoSize = True
         DarkLabel10.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel10.Location = New Point(13, 292)
-        DarkLabel10.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel10.Location = New Point(10, 228)
+        DarkLabel10.Margin = New Padding(5, 0, 5, 0)
         DarkLabel10.Name = "DarkLabel10"
-        DarkLabel10.Size = New Size(135, 32)
+        DarkLabel10.Size = New Size(102, 25)
         DarkLabel10.TabIndex = 21
         DarkLabel10.Text = "Description"
         ' 
@@ -1160,11 +1136,11 @@ Partial Class frmEditor_Item
         txtDescription.BackColor = Color.FromArgb(CByte(69), CByte(73), CByte(74))
         txtDescription.BorderStyle = BorderStyle.FixedSingle
         txtDescription.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        txtDescription.Location = New Point(19, 333)
-        txtDescription.Margin = New Padding(7, 6, 7, 6)
+        txtDescription.Location = New Point(15, 260)
+        txtDescription.Margin = New Padding(5)
         txtDescription.Multiline = True
         txtDescription.Name = "txtDescription"
-        txtDescription.Size = New Size(492, 145)
+        txtDescription.Size = New Size(379, 114)
         txtDescription.TabIndex = 22
         ' 
         ' fraPet
@@ -1174,11 +1150,11 @@ Partial Class frmEditor_Item
         fraPet.Controls.Add(cmbPet)
         fraPet.Controls.Add(DarkLabel13)
         fraPet.ForeColor = Color.Gainsboro
-        fraPet.Location = New Point(527, 390)
-        fraPet.Margin = New Padding(7, 6, 7, 6)
+        fraPet.Location = New Point(405, 305)
+        fraPet.Margin = New Padding(5)
         fraPet.Name = "fraPet"
-        fraPet.Padding = New Padding(7, 6, 7, 6)
-        fraPet.Size = New Size(433, 98)
+        fraPet.Padding = New Padding(5)
+        fraPet.Size = New Size(333, 77)
         fraPet.TabIndex = 25
         fraPet.TabStop = False
         fraPet.Text = "Pets"
@@ -1187,20 +1163,20 @@ Partial Class frmEditor_Item
         ' 
         cmbPet.DrawMode = DrawMode.OwnerDrawFixed
         cmbPet.FormattingEnabled = True
-        cmbPet.Location = New Point(89, 34)
-        cmbPet.Margin = New Padding(7, 6, 7, 6)
+        cmbPet.Location = New Point(68, 27)
+        cmbPet.Margin = New Padding(5)
         cmbPet.Name = "cmbPet"
-        cmbPet.Size = New Size(327, 40)
+        cmbPet.Size = New Size(252, 32)
         cmbPet.TabIndex = 1
         ' 
         ' DarkLabel13
         ' 
         DarkLabel13.AutoSize = True
         DarkLabel13.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel13.Location = New Point(13, 43)
-        DarkLabel13.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel13.Location = New Point(10, 34)
+        DarkLabel13.Margin = New Padding(5, 0, 5, 0)
         DarkLabel13.Name = "DarkLabel13"
-        DarkLabel13.Size = New Size(52, 32)
+        DarkLabel13.Size = New Size(40, 25)
         DarkLabel13.TabIndex = 0
         DarkLabel13.Text = "Pet:"
         ' 
@@ -1213,50 +1189,50 @@ Partial Class frmEditor_Item
         fraEvents.Controls.Add(nudEvent)
         fraEvents.Controls.Add(DarkLabel38)
         fraEvents.ForeColor = Color.Gainsboro
-        fraEvents.Location = New Point(542, 292)
-        fraEvents.Margin = New Padding(7, 6, 7, 6)
+        fraEvents.Location = New Point(417, 228)
+        fraEvents.Margin = New Padding(5)
         fraEvents.Name = "fraEvents"
-        fraEvents.Padding = New Padding(7, 6, 7, 6)
-        fraEvents.Size = New Size(433, 205)
+        fraEvents.Padding = New Padding(5)
+        fraEvents.Size = New Size(333, 160)
         fraEvents.TabIndex = 27
         fraEvents.TabStop = False
         fraEvents.Text = "Events"
         ' 
         ' nudEventValue
         ' 
-        nudEventValue.Location = New Point(145, 122)
-        nudEventValue.Margin = New Padding(7, 6, 7, 6)
+        nudEventValue.Location = New Point(112, 95)
+        nudEventValue.Margin = New Padding(5)
         nudEventValue.Name = "nudEventValue"
-        nudEventValue.Size = New Size(275, 39)
+        nudEventValue.Size = New Size(212, 31)
         nudEventValue.TabIndex = 5
         ' 
         ' DarkLabel39
         ' 
         DarkLabel39.AutoSize = True
         DarkLabel39.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel39.Location = New Point(17, 130)
-        DarkLabel39.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel39.Location = New Point(13, 102)
+        DarkLabel39.Margin = New Padding(5, 0, 5, 0)
         DarkLabel39.Name = "DarkLabel39"
-        DarkLabel39.Size = New Size(77, 32)
+        DarkLabel39.Size = New Size(58, 25)
         DarkLabel39.TabIndex = 4
         DarkLabel39.Text = "Value:"
         ' 
         ' nudEvent
         ' 
-        nudEvent.Location = New Point(145, 34)
-        nudEvent.Margin = New Padding(7, 6, 7, 6)
+        nudEvent.Location = New Point(112, 27)
+        nudEvent.Margin = New Padding(5)
         nudEvent.Name = "nudEvent"
-        nudEvent.Size = New Size(275, 39)
+        nudEvent.Size = New Size(212, 31)
         nudEvent.TabIndex = 1
         ' 
         ' DarkLabel38
         ' 
         DarkLabel38.AutoSize = True
         DarkLabel38.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel38.Location = New Point(17, 43)
-        DarkLabel38.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel38.Location = New Point(13, 34)
+        DarkLabel38.Margin = New Padding(5, 0, 5, 0)
         DarkLabel38.Name = "DarkLabel38"
-        DarkLabel38.Size = New Size(42, 32)
+        DarkLabel38.Size = New Size(34, 25)
         DarkLabel38.TabIndex = 0
         DarkLabel38.Text = "ID:"
         ' 
@@ -1264,10 +1240,10 @@ Partial Class frmEditor_Item
         ' 
         DarkLabel36.AutoSize = True
         DarkLabel36.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
-        DarkLabel36.Location = New Point(13, 38)
-        DarkLabel36.Margin = New Padding(7, 0, 7, 0)
+        DarkLabel36.Location = New Point(10, 30)
+        DarkLabel36.Margin = New Padding(5, 0, 5, 0)
         DarkLabel36.Name = "DarkLabel36"
-        DarkLabel36.Size = New Size(83, 32)
+        DarkLabel36.Size = New Size(63, 25)
         DarkLabel36.TabIndex = 28
         DarkLabel36.Text = "Name:"
         ' 
@@ -1302,22 +1278,22 @@ Partial Class frmEditor_Item
         fraBasics.Controls.Add(fraVitals)
         fraBasics.Controls.Add(fraSkill)
         fraBasics.ForeColor = Color.Gainsboro
-        fraBasics.Location = New Point(470, 92)
-        fraBasics.Margin = New Padding(7, 6, 7, 6)
+        fraBasics.Location = New Point(362, 72)
+        fraBasics.Margin = New Padding(5)
         fraBasics.Name = "fraBasics"
-        fraBasics.Padding = New Padding(7, 6, 7, 6)
-        fraBasics.Size = New Size(975, 497)
+        fraBasics.Padding = New Padding(5)
+        fraBasics.Size = New Size(750, 388)
         fraBasics.TabIndex = 1
         fraBasics.TabStop = False
         fraBasics.Text = "Basics"
         ' 
         ' frmEditor_Item
         ' 
-        AutoScaleDimensions = New SizeF(13F, 32F)
+        AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
-        ClientSize = New Size(1457, 1220)
+        ClientSize = New Size(1121, 953)
         Controls.Add(nudSpanwAmount)
         Controls.Add(btnSpawn)
         Controls.Add(btnCancel)
@@ -1330,7 +1306,7 @@ Partial Class frmEditor_Item
         Controls.Add(fraRequirements)
         Controls.Add(fraEquipment)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
-        Margin = New Padding(7, 6, 7, 6)
+        Margin = New Padding(5)
         Name = "frmEditor_Item"
         Text = "Item Editor"
         DarkGroupBox1.ResumeLayout(False)
@@ -1346,7 +1322,6 @@ Partial Class frmEditor_Item
         CType(nudIntelligence, ComponentModel.ISupportInitialize).EndInit()
         CType(nudVitality, ComponentModel.ISupportInitialize).EndInit()
         CType(nudLuck, ComponentModel.ISupportInitialize).EndInit()
-        CType(nudEndurance, ComponentModel.ISupportInitialize).EndInit()
         CType(nudStrength, ComponentModel.ISupportInitialize).EndInit()
         CType(nudSpeed, ComponentModel.ISupportInitialize).EndInit()
         CType(nudDamage, ComponentModel.ISupportInitialize).EndInit()
@@ -1400,8 +1375,6 @@ Partial Class frmEditor_Item
     Friend WithEvents DarkGroupBox2 As DarkUI.Controls.DarkGroupBox
     Friend WithEvents chkRandomize As DarkUI.Controls.DarkCheckBox
     Friend WithEvents DarkLabel17 As DarkUI.Controls.DarkLabel
-    Friend WithEvents nudEndurance As DarkUI.Controls.DarkNumericUpDown
-    Friend WithEvents DarkLabel18 As DarkUI.Controls.DarkLabel
     Friend WithEvents nudStrength As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents nudLuck As DarkUI.Controls.DarkNumericUpDown
     Friend WithEvents DarkLabel19 As DarkUI.Controls.DarkLabel
