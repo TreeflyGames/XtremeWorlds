@@ -26,16 +26,16 @@ Module C_Sound
             Exit Sub
         End If
 
+        If fileName = CurrentMusic Then
+            Exit Sub
+        End If
+
         If Types.Settings.MusicExt = ".mid" Then
-            If Not CurrentMusic = fileName Or Not MidiPlayer.IsPlaying() Then
+            If Not MidiPlayer.IsPlaying() Then
                 MidiPlayer.Play(Paths.Music & fileName)
                 CurrentMusic = fileName
                 Exit Sub
             End If
-        End If
-
-        If fileName = CurrentMusic Then
-            Exit Sub
         End If
 
         Dim luaVolume As Single = Convert.ToSingle(LuaScripting.Instance().ExecuteScript("AdjustMusicVolume", Types.Settings.Volume)(0))
