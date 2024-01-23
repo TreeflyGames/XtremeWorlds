@@ -1571,11 +1571,11 @@ Continue1:
                 If Item(itemNum).Add_Stat(StatType.Luck) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " End", Color.White)
                 End If
-                If Item(itemNum).Add_Stat(StatType.Vitality) > 0 Then
-                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Vitality) & " Vit", Color.White)
+                If Item(itemNum).Add_Stat(StatType.Spirit) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Spirit) & " Spi", Color.White)
                 End If
                 If Item(itemNum).Add_Stat(StatType.Luck) > 0 Then
-                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " Luck", Color.White)
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " Luc", Color.White)
                 End If
                 If Item(itemNum).Add_Stat(StatType.Intelligence) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Intelligence) & " Int", Color.White)
