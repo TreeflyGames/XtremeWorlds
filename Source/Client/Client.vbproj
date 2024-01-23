@@ -99,7 +99,7 @@
       <DependentUpon>frmEditor_Shop.vb</DependentUpon>
     </Compile>
     <Compile Update="Forms\Editors\frmEditor_Skill.Designer.vb">
-      <DependentUpon>frmEditor_Skill.vb</DependentUpon>
+      <DependentUpon>FrmEditor_Skill.vb</DependentUpon>
     </Compile>
     <Compile Update="Forms\Game\frmAdmin.Designer.vb">
       <DependentUpon>frmAdmin.vb</DependentUpon>

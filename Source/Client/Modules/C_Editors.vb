@@ -399,7 +399,6 @@ Module C_Editors
 
             .nudStrength.Value = Job(Editorindex).Stat(StatType.Strength)
             .nudLuck.Value = Job(Editorindex).Stat(StatType.Luck)
-            .nudEndurance.Value = Job(Editorindex).Stat(StatType.Luck)
             .nudIntelligence.Value = Job(Editorindex).Stat(StatType.Intelligence)
             .nudVitality.Value = Job(Editorindex).Stat(StatType.Vitality)
             .nudSpirit.Value = Job(Editorindex).Stat(StatType.Spirit)

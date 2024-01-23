@@ -538,18 +538,18 @@ Module S_Pet
                 Case StatType.Strength
                     SetPetStat(index, pointType, GetPetStat(index, pointType) + 1)
                     sMes = "Strength"
-                Case StatType.Luck
-                    SetPetStat(index, pointType, GetPetStat(index, pointType) + 1)
-                    sMes = "Endurance"
                 Case StatType.Intelligence
                     SetPetStat(index, pointType, GetPetStat(index, pointType) + 1)
                     sMes = "Intelligence"
                 Case StatType.Luck
                     SetPetStat(index, pointType, GetPetStat(index, pointType) + 1)
-                    sMes = "Agility"
+                    sMes = "Luck"
                 Case StatType.Spirit
                     SetPetStat(index, pointType, GetPetStat(index, pointType) + 1)
-                    sMes = "Willpower"
+                    sMes = "Spirit"
+                Case StatType.Vitality
+                    SetPetStat(index, pointType, GetPetStat(index, pointType) + 1)
+                    sMes = "Vitality"
             End Select
 
             SendActionMsg(GetPlayerMap(index), "+1 " & sMes, ColorType.White, 1, (GetPetX(index) * 32), (GetPetY(index) * 32))

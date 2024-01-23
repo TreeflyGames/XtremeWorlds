@@ -21,12 +21,8 @@ Module C_Sound
     Friend MaxVolume As Single
 
     Sub PlayMusic(fileName As String)
-        If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then
+        If fileName = CurrentMusic Or Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then
             StopMusic()
-            Exit Sub
-        End If
-
-        If fileName = CurrentMusic Then
             Exit Sub
         End If
 

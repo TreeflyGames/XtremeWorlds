@@ -1912,8 +1912,8 @@ Module C_Interface
         UpdateChat()
     End Sub
 
-    Public Sub chkChat_Whisper()
-        Types.Settings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkWhisper")).Value
+    Public Sub chkChat_Private()
+        Types.Settings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPrivate")).Value
         UpdateChat()
     End Sub
 
@@ -2622,7 +2622,7 @@ End Sub
         CreateCheckbox(WindowCount, "chkGlobal", 110, 2, 49, 23, 1, "Global", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Global))
         CreateCheckbox(WindowCount, "chkParty", 160, 2, 49, 23, 1, "Party", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Party))
         CreateCheckbox(WindowCount, "chkGuild", 210, 2, 49, 23, 1, "Guild", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Guild))
-        CreateCheckbox(WindowCount, "chkWhisper", 260, 2, 49, 23, 1, "Whisper", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Whisper))
+        CreateCheckbox(WindowCount, "chkPrivate", 260, 2, 49, 23, 1, "Private", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Private))
 
         ' Blank picturebox - ondraw wrapper
         CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
@@ -2651,7 +2651,7 @@ End Sub
             .Controls(GetControlIndex("winChat", "chkGlobal")).Value = Types.Settings.ChannelState(ChatChannel.Broadcast)
             .Controls(GetControlIndex("winChat", "chkParty")).Value = Types.Settings.ChannelState(ChatChannel.Party)
             .Controls(GetControlIndex("winChat", "chkGuild")).Value = Types.Settings.ChannelState(ChatChannel.Guild)
-            .Controls(GetControlIndex("winChat", "chkWhisper")).Value = Types.Settings.ChannelState(ChatChannel.Whisper)
+            .Controls(GetControlIndex("winChat", "chkPrivate")).Value = Types.Settings.ChannelState(ChatChannel.Whisper)
         End With
     End Sub
 
@@ -2746,13 +2746,13 @@ End Sub
         CreateLabel(WindowCount, "lblHealth", 18, 116, 147, FontSize, "Health", Arial, Color.White)
         CreateLabel(WindowCount, "lblSpirit", 18, 136, 147, FontSize, "Spirit", Arial, Color.White)
         CreateLabel(WindowCount, "lblExperience", 18, 156, 147, FontSize, "Experience", Arial, Color.White)
-        CreateLabel(WindowCount, "lblName2", 0, 36, 147, FontSize, "Name", Arial, Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblClass2", 0, 56, 147, FontSize, "Class", Arial, Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblLevel2", 0, 76, 147, FontSize, "Level", Arial, Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblGuild2", 0, 96, 147, FontSize, "Guild", Arial, Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblHealth2", 0, 116, 147, FontSize, "Health", Arial, Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblSpirit2", 0, 136, 147, FontSize, "Spirit", Arial, Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblExperience2", 0, 156, 147, FontSize, "Experience", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblName2", 13, 36, 147, FontSize, "Name", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblClass2", 13, 56, 147, FontSize, "Class", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblLevel2", 13, 76, 147, FontSize, "Level", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblGuild2", 13, 96, 147, FontSize, "Guild", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblHealth2", 13, 116, 147, FontSize, "Health", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblSpirit2", 13, 136, 147, FontSize, "Spirit", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblExperience2", 13, 156, 147, FontSize, "Experience", Arial, Color.White, AlignmentType.Right)
 
 
         ' Attributes
@@ -2769,10 +2769,10 @@ End Sub
 
         ' Labels
         CreateLabel(WindowCount, "lblLabel", 18, 188, 138, FontSize, "Strength", Arial, Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 208, 138, FontSize, "Endurance", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 208, 138, FontSize, "Vitality", Arial, Color.Yellow)
         CreateLabel(WindowCount, "lblLabel", 18, 228, 138, FontSize, "Intelligence", Arial, Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 248, 138, FontSize, "Agility", Arial, Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 268, 138, FontSize, "Willpower", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 248, 138, FontSize, "Luck", Arial, Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 268, 138, FontSize, "Spirit", Arial, Color.Yellow)
         CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Stat Points", Arial, Color.Green)
 
         ' Buttons
@@ -2795,7 +2795,7 @@ End Sub
         CreateLabel(WindowCount, "lblStat_3", 50, 228, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
         CreateLabel(WindowCount, "lblStat_4", 50, 248, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
         CreateLabel(WindowCount, "lblStat_5", 50, 268, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblPoints", 50, 288, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblPoints", 65, 288, 100, 15, "255", Arial, Color.White, AlignmentType.Right)
     End Sub
 
 

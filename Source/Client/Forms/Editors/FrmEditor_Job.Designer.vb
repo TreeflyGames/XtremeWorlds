@@ -43,7 +43,6 @@ Partial Class frmEditor_Job
         nudBaseExp = New DarkUI.Controls.DarkNumericUpDown()
         DarkLabel10 = New DarkUI.Controls.DarkLabel()
         nudSpirit = New DarkUI.Controls.DarkNumericUpDown()
-        nudEndurance = New DarkUI.Controls.DarkNumericUpDown()
         DarkLabel8 = New DarkUI.Controls.DarkLabel()
         DarkLabel9 = New DarkUI.Controls.DarkLabel()
         nudVitality = New DarkUI.Controls.DarkNumericUpDown()

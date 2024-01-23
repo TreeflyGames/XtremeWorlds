@@ -1622,19 +1622,22 @@ Continue1:
     Public Sub LogoutGame()
         Dim I As Long
 
-        frmEditor_Item.Dispose
-        frmEditor_Job.Dispose
-        frmEditor_Map.Dispose
-        frmEditor_NPC.Dispose
-        frmEditor_Pet.Dispose
-        frmEditor_Projectile.Dispose
-        frmEditor_Resource.Dispose
-        frmEditor_Shop.Dispose
-        frmEditor_Events.Dispose
-        frmEditor_Skill.Dispose
-        frmAdmin.Dispose
-        frmEditor_Animation.Dispose
-        frmOptions.Dispose
+        if Editor > 0 Then
+            frmEditor_Item?.Dispose
+            frmEditor_Job?.Dispose
+            frmEditor_Map?.Dispose
+            frmEditor_NPC?.Dispose
+            frmEditor_Pet?.Dispose
+            frmEditor_Projectile?.Dispose
+            frmEditor_Resource?.Dispose
+            frmEditor_Shop?.Dispose
+            frmEditor_Events?.Dispose
+            frmEditor_Skill?.Dispose
+            frmAdmin?.Dispose
+            frmEditor_Animation?.Dispose
+        End If
+
+        frmOptions?.Dispose
 
         isLogging = True
         InGame = False
