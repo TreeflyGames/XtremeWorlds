@@ -1501,7 +1501,7 @@ Partial Class frmEditor_Events
         ' 
         ' btnLabeling
         ' 
-        btnLabeling.Location = New Point(10, 1105)
+        btnLabeling.Location = New Point(10, 1097)
         btnLabeling.Margin = New Padding(5)
         btnLabeling.Name = "btnLabeling"
         btnLabeling.Padding = New Padding(8, 10, 8, 10)
@@ -1521,7 +1521,7 @@ Partial Class frmEditor_Events
         ' 
         ' btnOk
         ' 
-        btnOk.Location = New Point(1047, 1105)
+        btnOk.Location = New Point(1047, 1104)
         btnOk.Margin = New Padding(5)
         btnOk.Name = "btnOk"
         btnOk.Padding = New Padding(8, 10, 8, 10)
@@ -5061,7 +5061,7 @@ Partial Class frmEditor_Events
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = Color.FromArgb(CByte(45), CByte(45), CByte(48))
-        ClientSize = New Size(2718, 1175)
+        ClientSize = New Size(2718, 1182)
         Controls.Add(pnlVariableSwitches)
         Controls.Add(fraDialogue)
         Controls.Add(fraMoveRoute)
