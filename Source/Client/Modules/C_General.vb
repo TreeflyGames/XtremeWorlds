@@ -21,6 +21,7 @@ Module C_General
         LoadGraphics()
         InitNetwork()
         InitInterface()
+        ResizeGUI()
         Ping = -1
     End Sub
 

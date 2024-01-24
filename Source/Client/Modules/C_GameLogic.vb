@@ -296,6 +296,7 @@ Module C_GameLogic
                 EditorAnim_DrawAnim()
             End If
 
+            UpdateWindow()
             GameWindow.DispatchEvents()
             Application.DoEvents()
             UpdateUi()

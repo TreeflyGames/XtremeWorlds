@@ -2657,13 +2657,13 @@ End Sub
 
     Public Sub CreateWindow_ChatSmall()
         ' Create window
-        CreateWindow("winChatSmall", "", Georgia, zOrder_Win, 8, 438, 0, 0, 0, False, , , , , , , , , , , , , , New Action(AddressOf OnDraw_ChatSmall), False, , , True)
+        CreateWindow("winChatSmall", "", Georgia, zOrder_Win, 8, 0, 0, 0, 0, False, , , , , , , , , , , , , , New Action(AddressOf OnDraw_ChatSmall), False, , , True)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
 
         ' Chat Label
-        CreateLabel(WindowCount, "lblMsg", 10, 305, 160, FontSize, "Press 'Enter' to open chatbox.", Verdana, Color.White)
+        CreateLabel(WindowCount, "lblMsg", 10, Types.Settings.ScreenHeight - 28, 160, FontSize, "Press 'Enter' to open chatbox.", Verdana, Color.White)
     End Sub
 
     Public Sub CreateWindow_Hotbar()
@@ -3077,15 +3077,11 @@ End Sub
         Dim Top As Long
 
         ' move hotbar
-        Windows(GetWindowIndex("winHotbar")).Window.Left = GameWindow.Size.X - 430
-
-        ' move chat
-        Windows(GetWindowIndex("winChat")).Window.Top = GameWindow.Size.Y - 178
-        Windows(GetWindowIndex("winChatSmall")).Window.Top = GameWindow.Size.Y - 162
+        Windows(GetWindowIndex("winHotbar")).Window.Left = GameWindow.Size.X - 462
 
         ' move menu
-        Windows(GetWindowIndex("winMenu")).Window.Left = GameWindow.Size.X - 236
-        Windows(GetWindowIndex("winMenu")).Window.Top = GameWindow.Size.Y - 37
+        Windows(GetWindowIndex("winMenu")).Window.Left = GameWindow.Size.X - 264
+        Windows(GetWindowIndex("winMenu")).Window.Top = GameWindow.Size.Y - 72
 
         ' move invitations
         Windows(GetWindowIndex("winInvite_Party")).Window.Left = GameWindow.Size.X - 234

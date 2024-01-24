@@ -12,6 +12,7 @@ Module C_Graphics
     Friend GameWindow As RenderWindow
     Friend TilesetWindow As RenderWindow
     Friend WindowSettings As ContextSettings
+    Friend RefreshWindow As Boolean
 
     Friend EditorSkill_Icon As RenderWindow
     Friend EditorAnimation_Anim1 As RenderWindow
@@ -446,49 +447,27 @@ Module C_Graphics
     End Sub
 
     Private Sub GameWindow_MouseMoved(ByVal sender As Object, ByVal e As SFML.Window.MouseMoveEventArgs)
-        Dim windowSize As Vector2u = GameWindow.Size
-        Const AspectRatio As Single = 16.0F / 9.0F
-        Dim windowAspectRatio As Single = windowSize.X / windowSize.Y
-
-        ' Initialize scale and offset for letterboxing or pillarboxing
-        Dim scale As Single
-        Dim offsetX As Single = 0
-        Dim offsetY As Single = 0
-
-        If windowAspectRatio > AspectRatio Then
-            ' Window is wider than the desired aspect ratio, adjust horizontally (letterboxing)
-            scale = windowSize.Y / Types.Settings.ScreenHeight
-            offsetX = (windowSize.X - Types.Settings.ScreenWidth * scale) / 2 + PicX / 2
-        Else
-            ' Window aspect ratio matches the desired aspect ratio
-            scale = 1.0F
-        End If
-
-        ' Adjust mouse coordinates for scaling and offset
-        Dim adjustedX As Single = (e.X - offsetX) / scale
-        Dim adjustedY As Single = (e.Y - offsetY) / scale
-
         ' Convert adjusted coordinates to game world coordinates
-        CurX = TileView.Left + Math.Floor((adjustedX + Camera.Left) / PicX)
-        CurY = TileView.Top + Math.Floor((adjustedY + Camera.Top) / PicY)
+        CurX = TileView.Left + Math.Floor((e.X + Camera.Left) / PicX)
+        CurY = TileView.Top + Math.Floor((e.Y + Camera.Top) / PicY)
 
         ' Store raw mouse coordinates for interface interactions
-        CurMouseX = adjustedX
-        CurMouseY = adjustedY
+        CurMouseX = e.X
+        CurMouseY = e.Y
 
+        ' Editor interactions
         If Editor = EditorType.Map Then
             If Mouse.IsButtonPressed(Mouse.Button.Left) Then
-                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Left, curX, curY, True)
+                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Left, CurX, CurY, True)
             End If
 
             If Mouse.IsButtonPressed(Mouse.Button.Right) Then
-                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Right, curX, curY, True)
+                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Right, CurX, CurY, True)
             End If
         End If
 
         HandleInterfaceEvents(EntState.MouseMove)
     End Sub
-
 
     Private Sub GameWindow_TextEntered(sender As Object, e As TextEventArgs)
         ' e.Unicode is a string, so no conversion is needed
@@ -502,8 +481,6 @@ Module C_Graphics
             Return
         End If
 
-        ' Convert the character to its UInteger Unicode code point
-        Dim unicodeValue As UInteger = Convert.ToUInt32(character)
         ' Ensure it's visible
         If Windows(activeWindow).Window.Visible Then
             If Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Locked Then
@@ -523,39 +500,12 @@ Module C_Graphics
     End Sub
 
     Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
-        Const AspectRatio As Single = 16.0F / 9.0F
+        Types.Settings.ScreenWidth = e.Width - (e.Width Mod PicX)
+        Types.Settings.ScreenHeight = e.Height - (e.Height Mod PicY)
 
-        e.Height = Types.Settings.ScreenHeight
-
-        ' Calculate the aspect ratio of the new window size
-        Dim windowAspectRatio As Single = e.Width / e.Height
-
-        ' Calculate the viewport dimensions to maintain the aspect ratio
-        Dim viewport As New FloatRect()
-
-        If windowAspectRatio > AspectRatio Then
-            ' Window is wider than the desired aspect ratio
-            viewport.Height = 1.0F ' Use the full height
-            viewport.Width = AspectRatio / windowAspectRatio
-            viewport.Left = (1.0F - viewport.Width) / 2.0F ' Center horizontally
-            viewport.Top = 0.0F
-        Else
-            ' Window aspect ratio is equal to or less than the desired aspect ratio
-            ' Use the full window size without adjustment
-            viewport.Left = 0.0F
-            viewport.Width = 1.0F
-            viewport.Top = 0.0F
-            viewport.Height = 1.0F
-        End If
-
-        ' Create a new view with the same center and size but a new viewport
-        Dim view As New View(GameWindow.GetView())
-        view.Viewport = viewport
-
-        ' Set the new view to the window
-        GameWindow.SetView(view)
+        RefreshWindow = True
+        ResizeGUI()
     End Sub
-
 
     Public Sub CenterWindow(ByVal window As RenderWindow)
         ' Get the working area of the primary screen (excluding taskbar)
@@ -578,21 +528,8 @@ Module C_Graphics
         Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Arial)
         Fonts(2) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Verdana)
 
-        WindowSettings = New ContextSettings()
-        WindowSettings.DepthBits = 24
-        WindowSettings.StencilBits = 8
-        WindowSettings.AntialiasingLevel = 4
-
-        GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Default, WindowSettings)
-        CenterWindow(GameWindow)
-        GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
-        If Types.Settings.Vsync = 0 Then
-            GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
-        End If
-        Dim iconImage As New Image(Paths.Gui + "icon.png")
-        GameWindow.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
-
-        RegisterEvents()
+        RefreshWindow = True
+        UpdateWindow()
         
         ReDim TilesetTexture(NumTileSets)
         ReDim TilesetSprite(NumTileSets)
@@ -811,6 +748,34 @@ Module C_Graphics
         Next
     End Sub
 
+    Public Sub UpdateWindow()
+        If RefreshWindow Then
+            WindowSettings = New ContextSettings()
+            WindowSettings.DepthBits = 24
+            WindowSettings.StencilBits = 8
+            WindowSettings.AntialiasingLevel = 4
+
+            ' Destroy Previous window if there was one
+            If GameWindow IsNot Nothing Then
+                GameWindow.Close()
+                GameWindow.Dispose()
+                GameWindow = Nothing
+            End If
+
+            GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Default, WindowSettings)
+            CenterWindow(GameWindow)
+            GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
+            If Types.Settings.Vsync = 0 Then
+                GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
+            End If
+            Dim iconImage As New Image(Paths.Gui + "icon.png")
+            GameWindow.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
+            GameWindow.SetActive(true)
+            RefreshWindow = False
+            RegisterEvents()
+        End If
+    End Sub
+
     Private Sub RegisterEvents()
         AddHandler GameWindow.Closed, AddressOf GameWindow_Closed
         AddHandler GameWindow.GainedFocus, AddressOf GameWindow_GainedFocus
@@ -826,7 +791,6 @@ Module C_Graphics
     End Sub
 
     Friend Sub LoadTexture(index As Integer, texType As Byte)
-
         If texType = 1 Then 'tilesets
             If index <= 0 OrElse index > NumTileSets Then Exit Sub
 
