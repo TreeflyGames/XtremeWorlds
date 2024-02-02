@@ -502,6 +502,7 @@ Module C_Graphics
     Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
         Types.Settings.ScreenWidth = e.Width - (e.Width Mod PicX)
         Types.Settings.ScreenHeight = e.Height - (e.Height Mod PicY)
+        SettingsManager.Save()
 
         RefreshWindow = True
         ResizeGUI()
