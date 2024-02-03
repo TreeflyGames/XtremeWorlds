@@ -140,8 +140,6 @@ Module C_Parties
         Dim i As Integer, x As Integer, y As Integer, barwidth As Integer, playerNum As Integer, theName As String
         Dim rec(1) As Rectangle
 
-        ' render the window
-
         ' draw the bars
         If Party.Leader > 0 Then ' make sure we're in a party
             ' draw leader

@@ -2014,7 +2014,6 @@ Module S_Player
         SendInventory(index)
         SendWornEquipment(index)
         SendMapEquipment(index)
-        SendVitals(index)
         SendExp(index)
         SendHotbar(index)
         SendPlayerSkills(index)

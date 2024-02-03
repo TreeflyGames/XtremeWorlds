@@ -690,6 +690,7 @@ Module S_NetworkSend
         ' Send index's player data to everyone on the map including himself
         data = PlayerData(index)
         SendDataToMapBut(index, GetPlayerMap(index), data, data.Length)
+        SendVitals(index)
     End Sub
 
     Function PlayerData(index As Integer) As Byte()
