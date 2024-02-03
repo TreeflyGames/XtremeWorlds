@@ -502,6 +502,8 @@ Module C_Graphics
     Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
         Types.Settings.ScreenWidth = e.Width - (e.Width Mod PicX)
         Types.Settings.ScreenHeight = e.Height - (e.Height Mod PicY)
+        Types.Settings.CameraHeight = Types.Settings.ScreenHeight / 32
+        Types.Settings.CameraWidth = Types.Settings.ScreenWidth / 32
         SettingsManager.Save()
 
         RefreshWindow = True
@@ -1476,9 +1478,9 @@ Module C_Graphics
 
         With TileView
             .Top = startY
-            .Bottom = endY + 1
+            .Bottom = endY
             .Left = startX
-            .Right = endX + 1
+            .Right = endX
         End With
 
         With Camera
@@ -1494,7 +1496,6 @@ Module C_Graphics
     Friend Sub Render_Graphics()
         Dim x As Integer, y As Integer, I As Integer
 
-        'Don't Render if
         If GettingMap Then Exit Sub
 
         'update view around player
@@ -1519,8 +1520,8 @@ Module C_Graphics
 
         ' Draw lower tiles
         If NumTileSets > 0 Then
-            For x = TileView.Left To TileView.Right + 1
-                For y = TileView.Top To TileView.Bottom + 1
+            For x = TileView.Left To TileView.Right
+                For y = TileView.Top To TileView.Bottom
                     If IsValidMapPoint(x, y) Then
                         DrawMapTile(x, y)
                     End If
@@ -1671,8 +1672,8 @@ Module C_Graphics
         End If
 
         If NumTileSets > 0 Then
-            For x = TileView.Left To TileView.Right + 1
-                For y = TileView.Top To TileView.Bottom + 1
+            For x = TileView.Left To TileView.Right
+                For y = TileView.Top To TileView.Bottom
                     If IsValidMapPoint(x, y) Then
                         DrawMapFringeTile(x, y)
                     End If

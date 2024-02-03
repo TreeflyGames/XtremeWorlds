@@ -3081,7 +3081,7 @@ End Sub
 
         ' move menu
         Windows(GetWindowIndex("winMenu")).Window.Left = GameWindow.Size.X - 264
-        Windows(GetWindowIndex("winMenu")).Window.Top = GameWindow.Size.Y - 72
+        Windows(GetWindowIndex("winMenu")).Window.Top = GameWindow.Size.Y - 48
 
         ' move invitations
         Windows(GetWindowIndex("winInvite_Party")).Window.Left = GameWindow.Size.X - 234
