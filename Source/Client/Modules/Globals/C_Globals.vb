@@ -145,6 +145,8 @@ Module C_Globals
     ' Draw map name location
     Public DrawMapNameX As Single = 10
     Public DrawMapNameY As Single = 90
+    Public DrawLocX As Single = 10
+    Public DrawLocY As Single = 0
     Public DrawMapNameColor As SFML.Graphics.Color
 
     ' Game direction vars

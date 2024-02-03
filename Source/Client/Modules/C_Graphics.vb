@@ -1476,9 +1476,9 @@ Module C_Graphics
 
         With TileView
             .Top = startY
-            .Bottom = endY
+            .Bottom = endY + 1
             .Left = startX
-            .Right = endX
+            .Right = endX + 1
         End With
 
         With Camera
@@ -1519,8 +1519,8 @@ Module C_Graphics
 
         ' Draw lower tiles
         If NumTileSets > 0 Then
-            For x = TileView.Left To TileView.Right
-                For y = TileView.Top To TileView.Bottom
+            For x = TileView.Left To TileView.Right + 1
+                For y = TileView.Top To TileView.Bottom + 1
                     If IsValidMapPoint(x, y) Then
                         DrawMapTile(x, y)
                     End If
@@ -1671,8 +1671,8 @@ Module C_Graphics
         End If
 
         If NumTileSets > 0 Then
-            For x = TileView.Left To TileView.Right
-                For y = TileView.Top To TileView.Bottom
+            For x = TileView.Left To TileView.Right + 1
+                For y = TileView.Top To TileView.Bottom + 1
                     If IsValidMapPoint(x, y) Then
                         DrawMapFringeTile(x, y)
                     End If
@@ -1763,9 +1763,9 @@ Module C_Graphics
             Dim Loc As String = Trim$("loc X: " & GetPlayerX(MyIndex) & " Y: " & GetPlayerY(MyIndex))
             Dim Map As String = Trim$(" (Map #" & GetPlayerMap(MyIndex) & ")")
 
-            Call RenderText(Cur, GameWindow, Camera.Left  - 24, Camera.top + 75, Color.Yellow, Color.Black)
-            Call RenderText(Loc, GameWindow, Camera.Left  - 24, Camera.top + 90, Color.Yellow, Color.Black)
-            Call RenderText(Map, GameWindow, Camera.Left - 24, Camera.top + 105, Color.Yellow, Color.Black)
+            Call RenderText(Cur, GameWindow, DrawLocX, DrawLocY + 105, Color.Yellow, Color.Black)
+            Call RenderText(Loc, GameWindow, DrawLocX,  DrawLocY + 120, Color.Yellow, Color.Black)
+            Call RenderText(Map, GameWindow, DrawLocX, DrawLocY + 135, Color.Yellow, Color.Black)
         End If
 
         DrawMapName()
