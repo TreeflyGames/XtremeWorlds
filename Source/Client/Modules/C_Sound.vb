@@ -21,17 +21,24 @@ Module C_Sound
     Friend MaxVolume As Single
 
     Sub PlayMusic(fileName As String)
-        If fileName = CurrentMusic Or Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then
+        if fileName = "None" Then
+            Exit Sub
+        End If
+
+        If Types.Settings.Music = False OrElse Not File.Exists(Paths.Music & fileName) Then
             StopMusic()
             Exit Sub
         End If
 
+        if fileName = CurrentMusic Then
+            Exit Sub
+        End If
+
         If Types.Settings.MusicExt = ".mid" Then
-            If Not MidiPlayer.IsPlaying() Then
-                MidiPlayer.Play(Paths.Music & fileName)
-                CurrentMusic = fileName
-                Exit Sub
-            End If
+            StopMusic()
+            MidiPlayer.Play(Paths.Music & fileName)
+            CurrentMusic = fileName
+            Exit Sub
         End If
 
         Dim luaVolume As Single = Convert.ToSingle(LuaScripting.Instance().ExecuteScript("AdjustMusicVolume", Types.Settings.Volume)(0))
