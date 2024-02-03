@@ -322,7 +322,6 @@ Module C_NetworkReceive
         InMenu = False
         HideWindows()
         CanMoveNow = True
-        Player(Myindex).Moving = 0
         Editor = -1
 
         ' show gui

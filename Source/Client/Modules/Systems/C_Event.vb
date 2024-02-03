@@ -2283,7 +2283,7 @@ newlist:
         Dim buffer As New ByteStream(data)
         sound = buffer.ReadString
 
-        PlaySound(sound)
+        PlaySoundAsync(sound)
 
         buffer.Dispose()
     End Sub

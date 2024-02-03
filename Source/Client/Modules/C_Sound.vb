@@ -20,6 +20,14 @@ Module C_Sound
     Friend CurrentMusic As String
     Friend MaxVolume As Single
 
+    Sub PlayMusicAsync(fileName As String)
+        Task.Run(Sub() PlayMusic(fileName))
+    End Sub
+
+    Sub PlaySoundAsync(fileName As String, Optional looped As Boolean = False)
+        Task.Run(Sub() PlaySound(fileName, looped))
+    End Sub
+
     Sub PlayMusic(fileName As String)
         if fileName = "None" Then
             Exit Sub
@@ -191,7 +199,7 @@ Module C_Sound
             Else
                 tmpmusic = CurrentMusic
                 StopMusic()
-                PlayMusic(tmpmusic)
+                PlayMusicAsync(tmpmusic)
             End If
         End If
         If MusicPlayer Is Nothing Then Exit Sub

@@ -783,12 +783,6 @@ Module C_Player
             Player(i).GatherSkills(x).SkillNextLvlExp = buffer.ReadInt32
         Next
 
-        With Player(i)
-            .XOffset = 0
-            .YOffset = 0
-            .Moving = 0
-        End With
-
         ' Check if the player is the client player
         If i = Myindex Then
             ' Reset directions
