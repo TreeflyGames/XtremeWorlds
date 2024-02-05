@@ -65,16 +65,7 @@ Module C_Globals
     Public ChatBubble(Byte.MaxValue) As ChatBubbleStruct
     Public ChatBubbleindex As Integer
 
-    ' Skill drag + drop
-    Public DragSkillSlotNum As Integer
-
-    Public SkillX As Integer
-    Public SkillY As Integer
-
     ' Gui
-    Public EqX As Integer
-
-    Public EqY As Integer
     Public Fps As Integer
     Public Lps As Integer
     Public PingToDraw As String
