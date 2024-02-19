@@ -507,7 +507,6 @@ Module C_Graphics
         SettingsManager.Save()
 
         RefreshWindow = True
-        ResizeGUI()
     End Sub
 
     Public Sub CenterWindow(ByVal window As RenderWindow)
