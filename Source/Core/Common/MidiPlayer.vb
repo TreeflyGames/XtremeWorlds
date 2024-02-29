@@ -1,21 +1,55 @@
-﻿Imports System.Runtime.InteropServices
-Imports System.Text
+﻿Imports Sanford.Multimedia.Midi
 
-Public Class MidiPlayer
-    <DllImport("winmm.dll")>
-    Private Shared Function mciSendString(command As String, returnValue As StringBuilder, returnLength As Integer, hwndCallback As IntPtr) As Integer
-    End Function
+Public Module MidiPlayer
+    Private OutputDevice As OutputDevice
+    Private midiSequence As Sequence
+    Private midiSequencer As Sequencer
 
-    Public Shared Sub Play(filePath As String)
-        Dim command As String = $"open ""{filePath}"" type sequencer alias MidiSeq"
-        mciSendString("close MidiSeq", Nothing, 0, IntPtr.Zero)
-        mciSendString(command, Nothing, 0, IntPtr.Zero)
-        mciSendString("play MidiSeq", Nothing, 0, IntPtr.Zero)
+    ' Initialize the MIDI sequence and sequencer
+    Public Sub Initialize()
+        midiSequence = New Sequence()
+        midiSequencer = New Sequencer()
+
+        AddHandler midiSequencer.PlayingCompleted, AddressOf OnPlayingCompleted
+        AddHandler midiSequencer.ChannelMessagePlayed, AddressOf OnChannelMessagePlayed
+
+        midiSequencer.Sequence = midiSequence
+
+        ' Initialize the OutputDevice
+        Try
+            OutputDevice = New OutputDevice(0) ' Assumes device ID 0 is available
+        Catch ex As Exception
+            ' Handle error (e.g., no MIDI devices available)
+            Throw New InvalidOperationException("Could not initialize MIDI output device.", ex)
+        End Try
     End Sub
 
-    Public Shared Function IsPlaying() As Boolean
-        Dim returnData As New StringBuilder(128)
-        mciSendString("status MidiSeq mode", returnData, returnData.Capacity, IntPtr.Zero)
-        Return returnData.ToString().Equals("playing", StringComparison.OrdinalIgnoreCase)
-    End Function
-End Class
+    ' Load a MIDI file
+    Public Sub LoadMidiFile(filePath As String)
+        midiSequence.Load(filePath)
+    End Sub
+
+    ' Play the loaded MIDI file
+    Public Sub Play()
+        If midiSequencer IsNot Nothing AndAlso midiSequence IsNot Nothing Then
+            midiSequencer.Start()
+        End If
+    End Sub
+
+    ' Stop playback
+    Public Sub StopPlayback()
+        If midiSequencer IsNot Nothing Then
+            midiSequencer.[Stop]()
+        End If
+    End Sub
+
+    ' Handle channel messages
+    Private Sub OnChannelMessagePlayed(sender As Object, e As ChannelMessageEventArgs)
+        OutputDevice.Send(e.Message)
+    End Sub
+
+    ' Handle playback completion
+    Private Sub OnPlayingCompleted(sender As Object, e As EventArgs)
+        ' Handle playback completion here (e.g., clean up or reset the UI)
+    End Sub
+End Module

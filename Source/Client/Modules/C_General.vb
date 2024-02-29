@@ -18,6 +18,7 @@ Module C_General
         SettingsManager.Load()
         LoadLanguage()
         InputManager.Load()
+        MidiPlayer.Initialize()
         LoadGraphics()
         InitNetwork()
         InitInterface()

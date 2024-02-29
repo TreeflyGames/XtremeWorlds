@@ -20,14 +20,6 @@ Module C_Sound
     Friend CurrentMusic As String
     Friend MaxVolume As Single
 
-    Sub PlayMusicAsync(fileName As String)
-        Task.Run(Sub() PlayMusic(fileName))
-    End Sub
-
-    Sub PlaySoundAsync(fileName As String, Optional looped As Boolean = False)
-        Task.Run(Sub() PlaySound(fileName, looped))
-    End Sub
-
     Sub PlayMusic(fileName As String)
         if fileName = "None" Then
             Exit Sub
@@ -44,7 +36,8 @@ Module C_Sound
 
         If Types.Settings.MusicExt = ".mid" Then
             StopMusic()
-            MidiPlayer.Play(Paths.Music & fileName)
+            MidiPlayer.LoadMidiFile(Paths.Music & fileName)
+            MidiPlayer.Play()
             CurrentMusic = fileName
             Exit Sub
         End If
@@ -69,7 +62,8 @@ Module C_Sound
     End Sub
 
     Sub StopMusic()
-        MidiPlayer.Play(Paths.Music & "blank.mid")
+        MidiPlayer.LoadMidiFile(Paths.Music & "blank.mid")
+        MidiPlayer.Play()
         If MusicPlayer Is Nothing Then Exit Sub
         MusicPlayer.Stop()
         MusicPlayer.Dispose()
@@ -199,7 +193,7 @@ Module C_Sound
             Else
                 tmpmusic = CurrentMusic
                 StopMusic()
-                PlayMusicAsync(tmpmusic)
+                PlayMusic(tmpmusic)
             End If
         End If
         If MusicPlayer Is Nothing Then Exit Sub

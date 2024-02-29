@@ -45,7 +45,7 @@ Module C_GameLogic
                 End If
 
                 If tmr25 < tick Then
-                    PlayMusicAsync(Map.Music)
+                    PlayMusic(Map.Music)
                     tmr25 = tick + 25
                 End If
 
@@ -249,7 +249,7 @@ Module C_GameLogic
                 End If
 
                 If tmr25 < tick Then
-                    PlayMusicAsync(Types.Settings.MenuMusic)
+                    PlayMusic(Types.Settings.MenuMusic)
                     tmr25 = tick + 25
                 End If
             End If

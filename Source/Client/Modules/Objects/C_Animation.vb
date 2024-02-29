@@ -322,7 +322,7 @@ Module C_Animations
                     Else
                         AnimInstance(index).FrameIndex(layer) = AnimInstance(index).FrameIndex(layer) + 1
                     End If
-                    If sound <> "" Then PlaySoundAsync(sound)
+                    If sound <> "" Then PlaySound(sound)
                     AnimInstance(index).Timer(layer) = GetTickCount()
                 End If
             End If

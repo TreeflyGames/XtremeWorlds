@@ -1675,6 +1675,9 @@
     <None Update="Contents\Music\battle9.mid">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Contents\Music\blank.mid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Contents\Music\castle1.mid">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
