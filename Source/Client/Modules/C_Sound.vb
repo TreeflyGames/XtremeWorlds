@@ -62,7 +62,6 @@ Module C_Sound
     End Sub
 
     Sub StopMusic()
-        MidiPlayer.LoadMidiFile(Paths.Music & "blank.mid")
         MidiPlayer.Play()
         If MusicPlayer Is Nothing Then Exit Sub
         MusicPlayer.Stop()
