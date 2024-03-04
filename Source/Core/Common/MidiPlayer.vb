@@ -14,6 +14,7 @@ Public Module MidiPlayer
         AddHandler midiSequencer.ChannelMessagePlayed, AddressOf OnChannelMessagePlayed
 
         midiSequencer.Sequence = midiSequence
+        OutputDevice?.Dispose
 
         ' Initialize the OutputDevice
         Try
@@ -37,10 +38,10 @@ Public Module MidiPlayer
     End Sub
 
     ' Stop playback
-    Public Sub StopPlayback()
-        If midiSequencer IsNot Nothing Then
-            midiSequencer.[Stop]()
-        End If
+    Public Sub Dispose()
+        midiSequence.Dispose
+        midiSequencer.Dispose
+        Initialize()
     End Sub
 
     ' Handle channel messages

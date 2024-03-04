@@ -35,7 +35,7 @@ Module C_Sound
         End If
 
         If Types.Settings.MusicExt = ".mid" Then
-            StopMusic()
+            MidiPlayer.Dispose()
             MidiPlayer.LoadMidiFile(Paths.Music & fileName)
             MidiPlayer.Play()
             CurrentMusic = fileName
@@ -62,7 +62,6 @@ Module C_Sound
     End Sub
 
     Sub StopMusic()
-        MidiPlayer.Play()
         If MusicPlayer Is Nothing Then Exit Sub
         MusicPlayer.Stop()
         MusicPlayer.Dispose()
