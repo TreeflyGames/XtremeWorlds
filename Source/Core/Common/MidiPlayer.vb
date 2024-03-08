@@ -4,6 +4,7 @@ Public Module MidiPlayer
     Private OutputDevice As OutputDevice
     Private midiSequence As Sequence
     Private midiSequencer As Sequencer
+    Private midiPath As String
 
     ' Initialize the MIDI sequence and sequencer
     Public Sub Initialize()
@@ -27,6 +28,7 @@ Public Module MidiPlayer
 
     ' Load a MIDI file
     Public Sub LoadMidiFile(filePath As String)
+        midiPath = filePath
         midiSequence.Load(filePath)
     End Sub
 
@@ -51,6 +53,8 @@ Public Module MidiPlayer
 
     ' Handle playback completion
     Private Sub OnPlayingCompleted(sender As Object, e As EventArgs)
-        ' Handle playback completion here (e.g., clean up or reset the UI)
+        MidiPlayer.Dispose()
+        MidiPlayer.LoadMidiFile(midiPath)
+        MidiPlayer.Play()
     End Sub
 End Module
