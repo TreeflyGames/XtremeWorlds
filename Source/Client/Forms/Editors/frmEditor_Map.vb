@@ -750,6 +750,7 @@ Public Class frmEditor_Map
         Next
 
         If Not IsInBounds() Then Exit Sub
+        If cmbAutoTile.SelectedIndex = -1 Then Exit Sub
 
         If Button = Mouse.Button.Left Then
             If tabpages.SelectedTab Is tpTiles Then
