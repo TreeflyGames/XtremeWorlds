@@ -1048,9 +1048,7 @@ Public Class frmEditor_Map
     Public Sub MapEditorUndo()
         Dim tileChanged As Boolean
 
-        If HistoryIndex = 0 Then
-            Exit Sub
-        End If
+        If HistoryIndex = 0 Then Exit Sub
 
         HistoryIndex = HistoryIndex - 1
 
@@ -1088,6 +1086,8 @@ Public Class frmEditor_Map
         If TileHistoryHighIndex > 0 And (TileHistoryHighIndex = HistoryIndex Or HistoryIndex = MaxTileHistory) Then
             Exit Sub
         End If
+
+        If HistoryIndex = MaxTileHistory Then Exit Sub
 
         HistoryIndex = HistoryIndex + 1
 
