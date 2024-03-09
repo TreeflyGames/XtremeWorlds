@@ -1,9 +1,4 @@
-﻿Imports System.ComponentModel.Design
-Imports System.Drawing
-Imports System.Threading
-Imports System.Windows.Forms
-Imports System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar
-Imports Core
+﻿Imports Core
 Imports Mirage.Sharp.Asfw
 Imports Color = SFML.Graphics.Color
 
@@ -1624,22 +1619,32 @@ Continue1:
     Public Sub LogoutGame()
         Dim I As Long
 
-        if Editor > 0 Then
-            frmEditor_Item?.Dispose
-            frmEditor_Job?.Dispose
-            frmEditor_Map?.Dispose
-            frmEditor_NPC?.Dispose
-            frmEditor_Pet?.Dispose
-            frmEditor_Projectile?.Dispose
-            frmEditor_Resource?.Dispose
-            frmEditor_Shop?.Dispose
-            frmEditor_Events?.Dispose
-            frmEditor_Skill?.Dispose
-            frmAdmin?.Dispose
-            frmEditor_Animation?.Dispose
-        End If
+        Select Case Editor
+            Case EditorType.Item
+                frmEditor_Item.Dispose()
+            Case EditorType.Job
+                frmEditor_Job.Dispose()
+            Case EditorType.Map
+                frmEditor_Map.Dispose()
+                frmEditor_Events.Dispose()
+            Case EditorType.NPC
+                frmEditor_NPC.Dispose()
+            Case EditorType.Pet
+                frmEditor_Pet.Dispose()
+            Case EditorType.Projectile
+                frmEditor_Projectile.Dispose()
+            Case EditorType.Resource
+                frmEditor_Resource.Dispose()
+            Case EditorType.Shop
+                frmEditor_Shop.Dispose()
+            Case EditorType.Skill
+                frmEditor_Skill.Dispose()
+            Case EditorType.Animation
+                frmEditor_Animation.Dispose()
+        End Select
 
-        frmOptions?.Dispose
+        frmAdmin.Dispose()
+        frmOptions.Dispose()
 
         isLogging = True
         InGame = False
