@@ -458,11 +458,11 @@ Module C_Graphics
         ' Editor interactions
         If Editor = EditorType.Map Then
             If Mouse.IsButtonPressed(Mouse.Button.Left) Then
-                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Left, CurX, CurY, True)
+                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Left, CurMouseX, CurMouseY, True)
             End If
 
             If Mouse.IsButtonPressed(Mouse.Button.Right) Then
-                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Right, CurX, CurY, True)
+                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Right, CurMouseX, CurMouseY, True)
             End If
         End If
 
