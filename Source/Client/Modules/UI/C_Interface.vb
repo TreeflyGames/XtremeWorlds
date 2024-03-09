@@ -2183,7 +2183,7 @@ Public Sub DragBox_OnDraw()
     End With
 End Sub
 
-    Public Sub DragBox_Check()
+Public Sub DragBox_Check()
     Dim winIndex As Long, I As Long, curWindow As Long, curControl As Long, tmpRec As RectStruct
     
     winIndex = GetWindowIndex("winDragBox")
