@@ -32,6 +32,8 @@
     Public Function GetPlayerStat(index As Integer, Stat As StatType) As Integer
         Dim x As Integer, i As Integer
 
+        If index = 0 Then Exit Function
+
         x = Player(index).Stat(Stat)
 
         For i = 1 To EquipmentType.Count - 1
@@ -66,6 +68,8 @@
     End Function
 
     Public Sub SetPlayerVital(index As Integer, Vital As VitalType, Value As Integer)
+        If index = 0 Then Exit Sub
+
         Player(index).Vital(Vital) = Value
 
         If GetPlayerVital(index, Vital) > GetPlayerMaxVital(index, Vital) Then
@@ -221,6 +225,7 @@
     End Sub
 
     Public Function GetPlayerVital(index As Integer, vital As VitalType) As Integer
+        If index = 0 Then Exit Function
         GetPlayerVital = Player(index).Vital(vital)
     End Function
 
