@@ -725,25 +725,25 @@ Public Class frmEditor_Map
             Exit Sub
         End If
 
-        For X = 0 To Map.MaxX
-            For Y = 0 To Map.MaxY
-                With Map.Tile(X, Y)
+        For x2 = 0 To Map.MaxX
+            For y2 = 0 To Map.MaxY
+                With Map.Tile(x2, y2)
                     If .Layer(CurLayer).Tileset > 0 Then
                         If Not tileChanged Then
                             MapEditorHistory()
                             tileChanged = True
                         End If
 
-                        TileHistory(HistoryIndex).Tile(X, Y).Data1 = .Data1
-                        TileHistory(HistoryIndex).Tile(X, Y).Data2 = .Data2
-                        TileHistory(HistoryIndex).Tile(X, Y).Data3 = .Data3
-                        TileHistory(HistoryIndex).Tile(X, Y).Type = .Type
-                        TileHistory(HistoryIndex).Tile(X, Y).DirBlock = .DirBlock
+                        TileHistory(HistoryIndex).Tile(x2, y2).Data1 = .Data1
+                        TileHistory(HistoryIndex).Tile(x2, y2).Data2 = .Data2
+                        TileHistory(HistoryIndex).Tile(x2, y2).Data3 = .Data3
+                        TileHistory(HistoryIndex).Tile(x2, y2).Type = .Type
+                        TileHistory(HistoryIndex).Tile(x2, y2).DirBlock = .DirBlock
 
-                        TileHistory(HistoryIndex).Tile(X, Y).Layer(CurLayer).X = .Layer(CurLayer).X
-                        TileHistory(HistoryIndex).Tile(X, Y).Layer(CurLayer).Y = .Layer(CurLayer).Y
-                        TileHistory(HistoryIndex).Tile(X, Y).Layer(CurLayer).Tileset = .Layer(CurLayer).Tileset
-                        TileHistory(HistoryIndex).Tile(X, Y).Layer(CurLayer).AutoTile = .Layer(CurLayer).AutoTile
+                        TileHistory(HistoryIndex).Tile(x2, y2).Layer(CurLayer).X = .Layer(CurLayer).X
+                        TileHistory(HistoryIndex).Tile(x2, y2).Layer(CurLayer).Y = .Layer(CurLayer).Y
+                        TileHistory(HistoryIndex).Tile(x2, y2).Layer(CurLayer).Tileset = .Layer(CurLayer).Tileset
+                        TileHistory(HistoryIndex).Tile(x2, y2).Layer(CurLayer).AutoTile = .Layer(CurLayer).AutoTile
                     End If
                 End With
             Next
