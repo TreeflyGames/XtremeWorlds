@@ -25,6 +25,7 @@ Friend Class FrmOptions
         Else
             Types.Settings.Music = False
             StopMusic()
+            MidiPlayer.Dispose()
             CurrentMusic = ""
         End If
 
