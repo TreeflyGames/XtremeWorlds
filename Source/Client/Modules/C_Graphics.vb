@@ -1125,7 +1125,7 @@ Module C_Graphics
             rec.Width = 8
 
             ' find out whether render blocked or not
-            If Not IsDirBlocked(Map.Tile(x, y).DirBlock, i) Then
+            If Not IsDirBlocked(Map.Tile(x, y).DirBlock, CByte(i)) Then
                 rec.Y = 8
             Else
                 rec.Y = 16
