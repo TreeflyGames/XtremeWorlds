@@ -116,10 +116,10 @@ Module S_Loop
     Sub UpdateSavePlayers()
         Dim i As Integer
 
-        If GetPlayersOnline() > 0 Then
+        If Socket.HighIndex() > 0 Then
             Console.WriteLine("Saving all online players...")
 
-            For i = 1 To GetPlayersOnline()
+            For i = 1 To Socket.HighIndex()
                 SaveCharacter(i, TempPlayer(i).Slot)
                 SaveBank(i)
             Next
@@ -157,7 +157,7 @@ Module S_Loop
     Private Sub UpdatePlayerVitals()
         Dim i As Integer
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             For x = 0 To [Enum].VitalType.Count - 1
                 If GetPlayerVital(i, x) <> GetPlayerMaxVital(i, x) Then
                     SetPlayerVital(i, x, GetPlayerVital(i, x) + GetPlayerVitalRegen(i, x))
@@ -257,7 +257,7 @@ Module S_Loop
                                 ' make sure it's not stunned
                                 If Not MapNPC(mapNum).Npc(x).StunDuration > 0 Then
 
-                                    For i = 1 To GetPlayersOnline()
+                                    For i = 1 To Socket.HighIndex()
                                         If IsPlaying(i) Then
                                             If GetPlayerMap(i) = mapNum AndAlso MapNPC(mapNum).Npc(x).Target = 0 AndAlso GetPlayerAccess(i) <= AdminType.Moderator Then
                                                 If PetAlive(i) Then
@@ -969,7 +969,7 @@ Module S_Loop
                 Select Case Skill(skillnum).Type
                     Case SkillType.DamageHp
                         didCast = True
-                        For i = 1 To GetPlayersOnline()
+                        For i = 1 To Socket.HighIndex()
                             If IsPlaying(i) Then
                                 If GetPlayerMap(i) = mapNum Then
                                     If IsInRange(aoe, x, y, GetPlayerX(i), GetPlayerY(i)) Then
@@ -1011,7 +1011,7 @@ Module S_Loop
                         End If
 
                         didCast = True
-                        For i = 1 To GetPlayersOnline()
+                        For i = 1 To Socket.HighIndex()
                             If IsPlaying(i) AndAlso GetPlayerMap(i) = GetPlayerMap(npcNum) Then
                                 If IsInRange(aoe, x, y, GetPlayerX(i), GetPlayerY(i)) Then
                                     SkillPlayer_Effect(vital, increment, i, vital, skillnum)

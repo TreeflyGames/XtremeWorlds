@@ -126,7 +126,7 @@ Module S_General
 
     Sub UpdateCaption()
         Try
-            Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Types.Settings.GameName, MyIPAddress, Types.Settings.Port, GetPlayersOnline(), ErrorCount, Core.Time.Instance.ToString())
+            Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Types.Settings.GameName, MyIPAddress, Types.Settings.Port, Socket.HighIndex(), ErrorCount, Core.Time.Instance.ToString())
         Catch ex As Exception
             Exit Sub
         End Try

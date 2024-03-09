@@ -1080,7 +1080,7 @@ Module S_Database
 #Region "Players"
 
     Sub SaveAllPlayersOnline()
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If Not IsPlaying(i) Then Continue For
             SaveCharacter(i, TempPlayer(i).Slot)
             SaveBank(i)

@@ -7,7 +7,7 @@ Friend Module S_EventLogic
     Friend Sub RemoveDeadEvents()
         Dim i As Integer, mapNum As Integer, x As Integer, id As Integer, page As Integer, compare As Integer
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If TempPlayer(i).EventMap.CurrentEvents > 0 And TempPlayer(i).GettingMap = False Then
                 mapNum = GetPlayerMap(i)
                 For x = 0 To TempPlayer(i).EventMap.CurrentEvents
@@ -124,7 +124,7 @@ Friend Module S_EventLogic
         Dim pageID As Integer, id As Integer, compare As Integer, i As Integer, mapNum As Integer
         Dim n As Integer, x As Integer, z As Integer, spawnevent As Boolean, p As Integer
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If TempPlayer(i).EventMap.CurrentEvents > 0 Then
                 mapNum = GetPlayerMap(i)
                 For x = 0 To TempPlayer(i).EventMap.CurrentEvents
@@ -712,7 +712,7 @@ Friend Module S_EventLogic
         Dim isglobal As Boolean, mapNum As Integer, actualmovespeed As Integer, Buffer As ByteStream, z As Integer, sendupdate As Boolean
         Dim donotprocessmoveroute As Boolean
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             playerID = i
             If TempPlayer(i).EventMap.CurrentEvents > 0 Then
                 For x = 0 To TempPlayer(i).EventMap.CurrentEvents
@@ -1102,7 +1102,7 @@ Friend Module S_EventLogic
 
         'Now, we process the damn things for commands :P
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
                 If TempPlayer(i).GettingMap = False Then
                     If TempPlayer(i).EventMap.CurrentEvents > 0 Then
@@ -1136,7 +1136,7 @@ Friend Module S_EventLogic
         Next
 
         'That is it for starting parallel processes :D now we just have to make the code that actually processes the events to their fullest
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) AndAlso TempPlayer(i).GettingMap = 0 Then
                 If TempPlayer(i).EventProcessingCount > 0 Then
                     If TempPlayer(i).GettingMap = False Then

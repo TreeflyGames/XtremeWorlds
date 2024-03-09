@@ -383,7 +383,7 @@ Module S_Pet
         If x < 0 OrElse x > Map(GetPlayerMap(index)).MaxX OrElse y < 0 OrElse y > Map(GetPlayerMap(index)).MaxY Then Exit Sub
 
         ' Check for a player
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
 
             If IsPlaying(i) Then
                 If GetPlayerMap(index) = GetPlayerMap(i) AndAlso GetPlayerX(i) = x AndAlso GetPlayerY(i) = y Then
@@ -583,7 +583,7 @@ Module S_Pet
         Dim target As Integer, targetTypes As Byte, targetX As Integer, targetY As Integer, targetVerify As Boolean
 
         For mapNum = 1 To MAX_MAPS
-            For playerindex = 0 To GetPlayersOnline()
+            For playerindex = 1 To Socket.HighIndex()
                 tickCount = GetTimeMs()
 
                 If GetPlayerMap(playerindex) = mapNum AndAlso PetAlive(playerindex) Then
@@ -1051,7 +1051,7 @@ Module S_Pet
                     End If
 
                     ' Check to make sure that there is not a player in the way
-                    For i = 1 To GetPlayersOnline()
+                    For i = 1 To Socket.HighIndex()
                         If IsPlaying(i) Then
                             If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = GetPetX(index) + 1) AndAlso (GetPlayerY(i) = GetPetY(index) - 1) Then
                                 CanPetMove = False
@@ -1092,7 +1092,7 @@ Module S_Pet
                         Exit Function
                     End If
 
-                    For i = 1 To GetPlayersOnline()
+                    For i = 1 To Socket.HighIndex()
                         If IsPlaying(i) Then
                             If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = GetPetX(index)) AndAlso (GetPlayerY(i) = GetPetY(index) + 1) Then
                                 CanPetMove = False
@@ -1133,7 +1133,7 @@ Module S_Pet
                         Exit Function
                     End If
 
-                    For i = 1 To GetPlayersOnline()
+                    For i = 1 To Socket.HighIndex()
                         If IsPlaying(i) Then
                             If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = GetPetX(index) - 1) AndAlso (GetPlayerY(i) = GetPetY(index)) Then
                                 CanPetMove = False
@@ -1174,7 +1174,7 @@ Module S_Pet
                         Exit Function
                     End If
 
-                    For i = 1 To GetPlayersOnline()
+                    For i = 1 To Socket.HighIndex()
                         If IsPlaying(i) Then
                             If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = GetPetX(index) + 1) AndAlso (GetPlayerY(i) = GetPetY(index)) Then
                                 CanPetMove = False
@@ -3014,7 +3014,7 @@ Module S_Pet
                     Case SkillType.DamageHp
                         didCast = True
 
-                        For i = 1 To GetPlayersOnline()
+                        For i = 1 To Socket.HighIndex()
                             If IsPlaying(i) AndAlso i <> index Then
                                 If GetPlayerMap(i) = GetPlayerMap(index) Then
                                     If IsInRange(aoE, x, y, GetPlayerX(i), GetPlayerY(i)) Then
@@ -3063,7 +3063,7 @@ Module S_Pet
 
                         didCast = True
 
-                        For i = 1 To GetPlayersOnline()
+                        For i = 1 To Socket.HighIndex()
                             If IsPlaying(i) AndAlso GetPlayerMap(i) = GetPlayerMap(index) Then
                                 If IsInRange(aoE, x, y, GetPlayerX(i), GetPlayerY(i)) Then
                                     SpellPlayer_Effect(vitalType, increment, i, vital, skillnum)
@@ -3554,7 +3554,7 @@ Module S_Pet
             End If
 
             ' purge target info of anyone who targetted dead guy
-            For i = 1 To GetPlayersOnline()
+            For i = 1 To Socket.HighIndex()
                 If IsPlaying(i) AndAlso Socket.IsConnected(i) AndAlso GetPlayerMap(i) = GetPlayerMap(attacker) Then
                     If TempPlayer(i).Target = TargetType.Pet AndAlso TempPlayer(i).Target = victim Then
                         TempPlayer(i).Target = 0

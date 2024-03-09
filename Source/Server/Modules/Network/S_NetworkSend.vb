@@ -430,7 +430,7 @@ Module S_NetworkSend
 
         If GetPlayerAccess(index) < AdminType.Moderator Then Exit Sub
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
 
             If i <> index Then
                 s = s & GetPlayerName(i) & ", "
@@ -678,7 +678,7 @@ Module S_NetworkSend
         Dim data As Byte()
 
         ' Send all players on current map to index
-        For i = i To GetPlayersOnline()
+        For i = i To Socket.HighIndex()
             If IsPlaying(i) Then
                 If GetPlayerMap(i) = GetPlayerMap(index) Then
                     data = PlayerData(i)

@@ -181,7 +181,7 @@ Module S_Npc
                     End If
 
                     ' Check to make sure that there is not a player in the way
-                    For i = 1 To GetPlayersOnline()
+                    For i = 1 To Socket.HighIndex()
                         If IsPlaying(i) Then
                             If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNPC(mapNum).Npc(MapNpcNum).X) AndAlso (GetPlayerY(i) = MapNPC(mapNum).Npc(MapNpcNum).Y - 1) Then
                                 CanNpcMove = False
@@ -214,7 +214,7 @@ Module S_Npc
                     End If
 
                     ' Check to make sure that there is not a player in the way
-                    For i = 1 To GetPlayersOnline()
+                    For i = 1 To Socket.HighIndex()
                         If IsPlaying(i) Then
                             If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNPC(mapNum).Npc(MapNpcNum).X) AndAlso (GetPlayerY(i) = MapNPC(mapNum).Npc(MapNpcNum).Y + 1) Then
                                 CanNpcMove = False
@@ -247,7 +247,7 @@ Module S_Npc
                     End If
 
                     ' Check to make sure that there is not a player in the way
-                    For i = 1 To GetPlayersOnline()
+                    For i = 1 To Socket.HighIndex()
                         If IsPlaying(i) Then
                             If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNPC(mapNum).Npc(MapNpcNum).X - 1) AndAlso (GetPlayerY(i) = MapNPC(mapNum).Npc(MapNpcNum).Y) Then
                                 CanNpcMove = False
@@ -280,7 +280,7 @@ Module S_Npc
                     End If
 
                     ' Check to make sure that there is not a player in the way
-                    For i = 1 To GetPlayersOnline()
+                    For i = 1 To Socket.HighIndex()
                         If IsPlaying(i) Then
                             If (GetPlayerMap(i) = mapNum) AndAlso (GetPlayerX(i) = MapNPC(mapNum).Npc(MapNpcNum).X + 1) AndAlso (GetPlayerY(i) = MapNPC(mapNum).Npc(MapNpcNum).Y) Then
                                 CanNpcMove = False

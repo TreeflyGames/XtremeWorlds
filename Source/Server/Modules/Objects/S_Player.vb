@@ -931,7 +931,7 @@ Module S_Player
 
         ' send equipment of all people on new map
         If GetTotalMapPlayers(MapNum) > 0 Then
-            For i = 1 To GetPlayersOnline()
+            For i = 1 To Socket.HighIndex()
                 If IsPlaying(i) Then
                     If GetPlayerMap(i) = MapNum Then
                         SendMapEquipmentTo(i, index)

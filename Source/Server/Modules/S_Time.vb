@@ -40,7 +40,7 @@ Friend Module Time
     Sub SendGameClockToAll()
         Dim i As Integer
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
                 SendGameClockTo(i)
             End If
@@ -60,7 +60,7 @@ Friend Module Time
     Sub SendTimeToAll()
         Dim i As Integer
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
                 SendTimeTo(i)
             End If

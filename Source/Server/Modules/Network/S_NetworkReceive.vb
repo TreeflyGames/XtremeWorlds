@@ -601,7 +601,7 @@ Module S_NetworkReceive
         End If
 
         ' Try to attack a player
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             Tempindex = i
 
             ' Make sure we dont try to attack ourselves
@@ -994,7 +994,7 @@ Module S_NetworkReceive
         SpawnMapNpcs(mapNum)
         SpawnGlobalEvents(mapNum)
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
                 If Player(i).Map = mapNum Then
                     SpawnMapEventsFor(i, mapNum)
@@ -1013,7 +1013,7 @@ Module S_NetworkReceive
         CacheResources(mapNum)
 
         ' Refresh map for everyone online
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) AndAlso GetPlayerMap(i) = mapNum Then
                 PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i))
                 ' Send map
@@ -1399,7 +1399,7 @@ Module S_NetworkReceive
         If x < 0 OrElse x > Map(GetPlayerMap(index)).MaxX OrElse y < 0 OrElse y > Map(GetPlayerMap(index)).MaxY Then Exit Sub
 
         ' Check for a player
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
 
             If IsPlaying(i) Then
                 If GetPlayerMap(index) = GetPlayerMap(i) Then
@@ -2429,7 +2429,7 @@ Module S_NetworkReceive
         SpawnMapNpcs(mapNum)
         SpawnGlobalEvents(mapNum)
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
                 If Player(i).Map = mapNum Then
                     SpawnMapEventsFor(i, mapNum)
@@ -2448,7 +2448,7 @@ Module S_NetworkReceive
         CacheResources(mapNum)
 
         ' Refresh map for everyone online
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) AndAlso GetPlayerMap(i) = mapNum Then
                 PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i))
                 ' Send map

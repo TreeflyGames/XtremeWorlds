@@ -5,24 +5,13 @@ Module S_GameLogic
         Dim i As Integer, n As Integer
         n = 0
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If GetPlayerMap(i) = mapNum Then
                 n = n + 1
             End If
         Next
 
         GetTotalMapPlayers = n
-    End Function
-
-    Friend Function GetPlayersOnline() As Integer
-        Dim x As Integer
-        x = 0
-        For i As Integer = 1 To Socket.HighIndex
-            If TempPlayer(i).InGame = True Then
-                x = x + 1
-            End If
-        Next
-        GetPlayersOnline = x
     End Function
 
     Function GetNpcMaxVital(NpcNum As Integer, Vital As [Enum].VitalType) As Integer
@@ -45,7 +34,7 @@ Module S_GameLogic
     Function FindPlayer(Name As String) As Integer
         Dim i As Integer
 
-        For i = 1 To GetPlayersOnline()
+        For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
                 ' Make sure we dont try to check a name thats to small
                 If Len(GetPlayerName(i)) >= Len(Trim$(Name)) Then
