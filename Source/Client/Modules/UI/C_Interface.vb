@@ -1797,7 +1797,7 @@ Module C_Interface
                 Case 1 ' Warrior
                     text = "The way of a warrior has never been an easy one. Skilled use of a sword is not something learnt overnight. Being able to take a decent amount of hits is important for these characters and as such they weigh a lot of importance on endurance and strength."
                 Case 2 ' Wizard
-                    text = "Wizards are often mistrusted characters who have mastered the practise of using their own spirit to create elemental entities. Generally seen as playful and almost childish because of the huge amounts of pleasure they take from setting things on fire."
+                    text = "Wizards are often mistrusted characters who have mastered the practice of using their own spirit to create elemental entities. Generally seen as playful and almost childish because of the huge amounts of pleasure they take from setting things on fire."
                 Case 3 ' Whisperer
                     text = "The art of healing is one which comes with tremendous amounts of pressure and guilt. Constantly being put under high-pressure situations where their abilities could mean the difference between life and death leads many Whisperers to insanity."
             End Select
@@ -2091,7 +2091,9 @@ Module C_Interface
                 .movedX = CurX - .Left
                 .movedY = CurY - .Top
             End With
+
             ShowWindow(winIndex, , False)
+
             ' stop dragging inventory
             Windows(GetWindowIndex("winInventory")).Window.State = EntState.Normal
         End If
@@ -2140,11 +2142,14 @@ Module C_Interface
                     End If
                 Next
             End If
+
             ' make sure we're not dragging the item
             If DragBox.Type = PartType.Item And DragBox.Value = itemNum Then Exit Sub
+
             ' calc position
             x = Windows(GetWindowIndex("winInventory")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             y = Windows(GetWindowIndex("winInventory")).Window.Top - 4
+
             ' offscreen?
             If x < 0 Then
                 ' switch to right
@@ -2158,7 +2163,6 @@ Module C_Interface
 ' ##############
 ' ## Drag Box ##
 ' ##############
-
 Public Sub DragBox_OnDraw()
     Dim xO As Long, yO As Long, texNum As Long, winIndex As Long
 
