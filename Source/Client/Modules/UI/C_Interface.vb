@@ -3104,23 +3104,6 @@ End Sub
         ' re-size combo background
         Windows(GetWindowIndex("winComboMenuBG")).Window.Width = GameWindow.Size.X
         Windows(GetWindowIndex("winComboMenuBG")).Window.Height = GameWindow.Size.Y
-
-        ' centralize windows
-        CentralizeWindow(GetWindowIndex("winLogin"))
-        CentralizeWindow(GetWindowIndex("winCharacters"))
-        CentralizeWindow(GetWindowIndex("winLoading"))
-        CentralizeWindow(GetWindowIndex("winDialogue"))
-        CentralizeWindow(GetWindowIndex("winClasses"))
-        CentralizeWindow(GetWindowIndex("winNewChar"))
-        CentralizeWindow(GetWindowIndex("winEscMenu"))
-        CentralizeWindow(GetWindowIndex("winInventory"))
-        CentralizeWindow(GetWindowIndex("winCharacter"))
-        CentralizeWindow(GetWindowIndex("winSkills"))
-        CentralizeWindow(GetWindowIndex("winOptions"))
-        CentralizeWindow(GetWindowIndex("winShop"))
-        CentralizeWindow(GetWindowIndex("winNpcChat"))
-        CentralizeWindow(GetWindowIndex("winTrade"))
-        CentralizeWindow(GetWindowIndex("winGuild"))
     End Sub
 
     Public Sub DrawSkills()
