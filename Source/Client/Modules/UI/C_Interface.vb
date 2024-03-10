@@ -373,7 +373,7 @@ Module C_Interface
                             RenderTexture(InterfaceSprite(51), GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
 
                             ' render text
-                            left = .Left + (49 / 2) - (TextWidth(.Text) / 2) + xO
+                            left = .Left + 22 - (TextWidth(.Text) / 2) + xO
                             RenderText(.Text, GameWindow, left, .Top + yO + 4, .Color, Color.Black)
 
                         Case DesignType.ChkCustom_Buying
