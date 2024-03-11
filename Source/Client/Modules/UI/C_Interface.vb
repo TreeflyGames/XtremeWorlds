@@ -2751,7 +2751,7 @@ End Sub
         CreateLabel(WindowCount, "lblSpirit", 18, 136, 147, FontSize, "Spirit", Arial, Color.White)
         CreateLabel(WindowCount, "lblExperience", 18, 156, 147, FontSize, "Experience", Arial, Color.White)
         CreateLabel(WindowCount, "lblName2", 13, 36, 147, FontSize, "Name", Arial, Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblJob2", 13, 56, 147, FontSize, "Class", Arial, Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblJob2", 13, 56, 147, FontSize, "", Arial, Color.White, AlignmentType.Right)
         CreateLabel(WindowCount, "lblLevel2", 13, 76, 147, FontSize, "Level", Arial, Color.White, AlignmentType.Right)
         CreateLabel(WindowCount, "lblGuild2", 13, 96, 147, FontSize, "Guild", Arial, Color.White, AlignmentType.Right)
         CreateLabel(WindowCount, "lblHealth2", 13, 116, 147, FontSize, "Health", Arial, Color.White, AlignmentType.Right)
