@@ -603,7 +603,6 @@ Module C_GameLogic
                 ' // Moderator Admin Commands //
                 ' Admin Help
                 Case "/admin"
-
                     If GetPlayerAccess(Myindex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1

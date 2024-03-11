@@ -701,6 +701,7 @@ Public Class frmEditor_Map
             If X > EditorTileX Then ' drag right
                 EditorTileWidth = X - EditorTileX
             End If
+
             If Y > EditorTileY Then ' drag down
                 EditorTileHeight = Y - EditorTileY
             End If
