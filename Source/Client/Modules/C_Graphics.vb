@@ -482,7 +482,7 @@ Module C_Graphics
         End If
 
         ' Ensure it's visible
-        If Windows(activeWindow).Window.Visible Then
+        If Windows(activeWindow).Window.Visible And Windows(activeWindow).ActiveControl > 0 Then
             If Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Locked Then
                 Exit Sub
             End If
