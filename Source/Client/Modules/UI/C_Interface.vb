@@ -2698,7 +2698,7 @@ End Sub
 
     Public Sub CreateWindow_Inventory()
         ' Create window
-        CreateWindow("winInventory", "Inventory", Georgia, zOrder_Win, 0, 0, 202, 319, 1, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Inventory_MouseDown), New Action(AddressOf Inventory_MouseMove), New Action(AddressOf Inventory_DblClick), New Action(AddressOf DrawInventory))
+        CreateWindow("winInventory", "Inventory", Georgia, zOrder_Win, 0, 0, 202, 319, 1, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Inventory_MouseMove), New Action(AddressOf Inventory_MouseDown), New Action(AddressOf Inventory_DblClick), New Action(AddressOf DrawInventory))
 
         ' Centralise it
         CentralizeWindow(WindowCount)
@@ -3056,7 +3056,7 @@ End Sub
 
     Public Sub CreateWindow_DragBox()
         ' Create window
-        CreateWindow("winDragBox", "", Georgia, zOrder_Win, 0, 0, 32, 32, 0, false, , , , , , , , , , , New Action(AddressOf DragBox_Check), , , New Action(AddressOf DragBox_OnDraw))
+        CreateWindow("winDragBox", "", Georgia, zOrder_Win, 0, 0, 32, 32, 0, false, , , , , , , , , , , , New Action(AddressOf DragBox_Check), , New Action(AddressOf DragBox_OnDraw))
         
         ' Need to set up unique mouseup event
         Windows(WindowCount).Window.CallBack(entState.MouseUp) = New Action(AddressOf DragBox_Check)
