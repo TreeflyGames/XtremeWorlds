@@ -798,4 +798,14 @@ Module C_NetworkSend
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()
     End Sub
+
+    Sub SendLearnSkill(tmpSkill As Integer)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CSkillLearn)
+        buffer.WriteInt32(tmpSkill)
+
+        Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
 End Module

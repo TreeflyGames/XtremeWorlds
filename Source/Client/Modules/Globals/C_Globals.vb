@@ -178,7 +178,7 @@ Module C_Globals
 
     ' Game editors
     Public Editor As Integer
-    Public Editorindex As Integer
+    Public EditorIndex As Integer
 
     ' Spawn
     Public SpawnNpcNum As Integer

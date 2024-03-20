@@ -112,6 +112,8 @@
         CPetUseStatPoint
         CRequestPet
 
+        CSkillLearn
+
         '*************************
         '***   EDITOR PACKETS  ***
         '*************************

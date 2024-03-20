@@ -44,7 +44,7 @@ Module C_Resources
     End Sub
 
     Sub StreamResource(resourceNum As Integer)
-        If resourceNum > 0 And Resource(resourceNum).Name = "" And Resource_Loaded(resourceNum) = False Then
+        If resourceNum > 0 And Resource(resourceNum).Name = "" Or Resource_Loaded(resourceNum) = False Then
             Resource_Loaded(resourceNum) = True
             SendRequestResource(resourceNum)
         End If

@@ -60,7 +60,7 @@ Module C_Items
     End Sub
 
     Sub StreamItem(itemNum As Integer)
-        If itemnum > 0 and Item(itemNum).Name = "" And Item_Loaded(itemNum) = False Then
+        If itemnum > 0 and Item(itemNum).Name = "" Or Item_Loaded(itemNum) = False Then
             Item_Loaded(itemNum) = True
             SendRequestItem(itemNum)
         End If

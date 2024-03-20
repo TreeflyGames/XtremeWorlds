@@ -1839,44 +1839,7 @@ Module S_Player
                 End Select
 
             Case ItemType.Skill
-                ' Get the skill num
-                n = Item(InvItemNum).Data1
-
-                If n > 0 Then
-
-                    ' Make sure they are the right class
-                    If Skill(n).JobReq = GetPlayerJob(index) OrElse Skill(n).JobReq = 0 Then
-                        ' Make sure they are the right level
-                        i = Skill(n).LevelReq
-
-                        If i <= GetPlayerLevel(index) Then
-                            i = FindOpenSkill(index)
-
-                            ' Make sure they have an open skill slot
-                            If i > 0 Then
-
-                                ' Make sure they dont already have the skill
-                                If Not HasSkill(index, n) Then
-                                    SetPlayerSkill(index, i, n)
-                                    SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
-                                    TakeInvItem(index, InvItemNum, 0)
-                                    PlayerMsg(index, "You study the skill carefully.", ColorType.Yellow)
-                                    PlayerMsg(index, "You have learned a new skill!", ColorType.BrightGreen)
-                                Else
-                                    PlayerMsg(index, "You have already learned this skill!", ColorType.BrightRed)
-                                End If
-                            Else
-                                PlayerMsg(index, "You have learned all that you can learn!", ColorType.BrightRed)
-                            End If
-                        Else
-                            PlayerMsg(index, "You must be level " & i & " to learn this skill.", ColorType.Yellow)
-                        End If
-                    Else
-                        PlayerMsg(index, "This skill can only be learned by " & CheckGrammar(Job(Skill(n).JobReq).Name.Trim) & ".", ColorType.Yellow)
-                    End If
-                Else
-                    PlayerMsg(index, "This scroll is not connected to a skill, please inform an admin!", ColorType.BrightRed)
-                End If
+                PlayerLearnSkill(index, InvItemNum)
 
             Case ItemType.Pet
                 If Item(InvItemNum).Stackable = 1 Then
@@ -1887,6 +1850,52 @@ Module S_Player
                 n = Item(InvItemNum).Data1
                 AdoptPet(index, n)
         End Select
+    End Sub
+
+    Sub PlayerLearnSkill(Index As Integer, InvItemNum As Integer, Optional SkillNum As Integer = 0)
+        Dim n As Integer, i As Integer
+
+        ' Get the skill num
+        If SkillNum > 0 Then
+            n = SkillNum
+        Else
+            n = Item(InvItemNum).Data1
+        End If
+
+        If n > 0 Then
+            ' Make sure they are the right class
+            If Skill(n).JobReq = GetPlayerJob(index) OrElse Skill(n).JobReq = 0 Then
+                ' Make sure they are the right level
+                i = Skill(n).LevelReq
+
+                If i <= GetPlayerLevel(index) Then
+                    i = FindOpenSkill(index)
+
+                    ' Make sure they have an open skill slot
+                    If i > 0 Then
+
+                        ' Make sure they dont already have the skill
+                        If Not HasSkill(index, n) Then
+                            SetPlayerSkill(index, i, n)
+                            SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
+                            TakeInvItem(index, InvItemNum, 0)
+                            PlayerMsg(index, "You study the skill carefully.", ColorType.Yellow)
+                            PlayerMsg(index, "You have learned a new skill!", ColorType.BrightGreen)
+                        Else
+                            PlayerMsg(index, "You have already learned this skill!", ColorType.BrightRed)
+                        End If
+                    Else
+                        PlayerMsg(index, "You have learned all that you can learn!", ColorType.BrightRed)
+                    End If
+                Else
+                    PlayerMsg(index, "You must be level " & i & " to learn this skill.", ColorType.Yellow)
+                End If
+            Else
+                PlayerMsg(index, "This skill can only be learned by " & CheckGrammar(Job(Skill(n).JobReq).Name.Trim) & ".", ColorType.Yellow)
+            End If
+        Else
+            PlayerMsg(index, "This scroll is not connected to a skill, please inform an admin!", ColorType.BrightRed)
+        End If
     End Sub
 
     Sub PlayerSwitchInvSlots(index As Integer, OldSlot As Integer, NewSlot As Integer)

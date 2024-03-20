@@ -85,6 +85,8 @@ Module S_NetworkReceive
         Socket.PacketId(ClientPackets.CDeleteHotbarSlot) = AddressOf Packet_DeleteHotBarSlot
         Socket.PacketId(ClientPackets.CUseHotbarSlot) = AddressOf Packet_UseHotBarSlot
 
+        Socket.PacketId(ClientPackets.CSkillLearn) = AddressOf Packet_SkillLearn
+
         Socket.PacketId(ClientPackets.CEventChatReply) = AddressOf Packet_EventChatReply
         Socket.PacketId(ClientPackets.CEvent) = AddressOf Packet_Event
         Socket.PacketId(ClientPackets.CRequestSwitchesAndVariables) = AddressOf Packet_RequestSwitchesAndVariables
@@ -2134,6 +2136,15 @@ Module S_NetworkReceive
 
         SendHotbar(index)
 
+    End Sub
+
+    Sub Packet_SkillLearn(index As Integer, ByRef data() As Byte)
+        Dim SkillNum As Integer
+        Dim buffer As New ByteStream(data)
+
+        SkillNum = buffer.ReadInt32()
+
+        PlayerLearnSkill(index, 0, SkillNum)
     End Sub
 
     Sub Packet_RequestEditJob(index As Integer, ByRef data() As Byte)

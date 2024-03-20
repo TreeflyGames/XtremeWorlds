@@ -698,6 +698,21 @@ Partial Class frmEditor_Item
         DarkLabel29.TabIndex = 11
         DarkLabel29.Text = "Luck:"
         ' 
+        ' nudEndReq
+        ' 
+        nudEndReq.Location = New Point(0, 0)
+        nudEndReq.Name = "nudEndReq"
+        nudEndReq.Size = New Size(120, 31)
+        nudEndReq.TabIndex = 19
+        ' 
+        ' DarkLabel30
+        ' 
+        DarkLabel30.ForeColor = Color.FromArgb(CByte(220), CByte(220), CByte(220))
+        DarkLabel30.Location = New Point(0, 0)
+        DarkLabel30.Name = "DarkLabel30"
+        DarkLabel30.Size = New Size(100, 23)
+        DarkLabel30.TabIndex = 20
+        ' 
         ' nudStrReq
         ' 
         nudStrReq.Location = New Point(92, 41)

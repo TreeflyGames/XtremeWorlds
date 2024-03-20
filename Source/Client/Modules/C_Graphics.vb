@@ -14,7 +14,6 @@ Module C_Graphics
     Friend WindowSettings As ContextSettings
     Friend RefreshWindow As Boolean
 
-    Friend EditorSkill_Icon As RenderWindow
     Friend EditorAnimation_Anim1 As RenderWindow
     Friend EditorAnimation_Anim2 As RenderWindow
 
@@ -2264,9 +2263,11 @@ Module C_Graphics
 
     End Sub
 
-    Friend Sub EditorItem_DrawItem()
+    Friend Sub EditorItem_DrawIcon()
         Dim itemnum As Integer
         itemnum = frmEditor_Item.nudPic.Value
+
+        StreamItem(EditorIndex)
 
         If itemnum < 1 OrElse itemnum > NumItems Then
             frmEditor_Item.picItem.BackgroundImage = Nothing
@@ -2458,14 +2459,7 @@ Module C_Graphics
                                 Dim x1 = (ConvertMapX(x * 32) + 16 - CDbl((LightGfxInfo.Width * scale.X)) / 2)
                                 Dim y1 = (ConvertMapY(y * 32) + 16 - CDbl((LightGfxInfo.Height * scale.Y)) / 2)
                                 LightSprite.Position = New Vector2f(CSng(x1), CSng(y1))
-                                TileLights.Add(New LightTileStruct() With {
-                                                      .Tiles = New List(Of Vector2i)() From {
-                                                      New Vector2i(x, y)
-                                                      },
-.IsFlicker = Map.Tile(x, y).Data2 = 1,
-                                                      .Scale =
-                                                      New Vector2f(0.3F * Map.Tile(x, y).Data1, 0.3F * Map.Tile(x, y).Data1)
-})
+                                TileLights.Add(New LightTileStruct() With { .Tiles = New List(Of Vector2i)() From { New Vector2i(x, y)}, .IsFlicker = Map.Tile(x, y).Data2 = 1, .Scale = New Vector2f(0.3F * Map.Tile(x, y).Data1, 0.3F * Map.Tile(x, y).Data1)})
                                 GameWindow.Draw(LightSprite, New RenderStates(BlendMode.Multiply))
                             End If
                         End If
@@ -2525,43 +2519,21 @@ Module C_Graphics
     End Sub
 
     Friend Sub EditorSkill_DrawIcon()
-        Dim iconnum As Integer
-        Dim sRECT As Rectangle
-        Dim dRECT As Rectangle
+        Dim skillNum As Integer
+        skillNum = frmEditor_Skill.nudIcon.Value
 
-        iconnum = frmEditor_Skill.nudIcon.Value
+        StreamSkill(EditorIndex)
 
-        If iconnum < 1 OrElse iconnum > NumSkills Then
-            EditorSkill_Icon.Clear(ToSfmlColor(frmEditor_Skill.picSprite.BackColor))
-            EditorSkill_Icon.Display()
+        If skillNum < 1 OrElse skillNum > NumItems Then
+            frmEditor_Skill.picSprite.BackgroundImage = Nothing
             Exit Sub
         End If
 
-        If SkillGfxInfo(iconnum).IsLoaded = False Then
-            LoadTexture(iconnum, 9)
+        If File.Exists(Paths.Graphics & "skills\" & skillNum & GfxExt) Then
+            frmEditor_Skill.picSprite.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "skills\" & skillNum & GfxExt)
+        Else
+            frmEditor_Skill.picSprite.BackgroundImage = Nothing
         End If
-
-        'seeying we still use it, lets update timer
-        With SkillGfxInfo(iconnum)
-            .TextureTimer = GetTickCount() + 100000
-        End With
-
-        With sRECT
-            .Y = 0
-            .Height = PicY
-            .X = 0
-            .Width = PicX
-        End With
-
-        'drect is the same, so just copy it
-        dRECT = sRECT
-
-        EditorSkill_Icon.Clear(ToSfmlColor(frmEditor_Skill.picSprite.BackColor))
-
-        RenderTexture(SkillSprite(iconnum), EditorSkill_Icon, dRECT.X, dRECT.Y, sRECT.X, sRECT.Y, sRECT.Width,
-                     sRECT.Height)
-
-        EditorSkill_Icon.Display()
     End Sub
 
     Friend Sub EditorAnim_DrawAnim()
@@ -2616,6 +2588,7 @@ Module C_Graphics
                         .X = (AnimEditorFrame(0) - 1) * width
                         .Width = width
                     End With
+
                     With dRECT
                         .Y = 0
                         .Height = height
