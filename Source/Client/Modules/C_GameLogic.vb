@@ -1686,7 +1686,7 @@ Continue1:
         With Windows(GetWindowIndex("winOptions"))
             .Controls(GetControlIndex("winOptions", "chkMusic")).Value = GameSettings.Music
             .Controls(GetControlIndex("winOptions", "chkSound")).Value = GameSettings.Sound
-            .Controls(GetControlIndex("winOptions", "chkAutotiles")).Value = GameSettings.Autotile
+            .Controls(GetControlIndex("winOptions", "chkAutotile")).Value = GameSettings.Autotile
             .Controls(GetControlIndex("winOptions", "chkFullscreen")).Value = GameSettings.Fullscreen
             .Controls(GetControlIndex("winOptions", "cmbRes")).Value = 0
         End With
@@ -1695,7 +1695,7 @@ Continue1:
         With Windows(GetWindowIndex("winOptions"))
             .Controls(GetControlIndex("winOptions", "chkMusic")).Value = GameSettings.Music
             .Controls(GetControlIndex("winOptions", "chkSound")).Value = GameSettings.Sound
-            .Controls(GetControlIndex("winOptions", "chkAutotiles")).Value = GameSettings.Autotile
+            .Controls(GetControlIndex("winOptions", "chkAutotile")).Value = GameSettings.Autotile
             .Controls(GetControlIndex("winOptions", "chkFullscreen")).Value = GameSettings.Fullscreen
             .Controls(GetControlIndex("winOptions", "cmbResWidth")).Value = GameSettings.ScreenWidth
             .Controls(GetControlIndex("winOptions", "cmbResHeight")).Value = GameSettings.ScreenHeight
