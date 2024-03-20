@@ -2267,8 +2267,6 @@ Module C_Graphics
         Dim itemnum As Integer
         itemnum = frmEditor_Item.nudPic.Value
 
-        StreamItem(EditorIndex)
-
         If itemnum < 1 OrElse itemnum > NumItems Then
             frmEditor_Item.picItem.BackgroundImage = Nothing
             Exit Sub
@@ -2521,8 +2519,6 @@ Module C_Graphics
     Friend Sub EditorSkill_DrawIcon()
         Dim skillNum As Integer
         skillNum = frmEditor_Skill.nudIcon.Value
-
-        StreamSkill(EditorIndex)
 
         If skillNum < 1 OrElse skillNum > NumItems Then
             frmEditor_Skill.picSprite.BackgroundImage = Nothing
