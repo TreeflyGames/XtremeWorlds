@@ -1340,9 +1340,9 @@ Module C_Interface
                             If .Design(0) = DesignType.ComboMenuNorm Then
                                 ' set the hover menu
                                 If entState = EntState.MouseMove Or entState = EntState.Hover Then
-                                    'ComboMenu_MouseMove(i)
+                                    ComboMenu_MouseMove(i)
                                 ElseIf entState = EntState.MouseDown Then
-                                    'ComboMenu_MouseDown(i)
+                                    ComboMenu_MouseDown(i)
                                 End If
                             End If
 
@@ -1523,34 +1523,67 @@ Module C_Interface
         HideWindow(GetWindowIndex("winComboMenu"))
     End Sub
 
-Sub ShowComboMenu(curWindow As Long, curControl As Long)
-    Dim Top As Long
+    Sub ShowComboMenu(curWindow As Long, curControl As Long)
+        Dim Top As Long
 
-    With Windows(curWindow).Controls(curControl)
-        ' linked to
-        Windows(GetWindowIndex("winComboMenu")).Window.linkedToWin = curWindow
-        Windows(GetWindowIndex("winComboMenu")).Window.linkedToCon = curControl
+        With Windows(curWindow).Controls(curControl)
+            ' linked to
+            Windows(GetWindowIndex("winComboMenu")).Window.linkedToWin = curWindow
+            Windows(GetWindowIndex("winComboMenu")).Window.linkedToCon = curControl
         
-        ' set the size
-        Windows(GetWindowIndex("winComboMenu")).Window.Height = 2 + (UBound(.list) * 16)
-        Windows(GetWindowIndex("winComboMenu")).Window.Left = Windows(curWindow).Window.Left + .Left + 2
-        Top = Windows(curWindow).Window.Top + .Top + .Height
-        If Top + Windows(GetWindowIndex("winComboMenu")).Window.Height > GameSettings.ScreenHeight Then Top = GameSettings.ScreenHeight - Windows(GetWindowIndex("winComboMenu")).Window.Height
-        Windows(GetWindowIndex("winComboMenu")).Window.Top = Top
-        Windows(GetWindowIndex("winComboMenu")).Window.Width = .Width - 4
+            ' set the size
+            Windows(GetWindowIndex("winComboMenu")).Window.Height = 2 + (UBound(.list) * 16)
+            Windows(GetWindowIndex("winComboMenu")).Window.Left = Windows(curWindow).Window.Left + .Left + 2
+            Top = Windows(curWindow).Window.Top + .Top + .Height
+            If Top + Windows(GetWindowIndex("winComboMenu")).Window.Height > GameSettings.ScreenHeight Then Top = GameSettings.ScreenHeight - Windows(GetWindowIndex("winComboMenu")).Window.Height
+            Windows(GetWindowIndex("winComboMenu")).Window.Top = Top
+            Windows(GetWindowIndex("winComboMenu")).Window.Width = .Width - 4
         
-        ' set the values
-        Windows(GetWindowIndex("winComboMenu")).Window.List = .List
-        Windows(GetWindowIndex("winComboMenu")).Window.Value = .Value
-        Windows(GetWindowIndex("winComboMenu")).Window.Group = 0
+            ' set the values
+            Windows(GetWindowIndex("winComboMenu")).Window.List = .List
+            Windows(GetWindowIndex("winComboMenu")).Window.Value = .Value
+            Windows(GetWindowIndex("winComboMenu")).Window.Group = 0
         
-        ' load the menu
-        Windows(GetWindowIndex("winComboMenu")).Window.Visible = True
-        Windows(GetWindowIndex("winComboMenuBG")).Window.Visible = True
-        ShowWindow(GetWindowIndex("winComboMenuBG"), True, False)
-        ShowWindow(GetWindowIndex("winComboMenu"), True, False)
-    End With
-End Sub
+            ' load the menu
+            Windows(GetWindowIndex("winComboMenu")).Window.Visible = True
+            Windows(GetWindowIndex("winComboMenuBG")).Window.Visible = True
+            ShowWindow(GetWindowIndex("winComboMenuBG"), True, False)
+            ShowWindow(GetWindowIndex("winComboMenu"), True, False)
+        End With
+    End Sub
+
+    Sub ComboMenu_MouseMove(curWindow As Long)
+        Dim y As Long, i As Long
+        With Windows(curWindow).Window
+            y = curMouseY - .Top
+
+            ' find the option we're hovering over
+            If UBound(.list) > 0 Then
+                For i = 1 To UBound(.list)
+                    If y >= (16 * (i - 1)) And y <= (16 * (i)) Then
+                        .group = i
+                    End If
+                Next
+            End If
+        End With
+    End Sub
+
+    Sub ComboMenu_MouseDown(curWindow As Long)
+    Dim y As Long, i As Long
+        With Windows(curWindow).Window
+            y = curMouseY - .Top
+
+            ' find the option we're hovering over
+            If UBound(.list) > 0 Then
+                For i = 1 To UBound(.list)
+                    If y >= (16 * (i - 1)) And y <= (16 * (i)) Then
+                        Windows(.linkedToWin).Controls(.linkedToCon).value = i
+                        CloseComboMenu
+                    End If
+                Next
+            End If
+        End With
+    End Sub
 
     Public Sub chkSaveUser_Click()
         With Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "chkSaveUsername"))
@@ -3113,7 +3146,7 @@ End Sub
         CreateLabel(windowCount, "lblBlank", 35, 92, 140, FontSize, "Select Resolution", Verdana, Color.White, AlignmentType.Center)
 
         ' combobox
-        CreateComboBox(windowCount, "cmbRes", 30, 100, 150, 18, DesignType.ComboNorm)
+        CreateComboBox(windowCount, "cmbRes", 30, 100, 150, 18, DesignType.ComboMenuNorm)
 
         ' Button
         CreateButton(windowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)
@@ -3127,7 +3160,7 @@ End Sub
         CreateWindow("winComboMenuBG", "ComboMenuBG", Georgia, zOrder_Win, 0, 0, 800, 600, 0, False, , , , , , , , , , , , , New Action(AddressOf CloseComboMenu), , , False, False)
 
         ' window
-        CreateWindow("winComboMenu", "ComboMenu", Georgia, zOrder_Win, 0, 0, 100, 100, 0, False, , , DesignType.ComboNorm, , , , , , , , , , , , , , False, False)
+        CreateWindow("winComboMenu", "ComboMenu", Georgia, zOrder_Win, 0, 0, 100, 100, 0, False, , , DesignType.ComboMenuNorm, , , , , , , , , , , , , , False, False)
 
         ' centralize it
         CentralizeWindow(windowCount)
