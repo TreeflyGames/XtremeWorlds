@@ -771,8 +771,8 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CSetHotbarSlot)
 
         buffer.WriteInt32(type)
-        buffer.WriteInt32(num)
         buffer.WriteInt32(slot)
+        buffer.WriteInt32(num)
 
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()

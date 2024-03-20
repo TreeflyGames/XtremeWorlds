@@ -2391,12 +2391,12 @@ Public Sub DragBox_Check()
                                     ' set the hotbar slot
                                     If DragBox.Origin <> PartOriginType.Hotbar Then
                                         If DragBox.Type = PartType.Item Then
-                                            SendSetHotbarSlot(1, I, DragBox.Slot)
+                                            SendSetHotbarSlot(1, DragBox.Slot, I)
                                         ElseIf DragBox.Type = PartType.Spell Then
-                                            SendSetHotbarSlot(2, I, DragBox.Slot)
+                                            SendSetHotbarSlot(2, DragBox.Slot, I)
                                         End If
                                     Else
-                                        If DragBox.Slot <> I Then SendSetHotbarSlot(3, I, DragBox.Slot)
+                                        If DragBox.Slot <> I Then SendSetHotbarSlot(3, DragBox.Slot, I)
                                     End If
                                     Exit For
                                 End If
