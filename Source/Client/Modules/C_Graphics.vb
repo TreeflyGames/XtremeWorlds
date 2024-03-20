@@ -221,8 +221,21 @@ Module C_Graphics
                 Case Keyboard.Key.Escape
                     if InMenu Then Exit Sub
 
+                    ' Hide options screen
+                    If Windows(GetWindowIndex("winOptions")).Window.visible Then
+                        HideWindow(GetWindowIndex("winOptions"))
+                        CloseComboMenu()
+                        Exit Sub
+                    End If
+
+                    ' hide/show chat window
+                    If Windows(GetWindowIndex("winChat")).Window.Visible Then
+                        Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text = ""
+                        HideChat()
+                        Exit Sub
+                    End If
+
                     If Windows(GetWindowIndex("winEscMenu")).Window.visible Then
-                        ' hide it
                         HideWindow(GetWindowIndex("winEscMenu"))
                         Exit Sub
                     Else
@@ -280,15 +293,6 @@ Module C_Graphics
                     ' Handle input
                     Select Case e.Code
                         Case Keyboard.Key.Escape
-                            ' Hide options screen
-                            'HideWindow("winOptions")
-                            'CloseComboMenu()
-
-                            ' hide/show chat window
-                            If Windows(GetWindowIndex("winChat")).Window.Visible Then
-                                Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text = ""
-                                HideChat()
-                            End If
 
                         Case Keyboard.Key.Backspace
                             If Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Length > 0 Then
@@ -765,6 +769,7 @@ Module C_Graphics
             End If
 
             GameWindow = New RenderWindow(New VideoMode(GameSettings.ScreenWidth, GameSettings.ScreenHeight), GameSettings.GameName, Styles.Default, WindowSettings)
+            
             CenterWindow(GameWindow)
             GameWindow.SetVerticalSyncEnabled(GameSettings.Vsync)
             If GameSettings.Vsync = 0 Then
