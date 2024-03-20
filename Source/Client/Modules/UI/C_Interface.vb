@@ -1323,6 +1323,7 @@ Module C_Interface
         CreateWindow_Dialogue()
         CreateWindow_DragBox()
         CreateWindow_Options()
+        CreateWindow_Combobox()
     End Sub
 
     Public Function HandleInterfaceEvents(entState As EntState) As Boolean
@@ -1437,7 +1438,7 @@ Module C_Interface
                                     End If
                                 End If
                             Case EntityType.Combobox
-                                'ShowComboMenu(curWindow, curControl)
+                                ShowComboMenu(curWindow, curControl)
                         End Select
 
                         ' set active input
@@ -1522,10 +1523,34 @@ Module C_Interface
         HideWindow(GetWindowIndex("winComboMenu"))
     End Sub
 
-    Sub ShowComboMenu()
-        ShowWindow(GetWindowIndex("winComboMenuBG"))
-        ShowWindow(GetWindowIndex("winComboMenu"))
-    End Sub
+Sub ShowComboMenu(curWindow As Long, curControl As Long)
+    Dim Top As Long
+
+    With Windows(curWindow).Controls(curControl)
+        ' linked to
+        Windows(GetWindowIndex("winComboMenu")).Window.linkedToWin = curWindow
+        Windows(GetWindowIndex("winComboMenu")).Window.linkedToCon = curControl
+        
+        ' set the size
+        Windows(GetWindowIndex("winComboMenu")).Window.Height = 2 + (UBound(.list) * 16)
+        Windows(GetWindowIndex("winComboMenu")).Window.Left = Windows(curWindow).Window.Left + .Left + 2
+        Top = Windows(curWindow).Window.Top + .Top + .Height
+        If Top + Windows(GetWindowIndex("winComboMenu")).Window.Height > GameSettings.ScreenHeight Then Top = GameSettings.ScreenHeight - Windows(GetWindowIndex("winComboMenu")).Window.Height
+        Windows(GetWindowIndex("winComboMenu")).Window.Top = Top
+        Windows(GetWindowIndex("winComboMenu")).Window.Width = .Width - 4
+        
+        ' set the values
+        Windows(GetWindowIndex("winComboMenu")).Window.List = .List
+        Windows(GetWindowIndex("winComboMenu")).Window.Value = .Value
+        Windows(GetWindowIndex("winComboMenu")).Window.Group = 0
+        
+        ' load the menu
+        Windows(GetWindowIndex("winComboMenu")).Window.Visible = True
+        Windows(GetWindowIndex("winComboMenuBG")).Window.Visible = True
+        ShowWindow(GetWindowIndex("winComboMenuBG"), True, False)
+        ShowWindow(GetWindowIndex("winComboMenu"), True, False)
+    End With
+End Sub
 
     Public Sub chkSaveUser_Click()
         With Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "chkSaveUsername"))
@@ -2333,12 +2358,12 @@ Public Sub DragBox_Check()
                                     ' set the hotbar slot
                                     If DragBox.Origin <> PartOriginType.Hotbar Then
                                         If DragBox.Type = PartType.Item Then
-                                            SendSetHotbarSlot(1, DragBox.Slot, I)
+                                            SendSetHotbarSlot(1, I, DragBox.Slot)
                                         ElseIf DragBox.Type = PartType.Spell Then
-                                            SendSetHotbarSlot(2, DragBox.Slot, I)
+                                            SendSetHotbarSlot(2, I, DragBox.Slot)
                                         End If
                                     Else
-                                        'If DragBox.Slot <> I Then SendSetHotbarSlot(DragBox.Slot, I)
+                                        If DragBox.Slot <> I Then SendSetHotbarSlot(3, I, DragBox.Slot)
                                     End If
                                     Exit For
                                 End If
@@ -3062,40 +3087,50 @@ End Sub
     End Sub
 
     Public Sub CreateWindow_Options()
-    CreateWindow("winOptions", "", Georgia, zOrder_Win, 0, 0, 210, 212, 0, 0, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , , ,False, False)
+        CreateWindow("winOptions", "", Georgia, zOrder_Win, 0, 0, 210, 212, 0, 0, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , , ,False, False)
 
-    ' Centralize it
-    CentralizeWindow(windowCount)
+        ' Centralize it
+        CentralizeWindow(windowCount)
 
-    ' Set the index for spawning controls
-    zOrder_Con = 1
+        ' Set the index for spawning controls
+        zOrder_Con = 1
 
-    ' Parchment
-    CreatePictureBox(windowCount, "picParchment", 6, 6, 198, 200, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        ' Parchment
+        CreatePictureBox(windowCount, "picParchment", 6, 6, 198, 200, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
 
-    ' General
-    CreatePictureBox(windowCount, "picBlank", 35, 25, 140, FontSize, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-    CreateLabel(windowCount, "lblBlank", 35, 22, 140, 0, "General Options", Verdana, Color.White, AlignmentType.Center)
+        ' General
+        CreatePictureBox(windowCount, "picBlank", 35, 25, 140, FontSize, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(windowCount, "lblBlank", 35, 22, 140, 0, "General Options", Verdana, Color.White, AlignmentType.Center)
     
-    ' Check boxes
-    CreateCheckbox(windowCount, "chkMusic", 35, 40, 80, , , "Music", Verdana, , , , DesignType.ChkNorm)
-    CreateCheckbox(windowCount, "chkSound", 115, 40, 80, , , "Sound", Verdana, , , , DesignType.ChkNorm)
-    CreateCheckbox(windowCount, "chkAutotile", 35, 60, 80, , , "Autotile", Verdana, , , , DesignType.ChkNorm)
-    CreateCheckbox(windowCount, "chkFullscreen", 115, 60, 80, , , "Fullscreen", Verdana, , , , DesignType.ChkNorm)
+        ' Check boxes
+        CreateCheckbox(windowCount, "chkMusic", 35, 40, 80, , , "Music", Verdana, , , , DesignType.ChkNorm)
+        CreateCheckbox(windowCount, "chkSound", 115, 40, 80, , , "Sound", Verdana, , , , DesignType.ChkNorm)
+        CreateCheckbox(windowCount, "chkAutotile", 35, 60, 80, , , "Autotile", Verdana, , , , DesignType.ChkNorm)
+        CreateCheckbox(windowCount, "chkFullscreen", 115, 60, 80, , , "Fullscreen", Verdana, , , , DesignType.ChkNorm)
 
-    ' Resolution
-    CreatePictureBox(windowCount, "picBlank", 35, 85, 140, FontSize, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-    CreateLabel(windowCount, "lblBlank", 35, 92, 140, FontSize, "Select Resolution", Verdana, Color.White, AlignmentType.Center)
+        ' Resolution
+        CreatePictureBox(windowCount, "picBlank", 35, 85, 140, FontSize, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(windowCount, "lblBlank", 35, 92, 140, FontSize, "Select Resolution", Verdana, Color.White, AlignmentType.Center)
 
-    ' combobox
-    CreateComboBox(windowCount, "cmbResWidth", 30, 100, 150, 18, DesignType.ComboNorm)
-    CreateComboBox(windowCount, "cmbResHeight", 130, 100, 150, 18, DesignType.ComboNorm)
+        ' combobox
+        CreateComboBox(windowCount, "cmbRes", 30, 100, 150, 18, DesignType.ComboNorm)
 
-    ' Button
-    CreateButton(windowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)
+        ' Button
+        CreateButton(windowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)
 
-    ' Populate the options screen
-    SetOptionsScreen
+        ' Populate the options screen
+        SetOptionsScreen
+    End Sub
+
+    Public Sub CreateWindow_Combobox()
+        ' background window
+        CreateWindow("winComboMenuBG", "ComboMenuBG", Georgia, zOrder_Win, 0, 0, 800, 600, 0, False, , , , , , , , , , , , , New Action(AddressOf CloseComboMenu), , , False, False)
+
+        ' window
+        CreateWindow("winComboMenu", "ComboMenu", Georgia, zOrder_Win, 0, 0, 100, 100, 0, False, , , DesignType.ComboNorm, , , , , , , , , , , , , , False, False)
+
+        ' centralize it
+        CentralizeWindow(windowCount)
 End Sub
 
     Public Sub CreateWindow_Skills()

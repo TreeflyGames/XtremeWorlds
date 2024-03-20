@@ -2092,8 +2092,8 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         type = buffer.ReadInt32
-        slot = buffer.ReadInt32
         skill = buffer.ReadInt32
+        slot = buffer.ReadInt32
 
         Player(index).Hotbar(slot).Slot = skill
         Player(index).Hotbar(slot).SlotType = type
