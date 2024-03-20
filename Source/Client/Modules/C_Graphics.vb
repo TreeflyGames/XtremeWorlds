@@ -512,10 +512,10 @@ Module C_Graphics
     End Sub
 
     Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
-        GameSettings.ScreenWidth = e.Width - (e.Width Mod PicX)
-        GameSettings.ScreenHeight = e.Height - (e.Height Mod PicY)
-        GameSettings.CameraHeight = GameSettings.ScreenHeight / 32
-        GameSettings.CameraWidth = GameSettings.ScreenWidth / 32
+        ResolutionWidth = e.Width - (e.Width Mod PicX)
+        ResolutionHeight = e.Height - (e.Height Mod PicY)
+        GameSettings.CameraHeight = ResolutionHeight / 32
+        GameSettings.CameraWidth = ResolutionWidth / 32
         GameSettings.Save()
 
         RefreshWindow = True
@@ -776,7 +776,7 @@ Module C_Graphics
                 GameWindow = Nothing
             End If
 
-            GameWindow = New RenderWindow(New VideoMode(GameSettings.ScreenWidth, GameSettings.ScreenHeight), GameSettings.GameName, Styles.Default, WindowSettings)
+            GameWindow = New RenderWindow(New VideoMode(ResolutionWidth, ResolutionHeight), GameSettings.GameName, Styles.Default, WindowSettings)
             
             CenterWindow(GameWindow)
             GameWindow.SetVerticalSyncEnabled(GameSettings.Vsync)
@@ -2900,20 +2900,22 @@ Module C_Graphics
         Next
 
         ' row 1
-        RenderTexture(PictureSprite(1), GameWindow, GameSettings.ScreenWidth - 512, GameSettings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(2), GameWindow, GameSettings.ScreenWidth - 1024, GameSettings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(3), GameWindow, GameSettings.ScreenWidth - 1536, GameSettings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(4), GameWindow, GameSettings.ScreenWidth - 2048, GameSettings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(1), GameWindow, ResolutionWidth - 512, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(2), GameWindow, ResolutionWidth - 1024, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(3), GameWindow, ResolutionWidth - 1536, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(4), GameWindow, ResolutionWidth - 2048, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+       
         ' row 2
-        RenderTexture(PictureSprite(5), GameWindow, GameSettings.ScreenWidth - 512, GameSettings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(6), GameWindow, GameSettings.ScreenWidth - 1024, GameSettings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(7), GameWindow, GameSettings.ScreenWidth - 1536, GameSettings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(8), GameWindow, GameSettings.ScreenWidth - 2048, GameSettings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(5), GameWindow, ResolutionWidth - 512, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(6), GameWindow, ResolutionWidth - 1024, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(7), GameWindow, ResolutionWidth - 1536, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(8), GameWindow, ResolutionWidth - 2048, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        
         ' row 3
-        RenderTexture(PictureSprite(9), GameWindow, GameSettings.ScreenWidth - 512, GameSettings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(10), GameWindow, GameSettings.ScreenWidth - 1024, GameSettings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(11), GameWindow, GameSettings.ScreenWidth - 1536, GameSettings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(12), GameWindow, GameSettings.ScreenWidth - 2048, GameSettings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(9), GameWindow, ResolutionWidth - 512, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(10), GameWindow, ResolutionWidth - 1024, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(11), GameWindow, ResolutionWidth - 1536, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(12), GameWindow, ResolutionWidth - 2048, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
     End Sub
 
     Public Sub DrawHotbar()

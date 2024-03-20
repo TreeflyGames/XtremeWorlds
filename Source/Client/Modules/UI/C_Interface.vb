@@ -996,8 +996,8 @@ Module C_Interface
 
     Public Sub CentralizeWindow(curWindow As Long)
         With Windows(curWindow).Window
-            .Left = (GameSettings.ScreenWidth / 2) - (.Width / 2)
-            .Top = (GameSettings.ScreenWidth / 2) - (.Height / 2)
+            .Left = (ResolutionWidth / 2) - (.Width / 2)
+            .Top = (ResolutionHeight / 2) - (.Height / 2)
             .OrigLeft = .Left
             .OrigTop = .Top
         End With
@@ -1355,8 +1355,8 @@ Module C_Interface
                     If entState = EntState.MouseMove Then
                         If .CanDrag Then
                             If .State = EntState.MouseDown Then
-                                .Left = Math.Clamp(.Left + ((CurMouseX - .Left) - .movedX), 0, GameSettings.ScreenWidth - .Width)
-                                .Top = Math.Clamp(.Top + ((CurMouseY - .Top) - .movedY), 0, GameSettings.ScreenHeight - .Height)
+                                .Left = Math.Clamp(.Left + ((CurMouseX - .Left) - .movedX), 0, ResolutionWidth - .Width)
+                                .Top = Math.Clamp(.Top + ((CurMouseY - .Top) - .movedY), 0, ResolutionHeight - .Height)
                             End If
                         End If
                     End If
@@ -1535,7 +1535,7 @@ Module C_Interface
             Windows(GetWindowIndex("winComboMenu")).Window.Height = 2 + (UBound(.list) * 16)
             Windows(GetWindowIndex("winComboMenu")).Window.Left = Windows(curWindow).Window.Left + .Left + 2
             Top = Windows(curWindow).Window.Top + .Top + .Height
-            If Top + Windows(GetWindowIndex("winComboMenu")).Window.Height > GameSettings.ScreenHeight Then Top = GameSettings.ScreenHeight - Windows(GetWindowIndex("winComboMenu")).Window.Height
+            If Top + Windows(GetWindowIndex("winComboMenu")).Window.Height > ResolutionHeight Then Top = ResolutionHeight - Windows(GetWindowIndex("winComboMenu")).Window.Height
             Windows(GetWindowIndex("winComboMenu")).Window.Top = Top
             Windows(GetWindowIndex("winComboMenu")).Window.Width = .Width - 4
         
@@ -1940,7 +1940,7 @@ Module C_Interface
         If actChatHeight < 10 Then actChatHeight = 10
 
         xO = Windows(winIndex).Window.Left + 10
-        yO = GameSettings.ScreenHeight - 10
+        yO = ResolutionHeight - 10
 
         ' draw the background
         RenderDesign(DesignType.Win_Shadow, xO, yO, 160, 10)
@@ -2672,7 +2672,7 @@ End Sub
 
     Public Sub CreateWindow_Chat()
         ' Create window
-        CreateWindow("winChat", "", Georgia, zOrder_Win, 8, GameSettings.ScreenHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , , , False)
+        CreateWindow("winChat", "", Georgia, zOrder_Win, 8, ResolutionHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , , , False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
@@ -2724,7 +2724,7 @@ End Sub
         zOrder_Con = 1
 
         ' Chat Label
-        CreateLabel(WindowCount, "lblMsg", 10, GameSettings.ScreenHeight - 28, 160, FontSize, "Press 'Enter' to open chatbox.", Verdana, Color.White)
+        CreateLabel(WindowCount, "lblMsg", 10, ResolutionHeight - 28, 160, FontSize, "Press 'Enter' to open chatbox.", Verdana, Color.White)
     End Sub
 
     Public Sub CreateWindow_Hotbar()
@@ -2734,7 +2734,7 @@ End Sub
 
     Public Sub CreateWindow_Menu()
         ' Create window
-        CreateWindow("winMenu", "", Georgia, zOrder_Win, GameSettings.ScreenWidth - 229, GameSettings.ScreenHeight - 31, 229, 31, 0, False, , , , , , , , , , , , , , , , , False, False)
+        CreateWindow("winMenu", "", Georgia, zOrder_Win, ResolutionWidth - 229, ResolutionHeight - 31, 229, 31, 0, False, , , , , , , , , , , , , , , , , False, False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
@@ -3146,7 +3146,7 @@ End Sub
         CreateLabel(windowCount, "lblBlank", 35, 92, 140, FontSize, "Select Resolution", Verdana, Color.White, AlignmentType.Center)
 
         ' combobox
-        CreateComboBox(windowCount, "cmbRes", 30, 100, 150, 18, DesignType.ComboMenuNorm)
+        CreateComboBox(windowCount, "cmbRes", 30, 100, 150, 18, DesignType.ComboNorm)
 
         ' Button
         CreateButton(windowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)

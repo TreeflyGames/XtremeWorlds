@@ -210,7 +210,7 @@ Module C_Text
                         End If
                     End If
                 Next
-                x = (GameSettings.ScreenWidth \ 2) - ((Len(Trim$(ActionMsg(index).Message)) \ 2) * 8)
+                x = (ResolutionWidth \ 2) - ((Len(Trim$(ActionMsg(index).Message)) \ 2) * 8)
                 y = 425
 
         End Select
@@ -233,7 +233,7 @@ Module C_Text
 
         ' set the position
         xO = 19
-        yO = GameSettings.ScreenHeight - 40
+        yO = ResolutionHeight - 40
 
         ' loop through chat
         rLines = 1

@@ -16,8 +16,7 @@ Public Class GameSettings
     Public Shared MusicExt As String = ".mid"
     Public Shared SoundExt As String = ".wav"
 
-    Public Shared ScreenWidth As String = "1024"
-    Public Shared ScreenHeight As String = "768"
+    Public Shared Resolution As Byte = 0
     Public Shared Vsync As Byte = 1
     Public Shared ShowNpcBar As Byte = 1
     Public Shared CameraType As Byte = 0

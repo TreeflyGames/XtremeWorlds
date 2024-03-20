@@ -1688,17 +1688,7 @@ Continue1:
             .Controls(GetControlIndex("winOptions", "chkSound")).Value = GameSettings.Sound
             .Controls(GetControlIndex("winOptions", "chkAutotile")).Value = GameSettings.Autotile
             .Controls(GetControlIndex("winOptions", "chkFullscreen")).Value = GameSettings.Fullscreen
-            .Controls(GetControlIndex("winOptions", "cmbRes")).Value = 0
-        End With
-
-        ' fill the options screen
-        With Windows(GetWindowIndex("winOptions"))
-            .Controls(GetControlIndex("winOptions", "chkMusic")).Value = GameSettings.Music
-            .Controls(GetControlIndex("winOptions", "chkSound")).Value = GameSettings.Sound
-            .Controls(GetControlIndex("winOptions", "chkAutotile")).Value = GameSettings.Autotile
-            .Controls(GetControlIndex("winOptions", "chkFullscreen")).Value = GameSettings.Fullscreen
-            .Controls(GetControlIndex("winOptions", "cmbResWidth")).Value = GameSettings.ScreenWidth
-            .Controls(GetControlIndex("winOptions", "cmbResHeight")).Value = GameSettings.ScreenHeight
+            .Controls(GetControlIndex("winOptions", "cmbRes")).Value = GameSettings.Resolution
         End With
     End Sub
 End Module
