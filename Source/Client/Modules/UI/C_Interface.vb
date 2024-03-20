@@ -2333,15 +2333,13 @@ Public Sub DragBox_Check()
                                     ' set the hotbar slot
                                     If DragBox.Origin <> PartOriginType.Hotbar Then
                                         If DragBox.Type = PartType.Item Then
-                                            'SendHotbarChange(1, DragBox.Slot, I)
+                                            SendSetHotbarSlot(1, DragBox.Slot, I)
                                         ElseIf DragBox.Type = PartType.Spell Then
-                                            'SendHotbarChange(2, DragBox.Slot, I)
+                                            SendSetHotbarSlot(2, DragBox.Slot, I)
                                         End If
                                     Else
-                                        ' SWITCH the hotbar slots
-                                        'If DragBox.Slot <> I Then SwitchHotbar(DragBox.Slot, I)
+                                        'If DragBox.Slot <> I Then SendSetHotbarSlot(DragBox.Slot, I)
                                     End If
-                                    ' exit early
                                     Exit For
                                 End If
                             End If
@@ -2361,7 +2359,7 @@ Public Sub DragBox_Check()
             Case PartOriginType.Spells
                 ' dialogue
             Case PartOriginType.Hotbar
-                'SendHotbarChange(0, 0, DragBox.Slot)
+                SendSetHotbarSlot(0, 0, DragBox.Slot)
         End Select
     End If
     
@@ -2460,12 +2458,12 @@ End Sub
 
         If slotNum Then
             With DragBox
-                If Hotbar(slotNum).SlotType = 1 Then ' inventory
+                If Player(Myindex).Hotbar(slotNum).SlotType = 1 Then ' inventory
                     .Type = PartOriginsType.Inventory
-                ElseIf Hotbar(slotNum).SlotType = 2 Then ' spell
+                ElseIf Player(Myindex).Hotbar(slotNum).SlotType = 2 Then ' spell
                     .Type = PartOriginsType.Spell
                 End If
-                .Value = Hotbar(slotNum).Slot
+                .Value = Player(Myindex).Hotbar(slotNum).Slot
                 .Origin = PartOriginType.Hotbar
                 .Slot = slotNum
             End With
@@ -2524,11 +2522,11 @@ End Sub
             End If
 
             ' go go go
-            Select Case Hotbar(slotNum).SlotType
+            Select Case Player(Myindex).Hotbar(slotNum).SlotType
                 Case 1 ' inventory
-                    'ShowItemDesc(x, y, Hotbar(slotNum).Slot, False)
+                    'ShowItemDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot, False)
                 Case 2 ' spells
-                    'ShowSpellDesc(x, y, Hotbar(slotNum).Slot, 0)
+                    'ShowItemDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot, 0)
             End Select
         End If
     End Sub

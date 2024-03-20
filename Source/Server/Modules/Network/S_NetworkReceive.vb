@@ -81,33 +81,26 @@ Module S_NetworkReceive
 
         Socket.PacketId(ClientPackets.CAdmin) = AddressOf Packet_Admin
 
-        'hotbar
         Socket.PacketId(ClientPackets.CSetHotbarSlot) = AddressOf Packet_SetHotBarSlot
         Socket.PacketId(ClientPackets.CDeleteHotbarSlot) = AddressOf Packet_DeleteHotBarSlot
         Socket.PacketId(ClientPackets.CUseHotbarSlot) = AddressOf Packet_UseHotBarSlot
 
-        'Events
         Socket.PacketId(ClientPackets.CEventChatReply) = AddressOf Packet_EventChatReply
         Socket.PacketId(ClientPackets.CEvent) = AddressOf Packet_Event
         Socket.PacketId(ClientPackets.CRequestSwitchesAndVariables) = AddressOf Packet_RequestSwitchesAndVariables
         Socket.PacketId(ClientPackets.CSwitchesAndVariables) = AddressOf Packet_SwitchesAndVariables
 
-        'projectiles
-
         Socket.PacketId(ClientPackets.CRequestProjectiles) = AddressOf HandleRequestProjectile
         Socket.PacketId(ClientPackets.CClearProjectile) = AddressOf HandleClearProjectile
 
-        'emotes
         Socket.PacketId(ClientPackets.CEmote) = AddressOf Packet_Emote
 
-        'parties
         Socket.PacketId(ClientPackets.CRequestParty) = AddressOf Packet_PartyRquest
         Socket.PacketId(ClientPackets.CAcceptParty) = AddressOf Packet_AcceptParty
         Socket.PacketId(ClientPackets.CDeclineParty) = AddressOf Packet_DeclineParty
         Socket.PacketId(ClientPackets.CLeaveParty) = AddressOf Packet_LeaveParty
         Socket.PacketId(ClientPackets.CPartyChatMsg) = AddressOf Packet_PartyChatMsg
 
-        'pets
         Socket.PacketId(ClientPackets.CRequestPets) = AddressOf Packet_RequestPets
         Socket.PacketId(ClientPackets.CSummonPet) = AddressOf Packet_SummonPet
         Socket.PacketId(ClientPackets.CPetMove) = AddressOf Packet_PetMove
@@ -117,7 +110,6 @@ Module S_NetworkReceive
         Socket.PacketId(ClientPackets.CPetUseStatPoint) = AddressOf Packet_UsePetStatPoint
         Socket.PacketId(ClientPackets.CRequestEditPet) = AddressOf Packet_RequestPet
 
-        'editor
         Socket.PacketId(ClientPackets.CRequestEditItem) = AddressOf Packet_EditItem
         Socket.PacketId(ClientPackets.CSaveItem) = AddressOf Packet_SaveItem
         Socket.PacketId(ClientPackets.CRequestEditNpc) = AddressOf Packet_EditNpc
@@ -2099,9 +2091,9 @@ Module S_NetworkReceive
         Dim slot As Integer, skill As Integer, type As Byte
         Dim buffer As New ByteStream(data)
 
+        type = buffer.ReadInt32
         slot = buffer.ReadInt32
         skill = buffer.ReadInt32
-        type = buffer.ReadInt32
 
         Player(index).Hotbar(slot).Slot = skill
         Player(index).Hotbar(slot).SlotType = type

@@ -275,9 +275,9 @@ Module C_Graphics
             If inSmallChat Then
                 For i = 1 To 9
                     If e.Code = 48 + i Then
-                        'SendHotbarUse(i)
+                        SendUseHotbarSlot(i)
                     End If
-                    'If e.Code = 48 Then SendHotbarUse(10)
+                    If e.Code = 48 Then SendUseHotbarSlot(10)
                 Next
             End If
 
@@ -375,6 +375,7 @@ Module C_Graphics
                         PetMove(CurX, CurY)
                     End If
                 End If
+
                 ' targetting
                 PlayerSearch(CurX, CurY, 0)
             Else
@@ -388,6 +389,13 @@ Module C_Graphics
                 ' admin warp if we're pressing shift and right clicking
                 If GetPlayerAccess(Myindex) >= 2 Then AdminWarp(CurX, CurY)
             Else
+                For i = 1 To MAX_HOTBAR
+                    If Player(Myindex).Hotbar(i).Slot > 0 Then
+                        SendDeleteHotbar(i)
+                        Exit Sub
+                    End If
+                Next
+
                 ' rightclick menu
                 If PetAlive(Myindex) Then
                     If IsInBounds() AndAlso CurX = Player(Myindex).Pet.X And CurY = Player(Myindex).Pet.Y Then
@@ -2935,18 +2943,18 @@ Module C_Graphics
 
             ' render icon
             If Not (DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = i) Then
-                Select Case Hotbar(i).SlotType
+                Select Case Player(Myindex).Hotbar(i).SlotType
                     Case 1 ' inventory
-                        If Len(Item(Hotbar(i).Slot).Name) > 0 And Item(Hotbar(i).Slot).Pic > 0 Then
-                            RenderTexture(ItemSprite(Item(Hotbar(i).Slot).Pic), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                        If Len(Item(Player(Myindex).Hotbar(i).Slot).Name) > 0 And Item(Player(Myindex).Hotbar(i).Slot).Pic > 0 Then
+                            RenderTexture(ItemSprite(Item(Player(Myindex).Hotbar(i).Slot).Pic), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                         End If
                     Case 2 ' spell
-                        If Len(Skill(Hotbar(i).Slot).Name) > 0 And Skill(Hotbar(i).Slot).Icon > 0 Then
-                            RenderTexture(SkillSprite(Skill(Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                        If Len(Skill(Player(Myindex).Hotbar(i).Slot).Name) > 0 And Skill(Player(Myindex).Hotbar(i).Slot).Icon > 0 Then
+                            RenderTexture(SkillSprite(Skill(Player(Myindex).Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                             For t = 1 To MAX_PLAYER_SKILLS
                                 If GetPlayerSkill(Myindex, t) > 0 Then
-                                    If GetPlayerSkill(Myindex, t) = Hotbar(i).Slot And GetPlayerSkillCD(Myindex, t) > 0 Then
-                                        RenderTexture(SkillSprite(Skill(Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
+                                    If GetPlayerSkill(Myindex, t) = Player(Myindex).Hotbar(i).Slot And GetPlayerSkillCD(Myindex, t) > 0 Then
+                                        RenderTexture(SkillSprite(Skill(Player(Myindex).Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
                                     End If
                                 End If
                             Next

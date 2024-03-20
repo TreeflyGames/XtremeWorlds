@@ -1385,7 +1385,7 @@ Continue1:
         End With
 
         For i = 1 To MAX_HOTBAR
-            If Hotbar(i).Slot Then
+            If Player(Myindex).Hotbar(i).Slot Then
                 If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
                     If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.Bottom Then
                         IsHotbar = i
