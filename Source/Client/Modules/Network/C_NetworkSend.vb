@@ -43,7 +43,7 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CLogin)
         buffer.WriteString((EKeyPair.EncryptString(name)))
         buffer.WriteString((EKeyPair.EncryptString(pass)))
-        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
+        buffer.WriteString((EKeyPair.EncryptString(GameSettings.Version)))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -55,7 +55,7 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CRegister)
         buffer.WriteString((EKeyPair.EncryptString(name)))
         buffer.WriteString((EKeyPair.EncryptString(pass)))
-        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
+        buffer.WriteString((EKeyPair.EncryptString(GameSettings.Version)))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()

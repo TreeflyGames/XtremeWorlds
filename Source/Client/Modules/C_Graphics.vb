@@ -210,12 +210,12 @@ Module C_Graphics
         Console.WriteLine("Key Pressed: " & e.Code.ToString())
 
         If InGame Then
-            If Inputs.MoveUp(e.Code) Then VbKeyUp = True
-            If Inputs.MoveDown(e.Code) Then VbKeyDown = True
-            If Inputs.MoveLeft(e.Code) Then VbKeyLeft = True
-            If Inputs.MoveRight(e.Code) Then VbKeyRight = True
-            If Inputs.Attack(e.Code) Then VbKeyControl = True
-            If Inputs.Run(e.Code) Then VbKeyShift = True
+            If InputSettings.MoveUp(e.Code) Then VbKeyUp = True
+            If InputSettings.MoveDown(e.Code) Then VbKeyDown = True
+            If InputSettings.MoveLeft(e.Code) Then VbKeyLeft = True
+            If InputSettings.MoveRight(e.Code) Then VbKeyRight = True
+            If InputSettings.Attack(e.Code) Then VbKeyControl = True
+            If InputSettings.Run(e.Code) Then VbKeyShift = True
 
             Select Case e.Code
                 Case Keyboard.Key.Escape
@@ -343,12 +343,12 @@ Module C_Graphics
 
         Console.WriteLine("Key Released: " & e.Code.ToString())
 
-        If Inputs.MoveUp(e.Code) Then VbKeyUp = False
-        If Inputs.MoveDown(e.Code) Then VbKeyDown = False
-        If Inputs.MoveLeft(e.Code) Then VbKeyLeft = False
-        If Inputs.MoveRight(e.Code) Then VbKeyRight = False
-        If Inputs.Attack(e.Code) Then VbKeyControl = False
-        If Inputs.Run(e.Code) Then VbKeyShift = False
+        If InputSettings.MoveUp(e.Code) Then VbKeyUp = False
+        If InputSettings.MoveDown(e.Code) Then VbKeyDown = False
+        If InputSettings.MoveLeft(e.Code) Then VbKeyLeft = False
+        If InputSettings.MoveRight(e.Code) Then VbKeyRight = False
+        If InputSettings.Attack(e.Code) Then VbKeyControl = False
+        If InputSettings.Run(e.Code) Then VbKeyShift = False
 
         'admin
         If e.Code = Keyboard.Key.Insert Then
@@ -500,11 +500,11 @@ Module C_Graphics
     End Sub
 
     Private Sub GameWindow_Resized(sender As Object, e As SizeEventArgs)
-        Types.Settings.ScreenWidth = e.Width - (e.Width Mod PicX)
-        Types.Settings.ScreenHeight = e.Height - (e.Height Mod PicY)
-        Types.Settings.CameraHeight = Types.Settings.ScreenHeight / 32
-        Types.Settings.CameraWidth = Types.Settings.ScreenWidth / 32
-        SettingsManager.Save()
+        GameSettings.ScreenWidth = e.Width - (e.Width Mod PicX)
+        GameSettings.ScreenHeight = e.Height - (e.Height Mod PicY)
+        GameSettings.CameraHeight = GameSettings.ScreenHeight / 32
+        GameSettings.CameraWidth = GameSettings.ScreenWidth / 32
+        GameSettings.Save()
 
         RefreshWindow = True
     End Sub
@@ -764,11 +764,11 @@ Module C_Graphics
                 GameWindow = Nothing
             End If
 
-            GameWindow = New RenderWindow(New VideoMode(Types.Settings.ScreenWidth, Types.Settings.ScreenHeight), Types.Settings.GameName, Styles.Default, WindowSettings)
+            GameWindow = New RenderWindow(New VideoMode(GameSettings.ScreenWidth, GameSettings.ScreenHeight), GameSettings.GameName, Styles.Default, WindowSettings)
             CenterWindow(GameWindow)
-            GameWindow.SetVerticalSyncEnabled(Types.Settings.Vsync)
-            If Types.Settings.Vsync = 0 Then
-                GameWindow.SetFramerateLimit(Types.Settings.MaxFps)
+            GameWindow.SetVerticalSyncEnabled(GameSettings.Vsync)
+            If GameSettings.Vsync = 0 Then
+                GameWindow.SetFramerateLimit(GameSettings.MaxFps)
             End If
             Dim iconImage As New Image(Paths.Gui + "icon.png")
             GameWindow.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
@@ -1361,12 +1361,12 @@ Module C_Graphics
         offsetX = Player(Myindex).XOffset + PicX
         offsetY = Player(Myindex).YOffset + PicY
 
-        If Types.Settings.CameraType = 1 Then
-            startX = GetPlayerX(Myindex) - Types.Settings.CameraWidth
-            startY = GetPlayerY(Myindex) - Types.Settings.CameraHeight
+        If GameSettings.CameraType = 1 Then
+            startX = GetPlayerX(Myindex) - GameSettings.CameraWidth
+            startY = GetPlayerY(Myindex) - GameSettings.CameraHeight
         Else
-            startX = Math.Floor(GetPlayerX(Myindex) - (Types.Settings.CameraWidth) / 2)
-            startY = Math.Floor(GetPlayerY(Myindex) - (Types.Settings.CameraHeight) / 2)
+            startX = Math.Floor(GetPlayerX(Myindex) - (GameSettings.CameraWidth) / 2)
+            startY = Math.Floor(GetPlayerY(Myindex) - (GameSettings.CameraHeight) / 2)
         End If
 
         If startX < 0 Then
@@ -1393,24 +1393,24 @@ Module C_Graphics
             startY = 0
         End If
 
-        If Not Map.MaxX = Types.Settings.CameraWidth Then
+        If Not Map.MaxX = GameSettings.CameraWidth Then
             If Player(MyIndex).xOffset > 0 Then
-                EndX = StartX + (Types.Settings.CameraWidth + 1) + 1
+                EndX = StartX + (GameSettings.CameraWidth + 1) + 1
             Else
-                EndX = StartX + (Types.Settings.CameraWidth + 1)
+                EndX = StartX + (GameSettings.CameraWidth + 1)
             End If
         Else
-            EndX = StartX + (Types.Settings.CameraWidth + 1)
+            EndX = StartX + (GameSettings.CameraWidth + 1)
         End If
 
-        If Not Map.MaxY = Types.Settings.CameraHeight Then
+        If Not Map.MaxY = GameSettings.CameraHeight Then
             If Player(MyIndex).yOffset > 0 Then
-                EndY = StartY + (Types.Settings.CameraHeight + 1) + 1
+                EndY = StartY + (GameSettings.CameraHeight + 1) + 1
             Else
-                EndY = StartY + (Types.Settings.CameraHeight + 1)
+                EndY = StartY + (GameSettings.CameraHeight + 1)
             End If
         Else
-            EndY = StartY + (Types.Settings.CameraHeight + 1)
+            EndY = StartY + (GameSettings.CameraHeight + 1)
         End If
 
         If EndX - 1 >= Map.MaxX Then
@@ -1423,14 +1423,14 @@ Module C_Graphics
                 End If
             End If
         
-            If Map.MaxX = Types.Settings.CameraWidth Then
+            If Map.MaxX = GameSettings.CameraWidth Then
                 If offsetX <> 0 Then
-                    StartX = EndX - Types.Settings.CameraWidth
+                    StartX = EndX - GameSettings.CameraWidth
                 Else
-                    StartX = EndX - Types.Settings.CameraWidth - 1
+                    StartX = EndX - GameSettings.CameraWidth - 1
                 End If
             Else
-                StartX = EndX - Types.Settings.CameraWidth - 1
+                StartX = EndX - GameSettings.CameraWidth - 1
             End If
         End If
 
@@ -1444,34 +1444,34 @@ Module C_Graphics
                 End If
             End If
 
-            If Map.MaxY = Types.Settings.CameraHeight Then
+            If Map.MaxY = GameSettings.CameraHeight Then
                 If offsetY <> 0 Then
-                    StartY = EndY - Types.Settings.CameraHeight
+                    StartY = EndY - GameSettings.CameraHeight
                 Else
-                    StartY = EndY - Types.Settings.CameraHeight - 1
+                    StartY = EndY - GameSettings.CameraHeight - 1
                 End If
             Else
-                StartY = EndY - Types.Settings.CameraHeight - 1
+                StartY = EndY - GameSettings.CameraHeight - 1
             End If
         End If
 
-        If Types.Settings.CameraWidth > Map.MaxX Then
-            If EndX + 1 < Types.Settings.CameraWidth Then
-                StartX = StartX + ((Types.Settings.CameraWidth - EndX) / 2)
+        If GameSettings.CameraWidth > Map.MaxX Then
+            If EndX + 1 < GameSettings.CameraWidth Then
+                StartX = StartX + ((GameSettings.CameraWidth - EndX) / 2)
             End If
         End If
 
-        If Types.Settings.CameraHeight > Map.MaxY Then
-            If EndY + 1 < Types.Settings.CameraHeight Then
-                StartY = StartY + ((Types.Settings.CameraHeight - EndY) / 2)
+        If GameSettings.CameraHeight > Map.MaxY Then
+            If EndY + 1 < GameSettings.CameraHeight Then
+                StartY = StartY + ((GameSettings.CameraHeight - EndY) / 2)
             End If
         End If
             
-        If Types.Settings.CameraWidth = Map.MaxX Then
+        If GameSettings.CameraWidth = Map.MaxX Then
             offsetX = 0
         End If
 
-        If Types.Settings.CameraHeight = Map.MaxY Then
+        If GameSettings.CameraHeight = Map.MaxY Then
             offsetY = 0
         End If
 
@@ -1485,8 +1485,8 @@ Module C_Graphics
         With Camera
             .Y = offsetY
             .X = offsetX
-            .Height = .Top + Types.Settings.CameraHeight * PicY
-            .Width = .Left + Types.Settings.CameraWidth * PicX
+            .Height = .Top + GameSettings.CameraHeight * PicY
+            .Width = .Left + GameSettings.CameraWidth * PicX
         End With
 
         UpdateDrawMapName()
@@ -1912,7 +1912,7 @@ Module C_Graphics
             GameWindow.Draw(rectShape)
         End If
 
-        If Types.Settings.ShowNpcBar = 1 Then
+        If GameSettings.ShowNpcBar = 1 Then
             ' check for hp bar
             For i = 1 To MAX_MAP_NPCS
                 If Map.Npc Is Nothing Then Exit Sub
@@ -2386,7 +2386,7 @@ Module C_Graphics
                                     scale = New Vector2f(0.35F, 0.35F)
                                 End If
 
-                                If Types.Settings.DynamicLightRendering Then
+                                If GameSettings.DynamicLightRendering Then
 
                                     For Each tile As Vector2i In tiles
                                         LightSprite.Scale = scale
@@ -2887,20 +2887,20 @@ Module C_Graphics
         Next
 
         ' row 1
-        RenderTexture(PictureSprite(1), GameWindow, Types.Settings.ScreenWidth - 512, Types.Settings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(2), GameWindow, Types.Settings.ScreenWidth - 1024, Types.Settings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(3), GameWindow, Types.Settings.ScreenWidth - 1536, Types.Settings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(4), GameWindow, Types.Settings.ScreenWidth - 2048, Types.Settings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(1), GameWindow, GameSettings.ScreenWidth - 512, GameSettings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(2), GameWindow, GameSettings.ScreenWidth - 1024, GameSettings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(3), GameWindow, GameSettings.ScreenWidth - 1536, GameSettings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(4), GameWindow, GameSettings.ScreenWidth - 2048, GameSettings.ScreenHeight - 512, 0, 0, 512, 512, 512, 512)
         ' row 2
-        RenderTexture(PictureSprite(5), GameWindow, Types.Settings.ScreenWidth - 512, Types.Settings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(6), GameWindow, Types.Settings.ScreenWidth - 1024, Types.Settings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(7), GameWindow, Types.Settings.ScreenWidth - 1536, Types.Settings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(8), GameWindow, Types.Settings.ScreenWidth - 2048, Types.Settings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(5), GameWindow, GameSettings.ScreenWidth - 512, GameSettings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(6), GameWindow, GameSettings.ScreenWidth - 1024, GameSettings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(7), GameWindow, GameSettings.ScreenWidth - 1536, GameSettings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(PictureSprite(8), GameWindow, GameSettings.ScreenWidth - 2048, GameSettings.ScreenHeight - 1024, 0, 0, 512, 512, 512, 512)
         ' row 3
-        RenderTexture(PictureSprite(9), GameWindow, Types.Settings.ScreenWidth - 512, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(10), GameWindow, Types.Settings.ScreenWidth - 1024, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(11), GameWindow, Types.Settings.ScreenWidth - 1536, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(12), GameWindow, Types.Settings.ScreenWidth - 2048, Types.Settings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(9), GameWindow, GameSettings.ScreenWidth - 512, GameSettings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(10), GameWindow, GameSettings.ScreenWidth - 1024, GameSettings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(11), GameWindow, GameSettings.ScreenWidth - 1536, GameSettings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(PictureSprite(12), GameWindow, GameSettings.ScreenWidth - 2048, GameSettings.ScreenHeight - 1088, 0, 0, 512, 64, 512, 64)
     End Sub
 
     Public Sub DrawHotbar()

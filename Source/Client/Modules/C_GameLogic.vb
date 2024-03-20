@@ -244,7 +244,7 @@ Module C_GameLogic
                 End If
 
                 If tmr25 < tick Then
-                    PlayMusic(Types.Settings.MenuMusic)
+                    PlayMusic(GameSettings.MenuMusic)
                     tmr25 = tick + 25
                 End If
             End If
@@ -1356,7 +1356,7 @@ Continue1:
     End Sub
 
     Public Sub UpdateChat()
-        SettingsManager.Save()
+        GameSettings.Save()
     End Sub
 
     Public Sub ScrollChatBox(ByVal direction As Byte)
@@ -1643,7 +1643,6 @@ Continue1:
         End Select
 
         frmAdmin.Dispose()
-        frmOptions.Dispose()
 
         isLogging = True
         InGame = False
@@ -1662,5 +1661,49 @@ Continue1:
             Chat(I).text = vbNullString
         Next
     End Sub
+
+    Sub SetOptionsScreen()
+    ' clear the combolists
+    Erase Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "cmbRes")).list
+    ReDim Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "cmbRes")).list(0)
+    
+    ' fill the options screen
+    With Windows(GetWindowIndex("winOptions"))
+        .Controls(GetControlIndex("winOptions", "chkMusic")).Value = GameSettings.Music
+        .Controls(GetControlIndex("winOptions", "chkSound")).Value = GameSettings.Sound
+        .Controls(GetControlIndex("winOptions", "chkAutotiles")).Value = GameSettings.Autotile
+        .Controls(GetControlIndex("winOptions", "chkFullscreen")).Value = GameSettings.Fullscreen
+        .Controls(GetControlIndex("winOptions", "cmbResWidth")).Value = GameSettings.ScreenWidth
+        .Controls(GetControlIndex("winOptions", "cmbResHeight")).Value = GameSettings.ScreenHeight
+    End With
+
+    ' fill the options screen
+    With Windows(GetWindowIndex("winOptions"))
+        .Controls(GetControlIndex("winOptions", "chkMusic")).Value = GameSettings.Music
+        .Controls(GetControlIndex("winOptions", "chkSound")).Value = GameSettings.Sound
+        .Controls(GetControlIndex("winOptions", "chkAutotiles")).Value = GameSettings.Autotile
+        .Controls(GetControlIndex("winOptions", "chkFullscreen")).Value = GameSettings.Fullscreen
+        .Controls(GetControlIndex("winOptions", "cmbResWidth")).Value = GameSettings.ScreenWidth
+        .Controls(GetControlIndex("winOptions", "cmbResHeight")).Value = GameSettings.ScreenHeight
+    End With
+End Sub
+
+Public Sub LoadResolution(ResolutionType As String)
+    ' Resolutions
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes" + ResolutionType), "1920x1080")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes" + ResolutionType), "1680x1050")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes" + ResolutionType), "1600x900")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes" + ResolutionType), "1440x900")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes" + ResolutionType), "1440x1050")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes" + ResolutionType), "1366x768")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1360x1024")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1360x768")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1280x1024")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1280x800")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1280x768")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1280x720")
+    Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1024x768")
+    
+End Sub
 
 End Module

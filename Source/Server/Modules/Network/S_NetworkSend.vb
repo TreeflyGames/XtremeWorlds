@@ -415,8 +415,8 @@ Module S_NetworkSend
     Sub SendWelcome(index As Integer)
 
         ' Send them welcome
-        If Types.Settings.Welcome.Trim.Length > 0 Then
-            PlayerMsg(index, Types.Settings.Welcome, ColorType.BrightCyan)
+        If GameSettings.Welcome.Trim.Length > 0 Then
+            PlayerMsg(index, GameSettings.Welcome, ColorType.BrightCyan)
         End If
 
         ' Send whos online

@@ -15,9 +15,9 @@ Module C_General
     End Sub
 
     Friend Sub LoadGame()
-        SettingsManager.Load()
+        GameSettings.Load()
         LoadLanguage()
-        InputManager.Load()
+        InputSettings.Load()
         MidiPlayer.Initialize()
         LoadGraphics()
         InitNetwork()
@@ -79,7 +79,7 @@ Module C_General
 
     Sub GameInit()
         ' Send a request to the server to open the admin menu if the user wants it.
-        If Types.Settings.OpenAdminPanelOnLogin = 1 Then
+        If GameSettings.OpenAdminPanelOnLogin = 1 Then
             If GetPlayerAccess(Myindex) > 0 Then
                 SendRequestAdmin()
             End If

@@ -24,9 +24,9 @@ Module S_General
 
         myStopWatch.Start()
 
-        SettingsManager.Load()
+        GameSettings.Load()
 
-        Core.Time.Instance.GameSpeed = Types.Settings.TimeSpeed
+        Core.Time.Instance.GameSpeed = GameSettings.TimeSpeed
 
         Console.Title = "MirageWorlds Server"
 
@@ -103,7 +103,7 @@ Module S_General
         UpdateCaption()
 
         ' Start listener now that everything is loaded
-        Socket.StartListening(Types.Settings.Port, 5)
+        Socket.StartListening(GameSettings.Port, 5)
 
         ' Starts the server loop
         ServerLoop()
@@ -126,7 +126,7 @@ Module S_General
 
     Sub UpdateCaption()
         Try
-            Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", Types.Settings.GameName, MyIPAddress, Types.Settings.Port, Socket.HighIndex(), ErrorCount, Core.Time.Instance.ToString())
+            Console.Title = String.Format("{0} <IP {1}:{2}> ({3} Players Online) - Current Errors: {4} - Time: {5}", GameSettings.GameName, MyIPAddress, GameSettings.Port, Socket.HighIndex(), ErrorCount, Core.Time.Instance.ToString())
         Catch ex As Exception
             Exit Sub
         End Try

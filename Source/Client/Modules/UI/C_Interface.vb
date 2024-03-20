@@ -996,8 +996,8 @@ Module C_Interface
 
     Public Sub CentralizeWindow(curWindow As Long)
         With Windows(curWindow).Window
-            .Left = (Types.Settings.ScreenWidth / 2) - (.Width / 2)
-            .Top = (Types.Settings.ScreenHeight / 2) - (.Height / 2)
+            .Left = (GameSettings.ScreenWidth / 2) - (.Width / 2)
+            .Top = (GameSettings.ScreenWidth / 2) - (.Height / 2)
             .OrigLeft = .Left
             .OrigTop = .Top
         End With
@@ -1073,11 +1073,11 @@ Module C_Interface
         CreateLabel(WindowCount, "lblPassword", 72, 75, 142, FontSize, "Password", Arial, Color.White, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Types.Settings.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, GameSettings.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, , Types.Settings.SaveUsername, "Save Username?", Arial, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, , GameSettings.SaveUsername, "Save Username?", Arial, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
 
         ' Register Button
         CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Arial,  , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
@@ -1112,6 +1112,7 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picShadow_3", 67, 115, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         'CreatePictureBox(WindowCount, "picShadow_4", 67, 151, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
         'CreatePictureBox(WindowCount, "picShadow_5", 67, 187, 142, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
+
 
         ' Buttons
         CreateButton(WindowCount, "btnAccept", 68, 152, 67, 22, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
@@ -1321,6 +1322,7 @@ Module C_Interface
         CreateWindow_Bars()
         CreateWindow_Dialogue()
         CreateWindow_DragBox()
+        CreateWindow_Options()
     End Sub
 
     Public Function HandleInterfaceEvents(entState As EntState) As Boolean
@@ -1352,8 +1354,8 @@ Module C_Interface
                     If entState = EntState.MouseMove Then
                         If .CanDrag Then
                             If .State = EntState.MouseDown Then
-                                .Left = Math.Clamp(.Left + ((CurMouseX - .Left) - .movedX), 0, Types.Settings.ScreenWidth - .Width)
-                                .Top = Math.Clamp(.Top + ((CurMouseY - .Top) - .movedY), 0, Types.Settings.ScreenHeight - .Height)
+                                .Left = Math.Clamp(.Left + ((CurMouseX - .Left) - .movedX), 0, GameSettings.ScreenWidth - .Width)
+                                .Top = Math.Clamp(.Top + ((CurMouseY - .Top) - .movedY), 0, GameSettings.ScreenHeight - .Height)
                             End If
                         End If
                     End If
@@ -1528,12 +1530,12 @@ Module C_Interface
     Public Sub chkSaveUser_Click()
         With Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "chkSaveUsername"))
             If .Value = 0 Then ' set as false
-                Types.Settings.SaveUsername = 0
-                Types.Settings.Username = ""
-                SettingsManager.Save()
+                GameSettings.SaveUsername = 0
+                GameSettings.Username = ""
+                GameSettings.Save()
             Else
-                Types.Settings.SaveUsername = 1
-                SettingsManager.Save()
+                GameSettings.SaveUsername = 1
+                GameSettings.Save()
             End If
         End With
     End Sub
@@ -1653,8 +1655,7 @@ Module C_Interface
 
     Public Sub btnEscMenu_Options()
         HideWindow(GetWindowIndex("winEscMenu"))
-        'ShowWindow(GetWindowIndex("winOptions"), True, True)
-        FrmOptions.Show()
+        ShowWindow(GetWindowIndex("winOptions"), True, True)
     End Sub
 
     Public Sub btnEscMenu_MainMenu()
@@ -1881,39 +1882,39 @@ Module C_Interface
         If actChatHeight < 10 Then actChatHeight = 10
 
         xO = Windows(winIndex).Window.Left + 10
-        yO = Types.Settings.ScreenHeight - 10
+        yO = GameSettings.ScreenHeight - 10
 
         ' draw the background
         RenderDesign(DesignType.Win_Shadow, xO, yO, 160, 10)
     End Sub
 
     Public Sub chkChat_Game()
-        Types.Settings.ChannelState(ChatChannel.Game) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGame")).Value
+        GameSettings.ChannelState(ChatChannel.Game) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGame")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Map()
-        Types.Settings.ChannelState(ChatChannel.Map) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkMap")).Value
+        GameSettings.ChannelState(ChatChannel.Map) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkMap")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Global()
-        Types.Settings.ChannelState(ChatChannel.Broadcast) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGlobal")).Value
+        GameSettings.ChannelState(ChatChannel.Broadcast) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGlobal")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Party()
-        Types.Settings.ChannelState(ChatChannel.Party) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkParty")).Value
+        GameSettings.ChannelState(ChatChannel.Party) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkParty")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Guild()
-        Types.Settings.ChannelState(ChatChannel.Guild) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGuild")).Value
+        GameSettings.ChannelState(ChatChannel.Guild) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGuild")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Private()
-        Types.Settings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPrivate")).Value
+        GameSettings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPrivate")).Value
         UpdateChat()
     End Sub
 
@@ -2615,7 +2616,7 @@ End Sub
 
     Public Sub CreateWindow_Chat()
         ' Create window
-        CreateWindow("winChat", "", Georgia, zOrder_Win, 8, Types.Settings.ScreenHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , , , False)
+        CreateWindow("winChat", "", Georgia, zOrder_Win, 8, GameSettings.ScreenHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , , , False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
@@ -2650,12 +2651,12 @@ End Sub
 
         ' sort out the tabs
         With Windows(GetWindowIndex("winChat"))
-            .Controls(GetControlIndex("winChat", "chkGame")).Value = Types.Settings.ChannelState(ChatChannel.Game)
-            .Controls(GetControlIndex("winChat", "chkMap")).Value = Types.Settings.ChannelState(ChatChannel.Map)
-            .Controls(GetControlIndex("winChat", "chkGlobal")).Value = Types.Settings.ChannelState(ChatChannel.Broadcast)
-            .Controls(GetControlIndex("winChat", "chkParty")).Value = Types.Settings.ChannelState(ChatChannel.Party)
-            .Controls(GetControlIndex("winChat", "chkGuild")).Value = Types.Settings.ChannelState(ChatChannel.Guild)
-            .Controls(GetControlIndex("winChat", "chkPrivate")).Value = Types.Settings.ChannelState(ChatChannel.Whisper)
+            .Controls(GetControlIndex("winChat", "chkGame")).Value = GameSettings.ChannelState(ChatChannel.Game)
+            .Controls(GetControlIndex("winChat", "chkMap")).Value = GameSettings.ChannelState(ChatChannel.Map)
+            .Controls(GetControlIndex("winChat", "chkGlobal")).Value = GameSettings.ChannelState(ChatChannel.Broadcast)
+            .Controls(GetControlIndex("winChat", "chkParty")).Value = GameSettings.ChannelState(ChatChannel.Party)
+            .Controls(GetControlIndex("winChat", "chkGuild")).Value = GameSettings.ChannelState(ChatChannel.Guild)
+            .Controls(GetControlIndex("winChat", "chkPrivate")).Value = GameSettings.ChannelState(ChatChannel.Whisper)
         End With
     End Sub
 
@@ -2667,7 +2668,7 @@ End Sub
         zOrder_Con = 1
 
         ' Chat Label
-        CreateLabel(WindowCount, "lblMsg", 10, Types.Settings.ScreenHeight - 28, 160, FontSize, "Press 'Enter' to open chatbox.", Verdana, Color.White)
+        CreateLabel(WindowCount, "lblMsg", 10, GameSettings.ScreenHeight - 28, 160, FontSize, "Press 'Enter' to open chatbox.", Verdana, Color.White)
     End Sub
 
     Public Sub CreateWindow_Hotbar()
@@ -2677,7 +2678,7 @@ End Sub
 
     Public Sub CreateWindow_Menu()
         ' Create window
-        CreateWindow("winMenu", "", Georgia, zOrder_Win, Types.Settings.ScreenWidth - 229, Types.Settings.ScreenHeight - 31, 229, 31, 0, False, , , , , , , , , , , , , , , , , False, False)
+        CreateWindow("winMenu", "", Georgia, zOrder_Win, GameSettings.ScreenWidth - 229, GameSettings.ScreenHeight - 31, 229, 31, 0, False, , , , , , , , , , , , , , , , , False, False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
@@ -3062,6 +3063,43 @@ End Sub
         Windows(WindowCount).Window.CallBack(entState.MouseUp) = New Action(AddressOf DragBox_Check)
     End Sub
 
+    Public Sub CreateWindow_Options()
+    CreateWindow("winOptions", "", Georgia, zOrder_Win, 0, 0, 210, 212, 0, 0, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , , ,False, False)
+
+    ' Centralize it
+    CentralizeWindow(windowCount)
+
+    ' Set the index for spawning controls
+    zOrder_Con = 1
+
+    ' Parchment
+    CreatePictureBox(windowCount, "picParchment", 6, 6, 198, 200, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+
+    ' General
+    CreatePictureBox(windowCount, "picBlank", 35, 25, 140, FontSize, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+    CreateLabel(windowCount, "lblBlank", 35, 22, 140, 0, "General Options", Verdana, Color.White, AlignmentType.Center)
+    
+    ' Check boxes
+    CreateCheckbox(windowCount, "chkMusic", 35, 40, 80, , , "Music", Verdana, , , , DesignType.ChkNorm)
+    CreateCheckbox(windowCount, "chkSound", 115, 40, 80, , , "Sound", Verdana, , , , DesignType.ChkNorm)
+    CreateCheckbox(windowCount, "chkAutotile", 35, 60, 80, , , "Autotile", Verdana, , , , DesignType.ChkNorm)
+    CreateCheckbox(windowCount, "chkFullscreen", 115, 60, 80, , , "Fullscreen", Verdana, , , , DesignType.ChkNorm)
+
+    ' Resolution
+    CreatePictureBox(windowCount, "picBlank", 35, 85, 140, FontSize, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+    CreateLabel(windowCount, "lblBlank", 35, 92, 140, FontSize, "Select Resolution", Verdana, Color.White, AlignmentType.Center)
+
+    ' combobox
+    CreateComboBox(windowCount, "cmbResWidth", 30, 100, 150, 18, DesignType.ComboNorm)
+    CreateComboBox(windowCount, "cmbResHeight", 130, 100, 150, 18, DesignType.ComboNorm)
+
+    ' Button
+    CreateButton(windowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)
+
+    ' Populate the options screen
+    SetOptionsScreen
+End Sub
+
     Public Sub CreateWindow_Skills()
         ' Create window
         CreateWindow("winSkills", "Skills", Georgia, zOrder_Win, 0, 0, 202, 297, 109, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Skills_MouseMove), New Action(AddressOf Skills_MouseDown), New Action(AddressOf Skills_DblClick), New Action(AddressOf DrawSkills))
@@ -3151,6 +3189,92 @@ End Sub
                 End If
             End If
         Next
+    End Sub
+
+    ' Options
+    Public Sub btnOptions_Close()
+        HideWindow(GetWindowIndex("winOptions"))
+        ShowWindow(GetWindowIndex("winEscMenu"))
+    End Sub
+
+    Sub btnOptions_Confirm()
+        Dim i As Long, Value As Long, Width As Long, Height As Long, message As Boolean, musicFile As String
+
+        ' music
+        Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkMusic")).Value
+        If GameSettings.Music <> Value Then
+            GameSettings.Music = Value
+
+            ' let them know
+            If Value = 0 Then
+                AddText("Music turned off.", ColorType.BrightGreen)
+                StopMusic
+            Else
+                AddText("Music tured on.", ColorType.BrightGreen)
+                ' play music
+                If InGame Then musicFile = Trim$(Map.Music) Else musicFile = Trim$(GameSettings.Music)
+                If Not musicFile = "None." Then
+                    PlayMusic(musicFile)
+                Else
+                    StopMusic
+                End If
+            End If
+        End If
+    
+        ' sound
+        Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkSound")).Value
+        If GameSettings.Sound <> Value Then
+            GameSettings.Sound = Value
+            ' let them know
+            If Value = 0 Then
+                AddText("Sound turned off.", ColorType.BrightGreen)
+            Else
+                AddText("Sound tured on.", ColorType.BrightGreen)
+            End If
+        End If
+    
+        ' autotiles
+        Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkAutotile")).Value
+        If GameSettings.Autotile <> Value Then
+            GameSettings.Autotile = Value
+            ' let them know
+            If Value = 0 Then
+                If InGame Then
+                    AddText("Autotiles turned off.", ColorType.BrightGreen)
+                    initAutotiles
+                End If
+            Else
+                If InGame Then
+                    AddText("Autotiles turned on.", ColorType.BrightGreen)
+                    initAutotiles
+                End If
+            End If
+        End If
+    
+        ' fullscreen
+        Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkFullscreen")).Value
+        If GameSettings.Fullscreen <> Value Then
+            GameSettings.Fullscreen = Value
+            message = True
+        End If
+    
+        ' resolution
+        With Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "cmbRes"))
+            If .Value > 0 And .Value <= 13 Then
+                message = True
+            End If
+        End With
+    
+        ' save options
+        GameSettings.Save()
+
+        ' let them know
+        If InGame Then
+            If message Then AddText("Some changes will take effect next time you load the game.", ColorType.BrightGreen)
+        End If
+
+        ' close
+        btnOptions_Close
     End Sub
 End Module
 
