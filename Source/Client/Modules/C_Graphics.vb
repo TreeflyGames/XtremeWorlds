@@ -1577,7 +1577,6 @@ Module C_Graphics
 
         ' Y-based render. Renders Players, Npcs and Resources based on Y-axis.
         For y = 0 To Map.MaxY
-
             If NumCharacters > 0 Then
                 ' Players
                 For I = 1 To MAX_PLAYERS
@@ -1792,17 +1791,19 @@ Module C_Graphics
             EditorProjectile_DrawProjectile()
         End If
 
-        If InGame Then
-            DrawBars()
-            DrawParty()
-        End If
-
+        DrawBars()
+        DrawParty()
         DrawMapFade()
+        RenderEntities()
 
-        If InGame = False Then
-            DrawMenuBG()
-        End If
+        GameWindow.Display()
+    End Sub
 
+    Friend Sub Render_Menu()
+        'Clear each of our render targets
+        GameWindow.Clear(Color.Black)
+
+        DrawMenuBG()
         RenderEntities()
 
         GameWindow.Display()

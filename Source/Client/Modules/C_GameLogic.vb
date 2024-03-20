@@ -272,7 +272,11 @@ Module C_GameLogic
                 fadetmr = tick + 30
             End If
 
-            Render_Graphics()
+            if InGame Then
+                Render_Graphics()
+            Else
+                Render_Menu()
+            End If
 
             ' Calculate fps
             If TickFPS < tick Then
