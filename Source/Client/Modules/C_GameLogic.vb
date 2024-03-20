@@ -295,6 +295,15 @@ Module C_GameLogic
                 EditorAnim_DrawAnim()
             End If
 
+            If Editor = EditorType.Skill Then
+                EditorSkill_DrawIcon()
+            End If
+
+            If Editor = EditorType.Item Then
+                EditorItem_DrawItem()
+                EditorItem_DrawPaperdoll()
+            End If
+
             GameWindow.DispatchEvents()
             UpdateWindow()
             Application.DoEvents()

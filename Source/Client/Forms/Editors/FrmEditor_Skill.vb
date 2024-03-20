@@ -40,11 +40,6 @@ Friend Class frmEditor_Skill
         Skill(Editorindex).CdTime = nudCool.Value
     End Sub
 
-    Private Sub NudIcon_Scroll(sender As Object, e As EventArgs) Handles nudIcon.ValueChanged
-        Skill(Editorindex).Icon = nudIcon.Value
-        EditorSkill_DrawIcon()
-    End Sub
-
     Private Sub NudMap_Scroll(sender As Object, e As EventArgs) Handles nudMap.ValueChanged
         Skill(Editorindex).Map = nudMap.Value
     End Sub

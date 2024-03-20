@@ -250,7 +250,6 @@ Module C_Editors
             .cmbKnockBackTiles.SelectedIndex = Skill(Editorindex).KnockBackTiles
         End With
 
-        EditorSkill_DrawIcon()
         Skill_Changed(Editorindex) = True
     End Sub
 
@@ -555,8 +554,6 @@ Module C_Editors
             End If
         End With
 
-        EditorItem_DrawItem()
-        EditorItem_DrawPaperdoll()
         Item_Changed(Editorindex) = True
     End Sub
 
