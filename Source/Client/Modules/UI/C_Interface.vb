@@ -2145,10 +2145,10 @@ Module C_Interface
             winIndex = GetWindowIndex("winDragBox")
             With Windows(winIndex).Window
                 .State = EntState.MouseDown
-                .Left = CurX - 16
-                .Top = CurY - 16
-                .movedX = CurX - .Left
-                .movedY = CurY - .Top
+                .Left = CurMouseX - 16
+                .Top = CurMouseY - 16
+                .movedX = CurMouseX - .Left
+                .movedY = CurMouseY - .Top
             End With
 
             ShowWindow(winIndex, , False)
@@ -2214,6 +2214,7 @@ Module C_Interface
                 ' switch to right
                 x = Windows(GetWindowIndex("winInventory")).Window.Left + Windows(GetWindowIndex("winInventory")).Window.Width
             End If
+
             ' go go go
             ShowInvDesc(x, y, itemNum)
         End If
@@ -2361,7 +2362,7 @@ Public Sub DragBox_Check()
                 End If
 
             Case "winSkills"
-                If DragBox.Origin = PartOriginType.Skills Then
+                If DragBox.Origin = PartOriginType.Skill Then
                     ' it's from the Skills!
                     If DragBox.Type = PartType.Skill Then
                         ' find the slot to switch with
@@ -2424,7 +2425,7 @@ Public Sub DragBox_Check()
                 Else
                     Dialogue("Drop Item", "Please choose how many to drop", "", DialogueType.DropItem, DialogueStyle.Input, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
                 End If
-            Case PartOriginType.Skills
+            Case PartOriginType.Skill
                 ' dialogue
             Case PartOriginType.Hotbar
                 SendSetHotbarSlot(0, 0, DragBox.Slot)
@@ -2455,7 +2456,7 @@ End Sub
             With DragBox
                 .Type = PartType.Skill
                 .value = Player(Myindex).Skill(slotNum).Num
-                .Origin = PartOriginType.Skills
+                .Origin = PartOriginType.Skill
                 .Slot = slotNum
             End With
         
@@ -2592,9 +2593,9 @@ End Sub
             ' go go go
             Select Case Player(Myindex).Hotbar(slotNum).SlotType
                 Case 1 ' inventory
-                    'ShowItemDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot, False)
+                    ShowItemDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot)
                 Case 2 ' Skills
-                    'ShowItemDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot, 0)
+                    ShowskillDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot, 0)
             End Select
         End If
     End Sub
@@ -2963,7 +2964,7 @@ End Sub
 
     Public Sub DrawInventory()
         Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, y As Long, itemNum As Long, ItemPic As Long, x As Long, Top As Long, Left As Long, Amount As String
-        Dim Colour As Color, skipItem As Boolean, amountModifier As Long, tmpItem As Long
+        Dim Color As Color, skipItem As Boolean, amountModifier As Long, tmpItem As Long
 
         xO = Windows(GetWindowIndex("winInventory")).Window.Left
         yO = Windows(GetWindowIndex("winInventory")).Window.Top
@@ -3038,14 +3039,14 @@ End Sub
 
                                 ' Draw currency but with k, m, b etc. using a convertion function
                                 If CLng(Amount) < 1000000 Then
-                                    Colour = GetSfmlColor(ColorType.White)
+                                    Color = GetSfmlColor(ColorType.White)
                                 ElseIf CLng(Amount) > 1000000 And CLng(Amount) < 10000000 Then
-                                    Colour = GetSfmlColor(ColorType.Yellow)
+                                    Color = GetSfmlColor(ColorType.Yellow)
                                 ElseIf CLng(Amount) > 10000000 Then
-                                    Colour = GetSfmlColor(ColorType.BrightGreen)
+                                    Color = GetSfmlColor(ColorType.BrightGreen)
                                 End If
 
-                                RenderText(ConvertCurrency(Amount), GameWindow, x, y, Colour, Colour, , Verdana)
+                                RenderText(ConvertCurrency(Amount), GameWindow, x, y, Color, Color, , Verdana)
                             End If
                         End If
                     End If
@@ -3255,7 +3256,7 @@ End Sub
                 StreamSkill(Skillnum)
 
                 ' not dragging?
-                If Not (DragBox.Origin = PartOriginType.Skills And DragBox.Slot = i) Then
+                If Not (DragBox.Origin = PartOriginType.Skill And DragBox.Slot = i) Then
                     SkillPic = Skill(Skillnum).Icon
 
                     If SkillPic > 0 And SkillPic <= NumSkills Then

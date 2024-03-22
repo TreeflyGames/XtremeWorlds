@@ -2942,13 +2942,13 @@ Module C_Graphics
     End Sub
 
     Public Sub DrawChatBubble(ByVal Index As Long)
-        Dim theArray() As String, x As Long, y As Long, i As Long, MaxWidth As Long, x2 As Long, y2 As Long, Colour As Integer, tmpNum As Long
+        Dim theArray() As String, x As Long, y As Long, i As Long, MaxWidth As Long, x2 As Long, y2 As Long, Color As Integer, tmpNum As Long
     
         With chatBubble(Index)
             ' exit out early
             If .target = 0 Then Exit Sub
 
-            Colour = .Color
+            Color = .Color
 
             ' calculate position
             Select Case .TargetType
@@ -3017,7 +3017,7 @@ Module C_Graphics
             tmpNum = UBound(theArray)
 
             For i = 1 To tmpNum           
-                RenderText(theArray(i), GameWindow, x - (theArray(i).Length / 2) - (TextWidth(theArray(i)) / 2), y2, GetSfmlColor(.Color), Color.Black)
+                RenderText(theArray(i), GameWindow, x - (theArray(i).Length / 2) - (TextWidth(theArray(i)) / 2), y2, GetSfmlColor(.Color), SFML.Graphics.Color.Black)
                 y2 = y2 + 12
             Next
 

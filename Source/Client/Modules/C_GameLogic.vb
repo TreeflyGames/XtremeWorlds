@@ -1598,6 +1598,118 @@ Continue1:
         End Select
     End Sub
 
+    Public Sub ShowSkillDesc(x As Long, y As Long, Skillnum As Long, SkillSlot As Long)
+        Dim Color As Long, theName As String, sUse As String, i As Long, barWidth As Long, tmpWidth As Long
+
+        ' set globals
+        descType = 2 ' Skill
+        descItem = Skillnum
+    
+        ' set position
+        Windows(GetWindowIndex("winDescription")).Window.Left = x
+        Windows(GetWindowIndex("winDescription")).Window.Top = y
+    
+        ' show the window
+        ShowWindow(GetWindowIndex("winDescription"), , False)
+    
+        ' exit out early if last is same
+        If (descLastType = descType) And (descLastItem = descItem) Then Exit Sub
+    
+        ' clear
+        ReDim descText(1)
+    
+        ' hide req. labels
+        Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "lblLevel")).visible = False
+        Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "picBar")).visible = True
+    
+        ' set variables
+        With Windows(GetWindowIndex("winDescription"))
+            ' set name
+            .Controls(GetControlIndex("winDescription", "lblName")).Text = Trim$(Skill(Skillnum).name)
+            .Controls(GetControlIndex("winDescription", "lblName")).Color =  SFML.Graphics.Color.White
+        
+            ' find ranks
+            If SkillSlot > 0 Then
+                ' draw the rank bar
+                barWidth = 66
+                'If Skill(Skillnum).rank > 0 Then
+                    'tmpWidth = ((PlayerSkills(SkillSlot).Uses / barWidth) / (Skill(Skillnum).NextUses / barWidth)) * barWidth
+                'Else
+                    tmpWidth = 66
+                'End If
+                .Controls(GetControlIndex("winDescription", "picBar")).value = tmpWidth
+                ' does it rank up?
+                'If Skill(Skillnum).NextRank > 0 Then
+                    Color = ColorType.White
+                    'sUse = "Uses: " & PlayerSkills(SkillSlot).Uses & "/" & Skill(Skillnum).NextUses
+                    'If PlayerSkills(SkillSlot).Uses = Skill(Skillnum).NextUses Then
+                        'If Not GetPlayerLevel(MyIndex) >= Skill(Skill(Skillnum).NextRank).LevelReq Then
+                            'Color = BrightRed
+                            'sUse = "Lvl " & Skill(Skill(Skillnum).NextRank).LevelReq & " req."
+                        'End If
+                    'End If
+                'Else
+                    Color = ColorType.Gray
+                    sUse = "Max Rank"
+                'End If
+                ' show controls
+                .Controls(GetControlIndex("winDescription", "lblClass")).visible = True
+                .Controls(GetControlIndex("winDescription", "picBar")).visible = True
+                 'set vals
+                .Controls(GetControlIndex("winDescription", "lblClass")).Text = sUse
+                .Controls(GetControlIndex("winDescription", "lblClass")).Color = SFML.Graphics.Color.White
+            Else
+                ' hide some controls
+                .Controls(GetControlIndex("winDescription", "lblClass")).visible = False
+                .Controls(GetControlIndex("winDescription", "picBar")).visible = False
+            End If
+        End With
+    
+        Select Case Skill(Skillnum).Type
+            Case SkillType.DamageHp
+                AddDescInfo("Damage HP", SFML.Graphics.Color.White)
+            Case SkillType.DamageMp
+                AddDescInfo("Damage SP", SFML.Graphics.Color.White)
+            Case SkillType.HealHp
+                AddDescInfo("Heal HP", SFML.Graphics.Color.White)
+            Case SkillType.HealMp
+                AddDescInfo("Heal SP", SFML.Graphics.Color.White)
+            Case SkillType.Warp
+                AddDescInfo("Warp", SFML.Graphics.Color.White)
+        End Select
+    
+        ' more info
+        Select Case Skill(Skillnum).Type
+            Case SkillType.DamageHp, SkillType.DamageMp, SkillType.HealHp, SkillType.HealMp
+                ' damage
+                AddDescInfo("Vital: " & Skill(Skillnum).Vital, SFML.Graphics.Color.White)
+            
+                ' mp cost
+                AddDescInfo("Cost: " & Skill(Skillnum).MPCost & " SP", SFML.Graphics.Color.White)
+            
+                ' cast time
+                AddDescInfo("Cast Time: " & Skill(Skillnum).CastTime & "s", SFML.Graphics.Color.White)
+            
+                ' cd time
+                AddDescInfo("Cooldown: " & Skill(Skillnum).CDTime & "s", SFML.Graphics.Color.White)
+            
+                ' aoe
+                If Skill(Skillnum).AoE > 0 Then
+                    AddDescInfo("AoE: " & Skill(Skillnum).AoE, SFML.Graphics.Color.White)
+                End If
+            
+                ' stun
+                If Skill(Skillnum).StunDuration > 0 Then
+                    AddDescInfo("Stun: " & Skill(Skillnum).StunDuration & "s", SFML.Graphics.Color.White)
+                End If
+            
+                ' dot
+                If Skill(Skillnum).Duration > 0 And Skill(Skillnum).Interval > 0 Then
+                    AddDescInfo("DoT: " & (Skill(Skillnum).Duration / Skill(Skillnum).Interval) & " tick", SFML.Graphics.Color.White)
+                End If
+        End Select
+    End Sub
+
     Public Sub ShowEqDesc(x As Long, y As Long, eqNum As Long)
         Dim soulBound As Boolean
 

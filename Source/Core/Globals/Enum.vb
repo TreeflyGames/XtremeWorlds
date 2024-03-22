@@ -511,7 +511,7 @@
         None = 0
         Inventory
         Hotbar
-        Skills
+        Skill
         Bank
     End Enum
 
