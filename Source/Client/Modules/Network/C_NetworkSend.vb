@@ -327,6 +327,17 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Sub SendChangeSkillSlots(oldSlot As Integer, newSlot As Integer)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CSwapSkillSlots)
+        buffer.WriteInt32(oldSlot)
+        buffer.WriteInt32(newSlot)
+
+        Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
+
     Friend Sub SendUseItem(invNum As Integer)
         Dim buffer As New ByteStream(4)
 

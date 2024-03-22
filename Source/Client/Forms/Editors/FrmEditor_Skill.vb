@@ -186,7 +186,8 @@ Friend Class frmEditor_Skill
         SendLearnSkill(EditorIndex)
     End Sub
 
-    Private Sub nudIcon_ValueChanged(sender As Object, e As EventArgs) Handles nudIcon.ValueChanged
+    Private Sub nudIcon_Click(sender As Object, e As EventArgs) Handles nudIcon.Click
+        Skill(EditorIndex).Icon = nudIcon.Value
         EditorSkill_DrawIcon()
     End Sub
 End Class

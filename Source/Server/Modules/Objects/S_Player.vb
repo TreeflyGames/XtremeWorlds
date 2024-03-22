@@ -1881,6 +1881,7 @@ Module S_Player
                             TakeInvItem(index, InvItemNum, 0)
                             PlayerMsg(index, "You study the skill carefully.", ColorType.Yellow)
                             PlayerMsg(index, "You have learned a new skill!", ColorType.BrightGreen)
+                            SendPlayerSkills(Index)
                         Else
                             PlayerMsg(index, "You have already learned this skill!", ColorType.BrightRed)
                         End If
@@ -1903,8 +1904,6 @@ Module S_Player
         Dim OldSuffix As String, OldSpeed As Integer, OldDamage As Integer
         Dim NewNum As Integer, NewValue As Integer, NewRarity As Integer, NewPrefix As String
         Dim NewSuffix As String, NewSpeed As Integer, NewDamage As Integer
-        Dim NewStats(StatType.Count - 1) As Integer
-        Dim OldStats(StatType.Count - 1) As Integer
 
         If OldSlot = 0 OrElse NewSlot = 0 Then Exit Sub
 
@@ -1926,6 +1925,34 @@ Module S_Player
         End If
 
         SendInventory(index)
+    End Sub
+
+     Sub PlayerSwitchSkillSlots(index As Integer, OldSlot As Integer, NewSlot As Integer)
+        Dim OldNum As Integer, OldValue As Integer, OldRarity As Integer, OldPrefix As String
+        Dim OldSuffix As String, OldSpeed As Integer, OldDamage As Integer
+        Dim NewNum As Integer, NewValue As Integer, NewRarity As Integer, NewPrefix As String
+        Dim NewSuffix As String, NewSpeed As Integer, NewDamage As Integer
+
+        If OldSlot = 0 OrElse NewSlot = 0 Then Exit Sub
+
+        OldNum = GetPlayerSkill(index, OldSlot)
+        OldValue = GetPlayerSkillCD(index, OldSlot)
+        NewNum = GetPlayerSkill(index, NewSlot)
+        NewValue = GetPlayerSkillCD(index, NewSlot)
+
+        If OldNum = NewNum AndAlso Item(NewNum).Stackable = 1 Then ' same item, if we can stack it, lets do that :P
+            SetPlayerSkill(index, NewSlot, NewNum)
+            SetPlayerSkillCD(index, NewSlot, NewValue)
+            SetPlayerSkill(index, OldSlot, 0)
+            SetPlayerSkillCD(index, OldSlot, 0)
+        Else
+            SetPlayerSkill(index, NewSlot, OldNum)
+            SetPlayerSkillCD(index, NewSlot, OldValue)
+            SetPlayerSkill(index, OldSlot, NewNum)
+            SetPlayerSkillCD(index, OldSlot, NewValue)
+        End If
+
+        SendPlayerSkills(index)
     End Sub
 
 #End Region

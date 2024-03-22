@@ -39,6 +39,7 @@
         CCast
         CQuit
         CSwapInvSlots
+        CSwapSkillSlots
 
         CCheckPing
         CUnequip

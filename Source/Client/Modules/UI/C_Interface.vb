@@ -2235,11 +2235,22 @@ Public Sub DragBox_OnDraw()
             Case PartType.Item
                 If .value Then
                     texNum = Item(.value).Pic
+                        
+                    ' render the icon
+                    If ItemGfxInfo(texNum).IsLoaded = False Then
+                        LoadTexture(texNum, 4)
+                    End If
+
                     RenderTexture(ItemSprite(texNum), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                 End If
             Case PartType.Spell
                 If .value Then
                     texNum = Skill(.value).Icon
+
+                    ' render the icon
+                    If SkillGfxInfo(texNum).IsLoaded = False Then
+                        LoadTexture(texNum, 9)
+                    End If
                     RenderTexture(SkillSprite(texNum), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                 End If
         End Select
@@ -2366,7 +2377,7 @@ Public Sub DragBox_Check()
                             If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
                                 If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
                                     ' switch the slots
-                                    'If DragBox.Slot <> I Then SendChangeSpellSlots(DragBox.Slot, I)
+                                    If DragBox.Slot <> I Then SendChangeSkillSlots(DragBox.Slot, I)
                                     Exit For
                                 End If
                             End If
@@ -3242,13 +3253,19 @@ End Sub
         For i = 1 To MAX_PLAYER_SKILLS
             spellnum = Player(Myindex).Skill(i).Num
             If spellnum > 0 And spellnum <= MAX_SKILLS Then
+                StreamSkill(spellnum)
+
                 ' not dragging?
                 If Not (DragBox.Origin = PartOriginType.Spells And DragBox.Slot = i) Then
                     spellPic = Skill(spellnum).Icon
-    
+
                     If spellPic > 0 And spellPic <= NumSkills Then
-                        Top = yO + InvTop + ((InvOffsetY + 32) * ((i - 1) \ InvColumns))
-                        Left = xO + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
+                        If SkillGfxInfo(spellPic).IsLoaded = False Then
+                            LoadTexture(spellPic, 9)
+                        End If
+
+                        Top = yO + SkillTop + ((SkillOffsetY + 32) * ((i - 1) \ SkillColumns))
+                        Left = xO + SkillLeft + ((SkillOffsetX + 32) * (((i - 1) Mod SkillColumns)))
     
                         RenderTexture(SkillSprite(spellPic), GameWindow, Left, Top, 0, 0, 32, 32, 32, 32)
                     End If

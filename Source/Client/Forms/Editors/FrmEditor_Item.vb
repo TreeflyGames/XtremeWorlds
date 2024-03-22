@@ -86,7 +86,7 @@ Friend Class frmEditor_Item
 
 #Region "Basics"
 
-    Private Sub NudPic_ValueChanged(sender As Object, e As EventArgs) Handles nudPic.Click
+    Private Sub NudPic_Click(sender As Object, e As EventArgs) Handles nudPic.Click
         Item(EditorIndex).Pic = nudPic.Value
         EditorItem_DrawIcon()
     End Sub

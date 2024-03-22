@@ -48,6 +48,7 @@ Module S_NetworkReceive
         Socket.PacketId(ClientPackets.CCast) = AddressOf Packet_Cast
         Socket.PacketId(ClientPackets.CQuit) = AddressOf Packet_QuitGame
         Socket.PacketId(ClientPackets.CSwapInvSlots) = AddressOf Packet_SwapInvSlots
+        Socket.PacketId(ClientPackets.CSwapSkillSlots) = AddressOf Packet_SwapSkillSlots
 
         Socket.PacketId(ClientPackets.CCheckPing) = AddressOf Packet_CheckPing
         Socket.PacketId(ClientPackets.CUnequip) = AddressOf Packet_Unequip
@@ -1518,6 +1519,22 @@ Module S_NetworkReceive
         buffer.Dispose()
 
         PlayerSwitchInvSlots(index, oldSlot, newSlot)
+
+        buffer.Dispose()
+    End Sub
+
+     Sub Packet_SwapSkillSlots(index As Integer, ByRef data() As Byte)
+        Dim oldSlot As Integer, newSlot As Integer
+        Dim buffer As New ByteStream(data)
+
+        If TempPlayer(index).InTrade > 0 OrElse TempPlayer(index).InBank OrElse TempPlayer(index).InShop Then Exit Sub
+
+        ' Old Slot
+        oldSlot = buffer.ReadInt32
+        newSlot = buffer.ReadInt32
+        buffer.Dispose()
+
+        PlayerSwitchSkillSlots(index, oldSlot, newSlot)
 
         buffer.Dispose()
     End Sub
