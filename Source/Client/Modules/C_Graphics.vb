@@ -2437,10 +2437,10 @@ Module C_Graphics
                                     Next
 
                                     TileLights.Add(New LightTileStruct() With {
-                                                          .Tiles = tiles,
-.IsFlicker = Map.Tile(x, y).Data2 = 1,
-.Scale = New Vector2f(0.35F, 0.35F)
-})
+                                                            .Tiles = tiles,
+                                                            .IsFlicker = Map.Tile(x, y).Data2 = 1,
+                                                            .Scale = New Vector2f(0.35F, 0.35F)
+                                                            })
                                 End If
                             Else
                                 LightSprite.Color = Color.Red
@@ -2525,8 +2525,8 @@ Module C_Graphics
             Exit Sub
         End If
 
-        If File.Exists(Paths.Graphics & "skills\" & skillNum & GfxExt) Then
-            frmEditor_Skill.picSprite.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "skills\" & skillNum & GfxExt)
+        If File.Exists(Paths.Graphics & "Skills\" & skillNum & GfxExt) Then
+            frmEditor_Skill.picSprite.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "Skills\" & skillNum & GfxExt)
         Else
             frmEditor_Skill.picSprite.BackgroundImage = Nothing
         End If
