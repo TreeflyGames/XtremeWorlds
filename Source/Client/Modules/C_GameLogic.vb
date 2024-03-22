@@ -128,7 +128,7 @@ Module C_GameLogic
                     End If
                 End If
 
-                ' check if we need to unlock the pets's spell casting restriction
+                ' check if we need to unlock the pets's Skill casting restriction
                 If PetSkillBuffer > 0 Then
                     If PetSkillBufferTimer + (Skill(Pet(Player(Myindex).Pet.Num).Skill(PetSkillBuffer)).CastTime * 1000) < tick Then
                         PetSkillBuffer = 0

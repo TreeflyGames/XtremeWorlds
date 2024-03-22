@@ -2920,7 +2920,7 @@ Module C_Graphics
                         If Len(Item(Player(Myindex).Hotbar(i).Slot).Name) > 0 And Item(Player(Myindex).Hotbar(i).Slot).Pic > 0 Then
                             RenderTexture(ItemSprite(Item(Player(Myindex).Hotbar(i).Slot).Pic), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                         End If
-                    Case 2 ' spell
+                    Case 2 ' Skill
                         If Len(Skill(Player(Myindex).Hotbar(i).Slot).Name) > 0 And Skill(Player(Myindex).Hotbar(i).Slot).Icon > 0 Then
                             RenderTexture(SkillSprite(Skill(Player(Myindex).Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                             For t = 1 To MAX_PLAYER_SKILLS

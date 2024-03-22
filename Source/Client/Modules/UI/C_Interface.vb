@@ -2243,7 +2243,7 @@ Public Sub DragBox_OnDraw()
 
                     RenderTexture(ItemSprite(texNum), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                 End If
-            Case PartType.Spell
+            Case PartType.Skill
                 If .value Then
                     texNum = Skill(.value).Icon
 
@@ -2311,7 +2311,6 @@ Public Sub DragBox_Check()
                     End If
                 End If
                 
-                ' se o item saiu do inventario
                 If DragBox.Origin = PartOriginType.Inventory Then
                     If DragBox.Type = PartType.Item Then
     
@@ -2362,9 +2361,9 @@ Public Sub DragBox_Check()
                 End If
 
             Case "winSkills"
-                If DragBox.Origin = PartOriginType.Spells Then
-                    ' it's from the spells!
-                    If DragBox.Type = PartType.Spell Then
+                If DragBox.Origin = PartOriginType.Skills Then
+                    ' it's from the Skills!
+                    If DragBox.Type = PartType.Skill Then
                         ' find the slot to switch with
                         For I = 1 To MAX_PLAYER_SKILLS
                             With tmpRec
@@ -2403,7 +2402,7 @@ Public Sub DragBox_Check()
                                     If DragBox.Origin <> PartOriginType.Hotbar Then
                                         If DragBox.Type = PartType.Item Then
                                             SendSetHotbarSlot(1, DragBox.Slot, I)
-                                        ElseIf DragBox.Type = PartType.Spell Then
+                                        ElseIf DragBox.Type = PartType.Skill Then
                                             SendSetHotbarSlot(2, DragBox.Slot, I)
                                         End If
                                     Else
@@ -2425,7 +2424,7 @@ Public Sub DragBox_Check()
                 Else
                     Dialogue("Drop Item", "Please choose how many to drop", "", DialogueType.DropItem, DialogueStyle.Input, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
                 End If
-            Case PartOriginType.Spells
+            Case PartOriginType.Skills
                 ' dialogue
             Case PartOriginType.Hotbar
                 SendSetHotbarSlot(0, 0, DragBox.Slot)
@@ -2443,78 +2442,78 @@ Public Sub DragBox_Check()
     End With
 End Sub
 
-' ############
-' ## Skills ##
-' ############
-Public Sub Skills_MouseDown()
-Dim slotNum As Long, winIndex As Long
+    ' ############
+    ' ## Skills ##
+    ' ############
+    Public Sub Skills_MouseDown()
+    Dim slotNum As Long, winIndex As Long
     
-    ' is there an item?
-    slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
+        ' is there an item?
+        slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
     
-    If slotNum Then
-        With DragBox
-            .Type = PartType.Spell
-            .value = Player(Myindex).Skill(slotNum).Num
-            .Origin = PartOriginType.Spells
-            .Slot = slotNum
-        End With
+        If slotNum Then
+            With DragBox
+                .Type = PartType.Skill
+                .value = Player(Myindex).Skill(slotNum).Num
+                .Origin = PartOriginType.Skills
+                .Slot = slotNum
+            End With
         
-        winIndex = GetWindowIndex("winDragBox")
-        With Windows(winIndex).Window
-            .state = EntState.MouseDown
-            .Left = CurMouseX - 16
-            .Top = CurMouseY - 16
-            .movedX = CurMouseX - .Left
-            .movedY = CurMouseY - .Top
-        End With
+            winIndex = GetWindowIndex("winDragBox")
+            With Windows(winIndex).Window
+                .state = EntState.MouseDown
+                .Left = CurMouseX - 16
+                .Top = CurMouseY - 16
+                .movedX = CurMouseX - .Left
+                .movedY = CurMouseY - .Top
+            End With
 
-        ShowWindow(winIndex, , False)
+            ShowWindow(winIndex, , False)
 
-        ' stop dragging inventory
-        Windows(GetWindowIndex("winSkills")).Window.state = EntState.Normal
-    End If
-
-    ' show desc. if needed
-    Skills_MouseMove
-End Sub
-
-Public Sub Skills_DblClick()
-    Dim slotNum As Long
-
-    slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
-    
-    If slotNum Then
-        PlayerCastSkill(slotNum)
-    End If
-    
-    ' show desc. if needed
-    Skills_MouseMove
-End Sub
-
-Public Sub Skills_MouseMove()
-    Dim slotNum As Long, x As Long, y As Long
-
-    ' exit out early if dragging
-    If DragBox.Type <> PartType.None Then Exit Sub
-
-    slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
-    
-    If slotNum Then
-        ' make sure we're not dragging the item
-        If DragBox.Type = PartType.Item And DragBox.value = slotNum Then Exit Sub
-        ' calc position
-        x = Windows(GetWindowIndex("winSkills")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-        y = Windows(GetWindowIndex("winSkills")).Window.Top - 4
-        ' offscreen?
-        If x < 0 Then
-            ' switch to right
-            x = Windows(GetWindowIndex("winSkills")).Window.Left + Windows(GetWindowIndex("winSkills")).Window.Width
+            ' stop dragging inventory
+            Windows(GetWindowIndex("winSkills")).Window.state = EntState.Normal
         End If
-        ' go go go
-        'ShowPlayerSpellDesc(x, y, slotNum)
-    End If
-End Sub
+
+        ' show desc. if needed
+        Skills_MouseMove
+    End Sub
+
+    Public Sub Skills_DblClick()
+        Dim slotNum As Long
+
+        slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
+    
+        If slotNum Then
+            PlayerCastSkill(slotNum)
+        End If
+    
+        ' show desc. if needed
+        Skills_MouseMove
+    End Sub
+
+    Public Sub Skills_MouseMove()
+        Dim slotNum As Long, x As Long, y As Long
+
+        ' exit out early if dragging
+        If DragBox.Type <> PartType.None Then Exit Sub
+
+        slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
+    
+        If slotNum Then
+            ' make sure we're not dragging the item
+            If DragBox.Type = PartType.Item And DragBox.value = slotNum Then Exit Sub
+            ' calc position
+            x = Windows(GetWindowIndex("winSkills")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
+            y = Windows(GetWindowIndex("winSkills")).Window.Top - 4
+            ' offscreen?
+            If x < 0 Then
+                ' switch to right
+                x = Windows(GetWindowIndex("winSkills")).Window.Left + Windows(GetWindowIndex("winSkills")).Window.Width
+            End If
+            ' go go go
+            'ShowPlayerSkillDesc(x, y, slotNum)
+        End If
+    End Sub
 
     ' ############
     ' ## Hotbar ##
@@ -2529,8 +2528,8 @@ End Sub
             With DragBox
                 If Player(Myindex).Hotbar(slotNum).SlotType = 1 Then ' inventory
                     .Type = PartOriginsType.Inventory
-                ElseIf Player(Myindex).Hotbar(slotNum).SlotType = 2 Then ' spell
-                    .Type = PartOriginsType.Spell
+                ElseIf Player(Myindex).Hotbar(slotNum).SlotType = 2 Then ' Skill
+                    .Type = PartOriginsType.Skill
                 End If
                 .Value = Player(Myindex).Hotbar(slotNum).Slot
                 .Origin = PartOriginType.Hotbar
@@ -2594,7 +2593,7 @@ End Sub
             Select Case Player(Myindex).Hotbar(slotNum).SlotType
                 Case 1 ' inventory
                     'ShowItemDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot, False)
-                Case 2 ' spells
+                Case 2 ' Skills
                     'ShowItemDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot, 0)
             End Select
         End If
@@ -3225,7 +3224,7 @@ End Sub
     End Sub
 
     Public Sub DrawSkills()
-        Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, y As Long, spellnum As Long, spellPic As Long, x As Long, Top As Long, Left As Long
+        Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, y As Long, Skillnum As Long, SkillPic As Long, x As Long, Top As Long, Left As Long
 
         xO = Windows(GetWindowIndex("winSkills")).Window.Left
         yO = Windows(GetWindowIndex("winSkills")).Window.Top
@@ -3251,23 +3250,23 @@ End Sub
     
         ' actually draw the icons
         For i = 1 To MAX_PLAYER_SKILLS
-            spellnum = Player(Myindex).Skill(i).Num
-            If spellnum > 0 And spellnum <= MAX_SKILLS Then
-                StreamSkill(spellnum)
+            Skillnum = Player(Myindex).Skill(i).Num
+            If Skillnum > 0 And Skillnum <= MAX_SKILLS Then
+                StreamSkill(Skillnum)
 
                 ' not dragging?
-                If Not (DragBox.Origin = PartOriginType.Spells And DragBox.Slot = i) Then
-                    spellPic = Skill(spellnum).Icon
+                If Not (DragBox.Origin = PartOriginType.Skills And DragBox.Slot = i) Then
+                    SkillPic = Skill(Skillnum).Icon
 
-                    If spellPic > 0 And spellPic <= NumSkills Then
-                        If SkillGfxInfo(spellPic).IsLoaded = False Then
-                            LoadTexture(spellPic, 9)
+                    If SkillPic > 0 And SkillPic <= NumSkills Then
+                        If SkillGfxInfo(SkillPic).IsLoaded = False Then
+                            LoadTexture(SkillPic, 9)
                         End If
 
                         Top = yO + SkillTop + ((SkillOffsetY + 32) * ((i - 1) \ SkillColumns))
                         Left = xO + SkillLeft + ((SkillOffsetX + 32) * (((i - 1) Mod SkillColumns)))
     
-                        RenderTexture(SkillSprite(spellPic), GameWindow, Left, Top, 0, 0, 32, 32, 32, 32)
+                        RenderTexture(SkillSprite(SkillPic), GameWindow, Left, Top, 0, 0, 32, 32, 32, 32)
                     End If
                 End If
             End If

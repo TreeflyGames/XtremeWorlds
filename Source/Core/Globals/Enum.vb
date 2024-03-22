@@ -504,14 +504,14 @@
     Public Enum PartType
         None = 0
         Item
-        Spell
+        Skill
     End Enum
 
     Public Enum PartOriginType
         None = 0
         Inventory
         Hotbar
-        Spells
+        Skills
         Bank
     End Enum
 
@@ -595,7 +595,7 @@
         None = 0
         Inventory
         Hotbar
-        Spell
+        Skill
         Bank
     End Enum
 

@@ -469,43 +469,6 @@ Module S_Player
         If nVal <= range Then IsInRange = True
     End Function
 
-    Friend Sub SpellPlayer_Effect(Vital As Byte, increment As Boolean, index As Integer, Damage As Integer, Skillnum As Integer)
-        Dim sSymbol As String
-        Dim Color As Integer
-
-        If Damage > 0 Then
-            If increment Then
-                sSymbol = "+"
-                If Vital = VitalType.HP Then Color = ColorType.BrightGreen
-                If Vital = VitalType.MP Then Color = ColorType.BrightBlue
-            Else
-                sSymbol = "-"
-                Color = ColorType.Blue
-            End If
-
-            SendAnimation(GetPlayerMap(index), Skill(Skillnum).SkillAnim, 0, 0, TargetType.Player, index)
-            SendActionMsg(GetPlayerMap(index), sSymbol & Damage, Color, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
-
-            ' send the sound
-            'SendMapSound Index, GetPlayerX(Index), GetPlayerY(Index), SoundEntity.seSpell, Spellnum
-
-            If increment Then
-                SetPlayerVital(index, Vital, GetPlayerVital(index, Vital) + Damage)
-
-                If Skill(Skillnum).Duration > 0 Then
-                    'AddHoT_Player(Index, Spellnum)
-                End If
-
-            ElseIf Not increment Then
-                SetPlayerVital(index, Vital, GetPlayerVital(index, Vital) - Damage)
-            End If
-
-            SendVital(index, Vital)
-
-        End If
-
-    End Sub
-
     Friend Function CanPlayerDodge(index As Integer) As Boolean
         Dim rate As Integer, rndNum As Integer
 
