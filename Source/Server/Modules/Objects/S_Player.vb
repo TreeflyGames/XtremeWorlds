@@ -1532,7 +1532,7 @@ Module S_Player
 
                         If Item(InvItemNum).TwoHanded > 0 Then
                             If GetPlayerEquipment(index, EquipmentType.Shield) > 0 Then
-                                PlayerMsg(index, "This is a 2Handed weapon! Please unequip shield first.", ColorType.BrightRed)
+                                PlayerMsg(index, "This is a 2-Handed weapon! Please unequip shield first.", ColorType.BrightRed)
                                 Exit Sub
                             End If
                         End If
@@ -1728,7 +1728,7 @@ Module S_Player
 
             Case ItemType.Consumable
                 Select Case Item(InvItemNum).SubType
-                    Case ConsumableType.HP
+                    Case ItemSubType.AddHP
                         SendActionMsg(GetPlayerMap(index), "+" & Item(InvItemNum).Data1, ColorType.BrightGreen, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.HP, GetPlayerVital(index, VitalType.HP) + Item(InvItemNum).Data1)
@@ -1742,7 +1742,7 @@ Module S_Player
                         ' send vitals to party if in one
                         If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
-                    Case ConsumableType.MP
+                    Case ItemSubType.AddMP
                         SendActionMsg(GetPlayerMap(index), "+" & Item(InvItemNum).Data1, ColorType.BrightBlue, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.MP, GetPlayerVital(index, VitalType.MP) + Item(InvItemNum).Data1)
@@ -1756,7 +1756,7 @@ Module S_Player
                         ' send vitals to party if in one
                         If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
-                    Case ConsumableType.MP
+                    Case ItemSubType.AddSP
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Item(InvItemNum).Data1)
                         If Item(InvItemNum).Stackable = 1 Then
@@ -1769,8 +1769,17 @@ Module S_Player
                         ' send vitals to party if in one
                         If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
-                    Case ConsumableType.Exp
+                    Case ItemSubType.Exp
+                        SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
+                        SetPlayerExp(index, GetPlayerExp(index) + Item(InvItemNum).Data1)
+                        If Item(InvItemNum).Stackable = 1 Then
+                            TakeInvItem(index, InvItemNum, 1)
+                        Else
+                            TakeInvItem(index, InvItemNum, 0)
+                        End If
 
+                        ' send vitals to party if in one
+                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
                 End Select
 
             Case ItemType.Projectile
