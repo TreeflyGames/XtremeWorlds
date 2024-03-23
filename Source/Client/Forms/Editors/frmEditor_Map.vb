@@ -1328,7 +1328,7 @@ Public Class frmEditor_Map
         End If
 
         Dim image As Image
-        image = GameWindow.Capture()
+        image = Window.Capture()
         image.SaveToFile(Map.Name & GfxExt)
     End Sub
 

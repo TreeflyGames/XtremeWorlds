@@ -817,7 +817,7 @@ Module C_Maps
                         alpha = 255
                     End If
 
-                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
+                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), Window, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Types.Settings.Autotile Then
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
@@ -872,7 +872,7 @@ Module C_Maps
                         alpha = 255
                     End If
 
-                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
+                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), Window, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Types.Settings.Autotile Then
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)

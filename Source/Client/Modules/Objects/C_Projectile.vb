@@ -280,7 +280,7 @@ Friend Module C_Projectiles
             .TextureRect = New IntRect(rec.Left, rec.Top, 32, 32),
             .Position = New Vector2f(x, y)
         }
-        GameWindow.Draw(tmpSprite)
+        Window.Draw(tmpSprite)
 
     End Sub
 

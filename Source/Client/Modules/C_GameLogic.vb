@@ -295,7 +295,7 @@ Module C_GameLogic
                 EditorAnim_DrawAnim()
             End If
 
-            GameWindow.DispatchEvents()
+            Window.DispatchEvents()
             UpdateWindow()
             Application.DoEvents()
             ResizeGUI()

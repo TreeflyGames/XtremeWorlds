@@ -204,7 +204,7 @@ Module C_Interface
 
                     ' render image
                     If .Image(.State) > 0 Then
-                        RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height, .Alpha)
+                        RenderTexture(InterfaceSprite(.Image(.State)), Window, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height, .Alpha)
                     End If
 
                 ' textbox
@@ -216,7 +216,7 @@ Module C_Interface
 
                     ' render image
                     If .Image(.State) > 0 Then
-                        RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height, .Alpha)
+                        RenderTexture(InterfaceSprite(.Image(.State)), Window, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height, .Alpha)
                     End If
 
                     If activeWindow = winNum And Windows(winNum).ActiveControl = entNum Then
@@ -225,9 +225,9 @@ Module C_Interface
 
                     ' render text
                     If Not .Censor Then
-                        RenderText(.Text & taddText, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, .Color, Color.Black)
+                        RenderText(.Text & taddText, Window, .Left + xO + .xOffset, .Top + yO + .yOffset, .Color, Color.Black)
                     Else
-                        RenderText(CensorText(.Text) & taddText, GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
+                        RenderText(CensorText(.Text) & taddText, Window, .Left + xO + .xOffset, .Top + yO + .yOffset, Color.White, Color.Black)
                     End If
 
                 ' buttons
@@ -242,7 +242,7 @@ Module C_Interface
                     ' render image
                     If .Image(.State) > 0 Then
                         If .Image(.State) > 0 Then
-                            RenderTexture(InterfaceSprite(.Image(.State)), GameWindow, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height)
+                            RenderTexture(InterfaceSprite(.Image(.State)), Window, .Left + xO, .Top + yO, 0, 0, .Width, .Height, .Width, .Height)
                         End If
                     End If
 
@@ -256,7 +256,7 @@ Module C_Interface
                             LoadTexture(.Icon, 4)
                         End If
 
-                        RenderTexture(ItemSprite(.Icon), GameWindow, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, Width, Height, Width, Height)
+                        RenderTexture(ItemSprite(.Icon), Window, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, Width, Height, Width, Height)
                     End If
 
                     ' for changing the text space
@@ -278,7 +278,7 @@ Module C_Interface
                         hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2) - 2
                     End If
 
-                    RenderText(.Text, GameWindow, hor_centre, ver_centre, .Color, Color.Black)
+                    RenderText(.Text, Window, hor_centre, ver_centre, .Color, Color.Black)
 
                 ' labels
                 Case EntityType.Label
@@ -294,12 +294,12 @@ Module C_Interface
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        RenderText(textArray(i), GameWindow, .Left - xO, .Top + yO + yOffset, .Color, Color.Black)
+                                        RenderText(textArray(i), Window, .Left - xO, .Top + yO + yOffset, .Color, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
-                                    RenderText(.Text, GameWindow, .Left + xO, .Top + yO, .Color, Color.Black)
+                                    RenderText(.Text, Window, .Left + xO, .Top + yO, .Color, Color.Black)
                                 End If
 
                             Case AlignmentType.Right
@@ -313,13 +313,13 @@ Module C_Interface
 
                                     For i = 1 To count
                                         left = .Left + .Width - TextWidth(textArray(i))
-                                        RenderText(textArray(i), GameWindow, left + xO - FontSize, .Top + yO + yOffset, .Color, Color.Black)
+                                        RenderText(textArray(i), Window, left + xO - FontSize, .Top + yO + yOffset, .Color, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
                                     left = .Left + .Width - TextWidth(.Text)
-                                    RenderText(.Text, GameWindow, left + xO - FontSize, .Top + yO, .Color, Color.Black)
+                                    RenderText(.Text, Window, left + xO - FontSize, .Top + yO, .Color, Color.Black)
                                 End If
 
                             Case AlignmentType.Center
@@ -333,13 +333,13 @@ Module C_Interface
 
                                     For i = 1 To count
                                         left = .Left + (.Width \ 2) - (TextWidth(textArray(i)) \ 2) - 4
-                                        RenderText(textArray(i), GameWindow, left + xO, .Top + yO + yOffset, .Color, Color.Black)
+                                        RenderText(textArray(i), Window, left + xO, .Top + yO + yOffset, .Color, Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' Just one line
                                     left = .Left + (.Width \ 2) - (TextWidth(.Text) \ 2) - FontSize
-                                    RenderText(.Text, GameWindow, left + xO, .Top + yO, .Color, Color.Black)
+                                    RenderText(.Text, Window, left + xO, .Top + yO, .Color, Color.Black)
                                 End If
                         End Select
                     End If
@@ -352,7 +352,7 @@ Module C_Interface
                             If .Value = 0 Then sprite = InterfaceSprite(2) Else sprite = InterfaceSprite(3)
 
                             ' render box
-                            RenderTexture(sprite, GameWindow, .Left + xO, .Top + yO, 0, 0, 16, 16, 16, 16)
+                            RenderTexture(sprite, Window, .Left + xO, .Top + yO, 0, 0, 16, 16, 16, 16)
 
                             ' find text position
                             Select Case .Align
@@ -365,25 +365,25 @@ Module C_Interface
                             End Select
 
                             ' render text
-                            RenderText(.Text, GameWindow, left, .Top + yO, .Color, Color.Black)
+                            RenderText(.Text, Window, left, .Top + yO, .Color, Color.Black)
 
                         Case DesignType.ChkChat
                             If .Value = 0 Then .Alpha = 150 Else .Alpha = 255
 
                             ' render box
-                            RenderTexture(InterfaceSprite(51), GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
+                            RenderTexture(InterfaceSprite(51), Window, .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
 
                             ' render text
                             left = .Left + 22 - (TextWidth(.Text) / 2) + xO
-                            RenderText(.Text, GameWindow, left, .Top + yO + 4, .Color, Color.Black)
+                            RenderText(.Text, Window, left, .Top + yO + 4, .Color, Color.Black)
 
                         Case DesignType.ChkCustom_Buying
                             If .Value = 0 Then sprite = InterfaceSprite(58) Else sprite = InterfaceSprite(56)
-                            RenderTexture(sprite, GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 20, 49, 20)
+                            RenderTexture(sprite, Window, .Left + xO, .Top + yO, 0, 0, 49, 20, 49, 20)
 
                         Case DesignType.ChkCustom_Selling
                             If .Value = 0 Then sprite = InterfaceSprite(59) Else sprite = InterfaceSprite(57)
-                            RenderTexture(sprite, GameWindow, .Left + xO, .Top + yO, 0, 0, 49, 20, 49, 20)
+                            RenderTexture(sprite, Window, .Left + xO, .Top + yO, 0, 0, 49, 20, 49, 20)
                     End Select
 
                 ' comboboxes
@@ -396,12 +396,12 @@ Module C_Interface
                             ' render the text
                             If .Value > 0 Then
                                 If .Value <= UBound(.List) Then
-                                    RenderText(.List(.Value), GameWindow, .Left + xO, .Top + yO, .Color, Color.Black)
+                                    RenderText(.List(.Value), Window, .Left + xO, .Top + yO, .Color, Color.Black)
                                 End If
                             End If
 
                             ' draw the little arow
-                            RenderTexture(InterfaceSprite(66), GameWindow, .Left + xO + .Width, .Top + yO, 0, 0, 5, 4, 5, 4)
+                            RenderTexture(InterfaceSprite(66), Window, .Left + xO + .Width, .Top + yO, 0, 0, 5, 4, 5, 4)
                     End Select
             End Select
 
@@ -428,7 +428,7 @@ Module C_Interface
 
             Select Case .Design(0)
                 Case DesignType.ComboMenuNorm
-                    RenderTexture(InterfaceSprite(1), GameWindow, .Left, .Top, 0, 0, .Width, .Height, 157, 0, 0, 0)
+                    RenderTexture(InterfaceSprite(1), Window, .Left, .Top, 0, 0, .Width, .Height, 157, 0, 0, 0)
 
                     ' text
                     If UBound(.List) > 0 Then
@@ -438,16 +438,16 @@ Module C_Interface
                         For i = 1 To UBound(.List)
                             ' render select
                             If i = .Value Or i = .Group Then
-                                RenderTexture(InterfaceSprite(1), GameWindow, x, y - 1, 0, 0, .Width, 15, 255, 0, 0, 0)
+                                RenderTexture(InterfaceSprite(1), Window, x, y - 1, 0, 0, .Width, 15, 255, 0, 0, 0)
                             End If
 
                             ' render text
                             left = x + (.Width \ 2) - (TextWidth(.List(i)) \ 2)
 
                             If i = .Value Or i = .Group Then
-                                RenderText(.List(i), GameWindow, left, y, Color.White, Color.Black)
+                                RenderText(.List(i), Window, left, y, Color.White, Color.Black)
                             Else
-                                RenderText(.List(i), GameWindow, left, y, Color.White, Color.Black)
+                                RenderText(.List(i), Window, left, y, Color.White, Color.Black)
                             End If
                             y = y + 16
                         Next
@@ -458,7 +458,7 @@ Module C_Interface
             Select Case .Design(.State)
 
                 Case DesignType.Win_Black
-                    RenderTexture(InterfaceSprite(61), GameWindow, .Left, .Top, 0, 0, .Width, .Height, 190, 255, 255, 255)
+                    RenderTexture(InterfaceSprite(61), Window, .Left, .Top, 0, 0, .Width, .Height, 190, 255, 255, 255)
 
                 Case DesignType.Win_Norm
                     ' render window
@@ -469,10 +469,10 @@ Module C_Interface
                     If ItemGfxInfo(.Icon).IsLoaded = False Then
                         LoadTexture(.Icon, 4)
                     End If
-                    RenderTexture(ItemSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
+                    RenderTexture(ItemSprite(.Icon), Window, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
-                    RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
+                    RenderText(Trim$(.Text), Window, .Left + 32, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_NoBar
                     ' render window
@@ -487,10 +487,10 @@ Module C_Interface
                     If ItemGfxInfo(.Icon).IsLoaded = False Then
                         LoadTexture(.Icon, 4)
                     End If
-                    RenderTexture(ItemSprite(.Icon), GameWindow, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
+                    RenderTexture(ItemSprite(.Icon), Window, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
-                    RenderText(Trim$(.Text), GameWindow, .Left + 32, .Top + 4, Color.White, Color.Black)
+                    RenderText(Trim$(.Text), Window, .Left + 32, .Top + 4, Color.White, Color.Black)
 
                 Case DesignType.Win_Desc
                     RenderDesign(DesignType.Win_Desc, .Left, .Top, .Width, .Height)
@@ -513,11 +513,11 @@ Module C_Interface
         Select Case design
             Case DesignType.MenuHeader
                 ' render the header
-                RenderTexture(InterfaceSprite(61), GameWindow, left, top, 0, 0, width, height, width, height, 200, 47, 77, 29)
+                RenderTexture(InterfaceSprite(61), Window, left, top, 0, 0, width, height, width, height, 200, 47, 77, 29)
 
             Case DesignType.MenuOption
                 ' render the option
-                RenderTexture(InterfaceSprite(61), GameWindow, left, top, 0, 0, width, height, width, height, 200, 98, 98, 98)
+                RenderTexture(InterfaceSprite(61), Window, left, top, 0, 0, width, height, width, height, 200, 98, 98, 98)
 
             Case DesignType.Wood
                 bs = 4
@@ -525,7 +525,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(1), left, top, width, height, bs, alpha)
 
                 ' render wood texture
-                RenderTexture(InterfaceSprite(1), GameWindow, Left + bs, Top + bs, 100, 100, Width - (bs * 2), Height - (bs * 2), Width - (bs * 2), Height - (bs * 2), alpha)
+                RenderTexture(InterfaceSprite(1), Window, Left + bs, Top + bs, 100, 100, Width - (bs * 2), Height - (bs * 2), Width - (bs * 2), Height - (bs * 2), alpha)
 
             Case DesignType.Wood_Small
                 bs = 2
@@ -533,7 +533,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(8),Left + bs, Top + bs, width, height, bs, alpha)
 
                 ' render wood texture
-                RenderTexture(InterfaceSprite(1), GameWindow, left + bs, top + bs, 100, 100, Width - (bs * 2), Height - (bs * 2), Width - (bs * 2), Height - (bs * 2))
+                RenderTexture(InterfaceSprite(1), Window, left + bs, top + bs, 100, 100, Width - (bs * 2), Height - (bs * 2), Width - (bs * 2), Height - (bs * 2))
 
             Case DesignType.Wood_Empty
                 bs = 4
@@ -546,7 +546,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                RenderTexture(GradientSprite(1), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(1), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Green_Hover
                 bs = 2
@@ -554,7 +554,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                RenderTexture(GradientSprite(2), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(2), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Green_Click
                 bs = 2
@@ -562,7 +562,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(2), left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                RenderTexture(GradientSprite(3), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(3), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Red
                 bs = 2
@@ -570,7 +570,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
 
                 ' render red gradient overlay
-                RenderTexture(GradientSprite(4), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(4), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Red_Hover
                 bs = 2
@@ -578,7 +578,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
 
                 ' render red gradient overlay
-                RenderTexture(GradientSprite(5), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(5), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Red_Click
                 bs = 2
@@ -586,7 +586,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(3), left, top, width, height, bs, alpha)
 
                 ' render red gradient overlay
-                RenderTexture(GradientSprite(6), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(6), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Blue
                 bs = 2
@@ -594,7 +594,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
 
                 ' render Blue gradient overlay
-                RenderTexture(GradientSprite(8), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(8), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Blue_Hover
                 bs = 2
@@ -602,7 +602,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
 
                 ' render Blue gradient overlay
-                RenderTexture(GradientSprite(9), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(9), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Blue_Click
                 bs = 2
@@ -610,7 +610,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(14), left, top, width, height, bs, alpha)
 
                 ' render Blue gradient overlay
-                RenderTexture(GradientSprite(10), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(10), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Orange
                 bs = 2
@@ -618,7 +618,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
 
                 ' render Orange gradient overlay
-                RenderTexture(GradientSprite(11), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(11), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Orange_Hover
                 bs = 2
@@ -626,7 +626,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
 
                 ' render Orange gradient overlay
-                RenderTexture(GradientSprite(12), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(12), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Orange_Click
                 bs = 2
@@ -634,7 +634,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(15), left, top, width, height, bs, alpha)
 
                 ' render Orange gradient overlay
-                RenderTexture(GradientSprite(13), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(13), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Grey
                 bs = 2
@@ -642,7 +642,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(17), left, top, width, height, bs, alpha)
 
                 ' render Orange gradient overlay
-                RenderTexture(GradientSprite(14), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(14), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Parchment
                 bs = 20
@@ -680,7 +680,7 @@ Module C_Interface
                 RenderEntity_Square(DesignSprite(12), left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                RenderTexture(GradientSprite(7), GameWindow, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                RenderTexture(GradientSprite(7), Window, left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Win_Shadow
                 bs = 35
@@ -707,31 +707,31 @@ Module C_Interface
         bs = borderSize
 
         ' Draw centre
-        RenderTexture(sprite, GameWindow, x + bs, y + bs, bs + 1, bs + 1, width - (bs * 2), height - (bs * 2), , , , alpha)
+        RenderTexture(sprite, Window, x + bs, y + bs, bs + 1, bs + 1, width - (bs * 2), height - (bs * 2), , , , alpha)
 
         ' Draw top side
-        RenderTexture(sprite, GameWindow, x + bs, y, bs, 0, width - (bs * 2), bs, 1, bs, alpha)
+        RenderTexture(sprite, Window, x + bs, y, bs, 0, width - (bs * 2), bs, 1, bs, alpha)
 
         ' Draw left side
-        RenderTexture(sprite, GameWindow, x, y + bs, 0, bs, bs, height - (bs * 2), bs, , alpha)
+        RenderTexture(sprite, Window, x, y + bs, 0, bs, bs, height - (bs * 2), bs, , alpha)
 
         ' Draw right side
-        RenderTexture(sprite, GameWindow, x + width - bs, y + bs, bs + 3, bs, bs, height - (bs * 2), bs, , alpha)
+        RenderTexture(sprite, Window, x + width - bs, y + bs, bs + 3, bs, bs, height - (bs * 2), bs, , alpha)
 
         ' Draw bottom side
-        RenderTexture(sprite, GameWindow, x + bs, y + height - bs, bs, bs + 3, width - (bs * 2), bs, 1, bs, alpha)
+        RenderTexture(sprite, Window, x + bs, y + height - bs, bs, bs + 3, width - (bs * 2), bs, 1, bs, alpha)
 
         ' Draw top left corner
-        RenderTexture(sprite, GameWindow, x, y, 0, 0, bs, bs, bs, bs, alpha)
+        RenderTexture(sprite, Window, x, y, 0, 0, bs, bs, bs, bs, alpha)
 
         ' Draw top right corner
-        RenderTexture(sprite, GameWindow, x + width - bs, y, bs + 3, 0, bs, bs, bs, bs, alpha)
+        RenderTexture(sprite, Window, x + width - bs, y, bs + 3, 0, bs, bs, bs, bs, alpha)
 
         ' Draw bottom left corner
-        RenderTexture(sprite, GameWindow, x, y + height - bs, 0, bs + 3, bs, bs, bs, bs, alpha)
+        RenderTexture(sprite, Window, x, y + height - bs, 0, bs + 3, bs, bs, bs, bs, alpha)
 
         ' Draw bottom right corner
-        RenderTexture(sprite, GameWindow, x + width - bs, y + height - bs, bs + 3, bs + 3, bs, bs, bs, bs, alpha)
+        RenderTexture(sprite, Window, x + width - bs, y + height - bs, bs + 3, bs + 3, bs, bs, bs, bs, alpha)
     End Sub
 
     Sub Combobox_AddItem(winIndex As Long, controlIndex As Long, text As String)
@@ -1739,9 +1739,9 @@ Module C_Interface
         yO = Windows(GetWindowIndex("winBars")).Window.Top
 
         ' Bars
-        RenderTexture(InterfaceSprite(27), GameWindow, xO + 15, yO + 15, 0, 0, BarWidth_GuiHP, 13, BarWidth_GuiHP, 13)
-        RenderTexture(InterfaceSprite(28), GameWindow, xO + 15, yO + 32, 0, 0, BarWidth_GuiSP, 13, BarWidth_GuiSP, 13)
-        RenderTexture(InterfaceSprite(29), GameWindow, xO + 15, yO + 49, 0, 0, BarWidth_GuiEXP, 13, BarWidth_GuiEXP, 13)
+        RenderTexture(InterfaceSprite(27), Window, xO + 15, yO + 15, 0, 0, BarWidth_GuiHP, 13, BarWidth_GuiHP, 13)
+        RenderTexture(InterfaceSprite(28), Window, xO + 15, yO + 32, 0, 0, BarWidth_GuiSP, 13, BarWidth_GuiSP, 13)
+        RenderTexture(InterfaceSprite(29), Window, xO + 15, yO + 49, 0, 0, BarWidth_GuiEXP, 13, BarWidth_GuiEXP, 13)
     End Sub
 
     ' #######################
@@ -1766,7 +1766,7 @@ Module C_Interface
 
                     If Not CharSprite(I) > NumCharacters And Not CharSprite(I) > NumFaces Then
                         ' render char
-                        RenderTexture(CharacterSprite(CharSprite(I)), GameWindow, x + 24, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
+                        RenderTexture(CharacterSprite(CharSprite(I)), Window, x + 24, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
                     End If
                 End If
             End If
@@ -1844,7 +1844,7 @@ Module C_Interface
         End If
 
         ' render face
-        RenderTexture(FaceSprite(imageFace), GameWindow, xO + 30, yO + 75, 0, 0, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height)
+        RenderTexture(FaceSprite(imageFace), Window, xO + 30, yO + 75, 0, 0, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height)
     End Sub
 
     Public Sub Jobs_DrawText()
@@ -1874,7 +1874,7 @@ Module C_Interface
         y = yO + 60
         For I = 1 To count
             x = xO + 118 + (200 \ 2) - (TextWidth(textArray(I)) \ 2)
-            RenderText(textArray(I), GameWindow, x, y, Color.White, Color.White)
+            RenderText(textArray(I), Window, x, y, Color.White, Color.White)
             y = y + 14
         Next
     End Sub
@@ -1926,8 +1926,8 @@ Module C_Interface
         RenderDesign(DesignType.Win_Desc, xO, yO, 352, 152)
 
         ' draw the input box
-        RenderTexture(InterfaceSprite(46), GameWindow, xO + 7, yO + 123, 0, 0, 171, 22, 171, 22)
-        RenderTexture(InterfaceSprite(46), GameWindow, xO + 174, yO + 123, 0, 22, 171, 22, 171, 22)
+        RenderTexture(InterfaceSprite(46), Window, xO + 7, yO + 123, 0, 0, 171, 22, 171, 22)
+        RenderTexture(InterfaceSprite(46), Window, xO + 174, yO + 123, 0, 22, 171, 22, 171, 22)
 
         ' call the chat render
         RenderChat()
@@ -2020,7 +2020,7 @@ Module C_Interface
 
 
         ' render char
-        RenderTexture(CharacterSprite(imageChar), GameWindow, xO + 190, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
+        RenderTexture(CharacterSprite(imageChar), Window, xO + 190, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
     End Sub
 
     Public Sub btnNewChar_Left()
@@ -2170,7 +2170,7 @@ Module C_Interface
 
         itemNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
-        If itemNum Then
+        If itemNum > 0 Then
             SendUseItem(itemNum)
         End If
 
@@ -2244,7 +2244,7 @@ Public Sub DragBox_OnDraw()
                         LoadTexture(texNum, 4)
                     End If
 
-                    RenderTexture(ItemSprite(texNum), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                    RenderTexture(ItemSprite(texNum), Window, xO, yO, 0, 0, 32, 32, 32, 32)
                 End If
             Case PartType.Skill
                 If .value Then
@@ -2254,7 +2254,7 @@ Public Sub DragBox_OnDraw()
                     If SkillGfxInfo(texNum).IsLoaded = False Then
                         LoadTexture(texNum, 9)
                     End If
-                    RenderTexture(SkillSprite(texNum), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                    RenderTexture(SkillSprite(texNum), Window, xO, yO, 0, 0, 32, 32, 32, 32)
                 End If
         End Select
     End With
@@ -2885,13 +2885,13 @@ End Sub
         yO = Windows(GetWindowIndex("winCharacter")).Window.Top
 
         ' Render bottom
-        RenderTexture(InterfaceSprite(37), GameWindow, xO + 4, yO + 314, 0, 0, 40, 38, 40, 38)
-        RenderTexture(InterfaceSprite(37), GameWindow, xO + 44, yO + 314, 0, 0, 40, 38, 40, 38)
-        RenderTexture(InterfaceSprite(37), GameWindow, xO + 84, yO + 314, 0, 0, 40, 38, 40, 38)
-        RenderTexture(InterfaceSprite(37), GameWindow, xO + 124, yO + 314, 0, 0, 46, 38, 46, 38)
+        RenderTexture(InterfaceSprite(37), Window, xO + 4, yO + 314, 0, 0, 40, 38, 40, 38)
+        RenderTexture(InterfaceSprite(37), Window, xO + 44, yO + 314, 0, 0, 40, 38, 40, 38)
+        RenderTexture(InterfaceSprite(37), Window, xO + 84, yO + 314, 0, 0, 40, 38, 40, 38)
+        RenderTexture(InterfaceSprite(37), Window, xO + 124, yO + 314, 0, 0, 46, 38, 46, 38)
 
         ' render top wood
-        RenderTexture(InterfaceSprite(1), GameWindow, xO + 4, yO + 23, 100, 100, 166, 291, 166, 291)
+        RenderTexture(InterfaceSprite(1), Window, xO + 4, yO + 23, 100, 100, 166, 291, 166, 291)
 
         ' loop through equipment
         For i = 1 To EquipmentType.Count - 1
@@ -2908,7 +2908,7 @@ End Sub
             yO = Windows(GetWindowIndex("winCharacter")).Window.Top + EqTop
             xO = Windows(GetWindowIndex("winCharacter")).Window.Left + EqLeft + ((EqOffsetX + 32) * (((i - 1) Mod EqColumns)))
 
-            RenderTexture(ItemSprite(ItemPic), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+            RenderTexture(ItemSprite(ItemPic), Window, xO, yO, 0, 0, 32, 32, 32, 32)
         Next
     End Sub
 
@@ -2977,7 +2977,7 @@ End Sub
         Height = Windows(GetWindowIndex("winInventory")).Window.Height
 
         ' render green
-        RenderTexture(InterfaceSprite(34), GameWindow, xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
+        RenderTexture(InterfaceSprite(34), Window, xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
 
         Width = 76
         Height = 76
@@ -2986,14 +2986,14 @@ End Sub
         ' render grid - row
         For i = 1 To 4
             If i = 4 Then Height = 38
-            RenderTexture(InterfaceSprite(35), GameWindow, xO + 4, y, 0, 0, Width, Height, Width, Height)
-            RenderTexture(InterfaceSprite(35), GameWindow, xO + 80, y, 0, 0, Width, Height, Width, Height)
-            RenderTexture(InterfaceSprite(35), GameWindow, xO + 156, y, 0, 0, 42, Height, 42, Height)
+            RenderTexture(InterfaceSprite(35), Window, xO + 4, y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, xO + 80, y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, xO + 156, y, 0, 0, 42, Height, 42, Height)
             y = y + 76
         Next
 
         ' render bottom wood
-        RenderTexture(InterfaceSprite(1), GameWindow, xO + 4, yO + 289, 100, 100, 194, 26, 194, 26)
+        RenderTexture(InterfaceSprite(1), Window, xO + 4, yO + 289, 100, 100, 194, 26, 194, 26)
 
         ' actually draw the icons
         For i = 1 To MAX_INV
@@ -3034,7 +3034,7 @@ End Sub
                             Left = xO + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
 
                             ' draw icon
-                            RenderTexture(ItemSprite(ItemPic), GameWindow, Left, Top, 0, 0, 32, 32, 32, 32)
+                            RenderTexture(ItemSprite(ItemPic), Window, Left, Top, 0, 0, 32, 32, 32, 32)
 
                             ' If item is a stack - draw the amount you have
                             If GetPlayerInvItemValue(Myindex, i) > 1 Then
@@ -3051,7 +3051,7 @@ End Sub
                                     Color = GetSfmlColor(ColorType.BrightGreen)
                                 End If
 
-                                RenderText(ConvertCurrency(Amount), GameWindow, x, y, Color, Color, , Verdana)
+                                RenderText(ConvertCurrency(Amount), Window, x, y, Color, Color, , Verdana)
                             End If
                         End If
                     End If
@@ -3103,23 +3103,23 @@ End Sub
                 texNum = Item(descItem).Icon
 
                 ' render sprite
-                RenderTexture(ItemSprite(texNum), GameWindow, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
+                RenderTexture(ItemSprite(texNum), Window, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
             Case 2 ' Skill Icon
                 texNum = Skill(descItem).Icon
                 ' render bar
                 With Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "picBar"))
-                    If .Visible Then RenderTexture(InterfaceSprite(45), GameWindow, xO + .Left, yO + .Top, 0, 12, .Value, 12, .Value, 12)
+                    If .Visible Then RenderTexture(InterfaceSprite(45), Window, xO + .Left, yO + .Top, 0, 12, .Value, 12, .Value, 12)
                 End With
 
                 ' render sprite
-                RenderTexture(SkillSprite(texNum), GameWindow, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
+                RenderTexture(SkillSprite(texNum), Window, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
         End Select
 
         ' render text array
         y = 18
         count = UBound(descText)
         For I = 1 To count
-            RenderText(descText(I).Text, GameWindow, xO + 141 - (TextWidth(descText(I).Text) \ 2), yO + y, descText(I).Color, Color.Black)
+            RenderText(descText(I).Text, Window, xO + 141 - (TextWidth(descText(I).Text) \ 2), yO + y, descText(I).Color, Color.Black)
             y = y + 12
         Next
     End Sub
@@ -3197,33 +3197,33 @@ End Sub
         Dim Top As Long
 
         ' move hotbar
-        Windows(GetWindowIndex("winHotbar")).Window.Left = GameWindow.Size.X - 462
+        Windows(GetWindowIndex("winHotbar")).Window.Left = Window.Size.X - 462
 
         ' move menu
-        Windows(GetWindowIndex("winMenu")).Window.Left = GameWindow.Size.X - 264
-        Windows(GetWindowIndex("winMenu")).Window.Top = GameWindow.Size.Y - 48
+        Windows(GetWindowIndex("winMenu")).Window.Left = Window.Size.X - 264
+        Windows(GetWindowIndex("winMenu")).Window.Top = Window.Size.Y - 48
 
         ' move invitations
-        Windows(GetWindowIndex("winInvite_Party")).Window.Left = GameWindow.Size.X - 234
-        Windows(GetWindowIndex("winInvite_Party")).Window.Top = GameWindow.Size.Y - 80
+        Windows(GetWindowIndex("winInvite_Party")).Window.Left = Window.Size.X - 234
+        Windows(GetWindowIndex("winInvite_Party")).Window.Top = Window.Size.Y - 80
 
         ' loop through
-        Top = GameWindow.Size.Y - 80
+        Top = Window.Size.Y - 80
 
         If Windows(GetWindowIndex("winInvite_Party")).Window.visible Then
             Top = Top - 37
         End If
 
-        Windows(GetWindowIndex("winInvite_Trade")).Window.Left = GameWindow.Size.X - 234
+        Windows(GetWindowIndex("winInvite_Trade")).Window.Left = Window.Size.X - 234
         Windows(GetWindowIndex("winInvite_Trade")).Window.Top = Top
 
         ' re-size right-click background
-        Windows(GetWindowIndex("winRightClickBG")).Window.Width = GameWindow.Size.X
-        Windows(GetWindowIndex("winRightClickBG")).Window.Height = GameWindow.Size.Y
+        Windows(GetWindowIndex("winRightClickBG")).Window.Width = Window.Size.X
+        Windows(GetWindowIndex("winRightClickBG")).Window.Height = Window.Size.Y
 
         ' re-size combo background
-        Windows(GetWindowIndex("winComboMenuBG")).Window.Width = GameWindow.Size.X
-        Windows(GetWindowIndex("winComboMenuBG")).Window.Height = GameWindow.Size.Y
+        Windows(GetWindowIndex("winComboMenuBG")).Window.Width = Window.Size.X
+        Windows(GetWindowIndex("winComboMenuBG")).Window.Height = Window.Size.Y
     End Sub
 
     Public Sub DrawSkills()
@@ -3236,7 +3236,7 @@ End Sub
         Height = Windows(GetWindowIndex("winSkills")).Window.Height
     
         ' render green
-        RenderTexture(InterfaceSprite(34), GameWindow, xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
+        RenderTexture(InterfaceSprite(34), Window, xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
     
         Width = 76
         Height = 76
@@ -3245,9 +3245,9 @@ End Sub
         ' render grid - row
         For i = 1 To 4
             If i = 4 Then Height = 42
-            RenderTexture(InterfaceSprite(35), GameWindow, xO + 4, y, 0, 0, Width, Height, Width, Height)
-            RenderTexture(InterfaceSprite(35), GameWindow, xO + 80, y, 0, 0, Width, Height, Width, Height)
-            RenderTexture(InterfaceSprite(35), GameWindow, xO + 156, y, 0, 0, 42, Height, 42, Height)
+            RenderTexture(InterfaceSprite(35), Window, xO + 4, y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, xO + 80, y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, xO + 156, y, 0, 0, 42, Height, 42, Height)
             y = y + 76
         Next
     
@@ -3269,7 +3269,7 @@ End Sub
                         Top = yO + SkillTop + ((SkillOffsetY + 32) * ((i - 1) \ SkillColumns))
                         Left = xO + SkillLeft + ((SkillOffsetX + 32) * (((i - 1) Mod SkillColumns)))
     
-                        RenderTexture(SkillSprite(SkillPic), GameWindow, Left, Top, 0, 0, 32, 32, 32, 32)
+                        RenderTexture(SkillSprite(SkillPic), Window, Left, Top, 0, 0, 32, 32, 32, 32)
                     End If
                 End If
             End If

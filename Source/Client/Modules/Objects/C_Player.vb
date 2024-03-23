@@ -692,7 +692,7 @@ Module C_Player
         End If
 
         ' Draw name
-        RenderText(name, GameWindow, textX, textY, color, backcolor)
+        RenderText(name, Window, textX, textY, color, backcolor)
     End Sub
 
 #End Region

@@ -143,7 +143,7 @@ Module C_Resources
             .TextureTimer = GetTickCount() + 100000
         End With
 
-        RenderTexture(ResourceSprite(resource), GameWindow, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(ResourceSprite(resource), Window, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawMapResource(resourceNum As Integer)
