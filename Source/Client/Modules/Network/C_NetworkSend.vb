@@ -43,7 +43,7 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CLogin)
         buffer.WriteString((EKeyPair.EncryptString(name)))
         buffer.WriteString((EKeyPair.EncryptString(pass)))
-        buffer.WriteString((EKeyPair.EncryptString(GameSettings.Version)))
+        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -55,7 +55,7 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CRegister)
         buffer.WriteString((EKeyPair.EncryptString(name)))
         buffer.WriteString((EKeyPair.EncryptString(pass)))
-        buffer.WriteString((EKeyPair.EncryptString(GameSettings.Version)))
+        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -91,10 +91,10 @@ Module C_NetworkSend
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CPlayerMove)
-        buffer.WriteInt32(GetPlayerDir(MyIndex))
-        buffer.WriteInt32(Player(MyIndex).Moving)
-        buffer.WriteInt32(Player(MyIndex).X)
-        buffer.WriteInt32(Player(MyIndex).Y)
+        buffer.WriteInt32(GetPlayerDir(Myindex))
+        buffer.WriteInt32(Player(Myindex).Moving)
+        buffer.WriteInt32(Player(Myindex).X)
+        buffer.WriteInt32(Player(Myindex).Y)
 
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()
@@ -214,7 +214,7 @@ Module C_NetworkSend
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CPlayerDir)
-        buffer.WriteInt32(GetPlayerDir(MyIndex))
+        buffer.WriteInt32(GetPlayerDir(Myindex))
 
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()
@@ -355,9 +355,9 @@ Module C_NetworkSend
 
         ' do basic checks
         If invNum <= 0 OrElse invNum > MAX_INV Then Exit Sub
-        If Player(MyIndex).Inv(invNum).Num <= 0 OrElse Player(MyIndex).Inv(invNum).Num > MAX_ITEMS Then Exit Sub
-        If Item(GetPlayerInvItemNum(MyIndex, invNum)).Type = ItemType.Currency OrElse Item(GetPlayerInvItemNum(MyIndex, invNum)).Stackable = 1 Then
-            If amount <= 0 OrElse amount > Player(MyIndex).Inv(invNum).Value Then Exit Sub
+        If Player(Myindex).Inv(invNum).Num <= 0 OrElse Player(Myindex).Inv(invNum).Num > MAX_ITEMS Then Exit Sub
+        If Item(GetPlayerInvItemNum(Myindex, invNum)).Type = ItemType.Currency OrElse Item(GetPlayerInvItemNum(Myindex, invNum)).Stackable = 1 Then
+            If amount <= 0 OrElse amount > Player(Myindex).Inv(invNum).Value Then Exit Sub
         End If
 
         buffer.WriteInt32(ClientPackets.CMapDropItem)
@@ -419,7 +419,7 @@ Module C_NetworkSend
         If skillslot < 0 OrElse skillslot > MAX_PLAYER_SKILLS Then Exit Sub
 
         ' dont let them forget a skill which is in CD
-        If Player(MyIndex).Skill(skillslot).CD > 0 Then
+        If Player(Myindex).Skill(skillslot).CD > 0 Then
             AddText("Cannot forget a skill which is cooling down!", ColorType.Red)
             Exit Sub
         End If
@@ -430,7 +430,7 @@ Module C_NetworkSend
             Exit Sub
         End If
 
-        If Player(MyIndex).Skill(skillslot).Num > 0 Then
+        If Player(Myindex).Skill(skillslot).Num > 0 Then
             buffer.WriteInt32(ClientPackets.CForgetSkill)
             buffer.WriteInt32(skillslot)
             Socket.SendData(buffer.Data, buffer.Head)

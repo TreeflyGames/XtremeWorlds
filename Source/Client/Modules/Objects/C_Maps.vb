@@ -192,7 +192,7 @@ Module C_Maps
 
         ' Erase all players except self
         For i = 1 To MAX_PLAYERS
-            If i <> MyIndex Then
+            If i <> Myindex Then
                 SetPlayerMap(i, 0)
             End If
         Next
@@ -560,7 +560,7 @@ Module C_Maps
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CRequestNewMap)
-        buffer.WriteInt32(GetPlayerDir(MyIndex))
+        buffer.WriteInt32(GetPlayerDir(Myindex))
 
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()
@@ -819,7 +819,7 @@ Module C_Maps
 
                     RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
-                    If GameSettings.Autotile Then
+                    If Types.Settings.Autotile Then
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
                         DrawAutoTile(i, ConvertMapX(x * PicX) + 16, ConvertMapY(y * PicY), 2, x, y, 0, False)
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY) + 16, 3, x, y, 0, False)
@@ -874,7 +874,7 @@ Module C_Maps
 
                     RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), GameWindow, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
-                    If GameSettings.Autotile Then
+                    If Types.Settings.Autotile Then
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
                         DrawAutoTile(i, ConvertMapX(x * PicX) + 16, ConvertMapY(y * PicY), 2, x, y, 0, False)
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY) + 16, 3, x, y, 0, False)

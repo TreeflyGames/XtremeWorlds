@@ -43,10 +43,10 @@ Public Class frmEditor_Map
         Dim tempArr(,) As TileStruct
 
         If Not IsNumeric(txtMaxX.Text) Then txtMaxX.Text = Map.MaxX
-        If Val(txtMaxX.Text) < GameSettings.CameraWidth Then txtMaxX.Text = GameSettings.CameraWidth
+        If Val(txtMaxX.Text) < Types.Settings.CameraWidth Then txtMaxX.Text = Types.Settings.CameraWidth
         If Val(txtMaxX.Text) > Byte.MaxValue Then txtMaxX.Text = Byte.MaxValue
         If Not IsNumeric(txtMaxY.Text) Then txtMaxY.Text = Map.MaxY
-        If Val(txtMaxY.Text) < GameSettings.CameraHeight Then txtMaxY.Text = GameSettings.CameraHeight
+        If Val(txtMaxY.Text) < Types.Settings.CameraHeight Then txtMaxY.Text = Types.Settings.CameraHeight
         If Val(txtMaxY.Text) > Byte.MaxValue Then txtMaxY.Text = Byte.MaxValue
 
         With Map
@@ -380,7 +380,7 @@ Public Class frmEditor_Map
     Private Sub BtnPreview_Click(sender As Object, e As EventArgs) Handles btnPreview.Click
         If PreviewPlayer Is Nothing Then
             If lstMusic.SelectedIndex > 0 Then
-                If GameSettings.MusicExt = ".mid" Then
+                If Types.Settings.MusicExt = ".mid" Then
                     MidiPlayer.Load(Paths.Music & lstMusic.Items(lstMusic.SelectedIndex).ToString)
                     MidiPlayer.Play()
                 Else

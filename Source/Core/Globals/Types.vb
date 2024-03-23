@@ -26,6 +26,7 @@ Public Module Types
     Public Party As PartyStruct
     Public MapResource() As MapResourceStruct
     Public Chars As CharList
+    Public Settings As Settings 
 
     Public Structure ResourceTypeStruct
         Dim SkillLevel As Integer

@@ -165,9 +165,9 @@ Module C_Database
     End Sub
 
     Friend Sub CacheMusic()
-        ReDim MusicCache(Directory.GetFiles(Paths.Music, "*" & GameSettings.MusicExt).Count)
-        Dim files As String() = Directory.GetFiles(Paths.Music, "*" & GameSettings.MusicExt)
-        Dim maxNum As String = Directory.GetFiles(Paths.Music, "*" & GameSettings.MusicExt).Count
+        ReDim MusicCache(Directory.GetFiles(Paths.Music, "*" & Types.Settings.MusicExt).Count)
+        Dim files As String() = Directory.GetFiles(Paths.Music, "*" & Types.Settings.MusicExt)
+        Dim maxNum As String = Directory.GetFiles(Paths.Music, "*" & Types.Settings.MusicExt).Count
         Dim counter As Integer = 0
 
         For Each FileName In files
@@ -181,9 +181,9 @@ Module C_Database
     End Sub
 
     Friend Sub CacheSound()
-        ReDim SoundCache(Directory.GetFiles(Paths.Sounds, "*" & GameSettings.SoundExt).Count)
-        Dim files As String() = Directory.GetFiles(Paths.Sounds, "*" & GameSettings.SoundExt)
-        Dim maxNum As String = Directory.GetFiles(Paths.Sounds,  "*" & GameSettings.SoundExt).Count
+        ReDim SoundCache(Directory.GetFiles(Paths.Sounds, "*" & Types.Settings.SoundExt).Count)
+        Dim files As String() = Directory.GetFiles(Paths.Sounds, "*" & Types.Settings.SoundExt)
+        Dim maxNum As String = Directory.GetFiles(Paths.Sounds,  "*" & Types.Settings.SoundExt).Count
         Dim counter As Integer = 0
 
         For Each FileName In files

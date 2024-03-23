@@ -1075,11 +1075,11 @@ Module C_Interface
         CreateLabel(WindowCount, "lblPassword", 72, 75, 142, FontSize, "Password", Arial, Color.White, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, GameSettings.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Types.Settings.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, , GameSettings.SaveUsername, "Save Username?", Arial, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, , Types.Settings.SaveUsername, "Save Username?", Arial, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
 
         ' Register Button
         CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Arial,  , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
@@ -1590,12 +1590,12 @@ Module C_Interface
     Public Sub chkSaveUser_Click()
         With Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "chkSaveUsername"))
             If .Value = 0 Then ' set as false
-                GameSettings.SaveUsername = 0
-                GameSettings.Username = ""
-                GameSettings.Save()
+                Types.Settings.SaveUsername = 0
+                Types.Settings.Username = ""
+                Types.Settings.Save()
             Else
-                GameSettings.SaveUsername = 1
-                GameSettings.Save()
+                Types.Settings.SaveUsername = 1
+                Types.Settings.Save()
             End If
         End With
     End Sub
@@ -1949,32 +1949,32 @@ Module C_Interface
     End Sub
 
     Public Sub chkChat_Game()
-        GameSettings.ChannelState(ChatChannel.Game) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGame")).Value
+        Types.Settings.ChannelState(ChatChannel.Game) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGame")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Map()
-        GameSettings.ChannelState(ChatChannel.Map) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkMap")).Value
+        Types.Settings.ChannelState(ChatChannel.Map) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkMap")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Global()
-        GameSettings.ChannelState(ChatChannel.Broadcast) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGlobal")).Value
+        Types.Settings.ChannelState(ChatChannel.Broadcast) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGlobal")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Party()
-        GameSettings.ChannelState(ChatChannel.Party) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkParty")).Value
+        Types.Settings.ChannelState(ChatChannel.Party) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkParty")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Guild()
-        GameSettings.ChannelState(ChatChannel.Guild) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGuild")).Value
+        Types.Settings.ChannelState(ChatChannel.Guild) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkGuild")).Value
         UpdateChat()
     End Sub
 
     Public Sub chkChat_Private()
-        GameSettings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPrivate")).Value
+        Types.Settings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPrivate")).Value
         UpdateChat()
     End Sub
 
@@ -2114,9 +2114,9 @@ Module C_Interface
                 For I = 1 To MAX_INV
                     If TradeYourOffer(I).Num = invNum Then
                         ' is currency?
-                        If Item(GetPlayerInvItemNum(MyIndex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
+                        If Item(GetPlayerInvItemNum(Myindex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
                             ' only exit out if we're offering all of it
-                            If TradeYourOffer(I).Value = GetPlayerInvItemValue(MyIndex, TradeYourOffer(I).Num) Then
+                            If TradeYourOffer(I).Value = GetPlayerInvItemValue(Myindex, TradeYourOffer(I).Num) Then
                                 Exit Sub
                             End If
                         Else
@@ -2126,7 +2126,7 @@ Module C_Interface
                 Next
 
                 ' currency handler
-                If Item(GetPlayerInvItemNum(MyIndex, invNum)).Type = ItemType.Currency Then
+                If Item(GetPlayerInvItemNum(Myindex, invNum)).Type = ItemType.Currency Then
                     Dialogue("Select Amount", "Please choose how many to offer", "", DialogueType.TradeAmount, DialogueStyle.Input, invNum)
                     Exit Sub
                 End If
@@ -2139,7 +2139,7 @@ Module C_Interface
             ' drag it
             With DragBox
                 .Type = PartType.Item
-                .Value = GetPlayerInvItemNum(MyIndex, invNum)
+                .Value = GetPlayerInvItemNum(Myindex, invNum)
                 .Origin = PartOriginType.Inventory
                 .Slot = invNum
             End With
@@ -2186,15 +2186,15 @@ Module C_Interface
 
         itemNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
-        If itemNum > 0 Then
+        If itemNum Then
             ' exit out if we're offering that item
             If InTrade > 0 Then
                 For I = 1 To MAX_INV
                     If TradeYourOffer(I).Num = itemNum Then
                         ' is currency?
-                        If Item(GetPlayerInvItemNum(MyIndex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
+                        If Item(GetPlayerInvItemNum(Myindex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
                             ' only exit out if we're offering all of it
-                            If TradeYourOffer(I).Value = GetPlayerInvItemValue(MyIndex, TradeYourOffer(I).Num) Then
+                            If TradeYourOffer(I).Value = GetPlayerInvItemValue(Myindex, TradeYourOffer(I).Num) Then
                                 Exit Sub
                             End If
                         Else
@@ -2206,7 +2206,7 @@ Module C_Interface
 
             ' make sure we're not dragging the item
             If DragBox.Type = PartType.Item And DragBox.Value = itemNum Then Exit Sub
-            
+
             ' calc position
             x = Windows(GetWindowIndex("winInventory")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             y = Windows(GetWindowIndex("winInventory")).Window.Top - 4
@@ -2219,8 +2219,6 @@ Module C_Interface
 
             ' go go go
             ShowInvDesc(x, y, itemNum)
-        Else
-            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
@@ -2459,7 +2457,7 @@ End Sub
         If slotNum Then
             With DragBox
                 .Type = PartType.Skill
-                .value = Player(MyIndex).Skill(slotNum).Num
+                .value = Player(Myindex).Skill(slotNum).Num
                 .Origin = PartOriginType.Skill
                 .Slot = slotNum
             End With
@@ -2519,7 +2517,7 @@ End Sub
             End If
 
             ' go go go
-            ShowSkillDesc(x, y, GetPlayerSkill(MyIndex, slotNum), slotNum)
+            ShowSkillDesc(x, y, GetPlayerSkill(Myindex, slotNum), slotNum)
         End If
     End Sub
 
@@ -2534,12 +2532,12 @@ End Sub
 
         If slotNum Then
             With DragBox
-                If Player(MyIndex).Hotbar(slotNum).SlotType = 1 Then ' inventory
+                If Player(Myindex).Hotbar(slotNum).SlotType = 1 Then ' inventory
                     .Type = PartOriginsType.Inventory
-                ElseIf Player(MyIndex).Hotbar(slotNum).SlotType = 2 Then ' Skill
+                ElseIf Player(Myindex).Hotbar(slotNum).SlotType = 2 Then ' Skill
                     .Type = PartOriginsType.Skill
                 End If
-                .Value = Player(MyIndex).Hotbar(slotNum).Slot
+                .Value = Player(Myindex).Hotbar(slotNum).Slot
                 .Origin = PartOriginType.Hotbar
                 .Slot = slotNum
             End With
@@ -2583,7 +2581,7 @@ End Sub
 
         slotNum = IsHotbar(Windows(GetWindowIndex("winHotbar")).Window.Left, Windows(GetWindowIndex("winHotbar")).Window.Top)
 
-        If slotNum > 0 Then
+        If slotNum Then
             ' make sure we're not dragging the item
             If DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = slotNum Then Exit Sub
 
@@ -2598,14 +2596,12 @@ End Sub
             End If
 
             ' go go go
-            Select Case Player(MyIndex).Hotbar(slotNum).SlotType
+            Select Case Player(Myindex).Hotbar(slotNum).SlotType
                 Case 1 ' inventory
-                    ShowItemDesc(x, y, Player(MyIndex).Hotbar(slotNum).Slot)
+                    ShowItemDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot)
                 Case 2 ' skill
-                    ShowSkillDesc(x, y, Player(MyIndex).Hotbar(slotNum).Slot, 0)
+                    ShowskillDesc(x, y, Player(Myindex).Hotbar(slotNum).Slot, 0)
             End Select
-        Else
-            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
@@ -2624,9 +2620,9 @@ End Sub
     Sub UpdateStats_UI()
         ' set the bar labels
         With Windows(GetWindowIndex("winBars"))
-            .Controls(GetControlIndex("winBars", "lblHP")).Text = GetPlayerVital(MyIndex, VitalType.HP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.HP)
-            .Controls(GetControlIndex("winBars", "lblMP")).Text = GetPlayerVital(MyIndex, VitalType.MP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.MP)
-            .Controls(GetControlIndex("winBars", "lblEXP")).Text = GetPlayerExp(MyIndex) & "/" & NextlevelExp
+            .Controls(GetControlIndex("winBars", "lblHP")).Text = GetPlayerVital(Myindex, VitalType.HP) & "/" & GetPlayerMaxVital(Myindex, VitalType.HP)
+            .Controls(GetControlIndex("winBars", "lblMP")).Text = GetPlayerVital(Myindex, VitalType.MP) & "/" & GetPlayerMaxVital(Myindex, VitalType.MP)
+            .Controls(GetControlIndex("winBars", "lblEXP")).Text = GetPlayerExp(Myindex) & "/" & NextlevelExp
         End With
 
         ' update character screen
@@ -2634,9 +2630,9 @@ End Sub
             .Controls(GetControlIndex("winCharacter", "lblHealth")).Text = "Health"
             .Controls(GetControlIndex("winCharacter", "lblSpirit")).Text = "Spirit"
             .Controls(GetControlIndex("winCharacter", "lblExperience")).Text = "Exp"
-            .Controls(GetControlIndex("winCharacter", "lblHealth2")).Text = GetPlayerVital(MyIndex, VitalType.HP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.HP)
-            .Controls(GetControlIndex("winCharacter", "lblSpirit2")).Text = GetPlayerVital(MyIndex, VitalType.MP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.MP)
-            .Controls(GetControlIndex("winCharacter", "lblExperience2")).Text = Player(MyIndex).Exp & "/" & NextlevelExp
+            .Controls(GetControlIndex("winCharacter", "lblHealth2")).Text = GetPlayerVital(Myindex, VitalType.HP) & "/" & GetPlayerMaxVital(Myindex, VitalType.HP)
+            .Controls(GetControlIndex("winCharacter", "lblSpirit2")).Text = GetPlayerVital(Myindex, VitalType.MP) & "/" & GetPlayerMaxVital(Myindex, VitalType.MP)
+            .Controls(GetControlIndex("winCharacter", "lblExperience2")).Text = Player(Myindex).Exp & "/" & NextlevelExp
 
         End With
     End Sub
@@ -2727,12 +2723,12 @@ End Sub
 
         ' sort out the tabs
         With Windows(GetWindowIndex("winChat"))
-            .Controls(GetControlIndex("winChat", "chkGame")).Value = GameSettings.ChannelState(ChatChannel.Game)
-            .Controls(GetControlIndex("winChat", "chkMap")).Value = GameSettings.ChannelState(ChatChannel.Map)
-            .Controls(GetControlIndex("winChat", "chkGlobal")).Value = GameSettings.ChannelState(ChatChannel.Broadcast)
-            .Controls(GetControlIndex("winChat", "chkParty")).Value = GameSettings.ChannelState(ChatChannel.Party)
-            .Controls(GetControlIndex("winChat", "chkGuild")).Value = GameSettings.ChannelState(ChatChannel.Guild)
-            .Controls(GetControlIndex("winChat", "chkPrivate")).Value = GameSettings.ChannelState(ChatChannel.Whisper)
+            .Controls(GetControlIndex("winChat", "chkGame")).Value = Types.Settings.ChannelState(ChatChannel.Game)
+            .Controls(GetControlIndex("winChat", "chkMap")).Value = Types.Settings.ChannelState(ChatChannel.Map)
+            .Controls(GetControlIndex("winChat", "chkGlobal")).Value = Types.Settings.ChannelState(ChatChannel.Broadcast)
+            .Controls(GetControlIndex("winChat", "chkParty")).Value = Types.Settings.ChannelState(ChatChannel.Party)
+            .Controls(GetControlIndex("winChat", "chkGuild")).Value = Types.Settings.ChannelState(ChatChannel.Guild)
+            .Controls(GetControlIndex("winChat", "chkPrivate")).Value = Types.Settings.ChannelState(ChatChannel.Whisper)
         End With
     End Sub
 
@@ -2899,7 +2895,7 @@ End Sub
 
         ' loop through equipment
         For i = 1 To EquipmentType.Count - 1
-            itemNum = GetPlayerEquipment(MyIndex, i)
+            itemNum = GetPlayerEquipment(Myindex, i)
 
             ' get the item sprite
             If itemNum > 0 Then
@@ -3001,7 +2997,7 @@ End Sub
 
         ' actually draw the icons
         For i = 1 To MAX_INV
-            itemNum = GetPlayerInvItemNum(MyIndex, i)
+            itemNum = GetPlayerInvItemNum(Myindex, i)
             StreamItem(itemNum)
 
             If itemNum > 0 And itemNum <= MAX_ITEMS Then
@@ -3013,7 +3009,7 @@ End Sub
                     amountModifier = 0
                     If InTrade > 0 Then
                         For x = 1 To MAX_INV
-                            tmpItem = GetPlayerInvItemNum(MyIndex, TradeYourOffer(x).Num)
+                            tmpItem = GetPlayerInvItemNum(Myindex, TradeYourOffer(x).Num)
                             If TradeYourOffer(x).Num = i Then
                                 ' check if currency
                                 If Not Item(tmpItem).Type = ItemType.Currency Then
@@ -3021,7 +3017,7 @@ End Sub
                                     skipItem = True
                                 Else
                                     ' if amount = all currency, remove from inventory
-                                    If TradeYourOffer(x).Value = GetPlayerInvItemValue(MyIndex, i) Then
+                                    If TradeYourOffer(x).Value = GetPlayerInvItemValue(Myindex, i) Then
                                         skipItem = True
                                     Else
                                         ' not all, change modifier to show change in currency count
@@ -3041,10 +3037,10 @@ End Sub
                             RenderTexture(ItemSprite(ItemPic), GameWindow, Left, Top, 0, 0, 32, 32, 32, 32)
 
                             ' If item is a stack - draw the amount you have
-                            If GetPlayerInvItemValue(MyIndex, i) > 1 Then
+                            If GetPlayerInvItemValue(Myindex, i) > 1 Then
                                 y = Top + 21
                                 x = Left + 1
-                                Amount = GetPlayerInvItemValue(MyIndex, i) - amountModifier
+                                Amount = GetPlayerInvItemValue(Myindex, i) - amountModifier
 
                                 ' Draw currency but with k, m, b etc. using a convertion function
                                 If CLng(Amount) < 1000000 Then
@@ -3257,7 +3253,7 @@ End Sub
     
         ' actually draw the icons
         For i = 1 To MAX_PLAYER_SKILLS
-            Skillnum = Player(MyIndex).Skill(i).Num
+            Skillnum = Player(Myindex).Skill(i).Num
             If Skillnum > 0 And Skillnum <= MAX_SKILLS Then
                 StreamSkill(Skillnum)
 
@@ -3291,8 +3287,8 @@ End Sub
 
         ' music
         Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkMusic")).Value
-        If GameSettings.Music <> Value Then
-            GameSettings.Music = Value
+        If Types.Settings.Music <> Value Then
+            Types.Settings.Music = Value
 
             ' let them know
             If Value = 0 Then
@@ -3301,7 +3297,7 @@ End Sub
             Else
                 AddText("Music tured on.", ColorType.BrightGreen)
                 ' play music
-                If InGame Then musicFile = Trim$(Map.Music) Else musicFile = Trim$(GameSettings.Music)
+                If InGame Then musicFile = Trim$(Map.Music) Else musicFile = Trim$(Types.Settings.Music)
                 If Not musicFile = "None." Then
                     PlayMusic(musicFile)
                 Else
@@ -3312,8 +3308,8 @@ End Sub
     
         ' sound
         Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkSound")).Value
-        If GameSettings.Sound <> Value Then
-            GameSettings.Sound = Value
+        If Types.Settings.Sound <> Value Then
+            Types.Settings.Sound = Value
             ' let them know
             If Value = 0 Then
                 AddText("Sound turned off.", ColorType.BrightGreen)
@@ -3324,8 +3320,8 @@ End Sub
     
         ' autotiles
         Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkAutotile")).Value
-        If GameSettings.Autotile <> Value Then
-            GameSettings.Autotile = Value
+        If Types.Settings.Autotile <> Value Then
+            Types.Settings.Autotile = Value
             ' let them know
             If Value = 0 Then
                 If InGame Then
@@ -3342,8 +3338,8 @@ End Sub
     
         ' fullscreen
         Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkFullscreen")).Value
-        If GameSettings.Fullscreen <> Value Then
-            GameSettings.Fullscreen = Value
+        If Types.Settings.Fullscreen <> Value Then
+            Types.Settings.Fullscreen = Value
             message = True
         End If
     
@@ -3355,7 +3351,7 @@ End Sub
         End With
     
         ' save options
-        GameSettings.Save()
+        Types.Settings.Save()
 
         ' let them know
         If InGame Then

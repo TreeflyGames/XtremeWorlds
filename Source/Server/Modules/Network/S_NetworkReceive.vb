@@ -172,7 +172,7 @@ Module S_NetworkReceive
                 password = EKeyPair.DecryptString(buffer.ReadString())
 
                 ' Check versions
-                If EKeyPair.DecryptString(buffer.ReadString) <> GameSettings.Version Then
+                If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
                     AlertMsg(index, DialogueMsg.Outdated, MenuType.Login)
                     Exit Sub
                 End If
@@ -265,7 +265,7 @@ Module S_NetworkReceive
                 Next
 
                 ' Check versions
-                If EKeyPair.DecryptString(buffer.ReadString) <> GameSettings.Version Then
+                If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
                     AlertMsg(index, DialogueMsg.Outdated, MenuType.Register)
                     Exit Sub
                 End If
@@ -1087,7 +1087,7 @@ Module S_NetworkReceive
         If n <> index Then
             If n > 0 Then
                 If GetPlayerAccess(n) < GetPlayerAccess(index) Then
-                    GlobalMsg(GetPlayerName(n) & " has been kicked from " & GameSettings.GameName & " by " & GetPlayerName(index) & "!")
+                    GlobalMsg(GetPlayerName(n) & " has been kicked from " & Types.Settings.GameName & " by " & GetPlayerName(index) & "!")
                     Addlog(GetPlayerName(index) & " has kicked " & GetPlayerName(n) & ".", ADMIN_LOG)
                     AlertMsg(n, DialogueMsg.Kicked, MenuType.Login)
                 Else
@@ -1372,11 +1372,11 @@ Module S_NetworkReceive
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
 
-        GameSettings.Welcome = Trim$(buffer.ReadString)
-        GameSettings.Save()
+        Types.Settings.Welcome = Trim$(buffer.ReadString)
+        Settings.Save()
 
-        GlobalMsg("Welcome changed to: " & GameSettings.Welcome)
-        Addlog(GetPlayerName(index) & " changed welcome to: " & GameSettings.Welcome, ADMIN_LOG)
+        GlobalMsg("Welcome changed to: " & Types.Settings.Welcome)
+        Addlog(GetPlayerName(index) & " changed welcome to: " & Types.Settings.Welcome, ADMIN_LOG)
 
         buffer.Dispose()
     End Sub

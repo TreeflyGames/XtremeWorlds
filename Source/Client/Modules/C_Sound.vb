@@ -25,7 +25,7 @@ Module C_Sound
             Exit Sub
         End If
 
-        If GameSettings.Music = False OrElse Not File.Exists(Paths.Music & fileName) Then
+        If Types.Settings.Music = False OrElse Not File.Exists(Paths.Music & fileName) Then
             StopMusic()
             Exit Sub
         End If
@@ -34,7 +34,7 @@ Module C_Sound
             Exit Sub
         End If
 
-        If GameSettings.MusicExt = ".mid" Then
+        If Types.Settings.MusicExt = ".mid" Then
             MidiPlayer.Dispose()
             MidiPlayer.Load(Paths.Music & fileName)
             MidiPlayer.Play()
@@ -42,7 +42,7 @@ Module C_Sound
             Exit Sub
         End If
 
-        Dim luaVolume As Single = Convert.ToSingle(LuaScripting.Instance().ExecuteScript("AdjustMusicVolume", GameSettings.Volume)(0))
+        Dim luaVolume As Single = Convert.ToSingle(LuaScripting.Instance().ExecuteScript("AdjustMusicVolume", Types.Settings.Volume)(0))
 
         Try
             If MusicPlayer Is Nothing Then
@@ -78,13 +78,13 @@ Module C_Sound
     End Sub
 
     Sub PlayPreview(fileName As String)
-        If GameSettings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
+        If Types.Settings.Music = 0 OrElse Not File.Exists(Paths.Music & fileName) Then Exit Sub
 
         If PreviewPlayer Is Nothing Then
             Try
                 PreviewPlayer = New Music(Paths.Music & fileName)
                 PreviewPlayer.Loop() = True
-                PreviewPlayer.Volume() = GameSettings.Volume
+                PreviewPlayer.Volume() = Types.Settings.Volume
                 PreviewPlayer.Play()
             Catch ex As Exception
 
@@ -94,7 +94,7 @@ Module C_Sound
                 StopPreview()
                 PreviewPlayer = New Music(Paths.Music & fileName)
                 PreviewPlayer.Loop() = True
-                PreviewPlayer.Volume() = GameSettings.Volume
+                PreviewPlayer.Volume() = Types.Settings.Volume
                 PreviewPlayer.Play()
             Catch ex As Exception
 
@@ -110,7 +110,7 @@ Module C_Sound
     End Sub
 
     Sub PlaySound(fileName As String, Optional looped As Boolean = False)
-        If GameSettings.Sound = 0 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
+        If Types.Settings.Sound = 0 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
 
         Dim buffer As SoundBuffer
         If SoundPlayer Is Nothing Then
@@ -145,7 +145,7 @@ Module C_Sound
     End Sub
 
     Sub PlayExtraSound(fileName As String, Optional looped As Boolean = False)
-        If GameSettings.Sound = 0 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
+        If Types.Settings.Sound = 0 OrElse Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
 
         Dim buffer As SoundBuffer
         If ExtraSoundPlayer Is Nothing Then

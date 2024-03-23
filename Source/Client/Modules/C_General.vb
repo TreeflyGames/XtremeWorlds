@@ -13,11 +13,11 @@ Module C_General
     End Sub
 
     Friend Sub LoadGame()
-        GameSettings.Load()
+        Settings.Load()
         LoadLanguage()
         InputSettings.Load()
         MidiPlayer.Initialize()
-        GetResolutionSize(GameSettings.Resolution, ResolutionWidth, ResolutionHeight)
+        GetResolutionSize(Types.Settings.Resolution, ResolutionWidth, ResolutionHeight)
         LoadGraphics()
         InitNetwork()
         InitInterface()
@@ -25,12 +25,6 @@ Module C_General
     End Sub
 
     Function GetResolutionSize(Resolution As Byte, ByRef Width As Long, ByRef Height As Long)
-        If GameSettings.Resolution = 0 Or GameSettings.Resolution > 13 Then
-            Resolution = 13
-            GameSettings.Resolution = Resolution
-            GameSettings.Save()
-        End If
-
         Select Case Resolution
             Case 1
                 Width = 1920
@@ -128,8 +122,8 @@ End Function
 
     Sub GameInit()
         ' Send a request to the server to open the admin menu if the user wants it.
-        If GameSettings.OpenAdminPanelOnLogin = 1 Then
-            If GetPlayerAccess(MyIndex) > 0 Then
+        If Types.Settings.OpenAdminPanelOnLogin = 1 Then
+            If GetPlayerAccess(Myindex) > 0 Then
                 SendRequestAdmin()
             End If
         End If

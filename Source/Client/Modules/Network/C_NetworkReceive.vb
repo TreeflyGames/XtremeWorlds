@@ -190,7 +190,7 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Now we can receive game data
-        MyIndex = buffer.ReadInt32
+        Myindex = buffer.ReadInt32
 
         buffer.Dispose()
     End Sub
@@ -198,8 +198,8 @@ Module C_NetworkReceive
     Sub Packet_PlayerChars(ByRef data() As Byte)
         Dim buffer As New ByteStream(data), I As Long, winNum As Long, conNum As Long, isSlotEmpty(MAX_CHARS) As Boolean, x As Long
 
-        GameSettings.Username = Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Text
-        GameSettings.Save()
+        Types.Settings.Username = Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Text
+        Settings.Save()
 
         For I = 1 To MAX_CHARS
             CharName(I) = Trim$(buffer.ReadString)
@@ -340,8 +340,8 @@ Module C_NetworkReceive
         For i = 1 To MAX_INV
             invNum = buffer.ReadInt32
             amount = buffer.ReadInt32
-            SetPlayerInvItemNum(MyIndex, i, invNum)
-            SetPlayerInvItemValue(MyIndex, i, amount)
+            SetPlayerInvItemNum(Myindex, i, invNum)
+            SetPlayerInvItemValue(Myindex, i, amount)
         Next
 
         ' changes to inventory, need to clear any drop menu
@@ -356,8 +356,8 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         n = buffer.ReadInt32
-        SetPlayerInvItemNum(MyIndex, n, buffer.ReadInt32)
-        SetPlayerInvItemValue(MyIndex, n, buffer.ReadInt32)
+        SetPlayerInvItemNum(Myindex, n, buffer.ReadInt32)
+        SetPlayerInvItemValue(Myindex, n, buffer.ReadInt32)
 
         ' changes, clear drop menu
         TmpCurrencyItem = 0
@@ -371,7 +371,7 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         For i = 1 To EquipmentType.Count - 1
-            SetPlayerEquipment(MyIndex, buffer.ReadInt32, i)
+            SetPlayerEquipment(Myindex, buffer.ReadInt32, i)
         Next
 
         ' changes to inventory, need to clear any drop menu
@@ -627,7 +627,7 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         For i = 1 To MAX_PLAYER_SKILLS
-            Player(MyIndex).Skill(i).Num = buffer.ReadInt32
+            Player(Myindex).Skill(i).Num = buffer.ReadInt32
         Next
 
         buffer.Dispose()
@@ -700,7 +700,7 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         slot = buffer.ReadInt32
-        Player(MyIndex).Skill(slot).CD = GetTickCount()
+        Player(Myindex).Skill(slot).CD = GetTickCount()
 
         buffer.Dispose()
     End Sub
@@ -1190,8 +1190,8 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         For i = 1 To MAX_HOTBAR
-            Player(MyIndex).Hotbar(i).Slot = buffer.ReadInt32
-            Player(MyIndex).Hotbar(i).SlotType = buffer.ReadInt32
+            Player(Myindex).Hotbar(i).Slot = buffer.ReadInt32
+            Player(Myindex).Hotbar(i).SlotType = buffer.ReadInt32
         Next
 
         buffer.Dispose()

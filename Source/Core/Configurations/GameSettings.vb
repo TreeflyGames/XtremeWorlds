@@ -1,80 +1,85 @@
 ﻿Imports System.IO
-Imports System.Runtime
 Imports System.Xml.Serialization
 
-Public Class GameSettings
-    Public Shared Language As String = "English"
+Public Class Settings
+    Public Language As String = "English"
 
-    Public Shared Username As String = ""
-    Public Shared SaveUsername As Boolean = False
+    Public Username As String = ""
+    Public SaveUsername As Boolean = False
 
-    Public Shared MenuMusic As String = "menu.mid"
-    Public Shared Music As Boolean = True
-    Public Shared Sound As Boolean = True
-    Public Shared Volume As Single = 100.0F
+    Public MenuMusic As String = "menu.mid"
+    Public Music As Boolean = True
+    Public Sound As Boolean = True
+    Public Volume As Single = 100.0F
 
-    Public Shared MusicExt As String = ".mid"
-    Public Shared SoundExt As String = ".wav"
+    Public MusicExt As String = ".mid"
+    Public SoundExt As String = ".wav"
 
-    Public Shared Resolution As Byte = 0
-    Public Shared Vsync As Byte = 1
-    Public Shared ShowNpcBar As Byte = 1
-    Public Shared CameraType As Byte = 0
-    Public Shared Fullscreen As Byte = 1
-    Public Shared CameraWidth As Byte = 32
-    Public Shared CameraHeight As Byte = 24
-    Public Shared OpenAdminPanelOnLogin As Byte = 1
-    Public Shared DynamicLightRendering As Byte = 1
-    Public Shared ChannelState(ChatChannel.Count - 1) As Byte
+    Public Resolution As Byte = 13
+    Public Vsync As Byte = 1
+    Public ShowNpcBar As Byte = 1
+    Public CameraType As Byte = 0
+    Public Fullscreen As Byte = 1
+    Public CameraWidth As Byte = 32
+    Public CameraHeight As Byte = 24
+    Public OpenAdminPanelOnLogin As Byte = 1
+    Public DynamicLightRendering As Byte = 1
+    Public ChannelState(ChatChannel.Count - 1) As Byte
 
-    Public Shared Ip As String = "127.0.0.1"
-    Public Shared Port As Integer = 7001
+    Public Ip As String = "127.0.0.1"
+    Public Port As Integer = 7001
 
-    <XmlIgnore()> Public Shared GameName As String = "MirageWorlds"
-    <XmlIgnore()> Public Shared Website As String = "https://giamon.com/"
+    <XmlIgnore()> Public GameName As String = "MirageWorlds"
+    <XmlIgnore()> Public Website As String = "https://giamon.com/"
 
-    <XmlIgnore()> Public Shared Version As String = "1.6.2"
+    <XmlIgnore()> Public Version As String = "1.6.2"
 
-    Public Shared Welcome As String = "Welcome to MirageWorlds, enjoy your stay!"
+    Public Welcome As String = "Welcome to MirageWorlds, enjoy your stay!"
 
-    Public Shared TimeSpeed As Integer = 1
+    Public TimeSpeed As Integer = 1
 
-    Public Shared MaxFps As Integer = 60
+    Public MaxFps As Integer = 60
 
-    Public Shared Autotile As Boolean = True
+    Public Autotile As Boolean = True
 
-    Public Shared Instance As GameSettings
+    Public Shared Sub Load()
+        Dim cf As String = Paths.Config()
+        Dim x As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
 
-    ' Configuration file path
-    Private Shared ReadOnly Property ConfigPath As String
-        Get
-            Dim cf As String = Paths.Config()
-            Directory.CreateDirectory(cf)
-            Return Path.Combine(cf, "GameSettings.xml")
-        End Get
-    End Property
+        Directory.CreateDirectory(cf)
+        cf += "Settings.xml"
 
-    ' Load settings from file
-    Public Shared Function Load() As GameSettings
-        If File.Exists(ConfigPath) Then
-            Try
-                Using reader As New StreamReader(ConfigPath)
-                    Dim serializer As New XmlSerializer(GetType(GameSettings))
-                    Return CType(serializer.Deserialize(reader), GameSettings)
-                End Using
-            Catch ex As Exception
-                Return New GameSettings() ' In case of error, return default settings
-            End Try
-        Else
-            Return New GameSettings() ' If file doesn't exist, return default settings
+        If Not File.Exists(cf) Then
+            File.Create(cf).Dispose()
+            Dim writer = New StreamWriter(cf)
+            x.Serialize(writer, New Settings)
+            writer.Close()
         End If
-    End Function
 
-    ' Save current settings to file
+        Try
+            Dim reader = New StreamReader(cf)
+            Types.Settings = x.Deserialize(reader)
+            reader.Close()
+        Catch ex As Exception
+            Types.Settings = New Settings()
+        End Try
+    End Sub
+
     Public Shared Sub Save()
-        Using writer As New StreamWriter(ConfigPath)
-            Dim serializer As New XmlSerializer(GetType(GameSettings))
-            serializer.Serialize(writer, Instance)
-        End Using
+        Dim cf As String = Paths.Config()
+
+        Directory.CreateDirectory(cf)
+        cf += "Settings.xml"
+
+        Dim x As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
+        Try
+            Using writer = New StreamWriter(cf)
+                x.Serialize(writer, Types.Settings)
+            End Using ' This ensures the writer is properly disposed and the file is closed
+        Catch ex As Exception
+            Threading.Thread.Sleep(1000) ' Wait for 1 second
+            File.Delete(cf)
+        End Try
+
     End Sub
 End Class

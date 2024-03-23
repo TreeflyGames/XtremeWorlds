@@ -111,32 +111,32 @@ Module C_Player
         If IsTryingToMove() AndAlso CanMove() Then
             ' Check if player has the shift key down for running
             If VbKeyShift Then
-                Player(MyIndex).Moving = MovementType.Walking
+                Player(Myindex).Moving = MovementType.Walking
             Else
-                Player(MyIndex).Moving = MovementType.Running               
+                Player(Myindex).Moving = MovementType.Running               
             End If
 
-            Select Case GetPlayerDir(MyIndex)
+            Select Case GetPlayerDir(Myindex)
                 Case DirectionType.Up
                     SendPlayerMove()
-                    Player(MyIndex).YOffset = PicY
-                    SetPlayerY(MyIndex, GetPlayerY(MyIndex) - 1)
+                    Player(Myindex).YOffset = PicY
+                    SetPlayerY(Myindex, GetPlayerY(Myindex) - 1)
                 Case DirectionType.Down
                     SendPlayerMove()
-                    Player(MyIndex).YOffset = PicY * -1
-                    SetPlayerY(MyIndex, GetPlayerY(MyIndex) + 1)
+                    Player(Myindex).YOffset = PicY * -1
+                    SetPlayerY(Myindex, GetPlayerY(Myindex) + 1)
                 Case DirectionType.Left
                     SendPlayerMove()
-                    Player(MyIndex).XOffset = PicX
-                    SetPlayerX(MyIndex, GetPlayerX(MyIndex) - 1)
+                    Player(Myindex).XOffset = PicX
+                    SetPlayerX(Myindex, GetPlayerX(Myindex) - 1)
                 Case DirectionType.Right
                     SendPlayerMove()
-                    Player(MyIndex).XOffset = PicX * -1
-                    SetPlayerX(MyIndex, GetPlayerX(MyIndex) + 1)
+                    Player(Myindex).XOffset = PicX * -1
+                    SetPlayerX(Myindex, GetPlayerX(Myindex) + 1)
             End Select
 
-            If Player(MyIndex).XOffset = 0 AndAlso Player(MyIndex).YOffset = 0 Then
-                If Map.Tile(GetPlayerX(MyIndex), GetPlayerY(MyIndex)).Type = TileType.Warp Then
+            If Player(Myindex).XOffset = 0 AndAlso Player(Myindex).YOffset = 0 Then
+                If Map.Tile(GetPlayerX(Myindex), GetPlayerY(Myindex)).Type = TileType.Warp Then
                     GettingMap = True
                 End If
             End If
@@ -167,7 +167,7 @@ Module C_Player
         End If
 
         ' Make sure they aren't trying to move when they are already moving
-        If Player(MyIndex).Moving <> 0 Then
+        If Player(Myindex).Moving <> 0 Then
             CanMove = False
             Exit Function
         End If
@@ -209,13 +209,13 @@ Module C_Player
             Exit Function
         End If
 
-        d = GetPlayerDir(MyIndex)
+        d = GetPlayerDir(Myindex)
 
         If DirUp Then
-            SetPlayerDir(MyIndex, DirectionType.Up)
+            SetPlayerDir(Myindex, DirectionType.Up)
 
             ' Check to see if they are trying to go out of bounds
-            If GetPlayerY(MyIndex) > 0 Then
+            If GetPlayerY(Myindex) > 0 Then
                 If CheckDirection(DirectionType.Up) Then
                     CanMove = False
 
@@ -241,10 +241,10 @@ Module C_Player
         End If
 
         If DirDown Then
-            SetPlayerDir(MyIndex, DirectionType.Down)
+            SetPlayerDir(Myindex, DirectionType.Down)
 
             ' Check to see if they are trying to go out of bounds
-            If GetPlayerY(MyIndex) < Map.MaxY Then
+            If GetPlayerY(Myindex) < Map.MaxY Then
                 If CheckDirection(DirectionType.Down) Then
                     CanMove = False
 
@@ -270,10 +270,10 @@ Module C_Player
         End If
 
         If DirLeft Then
-            SetPlayerDir(MyIndex, DirectionType.Left)
+            SetPlayerDir(Myindex, DirectionType.Left)
 
             ' Check to see if they are trying to go out of bounds
-            If GetPlayerX(MyIndex) > 0 Then
+            If GetPlayerX(Myindex) > 0 Then
                 If CheckDirection(DirectionType.Left) Then
                     CanMove = False
 
@@ -299,10 +299,10 @@ Module C_Player
         End If
 
         If DirRight Then
-            SetPlayerDir(MyIndex, DirectionType.Right)
+            SetPlayerDir(Myindex, DirectionType.Right)
 
             ' Check to see if they are trying to go out of bounds
-            If GetPlayerX(MyIndex) < Map.MaxX Then
+            If GetPlayerX(Myindex) < Map.MaxX Then
                 If CheckDirection(DirectionType.Right) Then
                     CanMove = False
 
@@ -336,24 +336,24 @@ Module C_Player
         CheckDirection = False
 
         ' check directional blocking
-        If IsDirBlocked(Map.Tile(GetPlayerX(MyIndex), GetPlayerY(MyIndex)).DirBlock, direction) Then
+        If IsDirBlocked(Map.Tile(GetPlayerX(Myindex), GetPlayerY(Myindex)).DirBlock, direction) Then
             CheckDirection = True
             Exit Function
         End If
 
         Select Case direction
             Case DirectionType.Up
-                x = GetPlayerX(MyIndex)
-                y = GetPlayerY(MyIndex) - 1
+                x = GetPlayerX(Myindex)
+                y = GetPlayerY(Myindex) - 1
             Case DirectionType.Down
-                x = GetPlayerX(MyIndex)
-                y = GetPlayerY(MyIndex) + 1
+                x = GetPlayerX(Myindex)
+                y = GetPlayerY(Myindex) + 1
             Case DirectionType.Left
-                x = GetPlayerX(MyIndex) - 1
-                y = GetPlayerY(MyIndex)
+                x = GetPlayerX(Myindex) - 1
+                y = GetPlayerY(Myindex)
             Case DirectionType.Right
-                x = GetPlayerX(MyIndex) + 1
-                y = GetPlayerY(MyIndex)
+                x = GetPlayerX(Myindex) + 1
+                y = GetPlayerY(Myindex)
         End Select
 
         ' Check to see if the map tile is blocked or not
@@ -452,16 +452,16 @@ Module C_Player
             If StunDuration > 0 Then Exit Sub ' stunned, can't attack
 
             ' speed from weapon
-            If GetPlayerEquipment(MyIndex, EquipmentType.Weapon) > 0 Then
-                attackspeed = Item(GetPlayerEquipment(MyIndex, EquipmentType.Weapon)).Speed * 1000
+            If GetPlayerEquipment(Myindex, EquipmentType.Weapon) > 0 Then
+                attackspeed = Item(GetPlayerEquipment(Myindex, EquipmentType.Weapon)).Speed * 1000
             Else
                 attackspeed = 1000
             End If
 
-            If Player(MyIndex).AttackTimer + attackspeed < GetTickCount() Then
-                If Player(MyIndex).Attacking = 0 Then
+            If Player(Myindex).AttackTimer + attackspeed < GetTickCount() Then
+                If Player(Myindex).Attacking = 0 Then
 
-                    With Player(MyIndex)
+                    With Player(Myindex)
                         .Attacking = 1
                         .AttackTimer = GetTickCount()
                     End With
@@ -470,22 +470,22 @@ Module C_Player
                 End If
             End If
 
-            Select Case Player(MyIndex).Dir
+            Select Case Player(Myindex).Dir
                 Case DirectionType.Up
-                    x = GetPlayerX(MyIndex)
-                    y = GetPlayerY(MyIndex) - 1
+                    x = GetPlayerX(Myindex)
+                    y = GetPlayerY(Myindex) - 1
                 Case DirectionType.Down
-                    x = GetPlayerX(MyIndex)
-                    y = GetPlayerY(MyIndex) + 1
+                    x = GetPlayerX(Myindex)
+                    y = GetPlayerY(Myindex) + 1
                 Case DirectionType.Left
-                    x = GetPlayerX(MyIndex) - 1
-                    y = GetPlayerY(MyIndex)
+                    x = GetPlayerX(Myindex) - 1
+                    y = GetPlayerY(Myindex)
                 Case DirectionType.Right
-                    x = GetPlayerX(MyIndex) + 1
-                    y = GetPlayerY(MyIndex)
+                    x = GetPlayerX(Myindex) + 1
+                    y = GetPlayerY(Myindex)
             End Select
 
-            If GetTickCount() > Player(MyIndex).EventTimer Then
+            If GetTickCount() > Player(Myindex).EventTimer Then
                 For i = 1 To CurrentEvents
                     If MapEvents(i).Visible = 1 Then
                         If MapEvents(i).X = x AndAlso MapEvents(i).Y = y Then
@@ -494,7 +494,7 @@ Module C_Player
                             buffer.WriteInt32(i)
                             Socket.SendData(buffer.Data, buffer.Head)
                             buffer.Dispose()
-                            Player(MyIndex).EventTimer = GetTickCount() + 200
+                            Player(Myindex).EventTimer = GetTickCount() + 200
                         End If
                     End If
                 Next
@@ -509,20 +509,20 @@ Module C_Player
         ' Check for subscript out of range
         If skillslot < 0 OrElse skillslot > MAX_PLAYER_SKILLS Then Exit Sub
 
-        If Player(MyIndex).Skill(skillslot).CD > 0 Then
+        If Player(Myindex).Skill(skillslot).CD > 0 Then
             AddText("Skill has not cooled down yet!", ColorType.BrightRed)
             Exit Sub
         End If
 
         ' Check if player has enough MP
-        If GetPlayerVital(MyIndex, VitalType.MP) < Skill(Player(MyIndex).Skill(skillslot).Num).MpCost Then
-            AddText("Not enough MP to cast " & Trim$(Skill(Player(MyIndex).Skill(skillslot).Num).Name) & ".", ColorType.BrightRed)
+        If GetPlayerVital(Myindex, VitalType.MP) < Skill(Player(Myindex).Skill(skillslot).Num).MpCost Then
+            AddText("Not enough MP to cast " & Trim$(Skill(Player(Myindex).Skill(skillslot).Num).Name) & ".", ColorType.BrightRed)
             Exit Sub
         End If
 
-        If Player(MyIndex).Skill(skillslot).Num > 0 Then
-            If GetTickCount() > Player(MyIndex).AttackTimer + 1000 Then
-                If Player(MyIndex).Moving = 0 Then
+        If Player(Myindex).Skill(skillslot).Num > 0 Then
+            If GetTickCount() > Player(Myindex).AttackTimer + 1000 Then
+                If Player(Myindex).Moving = 0 Then
                     buffer.WriteInt32(ClientPackets.CCast)
                     buffer.WriteInt32(skillslot)
 
@@ -644,8 +644,8 @@ Module C_Player
         End With
 
         'check for emotes
-        If Player(MyIndex).Emote > 0 Then
-            DrawEmotes(x, y, Player(MyIndex).Emote)
+        If Player(Myindex).Emote > 0 Then
+            DrawEmotes(x, y, Player(Myindex).Emote)
         End If
     End Sub
 
@@ -685,7 +685,7 @@ Module C_Player
         textX = textX - (TextWidth((name)) / 2)
 
         If GetPlayerSprite(index) < 0 OrElse GetPlayerSprite(index) > NumCharacters Then
-            textY = ConvertMapY(GetPlayerY(index) * PicY) + Player(MyIndex).YOffset - 16
+            textY = ConvertMapY(GetPlayerY(index) * PicY) + Player(Myindex).YOffset - 16
         Else
             ' Determine location for text
             textY = ConvertMapY(GetPlayerY(index) * PicY) + Player(index).YOffset - (CharacterGfxInfo(GetPlayerSprite(index)).Height / 4) + 16
@@ -705,11 +705,11 @@ Module C_Player
     Sub Packet_PlayerHP(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
-        SetPlayerVital(MyIndex, VitalType.HP, buffer.ReadInt32)
+        SetPlayerVital(Myindex, VitalType.HP, buffer.ReadInt32)
 
         ' set max width
-        If GetPlayerVital(MyIndex, VitalType.HP) > 0 Then
-            BarWidth_GuiHP_Max = ((GetPlayerVital(MyIndex, VitalType.HP) / 209) / (GetPlayerMaxVital(MyIndex, VitalType.HP) / 209)) * 209
+        If GetPlayerVital(Myindex, VitalType.HP) > 0 Then
+            BarWidth_GuiHP_Max = ((GetPlayerVital(Myindex, VitalType.HP) / 209) / (GetPlayerMaxVital(Myindex, VitalType.HP) / 209)) * 209
         Else
             BarWidth_GuiHP_Max = 0
         End If
@@ -723,11 +723,11 @@ Module C_Player
     Sub Packet_PlayerMP(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
-        SetPlayerVital(MyIndex, VitalType.MP, buffer.ReadInt32)
+        SetPlayerVital(Myindex, VitalType.MP, buffer.ReadInt32)
 
         ' set max width
-        If GetPlayerVital(MyIndex, VitalType.MP) > 0 Then
-            BarWidth_GuiSP_Max = ((GetPlayerVital(MyIndex, VitalType.MP) / 209) / (GetPlayerMaxVital(MyIndex, VitalType.MP) / 209)) * 209
+        If GetPlayerVital(Myindex, VitalType.MP) > 0 Then
+            BarWidth_GuiSP_Max = ((GetPlayerVital(Myindex, VitalType.MP) / 209) / (GetPlayerMaxVital(Myindex, VitalType.MP) / 209)) * 209
         Else
             BarWidth_GuiSP_Max = 0
         End If
@@ -741,7 +741,7 @@ Module C_Player
     Sub Packet_PlayerSP(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
-        SetPlayerVital(MyIndex, VitalType.SP, buffer.ReadInt32)
+        SetPlayerVital(Myindex, VitalType.SP, buffer.ReadInt32)
 
         buffer.Dispose()
     End Sub
@@ -784,7 +784,7 @@ Module C_Player
         Next
 
         ' Check if the player is the client player
-        If i = MyIndex Then
+        If i = Myindex Then
             ' Reset directions
             DirUp = False
             DirDown = False
@@ -797,22 +797,22 @@ Module C_Player
                 .Controls(GetControlIndex("winCharacter", "lblClass")).Text = "Class"
                 .Controls(GetControlIndex("winCharacter", "lblLevel")).Text = "Level"
                 .Controls(GetControlIndex("winCharacter", "lblGuild")).Text = "Guild"
-                .Controls(GetControlIndex("winCharacter", "lblName2")).Text = Trim$(GetPlayerName(MyIndex))
-                .Controls(GetControlIndex("winCharacter", "lblClass2")).Text =Trim$(Job(GetPlayerJob(MyIndex)).Name)
-                .Controls(GetControlIndex("winCharacter", "lblLevel2")).Text = GetPlayerLevel(MyIndex)
+                .Controls(GetControlIndex("winCharacter", "lblName2")).Text = Trim$(GetPlayerName(Myindex))
+                .Controls(GetControlIndex("winCharacter", "lblClass2")).Text =Trim$(Job(GetPlayerJob(Myindex)).Name)
+                .Controls(GetControlIndex("winCharacter", "lblLevel2")).Text = GetPlayerLevel(Myindex)
                 .Controls(GetControlIndex("winCharacter", "lblGuild2")).Text = "None"
                 UpdateStats_UI()
 
                 ' stats
                 For x = 1 To StatType.Count - 1
-                    .Controls(GetControlIndex("winCharacter", "lblStat_" & x)).Text = GetPlayerStat(MyIndex, x)
+                    .Controls(GetControlIndex("winCharacter", "lblStat_" & x)).Text = GetPlayerStat(Myindex, x)
                 Next
 
                 ' points
-                .Controls(GetControlIndex("winCharacter", "lblPoints")).Text = GetPlayerPoints(MyIndex)
+                .Controls(GetControlIndex("winCharacter", "lblPoints")).Text = GetPlayerPoints(Myindex)
 
                 ' grey out buttons
-                If GetPlayerPoints(MyIndex) = 0 Then
+                If GetPlayerPoints(Myindex) = 0 Then
                     For x = 1 To StatType.Count - 1
                         .Controls(GetControlIndex("winCharacter", "btnGreyStat_" & x)).Visible = True
                     Next
@@ -888,9 +888,9 @@ Module C_Player
         NextlevelExp = tnl
 
         ' set max width
-        If GetPlayerLevel(MyIndex) <= MAX_LEVEL Then
-            If GetPlayerExp(MyIndex) > 0 Then
-                BarWidth_GuiEXP_Max = ((GetPlayerExp(MyIndex) / 209) / (tnl / 209)) * 209
+        If GetPlayerLevel(Myindex) <= MAX_LEVEL Then
+            If GetPlayerExp(Myindex) > 0 Then
+                BarWidth_GuiEXP_Max = ((GetPlayerExp(Myindex) / 209) / (tnl / 209)) * 209
             Else
                 BarWidth_GuiEXP_Max = 0
             End If
@@ -912,14 +912,14 @@ Module C_Player
         y = buffer.ReadInt32
         dir = buffer.ReadInt32
 
-        SetPlayerX(MyIndex, x)
-        SetPlayerY(MyIndex, y)
-        SetPlayerDir(MyIndex, dir)
+        SetPlayerX(Myindex, x)
+        SetPlayerY(Myindex, y)
+        SetPlayerDir(Myindex, dir)
 
         ' Make sure they aren't walking
-        Player(MyIndex).Moving = 0
-        Player(MyIndex).XOffset = 0
-        Player(MyIndex).YOffset = 0
+        Player(Myindex).Moving = 0
+        Player(Myindex).XOffset = 0
+        Player(Myindex).YOffset = 0
 
         buffer.Dispose()
     End Sub
