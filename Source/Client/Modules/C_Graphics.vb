@@ -513,8 +513,8 @@ Module C_Graphics
     Private Sub Window_Resized(sender As Object, e As SizeEventArgs)
         ResolutionWidth = e.Width - (e.Width Mod PicX)
         ResolutionHeight = e.Height - (e.Height Mod PicY)
-        Types.Settings.CameraHeight = ResolutionHeight / 32
-        Types.Settings.CameraWidth = ResolutionWidth / 32
+        Types.Settings.CameraWidth = ResolutionWidth / PicX
+        Types.Settings.CameraHeight = ResolutionHeight / PicY
         Settings.Save()
 
         RefreshWindow = True
