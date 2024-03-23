@@ -338,7 +338,7 @@ Module C_Graphics
             End If
         End If
 
-        HandleInterfaceEvents(EntState.KeyDown)
+        'HandleInterfaceEvents(EntState.KeyDown)
     End Sub
 
     Private Sub Window_KeyReleased(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
@@ -360,13 +360,23 @@ Module C_Graphics
             End If
         End If
 
-        HandleInterfaceEvents(EntState.KeyUp)
+        'HandleInterfaceEvents(EntState.KeyUp)
     End Sub
 
     Private Sub Window_MouseButtonPressed(ByVal sender As Object, ByVal e As SFML.Window.MouseButtonEventArgs)
         Console.WriteLine("Mouse Button Pressed: " & e.Button.ToString())
 
         If e.Button = Mouse.Button.Left Then
+            Dim currentTime As Integer = Environment.TickCount
+
+            If currentTime - LastLeftClickTime <= DoubleClickTImer Then
+                HandleInterfaceEvents(EntState.DblClick)
+                LastLeftClickTime = 0 ' Reset the last click time to avoid triple-clicks registering as another double-click
+            Else
+                ' Update the last click time
+                LastLeftClickTime = currentTime
+            End If
+
             ' if we're in the middle of choose the trade target or not
             If Not TradeRequest Then
                 If PetAlive(Myindex) Then

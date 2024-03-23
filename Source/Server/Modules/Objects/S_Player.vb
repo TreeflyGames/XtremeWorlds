@@ -1728,7 +1728,7 @@ Module S_Player
 
             Case ItemType.Consumable
                 Select Case Item(InvItemNum).SubType
-                    Case ItemSubType.AddHP
+                    Case ConsumableType.HP
                         SendActionMsg(GetPlayerMap(index), "+" & Item(InvItemNum).Data1, ColorType.BrightGreen, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.HP, GetPlayerVital(index, VitalType.HP) + Item(InvItemNum).Data1)
@@ -1742,7 +1742,7 @@ Module S_Player
                         ' send vitals to party if in one
                         If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
-                    Case ItemSubType.AddMP
+                    Case ConsumableType.MP
                         SendActionMsg(GetPlayerMap(index), "+" & Item(InvItemNum).Data1, ColorType.BrightBlue, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.MP, GetPlayerVital(index, VitalType.MP) + Item(InvItemNum).Data1)
@@ -1756,7 +1756,7 @@ Module S_Player
                         ' send vitals to party if in one
                         If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
-                    Case ItemSubType.AddSP
+                    Case ConsumableType.SP
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Item(InvItemNum).Data1)
                         If Item(InvItemNum).Stackable = 1 Then
@@ -1769,7 +1769,7 @@ Module S_Player
                         ' send vitals to party if in one
                         If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
-                    Case ItemSubType.Exp
+                    Case ConsumableType.Exp
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerExp(index, GetPlayerExp(index) + Item(InvItemNum).Data1)
                         If Item(InvItemNum).Stackable = 1 Then

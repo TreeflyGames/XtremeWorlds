@@ -87,6 +87,14 @@
 
         Count
     End Enum
+
+    ''' <Summary> Consume Constant </Summary>
+    Enum ConsumableType As Byte
+        HP = 0
+        MP
+        SP
+        Exp
+    End Enum
     
     ''' <Summary> Sub Constant </Summary>
     Enum ItemSubType As Byte
