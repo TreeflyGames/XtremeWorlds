@@ -2428,7 +2428,7 @@ Public Sub DragBox_Check()
                     Dialogue("Drop Item", "Please choose how many to drop", "", DialogueType.DropItem, DialogueStyle.Input, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
                 End If
             Case PartOriginType.Skill
-                ' dialogue
+                ForgetSkill(DragBox.Slot)
             Case PartOriginType.Hotbar
                 SendSetHotbarSlot(0, 0, DragBox.Slot)
         End Select
