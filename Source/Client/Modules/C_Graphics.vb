@@ -537,6 +537,8 @@ Module C_Graphics
     End Function
 
     Sub InitGraphics()
+        GetResolutionSize(Types.Settings.Resolution, ResolutionWidth, ResolutionHeight)
+
         Fonts(0) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Georgia)
         Fonts(1) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Arial)
         Fonts(2) = New Font(Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\" + Verdana)

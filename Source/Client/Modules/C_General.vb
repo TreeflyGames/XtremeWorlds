@@ -17,7 +17,6 @@ Module C_General
         LoadLanguage()
         InputSettings.Load()
         MidiPlayer.Initialize()
-        GetResolutionSize(Types.Settings.Resolution, ResolutionWidth, ResolutionHeight)
         LoadGraphics()
         InitNetwork()
         InitInterface()
