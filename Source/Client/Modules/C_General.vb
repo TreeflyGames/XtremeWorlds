@@ -65,7 +65,7 @@ Module C_General
                 Width = 1024
                 Height = 768
         End Select
-End Function
+    End Function
 
     Friend Sub LoadGraphics()
         Started = True

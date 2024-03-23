@@ -338,7 +338,7 @@ Module C_Graphics
             End If
         End If
 
-        'HandleInterfaceEvents(EntState.KeyDown)
+        HandleInterfaceEvents(EntState.KeyDown)
     End Sub
 
     Private Sub Window_KeyReleased(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
@@ -360,7 +360,7 @@ Module C_Graphics
             End If
         End If
 
-        'HandleInterfaceEvents(EntState.KeyUp)
+        HandleInterfaceEvents(EntState.KeyUp)
     End Sub
 
     Private Sub Window_MouseButtonPressed(ByVal sender As Object, ByVal e As SFML.Window.MouseButtonEventArgs)

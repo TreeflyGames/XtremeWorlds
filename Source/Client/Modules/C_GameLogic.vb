@@ -1414,7 +1414,7 @@ Continue1:
     End Sub
 
     Public Sub ShowItemDesc(x As Long, y As Long, itemNum As Long)
-        Dim Color As Color, theName As String, className As String, levelTxt As String, i As Long
+        Dim Color As Color, theName As String, jobName As String, levelTxt As String, i As Long
 
         ' set globals
         descType = 1 ' inventory
@@ -1466,7 +1466,7 @@ Continue1:
 
             ' class req
             If Item(itemNum).JobReq > 0 Then
-                className = Trim$(Job(Item(itemNum).JobReq).Name)
+                jobName = Trim$(Job(Item(itemNum).JobReq).Name)
                 ' do we match it?
                 If GetPlayerJob(Myindex) = Item(itemNum).JobReq Then
                     Color = Color.Green
@@ -1474,7 +1474,7 @@ Continue1:
                     Color = Color.Red
                 End If
             Else
-                className = "No class req."
+                jobName = "No Job Req."
                 Color = Color.Green
             End If
 
@@ -1490,7 +1490,7 @@ Continue1:
                     Color = Color.Red
                 End If
             Else
-                levelTxt = "No level req."
+                levelTxt = "No Level Req."
                 Color = Color.Green
             End If
             .Controls(GetControlIndex("winDescription", "lblLevel")).Text = levelTxt
@@ -1503,7 +1503,7 @@ Continue1:
         ' go through the rest of the text
         Select Case Item(itemNum).Type
             Case ItemType.None
-                AddDescInfo("No type", Color.White)
+                AddDescInfo("No Type", Color.White)
             Case ItemType.Equipment
                 Select Case Item(itemNum).SubType
                     Case ItemSubType.Weapon

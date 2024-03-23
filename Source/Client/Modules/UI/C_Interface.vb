@@ -2502,7 +2502,7 @@ End Sub
 
         slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
     
-        If slotNum Then
+        If slotNum > 0 Then
             ' make sure we're not dragging the item
             If DragBox.Type = PartType.Item And DragBox.value = slotNum Then Exit Sub
             
@@ -2530,7 +2530,7 @@ End Sub
         ' is there an item?
         slotNum = IsHotbar(Windows(GetWindowIndex("winHotbar")).Window.Left, Windows(GetWindowIndex("winHotbar")).Window.Top)
 
-        If slotNum Then
+        If slotNum > 0 Then
             With DragBox
                 If Player(Myindex).Hotbar(slotNum).SlotType = 1 Then ' inventory
                     .Type = PartOriginsType.Inventory
@@ -2565,7 +2565,7 @@ End Sub
 
         slotNum = IsHotbar(Windows(GetWindowIndex("winHotbar")).Window.Left, Windows(GetWindowIndex("winHotbar")).Window.Top)
 
-        If slotNum Then
+        If slotNum > 0 Then
             SendUseHotbarSlot(slotNum)
         End If
 
@@ -2581,7 +2581,7 @@ End Sub
 
         slotNum = IsHotbar(Windows(GetWindowIndex("winHotbar")).Window.Left, Windows(GetWindowIndex("winHotbar")).Window.Top)
 
-        If slotNum Then
+        If slotNum > 0 Then
             ' make sure we're not dragging the item
             If DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = slotNum Then Exit Sub
 
