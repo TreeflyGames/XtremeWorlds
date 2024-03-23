@@ -192,7 +192,7 @@ Module C_Maps
 
         ' Erase all players except self
         For i = 1 To MAX_PLAYERS
-            If i <> Myindex Then
+            If i <> MyIndex Then
                 SetPlayerMap(i, 0)
             End If
         Next
@@ -560,7 +560,7 @@ Module C_Maps
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CRequestNewMap)
-        buffer.WriteInt32(GetPlayerDir(Myindex))
+        buffer.WriteInt32(GetPlayerDir(MyIndex))
 
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()

@@ -190,7 +190,7 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Now we can receive game data
-        Myindex = buffer.ReadInt32
+        MyIndex = buffer.ReadInt32
 
         buffer.Dispose()
     End Sub
@@ -340,8 +340,8 @@ Module C_NetworkReceive
         For i = 1 To MAX_INV
             invNum = buffer.ReadInt32
             amount = buffer.ReadInt32
-            SetPlayerInvItemNum(Myindex, i, invNum)
-            SetPlayerInvItemValue(Myindex, i, amount)
+            SetPlayerInvItemNum(MyIndex, i, invNum)
+            SetPlayerInvItemValue(MyIndex, i, amount)
         Next
 
         ' changes to inventory, need to clear any drop menu
@@ -356,8 +356,8 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         n = buffer.ReadInt32
-        SetPlayerInvItemNum(Myindex, n, buffer.ReadInt32)
-        SetPlayerInvItemValue(Myindex, n, buffer.ReadInt32)
+        SetPlayerInvItemNum(MyIndex, n, buffer.ReadInt32)
+        SetPlayerInvItemValue(MyIndex, n, buffer.ReadInt32)
 
         ' changes, clear drop menu
         TmpCurrencyItem = 0
@@ -371,7 +371,7 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         For i = 1 To EquipmentType.Count - 1
-            SetPlayerEquipment(Myindex, buffer.ReadInt32, i)
+            SetPlayerEquipment(MyIndex, buffer.ReadInt32, i)
         Next
 
         ' changes to inventory, need to clear any drop menu
@@ -627,7 +627,7 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         For i = 1 To MAX_PLAYER_SKILLS
-            Player(Myindex).Skill(i).Num = buffer.ReadInt32
+            Player(MyIndex).Skill(i).Num = buffer.ReadInt32
         Next
 
         buffer.Dispose()
@@ -700,7 +700,7 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         slot = buffer.ReadInt32
-        Player(Myindex).Skill(slot).CD = GetTickCount()
+        Player(MyIndex).Skill(slot).CD = GetTickCount()
 
         buffer.Dispose()
     End Sub
@@ -829,7 +829,7 @@ Module C_NetworkReceive
             Item(n).Mastery = buffer.ReadInt32()
             Item(n).Name = Trim$(buffer.ReadString())
             Item(n).Paperdoll = buffer.ReadInt32()
-            Item(n).Pic = buffer.ReadInt32()
+            Item(n).Icon = buffer.ReadInt32()
             Item(n).Price = buffer.ReadInt32()
             Item(n).Rarity = buffer.ReadInt32()
             Item(n).Speed = buffer.ReadInt32()
@@ -1190,8 +1190,8 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         For i = 1 To MAX_HOTBAR
-            Player(Myindex).Hotbar(i).Slot = buffer.ReadInt32
-            Player(Myindex).Hotbar(i).SlotType = buffer.ReadInt32
+            Player(MyIndex).Hotbar(i).Slot = buffer.ReadInt32
+            Player(MyIndex).Hotbar(i).SlotType = buffer.ReadInt32
         Next
 
         buffer.Dispose()

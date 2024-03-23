@@ -87,14 +87,28 @@
 
         Count
     End Enum
-
-    ''' <Summary> Consumable Constant </Summary>
-    Enum ConsumableType As Byte
+    
+    ''' <Summary> Sub Constant </Summary>
+    Enum ItemSubType As Byte
         None = 0
-        HP
-        MP
-        Sp
+        Weapon
+        Armor
+        Helmet
+        Shield
+        Shoes
+        Gloves
+        AddHP
+        AddMP
+        AddSP
+        SubHP
+        SubMP
+        SubSP
         Exp
+        CommonEvent
+        Currency
+        Skill
+
+        Count
     End Enum
 
     ''' <Summary> Direction Constant </Summary>

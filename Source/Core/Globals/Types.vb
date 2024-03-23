@@ -146,7 +146,7 @@ Public Module Types
 
     Public Structure ItemStruct
         Dim Name As String
-        Dim Pic As Integer
+        Dim Icon As Integer
         Dim Description As String
 
         Dim Type As Byte

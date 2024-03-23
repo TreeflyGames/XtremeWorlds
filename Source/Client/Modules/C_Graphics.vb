@@ -355,7 +355,7 @@ Module C_Graphics
 
         'admin
         If e.Code = Keyboard.Key.Insert Then
-            If GetPlayerAccess(Myindex) > 0 Then
+            If GetPlayerAccess(MyIndex) > 0 Then
                 SendRequestAdmin()
             End If
         End If
@@ -369,7 +369,7 @@ Module C_Graphics
         If e.Button = Mouse.Button.Left Then
             ' if we're in the middle of choose the trade target or not
             If Not TradeRequest Then
-                If PetAlive(Myindex) Then
+                If PetAlive(MyIndex) Then
                     If IsInBounds() Then
                         PetMove(CurX, CurY)
                     End If
@@ -386,18 +386,18 @@ Module C_Graphics
         ElseIf e.Button = Mouse.Button.Right Then
             If VbKeyShift = True Then
                 ' admin warp if we're pressing shift and right clicking
-                If GetPlayerAccess(Myindex) >= 2 Then AdminWarp(CurX, CurY)
+                If GetPlayerAccess(MyIndex) >= 2 Then AdminWarp(CurX, CurY)
             Else
                 For i = 1 To MAX_HOTBAR
-                    If Player(Myindex).Hotbar(i).Slot > 0 Then
+                    If Player(MyIndex).Hotbar(i).Slot > 0 Then
                         SendDeleteHotbar(i)
                         Exit Sub
                     End If
                 Next
 
                 ' rightclick menu
-                If PetAlive(Myindex) Then
-                    If IsInBounds() AndAlso CurX = Player(Myindex).Pet.X And CurY = Player(Myindex).Pet.Y Then
+                If PetAlive(MyIndex) Then
+                    If IsInBounds() AndAlso CurX = Player(MyIndex).Pet.X And CurY = Player(MyIndex).Pet.Y Then
                         ShowPetStats = True
                     End If
                 Else
@@ -1276,7 +1276,7 @@ Module C_Graphics
 
         StreamItem(MapItem(itemnum).Num)
 
-        picNum = Item(MapItem(itemnum).Num).Pic
+        picNum = Item(MapItem(itemnum).Num).Icon
 
         If picNum < 1 OrElse picNum > NumItems Then Exit Sub
 
@@ -1370,23 +1370,23 @@ Module C_Graphics
         Dim startX As Double, startY As Double
         Dim endX As Integer, endY As Integer
 
-        offsetX = Player(Myindex).XOffset + PicX
-        offsetY = Player(Myindex).YOffset + PicY
+        offsetX = Player(MyIndex).XOffset + PicX
+        offsetY = Player(MyIndex).YOffset + PicY
 
         If GameSettings.CameraType = 1 Then
-            startX = GetPlayerX(Myindex) - GameSettings.CameraWidth
-            startY = GetPlayerY(Myindex) - GameSettings.CameraHeight
+            startX = GetPlayerX(MyIndex) - GameSettings.CameraWidth
+            startY = GetPlayerY(MyIndex) - GameSettings.CameraHeight
         Else
-            startX = Math.Floor(GetPlayerX(Myindex) - (GameSettings.CameraWidth) / 2)
-            startY = Math.Floor(GetPlayerY(Myindex) - (GameSettings.CameraHeight) / 2)
+            startX = Math.Floor(GetPlayerX(MyIndex) - (GameSettings.CameraWidth) / 2)
+            startY = Math.Floor(GetPlayerY(MyIndex) - (GameSettings.CameraHeight) / 2)
         End If
 
         If startX < 0 Then
             offsetX = 0
 
             If startX = -1 Then
-                If Player(Myindex).XOffset > 0 Then
-                    offsetX = Player(Myindex).XOffset
+                If Player(MyIndex).XOffset > 0 Then
+                    offsetX = Player(MyIndex).XOffset
                 End If
             End If
 
@@ -1397,8 +1397,8 @@ Module C_Graphics
             offsetY = 0
 
             If startY = -1 Then
-                If Player(Myindex).YOffset > 0 Then
-                    offsetY = Player(Myindex).YOffset
+                If Player(MyIndex).YOffset > 0 Then
+                    offsetY = Player(MyIndex).YOffset
                 End If
             End If
 
@@ -1579,7 +1579,7 @@ Module C_Graphics
             If NumCharacters > 0 Then
                 ' Players
                 For I = 1 To MAX_PLAYERS
-                    If IsPlaying(I) AndAlso GetPlayerMap(I) = GetPlayerMap(Myindex) Then
+                    If IsPlaying(I) AndAlso GetPlayerMap(I) = GetPlayerMap(MyIndex) Then
                         If Player(I).Y = y Then
                             DrawPlayer(I)
                         End If
@@ -1628,7 +1628,7 @@ Module C_Graphics
 
                 For I = 1 To MAX_PLAYERS
                     If IsPlaying(I) Then
-                        If Player(I).Map = Player(Myindex).Map Then
+                        If Player(I).Map = Player(MyIndex).Map Then
                             If CurX = Player(I).X AndAlso CurY = Player(I).Y Then
                                 If MyTargetType = TargetType.Player AndAlso MyTarget = I Then
                                     ' dont render lol
@@ -1667,7 +1667,7 @@ Module C_Graphics
 
         If NumProjectiles > 0 Then
             For I = 1 To MAX_PROJECTILES
-                If MapProjectile(Player(Myindex).Map, I).ProjectileNum > 0 Then
+                If MapProjectile(Player(MyIndex).Map, I).ProjectileNum > 0 Then
                     DrawProjectile(I)
                 End If
             Next
@@ -1710,7 +1710,7 @@ Module C_Graphics
 
         ' draw player names
         For I = 1 To MAX_PLAYERS
-            If IsPlaying(I) AndAlso GetPlayerMap(I) = GetPlayerMap(Myindex) Then
+            If IsPlaying(I) AndAlso GetPlayerMap(I) = GetPlayerMap(MyIndex) Then
                 DrawPlayerName(I)
                 If PetAlive(I) Then
                     DrawPlayerPetName(I)
@@ -1843,8 +1843,8 @@ Module C_Graphics
         With ParallaxGfxInfo(index)
             .TextureTimer = GetTickCount() + 100000
         End With
-        horz = ConvertMapX(GetPlayerX(Myindex))
-        vert = ConvertMapY(GetPlayerY(Myindex))
+        horz = ConvertMapX(GetPlayerX(MyIndex))
+        vert = ConvertMapY(GetPlayerY(MyIndex))
 
         ParallaxSprite(index).Position = New Vector2f((horz * 2.5) - 50, (vert * 2.5) - 50)
 
@@ -1890,7 +1890,7 @@ Module C_Graphics
                 End If
                 PictureSprite(index).Position = New Vector2f(ConvertMapX(MapEvents(Picture.EventId).X * 32) / 2 - Picture.xOffset, ConvertMapY(MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset)
             Case 3 ' Center Player
-                PictureSprite(index).Position = New Vector2f(ConvertMapX(Player(Myindex).X * 32) / 2 - Picture.xOffset, ConvertMapY(Player(Myindex).Y * 32) / 2 - Picture.yOffset)
+                PictureSprite(index).Position = New Vector2f(ConvertMapX(Player(MyIndex).X * 32) / 2 - Picture.xOffset, ConvertMapY(Player(MyIndex).Y * 32) / 2 - Picture.yOffset)
         End Select
 
         GameWindow.Draw(PictureSprite(index))
@@ -1907,14 +1907,14 @@ Module C_Graphics
         ' check for casting time bar
         If SkillBuffer > 0 Then
             ' lock to player
-            tmpX = GetPlayerX(Myindex) * PicX + Player(Myindex).XOffset
-            tmpY = GetPlayerY(Myindex) * PicY + Player(Myindex).YOffset + 35
-            If Skill(Player(Myindex).Skill(SkillBuffer).Num).CastTime = 0 Then _
-                Skill(Player(Myindex).Skill(SkillBuffer).Num).CastTime = 1
+            tmpX = GetPlayerX(MyIndex) * PicX + Player(MyIndex).XOffset
+            tmpY = GetPlayerY(MyIndex) * PicY + Player(MyIndex).YOffset + 35
+            If Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime = 0 Then _
+                Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime = 1
             ' calculate the width to fill
             barWidth =
                 ((GetTickCount() - SkillBufferTimer) /
-                 ((GetTickCount() - SkillBufferTimer) + (Skill(Player(Myindex).Skill(SkillBuffer).Num).CastTime * 1000)) *
+                 ((GetTickCount() - SkillBufferTimer) + (Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime * 1000)) *
                  64)
             ' draw bars
             rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
@@ -1967,15 +1967,15 @@ Module C_Graphics
             Next
         End If
 
-        If PetAlive(Myindex) Then
+        If PetAlive(MyIndex) Then
             ' draw own health bar
-            If Player(Myindex).Pet.Health > 0 AndAlso Player(Myindex).Pet.Health <= Player(Myindex).Pet.MaxHp Then
-                'Debug.Print("pethealth:" & Player(Myindex).Pet.Health)
+            If Player(MyIndex).Pet.Health > 0 AndAlso Player(MyIndex).Pet.Health <= Player(MyIndex).Pet.MaxHp Then
+                'Debug.Print("pethealth:" & Player(MyIndex).Pet.Health)
                 ' lock to Player
-                tmpX = Player(Myindex).Pet.X * PicX + Player(Myindex).Pet.XOffset
-                tmpY = Player(Myindex).Pet.Y * PicX + Player(Myindex).Pet.YOffset + 35
+                tmpX = Player(MyIndex).Pet.X * PicX + Player(MyIndex).Pet.XOffset
+                tmpY = Player(MyIndex).Pet.Y * PicX + Player(MyIndex).Pet.YOffset + 35
                 ' calculate the width to fill
-                barWidth = ((Player(Myindex).Pet.Health) / (Player(Myindex).Pet.MaxHp)) * 32
+                barWidth = ((Player(MyIndex).Pet.Health) / (Player(MyIndex).Pet.MaxHp)) * 32
                 ' draw bars
                 rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
                 Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
@@ -1988,14 +1988,14 @@ Module C_Graphics
 
         ' check for pet casting time bar
         If PetSkillBuffer > 0 Then
-            If Skill(Pet(Player(Myindex).Pet.Num).Skill(PetSkillBuffer)).CastTime > 0 Then
+            If Skill(Pet(Player(MyIndex).Pet.Num).Skill(PetSkillBuffer)).CastTime > 0 Then
                 ' lock to pet
-                tmpX = Player(Myindex).Pet.X * PicX + Player(Myindex).Pet.XOffset
-                tmpY = Player(Myindex).Pet.Y * PicY + Player(Myindex).Pet.YOffset + 35
+                tmpX = Player(MyIndex).Pet.X * PicX + Player(MyIndex).Pet.XOffset
+                tmpY = Player(MyIndex).Pet.Y * PicY + Player(MyIndex).Pet.YOffset + 35
 
                 ' calculate the width to fill
                 barWidth = (GetTickCount() - PetSkillBufferTimer) /
-                           ((Skill(Pet(Player(Myindex).Pet.Num).Skill(PetSkillBuffer)).CastTime * 1000)) * 64
+                           ((Skill(Pet(Player(MyIndex).Pet.Num).Skill(PetSkillBuffer)).CastTime * 1000)) * 64
                 ' draw bar background
                 rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
                 Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
@@ -2506,8 +2506,8 @@ Module C_Graphics
             Next
         End If
 
-        Dim x2 = ConvertMapX(Player(Myindex).X * 32) + 56 + Player(Myindex).XOffset - CDbl(LightGfxInfo.Width) / 2
-        Dim y2 = ConvertMapY(Player(Myindex).Y * 32) + 56 + Player(Myindex).YOffset - CDbl(LightGfxInfo.Height) / 2
+        Dim x2 = ConvertMapX(Player(MyIndex).X * 32) + 56 + Player(MyIndex).XOffset - CDbl(LightGfxInfo.Width) / 2
+        Dim y2 = ConvertMapY(Player(MyIndex).Y * 32) + 56 + Player(MyIndex).YOffset - CDbl(LightGfxInfo.Height) / 2
         LightSprite.Position = New Vector2f(CSng(x2), CSng(y2))
         LightSprite.Color = Color.Red
         LightSprite.Scale = New Vector2f(0.7F, 0.7F)
@@ -2846,7 +2846,7 @@ Module C_Graphics
             Return False
         End If
 
-        If x = Player(Myindex).X AndAlso y = Player(Myindex).Y Then
+        If x = Player(MyIndex).X AndAlso y = Player(MyIndex).Y Then
             Return False
         End If
 
@@ -2915,18 +2915,26 @@ Module C_Graphics
 
             ' render icon
             If Not (DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = i) Then
-                Select Case Player(Myindex).Hotbar(i).SlotType
+                Select Case Player(MyIndex).Hotbar(i).SlotType
                     Case 1 ' inventory
-                        If Len(Item(Player(Myindex).Hotbar(i).Slot).Name) > 0 And Item(Player(Myindex).Hotbar(i).Slot).Pic > 0 Then
-                            RenderTexture(ItemSprite(Item(Player(Myindex).Hotbar(i).Slot).Pic), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                        StreamItem(Player(MyIndex).Hotbar(i).Slot)
+                        If Len(Item(Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Item(Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then
+                            If ItemGfxInfo(Player(MyIndex).Hotbar(i).Slot).IsLoaded = False Then
+                                LoadTexture(Item(Player(MyIndex).Hotbar(i).Slot).Icon, 4)
+                            End If
+                            RenderTexture(ItemSprite(Item(Player(MyIndex).Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                         End If
                     Case 2 ' Skill
-                        If Len(Skill(Player(Myindex).Hotbar(i).Slot).Name) > 0 And Skill(Player(Myindex).Hotbar(i).Slot).Icon > 0 Then
-                            RenderTexture(SkillSprite(Skill(Player(Myindex).Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
+                        StreamSkill(Player(MyIndex).Hotbar(i).Slot)
+                        If Len(Skill(Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Skill(Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then                           
+                            If SkillGfxInfo(Player(MyIndex).Hotbar(i).Slot).IsLoaded = False Then
+                                LoadTexture(Skill(Player(MyIndex).Hotbar(i).Slot).Icon, 9)
+                            End If
+                            RenderTexture(SkillSprite(Skill(Player(MyIndex).Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32)
                             For t = 1 To MAX_PLAYER_SKILLS
-                                If GetPlayerSkill(Myindex, t) > 0 Then
-                                    If GetPlayerSkill(Myindex, t) = Player(Myindex).Hotbar(i).Slot And GetPlayerSkillCD(Myindex, t) > 0 Then
-                                        RenderTexture(SkillSprite(Skill(Player(Myindex).Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
+                                If GetPlayerSkill(MyIndex, t) > 0 Then
+                                    If GetPlayerSkill(MyIndex, t) = Player(MyIndex).Hotbar(i).Slot And GetPlayerSkillCD(MyIndex, t) > 0 Then
+                                        RenderTexture(SkillSprite(Skill(Player(MyIndex).Hotbar(i).Slot).Icon), GameWindow, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
                                     End If
                                 End If
                             Next

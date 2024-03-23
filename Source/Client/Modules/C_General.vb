@@ -129,7 +129,7 @@ End Function
     Sub GameInit()
         ' Send a request to the server to open the admin menu if the user wants it.
         If GameSettings.OpenAdminPanelOnLogin = 1 Then
-            If GetPlayerAccess(Myindex) > 0 Then
+            If GetPlayerAccess(MyIndex) > 0 Then
                 SendRequestAdmin()
             End If
         End If

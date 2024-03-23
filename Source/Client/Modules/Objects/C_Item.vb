@@ -93,7 +93,7 @@ Module C_Items
         Item(n).Mastery = buffer.ReadInt32()
         Item(n).Name = Trim$(buffer.ReadString())
         Item(n).Paperdoll = buffer.ReadInt32()
-        Item(n).Pic = buffer.ReadInt32()
+        Item(n).Icon = buffer.ReadInt32()
         Item(n).Price = buffer.ReadInt32()
         Item(n).Rarity = buffer.ReadInt32()
         Item(n).Speed = buffer.ReadInt32()

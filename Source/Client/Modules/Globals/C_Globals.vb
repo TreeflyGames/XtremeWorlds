@@ -118,7 +118,7 @@ Module C_Globals
     Public ItemRarityColor5 = New SFML.Graphics.Color(255, 215, 0) ' gold
 
     ' Player variables
-    Public Myindex As Integer ' Index of actual player
+    Public MyIndex As Integer ' Index of actual player
 
     Public InventoryItemSelected As Integer
     Public SkillBuffer As Integer

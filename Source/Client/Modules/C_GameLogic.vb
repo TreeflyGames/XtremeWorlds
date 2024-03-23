@@ -110,10 +110,10 @@ Module C_GameLogic
                 ' check if we need to end the CD icon
                 If NumSkills > 0 Then
                     For i = 1 To MAX_PLAYER_SKILLS
-                        If Player(Myindex).Skill(i).Num > 0 Then
-                            If Player(Myindex).Skill(i).CD > 0 Then
-                                If Player(Myindex).Skill(i).CD + (Skill(Player(Myindex).Skill(i).Num).CdTime * 1000) < tick Then
-                                    Player(Myindex).Skill(i).CD = 0
+                        If Player(MyIndex).Skill(i).Num > 0 Then
+                            If Player(MyIndex).Skill(i).CD > 0 Then
+                                If Player(MyIndex).Skill(i).CD + (Skill(Player(MyIndex).Skill(i).Num).CdTime * 1000) < tick Then
+                                    Player(MyIndex).Skill(i).CD = 0
                                 End If
                             End If
                         End If
@@ -122,7 +122,7 @@ Module C_GameLogic
 
                 ' check if we need to unlock the player's skill casting restriction
                 If SkillBuffer > 0 Then
-                    If SkillBufferTimer + (Skill(Player(Myindex).Skill(SkillBuffer).Num).CastTime * 1000) < tick Then
+                    If SkillBufferTimer + (Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime * 1000) < tick Then
                         SkillBuffer = 0
                         SkillBufferTimer = 0
                     End If
@@ -130,7 +130,7 @@ Module C_GameLogic
 
                 ' check if we need to unlock the pets's Skill casting restriction
                 If PetSkillBuffer > 0 Then
-                    If PetSkillBufferTimer + (Skill(Pet(Player(Myindex).Pet.Num).Skill(PetSkillBuffer)).CastTime * 1000) < tick Then
+                    If PetSkillBufferTimer + (Skill(Pet(Player(MyIndex).Pet.Num).Skill(PetSkillBuffer)).CastTime * 1000) < tick Then
                         PetSkillBuffer = 0
                         PetSkillBufferTimer = 0
                     End If
@@ -607,7 +607,7 @@ Module C_GameLogic
                 ' // Moderator Admin Commands //
                 ' Admin Help
                 Case "/admin"
-                    If GetPlayerAccess(Myindex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -620,7 +620,7 @@ Module C_GameLogic
                 ' Kicking a player
                 Case "/kick"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -636,7 +636,7 @@ Module C_GameLogic
                 ' Location
                 Case "/loc"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -646,7 +646,7 @@ Module C_GameLogic
                 ' Warping to a player
                 Case "/warpmeto"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -661,7 +661,7 @@ Module C_GameLogic
                 ' Warping a player to you
                 Case "/warptome"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -676,7 +676,7 @@ Module C_GameLogic
                 ' Warping to a map
                 Case "/warpto"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -698,7 +698,7 @@ Module C_GameLogic
                 ' Setting sprite
                 Case "/sprite"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -713,7 +713,7 @@ Module C_GameLogic
                 ' Map report
                 Case "/mapreport"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -723,7 +723,7 @@ Module C_GameLogic
                 ' Respawn request
                 Case "/respawn"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -732,7 +732,7 @@ Module C_GameLogic
 
                 Case "/editmap"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -743,7 +743,7 @@ Module C_GameLogic
                 ' Welcome change
                 Case "/welcome"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -758,7 +758,7 @@ Module C_GameLogic
                 ' Check the ban list
                 Case "/banlist"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -768,7 +768,7 @@ Module C_GameLogic
                 ' Banning a player
                 Case "/ban"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -784,7 +784,7 @@ Module C_GameLogic
                 ' Giving another player access
                 Case "/bandestroy"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Creator Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Creator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -793,7 +793,7 @@ Module C_GameLogic
 
                 Case "/access"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Creator Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Creator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -810,7 +810,7 @@ Module C_GameLogic
                 ' // Developer Admin Commands //
                 Case "/editresource"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -819,7 +819,7 @@ Module C_GameLogic
 
                 Case "/editanimation"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -828,7 +828,7 @@ Module C_GameLogic
 
                 Case "/editpet"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -837,7 +837,7 @@ Module C_GameLogic
 
                 Case "/edititem"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -846,7 +846,7 @@ Module C_GameLogic
 
                 Case "/editprojectile"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -855,7 +855,7 @@ Module C_GameLogic
 
                 Case "/editnpc"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -864,7 +864,7 @@ Module C_GameLogic
 
                 Case "/editjob"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -873,7 +873,7 @@ Module C_GameLogic
 
                 Case "/editskill"
 
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -881,7 +881,7 @@ Module C_GameLogic
                     SendRequestEditSkill()
 
                 Case "/editshop"
-                    If GetPlayerAccess(Myindex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -906,8 +906,8 @@ Continue1:
         Dim buffer As New ByteStream(4)
         buffer = New ByteStream(4)
 
-        If GetTickCount() > Player(Myindex).MapGetTimer + 250 Then
-            Player(Myindex).MapGetTimer = GetTickCount()
+        If GetTickCount() > Player(MyIndex).MapGetTimer + 250 Then
+            Player(MyIndex).MapGetTimer = GetTickCount()
             buffer.WriteInt32(ClientPackets.CMapGetItem)
             Socket.SendData(buffer.Data, buffer.Head)
         End If
@@ -1382,14 +1382,14 @@ Continue1:
         Dim i As Long
 
         With tempRec
-            .Top = StartY + HotbarTop
+            .Top = StartY
+            .bottom = .Top + PicY
+            .Left = StartX
             .Right = .Left + PicX
-            .Bottom = .Top + PicY
-            .Left = StartX + HotbarLeft + ((i - 1) * HotbarOffsetX)
         End With
 
         For i = 1 To MAX_HOTBAR
-            If Player(Myindex).Hotbar(i).Slot Then
+            If Player(MyIndex).Hotbar(i).Slot Then
                 If CurMouseX >= tempRec.Left And CurMouseX <= tempRec.Right Then
                     If CurMouseY >= tempRec.Top And CurMouseY <= tempRec.Bottom Then
                         IsHotbar = i
@@ -1407,9 +1407,9 @@ Continue1:
         If invNum <= 0 Or invNum > MAX_INV Then Exit Sub
 
         ' show
-        If GetPlayerInvItemNum(Myindex, invNum) Then
-            If Item(GetPlayerInvItemNum(Myindex, invNum)).BindType > 0 And Player(Myindex).Inv(invNum).Bound > 0 Then soulBound = True
-            'ShowItemDesc(x, y, GetPlayerInvItemNum(Myindex, invNum), soulBound)
+        If GetPlayerInvItemNum(MyIndex, invNum) Then
+            If Item(GetPlayerInvItemNum(MyIndex, invNum)).BindType > 0 And Player(MyIndex).Inv(invNum).Bound > 0 Then soulBound = True
+            ShowItemDesc(x, y, GetPlayerInvItemNum(MyIndex, invNum))
         End If
     End Sub
 
@@ -1468,7 +1468,7 @@ Continue1:
             If Item(itemNum).JobReq > 0 Then
                 className = Trim$(Job(Item(itemNum).JobReq).Name)
                 ' do we match it?
-                If GetPlayerJob(Myindex) = Item(itemNum).JobReq Then
+                If GetPlayerJob(MyIndex) = Item(itemNum).JobReq Then
                     Color = Color.Green
                 Else
                     Color = Color.Red
@@ -1484,7 +1484,7 @@ Continue1:
             If Item(itemNum).LevelReq > 0 Then
                 levelTxt = "Level " & Item(itemNum).LevelReq
                 ' do we match it?
-                If GetPlayerLevel(Myindex) >= Item(itemNum).LevelReq Then
+                If GetPlayerLevel(MyIndex) >= Item(itemNum).LevelReq Then
                     Color = Color.Green
                 Else
                     Color = Color.Red
@@ -1506,17 +1506,17 @@ Continue1:
                 AddDescInfo("No type", Color.White)
             Case ItemType.Equipment
                 Select Case Item(itemNum).SubType
-                    Case EquipmentType.Weapon
+                    Case ItemSubType.Weapon
                         AddDescInfo("Weapon", Color.White)
-                    Case EquipmentType.Armor
+                    Case ItemSubType.Armor
                         AddDescInfo("Armor", Color.White)
-                    Case EquipmentType.Helmet
+                    Case ItemSubType.Helmet
                         AddDescInfo("Helmet", Color.White)
-                    Case EquipmentType.Shield
+                    Case ItemSubType.Shield
                         AddDescInfo("Shield", Color.White)
-                    Case EquipmentType.Shoes
+                    Case ItemSubType.Shoes
                         AddDescInfo("Shoes", Color.White)
-                    Case EquipmentType.Gloves
+                    Case ItemSubType.Gloves
                         AddDescInfo("Gloves", Color.White)
                 End Select
             Case ItemType.Consumable
@@ -1541,10 +1541,9 @@ Continue1:
                     AddDescInfo("Bind on Equip", Color.White)
                 End If
 
-                ' price
                 AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
             Case ItemType.Equipment
-                ' Damage/defence
+                ' Damage/defense
                 If Item(itemNum).SubType = EquipmentType.Weapon Then
                     AddDescInfo("Damage: " & Item(itemNum).Data2, Color.White)
                     AddDescInfo("Speed: " & (Item(itemNum).Speed / 1000) & "s", Color.White)
@@ -1561,39 +1560,65 @@ Continue1:
                     AddDescInfo("Bind on Equip", Color.White)
                 End If
 
-                ' price
                 AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
 
                 ' stat bonuses
                 If Item(itemNum).Add_Stat(StatType.Strength) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Strength) & " Str", Color.White)
                 End If
+
                 If Item(itemNum).Add_Stat(StatType.Luck) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " End", Color.White)
                 End If
+
                 If Item(itemNum).Add_Stat(StatType.Spirit) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Spirit) & " Spi", Color.White)
                 End If
+
                 If Item(itemNum).Add_Stat(StatType.Luck) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " Luc", Color.White)
                 End If
+
                 If Item(itemNum).Add_Stat(StatType.Intelligence) > 0 Then
                     AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Intelligence) & " Int", Color.White)
                 End If
             Case ItemType.Consumable
-                'If Item(itemNum).Add_Stat > 0 Then
-                ' AddDescInfo "+" & Item(itemNum).Add_Stat & " HP"
-                'End If
-                'If Item(itemNum).AddMP > 0 Then
-                ' AddDescInfo "+" & Item(itemNum).AddMP & " SP"
-                'End If
-                'If Item(itemNum).AddEXP > 0 Then
-                ' AddDescInfo "+" & Item(itemNum).AddEXP & " EXP"
-                'End If
-                ' price
+                If Item(itemNum).Add_Stat(StatType.Strength) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Strength) & " Str", Color.White)
+                End If
+
+                If Item(itemNum).Add_Stat(StatType.Luck) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " End", Color.White)
+                End If
+
+                If Item(itemNum).Add_Stat(StatType.Spirit) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Spirit) & " Spi", Color.White)
+                End If
+
+                If Item(itemNum).Add_Stat(StatType.Luck) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Luck) & " Luc", Color.White)
+                End If
+
+                If Item(itemNum).Add_Stat(StatType.Intelligence) > 0 Then
+                    AddDescInfo("+" & Item(itemNum).Add_Stat(StatType.Intelligence) & " Int", Color.White)
+                End If
+
+                If Item(itemNum).Data1 > 0 Then
+                    Select Case Item(itemNum).SubType
+                        Case ItemSubType.AddHP
+                            AddDescInfo("+" & Item(itemNum).Data1 & " HP", Color.White)
+                        Case ItemSubType.AddMP
+                            AddDescInfo("+" & Item(itemNum).Data1 & " MP", Color.White)
+                        Case ItemSubType.AddSP
+                            AddDescInfo("+" & Item(itemNum).Data1 & " SP", Color.White)
+                        Case ItemSubType.Exp
+                            AddDescInfo("+" & Item(itemNum).Data1 & " EXP", Color.White)
+                    End Select
+                    
+                End If
+
                 AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
             Case ItemType.Skill
-                ' price
                 AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
         End Select
     End Sub
@@ -1717,9 +1742,9 @@ Continue1:
         If eqNum <= 0 Or eqNum > EquipmentType.Count - 1 Then Exit Sub
 
         ' show
-        If Player(Myindex).Equipment(eqNum) Then
-            If Item(Player(Myindex).Equipment(eqNum)).BindType > 0 Then soulBound = True
-            ShowItemDesc(x, y, Player(Myindex).Equipment(eqNum))
+        If Player(MyIndex).Equipment(eqNum) Then
+            If Item(Player(MyIndex).Equipment(eqNum)).BindType > 0 Then soulBound = True
+            ShowItemDesc(x, y, Player(MyIndex).Equipment(eqNum))
         End If
     End Sub
 

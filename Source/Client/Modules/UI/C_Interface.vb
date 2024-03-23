@@ -2239,7 +2239,7 @@ Public Sub DragBox_OnDraw()
         Select Case .Type
             Case PartType.Item
                 If .value Then
-                    texNum = Item(.value).Pic
+                    texNum = Item(.value).Icon
                         
                     ' render the icon
                     If ItemGfxInfo(texNum).IsLoaded = False Then
@@ -2602,8 +2602,10 @@ End Sub
                 Case 1 ' inventory
                     ShowItemDesc(x, y, Player(MyIndex).Hotbar(slotNum).Slot)
                 Case 2 ' skill
-                    ShowskillDesc(x, y, Player(MyIndex).Hotbar(slotNum).Slot, 0)
+                    ShowSkillDesc(x, y, Player(MyIndex).Hotbar(slotNum).Slot, 0)
             End Select
+        Else
+            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
@@ -2901,7 +2903,7 @@ End Sub
 
             ' get the item sprite
             If itemNum > 0 Then
-                ItemPic = Item(itemNum).Pic
+                ItemPic = Item(itemNum).Icon
             Else
                 ' no item equiped - use blank image
                 ItemPic = 37 + i
@@ -3005,7 +3007,7 @@ End Sub
             If itemNum > 0 And itemNum <= MAX_ITEMS Then
                 ' not dragging?
                 If Not (DragBox.Origin = PartOriginType.Inventory And DragBox.Slot = i) Then
-                    ItemPic = Item(itemNum).Pic
+                    ItemPic = Item(itemNum).Icon
 
                     ' exit out if we're offering item in a trade.
                     amountModifier = 0
@@ -3102,7 +3104,7 @@ End Sub
 
         Select Case descType
             Case 1 ' Inventory Item
-                texNum = Item(descItem).Pic
+                texNum = Item(descItem).Icon
 
                 ' render sprite
                 RenderTexture(ItemSprite(texNum), GameWindow, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)

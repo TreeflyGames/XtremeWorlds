@@ -87,7 +87,7 @@ Friend Class frmEditor_Item
 #Region "Basics"
 
     Private Sub NudPic_Click(sender As Object, e As EventArgs) Handles nudPic.Click
-        Item(EditorIndex).Pic = nudPic.Value
+        Item(EditorIndex).Icon = nudPic.Value
         EditorItem_DrawIcon()
     End Sub
 
@@ -188,7 +188,7 @@ Friend Class frmEditor_Item
         Item(EditorIndex).Type = cmbType.SelectedIndex
     End Sub
 
-    Private Sub NudVitalMod_ValueChanged(sender As Object, e As EventArgs) Handles nudVitalMod.Click
+    Private Sub NudVitalMod_Click(sender As Object, e As EventArgs) Handles nudVitalMod.Click
         Item(EditorIndex).Data1 = nudVitalMod.Value
     End Sub
 

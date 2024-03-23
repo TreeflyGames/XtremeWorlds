@@ -1229,7 +1229,7 @@ Public Class frmEditor_Map
     Public Sub EditorMap_DrawItem()
         Dim itemnum As Integer
 
-        itemnum = Item(Me.scrlMapItem.Value).Pic
+        itemnum = Item(Me.scrlMapItem.Value).Icon
 
         If itemnum <= 0 OrElse itemnum > NumItems Then
             Me.picMapItem.BackgroundImage = Nothing

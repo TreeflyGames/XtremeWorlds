@@ -434,8 +434,8 @@ Module C_Editors
             frmEditor_Item.txtName.Text = Trim$(.Name)
             frmEditor_Item.txtDescription.Text = Trim$(.Description)
 
-            If .Pic > frmEditor_Item.nudPic.Maximum Then .Pic = 0
-            frmEditor_Item.nudPic.Value = .Pic
+            If .Icon > frmEditor_Item.nudPic.Maximum Then .Icon = 0
+            frmEditor_Item.nudPic.Value = .Icon
             If .Type > ItemType.Count - 1 Then .Type = 0
             frmEditor_Item.cmbType.SelectedIndex = .Type
             frmEditor_Item.cmbAnimation.SelectedIndex = .Animation
@@ -532,7 +532,6 @@ Module C_Editors
             frmEditor_Item.nudStrReq.Value = .Stat_Req(StatType.Strength)
             frmEditor_Item.nudVitReq.Value = .Stat_Req(StatType.Vitality)
             frmEditor_Item.nudLuckReq.Value = .Stat_Req(StatType.Luck)
-            frmEditor_Item.nudEndReq.Value = .Stat_Req(StatType.Luck)
             frmEditor_Item.nudIntReq.Value = .Stat_Req(StatType.Intelligence)
             frmEditor_Item.nudSprReq.Value = .Stat_Req(StatType.Spirit)
 
