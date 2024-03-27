@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class frmEditor_Map
+Partial Class FrmEditor_Map
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class frmEditor_Map
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEditor_Map))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmEditor_Map))
         btnClearAttribute = New Button()
         optTrap = New RadioButton()
         optHeal = New RadioButton()
@@ -1982,7 +1982,7 @@ Partial Class frmEditor_Map
         cmbWeather.Size = New Size(238, 33)
         cmbWeather.TabIndex = 0
         ' 
-        ' frmEditor_Map
+        ' FrmEditor_Map
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
@@ -1995,7 +1995,7 @@ Partial Class frmEditor_Map
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(6, 5, 6, 5)
         MaximizeBox = False
-        Name = "frmEditor_Map"
+        Name = "FrmEditor_Map"
         Text = "Map Editor"
         pnlBack.ResumeLayout(False)
         CType(picBackSelect, ComponentModel.ISupportInitialize).EndInit()

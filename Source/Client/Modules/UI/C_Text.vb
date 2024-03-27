@@ -128,7 +128,7 @@ Module C_Text
         Dim tX As Integer
         Dim tY As Integer
 
-        If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
+        If FrmEditor_Map.tabpages.SelectedTab Is FrmEditor_Map.tpAttributes Then
             For X = TileView.Left To TileView.Right
                 For y = TileView.Top To TileView.Bottom
                     If IsValidMapPoint(X, y) Then

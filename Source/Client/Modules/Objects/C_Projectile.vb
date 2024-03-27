@@ -287,15 +287,15 @@ Friend Module C_Projectiles
     Friend Sub EditorProjectile_DrawProjectile()
         Dim iconnum As Integer
 
-        iconnum = frmEditor_Projectile.nudPic.Value
+        iconnum = FrmEditor_Projectile.nudPic.Value
 
         If iconnum < 1 OrElse iconnum > NumProjectiles Then
-            frmEditor_Projectile.picProjectile.BackgroundImage = Nothing
+            FrmEditor_Projectile.picProjectile.BackgroundImage = Nothing
             Exit Sub
         End If
 
         If File.Exists(Paths.Graphics & "Projectiles\" & iconnum & GfxExt) Then
-            frmEditor_Projectile.picProjectile.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "Projectiles\" & iconnum & GfxExt)
+            FrmEditor_Projectile.picProjectile.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "Projectiles\" & iconnum & GfxExt)
         End If
 
     End Sub
@@ -304,14 +304,14 @@ Friend Module C_Projectiles
 #Region "Projectile Editor"
 
     Friend Sub ProjectileEditorInit()
-        EditorIndex = frmEditor_Projectile.lstIndex.SelectedIndex + 1
+        EditorIndex = FrmEditor_Projectile.lstIndex.SelectedIndex + 1
 
         With Projectile(EditorIndex)
-            frmEditor_Projectile.txtName.Text = Trim$(.Name)
-            frmEditor_Projectile.nudPic.Value = .Sprite
-            frmEditor_Projectile.nudRange.Value = .Range
-            frmEditor_Projectile.nudSpeed.Value = .Speed
-            frmEditor_Projectile.nudDamage.Value = .Damage
+            FrmEditor_Projectile.txtName.Text = Trim$(.Name)
+            FrmEditor_Projectile.nudPic.Value = .Sprite
+            FrmEditor_Projectile.nudRange.Value = .Range
+            FrmEditor_Projectile.nudSpeed.Value = .Speed
+            FrmEditor_Projectile.nudDamage.Value = .Damage
         End With
 
         ProjectileChanged(EditorIndex) = True

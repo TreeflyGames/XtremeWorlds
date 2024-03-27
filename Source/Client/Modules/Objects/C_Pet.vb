@@ -585,9 +585,9 @@ Module C_Pets
     Friend Sub PetEditorInit()
         Dim i As Integer
 
-        EditorIndex = frmEditor_Pet.lstIndex.SelectedIndex + 1
+        EditorIndex = FrmEditor_Pet.lstIndex.SelectedIndex + 1
 
-        With frmEditor_Pet
+        With FrmEditor_Pet
             'populate skill combo's
             .cmbSkill1.Items.Clear()
             .cmbSkill2.Items.Clear()

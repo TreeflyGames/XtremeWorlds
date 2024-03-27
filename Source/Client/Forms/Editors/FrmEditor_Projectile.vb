@@ -1,8 +1,8 @@
 ﻿Imports Core
 
-Friend Class frmEditor_Projectile
+Friend Class FrmEditor_Projectile
 
-    Private Sub frmEditor_Projectile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FrmEditor_Projectile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lstIndex.Items.Clear()
 
         ' Add the names
@@ -65,7 +65,7 @@ Friend Class frmEditor_Projectile
         ProjectileEditorInit()
     End Sub
 
-    Private Sub frmEditor_Projectile_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub FrmEditor_Projectile_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ProjectileEditorCancel
     End Sub
 End Class

@@ -1,7 +1,7 @@
 ﻿
 Imports Core
 
-Friend Class frmEditor_Item
+Friend Class FrmEditor_Item
 
 #Region "Form Code"
 
@@ -32,7 +32,7 @@ Friend Class frmEditor_Item
         ItemEditorInit()
     End Sub
 
-    Private Sub frmEditor_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FrmEditor_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudPic.Maximum = NumItems
         nudPaperdoll.Maximum = NumPaperdolls
 

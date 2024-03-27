@@ -2,7 +2,7 @@
 Imports System.Windows.Forms
 Imports Core
 
-Friend Class frmEditor_Shop
+Friend Class FrmEditor_Shop
     Private Sub TxtName_TextChanged(sender As Object, e As EventArgs) Handles txtName.TextChanged
         Dim tmpindex As Integer
 
@@ -82,7 +82,7 @@ Friend Class frmEditor_Shop
         Shop(EditorIndex).Face = nudFace.Value
     End Sub
 
-    Private Sub frmEditor_Shop_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FrmEditor_Shop_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lstIndex.Items.Clear()
 
         ' Add the names
@@ -101,7 +101,7 @@ Friend Class frmEditor_Shop
         nudFace.Maximum = NumFaces
     End Sub
 
-    Private Sub frmEditor_Shop_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub FrmEditor_Shop_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ShopEditorCancel
     End Sub
 End Class

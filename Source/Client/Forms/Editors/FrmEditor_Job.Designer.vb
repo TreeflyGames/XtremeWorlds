@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmEditor_Job
+Partial Class FrmEditor_Job
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -657,7 +657,7 @@ Partial Class frmEditor_Job
         btnDelete.TabIndex = 6
         btnDelete.Text = "Delete"
         ' 
-        ' frmEditor_Job
+        ' FrmEditor_Job
         ' 
         AutoScaleDimensions = New SizeF(13F, 32F)
         AutoScaleMode = AutoScaleMode.Font
@@ -671,7 +671,7 @@ Partial Class frmEditor_Job
         Controls.Add(DarkGroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(7)
-        Name = "frmEditor_Job"
+        Name = "FrmEditor_Job"
         Text = "Job Editor"
         DarkGroupBox1.ResumeLayout(False)
         DarkGroupBox2.ResumeLayout(False)

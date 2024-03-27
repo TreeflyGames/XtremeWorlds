@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class frmEditor_Skill
+Partial Class FrmEditor_Skill
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -833,7 +833,7 @@ Partial Class frmEditor_Skill
         btnSave.TabIndex = 2
         btnSave.Text = "Save"
         ' 
-        ' frmEditor_Skill
+        ' FrmEditor_Skill
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
@@ -847,7 +847,7 @@ Partial Class frmEditor_Skill
         Controls.Add(btnSave)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(6, 5, 6, 5)
-        Name = "frmEditor_Skill"
+        Name = "FrmEditor_Skill"
         Text = "Skill Editor"
         DarkGroupBox1.ResumeLayout(False)
         DarkGroupBox2.ResumeLayout(False)

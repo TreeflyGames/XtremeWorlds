@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmEditor_Shop
+Partial Class FrmEditor_Shop
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -358,7 +358,7 @@ Partial Class frmEditor_Shop
         btnSave.TabIndex = 53
         btnSave.Text = "Save"
         ' 
-        ' frmEditor_Shop
+        ' FrmEditor_Shop
         ' 
         AutoScaleDimensions = New SizeF(13F, 32F)
         AutoScaleMode = AutoScaleMode.Font
@@ -373,7 +373,7 @@ Partial Class frmEditor_Shop
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(8, 6, 8, 6)
         MaximizeBox = False
-        Name = "frmEditor_Shop"
+        Name = "FrmEditor_Shop"
         Text = "Shop Editor"
         DarkGroupBox1.ResumeLayout(False)
         DarkGroupBox2.ResumeLayout(False)

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmEditor_Pet
+Partial Class FrmEditor_Pet
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -712,7 +712,7 @@ Partial Class frmEditor_Pet
         btnDelete.TabIndex = 4
         btnDelete.Text = "Delete"
         ' 
-        ' frmEditor_Pet
+        ' FrmEditor_Pet
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
@@ -726,7 +726,7 @@ Partial Class frmEditor_Pet
         Controls.Add(DarkGroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(6, 5, 6, 5)
-        Name = "frmEditor_Pet"
+        Name = "FrmEditor_Pet"
         Text = "Pet Editor"
         DarkGroupBox1.ResumeLayout(False)
         DarkGroupBox2.ResumeLayout(False)

@@ -6,34 +6,34 @@ Module C_Editors
 #Region "Animation Editor"
 
     Friend Sub AnimationEditorInit()
-        EditorIndex = frmEditor_Animation.lstIndex.SelectedIndex + 1
+        EditorIndex = FrmEditor_Animation.lstIndex.SelectedIndex + 1
 
         With Animation(EditorIndex)
             If Trim$(Animation(EditorIndex).Sound) = "" Then
-                frmEditor_Animation.cmbSound.SelectedIndex = 0
+                FrmEditor_Animation.cmbSound.SelectedIndex = 0
             Else
-                For i = 0 To frmEditor_Animation.cmbSound.Items.Count
-                    If frmEditor_Animation.cmbSound.GetItemText(i) = frmEditor_Animation.cmbSound.SelectedIndex Then
-                        frmEditor_Animation.cmbSound.SelectedIndex = i
+                For i = 0 To FrmEditor_Animation.cmbSound.Items.Count
+                    If FrmEditor_Animation.cmbSound.GetItemText(i) = FrmEditor_Animation.cmbSound.SelectedIndex Then
+                        FrmEditor_Animation.cmbSound.SelectedIndex = i
                         Exit For
                     End If
                 Next
             End If
-            frmEditor_Animation.txtName.Text = Trim$(.Name)
+            FrmEditor_Animation.txtName.Text = Trim$(.Name)
 
-            frmEditor_Animation.nudSprite0.Value = .Sprite(0)
-            frmEditor_Animation.nudFrameCount0.Value = .Frames(0)
+            FrmEditor_Animation.nudSprite0.Value = .Sprite(0)
+            FrmEditor_Animation.nudFrameCount0.Value = .Frames(0)
             If Animation(EditorIndex).LoopCount(0) = 0 Then Animation(EditorIndex).LoopCount(0) = 1
-            frmEditor_Animation.nudLoopCount0.Value = .LoopCount(0)
+            FrmEditor_Animation.nudLoopCount0.Value = .LoopCount(0)
             If Animation(EditorIndex).LoopTime(0) = 0 Then Animation(EditorIndex).LoopTime(0) = 1
-            frmEditor_Animation.nudLoopTime0.Value = .LoopTime(0)
+            FrmEditor_Animation.nudLoopTime0.Value = .LoopTime(0)
 
-            frmEditor_Animation.nudSprite1.Value = .Sprite(1)
-            frmEditor_Animation.nudFrameCount1.Value = .Frames(1)
+            FrmEditor_Animation.nudSprite1.Value = .Sprite(1)
+            FrmEditor_Animation.nudFrameCount1.Value = .Frames(1)
             If Animation(EditorIndex).LoopCount(1) = 0 Then Animation(EditorIndex).LoopCount(1) = 1
-            frmEditor_Animation.nudLoopCount1.Value = .LoopCount(1)
+            FrmEditor_Animation.nudLoopCount1.Value = .LoopCount(1)
             If Animation(EditorIndex).LoopTime(1) = 0 Then Animation(EditorIndex).LoopTime(1) = 1
-            frmEditor_Animation.nudLoopTime1.Value = .LoopTime(1)
+            FrmEditor_Animation.nudLoopTime1.Value = .LoopTime(1)
         End With
 
         Animation_Changed(EditorIndex) = True
@@ -71,7 +71,7 @@ Module C_Editors
 #Region "Npc Editor"
 
     Friend Sub NpcEditorInit()
-        With frmEditor_NPC
+        With FrmEditor_NPC
             EditorIndex = .lstIndex.SelectedIndex + 1
 
             .cmbDropSlot.SelectedIndex = 0
@@ -83,10 +83,10 @@ Module C_Editors
             .cmbBehaviour.SelectedIndex = NPC(EditorIndex).Behaviour
             .cmbFaction.SelectedIndex = NPC(EditorIndex).Faction
             .nudRange.Value = NPC(EditorIndex).Range
-            .nudChance.Value = NPC(EditorIndex).DropChance(frmEditor_NPC.cmbDropSlot.SelectedIndex)
-            .cmbItem.SelectedIndex = NPC(EditorIndex).DropItem(frmEditor_NPC.cmbDropSlot.SelectedIndex)
+            .nudChance.Value = NPC(EditorIndex).DropChance(FrmEditor_NPC.cmbDropSlot.SelectedIndex)
+            .cmbItem.SelectedIndex = NPC(EditorIndex).DropItem(FrmEditor_NPC.cmbDropSlot.SelectedIndex)
 
-            .nudAmount.Value = NPC(EditorIndex).DropItemValue(frmEditor_NPC.cmbDropSlot.SelectedIndex)
+            .nudAmount.Value = NPC(EditorIndex).DropItemValue(FrmEditor_NPC.cmbDropSlot.SelectedIndex)
 
             .nudHp.Value = NPC(EditorIndex).HP
             .nudExp.Value = NPC(EditorIndex).Exp
@@ -152,9 +152,9 @@ Module C_Editors
     Friend Sub ResourceEditorInit()
         Dim i As Integer
 
-        EditorIndex = frmEditor_Resource.lstIndex.SelectedIndex + 1
+        EditorIndex = FrmEditor_Resource.lstIndex.SelectedIndex + 1
 
-        With frmEditor_Resource
+        With FrmEditor_Resource
             .txtName.Text = Trim$(Resource(EditorIndex).Name)
             .txtMessage.Text = Trim$(Resource(EditorIndex).SuccessMessage)
             .txtMessage2.Text = Trim$(Resource(EditorIndex).EmptyMessage)
@@ -170,7 +170,7 @@ Module C_Editors
             .nudLvlReq.Value = Resource(EditorIndex).LvlRequired
         End With
 
-        frmEditor_Resource.Visible = True
+        FrmEditor_Resource.Visible = True
 
         EditorResource_DrawSprite()
 
@@ -203,7 +203,7 @@ Module C_Editors
 #Region "Skill Editor"
 
     Friend Sub SkillEditorInit()
-        With frmEditor_Skill
+        With FrmEditor_Skill
             EditorIndex = .lstIndex.SelectedIndex + 1
 
             .cmbAnimCast.SelectedIndex = 0
@@ -285,9 +285,9 @@ Module C_Editors
 
 #Region "Shop editor"
     Friend Sub ShopEditorInit()
-        EditorIndex = frmEditor_Shop.lstIndex.SelectedIndex + 1
+        EditorIndex = FrmEditor_Shop.lstIndex.SelectedIndex + 1
 
-        With frmEditor_Shop
+        With FrmEditor_Shop
             .txtName.Text = Trim$(Shop(EditorIndex).Name)
 
             If Shop(EditorIndex).BuyRate > 0 Then
@@ -314,20 +314,20 @@ Module C_Editors
     Friend Sub UpdateShopTrade()
         Dim i As Integer
 
-        frmEditor_Shop.lstTradeItem.Items.Clear()
+        FrmEditor_Shop.lstTradeItem.Items.Clear()
 
         For i = 1 To MAX_TRADES
             With Shop(EditorIndex).TradeItem(i)
                 ' if none, show as none
                 If .Item = 0 AndAlso .CostItem = 0 Then
-                    frmEditor_Shop.lstTradeItem.Items.Add("Empty Trade Slot")
+                    FrmEditor_Shop.lstTradeItem.Items.Add("Empty Trade Slot")
                 Else
-                    frmEditor_Shop.lstTradeItem.Items.Add(i & ": " & .ItemValue & "x " & Trim$(Item(.Item).Name) & " for " & .CostValue & "x " & Trim$(Item(.CostItem).Name))
+                    FrmEditor_Shop.lstTradeItem.Items.Add(i & ": " & .ItemValue & "x " & Trim$(Item(.Item).Name) & " for " & .CostValue & "x " & Trim$(Item(.CostItem).Name))
                 End If
             End With
         Next
 
-        frmEditor_Shop.lstTradeItem.SelectedIndex = 0
+        FrmEditor_Shop.lstTradeItem.SelectedIndex = 0
     End Sub
 
     Friend Sub ShopEditorOk()
@@ -380,7 +380,7 @@ Module C_Editors
     Friend Sub JobEditorInit()
         Dim i As Integer
 
-        With frmEditor_Job
+        With FrmEditor_Job
             EditorIndex = .lstIndex.SelectedIndex + 1
 
             .txtName.Text = Job(EditorIndex).Name
@@ -428,129 +428,129 @@ Module C_Editors
     Friend Sub ItemEditorInit()
         Dim i As Integer
 
-        EditorIndex = frmEditor_Item.lstIndex.SelectedIndex + 1
+        EditorIndex = FrmEditor_Item.lstIndex.SelectedIndex + 1
 
         With Item(EditorIndex)
-            frmEditor_Item.txtName.Text = Trim$(.Name)
-            frmEditor_Item.txtDescription.Text = Trim$(.Description)
+            FrmEditor_Item.txtName.Text = Trim$(.Name)
+            FrmEditor_Item.txtDescription.Text = Trim$(.Description)
 
-            If .Icon > frmEditor_Item.nudPic.Maximum Then .Icon = 0
-            frmEditor_Item.nudPic.Value = .Icon
+            If .Icon > FrmEditor_Item.nudPic.Maximum Then .Icon = 0
+            FrmEditor_Item.nudPic.Value = .Icon
             If .Type > ItemType.Count - 1 Then .Type = 0
-            frmEditor_Item.cmbType.SelectedIndex = .Type
-            frmEditor_Item.cmbAnimation.SelectedIndex = .Animation
+            FrmEditor_Item.cmbType.SelectedIndex = .Type
+            FrmEditor_Item.cmbAnimation.SelectedIndex = .Animation
 
             If .ItemLevel = 0 Then .ItemLevel = 1
-            frmEditor_Item.nudItemLvl.Value = .ItemLevel
+            FrmEditor_Item.nudItemLvl.Value = .ItemLevel
 
             ' Type specific settings
-            If (frmEditor_Item.cmbType.SelectedIndex = ItemType.Equipment) Then
-                frmEditor_Item.fraEquipment.Visible = True
-                frmEditor_Item.nudDamage.Value = .Data2
-                frmEditor_Item.cmbTool.SelectedIndex = .Data3
+            If (FrmEditor_Item.cmbType.SelectedIndex = ItemType.Equipment) Then
+                FrmEditor_Item.fraEquipment.Visible = True
+                FrmEditor_Item.nudDamage.Value = .Data2
+                FrmEditor_Item.cmbTool.SelectedIndex = .Data3
 
-                frmEditor_Item.cmbSubType.SelectedIndex = .SubType
+                FrmEditor_Item.cmbSubType.SelectedIndex = .SubType
 
                 If .Speed < 1000 Then .Speed = 100
-                If .Speed > frmEditor_Item.nudSpeed.Maximum Then .Speed = frmEditor_Item.nudSpeed.Maximum
-                frmEditor_Item.nudSpeed.Value = .Speed
+                If .Speed > FrmEditor_Item.nudSpeed.Maximum Then .Speed = FrmEditor_Item.nudSpeed.Maximum
+                FrmEditor_Item.nudSpeed.Value = .Speed
 
-                frmEditor_Item.nudStrength.Value = .Add_Stat(StatType.Strength)
-                frmEditor_Item.nudIntelligence.Value = .Add_Stat(StatType.Intelligence)
-                frmEditor_Item.nudVitality.Value = .Add_Stat(StatType.Vitality)
-                frmEditor_Item.nudLuck.Value = .Add_Stat(StatType.Luck)
-                frmEditor_Item.nudSpirit.Value = .Add_Stat(StatType.Spirit)
+                FrmEditor_Item.nudStrength.Value = .Add_Stat(StatType.Strength)
+                FrmEditor_Item.nudIntelligence.Value = .Add_Stat(StatType.Intelligence)
+                FrmEditor_Item.nudVitality.Value = .Add_Stat(StatType.Vitality)
+                FrmEditor_Item.nudLuck.Value = .Add_Stat(StatType.Luck)
+                FrmEditor_Item.nudSpirit.Value = .Add_Stat(StatType.Spirit)
 
                 If .KnockBack = 1 Then
-                    frmEditor_Item.chkKnockBack.Checked = True
+                    FrmEditor_Item.chkKnockBack.Checked = True
                 Else
-                    frmEditor_Item.chkKnockBack.Checked = False
+                    FrmEditor_Item.chkKnockBack.Checked = False
                 End If
-                frmEditor_Item.cmbKnockBackTiles.SelectedIndex = .KnockBackTiles
+                FrmEditor_Item.cmbKnockBackTiles.SelectedIndex = .KnockBackTiles
 
                 If .Randomize = 1 Then
-                    frmEditor_Item.chkRandomize.Checked = True
+                    FrmEditor_Item.chkRandomize.Checked = True
                 Else
-                    frmEditor_Item.chkRandomize.Checked = False
+                    FrmEditor_Item.chkRandomize.Checked = False
                 End If
 
-                frmEditor_Item.nudPaperdoll.Value = .Paperdoll
+                FrmEditor_Item.nudPaperdoll.Value = .Paperdoll
 
                 If .SubType = EquipmentType.Weapon Then
-                    frmEditor_Item.fraProjectile.Visible = True
+                    FrmEditor_Item.fraProjectile.Visible = True
                 Else
-                     frmEditor_Item.fraProjectile.Visible = False
+                     FrmEditor_Item.fraProjectile.Visible = False
                 End If
             Else
-                frmEditor_Item.fraEquipment.Visible = False
+                FrmEditor_Item.fraEquipment.Visible = False
             End If
 
-            If (frmEditor_Item.cmbType.SelectedIndex = ItemType.Consumable) Then
-                frmEditor_Item.fraVitals.Visible = True
-                frmEditor_Item.nudVitalMod.Value = .Data1
+            If (FrmEditor_Item.cmbType.SelectedIndex = ItemType.Consumable) Then
+                FrmEditor_Item.fraVitals.Visible = True
+                FrmEditor_Item.nudVitalMod.Value = .Data1
             Else
-                frmEditor_Item.fraVitals.Visible = False
+                FrmEditor_Item.fraVitals.Visible = False
             End If
 
-            If (frmEditor_Item.cmbType.SelectedIndex = ItemType.Skill) Then
-                frmEditor_Item.fraSkill.Visible = True
-                frmEditor_Item.cmbSkills.SelectedIndex = .Data1
+            If (FrmEditor_Item.cmbType.SelectedIndex = ItemType.Skill) Then
+                FrmEditor_Item.fraSkill.Visible = True
+                FrmEditor_Item.cmbSkills.SelectedIndex = .Data1
             Else
-                frmEditor_Item.fraSkill.Visible = False
+                FrmEditor_Item.fraSkill.Visible = False
             End If
 
-            if (frmEditor_Item.cmbType.SelectedIndex = ItemType.Projectile) Then
-                frmEditor_Item.fraProjectile.Visible = True
-                frmEditor_Item.fraEquipment.Visible = True
+            if (FrmEditor_Item.cmbType.SelectedIndex = ItemType.Projectile) Then
+                FrmEditor_Item.fraProjectile.Visible = True
+                FrmEditor_Item.fraEquipment.Visible = True
             Elseif .Type <> ItemType.Equipment Then
-                frmEditor_Item.fraProjectile.Visible = False
+                FrmEditor_Item.fraProjectile.Visible = False
             End If
 
-            If frmEditor_Item.cmbType.SelectedIndex = ItemType.CommonEvent Then
-                frmEditor_Item.fraEvents.Visible = True
-                frmEditor_Item.nudEvent.Value = .Data1
-                frmEditor_Item.nudEventValue.Value = .Data2
+            If FrmEditor_Item.cmbType.SelectedIndex = ItemType.CommonEvent Then
+                FrmEditor_Item.fraEvents.Visible = True
+                FrmEditor_Item.nudEvent.Value = .Data1
+                FrmEditor_Item.nudEventValue.Value = .Data2
             Else
-                frmEditor_Item.fraEvents.Visible = False
+                FrmEditor_Item.fraEvents.Visible = False
             End If
 
-            If (frmEditor_Item.cmbType.SelectedIndex = ItemType.Pet) Then
-                frmEditor_Item.fraPet.Visible = True
-                frmEditor_Item.cmbPet.SelectedIndex = .Data1
+            If (FrmEditor_Item.cmbType.SelectedIndex = ItemType.Pet) Then
+                FrmEditor_Item.fraPet.Visible = True
+                FrmEditor_Item.cmbPet.SelectedIndex = .Data1
             Else
-                frmEditor_Item.fraPet.Visible = False
+                FrmEditor_Item.fraPet.Visible = False
             End If
 
             ' Projectile
-            frmEditor_Item.cmbProjectile.SelectedIndex = .Projectile
-            frmEditor_Item.cmbAmmo.SelectedIndex = .Ammo
+            FrmEditor_Item.cmbProjectile.SelectedIndex = .Projectile
+            FrmEditor_Item.cmbAmmo.SelectedIndex = .Ammo
 
             ' Basic requirements
-            frmEditor_Item.cmbAccessReq.SelectedIndex = .AccessReq
-            frmEditor_Item.nudLevelReq.Value = .LevelReq
+            FrmEditor_Item.cmbAccessReq.SelectedIndex = .AccessReq
+            FrmEditor_Item.nudLevelReq.Value = .LevelReq
 
-            frmEditor_Item.nudStrReq.Value = .Stat_Req(StatType.Strength)
-            frmEditor_Item.nudVitReq.Value = .Stat_Req(StatType.Vitality)
-            frmEditor_Item.nudLuckReq.Value = .Stat_Req(StatType.Luck)
-            frmEditor_Item.nudIntReq.Value = .Stat_Req(StatType.Intelligence)
-            frmEditor_Item.nudSprReq.Value = .Stat_Req(StatType.Spirit)
+            FrmEditor_Item.nudStrReq.Value = .Stat_Req(StatType.Strength)
+            FrmEditor_Item.nudVitReq.Value = .Stat_Req(StatType.Vitality)
+            FrmEditor_Item.nudLuckReq.Value = .Stat_Req(StatType.Luck)
+            FrmEditor_Item.nudIntReq.Value = .Stat_Req(StatType.Intelligence)
+            FrmEditor_Item.nudSprReq.Value = .Stat_Req(StatType.Spirit)
 
             ' Build cmbJobReq
-            frmEditor_Item.cmbJobReq.Items.Clear()
+            FrmEditor_Item.cmbJobReq.Items.Clear()
            For i = 1 To MAX_JOBS
-                frmEditor_Item.cmbJobReq.Items.Add(Job(i).Name)
+                FrmEditor_Item.cmbJobReq.Items.Add(Job(i).Name)
             Next
 
-            frmEditor_Item.cmbJobReq.SelectedIndex = .JobReq
+            FrmEditor_Item.cmbJobReq.SelectedIndex = .JobReq
             ' Info
-            frmEditor_Item.nudPrice.Value = .Price
-            frmEditor_Item.cmbBind.SelectedIndex = .BindType
-            frmEditor_Item.nudRarity.Value = .Rarity
+            FrmEditor_Item.nudPrice.Value = .Price
+            FrmEditor_Item.cmbBind.SelectedIndex = .BindType
+            FrmEditor_Item.nudRarity.Value = .Rarity
 
             If .Stackable = 1 Then
-                frmEditor_Item.chkStackable.Checked = True
+                FrmEditor_Item.chkStackable.Checked = True
             Else
-                frmEditor_Item.chkStackable.Checked = False
+                FrmEditor_Item.chkStackable.Checked = False
             End If
         End With
 

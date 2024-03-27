@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class frmEditor_Item
+Partial Class FrmEditor_Item
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -1262,7 +1262,7 @@ Partial Class frmEditor_Item
         fraBasics.TabStop = False
         fraBasics.Text = "Properties"
         ' 
-        ' frmEditor_Item
+        ' FrmEditor_Item
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
@@ -1282,7 +1282,7 @@ Partial Class frmEditor_Item
         Controls.Add(fraEquipment)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(5)
-        Name = "frmEditor_Item"
+        Name = "FrmEditor_Item"
         Text = "Item Editor"
         DarkGroupBox1.ResumeLayout(False)
         fraEquipment.ResumeLayout(False)

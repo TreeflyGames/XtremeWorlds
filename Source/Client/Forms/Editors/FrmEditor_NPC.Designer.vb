@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmEditor_NPC
+Partial Class FrmEditor_NPC
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -861,7 +861,7 @@ Partial Class frmEditor_NPC
         btnSave.TabIndex = 7
         btnSave.Text = "Save"
         ' 
-        ' frmEditor_NPC
+        ' FrmEditor_NPC
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
@@ -878,7 +878,7 @@ Partial Class frmEditor_NPC
         Controls.Add(DarkGroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(6, 5, 6, 5)
-        Name = "frmEditor_NPC"
+        Name = "FrmEditor_NPC"
         Text = "NPC Editor"
         DarkGroupBox1.ResumeLayout(False)
         DarkGroupBox2.ResumeLayout(False)

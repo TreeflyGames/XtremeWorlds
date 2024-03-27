@@ -288,7 +288,7 @@ Module C_GameLogic
             End If
 
             If Editor = EditorType.Map Then
-                frmEditor_Map.DrawTileset()
+                FrmEditor_Map.DrawTileset()
             End If
 
             If Editor = EditorType.Animation Then
@@ -1760,26 +1760,26 @@ Continue1:
 
         Select Case Editor
             Case EditorType.Item
-                frmEditor_Item.Dispose()
+                FrmEditor_Item.Dispose()
             Case EditorType.Job
-                frmEditor_Job.Dispose()
+                FrmEditor_Job.Dispose()
             Case EditorType.Map
-                frmEditor_Map.Dispose()
-                frmEditor_Events.Dispose()
+                FrmEditor_Map.Dispose()
+                FrmEditor_Events.Dispose()
             Case EditorType.NPC
-                frmEditor_NPC.Dispose()
+                FrmEditor_NPC.Dispose()
             Case EditorType.Pet
-                frmEditor_Pet.Dispose()
+                FrmEditor_Pet.Dispose()
             Case EditorType.Projectile
-                frmEditor_Projectile.Dispose()
+                FrmEditor_Projectile.Dispose()
             Case EditorType.Resource
-                frmEditor_Resource.Dispose()
+                FrmEditor_Resource.Dispose()
             Case EditorType.Shop
-                frmEditor_Shop.Dispose()
+                FrmEditor_Shop.Dispose()
             Case EditorType.Skill
-                frmEditor_Skill.Dispose()
+                FrmEditor_Skill.Dispose()
             Case EditorType.Animation
-                frmEditor_Animation.Dispose()
+                FrmEditor_Animation.Dispose()
         End Select
 
         frmAdmin.Dispose()

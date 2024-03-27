@@ -1,7 +1,7 @@
 ﻿Imports Core
 Imports SFML.Graphics
 
-Friend Class frmEditor_Animation
+Friend Class FrmEditor_Animation
     Private Sub NudSprite0_ValueChanged(sender As Object, e As EventArgs) Handles nudSprite0.Click
         Animation(EditorIndex).Sprite(0) = nudSprite0.Value
     End Sub
@@ -70,7 +70,7 @@ Friend Class frmEditor_Animation
         Dispose()
     End Sub
 
-    Private Sub frmEditor_Animation_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FrmEditor_Animation_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lstIndex.Items.Clear()
 
         ' Add the names
@@ -98,7 +98,7 @@ Friend Class frmEditor_Animation
         Animation(EditorIndex).Sound = cmbSound.SelectedItem.ToString
     End Sub
 
-    Private Sub frmEditor_Animation_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub FrmEditor_Animation_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         AnimationEditorCancel()
     End Sub
 End Class

@@ -1,7 +1,7 @@
 ﻿Imports Core
 Imports SFML.Graphics
 
-Friend Class frmEditor_Skill
+Friend Class FrmEditor_Skill
 
     Private Sub TxtName_TextChanged(sender As Object, e As EventArgs) Handles txtName.TextChanged
         Dim tmpindex As Integer
@@ -123,7 +123,7 @@ Friend Class frmEditor_Skill
         Dispose()
     End Sub
 
-    Private Sub frmEditor_Skill_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FrmEditor_Skill_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudIcon.Maximum = NumSkills
         nudCast.Value = 1
         nudAoE.Maximum = Byte.MaxValue
@@ -178,7 +178,7 @@ Friend Class frmEditor_Skill
         Skill(EditorIndex).KnockBackTiles = cmbKnockBackTiles.SelectedIndex
     End Sub
 
-    Private Sub frmEditor_Skill_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub FrmEditor_Skill_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         SkillEditorCancel()
     End Sub
 

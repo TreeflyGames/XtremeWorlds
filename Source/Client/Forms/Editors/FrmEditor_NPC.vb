@@ -1,10 +1,10 @@
 ﻿Imports Core
 
-Friend Class frmEditor_NPC
+Friend Class FrmEditor_NPC
 
 #Region "Form Code"
 
-    Private Sub frmEditor_NPC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FrmEditor_NPC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudSprite.Maximum = NumCharacters
 
         lstIndex.Items.Clear()
@@ -215,7 +215,7 @@ Friend Class frmEditor_NPC
         NPC(EditorIndex).Skill(6) = cmbSkill6.SelectedIndex
     End Sub
 
-    Private Sub frmEditor_NPC_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub FrmEditor_NPC_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         NpcEditorCancel
     End Sub
 

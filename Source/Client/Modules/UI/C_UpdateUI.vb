@@ -46,7 +46,7 @@ Module C_UpdateUI
 
     Sub UpdateUi()
         if InitEventEditorForm Then
-            with frmEditor_Events
+            with FrmEditor_Events
                 .Show()
             End With
             InitEventEditorForm = False
@@ -60,7 +60,7 @@ Module C_UpdateUI
         End If
 
         If InitMapEditor Then
-            With frmEditor_Map
+            With FrmEditor_Map
                 Editor = EditorType.Map
                 EditorIndex = 1
                 .Show()
@@ -70,7 +70,7 @@ Module C_UpdateUI
         End If
 
         If InitPetEditor Then
-            With frmEditor_Pet
+            With FrmEditor_Pet
                 Editor = EditorType.Pet
                 EditorIndex = 1
                 .Show()
@@ -81,7 +81,7 @@ Module C_UpdateUI
         End If
 
         If InitAnimationEditor Then
-            With frmEditor_Animation
+            With FrmEditor_Animation
                 Editor = EditorType.Animation
                 EditorIndex = 1
                 .Show()
@@ -92,7 +92,7 @@ Module C_UpdateUI
         End If
 
         If InitItemEditor Then
-            With frmEditor_Item
+            With FrmEditor_Item
                 Editor = EditorType.Item
                 EditorIndex = 1
                 .Show()
@@ -103,7 +103,7 @@ Module C_UpdateUI
         End If
 
         If InitJobEditor Then
-            With frmEditor_Job
+            With FrmEditor_Job
                 Editor = EditorType.Job
                 EditorIndex = 1
                 .Show()
@@ -114,7 +114,7 @@ Module C_UpdateUI
         End If
 
         If InitResourceEditor Then
-            With frmEditor_Resource
+            With FrmEditor_Resource
                 Editor = EditorType.Resource
                 EditorIndex = 1
                 .Show()
@@ -125,7 +125,7 @@ Module C_UpdateUI
         End If
 
         If InitNPCEditor Then
-            With frmEditor_NPC
+            With FrmEditor_NPC
                 Editor = EditorType.NPC
                 EditorIndex = 1
                 .Show()
@@ -136,7 +136,7 @@ Module C_UpdateUI
         End If
 
         If InitSkillEditor Then
-            With frmEditor_Skill
+            With FrmEditor_Skill
                 Editor = EditorType.Skill
                 EditorIndex = 1
                 .Show()
@@ -147,7 +147,7 @@ Module C_UpdateUI
         End If
 
         If InitShopEditor Then
-            With frmEditor_Shop
+            With FrmEditor_Shop
                 Editor = EditorType.Shop
                 EditorIndex = 1
                 .Show()
@@ -158,7 +158,7 @@ Module C_UpdateUI
         End If
 
         If InitProjectileEditor Then
-            With frmEditor_Projectile
+            With FrmEditor_Projectile
                 Editor = EditorType.Projectile
                 EditorIndex = 1
                 .Show()

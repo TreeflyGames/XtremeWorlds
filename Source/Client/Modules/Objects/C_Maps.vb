@@ -808,7 +808,7 @@ Module C_Maps
                     End With
 
                     If Editor = EditorType.Map And HideLayers Then
-                        If i = frmEditor_Map.cmbLayers.SelectedIndex Then
+                        If i = FrmEditor_Map.cmbLayers.SelectedIndex Then
                             alpha = 255
                         Else
                             alpha = 127
@@ -863,7 +863,7 @@ Module C_Maps
                     End With
 
                     If Editor = EditorType.Map And HideLayers Then
-                        If i = frmEditor_Map.cmbLayers.SelectedIndex Then
+                        If i = FrmEditor_Map.cmbLayers.SelectedIndex Then
                             alpha = 255
                         Else
                             alpha = 127

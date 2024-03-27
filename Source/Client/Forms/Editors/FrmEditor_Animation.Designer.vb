@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmEditor_Animation
+Partial Class FrmEditor_Animation
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -416,7 +416,7 @@ Partial Class frmEditor_Animation
         btnCancel.TabIndex = 4
         btnCancel.Text = "Cancel"
         ' 
-        ' frmEditor_Animation
+        ' FrmEditor_Animation
         ' 
         AutoScaleDimensions = New SizeF(13F, 32F)
         AutoScaleMode = AutoScaleMode.Font
@@ -430,7 +430,7 @@ Partial Class frmEditor_Animation
         Controls.Add(DarkGroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(8, 6, 8, 6)
-        Name = "frmEditor_Animation"
+        Name = "FrmEditor_Animation"
         Text = "Animation Editor"
         DarkGroupBox1.ResumeLayout(False)
         DarkGroupBox2.ResumeLayout(False)

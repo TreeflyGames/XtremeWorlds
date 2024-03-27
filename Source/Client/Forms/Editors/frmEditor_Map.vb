@@ -7,9 +7,9 @@ Imports Core.Enum
 Imports SFML.Window
 Imports FxResources.System
 
-Public Class frmEditor_Map
+Public Class FrmEditor_Map
 #Region "Frm"
-    Private Sub frmEditor_Map_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub FrmEditor_Map_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         pnlAttributes.BringToFront()
         pnlAttributes.Visible = False
         pnlAttributes.Left = 4
@@ -874,7 +874,7 @@ Public Class frmEditor_Map
                     End If
                 Next
             ElseIf tabpages.SelectedTab Is tpEvents Then
-                If frmEditor_Events.Visible = False Then
+                If FrmEditor_Events.Visible = False Then
                     If EventCopy Then
                         CopyEvent_Map(CurX, CurY)
                     ElseIf EventPaste Then
@@ -924,7 +924,7 @@ Public Class frmEditor_Map
         GettingMap = True
         SendCloseEditor()
 
-        frmEditor_Events.Dispose()
+        FrmEditor_Events.Dispose()
     End Sub
 
     Public Sub MapEditorSend()
@@ -1151,7 +1151,7 @@ Public Class frmEditor_Map
         Map.Name = txtName.Text
     End Sub
 
-    Private Sub frmEditor_Map_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub FrmEditor_Map_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         MapEditorCancel()
     End Sub
 

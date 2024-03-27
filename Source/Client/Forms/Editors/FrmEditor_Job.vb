@@ -1,11 +1,11 @@
 ﻿Imports System.IO
 Imports Core
 
-Friend Class frmEditor_Job
+Friend Class FrmEditor_Job
 
 #Region "Frm Controls"
 
-    Private Sub frmEditor_Job_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FrmEditor_Job_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudMaleSprite.Maximum = NumCharacters
         nudFemaleSprite.Maximum = NumCharacters
 
@@ -147,7 +147,7 @@ Friend Class frmEditor_Job
         JobEditorInit()
     End Sub
 
-    Private Sub frmEditor_Job_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub FrmEditor_Job_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         JobEditorCancel
     End Sub
 
