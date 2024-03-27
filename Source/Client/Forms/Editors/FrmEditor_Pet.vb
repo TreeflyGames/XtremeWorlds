@@ -1,10 +1,10 @@
 ﻿Imports System.IO
 Imports Core
-Friend Class FrmEditor_Pet
+Friend Class frmEditor_Pet
 
 #Region "Basics"
 
-    Private Sub FrmEditor_Pet_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Pet_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudSprite.Maximum = NumCharacters
         nudRange.Maximum = 50
         nudLevel.Maximum = MAX_LEVEL
@@ -25,7 +25,7 @@ Friend Class FrmEditor_Pet
         Next
     End Sub
 
-    Private Sub LstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
+    Private Sub lstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
         PetEditorInit()
     End Sub
 
@@ -219,7 +219,7 @@ End If
         PetEditorInit()
     End Sub
 
-    Private Sub FrmEditor_Pet_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmEditor_Pet_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         PetEditorCancel
     End Sub
 

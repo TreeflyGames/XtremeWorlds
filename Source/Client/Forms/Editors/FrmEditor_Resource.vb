@@ -1,5 +1,5 @@
 ﻿Imports Core
-Friend Class FrmEditor_Resource
+Friend Class frmEditor_Resource
 
     Private Sub ScrlNormalPic_Scroll(sender As Object, e As EventArgs) Handles nudNormalPic.ValueChanged
         EditorResource_DrawSprite()
@@ -43,7 +43,7 @@ Friend Class FrmEditor_Resource
         Resource(EditorIndex).Animation = cmbAnimation.SelectedIndex
     End Sub
 
-    Private Sub LstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
+    Private Sub lstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
         ResourceEditorInit()
     End Sub
 
@@ -70,7 +70,7 @@ Friend Class FrmEditor_Resource
         Dispose()
     End Sub
 
-    Private Sub FrmEditor_Resource_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Resource_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lstIndex.Items.Clear()
 
         ' Add the names
@@ -114,7 +114,7 @@ Friend Class FrmEditor_Resource
         Resource(EditorIndex).EmptyMessage = Trim$(txtMessage2.Text)
     End Sub
 
-    Private Sub FrmEditor_Resource_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmEditor_Resource_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ResourceEditorCancel
     End Sub
 End Class

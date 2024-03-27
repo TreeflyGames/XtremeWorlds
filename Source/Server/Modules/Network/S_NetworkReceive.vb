@@ -133,6 +133,10 @@ Module S_NetworkReceive
         Socket.PacketId(ClientPackets.CRequestEditPet) = AddressOf Packet_RequestEditPet
         Socket.PacketId(ClientPackets.CSavePet) = AddressOf Packet_SavePet
 
+        Socket.PacketId(ClientPackets.CRequestMoral) = AddressOf Packet_RequestMoral
+        Socket.PacketId(ClientPackets.CRequestEditMoral) = AddressOf Packet_RequestEditMoral
+        Socket.PacketId(ClientPackets.CSaveMoral) = AddressOf Packet_SaveMoral
+
         Socket.PacketId(ClientPackets.CCloseEditor) = AddressOf Packet_CloseEditor
 
     End Sub
@@ -213,7 +217,10 @@ Module S_NetworkReceive
 
                 ' send them to the character portal
                 Call SendPlayerChars(index)
-                Call SendNewCharJob(index)
+
+                For i = 1 to MAX_JOBS
+                    SendUpdateJob(index, i)
+                Next
             End If
         End If
     End Sub
@@ -291,7 +298,10 @@ Module S_NetworkReceive
 
                 ' send them to the character portal
                 Call SendPlayerChars(index)
-                Call SendNewCharJob(index)
+
+                For i = 1 to MAX_JOBS
+                    Call SendUpdateJob(index, i)
+                Next
             End If
         End If
     End Sub
@@ -412,7 +422,10 @@ Module S_NetworkReceive
 
             ' send them to the character portal
             Call SendPlayerChars(index)
-            Call SendNewCharJob(index)
+
+            For i = 1 To MAX_JOBS
+                Call SendUpdateJob(index, i)
+            Next
 
             buffer.Dispose()
         End If
@@ -1496,10 +1509,12 @@ Module S_NetworkReceive
         n = buffer.ReadInt32
         buffer.Dispose()
 
-        ' set the skill buffer before casting
-        BufferSkill(index, n)
-
-        buffer.Dispose()
+        If Map(GetPlayerMap(index)).Moral > 0 Then
+            If Moral(Map(GetPlayerMap(index)).Moral).CanCast Then
+                ' set the skill buffer before casting
+                BufferSkill(index, n)
+            End If
+        End If
     End Sub
 
     Sub Packet_QuitGame(index As Integer, ByRef data() As Byte)

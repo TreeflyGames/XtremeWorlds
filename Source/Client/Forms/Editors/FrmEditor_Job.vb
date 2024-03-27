@@ -1,11 +1,11 @@
 ﻿Imports System.IO
 Imports Core
 
-Friend Class FrmEditor_Job
+Friend Class frmEditor_Job
 
 #Region "Frm Controls"
 
-    Private Sub FrmEditor_Job_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Job_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudMaleSprite.Maximum = NumCharacters
         nudFemaleSprite.Maximum = NumCharacters
 
@@ -90,7 +90,7 @@ Friend Class FrmEditor_Job
         Job(EditorIndex).Stat(StatType.Luck) = nudLuck.Value
     End Sub
 
-    Private Sub NumEndurance_ValueChanged(sender As Object, e As EventArgs) Handles nudEndurance.Click
+    Private Sub NumEndurance_ValueChanged(sender As Object, e As EventArgs)
         Job(EditorIndex).Stat(StatType.Luck) = nudEndurance.Value
     End Sub
 
@@ -147,7 +147,7 @@ Friend Class FrmEditor_Job
         JobEditorInit()
     End Sub
 
-    Private Sub FrmEditor_Job_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmEditor_Job_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         JobEditorCancel
     End Sub
 

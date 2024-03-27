@@ -7,9 +7,9 @@ Imports Core.Enum
 Imports SFML.Window
 Imports FxResources.System
 
-Public Class FrmEditor_Map
+Public Class frmEditor_Map
 #Region "Frm"
-    Private Sub FrmEditor_Map_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Map_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         pnlAttributes.BringToFront()
         pnlAttributes.Visible = False
         pnlAttributes.Left = 4
@@ -539,12 +539,6 @@ Public Class FrmEditor_Map
         txtLeft.Text = Map.Left
         txtRight.Text = Map.Right
 
-        If Map.Moral > 0 Then
-            cmbMoral.SelectedIndex = Map.Moral - 1
-        Else
-            cmbMoral.SelectedIndex = 0
-        End If
-
         txtBootMap.Text = Map.BootMap
         txtBootX.Text = Map.BootX
         txtBootY.Text = Map.BootY
@@ -555,6 +549,14 @@ Public Class FrmEditor_Map
 
         For X = 1 To MAX_MAP_NPCS
             lstMapNpc.Items.Add(X & ": " & Trim$(NPC(Map.Npc(X)).Name))
+        Next
+
+        cmbMoral.Items.Clear()
+        cmbMoral.Items.Add("None")
+        cmbMoral.SelectedIndex = 0
+
+        For X = 1 To MAX_MORALS
+            cmbMoral.Items.Add(X & ": " & Trim$(Moral(x).Name))
         Next
 
         cmbNpcList.Items.Clear()
@@ -874,7 +876,7 @@ Public Class FrmEditor_Map
                     End If
                 Next
             ElseIf tabpages.SelectedTab Is tpEvents Then
-                If FrmEditor_Events.Visible = False Then
+                If frmEditor_Events.Visible = False Then
                     If EventCopy Then
                         CopyEvent_Map(CurX, CurY)
                     ElseIf EventPaste Then
@@ -924,7 +926,7 @@ Public Class FrmEditor_Map
         GettingMap = True
         SendCloseEditor()
 
-        FrmEditor_Events.Dispose()
+        frmEditor_Events.Dispose()
     End Sub
 
     Public Sub MapEditorSend()
@@ -1151,7 +1153,7 @@ Public Class FrmEditor_Map
         Map.Name = txtName.Text
     End Sub
 
-    Private Sub FrmEditor_Map_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmEditor_Map_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         MapEditorCancel()
     End Sub
 

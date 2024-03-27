@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class FrmEditor_Resource
+Partial Class frmEditor_Resource
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -508,7 +508,7 @@ Partial Class FrmEditor_Resource
         btnCancel.TabIndex = 4
         btnCancel.Text = "Cancel"
         ' 
-        ' FrmEditor_Resource
+        ' frmEditor_Resource
         ' 
         AutoScaleDimensions = New SizeF(13F, 32F)
         AutoScaleMode = AutoScaleMode.Font
@@ -522,7 +522,7 @@ Partial Class FrmEditor_Resource
         Controls.Add(DarkGroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(8, 6, 8, 6)
-        Name = "FrmEditor_Resource"
+        Name = "frmEditor_Resource"
         Text = "Resource Editor"
         DarkGroupBox1.ResumeLayout(False)
         DarkGroupBox2.ResumeLayout(False)

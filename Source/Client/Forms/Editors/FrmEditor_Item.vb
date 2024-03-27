@@ -1,7 +1,7 @@
 ﻿
 Imports Core
 
-Friend Class FrmEditor_Item
+Friend Class frmEditor_Item
 
 #Region "Form Code"
 
@@ -28,11 +28,11 @@ Friend Class FrmEditor_Item
         ItemEditorInit()
     End Sub
 
-    Private Sub LstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
+    Private Sub lstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
         ItemEditorInit()
     End Sub
 
-    Private Sub FrmEditor_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Item_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         nudPic.Maximum = NumItems
         nudPaperdoll.Maximum = NumPaperdolls
 
@@ -354,6 +354,7 @@ Friend Class FrmEditor_Item
     Private Sub btnSpawn_Click(sender As Object, e As EventArgs) Handles btnSpawn.Click
         SendSpawnItem(EditorIndex, nudSpanwAmount.Value)
     End Sub
+
 
 #End Region
 

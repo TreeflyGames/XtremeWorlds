@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class FrmEditor_Map
+Partial Class frmEditor_Map
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class FrmEditor_Map
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmEditor_Map))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEditor_Map))
         btnClearAttribute = New Button()
         optTrap = New RadioButton()
         optHeal = New RadioButton()
@@ -1130,7 +1130,7 @@ Partial Class FrmEditor_Map
         tpNpcs.Padding = New Padding(6, 5, 6, 5)
         tpNpcs.Size = New Size(778, 1010)
         tpNpcs.TabIndex = 1
-        tpNpcs.Text = "NPC's"
+        tpNpcs.Text = "NPCs"
         tpNpcs.UseVisualStyleBackColor = True
         ' 
         ' fraNpcs
@@ -1265,7 +1265,6 @@ Partial Class FrmEditor_Map
         ' 
         cmbMoral.DropDownStyle = ComboBoxStyle.DropDownList
         cmbMoral.FormattingEnabled = True
-        cmbMoral.Items.AddRange(New Object() {"None", "Safe Zone", "Danger Zone"})
         cmbMoral.Location = New Point(74, 23)
         cmbMoral.Margin = New Padding(6, 5, 6, 5)
         cmbMoral.Name = "cmbMoral"
@@ -1359,9 +1358,9 @@ Partial Class FrmEditor_Map
         chkIndoors.Location = New Point(12, 167)
         chkIndoors.Margin = New Padding(6, 5, 6, 5)
         chkIndoors.Name = "chkIndoors"
-        chkIndoors.Size = New Size(108, 29)
+        chkIndoors.Size = New Size(100, 29)
         chkIndoors.TabIndex = 42
-        chkIndoors.Text = "Indoors?"
+        chkIndoors.Text = "Indoors"
         chkIndoors.UseVisualStyleBackColor = True
         ' 
         ' chkMapRespawn
@@ -1370,9 +1369,9 @@ Partial Class FrmEditor_Map
         chkMapRespawn.Location = New Point(229, 167)
         chkMapRespawn.Margin = New Padding(6, 5, 6, 5)
         chkMapRespawn.Name = "chkMapRespawn"
-        chkMapRespawn.Size = New Size(157, 29)
+        chkMapRespawn.Size = New Size(149, 29)
         chkMapRespawn.TabIndex = 19
-        chkMapRespawn.Text = "Map Respawn?"
+        chkMapRespawn.Text = "Map Respawn"
         chkMapRespawn.UseVisualStyleBackColor = True
         ' 
         ' txtBootMap
@@ -1982,7 +1981,7 @@ Partial Class FrmEditor_Map
         cmbWeather.Size = New Size(238, 33)
         cmbWeather.TabIndex = 0
         ' 
-        ' FrmEditor_Map
+        ' frmEditor_Map
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
@@ -1995,7 +1994,7 @@ Partial Class FrmEditor_Map
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(6, 5, 6, 5)
         MaximizeBox = False
-        Name = "FrmEditor_Map"
+        Name = "frmEditor_Map"
         Text = "Map Editor"
         pnlBack.ResumeLayout(False)
         CType(picBackSelect, ComponentModel.ISupportInitialize).EndInit()

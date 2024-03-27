@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class FrmEditor_Projectile
+Partial Class frmEditor_Projectile
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -238,7 +238,7 @@ Partial Class FrmEditor_Projectile
         btnDelete.TabIndex = 4
         btnDelete.Text = "Delete"
         ' 
-        ' FrmEditor_Projectile
+        ' frmEditor_Projectile
         ' 
         AutoScaleDimensions = New SizeF(13F, 32F)
         AutoScaleMode = AutoScaleMode.Font
@@ -252,7 +252,7 @@ Partial Class FrmEditor_Projectile
         Controls.Add(DarkGroupBox1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Margin = New Padding(8, 6, 8, 6)
-        Name = "FrmEditor_Projectile"
+        Name = "frmEditor_Projectile"
         Text = "Projectile Editor"
         DarkGroupBox1.ResumeLayout(False)
         DarkGroupBox2.ResumeLayout(False)

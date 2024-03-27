@@ -357,8 +357,8 @@ Module C_Pets
     Friend Sub Packet_PetExperience(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
-        Player(Myindex).Pet.Exp = buffer.ReadInt32
-        Player(Myindex).Pet.Tnl = buffer.ReadInt32
+        Player(MyIndex).Pet.Exp = buffer.ReadInt32
+        Player(MyIndex).Pet.Tnl = buffer.ReadInt32
 
         buffer.Dispose()
     End Sub
@@ -585,9 +585,9 @@ Module C_Pets
     Friend Sub PetEditorInit()
         Dim i As Integer
 
-        EditorIndex = FrmEditor_Pet.lstIndex.SelectedIndex + 1
+        EditorIndex = frmEditor_Pet.lstIndex.SelectedIndex + 1
 
-        With FrmEditor_Pet
+        With frmEditor_Pet
             'populate skill combo's
             .cmbSkill1.Items.Clear()
             .cmbSkill2.Items.Clear()

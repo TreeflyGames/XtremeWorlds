@@ -1,8 +1,8 @@
 ﻿Imports Core
 
-Friend Class FrmEditor_Projectile
+Friend Class frmEditor_Projectile
 
-    Private Sub FrmEditor_Projectile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEditor_Projectile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lstIndex.Items.Clear()
 
         ' Add the names
@@ -12,7 +12,7 @@ Friend Class FrmEditor_Projectile
         nudPic.Maximum = NumProjectiles
     End Sub
 
-    Private Sub LstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
+    Private Sub lstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
         ProjectileEditorInit()
     End Sub
 
@@ -65,7 +65,7 @@ Friend Class FrmEditor_Projectile
         ProjectileEditorInit()
     End Sub
 
-    Private Sub FrmEditor_Projectile_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmEditor_Projectile_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ProjectileEditorCancel
     End Sub
 End Class

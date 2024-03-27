@@ -355,7 +355,7 @@ Module C_Graphics
 
         'admin
         If e.Code = Keyboard.Key.Insert Then
-            If GetPlayerAccess(Myindex) > 0 Then
+            If GetPlayerAccess(MyIndex) > 0 Then
                 SendRequestAdmin()
             End If
         End If
@@ -379,7 +379,7 @@ Module C_Graphics
 
             ' if we're in the middle of choose the trade target or not
             If Not TradeRequest Then
-                If PetAlive(Myindex) Then
+                If PetAlive(MyIndex) Then
                     If IsInBounds() Then
                         PetMove(CurX, CurY)
                     End If
@@ -396,11 +396,11 @@ Module C_Graphics
         ElseIf e.Button = Mouse.Button.Right Then
             If VbKeyShift = True Then
                 ' admin warp if we're pressing shift and right clicking
-                If GetPlayerAccess(Myindex) >= 2 Then AdminWarp(CurX, CurY)
+                If GetPlayerAccess(MyIndex) >= 2 Then AdminWarp(CurX, CurY)
             Else
                 ' rightclick menu
-                If PetAlive(Myindex) Then
-                    If IsInBounds() AndAlso CurX = Player(Myindex).Pet.X And CurY = Player(Myindex).Pet.Y Then
+                If PetAlive(MyIndex) Then
+                    If IsInBounds() AndAlso CurX = Player(MyIndex).Pet.X And CurY = Player(MyIndex).Pet.Y Then
                         ShowPetStats = True
                     End If
                 Else
@@ -410,7 +410,7 @@ Module C_Graphics
         End If
 
         If Editor = EditorType.Map Then
-            FrmEditor_Map.MapEditorMouseDown(e.Button, e.X, e.Y, False)
+            frmEditor_Map.MapEditorMouseDown(e.Button, e.X, e.Y, False)
         End If
 
         HandleInterfaceEvents(EntState.MouseDown)
@@ -428,24 +428,24 @@ Module C_Graphics
         If Editor = EditorType.Map Then
             If e.Delta > 0 Then
                 If Control.ModifierKeys = Keys.Shift Then
-                    If FrmEditor_Map.cmbLayers.SelectedIndex + 1 < LayerType.Count - 1 Then
-                        FrmEditor_Map.cmbLayers.SelectedIndex = FrmEditor_Map.cmbLayers.SelectedIndex + 1
+                    If frmEditor_Map.cmbLayers.SelectedIndex + 1 < LayerType.Count - 1 Then
+                        frmEditor_Map.cmbLayers.SelectedIndex = frmEditor_Map.cmbLayers.SelectedIndex + 1
                     End If
 
                 Else
-                    If FrmEditor_Map.cmbTileSets.SelectedIndex > 0 Then
-                        FrmEditor_Map.cmbTileSets.SelectedIndex = FrmEditor_Map.cmbTileSets.SelectedIndex - 1
+                    If frmEditor_Map.cmbTileSets.SelectedIndex > 0 Then
+                        frmEditor_Map.cmbTileSets.SelectedIndex = frmEditor_Map.cmbTileSets.SelectedIndex - 1
                     End If
                 End If
 
             Else
                 If Control.ModifierKeys = Keys.Shift Then
-                    If FrmEditor_Map.cmbLayers.SelectedIndex > 0 Then
-                        FrmEditor_Map.cmbLayers.SelectedIndex = FrmEditor_Map.cmbLayers.SelectedIndex - 1
+                    If frmEditor_Map.cmbLayers.SelectedIndex > 0 Then
+                        frmEditor_Map.cmbLayers.SelectedIndex = frmEditor_Map.cmbLayers.SelectedIndex - 1
                     End If
                 Else
-                    If FrmEditor_Map.cmbTileSets.SelectedIndex + 1 < NumTileSets Then
-                        FrmEditor_Map.cmbTileSets.SelectedIndex = FrmEditor_Map.cmbTileSets.SelectedIndex + 1
+                    If frmEditor_Map.cmbTileSets.SelectedIndex + 1 < NumTileSets Then
+                        frmEditor_Map.cmbTileSets.SelectedIndex = frmEditor_Map.cmbTileSets.SelectedIndex + 1
                     End If
                 End If
             End If
@@ -472,11 +472,11 @@ Module C_Graphics
         ' Editor interactions
         If Editor = EditorType.Map Then
             If Mouse.IsButtonPressed(Mouse.Button.Left) Then
-                FrmEditor_Map.MapEditorMouseDown(Mouse.Button.Left, CurMouseX, CurMouseY, True)
+                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Left, CurMouseX, CurMouseY, True)
             End If
 
             If Mouse.IsButtonPressed(Mouse.Button.Right) Then
-                FrmEditor_Map.MapEditorMouseDown(Mouse.Button.Right, CurMouseX, CurMouseY, True)
+                frmEditor_Map.MapEditorMouseDown(Mouse.Button.Right, CurMouseX, CurMouseY, True)
             End If
         End If
 
@@ -1375,23 +1375,23 @@ Module C_Graphics
         Dim startX As Double, startY As Double
         Dim endX As Integer, endY As Integer
 
-        offsetX = Player(Myindex).XOffset + PicX
-        offsetY = Player(Myindex).YOffset + PicY
+        offsetX = Player(MyIndex).XOffset + PicX
+        offsetY = Player(MyIndex).YOffset + PicY
 
         If Types.Settings.CameraType = 1 Then
-            startX = GetPlayerX(Myindex) - Types.Settings.CameraWidth
-            startY = GetPlayerY(Myindex) - Types.Settings.CameraHeight
+            startX = GetPlayerX(MyIndex) - Types.Settings.CameraWidth
+            startY = GetPlayerY(MyIndex) - Types.Settings.CameraHeight
         Else
-            startX = Math.Floor(GetPlayerX(Myindex) - (Types.Settings.CameraWidth) / 2)
-            startY = Math.Floor(GetPlayerY(Myindex) - (Types.Settings.CameraHeight) / 2)
+            startX = Math.Floor(GetPlayerX(MyIndex) - (Types.Settings.CameraWidth) / 2)
+            startY = Math.Floor(GetPlayerY(MyIndex) - (Types.Settings.CameraHeight) / 2)
         End If
 
         If startX < 0 Then
             offsetX = 0
 
             If startX = -1 Then
-                If Player(Myindex).XOffset > 0 Then
-                    offsetX = Player(Myindex).XOffset
+                If Player(MyIndex).XOffset > 0 Then
+                    offsetX = Player(MyIndex).XOffset
                 End If
             End If
 
@@ -1402,8 +1402,8 @@ Module C_Graphics
             offsetY = 0
 
             If startY = -1 Then
-                If Player(Myindex).YOffset > 0 Then
-                    offsetY = Player(Myindex).YOffset
+                If Player(MyIndex).YOffset > 0 Then
+                    offsetY = Player(MyIndex).YOffset
                 End If
             End If
 
@@ -1584,7 +1584,7 @@ Module C_Graphics
             If NumCharacters > 0 Then
                 ' Players
                 For I = 1 To MAX_PLAYERS
-                    If IsPlaying(I) AndAlso GetPlayerMap(I) = GetPlayerMap(Myindex) Then
+                    If IsPlaying(I) AndAlso GetPlayerMap(I) = GetPlayerMap(MyIndex) Then
                         If Player(I).Y = y Then
                             DrawPlayer(I)
                         End If
@@ -1633,7 +1633,7 @@ Module C_Graphics
 
                 For I = 1 To MAX_PLAYERS
                     If IsPlaying(I) Then
-                        If Player(I).Map = Player(Myindex).Map Then
+                        If Player(I).Map = Player(MyIndex).Map Then
                             If CurX = Player(I).X AndAlso CurY = Player(I).Y Then
                                 If MyTargetType = TargetType.Player AndAlso MyTarget = I Then
                                     ' dont render lol
@@ -1672,7 +1672,7 @@ Module C_Graphics
 
         If NumProjectiles > 0 Then
             For I = 1 To MAX_PROJECTILES
-                If MapProjectile(Player(Myindex).Map, I).ProjectileNum > 0 Then
+                If MapProjectile(Player(MyIndex).Map, I).ProjectileNum > 0 Then
                     DrawProjectile(I)
                 End If
             Next
@@ -1715,7 +1715,7 @@ Module C_Graphics
 
         ' draw player names
         For I = 1 To MAX_PLAYERS
-            If IsPlaying(I) AndAlso GetPlayerMap(I) = GetPlayerMap(Myindex) Then
+            If IsPlaying(I) AndAlso GetPlayerMap(I) = GetPlayerMap(MyIndex) Then
                 DrawPlayerName(I)
                 If PetAlive(I) Then
                     DrawPlayerPetName(I)
@@ -1748,7 +1748,7 @@ Module C_Graphics
         Next
 
         If Editor = EditorType.Map Then
-            If FrmEditor_Map.tabpages.SelectedTab Is FrmEditor_Map.tpDirBlock Then
+            If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock Then
                 For x = TileView.Left To TileView.Right
                     For y = TileView.Top To TileView.Bottom
                         If IsValidMapPoint(x, y) Then
@@ -1786,7 +1786,7 @@ Module C_Graphics
 
         DrawMapName()
 
-        If Editor = EditorType.Map AndAlso FrmEditor_Map.tabpages.SelectedTab Is FrmEditor_Map.tpEvents Then
+        If Editor = EditorType.Map AndAlso frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpEvents Then
             DrawEvents()
             EditorEvent_DrawGraphic()
         End If
@@ -1848,8 +1848,8 @@ Module C_Graphics
         With ParallaxGfxInfo(index)
             .TextureTimer = GetTickCount() + 100000
         End With
-        horz = ConvertMapX(GetPlayerX(Myindex))
-        vert = ConvertMapY(GetPlayerY(Myindex))
+        horz = ConvertMapX(GetPlayerX(MyIndex))
+        vert = ConvertMapY(GetPlayerY(MyIndex))
 
         ParallaxSprite(index).Position = New Vector2f((horz * 2.5) - 50, (vert * 2.5) - 50)
 
@@ -1895,7 +1895,7 @@ Module C_Graphics
                 End If
                 PictureSprite(index).Position = New Vector2f(ConvertMapX(MapEvents(Picture.EventId).X * 32) / 2 - Picture.xOffset, ConvertMapY(MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset)
             Case 3 ' Center Player
-                PictureSprite(index).Position = New Vector2f(ConvertMapX(Player(Myindex).X * 32) / 2 - Picture.xOffset, ConvertMapY(Player(Myindex).Y * 32) / 2 - Picture.yOffset)
+                PictureSprite(index).Position = New Vector2f(ConvertMapX(Player(MyIndex).X * 32) / 2 - Picture.xOffset, ConvertMapY(Player(MyIndex).Y * 32) / 2 - Picture.yOffset)
         End Select
 
         Window.Draw(PictureSprite(index))
@@ -1912,14 +1912,14 @@ Module C_Graphics
         ' check for casting time bar
         If SkillBuffer > 0 Then
             ' lock to player
-            tmpX = GetPlayerX(Myindex) * PicX + Player(Myindex).XOffset
-            tmpY = GetPlayerY(Myindex) * PicY + Player(Myindex).YOffset + 35
-            If Skill(Player(Myindex).Skill(SkillBuffer).Num).CastTime = 0 Then _
-                Skill(Player(Myindex).Skill(SkillBuffer).Num).CastTime = 1
+            tmpX = GetPlayerX(MyIndex) * PicX + Player(MyIndex).XOffset
+            tmpY = GetPlayerY(MyIndex) * PicY + Player(MyIndex).YOffset + 35
+            If Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime = 0 Then _
+                Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime = 1
             ' calculate the width to fill
             barWidth =
                 ((GetTickCount() - SkillBufferTimer) /
-                 ((GetTickCount() - SkillBufferTimer) + (Skill(Player(Myindex).Skill(SkillBuffer).Num).CastTime * 1000)) *
+                 ((GetTickCount() - SkillBufferTimer) + (Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime * 1000)) *
                  64)
             ' draw bars
             rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
@@ -1972,15 +1972,15 @@ Module C_Graphics
             Next
         End If
 
-        If PetAlive(Myindex) Then
+        If PetAlive(MyIndex) Then
             ' draw own health bar
-            If Player(Myindex).Pet.Health > 0 AndAlso Player(Myindex).Pet.Health <= Player(Myindex).Pet.MaxHp Then
-                'Debug.Print("pethealth:" & Player(Myindex).Pet.Health)
+            If Player(MyIndex).Pet.Health > 0 AndAlso Player(MyIndex).Pet.Health <= Player(MyIndex).Pet.MaxHp Then
+                'Debug.Print("pethealth:" & Player(MyIndex).Pet.Health)
                 ' lock to Player
-                tmpX = Player(Myindex).Pet.X * PicX + Player(Myindex).Pet.XOffset
-                tmpY = Player(Myindex).Pet.Y * PicX + Player(Myindex).Pet.YOffset + 35
+                tmpX = Player(MyIndex).Pet.X * PicX + Player(MyIndex).Pet.XOffset
+                tmpY = Player(MyIndex).Pet.Y * PicX + Player(MyIndex).Pet.YOffset + 35
                 ' calculate the width to fill
-                barWidth = ((Player(Myindex).Pet.Health) / (Player(Myindex).Pet.MaxHp)) * 32
+                barWidth = ((Player(MyIndex).Pet.Health) / (Player(MyIndex).Pet.MaxHp)) * 32
                 ' draw bars
                 rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
                 Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
@@ -1993,14 +1993,14 @@ Module C_Graphics
 
         ' check for pet casting time bar
         If PetSkillBuffer > 0 Then
-            If Skill(Pet(Player(Myindex).Pet.Num).Skill(PetSkillBuffer)).CastTime > 0 Then
+            If Skill(Pet(Player(MyIndex).Pet.Num).Skill(PetSkillBuffer)).CastTime > 0 Then
                 ' lock to pet
-                tmpX = Player(Myindex).Pet.X * PicX + Player(Myindex).Pet.XOffset
-                tmpY = Player(Myindex).Pet.Y * PicY + Player(Myindex).Pet.YOffset + 35
+                tmpX = Player(MyIndex).Pet.X * PicX + Player(MyIndex).Pet.XOffset
+                tmpY = Player(MyIndex).Pet.Y * PicY + Player(MyIndex).Pet.YOffset + 35
 
                 ' calculate the width to fill
                 barWidth = (GetTickCount() - PetSkillBufferTimer) /
-                           ((Skill(Pet(Player(Myindex).Pet.Num).Skill(PetSkillBuffer)).CastTime * 1000)) * 64
+                           ((Skill(Pet(Player(MyIndex).Pet.Num).Skill(PetSkillBuffer)).CastTime * 1000)) * 64
                 ' draw bar background
                 rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
                 Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
@@ -2038,7 +2038,7 @@ Module C_Graphics
     Friend Sub DrawTileOutline()
         Dim rec As Rectangle
 
-        If FrmEditor_Map.tabpages.SelectedTab Is FrmEditor_Map.tpDirBlock Then Exit Sub
+        If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock Then Exit Sub
 
         With rec
             .Y = 0
@@ -2053,29 +2053,29 @@ Module C_Graphics
             .FillColor = New SFML.Graphics.Color(SFML.Graphics.Color.Transparent)
         }
 
-        If FrmEditor_Map.tabpages.SelectedTab Is FrmEditor_Map.tpAttributes Then
+        If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
             rec2.Size = New Vector2f(rec.Width, rec.Height)
         Else
-            If TilesetGfxInfo(FrmEditor_Map.cmbTileSets.SelectedIndex + 1).IsLoaded = False Then
-                LoadTexture(FrmEditor_Map.cmbTileSets.SelectedIndex, 1)
+            If TilesetGfxInfo(frmEditor_Map.cmbTileSets.SelectedIndex + 1).IsLoaded = False Then
+                LoadTexture(frmEditor_Map.cmbTileSets.SelectedIndex, 1)
             End If
 
             ' we use it, lets update timer
-            With TilesetGfxInfo(FrmEditor_Map.cmbTileSets.SelectedIndex + 1)
+            With TilesetGfxInfo(frmEditor_Map.cmbTileSets.SelectedIndex + 1)
                 .TextureTimer = GetTickCount() + 100000
             End With
 
             If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then
-                RenderTexture(TilesetSprite(FrmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height, rec.Width, rec.Height)
+                RenderTexture(TilesetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height, rec.Width, rec.Height)
 
                 rec2.Size = New Vector2f(rec.Width, rec.Height)
             Else
-                If FrmEditor_Map.cmbAutoTile.SelectedIndex > 0 Then
-                    RenderTexture(TilesetSprite(FrmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height, rec.Width, rec.Height)
+                If frmEditor_Map.cmbAutoTile.SelectedIndex > 0 Then
+                    RenderTexture(TilesetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height, rec.Width, rec.Height)
 
                     rec2.Size = New Vector2f(rec.Width, rec.Height)
                 Else
-                    RenderTexture(TilesetSprite(FrmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
+                    RenderTexture(TilesetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
 
                     rec2.Size = New Vector2f(EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
                 End If
@@ -2270,32 +2270,32 @@ Module C_Graphics
 
     Friend Sub EditorItem_DrawIcon()
         Dim itemnum As Integer
-        itemnum = FrmEditor_Item.nudPic.Value
+        itemnum = frmEditor_Item.nudPic.Value
 
         If itemnum < 1 OrElse itemnum > NumItems Then
-            FrmEditor_Item.picItem.BackgroundImage = Nothing
+            frmEditor_Item.picItem.BackgroundImage = Nothing
             Exit Sub
         End If
 
         If File.Exists(Paths.Graphics & "items\" & itemnum & GfxExt) Then
-            FrmEditor_Item.picItem.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "items\" & itemnum & GfxExt)
+            frmEditor_Item.picItem.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "items\" & itemnum & GfxExt)
         Else
-            FrmEditor_Item.picItem.BackgroundImage = Nothing
+            frmEditor_Item.picItem.BackgroundImage = Nothing
         End If
     End Sub
 
     Friend Sub EditorItem_DrawPaperdoll()
         Dim Sprite As Integer
 
-        Sprite = FrmEditor_Item.nudPaperdoll.Value
+        Sprite = frmEditor_Item.nudPaperdoll.Value
 
         If Sprite < 1 OrElse Sprite > NumPaperdolls Then
-            FrmEditor_Item.picPaperdoll.BackgroundImage = Nothing
+            frmEditor_Item.picPaperdoll.BackgroundImage = Nothing
             Exit Sub
         End If
 
         If File.Exists(Paths.Graphics & "paperdolls\" & Sprite & GfxExt) Then
-            FrmEditor_Item.picPaperdoll.BackgroundImage =
+            frmEditor_Item.picPaperdoll.BackgroundImage =
                 Drawing.Image.FromFile(Paths.Graphics & "paperdolls\" & Sprite & GfxExt)
         End If
     End Sub
@@ -2303,19 +2303,19 @@ Module C_Graphics
     Friend Sub EditorNpc_DrawSprite()
         Dim Sprite As Integer
 
-        Sprite = FrmEditor_NPC.nudSprite.Value
+        Sprite = frmEditor_NPC.nudSprite.Value
 
         If Sprite < 1 OrElse Sprite > NumCharacters Then
-            FrmEditor_NPC.picSprite.BackgroundImage = Nothing
+            frmEditor_NPC.picSprite.BackgroundImage = Nothing
             Exit Sub
         End If
 
         If File.Exists(Paths.Graphics & "characters\" & Sprite & GfxExt) Then
-            FrmEditor_NPC.picSprite.Width =
+            frmEditor_NPC.picSprite.Width =
                 Drawing.Image.FromFile(Paths.Graphics & "characters\" & Sprite & GfxExt).Width / 4
-            FrmEditor_NPC.picSprite.Height =
+            frmEditor_NPC.picSprite.Height =
                 Drawing.Image.FromFile(Paths.Graphics & "characters\" & Sprite & GfxExt).Height / 4
-            FrmEditor_NPC.picSprite.BackgroundImage =
+            frmEditor_NPC.picSprite.BackgroundImage =
                 Drawing.Image.FromFile(Paths.Graphics & "characters\" & Sprite & GfxExt)
         End If
     End Sub
@@ -2324,25 +2324,25 @@ Module C_Graphics
         Dim Sprite As Integer
 
         ' normal sprite
-        Sprite = FrmEditor_Resource.nudNormalPic.Value
+        Sprite = frmEditor_Resource.nudNormalPic.Value
 
         If Sprite < 1 OrElse Sprite > NumResources Then
-            FrmEditor_Resource.picNormalpic.BackgroundImage = Nothing
+            frmEditor_Resource.picNormalpic.BackgroundImage = Nothing
         Else
             If File.Exists(Paths.Graphics & "resources\" & Sprite & GfxExt) Then
-                FrmEditor_Resource.picNormalpic.BackgroundImage =
+                frmEditor_Resource.picNormalpic.BackgroundImage =
                     Drawing.Image.FromFile(Paths.Graphics & "resources\" & Sprite & GfxExt)
             End If
         End If
 
         ' exhausted sprite
-        Sprite = FrmEditor_Resource.nudExhaustedPic.Value
+        Sprite = frmEditor_Resource.nudExhaustedPic.Value
 
         If Sprite < 1 OrElse Sprite > NumResources Then
-            FrmEditor_Resource.picExhaustedPic.BackgroundImage = Nothing
+            frmEditor_Resource.picExhaustedPic.BackgroundImage = Nothing
         Else
             If File.Exists(Paths.Graphics & "resources\" & Sprite & GfxExt) Then
-                FrmEditor_Resource.picExhaustedPic.BackgroundImage =
+                frmEditor_Resource.picExhaustedPic.BackgroundImage =
                     Drawing.Image.FromFile(Paths.Graphics & "resources\" & Sprite & GfxExt)
             End If
         End If
@@ -2351,19 +2351,19 @@ Module C_Graphics
     Friend Sub EditorEvent_DrawPicture()
         Dim Sprite As Integer
 
-        Sprite = FrmEditor_Events.nudShowPicture.Value
+        Sprite = frmEditor_Events.nudShowPicture.Value
 
         If Sprite < 1 OrElse Sprite > NumPictures Then
-            FrmEditor_Events.picShowPic.BackgroundImage = Nothing
+            frmEditor_Events.picShowPic.BackgroundImage = Nothing
             Exit Sub
         End If
 
         If File.Exists(Paths.Graphics & "pictures\" & Sprite & GfxExt) Then
-            FrmEditor_Events.picShowPic.Width =
+            frmEditor_Events.picShowPic.Width =
                 Drawing.Image.FromFile(Paths.Graphics & "pictures\" & Sprite & GfxExt).Width
-            FrmEditor_Events.picShowPic.Height =
+            frmEditor_Events.picShowPic.Height =
                 Drawing.Image.FromFile(Paths.Graphics & "pictures\" & Sprite & GfxExt).Height
-            FrmEditor_Events.picShowPic.BackgroundImage =
+            frmEditor_Events.picShowPic.BackgroundImage =
                 Drawing.Image.FromFile(Paths.Graphics & "pictures\" & Sprite & GfxExt)
         End If
     End Sub
@@ -2511,8 +2511,8 @@ Module C_Graphics
             Next
         End If
 
-        Dim x2 = ConvertMapX(Player(Myindex).X * 32) + 56 + Player(Myindex).XOffset - CDbl(LightGfxInfo.Width) / 2
-        Dim y2 = ConvertMapY(Player(Myindex).Y * 32) + 56 + Player(Myindex).YOffset - CDbl(LightGfxInfo.Height) / 2
+        Dim x2 = ConvertMapX(Player(MyIndex).X * 32) + 56 + Player(MyIndex).XOffset - CDbl(LightGfxInfo.Width) / 2
+        Dim y2 = ConvertMapY(Player(MyIndex).Y * 32) + 56 + Player(MyIndex).YOffset - CDbl(LightGfxInfo.Height) / 2
         LightSprite.Position = New Vector2f(CSng(x2), CSng(y2))
         LightSprite.Color = Color.Red
         LightSprite.Scale = New Vector2f(0.7F, 0.7F)
@@ -2523,17 +2523,17 @@ Module C_Graphics
 
     Friend Sub EditorSkill_DrawIcon()
         Dim skillNum As Integer
-        skillNum = FrmEditor_Skill.nudIcon.Value
+        skillNum = frmEditor_Skill.nudIcon.Value
 
         If skillNum < 1 OrElse skillNum > NumItems Then
-            FrmEditor_Skill.picSprite.BackgroundImage = Nothing
+            frmEditor_Skill.picSprite.BackgroundImage = Nothing
             Exit Sub
         End If
 
         If File.Exists(Paths.Graphics & "Skills\" & skillNum & GfxExt) Then
-            FrmEditor_Skill.picSprite.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "Skills\" & skillNum & GfxExt)
+            frmEditor_Skill.picSprite.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "Skills\" & skillNum & GfxExt)
         Else
-            FrmEditor_Skill.picSprite.BackgroundImage = Nothing
+            frmEditor_Skill.picSprite.BackgroundImage = Nothing
         End If
     End Sub
 
@@ -2546,10 +2546,10 @@ Module C_Graphics
         Dim FrameCount As Integer
         Dim ShouldRender As Boolean
 
-        Animationnum = FrmEditor_Animation.nudSprite0.Value
+        Animationnum = frmEditor_Animation.nudSprite0.Value
 
         If Animationnum < 1 OrElse Animationnum > NumAnimations Then
-            EditorAnimation_Anim1.Clear(ToSfmlColor(FrmEditor_Animation.picSprite0.BackColor))
+            EditorAnimation_Anim1.Clear(ToSfmlColor(frmEditor_Animation.picSprite0.BackColor))
             EditorAnimation_Anim1.Display()
         Else
             If AnimationGfxInfo(Animationnum).IsLoaded = False Then
@@ -2561,8 +2561,8 @@ Module C_Graphics
                 .TextureTimer = GetTickCount() + 100000
             End With
 
-            looptime = FrmEditor_Animation.nudLoopTime0.Value
-            FrameCount = FrmEditor_Animation.nudFrameCount0.Value
+            looptime = frmEditor_Animation.nudLoopTime0.Value
+            FrameCount = frmEditor_Animation.nudFrameCount0.Value
 
             ShouldRender = False
 
@@ -2579,10 +2579,10 @@ Module C_Graphics
             End If
 
             If ShouldRender Then
-                If FrmEditor_Animation.nudFrameCount0.Value > 0 Then
+                If frmEditor_Animation.nudFrameCount0.Value > 0 Then
                     ' total width divided by frame count
                     height = AnimationGfxInfo(Animationnum).Height
-                    width = AnimationGfxInfo(Animationnum).Width / FrmEditor_Animation.nudFrameCount0.Value
+                    width = AnimationGfxInfo(Animationnum).Width / frmEditor_Animation.nudFrameCount0.Value
                     With sRECT
                         .Y = 0
                         .Height = height
@@ -2597,7 +2597,7 @@ Module C_Graphics
                         .Width = width
                     End With
 
-                    EditorAnimation_Anim1.Clear(ToSfmlColor(FrmEditor_Animation.picSprite0.BackColor))
+                    EditorAnimation_Anim1.Clear(ToSfmlColor(frmEditor_Animation.picSprite0.BackColor))
                     RenderTexture(AnimationSprite(Animationnum), EditorAnimation_Anim1, dRECT.X, dRECT.Y, sRECT.X,
                                  sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Width, dRECT.Height)
                     EditorAnimation_Anim1.Display()
@@ -2605,10 +2605,10 @@ Module C_Graphics
             End If
         End If
 
-        Animationnum = FrmEditor_Animation.nudSprite1.Value
+        Animationnum = frmEditor_Animation.nudSprite1.Value
 
         If Animationnum < 1 OrElse Animationnum > NumAnimations Then
-            EditorAnimation_Anim2.Clear(ToSfmlColor(FrmEditor_Animation.picSprite1.BackColor))
+            EditorAnimation_Anim2.Clear(ToSfmlColor(frmEditor_Animation.picSprite1.BackColor))
             EditorAnimation_Anim2.Display()
         Else
             If AnimationGfxInfo(Animationnum).IsLoaded = False Then
@@ -2620,8 +2620,8 @@ Module C_Graphics
                 .TextureTimer = GetTickCount() + 100000
             End With
 
-            looptime = FrmEditor_Animation.nudLoopTime1.Value
-            FrameCount = FrmEditor_Animation.nudFrameCount1.Value
+            looptime = frmEditor_Animation.nudLoopTime1.Value
+            FrameCount = frmEditor_Animation.nudFrameCount1.Value
             ShouldRender = False
 
             ' check if we need to render new frame
@@ -2637,10 +2637,10 @@ Module C_Graphics
             End If
 
             If ShouldRender Then
-                If FrmEditor_Animation.nudFrameCount1.Value > 0 Then
+                If frmEditor_Animation.nudFrameCount1.Value > 0 Then
                     ' total width divided by frame count
                     height = AnimationGfxInfo(Animationnum).Height
-                    width = AnimationGfxInfo(Animationnum).Width / FrmEditor_Animation.nudFrameCount1.Value
+                    width = AnimationGfxInfo(Animationnum).Width / frmEditor_Animation.nudFrameCount1.Value
                     With sRECT
                         .Y = 0
                         .Height = height
@@ -2655,7 +2655,7 @@ Module C_Graphics
                         .Width = width
                     End With
 
-                    EditorAnimation_Anim2.Clear(ToSfmlColor(FrmEditor_Animation.picSprite1.BackColor))
+                    EditorAnimation_Anim2.Clear(ToSfmlColor(frmEditor_Animation.picSprite1.BackColor))
                     RenderTexture(AnimationSprite(Animationnum), EditorAnimation_Anim2, dRECT.X, dRECT.Y, sRECT.X,
                                  sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Height, dRECT.Width)
                     EditorAnimation_Anim2.Display()
@@ -2851,7 +2851,7 @@ Module C_Graphics
             Return False
         End If
 
-        If x = Player(Myindex).X AndAlso y = Player(Myindex).Y Then
+        If x = Player(MyIndex).X AndAlso y = Player(MyIndex).Y Then
             Return False
         End If
 
@@ -2920,26 +2920,26 @@ Module C_Graphics
 
             ' Render icon
             If Not (DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = i) Then
-                Select Case Player(Myindex).Hotbar(i).SlotType
+                Select Case Player(MyIndex).Hotbar(i).SlotType
                     Case PartOriginType.Inventory
-                        StreamItem(Player(Myindex).Hotbar(i).Slot)
-                        If Len(Item(Player(Myindex).Hotbar(i).Slot).Name) > 0 And Item(Player(Myindex).Hotbar(i).Slot).Icon > 0 Then
-                            If ItemGfxInfo(Item(Player(Myindex).Hotbar(i).Slot).Icon).IsLoaded = False Then
-                                LoadTexture(Item(Player(Myindex).Hotbar(i).Slot).Icon, 4)
+                        StreamItem(Player(MyIndex).Hotbar(i).Slot)
+                        If Len(Item(Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Item(Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then
+                            If ItemGfxInfo(Item(Player(MyIndex).Hotbar(i).Slot).Icon).IsLoaded = False Then
+                                LoadTexture(Item(Player(MyIndex).Hotbar(i).Slot).Icon, 4)
                             End If
-                            RenderTexture(ItemSprite(Item(Player(Myindex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
+                            RenderTexture(ItemSprite(Item(Player(MyIndex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
                         End If
                     Case PartOriginType.Skill
-                        StreamSkill(Player(Myindex).Hotbar(i).Slot)
-                        If Len(Skill(Player(Myindex).Hotbar(i).Slot).Name) > 0 And Skill(Player(Myindex).Hotbar(i).Slot).Icon > 0 Then
-                            If SkillGfxInfo(Item(Player(Myindex).Hotbar(i).Slot).Icon).IsLoaded = False Then
-                                LoadTexture(Item(Player(Myindex).Hotbar(i).Slot).Icon, 9)
+                        StreamSkill(Player(MyIndex).Hotbar(i).Slot)
+                        If Len(Skill(Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Skill(Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then
+                            If SkillGfxInfo(Item(Player(MyIndex).Hotbar(i).Slot).Icon).IsLoaded = False Then
+                                LoadTexture(Item(Player(MyIndex).Hotbar(i).Slot).Icon, 9)
                             End If
-                            RenderTexture(SkillSprite(Skill(Player(Myindex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
+                            RenderTexture(SkillSprite(Skill(Player(MyIndex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
                             For t = 1 To MAX_PLAYER_SKILLS
-                                If GetPlayerSkill(Myindex, t) > 0 Then
-                                    If GetPlayerSkill(Myindex, t) = Player(Myindex).Hotbar(i).Slot And GetPlayerSkillCD(Myindex, t) > 0 Then
-                                        RenderTexture(SkillSprite(Skill(Player(Myindex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
+                                If GetPlayerSkill(MyIndex, t) > 0 Then
+                                    If GetPlayerSkill(MyIndex, t) = Player(MyIndex).Hotbar(i).Slot And GetPlayerSkillCD(MyIndex, t) > 0 Then
+                                        RenderTexture(SkillSprite(Skill(Player(MyIndex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
                                     End If
                                 End If
                             Next

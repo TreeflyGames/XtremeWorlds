@@ -43,6 +43,7 @@ Friend Module C_Projectiles
         buffer.Dispose()
 
     End Sub
+
     Sub SendRequestProjectile()
         Dim buffer As New ByteStream(4)
 
@@ -212,7 +213,7 @@ Friend Module C_Projectiles
 
         'Check for player collision
        For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) AndAlso GetPlayerMap(i) = GetPlayerMap(Myindex) Then
+            If IsPlaying(i) AndAlso GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
                 If GetPlayerX(i) = x AndAlso GetPlayerY(i) = y Then
                     canClearProjectile = True
                     collisionindex = i
@@ -233,7 +234,7 @@ Friend Module C_Projectiles
         'Clear the projectile if possible
         If canClearProjectile = True Then
             'Only send the clear to the server if you're the projectile caster or the one hit (only if owner is not a player)
-            If (MapProjectile(Player(MyIndex).Map, projectileNum).OwnerType = TargetType.Player AndAlso MapProjectile(Player(MyIndex).Map, projectileNum).Owner = Myindex) Then
+            If (MapProjectile(Player(MyIndex).Map, projectileNum).OwnerType = TargetType.Player AndAlso MapProjectile(Player(MyIndex).Map, projectileNum).Owner = MyIndex) Then
                 SendClearProjectile(projectileNum, collisionindex, collisionType, collisionZone)
             End If
 
@@ -287,15 +288,15 @@ Friend Module C_Projectiles
     Friend Sub EditorProjectile_DrawProjectile()
         Dim iconnum As Integer
 
-        iconnum = FrmEditor_Projectile.nudPic.Value
+        iconnum = frmEditor_Projectile.nudPic.Value
 
         If iconnum < 1 OrElse iconnum > NumProjectiles Then
-            FrmEditor_Projectile.picProjectile.BackgroundImage = Nothing
+            frmEditor_Projectile.picProjectile.BackgroundImage = Nothing
             Exit Sub
         End If
 
         If File.Exists(Paths.Graphics & "Projectiles\" & iconnum & GfxExt) Then
-            FrmEditor_Projectile.picProjectile.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "Projectiles\" & iconnum & GfxExt)
+            frmEditor_Projectile.picProjectile.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "Projectiles\" & iconnum & GfxExt)
         End If
 
     End Sub
@@ -304,14 +305,14 @@ Friend Module C_Projectiles
 #Region "Projectile Editor"
 
     Friend Sub ProjectileEditorInit()
-        EditorIndex = FrmEditor_Projectile.lstIndex.SelectedIndex + 1
+        EditorIndex = frmEditor_Projectile.lstIndex.SelectedIndex + 1
 
         With Projectile(EditorIndex)
-            FrmEditor_Projectile.txtName.Text = Trim$(.Name)
-            FrmEditor_Projectile.nudPic.Value = .Sprite
-            FrmEditor_Projectile.nudRange.Value = .Range
-            FrmEditor_Projectile.nudSpeed.Value = .Speed
-            FrmEditor_Projectile.nudDamage.Value = .Damage
+            frmEditor_Projectile.txtName.Text = Trim$(.Name)
+            frmEditor_Projectile.nudPic.Value = .Sprite
+            frmEditor_Projectile.nudRange.Value = .Range
+            frmEditor_Projectile.nudSpeed.Value = .Speed
+            frmEditor_Projectile.nudDamage.Value = .Damage
         End With
 
         ProjectileChanged(EditorIndex) = True
