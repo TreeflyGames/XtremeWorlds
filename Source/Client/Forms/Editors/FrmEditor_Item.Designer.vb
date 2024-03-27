@@ -1102,9 +1102,9 @@ Partial Class frmEditor_Item
         DarkLabel10.Location = New Point(10, 228)
         DarkLabel10.Margin = New Padding(5, 0, 5, 0)
         DarkLabel10.Name = "DarkLabel10"
-        DarkLabel10.Size = New Size(102, 25)
+        DarkLabel10.Size = New Size(106, 25)
         DarkLabel10.TabIndex = 21
-        DarkLabel10.Text = "Description"
+        DarkLabel10.Text = "Description:"
         ' 
         ' txtDescription
         ' 
