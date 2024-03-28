@@ -13,6 +13,10 @@ Public Class frmEditor_Moral
         Dispose
     End Sub
 
+    Private Sub frmEditor_Moral_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        MoralEditorCancel
+    End Sub
+
     Private Sub BtnDelete_Click(sender As Object, e As EventArgs) Handles  btnDelete.Click
         Dim tmpindex As Integer
 

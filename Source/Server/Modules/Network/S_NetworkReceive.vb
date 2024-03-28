@@ -2531,6 +2531,7 @@ Module S_NetworkReceive
     Private Sub Packet_CloseEditor(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        
         If TempPlayer(index).Editor = -1 Then Exit Sub
 
         TempPlayer(index).Editor = -1
