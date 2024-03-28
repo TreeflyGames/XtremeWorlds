@@ -3310,8 +3310,8 @@ Module C_Interface
         CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", Verdana, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
         
         ' Buying/Selling
-        CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , , DesignType.ChkCustom_Buying, , , New Action(AddressOf chkShopBuying))
-        CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , , , DesignType.ChkCustom_Selling, , , New Action(AddressOf chkShopSelling))
+        CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , DesignType.ChkCustom_Buying, , , , , New Action(AddressOf chkShopBuying))
+        CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , ,  , DesignType.ChkCustom_Selling, , , , , New Action(AddressOf chkShopSelling))
 
         ' Labels
         CreateLabel(windowCount, "lblName", 56, 226, 300, FontSize, "Test Item", Verdana, Color.Black, AlignmentType.Left)
@@ -3421,9 +3421,9 @@ Module C_Interface
     End Sub
 
     ' Shop
-Public Sub btnShop_Close()
-    CloseShop
-End Sub
+    Public Sub btnShop_Close()
+        CloseShop
+    End Sub
 
     Public Sub chkShopBuying()
         With Windows(GetWindowIndex("winShop"))
