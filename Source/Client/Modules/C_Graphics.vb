@@ -2929,6 +2929,7 @@ Module C_Graphics
                             End If
                             RenderTexture(ItemSprite(Item(Player(MyIndex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
                         End If
+
                     Case PartOriginType.Skill
                         StreamSkill(Player(MyIndex).Hotbar(i).Slot)
                         If Len(Skill(Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Skill(Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then

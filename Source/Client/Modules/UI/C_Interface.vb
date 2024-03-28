@@ -1320,6 +1320,7 @@ Module C_Interface
         CreateWindow_Skills()
         CreateWindow_Character()
         CreateWindow_Hotbar()
+        CreateWindow_Bank()
         CreateWindow_EscMenu()
         CreateWindow_Bars()
         CreateWindow_Dialogue()
@@ -2224,6 +2225,80 @@ Module C_Interface
         End If
     End Sub
 
+    ' ###############
+    ' ##    Bank   ##
+    ' ###############
+    Public Sub btnMenu_Bank()
+        If Windows(GetWindowIndex("winBank")).Window.visible Then
+            CloseBank
+        End If
+
+        Windows(GetWindowIndex("winBank")).Window.visible = Not Windows(GetWindowIndex("winBank")).Window.visible
+    End Sub
+
+    Public Sub Bank_MouseMove()
+        Dim ItemNum As Long, X As Long, Y As Long, i As Long
+
+        ' exit out early if dragging
+        If DragBox.Type <> PartType.None Then Exit Sub
+
+        ItemNum = IsBank(Windows(GetWindowIndex("winBank")).Window.Left, Windows(GetWindowIndex("winBank")).Window.Top)
+
+        If ItemNum > 0 Then
+
+            ' make sure we're not dragging the item
+            If DragBox.Type = PartType.Item And DragBox.Value = ItemNum Then Exit Sub
+            
+            ' calc position
+            X = Windows(GetWindowIndex("winBank")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
+            Y = Windows(GetWindowIndex("winBank")).Window.Top - 4
+
+            ' offscreen?
+            If X < 0 Then
+                ' switch to right
+                X = Windows(GetWindowIndex("winBank")).Window.Left + Windows(GetWindowIndex("winBank")).Window.Width
+            End If
+
+            ShowItemDesc(X, Y, Bank.Item(ItemNum).Num)
+        End If
+    End Sub
+
+    Public Sub Bank_MouseDown()
+        Dim BankSlot As Long, winIndex As Long, i As Long
+
+        ' is there an item?
+        BankSlot = IsBank(Windows(GetWindowIndex("winBank")).Window.Left, Windows(GetWindowIndex("winBank")).Window.Top)
+
+        If BankSlot > 0 Then
+            ' exit out if we're offering that item
+
+            ' drag it
+            With DragBox
+                .Type = PartType.Item
+                .Value = Bank.Item(BankSlot).Num
+                .Origin = PartOriginType.Bank
+
+                .Slot = BankSlot
+            End With
+
+            winIndex = GetWindowIndex("winDragBox")
+            With Windows(winIndex).Window
+                .state = EntState.MouseDown
+                .Left = CurMouseX - 16
+                .Top = CurMouseY - 16
+                .movedX = CurMouseX - .Left
+                .movedY = CurMouseY - .Top
+            End With
+
+            ShowWindow(winIndex, , False)
+            ' stop dragging inventory
+            Windows(GetWindowIndex("winBank")).Window.state = EntState.Normal
+        End If
+
+        ' show desc. if needed
+        Bank_MouseMove
+    End Sub
+
     ' ##############
     ' ## Drag Box ##
     ' ##############
@@ -2883,7 +2958,7 @@ End Sub
     ' ## Character ##
     ' ###############
     Public Sub DrawCharacter()
-        Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, sprite As Long, itemNum As Long, ItemPic As Long
+        Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, sprite As Long, itemNum As Long, ItemIcon As Long
 
         xO = Windows(GetWindowIndex("winCharacter")).Window.Left
         yO = Windows(GetWindowIndex("winCharacter")).Window.Top
@@ -2903,16 +2978,16 @@ End Sub
 
             ' get the item sprite
             If itemNum > 0 Then
-                ItemPic = Item(itemNum).Icon
+                ItemIcon = Item(itemNum).Icon
             Else
                 ' no item equiped - use blank image
-                ItemPic = 37 + i
+                ItemIcon = 37 + i
             End If
 
             yO = Windows(GetWindowIndex("winCharacter")).Window.Top + EqTop
             xO = Windows(GetWindowIndex("winCharacter")).Window.Left + EqLeft + ((EqOffsetX + 32) * (((i - 1) Mod EqColumns)))
 
-            RenderTexture(ItemSprite(ItemPic), Window, xO, yO, 0, 0, 32, 32, 32, 32)
+            RenderTexture(ItemSprite(ItemIcon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
         Next
     End Sub
 
@@ -2972,7 +3047,7 @@ End Sub
     End Sub
 
     Public Sub DrawInventory()
-        Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, y As Long, itemNum As Long, ItemPic As Long, x As Long, Top As Long, Left As Long, Amount As String
+        Dim xO As Long, yO As Long, Width As Long, Height As Long, i As Long, y As Long, itemNum As Long, ItemIcon As Long, x As Long, Top As Long, Left As Long, Amount As String
         Dim Color As Color, skipItem As Boolean, amountModifier As Long, tmpItem As Long
 
         xO = Windows(GetWindowIndex("winInventory")).Window.Left
@@ -3007,7 +3082,7 @@ End Sub
             If itemNum > 0 And itemNum <= MAX_ITEMS Then
                 ' not dragging?
                 If Not (DragBox.Origin = PartOriginType.Inventory And DragBox.Slot = i) Then
-                    ItemPic = Item(itemNum).Icon
+                    ItemIcon = Item(itemNum).Icon
 
                     ' exit out if we're offering item in a trade.
                     amountModifier = 0
@@ -3033,12 +3108,12 @@ End Sub
                     End If
 
                     If Not skipItem Then
-                        If ItemPic > 0 And ItemPic <= NumItems Then
+                        If ItemIcon > 0 And ItemIcon <= NumItems Then
                             Top = yO + InvTop + ((InvOffsetY + 32) * ((i - 1) \ InvColumns))
                             Left = xO + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
 
                             ' draw icon
-                            RenderTexture(ItemSprite(ItemPic), Window, Left, Top, 0, 0, 32, 32, 32, 32)
+                            RenderTexture(ItemSprite(ItemIcon), Window, Left, Top, 0, 0, 32, 32, 32, 32)
 
                             ' If item is a stack - draw the amount you have
                             If GetPlayerInvItemValue(MyIndex, i) > 1 Then
@@ -3195,6 +3270,17 @@ End Sub
     
         ' Close button
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Skills))
+    End Sub
+
+    Public Sub CreateWindow_Bank()
+        CreateWindow("winBank", "Bank", Georgia, zOrder_Win, 0, 0, 391, 373, 1, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Bank_MouseMove), New Action(AddressOf Bank_MouseDown), , New Action(AddressOf DrawBank))
+
+        ' Centralize it
+        CentralizeWindow(windowCount)
+
+        ' Set the index for spawning controls
+        zOrder_Con = 1
+        CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 39, 2, 36, 36, , , , 3, 4, 5, , , , , , , , New Action(AddressOf btnMenu_Bank))
     End Sub
 
     Sub ResizeGUI()
@@ -3363,6 +3449,76 @@ End Sub
 
         ' close
         btnOptions_Close
+    End Sub
+
+    Public Sub DrawBank()
+        Dim X As Long, Y As Long, Xo As Long, Yo As Long, width As Long, height As Long
+        Dim i As Long, itemNum As Long, itemIcon As Long
+
+        Dim Left As Long, top As Long
+        Dim color As Long, skipItem As Boolean, amount As Long, tmpItem As Long
+
+        Xo = Windows(GetWindowIndex("winBank")).Window.Left
+        Yo = Windows(GetWindowIndex("winBank")).Window.Top
+        width = Windows(GetWindowIndex("winBank")).Window.Width
+        height = Windows(GetWindowIndex("winBank")).Window.Height
+        
+        ' render green
+        RenderTexture(InterfaceSprite(34), Window, Xo + 4, Yo + 23, 0, 0, width - 8, height - 27, 4, 4)
+
+        width = 76
+        height = 76
+
+        Y = Yo + 23
+        ' render grid - row
+        For i = 1 To 5
+            If i = 5 Then height = 42
+            RenderTexture(InterfaceSprite(38), Window, Xo + 4, Y, 0, 0, width, height, width, height)
+            RenderTexture(InterfaceSprite(38), Window, Xo + 80, Y, 0, 0, width, height, width, height)
+            RenderTexture(InterfaceSprite(38), Window, Xo + 156, Y, 0, 0, width, height, width, height)
+            RenderTexture(InterfaceSprite(38), Window, Xo + 232, Y, 0, 0, width, height, width, height)
+            RenderTexture(InterfaceSprite(38), Window, Xo + 308, Y, 0, 0, 79, height, 79, height)
+            Y = Y + 76
+        Next
+
+        ' actually draw the icons
+        For i = 1 To MAX_BANK
+            itemNum = Bank.Item(i).Num
+
+            If itemNum > 0 And itemNum <= MAX_ITEMS Then
+                ' not dragging?
+                If Not (DragBox.Origin = PartOriginType.Bank And DragBox.Slot = i) Then
+                    itemIcon = Item(itemNum).Icon
+
+                    If itemIcon > 0 And itemIcon <= NumItems Then
+                        top = Yo + BankTop + ((BankOffsetY + 32) * ((i - 1) \ BankColumns))
+                        Left = Xo + BankLeft + ((BankOffsetX + 32) * (((i - 1) Mod BankColumns)))
+
+                        ' draw icon
+                        RenderTexture(ItemSprite(itemIcon), Window, Left, top, 0, 0, 32, 32, 32, 32)
+
+                        ' If item is a stack - draw the amount you have
+                        If Bank.Item(i).Value > 1 Then
+                            Y = top + 21
+                            X = Left + 1
+                            amount = Bank.Item(i).Value
+
+                            ' Draw currency but with k, m, b etc. using a convertion function
+                            If CLng(amount) < 1000000 Then
+                                color = ColorType.White
+                            ElseIf CLng(amount) > 1000000 And CLng(amount) < 10000000 Then
+                                color = ColorType.Yellow
+                            ElseIf CLng(amount) > 10000000 Then
+                                color = ColorType.BrightGreen
+                            End If
+
+                            RenderText(ConvertCurrency(amount), Window, X, Y, GetSfmlColor(color), GetSfmlColor(color))
+                        End If
+                    End If
+                End If
+            End If
+        Next
+
     End Sub
 End Module
 

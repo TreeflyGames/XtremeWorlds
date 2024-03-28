@@ -15,12 +15,6 @@ Module C_UpdateUI
     Friend VbKeyAlt As Boolean
     Friend VbKeyEnter As Boolean
 
-    Friend NeedToOpenShop As Boolean
-    Friend NeedToOpenShopNum As Integer
-    Friend NeedToOpenBank As Boolean
-    Friend NeedToOpenTrade As Boolean
-    Friend NeedtoCloseTrade As Boolean
-    Friend NeedtoUpdateTrade As Boolean
     Friend Tradername As String
 
     Friend SkillDescName As String

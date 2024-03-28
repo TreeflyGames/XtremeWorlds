@@ -1414,7 +1414,7 @@ Continue1:
         Dim Color As Color, theName As String, jobName As String, levelTxt As String, i As Long
 
         ' set globals
-        descType = 1 ' inventory
+        descType = PartType.Item ' inventory
         descItem = itemNum
 
         ' set position
