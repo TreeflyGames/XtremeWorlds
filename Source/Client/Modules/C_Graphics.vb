@@ -765,6 +765,8 @@ Module C_Graphics
                 Window.SetFramerateLimit(Types.Settings.MaxFps)
             End If
 
+            Window.SetMouseCursorVisible(False)
+
             Dim iconImage As New Image(Paths.Gui + "icon.png")
             Window.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
 
@@ -1778,8 +1780,6 @@ Module C_Graphics
         DrawParty()
         DrawMapFade()
         RenderEntities()
-
-        Window.SetMouseCursorVisible(False)
         RenderTexture(CursorSprite, Window, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
 
         Window.Display()
@@ -1790,7 +1790,6 @@ Module C_Graphics
 
         DrawMenuBG()
         RenderEntities()
-        Window.SetMouseCursorVisible(False)
         RenderTexture(CursorSprite, Window, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
 
         Window.Display()
@@ -1957,8 +1956,7 @@ Module C_Graphics
 
         If PetAlive(MyIndex) Then
             ' draw own health bar
-            If Player(MyIndex).Pet.Health > 0 AndAlso Player(MyIndex).Pet.Health <= Player(MyIndex).Pet.MaxHp Then
-                'Debug.Print("pethealth:" & Player(MyIndex).Pet.Health)
+            If Player(MyIndex).Pet.Health > 0 And Player(MyIndex).Pet.Health <= Player(MyIndex).Pet.MaxHp Then
                 ' lock to Player
                 tmpX = Player(MyIndex).Pet.X * PicX + Player(MyIndex).Pet.XOffset
                 tmpY = Player(MyIndex).Pet.Y * PicX + Player(MyIndex).Pet.YOffset + 35
