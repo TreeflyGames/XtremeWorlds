@@ -1186,10 +1186,10 @@ Module S_NetworkReceive
         SendItems(index)
         SendAnimations(index)
         SendShops(index)
+        SendResources(index)
+        SendMapEventData(index)
 
         TempPlayer(index).Editor = EditorType.Map
-
-        SendMapEventData(index)
 
         Dim Buffer As New ByteStream(4)
         Buffer.WriteInt32(ServerPackets.SEditMap)
