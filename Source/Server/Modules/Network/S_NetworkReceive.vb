@@ -842,7 +842,7 @@ Module S_NetworkReceive
         Map(mapNum).Panorama = buffer.ReadByte
         Map(mapNum).Parallax = buffer.ReadByte
         Map(mapNum).Brightness = buffer.ReadByte
-        Map(mapNum).Respawn = buffer.ReadInt32
+        Map(mapNum).NoRespawn = buffer.ReadInt32
         Map(mapNum).Indoors = buffer.ReadInt32
         Map(mapNum).Shop = buffer.ReadInt32
 
@@ -2321,7 +2321,7 @@ Module S_NetworkReceive
         Map(mapNum).Panorama = buffer.ReadByte
         Map(mapNum).Parallax = buffer.ReadByte
         Map(mapNum).Brightness = buffer.ReadByte
-        Map(mapNum).Respawn = buffer.ReadInt32
+        Map(mapNum).NoRespawn = buffer.ReadInt32
         Map(mapNum).Indoors = buffer.ReadInt32
         Map(mapNum).Shop = buffer.ReadInt32
 

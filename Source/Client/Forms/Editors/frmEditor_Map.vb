@@ -530,7 +530,7 @@ Public Class frmEditor_Map
         Next
 
         chkTint.Checked = Map.MapTint
-        chkMapRespawn.Checked = Map.Respawn
+        chkNoMapRespawn.Checked = Map.NoRespawn
         chkIndoors.Checked = Map.Indoors
 
         ' rest of it
@@ -1378,11 +1378,11 @@ Public Class frmEditor_Map
         lblRadius.Text = "Radius: " & scrlLight.Value
     End Sub
 
-    Private Sub chkRespawn_CheckedChanged(sender As Object, e As EventArgs) Handles chkMapRespawn.CheckedChanged
-        If chkMapRespawn.Checked = True Then
-            Map.Respawn = 1
+    Private Sub chkRespawn_CheckedChanged(sender As Object, e As EventArgs) Handles chkNoMapRespawn.CheckedChanged
+        If chkNoMapRespawn.Checked = True Then
+            Map.NoRespawn = 1
         Else
-            Map.Respawn = 0
+            Map.NoRespawn = 0
         End If
     End Sub
 

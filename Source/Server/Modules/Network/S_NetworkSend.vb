@@ -518,7 +518,7 @@ Module S_NetworkSend
             buffer.WriteByte(Map(mapNum).Panorama)
             buffer.WriteByte(Map(mapNum).Parallax)
             buffer.WriteByte(Map(mapNum).Brightness)
-            buffer.WriteInt32(Map(mapNum).Respawn)
+            buffer.WriteInt32(Map(mapNum).NoRespawn)
             buffer.WriteInt32(Map(mapNum).Indoors)
             buffer.WriteInt32(Map(mapNum).Shop)
 

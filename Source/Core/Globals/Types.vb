@@ -483,7 +483,7 @@ Public Module Types
         Dim Brightness As Byte
 
         Dim Shop As Integer
-        Dim Respawn As Boolean
+        Dim NoRespawn As Boolean
         Dim Indoors As Boolean
     End Structure
 

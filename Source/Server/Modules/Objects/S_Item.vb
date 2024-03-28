@@ -230,7 +230,7 @@ Friend Module S_Item
 
         ' Check for subscript out of range
         If mapNum <= 0 OrElse mapNum > MAX_MAPS Then Exit Sub
-        If Map(mapNum).Respawn = False Then Exit Sub
+        If Map(mapNum).NoRespawn Then Exit Sub
 
         ' Spawn what we have
         For x = 0 To Map(mapNum).MaxX
