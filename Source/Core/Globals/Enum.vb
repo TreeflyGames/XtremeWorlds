@@ -603,7 +603,7 @@
         Broadcast
         Party
         Guild
-        Whisper
+        Player
         Count
     End Enum
 

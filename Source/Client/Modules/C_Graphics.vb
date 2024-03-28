@@ -112,14 +112,6 @@ Module C_Graphics
     Friend TargetSprite As Sprite
     Friend TargetGfxInfo As GraphicInfo
 
-    Friend ProgBarGfx As Texture
-    Friend ProgBarSprite As Sprite
-    Friend ProgBarGfxInfo As GraphicInfo
-
-    Friend RClickGfx As Texture
-    Friend RClickSprite As Sprite
-    Friend RClickGfxInfo As GraphicInfo
-
     Friend ChatBubbleGfx As Texture
     Friend ChatBubbleSprite As Sprite
     Friend ChatBubbleGfxInfo As GraphicInfo
@@ -369,21 +361,23 @@ Module C_Graphics
                 ' trading
                 SendTradeRequest(Player(MyTarget).Name)
             End If
-            ShowPetStats = False
 
         ElseIf e.Button = Mouse.Button.Right Then
             If VbKeyShift = True Then
                 ' admin warp if we're pressing shift and right clicking
                 If GetPlayerAccess(MyIndex) >= 2 Then AdminWarp(CurX, CurY)
             Else
-                ' rightclick menu
-                If PetAlive(MyIndex) Then
-                    If IsInBounds() AndAlso CurX = Player(MyIndex).Pet.X And CurY = Player(MyIndex).Pet.Y Then
-                        ShowPetStats = True
+                ' right-click menu
+                For i = 1 To MAX_PLAYERS
+                    If IsPlaying(i) Then
+                        If GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
+                            If GetPlayerX(i) = CurX And GetPlayerY(i) = CurY Then
+                                ShowPlayerMenu(i, CurMouseX, CurMouseY)
+                            End If
+                        End If
                     End If
-                Else
-                    PlayerSearch(CurX, CurY, 1)
-                End If
+                Next
+                PlayerSearch(CurX, CurY, 1)
             End If
         End If
 
@@ -668,26 +662,6 @@ Module C_Graphics
             'Cache the width and height
             TargetGfxInfo.Width = TargetGfx.Size.X
             TargetGfxInfo.Height = TargetGfx.Size.Y
-        End If
-
-        RClickGfxInfo = New GraphicInfo
-        If File.Exists(Paths.Gui & "Main\" & "RightClick" & GfxExt) Then
-            RClickGfx = New Texture(Paths.Gui & "Main\" & "RightClick" & GfxExt)
-            RClickSprite = New Sprite(RClickGfx)
-
-            'Cache the width and height
-            RClickGfxInfo.Width = RClickGfx.Size.X
-            RClickGfxInfo.Height = RClickGfx.Size.Y
-        End If
-
-        ProgBarGfxInfo = New GraphicInfo
-        If File.Exists(Paths.Gui & "Main\" & "ProgBar" & GfxExt) Then
-            ProgBarGfx = New Texture(Paths.Gui & "Main\" & "ProgBar" & GfxExt)
-            ProgBarSprite = New Sprite(ProgBarGfx)
-
-            'Cache the width and height
-            ProgBarGfxInfo.Width = ProgBarGfx.Size.X
-            ProgBarGfxInfo.Height = ProgBarGfx.Size.Y
         End If
 
         ChatBubbleGfxInfo = New GraphicInfo
@@ -2180,8 +2154,6 @@ Module C_Graphics
         If Not TargetGfx Is Nothing Then TargetGfx.Dispose()
         If Not WeatherTexture Is Nothing Then WeatherTexture.Dispose()
         If Not EventChatGfx Is Nothing Then EventChatGfx.Dispose()
-        If Not RClickGfx Is Nothing Then RClickGfx.Dispose()
-        If Not ProgBarGfx Is Nothing Then ProgBarGfx.Dispose()
         If Not ChatBubbleGfx Is Nothing Then ChatBubbleGfx.Dispose()
 
         If Not HpBarTextire Is Nothing Then HpBarTextire.Dispose()
@@ -2189,6 +2161,8 @@ Module C_Graphics
 
         If Not LightGfx Is Nothing Then LightGfx.Dispose()
         If Not NightGfx Is Nothing Then NightGfx.Dispose()
+
+        If Not CursorGfx Is Nothing Then CursorGfx.Dispose()
     End Sub
 
     Friend Function ToSfmlColor(toConvert As Drawing.Color) As Color
@@ -2208,11 +2182,11 @@ Module C_Graphics
         End With
 
         x = ConvertMapX(x2)
-        y = ConvertMapY(y2)
+        y = ConvertMapY(y2 - 32)
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderTexture(TargetSprite, Window, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(TargetSprite, Window, x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawHover(x2 As Integer, y2 As Integer)
@@ -2232,21 +2206,6 @@ Module C_Graphics
         height = (rec.Bottom - rec.Top)
 
         RenderTexture(TargetSprite, Window, x, y, rec.X, rec.Y, rec.Width, rec.Height)
-    End Sub
-
-    Friend Sub DrawRClick()
-        'first render panel
-        RenderTexture(RClickSprite, Window, RClickX, RClickY, 0, 0, RClickGfxInfo.Width, RClickGfxInfo.Height)
-
-        RenderText(RClickname, Window, RClickX + (RClickGfxInfo.Width \ 2) - (TextWidth(RClickname) \ 2), RClickY + 10, Color.White,
-                 Color.Black)
-
-        RenderText("Invite to Trade", Window, RClickX + (RClickGfxInfo.Width \ 2) - (TextWidth("Invite to Trade") \ 2), RClickY + 35,
-                 Color.White, Color.White)
-
-        RenderText("Invite to Party", Window, RClickX + (RClickGfxInfo.Width \ 2) - (TextWidth("Invite to Party") \ 2), RClickY + 60,
-                 Color.White, Color.White)
-
     End Sub
 
     Friend Sub EditorItem_DrawIcon()

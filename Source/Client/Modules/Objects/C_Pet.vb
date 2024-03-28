@@ -19,8 +19,6 @@ Module C_Pets
     Friend PetSkillBufferTimer As Integer
     Friend PetSkillCd() As Integer
 
-    Friend ShowPetStats As Boolean
-
     'Pet Constants
     Friend Const PetBehaviourFollow As Byte = 0 'The pet will attack all npcs around
 

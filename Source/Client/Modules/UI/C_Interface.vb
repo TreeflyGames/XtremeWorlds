@@ -1327,6 +1327,8 @@ Module C_Interface
         CreateWindow_Dialogue()
         CreateWindow_DragBox()
         CreateWindow_Options()
+        CreateWindow_PlayerMenu()
+        CreateWindow_RightClick()
         CreateWindow_Combobox()
     End Sub
 
@@ -1975,8 +1977,8 @@ Module C_Interface
         UpdateChat()
     End Sub
 
-    Public Sub chkChat_Private()
-        Types.Settings.ChannelState(ChatChannel.Whisper) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPrivate")).Value
+    Public Sub chkChat_Player()
+        Types.Settings.ChannelState(ChatChannel.Player) = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "chkPlayer")).Value
         UpdateChat()
     End Sub
 
@@ -2781,7 +2783,7 @@ Module C_Interface
         CreateCheckbox(WindowCount, "chkGlobal", 110, 2, 49, 23, 1, "Global", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Global))
         CreateCheckbox(WindowCount, "chkParty", 160, 2, 49, 23, 1, "Party", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Party))
         CreateCheckbox(WindowCount, "chkGuild", 210, 2, 49, 23, 1, "Guild", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Guild))
-        CreateCheckbox(WindowCount, "chkPrivate", 260, 2, 49, 23, 1, "Private", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Private))
+        CreateCheckbox(WindowCount, "chkPlayer", 260, 2, 49, 23, 1, "Player", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Player))
 
         ' Blank picturebox - ondraw wrapper
         CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
@@ -2810,7 +2812,7 @@ Module C_Interface
             .Controls(GetControlIndex("winChat", "chkGlobal")).Value = Types.Settings.ChannelState(ChatChannel.Broadcast)
             .Controls(GetControlIndex("winChat", "chkParty")).Value = Types.Settings.ChannelState(ChatChannel.Party)
             .Controls(GetControlIndex("winChat", "chkGuild")).Value = Types.Settings.ChannelState(ChatChannel.Guild)
-            .Controls(GetControlIndex("winChat", "chkPrivate")).Value = Types.Settings.ChannelState(ChatChannel.Whisper)
+            .Controls(GetControlIndex("winChat", "chkPlayer")).Value = Types.Settings.ChannelState(ChatChannel.Player)
         End With
     End Sub
 
@@ -3768,5 +3770,64 @@ Module C_Interface
         Next
 
     End Sub
+
+    Public Sub CreateWindow_RightClick()
+        ' Create window
+        CreateWindow("winRightClickBG", "", Georgia, zOrder_Win, 0, 0, 800, 600, 0, False, , , , , , , , , , , , New Action(AddressOf RightClick_Close), , , False)
+        
+        ' Centralize it
+        CentralizeWindow(windowCount)
+    End Sub
+
+    Public Sub CreateWindow_PlayerMenu()
+        ' Create window
+        CreateWindow("winPlayerMenu", "", Georgia, zOrder_Win, 0, 0, 110, 106, 0, False, , , , , DesignType.Win_Desc, DesignType.Win_Desc, DesignType.Win_Desc, , , , , , New Action(AddressOf RightClick_Close), , , False)
+        
+        ' Centralise it
+        CentralizeWindow(windowCount)
+
+        ' Name
+        CreateButton(windowCount, "btnName", 8, 8, 94, 18, "[Name]", Verdana, , , , , , , DesignType.MenuHeader, DesignType.MenuHeader, DesignType.MenuHeader, , , New Action(AddressOf RightClick_Close))
+        
+        ' Options
+        CreateButton(windowCount, "btnParty", 8, 26, 94, 18, "Invite to Party", Verdana, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Party))
+        CreateButton(windowCount, "btnTrade", 8, 44, 94, 18, "Request Trade", Verdana, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Trade))
+        CreateButton(windowCount, "btnGuild", 8, 62, 94, 18, "Invite to Guild", Verdana, , , , , , , DesignType.MenuOption, , , , , New Action(AddressOf PlayerMenu_Guild))
+        CreateButton(windowCount, "btnPM", 8, 80, 94, 18, "Private Message", Verdana, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Player))
+
+    End Sub
+
+    ' Right Click Menu
+    Sub RightClick_Close()
+        ' close all menus
+        HideWindow(GetWindowIndex("winRightClickBG"))
+        HideWindow(GetWindowIndex("winPlayerMenu"))
+    End Sub
+
+     ' Player Menu
+    Sub PlayerMenu_Party()
+        RightClick_Close
+        If PlayerMenuIndex = 0 Then Exit Sub
+        SendPartyRequest(GetPlayerName(PlayerMenuIndex))
+    End Sub
+
+    Sub PlayerMenu_Trade()
+        RightClick_Close
+        If PlayerMenuIndex = 0 Then Exit Sub
+        SendTradeRequest(GetPlayerName(PlayerMenuIndex))
+    End Sub
+
+    Sub PlayerMenu_Guild()
+        RightClick_Close
+        If PlayerMenuIndex = 0 Then Exit Sub
+        AddText("System not yet in place.", ColorType.BrightRed)
+    End Sub
+
+    Sub PlayerMenu_Player()
+        RightClick_Close
+        If PlayerMenuIndex = 0 Then Exit Sub
+        AddText("System not yet in place.", ColorType.BrightRed)
+    End Sub
+
 End Module
 

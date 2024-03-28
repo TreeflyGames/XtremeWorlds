@@ -783,6 +783,21 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Sub AdminMsg(mapNum As Integer, Msg As String, Color As Byte)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ServerPackets.SAdminMsg)
+        buffer.WriteString((Msg.Trim))
+
+        For i = 1 To Socket.HighIndex
+            If GetPlayerAccess(i) >= AdminType.Moderator Then
+                SendDataTo(i, buffer.Data, buffer.Head)
+            End If
+        Next
+
+        buffer.Dispose()
+    End Sub
+
     Sub SendActionMsg(mapNum As Integer, Message As String, Color As Integer, MsgType As Integer, X As Integer, Y As Integer, Optional PlayerOnlyNum As Integer = 0)
         Dim buffer As New ByteStream(4)
 

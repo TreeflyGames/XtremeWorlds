@@ -1931,4 +1931,14 @@ Continue1:
             End If
         End With
     End Sub
+
+    Sub ShowPlayerMenu(Index As Long, X As Long, Y As Long)
+        PlayerMenuIndex = Index
+        If PlayerMenuIndex = 0 Then Exit Sub
+        Windows(GetWindowIndex("winPlayerMenu")).Window.Left = X - 5
+        Windows(GetWindowIndex("winPlayerMenu")).Window.Top = Y - 5
+        Windows(GetWindowIndex("winPlayerMenu")).Controls(GetControlIndex("winPlayerMenu", "btnName")).text = Trim$(GetPlayerName(PlayerMenuIndex))
+        ShowWindow(GetWindowIndex("winRightClickBG"))
+        ShowWindow(GetWindowIndex("winPlayerMenu"))
+    End Sub
 End Module

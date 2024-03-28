@@ -24,6 +24,9 @@ Module C_Globals
     Public shopSelectedItem As Long
     Public shopIsSelling As Boolean
 
+    ' right click menu
+    Public PlayerMenuIndex As Long
+
     ' description
     Public descType As Byte
     Public descItem As Long
