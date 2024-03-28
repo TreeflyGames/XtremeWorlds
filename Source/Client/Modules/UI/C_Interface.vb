@@ -3280,7 +3280,7 @@ End Sub
 
         ' Set the index for spawning controls
         zOrder_Con = 1
-        CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 39, 2, 36, 36, , , , 3, 4, 5, , , , , , , , New Action(AddressOf btnMenu_Bank))
+        CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 19, 5, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Bank))
     End Sub
 
     Sub ResizeGUI()
@@ -3473,11 +3473,11 @@ End Sub
         ' render grid - row
         For i = 1 To 5
             If i = 5 Then height = 42
-            RenderTexture(InterfaceSprite(38), Window, Xo + 4, Y, 0, 0, width, height, width, height)
-            RenderTexture(InterfaceSprite(38), Window, Xo + 80, Y, 0, 0, width, height, width, height)
-            RenderTexture(InterfaceSprite(38), Window, Xo + 156, Y, 0, 0, width, height, width, height)
-            RenderTexture(InterfaceSprite(38), Window, Xo + 232, Y, 0, 0, width, height, width, height)
-            RenderTexture(InterfaceSprite(38), Window, Xo + 308, Y, 0, 0, 79, height, 79, height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 4, Y, 0, 0, width, height, width, height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 80, Y, 0, 0, width, height, width, height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 156, Y, 0, 0, width, height, width, height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 232, Y, 0, 0, width, height, width, height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 308, Y, 0, 0, 79, height, 79, height)
             Y = Y + 76
         Next
 
