@@ -955,6 +955,10 @@ Module S_Player
             Exit Sub
         End If
 
+        If TempPlayer(index).InShop > 0 Or TempPlayer(index).InBank Then
+            Exit Sub
+        End If
+
         SetPlayerDir(index, Dir)
         Moved = False
         mapNum = GetPlayerMap(index)

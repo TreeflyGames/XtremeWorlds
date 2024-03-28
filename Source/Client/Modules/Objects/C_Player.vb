@@ -184,6 +184,11 @@ Module C_Player
             Exit Function
         End If
 
+        If InBank Then
+            CanMove = False
+            Exit Function
+        End If
+
         If InEvent Then
             CanMove = False
             Exit Function
