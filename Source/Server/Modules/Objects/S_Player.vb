@@ -1211,11 +1211,10 @@ Module S_Player
             ' Check to see if the player has the item
             If GetPlayerInvItemNum(index, i) = ItemNum Then
                 If Item(ItemNum).Type = ItemType.Currency OrElse Item(ItemNum).Stackable = 1 Then
-                    HasItem = GetPlayerInvItemValue(index, i)
+                    HasItem += GetPlayerInvItemValue(index, i)
                 Else
-                    HasItem = 1
+                    HasItem += 1
                 End If
-                Exit Function
             End If
         Next
 
