@@ -1382,8 +1382,8 @@ Module C_Graphics
             startX = GetPlayerX(MyIndex) - Types.Settings.CameraWidth
             startY = GetPlayerY(MyIndex) - Types.Settings.CameraHeight
         Else
-            startX = Math.Floor(GetPlayerX(MyIndex) - (Types.Settings.CameraWidth) / 2)
-            startY = Math.Floor(GetPlayerY(MyIndex) - (Types.Settings.CameraHeight) / 2)
+            startX = Math.Floor(GetPlayerX(MyIndex) - (Types.Settings.CameraWidth) / 2) - 1
+            startY = Math.Floor(GetPlayerY(MyIndex) - (Types.Settings.CameraHeight) / 2) - 1
         End If
 
         If startX < 0 Then
