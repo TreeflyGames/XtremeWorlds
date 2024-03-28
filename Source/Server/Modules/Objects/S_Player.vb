@@ -2382,10 +2382,10 @@ Module S_Player
     Sub GiveBankItem(index As Integer, InvSlot As Integer, Amount As Integer)
         Dim BankSlot As Integer, itemnum As Integer
 
-        If InvSlot < 0 OrElse InvSlot > MAX_INV Then Exit Sub
+        If InvSlot <= 0 OrElse InvSlot > MAX_INV Then Exit Sub
 
         If GetPlayerInvItemValue(index, InvSlot) < 0 Then Exit Sub
-        If GetPlayerInvItemValue(index, InvSlot) < Amount Then Exit Sub
+        If GetPlayerInvItemValue(index, InvSlot) < Amount And GetPlayerInvItemNum(index, InvSlot) = 0 Then Exit Sub
 
         BankSlot = FindOpenBankSlot(index, GetPlayerInvItemNum(index, InvSlot))
         itemnum = GetPlayerInvItemNum(index, InvSlot)
@@ -2410,6 +2410,8 @@ Module S_Player
                     TakeInvItem(index, GetPlayerInvItemNum(index, InvSlot), 0)
                 End If
             End If
+
+            SendBank(index)
         End If
 
     End Sub
