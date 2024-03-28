@@ -352,7 +352,8 @@ Module C_NetworkReceive
         Dim n As Integer, i As Integer
         Dim buffer As New ByteStream(data)
 
-        n = buffer.ReadInt32
+        n = buffer.ReadInt32()
+
         SetPlayerInvItemNum(MyIndex, n, buffer.ReadInt32)
         SetPlayerInvItemValue(MyIndex, n, buffer.ReadInt32)
 

@@ -1048,6 +1048,7 @@ Module S_NetworkReceive
         End If
 
         If Map(GetPlayerMap(index)).Shop > 0 Then
+            TempPlayer(index).InShop = Map(GetPlayerMap(index)).Shop
             SendOpenShop(index, Map(GetPlayerMap(index)).Shop)
         End If
 
@@ -1231,7 +1232,7 @@ Module S_NetworkReceive
         ' Prevent hacking
         If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
 
-        ShopNum = buffer.ReadInt32
+        ShopNum = buffer.ReadInt32()
 
         ' Prevent hacking
         If ShopNum <= 0 OrElse ShopNum > MAX_SHOPS Then Exit Sub
@@ -1246,8 +1247,6 @@ Module S_NetworkReceive
             Shop(ShopNum).TradeItem(i).Item = buffer.ReadInt32()
             Shop(ShopNum).TradeItem(i).ItemValue = buffer.ReadInt32()
         Next
-
-        If Shop(ShopNum).Name Is Nothing Then Shop(ShopNum).Name = ""
 
         buffer.Dispose()
 
@@ -1704,7 +1703,9 @@ Module S_NetworkReceive
             End If
 
             ' it's fine, let's go ahead
-            TakeInvItem(index, .CostItem, .CostValue)
+            For i = 1 To .CostValue
+                TakeInvItem(index, .CostItem, .CostValue)
+            Next
             GiveInvItem(index, .Item, .ItemValue)
         End With
 

@@ -184,7 +184,7 @@ Module S_General
         Console.WriteLine("Loading Morals...") : LoadMorals()
         Console.WriteLine("Loading Maps...") : LoadMaps()
         Console.WriteLine("Loading Items...") : LoadItems()
-        Console.WriteLine("Loading NPC's...") : LoadNpcs()
+        Console.WriteLine("Loading NPCs...") : LoadNpcs()
         Console.WriteLine("Loading Resources...") : LoadResources()
         Console.WriteLine("Loading Shops...") : LoadShops()
         Console.WriteLine("Loading Skills...") : LoadSkills()

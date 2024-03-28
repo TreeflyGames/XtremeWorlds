@@ -3354,6 +3354,8 @@ Module C_Interface
         Dim Xo As Long, Yo As Long, ItemIcon As Long, ItemNum As Long, Amount As Long, i As Long, Top As Long, Left As Long, Y As Long, X As Long, Color As Long
 
         If InShop = 0 Then Exit Sub
+
+        StreamShop(InShop)
     
         Xo = Windows(GetWindowIndex("winShop")).Window.Left
         Yo = Windows(GetWindowIndex("winShop")).Window.Top

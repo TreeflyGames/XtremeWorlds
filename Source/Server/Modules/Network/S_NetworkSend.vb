@@ -266,6 +266,7 @@ Module S_NetworkSend
         buffer.WriteInt32(ServerPackets.SUpdateShop)
 
         buffer.WriteInt32(shopNum)
+
         buffer.WriteInt32(Shop(shopNum).BuyRate)
         buffer.WriteString((Shop(shopNum).Name.Trim))
         buffer.WriteInt32(Shop(shopNum).Face)
@@ -842,7 +843,9 @@ Module S_NetworkSend
         Dim buffer As New ByteStream(4), n As Integer
 
         buffer.WriteInt32(ServerPackets.SPlayerInvUpdate)
+
         buffer.WriteInt32(InvSlot)
+
         buffer.WriteInt32(GetPlayerInvItemNum(index, InvSlot))
         buffer.WriteInt32(GetPlayerInvItemValue(index, InvSlot))
 
