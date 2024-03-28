@@ -1001,6 +1001,7 @@ Module S_Database
     End Sub
 
     Sub ClearShop(index As Integer)
+        Shop(index) = Nothing
         Shop(index).Name = ""
     End Sub
 
