@@ -19,6 +19,11 @@ Module C_Globals
     Public diaDataString As String
     Public diaStyle As Byte
 
+    ' shop
+    Public shopSelectedSlot As Long
+    Public shopSelectedItem As Long
+    Public shopIsSelling As Boolean
+
     ' description
     Public descType As Byte
     Public descItem As Long

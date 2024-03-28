@@ -50,6 +50,8 @@ Module C_Shops
         Dim buffer As New ByteStream(data)
         shopnum = buffer.ReadInt32
 
+        OpenShop(shopnum)
+
         buffer.Dispose()
     End Sub
 

@@ -1321,6 +1321,7 @@ Module C_Interface
         CreateWindow_Character()
         CreateWindow_Hotbar()
         CreateWindow_Bank()
+        CreateWindow_Shop()
         CreateWindow_EscMenu()
         CreateWindow_Bars()
         CreateWindow_Dialogue()
@@ -3283,6 +3284,241 @@ Module C_Interface
         ' Set the index for spawning controls
         zOrder_Con = 1
         CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 19, 5, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Bank))
+    End Sub
+
+    Public Sub CreateWindow_Shop()
+        ' Create window
+        CreateWindow("winShop", "Shop", Georgia, zOrder_Win, 0, 0, 278, 293, 17, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Shop_MouseMove), New Action(AddressOf Shop_MouseDown), , New Action(AddressOf DrawShopBackground))
+
+        ' Centralize it
+        CentralizeWindow(windowCount)
+
+        ' Close button
+        CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 19, 6, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnShop_Close))
+        
+        ' Parchment
+        CreatePictureBox(windowCount, "picParchment", 6, 215, 266, 50, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment, , , , , , New Action(AddressOf DrawShop))
+        
+        ' Picture Box
+        CreatePictureBox(windowCount, "picItemBG", 13, 222, 36, 36, , , , , 30, 30, 30)
+        CreatePictureBox(windowCount, "picItem", 15, 224, 32, 32)
+        
+        ' Buttons
+        CreateButton(windowCount, "btnBuy", 190, 228, 70, 24, "Buy", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnShopBuy))
+        CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", Verdana, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
+        
+        ' Buying/Selling
+        CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , , DesignType.ChkCustom_Buying, , , New Action(AddressOf chkShopBuying))
+        CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , , , DesignType.ChkCustom_Selling, , , New Action(AddressOf chkShopSelling))
+
+        ' Labels
+        CreateLabel(windowCount, "lblName", 56, 226, 300, FontSize, "Test Item", Verdana, Color.Black, AlignmentType.Left)
+        CreateLabel(windowCount, "lblCost", 56, 240, 300,  FontSize, "1000g", Verdana, Color.Black, AlignmentType.Left)
+        
+        ' Gold
+        CreateLabel(windowCount, "lblGold", 44, 269, 300, FontSize, "G", Verdana, Color.White)
+    End Sub
+
+    Public Sub DrawShopBackground()
+        Dim Xo As Long, Yo As Long, Width As Long, Height As Long, i As Long, Y As Long
+    
+        Xo = Windows(GetWindowIndex("winShop")).Window.Left
+        Yo = Windows(GetWindowIndex("winShop")).Window.Top
+        Width = Windows(GetWindowIndex("winShop")).Window.Width
+        Height = Windows(GetWindowIndex("winShop")).Window.Height
+    
+        ' render green
+        RenderTexture(InterfaceSprite(34), Window, Xo + 4, Yo + 23, 0, 0, Width - 8, Height - 27, 4, 4)
+    
+        Width = 76
+        Height = 76
+    
+        Y = Yo + 23
+        ' render grid - row
+        For i = 1 To 3
+            If i = 3 Then Height = 42
+            RenderTexture(InterfaceSprite(35), Window, Xo + 4, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 80, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 156, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 232, Y, 0, 0, 42, Height, 42, Height)
+            Y = Y + 76
+        Next
+
+        ' render bottom wood
+        RenderTexture(InterfaceSprite(1), Window, Xo + 4, Y - 34, 0, 0, 270, 72, 270, 72)
+    End Sub
+
+    Public Sub DrawShop()
+        Dim Xo As Long, Yo As Long, ItemIcon As Long, ItemNum As Long, Amount As Long, i As Long, Top As Long, Left As Long, Y As Long, X As Long, Color As Long
+
+        If InShop = 0 Then Exit Sub
+    
+        Xo = Windows(GetWindowIndex("winShop")).Window.Left
+        Yo = Windows(GetWindowIndex("winShop")).Window.Top
+    
+        If Not shopIsSelling Then
+            ' render the shop items
+            For i = 1 To MAX_TRADES
+                ItemNum = Shop(InShop).TradeItem(i).Item
+            
+                ' draw early
+                Top = Yo + ShopTop + ((ShopOffsetY + 32) * ((i - 1) \ ShopColumns))
+                Left = Xo + ShopLeft + ((ShopOffsetX + 32) * (((i - 1) Mod ShopColumns)))
+                
+                ' draw selected square
+                If shopSelectedSlot = i Then RenderTexture(ItemSprite(35), Window, Left, Top, 0, 0, 32, 32, 32, 32)
+            
+                If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
+                    ItemIcon = Item(ItemNum).Icon
+                    If ItemIcon > 0 And ItemIcon <= NumItems Then
+                        ' draw item
+                        RenderTexture(ItemSprite(ItemIcon), Window, Left, Top, 0, 0, 32, 32, 32, 32)
+                    End If
+                End If
+            Next
+        Else
+            ' render the shop items
+            For i = 1 To MAX_TRADES
+                ItemNum = GetPlayerInvItemNum(MyIndex, i)
+            
+                ' draw early
+                Top = Yo + ShopTop + ((ShopOffsetY + 32) * ((i - 1) \ ShopColumns))
+                Left = Xo + ShopLeft + ((ShopOffsetX + 32) * (((i - 1) Mod ShopColumns)))
+                
+                ' draw selected square
+                If shopSelectedSlot = i Then RenderTexture(InterfaceSprite(35), Window, Left, Top, 0, 0, 32, 32, 32, 32)
+            
+                If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
+                    ItemIcon = Item(ItemNum).Icon
+                    If ItemIcon > 0 And ItemIcon <= NumItems Then
+
+                        ' draw item
+                        RenderTexture(ItemSprite(ItemIcon), Window, Left, Top, 0, 0, 32, 32, 32, 32)
+                    
+                        ' If item is a stack - draw the amount you have
+                        If GetPlayerInvItemValue(MyIndex, i) > 1 Then
+                            Y = Top + 21
+                            X = Left + 1
+                            Amount = CStr(GetPlayerInvItemValue(MyIndex, i))
+                        
+                            ' Draw currency but with k, m, b etc. using a convertion function
+                            If CLng(Amount) < 1000000 Then
+                                Color = ColorType.White
+                            ElseIf CLng(Amount) > 1000000 And CLng(Amount) < 10000000 Then
+                                Color = ColorType.Yellow
+                            ElseIf CLng(Amount) > 10000000 Then
+                                Color = ColorType.BrightGreen
+                            End If
+                        
+                            RenderText(ConvertCurrency(Amount), Window, X, Y, GetSfmlColor(Color), GetSfmlColor(Color))
+                        End If
+                    End If
+                End If
+            Next
+        End If
+    End Sub
+
+    ' Shop
+Public Sub btnShop_Close()
+    CloseShop
+End Sub
+
+Public Sub chkShopBuying()
+    With Windows(GetWindowIndex("winShop"))
+        If .Controls(GetControlIndex("winShop", "chkBuying")).Value = 1 Then
+            .Controls(GetControlIndex("winShop", "chkSelling")).Value = 0
+        Else
+            .Controls(GetControlIndex("winShop", "chkSelling")).Value = 0
+            .Controls(GetControlIndex("winShop", "chkBuying")).Value = 1
+            Exit Sub
+        End If
+    End With
+    ' show buy button, hide sell
+    With Windows(GetWindowIndex("winShop"))
+        .Controls(GetControlIndex("winShop", "btnSell")).visible = False
+        .Controls(GetControlIndex("winShop", "btnBuy")).visible = True
+    End With
+    ' update the shop
+    shopIsSelling = False
+    shopSelectedSlot = 1
+    UpdateShop
+End Sub
+
+Public Sub chkShopSelling()
+    With Windows(GetWindowIndex("winShop"))
+        If .Controls(GetControlIndex("winShop", "chkSelling")).Value = 1 Then
+            .Controls(GetControlIndex("winShop", "chkBuying")).Value = 0
+        Else
+            .Controls(GetControlIndex("winShop", "chkBuying")).Value = 0
+            .Controls(GetControlIndex("winShop", "chkSelling")).Value = 1
+            Exit Sub
+        End If
+    End With
+    ' show sell button, hide buy
+    With Windows(GetWindowIndex("winShop"))
+        .Controls(GetControlIndex("winShop", "btnBuy")).visible = False
+        .Controls(GetControlIndex("winShop", "btnSell")).visible = True
+    End With
+    ' update the shop
+    shopIsSelling = True
+    shopSelectedSlot = 1
+    UpdateShop
+End Sub
+
+Public Sub btnShopBuy()
+    BuyItem(shopSelectedSlot)
+End Sub
+
+Public Sub btnShopSell()
+    SellItem(shopSelectedSlot)
+End Sub
+
+Public Sub Shop_MouseDown()
+Dim shopNum As Long
+    
+    ' is there an item?
+    shopNum = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
+    
+    If shopNum Then
+        ' set the active slot
+        shopSelectedSlot = shopNum
+        UpdateShop
+    End If
+    
+    Shop_MouseMove
+End Sub
+
+    Public Sub Shop_MouseMove()
+        Dim shopSlot As Long, ItemNum As Long, X As Long, Y As Long
+
+        If InShop = 0 Then Exit Sub
+
+        shopSlot = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
+    
+        If shopSlot Then
+            ' calc position
+            X = Windows(GetWindowIndex("winShop")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
+            Y = Windows(GetWindowIndex("winShop")).Window.Top - 4
+
+            ' offscreen?
+            If X < 0 Then
+                ' switch to right
+                X = Windows(GetWindowIndex("winShop")).Window.Left + Windows(GetWindowIndex("winShop")).Window.Width
+            End If
+
+            ' selling/buying
+            If Not shopIsSelling Then
+                ' get the itemnum
+                ItemNum = Shop(InShop).TradeItem(shopSlot).Item
+                If ItemNum = 0 Then Exit Sub
+                ShowShopDesc(X, Y, ItemNum)
+            Else
+                ' get the itemnum
+                ItemNum = GetPlayerInvItemNum(MyIndex, shopSlot)
+                If ItemNum = 0 Then Exit Sub
+                ShowShopDesc(X, Y, ItemNum)
+            End If
+        End If
     End Sub
 
     Sub ResizeGUI()

@@ -883,4 +883,12 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Sub SendCloseShop()
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CCloseShop)
+        Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
+
 End Module

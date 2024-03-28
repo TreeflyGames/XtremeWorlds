@@ -1732,6 +1732,12 @@ Continue1:
         End Select
     End Sub
 
+    Public Sub ShowShopDesc(X As Long, Y As Long, ItemNum As Long)
+        If ItemNum <= 0 Or ItemNum > MAX_ITEMS Then Exit Sub
+        ' show
+        ShowItemDesc(X, Y, ItemNum)
+    End Sub
+
     Public Sub ShowEqDesc(x As Long, y As Long, eqNum As Long)
         Dim soulBound As Boolean
 
@@ -1829,6 +1835,100 @@ Continue1:
             .Controls(GetControlIndex("winOptions", "chkAutotile")).Value = Types.Settings.Autotile
             .Controls(GetControlIndex("winOptions", "chkFullscreen")).Value = Types.Settings.Fullscreen
             .Controls(GetControlIndex("winOptions", "cmbRes")).Value = Types.Settings.Resolution
+        End With
+    End Sub
+
+    Public Sub OpenShop(shopNum As Long)
+        ' set globals
+        InShop = shopNum
+        shopSelectedSlot = 1
+        shopSelectedItem = Shop(InShop).TradeItem(1).Item
+        Windows(GetWindowIndex("winShop")).Controls(GetControlIndex("winShop", "chkSelling")).Value = 0
+        Windows(GetWindowIndex("winShop")).Controls(GetControlIndex("winShop", "chkBuying")).Value = 1
+        Windows(GetWindowIndex("winShop")).Controls(GetControlIndex("winShop", "btnSell")).visible = False
+        Windows(GetWindowIndex("winShop")).Controls(GetControlIndex("winShop", "btnBuy")).visible = True
+        shopIsSelling = False
+    
+        ' set the current item
+        UpdateShop
+    
+        ' show the window
+        ShowWindow(GetWindowIndex("winShop"))
+    End Sub
+
+    Public Sub CloseShop()
+        SendCloseShop
+        HideWindow(GetWindowIndex("winShop"))
+        shopSelectedSlot = 0
+        shopSelectedItem = 0
+        shopIsSelling = False
+        InShop = 0
+    End Sub
+
+    Sub UpdateShop()
+        Dim i As Long, CostValue As Long
+
+        If InShop = 0 Then Exit Sub
+    
+        ' make sure we have an item selected
+        If shopSelectedSlot = 0 Then shopSelectedSlot = 1
+    
+        With Windows(GetWindowIndex("winShop"))
+            ' buying items
+            If Not shopIsSelling Then
+                shopSelectedItem = Shop(InShop).TradeItem(shopSelectedSlot).Item
+                ' labels
+                If shopSelectedItem > 0 Then
+                    .Controls(GetControlIndex("winShop", "lblName")).text = Trim$(Item(shopSelectedItem).Name)
+                    ' check if it's gold
+                    If Shop(InShop).TradeItem(shopSelectedSlot).CostItem = 1 Then
+                        ' it's gold
+                        .Controls(GetControlIndex("winShop", "lblCost")).text = Shop(InShop).TradeItem(shopSelectedSlot).CostValue & "g"
+                    Else
+                        ' if it's one then just print the name
+                        If Shop(InShop).TradeItem(shopSelectedSlot).CostValue = 1 Then
+                            .Controls(GetControlIndex("winShop", "lblCost")).text = Trim$(Item(Shop(InShop).TradeItem(shopSelectedSlot).CostItem).Name)
+                        Else
+                            .Controls(GetControlIndex("winShop", "lblCost")).text = Shop(InShop).TradeItem(shopSelectedSlot).CostValue & " " & Trim$(Item(Shop(InShop).TradeItem(shopSelectedSlot).CostItem).Name)
+                        End If
+                    End If
+
+                    ' draw the item
+                    For i = 0 To 5
+                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = Item(shopSelectedItem).Icon
+                    Next
+                Else
+                    .Controls(GetControlIndex("winShop", "lblName")).text = "Empty Slot"
+                    .Controls(GetControlIndex("winShop", "lblCost")).text = vbNullString
+                    
+                    ' draw the item
+                    For i = 0 To 5
+                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = 0
+                    Next
+                End If
+            Else
+                shopSelectedItem = GetPlayerInvItemNum(MyIndex, shopSelectedSlot)
+                ' labels
+                If shopSelectedItem > 0 Then
+                    .Controls(GetControlIndex("winShop", "lblName")).text = Trim$(Item(shopSelectedItem).Name)
+                    ' calc cost
+                    CostValue = (Item(shopSelectedItem).Price / 100) * Shop(InShop).BuyRate
+                    .Controls(GetControlIndex("winShop", "lblCost")).text = CostValue & "g"
+                    
+                    ' draw the item
+                    For i = 0 To 5
+                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = Item(shopSelectedItem).Icon
+                    Next
+                Else
+                    .Controls(GetControlIndex("winShop", "lblName")).text = "Empty Slot"
+                    .Controls(GetControlIndex("winShop", "lblCost")).text = vbNullString
+                    
+                    ' draw the item
+                    For i = 0 To 5
+                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = 0
+                    Next
+                End If
+            End If
         End With
     End Sub
 End Module
