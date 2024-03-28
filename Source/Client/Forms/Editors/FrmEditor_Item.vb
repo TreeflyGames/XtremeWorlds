@@ -355,6 +355,10 @@ Friend Class frmEditor_Item
         SendSpawnItem(EditorIndex, nudSpanwAmount.Value)
     End Sub
 
+    Private Sub frmEditor_Item_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        ItemEditorCancel()
+    End Sub
+
 
 #End Region
 

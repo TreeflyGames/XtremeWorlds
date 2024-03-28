@@ -12,7 +12,7 @@ Imports Core.Types
 Imports SFML.Graphics
 Module C_Interface
     ' GUI
-    Public Windows() As Types.WindowStruct
+    Public Windows() As WindowStruct
     Public WindowCount As Long
     Public activeWindow As Long
 
