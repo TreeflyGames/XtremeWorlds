@@ -128,13 +128,8 @@ Module C_Graphics
     Friend PetStatSprite As Sprite
     Friend PetStatGfxInfo As GraphicInfo
 
-    Friend PetBarGfx As Texture
-    Friend PetBarSprite As Sprite
-    Friend PetbarGfxInfo As GraphicInfo
-
     Friend MapTintGfx As Texture
     Friend MapTintSprite As Sprite
-
     Friend MapFadeSprite As Sprite
 
     Friend NightGfx As Texture
@@ -144,6 +139,9 @@ Module C_Graphics
     Friend LightSprite As Sprite
     Friend LightDynamicSprite As Sprite
     Friend LightGfxInfo As GraphicInfo
+    Friend CursorGfx As Texture
+    Friend CursorSprite As Sprite
+    Friend CursorGfxInfo As GraphicInfo
 
     ' Number of graphic files
     Friend NumTileSets As Integer
@@ -712,17 +710,6 @@ Module C_Graphics
             PetStatGfxInfo.Height = PetStatTexture.Size.Y
         End If
 
-        PetbarGfxInfo = New GraphicInfo
-        If File.Exists(Paths.Gui & "Main\Petbar" & GfxExt) Then
-            'Load texture first, dont care about memory streams (just use the filename)
-            PetBarGfx = New Texture(Paths.Gui & "Main\Petbar" & GfxExt)
-            PetBarSprite = New Sprite(PetBarGfx)
-
-            'Cache the width and height
-            PetbarGfxInfo.Width = PetBarGfx.Size.X
-            PetbarGfxInfo.Height = PetBarGfx.Size.Y
-        End If
-
         LightGfxInfo = New GraphicInfo
         If File.Exists(Paths.Graphics & "Misc\Light" & GfxExt) Then
             LightGfx = New Texture(Paths.Graphics & "Misc\Light" & GfxExt)
@@ -731,6 +718,16 @@ Module C_Graphics
             'Cache the width and height
             LightGfxInfo.Width = LightGfx.Size.X
             LightGfxInfo.Height = LightGfx.Size.Y
+        End If
+
+        CursorGfxInfo = New GraphicInfo
+        If File.Exists(Paths.Graphics & "Misc\Cursor" & GfxExt) Then
+            CursorGfx = New Texture(Paths.Graphics & "Misc\Cursor" & GfxExt)
+            CursorSprite = New Sprite(CursorGfx)
+
+            'Cache the width and height
+            CursorGfxInfo.Width = CursorGfx.Size.X
+            CursorGfxInfo.Height = CursorGfx.Size.Y
         End If
 
         For i = 1 To NumInterface
@@ -1782,15 +1779,19 @@ Module C_Graphics
         DrawMapFade()
         RenderEntities()
 
+        Window.SetMouseCursorVisible(False)
+        RenderTexture(CursorSprite, Window, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
+
         Window.Display()
     End Sub
 
     Friend Sub Render_Menu()
-        'Clear each of our render targets
         Window.Clear(Color.Black)
 
         DrawMenuBG()
         RenderEntities()
+        Window.SetMouseCursorVisible(False)
+        RenderTexture(CursorSprite, Window, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
 
         Window.Display()
     End Sub
