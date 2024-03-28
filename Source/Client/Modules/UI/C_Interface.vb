@@ -2261,6 +2261,8 @@ Module C_Interface
             End If
 
             ShowItemDesc(X, Y, Bank.Item(ItemNum).Num)
+        Else
+            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
@@ -3316,7 +3318,7 @@ Module C_Interface
         CreateLabel(windowCount, "lblCost", 56, 240, 300,  FontSize, "1000g", Verdana, Color.Black, AlignmentType.Left)
         
         ' Gold
-        CreateLabel(windowCount, "lblGold", 44, 269, 300, FontSize, "G", Verdana, Color.White)
+        'CreateLabel(windowCount, "lblGold", 44, 269, 300, FontSize, "G", Verdana, Color.White)
     End Sub
 
     Public Sub DrawShopBackground()
@@ -3386,7 +3388,7 @@ Module C_Interface
                 Left = Xo + ShopLeft + ((ShopOffsetX + 32) * (((i - 1) Mod ShopColumns)))
                 
                 ' draw selected square
-                If shopSelectedSlot = i Then RenderTexture(InterfaceSprite(35), Window, Left, Top, 0, 0, 32, 32, 32, 32)
+                If shopSelectedSlot = i Then RenderTexture(InterfaceSprite(30), Window, Left, Top, 0, 0, 32, 32, 32, 32)
             
                 If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
                     ItemIcon = Item(ItemNum).Icon
@@ -3423,70 +3425,74 @@ Public Sub btnShop_Close()
     CloseShop
 End Sub
 
-Public Sub chkShopBuying()
-    With Windows(GetWindowIndex("winShop"))
-        If .Controls(GetControlIndex("winShop", "chkBuying")).Value = 1 Then
-            .Controls(GetControlIndex("winShop", "chkSelling")).Value = 0
-        Else
-            .Controls(GetControlIndex("winShop", "chkSelling")).Value = 0
-            .Controls(GetControlIndex("winShop", "chkBuying")).Value = 1
-            Exit Sub
-        End If
-    End With
-    ' show buy button, hide sell
-    With Windows(GetWindowIndex("winShop"))
-        .Controls(GetControlIndex("winShop", "btnSell")).visible = False
-        .Controls(GetControlIndex("winShop", "btnBuy")).visible = True
-    End With
-    ' update the shop
-    shopIsSelling = False
-    shopSelectedSlot = 1
-    UpdateShop
-End Sub
+    Public Sub chkShopBuying()
+        With Windows(GetWindowIndex("winShop"))
+            If .Controls(GetControlIndex("winShop", "chkBuying")).Value = 1 Then
+                .Controls(GetControlIndex("winShop", "chkSelling")).Value = 0
+            Else
+                .Controls(GetControlIndex("winShop", "chkSelling")).Value = 0
+                .Controls(GetControlIndex("winShop", "chkBuying")).Value = 1
+                Exit Sub
+            End If
+        End With
 
-Public Sub chkShopSelling()
-    With Windows(GetWindowIndex("winShop"))
-        If .Controls(GetControlIndex("winShop", "chkSelling")).Value = 1 Then
-            .Controls(GetControlIndex("winShop", "chkBuying")).Value = 0
-        Else
-            .Controls(GetControlIndex("winShop", "chkBuying")).Value = 0
-            .Controls(GetControlIndex("winShop", "chkSelling")).Value = 1
-            Exit Sub
-        End If
-    End With
-    ' show sell button, hide buy
-    With Windows(GetWindowIndex("winShop"))
-        .Controls(GetControlIndex("winShop", "btnBuy")).visible = False
-        .Controls(GetControlIndex("winShop", "btnSell")).visible = True
-    End With
-    ' update the shop
-    shopIsSelling = True
-    shopSelectedSlot = 1
-    UpdateShop
-End Sub
+        ' show buy button, hide sell
+        With Windows(GetWindowIndex("winShop"))
+            .Controls(GetControlIndex("winShop", "btnSell")).visible = False
+            .Controls(GetControlIndex("winShop", "btnBuy")).visible = True
+        End With
 
-Public Sub btnShopBuy()
-    BuyItem(shopSelectedSlot)
-End Sub
-
-Public Sub btnShopSell()
-    SellItem(shopSelectedSlot)
-End Sub
-
-Public Sub Shop_MouseDown()
-Dim shopNum As Long
-    
-    ' is there an item?
-    shopNum = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
-    
-    If shopNum Then
-        ' set the active slot
-        shopSelectedSlot = shopNum
+        ' update the shop
+        shopIsSelling  = False
+        shopSelectedSlot = 1
         UpdateShop
-    End If
+    End Sub
+
+    Public Sub chkShopSelling()
+        With Windows(GetWindowIndex("winShop"))
+            If .Controls(GetControlIndex("winShop", "chkSelling")).Value = 1 Then
+                .Controls(GetControlIndex("winShop", "chkBuying")).Value = 0
+            Else
+                .Controls(GetControlIndex("winShop", "chkBuying")).Value = 0
+                .Controls(GetControlIndex("winShop", "chkSelling")).Value = 1
+                Exit Sub
+            End If
+        End With
+
+        ' show sell button, hide buy
+        With Windows(GetWindowIndex("winShop"))
+            .Controls(GetControlIndex("winShop", "btnBuy")).visible = False
+            .Controls(GetControlIndex("winShop", "btnSell")).visible = True
+        End With
+
+        ' update the shop
+        shopIsSelling  = True
+        shopSelectedSlot = 1
+        UpdateShop
+    End Sub
+
+    Public Sub btnShopBuy()
+        BuyItem(shopSelectedSlot)
+    End Sub
+
+    Public Sub btnShopSell()
+        SellItem(shopSelectedSlot)
+    End Sub
+
+    Public Sub Shop_MouseDown()
+        Dim shopNum As Long
     
-    Shop_MouseMove
-End Sub
+        ' is there an item?
+        shopNum = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
+    
+        If shopNum Then
+            ' set the active slot
+            shopSelectedSlot = shopNum
+            UpdateShop
+        End If
+    
+        Shop_MouseMove
+    End Sub
 
     Public Sub Shop_MouseMove()
         Dim shopSlot As Long, ItemNum As Long, X As Long, Y As Long
@@ -3495,7 +3501,7 @@ End Sub
 
         shopSlot = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
     
-        If shopSlot Then
+        If shopSlot > 0 Then
             ' calc position
             X = Windows(GetWindowIndex("winShop")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             Y = Windows(GetWindowIndex("winShop")).Window.Top - 4
@@ -3518,6 +3524,8 @@ End Sub
                 If ItemNum = 0 Then Exit Sub
                 ShowShopDesc(X, Y, ItemNum)
             End If
+        Else
+            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
