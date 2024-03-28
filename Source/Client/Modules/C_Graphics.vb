@@ -19,92 +19,74 @@ Module C_Graphics
 
     Friend Fonts([Enum].FontType.Count - 1) As Font
 
-    'TileSets
     Friend TilesetTexture() As Texture
     Friend TilesetSprite() As Sprite
     Friend TilesetGfxInfo() As GraphicInfo
 
-    'Characters
     Friend CharacterTexture() As Texture
     Friend CharacterSprite() As Sprite
     Friend CharacterGfxInfo() As GraphicInfo
 
-    'Paperdolls
     Friend PaperdollTexture() As Texture
     Friend PaperdollSprite() As Sprite
     Friend PaperdollGfxInfo() As GraphicInfo
 
-    'Items
     Friend ItemTexture() As Texture
     Friend ItemSprite() As Sprite
     Friend ItemGfxInfo() As GraphicInfo
 
-    'Resources
     Friend ResourceTexture() As Texture
     Friend ResourceSprite() As Sprite
     Friend ResourceGfxInfo() As GraphicInfo
 
-    'Animations
     Friend AnimationTexture() As Texture
     Friend AnimationSprite() As Sprite
     Friend AnimationGfxInfo() As GraphicInfo
 
-    'Skills
     Friend SkillTexture() As Texture
     Friend SkillSprite() As Sprite
     Friend SkillGfxInfo() As GraphicInfo
 
-    'Faces
     Friend FaceTexture() As Texture
     Friend FaceSprite() As Sprite
     Friend FaceGfxInfo() As GraphicInfo
 
-    'Projectiles
     Friend ProjectileTexture() As Texture
     Friend ProjectileSprite() As Sprite
     Friend ProjectileGfxInfo() As GraphicInfo
 
-    'Fogs
     Friend FogTexture() As Texture
     Friend FogSprite() As Sprite
     Friend FogGfxInfo() As GraphicInfo
 
-    'Emotes
     Friend EmoteTexture() As Texture
     Friend EmoteSprite() As Sprite
     Friend EmoteGfxInfo() As GraphicInfo
 
-    'Panoramas
     Friend PanoramaTexture() As Texture
     Friend PanoramaSprite() As Sprite
     Friend PanoramaGfxInfo() As GraphicInfo
 
-    'Parallax
     Friend ParallaxTexture() As Texture
     Friend ParallaxSprite() As Sprite
     Friend ParallaxGfxInfo() As GraphicInfo
 
-    'Pictures
     Friend PictureTexture() As Texture
     Friend PictureSprite() As Sprite
     Friend PictureGfxInfo() As GraphicInfo
 
-    'Blood
     Friend BloodTexture As Texture
     Friend BloodSprite As Sprite
     Friend BloodGfxInfo As GraphicInfo
 
-    'Directions
     Friend DirectionTexture As Texture
     Friend DirectionSprite As Sprite
     Friend DirectionGfxInfo As GraphicInfo
 
-    'Weather
     Friend WeatherTexture As Texture
     Friend WeatherSprite As Sprite
     Friend WeatherGfxInfo As GraphicInfo
 
-    'GUI
     Friend InterfaceTexture() As Texture
     Friend InterfaceSprite() As Sprite
     Friend InterfaceGfxInfo() As GraphicInfo
@@ -115,7 +97,6 @@ Module C_Graphics
     Friend GradientSprite() As Sprite
     Friend GradientGfxInfo() As GraphicInfo
 
-    'Bars
     Friend HpBarTextire As Texture
     Friend HpBarSprite As Sprite
     Friend HpBarGfxInfo As GraphicInfo
@@ -156,6 +137,14 @@ Module C_Graphics
 
     Friend MapFadeSprite As Sprite
 
+    Friend NightGfx As Texture
+    Friend NightSprite As Sprite
+    Friend LightGfx As Texture
+    Friend LightDynamicGfx As Texture
+    Friend LightSprite As Sprite
+    Friend LightDynamicSprite As Sprite
+    Friend LightGfxInfo As GraphicInfo
+
     ' Number of graphic files
     Friend NumTileSets As Integer
     Friend NumCharacters As Integer
@@ -173,15 +162,6 @@ Module C_Graphics
     Friend NumInterface As Integer
     Friend NumGradients As Integer
     Friend NumDesigns As Integer
-
-    ' Day/Night
-    Friend NightGfx As Texture
-    Friend NightSprite As Sprite
-    Friend LightGfx As Texture
-    Friend LightDynamicGfx As Texture
-    Friend LightSprite As Sprite
-    Friend LightDynamicSprite As Sprite
-    Friend LightGfxInfo As GraphicInfo
 
 #End Region
 
@@ -787,8 +767,10 @@ Module C_Graphics
             If Types.Settings.Vsync = 0 Then
                 Window.SetFramerateLimit(Types.Settings.MaxFps)
             End If
+
             Dim iconImage As New Image(Paths.Gui + "icon.png")
             Window.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
+
             Window.SetActive(true)
             RefreshWindow = False
             RegisterEvents()
@@ -1382,8 +1364,8 @@ Module C_Graphics
             startX = GetPlayerX(MyIndex) - Types.Settings.CameraWidth
             startY = GetPlayerY(MyIndex) - Types.Settings.CameraHeight
         Else
-            startX = Math.Floor(GetPlayerX(MyIndex) - (Types.Settings.CameraWidth) / 2) - 1
-            startY = Math.Floor(GetPlayerY(MyIndex) - (Types.Settings.CameraHeight) / 2) - 1
+            startX = Math.Floor(GetPlayerX(MyIndex) - (Types.Settings.CameraWidth) / 2)
+            startY = Math.Floor(GetPlayerY(MyIndex) - (Types.Settings.CameraHeight) / 2)
         End If
 
         If startX < 0 Then
