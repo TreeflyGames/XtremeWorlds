@@ -2193,6 +2193,7 @@ Module C_Graphics
         Dim rec As Rectangle
         Dim x As Integer, y As Integer
         Dim width As Integer, height As Integer
+
         With rec
             .Y = 0
             .Height = TargetGfxInfo.Height
@@ -2200,12 +2201,12 @@ Module C_Graphics
             .Width = TargetGfxInfo.Width / 2 + TargetGfxInfo.Width / 2
         End With
 
-        x = ConvertMapX(x2)
-        y = ConvertMapY(y2)
+        x = ConvertMapX(x2 + 4)
+        y = ConvertMapY(y2 - 32)
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderTexture(TargetSprite, Window, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(TargetSprite, Window, x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Friend Sub EditorItem_DrawIcon()

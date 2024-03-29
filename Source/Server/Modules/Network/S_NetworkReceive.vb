@@ -1441,8 +1441,14 @@ Module S_NetworkReceive
                             End If
 
                             ' Change target
-                            TempPlayer(index).Target = i
-                            TempPlayer(index).TargetType = TargetType.Player
+                            If TempPlayer(index).Target = 0 Then
+                                TempPlayer(index).Target = i
+                                TempPlayer(index).TargetType = TargetType.Player
+                            Else
+                                TempPlayer(index).Target = 0
+                                TempPlayer(index).TargetType = 0
+                            End If
+
                             PlayerMsg(index, "Your target is now " & GetPlayerName(i) & ".", ColorType.Yellow)
                             SendTarget(index, TempPlayer(index).Target, TempPlayer(index).TargetType)
                             TargetFound = 1
@@ -1477,8 +1483,13 @@ Module S_NetworkReceive
                 If MapNPC(GetPlayerMap(index)).Npc(i).X = x Then
                     If MapNPC(GetPlayerMap(index)).Npc(i).Y = y Then
                         ' Change target
-                        TempPlayer(index).Target = i
-                        TempPlayer(index).TargetType = TargetType.Npc
+                        If TempPlayer(index).Target = 0 Then
+                            TempPlayer(index).Target = i
+                            TempPlayer(index).TargetType = TargetType.Npc
+                        Else
+                            TempPlayer(index).Target = 0
+                            TempPlayer(index).TargetType = 0
+                        End If
                         PlayerMsg(index, "Your target is now " & CheckGrammar(Trim$(NPC(MapNPC(GetPlayerMap(index)).Npc(i).Num).Name)) & ".", ColorType.Yellow)
                         SendTarget(index, TempPlayer(index).Target, TempPlayer(index).TargetType)
                         TargetFound = 1
