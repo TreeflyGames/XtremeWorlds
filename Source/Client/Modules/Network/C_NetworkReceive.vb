@@ -1048,6 +1048,7 @@ Module C_NetworkReceive
 
     Private Sub Packet_Target(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
+
         MyTarget = buffer.ReadInt32
         MyTargetType = buffer.ReadInt32
 
