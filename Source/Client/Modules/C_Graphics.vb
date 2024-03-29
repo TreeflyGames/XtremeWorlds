@@ -2181,7 +2181,7 @@ Module C_Graphics
             .Width = TargetGfxInfo.Width / 2
         End With
 
-        x = ConvertMapX(x2)
+        x = ConvertMapX(x2 + 4)
         y = ConvertMapY(y2 - 32)
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
