@@ -1006,9 +1006,8 @@ Module S_Database
     End Sub
 
     Sub ClearShops()
-        ReDim Shop(MAX_SHOPS).TradeItem(MAX_TRADES)
-
-        For i = 1 To MAX_SHOPS
+        For i = 1 To MAX_SHOPS      
+            ReDim Shop(i).TradeItem(MAX_TRADES)
             Call ClearShop(i)
         Next
     End Sub
