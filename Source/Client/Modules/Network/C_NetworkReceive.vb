@@ -963,7 +963,6 @@ Module C_NetworkReceive
                 Shop(n).TradeItem(z).ItemValue = buffer.ReadInt32()
             Next
 
-            If Shop(n).Name Is Nothing Then Shop(n).Name = ""
         Next
 
         i = 0
@@ -1005,7 +1004,6 @@ Module C_NetworkReceive
             Skill(n).KnockBack = buffer.ReadInt32()
             Skill(n).KnockBackTiles = buffer.ReadInt32()
 
-            If Skill(n).Name Is Nothing Then Skill(n).Name = ""
         Next
 
         i = 0
@@ -1032,10 +1030,6 @@ Module C_NetworkReceive
             Resource(n).LvlRequired = buffer.ReadInt32()
             Resource(n).ToolRequired = buffer.ReadInt32()
             Resource(n).Walkthrough = buffer.ReadInt32()
-
-            If Resource(n).Name Is Nothing Then Resource(n).Name = ""
-            If Resource(n).EmptyMessage Is Nothing Then Resource(n).EmptyMessage = ""
-            If Resource(n).SuccessMessage Is Nothing Then Resource(n).SuccessMessage = ""
         Next
 
         i = 0
