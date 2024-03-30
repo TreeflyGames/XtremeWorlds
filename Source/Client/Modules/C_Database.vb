@@ -208,7 +208,7 @@ Module C_Database
 
 #End Region
 
-#Region "Npc's"
+#Region "Npc"
 
     Sub ClearNpcs()
         Dim i As Integer
@@ -282,7 +282,5 @@ Module C_Database
             SendRequestSkill(skillNum)
         End If
     End Sub
-
 #End Region
-
 End Module

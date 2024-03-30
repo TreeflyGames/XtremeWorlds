@@ -216,11 +216,8 @@ Module S_NetworkReceive
                 Console.WriteLine(GetPlayerLogin(index) & " has logged in from " & Socket.ClientIp(index) & ".")
 
                 ' send them to the character portal
-                Call SendPlayerChars(index)
-
-                For i = 1 to MAX_JOBS
-                    SendUpdateJob(index, i)
-                Next
+                SendPlayerChars(index)
+                SendJobs(index)
             End If
         End If
     End Sub
@@ -297,11 +294,8 @@ Module S_NetworkReceive
                 RegisterAccount(index, username, password)
 
                 ' send them to the character portal
-                Call SendPlayerChars(index)
-
-                For i = 1 to MAX_JOBS
-                    Call SendUpdateJob(index, i)
-                Next
+                SendPlayerChars(index)
+                SendJobs(index)
             End If
         End If
     End Sub

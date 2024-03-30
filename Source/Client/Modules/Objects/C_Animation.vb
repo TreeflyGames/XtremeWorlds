@@ -78,9 +78,12 @@ Module C_Animations
         For i = 0 To UBound(AnimInstance(index).Used)
             AnimInstance(index).Used(i) = False
         Next
+
         For i = 0 To UBound(AnimInstance(index).Timer)
+            
             AnimInstance(index).Timer(i) = False
         Next
+
         For i = 0 To UBound(AnimInstance(index).FrameIndex)
             AnimInstance(index).FrameIndex(i) = False
         Next
