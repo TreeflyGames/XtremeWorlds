@@ -1003,11 +1003,14 @@ Module S_Database
     Sub ClearShop(index As Integer)
         Shop(index) = Nothing
         Shop(index).Name = ""
+
+        For i = 1 To MAX_TRADES
+            ReDim Shop(index).TradeItem(i)
+        Next
     End Sub
 
     Sub ClearShops()
         For i = 1 To MAX_SHOPS      
-            ReDim Shop(i).TradeItem(MAX_TRADES)
             Call ClearShop(i)
         Next
     End Sub
