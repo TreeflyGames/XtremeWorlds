@@ -25,6 +25,7 @@ Public Class Settings
     Public OpenAdminPanelOnLogin As Byte = 1
     Public DynamicLightRendering As Byte = 1
     Public ChannelState(ChatChannel.Count - 1) As Byte
+    Public Shadow As Byte = 0
 
     Public Ip As String = "127.0.0.1"
     Public Port As Integer = 7001

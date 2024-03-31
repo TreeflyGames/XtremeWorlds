@@ -1216,7 +1216,7 @@ Module C_Graphics
             y = MapNpc(mapNpcNum).Y * PicY + MapNpc(mapNpcNum).YOffset
         End If
 
-        'DrawShadow(x, y + 16)
+        DrawShadow(x, y + 16)
         DrawCharacterSprite(sprite, x, y, rect)
     End Sub
 
@@ -1285,6 +1285,8 @@ Module C_Graphics
         Dim y As Integer
         Dim srcrec As Rectangle
         Dim destrec As Rectangle
+
+        If Types.Settings.Shadow = 0 Then Exit Sub
 
         'seeying we still use it, lets update timer
         With ShadowGfxInfo
