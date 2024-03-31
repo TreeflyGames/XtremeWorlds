@@ -479,12 +479,24 @@ Module C_GameLogic
             End If
         End If
 
+        ' Admin message
+        If Left$(chatText, 1) = "@" Then
+            chatText = Mid$(chatText, 2, Len(chatText) - 1)
+
+            If Len(chatText) > 0 Then
+                AdminMsg(chatText)
+            End If
+
+            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = vbNullString
+            Exit Sub
+        End If
+
         ' Broadcast message
         If Left$(chatText, 1) = "'" Then
             chatText = Mid$(chatText, 2, Len(chatText) - 1)
 
             If Len(chatText) > 0 Then
-                BroadcastMsg(chatText) '("Привет, русский чат")
+                BroadcastMsg(chatText)
             End If
 
             Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = vbNullString
@@ -551,6 +563,7 @@ Module C_GameLogic
                     AddText(Language.Chat.Help3, ColorType.Yellow)
                     AddText(Language.Chat.Help4, ColorType.Yellow)
                     AddText(Language.Chat.Help5, ColorType.Yellow)
+                    AddText(Language.Chat.Help6, ColorType.Yellow)
 
                 Case "/info"
                     ' Checks to make sure we have more than one string in the array

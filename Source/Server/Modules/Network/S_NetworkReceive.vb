@@ -16,6 +16,7 @@ Module S_NetworkReceive
         Socket.PacketId(ClientPackets.CSayMsg) = AddressOf Packet_SayMessage
         Socket.PacketId(ClientPackets.CBroadcastMsg) = AddressOf Packet_BroadCastMsg
         Socket.PacketId(ClientPackets.CPlayerMsg) = AddressOf Packet_PlayerMsg
+        Socket.PacketId(ClientPackets.CAdminMsg) = AddressOf Packet_AdminMsg
         Socket.PacketId(ClientPackets.CPlayerMove) = AddressOf Packet_PlayerMove
         Socket.PacketId(ClientPackets.CPlayerDir) = AddressOf Packet_PlayerDirection
         Socket.PacketId(ClientPackets.CUseItem) = AddressOf Packet_UseItem
@@ -474,6 +475,20 @@ Module S_NetworkReceive
         Else
             PlayerMsg(index, "Cannot message your self!", ColorType.BrightRed)
         End If
+    End Sub
+
+     Private Sub Packet_AdminMsg(index As Integer, ByRef data() As Byte)
+        Dim msg As String
+        Dim s As String
+        Dim buffer As New ByteStream(data)
+
+        msg = buffer.ReadString
+
+        AdminMsg(GetPlayerMap(index), msg, ColorType.BrightCyan)
+        Addlog(s, PLAYER_LOG)
+        Console.WriteLine(s)
+
+        buffer.Dispose()
     End Sub
 
     Private Sub Packet_PlayerMove(index As Integer, ByRef data() As Byte)

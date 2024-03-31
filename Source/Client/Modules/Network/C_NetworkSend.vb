@@ -279,6 +279,16 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Friend Sub AdminMsg(text As String)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CAdminMsg)
+        buffer.WriteString(text.Trim)
+
+        Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
+
     Friend Sub SendWhosOnline()
         Dim buffer As New ByteStream(4)
 

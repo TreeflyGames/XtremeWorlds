@@ -34,7 +34,7 @@ Module C_NetworkReceive
         Socket.PacketId(ServerPackets.SMapNpcUpdate) = AddressOf Packet_MapNPCUpdate
         Socket.PacketId(ServerPackets.SMapDone) = AddressOf Packet_MapDone
         Socket.PacketId(ServerPackets.SGlobalMsg) = AddressOf Packet_GlobalMessage
-        Socket.PacketId(ServerPackets.SAdminMsg) = AddressOf Packet_AdminMessage
+        Socket.PacketId(ServerPackets.SAdminMsg) = AddressOf Packet_AdminMsg
         Socket.PacketId(ServerPackets.SPlayerMsg) = AddressOf Packet_PlayerMsg
         Socket.PacketId(ServerPackets.SMapMsg) = AddressOf Packet_MapMessage
         Socket.PacketId(ServerPackets.SSpawnItem) = AddressOf Packet_SpawnItem
@@ -480,7 +480,7 @@ Module C_NetworkReceive
 
     End Sub
 
-    Private Sub Packet_AdminMessage(ByRef data() As Byte)
+    Private Sub Packet_AdminMsg(ByRef data() As Byte)
         Dim msg As String
         Dim buffer As New ByteStream(data)
 
