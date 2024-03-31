@@ -1946,6 +1946,21 @@ Continue1:
         End With
     End Sub
 
+    Sub ShowTrade()
+        ' show the window
+        ShowWindow(GetWindowIndex("winTrade"))
+
+        ' set the controls up
+        With Windows(GetWindowIndex("winTrade"))
+            .Window.text = "Trading with " & Trim$(GetPlayerName(InTrade))
+            .Controls(GetControlIndex("winTrade", "lblYourTrade")).text = Trim$(GetPlayerName(MyIndex)) & "'s Offer"
+            .Controls(GetControlIndex("winTrade", "lblTheirTrade")).text = Trim$(GetPlayerName(InTrade)) & "'s Offer"
+            .Controls(GetControlIndex("winTrade", "lblYourValue")).text = "0g"
+            .Controls(GetControlIndex("winTrade", "lblTheirValue")).text = "0g"
+            .Controls(GetControlIndex("winTrade", "lblStatus")).text = "Choose items to offer."
+        End With
+    End Sub
+
     Sub ShowPlayerMenu(Index As Long, X As Long, Y As Long)
         PlayerMenuIndex = Index
         If PlayerMenuIndex = 0 Then Exit Sub
