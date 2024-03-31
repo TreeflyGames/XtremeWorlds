@@ -1046,7 +1046,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Login()
         ' Create the window
-        CreateWindow("winLogin", "Login", Georgia, zOrder_Win, 0, 0, 276, 212, 45, , 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winLogin", "Login", Georgia, zOrder_Win, 0, 0, 276, 212, 45, True, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -1338,6 +1338,43 @@ Module C_Interface
         CreatePictureBox(windowCount, "picChar3", 20, 100, 32, 32, , , , , CharacterSprite(1), CharacterSprite(1), CharacterSprite(1))
     End Sub
 
+    Public Sub CreateWindow_Trade()
+        ' Create window
+        CreateWindow("winTrade", "Trading with [Name]", Georgia, zOrder_Win, 0, 0, 412, 386, 112 , False, 2, 5,  DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , , New Action(AddressOf DrawTrade))
+
+        ' Centralize it
+        CentralizeWindow(windowCount)
+
+        ' Close Button
+        CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 19, 5, 36, 36, , , , InterfaceSprite(8), InterfaceSprite(9), InterfaceSprite(10), , , , , , , , New Action(AddressOf btnTrade_Close))
+        
+        ' Parchment
+        CreatePictureBox(windowCount, "picParchment", 10, 312, 392, 66, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        
+        ' Labels
+        CreatePictureBox(windowCount, "picShadow", 36, 30, 142, 9, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(windowCount, "lblYourTrade", 36, 27, 142, 9, "Robin's Offer", Verdana, Color.White, AlignmentType.Center)
+        CreatePictureBox(windowCount, "picShadow", 36 + 200, 30, 142, 9, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(windowCount, "lblTheirTrade", 36 + 200, 27, 142, 9, "Richard's Offer", Verdana, Color.White, AlignmentType.Center)
+        
+        ' Buttons
+        CreateButton(windowCount, "btnAccept", 134, 340, 68, 24, "Accept", Verdana, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , New Action(AddressOf btnTrade_Accept))
+        CreateButton(windowCount, "btnDecline", 210, 340, 68, 24, "Decline", Verdana, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnTrade_Close))
+        
+        ' Labels
+        CreateLabel(windowCount, "lblStatus", 114, 322, 184, FontSize, "", Verdana, Color.White, AlignmentType.Center)
+        
+        ' Amounts
+        CreateLabel(windowCount, "lblBlank", 25, 330, 100, FontSize, "Total Value", Verdana, Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblBlank", 285, 330, 100, FontSize, "Total Value", Verdana, Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblYourValue", 25, 344, 100, FontSize, "52,812g", Verdana, Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblTheirValue", 285, 344, 100, FontSize, "12,531g", Verdana, Color.White, AlignmentType.Center)
+        
+        ' Item Containers
+        CreatePictureBox(windowCount, "picYour", 14, 46, 184, 260, , , , , , , , , , , , , New Action(AddressOf TradeMouseDown_Your), New Action(AddressOf TradeMouseMove_Your), , New Action(AddressOf DrawYourTrade))
+        CreatePictureBox(windowCount, "picTheir", 214, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Their), , New Action(AddressOf DrawTheirTrade))
+    End Sub
+
     ' Rendering & Initialisation
     Public Sub InitInterface()
         ' Starter values
@@ -1365,6 +1402,7 @@ Module C_Interface
         CreateWindow_Dialogue()
         CreateWindow_DragBox()
         CreateWindow_Options()
+        CreateWindow_Trade()
         CreateWindow_Party()
         CreateWindow_PlayerMenu()
         CreateWindow_RightClick()
@@ -1561,6 +1599,86 @@ Module C_Interface
             End With
 
         Next
+    End Sub
+
+    ' Trade
+    Sub btnTrade_Close()
+        HideWindow(GetWindowIndex("winTrade"))
+        SendDeclineTrade()
+    End Sub
+
+    Sub btnTrade_Accept()
+        SendAcceptTrade()
+    End Sub
+
+    Sub TradeMouseDown_Your()
+        Dim Xo As Long, Yo As Long, ItemNum As Long
+        
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Top
+        ItemNum = IsTrade(Xo, Yo)
+    
+        ' make sure it exists
+        If ItemNum > 0 Then
+            If TradeYourOffer(ItemNum).Num = 0 Then Exit Sub
+            If GetPlayerInvItemNum(MyIndex, TradeYourOffer(ItemNum).Num) = 0 Then Exit Sub
+        
+            ' unoffer the item
+            UntradeItem(ItemNum)
+        End If
+    End Sub
+
+    Sub TradeMouseMove_Your()
+        Dim Xo As Long, Yo As Long, ItemNum As Long, X As Long, Y As Long
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Top
+
+        ItemNum = IsTrade(Xo, Yo)
+    
+        ' make sure it exists
+        If ItemNum > 0 Then
+            If TradeYourOffer(ItemNum).Num = 0 Then Exit Sub
+            If GetPlayerInvItemNum(MyIndex, TradeYourOffer(ItemNum).Num) = 0 Then Exit Sub
+        
+            X = Windows(GetWindowIndex("winTrade")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
+            Y = Windows(GetWindowIndex("winTrade")).Window.Top - 4
+
+            ' offscreen?
+            If X < 0 Then
+                ' switch to right
+                X = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Window.Width
+            End If
+
+            ' go go go
+            ShowItemDesc(X, Y, GetPlayerInvItemNum(MyIndex, TradeYourOffer(ItemNum).Num))
+        End If
+    End Sub
+
+    Sub TradeMouseMove_Their()
+        Dim Xo As Long, Yo As Long, ItemNum As Long, X As Long, Y As Long
+        
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Top
+
+        ItemNum = IsTrade(Xo, Yo)
+    
+        ' make sure it exists
+        If ItemNum > 0 Then
+            If TradeTheirOffer(ItemNum).Num = 0 Then Exit Sub
+        
+            ' calc position
+            X = Windows(GetWindowIndex("winTrade")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
+            Y = Windows(GetWindowIndex("winTrade")).Window.Top - 4
+
+            ' offscreen?
+            If X < 0 Then
+                ' switch to right
+                X = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Window.Width
+            End If
+
+            ' go go go
+            ShowItemDesc(X, Y, TradeTheirOffer(ItemNum).Num)
+        End If
     End Sub
 
     Sub CloseComboMenu()
@@ -2567,7 +2685,7 @@ Module C_Interface
     ' ## Skills ##
     ' ############
     Public Sub Skills_MouseDown()
-    Dim slotNum As Long, winIndex As Long
+        Dim slotNum As Long, winIndex As Long
     
         ' is there an item?
         slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
@@ -3739,6 +3857,142 @@ Module C_Interface
         btnOptions_Close
     End Sub
 
+    Sub DrawTrade()
+        Dim Xo As Long, Yo As Long, Width As Long, Height As Long, i As Long, Y As Long, X As Long
+    
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top
+        Width = Windows(GetWindowIndex("winTrade")).Window.Width
+        Height = Windows(GetWindowIndex("winTrade")).Window.Height
+    
+        ' render green
+        RenderTexture(InterfaceSprite(34), Window, Xo + 4, Yo + 23, 0, 0, Width - 8, Height - 27, 4, 4)
+    
+        ' top wood
+        RenderTexture(InterfaceSprite(1), Window, Xo + 4, Yo + 23, 100, 100, Width - 8, 18, Width - 8, 18)
+        
+        ' left wood
+        RenderTexture(InterfaceSprite(1), Window, Xo + 4, Yo + 41, 350, 0, 5, Height - 45, 5, Height - 45)
+        
+        ' right wood
+        RenderTexture(InterfaceSprite(1), Window, Xo + Width - 9, Yo + 41, 350, 0, 5, Height - 45, 5, Height - 45)
+        
+        ' centre wood
+        RenderTexture(InterfaceSprite(1), Window, Xo + 203, Yo + 41, 350, 0, 6, Height - 45, 6, Height - 45)
+        
+        ' bottom wood
+        RenderTexture(InterfaceSprite(1), Window, Xo + 4, Yo + 307, 100, 100, Width - 8, 75, Width - 8, 75)
+    
+        ' left
+        Width = 76
+        Height = 76
+        Y = Yo + 41
+        For i = 1 To 4
+            If i = 4 Then Height = 38
+            RenderTexture(InterfaceSprite(38), Window, Xo + 4 + 5, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(38), Window, Xo + 80 + 5, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(38), Window, Xo + 156 + 5, Y, 0, 0, 42, Height, 42, Height)
+            Y = Y + 76
+        Next
+    
+        ' right
+        Width = 76
+        Height = 76
+        Y = Yo + 41
+        For i = 1 To 4
+            If i = 4 Then Height = 38
+            RenderTexture(InterfaceSprite(38), Window, Xo + 4 + 205, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(38), Window, Xo + 80 + 205, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(38), Window, Xo + 156 + 205, Y, 0, 0, 42, Height, 42, Height)
+
+            Y = Y + 76
+        Next
+    End Sub
+
+    Sub DrawYourTrade()
+        Dim i As Long, ItemNum As Long, ItemPic As Long, Top As Long, Left As Long, Color As Long, Amount As String, X As Long, Y As Long
+        Dim Xo As Long, Yo As Long
+
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Top
+    
+        ' your items
+        For i = 1 To MAX_INV
+            If TradeYourOffer(i).Num > 0 Then
+                ItemNum = GetPlayerInvItemNum(MyIndex, TradeYourOffer(i).Num)
+                If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
+                    ItemPic = Item(ItemNum).Icon
+                    If ItemPic > 0 And ItemPic <= NumItems Then
+                        Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
+                        Left = Xo + TradeLeft + ((TradeOffsetX + 32) * (((i - 1) Mod TradeColumns)))
+
+                        ' draw icon
+                        RenderTexture(ItemSprite(ItemPic), Window, Left, Top, 0, 0, 32, 32, 32, 32)
+                
+                        ' If item is a stack - draw the amount you have
+                        If TradeYourOffer(i).Value > 1 Then
+                            Y = Top + 21
+                            X = Left + 1
+                            Amount = CStr(TradeYourOffer(i).Value)
+                    
+                            ' Draw currency but with k, m, b etc. using a convertion function
+                            If CLng(Amount) < 1000000 Then
+                                Color = ColorType.White
+                            ElseIf CLng(Amount) > 1000000 And CLng(Amount) < 10000000 Then
+                                Color = ColorType.Yellow
+                            ElseIf CLng(Amount) > 10000000 Then
+                                Color = ColorType.BrightGreen
+                            End If
+                    
+                            RenderText(ConvertCurrency(Amount), Window, X, Y, GetSfmlColor(Color), GetSfmlColor(Color))
+                        End If
+                    End If
+                End If
+            End If
+        Next
+    End Sub
+
+    Sub DrawTheirTrade()
+        Dim i As Long, ItemNum As Long, ItemPic As Long, Top As Long, Left As Long, Color As Long, Amount As String, X As Long, Y As Long
+        Dim Xo As Long, Yo As Long
+
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Top
+
+        ' their items
+        For i = 1 To MAX_INV
+            ItemNum = TradeTheirOffer(i).Num
+            If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
+                ItemPic = Item(ItemNum).Icon
+                If ItemPic > 0 And ItemPic <= NumItems Then
+                    Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
+                    Left = Xo + TradeLeft + ((TradeOffsetX + 32) * (((i - 1) Mod TradeColumns)))
+
+                    ' draw icon
+                    RenderTexture(ItemSprite(ItemPic), Window, Left, Top, 0, 0, 32, 32, 32, 32)
+                
+                    ' If item is a stack - draw the amount you have
+                    If TradeTheirOffer(i).Value > 1 Then
+                        Y = Top + 21
+                        X = Left + 1
+                        Amount = CStr(TradeTheirOffer(i).Value)
+                    
+                        ' Draw currency but with k, m, b etc. using a convertion function
+                        If CLng(Amount) < 1000000 Then
+                            Color = ColorType.White
+                        ElseIf CLng(Amount) > 1000000 And CLng(Amount) < 10000000 Then
+                            Color = ColorType.Yellow
+                        ElseIf CLng(Amount) > 10000000 Then
+                            Color = ColorType.BrightGreen
+                        End If
+                    
+                        RenderText(ConvertCurrency(Amount), Window, X, Y, GetSfmlColor(Color), GetSfmlColor(Color))
+                    End If
+                End If
+            End If
+        Next
+    End Sub
+
     Public Sub DrawBank()
         Dim X As Long, Y As Long, Xo As Long, Yo As Long, width As Long, height As Long
         Dim i As Long, itemNum As Long, itemIcon As Long
@@ -3868,4 +4122,3 @@ Module C_Interface
     End Sub
 
 End Module
-
