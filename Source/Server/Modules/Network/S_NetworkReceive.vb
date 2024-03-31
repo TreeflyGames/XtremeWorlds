@@ -1198,6 +1198,7 @@ Module S_NetworkReceive
         SendShops(index)
         SendResources(index)
         SendMapEventData(index)
+        SendMorals(index)
 
         TempPlayer(index).Editor = EditorType.Map
 

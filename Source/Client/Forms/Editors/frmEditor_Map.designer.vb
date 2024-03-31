@@ -120,7 +120,7 @@ Partial Class frmEditor_Map
         Label22 = New Label()
         lstShop = New ComboBox()
         Label8 = New Label()
-        cmbMoral = New ComboBox()
+        lstMoral = New ComboBox()
         fraMapLinks = New GroupBox()
         txtDown = New TextBox()
         txtLeft = New TextBox()
@@ -1221,7 +1221,7 @@ Partial Class frmEditor_Map
         fraMapSettings.Controls.Add(Label22)
         fraMapSettings.Controls.Add(lstShop)
         fraMapSettings.Controls.Add(Label8)
-        fraMapSettings.Controls.Add(cmbMoral)
+        fraMapSettings.Controls.Add(lstMoral)
         fraMapSettings.Location = New Point(10, 62)
         fraMapSettings.Margin = New Padding(6, 5, 6, 5)
         fraMapSettings.Name = "fraMapSettings"
@@ -1261,15 +1261,15 @@ Partial Class frmEditor_Map
         Label8.TabIndex = 38
         Label8.Text = "Moral:"
         ' 
-        ' cmbMoral
+        ' lstMoral
         ' 
-        cmbMoral.DropDownStyle = ComboBoxStyle.DropDownList
-        cmbMoral.FormattingEnabled = True
-        cmbMoral.Location = New Point(74, 23)
-        cmbMoral.Margin = New Padding(6, 5, 6, 5)
-        cmbMoral.Name = "cmbMoral"
-        cmbMoral.Size = New Size(298, 33)
-        cmbMoral.TabIndex = 37
+        lstMoral.DropDownStyle = ComboBoxStyle.DropDownList
+        lstMoral.FormattingEnabled = True
+        lstMoral.Location = New Point(74, 23)
+        lstMoral.Margin = New Padding(6, 5, 6, 5)
+        lstMoral.Name = "lstMoral"
+        lstMoral.Size = New Size(298, 33)
+        lstMoral.TabIndex = 37
         ' 
         ' fraMapLinks
         ' 
@@ -2138,7 +2138,7 @@ Partial Class frmEditor_Map
     Friend WithEvents lstMusic As System.Windows.Forms.ListBox
     Friend WithEvents fraMapSettings As System.Windows.Forms.GroupBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents cmbMoral As System.Windows.Forms.ComboBox
+    Friend WithEvents lstMoral As System.Windows.Forms.ComboBox
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmbNpcList As System.Windows.Forms.ComboBox
     Friend WithEvents lstMapNpc As System.Windows.Forms.ListBox

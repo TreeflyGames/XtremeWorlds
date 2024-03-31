@@ -67,7 +67,7 @@ Public Class frmEditor_Map
             .Down = Val(txtDown.Text)
             .Left = Val(txtLeft.Text)
             .Right = Val(txtRight.Text)
-            .Moral = cmbMoral.SelectedIndex + 1
+            .Moral = lstMoral.SelectedIndex
             .BootMap = Val(txtBootMap.Text)
             .BootX = Val(txtBootX.Text)
             .BootY = Val(txtBootY.Text)
@@ -529,6 +529,22 @@ Public Class frmEditor_Map
             End If
         Next
 
+        ' find the shop we have set
+        lstMoral.Items.Clear()
+        lstMoral.Items.Add("None")
+        lstMoral.SelectedIndex = 0
+
+        For i = 1 To MAX_MORALS
+            lstMoral.Items.Add(Moral(i).Name)
+        Next
+
+        For i = 1 To lstMoral.Items.Count - 1
+            If lstMoral.Items(i).ToString = Trim$(Moral(Map.Moral).Name) Then
+                lstMoral.SelectedIndex = i
+                Exit For
+            End If
+        Next
+
         chkTint.Checked = Map.MapTint
         chkNoMapRespawn.Checked = Map.NoRespawn
         chkIndoors.Checked = Map.Indoors
@@ -551,15 +567,6 @@ Public Class frmEditor_Map
             lstMapNpc.Items.Add(X & ": " & Trim$(NPC(Map.Npc(X)).Name))
         Next
 
-        cmbMoral.Items.Clear()
-        cmbMoral.Items.Add("None")
-        cmbMoral.SelectedIndex = 0
-
-        For X = 1 To MAX_MORALS
-            cmbMoral.Items.Add(X & ": " & Trim$(Moral(x).Name))
-        Next
-
-        cmbNpcList.Items.Clear()
         cmbNpcList.Items.Add("None")
         cmbNpcList.SelectedIndex = 0
 

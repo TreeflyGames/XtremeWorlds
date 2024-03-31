@@ -86,6 +86,7 @@ Module C_General
         ClearProjectile()
         ClearPets()
         ClearJobs()
+        ClearMorals()
         ClearBank()
         ClearParty()
 

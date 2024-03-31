@@ -938,6 +938,7 @@ Module S_NetworkSend
 
         buffer.WriteInt32(ServerPackets.STrade)
         buffer.WriteInt32(TradeTarget)
+
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()
