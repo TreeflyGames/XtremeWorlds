@@ -201,8 +201,6 @@ Public Class frmEditor_Events
         End If
         btnPastePage.Enabled = False
 
-        nudShowTextFace.Maximum = NumFaces
-        nudShowChoicesFace.Maximum = NumFaces
         nudShowPicture.Maximum = NumPictures
 
         cmbPicLoc.SelectedIndex = 0
@@ -270,8 +268,6 @@ Public Class frmEditor_Events
                 txtShowText.Text = ""
                 fraDialogue.Visible = True
                 fraShowText.Visible = True
-                nudShowTextFace.Value = 0
-                nudShowTextFace.Maximum = NumFaces
                 fraCommands.Visible = False
             'show choices
             Case "Show Choices"
@@ -1527,16 +1523,6 @@ Public Class frmEditor_Events
 #Region "CommandFrames"
 
 #Region "Show Text"
-
-    Private Sub NudShowTextFace_ValueChanged(sender As Object, e As EventArgs) Handles nudShowTextFace.ValueChanged
-        If nudShowTextFace.Value > 0 Then
-            If File.Exists(Paths.Graphics & "Faces\" & nudShowTextFace.Value & GfxExt) Then
-                picShowTextFace.BackgroundImage = Image.FromFile(Paths.Graphics & "Faces\" & nudShowTextFace.Value & GfxExt)
-            End If
-        Else
-            picShowTextFace.BackgroundImage = Nothing
-        End If
-    End Sub
 
     Private Sub BtnShowTextOk_Click(sender As Object, e As EventArgs) Handles btnShowTextOk.Click
         If Not IsEdit Then

@@ -66,17 +66,6 @@ Module C_Database
 
     End Sub
 
-    Friend Sub CheckFaces()
-        Dim i As Integer
-        i = 1
-
-        While File.Exists(Paths.Graphics & "Faces\" & i & GfxExt)
-            NumFaces = NumFaces + 1
-            i = i + 1
-        End While
-
-    End Sub
-
     Friend Sub CheckFog()
         Dim i As Integer
         i = 1

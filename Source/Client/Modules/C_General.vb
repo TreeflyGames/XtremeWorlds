@@ -103,7 +103,6 @@ Module C_General
         CheckAnimations()
         CheckCharacters()
         CheckEmotes()
-        CheckFaces()
         CheckFog()
         CheckItems()
         CheckPanoramas()

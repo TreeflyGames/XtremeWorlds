@@ -1768,7 +1768,7 @@ Module C_Interface
                     Dim rect = New Rectangle((CharacterGfxInfo(CharSprite(I)).Width / 4), (CharacterGfxInfo(CharSprite(I)).Height / 4),
                                (CharacterGfxInfo(CharSprite(I)).Width / 4), (CharacterGfxInfo(CharSprite(I)).Height / 4))
 
-                    If Not CharSprite(I) > NumCharacters And Not CharSprite(I) > NumFaces Then
+                    If Not CharSprite(I) > NumCharacters Then
                         ' render char
                         RenderTexture(CharacterSprite(CharSprite(I)), Window, x + 24, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
                     End If
@@ -1827,7 +1827,7 @@ Module C_Interface
     ' ## Jobs Window ##
     ' ####################
     Public Sub Jobs_DrawFace()
-        Dim imageFace As Long, xO As Long, yO As Long
+        Dim imageChar As Long, xO As Long, yO As Long
 
         xO = Windows(GetWindowIndex("winJob")).Window.Left
         yO = Windows(GetWindowIndex("winJob")).Window.Top
@@ -1836,19 +1836,18 @@ Module C_Interface
 
         Select Case newCharJob
             Case 1 ' Warrior
-                imageFace = 1
+                imageChar = 1
             Case 2 ' Wizard
-                imageFace = 2
+                imageChar = 2
             Case 3 ' Whisperer
-                imageFace = 3
+                imageChar = 3
         End Select
 
-        If FaceGfxInfo(imageFace).IsLoaded = False Then
-            LoadTexture(imageFace, 7)
+        If CharacterGfxInfo(imageChar).IsLoaded = False Then
+            LoadTexture(imageChar, 2)
         End If
 
-        ' render face
-        RenderTexture(FaceSprite(imageFace), Window, xO + 30, yO + 75, 0, 0, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height, FaceGfxInfo(imageFace).Width, FaceGfxInfo(imageFace).Height)
+        RenderTexture(CharacterSprite(imageChar), Window, xO + 50, yO + 90, 0, 0, CharacterGfxInfo(imageChar).Width / 4, CharacterGfxInfo(imageChar).Height / 4, CharacterGfxInfo(imageChar).Width / 4, CharacterGfxInfo(imageChar).Height / 4)
     End Sub
 
     Public Sub Jobs_DrawText()

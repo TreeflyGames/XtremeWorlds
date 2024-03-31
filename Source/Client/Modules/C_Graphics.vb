@@ -47,10 +47,6 @@ Module C_Graphics
     Friend SkillSprite() As Sprite
     Friend SkillGfxInfo() As GraphicInfo
 
-    Friend FaceTexture() As Texture
-    Friend FaceSprite() As Sprite
-    Friend FaceGfxInfo() As GraphicInfo
-
     Friend ProjectileTexture() As Texture
     Friend ProjectileSprite() As Sprite
     Friend ProjectileGfxInfo() As GraphicInfo
@@ -143,7 +139,6 @@ Module C_Graphics
     Friend NumResources As Integer
     Friend NumAnimations As Integer
     Friend NumSkills As Integer
-    Friend NumFaces As Integer
     Friend NumFogs As Integer
     Friend NumEmotes As Integer
     Friend NumPanorama As Integer
@@ -549,10 +544,6 @@ Module C_Graphics
         ReDim SkillSprite(NumSkills)
         ReDim SkillGfxInfo(NumSkills)
 
-        ReDim FaceTexture(NumFaces)
-        ReDim FaceSprite(NumFaces)
-        ReDim FaceGfxInfo(NumFaces)
-
         ReDim ProjectileTexture(NumProjectiles)
         ReDim ProjectileSprite(NumProjectiles)
         ReDim ProjectileGfxInfo(NumProjectiles)
@@ -851,21 +842,6 @@ Module C_Graphics
             With AnimationGfxInfo(index)
                 .Width = AnimationTexture(index).Size.X
                 .Height = AnimationTexture(index).Size.Y
-                .IsLoaded = True
-                .TextureTimer = GetTickCount() + 100000
-            End With
-
-        ElseIf texType = 7 Then 'faces
-            If index <= 0 OrElse index > NumFaces Then Exit Sub
-
-            'Load texture first, dont care about memory streams (just use the filename)
-            FaceTexture(index) = New Texture(Paths.Graphics & "faces\" & index & GfxExt)
-            FaceSprite(index) = New Sprite(FaceTexture(index))
-
-            'Cache the width and height
-            With FaceGfxInfo(index)
-                .Width = FaceTexture(index).Size.X
-                .Height = FaceTexture(index).Size.Y
                 .IsLoaded = True
                 .TextureTimer = GetTickCount() + 100000
             End With
@@ -2108,10 +2084,6 @@ Module C_Graphics
         For i = 0 To NumTileSets
             If Not TilesetTexture(i) Is Nothing Then TilesetTexture(i).Dispose()
         Next i
-
-        For i = 0 To NumFaces
-            If Not FaceTexture(i) Is Nothing Then FaceTexture(i).Dispose()
-        Next
 
         For i = 0 To NumFogs
             If Not FogTexture(i) Is Nothing Then FogTexture(i).Dispose()

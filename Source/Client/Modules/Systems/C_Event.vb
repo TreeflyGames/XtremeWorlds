@@ -901,7 +901,6 @@ newlist:
                     tmptxt = tmptxt & frmEditor_Events.txtShowText.Lines(i)
                 Next
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text1 = tmptxt
-                TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.nudShowTextFace.Value
 
             Case EventType.ShowChoices
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Index = Index
@@ -1265,7 +1264,6 @@ newlist:
             Case EventType.ShowText
                 IsEdit = True
                 frmEditor_Events.txtShowText.Text = TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text1
-                frmEditor_Events.nudShowTextFace.Value = TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1
                 frmEditor_Events.fraDialogue.Visible = True
                 frmEditor_Events.fraShowText.Visible = True
                 frmEditor_Events.fraCommands.Visible = False
@@ -1785,7 +1783,6 @@ newlist:
                 End If
             Case EventType.ShowText
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text1 = frmEditor_Events.txtShowText.Text
-                TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.nudShowTextFace.Value
             Case EventType.ShowChoices
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text1 = frmEditor_Events.txtChoicePrompt.Text
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text2 = frmEditor_Events.txtChoices1.Text
