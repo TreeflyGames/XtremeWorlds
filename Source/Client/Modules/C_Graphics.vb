@@ -1216,6 +1216,7 @@ Module C_Graphics
             y = MapNpc(mapNpcNum).Y * PicY + MapNpc(mapNpcNum).YOffset
         End If
 
+        'DrawShadow(x, y + 16)
         DrawCharacterSprite(sprite, x, y, rect)
     End Sub
 
@@ -1279,6 +1280,25 @@ Module C_Graphics
         RenderTexture(CharacterSprite(sprite), Window, x, y, sRECT.X, sRECT.Y, sRECT.Width, sRECT.Height, sRECT.Width, sRECT.Height)
     End Sub
 
+    Friend Sub DrawShadow(x2 As Integer, y2 As Integer)
+        Dim x As Integer
+        Dim y As Integer
+        Dim srcrec As Rectangle
+        Dim destrec As Rectangle
+
+        'seeying we still use it, lets update timer
+        With ShadowGfxInfo
+            .TextureTimer = GetTickCount() + 100000
+        End With
+
+        x = ConvertMapX(x2)
+        y = ConvertMapY(y2)
+        srcrec = New Rectangle(0, 0, PicX, PicY)
+        destrec = New Rectangle(ConvertMapX(x * PicX), ConvertMapY(y * PicY), PicX, PicY)
+
+        RenderTexture(ShadowSprite, Window, x, y, srcrec.X, srcrec.Y, destrec.Width, destrec.Height, destrec.Width, destrec.Height)
+    End Sub
+
     Friend Sub DrawBlood(index As Integer)
         Dim srcrec As Rectangle
         Dim destrec As Rectangle
@@ -1296,7 +1316,6 @@ Module C_Graphics
             y = ConvertMapY(Blood(index).Y * PicY)
 
             srcrec = New Rectangle((.Sprite - 1) * PicX, 0, PicX, PicY)
-
             destrec = New Rectangle(ConvertMapX(.X * PicX), ConvertMapY(.Y * PicY), PicX, PicY)
 
             RenderTexture(BloodSprite, Window, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)

@@ -665,6 +665,7 @@ Module C_Player
                                (CharacterGfxInfo(spritenum).Width / 4), (CharacterGfxInfo(spritenum).Height / 4))
 
         ' render the actual sprite
+        'DrawShadow(x, y + 16)
         DrawCharacterSprite(spritenum, x, y, rect)
 
         'check for paperdolling
