@@ -131,6 +131,10 @@ Module C_Graphics
     Friend CursorSprite As Sprite
     Friend CursorGfxInfo As GraphicInfo
 
+    Friend ShadowGfx As Texture
+    Friend ShadowSprite As Sprite
+    Friend ShadowGfxInfo As GraphicInfo
+
     ' Number of graphic files
     Friend NumTileSets As Integer
     Friend NumCharacters As Integer
@@ -693,6 +697,16 @@ Module C_Graphics
             'Cache the width and height
             CursorGfxInfo.Width = CursorGfx.Size.X
             CursorGfxInfo.Height = CursorGfx.Size.Y
+        End If
+
+        ShadowGfxInfo = New GraphicInfo
+        If File.Exists(Paths.Graphics & "Misc\Shadow" & GfxExt) Then
+            ShadowGfx = New Texture(Paths.Graphics & "Misc\Shadow" & GfxExt)
+            ShadowSprite = New Sprite(ShadowGfx)
+
+            'Cache the width and height
+            ShadowGfxInfo.Width = ShadowGfx.Size.X
+            ShadowGfxInfo.Height = ShadowGfx.Size.Y
         End If
 
         For i = 1 To NumInterface
