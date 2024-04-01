@@ -434,8 +434,8 @@ Module C_Editors
             frmEditor_Item.txtName.Text = Trim$(.Name)
             frmEditor_Item.txtDescription.Text = Trim$(.Description)
 
-            If .Icon > frmEditor_Item.nudPic.Maximum Then .Icon = 0
-            frmEditor_Item.nudPic.Value = .Icon
+            If .Icon > frmEditor_Item.nudIcon.Maximum Then .Icon = 0
+            frmEditor_Item.nudIcon.Value = .Icon
             If .Type > ItemType.Count - 1 Then .Type = 0
             frmEditor_Item.cmbType.SelectedIndex = .Type
             frmEditor_Item.cmbAnimation.SelectedIndex = .Animation

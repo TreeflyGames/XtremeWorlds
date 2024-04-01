@@ -2218,7 +2218,7 @@ Module C_Graphics
 
     Friend Sub EditorItem_DrawIcon()
         Dim itemnum As Integer
-        itemnum = frmEditor_Item.nudPic.Value
+        itemnum = frmEditor_Item.nudIcon.Value
 
         If itemnum < 1 OrElse itemnum > NumItems Then
             frmEditor_Item.picItem.BackgroundImage = Nothing
