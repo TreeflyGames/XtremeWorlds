@@ -263,9 +263,9 @@ Partial Class frmEditor_Moral
         DarkLabel11.Location = New Point(13, 81)
         DarkLabel11.Margin = New Padding(5, 0, 5, 0)
         DarkLabel11.Name = "DarkLabel11"
-        DarkLabel11.Size = New Size(55, 25)
+        DarkLabel11.Size = New Size(59, 25)
         DarkLabel11.TabIndex = 10
-        DarkLabel11.Text = "Color"
+        DarkLabel11.Text = "Color:"
         ' 
         ' frmEditor_Moral
         ' 
