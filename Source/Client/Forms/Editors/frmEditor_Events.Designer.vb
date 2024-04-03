@@ -8,7 +8,7 @@ Partial Class frmEditor_Events
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
-            If disposing AndAlso components IsNot Nothing Then
+            If disposing And components IsNot Nothing Then
                 components.Dispose()
             End If
         Finally
@@ -1271,7 +1271,7 @@ Partial Class frmEditor_Events
         ' 
         cmbPlayervarCompare.DrawMode = DrawMode.OwnerDrawFixed
         cmbPlayervarCompare.FormattingEnabled = True
-        cmbPlayervarCompare.Items.AddRange(New Object() {"Equal To", "Great Than OrElse Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
+        cmbPlayervarCompare.Items.AddRange(New Object() {"Equal To", "Great Than Or Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
         cmbPlayervarCompare.Location = New Point(372, 34)
         cmbPlayervarCompare.Margin = New Padding(5)
         cmbPlayervarCompare.Name = "cmbPlayervarCompare"
@@ -1951,7 +1951,7 @@ Partial Class frmEditor_Events
         ' 
         cmbCondition_LevelCompare.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_LevelCompare.FormattingEnabled = True
-        cmbCondition_LevelCompare.Items.AddRange(New Object() {"Equal To", "Great Than OrElse Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
+        cmbCondition_LevelCompare.Items.AddRange(New Object() {"Equal To", "Great Than Or Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
         cmbCondition_LevelCompare.Location = New Point(178, 300)
         cmbCondition_LevelCompare.Margin = New Padding(5)
         cmbCondition_LevelCompare.Name = "cmbCondition_LevelCompare"
@@ -2095,7 +2095,7 @@ Partial Class frmEditor_Events
         ' 
         cmbCondition_PlayerVarCompare.DrawMode = DrawMode.OwnerDrawFixed
         cmbCondition_PlayerVarCompare.FormattingEnabled = True
-        cmbCondition_PlayerVarCompare.Items.AddRange(New Object() {"Equal To", "Great Than OrElse Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
+        cmbCondition_PlayerVarCompare.Items.AddRange(New Object() {"Equal To", "Great Than Or Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal"})
         cmbCondition_PlayerVarCompare.Location = New Point(393, 40)
         cmbCondition_PlayerVarCompare.Margin = New Padding(5)
         cmbCondition_PlayerVarCompare.Name = "cmbCondition_PlayerVarCompare"

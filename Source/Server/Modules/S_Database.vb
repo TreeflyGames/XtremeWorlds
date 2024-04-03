@@ -123,7 +123,7 @@ Module S_Database
     End Function
 
     Public Function HexToNumber(hexString As String) As Int64
-        If String.IsNullOrWhiteSpace(hexString) OrElse Not Regex.IsMatch(hexString, "^[0-9a-fA-F]+$") Then
+        If String.IsNullOrWhiteSpace(hexString) Or Not Regex.IsMatch(hexString, "^[0-9a-fA-F]+$") Then
             Return 0
         End If
 
@@ -331,9 +331,9 @@ Module S_Database
         For Each line As String In File.ReadAllLines(filePath)
             If line.Trim().Equals("[" & section & "]", StringComparison.OrdinalIgnoreCase) Then
                 isInSection = True
-            ElseIf line.StartsWith("[") AndAlso line.EndsWith("]") Then
+            ElseIf line.StartsWith("[") And line.EndsWith("]") Then
                 isInSection = False
-            ElseIf isInSection AndAlso line.Contains("=") Then
+            ElseIf isInSection And line.Contains("=") Then
                 Dim parts() As String = line.Split(New Char() {"="c}, 2)
                 If parts(0).Trim().Equals(key, StringComparison.OrdinalIgnoreCase) Then
                     Return parts(1).Trim()
@@ -354,7 +354,7 @@ Module S_Database
             If lines(i).Trim().Equals("[" & section & "]", StringComparison.OrdinalIgnoreCase) Then
                 isInSection = True
                 i += 1
-                While i < lines.Count AndAlso Not lines(i).StartsWith("[")
+                While i < lines.Count And Not lines(i).StartsWith("[")
                     If lines(i).Contains("=") Then
                         Dim parts() As String = lines(i).Split(New Char() {"="c}, 2)
                         If parts(0).Trim().Equals(key, StringComparison.OrdinalIgnoreCase) Then

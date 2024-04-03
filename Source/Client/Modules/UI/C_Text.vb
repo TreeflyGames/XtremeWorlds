@@ -77,7 +77,7 @@ Module C_Text
         End Select
 
         textX = ConvertMapX(MapNpc(mapNpcNum).X * PicX) + MapNpc(mapNpcNum).XOffset + (PicX \ 2) - (TextWidth((Trim$(NPC(npcNum).Name))) / 2) - 2
-        If NPC(npcNum).Sprite < 1 OrElse NPC(npcNum).Sprite > NumCharacters Then
+        If NPC(npcNum).Sprite < 1 Or NPC(npcNum).Sprite > NumCharacters Then
             textY = ConvertMapY(MapNpc(mapNpcNum).Y * PicY) + MapNpc(mapNpcNum).YOffset - 16
         Else
             textY = ConvertMapY(MapNpc(mapNpcNum).Y * PicY) + MapNpc(mapNpcNum).YOffset - (CharacterGfxInfo(NPC(npcNum).Sprite).Height / 4) + 16
@@ -103,7 +103,7 @@ Module C_Text
         If MapEvents(index).GraphicType = 0 Then
             textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
         ElseIf MapEvents(index).GraphicType = 1 Then
-            If MapEvents(index).Graphic < 1 OrElse MapEvents(index).Graphic > NumCharacters Then
+            If MapEvents(index).Graphic < 1 Or MapEvents(index).Graphic > NumCharacters Then
                 textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
             Else
                 ' Determine location for text
@@ -135,32 +135,61 @@ Module C_Text
                         With Map.Tile(X, y)
                             tX = ((ConvertMapX(X * PicX)) - 4) + (PicX * 0.5)
                             tY = ((ConvertMapY(y * PicY)) - 7) + (PicY * 0.5)
-                            Select Case .Type
-                                Case [Enum].TileType.Blocked
-                                    RenderText("B", Window, tX, tY, (Color.Red), (Color.Black))
-                                Case TileType.Warp
-                                    RenderText("W", Window, tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Item
-                                    RenderText("I", Window, tX, tY, (Color.White), (Color.Black))
-                                Case TileType.NpcAvoid
-                                    RenderText("N", Window, tX, tY, (Color.White), (Color.Black))
-                                Case TileType.Resource
-                                    RenderText("R", Window, tX, tY, (Color.Green), (Color.Black))
-                                Case TileType.NpcSpawn
-                                    RenderText("S", Window, tX, tY, (Color.Yellow), (Color.Black))
-                                Case TileType.Shop
-                                    RenderText("S", Window, tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Bank
-                                    RenderText("B", Window, tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Heal
-                                    RenderText("H", Window, tX, tY, (Color.Green), (Color.Black))
-                                Case TileType.Trap
-                                    RenderText("T", Window, tX, tY, (Color.Red), (Color.Black))
-                                Case TileType.Light
-                                    RenderText("L", Window, tX, tY, (Color.Yellow), (Color.Black))
-                                Case TileType.Animation
-                                    RenderText("A", Window, tX, tY, (Color.Red), (Color.Black))
-                            End Select
+                            If EditorAttribute = 1 Then
+                                Select Case .Type
+                                    Case TileType.Blocked
+                                        RenderText("B", Window, tX, tY, (Color.Red), (Color.Black))
+                                    Case TileType.Warp
+                                        RenderText("W", Window, tX, tY, (Color.Blue), (Color.Black))
+                                    Case TileType.Item
+                                        RenderText("I", Window, tX, tY, (Color.White), (Color.Black))
+                                    Case TileType.NpcAvoid
+                                        RenderText("N", Window, tX, tY, (Color.White), (Color.Black))
+                                    Case TileType.Resource
+                                        RenderText("R", Window, tX, tY, (Color.Green), (Color.Black))
+                                    Case TileType.NpcSpawn
+                                        RenderText("S", Window, tX, tY, (Color.Yellow), (Color.Black))
+                                    Case TileType.Shop
+                                        RenderText("S", Window, tX, tY, (Color.Blue), (Color.Black))
+                                    Case TileType.Bank
+                                        RenderText("B", Window, tX, tY, (Color.Blue), (Color.Black))
+                                    Case TileType.Heal
+                                        RenderText("H", Window, tX, tY, (Color.Green), (Color.Black))
+                                    Case TileType.Trap
+                                        RenderText("T", Window, tX, tY, (Color.Red), (Color.Black))
+                                    Case TileType.Light
+                                        RenderText("L", Window, tX, tY, (Color.Yellow), (Color.Black))
+                                    Case TileType.Animation
+                                        RenderText("A", Window, tX, tY, (Color.Red), (Color.Black))
+                                End Select
+                            Else
+                                Select Case .Type2
+                                    Case [Enum].TileType.Blocked
+                                        RenderText("B", Window, tX, tY, (Color.Red), (Color.Black))
+                                    Case TileType.Warp
+                                        RenderText("W", Window, tX, tY, (Color.Blue), (Color.Black))
+                                    Case TileType.Item
+                                        RenderText("I", Window, tX, tY, (Color.White), (Color.Black))
+                                    Case TileType.NpcAvoid
+                                        RenderText("N", Window, tX, tY, (Color.White), (Color.Black))
+                                    Case TileType.Resource
+                                        RenderText("R", Window, tX, tY, (Color.Green), (Color.Black))
+                                    Case TileType.NpcSpawn
+                                        RenderText("S", Window, tX, tY, (Color.Yellow), (Color.Black))
+                                    Case TileType.Shop
+                                        RenderText("S", Window, tX, tY, (Color.Blue), (Color.Black))
+                                    Case TileType.Bank
+                                        RenderText("B", Window, tX, tY, (Color.Blue), (Color.Black))
+                                    Case TileType.Heal
+                                        RenderText("H", Window, tX, tY, (Color.Green), (Color.Black))
+                                    Case TileType.Trap
+                                        RenderText("T", Window, tX, tY, (Color.Red), (Color.Black))
+                                    Case TileType.Light
+                                        RenderText("L", Window, tX, tY, (Color.Yellow), (Color.Black))
+                                    Case TileType.Animation
+                                        RenderText("A", Window, tX, tY, (Color.Red), (Color.Black))
+                                End Select
+                            End If
                         End With
                     End If
                 Next

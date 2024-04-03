@@ -187,7 +187,7 @@ Module C_Animations
 
         sprite = Animation(AnimInstance(index).Animation).Sprite(layer)
 
-        If sprite < 1 OrElse sprite > NumAnimations Then Exit Sub
+        If sprite < 1 Or sprite > NumAnimations Then Exit Sub
 
         If AnimationGfxInfo(sprite).IsLoaded = False Then
             LoadTexture(sprite, 6)
@@ -245,7 +245,7 @@ Module C_Animations
                 ' quick save the index
                 lockindex = AnimInstance(index).lockindex
                 ' check if is ingame
-                If IsPlaying(lockindex) AndAlso PetAlive(lockindex) = True Then
+                If IsPlaying(lockindex) And PetAlive(lockindex) = True Then
                     ' check if on same map
                     If GetPlayerMap(lockindex) = GetPlayerMap(MyIndex) Then
                         ' is on map, is playing, set x & y
@@ -284,7 +284,7 @@ Module C_Animations
             x = 0
         End If
 
-        If sRect.Width < 0 OrElse sRect.Height < 0 Then Exit Sub
+        If sRect.Width < 0 Or sRect.Height < 0 Then Exit Sub
 
         RenderTexture(AnimationSprite(sprite), Window, x, y, sRect.X, sRect.Y, sRect.Width, sRect.Height)
 
@@ -332,7 +332,7 @@ Module C_Animations
         Next
 
         ' if neither layer is used, clear
-        If AnimInstance(index).Used(0) = False AndAlso AnimInstance(index).Used(1) = False Then
+        If AnimInstance(index).Used(0) = False And AnimInstance(index).Used(1) = False Then
             ClearAnimInstance(index)
         End If
     End Sub

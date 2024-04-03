@@ -57,7 +57,7 @@ Friend Module S_NetworkConfig
 
     Sub SendDataToMapBut(index As Integer, mapNum As Integer, ByRef data() As Byte, head As Integer)
         For i As Integer = 1 To Socket.HighIndex()
-            If GetPlayerMap(i) = mapNum AndAlso i <> index Then
+            If GetPlayerMap(i) = mapNum And i <> index Then
                 Socket.SendDataTo(i, data, head)
             End If
         Next

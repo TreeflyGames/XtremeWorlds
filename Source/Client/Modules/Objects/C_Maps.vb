@@ -103,7 +103,11 @@ Module C_Maps
                     Map.Tile(x, y).Data1 = 0
                     Map.Tile(x, y).Data2 = 0
                     Map.Tile(x, y).Data3 = 0
+                    Map.Tile(x, y).Data1_2 = 0
+                    Map.Tile(x, y).Data2_2 = 0
+                    Map.Tile(x, y).Data3_2 = 0
                     Map.Tile(x, y).Type = 0
+                    Map.Tile(x, y).Type2 = 0
                     Map.Tile(x, y).DirBlock = 0
 
                     For i = 1 To MaxTileHistory
@@ -277,14 +281,21 @@ Module C_Maps
                     Map.Tile(x, y).Data1 = buffer.ReadInt32
                     Map.Tile(x, y).Data2 = buffer.ReadInt32
                     Map.Tile(x, y).Data3 = buffer.ReadInt32
+                    Map.Tile(x, y).Data1_2 = buffer.ReadInt32
+                    Map.Tile(x, y).Data2_2 = buffer.ReadInt32
+                    Map.Tile(x, y).Data3_2 = buffer.ReadInt32
                     Map.Tile(x, y).DirBlock = buffer.ReadInt32
 
                     For j = 1 To MaxTileHistory
                         TileHistory(j).Tile(x, y).Data1 = Map.Tile(x, y).Data1
                         TileHistory(j).Tile(x, y).Data2 = Map.Tile(x, y).Data2
                         TileHistory(j).Tile(x, y).Data3 = Map.Tile(x, y).Data3
+                        TileHistory(j).Tile(x, y).Data1_2 = Map.Tile(x, y).Data1_2
+                        TileHistory(j).Tile(x, y).Data2_2 = Map.Tile(x, y).Data2_2
+                        TileHistory(j).Tile(x, y).Data3_2 = Map.Tile(x, y).Data3_2
                         TileHistory(j).Tile(x, y).DirBlock = Map.Tile(x, y).DirBlock
                         TileHistory(j).Tile(x, y).Type = Map.Tile(x, y).Type
+                        TileHistory(j).Tile(x, y).Type2 = Map.Tile(x, y).Type2
                     Next
 
                     ReDim Map.Tile(x, y).Layer(LayerType.Count - 1)
@@ -305,7 +316,9 @@ Module C_Maps
                             TileHistory(j).Tile(x, y).Layer(i).AutoTile = Map.Tile(x, y).Layer(i).AutoTile
                         Next
                     Next
+
                     Map.Tile(x, y).Type = buffer.ReadInt32
+                    Map.Tile(x, y).Type2 = buffer.ReadInt32
                 Next
             Next
 
@@ -623,6 +636,9 @@ Module C_Maps
                 buffer.WriteInt32(Map.Tile(x, y).Data1)
                 buffer.WriteInt32(Map.Tile(x, y).Data2)
                 buffer.WriteInt32(Map.Tile(x, y).Data3)
+                buffer.WriteInt32(Map.Tile(x, y).Data1_2)
+                buffer.WriteInt32(Map.Tile(x, y).Data2_2)
+                buffer.WriteInt32(Map.Tile(x, y).Data3_2)
                 buffer.WriteInt32(Map.Tile(x, y).DirBlock)
                 For i = 1 To LayerType.Count - 1
                     buffer.WriteInt32(Map.Tile(x, y).Layer(i).Tileset)
@@ -631,6 +647,7 @@ Module C_Maps
                     buffer.WriteInt32(Map.Tile(x, y).Layer(i).AutoTile)
                 Next
                 buffer.WriteInt32(Map.Tile(x, y).Type)
+                buffer.WriteInt32(Map.Tile(x, y).Type2)
             Next
         Next
 
@@ -778,7 +795,7 @@ Module C_Maps
 
 #Region "Drawing"
 
-    Friend Sub DrawMapTile(x As Integer, y As Integer)
+    Friend Sub DrawMapLowerTile(x As Integer, y As Integer)
         Dim i As Integer, alpha As Byte
         Dim rect As New Rectangle(0, 0, 0, 0)
 
@@ -800,7 +817,7 @@ Module C_Maps
             End If
 
             ' skip tile if tileset isn't set
-            If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
+            If Map.Tile(x, y).Layer(i).Tileset > 0 And Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
                 If TilesetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
                     LoadTexture(Map.Tile(x, y).Layer(i).Tileset, 1)
                 End If
@@ -864,7 +881,7 @@ Module C_Maps
             End If
 
             ' skip tile if tileset isn't set
-            If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
+            If Map.Tile(x, y).Layer(i).Tileset > 0 And Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
                 If TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
                     LoadTexture(Map.Tile(x, y).Layer(i).Tileset, 1)
                 End If
