@@ -1126,7 +1126,7 @@ Partial Class frmEditor_Map
         ' 
         cmbAttribute.DropDownStyle = ComboBoxStyle.DropDownList
         cmbAttribute.FormattingEnabled = True
-        cmbAttribute.Items.AddRange(New Object() {"Type 1", "Type 2"})
+        cmbAttribute.Items.AddRange(New Object() {"Layer 1", "Layer 2"})
         cmbAttribute.Location = New Point(89, 957)
         cmbAttribute.Margin = New Padding(6, 5, 6, 5)
         cmbAttribute.Name = "cmbAttribute"
