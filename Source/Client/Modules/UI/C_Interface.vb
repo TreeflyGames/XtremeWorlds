@@ -1927,7 +1927,7 @@ Module C_Interface
 
                     If Not CharSprite(I) > NumCharacters Then
                         ' render char
-                        RenderTexture(CharacterSprite(CharSprite(I)), Window, x + 24, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
+                        RenderTexture(CharacterSprite(CharSprite(I)), Window, x + 30, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
                     End If
                 End If
             End If
