@@ -1283,7 +1283,7 @@ Module C_Interface
         CreateLabel(WindowCount, "lblHeader", 103, 41, 144, FontSize, "Header", Arial, Color.White, AlignmentType.Center)
 
         ' Input
-        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, , Arial, AlignmentType.Center, , , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
+        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, , Arial, AlignmentType.Center, , , , 5, 2, , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
 
         ' Labels
         CreateLabel(WindowCount, "lblBody_1", 15, 60, 314, FontSize, "Invalid username or password.", Arial, Color.White, AlignmentType.Center)
