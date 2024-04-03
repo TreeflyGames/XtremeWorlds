@@ -833,7 +833,7 @@ Module S_Database
         End If
 
         mwMap.Weather = xwMap.Weather
-        mwMap.NoRespawn = xwMap.Respawn <> 0
+        mwMap.NoRespawn = xwMap.Respawn = 0
         mwMap.MaxX = 15
         mwMap.MaxY = 11
 
