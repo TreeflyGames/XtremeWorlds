@@ -3293,7 +3293,7 @@ Module C_Interface
                                     Color = GetSfmlColor(ColorType.BrightGreen)
                                 End If
 
-                                RenderText(ConvertCurrency(Amount), Window, x, y, Color, Color, , Verdana)
+                                RenderText(ConvertCurrency(Amount), Window, x, y, Color, Color, , Georgia)
                             End If
                         End If
                     End If
