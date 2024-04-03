@@ -1308,8 +1308,8 @@ Module S_Player
                                     SetPlayerInvItemValue(index, n, GetPlayerInvItemValue(index, n) + MapItem(mapNum, i).Value)
                                     Msg = MapItem(mapNum, i).Value & " " & Trim$(Item(GetPlayerInvItemNum(index, n)).Name)
                                 Else
-                                    SetPlayerInvItemValue(index, n, 0)
-                                    Msg = CheckGrammar(Trim$(Item(GetPlayerInvItemNum(index, n)).Name), 1)
+                                    SetPlayerInvItemValue(index, n, 1)
+                                    Msg = Trim$(Item(GetPlayerInvItemNum(index, n)).Name)
                                 End If
 
                                 ' Erase item from the map
