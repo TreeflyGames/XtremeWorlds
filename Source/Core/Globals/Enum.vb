@@ -218,9 +218,13 @@
         None = 0
         Ground
         Mask
+        MaskAnim
         Cover
+        CoverAnim
         Fringe
+        FringeAnim
         Roof
+        RoofAnim
         Count
     End Enum
 

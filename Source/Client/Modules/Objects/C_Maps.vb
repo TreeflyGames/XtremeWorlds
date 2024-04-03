@@ -1,6 +1,7 @@
 ﻿Imports System.DirectoryServices.Protocols
 Imports System.Drawing
 Imports System.IO
+Imports System.Speech.Synthesis.TtsEngine
 Imports Core
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
@@ -785,8 +786,18 @@ Module C_Maps
         If Map.Tile Is Nothing Then Exit Sub
         If MapData = False Then Exit Sub
 
-        For i = LayerType.Ground To LayerType.Cover
+        For i = LayerType.Ground To LayerType.CoverAnim
             If Map.Tile(x, y).Layer Is Nothing Then Exit Sub
+
+            If MapAnim = 1 Then
+                Select Case i
+                    Case LayerType.Mask
+                        i = LayerType.MaskAnim
+
+                    Case LayerType.Cover
+                        i = LayerType.CoverAnim
+                End Select
+            End If
 
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
@@ -831,7 +842,7 @@ Module C_Maps
 
     End Sub
 
-    Friend Sub DrawMapFringeTile(x As Integer, y As Integer)
+    Friend Sub DrawMapUpperTile(x As Integer, y As Integer)
         Dim i As Integer, alpha As Integer
         Dim rect As Rectangle
 
@@ -839,8 +850,18 @@ Module C_Maps
         If Map.Tile Is Nothing Then Exit Sub
         If MapData = False Then Exit Sub
 
-        For i = LayerType.Fringe To LayerType.Roof
+        For i = LayerType.Fringe To LayerType.RoofAnim
             If Map.Tile(x, y).Layer Is Nothing Then Exit Sub
+
+            If MapAnim = 1 Then
+                Select Case i
+                    Case LayerType.Fringe
+                        i = LayerType.Fringe
+
+                    Case LayerType.Roof
+                        i = LayerType.Roof
+                End Select
+            End If
 
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then

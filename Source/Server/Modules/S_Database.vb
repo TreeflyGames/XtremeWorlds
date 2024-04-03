@@ -536,6 +536,12 @@ Module S_Database
             Exit Sub
         End If
 
+        If File.Exists(mapsDir & "\sd\map" & MapNum & ".dat" )
+            'Dim sdMap As SDMapStruct = loadsdmap(mapsDir & "\sd\map" & mapNum.ToString() & ".dat")
+            'Map(mapNum) = MapFromSDMap(sdMap)
+            Exit Sub
+        End If
+
         Dim data As JObject
 
         data = SelectRow(mapNum, "map", "data")
@@ -708,7 +714,7 @@ Module S_Database
                     For x As Integer = 0 To 15
                         xwMap.Tile(x, y).Ground = reader.ReadInt16() ' 42
                         xwMap.Tile(x, y).Mask = reader.ReadInt16() ' 44
-                        xwMap.Tile(x, y).Animation = reader.ReadInt16() ' 46
+                        xwMap.Tile(x, y).MaskAnim = reader.ReadInt16() ' 46
                         xwMap.Tile(x, y).Fringe = reader.ReadInt16() ' 48
                         xwMap.Tile(x, y).Type = CType(reader.ReadByte(), TileType) ' 50
                         xwMap.Tile(x, y).Data1 = reader.ReadInt16() ' 51
@@ -755,12 +761,20 @@ Module S_Database
                     tileNumber = xwTile.Ground
                 Case LayerType.Mask
                     tileNumber = xwTile.Mask
+                Case LayerType.MaskAnim
+                    tileNumber = xwTile.MaskAnim
                 Case LayerType.Cover
                     tileNumber = xwTile.Mask2
+                Case LayerType.CoverAnim
+                    tileNumber = xwTile.Mask2Anim
                 Case LayerType.Fringe
                     tileNumber = xwTile.Fringe
+                Case LayerType.FringeAnim
+                    tileNumber = xwTile.FringeAnim
                 Case LayerType.Roof
                     tileNumber = xwTile.Roof
+                Case LayerType.RoofAnim
+                    tileNumber = xwTile.Fringe2Anim
             End Select
 
             ' Ensure tileNumber is non-negative
@@ -826,7 +840,7 @@ Module S_Database
         Return mwMap
     End Function
 
-    public Function MapFromCSMap(csMap As CSMapStruct) As MapStruct
+    Public Function MapFromCSMap(csMap As CSMapStruct) As MapStruct
         Dim mwMap As MapStruct
 
         ReDim mwMap.Npc(MAX_MAP_NPCS)
@@ -878,6 +892,25 @@ Module S_Database
         For i As Integer = 1 To 30
             mwMap.Npc(i) = csMap.MapData.Npc(i)
         Next
+
+        Return mwMap
+    End Function
+
+    Private Function MapFromSDMap(sdMap As SDMapStruct) As MapStruct
+        Dim mwMap As MapStruct
+
+        mwMap.Name = sdMap.Name
+        mwMap.Music = sdMap.Music
+        mwMap.Revision = sdMap.Revision
+
+        mwMap.Up = sdMap.Up
+        mwMap.Down = sdMap.Down
+        mwMap.Left = sdMap.Left
+        mwMap.Right = sdMap.Right
+
+        mwMap.Tileset = sdMap.Tileset
+        mwMap.MaxX = sdMap.MaxX
+        mwMap.MaxY = sdMap.MaxY
 
         Return mwMap
     End Function

@@ -6,6 +6,8 @@ Module C_Globals
     Public ResolutionHeight As Integer
     Public ResolutionWidth As Integer
 
+    Public MapAnim As Byte
+
     ' Global dialogue index
     Public diaHeader As String
     Public diaBody As String

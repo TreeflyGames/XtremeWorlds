@@ -11,7 +11,7 @@ Module C_GameLogic
         Dim tmr1000 As Integer, tick As Integer, fogtmr As Integer, chattmr As Integer
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
         Dim tmrweather As Integer
-        Dim tmr25 As Integer, tmr500 As Integer, tmrconnect As Integer, TickFPS As Integer
+        Dim tmr25 As Integer, tmr500 As Integer, tmr250 As Integer, tmrconnect As Integer, TickFPS As Integer
         Dim fadetmr As Integer, rendertmr As Integer
         Dim animationtmr As Integer
 
@@ -223,6 +223,16 @@ Module C_GameLogic
                     End If
 
                     tmr500 = tick + 500
+                End If
+
+                ' Change map animation
+                If tmr250 < tick Then
+                    If MapAnim = 0 Then
+                        MapAnim = 1
+                    Else
+                        MapAnim = 0
+                    End If
+                    tmr250 = tick + 250
                 End If
 
                 If FadeInSwitch = True Then

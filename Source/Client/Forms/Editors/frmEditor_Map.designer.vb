@@ -1048,7 +1048,7 @@ Partial Class frmEditor_Map
         ' 
         cmbLayers.DropDownStyle = ComboBoxStyle.DropDownList
         cmbLayers.FormattingEnabled = True
-        cmbLayers.Items.AddRange(New Object() {"Ground", "Mask", "Cover", "Fringe", "Roof"})
+        cmbLayers.Items.AddRange(New Object() {"Ground", "Mask", "Mask 2 Anim", "Cover", "Cover 2 Anim", "Fringe", "Fringe Anim", "Roof", "Roof Anim"})
         cmbLayers.Location = New Point(309, 943)
         cmbLayers.Margin = New Padding(6, 5, 6, 5)
         cmbLayers.Name = "cmbLayers"
