@@ -570,7 +570,11 @@ Module C_Maps
 
     Friend Sub SendPlayerRequestNewMap()
         If GettingMap Then Exit Sub
-
+        If Map.Tile(GetPlayerX(MyIndex), GetPlayerY(MyIndex)).Type = TileType.NoXing Or Map.Tile(GetPlayerX(MyIndex), GetPlayerY(MyIndex)).Type2 = TileType.NoXing Then
+            AddText("The pathway is blocked.", ColorType.BrightRed)
+            Exit Sub
+        End If
+ 
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CRequestNewMap)
@@ -578,6 +582,9 @@ Module C_Maps
 
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()
+
+        GettingMap = True
+        CanMoveNow = False
 
     End Sub
 

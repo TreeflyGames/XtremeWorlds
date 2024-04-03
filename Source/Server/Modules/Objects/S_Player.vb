@@ -857,7 +857,6 @@ Module S_Player
 #End Region
 
 #Region "Movement"
-
     Sub PlayerWarp(index As Integer, MapNum As Integer, X As Integer, Y As Integer, Optional NoInstance As Boolean = False)
         Dim OldMap As Integer
         Dim i As Integer
@@ -983,12 +982,14 @@ Module S_Player
                         End If
                     End If
                 Else
-                    ' Check to see if we can move them to the another map
-                    If Map(GetPlayerMap(index)).Up > 0 Then
-                        NewMapY = Map(Map(GetPlayerMap(index)).Up).MaxY
-                        PlayerWarp(index, Map(GetPlayerMap(index)).Up, GetPlayerX(index), NewMapY)
-                        DidWarp = True
-                        Moved = True
+                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then 
+                        ' Check to see if we can move them to the another map
+                        If Map(GetPlayerMap(index)).Up > 0 Then
+                            NewMapY = Map(Map(GetPlayerMap(index)).Up).MaxY
+                            PlayerWarp(index, Map(GetPlayerMap(index)).Up, GetPlayerX(index), NewMapY)
+                            DidWarp = True
+                            Moved = True
+                        End If
                     End If
                 End If
 
@@ -1011,18 +1012,19 @@ Module S_Player
                         End If
                     End If
                 Else
-                    ' Check to see if we can move them to the another map
-                    If Map(GetPlayerMap(index)).Down > 0 Then
-                        PlayerWarp(index, Map(GetPlayerMap(index)).Down, GetPlayerX(index), 0)
-                        DidWarp = True
-                        Moved = True
+                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then 
+                        ' Check to see if we can move them to the another map
+                        If Map(GetPlayerMap(index)).Down > 0 Then
+                            PlayerWarp(index, Map(GetPlayerMap(index)).Down, GetPlayerX(index), 0)
+                            DidWarp = True
+                            Moved = True
+                        End If
                     End If
                 End If
 
             Case DirectionType.Left
                 ' Check to make sure not outside of boundaries
                 If GetPlayerX(index) > 0 Then
-
                     ' Check to make sure that the tile is walkable
                     If Not IsDirBlocked(Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).DirBlock, DirectionType.Left) Then
                         If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index)).Type <> TileType.Blocked And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index)).Type2 <> TileType.Blocked Then
@@ -1039,12 +1041,14 @@ Module S_Player
                         End If
                     End If
                 Else
-                    ' Check to see if we can move them to the another map
-                    If Map(GetPlayerMap(index)).Left > 0 Then
-                        NewMapX = Map(Map(GetPlayerMap(index)).Left).MaxX
-                        PlayerWarp(index, Map(GetPlayerMap(index)).Left, NewMapX, GetPlayerY(index))
-                        DidWarp = True
-                        Moved = True
+                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then 
+                        ' Check to see if we can move them to the another map
+                        If Map(GetPlayerMap(index)).Left > 0 Then
+                            NewMapX = Map(Map(GetPlayerMap(index)).Left).MaxX
+                            PlayerWarp(index, Map(GetPlayerMap(index)).Left, NewMapX, GetPlayerY(index))
+                            DidWarp = True
+                            Moved = True
+                        End If
                     End If
                 End If
 
@@ -1067,11 +1071,13 @@ Module S_Player
                         End If
                     End If
                 Else
-                    ' Check to see if we can move them to the another map
-                    If Map(GetPlayerMap(index)).Right > 0 Then
-                        PlayerWarp(index, Map(GetPlayerMap(index)).Right, 0, GetPlayerY(index))
-                        DidWarp = True
-                        Moved = True
+                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then 
+                        ' Check to see if we can move them to the another map
+                        If Map(GetPlayerMap(index)).Right > 0 Then
+                            PlayerWarp(index, Map(GetPlayerMap(index)).Right, 0, GetPlayerY(index))
+                            DidWarp = True
+                            Moved = True
+                        End If
                     End If
                 End If
         End Select

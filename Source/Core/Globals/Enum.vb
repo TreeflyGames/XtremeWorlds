@@ -42,6 +42,7 @@
         Trap
         Light
         Animation
+        NoXing
 
         Count
     End Enum

@@ -107,6 +107,8 @@ Partial Class frmEditor_Map
         Label9 = New Label()
         cmbTileSets = New ComboBox()
         tpAttributes = New TabPage()
+        optNoXing = New RadioButton()
+        optInfo = New RadioButton()
         Label23 = New Label()
         cmbAttribute = New ComboBox()
         optAnimation = New RadioButton()
@@ -190,7 +192,6 @@ Partial Class frmEditor_Map
         lblFogIndex = New Label()
         Label14 = New Label()
         cmbWeather = New ComboBox()
-        optInfo = New RadioButton()
         pnlBack.SuspendLayout()
         CType(picBackSelect, ComponentModel.ISupportInitialize).BeginInit()
         pnlAttributes.SuspendLayout()
@@ -1089,6 +1090,7 @@ Partial Class frmEditor_Map
         ' 
         ' tpAttributes
         ' 
+        tpAttributes.Controls.Add(optNoXing)
         tpAttributes.Controls.Add(optInfo)
         tpAttributes.Controls.Add(Label23)
         tpAttributes.Controls.Add(cmbAttribute)
@@ -1113,6 +1115,30 @@ Partial Class frmEditor_Map
         tpAttributes.TabIndex = 3
         tpAttributes.Text = "Attributes"
         tpAttributes.UseVisualStyleBackColor = True
+        ' 
+        ' optNoXing
+        ' 
+        optNoXing.AutoSize = True
+        optNoXing.Checked = True
+        optNoXing.Location = New Point(17, 165)
+        optNoXing.Margin = New Padding(6, 5, 6, 5)
+        optNoXing.Name = "optNoXing"
+        optNoXing.Size = New Size(102, 29)
+        optNoXing.TabIndex = 23
+        optNoXing.TabStop = True
+        optNoXing.Text = "No Xing"
+        optNoXing.UseVisualStyleBackColor = True
+        ' 
+        ' optInfo
+        ' 
+        optInfo.AutoSize = True
+        optInfo.Location = New Point(196, 958)
+        optInfo.Margin = New Padding(6, 5, 6, 5)
+        optInfo.Name = "optInfo"
+        optInfo.Size = New Size(69, 29)
+        optInfo.TabIndex = 22
+        optInfo.Text = "Info"
+        optInfo.UseVisualStyleBackColor = True
         ' 
         ' Label23
         ' 
@@ -1265,7 +1291,7 @@ Partial Class frmEditor_Map
         fraMapSettings.Size = New Size(387, 132)
         fraMapSettings.TabIndex = 15
         fraMapSettings.TabStop = False
-        fraMapSettings.Text = "Map Settings"
+        fraMapSettings.Text = "Settings"
         ' 
         ' Label22
         ' 
@@ -1321,7 +1347,7 @@ Partial Class frmEditor_Map
         fraMapLinks.Size = New Size(387, 215)
         fraMapLinks.TabIndex = 14
         fraMapLinks.TabStop = False
-        fraMapLinks.Text = "Map Links"
+        fraMapLinks.Text = "Borders"
         ' 
         ' txtDown
         ' 
@@ -1344,12 +1370,12 @@ Partial Class frmEditor_Map
         ' lblMap
         ' 
         lblMap.AutoSize = True
-        lblMap.Location = New Point(126, 97)
+        lblMap.Location = New Point(149, 96)
         lblMap.Margin = New Padding(6, 0, 6, 0)
         lblMap.Name = "lblMap"
-        lblMap.Size = New Size(130, 25)
+        lblMap.Size = New Size(67, 25)
         lblMap.TabIndex = 4
-        lblMap.Text = "Current Map: 0"
+        lblMap.Text = "Map: 0"
         ' 
         ' txtRight
         ' 
@@ -1425,9 +1451,9 @@ Partial Class frmEditor_Map
         Label5.Location = New Point(10, 30)
         Label5.Margin = New Padding(6, 0, 6, 0)
         Label5.Name = "Label5"
-        Label5.Size = New Size(127, 25)
+        Label5.Size = New Size(52, 25)
         Label5.TabIndex = 4
-        Label5.Text = "Respawn Map:"
+        Label5.Text = "Map:"
         ' 
         ' txtBootY
         ' 
@@ -1444,9 +1470,9 @@ Partial Class frmEditor_Map
         Label3.Location = New Point(10, 125)
         Label3.Margin = New Padding(6, 0, 6, 0)
         Label3.Name = "Label3"
-        Label3.Size = New Size(101, 25)
+        Label3.Size = New Size(26, 25)
         Label3.TabIndex = 2
-        Label3.Text = "Respawn Y:"
+        Label3.Text = "Y:"
         ' 
         ' txtBootX
         ' 
@@ -1463,9 +1489,9 @@ Partial Class frmEditor_Map
         Label4.Location = New Point(10, 72)
         Label4.Margin = New Padding(6, 0, 6, 0)
         Label4.Name = "Label4"
-        Label4.Size = New Size(102, 25)
+        Label4.Size = New Size(27, 25)
         Label4.TabIndex = 0
-        Label4.Text = "Respawn X:"
+        Label4.Text = "X:"
         ' 
         ' fraMaxSizes
         ' 
@@ -1480,7 +1506,7 @@ Partial Class frmEditor_Map
         fraMaxSizes.Size = New Size(356, 150)
         fraMaxSizes.TabIndex = 12
         fraMaxSizes.TabStop = False
-        fraMaxSizes.Text = "Map Sizes"
+        fraMaxSizes.Text = "Size Settings"
         ' 
         ' txtMaxY
         ' 
@@ -1497,9 +1523,9 @@ Partial Class frmEditor_Map
         Label2.Location = New Point(10, 87)
         Label2.Margin = New Padding(6, 0, 6, 0)
         Label2.Name = "Label2"
-        Label2.Size = New Size(110, 25)
+        Label2.Size = New Size(64, 25)
         Label2.TabIndex = 2
-        Label2.Text = "Maximum Y:"
+        Label2.Text = "Max Y:"
         ' 
         ' txtMaxX
         ' 
@@ -1516,9 +1542,9 @@ Partial Class frmEditor_Map
         Label7.Location = New Point(10, 37)
         Label7.Margin = New Padding(6, 0, 6, 0)
         Label7.Name = "Label7"
-        Label7.Size = New Size(111, 25)
+        Label7.Size = New Size(65, 25)
         Label7.TabIndex = 0
-        Label7.Text = "Maximum X:"
+        Label7.Text = "Max X:"
         ' 
         ' GroupBox2
         ' 
@@ -2017,17 +2043,6 @@ Partial Class frmEditor_Map
         cmbWeather.Size = New Size(238, 33)
         cmbWeather.TabIndex = 0
         ' 
-        ' optInfo
-        ' 
-        optInfo.AutoSize = True
-        optInfo.Location = New Point(17, 165)
-        optInfo.Margin = New Padding(6, 5, 6, 5)
-        optInfo.Name = "optInfo"
-        optInfo.Size = New Size(69, 29)
-        optInfo.TabIndex = 22
-        optInfo.Text = "Info"
-        optInfo.UseVisualStyleBackColor = True
-        ' 
         ' frmEditor_Map
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
@@ -2272,4 +2287,5 @@ Partial Class frmEditor_Map
     Friend WithEvents cmbAttribute As ComboBox
     Friend WithEvents tsbDeleteMap As ToolStripButton
     Friend WithEvents optInfo As RadioButton
+    Friend WithEvents optNoXing As RadioButton
 End Class
