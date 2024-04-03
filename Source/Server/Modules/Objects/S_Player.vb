@@ -811,6 +811,7 @@ Module S_Player
                 'plural
                 GlobalMsg(GetPlayerName(index) & " has gained " & level_count & " levels!")
             End If
+            SendActionMsg(GetPlayerMap(index), "Level Up", ColorType.Yellow, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32))
             SendExp(index)
             SendPlayerData(index)
         End If
