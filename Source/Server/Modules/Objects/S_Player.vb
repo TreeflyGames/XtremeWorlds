@@ -1491,7 +1491,7 @@ Module S_Player
                             MapMsg(GetPlayerMap(index), String.Format("{0} has dropped {1} ({2}x).", GetPlayerName(index), CheckGrammar(Trim$(Item(GetPlayerInvItemNum(index, invNum)).Name)), amount), ColorType.Yellow)
                         Else
                             ' It's not a currency object so this is easy
-                            .Value = 0
+                            .Value = 1
 
                             ' send message
                             MapMsg(GetPlayerMap(index), String.Format("{0} has dropped {1}.", GetPlayerName(index), CheckGrammar(Trim$(Item(GetPlayerInvItemNum(index, invNum)).Name))), ColorType.Yellow)
