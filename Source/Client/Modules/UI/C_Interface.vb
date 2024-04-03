@@ -2661,7 +2661,7 @@ Module C_Interface
                     If Item(GetPlayerInvItemNum(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
                         SendDropItem(DragBox.Slot, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
                     Else
-                        Dialogue("Drop Item", "Please choose how many to drop", "", DialogueType.DropItem, DialogueStyle.Input, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
+                        Dialogue("Drop Item", "Please choose how many to drop", "", DialogueType.DropItem, DialogueStyle.Input, DragBox.Slot)
                     End If
                 Case PartOriginType.Skill
                     ForgetSkill(DragBox.Slot)
