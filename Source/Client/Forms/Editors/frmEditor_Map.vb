@@ -961,6 +961,21 @@ Public Class frmEditor_Map
                             .Data3_2 = 0
                         End If
                     End If
+
+                    ' No Xing
+                    If optNoXing.Checked = True Then
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.NoXing
+                            .Data1 = 0
+                            .Data2 = 0
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.NoXing
+                            .Data1_2 = 0
+                            .Data2_2 = 0
+                            .Data3_2 = 0
+                        End If
+                    End If
                 End With
             ElseIf tabpages.SelectedTab Is tpDirBlock Then
                 ' find what tile it is

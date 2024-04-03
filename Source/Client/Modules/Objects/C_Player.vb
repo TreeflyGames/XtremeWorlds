@@ -235,8 +235,6 @@ Module C_Player
                 ' Check if they can warp to a new map
                 If Map.Up > 0 Then
                     SendPlayerRequestNewMap()
-                    GettingMap = True
-                    CanMoveNow = False
                 End If
 
                 CanMove = False
@@ -264,8 +262,6 @@ Module C_Player
                 ' Check if they can warp to a new map
                 If Map.Down > 0 Then
                     SendPlayerRequestNewMap()
-                    GettingMap = True
-                    CanMoveNow = False
                 End If
 
                 CanMove = False
@@ -293,8 +289,6 @@ Module C_Player
                 ' Check if they can warp to a new map
                 If Map.Left > 0 Then
                     SendPlayerRequestNewMap()
-                    GettingMap = True
-                    CanMoveNow = False
                 End If
 
                 CanMove = False
@@ -318,12 +312,9 @@ Module C_Player
                     Exit Function
                 End If
             Else
-
                 ' Check if they can warp to a new map
                 If Map.Right > 0 Then
                     SendPlayerRequestNewMap()
-                    GettingMap = True
-                    CanMoveNow = False
                 End If
 
                 CanMove = False
