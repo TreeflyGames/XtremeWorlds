@@ -156,7 +156,7 @@ Partial Class frmEditor_Map
         btnCopyEvent = New Button()
         Label15 = New Label()
         Label13 = New Label()
-        TabPage1 = New TabPage()
+        tpEffects = New TabPage()
         GroupBox6 = New GroupBox()
         lblMapBrightness = New Label()
         scrlMapBrightness = New HScrollBar()
@@ -214,7 +214,7 @@ Partial Class frmEditor_Map
         GroupBox2.SuspendLayout()
         tpDirBlock.SuspendLayout()
         tpEvents.SuspendLayout()
-        TabPage1.SuspendLayout()
+        tpEffects.SuspendLayout()
         GroupBox6.SuspendLayout()
         GroupBox5.SuspendLayout()
         GroupBox4.SuspendLayout()
@@ -986,7 +986,7 @@ Partial Class frmEditor_Map
         tabpages.Controls.Add(tpSettings)
         tabpages.Controls.Add(tpDirBlock)
         tabpages.Controls.Add(tpEvents)
-        tabpages.Controls.Add(TabPage1)
+        tabpages.Controls.Add(tpEffects)
         tabpages.Location = New Point(7, 53)
         tabpages.Margin = New Padding(6, 5, 6, 5)
         tabpages.Name = "tabpages"
@@ -1648,21 +1648,21 @@ Partial Class frmEditor_Map
         Label13.TabIndex = 0
         Label13.Text = "Click on the map where you want to add a event."
         ' 
-        ' TabPage1
+        ' tpEffects
         ' 
-        TabPage1.Controls.Add(GroupBox6)
-        TabPage1.Controls.Add(GroupBox5)
-        TabPage1.Controls.Add(GroupBox4)
-        TabPage1.Controls.Add(GroupBox3)
-        TabPage1.Controls.Add(GroupBox1)
-        TabPage1.Location = New Point(4, 34)
-        TabPage1.Margin = New Padding(6, 5, 6, 5)
-        TabPage1.Name = "TabPage1"
-        TabPage1.Padding = New Padding(6, 5, 6, 5)
-        TabPage1.Size = New Size(778, 1010)
-        TabPage1.TabIndex = 6
-        TabPage1.Text = "Map Effects"
-        TabPage1.UseVisualStyleBackColor = True
+        tpEffects.Controls.Add(GroupBox6)
+        tpEffects.Controls.Add(GroupBox5)
+        tpEffects.Controls.Add(GroupBox4)
+        tpEffects.Controls.Add(GroupBox3)
+        tpEffects.Controls.Add(GroupBox1)
+        tpEffects.Location = New Point(4, 34)
+        tpEffects.Margin = New Padding(6, 5, 6, 5)
+        tpEffects.Name = "tpEffects"
+        tpEffects.Padding = New Padding(6, 5, 6, 5)
+        tpEffects.Size = New Size(778, 1010)
+        tpEffects.TabIndex = 6
+        tpEffects.Text = "Effects"
+        tpEffects.UseVisualStyleBackColor = True
         ' 
         ' GroupBox6
         ' 
@@ -1675,7 +1675,7 @@ Partial Class frmEditor_Map
         GroupBox6.Size = New Size(393, 75)
         GroupBox6.TabIndex = 22
         GroupBox6.TabStop = False
-        GroupBox6.Text = "Map Brightness"
+        GroupBox6.Text = "Brightness"
         ' 
         ' lblMapBrightness
         ' 
@@ -1707,7 +1707,7 @@ Partial Class frmEditor_Map
         GroupBox5.Size = New Size(393, 102)
         GroupBox5.TabIndex = 21
         GroupBox5.TabStop = False
-        GroupBox5.Text = "Map Parallax"
+        GroupBox5.Text = "Parallax"
         ' 
         ' Label20
         ' 
@@ -1739,7 +1739,7 @@ Partial Class frmEditor_Map
         GroupBox4.Size = New Size(401, 102)
         GroupBox4.TabIndex = 20
         GroupBox4.TabStop = False
-        GroupBox4.Text = "Map Panorama"
+        GroupBox4.Text = "Panorama"
         ' 
         ' Label19
         ' 
@@ -1778,7 +1778,7 @@ Partial Class frmEditor_Map
         GroupBox3.Size = New Size(393, 297)
         GroupBox3.TabIndex = 19
         GroupBox3.TabStop = False
-        GroupBox3.Text = "Map Tint"
+        GroupBox3.Text = "Tint"
         ' 
         ' chkTint
         ' 
@@ -1786,9 +1786,9 @@ Partial Class frmEditor_Map
         chkTint.Location = New Point(10, 37)
         chkTint.Margin = New Padding(6, 5, 6, 5)
         chkTint.Name = "chkTint"
-        chkTint.Size = New Size(98, 29)
+        chkTint.Size = New Size(90, 29)
         chkTint.TabIndex = 18
-        chkTint.Text = "Enable?"
+        chkTint.Text = "Enable"
         chkTint.UseVisualStyleBackColor = True
         ' 
         ' lblMapAlpha
@@ -1886,7 +1886,7 @@ Partial Class frmEditor_Map
         GroupBox1.Size = New Size(401, 297)
         GroupBox1.TabIndex = 18
         GroupBox1.TabStop = False
-        GroupBox1.Text = "Map Weather"
+        GroupBox1.Text = "Weather"
         ' 
         ' scrlFogOpacity
         ' 
@@ -2041,7 +2041,7 @@ Partial Class frmEditor_Map
         tpDirBlock.PerformLayout()
         tpEvents.ResumeLayout(False)
         tpEvents.PerformLayout()
-        TabPage1.ResumeLayout(False)
+        tpEffects.ResumeLayout(False)
         GroupBox6.ResumeLayout(False)
         GroupBox6.PerformLayout()
         GroupBox5.ResumeLayout(False)
@@ -2165,7 +2165,7 @@ Partial Class frmEditor_Map
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents lblPasteMode As System.Windows.Forms.Label
     Friend WithEvents lblCopyMode As System.Windows.Forms.Label
-    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents tpEffects As System.Windows.Forms.TabPage
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents chkTint As System.Windows.Forms.CheckBox
     Friend WithEvents lblMapAlpha As System.Windows.Forms.Label

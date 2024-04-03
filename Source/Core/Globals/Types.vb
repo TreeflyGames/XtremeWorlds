@@ -132,11 +132,11 @@ Public Module Types
 
     Public Structure TileStruct
         Dim Layer() As TileDataStruct
-        Dim Type As TileType
-        Dim Type2 As TileType
+        Dim Type As TileType 
         Dim Data1 As Integer
         Dim Data2 As Integer
         Dim Data3 As Integer
+        Dim Type2 As TileType
         Dim Data1_2 As Integer
         Dim Data2_2 As Integer
         Dim Data3_2 As Integer
