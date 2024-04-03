@@ -382,14 +382,14 @@ Public Class frmEditor_Map
             If lstMusic.SelectedIndex > 0 Then
                 If Types.Settings.MusicExt = ".mid" Then
                     MidiPlayer.Load(Paths.Music & lstMusic.Items(lstMusic.SelectedIndex).ToString)
-                    MidiPlayer.Play()
+                    Play
                 Else
-                    StopMusic()
+                    StopMusic
                     PlayPreview(lstMusic.Items(lstMusic.SelectedIndex).ToString)
                 End If
             End If
         Else
-            StopPreview()
+            StopPreview
             PlayMusic(Map.Music)
         End If
     End Sub
@@ -764,6 +764,18 @@ Public Class frmEditor_Map
         If cmbAutoTile.SelectedIndex = -1 Then Exit Sub
 
         If Button = Mouse.Button.Left Then
+            If optInfo.Checked Then
+                Select Case Map.Tile(CurX, CurY).Type
+                    Case TileType.Warp
+                        AddText("Map: " + Map.Tile(CurX, CurY).Data1.ToString() + " X: " + Map.Tile(CurX, CurY).Data2.ToString() + " Y:" + Map.Tile(CurX, CurY).Data3.ToString(), ColorType.Gray)
+                End Select
+
+                Select Case map.Tile(CurX, CurY).Type2
+                    Case TileType.Warp
+                        AddText("Map: " + Map.Tile(CurX, CurY).Data1_2.ToString() + " X: " + Map.Tile(CurX, CurY).Data2_2.ToString() + " Y:" + Map.Tile(CurX, CurY).Data3_2.ToString(), ColorType.Gray)
+                End Select
+            End If
+
             If tabpages.SelectedTab Is tpTiles Then
                 If EditorTileWidth = 1 And EditorTileHeight = 1 Then 'single tile
                     MapEditorSetTile(CurX, CurY, CurLayer, False, cmbAutoTile.SelectedIndex)

@@ -164,7 +164,7 @@ Module C_Text
                                 End Select
                             Else
                                 Select Case .Type2
-                                    Case [Enum].TileType.Blocked
+                                    Case TileType.Blocked
                                         RenderText("B", Window, tX, tY, (Color.Red), (Color.Black))
                                     Case TileType.Warp
                                         RenderText("W", Window, tX, tY, (Color.Blue), (Color.Black))

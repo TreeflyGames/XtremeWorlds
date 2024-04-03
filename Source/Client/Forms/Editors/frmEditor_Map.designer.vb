@@ -190,6 +190,7 @@ Partial Class frmEditor_Map
         lblFogIndex = New Label()
         Label14 = New Label()
         cmbWeather = New ComboBox()
+        optInfo = New RadioButton()
         pnlBack.SuspendLayout()
         CType(picBackSelect, ComponentModel.ISupportInitialize).BeginInit()
         pnlAttributes.SuspendLayout()
@@ -1088,6 +1089,7 @@ Partial Class frmEditor_Map
         ' 
         ' tpAttributes
         ' 
+        tpAttributes.Controls.Add(optInfo)
         tpAttributes.Controls.Add(Label23)
         tpAttributes.Controls.Add(cmbAttribute)
         tpAttributes.Controls.Add(optAnimation)
@@ -2015,6 +2017,17 @@ Partial Class frmEditor_Map
         cmbWeather.Size = New Size(238, 33)
         cmbWeather.TabIndex = 0
         ' 
+        ' optInfo
+        ' 
+        optInfo.AutoSize = True
+        optInfo.Location = New Point(17, 165)
+        optInfo.Margin = New Padding(6, 5, 6, 5)
+        optInfo.Name = "optInfo"
+        optInfo.Size = New Size(69, 29)
+        optInfo.TabIndex = 22
+        optInfo.Text = "Info"
+        optInfo.UseVisualStyleBackColor = True
+        ' 
         ' frmEditor_Map
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
@@ -2258,4 +2271,5 @@ Partial Class frmEditor_Map
     Friend WithEvents Label23 As Label
     Friend WithEvents cmbAttribute As ComboBox
     Friend WithEvents tsbDeleteMap As ToolStripButton
+    Friend WithEvents optInfo As RadioButton
 End Class
