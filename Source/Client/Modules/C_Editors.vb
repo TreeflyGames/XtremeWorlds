@@ -319,7 +319,7 @@ Module C_Editors
         For i = 1 To MAX_TRADES
             With Shop(EditorIndex).TradeItem(i)
                 ' if none, show as none
-                If .Item = 0 AndAlso .CostItem = 0 Then
+                If .Item = 0 And .CostItem = 0 Then
                     frmEditor_Shop.lstTradeItem.Items.Add("Empty Trade Slot")
                 Else
                     frmEditor_Shop.lstTradeItem.Items.Add(i & ": " & .ItemValue & "x " & Trim$(Item(.Item).Name) & " for " & .CostValue & "x " & Trim$(Item(.CostItem).Name))

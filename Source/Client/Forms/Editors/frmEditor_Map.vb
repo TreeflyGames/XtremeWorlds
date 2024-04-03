@@ -208,7 +208,7 @@ Public Class frmEditor_Map
     End Sub
 
     Private Sub ScrlMapItem_ValueChanged(ByVal sender As Object, ByVal e As EventArgs) Handles scrlMapItem.ValueChanged
-        If Item(scrlMapItem.Value).Type = ItemType.Currency OrElse Item(scrlMapItem.Value).Stackable = 1 Then
+        If Item(scrlMapItem.Value).Type = ItemType.Currency Or Item(scrlMapItem.Value).Stackable = 1 Then
             scrlMapItemValue.Enabled = True
         Else
             scrlMapItemValue.Value = 1
@@ -367,9 +367,9 @@ Public Class frmEditor_Map
 #Region "Npc's"
 
     Private Sub CmbNpcList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbNpcList.SelectedIndexChanged
-        If lstMapNpc.SelectedIndex > -1 Then
-            lstMapNpc.Items.Item(lstMapNpc.SelectedIndex) = lstMapNpc.SelectedIndex + 1 & ": " & NPC(cmbNpcList.SelectedIndex + 1).Name
-            Map.Npc(lstMapNpc.SelectedIndex + 1) = cmbNpcList.SelectedIndex + 1
+        If lstMapNpc.SelectedIndex > 0 Then
+            lstMapNpc.Items.Item(lstMapNpc.SelectedIndex) = lstMapNpc.SelectedIndex & ": " & NPC(cmbNpcList.SelectedIndex).Name
+            Map.Npc(lstMapNpc.SelectedIndex) = cmbNpcList.SelectedIndex + 1
         End If
     End Sub
 
@@ -642,6 +642,7 @@ Public Class frmEditor_Map
 
         ' we're not in a shop
         cmbShop.SelectedIndex = 0
+        cmbAttribute.SelectedIndex = 0
 
         optBlocked.Checked = True
 
@@ -764,7 +765,7 @@ Public Class frmEditor_Map
 
         If Button = Mouse.Button.Left Then
             If tabpages.SelectedTab Is tpTiles Then
-                If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then 'single tile
+                If EditorTileWidth = 1 And EditorTileHeight = 1 Then 'single tile
                     MapEditorSetTile(CurX, CurY, CurLayer, False, cmbAutoTile.SelectedIndex)
                 Else ' multi tile!
                     If cmbAutoTile.SelectedIndex = 0 Then
@@ -776,94 +777,177 @@ Public Class frmEditor_Map
             ElseIf tabpages.SelectedTab Is tpAttributes Then
                 With Map.Tile(CurX, CurY)
                     ' blocked tile
-                    If optBlocked.Checked = True Then .Type = TileType.Blocked
+                    If optBlocked.Checked = True Then
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Blocked
+                        Else
+                            .Type2 = TileType.Blocked
+                        End If
+                    End If
 
                     ' warp tile
                     If optWarp.Checked = True Then
-                        .Type = TileType.Warp
-                        .Data1 = EditorWarpMap
-                        .Data2 = EditorWarpX
-                        .Data3 = EditorWarpY
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Warp
+                            .Data1 = EditorWarpMap
+                            .Data2 = EditorWarpX
+                            .Data3 = EditorWarpY
+                        Else
+                            .Type2 = TileType.Warp
+                            .Data1_2 = EditorWarpMap
+                            .Data2_2 = EditorWarpX
+                            .Data3_2 = EditorWarpY
+                        End If
                     End If
 
                     ' item spawn
                     If optItem.Checked = True Then
-                        .Type = TileType.Item
-                        .Data1 = ItemEditorNum
-                        .Data2 = ItemEditorValue
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Item
+                            .Data1 = ItemEditorNum
+                            .Data2 = ItemEditorValue
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.Item
+                            .Data1_2 = ItemEditorNum
+                            .Data2_2 = ItemEditorValue
+                            .Data3_2 = 0
+                        End If
                     End If
 
                     ' npc avoid
                     If optNPCAvoid.Checked = True Then
-                        .Type = TileType.NpcAvoid
-                        .Data1 = 0
-                        .Data2 = 0
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.NpcAvoid
+                            .Data1 = 0
+                            .Data2 = 0
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.NpcAvoid
+                            .Data1_2 = 0
+                            .Data2_2 = 0
+                            .Data3_2 = 0
+                        End If
                     End If
 
                     ' resource
                     If optResource.Checked = True Then
-                        .Type = TileType.Resource
-                        .Data1 = ResourceEditorNum
-                        .Data2 = 0
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Resource
+                            .Data1 = ResourceEditorNum
+                            .Data2 = 0
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.Resource
+                            .Data1_2 = ResourceEditorNum
+                            .Data2_2 = 0
+                            .Data3_2 = 0
+                        End If
                     End If
 
                     ' npc spawn
                     If optNPCSpawn.Checked = True Then
-                        .Type = TileType.NpcSpawn
-                        .Data1 = SpawnNpcNum
-                        .Data2 = SpawnNpcDir
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.NpcSpawn
+                            .Data1 = SpawnNpcNum
+                            .Data2 = SpawnNpcDir
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.NpcSpawn
+                            .Data1_2 = SpawnNpcNum
+                            .Data2_2 = SpawnNpcDir
+                            .Data3_2 = 0
+                        End If
                     End If
 
                     ' shop
                     If optShop.Checked = True Then
-                        .Type = TileType.Shop
-                        .Data1 = EditorShop
-                        .Data2 = 0
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Shop
+                            .Data1 = EditorShop
+                            .Data2 = 0
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.Shop
+                            .Data1_2 = EditorShop
+                            .Data2_2 = 0
+                            .Data3_2 = 0
+                        End If
                     End If
 
                     ' bank
                     If optBank.Checked = True Then
-                        .Type = TileType.Bank
-                        .Data1 = 0
-                        .Data2 = 0
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Bank
+                            .Data1 = 0
+                            .Data2 = 0
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.Bank
+                            .Data1_2 = 0
+                            .Data2_2 = 0
+                            .Data3_2 = 0
+                        End If
                     End If
 
                     ' heal
                     If optHeal.Checked = True Then
-                        .Type = TileType.Heal
-                        .Data1 = MapEditorHealType
-                        .Data2 = MapEditorHealAmount
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Heal
+                            .Data1 = MapEditorHealType
+                            .Data2 = MapEditorHealAmount
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.Heal
+                            .Data1_2 = MapEditorHealType
+                            .Data2_2 = MapEditorHealAmount
+                            .Data3_2 = 0
+                        End If
                     End If
 
                     ' trap
                     If optTrap.Checked = True Then
-                        .Type = TileType.Trap
-                        .Data1 = MapEditorHealAmount
-                        .Data2 = 0
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Trap
+                            .Data1 = MapEditorHealAmount
+                            .Data2 = 0
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.Trap
+                            .Data1_2 = MapEditorHealAmount
+                            .Data2_2 = 0
+                            .Data3_2 = 0
+                        End If
                     End If
 
                     ' light
                     If optLight.Checked Then
-                        .Type = TileType.Light
-                        .Data1 = EditorLight
-                        .Data2 = EditorFlicker
-                        .Data3 = EditorShadow
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Light
+                            .Data1 = EditorLight
+                            .Data2 = EditorFlicker
+                            .Data3 = EditorShadow
+                        Else
+                            .Type2 = TileType.Light
+                            .Data1_2 = EditorLight
+                            .Data2_2 = EditorFlicker
+                            .Data3_2 = EditorShadow
+                        End If
                     End If
 
                     ' Animation
                     If optAnimation.Checked = True Then
-                        .Type = TileType.Animation
-                        .Data1 = EditorAnimation
-                        .Data2 = 0
-                        .Data3 = 0
+                        If EditorAttribute = 1 Then
+                            .Type = TileType.Animation
+                            .Data1 = EditorAnimation
+                            .Data2 = 0
+                            .Data3 = 0
+                        Else
+                            .Type2 = TileType.Animation
+                            .Data1_2 = EditorAnimation
+                            .Data2_2 = 0
+                            .Data3_2 = 0
+                        End If
                     End If
                 End With
             ElseIf tabpages.SelectedTab Is tpDirBlock Then
@@ -897,7 +981,7 @@ Public Class frmEditor_Map
 
         If Button = Mouse.Button.Right Then
             If tabpages.SelectedTab Is tpTiles Then
-                If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then 'single tile
+                If EditorTileWidth = 1 And EditorTileHeight = 1 Then 'single tile
                     MapEditorSetTile(CurX, CurY, CurLayer, False, cmbAutoTile.SelectedIndex, 1)
                 Else ' multi tile!
                     If cmbAutoTile.SelectedIndex = 0 Then
@@ -991,8 +1075,8 @@ Public Class frmEditor_Map
             For Y = CurY To CurY + EditorTileHeight - 1
                 x2 = 0 ' re-set x count every y loop
                 For X = CurX To CurX + EditorTileWidth - 1
-                    If X >= 0 AndAlso X <= Map.MaxX Then
-                        If Y >= 0 AndAlso Y <= Map.MaxY Then
+                    If X >= 0 And X <= Map.MaxX Then
+                        If Y >= 0 And Y <= Map.MaxY Then
                             With Map.Tile(X, Y)
                                 .Layer(CurLayer).X = newTileX + x2
                                 .Layer(CurLayer).Y = newTileY + y2
@@ -1073,7 +1157,11 @@ Public Class frmEditor_Map
                         .Data1 = TileHistory(HistoryIndex).Tile(x, y).Data1
                         .Data2 = TileHistory(HistoryIndex).Tile(x, y).Data2
                         .Data3 = TileHistory(HistoryIndex).Tile(x, y).Data3
+                        .Data1_2 = TileHistory(HistoryIndex).Tile(x, y).Data1_2
+                        .Data2_2 = TileHistory(HistoryIndex).Tile(x, y).Data2_2
+                        .Data3_2 = TileHistory(HistoryIndex).Tile(x, y).Data3_2
                         .Type = TileHistory(HistoryIndex).Tile(x, y).Type
+                        .Type2 = TileHistory(HistoryIndex).Tile(x, y).Type2
                         .DirBlock = TileHistory(HistoryIndex).Tile(x, y).DirBlock
                         .Layer(i).X = TileHistory(HistoryIndex).Tile(x, y).Layer(i).X
                         .Layer(i).Y = TileHistory(HistoryIndex).Tile(x, y).Layer(i).Y
@@ -1240,7 +1328,7 @@ Public Class frmEditor_Map
 
         itemnum = Item(Me.scrlMapItem.Value).Icon
 
-        If itemnum <= 0 OrElse itemnum > NumItems Then
+        If itemnum <= 0 Or itemnum > NumItems Then
             Me.picMapItem.BackgroundImage = Nothing
             Exit Sub
         End If
@@ -1399,6 +1487,14 @@ Public Class frmEditor_Map
         Else
             Map.Indoors = 0
         End If
+    End Sub
+
+    Private Sub cmbAttribute_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbAttribute.SelectedIndexChanged
+        EditorAttribute = cmbAttribute.SelectedIndex + 1
+    End Sub
+
+    Private Sub tsbDeleteMap_Click(sender As Object, e As EventArgs) Handles tsbDeleteMap.Click
+        ClearMap
     End Sub
 
 #End Region

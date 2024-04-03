@@ -6,7 +6,7 @@ Partial Class frmEditor_Map
     <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
-            If disposing AndAlso components IsNot Nothing Then
+            If disposing And components IsNot Nothing Then
                 components.Dispose()
             End If
         Finally
@@ -94,6 +94,7 @@ Partial Class frmEditor_Map
         tsbClear = New ToolStripButton()
         tsbEyeDropper = New ToolStripButton()
         tsbCopyMap = New ToolStripButton()
+        tsbDeleteMap = New ToolStripButton()
         tsbUndo = New ToolStripButton()
         tsbRedo = New ToolStripButton()
         tsbScreenshot = New ToolStripButton()
@@ -106,6 +107,8 @@ Partial Class frmEditor_Map
         Label9 = New Label()
         cmbTileSets = New ComboBox()
         tpAttributes = New TabPage()
+        Label23 = New Label()
+        cmbAttribute = New ComboBox()
         optAnimation = New RadioButton()
         optLight = New RadioButton()
         tpNpcs = New TabPage()
@@ -224,7 +227,7 @@ Partial Class frmEditor_Map
         ' 
         ' btnClearAttribute
         ' 
-        btnClearAttribute.Location = New Point(489, 922)
+        btnClearAttribute.Location = New Point(492, 948)
         btnClearAttribute.Margin = New Padding(6, 5, 6, 5)
         btnClearAttribute.Name = "btnClearAttribute"
         btnClearAttribute.Size = New Size(274, 48)
@@ -856,7 +859,7 @@ Partial Class frmEditor_Map
         ' ToolStrip
         ' 
         ToolStrip.ImageScalingSize = New Size(24, 24)
-        ToolStrip.Items.AddRange(New ToolStripItem() {tsbSave, tsbDiscard, ToolStripSeparator1, tsbMapGrid, tsbOpacity, tsbLight, ToolStripSeparator2, tsbFill, tsbClear, tsbEyeDropper, tsbCopyMap, tsbUndo, tsbRedo, tsbScreenshot})
+        ToolStrip.Items.AddRange(New ToolStripItem() {tsbSave, tsbDiscard, ToolStripSeparator1, tsbMapGrid, tsbOpacity, tsbLight, ToolStripSeparator2, tsbFill, tsbClear, tsbEyeDropper, tsbCopyMap, tsbDeleteMap, tsbUndo, tsbRedo, tsbScreenshot})
         ToolStrip.Location = New Point(0, 0)
         ToolStrip.Name = "ToolStrip"
         ToolStrip.Padding = New Padding(0, 0, 3, 0)
@@ -950,6 +953,14 @@ Partial Class frmEditor_Map
         tsbCopyMap.Name = "tsbCopyMap"
         tsbCopyMap.Size = New Size(34, 28)
         tsbCopyMap.ToolTipText = "Copy"
+        ' 
+        ' tsbDeleteMap
+        ' 
+        tsbDeleteMap.DisplayStyle = ToolStripItemDisplayStyle.Image
+        tsbDeleteMap.Image = My.Resources.Resources.Delete
+        tsbDeleteMap.ImageTransparentColor = Color.Magenta
+        tsbDeleteMap.Name = "tsbDeleteMap"
+        tsbDeleteMap.Size = New Size(34, 28)
         ' 
         ' tsbUndo
         ' 
@@ -1077,6 +1088,8 @@ Partial Class frmEditor_Map
         ' 
         ' tpAttributes
         ' 
+        tpAttributes.Controls.Add(Label23)
+        tpAttributes.Controls.Add(cmbAttribute)
         tpAttributes.Controls.Add(optAnimation)
         tpAttributes.Controls.Add(optLight)
         tpAttributes.Controls.Add(btnClearAttribute)
@@ -1098,6 +1111,27 @@ Partial Class frmEditor_Map
         tpAttributes.TabIndex = 3
         tpAttributes.Text = "Attributes"
         tpAttributes.UseVisualStyleBackColor = True
+        ' 
+        ' Label23
+        ' 
+        Label23.AutoSize = True
+        Label23.Location = New Point(12, 960)
+        Label23.Margin = New Padding(6, 0, 6, 0)
+        Label23.Name = "Label23"
+        Label23.Size = New Size(53, 25)
+        Label23.TabIndex = 21
+        Label23.Text = "Type:"
+        ' 
+        ' cmbAttribute
+        ' 
+        cmbAttribute.DropDownStyle = ComboBoxStyle.DropDownList
+        cmbAttribute.FormattingEnabled = True
+        cmbAttribute.Items.AddRange(New Object() {"Type 1", "Type 2"})
+        cmbAttribute.Location = New Point(89, 957)
+        cmbAttribute.Margin = New Padding(6, 5, 6, 5)
+        cmbAttribute.Name = "cmbAttribute"
+        cmbAttribute.Size = New Size(95, 33)
+        cmbAttribute.TabIndex = 20
         ' 
         ' optAnimation
         ' 
@@ -2221,4 +2255,7 @@ Partial Class frmEditor_Map
     Friend WithEvents lstShop As ComboBox
     Friend WithEvents chkNoMapRespawn As CheckBox
     Friend WithEvents chkIndoors As CheckBox
+    Friend WithEvents Label23 As Label
+    Friend WithEvents cmbAttribute As ComboBox
+    Friend WithEvents tsbDeleteMap As ToolStripButton
 End Class

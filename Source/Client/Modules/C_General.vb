@@ -144,7 +144,7 @@ Module C_General
         Connect()
 
         ' Wait until connected or a few seconds have passed and report the server being down
-        Do While (Not Socket.IsConnected()) AndAlso (GetTickCount() <= until)
+        Do While (Not Socket.IsConnected()) And (GetTickCount() <= until)
             Application.DoEvents()
         Loop
 

@@ -113,6 +113,7 @@ Module C_Globals
     Public EditorLight As Integer
     Public EditorShadow As Byte
     Public EditorFlicker As Byte
+    Public EditorAttribute As Byte
     Public EditorTileSelStart As Point
     Public EditorTileSelEnd As Point
     Public CopyMap As Boolean

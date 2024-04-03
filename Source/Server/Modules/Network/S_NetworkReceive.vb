@@ -377,9 +377,9 @@ Module S_NetworkReceive
                 Exit Sub
             End If
 
-            If (sexNum < SexType.Male) OrElse (sexNum > SexType.Female) Then Exit Sub
+            If (sexNum < SexType.Male) Or (sexNum > SexType.Female) Then Exit Sub
 
-            If jobNum <= 0 OrElse jobNum > MAX_JOBS Then Exit Sub
+            If jobNum <= 0 Or jobNum > MAX_JOBS Then Exit Sub
 
             If sexNum = SexType.Male Then
                 sprite = Job(jobNum).MaleSprite
@@ -555,7 +555,7 @@ Module S_NetworkReceive
         buffer.Dispose()
 
         ' Prevent hacking
-        If dir < DirectionType.Up OrElse dir > DirectionType.Left Then Exit Sub
+        If dir < DirectionType.Up Or dir > DirectionType.Left Then Exit Sub
 
         SetPlayerDir(index, dir)
 
@@ -757,7 +757,7 @@ Module S_NetworkReceive
         buffer.Dispose()
 
         ' Prevent hacking
-        If n <= 0 OrElse n > MAX_MAPS Then Exit Sub
+        If n <= 0 Or n > MAX_MAPS Then Exit Sub
 
         PlayerWarp(index, n, GetPlayerX(index), GetPlayerY(index))
         PlayerMsg(index, "You have been warped to map #" & n, ColorType.Yellow)
@@ -868,6 +868,9 @@ Module S_NetworkReceive
                     .Tile(x, y).Data1 = buffer.ReadInt32
                     .Tile(x, y).Data2 = buffer.ReadInt32
                     .Tile(x, y).Data3 = buffer.ReadInt32
+                    .Tile(x, y).Data1_2 = buffer.ReadInt32
+                    .Tile(x, y).Data2_2 = buffer.ReadInt32
+                    .Tile(x, y).Data3_2 = buffer.ReadInt32
                     .Tile(x, y).DirBlock = buffer.ReadInt32
                     ReDim .Tile(x, y).Layer(LayerType.Count - 1)
                     For i = 1 To LayerType.Count - 1
@@ -877,6 +880,8 @@ Module S_NetworkReceive
                         .Tile(x, y).Layer(i).AutoTile = buffer.ReadInt32
                     Next
                     .Tile(x, y).Type = buffer.ReadInt32
+                    .Tile(x, y).Type2 = buffer.ReadInt32
+
                 Next
             Next
 
@@ -1031,7 +1036,7 @@ Module S_NetworkReceive
 
         ' Refresh map for everyone online
         For i = 1 To Socket.HighIndex()
-            If IsPlaying(i) AndAlso GetPlayerMap(i) = mapNum Then
+            If IsPlaying(i) And GetPlayerMap(i) = mapNum Then
                 PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i))
                 ' Send map
                 SendMapData(i, mapNum, True)
@@ -1245,7 +1250,7 @@ Module S_NetworkReceive
         ShopNum = buffer.ReadInt32()
 
         ' Prevent hacking
-        If ShopNum <= 0 OrElse ShopNum > MAX_SHOPS Then Exit Sub
+        If ShopNum <= 0 Or ShopNum > MAX_SHOPS Then Exit Sub
 
         Shop(ShopNum).BuyRate = buffer.ReadInt32()
         Shop(ShopNum).Name = buffer.ReadString()
@@ -1301,7 +1306,7 @@ Module S_NetworkReceive
         skillnum = buffer.ReadInt32
 
         ' Prevent hacking
-        If skillnum <= 0 OrElse skillnum > MAX_SKILLS Then Exit Sub
+        If skillnum <= 0 Or skillnum > MAX_SKILLS Then Exit Sub
 
         Skill(skillnum).AccessReq = buffer.ReadInt32()
         Skill(skillnum).AoE = buffer.ReadInt32()
@@ -1356,7 +1361,7 @@ Module S_NetworkReceive
         i = buffer.ReadInt32
 
         ' Check for invalid access level
-        If i >= 1 OrElse i <= 5 Then
+        If i >= 1 Or i <= 5 Then
 
             ' Check if player is on
             If n > 0 Then
@@ -1413,7 +1418,7 @@ Module S_NetworkReceive
         rclick = buffer.ReadInt32
 
         ' Prevent subscript out of range
-        If x < 0 OrElse x > Map(GetPlayerMap(index)).MaxX OrElse y < 0 OrElse y > Map(GetPlayerMap(index)).MaxY Then Exit Sub
+        If x < 0 Or x > Map(GetPlayerMap(index)).MaxX Or y < 0 Or y > Map(GetPlayerMap(index)).MaxY Then Exit Sub
 
         ' Check for a player
         For i = 1 To Socket.HighIndex()
@@ -1546,7 +1551,7 @@ Module S_NetworkReceive
         Dim oldSlot As Integer, newSlot As Integer
         Dim buffer As New ByteStream(data)
 
-        If TempPlayer(index).InTrade > 0 OrElse TempPlayer(index).InBank OrElse TempPlayer(index).InShop Then Exit Sub
+        If TempPlayer(index).InTrade > 0 Or TempPlayer(index).InBank Or TempPlayer(index).InShop Then Exit Sub
 
         ' Old Slot
         oldSlot = buffer.ReadInt32
@@ -1562,7 +1567,7 @@ Module S_NetworkReceive
         Dim oldSlot As Integer, newSlot As Integer
         Dim buffer As New ByteStream(data)
 
-        If TempPlayer(index).InTrade > 0 OrElse TempPlayer(index).InBank OrElse TempPlayer(index).InShop Then Exit Sub
+        If TempPlayer(index).InTrade > 0 Or TempPlayer(index).InBank Or TempPlayer(index).InShop Then Exit Sub
 
         ' Old Slot
         oldSlot = buffer.ReadInt32
@@ -1677,7 +1682,7 @@ Module S_NetworkReceive
         skillslot = buffer.ReadInt32
 
         ' Check for subscript out of range
-        If skillslot < 0 OrElse skillslot > MAX_PLAYER_SKILLS Then Exit Sub
+        If skillslot < 0 Or skillslot > MAX_PLAYER_SKILLS Then Exit Sub
 
         ' dont let them forget a skill which is in CD
         If TempPlayer(index).SkillCd(skillslot) > 0 Then
@@ -1709,7 +1714,7 @@ Module S_NetworkReceive
 
         ' not in shop, exit out
         shopnum = TempPlayer(index).InShop
-        If shopnum <= 0 OrElse shopnum > MAX_SHOPS Then Exit Sub
+        If shopnum <= 0 Or shopnum > MAX_SHOPS Then Exit Sub
 
         With Shop(shopnum).TradeItem(shopslot)
             ' check trade exists
@@ -1717,7 +1722,7 @@ Module S_NetworkReceive
 
             ' check has the cost item
             itemamount = HasItem(index, .CostItem)
-            If itemamount = 0 OrElse itemamount < .CostValue Then
+            If itemamount = 0 Or itemamount < .CostValue Then
                 PlayerMsg(index, "You do not have enough to buy this item.", ColorType.BrightRed)
                 ResetShopAction(index)
                 Exit Sub
@@ -1747,10 +1752,10 @@ Module S_NetworkReceive
         invSlot = buffer.ReadInt32
 
         ' if invalid, exit out
-        If invSlot < 0 OrElse invSlot > MAX_INV Then Exit Sub
+        If invSlot < 0 Or invSlot > MAX_INV Then Exit Sub
 
         ' has item?
-        If GetPlayerInvItemNum(index, invSlot) < 0 OrElse GetPlayerInvItemNum(index, invSlot) > MAX_ITEMS Then Exit Sub
+        If GetPlayerInvItemNum(index, invSlot) < 0 Or GetPlayerInvItemNum(index, invSlot) > MAX_ITEMS Then Exit Sub
 
         ' seems to be valid
         itemNum = GetPlayerInvItemNum(index, invSlot)
@@ -1849,7 +1854,7 @@ Module S_NetworkReceive
         tradetarget = FindPlayer(Name)
 
         ' make sure we don't error
-        If tradetarget < 0 OrElse tradetarget > MAX_PLAYERS Then Exit Sub
+        If tradetarget < 0 Or tradetarget > MAX_PLAYERS Then Exit Sub
 
         ' can't trade with yourself..
         If tradetarget = index Then
@@ -2028,16 +2033,16 @@ Module S_NetworkReceive
 
         buffer.Dispose()
 
-        If invslot < 0 OrElse invslot > MAX_INV Then Exit Sub
+        If invslot < 0 Or invslot > MAX_INV Then Exit Sub
 
         itemnum = GetPlayerInvItemNum(index, invslot)
 
-        If itemnum <= 0 OrElse itemnum > MAX_ITEMS Then Exit Sub
+        If itemnum <= 0 Or itemnum > MAX_ITEMS Then Exit Sub
 
         ' make sure they have the amount they offer
-        If amount < 0 OrElse amount > GetPlayerInvItemValue(index, invslot) Then Exit Sub
+        If amount < 0 Or amount > GetPlayerInvItemValue(index, invslot) Then Exit Sub
 
-        If Item(itemnum).Type = ItemType.Currency OrElse Item(itemnum).Stackable = 1 Then
+        If Item(itemnum).Type = ItemType.Currency Or Item(itemnum).Stackable = 1 Then
 
             ' check if already offering same currency item
             For i = 1 To MAX_INV
@@ -2103,7 +2108,7 @@ Module S_NetworkReceive
 
         buffer.Dispose()
 
-        If tradeslot < 0 OrElse tradeslot > MAX_INV Then Exit Sub
+        If tradeslot < 0 Or tradeslot > MAX_INV Then Exit Sub
         If TempPlayer(index).TradeOffer(tradeslot).Num <= 0 Then Exit Sub
 
         TempPlayer(index).TradeOffer(tradeslot).Num = 0
@@ -2121,7 +2126,7 @@ Module S_NetworkReceive
 
     Sub HackingAttempt(index As Integer, Reason As String)
 
-        If index > 0 AndAlso IsPlaying(index) Then
+        If index > 0 And IsPlaying(index) Then
             GlobalMsg(GetPlayerLogin(index) & "/" & GetPlayerName(index) & " has been booted for (" & Reason & ")")
 
             AlertMsg(index, DialogueMsg.Connection, MenuType.Login)
@@ -2522,7 +2527,7 @@ Module S_NetworkReceive
 
         ' Refresh map for everyone online
         For i = 1 To Socket.HighIndex()
-            If IsPlaying(i) AndAlso GetPlayerMap(i) = mapNum Then
+            If IsPlaying(i) And GetPlayerMap(i) = mapNum Then
                 PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i))
                 ' Send map
                 SendMapData(i, mapNum, True)
