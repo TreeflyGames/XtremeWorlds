@@ -1480,17 +1480,8 @@ Module C_Graphics
 
         If GettingMap Then Exit Sub
 
-        'update view around player
         UpdateCamera()
-
-        'Clear each of our render targets
         Window.Clear(Color.Black)
-
-        'If CurMouseX > 0 AndAlso CurMouseX <= Window.Size.X Then
-        '    If CurMouseY > 0 AndAlso CurMouseY <= Window.Size.Y Then
-        '        Window.SetMouseCursorVisible(False)
-        '    End If
-        'End If
 
         If NumPanorama > 0 AndAlso Map.Panorama > 0 Then
             DrawPanorama(Map.Panorama)
@@ -1602,7 +1593,6 @@ Module C_Graphics
                         If Player(I).Map = Player(MyIndex).Map Then
                             If CurX = Player(I).X AndAlso CurY = Player(I).Y Then
                                 If MyTargetType = TargetType.Player AndAlso MyTarget = I Then
-                                    ' dont render lol
                                 Else
                                     DrawHover(Player(I).X * 32 - 16, Player(I).Y * 32 + Player(I).YOffset)
                                 End If
@@ -1656,7 +1646,7 @@ Module C_Graphics
             For x = TileView.Left To TileView.Right
                 For y = TileView.Top To TileView.Bottom
                     If IsValidMapPoint(x, y) Then
-                        DrawMapFringeTile(x, y)
+                        DrawMapUpperTile(x, y)
                     End If
                 Next
             Next
@@ -1764,7 +1754,9 @@ Module C_Graphics
         DrawBars()
         DrawParty()
         DrawMapFade()
-        RenderEntities()
+        If Not Editor = EditorType.Map Then
+            RenderEntities()
+        End If
         RenderTexture(CursorSprite, Window, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
 
         Window.Display()
