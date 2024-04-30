@@ -36,12 +36,10 @@ Module S_GameLogic
 
         For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
-                ' Make sure we dont try to check a name thats to small
-                If Len(GetPlayerName(i)) >= Len(Trim$(Name)) Then
-                    If UCase$(Mid$(GetPlayerName(i), 1, Len(Trim$(Name)))) = UCase$(Trim$(Name)) Then
-                        FindPlayer = i
-                        Exit Function
-                    End If
+                ' Trim and convert both names to uppercase for case-insensitive comparison
+                If UCase$(Trim$(GetPlayerName(i))) = UCase$(Trim$(Name)) Then
+                    FindPlayer = i
+                    Exit Function
                 End If
             End If
         Next
