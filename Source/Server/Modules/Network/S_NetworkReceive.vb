@@ -1671,7 +1671,7 @@ Module S_NetworkReceive
 
     Sub Packet_RequestLevelUp(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Creator Then Exit Sub
+        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
 
         SetPlayerExp(index, GetPlayerNextLevel(index))
         CheckPlayerLevelUp(index)
