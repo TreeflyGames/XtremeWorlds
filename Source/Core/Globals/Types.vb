@@ -367,7 +367,6 @@ Public Module Types
     End Structure
 
     Public Structure TempPlayerStruct
-        ' Non saved local vars
         Dim InGame As Boolean
 
         Dim AttackTimer As Integer
@@ -388,7 +387,6 @@ Public Module Types
         Dim StunDuration As Integer
         Dim InBank As Boolean
 
-        ' trade
         Dim TradeRequest As Integer
 
         Dim InTrade As Integer
@@ -402,15 +400,11 @@ Public Module Types
         Dim StopRegenTimer As Integer
         Dim StopRegen As Byte
 
-        'instance stuff
-        Dim InInstance As Byte
-
         Dim TmpInstanceNum As Integer
         Dim TmpMap As Integer
         Dim TmpX As Integer
         Dim TmpY As Integer
 
-        'pets
         Dim PetTarget As Integer
 
         Dim PetTargetType As Integer
