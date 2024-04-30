@@ -492,14 +492,15 @@ Module C_NetworkReceive
     End Sub
 
     Private Sub Packet_PlayerMsg(ByRef data() As Byte)
-        Dim msg As String
+        Dim msg As String, color As Integer
         Dim buffer As New ByteStream(data)
 
         msg = Trim(buffer.ReadString)
+        color = buffer.ReadInt32
 
         buffer.Dispose()
 
-        AddText(msg, ColorType.Pink, , ChatChannel.Player)
+        AddText(msg, color, , ChatChannel.Player)
     End Sub
 
     Private Sub Packet_SpawnItem(ByRef data() As Byte)
@@ -1169,15 +1170,15 @@ Module C_NetworkReceive
 
         Select Case Time.Instance.TimeOfDay
             Case TimeOfDay.Dawn
-                AddText("A chilling, refreshing, breeze has come with the morning.", ColorType.BrightBlue)
+                AddText("A chilling, refreshing, breeze has come with the morning.", ColorType.DarkGray)
                 Exit Select
 
             Case TimeOfDay.Day
-                AddText("Day has dawned in this region.", ColorType.Yellow)
+                AddText("Day has dawned in this region.", ColorType.DarkGray)
                 Exit Select
 
             Case TimeOfDay.Dusk
-                AddText("Dusk has begun darkening the skies...", ColorType.BrightRed)
+                AddText("Dusk has begun darkening the skies...", ColorType.DarkGray)
                 Exit Select
 
             Case Else
