@@ -327,20 +327,42 @@ namespace Mirage.Sharp.Asfw.Network
         this._socket?.BeginSend(numArray, 0, head + 4, SocketFlags.None, new AsyncCallback(this.DoSend), (object)null);
     }
 
-    private void DoSend(IAsyncResult ar)
-    {
-      try
-      {
-        this._socket?.EndSend(ar);
-      }
-      catch
-      {
-        NetworkClient.CrashReportArgs crashReport = this.CrashReport;
-        if (crashReport != null)
-          crashReport("ConnectionForciblyClosedException");
-        this.Disconnect();
-      }
-    }
+        private void DoSend(IAsyncResult ar)
+        {
+            try
+            {
+                if (_socket != null)
+                {
+                    _socket.EndSend(ar);
+                }
+                else
+                {
+                    // Log or handle the case where the socket is null
+                    Console.WriteLine("Socket is null when attempting to send data.");
+                }
+            }
+            catch (SocketException ex)
+            {
+                // Log the exception and any relevant information
+                Console.WriteLine($"SocketException occurred during send operation: {ex.Message}");
+
+                // Report the exception via crash report event
+                NetworkClient.CrashReportArgs crashReport = CrashReport;
+                if (crashReport != null)
+                {
+                    crashReport("SocketException occurred during send operation: " + ex.Message);
+                }
+
+                // Disconnect the client
+                Disconnect();
+            }
+            catch (Exception ex)
+            {
+                // Handle other types of exceptions
+                Console.WriteLine($"An unexpected exception occurred during send operation: {ex.Message}");
+            }
+        }
+
 
     public delegate void ConnectionArgs();
 
