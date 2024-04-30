@@ -1485,7 +1485,7 @@ Module S_NetworkReceive
                 If Item(MapItem(GetPlayerMap(index), i).Num).Name <> "" Then
                     If MapItem(GetPlayerMap(index), i).X = x Then
                         If MapItem(GetPlayerMap(index), i).Y = y Then
-                            PlayerMsg(index, "You see " & CheckGrammar(Trim$(Item(MapItem(GetPlayerMap(index), i).Num).Name)) & ".", ColorType.White)
+                            PlayerMsg(index, "You see " & CheckGrammar(Trim$(Item(MapItem(GetPlayerMap(index), i).Num).Name)) & ".", ColorType.BrightGreen)
                             Exit Sub
                         End If
                     End If
