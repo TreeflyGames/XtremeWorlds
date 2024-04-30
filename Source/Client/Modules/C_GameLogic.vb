@@ -99,15 +99,6 @@ Module C_GameLogic
                     End If
                 End If
 
-                ' check if trade timed out
-                If TradeRequest = True Then
-                    If TradeTimer < tick Then
-                        AddText(Language.Trade.Timeout, ColorType.Yellow)
-                        TradeRequest = False
-                        TradeTimer = 0
-                    End If
-                End If
-
                 ' check if we need to end the CD icon
                 If NumSkills > 0 Then
                     For i = 1 To MAX_PLAYER_SKILLS
@@ -561,7 +552,7 @@ Module C_GameLogic
             Select Case command(0)
                 Case "/emote"
                     ' Checks to make sure we have more than one string in the array
-                    If UBound(command) < 1 Or Not IsNumeric(command(1)) Then
+                    If UBound(command) < 1 OrElse Not IsNumeric(command(1)) Then
                         AddText(Language.Chat.Emote, ColorType.Yellow)
                         GoTo Continue1
                     End If
@@ -578,7 +569,7 @@ Module C_GameLogic
 
                 Case "/info"
                     ' Checks to make sure we have more than one string in the array
-                    If UBound(command) < 1 Or IsNumeric(command(1)) Then
+                    If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
                         AddText(Language.Chat.Info, ColorType.Yellow)
                         GoTo Continue1
                     End If
@@ -613,8 +604,8 @@ Module C_GameLogic
 
                 Case "/party"
                     ' Make sure they are actually sending something
-                    If UBound(command) < 1 Or IsNumeric(command(1)) Then
-                        AddText(Language.Chat.Party, ColorType.Yellow)
+                    If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
+                        AddText(Language.Chat.Party, ColorType.BrightRed)
                         GoTo Continue1
                     End If
 
@@ -627,6 +618,16 @@ Module C_GameLogic
                 ' Leave party
                 Case "/leave"
                     SendLeaveParty()
+
+                ' Trade
+                Case "/trade"
+                    ' Make sure they are actually sending something
+                    If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
+                        AddText(Language.Chat.Trade, ColorType.BrightRed)
+                        GoTo Continue1
+                    End If
+
+                    SendTradeRequest(command(1))
 
                 ' // Moderator Admin Commands //
                 ' Admin Help
@@ -649,7 +650,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    If UBound(command) < 1 Or IsNumeric(command(1)) Then
+                    If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
                         AddText(Language.Chat.Kick, ColorType.Yellow)
                         GoTo Continue1
                     End If
@@ -675,7 +676,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    If UBound(command) < 1 Or IsNumeric(command(1)) Then
+                    If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
                         AddText(Language.Chat.WarpMeTo, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -690,7 +691,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    If UBound(command) < 1 Or IsNumeric(command(1)) Then
+                    If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
                         AddText(Language.Chat.WarpToMe, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -705,7 +706,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    If UBound(command) < 1 Or Not IsNumeric(command(1)) Then
+                    If UBound(command) < 1 OrElse Not IsNumeric(command(1)) Then
                         AddText(Language.Chat.WarpTo, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -727,7 +728,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    If UBound(command) < 1 Or Not IsNumeric(command(1)) Then
+                    If UBound(command) < 1 OrElse Not IsNumeric(command(1)) Then
                         AddText(Language.Chat.Sprite, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -822,7 +823,7 @@ Module C_GameLogic
                         GoTo Continue1
                     End If
 
-                    If UBound(command) < 2 Or
+                    If UBound(command) < 2 OrElse
                         IsNumeric(command(1)) Or
                         Not IsNumeric(command(2)) Then
                         AddText(Language.Chat.Access, ColorType.Yellow)
@@ -1261,7 +1262,7 @@ Continue1:
             ' Dialogue index
             Select Case diaIndex
                 Case DialogueType.Trade
-                    SendAcceptTrade()
+                    SendHandleTradeInvite(1)
 
                 Case DialogueType.Forget
                     ForgetSkill(diaData1)
@@ -1319,7 +1320,7 @@ Continue1:
             ' Dialogue index
             Select Case diaIndex
                 Case DialogueType.Trade
-                    SendDeclineTrade()
+                    SendHandleTradeInvite(0)
 
                 Case DialogueType.Party
                     SendDeclineParty()

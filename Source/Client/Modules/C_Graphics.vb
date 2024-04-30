@@ -348,19 +348,14 @@ Module C_Graphics
             End If
 
             ' if we're in the middle of choose the trade target or not
-            If Not TradeRequest Then
-                If PetAlive(MyIndex) Then
-                    If IsInBounds() Then
-                        PetMove(CurX, CurY)
-                    End If
+            If PetAlive(MyIndex) Then
+                If IsInBounds() Then
+                    PetMove(CurX, CurY)
                 End If
-
-                ' targetting
-                PlayerSearch(CurX, CurY, 0)
-            Else
-                ' trading
-                SendTradeRequest(Player(MyTarget).Name)
             End If
+
+            ' targetting
+            PlayerSearch(CurX, CurY, 0)
 
         ElseIf e.Button = Mouse.Button.Right Then
             If VbKeyShift = True Then

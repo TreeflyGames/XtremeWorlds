@@ -23,14 +23,9 @@ Module C_Parties
     Sub Packet_PartyInvite(ByRef data() As Byte)
         Dim name As String
         Dim buffer As New ByteStream(data)
+
         name = buffer.ReadString
-
-        'DialogType = DialogueTypeParty
-
-        DialogMsg1 = "Party Invite"
-        DialogMsg2 = Trim$(name) & " has invited you to a party. Would you like to join?"
-
-        UpdateDialog = True
+        Dialogue("Party Invite", Trim$(name) & " has invited you to a party. Would you like to join?", "", DialogueType.Party, DialogueStyle.YesNo)
 
         buffer.Dispose()
     End Sub

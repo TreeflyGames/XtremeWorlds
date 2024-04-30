@@ -214,14 +214,6 @@ Module C_Globals
 
     Public TempMapData() As Byte
 
-    ' Dialog
-    Public DialogMsg1 As String
-    Public DialogMsg2 As String
-    Public DialogMsg3 As String
-    Public UpdateDialog As Boolean
-    Public DialogButton1Text As String
-    Public DialogButton2Text As String
-
     Public ShakeTimerEnabled As Boolean
     Public ShakeTimer As Integer
     Public ShakeCount As Byte

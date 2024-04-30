@@ -75,7 +75,7 @@ Module S_NetworkReceive
         Socket.PacketId(ClientPackets.CAdminWarp) = AddressOf Packet_AdminWarp
 
         Socket.PacketId(ClientPackets.CTradeInvite) = AddressOf Packet_TradeInvite
-        Socket.PacketId(ClientPackets.CTradeInviteAccept) = AddressOf Packet_TradeInviteAccept
+        Socket.PacketId(ClientPackets.CHandleTradeInvite) = AddressOf Packet_HandleTradeInvite
         Socket.PacketId(ClientPackets.CAcceptTrade) = AddressOf Packet_AcceptTrade
         Socket.PacketId(ClientPackets.CDeclineTrade) = AddressOf Packet_DeclineTrade
         Socket.PacketId(ClientPackets.CTradeItem) = AddressOf Packet_TradeItem
@@ -1860,7 +1860,7 @@ Module S_NetworkReceive
 
         ' can't trade with yourself..
         If tradetarget = index Then
-            PlayerMsg(index, "You can't trade with yourself.", ColorType.BrightRed)
+            PlayerMsg(index, "You can't trade with yourself!", ColorType.BrightRed)
             Exit Sub
         End If
 
@@ -1870,12 +1870,11 @@ Module S_NetworkReceive
 
         PlayerMsg(tradetarget, Trim$(GetPlayerName(index)) & " has invited you to trade.", ColorType.Yellow)
         PlayerMsg(index, "You have invited " & Trim$(GetPlayerName(tradetarget)) & " to trade.", ColorType.BrightGreen)
-        SendClearTradeTimer(index)
 
         SendTradeInvite(tradetarget, index)
     End Sub
 
-    Sub Packet_TradeInviteAccept(index As Integer, ByRef data() As Byte)
+    Sub Packet_HandleTradeInvite(index As Integer, ByRef data() As Byte)
         Dim tradetarget As Integer, status As Byte
         Dim buffer As New ByteStream(data)
 
@@ -1883,17 +1882,20 @@ Module S_NetworkReceive
 
         buffer.Dispose()
 
-        If status = 0 Then Exit Sub
-
         tradetarget = TempPlayer(index).TradeRequest
+
+        If status = 0 Then
+            PlayerMsg(tradetarget, GetPlayerName(index) & " has declined your trade request.", ColorType.BrightRed)
+            PlayerMsg(index,"You have declined the trade with " & GetPlayerName(tradetarget) & ".", ColorType.BrightRed)
+            TempPlayer(index).TradeRequest = 0
+            Exit Sub
+        End If
 
         ' Let them trade!
         If TempPlayer(tradetarget).TradeRequest = index Then
             ' let them know they're trading
-            PlayerMsg(index, "You have accepted " & Trim$(GetPlayerName(tradetarget)) & "'s trade request.", ColorType.Yellow)
-            PlayerMsg(tradetarget, Trim$(GetPlayerName(index)) & " has accepted your trade request.", ColorType.BrightGreen)
-            ' clear the trade timeout clientside
-            SendClearTradeTimer(index)
+            PlayerMsg(index, "You have accepted " & GetPlayerName(tradetarget) & "'s trade request.", ColorType.Yellow)
+            PlayerMsg(tradetarget, GetPlayerName(index) & " has accepted your trade request.", ColorType.BrightGreen)
 
             ' clear the tradeRequest server-side
             TempPlayer(index).TradeRequest = 0
@@ -1912,6 +1914,7 @@ Module S_NetworkReceive
                 TempPlayer(tradetarget).TradeOffer(i).Num = 0
                 TempPlayer(tradetarget).TradeOffer(i).Value = 0
             Next
+
             ' Used to init the trade window clientside
             SendTrade(index, tradetarget)
             SendTrade(tradetarget, index)
@@ -1921,8 +1924,11 @@ Module S_NetworkReceive
             SendTradeUpdate(index, 1)
             SendTradeUpdate(tradetarget, 0)
             SendTradeUpdate(tradetarget, 1)
-            Exit Sub
         End If
+    End Sub
+
+     Sub Packet_TradeInviteDecline(index As Integer, ByRef data() As Byte)
+        TempPlayer(index).TradeRequest = 0
     End Sub
 
     Sub Packet_AcceptTrade(index As Integer, ByRef data() As Byte)

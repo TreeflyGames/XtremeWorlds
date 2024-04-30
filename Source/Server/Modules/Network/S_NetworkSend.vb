@@ -940,15 +940,6 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub SendClearTradeTimer(index As Integer)
-        Dim buffer As New ByteStream(4)
-
-        buffer.WriteInt32(ServerPackets.SClearTradeTimer)
-        Socket.SendDataTo(index, buffer.Data, buffer.Head)
-
-        buffer.Dispose()
-    End Sub
-
     Sub SendTradeInvite(index As Integer, Tradeindex As Integer)
         Dim buffer As New ByteStream(4)
 

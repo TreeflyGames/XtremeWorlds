@@ -2289,7 +2289,7 @@ Module C_Interface
 
                 ' currency handler
                 If Item(GetPlayerInvItemNum(MyIndex, invNum)).Type = ItemType.Currency Then
-                    Dialogue("Select Amount", "Please choose how many to offer", "", DialogueType.TradeAmount, DialogueStyle.Input, invNum)
+                    Dialogue("Select Amount", "Please choose how many to offer.", "", DialogueType.TradeAmount, DialogueStyle.Input, invNum)
                     Exit Sub
                 End If
 
@@ -2663,7 +2663,7 @@ Module C_Interface
                     If Item(GetPlayerInvItemNum(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
                         SendDropItem(DragBox.Slot, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
                     Else
-                        Dialogue("Drop Item", "Please choose how many to drop", "", DialogueType.DropItem, DialogueStyle.Input, DragBox.Slot)
+                        Dialogue("Drop Item", "Please choose how many to drop.", "", DialogueType.DropItem, DialogueStyle.Input, DragBox.Slot)
                     End If
                 Case PartOriginType.Skill
                     ForgetSkill(DragBox.Slot)

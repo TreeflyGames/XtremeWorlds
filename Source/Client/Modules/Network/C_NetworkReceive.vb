@@ -66,7 +66,6 @@ Module C_NetworkReceive
         Socket.PacketId(ServerPackets.SBank) = AddressOf Packet_OpenBank
         Socket.PacketId(ServerPackets.SLeftGame) = AddressOf Packet_LeftGame
 
-        Socket.PacketId(ServerPackets.SClearTradeTimer) = AddressOf Packet_ClearTradeTimer
         Socket.PacketId(ServerPackets.STradeInvite) = AddressOf Packet_TradeInvite
         Socket.PacketId(ServerPackets.STrade) = AddressOf Packet_Trade
         Socket.PacketId(ServerPackets.SCloseTrade) = AddressOf Packet_CloseTrade
