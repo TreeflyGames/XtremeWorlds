@@ -2525,7 +2525,7 @@ newlist:
         Dim tY As Integer
 
         If Map.EventCount <= 0 Then Exit Sub
-        For i = 0 To Map.EventCount
+        For i = 1 To Map.EventCount
             width = 32
             height = 32
             x = Map.Events(i).X * 32

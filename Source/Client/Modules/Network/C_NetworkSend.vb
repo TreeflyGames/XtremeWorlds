@@ -638,29 +638,29 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Friend Sub SendSaveAnimation(Animationnum As Integer)
+    Friend Sub SendSaveAnimation(animationNum As Integer)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CSaveAnimation)
-        buffer.WriteInt32(Animationnum)
+        buffer.WriteInt32(animationNum)
 
-        For i = 0 To UBound(Animation(Animationnum).Frames)
-            buffer.WriteInt32(Animation(Animationnum).Frames(i))
+        For i = 0 To UBound(Animation(animationNum).Frames)
+            buffer.WriteInt32(Animation(animationNum).Frames(i))
         Next
 
-        For i = 0 To UBound(Animation(Animationnum).LoopCount)
-            buffer.WriteInt32(Animation(Animationnum).LoopCount(i))
+        For i = 0 To UBound(Animation(animationNum).LoopCount)
+            buffer.WriteInt32(Animation(animationNum).LoopCount(i))
         Next
 
-        For i = 0 To UBound(Animation(Animationnum).LoopTime)
-            buffer.WriteInt32(Animation(Animationnum).LoopTime(i))
+        For i = 0 To UBound(Animation(animationNum).LoopTime)
+            buffer.WriteInt32(Animation(animationNum).LoopTime(i))
         Next
 
-        buffer.WriteString((Trim$(Animation(Animationnum).Name)))
-        buffer.WriteString((Trim$(Animation(Animationnum).Sound)))
+        buffer.WriteString((Trim$(Animation(animationNum).Name)))
+        buffer.WriteString((Trim$(Animation(animationNum).Sound)))
 
-        For i = 0 To UBound(Animation(Animationnum).Sprite)
-            buffer.WriteInt32(Animation(Animationnum).Sprite(i))
+        For i = 0 To UBound(Animation(animationNum).Sprite)
+            buffer.WriteInt32(Animation(animationNum).Sprite(i))
         Next
 
         Socket.SendData(buffer.Data, buffer.Head)

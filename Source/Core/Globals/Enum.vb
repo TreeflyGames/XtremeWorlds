@@ -422,7 +422,8 @@
     End Enum
 
     Public Enum GfxType
-        Tileset = 1
+        None = 0
+        Tileset
         Character
         Paperdoll
         Item

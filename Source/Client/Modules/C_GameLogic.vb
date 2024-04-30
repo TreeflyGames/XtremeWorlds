@@ -1926,7 +1926,8 @@ Continue1:
 
                     ' draw the item
                     For i = 0 To 5
-                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = ItemSprite(Item(shopSelectedItem).Icon)
+                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = Item(shopSelectedItem).Icon
+                        .Controls(GetControlIndex("winShop", "picItem")).GfxType(i) = GfxType.Item
                     Next
                 Else
                     .Controls(GetControlIndex("winShop", "lblName")).text = "Empty Slot"
@@ -1934,7 +1935,8 @@ Continue1:
                     
                     ' draw the item
                     For i = 0 To 5
-                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = New Sprite
+                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = 0
+                        .Controls(GetControlIndex("winShop", "picItem")).GfxType(i) = GfxType.None
                     Next
                 End If
             Else
@@ -1948,7 +1950,8 @@ Continue1:
                     
                     ' draw the item
                     For i = 0 To 5
-                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = ItemSprite(Item(shopSelectedItem).Icon)
+                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = Item(shopSelectedItem).Icon
+                        .Controls(GetControlIndex("winShop", "picItem")).GfxType(i) = GfxType.Item
                     Next
                 Else
                     .Controls(GetControlIndex("winShop", "lblName")).text = "Empty Slot"
@@ -1956,7 +1959,8 @@ Continue1:
                     
                     ' draw the item
                     For i = 0 To 5
-                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = New Sprite
+                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = 0
+                        .Controls(GetControlIndex("winShop", "picItem")).GfxType(i) = GfxType.None
                     Next
                 End If
             End If

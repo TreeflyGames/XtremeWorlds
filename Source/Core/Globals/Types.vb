@@ -866,7 +866,8 @@ Public Module Types
         Dim Min As Long
         Dim Value As Long
         Dim Text As String
-        Dim Image() As Sprite
+        Dim Image() As Long
+        Dim GfxType() as GfxType
         Dim Design() As Long
         Dim Color As Color
         Dim Alpha As Long

@@ -705,18 +705,6 @@ Module C_Graphics
             ShadowGfxInfo.Width = ShadowGfx.Size.X
             ShadowGfxInfo.Height = ShadowGfx.Size.Y
         End If
-
-        For i = 1 To NumInterface
-            LoadTexture(i, GfxType.GUI)
-        Next
-
-        For i = 1 To NumGradients
-            LoadTexture(i, GfxType.Gradient)
-        Next
-
-        For i = 1 To NumDesigns
-            LoadTexture(i, GfxType.Design)
-        Next
     End Sub
 
     Public Sub UpdateWindow()
@@ -918,10 +906,6 @@ Module C_Graphics
 
         If sprite < 1 Or sprite > NumEmotes Then Exit Sub
 
-        If EmoteGfxInfo(sprite).IsLoaded = False Then
-            LoadTexture(sprite, GfxType.Emote)
-        End If
-
         If ShowAnimLayers = True Then
             anim = 1
         Else
@@ -938,33 +922,142 @@ Module C_Graphics
         x = ConvertMapX(x2)
         y = ConvertMapY(y2) - (PicY + 16)
 
-        RenderTexture(EmoteSprite(sprite), Window, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(sprite, GfxType.Emote, Window, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub RenderTexture(tmpSprite As Sprite, target As RenderWindow, dX As Integer, dY As Integer,
                             sX As Integer, sY As Integer, dW As Integer, dH As Integer, Optional sW As Integer = 1, Optional sH As Integer = 1, Optional alpha As Byte = 255, Optional red As Byte = 255, Optional green As Byte = 255, Optional blue As Byte = 255)
-
+        
         If tmpSprite Is Nothing Then Exit Sub
+        If target Is Nothing Then Exit Sub
 
         tmpSprite.TextureRect = New IntRect(sX, sY, sW, sH)
         tmpSprite.Scale = New Vector2f(dW / sW, dH / sH)
         tmpSprite.Position = New Vector2f(dX, dY)
         tmpSprite.Color = New Color(red, green, blue, alpha)
+
         target.Draw(tmpSprite)
     End Sub
 
-    Friend Sub RenderTextures(tex As Texture, target As RenderWindow, dX As Integer, dY As Integer, sX As Integer,
-                              sY As Integer, dW As Integer, dH As Integer, Optional sW As Integer = 1, Optional sH As Integer = 1, Optional alpha As Byte = 255, Optional red As Byte = 255, Optional green As Byte = 255, Optional blue As Byte = 255)
+    Friend Sub RenderTexture(index As Integer, gfxType As GfxType, ByRef target As RenderWindow, 
+                             dX As Integer, dY As Integer, sX As Integer, sY As Integer, 
+                             dW As Integer, dH As Integer, 
+                             Optional sW As Integer = 1, Optional sH As Integer = 1, 
+                             Optional alpha As Byte = 255, Optional red As Byte = 255, 
+                             Optional green As Byte = 255, Optional blue As Byte = 255)
 
-        If tex Is Nothing Then Exit Sub
+        Dim textureArray() As Texture = Nothing
+        Dim spriteArray() As Sprite = Nothing
+        Dim gfxInfoArray() As GraphicInfo = Nothing
 
-        Dim tmpImage = New Sprite(tex) With {
-                .TextureRect = New IntRect(sX, sY, sW, sH),
-                .Scale = New Vector2f(dW / sW, dH / sH),
-                .Position = New Vector2f(dX, dY),
-                .Color = New Color(red, green, blue, alpha)
-                }
-        target.Draw(tmpImage)
+        If gfxType = GfxType.None Then Exit Sub
+        If target Is Nothing Then Exit Sub
+
+        ResolveTextureArrays(gfxType, textureArray, spriteArray, gfxInfoArray)
+
+        If index <= 0 OrElse index >= textureArray.Length OrElse gfxInfoArray Is Nothing Then
+            Console.WriteLine("Invalid index or gfxInfo array.")
+            Exit Sub
+        End If
+
+        ' Check if the texture is loaded, if not, load it
+        If gfxInfoArray(index).IsLoaded = False Then
+            LoadTexture(index, gfxType)
+        End If
+
+        ' Use the texture
+        Dim tmpSprite As Sprite = spriteArray(index)
+        tmpSprite.TextureRect = New IntRect(sX, sY, sW, sH)
+        tmpSprite.Scale = New Vector2f(dW / sW, dH / sH)
+        tmpSprite.Position = New Vector2f(dX, dY)
+        tmpSprite.Color = New Color(red, green, blue, alpha)
+
+        target.Draw(tmpSprite)
+    End Sub
+
+    Private Sub ResolveTextureArrays(gfxType As GfxType, ByRef textureArray() As Texture, 
+                                     ByRef spriteArray() As Sprite, ByRef gfxInfoArray() As GraphicInfo)
+        Select Case gfxType
+            Case GfxType.Tileset
+                textureArray = TilesetTexture
+                spriteArray = TilesetSprite
+                gfxInfoArray = TilesetGfxInfo
+
+            Case GfxType.Character
+                textureArray = CharacterTexture
+                spriteArray = CharacterSprite
+                gfxInfoArray = CharacterGfxInfo
+
+            Case GfxType.Paperdoll
+                textureArray = PaperdollTexture
+                spriteArray = PaperdollSprite
+                gfxInfoArray = PaperdollGfxInfo
+
+            Case GfxType.Item
+                textureArray = ItemTexture
+                spriteArray = ItemSprite
+                gfxInfoArray = ItemGfxInfo
+
+            Case GfxType.Resource
+                textureArray = ResourceTexture
+                spriteArray = ResourceSprite
+                gfxInfoArray = ResourceGfxInfo
+
+            Case GfxType.Animation
+                textureArray = AnimationTexture
+                spriteArray = AnimationSprite
+                gfxInfoArray = AnimationGfxInfo
+
+            Case GfxType.Fog
+                textureArray = FogTexture
+                spriteArray = FogSprite
+                gfxInfoArray = FogGfxInfo
+
+            Case GfxType.Skill
+                textureArray = SkillTexture
+                spriteArray = SkillSprite
+                gfxInfoArray = SkillGfxInfo
+
+            Case GfxType.Projectile
+                textureArray = ProjectileTexture
+                spriteArray = ProjectileSprite
+                gfxInfoArray = ProjectileGfxInfo
+
+            Case GfxType.Emote
+                textureArray = EmoteTexture
+                spriteArray = EmoteSprite
+                gfxInfoArray = EmoteGfxInfo
+
+            Case GfxType.Panorama
+                textureArray = PanoramaTexture
+                spriteArray = PanoramaSprite
+                gfxInfoArray = PanoramaGfxInfo
+
+            Case GfxType.Parallax
+                textureArray = ParallaxTexture
+                spriteArray = ParallaxSprite
+                gfxInfoArray = ParallaxGfxInfo
+
+            Case GfxType.Picture
+                textureArray = PictureTexture
+                spriteArray = PictureSprite
+                gfxInfoArray = PictureGfxInfo
+
+            Case GfxType.GUI
+                textureArray = InterfaceTexture
+                spriteArray = InterfaceSprite
+                gfxInfoArray = InterfaceGfxInfo
+
+            Case GfxType.Gradient
+                textureArray = GradientTexture
+                spriteArray = GradientSprite
+                gfxInfoArray = GradientGfxInfo
+
+            Case GfxType.Design
+                textureArray = DesignTexture
+                spriteArray = DesignSprite
+                gfxInfoArray = DesignGfxInfo
+        End Select
     End Sub
 
     Friend Sub DrawDirections(x As Integer, y As Integer)
@@ -1012,10 +1105,6 @@ Module C_Graphics
 
         If sprite < 1 Or sprite > NumPaperdolls Then Exit Sub
 
-        If PaperdollGfxInfo(sprite).IsLoaded = False Then
-            LoadTexture(sprite, GfxType.Paperdoll)
-        End If
-
         With rec
             .Y = spritetop * (PaperdollGfxInfo(sprite).Height / 4)
             .Height = (PaperdollGfxInfo(sprite).Height / 4)
@@ -1028,7 +1117,7 @@ Module C_Graphics
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderTexture(PaperdollSprite(sprite), Window, x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        RenderTexture(sprite, GfxType.Paperdoll, Window, x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawNpc(mapNpcNum As Integer)
@@ -1124,10 +1213,6 @@ Module C_Graphics
 
         If picNum < 1 Or picNum > NumItems Then Exit Sub
 
-        If ItemGfxInfo(picNum).IsLoaded = False Then
-            LoadTexture(picNum, GfxType.Item)
-        End If
-
         With MapItem(itemnum)
             If .X < TileView.Left Or .X > TileView.Right Then Exit Sub
             If .Y < TileView.Top Or .Y > TileView.Bottom Then Exit Sub
@@ -1144,7 +1229,7 @@ Module C_Graphics
         x = ConvertMapX(MapItem(itemnum).X * PicX)
         y = ConvertMapY(MapItem(itemnum).Y * PicY)
 
-        RenderTexture(ItemSprite(picNum), Window, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width, srcrec.Height)
+        RenderTexture(picNum, GfxType.Item, Window, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width, srcrec.Height)
     End Sub
 
     Friend Sub DrawCharacterSprite(sprite As Integer, x2 As Integer, y2 As Integer, sRECT As Rectangle)
@@ -1153,14 +1238,10 @@ Module C_Graphics
 
         If sprite < 1 Or sprite > NumCharacters Then Exit Sub
 
-        If CharacterGfxInfo(sprite).IsLoaded = False Then
-            LoadTexture(sprite, GfxType.Character)
-        End If
-
         x = ConvertMapX(x2)
         y = ConvertMapY(y2)
 
-        RenderTexture(CharacterSprite(sprite), Window, x, y, sRECT.X, sRECT.Y, sRECT.Width, sRECT.Height, sRECT.Width, sRECT.Height)
+        RenderTexture(sprite, GfxType.Character, Window, x, y, sRECT.X, sRECT.Y, sRECT.Width, sRECT.Height, sRECT.Width, sRECT.Height)
     End Sub
 
     Friend Sub DrawShadow(x2 As Integer, y2 As Integer)
@@ -1658,33 +1739,27 @@ Module C_Graphics
 
         If index < 1 Or index > NumPanorama Then Exit Sub
 
-        If PanoramaGfxInfo(index).IsLoaded = False Then
-            LoadTexture(index, GfxType.Panorama)
-        End If
-
-        PanoramaSprite(index).TextureRect = New IntRect(0, 0, Window.Size.X, Window.Size.Y)
-        PanoramaSprite(index).Position = New Vector2f(0, 0)
-
-        Window.Draw(PanoramaSprite(index))
+        RenderTexture(index, GfxType.Panorama, Window, 
+                      0, 0, 0, 0, 
+                      Window.Size.X, Window.Size.Y, 
+                      Window.Size.X, Window.Size.Y)
     End Sub
 
     Friend Sub DrawParallax(index As Integer)
-        Dim horz = 0
-        Dim vert = 0
+        Dim horz As Single = 0
+        Dim vert As Single = 0
 
         If Map.Moral = Map.Indoors Then Exit Sub
         If index < 1 Or index > NumParallax Then Exit Sub
 
-        If ParallaxGfxInfo(index).IsLoaded = False Then
-            LoadTexture(index, GfxType.Parallax)
-        End If
+        ' Calculate horizontal and vertical offsets based on player position
+        horz = ConvertMapX(GetPlayerX(MyIndex)) * 2.5F - 50
+        vert = ConvertMapY(GetPlayerY(MyIndex)) * 2.5F - 50
 
-        horz = ConvertMapX(GetPlayerX(MyIndex))
-        vert = ConvertMapY(GetPlayerY(MyIndex))
-
-        ParallaxSprite(index).Position = New Vector2f((horz * 2.5) - 50, (vert * 2.5) - 50)
-
-        Window.Draw(ParallaxSprite(index))
+        RenderTexture(index, GfxType.Parallax, Window, 
+                      CInt(horz), CInt(vert), 0, 0, 
+                      Window.Size.X, Window.Size.Y, 
+                      Window.Size.X, Window.Size.Y)
     End Sub
 
     Friend Sub DrawPicture(Optional index As Integer = 0, Optional type As Integer = 0)
@@ -1697,21 +1772,24 @@ Module C_Graphics
         End If
 
         If index < 1 Or index > NumPictures Then Exit Sub
-        If type < 0 Or type > 2 Then Exit Sub
+        If type < 0 Or type > 3 Then Exit Sub
 
-        If PictureGfxInfo(index).IsLoaded = False Then
-            LoadTexture(index, GfxType.Picture)
-        End If
+        Dim posX As Integer = 0
+        Dim posY As Integer = 0
 
-        PictureSprite(index).TextureRect = New IntRect(0, 0, Window.Size.X, Window.Size.Y)
-
+        ' Determine position based on type
         Select Case type
             Case 0 ' Top Left
-                PictureSprite(index).Position = New Vector2f(0 - Picture.xOffset, 0 - Picture.yOffset)
+                posX = 0 - Picture.xOffset
+                posY = 0 - Picture.yOffset
+
             Case 1 ' Center Screen
-                PictureSprite(index).Position = New Vector2f(Window.Size.X / 2 - PictureGfxInfo(index).Width / 2 - Picture.xOffset, Window.Size.Y / 2 - PictureGfxInfo(index).Height / 2)
+                posX = Window.Size.X / 2 - PictureGfxInfo(index).Width / 2 - Picture.xOffset
+                posY = Window.Size.Y / 2 - PictureGfxInfo(index).Height / 2 - Picture.yOffset
+
             Case 2 ' Center Event
                 If CurrentEvents < Picture.EventId Then
+                    ' Reset picture details and exit if event is invalid
                     Picture.EventId = 0
                     Picture.Index = 0
                     Picture.SpriteType = 0
@@ -1719,12 +1797,16 @@ Module C_Graphics
                     Picture.yOffset = 0
                     Exit Sub
                 End If
-                PictureSprite(index).Position = New Vector2f(ConvertMapX(MapEvents(Picture.EventId).X * 32) / 2 - Picture.xOffset, ConvertMapY(MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset)
+                posX = ConvertMapX(MapEvents(Picture.EventId).X * 32) / 2 - Picture.xOffset
+                posY = ConvertMapY(MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset
+
             Case 3 ' Center Player
-                PictureSprite(index).Position = New Vector2f(ConvertMapX(Player(MyIndex).X * 32) / 2 - Picture.xOffset, ConvertMapY(Player(MyIndex).Y * 32) / 2 - Picture.yOffset)
+                posX = ConvertMapX(Player(MyIndex).X * 32) / 2 - Picture.xOffset
+                posY = ConvertMapY(Player(MyIndex).Y * 32) / 2 - Picture.yOffset
         End Select
 
-        Window.Draw(PictureSprite(index))
+        RenderTexture(index, GfxType.Picture, Window, posX, posY, 0, 0, 
+                      Window.Size.X, Window.Size.Y, Window.Size.X, Window.Size.Y)
     End Sub
 
     Friend Sub DrawBars()
@@ -1881,21 +1963,17 @@ Module C_Graphics
         If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
             rec2.Size = New Vector2f(rec.Width, rec.Height)
         Else
-            If TilesetGfxInfo(frmEditor_Map.cmbTileSets.SelectedIndex + 1).IsLoaded = False Then
-                LoadTexture(frmEditor_Map.cmbTileSets.SelectedIndex, GfxType.Tileset)
-            End If
-
             If EditorTileWidth = 1 And EditorTileHeight = 1 Then
-                RenderTexture(TilesetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height, rec.Width, rec.Height)
+                RenderTexture(frmEditor_Map.cmbTileSets.SelectedIndex + 1, GfxType.Tileset, Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height, rec.Width, rec.Height)
 
                 rec2.Size = New Vector2f(rec.Width, rec.Height)
             Else
                 If frmEditor_Map.cmbAutoTile.SelectedIndex > 0 Then
-                    RenderTexture(TilesetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height, rec.Width, rec.Height)
+                    RenderTexture(frmEditor_Map.cmbTileSets.SelectedIndex + 1, GfxType.Tileset, Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, rec.Width, rec.Height, rec.Width, rec.Height)
 
                     rec2.Size = New Vector2f(rec.Width, rec.Height)
                 Else
-                    RenderTexture(TilesetSprite(frmEditor_Map.cmbTileSets.SelectedIndex + 1), Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
+                    RenderTexture(frmEditor_Map.cmbTileSets.SelectedIndex + 1, GfxType.Tileset, Window, ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY), EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY, EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
 
                     rec2.Size = New Vector2f(EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
                 End If
@@ -2340,7 +2418,7 @@ Module C_Graphics
     End Sub
 
     Friend Sub EditorAnim_DrawAnim()
-        Dim Animationnum As Integer
+        Dim animationNum As Integer
         Dim sRECT As Rectangle
         Dim dRECT As Rectangle
         Dim width As Integer, height As Integer
@@ -2348,16 +2426,12 @@ Module C_Graphics
         Dim FrameCount As Integer
         Dim ShouldRender As Boolean
 
-        Animationnum = frmEditor_Animation.nudSprite0.Value
+        animationNum = frmEditor_Animation.nudSprite0.Value
 
-        If Animationnum < 1 Or Animationnum > NumAnimations Then
+        If animationNum < 1 Or animationNum > NumAnimations Then
             EditorAnimation_Anim1.Clear(ToSfmlColor(frmEditor_Animation.picSprite0.BackColor))
             EditorAnimation_Anim1.Display()
         Else
-            If AnimationGfxInfo(Animationnum).IsLoaded = False Then
-                LoadTexture(Animationnum, GfxType.Animation)
-            End If
-
             looptime = frmEditor_Animation.nudLoopTime0.Value
             FrameCount = frmEditor_Animation.nudFrameCount0.Value
 
@@ -2378,8 +2452,8 @@ Module C_Graphics
             If ShouldRender Then
                 If frmEditor_Animation.nudFrameCount0.Value > 0 Then
                     ' total width divided by frame count
-                    height = AnimationGfxInfo(Animationnum).Height
-                    width = AnimationGfxInfo(Animationnum).Width / frmEditor_Animation.nudFrameCount0.Value
+                    height = AnimationGfxInfo(animationNum).Height
+                    width = AnimationGfxInfo(animationNum).Width / frmEditor_Animation.nudFrameCount0.Value
                     With sRECT
                         .Y = 0
                         .Height = height
@@ -2395,23 +2469,19 @@ Module C_Graphics
                     End With
 
                     EditorAnimation_Anim1.Clear(ToSfmlColor(frmEditor_Animation.picSprite0.BackColor))
-                    RenderTexture(AnimationSprite(Animationnum), EditorAnimation_Anim1, dRECT.X, dRECT.Y, sRECT.X,
+                    RenderTexture(animationNum, GfxType.Animation, EditorAnimation_Anim1, dRECT.X, dRECT.Y, sRECT.X,
                                  sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Width, dRECT.Height)
                     EditorAnimation_Anim1.Display()
                 End If
             End If
         End If
 
-        Animationnum = frmEditor_Animation.nudSprite1.Value
+        animationNum = frmEditor_Animation.nudSprite1.Value
 
-        If Animationnum < 1 Or Animationnum > NumAnimations Then
+        If animationNum < 1 Or animationNum > NumAnimations Then
             EditorAnimation_Anim2.Clear(ToSfmlColor(frmEditor_Animation.picSprite1.BackColor))
             EditorAnimation_Anim2.Display()
         Else
-            If AnimationGfxInfo(Animationnum).IsLoaded = False Then
-                LoadTexture(Animationnum, GfxType.Animation)
-            End If
-
             looptime = frmEditor_Animation.nudLoopTime1.Value
             FrameCount = frmEditor_Animation.nudFrameCount1.Value
             ShouldRender = False
@@ -2431,8 +2501,8 @@ Module C_Graphics
             If ShouldRender Then
                 If frmEditor_Animation.nudFrameCount1.Value > 0 Then
                     ' total width divided by frame count
-                    height = AnimationGfxInfo(Animationnum).Height
-                    width = AnimationGfxInfo(Animationnum).Width / frmEditor_Animation.nudFrameCount1.Value
+                    height = AnimationGfxInfo(animationNum).Height
+                    width = AnimationGfxInfo(animationNum).Width / frmEditor_Animation.nudFrameCount1.Value
                     With sRECT
                         .Y = 0
                         .Height = height
@@ -2448,7 +2518,7 @@ Module C_Graphics
                     End With
 
                     EditorAnimation_Anim2.Clear(ToSfmlColor(frmEditor_Animation.picSprite1.BackColor))
-                    RenderTexture(AnimationSprite(Animationnum), EditorAnimation_Anim2, dRECT.X, dRECT.Y, sRECT.X,
+                    RenderTexture(animationNum, GfxType.Animation, EditorAnimation_Anim2, dRECT.X, dRECT.Y, sRECT.X,
                                  sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Height, dRECT.Width)
                     EditorAnimation_Anim2.Display()
                 End If
@@ -2655,29 +2725,23 @@ Module C_Graphics
     End Function
 
     Sub DrawMenuBG()
-        For i = 1 To 12
-            If PictureGfxInfo(i).IsLoaded = False Then
-                LoadTexture(i, GfxType.Picture)
-            End If
-        Next
-
         ' row 1
-        RenderTexture(PictureSprite(1), Window, ResolutionWidth - 512, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(2), Window, ResolutionWidth - 1024, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(3), Window, ResolutionWidth - 1536, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(4), Window, ResolutionWidth - 2048, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(1, GfxType.Picture, Window, ResolutionWidth - 512, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(2, GfxType.Picture, Window, ResolutionWidth - 1024, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(3, GfxType.Picture, Window, ResolutionWidth - 1536, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        RenderTexture(4, GfxType.Picture, Window, ResolutionWidth - 2048, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
        
         ' row 2
-        RenderTexture(PictureSprite(5), Window, ResolutionWidth - 512, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(6), Window, ResolutionWidth - 1024, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(7), Window, ResolutionWidth - 1536, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
-        RenderTexture(PictureSprite(8), Window, ResolutionWidth - 2048, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(5, GfxType.Picture, Window, ResolutionWidth - 512, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(6, GfxType.Picture, Window, ResolutionWidth - 1024, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(7, GfxType.Picture, Window, ResolutionWidth - 1536, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        RenderTexture(8, GfxType.Picture, Window, ResolutionWidth - 2048, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
         
         ' row 3
-        RenderTexture(PictureSprite(9), Window, ResolutionWidth - 512, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(10), Window, ResolutionWidth - 1024, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(11), Window, ResolutionWidth - 1536, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
-        RenderTexture(PictureSprite(12), Window, ResolutionWidth - 2048, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(9, GfxType.Picture, Window, ResolutionWidth - 512, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(10, GfxType.Picture, Window, ResolutionWidth - 1024, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(11, GfxType.Picture, Window, ResolutionWidth - 1536, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        RenderTexture(12, GfxType.Picture, Window, ResolutionWidth - 2048, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
     End Sub
 
     Public Sub DrawHotbar()
@@ -2687,8 +2751,8 @@ Module C_Graphics
         yO = Windows(GetWindowIndex("winHotbar")).Window.Top
 
         ' Render start + end wood
-        RenderTexture(InterfaceSprite(31), Window, xO - 1, yO + 3, 0, 0, 11, 26, 11, 26)
-        RenderTexture(InterfaceSprite(31), Window, xO + 407, yO + 3, 0, 0, 11, 26, 11, 26)
+        RenderTexture(31, GfxType.GUI, Window, xO - 1, yO + 3, 0, 0, 11, 26, 11, 26)
+        RenderTexture(31, GfxType.GUI, Window, xO + 407, yO + 3, 0, 0, 11, 26, 11, 26)
 
         For i = 1 To MAX_HOTBAR
             xO = Windows(GetWindowIndex("winHotbar")).Window.Left + HotbarLeft + ((i - 1) * HotbarOffsetX)
@@ -2699,11 +2763,11 @@ Module C_Graphics
             ' Don't render last one
             If i <> MAX_HOTBAR Then
                 ' Render wood
-                RenderTexture(InterfaceSprite(32), Window, xO + 30, yO + 3, 0, 0, 13, 26, 13, 26)
+                RenderTexture(32, GfxType.GUI, Window, xO + 30, yO + 3, 0, 0, 13, 26, 13, 26)
             End If
 
             ' Render box
-            RenderTexture(InterfaceSprite(30), Window, xO - 2, yO - 2, 0, 0, Width, Height, Width, Height)
+            RenderTexture(30, GfxType.GUI, Window, xO - 2, yO - 2, 0, 0, Width, Height, Width, Height)
 
             ' Render icon
             If Not (DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = i) Then
@@ -2711,23 +2775,17 @@ Module C_Graphics
                     Case PartOriginType.Inventory
                         StreamItem(Player(MyIndex).Hotbar(i).Slot)
                         If Len(Item(Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Item(Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then
-                            If ItemGfxInfo(Item(Player(MyIndex).Hotbar(i).Slot).Icon).IsLoaded = False Then
-                                LoadTexture(Item(Player(MyIndex).Hotbar(i).Slot).Icon, GfxType.Item)
-                            End If
-                            RenderTexture(ItemSprite(Item(Player(MyIndex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
+                            RenderTexture(Item(Player(MyIndex).Hotbar(i).Slot).Icon, GfxType.Item, Window, xO, yO, 0, 0, 32, 32, 32, 32)
                         End If
 
                     Case PartOriginType.Skill
                         StreamSkill(Player(MyIndex).Hotbar(i).Slot)
                         If Len(Skill(Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Skill(Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then
-                            If SkillGfxInfo(Item(Player(MyIndex).Hotbar(i).Slot).Icon).IsLoaded = False Then
-                                LoadTexture(Item(Player(MyIndex).Hotbar(i).Slot).Icon, GfxType.Skill)
-                            End If
-                            RenderTexture(SkillSprite(Skill(Player(MyIndex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
+                            RenderTexture(Skill(Player(MyIndex).Hotbar(i).Slot).Icon, GfxType.Skill, Window, xO, yO, 0, 0, 32, 32, 32, 32)
                             For t = 1 To MAX_PLAYER_SKILLS
                                 If GetPlayerSkill(MyIndex, t) > 0 Then
                                     If GetPlayerSkill(MyIndex, t) = Player(MyIndex).Hotbar(i).Slot And GetPlayerSkillCD(MyIndex, t) > 0 Then
-                                        RenderTexture(SkillSprite(Skill(Player(MyIndex).Hotbar(i).Slot).Icon), Window, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
+                                        RenderTexture(Skill(Player(MyIndex).Hotbar(i).Slot).Icon, GfxType.Skill, Window, xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
                                     End If
                                 End If
                             Next
@@ -2782,37 +2840,37 @@ Module C_Graphics
             y2 = y - (UBound(theArray) * 12)
 
             ' render bubble - top left
-            RenderTexture(InterfaceSprite(33), Window, x2 - 9, y2 - 5, 0, 0, 9, 5, 9, 5)
+            RenderTexture(33, GfxType.GUI, Window, x2 - 9, y2 - 5, 0, 0, 9, 5, 9, 5)
 
             ' top right
-            RenderTexture(InterfaceSprite(33), Window, x2 + MaxWidth, y2 - 5, 119, 0, 9, 5, 9, 5)
+            RenderTexture(33, GfxType.GUI, Window, x2 + MaxWidth, y2 - 5, 119, 0, 9, 5, 9, 5)
 
             ' top
-            RenderTexture(InterfaceSprite(33), Window, x2, y2 - 5, 9, 0, MaxWidth, 5, 5, 5)
+            RenderTexture(33, GfxType.GUI, Window, x2, y2 - 5, 9, 0, MaxWidth, 5, 5, 5)
 
             ' bottom left
-            RenderTexture(InterfaceSprite(33), Window, x2 - 9, y, 0, 19, 9, 6, 9, 6)
+            RenderTexture(33, GfxType.GUI, Window, x2 - 9, y, 0, 19, 9, 6, 9, 6)
 
             ' bottom right
-            RenderTexture(InterfaceSprite(33), Window, x2 + MaxWidth, y, 119, 19, 9, 6, 9, 6)
+            RenderTexture(33, GfxType.GUI, Window, x2 + MaxWidth, y, 119, 19, 9, 6, 9, 6)
 
             ' bottom - left half
-            RenderTexture(InterfaceSprite(33), Window, x2, y, 9, 19, (MaxWidth \ 2) - 5, 6, 6, 6)
+            RenderTexture(33, GfxType.GUI, Window, x2, y, 9, 19, (MaxWidth \ 2) - 5, 6, 6, 6)
 
             ' bottom - right half
-            RenderTexture(InterfaceSprite(33), Window, x2 + (MaxWidth \ 2) + 6, y, 9, 19, (MaxWidth \ 2) - 5, 6, 9, 6)
+            RenderTexture(33, GfxType.GUI, Window, x2 + (MaxWidth \ 2) + 6, y, 9, 19, (MaxWidth \ 2) - 5, 6, 9, 6)
 
             ' left
-            RenderTexture(InterfaceSprite(33), Window, x2 - 9, y2, 0, 6, 9, (UBound(theArray) * 12), 9, 6)
+            RenderTexture(33, GfxType.GUI, Window, x2 - 9, y2, 0, 6, 9, (UBound(theArray) * 12), 9, 6)
 
             ' right
-            RenderTexture(InterfaceSprite(33), Window, x2 + MaxWidth, y2, 119, 6, 9, (UBound(theArray) * 12), 9, 6)
+            RenderTexture(33, GfxType.GUI, Window, x2 + MaxWidth, y2, 119, 6, 9, (UBound(theArray) * 12), 9, 6)
 
             ' center
-            RenderTexture(InterfaceSprite(33), Window, x2, y2, 9, 5, MaxWidth, (UBound(theArray) * 12), 9, 5)
+            RenderTexture(33, GfxType.GUI, Window, x2, y2, 9, 5, MaxWidth, (UBound(theArray) * 12), 9, 5)
 
             ' little pointy bit
-            RenderTexture(InterfaceSprite(33), Window, x - 5, y, 58, 19, 11, 11, 11, 11)
+            RenderTexture(33, GfxType.GUI, Window, x - 5, y, 58, 19, 11, 11, 11, 11)
 
             ' render each line centralized
             tmpNum = UBound(theArray)

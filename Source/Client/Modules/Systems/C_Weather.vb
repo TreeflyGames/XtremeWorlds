@@ -81,10 +81,6 @@ Friend Module C_Weather
         fogNum = CurrentFog
         If fogNum <= 0 Or fogNum > NumFogs Then Exit Sub
 
-        If FogGfxInfo(fogNum).IsLoaded = False Then
-            LoadTexture(fogNum, GfxType.Fog)
-        End If
-
         FogTexture(fogNum).Repeated = True
         FogTexture(fogNum).Smooth = True
 

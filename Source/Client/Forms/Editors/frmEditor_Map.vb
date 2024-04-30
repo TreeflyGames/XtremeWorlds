@@ -1302,10 +1302,6 @@ Public Class frmEditor_Map
             .FillColor = New SFML.Graphics.Color(SFML.Graphics.Color.Transparent)
         }
 
-        If TilesetGfxInfo(tileset).IsLoaded = False Then
-            LoadTexture(tileset, GfxType.Tileset)
-        End If
-
         ' change selected shape for autotiles
         If Me.cmbAutoTile.SelectedIndex > 0 Then
             Select Case Me.cmbAutoTile.SelectedIndex
@@ -1331,9 +1327,9 @@ Public Class frmEditor_Map
         End If
 
         If TilesetGfxInfo(tileset).Width < picBackSelect.Width Or TilesetGfxInfo(tileset).Height < picBackSelect.Height Then
-            RenderTexture(TilesetSprite(tileset), TilesetWindow, 0, 0, 0, 0, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height)
+            RenderTexture(tileset, GfxType.Tileset, TilesetWindow, 0, 0, 0, 0, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height)
         Else
-            RenderTexture(TilesetSprite(tileset), TilesetWindow, 0, 0, 0, 0, picBackSelect.Width, picBackSelect.Height, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height)
+            RenderTexture(tileset, GfxType.Tileset, TilesetWindow, 0, 0, 0, 0, picBackSelect.Width, picBackSelect.Height, TilesetGfxInfo(tileset).Width, TilesetGfxInfo(tileset).Height)
         End If
 
         rec2.Size = New Vector2f(EditorTileWidth * PicX, EditorTileHeight * PicY)

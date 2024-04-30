@@ -825,10 +825,6 @@ Module C_Maps
 
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 And Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
-                If TilesetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
-                    LoadTexture(Map.Tile(x, y).Layer(i).Tileset, GfxType.Tileset)
-                End If
-
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
                     With rect
                         .X = Map.Tile(x, y).Layer(i).X * PicX
@@ -847,7 +843,7 @@ Module C_Maps
                         alpha = 255
                     End If
 
-                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), Window, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
+                    RenderTexture(Map.Tile(x, y).Layer(i).Tileset, GfxType.Tileset, Window, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Types.Settings.Autotile Then
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
@@ -884,11 +880,6 @@ Module C_Maps
 
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 And Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
-                If TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
-                    LoadTexture(Map.Tile(x, y).Layer(i).Tileset, GfxType.Tileset)
-                End If
-
-                ' render
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
                     With rect
                         .X = Map.Tile(x, y).Layer(i).X * PicX
@@ -907,7 +898,7 @@ Module C_Maps
                         alpha = 255
                     End If
 
-                    RenderTexture(TilesetSprite(Map.Tile(x, y).Layer(i).Tileset), Window, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
+                    RenderTexture(Map.Tile(x, y).Layer(i).Tileset, GfxType.Tileset, Window, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Types.Settings.Autotile Then
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
