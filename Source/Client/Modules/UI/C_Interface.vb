@@ -1074,7 +1074,11 @@ Module C_Interface
         CreateLabel(WindowCount, "lblPassword", 72, 75, 142, FontSize, "Password", Arial, Color.White, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Types.Settings.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        If Types.Settings.SaveUsername Then
+            CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Types.Settings.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        Else
+            CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        End If
         CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
