@@ -2982,7 +2982,7 @@ Module C_Interface
         zOrder_Con = 1
 
         ' Chat Label
-        CreateLabel(WindowCount, "lblMsg", 10, ResolutionHeight - 28, 160, FontSize, "Press 'Enter' to open chatbox.", Georgia, Color.White)
+        CreateLabel(WindowCount, "lblMsg", 12, 140, 286, 25, "Press 'Enter' to open chatbox.", Georgia, Color.White)
     End Sub
 
     Public Sub CreateWindow_Hotbar()
