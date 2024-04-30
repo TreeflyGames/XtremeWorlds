@@ -1345,7 +1345,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Trade()
         ' Create window
-        CreateWindow("winTrade", "Trading with [Name]", Georgia, zOrder_Win, 0, 0, 412, 386, 112 , False, 2, 5,  DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , , New Action(AddressOf DrawTrade))
+        CreateWindow("winTrade", "Trading with [Name]", Georgia, zOrder_Win, 0, 0, 412, 386, 112 , False, 2, 5,  DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , , , , New Action(AddressOf DrawTrade))
 
         ' Centralize it
         CentralizeWindow(windowCount)
