@@ -1772,22 +1772,22 @@ Module C_Graphics
         End If
 
         If index < 1 Or index > NumPictures Then Exit Sub
-        If type < 0 Or type > 3 Then Exit Sub
+        If type < 0 Or type >= PictureType.Count Then Exit Sub
 
         Dim posX As Integer = 0
         Dim posY As Integer = 0
 
         ' Determine position based on type
         Select Case type
-            Case 0 ' Top Left
+            Case PictureType.TopLeft
                 posX = 0 - Picture.xOffset
                 posY = 0 - Picture.yOffset
 
-            Case 1 ' Center Screen
+            Case PictureType.CenterScreen
                 posX = Window.Size.X / 2 - PictureGfxInfo(index).Width / 2 - Picture.xOffset
                 posY = Window.Size.Y / 2 - PictureGfxInfo(index).Height / 2 - Picture.yOffset
 
-            Case 2 ' Center Event
+            Case PictureType.CenterEvent
                 If CurrentEvents < Picture.EventId Then
                     ' Reset picture details and exit if event is invalid
                     Picture.EventId = 0
@@ -1800,7 +1800,7 @@ Module C_Graphics
                 posX = ConvertMapX(MapEvents(Picture.EventId).X * 32) / 2 - Picture.xOffset
                 posY = ConvertMapY(MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset
 
-            Case 3 ' Center Player
+            Case PictureType.CenterPlayer
                 posX = ConvertMapX(Player(MyIndex).X * 32) / 2 - Picture.xOffset
                 posY = ConvertMapY(Player(MyIndex).Y * 32) / 2 - Picture.yOffset
         End Select

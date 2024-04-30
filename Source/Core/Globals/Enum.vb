@@ -441,6 +441,14 @@
         Design
     End Enum
 
+    Public Enum PictureType
+        TopLeft = 0
+        CenterScreen
+        CenterEvent
+        CenterPlayer
+        Count
+    End Enum
+
     Public Enum QuadrantType
         None = 0
         NE
