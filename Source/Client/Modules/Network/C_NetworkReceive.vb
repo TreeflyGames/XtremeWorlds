@@ -33,10 +33,10 @@ Module C_NetworkReceive
         Socket.PacketId(ServerPackets.SMapNpcData) = AddressOf Packet_MapNPCData
         Socket.PacketId(ServerPackets.SMapNpcUpdate) = AddressOf Packet_MapNPCUpdate
         Socket.PacketId(ServerPackets.SMapDone) = AddressOf Packet_MapDone
-        Socket.PacketId(ServerPackets.SGlobalMsg) = AddressOf Packet_GlobalMessage
+        Socket.PacketId(ServerPackets.SGlobalMsg) = AddressOf Packet_GlobalMsg
         Socket.PacketId(ServerPackets.SAdminMsg) = AddressOf Packet_AdminMsg
         Socket.PacketId(ServerPackets.SPlayerMsg) = AddressOf Packet_PlayerMsg
-        Socket.PacketId(ServerPackets.SMapMsg) = AddressOf Packet_MapMessage
+        Socket.PacketId(ServerPackets.SMapMsg) = AddressOf Packet_MapMsg
         Socket.PacketId(ServerPackets.SSpawnItem) = AddressOf Packet_SpawnItem
         Socket.PacketId(ServerPackets.SUpdateItem) = AddressOf Packet_UpdateItem
         Socket.PacketId(ServerPackets.SSpawnNpc) = AddressOf Packet_SpawnNPC
@@ -457,7 +457,7 @@ Module C_NetworkReceive
         buffer.Dispose()
     End Sub
 
-    Private Sub Packet_GlobalMessage(ByRef data() As Byte)
+    Private Sub Packet_GlobalMsg(ByRef data() As Byte)
         Dim msg As String
         Dim buffer As New ByteStream(data)
 
@@ -468,7 +468,7 @@ Module C_NetworkReceive
         AddText(msg, ColorType.Yellow, , ChatChannel.Broadcast)
     End Sub
 
-    Private Sub Packet_MapMessage(ByRef data() As Byte)
+    Private Sub Packet_MapMsg(ByRef data() As Byte)
         Dim msg As String
         Dim buffer As New ByteStream(data)
 
