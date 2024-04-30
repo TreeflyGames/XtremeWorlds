@@ -603,6 +603,13 @@ Module C_GameLogic
                     buffer.Dispose()
 
                 Case "/party"
+                    If MyTarget > 0 Then
+                        If MyTargetType = TargetType.Player Then
+                            SendPartyRequest(GetPlayerName(MyTarget))
+                            Exit Sub
+                        End If
+                    End If
+
                     ' Make sure they are actually sending something
                     If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
                         AddText(Language.Chat.Party, ColorType.BrightRed)
@@ -621,6 +628,13 @@ Module C_GameLogic
 
                 ' Trade
                 Case "/trade"
+                    If MyTarget > 0 Then
+                        If MyTargetType = TargetType.Player Then
+                            SendTradeRequest(GetPlayerName(MyTarget))
+                            Exit Sub
+                        End If
+                    End If
+
                     ' Make sure they are actually sending something
                     If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
                         AddText(Language.Chat.Trade, ColorType.BrightRed)
