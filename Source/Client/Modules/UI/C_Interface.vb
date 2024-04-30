@@ -1011,6 +1011,7 @@ Module C_Interface
     End Sub
 
     Public Sub ShowWindow(curWindow As Long, Optional forced As Boolean = False, Optional resetPosition As Boolean = True)
+        If curWindow = 0 Then Exit Sub
         Windows(curWindow).Window.Visible = True
 
         If forced Then
@@ -1266,7 +1267,7 @@ Module C_Interface
         ' Create dialogue window
         CreateWindow("winDialogue", "Warning", Georgia, zOrder_Win, 0, 0, 348, 145, 38, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm, , , , , , , , , , False)
 
-        ' Centralise it
+        ' Centralize it
         CentralizeWindow(WindowCount)
 
         ' Set the index for spawning controls
@@ -3014,7 +3015,7 @@ Module C_Interface
         ' Create window
         CreateWindow("winInventory", "Inventory", Georgia, zOrder_Win, 0, 0, 202, 319, 1, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Inventory_MouseMove), New Action(AddressOf Inventory_MouseDown), New Action(AddressOf Inventory_DblClick), New Action(AddressOf DrawInventory))
 
-        ' Centralise it
+        ' Centralize it
         CentralizeWindow(WindowCount)
 
         ' Set the index for spawning controls
@@ -3035,7 +3036,7 @@ Module C_Interface
         ' Create window
         CreateWindow("winCharacter", "Character", Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseDown), , New Action(AddressOf DrawCharacter))
 
-        ' Centralise it
+        ' Centralize it
         CentralizeWindow(WindowCount)
 
         ' Set the index for spawning controls
@@ -4079,7 +4080,7 @@ Module C_Interface
         ' Create window
         CreateWindow("winPlayerMenu", "", Georgia, zOrder_Win, 0, 0, 110, 106, 0, False, , , DesignType.Win_Desc, DesignType.Win_Desc, DesignType.Win_Desc, , , , , , , New Action(AddressOf RightClick_Close), , , False)
         
-        ' Centralise it
+        ' Centralize it
         CentralizeWindow(windowCount)
 
         ' Name
@@ -4103,25 +4104,21 @@ Module C_Interface
      ' Player Menu
     Sub PlayerMenu_Party()
         RightClick_Close
-        If PlayerMenuIndex = 0 Then Exit Sub
         SendPartyRequest(GetPlayerName(PlayerMenuIndex))
     End Sub
 
     Sub PlayerMenu_Trade()
         RightClick_Close
-        If PlayerMenuIndex = 0 Then Exit Sub
         SendTradeRequest(GetPlayerName(PlayerMenuIndex))
     End Sub
 
     Sub PlayerMenu_Guild()
         RightClick_Close
-        If PlayerMenuIndex = 0 Then Exit Sub
         AddText("System not yet in place.", ColorType.BrightRed)
     End Sub
 
     Sub PlayerMenu_Player()
         RightClick_Close
-        If PlayerMenuIndex = 0 Then Exit Sub
         AddText("System not yet in place.", ColorType.BrightRed)
     End Sub
 

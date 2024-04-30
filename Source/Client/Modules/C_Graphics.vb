@@ -4,6 +4,7 @@ Imports SFML.Graphics
 Imports SFML.System
 Imports Core
 Imports SFML.Window
+Imports Microsoft.Win32
 
 Module C_Graphics
 
@@ -2965,7 +2966,7 @@ Module C_Graphics
             ' little pointy bit
             RenderTexture(InterfaceSprite(33), Window, x - 5, y, 58, 19, 11, 11, 11, 11)
 
-            ' render each line centralised
+            ' render each line centralized
             tmpNum = UBound(theArray)
 
             For i = 1 To tmpNum           

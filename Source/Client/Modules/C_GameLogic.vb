@@ -1184,6 +1184,7 @@ Continue1:
 
     Public Sub Dialogue(ByVal header As String, ByVal body As String, ByVal body2 As String, ByVal Index As Byte, Optional ByVal style As Byte = 1, Optional ByVal Data1 As Long = 0, Optional ByVal Data2 As Long = 0, Optional ByVal Data3 As Long = 0, Optional ByVal Data4 As Long = 0, Optional ByVal Data5 As Long = 0)
         ' exit out if we've already got a dialogue open
+        If GetWindowIndex("winDialogue") = 0 Then Exit Sub
         If Windows(GetWindowIndex("winDialogue")).Window.Visible Then Exit Sub
 
         ' set buttons
@@ -1973,7 +1974,7 @@ Continue1:
 
     Sub ShowPlayerMenu(Index As Long, X As Long, Y As Long)
         PlayerMenuIndex = Index
-        If PlayerMenuIndex = 0 Then Exit Sub
+        If PlayerMenuIndex = 0 Or PlayerMenuIndex = MyIndex Then Exit Sub
         Windows(GetWindowIndex("winPlayerMenu")).Window.Left = X - 5
         Windows(GetWindowIndex("winPlayerMenu")).Window.Top = Y - 5
         Windows(GetWindowIndex("winPlayerMenu")).Controls(GetControlIndex("winPlayerMenu", "btnName")).text = Trim$(GetPlayerName(PlayerMenuIndex))
