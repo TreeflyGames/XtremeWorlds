@@ -2325,7 +2325,6 @@ Module C_Interface
             Windows(GetWindowIndex("winInventory")).Window.State = EntState.Normal
         End If
 
-        ' show desc. if needed
         Inventory_MouseMove()
     End Sub
 
@@ -2340,7 +2339,6 @@ Module C_Interface
             SendUseItem(itemNum)
         End If
 
-        ' show desc. if needed
         Inventory_MouseMove()
     End Sub
 
@@ -2462,7 +2460,6 @@ Module C_Interface
             Windows(GetWindowIndex("winBank")).Window.state = EntState.Normal
         End If
 
-        ' show desc. if needed
         Bank_MouseMove
     End Sub
 
@@ -2719,7 +2716,6 @@ Module C_Interface
             Windows(GetWindowIndex("winSkills")).Window.state = EntState.Normal
         End If
 
-        ' show desc. if needed
         Skills_MouseMove
     End Sub
 
@@ -2732,7 +2728,6 @@ Module C_Interface
             PlayerCastSkill(slotNum)
         End If
     
-        ' show desc. if needed
         Skills_MouseMove
     End Sub
 
@@ -2800,7 +2795,6 @@ Module C_Interface
             Windows(GetWindowIndex("winHotbar")).Window.State = EntState.Normal
         End If
 
-        ' show desc. if needed
         Hotbar_MouseMove()
     End Sub
 
@@ -2813,7 +2807,6 @@ Module C_Interface
             SendUseHotbarSlot(slotNum)
         End If
 
-        ' show desc. if needed
         Hotbar_MouseMove()
     End Sub
 
@@ -3038,7 +3031,7 @@ Module C_Interface
 
     Public Sub CreateWindow_Character()
         ' Create window
-        CreateWindow("winCharacter", "Character", Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseDown), , New Action(AddressOf DrawCharacter))
+        CreateWindow("winCharacter", "Character", Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_DblClick) , New Action(AddressOf DrawCharacter))
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -3157,17 +3150,14 @@ Module C_Interface
         Next
     End Sub
 
-    Public Sub Character_MouseDown()
+    Public Sub Character_DblClick()
         Dim itemNum As Long
 
         itemNum = IsEq(Windows(GetWindowIndex("winCharacter")).Window.Left, Windows(GetWindowIndex("winCharacter")).Window.Top)
 
-        If itemNum Then
+        If itemNum > 0 Then
             SendUnequip(itemNum)
         End If
-
-        ' show desc. if needed
-        Character_MouseMove()
     End Sub
 
     Public Sub Character_MouseMove()
@@ -3192,6 +3182,18 @@ Module C_Interface
             ' go go go
             ShowEqDesc(x, y, itemNum)
         End If
+    End Sub
+
+    Public Sub Character_DbClick()
+        Dim itemNum As Long
+
+        itemNum = IsEq(Windows(GetWindowIndex("winCharacter")).Window.Left, Windows(GetWindowIndex("winCharacter")).Window.Top)
+
+        If itemNum > 0 Then
+            SendUnequip(itemNum)
+        End If
+
+        Character_MouseMove()
     End Sub
 
     Public Sub Character_SpendPoint1()
@@ -3650,7 +3652,7 @@ Module C_Interface
         ' is there an item?
         shopNum = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
     
-        If shopNum Then
+        If shopNum > 0 Then
             ' set the active slot
             shopSelectedSlot = shopNum
             UpdateShop
