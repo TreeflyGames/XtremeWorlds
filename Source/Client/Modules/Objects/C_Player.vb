@@ -691,16 +691,16 @@ Module C_Player
         If GetPlayerPK(index) = False Then
             Select Case GetPlayerAccess(index)
                 Case AdminType.Player
-                    color = SFML.Graphics.Color.Red
+                    color = SFML.Graphics.Color.White
                     backcolor = SFML.Graphics.Color.Black
                 Case AdminType.Moderator
-                    color = SFML.Graphics.Color.Black
+                    color = SFML.Graphics.Color.Cyan
                     backcolor = SFML.Graphics.Color.White
                 Case AdminType.Mapper
-                    color = SFML.Graphics.Color.Cyan
+                    color = SFML.Graphics.Color.Green
                     backcolor = SFML.Graphics.Color.Black
                 Case AdminType.Developer
-                    color = SFML.Graphics.Color.Green
+                    color = SFML.Graphics.Color.Magenta
                     backcolor = SFML.Graphics.Color.Black
                 Case AdminType.Creator
                     color = SFML.Graphics.Color.Yellow

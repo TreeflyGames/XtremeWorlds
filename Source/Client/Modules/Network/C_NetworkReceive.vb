@@ -725,7 +725,7 @@ Module C_NetworkReceive
 
     Private Sub Packet_SayMessage(ByRef data() As Byte)
         Dim access As Integer, name As String, message As String
-        Dim header As String, pk As Integer, channelType As Byte, colorNum As Byte
+        Dim header As String, pk As Integer, channelType As Byte, color As Byte
         Dim buffer As New ByteStream(data)
 
         name = buffer.ReadString
@@ -735,10 +735,22 @@ Module C_NetworkReceive
         header = buffer.ReadString
 
         ' Check access level
-        colorNum = ColorType.White
+        Select Case access
+            Case AdminType.Player
+                color = ColorType.White
+            Case AdminType.Moderator
+                color = ColorType.Cyan
+            Case AdminType.Mapper
+                color = ColorType.Green
+            Case AdminType.Developer
+                color = ColorType.Magenta
+            Case AdminType.Creator
+                color = ColorType.Yellow
+            Case Else
+                color = ColorType.White
+        End Select
 
-        If access > 0 Then colorNum = ColorType.Pink
-        If pk > 0 Then colorNum = ColorType.BrightRed
+        If pk > 0 Then color = ColorType.BrightRed
 
         ' find channel
         channelType = 0
@@ -750,7 +762,7 @@ Module C_NetworkReceive
         End Select
 
         ' add to the chat box
-        AddText(header & name & ": " & message, colorNum, , channelType)
+        AddText(header & name & ": " & message, color, , channelType)
 
         buffer.Dispose()
     End Sub

@@ -2163,7 +2163,7 @@ Module C_Graphics
     End Sub
 
     Friend Function ToSfmlColor(toConvert As Drawing.Color) As Color
-        Return New Color(toConvert.R, toConvert.G, toConvert.G, toConvert.A)
+        Return New Color(toConvert.R, toConvert.G, toConvert.B, toConvert.A)
     End Function
 
     Friend Sub DrawTarget(x2 As Integer, y2 As Integer)
