@@ -697,12 +697,11 @@ Module S_NetworkSend
         Dim data As Byte()
 
         ' Send all players on current map to index
-        For i = i To Socket.HighIndex()
-            If IsPlaying(i) Then
-                If GetPlayerMap(i) = GetPlayerMap(index) Then
-                    data = PlayerData(i)
-                    Socket.SendDataTo(index, data, data.Length)
-                End If
+        For i = 1 To Socket.HighIndex()
+            If GetPlayerMap(i) = GetPlayerMap(index) Then
+                data = PlayerData(i)
+                Socket.SendDataTo(index, data, data.Length)
+                SendPlayerXYTo(index, i)
             End If
         Next
 
@@ -710,6 +709,7 @@ Module S_NetworkSend
         data = PlayerData(index)
         SendDataToMapBut(index, GetPlayerMap(index), data, data.Length)
         SendVitals(index)
+        SendPlayerXYToMap(index)
     End Sub
 
     Function PlayerData(index As Integer) As Byte()
@@ -745,11 +745,40 @@ Module S_NetworkSend
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SPlayerXY)
+        buffer.WriteInt32(index)
         buffer.WriteInt32(GetPlayerX(index))
         buffer.WriteInt32(GetPlayerY(index))
         buffer.WriteInt32(GetPlayerDir(index))
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
+
+        buffer.Dispose()
+    End Sub
+
+    Sub SendPlayerXYTo(index As Integer, playerNum As Integer)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ServerPackets.SPlayerXY)
+        buffer.WriteInt32(playerNum)
+        buffer.WriteInt32(GetPlayerX(playerNum))
+        buffer.WriteInt32(GetPlayerY(playerNum))
+        buffer.WriteInt32(GetPlayerDir(playerNum))
+
+        Socket.SendDataTo(index, buffer.Data, buffer.Head)
+
+        buffer.Dispose()
+    End Sub
+
+    Sub SendPlayerXYToMap(index As Integer)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ServerPackets.SPlayerXY)
+        buffer.WriteInt32(index)
+        buffer.WriteInt32(GetPlayerX(index))
+        buffer.WriteInt32(GetPlayerY(index))
+        buffer.WriteInt32(GetPlayerDir(index))
+
+        SendDataToMap(GetPlayerMap(index), buffer.Data, buffer.Head)
 
         buffer.Dispose()
     End Sub

@@ -937,21 +937,22 @@ Module C_Player
     End Sub
 
     Sub Packet_PlayerXY(ByRef data() As Byte)
-        Dim x As Integer, y As Integer, dir As Integer
+        Dim x As Integer, y As Integer, dir As Integer, index As Integer
         Dim buffer As New ByteStream(data)
 
+        index = buffer.ReadInt32
         x = buffer.ReadInt32
         y = buffer.ReadInt32
         dir = buffer.ReadInt32
 
-        SetPlayerX(MyIndex, x)
-        SetPlayerY(MyIndex, y)
-        SetPlayerDir(MyIndex, dir)
+        SetPlayerX(index, x)
+        SetPlayerY(index, y)
+        SetPlayerDir(index, dir)
 
         ' Make sure they aren't walking
-        Player(MyIndex).Moving = 0
-        Player(MyIndex).XOffset = 0
-        Player(MyIndex).YOffset = 0
+        Player(index).Moving = 0
+        Player(index).XOffset = 0
+        Player(index).YOffset = 0
 
         buffer.Dispose()
     End Sub

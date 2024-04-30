@@ -1821,16 +1821,7 @@ Continue1:
 
         DestroyNetwork()
         InitNetwork()
-
-        ' destroy the animations loaded
-        For I = 1 To Byte.MaxValue
-            ClearAnimInstance (I)
-        Next
-
-        ' clear chat
-        For I = 1 To ChatLines
-            Chat(I).text = vbNullString
-        Next
+        ClearGameData()
     End Sub
 
     Sub SetOptionsScreen()
