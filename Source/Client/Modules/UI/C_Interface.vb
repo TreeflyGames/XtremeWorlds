@@ -3137,18 +3137,17 @@ Module C_Interface
         For i = 1 To EquipmentType.Count - 1
             itemNum = GetPlayerEquipment(MyIndex, i)
 
-            ' get the item sprite
             If itemNum > 0 Then
-                ItemIcon = Item(itemNum).Icon
-            Else
-                ' no item equiped - use blank image
-                ItemIcon = 37 + i
+                ' get the item sprite
+                If itemNum > 0 Then
+                    ItemIcon = Item(itemNum).Icon
+                End If
+
+                yO = Windows(GetWindowIndex("winCharacter")).Window.Top + EqTop
+                xO = Windows(GetWindowIndex("winCharacter")).Window.Left + EqLeft + ((EqOffsetX + 32) * (((i - 1) Mod EqColumns)))
+
+                RenderTexture(ItemSprite(ItemIcon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
             End If
-
-            yO = Windows(GetWindowIndex("winCharacter")).Window.Top + EqTop
-            xO = Windows(GetWindowIndex("winCharacter")).Window.Left + EqLeft + ((EqOffsetX + 32) * (((i - 1) Mod EqColumns)))
-
-            RenderTexture(ItemSprite(ItemIcon), Window, xO, yO, 0, 0, 32, 32, 32, 32)
         Next
     End Sub
 
