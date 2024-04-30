@@ -96,7 +96,6 @@ Friend Module C_Weather
         Dim dW As Integer = Window.Size.X + 200
         Dim dH As Integer = Window.Size.Y + 200
 
-        ' RenderTexture does not support direct color manipulation, handle this aspect via sprite setup if possible
         RenderTexture(fogNum, GfxType.Fog, Window, dX, dY, sX, sY, dW, dH, sW, sH, CurrentFogOpacity)
     End Sub
 
