@@ -773,7 +773,7 @@ Module C_GameLogic
                     End If
 
                     If UBound(command) < 1 Then
-                        AddText(Language.Chat.Welcome, ColorType.BrightBlue)
+                        AddText(Language.Chat.Welcome, ColorType.BrightRed)
                         GoTo Continue1
                     End If
 
