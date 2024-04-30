@@ -2090,7 +2090,7 @@ Module C_Interface
         RenderTexture(InterfaceSprite(46), Window, xO + 174, yO + 123, 0, 22, 171, 22, 171, 22)
 
         ' call the chat render
-        RenderChat()
+        DrawChat()
     End Sub
 
     Public Sub OnDraw_ChatSmall()
