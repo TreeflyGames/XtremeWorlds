@@ -2559,22 +2559,25 @@ newlist:
                     RenderText("E", Window, tX, tY, (SFML.Graphics.Color.Green), (SFML.Graphics.Color.Black))
                 Case 1
                     If Map.Events(i).Pages(1).Graphic > 0 And Map.Events(i).Pages(1).Graphic <= NumCharacters Then
-                        If CharacterGfxInfo(Map.Events(i).Pages(1).Graphic).IsLoaded = False Then
-                            LoadTexture(Map.Events(i).Pages(1).Graphic, GfxType.Character)
-                        End If
+                        Dim gfxIndex As Integer = Map.Events(i).Pages(1).Graphic
+                        Dim gfxInfo As GraphicInfo = CharacterGfxInfo(gfxIndex)
+                        Dim gfxType As GfxType = GfxType.Character  ' Assuming the type here
 
-                        With rec
-                            .Y = (Map.Events(i).Pages(1).GraphicY * (CharacterGfxInfo(Map.Events(i).Pages(1).Graphic).Height / 4))
-                            .Height = .Y + PicY
-                            .X = (Map.Events(i).Pages(1).GraphicX * (CharacterGfxInfo(Map.Events(i).Pages(1).Graphic).Width / 4))
-                            .Width = .X + PicX
-                        End With
+                        ' Calculate source rectangle based on character graphics properties
+                        Dim sX As Integer = Map.Events(i).Pages(1).GraphicX * (gfxInfo.Width / 4)
+                        Dim sY As Integer = Map.Events(i).Pages(1).GraphicY * (gfxInfo.Height / 4)
+                        Dim sW As Integer = gfxInfo.Width / 4
 
-                        Dim tmpSprite As Sprite = New Sprite(CharacterTexture(Map.Events(i).Pages(1).Graphic)) With {
-                            .TextureRect = New IntRect(rec.X, rec.Y, rec.Width, rec.Height),
-                            .Position = New Vector2f(ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY))
-                        }
-                        Window.Draw(tmpSprite)
+                        ' Adjust sH to capture more of the sprite, excluding the lower part, like the legs
+                        Dim sH As Integer = (gfxInfo.Height / 4) * 3 / 4  ' Taking about 3/4 of the top part
+
+                        ' Destination coordinates and dimensions to fit into a 32x32 square
+                        Dim dX As Integer = ConvertMapX(Map.Events(i).X * PicX)
+                        Dim dY As Integer = ConvertMapY(Map.Events(i).Y * PicY)
+                        Dim dW As Integer = 32
+                        Dim dH As Integer = 32
+
+                        RenderTexture(gfxIndex, gfxType, Window, dX, dY, sX, sY, dW, dH, sW, sH)
                     Else
                         With rec
                             .Y = 0
@@ -2601,14 +2604,10 @@ newlist:
                             .Height = Map.Events(i).Pages(1).GraphicY2 * 32
                         End With
 
-                        If TilesetGfxInfo(Map.Events(i).Pages(1).Graphic).IsLoaded = False Then
-                            LoadTexture(Map.Events(i).Pages(1).Graphic, GfxType.Tileset)
-                        End If
-
                         If rec.Height > 32 Then
-                            RenderTexture(TilesetSprite(Map.Events(i).Pages(1).Graphic), Window, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY) - PicY, rec.X, rec.Y, rec.Width, rec.Height)
+                            RenderTexture(Map.Events(i).Pages(1).Graphic, GfxType.Tileset, Window, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY) - PicY, rec.X, rec.Y, rec.Width, rec.Height)
                         Else
-                            RenderTexture(TilesetSprite(Map.Events(i).Pages(1).Graphic), Window, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY), rec.X, rec.Y, rec.Width, rec.Height)
+                            RenderTexture(Map.Events(i).Pages(1).Graphic, GfxType.Tileset, Window, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY), rec.X, rec.Y, rec.Width, rec.Height)
                         End If
                     Else
                         With rec
@@ -2722,9 +2721,9 @@ nextevent:
                 y = y - (sRect.Bottom - sRect.Top) + 32
 
                 If MapEvents(id).GraphicY2 > 1 Then
-                    RenderTexture(TilesetSprite(MapEvents(id).Graphic), Window, ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
+                    RenderTexture(MapEvents(id).Graphic, GfxType.Tileset, Window, ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 Else
-                    RenderTexture(TilesetSprite(MapEvents(id).Graphic), Window, ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
+                    RenderTexture(MapEvents(id).Graphic, GfxType.Tileset, Window, ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 End If
         End Select
 
