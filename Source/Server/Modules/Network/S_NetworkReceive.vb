@@ -2024,7 +2024,7 @@ Module S_NetworkReceive
         TempPlayer(index).InTrade = 0
         TempPlayer(tradeTarget).InTrade = 0
 
-        PlayerMsg(index, "You declined the trade.", ColorType.Yellow)
+        PlayerMsg(index, "You declined the trade.", ColorType.BrightRed)
         PlayerMsg(tradeTarget, GetPlayerName(index) & " has declined the trade.", ColorType.BrightRed)
 
         SendCloseTrade(index)
