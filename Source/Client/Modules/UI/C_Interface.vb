@@ -251,7 +251,7 @@ Module C_Interface
 
                         ' render the icon
                         If ItemGfxInfo(.Icon).IsLoaded = False Then
-                            LoadTexture(.Icon, 4)
+                            LoadTexture(.Icon, GfxType.Item)
                         End If
 
                         RenderTexture(ItemSprite(.Icon), Window, .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, Width, Height, Width, Height)
@@ -465,7 +465,7 @@ Module C_Interface
 
                     ' render the icon
                     If ItemGfxInfo(.Icon).IsLoaded = False Then
-                        LoadTexture(.Icon, 4)
+                        LoadTexture(.Icon, GfxType.Item)
                     End If
                     RenderTexture(ItemSprite(.Icon), Window, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
@@ -483,7 +483,7 @@ Module C_Interface
 
                     ' render the icon
                     If ItemGfxInfo(.Icon).IsLoaded = False Then
-                        LoadTexture(.Icon, 4)
+                        LoadTexture(.Icon, GfxType.Item)
                     End If
                     RenderTexture(ItemSprite(.Icon), Window, .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
@@ -1924,7 +1924,7 @@ Module C_Interface
             If Trim$(CharName(I)) <> "" Then
                 If CharSprite(I) > 0 Then
                     If CharacterGfxInfo(CharSprite(I)).IsLoaded = False Then
-                        LoadTexture(CharSprite(I), 2)
+                        LoadTexture(CharSprite(I), GfxType.Character)
                     End If
 
                     Dim rect = New Rectangle((CharacterGfxInfo(CharSprite(I)).Width / 4), (CharacterGfxInfo(CharSprite(I)).Height / 4),
@@ -2006,7 +2006,7 @@ Module C_Interface
         End Select
 
         If CharacterGfxInfo(imageChar).IsLoaded = False Then
-            LoadTexture(imageChar, 2)
+            LoadTexture(imageChar, GfxType.Character)
         End If
 
         RenderTexture(CharacterSprite(imageChar), Window, xO + 50, yO + 90, 0, 0, CharacterGfxInfo(imageChar).Width / 4, CharacterGfxInfo(imageChar).Height / 4, CharacterGfxInfo(imageChar).Width / 4, CharacterGfxInfo(imageChar).Height / 4)
@@ -2178,7 +2178,7 @@ Module C_Interface
         End If
 
         If CharacterGfxInfo(imageChar).IsLoaded = False Then
-            LoadTexture(imageChar, 2)
+            LoadTexture(imageChar, GfxType.Character)
         End If
 
         Dim rect = New Rectangle((CharacterGfxInfo(imageChar).Width / 4), (CharacterGfxInfo(imageChar).Height / 4),
@@ -2484,7 +2484,7 @@ Module C_Interface
                         
                         ' render the icon
                         If ItemGfxInfo(texNum).IsLoaded = False Then
-                            LoadTexture(texNum, 4)
+                            LoadTexture(texNum, GfxType.Item)
                         End If
 
                         RenderTexture(ItemSprite(texNum), Window, xO, yO, 0, 0, 32, 32, 32, 32)
@@ -2495,7 +2495,7 @@ Module C_Interface
 
                         ' render the icon
                         If SkillGfxInfo(texNum).IsLoaded = False Then
-                            LoadTexture(texNum, 9)
+                            LoadTexture(texNum, GfxType.Skill)
                         End If
                         RenderTexture(SkillSprite(texNum), Window, xO, yO, 0, 0, 32, 32, 32, 32)
                     End If
@@ -3254,6 +3254,10 @@ Module C_Interface
                 If Not (DragBox.Origin = PartOriginType.Inventory And DragBox.Slot = i) Then
                     ItemIcon = Item(itemNum).Icon
 
+                    If ItemGfxInfo(ItemIcon).IsLoaded = False Then
+                        LoadTexture(ItemIcon, GfxType.Item)
+                    End If
+
                     ' exit out if we're offering item in a trade.
                     amountModifier = 0
                     If InTrade > 0 Then
@@ -3304,6 +3308,7 @@ Module C_Interface
                             End If
                         End If
                     End If
+
                     ' reset
                     skipItem = False
                 End If
@@ -3769,7 +3774,7 @@ Module C_Interface
 
                     If SkillPic > 0 And SkillPic <= NumSkills Then
                         If SkillGfxInfo(SkillPic).IsLoaded = False Then
-                            LoadTexture(SkillPic, 9)
+                            LoadTexture(SkillPic, GfxType.Skill)
                         End If
 
                         Top = yO + SkillTop + ((SkillOffsetY + 32) * ((i - 1) \ SkillColumns))

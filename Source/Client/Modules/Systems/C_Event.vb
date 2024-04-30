@@ -2560,13 +2560,9 @@ newlist:
                 Case 1
                     If Map.Events(i).Pages(1).Graphic > 0 And Map.Events(i).Pages(1).Graphic <= NumCharacters Then
                         If CharacterGfxInfo(Map.Events(i).Pages(1).Graphic).IsLoaded = False Then
-                            LoadTexture(Map.Events(i).Pages(1).Graphic, 2)
+                            LoadTexture(Map.Events(i).Pages(1).Graphic, GfxType.Character)
                         End If
 
-                        'seeying we still use it, lets update timer
-                        With CharacterGfxInfo(Map.Events(i).Pages(1).Graphic)
-                            .TextureTimer = GetTickCount() + 100000
-                        End With
                         With rec
                             .Y = (Map.Events(i).Pages(1).GraphicY * (CharacterGfxInfo(Map.Events(i).Pages(1).Graphic).Height / 4))
                             .Height = .Y + PicY
@@ -2606,12 +2602,8 @@ newlist:
                         End With
 
                         If TilesetGfxInfo(Map.Events(i).Pages(1).Graphic).IsLoaded = False Then
-                            LoadTexture(Map.Events(i).Pages(1).Graphic, 1)
+                            LoadTexture(Map.Events(i).Pages(1).Graphic, GfxType.Tileset)
                         End If
-                        ' we use it, lets update timer
-                        With TilesetGfxInfo(Map.Events(i).Pages(1).Graphic)
-                            .TextureTimer = GetTickCount() + 100000
-                        End With
 
                         If rec.Height > 32 Then
                             RenderTexture(TilesetSprite(Map.Events(i).Pages(1).Graphic), Window, ConvertMapX(Map.Events(i).X * PicX), ConvertMapY(Map.Events(i).Y * PicY) - PicY, rec.X, rec.Y, rec.Width, rec.Height)
@@ -2721,12 +2713,8 @@ nextevent:
                 End If
 
                 If TilesetGfxInfo(MapEvents(id).Graphic).IsLoaded = False Then
-                    LoadTexture(MapEvents(id).Graphic, 1)
+                    LoadTexture(MapEvents(id).Graphic, GfxType.Tileset)
                 End If
-                ' we use it, lets update timer
-                With TilesetGfxInfo(MapEvents(id).Graphic)
-                    .TextureTimer = GetTickCount() + 100000
-                End With
 
                 x = MapEvents(id).X * 32
                 y = MapEvents(id).Y * 32

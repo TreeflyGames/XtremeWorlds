@@ -1303,13 +1303,8 @@ Public Class frmEditor_Map
         }
 
         If TilesetGfxInfo(tileset).IsLoaded = False Then
-            LoadTexture(tileset, 1)
+            LoadTexture(tileset, GfxType.Tileset)
         End If
-
-        ' we use it, lets update timer
-        With TilesetGfxInfo(tileset)
-            .TextureTimer = GetTickCount() + 100000
-        End With
 
         ' change selected shape for autotiles
         If Me.cmbAutoTile.SelectedIndex > 0 Then

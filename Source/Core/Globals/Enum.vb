@@ -421,6 +421,25 @@
         Moral
     End Enum
 
+    Public Enum GfxType
+        Tileset = 1
+        Character
+        Paperdoll
+        Item
+        Resource
+        Animation
+        Fog
+        Skill
+        Projectile
+        Emote
+        Panorama
+        Parallax
+        Picture
+        GUI
+        Gradient
+        Design
+    End Enum
+
     Public Enum QuadrantType
         None = 0
         NE

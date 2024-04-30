@@ -826,13 +826,8 @@ Module C_Maps
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 And Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
                 If TilesetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
-                    LoadTexture(Map.Tile(x, y).Layer(i).Tileset, 1)
+                    LoadTexture(Map.Tile(x, y).Layer(i).Tileset, GfxType.Tileset)
                 End If
-
-                ' we use it, lets update timer
-                With TilesetGfxInfo(Map.Tile(x, y).Layer(i).Tileset)
-                    .TextureTimer = GetTickCount() + 100000
-                End With
 
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
                     With rect
@@ -890,13 +885,8 @@ Module C_Maps
             ' skip tile if tileset isn't set
             If Map.Tile(x, y).Layer(i).Tileset > 0 And Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
                 If TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset).IsLoaded = False Then
-                    LoadTexture(Map.Tile(x, y).Layer(i).Tileset, 1)
+                    LoadTexture(Map.Tile(x, y).Layer(i).Tileset, GfxType.Tileset)
                 End If
-
-                ' we use it, lets update timer
-                With TileSetGfxInfo(Map.Tile(x, y).Layer(i).Tileset)
-                    .TextureTimer = GetTickCount() + 100000
-                End With
 
                 ' render
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
