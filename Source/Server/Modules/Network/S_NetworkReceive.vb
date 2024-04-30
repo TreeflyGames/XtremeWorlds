@@ -1622,7 +1622,7 @@ Module S_NetworkReceive
         tmpItem = buffer.ReadInt32
         tmpAmount = buffer.ReadInt32
 
-        If GetPlayerAccess(index) < AdminType.Creator Then Exit Sub
+        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
 
         SpawnItem(tmpItem, tmpAmount, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index))
         buffer.Dispose()
