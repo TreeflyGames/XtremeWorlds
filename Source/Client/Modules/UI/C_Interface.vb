@@ -3905,9 +3905,9 @@ Module C_Interface
         Y = Yo + 41
         For i = 1 To 4
             If i = 4 Then Height = 38
-            RenderTexture(InterfaceSprite(38), Window, Xo + 4 + 5, Y, 0, 0, Width, Height, Width, Height)
-            RenderTexture(InterfaceSprite(38), Window, Xo + 80 + 5, Y, 0, 0, Width, Height, Width, Height)
-            RenderTexture(InterfaceSprite(38), Window, Xo + 156 + 5, Y, 0, 0, 42, Height, 42, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 4 + 5, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 80 + 5, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 156 + 5, Y, 0, 0, 42, Height, 42, Height)
             Y = Y + 76
         Next
     
@@ -3917,9 +3917,9 @@ Module C_Interface
         Y = Yo + 41
         For i = 1 To 4
             If i = 4 Then Height = 38
-            RenderTexture(InterfaceSprite(38), Window, Xo + 4 + 205, Y, 0, 0, Width, Height, Width, Height)
-            RenderTexture(InterfaceSprite(38), Window, Xo + 80 + 205, Y, 0, 0, Width, Height, Width, Height)
-            RenderTexture(InterfaceSprite(38), Window, Xo + 156 + 205, Y, 0, 0, 42, Height, 42, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 4 + 205, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 80 + 205, Y, 0, 0, Width, Height, Width, Height)
+            RenderTexture(InterfaceSprite(35), Window, Xo + 156 + 205, Y, 0, 0, 42, Height, 42, Height)
 
             Y = Y + 76
         Next
