@@ -2075,6 +2075,7 @@ Module C_Interface
     Public Sub btnSay_Click()
         HandlePressEnter()
     End Sub
+
     Public Sub Chat_OnDraw()
         Dim winIndex As Long, xO As Long, yO As Long
 
@@ -3693,6 +3694,10 @@ Module C_Interface
 
         ' move hotbar
         Windows(GetWindowIndex("winHotbar")).Window.Left = Window.Size.X - 462
+
+        ' move chat
+        Windows(GetWindowIndex("winChat")).Window.Top = ResolutionHeight - 178
+        Windows(GetWindowIndex("winChatSmall")).Window.Top = ResolutionHeight - 162
 
         ' move menu
         Windows(GetWindowIndex("winMenu")).Window.Left = Window.Size.X - 264
