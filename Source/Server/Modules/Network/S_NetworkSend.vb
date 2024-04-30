@@ -220,13 +220,10 @@ Module S_NetworkSend
 
         buffer.WriteInt32(ServerPackets.SMapWornEq)
         buffer.WriteInt32(index)
-        buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Armor))
-        buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Weapon))
-        buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Helmet))
-        buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Shield))
-        buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Shoes))
-        buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Gloves))
-
+        For i = 1 To EquipmentType.Count - 1
+            buffer.WriteInt32(GetPlayerEquipment(index, i))
+        Next
+        
         SendDataToMap(GetPlayerMap(index), buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -237,12 +234,9 @@ Module S_NetworkSend
 
         buffer.WriteInt32(ServerPackets.SMapWornEq)
         buffer.WriteInt32(PlayerNum)
-        buffer.WriteInt32(GetPlayerEquipment(PlayerNum, EquipmentType.Armor))
-        buffer.WriteInt32(GetPlayerEquipment(PlayerNum, EquipmentType.Weapon))
-        buffer.WriteInt32(GetPlayerEquipment(PlayerNum, EquipmentType.Helmet))
-        buffer.WriteInt32(GetPlayerEquipment(PlayerNum, EquipmentType.Shield))
-        buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Shoes))
-        buffer.WriteInt32(GetPlayerEquipment(index, EquipmentType.Gloves))
+        For i = 1 To EquipmentType.Count - 1
+            buffer.WriteInt32(GetPlayerEquipment(PlayerNum, i))
+        Next
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 

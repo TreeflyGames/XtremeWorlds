@@ -743,10 +743,6 @@ Module C_NetworkSend
         buffer.WriteInt32(Item(itemNum).Rarity)
         buffer.WriteInt32(Item(itemNum).Speed)
 
-        buffer.WriteInt32(Item(itemNum).Randomize)
-        buffer.WriteInt32(Item(itemNum).RandomMin)
-        buffer.WriteInt32(Item(itemNum).RandomMax)
-
         buffer.WriteInt32(Item(itemNum).Stackable)
         buffer.WriteString((Trim$(Item(itemNum).Description)))
 

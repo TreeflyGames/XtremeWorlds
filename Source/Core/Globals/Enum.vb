@@ -214,8 +214,6 @@
         Armor
         Helmet
         Shield
-        Shoes
-        Gloves
 
         Count
     End Enum

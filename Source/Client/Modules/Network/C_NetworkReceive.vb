@@ -370,7 +370,8 @@ Module C_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         For i = 1 To EquipmentType.Count - 1
-            SetPlayerEquipment(MyIndex, buffer.ReadInt32, i)
+            n = buffer.ReadInt32
+            SetPlayerEquipment(MyIndex, n, i)
         Next
 
         ' changes to inventory, need to clear any drop menu
@@ -776,16 +777,14 @@ Module C_NetworkReceive
     End Sub
 
     Private Sub Packet_MapWornEquipment(ByRef data() As Byte)
-        Dim playernum As Integer
+        Dim playernum As Integer, n As Integer
         Dim buffer As New ByteStream(data)
 
         playernum = buffer.ReadInt32
-        SetPlayerEquipment(playernum, buffer.ReadInt32, EquipmentType.Armor)
-        SetPlayerEquipment(playernum, buffer.ReadInt32, EquipmentType.Weapon)
-        SetPlayerEquipment(playernum, buffer.ReadInt32, EquipmentType.Helmet)
-        SetPlayerEquipment(playernum, buffer.ReadInt32, EquipmentType.Shield)
-        SetPlayerEquipment(playernum, buffer.ReadInt32, EquipmentType.Shoes)
-        SetPlayerEquipment(playernum, buffer.ReadInt32, EquipmentType.Gloves)
+        For i = 1 To EquipmentType.Count - 1
+            n = buffer.ReadInt32
+            SetPlayerEquipment(playernum, n, i)
+        Next
 
         buffer.Dispose()
     End Sub
@@ -854,10 +853,6 @@ Module C_NetworkReceive
             Item(n).Price = buffer.ReadInt32()
             Item(n).Rarity = buffer.ReadInt32()
             Item(n).Speed = buffer.ReadInt32()
-
-            Item(n).Randomize = buffer.ReadInt32()
-            Item(n).RandomMin = buffer.ReadInt32()
-            Item(n).RandomMax = buffer.ReadInt32()
 
             Item(n).Stackable = buffer.ReadInt32()
             Item(n).Description = Trim$(buffer.ReadString())

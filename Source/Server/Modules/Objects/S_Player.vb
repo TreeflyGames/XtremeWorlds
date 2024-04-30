@@ -149,7 +149,7 @@ Module S_Player
     End Function
 
     Function GetPlayerProtection(index As Integer) As Integer
-        Dim Armor As Integer, Helm As Integer, Shoes As Integer, Gloves As Integer
+        Dim Armor As Integer, Helm As Integer, Shield As Integer
         GetPlayerProtection = 0
 
         ' Check for subscript out of range
@@ -159,9 +159,7 @@ Module S_Player
 
         Armor = GetPlayerEquipment(index, EquipmentType.Armor)
         Helm = GetPlayerEquipment(index, EquipmentType.Helmet)
-        Shoes = GetPlayerEquipment(index, EquipmentType.Shoes)
-        Gloves = GetPlayerEquipment(index, EquipmentType.Gloves)
-        GetPlayerProtection = (GetPlayerStat(index, StatType.Luck) \ 5)
+        Shield = GetPlayerEquipment(index, EquipmentType.Shield)  
 
         If Armor > 0 Then
             GetPlayerProtection += Item(Armor).Data2
@@ -171,14 +169,12 @@ Module S_Player
             GetPlayerProtection += Item(Helm).Data2
         End If
 
-        If Shoes > 0 Then
-            GetPlayerProtection += Item(Shoes).Data2
+        If Shield > 0 Then
+            GetPlayerProtection += Item(Shield).Data2
         End If
 
-        If Gloves > 0 Then
-            GetPlayerProtection += Item(Gloves).Data2
-        End If
-
+        GetPlayerProtection /= 6
+        GetPlayerProtection += (GetPlayerStat(index, StatType.Luck) \ 5)
     End Function
 
     Sub AttackPlayer(attacker As Integer, victim As Integer, damage As Integer, Optional skillnum As Integer = 0, Optional npcnum As Integer = 0)
@@ -1595,7 +1591,6 @@ Module S_Player
         ' Find out what kind of item it is
         Select Case Item(InvItemNum).Type
             Case ItemType.Equipment
-
                 Select Case Item(InvItemNum).SubType
                     Case EquipmentType.Weapon
 
@@ -1612,11 +1607,7 @@ Module S_Player
 
                         SetPlayerEquipment(index, InvItemNum, EquipmentType.Weapon)
 
-                        If Item(InvItemNum).Randomize <> 0 Then
-                            PlayerMsg(index, "You equip " & tempstr(1) & " " & CheckGrammar(Item(InvItemNum).Name) & " " & tempstr(2), ColorType.BrightGreen)
-                        Else
-                            PlayerMsg(index, "You equip " & CheckGrammar(Item(InvItemNum).Name), ColorType.BrightGreen)
-                        End If
+                        PlayerMsg(index, "You equip " & CheckGrammar(Item(InvItemNum).Name), ColorType.BrightGreen)
 
                         SetPlayerInvItemNum(index, InvNum, 0)
                         SetPlayerInvItemValue(index, InvNum, 0)
@@ -1625,8 +1616,6 @@ Module S_Player
                             m = FindOpenInvSlot(index, tempitem)
                             SetPlayerInvItemNum(index, m, tempitem)
                             SetPlayerInvItemValue(index, m, 0)
-
-                            tempitem = 0
                         End If
 
                         SendWornEquipment(index)
@@ -1642,7 +1631,6 @@ Module S_Player
                         If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
                     Case EquipmentType.Armor
-
                         If GetPlayerEquipment(index, EquipmentType.Armor) > 0 Then
                             tempitem = GetPlayerEquipment(index, EquipmentType.Armor)
                         End If
@@ -1656,8 +1644,6 @@ Module S_Player
                             m = FindOpenInvSlot(index, tempitem)
                             SetPlayerInvItemNum(index, m, tempitem)
                             SetPlayerInvItemValue(index, m, 0)
-
-                            tempitem = 0
                         End If
 
                         SendWornEquipment(index)
@@ -1673,7 +1659,6 @@ Module S_Player
                         If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
                     Case EquipmentType.Helmet
-
                         If GetPlayerEquipment(index, EquipmentType.Helmet) > 0 Then
                             tempitem = GetPlayerEquipment(index, EquipmentType.Helmet)
                         End If
@@ -1687,8 +1672,6 @@ Module S_Player
                             m = FindOpenInvSlot(index, tempitem)
                             SetPlayerInvItemNum(index, m, tempitem)
                             SetPlayerInvItemValue(index, m, 0)
-
-                            tempitem = 0
                         End If
 
                         SendWornEquipment(index)
@@ -1704,7 +1687,7 @@ Module S_Player
 
                     Case EquipmentType.Shield
                         If Item(GetPlayerEquipment(index, EquipmentType.Weapon)).TwoHanded > 0 Then
-                            PlayerMsg(index, "Please unequip your 2handed weapon first.", ColorType.BrightRed)
+                            PlayerMsg(index, "Please unequip your 2-handed weapon first.", ColorType.BrightRed)
                             Exit Sub
                         End If
 
@@ -1721,66 +1704,6 @@ Module S_Player
                             m = FindOpenInvSlot(index, tempitem)
                             SetPlayerInvItemNum(index, m, tempitem)
                             SetPlayerInvItemValue(index, m, 0)
-
-                            tempitem = 0
-                        End If
-
-                        SendWornEquipment(index)
-                        SendMapEquipment(index)
-                        SendInventory(index)
-                        SendStats(index)
-
-                        ' send vitals
-                        SendVitals(index)
-
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
-
-                    Case EquipmentType.Shoes
-                        If GetPlayerEquipment(index, EquipmentType.Shoes) > 0 Then
-                            tempitem = GetPlayerEquipment(index, EquipmentType.Shoes)
-                        End If
-
-                        SetPlayerEquipment(index, InvItemNum, EquipmentType.Shoes)
-
-                        PlayerMsg(index, "You equip " & CheckGrammar(Item(InvItemNum).Name), ColorType.BrightGreen)
-                        TakeInvItem(index, InvItemNum, 1)
-
-                        If tempitem > 0 Then ' give back the stored item
-                            m = FindOpenInvSlot(index, tempitem)
-                            SetPlayerInvItemNum(index, m, tempitem)
-                            SetPlayerInvItemValue(index, m, 0)
-
-                            tempitem = 0
-                        End If
-
-                        SendWornEquipment(index)
-                        SendMapEquipment(index)
-                        SendInventory(index)
-                        SendStats(index)
-
-                        ' send vitals
-                        SendVitals(index)
-
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
-
-                    Case EquipmentType.Gloves
-                        If GetPlayerEquipment(index, EquipmentType.Gloves) > 0 Then
-                            tempitem = GetPlayerEquipment(index, EquipmentType.Gloves)
-                        End If
-
-                        SetPlayerEquipment(index, InvItemNum, EquipmentType.Gloves)
-
-                        PlayerMsg(index, "You equip " & CheckGrammar(Item(InvItemNum).Name), ColorType.BrightGreen)
-                        TakeInvItem(index, InvItemNum, 1)
-
-                        If tempitem > 0 Then ' give back the stored item
-                            m = FindOpenInvSlot(index, tempitem)
-                            SetPlayerInvItemNum(index, m, tempitem)
-                            SetPlayerInvItemValue(index, m, 0)
-
-                            tempitem = 0
                         End If
 
                         SendWornEquipment(index)
@@ -2025,12 +1948,6 @@ Module S_Player
                     Case EquipmentType.Shield
 
                         If Item(itemNum).SubType <> EquipmentType.Shield Then SetPlayerEquipment(index, 0, i)
-                    Case EquipmentType.Shoes
-
-                        If Item(itemNum).SubType <> EquipmentType.Shoes Then SetPlayerEquipment(index, 0, i)
-                    Case EquipmentType.Gloves
-
-                        If Item(itemNum).SubType <> EquipmentType.Gloves Then SetPlayerEquipment(index, 0, i)
                 End Select
             Else
                 SetPlayerEquipment(index, 0, i)
@@ -2441,7 +2358,7 @@ Module S_Player
                     TakeInvItem(index, GetPlayerInvItemNum(index, InvSlot), Amount)
                 End If
             Else
-                If GetPlayerBankItemNum(index, BankSlot) = GetPlayerInvItemNum(index, InvSlot) And Item(itemnum).Randomize = 0 Then
+                If GetPlayerBankItemNum(index, BankSlot) = GetPlayerInvItemNum(index, InvSlot) Then
                     SetPlayerBankItemValue(index, BankSlot, GetPlayerBankItemValue(index, BankSlot) + 1)
                     TakeInvItem(index, GetPlayerInvItemNum(index, InvSlot), 0)
                 Else
@@ -2516,7 +2433,7 @@ Module S_Player
                     SetPlayerBankItemValue(index, BankSlot, 0)
                 End If
             Else
-                If GetPlayerBankItemNum(index, BankSlot) = GetPlayerInvItemNum(index, invSlot) And Item(GetPlayerBankItemNum(index, BankSlot)).Randomize = 0 Then
+                If GetPlayerBankItemNum(index, BankSlot) = GetPlayerInvItemNum(index, invSlot) Then
                     If GetPlayerBankItemValue(index, BankSlot) > 1 Then
                         GiveInvItem(index, GetPlayerBankItemNum(index, BankSlot), 0)
                         SetPlayerBankItemValue(index, BankSlot, GetPlayerBankItemValue(index, BankSlot) - 1)

@@ -92,10 +92,6 @@ Friend Module S_Item
         buffer.WriteInt32(Item(itemNum).Rarity)
         buffer.WriteInt32(Item(itemNum).Speed)
 
-        buffer.WriteInt32(Item(itemNum).Randomize)
-        buffer.WriteInt32(Item(itemNum).RandomMin)
-        buffer.WriteInt32(Item(itemNum).RandomMax)
-
         buffer.WriteInt32(Item(itemNum).Stackable)
         buffer.WriteString((Trim$(Item(itemNum).Description)))
 
@@ -330,10 +326,6 @@ Friend Module S_Item
         Item(n).Price = buffer.ReadInt32()
         Item(n).Rarity = buffer.ReadInt32()
         Item(n).Speed = buffer.ReadInt32()
-
-        Item(n).Randomize = buffer.ReadInt32()
-        Item(n).RandomMin = buffer.ReadInt32()
-        Item(n).RandomMax = buffer.ReadInt32()
 
         Item(n).Stackable = buffer.ReadInt32()
         Item(n).Description = Trim$(buffer.ReadString)

@@ -171,10 +171,6 @@ Public Module Types
         Dim Animation As Integer
         Dim Paperdoll As Integer
 
-        Dim Randomize As Byte
-        Dim RandomMin As Byte
-        Dim RandomMax As Byte
-
         Dim Stackable As Byte
         Dim ItemLevel As Byte
 
@@ -189,14 +185,18 @@ Public Module Types
         Dim Animation As Integer
         Dim X As Integer
         Dim Y As Integer
-        ' used for locking to players/npcs
+
+        ' Used for locking to players/npcs
         Dim lockindex As Integer
         Dim LockType As Byte
-        ' timing
+
+        ' Timing
         Dim Timer() As Integer
-        ' rendering check
+
+        ' Rendering check
         Dim Used() As Boolean
-        ' counting the loop
+
+        ' Counting the loop
         Dim LoopIndex() As Integer
         Dim FrameIndex() As Integer
     End Structure
