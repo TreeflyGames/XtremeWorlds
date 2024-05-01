@@ -1110,7 +1110,9 @@ Friend Module S_EventLogic
                         For x = 1 To TempPlayer(i).EventMap.CurrentEvents
                             If TempPlayer(i).EventProcessingCount > 0 Then
                                 If TempPlayer(i).EventMap.EventPages(x).Visible Then
+                                    If x < TempPlayer(i).EventMap.EventPages(x).EventId Then Continue For
                                     If Map(Player(i).Map).Events(TempPlayer(i).EventMap.EventPages(x).EventId).Pages(TempPlayer(i).EventMap.EventPages(x).PageId).Trigger = 2 Then 'Parallel Process baby!
+
                                         If TempPlayer(i).EventProcessing(x).Active = 0 Then
                                             If Map(GetPlayerMap(i)).Events(TempPlayer(i).EventMap.EventPages(x).EventId).Pages(TempPlayer(i).EventMap.EventPages(x).PageId).CommandListCount > 0 Then
                                                 'start new event processing
@@ -1143,7 +1145,7 @@ Friend Module S_EventLogic
                         restartloop = True
                         Do While restartloop = True
                             restartloop = False
-                            For x = 0 To TempPlayer(i).EventProcessingCount - 1
+                            For x = 0 To TempPlayer(i).EventProcessingCount
                                 If TempPlayer(i).EventProcessing(x).Active = 1 Then
                                     If x > TempPlayer(i).EventProcessingCount Then Exit For
                                     With TempPlayer(i).EventProcessing(x)
@@ -1203,7 +1205,6 @@ Friend Module S_EventLogic
 
                                                     If restartlist = False And endprocess = False Then
                                                         'If we are still here, then we are good to process shit :D
-                                                        'Debug.WriteLine(.CurSlot)
                                                         Select Case Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Index
                                                             Case EventType.AddText
                                                                 Select Case Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data2
