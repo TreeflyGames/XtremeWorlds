@@ -151,7 +151,7 @@ Module C_GameLogic
                         End If
                     Next
 
-                    For i = 1 To CurrentEvents
+                    For I = 1 To CurrentEvents
                         ProcessEventMovement(i)
                     Next
 
@@ -455,21 +455,6 @@ Module C_GameLogic
 
         If InGame Then
             chatText = Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).Text
-        End If
-
-        If EventChat = True Then
-            If EventChatType = 0 Then
-                buffer = New ByteStream(4)
-                buffer.WriteInt32(ClientPackets.CEventChatReply)
-                buffer.WriteInt32(EventReplyId)
-                buffer.WriteInt32(EventReplyPage)
-                buffer.WriteInt32(0)
-                Socket.SendData(buffer.Data, buffer.Head)
-                buffer.Dispose()
-                ClearEventChat()
-                InEvent = False
-                Exit Sub
-            End If
         End If
 
         ' hide/show chat window

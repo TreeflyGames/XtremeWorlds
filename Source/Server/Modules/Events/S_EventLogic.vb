@@ -15,6 +15,7 @@ Friend Module S_EventLogic
                     If id > TempPlayer(i).EventMap.CurrentEvents Then Exit For
                     page = TempPlayer(i).EventMap.EventPages(x).PageId
 
+                    If x < id Then Continue For
                     If Map(mapNum).Events(id).PageCount >= page Then
                         'See if there is any reason to delete this event....
                         'In other words, go back through conditions and make sure they all check up.
@@ -134,7 +135,7 @@ Friend Module S_EventLogic
 
                         If TempPlayer(i).EventMap.EventPages(x).Visible = 0 Then pageID = 1
 
-                        'If (Map(MapNum).Events Is Nothing) Then Continue For
+                        If x < id Then Continue For
                         For z = Map(mapNum).Events(id).PageCount To 1 Step -1
                             spawnevent = True
 
@@ -1106,11 +1107,10 @@ Friend Module S_EventLogic
             If IsPlaying(i) Then
                 If TempPlayer(i).GettingMap = False Then
                     If TempPlayer(i).EventMap.CurrentEvents > 0 Then
-                        For x = 0 To TempPlayer(i).EventMap.CurrentEvents
+                        For x = 1 To TempPlayer(i).EventMap.CurrentEvents
                             If TempPlayer(i).EventProcessingCount > 0 Then
                                 If TempPlayer(i).EventMap.EventPages(x).Visible Then
                                     If Map(Player(i).Map).Events(TempPlayer(i).EventMap.EventPages(x).EventId).Pages(TempPlayer(i).EventMap.EventPages(x).PageId).Trigger = 2 Then 'Parallel Process baby!
-
                                         If TempPlayer(i).EventProcessing(x).Active = 0 Then
                                             If Map(GetPlayerMap(i)).Events(TempPlayer(i).EventMap.EventPages(x).EventId).Pages(TempPlayer(i).EventMap.EventPages(x).PageId).CommandListCount > 0 Then
                                                 'start new event processing
@@ -1143,7 +1143,7 @@ Friend Module S_EventLogic
                         restartloop = True
                         Do While restartloop = True
                             restartloop = False
-                            For x = 0 To TempPlayer(i).EventProcessingCount
+                            For x = 0 To TempPlayer(i).EventProcessingCount - 1
                                 If TempPlayer(i).EventProcessing(x).Active = 1 Then
                                     If x > TempPlayer(i).EventProcessingCount Then Exit For
                                     With TempPlayer(i).EventProcessing(x)
@@ -1171,6 +1171,7 @@ Friend Module S_EventLogic
                                                 End If
                                             End If
                                         End If
+
                                         If .WaitingForResponse = 0 Then
                                             If .ActionTimer <= GetTimeMs() Then
                                                 restartlist = True
@@ -1181,11 +1182,13 @@ Friend Module S_EventLogic
                                                         .CurSlot = .ListLeftOff(.CurList) + 1
                                                         .ListLeftOff(.CurList) = 0
                                                     End If
+
                                                     If .CurList > Map(Player(i).Map).Events(.EventId).Pages(.PageId).CommandListCount Then
                                                         'Get rid of this event, it is bad
                                                         removeEventProcess = True
                                                         endprocess = True
                                                     End If
+
                                                     If .CurSlot > Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).CommandCount Then
                                                         If .CurList = 1 Then
                                                             'Get rid of this event, it is bad
@@ -1197,6 +1200,7 @@ Friend Module S_EventLogic
                                                             restartlist = True
                                                         End If
                                                     End If
+
                                                     If restartlist = False And endprocess = False Then
                                                         'If we are still here, then we are good to process shit :D
                                                         'Debug.WriteLine(.CurSlot)
@@ -2428,8 +2432,6 @@ Friend Module S_EventLogic
     End Sub
 
     Function TriggerEvent(Index As Integer, i As Integer, triggerType As Byte, x As Integer, y As Integer)
-        If TempPlayer(Index).InGame = False Then Exit Function
-
         If TempPlayer(index).EventMap.CurrentEvents > 0 Then
             For z = 1 To TempPlayer(Index).EventMap.CurrentEvents
                 If TempPlayer(Index).EventMap.EventPages(z).EventId = i Then

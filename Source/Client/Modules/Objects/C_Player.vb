@@ -387,7 +387,7 @@ Module C_Player
             End If
         End If
 
-        For i = 0 To CurrentEvents
+        For i = 1 To CurrentEvents
             If MapEvents(i).Visible = 1 Then
                 If MapEvents(i).X = x And MapEvents(i).Y = y Then
                     If MapEvents(i).WalkThrough = 0 Then

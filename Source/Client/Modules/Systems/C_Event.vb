@@ -109,38 +109,38 @@ Friend Module C_EventSystem
         Map.Events(EventNum).Y = Y
     End Sub
 
-    Sub DeleteEvent(ByVal X As Integer, ByVal Y As Integer)
-        Dim count As Integer, i As Integer, lowIndex As Integer
+   Sub DeleteEvent(ByVal X As Integer, ByVal Y As Integer)
+    Dim i As Integer
+    Dim lowIndex As Integer = -1
+    Dim shifted As Boolean = False
 
-        If Editor <> EditorType.Map Then Exit Sub
-        If frmEditor_Events.Visible = True Then Exit Sub
+    If Editor <> EditorType.Map Then Exit Sub
+    If frmEditor_Events.Visible = True Then Exit Sub
 
-        count = Map.EventCount
+    ' First pass: find all events to delete and shift others down
+    For i = 1 To Map.EventCount
+        If Map.Events(i).X = X And Map.Events(i).Y = Y Then
+            ' Clear the event
+            ClearEvent(i)
+            lowIndex = i
+            shifted = True
+        ElseIf shifted Then
+            ' Shift this event down to fill the gap
+            Map.Events(lowIndex) = Map.Events(i)
+            lowIndex = lowIndex + 1
+        End If
+    Next
 
-        For i = 0 To count
-            If Map.Events(i).X = X And Map.Events(i).Y = Y Then
-                ' delete it
-                ClearEvent(i)
-                lowIndex = i
-                count = count - 1
-                Exit For
-            End If
-        Next
-        ' not found anything
-        If lowIndex = 0 Then Exit Sub
-
-        ' move everything down an index
-        For i = lowIndex To count
-            Map.Events(i) = Map.Events(i)
-        Next
-
-        ' set the new count
-        Map.EventCount = count
-        CurrentEvents = count
-        ReDim Preserve MapEvents(count)
-        ReDim Preserve Map.Events(count)
+    ' Adjust the event count if anything was deleted
+    If lowIndex <> -1 Then
+        ' Set the new count
+        Map.EventCount = lowIndex - 1
+        ReDim Preserve MapEvents(Map.EventCount)
+        ReDim Preserve Map.Events(Map.EventCount)
         TmpEvent = Nothing
-    End Sub
+    End If
+End Sub
+
 
     Sub AddEvent(ByVal X As Integer, ByVal Y As Integer, Optional ByVal cancelLoad As Boolean = False)
         Dim count As Integer, pageCount As Integer, i As Integer
@@ -440,11 +440,7 @@ newlist:
                                 ReDim Preserve EventList(X)
                                 EventList(X).CommandList = curlist
                                 EventList(X).CommandNum = i
-                                If TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Data5 > 0 Then
-                                    frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Show Choices - Prompt: " & Mid(TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Text1, 1, 20) & "... - Face: " & TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Data5)
-                                Else
-                                    frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Show Choices - Prompt: " & Mid(TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Text1, 1, 20) & "... - No Face")
-                                End If
+                                frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Show Choices - Prompt: " & Mid(TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Text1, 1, 20))
                                 indent = indent & "       "
                                 listleftoff(curlist) = i
                                 conditionalstage(curlist) = 1
@@ -546,11 +542,7 @@ newlist:
                                         frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Add Text - " & Mid(TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Text1, 1, 20) & "... - Color: " & GetColorString(TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Data1) & " - Chat Type: Global")
                                 End Select
                             Case EventType.ShowText
-                                If TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Data1 = 0 Then
-                                    frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Show Text - " & Mid(TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Text1, 1, 20) & "... - No Face")
-                                Else
-                                    frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Show Text - " & Mid(TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Text1, 1, 20) & "... - Face: " & TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Data1)
-                                End If
+                                frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Show Text - " & Mid(TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Text1, 1, 20))
                             Case EventType.PlayerVar
                                 Select Case TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(i).Data2
                                     Case 0
@@ -909,7 +901,6 @@ newlist:
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text3 = frmEditor_Events.txtChoices2.Text
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text4 = frmEditor_Events.txtChoices3.Text
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text5 = frmEditor_Events.txtChoices4.Text
-                TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data5 = frmEditor_Events.nudShowChoicesFace.Value
                 TmpEvent.Pages(CurPageNum).CommandListCount = TmpEvent.Pages(CurPageNum).CommandListCount + 4
                 ReDim Preserve TmpEvent.Pages(CurPageNum).CommandList(TmpEvent.Pages(CurPageNum).CommandListCount)
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1 = TmpEvent.Pages(CurPageNum).CommandListCount - 3
@@ -1084,7 +1075,7 @@ newlist:
             Case EventType.ShowChatBubble
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Index = Index
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text1 = frmEditor_Events.txtChatbubbleText.Text
-                TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.cmbChatBubbleTargetType.SelectedIndex
+                TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.cmbChatBubbleTargetType.SelectedIndex + 1
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data2 = frmEditor_Events.cmbChatBubbleTarget.SelectedIndex
 
             Case EventType.Label
@@ -1274,7 +1265,6 @@ newlist:
                 frmEditor_Events.txtChoices2.Text = TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text3
                 frmEditor_Events.txtChoices3.Text = TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text4
                 frmEditor_Events.txtChoices4.Text = TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text5
-                frmEditor_Events.nudShowChoicesFace.Value = TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data5
                 frmEditor_Events.fraDialogue.Visible = True
                 frmEditor_Events.fraShowChoices.Visible = True
                 frmEditor_Events.fraCommands.Visible = False
@@ -1789,7 +1779,6 @@ newlist:
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text3 = frmEditor_Events.txtChoices2.Text
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text4 = frmEditor_Events.txtChoices3.Text
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Text5 = frmEditor_Events.txtChoices4.Text
-                TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data5 = frmEditor_Events.nudShowChoicesFace.Value
             Case EventType.PlayerVar
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.cmbVariable.SelectedIndex 
                 If frmEditor_Events.optVariableAction0.Checked = True Then i = 0

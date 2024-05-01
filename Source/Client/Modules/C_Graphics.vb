@@ -1440,7 +1440,7 @@ Module C_Graphics
     End Sub
 
     Friend Sub Render_Graphics()
-        Dim x As Integer, y As Integer, I As Integer
+        Dim x As Integer, y As Integer, i As Integer
 
         If GettingMap Then Exit Sub
 
@@ -1469,33 +1469,33 @@ Module C_Graphics
         ' events
         If Editor <> EditorType.Map Then
             If CurrentEvents > 0 And CurrentEvents <= Map.EventCount Then
-                For I = 0 To CurrentEvents
-                    If MapEvents(I).Position = 0 Then
-                        DrawEvent(I)
+                For i = 1 To CurrentEvents
+                    If MapEvents(i).Position = 0 Then
+                        DrawEvent(i)
                     End If
                 Next
             End If
         End If
 
         ' blood
-        For I = 0 To Byte.MaxValue
-            DrawBlood(I)
+        For i = 0 To Byte.MaxValue
+            DrawBlood(i)
         Next
 
         ' Draw out the items
         If NumItems > 0 Then
-            For I = 1 To MAX_MAP_ITEMS
-                If MapItem(I).Num > 0 Then
-                    DrawMapItem(I)
+            For i = 1 To MAX_MAP_ITEMS
+                If MapItem(i).Num > 0 Then
+                    DrawMapItem(i)
                 End If
             Next
         End If
 
         ' draw animations
         If NumAnimations > 0 Then
-            For I = 0 To Byte.MaxValue
-                If AnimInstance(I).Used(0) Then
-                    DrawAnimation(I, 0)
+            For i = 0 To Byte.MaxValue
+                If AnimInstance(i).Used(0) Then
+                    DrawAnimation(i, 0)
                 End If
             Next
         End If
@@ -1504,34 +1504,34 @@ Module C_Graphics
         For y = 0 To Map.MaxY
             If NumCharacters > 0 Then
                 ' Players
-                For I = 1 To MAX_PLAYERS
-                    If IsPlaying(I) And GetPlayerMap(I) = GetPlayerMap(MyIndex) Then
-                        If Player(I).Y = y Then
-                            DrawPlayer(I)
+                For i = 1 To MAX_PLAYERS
+                    If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
+                        If Player(i).Y = y Then
+                            DrawPlayer(i)
                         End If
 
-                        If PetAlive(I) Then
-                            If Player(I).Pet.Y = y Then
-                                DrawPet(I)
+                        If PetAlive(i) Then
+                            If Player(i).Pet.Y = y Then
+                                DrawPet(i)
                             End If
                         End If
                     End If
                 Next
 
                 ' Npcs
-                For I = 1 To MAX_MAP_NPCS
-                    If MapNpc(I).Y = y Then
-                        DrawNpc(I)
+                For i = 1 To MAX_MAP_NPCS
+                    If MapNpc(i).Y = y Then
+                        DrawNpc(i)
                     End If
                 Next
 
                 ' events
                 If Editor <> EditorType.Map Then
                     If CurrentEvents > 0 And CurrentEvents <= Map.EventCount Then
-                        For I = 0 To CurrentEvents
-                            If MapEvents(I).Position = 1 Then
-                                If y = MapEvents(I).Y Then
-                                    DrawEvent(I)
+                        For i = 1 To CurrentEvents
+                            If MapEvents(i).Position = 1 Then
+                                If y = MapEvents(i).Y Then
+                                    DrawEvent(i)
                                 End If
                             End If
                         Next
@@ -1552,13 +1552,13 @@ Module C_Graphics
                     End If
                 End If
 
-                For I = 1 To MAX_PLAYERS
-                    If IsPlaying(I) Then
-                        If Player(I).Map = Player(MyIndex).Map Then
-                            If CurX = Player(I).X And CurY = Player(I).Y Then
-                                If MyTargetType = TargetType.Player And MyTarget = I Then
+                For i = 1 To MAX_PLAYERS
+                    If IsPlaying(i) Then
+                        If Player(i).Map = Player(MyIndex).Map Then
+                            If CurX = Player(i).X And CurY = Player(i).Y Then
+                                If MyTargetType = TargetType.Player And MyTarget = i Then
                                 Else
-                                    DrawHover(Player(I).X * 32 - 16, Player(I).Y * 32 + Player(I).YOffset)
+                                    DrawHover(Player(i).X * 32 - 16, Player(i).Y * 32 + Player(i).YOffset)
                                 End If
                             End If
 
@@ -1571,9 +1571,9 @@ Module C_Graphics
             If NumResources > 0 Then
                 If ResourcesInit Then
                     If ResourceIndex > 0 Then
-                        For I = 0 To ResourceIndex
-                            If MapResource(I).Y = y Then
-                                DrawMapResource(I)
+                        For i = 0 To ResourceIndex
+                            If MapResource(i).Y = y Then
+                                DrawMapResource(i)
                             End If
                         Next
                     End If
@@ -1583,25 +1583,25 @@ Module C_Graphics
 
         ' animations
         If NumAnimations > 0 Then
-            For I = 0 To Byte.MaxValue
-                If AnimInstance(I).Used(1) Then
-                    DrawAnimation(I, 1)
+            For i = 0 To Byte.MaxValue
+                If AnimInstance(i).Used(1) Then
+                    DrawAnimation(i, 1)
                 End If
             Next
         End If
 
         If NumProjectiles > 0 Then
-            For I = 1 To MAX_PROJECTILES
-                If MapProjectile(Player(MyIndex).Map, I).ProjectileNum > 0 Then
-                    DrawProjectile(I)
+            For i = 1 To MAX_PROJECTILES
+                If MapProjectile(Player(MyIndex).Map, i).ProjectileNum > 0 Then
+                    DrawProjectile(i)
                 End If
             Next
         End If
 
         If CurrentEvents > 0 And CurrentEvents <= Map.EventCount Then
-            For I = 0 To CurrentEvents
-                If MapEvents(I).Position = 2 Then
-                    DrawEvent(I)
+            For i = 1 To CurrentEvents
+                If MapEvents(i).Position = 2 Then
+                    DrawEvent(i)
                 End If
             Next
         End If
@@ -1633,38 +1633,36 @@ Module C_Graphics
             End If
         End If
 
-        ' draw player names
-        For I = 1 To MAX_PLAYERS
-            If IsPlaying(I) And GetPlayerMap(I) = GetPlayerMap(MyIndex) Then
-                DrawPlayerName(I)
-                If PetAlive(I) Then
-                    DrawPlayerPetName(I)
+        For i = 1 To MAX_PLAYERS
+            If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
+                DrawPlayerName(i)
+                If PetAlive(i) Then
+                    DrawPlayerPetName(i)
                 End If
             End If
         Next
 
-        'draw event names
-        For I = 0 To CurrentEvents
-            If MapEvents(I).Visible = 1 Then
-                If MapEvents(I).ShowName = 1 Then
-                    DrawEventName(I)
+        If CurrentEvents > 0 AndAlso Map.EventCount >= CurrentEvents Then
+            For i = 1 To CurrentEvents
+                If MapEvents(i).Visible = 1 Then
+                    If MapEvents(i).ShowName = 1 Then
+                        DrawEventName(i)
+                    End If
                 End If
-            End If
-        Next
+            Next
+        End If
 
-        ' draw npc names
-        For I = 1 To MAX_MAP_NPCS
-            If MapNpc(I).Num > 0 Then
-                DrawNpcName(I)
+        For i = 1 To MAX_MAP_NPCS
+            If MapNpc(i).Num > 0 Then
+                DrawNpcName(i)
             End If
         Next
 
         DrawFog()
         DrawPicture()
 
-        'action msg
-        For I = 1 To Byte.MaxValue
-            DrawActionMsg(I)
+        For i = 1 To Byte.MaxValue
+            DrawActionMsg(i)
         Next
 
         If Editor = EditorType.Map Then
@@ -1681,7 +1679,6 @@ Module C_Graphics
             DrawMapAttributes()
         End If
 
-        ' draw the messages
         For i = 1 To Byte.MaxValue
             If chatBubble(i).active Then
                 DrawChatBubble(i)
