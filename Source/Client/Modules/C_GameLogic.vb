@@ -553,17 +553,20 @@ Module C_GameLogic
                     AddText(Language.Chat.Help6, ColorType.Yellow)
 
                 Case "/info"
+                    If MyTarget > 0 Then
+                        If MyTargetType = TargetType.Player Then
+                            SendPlayerInfo(GetPlayerName(MyTarget))
+                            Exit Sub
+                        End If
+                    End If
+
                     ' Checks to make sure we have more than one string in the array
                     If UBound(command) < 1 OrElse IsNumeric(command(1)) Then
                         AddText(Language.Chat.Info, ColorType.Yellow)
                         GoTo Continue1
                     End If
 
-                    buffer = New ByteStream(4)
-                    buffer.WriteInt32(ClientPackets.CPlayerInfoRequest)
-                    buffer.WriteString((command(1)))
-                    Socket.SendData(buffer.Data, buffer.Head)
-                    buffer.Dispose()
+                    SendPlayerInfo(command(1))
 
                 ' Whos Online
                 Case "/who"

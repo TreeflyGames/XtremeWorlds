@@ -298,6 +298,16 @@ Module C_NetworkSend
         buffer.Dispose()
     End Sub
 
+    Friend Sub SendPlayerInfo(name As String)
+        Dim buffer As New ByteStream(4)
+
+        buffer.WriteInt32(ClientPackets.CPlayerInfoRequest)
+        buffer.WriteString(name)
+
+        Socket.SendData(buffer.Data, buffer.Head)
+        buffer.Dispose()
+    End Sub
+
     Friend Sub SendMotdChange(welcome As String)
         Dim buffer As New ByteStream(4)
 
