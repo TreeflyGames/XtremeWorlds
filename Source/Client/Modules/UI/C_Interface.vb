@@ -3171,7 +3171,7 @@ Module C_Interface
 
         itemNum = IsEq(Windows(GetWindowIndex("winCharacter")).Window.Left, Windows(GetWindowIndex("winCharacter")).Window.Top)
 
-        If itemNum Then
+        If itemNum > 0 Then
             ' calc position
             x = Windows(GetWindowIndex("winCharacter")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             y = Windows(GetWindowIndex("winCharacter")).Window.Top - 4
@@ -3184,6 +3184,8 @@ Module C_Interface
 
             ' go go go
             ShowEqDesc(x, y, itemNum)
+        Else
+            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
