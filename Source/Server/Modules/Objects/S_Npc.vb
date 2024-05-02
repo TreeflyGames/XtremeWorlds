@@ -945,7 +945,7 @@ Module S_Npc
 
     Sub Packet_EditNpc(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
         If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
@@ -976,7 +976,7 @@ Module S_Npc
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
 
         NpcNum = buffer.ReadInt32
 

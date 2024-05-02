@@ -361,7 +361,7 @@ Module C_Graphics
         ElseIf e.Button = Mouse.Button.Right Then
             If VbKeyShift = True Then
                 ' admin warp if we're pressing shift and right clicking
-                If GetPlayerAccess(MyIndex) >= 2 Then AdminWarp(CurX, CurY)
+                If GetPlayerAccess(MyIndex) >= AccessType.Moderator Then AdminWarp(CurX, CurY)
             Else
                 ' right-click menu
                 For i = 1 To MAX_PLAYERS

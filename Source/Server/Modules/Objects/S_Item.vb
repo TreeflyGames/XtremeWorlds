@@ -266,7 +266,7 @@ Friend Module S_Item
 
     Sub Packet_EditItem(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
         If TempPlayer(index).Editor > 0 Then  Exit Sub
 
         Dim user As String
@@ -298,7 +298,7 @@ Friend Module S_Item
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
 
         n = buffer.ReadInt32
 

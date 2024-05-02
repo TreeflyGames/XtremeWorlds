@@ -736,15 +736,15 @@ Module C_NetworkReceive
 
         ' Check access level
         Select Case access
-            Case AdminType.Player
+            Case AccessType.Player
                 color = ColorType.White
-            Case AdminType.Moderator
+            Case AccessType.Moderator
                 color = ColorType.Cyan
-            Case AdminType.Mapper
+            Case AccessType.Mapper
                 color = ColorType.Green
-            Case AdminType.Developer
+            Case AccessType.Developer
                 color = ColorType.Magenta
-            Case AdminType.Creator
+            Case AccessType.Creator
                 color = ColorType.Yellow
             Case Else
                 color = ColorType.White

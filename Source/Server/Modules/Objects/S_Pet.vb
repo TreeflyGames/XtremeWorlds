@@ -296,7 +296,7 @@ Module S_Pet
     Sub Packet_RequestEditPet(index As Integer, ByRef data() As Byte)
         Dim buffer = New ByteStream(4)
 
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
         If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
@@ -322,7 +322,7 @@ Module S_Pet
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
 
         petNum = buffer.ReadInt32
 
@@ -604,7 +604,7 @@ Module S_Pet
                                 End If
 
                                 If IsPlaying(i) And i <> playerindex Then
-                                    If GetPlayerMap(i) = mapNum And GetPlayerAccess(i) <= AdminType.Moderator Then
+                                    If GetPlayerMap(i) = mapNum And GetPlayerAccess(i) <= AccessType.Moderator Then
                                         If PetAlive(i) Then
                                             n = GetPetRange(playerindex)
                                             distanceX = GetPetX(playerindex) - GetPetX(i)
@@ -2300,13 +2300,13 @@ Module S_Pet
         If GetPlayerVital(victim, VitalType.HP) <= 0 Then Exit Function
 
         ' Check to make sure that they dont have access
-        If GetPlayerAccess(attacker) > AdminType.Moderator Then
+        If GetPlayerAccess(attacker) > AccessType.Moderator Then
             PlayerMsg(attacker, "Admins cannot attack other players.", ColorType.Yellow)
             Exit Function
         End If
 
         ' Check to make sure the victim isn't an admin
-        If GetPlayerAccess(victim) > AdminType.Moderator Then
+        If GetPlayerAccess(victim) > AccessType.Moderator Then
             PlayerMsg(attacker, "You cannot attack " & GetPlayerName(victim) & "!", ColorType.Yellow)
             Exit Function
         End If
@@ -2550,13 +2550,13 @@ Module S_Pet
         If Player(victim).Pet.Health <= 0 Then Exit Function
 
         ' Check to make sure that they dont have access
-        If GetPlayerAccess(attacker) > AdminType.Moderator Then
+        If GetPlayerAccess(attacker) > AccessType.Moderator Then
             PlayerMsg(attacker, "Admins cannot attack other players.", ColorType.BrightRed)
             Exit Function
         End If
 
         ' Check to make sure the victim isn't an admin
-        If GetPlayerAccess(victim) > AdminType.Moderator Then
+        If GetPlayerAccess(victim) > AccessType.Moderator Then
             PlayerMsg(attacker, "You cannot attack " & GetPlayerName(victim) & "!", ColorType.BrightRed)
             Exit Function
         End If
@@ -3454,13 +3454,13 @@ Module S_Pet
         If GetPetVital(victim, VitalType.HP) <= 0 Then Exit Function
 
         ' Check to make sure that they dont have access
-        If GetPlayerAccess(attacker) > AdminType.Moderator Then
+        If GetPlayerAccess(attacker) > AccessType.Moderator Then
             PlayerMsg(attacker, "Admins cannot attack other players.", ColorType.BrightRed)
             Exit Function
         End If
 
         ' Check to make sure the victim isn't an admin
-        If GetPlayerAccess(victim) > AdminType.Moderator Then
+        If GetPlayerAccess(victim) > AccessType.Moderator Then
             PlayerMsg(attacker, "You cannot attack " & GetPlayerName(victim) & "s " & Trim$(GetPetName(victim)) & "!", ColorType.BrightRed)
             Exit Function
         End If

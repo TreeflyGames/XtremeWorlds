@@ -29,7 +29,7 @@ Module C_Player
         Player(index).AttackTimer = 0
         Player(index).Job = 1
         Player(index).Dir = 0
-        Player(index).Access = AdminType.Player
+        Player(index).Access = AccessType.Player
 
         ReDim Player(index).Equipment(EquipmentType.Count - 1)
         For y = 0 To EquipmentType.Count - 1
@@ -690,19 +690,19 @@ Module C_Player
         ' Check access level
         If GetPlayerPK(index) = False Then
             Select Case GetPlayerAccess(index)
-                Case AdminType.Player
+                Case AccessType.Player
                     color = SFML.Graphics.Color.White
                     backcolor = SFML.Graphics.Color.Black
-                Case AdminType.Moderator
+                Case AccessType.Moderator
                     color = SFML.Graphics.Color.Cyan
                     backcolor = SFML.Graphics.Color.White
-                Case AdminType.Mapper
+                Case AccessType.Mapper
                     color = SFML.Graphics.Color.Green
                     backcolor = SFML.Graphics.Color.Black
-                Case AdminType.Developer
+                Case AccessType.Developer
                     color = SFML.Graphics.Color.Magenta
                     backcolor = SFML.Graphics.Color.Black
-                Case AdminType.Creator
+                Case AccessType.Creator
                     color = SFML.Graphics.Color.Yellow
                     backcolor = SFML.Graphics.Color.Black
             End Select

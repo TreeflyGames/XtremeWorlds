@@ -674,7 +674,7 @@ Module S_NetworkReceive
         If i > 0 Then
             PlayerMsg(index, "Account:  " & GetPlayerLogin(i) & ", Name: " & GetPlayerName(i), ColorType.Yellow)
 
-            If GetPlayerAccess(index) > AdminType.Moderator Then
+            If GetPlayerAccess(index) > AccessType.Moderator Then
                 PlayerMsg(index, " Stats for " & GetPlayerName(i) & " ", ColorType.Yellow)
                 PlayerMsg(index, "Level: " & GetPlayerLevel(i) & "  Exp: " & GetPlayerExp(i) & "/" & GetPlayerNextLevel(i), ColorType.Yellow)
                 PlayerMsg(index, "HP: " & GetPlayerVital(i, VitalType.HP) & "/" & GetPlayerMaxVital(i, VitalType.HP) & "  MP: " & GetPlayerVital(i, VitalType.MP) & "/" & GetPlayerMaxVital(i, VitalType.MP) & "  SP: " & GetPlayerVital(i, VitalType.SP) & "/" & GetPlayerMaxVital(i, VitalType.SP), ColorType.Yellow)
@@ -698,7 +698,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         ' The player
         n = FindPlayer(buffer.ReadString)
@@ -724,7 +724,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         ' The player
         n = FindPlayer(buffer.ReadString)
@@ -750,7 +750,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         ' The map
         n = buffer.ReadInt32
@@ -769,7 +769,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         ' The sprite
         n = buffer.ReadInt32
@@ -815,7 +815,7 @@ Module S_NetworkReceive
         Dim y As Integer
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         Dim buffer As New ByteStream(Compression.DecompressBytes(data))
 
@@ -1078,7 +1078,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         ' Clear out it all
         For i = 1 To MAX_MAP_ITEMS
@@ -1106,7 +1106,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Moderator Then
+        If GetPlayerAccess(index) < AccessType.Moderator Then
             Exit Sub
         End If
 
@@ -1133,7 +1133,7 @@ Module S_NetworkReceive
 
     Sub Packet_Banlist(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Moderator Then
+        If GetPlayerAccess(index) < AccessType.Moderator Then
             Exit Sub
         End If
 
@@ -1144,7 +1144,7 @@ Module S_NetworkReceive
         Dim filename As String
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Creator Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Creator Then Exit Sub
 
         filename = Paths.Database & "banlist.txt"
 
@@ -1158,7 +1158,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Moderator Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Moderator Then Exit Sub
 
         ' The player index
         n = FindPlayer(buffer.ReadString)
@@ -1182,7 +1182,7 @@ Module S_NetworkReceive
 
     Private Sub Packet_EditMapRequest(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
         If TempPlayer(index).Editor > 0 Then Exit Sub
 
         If GetPlayerMap(index) > MAX_MAPS Then
@@ -1218,7 +1218,7 @@ Module S_NetworkReceive
 
     Sub Packet_EditShop(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
         If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
@@ -1247,7 +1247,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
 
         ShopNum = buffer.ReadInt32()
 
@@ -1275,7 +1275,7 @@ Module S_NetworkReceive
 
     Sub Packet_EditSkill(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
         If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
@@ -1354,7 +1354,7 @@ Module S_NetworkReceive
         Dim i As Integer
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Creator Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Creator Then Exit Sub
 
         ' The index
         n = FindPlayer(buffer.ReadString)
@@ -1399,7 +1399,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         Types.Settings.Welcome = Trim$(buffer.ReadString)
         Settings.Save()
@@ -1622,7 +1622,7 @@ Module S_NetworkReceive
         tmpItem = buffer.ReadInt32
         tmpAmount = buffer.ReadInt32
 
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
 
         SpawnItem(tmpItem, tmpAmount, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index))
         buffer.Dispose()
@@ -1671,7 +1671,7 @@ Module S_NetworkReceive
 
     Sub Packet_RequestLevelUp(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
 
         SetPlayerExp(index, GetPlayerNextLevel(index))
         CheckPlayerLevelUp(index)
@@ -1831,7 +1831,7 @@ Module S_NetworkReceive
         x = buffer.ReadInt32
         y = buffer.ReadInt32
 
-        If GetPlayerAccess(index) >= AdminType.Mapper Then
+        If GetPlayerAccess(index) >= AccessType.Mapper Then
             'Set the  Information
             SetPlayerX(index, x)
             SetPlayerY(index, y)
@@ -2144,14 +2144,14 @@ Module S_NetworkReceive
 
     Sub Packet_MapReport(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         SendMapReport(index)
     End Sub
 
     Sub Packet_Admin(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
         SendAdminPanel(index)
     End Sub
@@ -2223,7 +2223,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
 
         SkillNum = buffer.ReadInt32()
 
@@ -2232,7 +2232,7 @@ Module S_NetworkReceive
 
     Sub Packet_RequestEditJob(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
         If TempPlayer(index).Editor > 0 Then Exit Sub
 
         Dim user As String
@@ -2259,7 +2259,7 @@ Module S_NetworkReceive
         Dim buffer As New ByteStream(data)
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Developer Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Developer Then Exit Sub
 
         jobNum = buffer.ReadInt32
 
@@ -2304,7 +2304,7 @@ Module S_NetworkReceive
 
     Private Sub Packet_CloseEditor(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
-        If GetPlayerAccess(index) < AdminType.Mapper Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
         
         If TempPlayer(index).Editor = -1 Then Exit Sub
 

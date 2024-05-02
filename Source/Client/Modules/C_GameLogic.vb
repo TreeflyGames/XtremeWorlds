@@ -631,7 +631,7 @@ Module C_GameLogic
                 ' // Moderator Admin Commands //
                 ' Admin Help
                 Case "/admin"
-                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -644,7 +644,7 @@ Module C_GameLogic
                 ' Kicking a player
                 Case "/kick"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -660,7 +660,7 @@ Module C_GameLogic
                 ' Location
                 Case "/loc"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -670,7 +670,7 @@ Module C_GameLogic
                 ' Warping to a player
                 Case "/warpmeto"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -685,7 +685,7 @@ Module C_GameLogic
                 ' Warping a player to you
                 Case "/warptome"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -700,7 +700,7 @@ Module C_GameLogic
                 ' Warping to a map
                 Case "/warpto"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -722,7 +722,7 @@ Module C_GameLogic
                 ' Setting sprite
                 Case "/sprite"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -737,7 +737,7 @@ Module C_GameLogic
                 ' Map report
                 Case "/mapreport"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -747,7 +747,7 @@ Module C_GameLogic
                 ' Respawn request
                 Case "/respawn"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -756,7 +756,7 @@ Module C_GameLogic
 
                 Case "/editmap"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Mapper Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Mapper Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -767,7 +767,7 @@ Module C_GameLogic
                 ' Welcome change
                 Case "/welcome"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -782,7 +782,7 @@ Module C_GameLogic
                 ' Check the ban list
                 Case "/banlist"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -792,7 +792,7 @@ Module C_GameLogic
                 ' Banning a player
                 Case "/ban"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Moderator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Moderator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -808,7 +808,7 @@ Module C_GameLogic
                 ' Giving another player access
                 Case "/bandestroy"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Creator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Creator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -817,7 +817,7 @@ Module C_GameLogic
 
                 Case "/access"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Creator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Creator Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -834,7 +834,7 @@ Module C_GameLogic
                 ' // Developer Admin Commands //
                 Case "/editresource"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -843,7 +843,7 @@ Module C_GameLogic
 
                 Case "/editanimation"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -852,7 +852,7 @@ Module C_GameLogic
 
                 Case "/editpet"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -861,7 +861,7 @@ Module C_GameLogic
 
                 Case "/edititem"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -870,7 +870,7 @@ Module C_GameLogic
 
                 Case "/editprojectile"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -879,7 +879,7 @@ Module C_GameLogic
 
                 Case "/editnpc"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -888,7 +888,7 @@ Module C_GameLogic
 
                 Case "/editjob"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -897,7 +897,7 @@ Module C_GameLogic
 
                 Case "/editskill"
 
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -905,7 +905,7 @@ Module C_GameLogic
                     SendRequestEditSkill()
 
                 Case "/editshop"
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -914,7 +914,7 @@ Module C_GameLogic
 
                     
                 Case "/editmoral"
-                    If GetPlayerAccess(MyIndex) < AdminType.Developer Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If

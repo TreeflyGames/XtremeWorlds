@@ -259,7 +259,7 @@ Module S_Loop
 
                                     For i = 1 To Socket.HighIndex()
                                         If IsPlaying(i) Then
-                                            If GetPlayerMap(i) = mapNum And MapNPC(mapNum).Npc(x).Target = 0 And GetPlayerAccess(i) <= AdminType.Moderator Then
+                                            If GetPlayerMap(i) = mapNum And MapNPC(mapNum).Npc(x).Target = 0 And GetPlayerAccess(i) <= AccessType.Moderator Then
                                                 If PetAlive(i) Then
                                                     n = NPC(npcNum).Range
                                                     distanceX = MapNPC(mapNum).Npc(x).X - Player(i).Pet.X

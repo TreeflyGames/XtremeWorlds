@@ -60,13 +60,13 @@ Module S_Player
         If GetPlayerVital(Victim, VitalType.HP) <= 0 Then Exit Function
 
         ' Check to make sure that they dont have access
-        If GetPlayerAccess(Attacker) > AdminType.Moderator Then
+        If GetPlayerAccess(Attacker) > AccessType.Moderator Then
             PlayerMsg(Attacker, "You cannot attack any player for thou art an admin!", ColorType.BrightRed)
             Exit Function
         End If
 
         ' Check to make sure the victim isn't an admin
-        If GetPlayerAccess(Victim) > AdminType.Moderator Then
+        If GetPlayerAccess(Victim) > AccessType.Moderator Then
             PlayerMsg(Attacker, "You cannot attack " & GetPlayerName(Victim) & "!", ColorType.BrightRed)
             Exit Function
         End If

@@ -444,7 +444,7 @@ Module S_NetworkSend
         Dim n As Integer
         Dim i As Integer
 
-        If GetPlayerAccess(index) < AdminType.Moderator Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Moderator Then Exit Sub
 
         For i = 1 To Socket.HighIndex()
 
@@ -816,7 +816,7 @@ Module S_NetworkSend
         buffer.WriteString((Msg.Trim))
 
         For i = 1 To Socket.HighIndex
-            If GetPlayerAccess(i) >= AdminType.Moderator Then
+            If GetPlayerAccess(i) >= AccessType.Moderator Then
                 SendDataTo(i, buffer.Data, buffer.Head)
             End If
         Next

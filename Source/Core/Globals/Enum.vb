@@ -137,8 +137,7 @@
     End Enum
 
     ''' <Summary> Admin Constant </Summary>
-    Enum AdminType As Byte
-        None = 0
+    Enum AccessType As Byte
         Player
         Moderator
         Mapper
