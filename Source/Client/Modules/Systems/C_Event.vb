@@ -1066,7 +1066,7 @@ newlist:
 
             Case EventType.SetAccess
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Index = Index
-                TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.cmbSetAccess.SelectedIndex
+                TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Data1 = frmEditor_Events.cmbSetAccess.SelectedIndex + 1
 
             Case EventType.GiveExp
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Index = Index

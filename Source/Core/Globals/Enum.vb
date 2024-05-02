@@ -138,6 +138,7 @@
 
     ''' <Summary> Admin Constant </Summary>
     Enum AccessType As Byte
+        None = 0
         Player
         Moderator
         Mapper
