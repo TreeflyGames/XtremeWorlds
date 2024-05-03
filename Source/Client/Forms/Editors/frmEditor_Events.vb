@@ -102,12 +102,14 @@ Public Class frmEditor_Events
         nudChangeLevel.Maximum = MAX_LEVEL
         nudChangeLevel.Value = 1
         cmbChangeSkills.Items.Clear()
+        cmbChangeSkills.Items.Add("None")
 
         For i = 1 To MAX_SKILLS
             cmbChangeSkills.Items.Add(Trim$(Skill(i).Name))
         Next
         cmbChangeSkills.SelectedIndex = 0
         cmbChangeJob.Items.Clear()
+        cmbChangeJob.Items.Add("None")
 
         For i = 1 To MAX_JOBS
             cmbChangeJob.Items.Add(Trim$(Job(i).Name))
@@ -115,6 +117,7 @@ Public Class frmEditor_Events
         cmbChangeJob.SelectedIndex = 0
         nudChangeSprite.Maximum = NumCharacters
         cmbPlayAnim.Items.Clear()
+        cmbPlayAnim.Items.Add("None")
 
         For i = 1 To MAX_ANIMATIONS
             cmbPlayAnim.Items.Add(i & ". " & Trim$(Animation(i).Name))
@@ -136,12 +139,14 @@ Public Class frmEditor_Events
         Next
         cmbPlaySound.SelectedIndex = 0
         cmbOpenShop.Items.Clear()
+        cmbOpenShop.Items.Add("None")
 
         For i = 1 To MAX_SHOPS
             cmbOpenShop.Items.Add(i & ". " & Trim$(Shop(i).Name))
         Next
         cmbOpenShop.SelectedIndex = 0
         cmbSpawnNpc.Items.Clear()
+        cmbSpawnNpc.Items.Add("None")
 
         For i = 1 To MAX_MAP_NPCS
             If Map.Npc(i) > 0 Then
@@ -179,9 +184,11 @@ Public Class frmEditor_Events
 
         ' items
         cmbHasItem.Items.Clear()
+        cmbHasItem.Items.Add("None")
         For i = 1 To MAX_ITEMS
             cmbHasItem.Items.Add(i & ": " & Trim$(Item(i).Name))
         Next
+
         ' variables
         cmbPlayerVar.Items.Clear()
         For i = 1 To NAX_VARIABLES
