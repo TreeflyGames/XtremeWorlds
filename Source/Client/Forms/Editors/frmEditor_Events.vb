@@ -172,7 +172,7 @@ Public Class frmEditor_Events
         ' set the tabs
         tabPages.TabPages.Clear()
 
-        For i = 1 To TmpEvent.PageCount
+        For i = 0 To TmpEvent.PageCount
             tabPages.TabPages.Add(Str(i))
         Next
 
