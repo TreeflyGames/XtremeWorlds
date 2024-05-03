@@ -21,7 +21,7 @@ Friend Module S_EventLogic
                         'In other words, go back through conditions and make sure they all check up.
                         If TempPlayer(i).EventMap.EventPages(x).Visible = 1 Then
                             If Map(mapNum).Events(id).Pages(page).ChkHasItem = 1 Then
-                                If HasItem(i, Map(mapNum).Events(id).Pages(page).HasItemindex) = 0 Then
+                                If HasItem(i, Map(mapNum).Events(id).Pages(page).HasItemIndex) = 0 Then
                                     TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                 End If
                             End If
@@ -33,11 +33,11 @@ Friend Module S_EventLogic
                                     compare = 0
                                 End If
                                 If Map(mapNum).Events(id).Globals = 1 Then
-                                    If Map(mapNum).Events(id).SelfSwitches(Map(mapNum).Events(id).Pages(page).SelfSwitchindex) <> compare Then
+                                    If Map(mapNum).Events(id).SelfSwitches(Map(mapNum).Events(id).Pages(page).SelfSwitchIndex) <> compare Then
                                         TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                     End If
                                 Else
-                                    If TempPlayer(i).EventMap.EventPages(id).SelfSwitches(Map(mapNum).Events(id).Pages(page).SelfSwitchindex) <> compare Then
+                                    If TempPlayer(i).EventMap.EventPages(id).SelfSwitches(Map(mapNum).Events(id).Pages(page).SelfSwitchIndex) <> compare Then
                                         TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                     End If
                                 End If
@@ -46,27 +46,27 @@ Friend Module S_EventLogic
                             If Map(mapNum).Events(id).Pages(page).ChkVariable = 1 Then
                                 Select Case Map(mapNum).Events(id).Pages(page).VariableCompare
                                     Case 0
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).Variableindex) <> Map(mapNum).Events(id).Pages(page).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).VariableIndex) <> Map(mapNum).Events(id).Pages(page).VariableCondition Then
                                             TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                         End If
                                     Case 1
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).Variableindex) < Map(mapNum).Events(id).Pages(page).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).VariableIndex) < Map(mapNum).Events(id).Pages(page).VariableCondition Then
                                             TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                         End If
                                     Case 2
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).Variableindex) > Map(mapNum).Events(id).Pages(page).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).VariableIndex) > Map(mapNum).Events(id).Pages(page).VariableCondition Then
                                             TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                         End If
                                     Case 3
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).Variableindex) <= Map(mapNum).Events(id).Pages(page).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).VariableIndex) <= Map(mapNum).Events(id).Pages(page).VariableCondition Then
                                             TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                         End If
                                     Case 4
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).Variableindex) >= Map(mapNum).Events(id).Pages(page).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).VariableIndex) >= Map(mapNum).Events(id).Pages(page).VariableCondition Then
                                             TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                         End If
                                     Case 5
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).Variableindex) = Map(mapNum).Events(id).Pages(page).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(page).VariableIndex) = Map(mapNum).Events(id).Pages(page).VariableCondition Then
                                             TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                         End If
                                 End Select
@@ -74,11 +74,11 @@ Friend Module S_EventLogic
 
                             If Map(mapNum).Events(id).Pages(page).ChkSwitch = 1 Then
                                 If Map(mapNum).Events(id).Pages(page).SwitchCompare = 1 Then 'we expect true
-                                    If Player(i).Switches(Map(mapNum).Events(id).Pages(page).Switchindex) = 0 Then ' we see false so we despawn the event
+                                    If Player(i).Switches(Map(mapNum).Events(id).Pages(page).SwitchIndex) = 0 Then ' we see false so we despawn the event
                                         TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                     End If
                                 Else
-                                    If Player(i).Switches(Map(mapNum).Events(id).Pages(page).Switchindex) = 1 Then ' we expect false and we see true so we despawn the event
+                                    If Player(i).Switches(Map(mapNum).Events(id).Pages(page).SwitchIndex) = 1 Then ' we expect false and we see true so we despawn the event
                                         TempPlayer(i).EventMap.EventPages(x).Visible = 0
                                     End If
                                 End If
@@ -140,7 +140,7 @@ Friend Module S_EventLogic
                             spawnevent = True
 
                             If Map(mapNum).Events(id).Pages(z).ChkHasItem = 1 Then
-                                If HasItem(i, Map(mapNum).Events(id).Pages(z).HasItemindex) = 0 Then
+                                If HasItem(i, Map(mapNum).Events(id).Pages(z).HasItemIndex) = 0 Then
                                     spawnevent = False
                                 End If
                             End If
@@ -152,11 +152,11 @@ Friend Module S_EventLogic
                                     compare = 0
                                 End If
                                 If Map(mapNum).Events(id).Globals = 1 Then
-                                    If Map(mapNum).Events(id).SelfSwitches(Map(mapNum).Events(id).Pages(z).SelfSwitchindex) <> compare Then
+                                    If Map(mapNum).Events(id).SelfSwitches(Map(mapNum).Events(id).Pages(z).SelfSwitchIndex) <> compare Then
                                         spawnevent = False
                                     End If
                                 Else
-                                    If TempPlayer(i).EventMap.EventPages(id).SelfSwitches(Map(mapNum).Events(id).Pages(z).SelfSwitchindex) <> compare Then
+                                    If TempPlayer(i).EventMap.EventPages(id).SelfSwitches(Map(mapNum).Events(id).Pages(z).SelfSwitchIndex) <> compare Then
                                         spawnevent = False
                                     End If
                                 End If
@@ -165,27 +165,27 @@ Friend Module S_EventLogic
                             If Map(mapNum).Events(id).Pages(z).ChkVariable = 1 Then
                                 Select Case Map(mapNum).Events(id).Pages(z).VariableCompare
                                     Case 0
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).Variableindex) <> Map(mapNum).Events(id).Pages(z).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).VariableIndex) <> Map(mapNum).Events(id).Pages(z).VariableCondition Then
                                             spawnevent = False
                                         End If
                                     Case 1
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).Variableindex) < Map(mapNum).Events(id).Pages(z).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).VariableIndex) < Map(mapNum).Events(id).Pages(z).VariableCondition Then
                                             spawnevent = False
                                         End If
                                     Case 2
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).Variableindex) > Map(mapNum).Events(id).Pages(z).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).VariableIndex) > Map(mapNum).Events(id).Pages(z).VariableCondition Then
                                             spawnevent = False
                                         End If
                                     Case 3
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).Variableindex) <= Map(mapNum).Events(id).Pages(z).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).VariableIndex) <= Map(mapNum).Events(id).Pages(z).VariableCondition Then
                                             spawnevent = False
                                         End If
                                     Case 4
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).Variableindex) >= Map(mapNum).Events(id).Pages(z).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).VariableIndex) >= Map(mapNum).Events(id).Pages(z).VariableCondition Then
                                             spawnevent = False
                                         End If
                                     Case 5
-                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).Variableindex) = Map(mapNum).Events(id).Pages(z).VariableCondition Then
+                                        If Player(i).Variables(Map(mapNum).Events(id).Pages(z).VariableIndex) = Map(mapNum).Events(id).Pages(z).VariableCondition Then
                                             spawnevent = False
                                         End If
                                 End Select
@@ -193,11 +193,11 @@ Friend Module S_EventLogic
 
                             If Map(mapNum).Events(id).Pages(z).ChkSwitch = 1 Then
                                 If Map(mapNum).Events(id).Pages(z).SwitchCompare = 0 Then 'we want false
-                                    If Player(i).Switches(Map(mapNum).Events(id).Pages(z).Switchindex) = 1 Then 'and switch is true
+                                    If Player(i).Switches(Map(mapNum).Events(id).Pages(z).SwitchIndex) = 1 Then 'and switch is true
                                         spawnevent = False 'do not spawn
                                     End If
                                 Else
-                                    If Player(i).Switches(Map(mapNum).Events(id).Pages(z).Switchindex) = 0 Then ' else we want true and the switch is false
+                                    If Player(i).Switches(Map(mapNum).Events(id).Pages(z).SwitchIndex) = 0 Then ' else we want true and the switch is false
                                         spawnevent = False
                                     End If
                                 End If
@@ -2241,27 +2241,27 @@ Friend Module S_EventLogic
                         If .ChkVariable = 1 Then
                             Select Case .VariableCompare
                                 Case 0
-                                    If Player(index).Variables(.Variableindex) <> .VariableCondition Then
+                                    If Player(index).Variables(.VariableIndex) <> .VariableCondition Then
                                         spawncurrentevent = False
                                     End If
                                 Case 1
-                                    If Player(index).Variables(.Variableindex) < .VariableCondition Then
+                                    If Player(index).Variables(.VariableIndex) < .VariableCondition Then
                                         spawncurrentevent = False
                                     End If
                                 Case 2
-                                    If Player(index).Variables(.Variableindex) > .VariableCondition Then
+                                    If Player(index).Variables(.VariableIndex) > .VariableCondition Then
                                         spawncurrentevent = False
                                     End If
                                 Case 3
-                                    If Player(index).Variables(.Variableindex) <= .VariableCondition Then
+                                    If Player(index).Variables(.VariableIndex) <= .VariableCondition Then
                                         spawncurrentevent = False
                                     End If
                                 Case 4
-                                    If Player(index).Variables(.Variableindex) >= .VariableCondition Then
+                                    If Player(index).Variables(.VariableIndex) >= .VariableCondition Then
                                         spawncurrentevent = False
                                     End If
                                 Case 5
-                                    If Player(index).Variables(.Variableindex) = .VariableCondition Then
+                                    If Player(index).Variables(.VariableIndex) = .VariableCondition Then
                                         spawncurrentevent = False
                                     End If
                             End Select
@@ -2270,18 +2270,18 @@ Friend Module S_EventLogic
                         'we are assuming the event will spawn, and are looking for ways to stop it
                         If .ChkSwitch = 1 Then
                             If .SwitchCompare = 1 Then 'we want true
-                                If Player(index).Switches(.Switchindex) = 0 Then 'it is false, so we stop the spawn
+                                If Player(index).Switches(.SwitchIndex) = 0 Then 'it is false, so we stop the spawn
                                     spawncurrentevent = False
                                 End If
                             Else
-                                If Player(index).Switches(.Switchindex) = 1 Then 'we want false and it is true so we stop the spawn
+                                If Player(index).Switches(.SwitchIndex) = 1 Then 'we want false and it is true so we stop the spawn
                                     spawncurrentevent = False
                                 End If
                             End If
                         End If
 
                         If .ChkHasItem = 1 Then
-                            If HasItem(index, .HasItemindex) = 0 Then
+                            If HasItem(index, .HasItemIndex) = 0 Then
                                 spawncurrentevent = False
                             End If
                         End If
@@ -2293,7 +2293,7 @@ Friend Module S_EventLogic
                                 compare = 0
                             End If
                             If Map(mapNum).Events(i).Globals = 1 Then
-                                If Map(mapNum).Events(i).SelfSwitches(.SelfSwitchindex) <> compare Then
+                                If Map(mapNum).Events(i).SelfSwitches(.SelfSwitchIndex) <> compare Then
                                     spawncurrentevent = False
                                 End If
                             Else

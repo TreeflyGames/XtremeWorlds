@@ -340,20 +340,20 @@ Module C_Maps
                         For x = 0 To Map.Events(i).PageCount
                             With Map.Events(i).Pages(x)
                                 .ChkVariable = buffer.ReadInt32
-                                .Variableindex = buffer.ReadInt32
+                                .VariableIndex = buffer.ReadInt32
                                 .VariableCondition = buffer.ReadInt32
                                 .VariableCompare = buffer.ReadInt32
 
                                 .ChkSwitch = buffer.ReadInt32
-                                .Switchindex = buffer.ReadInt32
+                                .SwitchIndex = buffer.ReadInt32
                                 .SwitchCompare = buffer.ReadInt32
 
                                 .ChkHasItem = buffer.ReadInt32
-                                .HasItemindex = buffer.ReadInt32
+                                .HasItemIndex = buffer.ReadInt32
                                 .HasItemAmount = buffer.ReadInt32
 
                                 .ChkSelfSwitch = buffer.ReadInt32
-                                .SelfSwitchindex = buffer.ReadInt32
+                                .SelfSwitchIndex = buffer.ReadInt32
                                 .SelfSwitchCompare = buffer.ReadInt32
 
                                 .GraphicType = buffer.ReadByte
@@ -674,17 +674,17 @@ Module C_Maps
                     For x = 0 To Map.Events(i).PageCount
                         With Map.Events(i).Pages(x)
                             buffer.WriteInt32(.ChkVariable)
-                            buffer.WriteInt32(.Variableindex)
+                            buffer.WriteInt32(.VariableIndex)
                             buffer.WriteInt32(.VariableCondition)
                             buffer.WriteInt32(.VariableCompare)
                             buffer.WriteInt32(.ChkSwitch)
-                            buffer.WriteInt32(.Switchindex)
+                            buffer.WriteInt32(.SwitchIndex)
                             buffer.WriteInt32(.SwitchCompare)
                             buffer.WriteInt32(.ChkHasItem)
-                            buffer.WriteInt32(.HasItemindex)
+                            buffer.WriteInt32(.HasItemIndex)
                             buffer.WriteInt32(.HasItemAmount)
                             buffer.WriteInt32(.ChkSelfSwitch)
-                            buffer.WriteInt32(.SelfSwitchindex)
+                            buffer.WriteInt32(.SelfSwitchIndex)
                             buffer.WriteInt32(.SelfSwitchCompare)
                             buffer.WriteByte(.GraphicType)
                             buffer.WriteInt32(.Graphic)

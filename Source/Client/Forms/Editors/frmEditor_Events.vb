@@ -752,7 +752,7 @@ Public Class frmEditor_Events
 
     Private Sub CmbPlayerVar_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPlayerVar.SelectedIndexChanged
         If cmbPlayerVar.SelectedIndex = -1 Then Exit Sub
-        TmpEvent.Pages(CurPageNum).Variableindex = cmbPlayerVar.SelectedIndex
+        TmpEvent.Pages(CurPageNum).VariableIndex = cmbPlayerVar.SelectedIndex
     End Sub
 
     Private Sub CmbPlayervarCompare_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPlayervarCompare.SelectedIndexChanged
@@ -778,7 +778,7 @@ Public Class frmEditor_Events
 
     Private Sub CmbPlayerSwitch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPlayerSwitch.SelectedIndexChanged
         If cmbPlayerSwitch.SelectedIndex = -1 Then Exit Sub
-        TmpEvent.Pages(CurPageNum).Switchindex = cmbPlayerSwitch.SelectedIndex
+        TmpEvent.Pages(CurPageNum).SwitchIndex = cmbPlayerSwitch.SelectedIndex
     End Sub
 
     Private Sub CmbPlayerSwitchCompare_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPlayerSwitchCompare.SelectedIndexChanged
@@ -799,7 +799,7 @@ Public Class frmEditor_Events
 
     Private Sub CmbHasItem_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbHasItem.SelectedIndexChanged
         If cmbHasItem.SelectedIndex = -1 Then Exit Sub
-        TmpEvent.Pages(CurPageNum).HasItemindex = cmbHasItem.SelectedIndex
+        TmpEvent.Pages(CurPageNum).HasItemIndex = cmbHasItem.SelectedIndex
         TmpEvent.Pages(CurPageNum).HasItemAmount = nudCondition_HasItem.Value
     End Sub
 
@@ -817,7 +817,7 @@ Public Class frmEditor_Events
 
     Private Sub CmbSelfSwitch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSelfSwitch.SelectedIndexChanged
         If cmbSelfSwitch.SelectedIndex = -1 Then Exit Sub
-        TmpEvent.Pages(CurPageNum).SelfSwitchindex = cmbSelfSwitch.SelectedIndex
+        TmpEvent.Pages(CurPageNum).SelfSwitchIndex = cmbSelfSwitch.SelectedIndex
     End Sub
 
     Private Sub CmbSelfSwitchCompare_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSelfSwitchCompare.SelectedIndexChanged

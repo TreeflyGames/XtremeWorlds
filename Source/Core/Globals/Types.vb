@@ -636,20 +636,20 @@ Public Module Types
         'These are condition variables that decide if the event even appears to the player.
         Dim ChkVariable As Integer
 
-        Dim Variableindex As Integer
+        Dim VariableIndex As Integer
         Dim VariableCondition As Integer
         Dim VariableCompare As Integer
 
         Dim ChkSwitch As Integer
-        Dim Switchindex As Integer
+        Dim SwitchIndex As Integer
         Dim SwitchCompare As Integer
 
         Dim ChkHasItem As Integer
-        Dim HasItemindex As Integer
+        Dim HasItemIndex As Integer
         Dim HasItemAmount As Integer
 
         Dim ChkSelfSwitch As Integer
-        Dim SelfSwitchindex As Integer
+        Dim SelfSwitchIndex As Integer
         Dim SelfSwitchCompare As Integer
 
         'Handles the Event Sprite

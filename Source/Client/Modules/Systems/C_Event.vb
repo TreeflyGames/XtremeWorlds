@@ -210,7 +210,7 @@ End Sub
             GraphicSelX2 = .GraphicX2
             GraphicSelY2 = .GraphicY2
             frmEditor_Events.cmbGraphic.SelectedIndex = .GraphicType
-            frmEditor_Events.cmbHasItem.SelectedIndex = .HasItemindex
+            frmEditor_Events.cmbHasItem.SelectedIndex = .HasItemIndex
             If .HasItemAmount = 0 Then
                 frmEditor_Events.nudCondition_HasItem.Value = 1
             Else
@@ -219,8 +219,8 @@ End Sub
             frmEditor_Events.cmbMoveFreq.SelectedIndex = .MoveFreq
             frmEditor_Events.cmbMoveSpeed.SelectedIndex = .MoveSpeed
             frmEditor_Events.cmbMoveType.SelectedIndex = .MoveType
-            frmEditor_Events.cmbPlayerVar.SelectedIndex = .Variableindex
-            frmEditor_Events.cmbPlayerSwitch.SelectedIndex = .Switchindex
+            frmEditor_Events.cmbPlayerVar.SelectedIndex = .VariableIndex
+            frmEditor_Events.cmbPlayerSwitch.SelectedIndex = .SwitchIndex
             frmEditor_Events.cmbSelfSwitchCompare.SelectedIndex = .SelfSwitchCompare
             frmEditor_Events.cmbPlayerSwitchCompare.SelectedIndex = .SwitchCompare
             frmEditor_Events.cmbPlayervarCompare.SelectedIndex = .VariableCompare
@@ -2057,17 +2057,17 @@ newlist:
                     For x = 0 To Map.Events(i).PageCount
                         With Map.Events(i).Pages(x)
                             .ChkVariable = buffer.ReadInt32
-                            .Variableindex = buffer.ReadInt32
+                            .VariableIndex = buffer.ReadInt32
                             .VariableCondition = buffer.ReadInt32
                             .VariableCompare = buffer.ReadInt32
                             .ChkSwitch = buffer.ReadInt32
-                            .Switchindex = buffer.ReadInt32
+                            .SwitchIndex = buffer.ReadInt32
                             .SwitchCompare = buffer.ReadInt32
                             .ChkHasItem = buffer.ReadInt32
-                            .HasItemindex = buffer.ReadInt32
+                            .HasItemIndex = buffer.ReadInt32
                             .HasItemAmount = buffer.ReadInt32
                             .ChkSelfSwitch = buffer.ReadInt32
-                            .SelfSwitchindex = buffer.ReadInt32
+                            .SelfSwitchIndex = buffer.ReadInt32
                             .SelfSwitchCompare = buffer.ReadInt32
                             .GraphicType = buffer.ReadByte
                             .Graphic = buffer.ReadInt32

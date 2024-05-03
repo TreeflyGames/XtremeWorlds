@@ -906,20 +906,20 @@ Module S_NetworkReceive
                     For x = 0 To Map(mapNum).Events(i).PageCount
                         With Map(mapNum).Events(i).Pages(x)
                             .ChkVariable = buffer.ReadInt32
-                            .Variableindex = buffer.ReadInt32
+                            .VariableIndex = buffer.ReadInt32
                             .VariableCondition = buffer.ReadInt32
                             .VariableCompare = buffer.ReadInt32
 
                             .ChkSwitch = buffer.ReadInt32
-                            .Switchindex = buffer.ReadInt32
+                            .SwitchIndex = buffer.ReadInt32
                             .SwitchCompare = buffer.ReadInt32
 
                             .ChkHasItem = buffer.ReadInt32
-                            .HasItemindex = buffer.ReadInt32
+                            .HasItemIndex = buffer.ReadInt32
                             .HasItemAmount = buffer.ReadInt32
 
                             .ChkSelfSwitch = buffer.ReadInt32
-                            .SelfSwitchindex = buffer.ReadInt32
+                            .SelfSwitchIndex = buffer.ReadInt32
                             .SelfSwitchCompare = buffer.ReadInt32
 
                             .GraphicType = buffer.ReadByte
