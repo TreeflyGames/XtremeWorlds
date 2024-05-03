@@ -1611,9 +1611,9 @@ Public Class frmEditor_Events
 #Region "Show Chatbubble"
 
     Private Sub CmbChatBubbleTargetType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbChatBubbleTargetType.SelectedIndexChanged
-        If cmbChatBubbleTargetType.SelectedIndex = 0 Then
+        If cmbChatBubbleTargetType.SelectedIndex = TargetType.None Then
             cmbChatBubbleTarget.Visible = False
-        ElseIf cmbChatBubbleTargetType.SelectedIndex = 1 Then
+        ElseIf cmbChatBubbleTargetType.SelectedIndex = TargetType.Player Then
             cmbChatBubbleTarget.Visible = True
             cmbChatBubbleTarget.Items.Clear()
 
@@ -1625,7 +1625,7 @@ Public Class frmEditor_Events
                 End If
             Next
             cmbChatBubbleTarget.SelectedIndex = 0
-        ElseIf cmbChatBubbleTargetType.SelectedIndex = 2 Then
+        ElseIf cmbChatBubbleTargetType.SelectedIndex = TargetType.Npc Then
             cmbChatBubbleTarget.Visible = True
             cmbChatBubbleTarget.Items.Clear()
 
