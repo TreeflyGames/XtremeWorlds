@@ -80,12 +80,13 @@ Public Class frmEditor_Events
         Dim i As Integer
 
         cmbSwitch.Items.Clear()
-
+        cmbSwitch.Items.Add("None")
         For i = 1 To MAX_SWITCHES
             cmbSwitch.Items.Add(i & ". " & Switches(i))
         Next
         cmbSwitch.SelectedIndex = 0
         cmbVariable.Items.Clear()
+        cmbVariable.Items.Add("None")
 
         For i = 1 To NAX_VARIABLES
             cmbVariable.Items.Add(i & ". " & Variables(i))
@@ -191,11 +192,13 @@ Public Class frmEditor_Events
 
         ' variables
         cmbPlayerVar.Items.Clear()
+        cmbPlayerVar.Items.Add("None")
         For i = 1 To NAX_VARIABLES
             cmbPlayerVar.Items.Add(i & ". " & Variables(i))
         Next
         ' switches
         cmbPlayerSwitch.Items.Clear()
+        cmbPlayerSwitch.Items.Add("None")
         For i = 1 To MAX_SWITCHES
             cmbPlayerSwitch.Items.Add(i & ". " & Switches(i))
         Next
@@ -1166,11 +1169,13 @@ Public Class frmEditor_Events
         pnlVariableSwitches.Width = Width
         pnlVariableSwitches.Height = Height
         lstSwitches.Items.Clear()
+        lstSwitches.Items.Add("None")
 
         For i = 1 To MAX_SWITCHES
             lstSwitches.Items.Add(CStr(i) & ". " & Trim$(Switches(i)))
         Next
         lstVariables.Items.Clear()
+        lstVariables.Items.Add("None")
 
         For i = 1 To NAX_VARIABLES
             lstVariables.Items.Add(CStr(i) & ". " & Trim$(Variables(i)))
@@ -1203,12 +1208,13 @@ Public Class frmEditor_Events
                 End If
         End Select
         lstSwitches.Items.Clear()
-
+        lstSwitches.Items.Add("None")
         For i = 1 To MAX_SWITCHES
             lstSwitches.Items.Add(CStr(i) & ". " & Trim$(Switches(i)))
         Next
         lstSwitches.SelectedIndex = 0
         lstVariables.Items.Clear()
+        lstVariables.Items.Add("None")
 
         For i = 1 To NAX_VARIABLES
             lstVariables.Items.Add(CStr(i) & ". " & Trim$(Variables(i)))
@@ -1223,12 +1229,14 @@ Public Class frmEditor_Events
         RenameType = 0
         RenameIndex = 0
         lstSwitches.Items.Clear()
+        lstSwitches.Items.Add("None")
 
         For i = 1 To MAX_SWITCHES
             lstSwitches.Items.Add(CStr(i) & ". " & Trim$(Switches(i)))
         Next
         lstSwitches.SelectedIndex = 0
         lstVariables.Items.Clear()
+        lstVariables.Items.Add("None")
 
         For i = 1 To NAX_VARIABLES
             lstVariables.Items.Add(CStr(i) & ". " & Trim$(Variables(i)))
