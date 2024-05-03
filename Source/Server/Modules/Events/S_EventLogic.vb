@@ -1102,14 +1102,13 @@ Friend Module S_EventLogic
         Dim restartlist As Boolean, restartloop As Boolean, endprocess As Boolean
 
         'Now, we process the damn things for commands :P
-
         For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
                 If TempPlayer(i).GettingMap = False Then
                     If TempPlayer(i).EventMap.CurrentEvents > 0 Then
                         For x = 1 To TempPlayer(i).EventMap.CurrentEvents
                             If TempPlayer(i).EventProcessingCount > 0 Then
-                                If TempPlayer(i).EventMap.EventPages(x).Visible Then
+                                If TempPlayer(i).EventMap.EventPages(x).Visible = 1 Then
                                     If x < TempPlayer(i).EventMap.EventPages(x).EventId Then Continue For
                                     If Map(Player(i).Map).Events(TempPlayer(i).EventMap.EventPages(x).EventId).Pages(TempPlayer(i).EventMap.EventPages(x).PageId).Trigger = 2 Then 'Parallel Process baby!
 
@@ -1139,15 +1138,14 @@ Friend Module S_EventLogic
 
         'That is it for starting parallel processes :D now we just have to make the code that actually processes the events to their fullest
         For i = 1 To Socket.HighIndex()
-            If IsPlaying(i) And TempPlayer(i).GettingMap = 0 Then
+            If IsPlaying(i) Then
                 If TempPlayer(i).EventProcessingCount > 0 Then
                     If TempPlayer(i).GettingMap = False Then
                         restartloop = True
                         Do While restartloop = True
                             restartloop = False
-                            For x = 0 To TempPlayer(i).EventProcessingCount
+                            For x = 1 To TempPlayer(i).EventProcessingCount
                                 If TempPlayer(i).EventProcessing(x).Active = 1 Then
-                                    If x > TempPlayer(i).EventProcessingCount Then Exit For
                                     With TempPlayer(i).EventProcessing(x)
                                         If TempPlayer(i).EventProcessingCount = 0 Then Exit Sub
                                         removeEventProcess = False
