@@ -741,15 +741,15 @@ Public Class frmEditor_Events
 
     Private Sub ChkPlayerVar_CheckedChanged(sender As Object, e As EventArgs) Handles chkPlayerVar.CheckedChanged
         If chkPlayerVar.Checked = True Then
-            cmbPlayerVar.Enabled = False
-            nudPlayerVariable.Enabled = False
-            cmbPlayervarCompare.Enabled = False
-            TmpEvent.Pages(CurPageNum).ChkVariable = 0
-        Else
             cmbPlayerVar.Enabled = True
             nudPlayerVariable.Enabled = True
             cmbPlayervarCompare.Enabled = True
             TmpEvent.Pages(CurPageNum).ChkVariable = 1
+        Else
+            cmbPlayerVar.Enabled = False
+            nudPlayerVariable.Enabled = False
+            cmbPlayervarCompare.Enabled = False
+            TmpEvent.Pages(CurPageNum).ChkVariable = 0
         End If
     End Sub
 
