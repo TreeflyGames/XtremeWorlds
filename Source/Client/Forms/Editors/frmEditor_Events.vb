@@ -701,13 +701,17 @@ Public Class frmEditor_Events
 
     Private Sub BtnDeletePage_Click(sender As Object, e As EventArgs) Handles btnDeletePage.Click
         TmpEvent.Pages(CurPageNum) = Nothing
+
         ' move everything else down a notch
         If CurPageNum < TmpEvent.PageCount Then
             For i = CurPageNum To TmpEvent.PageCount
                 TmpEvent.Pages(i) = TmpEvent.Pages(i)
             Next
         End If
-        TmpEvent.PageCount = TmpEvent.PageCount
+        TmpEvent.PageCount = TmpEvent.PageCount - 1
+        CurPageNum = TmpEvent.PageCount
+        EventEditorLoadPage(CurPageNum)
+
         ' set the tabs
         tabPages.TabPages.Clear()
 
