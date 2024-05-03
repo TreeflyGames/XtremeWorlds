@@ -1185,21 +1185,21 @@ Public Class frmEditor_Events
         Select Case RenameType
             Case 1
                 'Variable
-                If Renameindex > 0 And Renameindex <= NAX_VARIABLES + 1 Then
-                    Variables(Renameindex) = txtRename.Text
+                If RenameIndex > 0 And RenameIndex <= NAX_VARIABLES + 1 Then
+                    Variables(RenameIndex) = txtRename.Text
                     FraRenaming.Visible = False
                     fraLabeling.Visible = True
                     RenameType = 0
-                    Renameindex = 0
+                    RenameIndex = 0
                 End If
             Case 2
                 'Switch
-                If Renameindex > 0 And Renameindex <= MAX_SWITCHES + 1 Then
-                    Switches(Renameindex) = txtRename.Text
+                If RenameIndex > 0 And RenameIndex <= MAX_SWITCHES + 1 Then
+                    Switches(RenameIndex) = txtRename.Text
                     FraRenaming.Visible = False
                     fraLabeling.Visible = True
                     RenameType = 0
-                    Renameindex = 0
+                    RenameIndex = 0
                 End If
         End Select
         lstSwitches.Items.Clear()
@@ -1221,7 +1221,7 @@ Public Class frmEditor_Events
         fraLabeling.Visible = True
 
         RenameType = 0
-        Renameindex = 0
+        RenameIndex = 0
         lstSwitches.Items.Clear()
 
         For i = 1 To MAX_SWITCHES
@@ -1251,7 +1251,7 @@ Public Class frmEditor_Events
             lblEditing.Text = "Editing Variable #" & CStr(lstVariables.SelectedIndex)
             txtRename.Text = Variables(lstVariables.SelectedIndex)
             RenameType = 1
-            Renameindex = lstVariables.SelectedIndex
+            RenameIndex = lstVariables.SelectedIndex
         End If
     End Sub
 
@@ -1266,7 +1266,7 @@ Public Class frmEditor_Events
             lblEditing.Text = "Editing Switch #" & CStr(lstSwitches.SelectedIndex)
             txtRename.Text = Switches(lstSwitches.SelectedIndex)
             RenameType = 2
-            Renameindex = lstSwitches.SelectedIndex
+            RenameIndex = lstSwitches.SelectedIndex
         End If
     End Sub
 
@@ -1277,7 +1277,7 @@ Public Class frmEditor_Events
             lblEditing.Text = "Editing Variable #" & CStr(lstVariables.SelectedIndex)
             txtRename.Text = Variables(lstVariables.SelectedIndex)
             RenameType = 1
-            Renameindex = lstVariables.SelectedIndex
+            RenameIndex = lstVariables.SelectedIndex
         End If
     End Sub
 
@@ -1287,7 +1287,7 @@ Public Class frmEditor_Events
             lblEditing.Text = "Editing Switch #" & CStr(lstSwitches.SelectedIndex)
             txtRename.Text = Switches(lstSwitches.SelectedIndex)
             RenameType = 2
-            Renameindex = lstSwitches.SelectedIndex
+            RenameIndex = lstSwitches.SelectedIndex
         End If
     End Sub
 

@@ -35,7 +35,7 @@ Friend Module C_EventSystem
     Friend EventChatFace As Integer
 
     Friend RenameType As Integer
-    Friend Renameindex As Integer
+    Friend RenameIndex As Integer
     Friend EventChatTimer As Integer
 
     Friend EventChat As Boolean
