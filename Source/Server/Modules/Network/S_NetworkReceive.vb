@@ -1094,6 +1094,9 @@ Module S_NetworkReceive
             SpawnNpc(i, GetPlayerMap(index))
         Next
 
+        SpawnMapEventsFor(index, GetPlayerMap(index))
+        SpawnGlobalEvents(GetPlayerMap(index))
+
         CacheResources(GetPlayerMap(index))
         PlayerMsg(index, "Map respawned.", ColorType.BrightGreen)
         Addlog(GetPlayerName(index) & " has respawned map #" & GetPlayerMap(index), ADMIN_LOG)
