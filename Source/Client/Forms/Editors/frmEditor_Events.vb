@@ -92,6 +92,7 @@ Public Class frmEditor_Events
         Next
         cmbVariable.SelectedIndex = 0
         cmbChangeItemIndex.Items.Clear()
+        cmbChangeItemIndex.Items.Add("None")
 
         For i = 1 To MAX_ITEMS
             cmbChangeItemIndex.Items.Add(Trim$(Item(i).Name))
