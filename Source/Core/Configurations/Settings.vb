@@ -18,7 +18,6 @@ Public Class Settings
     Public Resolution As Byte = 13
     Public Vsync As Byte = 1
     Public ShowNpcBar As Byte = 1
-    Public CameraType As Byte = 0
     Public Fullscreen As Byte = 1
     Public CameraWidth As Byte = 32
     Public CameraHeight As Byte = 24

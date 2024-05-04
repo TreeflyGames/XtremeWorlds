@@ -1307,14 +1307,8 @@ Module C_Graphics
 
         offsetX = Player(MyIndex).XOffset + PicX
         offsetY = Player(MyIndex).YOffset + PicY
-
-        If Types.Settings.CameraType = 1 Then
-            startX = GetPlayerX(MyIndex) - Types.Settings.CameraWidth
-            startY = GetPlayerY(MyIndex) - Types.Settings.CameraHeight
-        Else
-            startX = Math.Floor(GetPlayerX(MyIndex) - (Types.Settings.CameraWidth) / 2)
-            startY = Math.Floor(GetPlayerY(MyIndex) - (Types.Settings.CameraHeight) / 2)
-        End If
+        startX = GetPlayerX(MyIndex) - (Types.Settings.CameraWidth / 2)
+        startY = GetPlayerY(MyIndex) - (Types.Settings.CameraHeight / 2)
 
         If startX < 0 Then
             offsetX = 0
