@@ -4,7 +4,7 @@ Imports Core
 Imports SFML.Graphics
 Imports SFML.System
 
-Module C_Parties
+Module C_Party
 
 #Region "Database"
 
@@ -60,6 +60,7 @@ Module C_Parties
     Sub Packet_PartyVitals(ByRef data() As Byte)
         Dim playerNum As Integer, partyindex As Integer
         Dim buffer As New ByteStream(data)
+
         ' which player?
         playerNum = buffer.ReadInt32
 
