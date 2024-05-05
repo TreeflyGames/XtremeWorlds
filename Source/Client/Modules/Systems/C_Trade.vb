@@ -104,7 +104,7 @@ Module C_Trade
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CTradeInvite)
-        buffer.WriteString((name))
+        buffer.WriteString(name)
 
         Socket.SendData(buffer.Data, buffer.Head)
         buffer.Dispose()

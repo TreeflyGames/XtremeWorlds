@@ -944,11 +944,11 @@ Module S_NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub SendTradeInvite(index As Integer, Tradeindex As Integer)
+    Sub SendTradeInvite(index As Integer, TradeIndex As Integer)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.STradeInvite)
-        buffer.WriteInt32(Tradeindex)
+        buffer.WriteInt32(TradeIndex)
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()
