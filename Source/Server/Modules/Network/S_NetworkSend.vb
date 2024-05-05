@@ -973,6 +973,8 @@ Module S_NetworkSend
 
         tradeTarget = TempPlayer(index).InTrade
 
+        If tradeTarget = 0 Then Exit Sub
+
         buffer.WriteInt32(ServerPackets.STradeUpdate)
         buffer.WriteInt32(DataType)
 
