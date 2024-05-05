@@ -1707,7 +1707,6 @@ Module C_Graphics
         End If
 
         DrawBars()
-        DrawParty()
         DrawMapFade()
         RenderEntities()
         RenderTexture(CursorSprite, Window, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
@@ -1911,7 +1910,7 @@ Module C_Graphics
     End Sub
 
     Sub DrawMapName()
-        RenderText(Language.Game.MapName & Map.Name, Window, DrawMapNameX, DrawMapNameY, DrawMapNameColor, Color.Black)
+        RenderText(Language.Game.MapName & Map.Name, Window, ResolutionWidth / 2 - TextWidth(Map.Name), FontSize, DrawMapNameColor, Color.Black)
     End Sub
 
     Friend Sub DrawGrid()

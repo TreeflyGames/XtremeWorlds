@@ -1955,6 +1955,115 @@ Continue1:
         End With
     End Sub
 
+    Sub UpdatePartyInterface()
+        Dim i As Long, image(0 To 5) As Long, x As Long, pIndex As Long, Height As Long, cIn As Long
+
+        ' unload it if we're not in a party
+        If Party.Leader = 0 Then
+            HideWindow(GetWindowIndex("winParty"))
+            Exit Sub
+        End If
+    
+        ' load the window
+        ShowWindow(GetWindowIndex("winParty"))
+        ' fill the controls
+        With Windows(GetWindowIndex("winParty"))
+            ' clear controls first
+            For i = 1 To 3
+                .Controls(GetControlIndex("winParty", "lblName" & i)).text = vbNullString
+                .Controls(GetControlIndex("winParty", "picEmptyBar_HP" & i)).visible = False
+                .Controls(GetControlIndex("winParty", "picEmptyBar_SP" & i)).visible = False
+                .Controls(GetControlIndex("winParty", "picBar_HP" & i)).visible = False
+                .Controls(GetControlIndex("winParty", "picBar_SP" & i)).visible = False
+                .Controls(GetControlIndex("winParty", "picShadow" & i)).visible = False
+                .Controls(GetControlIndex("winParty", "picChar" & i)).visible = False
+                .Controls(GetControlIndex("winParty", "picChar" & i)).value = 0
+            Next
+
+            ' labels
+            cIn = 1
+            For i = 1 To Party.MemberCount
+                ' cache the index
+                pIndex = Party.Member(i)
+                If pIndex > 0 Then
+                    If pIndex <> MyIndex Then
+                        If IsPlaying(pIndex) Then
+                            ' name and level
+                            .Controls(GetControlIndex("winParty", "lblName" & cIn)).visible = True
+                            .Controls(GetControlIndex("winParty", "lblName" & cIn)).text = Trim$(GetPlayerName(pIndex))
+                            ' picture
+                            .Controls(GetControlIndex("winParty", "picShadow" & cIn)).visible = True
+                            .Controls(GetControlIndex("winParty", "picChar" & cIn)).visible = True
+                            ' store the player's index as a value for later use
+                            .Controls(GetControlIndex("winParty", "picChar" & cIn)).value = pIndex
+                            For x = 0 To 5
+                                .Controls(GetControlIndex("winParty", "picChar" & cIn)).image(x) = GetPlayerSprite(pIndex)
+                                .Controls(GetControlIndex("winParty", "picChar" & cIn)).GfxType(x) = GfxType.Character
+                            Next
+                            ' bars
+                            .Controls(GetControlIndex("winParty", "picEmptyBar_HP" & cIn)).visible = True
+                            .Controls(GetControlIndex("winParty", "picEmptyBar_SP" & cIn)).visible = True
+                            .Controls(GetControlIndex("winParty", "picBar_HP" & cIn)).visible = True
+                            .Controls(GetControlIndex("winParty", "picBar_SP" & cIn)).visible = True
+                            ' increment control usage
+                            cIn = cIn + 1
+                        End If
+                    End If
+                End If
+            Next
+            ' update the bars
+            UpdatePartyBars
+            ' set the window size
+            Select Case Party.MemberCount
+                Case 2: Height = 78
+                Case 3: Height = 118
+                Case 4: Height = 158
+            End Select
+            .Window.Height = Height
+        End With
+    End Sub
+
+    Sub UpdatePartyBars()
+        Dim i As Long, pIndex As Long, barWidth As Long, Width As Long
+
+        ' unload it if we're not in a party
+        If Party.Leader = 0 Then
+            Exit Sub
+        End If
+    
+        ' max bar width
+        barWidth = 173
+    
+        ' make sure we're in a party
+        With Windows(GetWindowIndex("winParty"))
+            For i = 1 To 3
+                ' get the pIndex from the control
+                If .Controls(GetControlIndex("winParty", "picChar" & i)).visible = True Then
+                    pIndex = .Controls(GetControlIndex("winParty", "picChar" & i)).value
+                    ' make sure they exist
+                    If pIndex > 0 Then
+                        If IsPlaying(pIndex) Then
+                            ' get their health
+                            If GetPlayerVital(pIndex, VitalType.HP) > 0 And GetPlayerMaxVital(pIndex, VitalType.HP) > 0 Then
+                                Width = ((GetPlayerVital(pIndex, VitalType.HP) / barWidth) / (GetPlayerMaxVital(pIndex, VitalType.HP) / barWidth)) * barWidth
+                                .Controls(GetControlIndex("winParty", "picBar_HP" & i)).Width = Width
+                            Else
+                                .Controls(GetControlIndex("winParty", "picBar_HP" & i)).Width = 0
+                            End If
+                            ' get their spirit
+                            If GetPlayerVital(pIndex, VitalType.MP) > 0 And GetPlayerMaxVital(pIndex, VitalType.MP) > 0 Then
+                                Width = ((GetPlayerVital(pIndex, VitalType.MP) / barWidth) / (GetPlayerMaxVital(pIndex, VitalType.MP) / barWidth)) * barWidth
+                                .Controls(GetControlIndex("winParty", "picBar_SP" & i)).Width = Width
+                            Else
+                                .Controls(GetControlIndex("winParty", "picBar_SP" & i)).Width = 0
+                            End If
+                        End If
+                    End If
+                End If
+            Next
+        End With
+    End Sub
+
     Sub ShowTrade()
         ' show the window
         ShowWindow(GetWindowIndex("winTrade"))

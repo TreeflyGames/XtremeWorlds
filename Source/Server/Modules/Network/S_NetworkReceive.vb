@@ -1414,7 +1414,7 @@ Module S_NetworkReceive
     End Sub
 
     Sub Packet_PlayerSearch(index As Integer, ByRef data() As Byte)
-        Dim TargetFound As Byte, rclick As Byte
+        Dim rclick As Byte
         Dim x As Integer, y As Integer, i As Integer
         Dim buffer As New ByteStream(data)
 
@@ -1428,53 +1428,50 @@ Module S_NetworkReceive
         ' Check for a player
         For i = 1 To Socket.HighIndex()
 
-            If IsPlaying(i) Then
-                If GetPlayerMap(index) = GetPlayerMap(i) Then
-                    If GetPlayerX(i) = x Then
-                        If GetPlayerY(i) = y Then
+            If GetPlayerMap(index) = GetPlayerMap(i) Then
+                If GetPlayerX(i) = x Then
+                    If GetPlayerY(i) = y Then
 
-                            ' Consider the player
-                            If i <> index Then
-                                If GetPlayerLevel(i) >= GetPlayerLevel(index) + 5 Then
-                                    PlayerMsg(index, "You wouldn't stand a chance.", ColorType.BrightRed)
+                        ' Consider the player
+                        If i <> index Then
+                            If GetPlayerLevel(i) >= GetPlayerLevel(index) + 5 Then
+                                PlayerMsg(index, "You wouldn't stand a chance.", ColorType.BrightRed)
+                            Else
+
+                                If GetPlayerLevel(i) > GetPlayerLevel(index) Then
+                                    PlayerMsg(index, "This one seems to have an advantage over you.", ColorType.Yellow)
                                 Else
 
-                                    If GetPlayerLevel(i) > GetPlayerLevel(index) Then
-                                        PlayerMsg(index, "This one seems to have an advantage over you.", ColorType.Yellow)
+                                    If GetPlayerLevel(i) = GetPlayerLevel(index) Then
+                                        PlayerMsg(index, "This would be an even fight.", ColorType.White)
                                     Else
 
-                                        If GetPlayerLevel(i) = GetPlayerLevel(index) Then
-                                            PlayerMsg(index, "This would be an even fight.", ColorType.White)
+                                        If GetPlayerLevel(index) >= GetPlayerLevel(i) + 5 Then
+                                            PlayerMsg(index, "You could slaughter that player.", ColorType.BrightBlue)
                                         Else
 
-                                            If GetPlayerLevel(index) >= GetPlayerLevel(i) + 5 Then
-                                                PlayerMsg(index, "You could slaughter that player.", ColorType.BrightBlue)
-                                            Else
-
-                                                If GetPlayerLevel(index) > GetPlayerLevel(i) Then
-                                                    PlayerMsg(index, "You would have an advantage over that player.", ColorType.BrightCyan)
-                                                End If
+                                            If GetPlayerLevel(index) > GetPlayerLevel(i) Then
+                                                PlayerMsg(index, "You would have an advantage over that player.", ColorType.BrightCyan)
                                             End If
                                         End If
                                     End If
                                 End If
                             End If
-
-                            ' Change target
-                            If TempPlayer(index).Target = 0 Then
-                                TempPlayer(index).Target = i
-                                TempPlayer(index).TargetType = TargetType.Player
-                            Else
-                                TempPlayer(index).Target = 0
-                                TempPlayer(index).TargetType = 0
-                            End If
-
-                            PlayerMsg(index, "Your target is now " & GetPlayerName(i) & ".", ColorType.Yellow)
-                            SendTarget(index, TempPlayer(index).Target, TempPlayer(index).TargetType)
-                            TargetFound = 1
-                            If rclick = 1 Then SendRightClick(index)
-                            Exit Sub
                         End If
+
+                        ' Change target
+                        If TempPlayer(index).Target = 0 Then
+                            TempPlayer(index).Target = i
+                            TempPlayer(index).TargetType = TargetType.Player
+                        Else
+                            TempPlayer(index).Target = 0
+                            TempPlayer(index).TargetType = 0
+                        End If
+
+                        PlayerMsg(index, "Your target is now " & GetPlayerName(i) & ".", ColorType.Yellow)
+                        SendTarget(index, TempPlayer(index).Target, TempPlayer(index).TargetType)
+                        If rclick = 1 Then SendRightClick(index)
+                        Exit Sub
                     End If
                 End If
             End If
@@ -1512,17 +1509,12 @@ Module S_NetworkReceive
                         End If
                         PlayerMsg(index, "Your target is now " & CheckGrammar(Trim$(NPC(MapNPC(GetPlayerMap(index)).Npc(i).Num).Name)) & ".", ColorType.Yellow)
                         SendTarget(index, TempPlayer(index).Target, TempPlayer(index).TargetType)
-                        TargetFound = 1
                         Exit Sub
                     End If
                 End If
             End If
 
         Next
-
-        If TargetFound = 0 Then
-            SendTarget(index, 0, 0)
-        End If
 
         buffer.Dispose()
     End Sub
