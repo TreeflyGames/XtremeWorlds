@@ -1234,7 +1234,7 @@ Module C_Interface
         ' Scenery Boxes
         CreatePictureBox(WindowCount, "picScene_1", 23, 55, 96, 96, , , , , 11, 11, 11)
         CreatePictureBox(WindowCount, "picScene_2", 133, 55, 96, 96, , , , , 11, 11, 11)
-        CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , New Action(AddressOf Chars_OnDraw))
+        CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , , New Action(AddressOf Chars_OnDraw))
 
         ' Create Buttons
         CreateButton(WindowCount, "btnSelectChar_1", 22, 155, 98, 24, "Select", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_1))
@@ -2906,7 +2906,7 @@ Module C_Interface
         CreatePictureBox(WindowCount, "picEXP_Blank", 15, 49, 209, 13, , , , , 26, 26, 26)
 
         ' Draw the bars
-        CreatePictureBox(WindowCount, "picBlank", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Bars_OnDraw))
+        CreatePictureBox(WindowCount, "picBlank", 0, 0, 0, 0, , , , , , , , , , , , , , , , , New Action(AddressOf Bars_OnDraw))
 
         ' Bar Labels
         CreatePictureBox(WindowCount, "picHealth", 16, 11, 44, 14, , , , , 21, 21, 21)

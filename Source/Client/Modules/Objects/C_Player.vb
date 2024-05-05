@@ -746,7 +746,6 @@ Module C_Player
             BarWidth_GuiHP_Max = 0
         End If
 
-        ' Update GUI
         UpdateStats_UI()
 
         buffer.Dispose()
@@ -764,7 +763,6 @@ Module C_Player
             BarWidth_GuiSP_Max = 0
         End If
 
-        ' Update GUI
         UpdateStats_UI()
 
         buffer.Dispose()

@@ -10,7 +10,7 @@ Module C_GameLogic
         Dim i As Integer
         Dim tmr1000 As Integer, tick As Integer, fogtmr As Integer, chattmr As Integer
         Dim tmpfps As Integer, tmplps As Integer, walkTimer As Integer, frameTime As Integer
-        Dim tmrweather As Integer
+        Dim tmrweather As Integer, barTmr As Integer
         Dim tmr25 As Integer, tmr500 As Integer, tmr250 As Integer, tmrconnect As Integer, TickFPS As Integer
         Dim fadetmr As Integer, rendertmr As Integer
         Dim animationtmr As Integer
@@ -214,6 +214,27 @@ Module C_GameLogic
                     End If
 
                     tmr500 = tick + 500
+                End If
+
+                ' elastic bars
+                If barTmr < tick Then
+                    SetBarWidth(BarWidth_GuiHP_Max, BarWidth_GuiHP)
+                    SetBarWidth(BarWidth_GuiSP_Max, BarWidth_GuiSP)
+                    SetBarWidth(BarWidth_GuiEXP_Max, BarWidth_GuiEXP)
+                    For i = 1 To MAX_MAP_NPCS
+                        If MapNpc(i).num > 0 Then
+                            SetBarWidth(BarWidth_NpcHP_Max(i), BarWidth_NpcHP(i))
+                        End If
+                    Next
+
+                    For i = 1 To MAX_PLAYERS
+                        If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
+                            SetBarWidth(BarWidth_PlayerHP_Max(i), BarWidth_PlayerHP(i))
+                        End If
+                    Next
+
+                    ' reset timer
+                    barTmr = tick + 10
                 End If
 
                 ' Change map animation
@@ -2087,5 +2108,27 @@ Continue1:
         Windows(GetWindowIndex("winPlayerMenu")).Controls(GetControlIndex("winPlayerMenu", "btnName")).text = Trim$(GetPlayerName(PlayerMenuIndex))
         ShowWindow(GetWindowIndex("winRightClickBG"))
         ShowWindow(GetWindowIndex("winPlayerMenu"))
+    End Sub
+
+    Public Sub SetBarWidth(ByRef MaxWidth As Long, ByRef Width As Long)
+        Dim barDifference As Long
+
+        If MaxWidth < Width Then
+            ' find out the amount to increase per loop
+            barDifference = ((Width - MaxWidth) / 100) * 10
+
+            ' if it's less than 1 then default to 1
+            If barDifference < 1 Then barDifference = 1
+            ' set the width
+            Width = Width - barDifference
+        ElseIf MaxWidth > Width Then
+            ' find out the amount to increase per loop
+            barDifference = ((MaxWidth - Width) / 100) * 10
+
+            ' if it's less than 1 then default to 1
+            If barDifference < 1 Then barDifference = 1
+            ' set the width
+            Width = Width + barDifference
+        End If
     End Sub
 End Module
