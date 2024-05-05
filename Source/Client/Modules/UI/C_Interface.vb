@@ -2363,7 +2363,7 @@ Module C_Interface
     End Sub
 
     Public Sub Inventory_MouseMove()
-        Dim itemNum As Long, x As Long, y As Long, I As Long
+        Dim itemNum As Long, x As Long, y As Long, i As Long
 
         ' exit out early if dragging
         If DragBox.Type <> PartType.None Then Exit Sub
@@ -2373,12 +2373,12 @@ Module C_Interface
         If itemNum > 0 Then
             ' exit out if we're offering that item
             If InTrade > 0 Then
-                For I = 1 To MAX_INV
-                    If TradeYourOffer(I).Num = itemNum Then
+                For i = 1 To MAX_INV
+                    If TradeYourOffer(i).Num = itemNum Then
                         ' is currency?
-                        If Item(GetPlayerInv(MyIndex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
+                        If Item(GetPlayerInv(MyIndex, TradeYourOffer(i).Num)).Type = ItemType.Currency Then
                             ' only exit out if we're offering all of it
-                            If TradeYourOffer(I).Value = GetPlayerInvValue(MyIndex, TradeYourOffer(I).Num) Then
+                            If TradeYourOffer(i).Value = GetPlayerInvValue(MyIndex, TradeYourOffer(i).Num) Then
                                 Exit Sub
                             End If
                         Else
