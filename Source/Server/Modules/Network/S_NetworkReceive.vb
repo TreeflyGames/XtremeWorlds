@@ -1460,7 +1460,7 @@ Module S_NetworkReceive
                         End If
 
                         ' Change target
-                        If TempPlayer(index).Target = 0 Then
+                        If TempPlayer(index).Target = 0 Or i <> TempPlayer(index).Target Then
                             TempPlayer(index).Target = i
                             TempPlayer(index).TargetType = TargetType.Player
                         Else
@@ -1847,11 +1847,9 @@ Module S_NetworkReceive
         buffer.Dispose()
 
         ' Check for a player
-
         tradetarget = FindPlayer(Name)
 
-        ' make sure we don't error
-        If tradetarget < 0 Or tradetarget > MAX_PLAYERS Then Exit Sub
+        If tradetarget <= 0 Or tradetarget > MAX_PLAYERS Then Exit Sub
 
         ' can't trade with yourself..
         If tradetarget = index Then
@@ -1863,8 +1861,8 @@ Module S_NetworkReceive
         TempPlayer(index).TradeRequest = tradetarget
         TempPlayer(tradetarget).TradeRequest = index
 
-        PlayerMsg(tradetarget, Trim$(GetPlayerName(index)) & " has invited you to trade.", ColorType.Yellow)
-        PlayerMsg(index, "You have invited " & Trim$(GetPlayerName(tradetarget)) & " to trade.", ColorType.BrightGreen)
+        PlayerMsg(tradetarget, GetPlayerName(index) & " has invited you to trade.", ColorType.Yellow)
+        PlayerMsg(index, "You have invited " & GetPlayerName(tradetarget) & " to trade.", ColorType.BrightGreen)
 
         SendTradeInvite(tradetarget, index)
     End Sub
