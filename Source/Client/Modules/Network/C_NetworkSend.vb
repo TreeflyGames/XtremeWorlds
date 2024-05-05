@@ -376,7 +376,7 @@ Module C_NetworkSend
         ' do basic checks
         If invNum <= 0 Or invNum > MAX_INV Then Exit Sub
         If Player(MyIndex).Inv(invNum).Num <= 0 Or Player(MyIndex).Inv(invNum).Num > MAX_ITEMS Then Exit Sub
-        If Item(GetPlayerInvItemNum(MyIndex, invNum)).Type = ItemType.Currency Or Item(GetPlayerInvItemNum(MyIndex, invNum)).Stackable = 1 Then
+        If Item(GetPlayerInv(MyIndex, invNum)).Type = ItemType.Currency Or Item(GetPlayerInv(MyIndex, invNum)).Stackable = 1 Then
             If amount <= 0 Or amount > Player(MyIndex).Inv(invNum).Value Then Exit Sub
         End If
 

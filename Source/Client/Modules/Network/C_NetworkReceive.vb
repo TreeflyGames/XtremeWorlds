@@ -337,8 +337,8 @@ Module C_NetworkReceive
         For i = 1 To MAX_INV
             invNum = buffer.ReadInt32
             amount = buffer.ReadInt32
-            SetPlayerInvItemNum(MyIndex, i, invNum)
-            SetPlayerInvItemValue(MyIndex, i, amount)
+            SetPlayerInv(MyIndex, i, invNum)
+            SetPlayerInvValue(MyIndex, i, amount)
         Next
 
         ' changes to inventory, need to clear any drop menu
@@ -354,8 +354,8 @@ Module C_NetworkReceive
 
         n = buffer.ReadInt32()
 
-        SetPlayerInvItemNum(MyIndex, n, buffer.ReadInt32)
-        SetPlayerInvItemValue(MyIndex, n, buffer.ReadInt32)
+        SetPlayerInv(MyIndex, n, buffer.ReadInt32)
+        SetPlayerInvValue(MyIndex, n, buffer.ReadInt32)
 
         ' changes, clear drop menu
         TmpCurrencyItem = 0

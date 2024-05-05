@@ -368,9 +368,9 @@ Friend Module S_Item
 
         ' Prevent hacking
         If invNum <= 0 Or invNum > MAX_INV Then Exit Sub
-        If GetPlayerInvItemNum(index, invNum) < 0 Or GetPlayerInvItemNum(index, invNum) > MAX_ITEMS Then Exit Sub
-        If Item(GetPlayerInvItemNum(index, invNum)).Type = ItemType.Currency Or Item(GetPlayerInvItemNum(index, invNum)).Stackable = 1 Then
-            If amount < 0 Or amount > GetPlayerInvItemValue(index, invNum) Then Exit Sub
+        If GetPlayerInv(index, invNum) < 0 Or GetPlayerInv(index, invNum) > MAX_ITEMS Then Exit Sub
+        If Item(GetPlayerInv(index, invNum)).Type = ItemType.Currency Or Item(GetPlayerInv(index, invNum)).Stackable = 1 Then
+            If amount < 0 Or amount > GetPlayerInvValue(index, invNum) Then Exit Sub
         End If
 
         ' everything worked out fine

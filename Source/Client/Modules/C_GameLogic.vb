@@ -1453,9 +1453,9 @@ Continue1:
         If invNum <= 0 Or invNum > MAX_INV Then Exit Sub
 
         ' show
-        If GetPlayerInvItemNum(MyIndex, invNum) Then
-            If Item(GetPlayerInvItemNum(MyIndex, invNum)).BindType > 0 And Player(MyIndex).Inv(invNum).Bound > 0 Then soulBound = True
-            ShowItemDesc(x, y, GetPlayerInvItemNum(MyIndex, invNum))
+        If GetPlayerInv(MyIndex, invNum) Then
+            If Item(GetPlayerInv(MyIndex, invNum)).BindType > 0 And Player(MyIndex).Inv(invNum).Bound > 0 Then soulBound = True
+            ShowItemDesc(x, y, GetPlayerInv(MyIndex, invNum))
         End If
     End Sub
 
@@ -1949,7 +1949,7 @@ Continue1:
                     Next
                 End If
             Else
-                shopSelectedItem = GetPlayerInvItemNum(MyIndex, shopSelectedSlot)
+                shopSelectedItem = GetPlayerInv(MyIndex, shopSelectedSlot)
                 ' labels
                 If shopSelectedItem > 0 Then
                     .Controls(GetControlIndex("winShop", "lblName")).text = Trim$(Item(shopSelectedItem).Name)

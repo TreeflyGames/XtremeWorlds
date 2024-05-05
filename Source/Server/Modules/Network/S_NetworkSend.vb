@@ -187,8 +187,8 @@ Module S_NetworkSend
         buffer.WriteInt32(ServerPackets.SPlayerInv)
 
         For i = 1 To MAX_INV
-            buffer.WriteInt32(GetPlayerInvItemNum(index, i))
-            buffer.WriteInt32(GetPlayerInvItemValue(index, i))
+            buffer.WriteInt32(GetPlayerInv(index, i))
+            buffer.WriteInt32(GetPlayerInvValue(index, i))
         Next
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
@@ -891,8 +891,8 @@ Module S_NetworkSend
 
         buffer.WriteInt32(InvSlot)
 
-        buffer.WriteInt32(GetPlayerInvItemNum(index, InvSlot))
-        buffer.WriteInt32(GetPlayerInvItemValue(index, InvSlot))
+        buffer.WriteInt32(GetPlayerInv(index, InvSlot))
+        buffer.WriteInt32(GetPlayerInvValue(index, InvSlot))
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
@@ -989,26 +989,26 @@ Module S_NetworkSend
                     ' currency?
                     If Item(TempPlayer(index).TradeOffer(i).Num).Type = ItemType.Currency Or Item(TempPlayer(index).TradeOffer(i).Num).Stackable = 1 Then
                         If TempPlayer(index).TradeOffer(i).Value = 0 Then TempPlayer(index).TradeOffer(i).Value = 1
-                        totalWorth = totalWorth + (Item(GetPlayerInvItemNum(index, TempPlayer(index).TradeOffer(i).Num)).Price * TempPlayer(index).TradeOffer(i).Value)
+                        totalWorth = totalWorth + (Item(GetPlayerInv(index, TempPlayer(index).TradeOffer(i).Num)).Price * TempPlayer(index).TradeOffer(i).Value)
                     Else
-                        totalWorth = totalWorth + Item(GetPlayerInvItemNum(index, TempPlayer(index).TradeOffer(i).Num)).Price
+                        totalWorth = totalWorth + Item(GetPlayerInv(index, TempPlayer(index).TradeOffer(i).Num)).Price
                     End If
                 End If
             Next
         ElseIf DataType = 1 Then ' other inventory
 
             For i = 1 To MAX_INV
-                buffer.WriteInt32(GetPlayerInvItemNum(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num))
+                buffer.WriteInt32(GetPlayerInv(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num))
                 buffer.WriteInt32(TempPlayer(tradeTarget).TradeOffer(i).Value)
 
                 ' add total worth
-                If GetPlayerInvItemNum(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num) > 0 Then
+                If GetPlayerInv(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num) > 0 Then
                     ' currency?
-                    If Item(GetPlayerInvItemNum(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)).Type = ItemType.Currency Or Item(GetPlayerInvItemNum(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)).Stackable = 1 Then
+                    If Item(GetPlayerInv(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)).Type = ItemType.Currency Or Item(GetPlayerInv(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)).Stackable = 1 Then
                         If TempPlayer(tradeTarget).TradeOffer(i).Value = 0 Then TempPlayer(tradeTarget).TradeOffer(i).Value = 1
-                        totalWorth = totalWorth + (Item(GetPlayerInvItemNum(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)).Price * TempPlayer(tradeTarget).TradeOffer(i).Value)
+                        totalWorth = totalWorth + (Item(GetPlayerInv(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)).Price * TempPlayer(tradeTarget).TradeOffer(i).Value)
                     Else
-                        totalWorth = totalWorth + Item(GetPlayerInvItemNum(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)).Price
+                        totalWorth = totalWorth + Item(GetPlayerInv(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)).Price
                     End If
                 End If
             Next

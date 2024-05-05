@@ -1391,8 +1391,8 @@ Module C_Interface
         CreateLabel(windowCount, "lblTheirValue", 285, 344, 100, FontSize, "12,531g", Georgia, Color.White, AlignmentType.Center)
         
         ' Item Containers
-        CreatePictureBox(windowCount, "picYour", 14, 46, 184, 260, , , , , , , , , , , , , New Action(AddressOf TradeMouseDown_Your), New Action(AddressOf TradeMouseMove_Your), , , New Action(AddressOf DrawYourTrade))
-        CreatePictureBox(windowCount, "picTheir", 214, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Their), , , New Action(AddressOf DrawTheirTrade))
+        CreatePictureBox(windowCount, "picYour", 14, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Your), New Action(AddressOf TradeMouseMove_Your), New Action(AddressOf TradeDblClick_Your), New Action(AddressOf DrawYourTrade))
+        CreatePictureBox(windowCount, "picTheir", 214, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf DrawTheirTrade))
     End Sub
 
     ' Rendering & Initialisation
@@ -1632,7 +1632,7 @@ Module C_Interface
         SendAcceptTrade()
     End Sub
 
-    Sub TradeMouseDown_Your()
+    Sub TradeDblClick_Your()
         Dim Xo As Long, Yo As Long, ItemNum As Long
         
         Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Left
@@ -1642,15 +1642,18 @@ Module C_Interface
         ' make sure it exists
         If ItemNum > 0 Then
             If TradeYourOffer(ItemNum).Num = 0 Then Exit Sub
-            If GetPlayerInvItemNum(MyIndex, TradeYourOffer(ItemNum).Num) = 0 Then Exit Sub
+            If GetPlayerInv(MyIndex, TradeYourOffer(ItemNum).Num) = 0 Then Exit Sub
         
             ' unoffer the item
             UntradeItem(ItemNum)
         End If
+
+        TradeMouseMove_Your()
     End Sub
 
     Sub TradeMouseMove_Your()
         Dim Xo As Long, Yo As Long, ItemNum As Long, X As Long, Y As Long
+
         Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Left
         Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Top
 
@@ -1658,11 +1661,18 @@ Module C_Interface
     
         ' make sure it exists
         If ItemNum > 0 Then
-            If TradeYourOffer(ItemNum).Num = 0 Then Exit Sub
-            If GetPlayerInvItemNum(MyIndex, TradeYourOffer(ItemNum).Num) = 0 Then Exit Sub
+            If TradeYourOffer(ItemNum).Num = 0 Then
+                Windows(GetWindowIndex("winDescription")).Window.Visible = False
+                Exit Sub
+            End If
+
+            If GetPlayerInv(MyIndex, TradeYourOffer(ItemNum).Num) = 0 Then
+                Windows(GetWindowIndex("winDescription")).Window.Visible = False
+                Exit Sub
+            End If
         
             X = Windows(GetWindowIndex("winTrade")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-            Y = Windows(GetWindowIndex("winTrade")).Window.Top - 4
+            Y = Windows(GetWindowIndex("winTrade")).Window.Top - 6
 
             ' offscreen?
             If X < 0 Then
@@ -1671,7 +1681,9 @@ Module C_Interface
             End If
 
             ' go go go
-            ShowItemDesc(X, Y, GetPlayerInvItemNum(MyIndex, TradeYourOffer(ItemNum).Num))
+            ShowItemDesc(X, Y, GetPlayerInv(MyIndex, TradeYourOffer(ItemNum).Num))
+        Else
+            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
@@ -1685,11 +1697,14 @@ Module C_Interface
     
         ' make sure it exists
         If ItemNum > 0 Then
-            If TradeTheirOffer(ItemNum).Num = 0 Then Exit Sub
+            If TradeTheirOffer(ItemNum).Num = 0 Then
+                Windows(GetWindowIndex("winDescription")).Window.Visible = False
+                Exit Sub
+            End If
         
             ' calc position
             X = Windows(GetWindowIndex("winTrade")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-            Y = Windows(GetWindowIndex("winTrade")).Window.Top - 4
+            Y = Windows(GetWindowIndex("winTrade")).Window.Top - 6
 
             ' offscreen?
             If X < 0 Then
@@ -1699,6 +1714,8 @@ Module C_Interface
 
             ' go go go
             ShowItemDesc(X, Y, TradeTheirOffer(ItemNum).Num)
+        Else
+            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
@@ -2279,37 +2296,10 @@ Module C_Interface
         invNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
         If invNum > 0 Then
-            ' exit out if we're offering that item
-            If InTrade > 0 Then
-                For I = 1 To MAX_INV
-                    If TradeYourOffer(I).Num = invNum Then
-                        ' is currency?
-                        If Item(GetPlayerInvItemNum(MyIndex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
-                            ' only exit out if we're offering all of it
-                            If TradeYourOffer(I).Value = GetPlayerInvItemValue(MyIndex, TradeYourOffer(I).Num) Then
-                                Exit Sub
-                            End If
-                        Else
-                            Exit Sub
-                        End If
-                    End If
-                Next
-
-                ' currency handler
-                If Item(GetPlayerInvItemNum(MyIndex, invNum)).Type = ItemType.Currency Then
-                    Dialogue("Select Amount", "Please choose how many to offer.", "", DialogueType.TradeAmount, DialogueStyle.Input, invNum)
-                    Exit Sub
-                End If
-
-                ' trade the normal item
-                Call TradeItem(invNum, 0)
-                Exit Sub
-            End If
-
             ' drag it
             With DragBox
                 .Type = PartType.Item
-                .Value = GetPlayerInvItemNum(MyIndex, invNum)
+                .Value = GetPlayerInv(MyIndex, invNum)
                 .Origin = PartOriginType.Inventory
                 .Slot = invNum
             End With
@@ -2333,14 +2323,40 @@ Module C_Interface
     End Sub
 
     Public Sub Inventory_DblClick()
-        Dim itemNum As Long, I As Long
+        Dim invNum As Long, I As Long
 
-        If InTrade > 0 Then Exit Sub
+        invNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
-        itemNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
+        If invNum > 0 Then
+            If InTrade = 0 And InShop = 0 And Not InBank Then
+                SendUseItem(invNum)
+            End If 
 
-        If itemNum > 0 Then
-            SendUseItem(itemNum)
+            ' exit out if we're offering that item
+            If InTrade > 0 Then
+                For i = 1 To MAX_INV
+                    If TradeYourOffer(I).Num = invNum Then
+                        ' is currency?
+                        If Item(GetPlayerInv(MyIndex, TradeYourOffer(i).Num)).Type = ItemType.Currency Then
+                            ' only exit out if we're offering all of it
+                            If TradeYourOffer(i).Value = GetPlayerInvValue(MyIndex, TradeYourOffer(i).Num) Then
+                                Exit Sub
+                            End If
+                        Else
+                            Exit Sub
+                        End If
+                    End If
+                Next
+
+                ' currency handler
+                If Item(GetPlayerInv(MyIndex, invNum)).Type = ItemType.Currency Then
+                    Dialogue("Select Amount", "Please choose how many to offer.", "", DialogueType.TradeAmount, DialogueStyle.Input, invNum)
+                    Exit Sub
+                End If
+
+                ' trade the normal item
+                Call TradeItem(invNum, 0)
+            End If
         End If
 
         Inventory_MouseMove()
@@ -2360,9 +2376,9 @@ Module C_Interface
                 For I = 1 To MAX_INV
                     If TradeYourOffer(I).Num = itemNum Then
                         ' is currency?
-                        If Item(GetPlayerInvItemNum(MyIndex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
+                        If Item(GetPlayerInv(MyIndex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
                             ' only exit out if we're offering all of it
-                            If TradeYourOffer(I).Value = GetPlayerInvItemValue(MyIndex, TradeYourOffer(I).Num) Then
+                            If TradeYourOffer(I).Value = GetPlayerInvValue(MyIndex, TradeYourOffer(I).Num) Then
                                 Exit Sub
                             End If
                         Else
@@ -2377,7 +2393,7 @@ Module C_Interface
 
             ' calc position
             x = Windows(GetWindowIndex("winInventory")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-            y = Windows(GetWindowIndex("winInventory")).Window.Top - 4
+            y = Windows(GetWindowIndex("winInventory")).Window.Top - 6
 
             ' offscreen?
             If x < 0 Then
@@ -2418,7 +2434,7 @@ Module C_Interface
             
             ' calc position
             X = Windows(GetWindowIndex("winBank")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-            Y = Windows(GetWindowIndex("winBank")).Window.Top - 4
+            Y = Windows(GetWindowIndex("winBank")).Window.Top - 6
 
             ' offscreen?
             If X < 0 Then
@@ -2552,7 +2568,7 @@ Module C_Interface
                     If DragBox.Origin = PartOriginType.Inventory Then
                         If DragBox.Type = PartType.Item Then
     
-                            If Item(GetPlayerInvItemNum(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
+                            If Item(GetPlayerInv(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
                                 DepositItem(DragBox.Slot, 1)
                             Else
                                 Dialogue("Deposit Item", "Enter the deposit quantity.", "", DialogueType.DepositItem, DialogueStyle.Input, DragBox.Slot)
@@ -2655,8 +2671,8 @@ Module C_Interface
             ' no windows found - dropping on bare map
             Select Case DragBox.Origin
                 Case PartOriginType.Inventory
-                    If Item(GetPlayerInvItemNum(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
-                        SendDropItem(DragBox.Slot, GetPlayerInvItemNum(MyIndex, DragBox.Slot))
+                    If Item(GetPlayerInv(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
+                        SendDropItem(DragBox.Slot, GetPlayerInv(MyIndex, DragBox.Slot))
                     Else
                         Dialogue("Drop Item", "Please choose how many to drop.", "", DialogueType.DropItem, DialogueStyle.Input, DragBox.Slot)
                     End If
@@ -2739,7 +2755,7 @@ Module C_Interface
             
             ' calc position
             x = Windows(GetWindowIndex("winSkills")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-            y = Windows(GetWindowIndex("winSkills")).Window.Top - 4
+            y = Windows(GetWindowIndex("winSkills")).Window.Top - 6
             
             ' offscreen?
             If x < 0 Then
@@ -2818,7 +2834,7 @@ Module C_Interface
 
             ' calc position
             x = Windows(GetWindowIndex("winHotbar")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-            y = Windows(GetWindowIndex("winHotbar")).Window.Top - 4
+            y = Windows(GetWindowIndex("winHotbar")).Window.Top - 6
 
             ' offscreen?
             If x < 0 Then
@@ -3152,6 +3168,8 @@ Module C_Interface
         If itemNum > 0 Then
             SendUnequip(itemNum)
         End If
+
+        Character_MouseMove()
     End Sub
 
     Public Sub Character_MouseMove()
@@ -3165,7 +3183,7 @@ Module C_Interface
         If itemNum > 0 Then
             ' calc position
             x = Windows(GetWindowIndex("winCharacter")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-            y = Windows(GetWindowIndex("winCharacter")).Window.Top - 4
+            y = Windows(GetWindowIndex("winCharacter")).Window.Top - 6
             
             ' offscreen?
             If x < 0 Then
@@ -3242,7 +3260,7 @@ Module C_Interface
 
         ' actually draw the icons
         For i = 1 To MAX_INV
-            itemNum = GetPlayerInvItemNum(MyIndex, i)
+            itemNum = GetPlayerInv(MyIndex, i)
             StreamItem(itemNum)
 
             If itemNum > 0 And itemNum <= MAX_ITEMS Then
@@ -3254,7 +3272,7 @@ Module C_Interface
                     amountModifier = 0
                     If InTrade > 0 Then
                         For x = 1 To MAX_INV
-                            tmpItem = GetPlayerInvItemNum(MyIndex, TradeYourOffer(x).Num)
+                            tmpItem = GetPlayerInv(MyIndex, TradeYourOffer(x).Num)
                             If TradeYourOffer(x).Num = i Then
                                 ' check if currency
                                 If Not Item(tmpItem).Type = ItemType.Currency Then
@@ -3262,7 +3280,7 @@ Module C_Interface
                                     skipItem = True
                                 Else
                                     ' if amount = all currency, remove from inventory
-                                    If TradeYourOffer(x).Value = GetPlayerInvItemValue(MyIndex, i) Then
+                                    If TradeYourOffer(x).Value = GetPlayerInvValue(MyIndex, i) Then
                                         skipItem = True
                                     Else
                                         ' not all, change modifier to show change in currency count
@@ -3282,10 +3300,10 @@ Module C_Interface
                             RenderTexture(ItemIcon, GfxType.Item, Window, Left, Top, 0, 0, 32, 32, 32, 32)
 
                             ' If item is a stack - draw the amount you have
-                            If GetPlayerInvItemValue(MyIndex, i) > 1 Then
+                            If GetPlayerInvValue(MyIndex, i) > 1 Then
                                 y = Top + 21
                                 x = Left + 1
-                                Amount = GetPlayerInvItemValue(MyIndex, i) - amountModifier
+                                Amount = GetPlayerInvValue(MyIndex, i) - amountModifier
 
                                 ' Draw currency but with k, m, b etc. using a convertion function
                                 If CLng(Amount) < 1000000 Then
@@ -3549,7 +3567,7 @@ Module C_Interface
         Else
             ' render the shop items
             For i = 1 To MAX_TRADES
-                ItemNum = GetPlayerInvItemNum(MyIndex, i)
+                ItemNum = GetPlayerInv(MyIndex, i)
             
                 ' draw early
                 Top = Yo + ShopTop + ((ShopOffsetY + 32) * ((i - 1) \ ShopColumns))
@@ -3567,10 +3585,10 @@ Module C_Interface
                         RenderTexture(ItemIcon, GfxType.Item, Window, Left, Top, 0, 0, 32, 32, 32, 32)
                     
                         ' If item is a stack - draw the amount you have
-                        If GetPlayerInvItemValue(MyIndex, i) > 1 Then
+                        If GetPlayerInvValue(MyIndex, i) > 1 Then
                             Y = Top + 21
                             X = Left + 1
-                            Amount = CStr(GetPlayerInvItemValue(MyIndex, i))
+                            Amount = CStr(GetPlayerInvValue(MyIndex, i))
                         
                             ' Draw currency but with k, m, b etc. using a convertion function
                             If CLng(Amount) < 1000000 Then
@@ -3673,7 +3691,7 @@ Module C_Interface
         If shopSlot > 0 Then
             ' calc position
             X = Windows(GetWindowIndex("winShop")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
-            Y = Windows(GetWindowIndex("winShop")).Window.Top - 4
+            Y = Windows(GetWindowIndex("winShop")).Window.Top - 6
 
             ' offscreen?
             If X < 0 Then
@@ -3689,7 +3707,7 @@ Module C_Interface
                 ShowShopDesc(X, Y, ItemNum)
             Else
                 ' get the itemnum
-                ItemNum = GetPlayerInvItemNum(MyIndex, shopSlot)
+                ItemNum = GetPlayerInv(MyIndex, shopSlot)
                 If ItemNum = 0 Then Exit Sub
                 ShowShopDesc(X, Y, ItemNum)
             End If
@@ -3928,7 +3946,7 @@ Module C_Interface
         ' your items
         For i = 1 To MAX_INV
             If TradeYourOffer(i).Num > 0 Then
-                ItemNum = GetPlayerInvItemNum(MyIndex, TradeYourOffer(i).Num)
+                ItemNum = GetPlayerInv(MyIndex, TradeYourOffer(i).Num)
                 If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
                     StreamItem(itemNum)
                     ItemPic = Item(ItemNum).Icon
@@ -3975,6 +3993,7 @@ Module C_Interface
             If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
                 StreamItem(ItemNum)
                 ItemPic = Item(ItemNum).Icon
+
                 If ItemPic > 0 And ItemPic <= NumItems Then
                     Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
                     Left = Xo + TradeLeft + ((TradeOffsetX + 32) * (((i - 1) Mod TradeColumns)))

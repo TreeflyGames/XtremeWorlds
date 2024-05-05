@@ -201,10 +201,10 @@
         Player(index).Map = mapNum
     End Sub
 
-    Public Function GetPlayerInvItemNum(index As Integer, invslot As Integer) As Integer
+    Public Function GetPlayerInv(index As Integer, invslot As Integer) As Integer
         If index < 1 Or index > MAX_PLAYERS Then Exit Function
 
-        GetPlayerInvItemNum = Player(index).Inv(invslot).Num
+        GetPlayerInv = Player(index).Inv(invslot).Num
     End Function
 
     Public Sub SetPlayerName(index As Integer, name As String)
@@ -232,19 +232,19 @@
         Player(index).Stat(stat) = value
     End Sub
 
-    Public Sub SetPlayerInvItemNum(index As Integer, invslot As Integer, itemnum As Integer)
+    Public Sub SetPlayerInv(index As Integer, invSlot As Integer, itemNum As Integer)
         If index < 1 Or index > MAX_PLAYERS Then Exit Sub
 
-        Player(index).Inv(invslot).Num = itemnum
+        Player(index).Inv(invSlot).Num = itemNum
     End Sub
 
-    Public Function GetPlayerInvItemValue(index As Integer, invslot As Integer) As Integer
+    Public Function GetPlayerInvValue(index As Integer, invSlot As Integer) As Integer
         If index < 1 Or index > MAX_PLAYERS Then Exit Function
 
-        GetPlayerInvItemValue = Player(index).Inv(invslot).Value
+        GetPlayerInvValue = Player(index).Inv(invSlot).Value
     End Function
 
-    Public Sub SetPlayerInvItemValue(index As Integer, invslot As Integer, itemValue As Integer)
+    Public Sub SetPlayerInvValue(index As Integer, invslot As Integer, itemValue As Integer)
         If index < 1 Or index > MAX_PLAYERS Then Exit Sub
 
         Player(index).Inv(invslot).Value = itemValue

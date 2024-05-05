@@ -93,11 +93,10 @@ Public Module Types
         Dim SkillAnim As Integer
         Dim StunDuration As Integer
 
-        'projectiles
-        Dim IsProjectile As Integer '0 is no, 1 is yes
+        Dim IsProjectile As Integer
         Dim Projectile As Integer
 
-        Dim KnockBack As Byte '0 is no, 1 is yes
+        Dim KnockBack As Byte
         Dim KnockBackTiles As Byte
     End Structure
 

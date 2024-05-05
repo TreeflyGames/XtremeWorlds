@@ -1752,10 +1752,10 @@ Module S_NetworkReceive
         If invSlot < 0 Or invSlot > MAX_INV Then Exit Sub
 
         ' has item?
-        If GetPlayerInvItemNum(index, invSlot) < 0 Or GetPlayerInvItemNum(index, invSlot) > MAX_ITEMS Then Exit Sub
+        If GetPlayerInv(index, invSlot) < 0 Or GetPlayerInv(index, invSlot) > MAX_ITEMS Then Exit Sub
 
         ' seems to be valid
-        itemNum = GetPlayerInvItemNum(index, invSlot)
+        itemNum = GetPlayerInv(index, invSlot)
 
         ' work out price
         multiplier = Shop(TempPlayer(index).InShop).BuyRate / 100
@@ -1773,7 +1773,7 @@ Module S_NetworkReceive
         GiveInvItem(index, 1, price)
 
         ' send confirmation message & reset their shop action
-        PlayerMsg(index, "Sold the " & Trim(Item(GetPlayerInvItemNum(index, invSlot)).Name) & " !", ColorType.BrightGreen)
+        PlayerMsg(index, "Sold the " & Trim(Item(GetPlayerInv(index, invSlot)).Name) & " !", ColorType.BrightGreen)
         ResetShopAction(index)
 
         buffer.Dispose()
@@ -1956,7 +1956,7 @@ Module S_NetworkReceive
             End If
             ' target
             If TempPlayer(tradeTarget).TradeOffer(i).Num > 0 Then
-                itemNum = GetPlayerInvItemNum(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)
+                itemNum = GetPlayerInv(tradeTarget, TempPlayer(tradeTarget).TradeOffer(i).Num)
                 If itemNum > 0 Then
                     ' store temp
                     tmpTradeItem2(i).Num = itemNum
@@ -2036,12 +2036,12 @@ Module S_NetworkReceive
 
         If invslot <= 0 Or invslot > MAX_INV Then Exit Sub
 
-        itemnum = GetPlayerInvItemNum(index, invslot)
+        itemnum = GetPlayerInv(index, invslot)
 
         If itemnum <= 0 Or itemnum > MAX_ITEMS Then Exit Sub
 
         ' make sure they have the amount they offer
-        If amount < 0 Or amount > GetPlayerInvItemValue(index, invslot) Then Exit Sub
+        If amount < 0 Or amount > GetPlayerInvValue(index, invslot) Then Exit Sub
 
         If Item(itemnum).Type = ItemType.Currency Or Item(itemnum).Stackable = 1 Then
 
@@ -2053,8 +2053,8 @@ Module S_NetworkReceive
                     TempPlayer(index).TradeOffer(i).Value = TempPlayer(index).TradeOffer(i).Value + amount
 
                     ' clamp to limits
-                    If TempPlayer(index).TradeOffer(i).Value > GetPlayerInvItemValue(index, invslot) Then
-                        TempPlayer(index).TradeOffer(i).Value = GetPlayerInvItemValue(index, invslot)
+                    If TempPlayer(index).TradeOffer(i).Value > GetPlayerInvValue(index, invslot) Then
+                        TempPlayer(index).TradeOffer(i).Value = GetPlayerInvValue(index, invslot)
                     End If
 
                     ' cancel any trade agreement
