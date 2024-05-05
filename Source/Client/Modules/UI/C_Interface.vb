@@ -837,9 +837,9 @@ Module C_Interface
     End Sub
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
-       Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
+       Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional alpha As Long = 255, Optional clickThrough As Boolean = True, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional gfxType As GfxType = GfxType.GUI,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing,
-       Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef onDraw As Action = Nothing, Optional gfxType As GfxType = GfxType.GUI)
+       Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef onDraw As Action = Nothing)
 
         Dim design(EntState.Count - 1) As Long
         Dim image(EntState.Count - 1) As Long
@@ -871,7 +871,7 @@ Module C_Interface
        Optional text As String = "", Optional font As String = "Georgia.ttf", Optional icon As Long = 0, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
        Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing,
-       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False, Optional locked As Boolean = True, Optional gfxType As GfxType = GfxType.GUI)
+       Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False, Optional locked As Boolean = True)
 
         Dim design(EntState.Count - 1) As Long
         Dim image(EntState.Count - 1) As Long
@@ -885,9 +885,15 @@ Module C_Interface
         image(EntState.Normal) = image_norm
         image(EntState.Hover) = image_hover
         image(EntState.MouseDown) = image_mousedown
-        type(EntState.Normal) = gfxType
-        type(EntState.Hover) = gfxType
-        type(EntState.MouseDown) = gfxType
+        If image_norm > 0 Then
+            type(EntState.Normal) = GfxType.GUI
+            type(EntState.Hover) = GfxType.GUI
+            type(EntState.MouseDown) = GfxType.GUI
+        Else
+            type(EntState.Normal) = GfxType.Design
+            type(EntState.Hover) = GfxType.Design
+            type(EntState.MouseDown) = GfxType.Design
+        End If
         callback(EntState.Normal) = callback_norm
         callback(EntState.Hover) = callback_hover
         callback(EntState.MouseDown) = callback_mousedown
@@ -1347,9 +1353,9 @@ Module C_Interface
         'CreatePictureBox WindowCount, "picShadow3", 20, 104, 32, 32, , , , , Tex_Shadow, Tex_Shadow, Tex_Shadow
     
         ' Characters
-        CreatePictureBox(WindowCount, "picChar1", 20, 20, 32, 32, , , , , 1, 1, 1, , , , , , , , , , GfxType.Character)
-        CreatePictureBox(WindowCount, "picChar2", 20, 60, 32, 32, , , , , 1, 1, 1, , , , , , , , , , GfxType.Character)
-        CreatePictureBox(WindowCount, "picChar3", 20, 100, 32, 32, , , , , 1, 1, 1, , , , , , , , , , GfxType.Character)
+        CreatePictureBox(WindowCount, "picChar1", 20, 20, 32, 32, , , , , 1, 1, 1, , , , GfxType.Character)
+        CreatePictureBox(WindowCount, "picChar2", 20, 60, 32, 32, , , , , 1, 1, 1, , , , GfxType.Character)
+        CreatePictureBox(WindowCount, "picChar3", 20, 100, 32, 32, , , , , 1, 1, 1, , , , GfxType.Character)
     End Sub
 
     Public Sub CreateWindow_Trade()
