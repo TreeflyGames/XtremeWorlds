@@ -95,13 +95,6 @@ Module C_Graphics
     Friend GradientSprite() As Sprite
     Friend GradientGfxInfo() As GraphicInfo
 
-    Friend HpBarTextire As Texture
-    Friend HpBarSprite As Sprite
-    Friend HpBarGfxInfo As GraphicInfo
-    Friend MpBarGfx As Texture
-    Friend MpBarSprite As Sprite
-    Friend MpBarGfxInfo As GraphicInfo
-
     Friend EventChatGfx As Texture
     Friend EventChatSprite As Sprite
     Friend EventChatGfxInfo As GraphicInfo
@@ -612,26 +605,6 @@ Module C_Graphics
             'Cache the width and height
             WeatherGfxInfo.Width = WeatherTexture.Size.X
             WeatherGfxInfo.Height = WeatherTexture.Size.Y
-        End If
-
-        HpBarGfxInfo = New GraphicInfo
-        If File.Exists(Paths.Gui & "HPBar" & GfxExt) Then
-            HpBarTextire = New Texture(Paths.Gui & "HPBar" & GfxExt)
-            HpBarSprite = New Sprite(HpBarTextire)
-
-            'Cache the width and height
-            HpBarGfxInfo.Width = HpBarTextire.Size.X
-            HpBarGfxInfo.Height = HpBarTextire.Size.Y
-        End If
-
-        MpBarGfxInfo = New GraphicInfo
-        If File.Exists(Paths.Gui & "MPBar" & GfxExt) Then
-            MpBarGfx = New Texture(Paths.Gui & "MPBar" & GfxExt)
-            MpBarSprite = New Sprite(MpBarGfx)
-
-            'Cache the width and height
-            MpBarGfxInfo.Width = MpBarGfx.Size.X
-            MpBarGfxInfo.Height = MpBarGfx.Size.Y
         End If
 
         EventChatGfxInfo = New GraphicInfo
@@ -2084,9 +2057,6 @@ Module C_Graphics
         If Not WeatherTexture Is Nothing Then WeatherTexture.Dispose()
         If Not EventChatGfx Is Nothing Then EventChatGfx.Dispose()
         If Not ChatBubbleGfx Is Nothing Then ChatBubbleGfx.Dispose()
-
-        If Not HpBarTextire Is Nothing Then HpBarTextire.Dispose()
-        If Not MpBarGfx Is Nothing Then MpBarGfx.Dispose()
 
         If Not LightGfx Is Nothing Then LightGfx.Dispose()
         If Not NightGfx Is Nothing Then NightGfx.Dispose()
