@@ -2935,7 +2935,7 @@ Module C_Interface
         CreateCheckbox(WindowCount, "chkPlayer", 260, 2, 49, 23, 1, "Player", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Player))
 
         ' Blank picturebox - ondraw wrapper
-        CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
+        CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
 
         ' Chat button
         CreateButton(WindowCount, "btnChat", 296, 124 + 16, 48, 20, "Say", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))
