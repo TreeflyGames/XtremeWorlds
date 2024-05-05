@@ -2034,7 +2034,7 @@ Module S_NetworkReceive
 
         buffer.Dispose()
 
-        If invslot < 0 Or invslot > MAX_INV Then Exit Sub
+        If invslot <= 0 Or invslot > MAX_INV Then Exit Sub
 
         itemnum = GetPlayerInvItemNum(index, invslot)
 
@@ -2066,7 +2066,6 @@ Module S_NetworkReceive
 
                     SendTradeUpdate(index, 0)
                     SendTradeUpdate(TempPlayer(index).InTrade, 1)
-                    ' exit early
                     Exit Sub
                 End If
             Next
@@ -2109,7 +2108,7 @@ Module S_NetworkReceive
 
         buffer.Dispose()
 
-        If tradeslot < 0 Or tradeslot > MAX_INV Then Exit Sub
+        If tradeslot <= 0 Or tradeslot > MAX_INV Then Exit Sub
         If TempPlayer(index).TradeOffer(tradeslot).Num <= 0 Then Exit Sub
 
         TempPlayer(index).TradeOffer(tradeslot).Num = 0
