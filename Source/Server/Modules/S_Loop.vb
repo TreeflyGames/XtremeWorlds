@@ -164,9 +164,6 @@ Module S_Loop
                     SendVital(i, x)
                 End If
             Next
-
-            ' send vitals to party if in one
-            If TempPlayer(i).InParty > 0 Then SendPartyVitals(TempPlayer(i).InParty, i)
         Next
 
     End Sub

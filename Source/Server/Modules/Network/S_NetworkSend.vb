@@ -410,6 +410,7 @@ Module S_NetworkSend
 
     Sub SendVital(index As Integer, Vital As VitalType)
         Dim buffer As New ByteStream(4)
+        Dim amount As Integer
 
         ' Get our packet type.
         Select Case Vital
@@ -421,8 +422,10 @@ Module S_NetworkSend
                 buffer.WriteInt32(ServerPackets.SPlayerSP)
         End Select
 
+        amount = GetPlayerVital(index, Vital)
+
         ' Set and send related data.
-        buffer.WriteInt32(GetPlayerVital(index, Vital))
+        buffer.WriteInt32(amount)
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()
