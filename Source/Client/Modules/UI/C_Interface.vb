@@ -1391,8 +1391,8 @@ Module C_Interface
         CreateLabel(windowCount, "lblTheirValue", 285, 344, 100, FontSize, "12,531g", Georgia, Color.White, AlignmentType.Center)
         
         ' Item Containers
-        CreatePictureBox(windowCount, "picYour", 14, 46, 184, 260, , , , , , , , , , , , , New Action(AddressOf TradeMouseDown_Your), New Action(AddressOf TradeMouseMove_Your), , New Action(AddressOf DrawYourTrade))
-        CreatePictureBox(windowCount, "picTheir", 214, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Their), , New Action(AddressOf DrawTheirTrade))
+        CreatePictureBox(windowCount, "picYour", 14, 46, 184, 260, , , , , , , , , , , , , New Action(AddressOf TradeMouseDown_Your), New Action(AddressOf TradeMouseMove_Your), , , New Action(AddressOf DrawYourTrade))
+        CreatePictureBox(windowCount, "picTheir", 214, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Their), , , New Action(AddressOf DrawTheirTrade))
     End Sub
 
     ' Rendering & Initialisation
