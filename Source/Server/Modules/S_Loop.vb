@@ -158,7 +158,7 @@ Module S_Loop
         Dim i As Integer
 
         For i = 1 To Socket.HighIndex()
-            For x = 0 To [Enum].VitalType.Count - 1
+            For x = 1 To VitalType.Count - 1
                 If GetPlayerVital(i, x) <> GetPlayerMaxVital(i, x) Then
                     SetPlayerVital(i, x, GetPlayerVital(i, x) + GetPlayerVitalRegen(i, x))
                     SendVital(i, x)

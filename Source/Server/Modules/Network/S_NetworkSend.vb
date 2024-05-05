@@ -426,6 +426,9 @@ Module S_NetworkSend
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
 
         buffer.Dispose()
+
+        ' check if they're in a party
+        If TempPlayer(index).inParty > 0 Then SendPartyVitals(TempPlayer(index).inParty, index)
     End Sub
 
     Sub SendWelcome(index As Integer)
