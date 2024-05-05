@@ -3930,6 +3930,7 @@ Module C_Interface
             If TradeYourOffer(i).Num > 0 Then
                 ItemNum = GetPlayerInvItemNum(MyIndex, TradeYourOffer(i).Num)
                 If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
+                    StreamItem(itemNum)
                     ItemPic = Item(ItemNum).Icon
                     If ItemPic > 0 And ItemPic <= NumItems Then
                         Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
@@ -3972,6 +3973,7 @@ Module C_Interface
         For i = 1 To MAX_INV
             ItemNum = TradeTheirOffer(i).Num
             If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
+                StreamItem(ItemNum)
                 ItemPic = Item(ItemNum).Icon
                 If ItemPic > 0 And ItemPic <= NumItems Then
                     Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
