@@ -35,12 +35,10 @@ Module S_GameLogic
         Dim i As Integer
 
         For i = 1 To Socket.HighIndex()
-            If IsPlaying(i) Then
-                ' Trim and convert both names to uppercase for case-insensitive comparison
-                If UCase$(Trim$(GetPlayerName(i))) = UCase$(Trim$(Name)) Then
-                    FindPlayer = i
-                    Exit Function
-                End If
+            ' Trim and convert both names to uppercase for case-insensitive comparison
+            If UCase$(Trim$(GetPlayerName(i))) = UCase$(Trim$(Name)) Then
+                FindPlayer = i
+                Exit Function
             End If
         Next
 
