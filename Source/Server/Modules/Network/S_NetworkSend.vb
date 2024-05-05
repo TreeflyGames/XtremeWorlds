@@ -430,8 +430,8 @@ Module S_NetworkSend
 
         buffer.Dispose()
 
-        ' check if they're in a party
-        If TempPlayer(index).inParty > 0 Then SendPartyVitals(TempPlayer(index).inParty, index)
+        ' send vitals to party if in one
+        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
     End Sub
 
     Sub SendWelcome(index As Integer)

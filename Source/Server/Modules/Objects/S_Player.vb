@@ -591,7 +591,6 @@ Module S_Player
         If Not IsPlayerDead(Victim) Then
             ' Send our player's new vitals to everyone that needs them.
             SendVital(Victim, VitalType.HP)
-            If TempPlayer(Victim).InParty > 0 Then SendPartyVitals(TempPlayer(Victim).InParty, Victim)
         Else
             ' Handle our dead player.
             HandlePlayerKillPlayer(Attacker, Victim)
@@ -1154,9 +1153,6 @@ Module S_Player
                     SetPlayerVital(index, VitalType, GetPlayerVital(index, VitalType) + amount)
                     PlayerMsg(index, "You feel rejuvenating forces coursing through your body.", ColorType.BrightGreen)
                     SendVital(index, VitalType)
-
-                    ' send vitals to party if in one
-                    If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
                 End If
                 Moved = True
             End If
@@ -1179,8 +1175,6 @@ Module S_Player
                     SetPlayerVital(index, Core.VitalType.HP, GetPlayerVital(index, Core.VitalType.HP) - amount)
                     PlayerMsg(index, "You've been injured by a trap.", ColorType.BrightRed)
                     SendVital(index, Core.VitalType.HP)
-                    ' send vitals to party if in one
-                    If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
                 End If
                 Moved = True
             End If
@@ -1627,9 +1621,6 @@ Module S_Player
                         ' send vitals
                         SendVitals(index)
 
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
-
                     Case EquipmentType.Armor
                         If GetPlayerEquipment(index, EquipmentType.Armor) > 0 Then
                             tempitem = GetPlayerEquipment(index, EquipmentType.Armor)
@@ -1655,9 +1646,6 @@ Module S_Player
                         ' send vitals
                         SendVitals(index)
 
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
-
                     Case EquipmentType.Helmet
                         If GetPlayerEquipment(index, EquipmentType.Helmet) > 0 Then
                             tempitem = GetPlayerEquipment(index, EquipmentType.Helmet)
@@ -1681,9 +1669,6 @@ Module S_Player
 
                         ' send vitals
                         SendVitals(index)
-
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
 
                     Case EquipmentType.Shield
                         If Item(GetPlayerEquipment(index, EquipmentType.Weapon)).TwoHanded > 0 Then
@@ -1714,8 +1699,6 @@ Module S_Player
                         ' send vitals
                         SendVitals(index)
 
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
                 End Select
 
             Case ItemType.Consumable
@@ -1731,9 +1714,6 @@ Module S_Player
                         End If
                         SendVital(index, VitalType.HP)
 
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
-
                     Case ConsumableType.MP
                         SendActionMsg(GetPlayerMap(index), "+" & Item(InvItemNum).Data1, ColorType.BrightBlue, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
@@ -1745,9 +1725,6 @@ Module S_Player
                         End If
                         SendVital(index, VitalType.MP)
 
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
-
                     Case ConsumableType.SP
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Item(InvItemNum).Data1)
@@ -1758,9 +1735,6 @@ Module S_Player
                         End If
                         SendVital(index, VitalType.SP)
 
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
-
                     Case ConsumableType.Exp
                         SendAnimation(GetPlayerMap(index), Item(InvItemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerExp(index, GetPlayerExp(index) + Item(InvItemNum).Data1)
@@ -1769,9 +1743,8 @@ Module S_Player
                         Else
                             TakeInvItem(index, InvItemNum, 0)
                         End If
+                        SendExp(index)
 
-                        ' send vitals to party if in one
-                        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
                 End Select
 
             Case ItemType.Projectile
@@ -1980,9 +1953,6 @@ Module S_Player
 
             ' send vitals
             SendVitals(index)
-
-            ' send vitals to party if in one
-            If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
         Else
             PlayerMsg(index, "Your inventory is full.", ColorType.BrightRed)
         End If
@@ -2089,8 +2059,6 @@ Module S_Player
     End Sub
 
     Sub OnDeath(index As Integer)
-        'Dim i As Integer
-
         ' Set HP to nothing
         SetPlayerVital(index, VitalType.HP, 0)
 
@@ -2117,11 +2085,8 @@ Module S_Player
         Next
         SendVitals(index)
 
-        ' send vitals to party if in one
-        If TempPlayer(index).InParty > 0 Then SendPartyVitals(TempPlayer(index).InParty, index)
-
         ' If the player the attacker killed was a pk then take it away
-        If GetPlayerPK(index) = True Then
+        If GetPlayerPK(index) Then
             SetPlayerPK(index, False)
             SendPlayerData(index)
         End If

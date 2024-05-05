@@ -2417,9 +2417,6 @@ Module S_Pet
             SetPlayerVital(victim, VitalType.HP, GetPlayerVital(victim, VitalType.HP) - damage)
             SendVital(victim, VitalType.HP)
 
-            ' send vitals to party if in one
-            If TempPlayer(victim).InParty > 0 Then SendPartyVitals(TempPlayer(victim).InParty, victim)
-
             ' send the sound
             'If SkillNum > 0 Then SendMapSound(Victim, GetPlayerX(Victim), GetPlayerY(Victim), SoundEntity.seSkill, SkillNum)
 

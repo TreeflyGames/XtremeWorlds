@@ -623,9 +623,6 @@ Module S_Npc
             SendVital(Victim, VitalType.HP)
             SendAnimation(mapNum, NPC(MapNPC(GetPlayerMap(Victim)).Npc(MapNpcNum).Num).Animation, 0, 0, TargetType.Player, Victim)
 
-            ' send vitals to party if in one
-            If TempPlayer(Victim).InParty > 0 Then SendPartyVitals(TempPlayer(Victim).InParty, Victim)
-
             ' send the sound
             'SendMapSound Victim, GetPlayerX(Victim), GetPlayerY(Victim), SoundEntity.seNpc, MapNpc(MapNum).Npc(MapNpcNum).Num
 
