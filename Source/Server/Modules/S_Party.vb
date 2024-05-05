@@ -276,7 +276,7 @@ Module S_Party
             ' set the invite target
             TempPlayer(target).PartyInvite = index
             ' let them know
-            PlayerMsg(index, "Invitation sent.", ColorType.Yellow)
+            PlayerMsg(index, "Party invitation sent.", ColorType.Pink)
             Exit Sub
         End If
     End Sub

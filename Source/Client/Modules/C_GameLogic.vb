@@ -556,7 +556,7 @@ Module C_GameLogic
                     If MyTarget > 0 Then
                         If MyTargetType = TargetType.Player Then
                             SendPlayerInfo(GetPlayerName(MyTarget))
-                            Exit Sub
+                            GoTo Continue1
                         End If
                     End If
 
@@ -594,7 +594,7 @@ Module C_GameLogic
                     If MyTarget > 0 Then
                         If MyTargetType = TargetType.Player Then
                             SendPartyRequest(GetPlayerName(MyTarget))
-                            Exit Sub
+                            GoTo Continue1
                         End If
                     End If
 
@@ -619,7 +619,7 @@ Module C_GameLogic
                     If MyTarget > 0 Then
                         If MyTargetType = TargetType.Player Then
                             SendTradeRequest(GetPlayerName(MyTarget))
-                            Exit Sub
+                            GoTo Continue1
                         End If
                     End If
 
