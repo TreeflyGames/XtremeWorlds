@@ -8531,11 +8531,6 @@
   <ItemGroup>
     <Folder Include="Contents\Graphics\Paperdolls\" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Sanford.Multimedia.Midi.Core">
-      <HintPath>..\Sanford.Multimedia.Midi.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>

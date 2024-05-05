@@ -69,7 +69,7 @@ Module C_Sound
             CurrentMusic = ""
         End If
 
-        If MidiPlayer.midiSequencer Is Nothing Then
+        If MidiPlayer.midiSequence Is Nothing Or MidiPlayer.midiSequencer Is Nothing Then
             Exit Sub
         Else
             MidiPlayer.Dispose()

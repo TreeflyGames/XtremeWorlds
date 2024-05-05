@@ -21,17 +21,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLua" Version="1.7.2" />
     <PackageReference Include="Npgsql" Version="8.0.2" />
+    <PackageReference Include="Sanford.Multimedia.Midi" Version="6.6.2" />
     <PackageReference Include="SFML.Audio" Version="2.5.1" />
     <PackageReference Include="SFML.Graphics" Version="2.5.1" />
     <PackageReference Include="SFML.Net" Version="2.5.1" />
     <PackageReference Include="SFML.System" Version="2.5.1" />
     <PackageReference Include="SFML.Window" Version="2.5.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Sanford.Multimedia.Midi.Core">
-      <HintPath>..\Sanford.Multimedia.Midi.Core.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
