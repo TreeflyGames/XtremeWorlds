@@ -8,7 +8,7 @@ Module C_NetworkReceive
     Sub PacketRouter()
         Socket.PacketId(ServerPackets.SAlertMsg) = AddressOf Packet_AlertMsg
         Socket.PacketId(ServerPackets.SKeyPair) = AddressOf Packet_KeyPair
-        Socket.PacketId(ServerPackets.SLoginOK) = AddressOf HandleLoginOk
+        Socket.PacketId(ServerPackets.SLoginOK) = AddressOf Packet_LoginOk
         Socket.PacketId(ServerPackets.SPlayerChars) = AddressOf Packet_PlayerChars
         Socket.PacketId(ServerPackets.SUpdateJob) = AddressOf Packet_UpdateJob
         Socket.PacketId(ServerPackets.SJobData) = AddressOf Packet_JobData
@@ -183,7 +183,7 @@ Module C_NetworkReceive
         buffer.Dispose()
     End Sub
 
-    Private Sub HandleLoginOk(ByRef data() As Byte)
+    Private Sub Packet_LoginOk(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
         ' Now we can receive game data
