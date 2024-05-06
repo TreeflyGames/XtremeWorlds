@@ -526,7 +526,7 @@ Module C_Player
         End If
 
         ' Check if player has enough MP
-        If GetPlayerVital(MyIndex, VitalType.MP) < Skill(Player(MyIndex).Skill(skillslot).Num).MpCost Then
+        If GetPlayerVital(MyIndex, VitalType.SP) < Skill(Player(MyIndex).Skill(skillslot).Num).MpCost Then
             AddText("Not enough MP to cast " & Trim$(Skill(Player(MyIndex).Skill(skillslot).Num).Name) & ".", ColorType.BrightRed)
             Exit Sub
         End If
@@ -754,11 +754,11 @@ Module C_Player
     Sub Packet_PlayerMP(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
-        SetPlayerVital(MyIndex, VitalType.MP, buffer.ReadInt32)
+        SetPlayerVital(MyIndex, VitalType.SP, buffer.ReadInt32)
 
         ' set max width
-        If GetPlayerVital(MyIndex, VitalType.MP) > 0 Then
-            BarWidth_GuiSP_Max = ((GetPlayerVital(MyIndex, VitalType.MP) / 209) / (GetPlayerMaxVital(MyIndex, VitalType.MP) / 209)) * 209
+        If GetPlayerVital(MyIndex, VitalType.SP) > 0 Then
+            BarWidth_GuiSP_Max = ((GetPlayerVital(MyIndex, VitalType.SP) / 209) / (GetPlayerMaxVital(MyIndex, VitalType.SP) / 209)) * 209
         Else
             BarWidth_GuiSP_Max = 0
         End If

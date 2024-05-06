@@ -160,7 +160,7 @@ Module C_Maps
         MapNpc(index).TargetType = 0
         ReDim MapNpc(index).Vital(VitalType.Count - 1)
         MapNpc(index).Vital(VitalType.HP) = 0
-        MapNpc(index).Vital(VitalType.MP) = 0
+        MapNpc(index).Vital(VitalType.SP) = 0
         MapNpc(index).Vital(VitalType.SP) = 0
         MapNpc(index).X = 0
         MapNpc(index).XOffset = 0
@@ -456,8 +456,9 @@ Module C_Maps
             MapNpc(i).X = buffer.ReadInt32()
             MapNpc(i).Y = buffer.ReadInt32()
             MapNpc(i).Dir = buffer.ReadInt32()
-            MapNpc(i).Vital(VitalType.HP) = buffer.ReadInt32()
-            MapNpc(i).Vital(VitalType.MP) = buffer.ReadInt32()
+            For n = 1 To VitalType.Count - 1
+                MapNpc(i).Vital(n) = buffer.ReadInt32()
+            Next
         Next
 
         If buffer.ReadInt32 = 1 Then
@@ -515,7 +516,6 @@ Module C_Maps
                 .Y = buffer.ReadInt32
                 .Dir = buffer.ReadInt32
                 .Vital(VitalType.HP) = buffer.ReadInt32
-                .Vital(VitalType.MP) = buffer.ReadInt32
             End With
 
         Next
@@ -534,7 +534,7 @@ Module C_Maps
             .Y = buffer.ReadInt32
             .Dir = buffer.ReadInt32
             .Vital(VitalType.HP) = buffer.ReadInt32
-            .Vital(VitalType.MP) = buffer.ReadInt32
+            .Vital(VitalType.SP) = buffer.ReadInt32
         End With
 
         buffer.Dispose()

@@ -1723,13 +1723,13 @@ Module S_Player
                     Case ConsumableType.MP
                         SendActionMsg(GetPlayerMap(index), "+" & Item(itemNum).Data1, ColorType.BrightBlue, ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32)
                         SendAnimation(GetPlayerMap(index), Item(itemNum).Animation, 0, 0, TargetType.Player, index)
-                        SetPlayerVital(index, VitalType.MP, GetPlayerVital(index, VitalType.MP) + Item(itemNum).Data1)
+                        SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Item(itemNum).Data1)
                         If Item(itemNum).Stackable = 1 Then
                             TakeInvItem(index, itemNum, 1)
                         Else
                             TakeInvItem(index, itemNum, 0)
                         End If
-                        SendVital(index, VitalType.MP)
+                        SendVital(index, VitalType.SP)
 
                     Case ConsumableType.SP
                         SendAnimation(GetPlayerMap(index), Item(itemNum).Animation, 0, 0, TargetType.Player, index)
@@ -2111,7 +2111,7 @@ Module S_Player
         Select Case Vital
             Case VitalType.HP
                 i = (GetPlayerStat(index, StatType.Vitality) \ 2)
-            Case VitalType.MP
+            Case VitalType.SP
                 i = (GetPlayerStat(index, StatType.Spirit) \ 2)
             Case VitalType.SP
                 i = (GetPlayerStat(index, StatType.Spirit) \ 2)
@@ -2199,7 +2199,7 @@ Module S_Player
         MPCost = Skill(skillnum).MpCost
 
         ' Check if they have enough MP
-        If GetPlayerVital(index, VitalType.MP) < MPCost Then
+        If GetPlayerVital(index, VitalType.SP) < MPCost Then
             PlayerMsg(index, "Not enough mana!", ColorType.Yellow)
             Exit Sub
         End If

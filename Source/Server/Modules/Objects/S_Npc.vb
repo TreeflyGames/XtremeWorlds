@@ -772,7 +772,7 @@ Module S_Npc
         MPCost = Skill(skillnum).MpCost
 
         ' Check if they have enough MP
-        If MapNPC(mapNum).Npc(MapNpcNum).Vital(VitalType.MP) < MPCost Then Exit Sub
+        If MapNPC(mapNum).Npc(MapNpcNum).Vital(VitalType.SP) < MPCost Then Exit Sub
 
         ' find out what kind of skill it is! self cast, target or AOE
         If Skill(skillnum).Range > 0 Then
@@ -928,7 +928,7 @@ Module S_Npc
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Y)
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Dir)
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.HP))
-            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.MP))
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.SP))
         Next
 
         SendDataToMap(mapNum, buffer.Data, buffer.Head)
@@ -1122,7 +1122,7 @@ Module S_Npc
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Y)
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Dir)
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.HP))
-            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.MP))
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.SP))
         Next
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
@@ -1144,7 +1144,7 @@ Module S_Npc
             buffer.WriteInt32(.Y)
             buffer.WriteInt32(.Dir)
             buffer.WriteInt32(.Vital(VitalType.HP))
-            buffer.WriteInt32(.Vital(VitalType.MP))
+            buffer.WriteInt32(.Vital(VitalType.SP))
         End With
 
         SendDataToMap(mapNum, buffer.Data, buffer.Head)

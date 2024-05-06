@@ -1589,9 +1589,9 @@ Friend Module S_EventLogic
                                                             Case EventType.RestoreHP
                                                                 SetPlayerVital(i, VitalType.HP, GetPlayerMaxVital(i, VitalType.HP))
                                                                 SendVital(i, VitalType.HP)
-                                                            Case EventType.RestoreMP
-                                                                SetPlayerVital(i, VitalType.MP, GetPlayerMaxVital(i, VitalType.MP))
-                                                                SendVital(i, VitalType.MP)
+                                                            Case EventType.RestoreSP
+                                                                SetPlayerVital(i, VitalType.SP, GetPlayerMaxVital(i, VitalType.SP))
+                                                                SendVital(i, VitalType.SP)
                                                             Case EventType.LevelUp
                                                                 SetPlayerExp(i, GetPlayerNextLevel(i))
                                                                 CheckPlayerLevelUp(i)

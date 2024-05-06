@@ -2870,7 +2870,7 @@ Module C_Interface
         ' set the bar labels
         With Windows(GetWindowIndex("winBars"))
             .Controls(GetControlIndex("winBars", "lblHP")).Text = GetPlayerVital(MyIndex, VitalType.HP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.HP)
-            .Controls(GetControlIndex("winBars", "lblMP")).Text = GetPlayerVital(MyIndex, VitalType.MP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.MP)
+            .Controls(GetControlIndex("winBars", "lblMP")).Text = GetPlayerVital(MyIndex, VitalType.SP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.SP)
             .Controls(GetControlIndex("winBars", "lblEXP")).Text = GetPlayerExp(MyIndex) & "/" & NextlevelExp
         End With
 
@@ -2880,7 +2880,7 @@ Module C_Interface
             .Controls(GetControlIndex("winCharacter", "lblSpirit")).Text = "Spirit"
             .Controls(GetControlIndex("winCharacter", "lblExperience")).Text = "Exp"
             .Controls(GetControlIndex("winCharacter", "lblHealth2")).Text = GetPlayerVital(MyIndex, VitalType.HP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.HP)
-            .Controls(GetControlIndex("winCharacter", "lblSpirit2")).Text = GetPlayerVital(MyIndex, VitalType.MP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.MP)
+            .Controls(GetControlIndex("winCharacter", "lblSpirit2")).Text = GetPlayerVital(MyIndex, VitalType.SP) & "/" & GetPlayerMaxVital(MyIndex, VitalType.SP)
             .Controls(GetControlIndex("winCharacter", "lblExperience2")).Text = Player(MyIndex).Exp & "/" & NextlevelExp
 
         End With

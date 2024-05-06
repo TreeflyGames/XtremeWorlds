@@ -31,8 +31,7 @@
         Select Case Vital
             Case VitalType.HP
                 GetPlayerMaxVital = 100 + (Player(index).Level + (GetPlayerStat(index, StatType.Vitality) / 2)) * 2
-            Case VitalType.MP
-                GetPlayerMaxVital = 50 + (Player(index).Level + (GetPlayerStat(index, StatType.Intelligence) / 2)) * 2
+
             Case VitalType.SP
                 GetPlayerMaxVital = 50 + (Player(index).Level + (GetPlayerStat(index, StatType.Spirit) / 2)) * 2
         End Select

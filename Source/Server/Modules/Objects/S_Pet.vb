@@ -185,7 +185,7 @@ Module S_Pet
 
         buffer.WriteInt32(GetPetNum(index))
         buffer.WriteInt32(GetPetVital(index, VitalType.HP))
-        buffer.WriteInt32(GetPetVital(index, VitalType.MP))
+        buffer.WriteInt32(GetPetVital(index, VitalType.SP))
         buffer.WriteInt32(GetPetLevel(index))
 
         For i = 1 To StatType.Count - 1
@@ -201,7 +201,7 @@ Module S_Pet
         buffer.WriteInt32(GetPetDir(index))
 
         buffer.WriteInt32(GetPetMaxVital(index, VitalType.HP))
-        buffer.WriteInt32(GetPetMaxVital(index, VitalType.MP))
+        buffer.WriteInt32(GetPetMaxVital(index, VitalType.SP))
 
         buffer.WriteInt32(Player(index).Pet.Alive)
 
@@ -258,7 +258,7 @@ Module S_Pet
 
         If vital = VitalType.HP Then
             buffer.WriteInt32(1)
-        ElseIf vital = VitalType.MP Then
+        ElseIf vital = VitalType.SP Then
             buffer.WriteInt32(2)
         End If
 
@@ -267,9 +267,9 @@ Module S_Pet
                 buffer.WriteInt32(GetPetMaxVital(index, VitalType.HP))
                 buffer.WriteInt32(GetPetVital(index, VitalType.HP))
 
-            Case VitalType.MP
-                buffer.WriteInt32(GetPetMaxVital(index, VitalType.MP))
-                buffer.WriteInt32(GetPetVital(index, VitalType.MP))
+            Case VitalType.SP
+                buffer.WriteInt32(GetPetMaxVital(index, VitalType.SP))
+                buffer.WriteInt32(GetPetVital(index, VitalType.SP))
         End Select
 
         SendDataToMap(GetPlayerMap(index), buffer.Data, buffer.Head)
@@ -845,20 +845,20 @@ Module S_Pet
                             If PetAlive(playerindex) And tickCount > givePetHpTimer + 10000 Then
                                 If GetPetVital(playerindex, VitalType.HP) > 0 Then
                                     SetPetVital(playerindex, VitalType.HP, GetPetVital(playerindex, VitalType.HP) + GetPetVitalRegen(playerindex, VitalType.HP))
-                                    SetPetVital(playerindex, VitalType.MP, GetPetVital(playerindex, VitalType.MP) + GetPetVitalRegen(playerindex, VitalType.MP))
+                                    SetPetVital(playerindex, VitalType.SP, GetPetVital(playerindex, VitalType.SP) + GetPetVitalRegen(playerindex, VitalType.SP))
 
                                     ' Check if they have more then they should and if so just set it to max
                                     If GetPetVital(playerindex, VitalType.HP) > GetPetMaxVital(playerindex, VitalType.HP) Then
                                         SetPetVital(playerindex, VitalType.HP, GetPetMaxVital(playerindex, VitalType.HP))
                                     End If
 
-                                    If GetPetVital(playerindex, VitalType.MP) > GetPetMaxVital(playerindex, VitalType.MP) Then
-                                        SetPetVital(playerindex, VitalType.MP, GetPetMaxVital(playerindex, VitalType.MP))
+                                    If GetPetVital(playerindex, VitalType.SP) > GetPetMaxVital(playerindex, VitalType.SP) Then
+                                        SetPetVital(playerindex, VitalType.SP, GetPetMaxVital(playerindex, VitalType.SP))
                                     End If
 
                                     If Not GetPetVital(playerindex, VitalType.HP) = GetPetMaxVital(playerindex, VitalType.HP) Then
                                         SendPetVital(playerindex, VitalType.HP)
-                                        SendPetVital(playerindex, VitalType.MP)
+                                        SendPetVital(playerindex, VitalType.SP)
                                     End If
                                 End If
                             End If
@@ -948,7 +948,7 @@ Module S_Pet
 
         If Pet(petNum).StatType = 0 Then
             Player(index).Pet.Health = GetPlayerMaxVital(index, VitalType.HP)
-            Player(index).Pet.Mana = GetPlayerMaxVital(index, VitalType.MP)
+            Player(index).Pet.Mana = GetPlayerMaxVital(index, VitalType.SP)
             Player(index).Pet.Level = GetPlayerLevel(index)
 
             For i = 1 To StatType.Count - 1
@@ -964,7 +964,7 @@ Module S_Pet
             Player(index).Pet.Level = Pet(petNum).Level
             Player(index).Pet.AdoptiveStats = 0
             Player(index).Pet.Health = GetPetMaxVital(index, VitalType.HP)
-            Player(index).Pet.Mana = GetPetMaxVital(index, VitalType.MP)
+            Player(index).Pet.Mana = GetPetMaxVital(index, VitalType.SP)
         End If
 
         Player(index).Pet.X = GetPlayerX(index)
@@ -1741,7 +1741,7 @@ Module S_Pet
             Case VitalType.HP
                 i = (GetPlayerStat(index, StatType.Spirit) * 0.8) + 6
 
-            Case VitalType.MP
+            Case VitalType.SP
                 i = (GetPlayerStat(index, StatType.Spirit) / 4) + 12.5
         End Select
 
@@ -2756,7 +2756,7 @@ Module S_Pet
         mpCost = Skill(skillnum).MpCost
 
         ' Check if they have enough MP
-        If GetPetVital(index, VitalType.MP) < mpCost Then
+        If GetPetVital(index, VitalType.SP) < mpCost Then
             PlayerMsg(index, "Your " & Trim$(GetPetName(index)) & " does not have enough mana!", ColorType.BrightRed)
             Exit Sub
         End If
@@ -2954,7 +2954,7 @@ Module S_Pet
                         SkillPet_Effect(Core.VitalType.HP, True, index, vital, skillnum)
                         didCast = True
                     Case SkillType.HealMp
-                        SkillPet_Effect(Core.VitalType.MP, True, index, vital, skillnum)
+                        SkillPet_Effect(Core.VitalType.SP, True, index, vital, skillnum)
                         didCast = True
                 End Select
 
@@ -3030,10 +3030,10 @@ Module S_Pet
                             vitalType = Core.VitalType.HP
                             increment = True
                         ElseIf Skill(skillnum).Type = SkillType.HealMp Then
-                            vitalType = Core.VitalType.MP
+                            vitalType = Core.VitalType.SP
                             increment = True
                         ElseIf Skill(skillnum).Type = SkillType.DamageMp Then
-                            vitalType = Core.VitalType.MP
+                            vitalType = Core.VitalType.SP
                             increment = False
                         End If
 
@@ -3109,10 +3109,10 @@ Module S_Pet
                     Case SkillType.DamageMp, SkillType.HealMp, SkillType.HealHp
 
                         If Skill(skillnum).Type = SkillType.DamageMp Then
-                            vitalType = Core.VitalType.MP
+                            vitalType = Core.VitalType.SP
                             increment = False
                         ElseIf Skill(skillnum).Type = SkillType.HealMp Then
-                            vitalType = Core.VitalType.MP
+                            vitalType = Core.VitalType.SP
                             increment = True
                         ElseIf Skill(skillnum).Type = SkillType.HealHp Then
                             vitalType = [Enum].VitalType.HP
@@ -3161,8 +3161,8 @@ Module S_Pet
         End Select
 
         If didCast Then
-            If takeMana Then SetPetVital(index, Core.VitalType.MP, GetPetVital(index, Core.VitalType.MP) - mpCost)
-            SendPetVital(index, Core.VitalType.MP)
+            If takeMana Then SetPetVital(index, Core.VitalType.SP, GetPetVital(index, Core.VitalType.SP) - mpCost)
+            SendPetVital(index, Core.VitalType.SP)
             SendPetVital(index, Core.VitalType.HP)
 
             TempPlayer(index).PetSkillCd(skillslot) = GetTimeMs() + (Skill(skillnum).CdTime * 1000)
@@ -3180,7 +3180,7 @@ Module S_Pet
             If increment Then
                 sSymbol = "+"
                 If vital = VitalType.HP Then Color = ColorType.BrightGreen
-                If vital = VitalType.MP Then Color = ColorType.BrightBlue
+                If vital = VitalType.SP Then Color = ColorType.BrightBlue
             Else
                 sSymbol = "-"
                 Color = ColorType.Blue
@@ -3202,15 +3202,15 @@ Module S_Pet
             ElseIf Not increment Then
                 If vital = VitalType.HP Then
                     SetPetVital(index, VitalType.HP, GetPetVital(index, VitalType.HP) - damage)
-                ElseIf vital = VitalType.MP Then
-                    SetPetVital(index, VitalType.MP, GetPetVital(index, VitalType.MP) - damage)
+                ElseIf vital = VitalType.SP Then
+                    SetPetVital(index, VitalType.SP, GetPetVital(index, VitalType.SP) - damage)
                 End If
             End If
         End If
 
         If GetPetVital(index, VitalType.HP) > GetPetMaxVital(index, VitalType.HP) Then SetPetVital(index, VitalType.HP, GetPetMaxVital(index, VitalType.HP))
 
-        If GetPetVital(index, VitalType.MP) > GetPetMaxVital(index, VitalType.MP) Then SetPetVital(index, VitalType.MP, GetPetMaxVital(index, VitalType.MP))
+        If GetPetVital(index, VitalType.SP) > GetPetMaxVital(index, VitalType.SP) Then SetPetVital(index, VitalType.SP, GetPetMaxVital(index, VitalType.SP))
 
     End Sub
 
@@ -3293,13 +3293,13 @@ Module S_Pet
                         If CanPetAttackPet(.Caster, index, .Skill) Then
                             PetAttackPet(.Caster, index, Skill(.Skill).Vital)
                             SendPetVital(index, VitalType.HP)
-                            SendPetVital(index, VitalType.MP)
+                            SendPetVital(index, VitalType.SP)
                         End If
                     ElseIf .AttackerType = TargetType.Player Then
                         If CanPlayerAttackPet(.Caster, index, .Skill) Then
                             PlayerAttackPet(.Caster, index, Skill(.Skill).Vital)
                             SendPetVital(index, VitalType.HP)
-                            SendPetVital(index, VitalType.MP)
+                            SendPetVital(index, VitalType.SP)
                         End If
                     End If
 
@@ -3334,10 +3334,10 @@ Module S_Pet
 
                     If GetPetVital(index, VitalType.HP) > GetPetMaxVital(index, VitalType.HP) Then SetPetVital(index, VitalType.HP, GetPetMaxVital(index, VitalType.HP))
 
-                    If GetPetVital(index, VitalType.MP) > GetPetMaxVital(index, VitalType.MP) Then SetPetVital(index, VitalType.MP, GetPetMaxVital(index, VitalType.MP))
+                    If GetPetVital(index, VitalType.SP) > GetPetMaxVital(index, VitalType.SP) Then SetPetVital(index, VitalType.SP, GetPetMaxVital(index, VitalType.SP))
 
                     SendPetVital(index, VitalType.HP)
-                    SendPetVital(index, VitalType.MP)
+                    SendPetVital(index, VitalType.SP)
                     .Timer = GetTimeMs()
 
                     ' check if DoT is still active - if player died it'll have been purged
@@ -3794,7 +3794,7 @@ Module S_Pet
             Case VitalType.HP
                 GetPetVital = Player(index).Pet.Health
 
-            Case VitalType.MP
+            Case VitalType.SP
                 GetPetVital = Player(index).Pet.Mana
         End Select
 
@@ -3808,7 +3808,7 @@ Module S_Pet
             Case VitalType.HP
                 Player(index).Pet.Health = amount
 
-            Case VitalType.MP
+            Case VitalType.SP
                 Player(index).Pet.Mana = amount
         End Select
 
@@ -3819,7 +3819,7 @@ Module S_Pet
             Case VitalType.HP
                 GetPetMaxVital = ((Player(index).Pet.Level * 4) + (Player(index).Pet.Stat(StatType.Luck) * 10)) + 150
 
-            Case VitalType.MP
+            Case VitalType.SP
                 GetPetMaxVital = ((Player(index).Pet.Level * 4) + (Player(index).Pet.Stat(StatType.Spirit) / 2)) * 5 + 50
         End Select
 

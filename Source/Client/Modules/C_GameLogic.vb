@@ -230,6 +230,7 @@ Module C_GameLogic
                     For i = 1 To MAX_PLAYERS
                         If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
                             SetBarWidth(BarWidth_PlayerHP_Max(i), BarWidth_PlayerHP(i))
+                            SetBarWidth(BarWidth_PlayerSP_Max(i), BarWidth_PlayerSP(i))
                         End If
                     Next
 
@@ -2072,8 +2073,8 @@ Continue1:
                                 .Controls(GetControlIndex("winParty", "picBar_HP" & i)).Width = 0
                             End If
                             ' get their spirit
-                            If GetPlayerVital(pIndex, VitalType.MP) > 0 And GetPlayerMaxVital(pIndex, VitalType.MP) > 0 Then
-                                Width = ((GetPlayerVital(pIndex, VitalType.MP) / barWidth) / (GetPlayerMaxVital(pIndex, VitalType.MP) / barWidth)) * barWidth
+                            If GetPlayerVital(pIndex, VitalType.SP) > 0 And GetPlayerMaxVital(pIndex, VitalType.SP) > 0 Then
+                                Width = ((GetPlayerVital(pIndex, VitalType.SP) / barWidth) / (GetPlayerMaxVital(pIndex, VitalType.SP) / barWidth)) * barWidth
                                 .Controls(GetControlIndex("winParty", "picBar_SP" & i)).Width = Width
                             Else
                                 .Controls(GetControlIndex("winParty", "picBar_SP" & i)).Width = 0

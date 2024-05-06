@@ -379,7 +379,7 @@ Public Class frmEditor_Events
                 fraDialogue.Visible = False
             'Restore MP
             Case "Restore MP"
-                AddCommand(EventType.RestoreMP)
+                AddCommand(EventType.RestoreSP)
                 fraCommands.Visible = False
                 fraDialogue.Visible = False
             'Level Up

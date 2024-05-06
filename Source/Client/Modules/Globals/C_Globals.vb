@@ -51,8 +51,10 @@ Module C_Globals
     ' elastic bars
     Public BarWidth_NpcHP(MAX_MAP_NPCS) As Long
     Public BarWidth_PlayerHP(MAX_PLAYERS) As Long
+    Public BarWidth_PlayerSP(MAX_PLAYERS) As Long
     Public BarWidth_NpcHP_Max(MAX_MAP_NPCS) As Long
     Public BarWidth_PlayerHP_Max(MAX_PLAYERS) As Long
+    Public BarWidth_PlayerSP_Max(MAX_PLAYERS) As Long
     Public BarWidth_GuiHP As Long
     Public BarWidth_GuiSP As Long
     Public BarWidth_GuiEXP As Long

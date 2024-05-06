@@ -1750,7 +1750,6 @@ Module C_Graphics
     Public Sub DrawBars()
         Dim Left As Long, Top As Long, Width As Long, Height As Long
         Dim tmpX As Long, tmpY As Long, barWidth As Long, i As Long, NpcNum As Long
-        Dim partyIndex As Long
 
         ' dynamic bar calculations
         Width = BarGfxInfo.Width
@@ -1784,31 +1783,8 @@ Module C_Graphics
             End If
         Next
 
-        ' check for casting time bar
         For i = 1 To MAX_PLAYERS
-            If GetPlayerMap(i) = GetPlayerMap(i) Then
-                If SkillBuffer > 0 Then
-                    If Skill(Player(i).Skill(SkillBuffer).Num).CastTime > 0 Then
-                        ' lock to player
-                        tmpX = GetPlayerX(i) * PicX + Player(i).xOffset + 16 - (Width / 2)
-                        tmpY = GetPlayerY(i) * PicY + Player(i).yOffset + 35 + Height + 1
-            
-                        ' calculate the width to fill
-                        If Width > 0 Then barWidth = (GetTickCount - SkillBufferTimer) / ((Skill(Player(i).Skill(SkillBuffer).Num).CastTime * 1000)) * Width
-            
-                        ' draw bar background
-                        Top = Height * 3 ' cooldown bar background
-                        Left = 0
-                        RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
-             
-                        ' draw the bar proper
-                        Top = Height * 2 ' cooldown bar
-                        Left = 0
-                        RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, barWidth, Height, barWidth, Height)
-                    End If
-                End If
-    
-                ' draw own health bar
+            If GetPlayerMap(i) = GetPlayerMap(i) Then               
                 If GetPlayerVital(i, VitalType.HP) > 0 And GetPlayerVital(i, VitalType.HP) < GetPlayerMaxVital(i, VitalType.HP) Then
                     ' lock to Player
                     tmpX = GetPlayerX(i) * PicX + Player(i).xOffset + 16 - (Width / 2)
@@ -1826,6 +1802,46 @@ Module C_Graphics
                     Top = 0 ' HP bar
                     Left = 0
                     RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_PlayerHP(i), Height, BarWidth_PlayerHP(i), Height)
+                End If
+
+                If GetPlayerVital(i, VitalType.SP) > 0 And GetPlayerVital(i, VitalType.SP) < GetPlayerMaxVital(i, VitalType.SP) Then
+                    ' lock to Player
+                    tmpX = GetPlayerX(i) * PicX + Player(i).xOffset + 16 - (Width / 2)
+                    tmpY = GetPlayerY(i) * PicY + Player(i).yOffset + 35 + Height 
+       
+                    ' calculate the width to fill
+                    If Width > 0 Then BarWidth_PlayerSP_Max(i) = ((GetPlayerVital(i, VitalType.SP) / Width) / (GetPlayerMaxVital(i, VitalType.SP) / Width)) * Width
+       
+                    ' draw bar background
+                    Top = Height * 3 ' SP bar background
+                    Left = 0
+                    RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+       
+                    ' draw the bar proper
+                    Top = Height * 1 ' SP bar
+                    Left = 0
+                    RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_PlayerSP(i), Height, BarWidth_PlayerSP(i), Height)
+                End If
+
+                If SkillBuffer > 0 Then
+                    If Skill(Player(i).Skill(SkillBuffer).Num).CastTime > 0 Then
+                        ' lock to player
+                        tmpX = GetPlayerX(i) * PicX + Player(i).xOffset + 16 - (Width / 2)
+                        tmpY = GetPlayerY(i) * PicY + Player(i).yOffset + 35 + Height
+            
+                        ' calculate the width to fill
+                        If Width > 0 Then barWidth = (GetTickCount - SkillBufferTimer) / ((Skill(Player(i).Skill(SkillBuffer).Num).CastTime * 1000)) * Width
+            
+                        ' draw bar background
+                        Top = Height * 3 ' cooldown bar background
+                        Left = 0
+                        RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+             
+                        ' draw the bar proper
+                        Top = Height * 2 ' cooldown bar
+                        Left = 0
+                        RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, barWidth, Height, barWidth, Height)
+                    End If
                 End If
             End If
         Next

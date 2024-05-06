@@ -599,7 +599,7 @@ newlist:
                                 End If
                             Case EventType.RestoreHP
                                 frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Restore Player HP")
-                            Case EventType.RestoreMP
+                            Case EventType.RestoreSP
                                 frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Restore Player MP")
                             Case EventType.LevelUp
                                 frmEditor_Events.lstCommands.Items.Add(indent & "@>" & "Level Up Player")
@@ -961,7 +961,7 @@ newlist:
             Case EventType.RestoreHP
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Index = Index
 
-            Case EventType.RestoreMP
+            Case EventType.RestoreSP
                 TmpEvent.Pages(CurPageNum).CommandList(curlist).Commands(curslot).Index = Index
 
             Case EventType.LevelUp

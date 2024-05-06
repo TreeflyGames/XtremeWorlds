@@ -416,7 +416,7 @@ Module S_NetworkSend
         Select Case Vital
             Case VitalType.HP
                 buffer.WriteInt32(ServerPackets.SPlayerHP)
-            Case VitalType.MP
+            Case VitalType.SP
                 buffer.WriteInt32(ServerPackets.SPlayerMP)
             Case VitalType.SP
                 buffer.WriteInt32(ServerPackets.SPlayerSP)
@@ -671,7 +671,7 @@ Module S_NetworkSend
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Y)
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Dir)
             buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.HP))
-            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.MP))
+            buffer.WriteInt32(MapNPC(mapNum).Npc(i).Vital(VitalType.SP))
         Next
 
         If MapResource(GetPlayerMap(index)).ResourceCount > 0 Then

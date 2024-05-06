@@ -201,7 +201,6 @@
     Public Enum VitalType As Byte
         None = 0
         HP
-        MP
         SP
 
         Count
@@ -342,7 +341,7 @@
         ChangeItems
 
         RestoreHP
-        RestoreMP
+        RestoreSP
         LevelUp
         ChangeLevel
         ChangeSkills
