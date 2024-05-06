@@ -107,10 +107,6 @@ Module C_Graphics
     Friend ChatBubbleSprite As Sprite
     Friend ChatBubbleGfxInfo As GraphicInfo
 
-    Friend PetStatTexture As Texture
-    Friend PetStatSprite As Sprite
-    Friend PetStatGfxInfo As GraphicInfo
-
     Friend MapTintGfx As Texture
     Friend MapTintSprite As Sprite
     Friend MapFadeSprite As Sprite
@@ -129,6 +125,10 @@ Module C_Graphics
     Friend ShadowGfx As Texture
     Friend ShadowSprite As Sprite
     Friend ShadowGfxInfo As GraphicInfo
+
+    Friend BarGfx As Texture
+    Friend BarSprite As Sprite
+    Friend BarGfxInfo As GraphicInfo
 
     ' Number of graphic files
     Friend NumTileSets As Integer
@@ -576,55 +576,40 @@ Module C_Graphics
 
         BloodGfxInfo = New GraphicInfo
         If File.Exists(Paths.Graphics & "Misc\Blood" & GfxExt) Then
-            'Load texture first, dont care about memory streams (just use the filename)
             BloodTexture = New Texture(Paths.Graphics & "Misc\Blood" & GfxExt)
             BloodSprite = New Sprite(BloodTexture)
-
-            'Cache the width and height
             BloodGfxInfo.Width = BloodTexture.Size.X
             BloodGfxInfo.Height = BloodTexture.Size.Y
         End If
 
         DirectionGfxInfo = New GraphicInfo
         If File.Exists(Paths.Graphics & "Misc\Direction" & GfxExt) Then
-            'Load texture first, dont care about memory streams (just use the filename)
             DirectionTexture = New Texture(Paths.Graphics & "Misc\Direction" & GfxExt)
             DirectionSprite = New Sprite(DirectionTexture)
-
-            'Cache the width and height
             DirectionGfxInfo.Width = DirectionTexture.Size.X
             DirectionGfxInfo.Height = DirectionTexture.Size.Y
         End If
 
         WeatherGfxInfo = New GraphicInfo
         If File.Exists(Paths.Graphics & "Misc\Weather" & GfxExt) Then
-            'Load texture first, dont care about memory streams (just use the filename)
             WeatherTexture = New Texture(Paths.Graphics & "Misc\Weather" & GfxExt)
             WeatherSprite = New Sprite(WeatherTexture)
-
-            'Cache the width and height
             WeatherGfxInfo.Width = WeatherTexture.Size.X
             WeatherGfxInfo.Height = WeatherTexture.Size.Y
         End If
 
         EventChatGfxInfo = New GraphicInfo
         If File.Exists(Paths.Gui & "Main\EventChat" & GfxExt) Then
-            'Load texture first, dont care about memory streams (just use the filename)
             EventChatGfx = New Texture(Paths.Gui & "Main\EventChat" & GfxExt)
             EventChatSprite = New Sprite(EventChatGfx)
-
-            'Cache the width and height
             EventChatGfxInfo.Width = EventChatGfx.Size.X
             EventChatGfxInfo.Height = EventChatGfx.Size.Y
         End If
 
         TargetGfxInfo = New GraphicInfo
         If File.Exists(Paths.Graphics & "Misc\Target" & GfxExt) Then
-            'Load texture first, dont care about memory streams (just use the filename)
             TargetGfx = New Texture(Paths.Graphics & "Misc\Target" & GfxExt)
             TargetSprite = New Sprite(TargetGfx)
-
-            'Cache the width and height
             TargetGfxInfo.Width = TargetGfx.Size.X
             TargetGfxInfo.Height = TargetGfx.Size.Y
         End If
@@ -633,28 +618,14 @@ Module C_Graphics
         If File.Exists(Paths.Graphics & "Misc\ChatBubble" & GfxExt) Then
             ChatBubbleGfx = New Texture(Paths.Graphics & "Misc\ChatBubble" & GfxExt)
             ChatBubbleSprite = New Sprite(ChatBubbleGfx)
-            'Cache the width and height
             ChatBubbleGfxInfo.Width = ChatBubbleGfx.Size.X
             ChatBubbleGfxInfo.Height = ChatBubbleGfx.Size.Y
-        End If
-
-        PetStatGfxInfo = New GraphicInfo
-        If File.Exists(Paths.Gui & "Main\Pet" & GfxExt) Then
-            'Load texture first, dont care about memory streams (just use the filename)
-            PetStatTexture = New Texture(Paths.Gui & "Main\Pet" & GfxExt)
-            PetStatSprite = New Sprite(PetStatTexture)
-
-            'Cache the width and height
-            PetStatGfxInfo.Width = PetStatTexture.Size.X
-            PetStatGfxInfo.Height = PetStatTexture.Size.Y
         End If
 
         LightGfxInfo = New GraphicInfo
         If File.Exists(Paths.Graphics & "Misc\Light" & GfxExt) Then
             LightGfx = New Texture(Paths.Graphics & "Misc\Light" & GfxExt)
             LightSprite = New Sprite(LightGfx)
-
-            'Cache the width and height
             LightGfxInfo.Width = LightGfx.Size.X
             LightGfxInfo.Height = LightGfx.Size.Y
         End If
@@ -663,8 +634,6 @@ Module C_Graphics
         If File.Exists(Paths.Graphics & "Misc\Cursor" & GfxExt) Then
             CursorGfx = New Texture(Paths.Graphics & "Misc\Cursor" & GfxExt)
             CursorSprite = New Sprite(CursorGfx)
-
-            'Cache the width and height
             CursorGfxInfo.Width = CursorGfx.Size.X
             CursorGfxInfo.Height = CursorGfx.Size.Y
         End If
@@ -673,10 +642,16 @@ Module C_Graphics
         If File.Exists(Paths.Graphics & "Misc\Shadow" & GfxExt) Then
             ShadowGfx = New Texture(Paths.Graphics & "Misc\Shadow" & GfxExt)
             ShadowSprite = New Sprite(ShadowGfx)
-
-            'Cache the width and height
             ShadowGfxInfo.Width = ShadowGfx.Size.X
             ShadowGfxInfo.Height = ShadowGfx.Size.Y
+        End If
+
+        BarGfxInfo = New GraphicInfo
+        If File.Exists(Paths.Graphics & "Misc\Bars" & GfxExt) Then
+            BarGfx = New Texture(Paths.Graphics & "Misc\Bars" & GfxExt)
+            BarSprite = New Sprite(BarGfx)
+            BarGfxInfo.Width = BarGfx.Size.X
+            BarGfxInfo.Height = BarGfx.Size.Y
         End If
     End Sub
 
@@ -1772,114 +1747,88 @@ Module C_Graphics
                       Window.Size.X, Window.Size.Y, Window.Size.X, Window.Size.Y)
     End Sub
 
-    Friend Sub DrawBars()
-        Dim tmpY As Integer
-        Dim tmpX As Integer
-        Dim barWidth As Integer
-        Dim rec(1) As Rectangle
+    Public Sub DrawBars()
+        Dim Left As Long, Top As Long, Width As Long, Height As Long
+        Dim tmpX As Long, tmpY As Long, barWidth As Long, i As Long, NpcNum As Long
+        Dim partyIndex As Long
 
-        If GettingMap Then Exit Sub
+        ' dynamic bar calculations
+        Width = BarGfxInfo.Width
+        Height = BarGfxInfo.Height / 4
+    
+        ' render npc health bars
+        For i = 1 To MAX_MAP_NPCS
+            NpcNum = MapNpc(i).Num
+
+            ' exists?
+            If NpcNum > 0 Then
+                ' alive?
+                If MapNpc(i).Vital(VitalType.HP) > 0 And MapNpc(i).Vital(VitalType.HP) < Npc(NpcNum).HP Then
+                    ' lock to npc
+                    tmpX = MapNpc(i).X * PicX + MapNpc(i).xOffset + 16 - (Width / 2)
+                    tmpY = MapNpc(i).Y * PicY + MapNpc(i).yOffset + 35
+                
+                    ' calculate the width to fill
+                    If Width > 0 Then BarWidth_NpcHP_Max(i) = ((MapNpc(i).Vital(VitalType.HP) / Width) / (Npc(NpcNum).HP / Width)) * Width
+                
+                    ' draw bar background
+                    Top = Height * 3 ' HP bar background
+                    Left = 0
+                    RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+                
+                    ' draw the bar proper
+                    Top = 0 ' HP bar
+                    Left = 0
+                    RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_NpcHP(i), Height, BarWidth_NpcHP(i), Height)
+                End If
+            End If
+        Next
 
         ' check for casting time bar
-        If SkillBuffer > 0 Then
-            ' lock to player
-            tmpX = GetPlayerX(MyIndex) * PicX + Player(MyIndex).XOffset
-            tmpY = GetPlayerY(MyIndex) * PicY + Player(MyIndex).YOffset + 35
-            If Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime = 0 Then _
-                Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime = 1
-            ' calculate the width to fill
-            barWidth =
-                ((GetTickCount() - SkillBufferTimer) /
-                 ((GetTickCount() - SkillBufferTimer) + (Skill(Player(MyIndex).Skill(SkillBuffer).Num).CastTime * 1000)) *
-                 64)
-            ' draw bars
-            rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
-            Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
-                    .Position = New Vector2f(ConvertMapX(tmpX), ConvertMapY(tmpY)),
-                    .FillColor = Color.Cyan
-                    }
-            Window.Draw(rectShape)
-        End If
-
-        If Types.Settings.ShowNpcBar = 1 Then
-            ' check for hp bar
-            For i = 1 To MAX_MAP_NPCS
-                If Map.Npc Is Nothing Then Exit Sub
-                If Map.Npc(i) > 0 And Map.Npc(i) <= MAX_NPCS And MapNpc(i).Num > 0 And MapNpc(i).Num <= MAX_NPCS Then
-                    If _
-                        NPC(MapNpc(i).Num).Behaviour = NpcBehavior.AttackOnSight Or
-                        NPC(MapNpc(i).Num).Behaviour = NpcBehavior.AttackWhenAttacked Or
-                        NPC(MapNpc(i).Num).Behaviour = NpcBehavior.Guard Then
-                        ' lock to npc
-                        tmpX = MapNpc(i).X * PicX + MapNpc(i).XOffset
-                        tmpY = MapNpc(i).Y * PicY + MapNpc(i).YOffset + 35
-                        If MapNpc(i).Vital(VitalType.HP) > 0 Then
-                            ' calculate the width to fill
-                            barWidth = ((MapNpc(i).Vital(VitalType.HP) / (NPC(MapNpc(i).Num).HP) * 32))
-                            ' draw bars
-                            rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
-                            Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
-                                    .Position = New Vector2f(ConvertMapX(tmpX), ConvertMapY(tmpY - 75)),
-                                    .FillColor = Color.Red
-                                    }
-                            Window.Draw(rectShape)
-
-                            If MapNpc(i).Vital(VitalType.MP) > 0 Then
-                                ' calculate the width to fill
-                                barWidth =
-                                    ((MapNpc(i).Vital(VitalType.MP) / (NPC(MapNpc(i).Num).Stat(StatType.Intelligence) * 2) *
-                                      32))
-                                ' draw bars
-                                rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
-                                Dim rectShape2 As New RectangleShape(New Vector2f(barWidth, 4)) With {
-                                        .Position = New Vector2f(ConvertMapX(tmpX), ConvertMapY(tmpY - 80)),
-                                        .FillColor = Color.Blue
-                                        }
-                                Window.Draw(rectShape2)
-                            End If
-                        End If
+        For i = 1 To MAX_PLAYERS
+            If GetPlayerMap(i) = GetPlayerMap(i) Then
+                If SkillBuffer > 0 Then
+                    If Skill(Player(i).Skill(SkillBuffer).Num).CastTime > 0 Then
+                        ' lock to player
+                        tmpX = GetPlayerX(i) * PicX + Player(i).xOffset + 16 - (Width / 2)
+                        tmpY = GetPlayerY(i) * PicY + Player(i).yOffset + 35 + Height + 1
+            
+                        ' calculate the width to fill
+                        If Width > 0 Then barWidth = (GetTickCount - SkillBufferTimer) / ((Skill(Player(i).Skill(SkillBuffer).Num).CastTime * 1000)) * Width
+            
+                        ' draw bar background
+                        Top = Height * 3 ' cooldown bar background
+                        Left = 0
+                        RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+             
+                        ' draw the bar proper
+                        Top = Height * 2 ' cooldown bar
+                        Left = 0
+                        RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, barWidth, Height, barWidth, Height)
                     End If
                 End If
-            Next
-        End If
-
-        If PetAlive(MyIndex) Then
-            ' draw own health bar
-            If Player(MyIndex).Pet.Health > 0 And Player(MyIndex).Pet.Health <= Player(MyIndex).Pet.MaxHp Then
-                ' lock to Player
-                tmpX = Player(MyIndex).Pet.X * PicX + Player(MyIndex).Pet.XOffset
-                tmpY = Player(MyIndex).Pet.Y * PicX + Player(MyIndex).Pet.YOffset + 35
-                ' calculate the width to fill
-                barWidth = ((Player(MyIndex).Pet.Health) / (Player(MyIndex).Pet.MaxHp)) * 32
-                ' draw bars
-                rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
-                Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
-                        .Position = New Vector2f(ConvertMapX(tmpX), ConvertMapY(tmpY - 75)),
-                        .FillColor = Color.Red
-                        }
-                Window.Draw(rectShape)
+    
+                ' draw own health bar
+                If GetPlayerVital(i, VitalType.HP) > 0 And GetPlayerVital(i, VitalType.HP) < GetPlayerMaxVital(i, VitalType.HP) Then
+                    ' lock to Player
+                    tmpX = GetPlayerX(i) * PicX + Player(i).xOffset + 16 - (Width / 2)
+                    tmpY = GetPlayerY(i) * PicY + Player(i).yOffset + 35
+       
+                    ' calculate the width to fill
+                    If Width > 0 Then BarWidth_PlayerHP_Max(i) = ((GetPlayerVital(i, VitalType.HP) / Width) / (GetPlayerMaxVital(i, VitalType.HP) / Width)) * Width
+       
+                    ' draw bar background
+                    Top = Height * 3 ' HP bar background
+                    Left = 0
+                    RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+       
+                    ' draw the bar proper
+                    Top = 0 ' HP bar
+                    Left = 0
+                    RenderTexture(BarSprite, Window, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_PlayerHP(i), Height, BarWidth_PlayerHP(i), Height)
+                End If
             End If
-        End If
-
-        ' check for pet casting time bar
-        If PetSkillBuffer > 0 Then
-            If Skill(Pet(Player(MyIndex).Pet.Num).Skill(PetSkillBuffer)).CastTime > 0 Then
-                ' lock to pet
-                tmpX = Player(MyIndex).Pet.X * PicX + Player(MyIndex).Pet.XOffset
-                tmpY = Player(MyIndex).Pet.Y * PicY + Player(MyIndex).Pet.YOffset + 35
-
-                ' calculate the width to fill
-                barWidth = (GetTickCount() - PetSkillBufferTimer) /
-                           ((Skill(Pet(Player(MyIndex).Pet.Num).Skill(PetSkillBuffer)).CastTime * 1000)) * 64
-                ' draw bar background
-                rec(1) = New Rectangle(ConvertMapX(tmpX), ConvertMapY(tmpY), barWidth, 4)
-                Dim rectShape As New RectangleShape(New Vector2f(barWidth, 4)) With {
-                        .Position = New Vector2f(ConvertMapX(tmpX), ConvertMapY(tmpY)),
-                        .FillColor = Color.Cyan
-                        }
-                Window.Draw(rectShape)
-            End If
-        End If
+        Next
     End Sub
 
     Sub DrawMapName()
