@@ -275,7 +275,7 @@ Public Class frmEditor_Map
 
         lstNpc.Items.Clear()
 
-        For n = 0 To MAX_MAP_NPCS
+        For n = 1 To MAX_MAP_NPCS
             If Map.Npc(n) > 0 Then
                 lstNpc.Items.Add(n & ": " & NPC(Map.Npc(n)).Name)
             Else
@@ -369,7 +369,7 @@ Public Class frmEditor_Map
     Private Sub CmbNpcList_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbNpcList.SelectedIndexChanged
         If lstMapNpc.SelectedIndex > 0 Then
             lstMapNpc.Items.Item(lstMapNpc.SelectedIndex) = lstMapNpc.SelectedIndex & ": " & NPC(cmbNpcList.SelectedIndex).Name
-            Map.Npc(lstMapNpc.SelectedIndex) = cmbNpcList.SelectedIndex + 1
+            Map.Npc(lstMapNpc.SelectedIndex) = cmbNpcList.SelectedIndex
         End If
     End Sub
 
