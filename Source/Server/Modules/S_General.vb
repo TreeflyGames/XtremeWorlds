@@ -58,7 +58,7 @@ Module S_General
 
         Console.WriteLine("Loading Character List...")
 
-        Dim ids As Task(Of List(Of Integer)) = GetData("account")
+        Dim ids As Task(Of List(Of Int64)) = GetData("account")
         Dim data As JObject
         Dim player As New PlayerStruct()
         Chars = New CharList
