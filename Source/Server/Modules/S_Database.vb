@@ -68,7 +68,7 @@ Module S_Database
         End If
     End Sub
 
-    Public Function RowExistsByColumn(columnName As String, value As Int64, tableName As String) As Boolean
+    Public Function RowExistsByColumn(columnName As String, value As Integer, tableName As String) As Boolean
         Dim sql As String = $"SELECT EXISTS (SELECT 1 FROM {tableName} WHERE {columnName} = @value);"
 
         Using connection As New NpgsqlConnection(connectionString)
@@ -83,7 +83,7 @@ Module S_Database
         End Using
     End Function
 
-    Sub UpdateRow(id As Int64, data As String, table As String, columnName As String)
+    Sub UpdateRow(id As Integer, data As String, table As String, columnName As String)
         Dim sqlCheck As String = $"SELECT column_name FROM information_schema.columns WHERE table_name='{table}' AND column_name='{columnName}';"
 
         Using connection As New NpgsqlConnection(connectionString)
@@ -122,19 +122,19 @@ Module S_Database
         Return hex.ToString()
     End Function
 
-    Public Function HexToNumber(hexString As String) As Int64
+    Public Function HexToNumber(hexString As String) As Integer
         If String.IsNullOrWhiteSpace(hexString) Or Not Regex.IsMatch(hexString, "^[0-9a-fA-F]+$") Then
             Return 0
         End If
 
-        Return Int64.Parse(hexString, NumberStyles.HexNumber)
+        Return Integer.Parse(hexString, NumberStyles.HexNumber)
     End Function
 
-    Public Function GenerateIdFromString(input As String) As Int64
+    Public Function GenerateIdFromString(input As String) As Integer
         Return HexToNumber(StringToHex(input))
     End Function
 
-    Public Sub UpdateRowByColumn(columnName As String, value As Int64, targetColumn As String, newValue As String, tableName As String)
+    Public Sub UpdateRowByColumn(columnName As String, value As Integer, targetColumn As String, newValue As String, tableName As String)
         Dim sql As String = $"UPDATE {tableName} SET {targetColumn} = @newValue::jsonb WHERE {columnName} = @value;"
 
         Dim jsonData As JObject = JObject.Parse(newValue) ' Parse the string into a JObject
@@ -180,8 +180,8 @@ Module S_Database
         End Using
     End Sub
 
-    Public Async Function GetData(tableName As String) As Task(Of List(Of Int64))
-        Dim ids As New List(Of Int64)
+    Public Async Function GetData(tableName As String) As Task(Of List(Of Integer))
+        Dim ids As New List(Of Integer)
 
         Using conn As New NpgsqlConnection(connectionString)
             Await conn.OpenAsync()
@@ -193,7 +193,7 @@ Module S_Database
             Using reader As NpgsqlDataReader = Await cmd.ExecuteReaderAsync()
                 ' Read all rows and output the first column in each row
                 While Await reader.ReadAsync()
-                    Dim id = Await reader.GetFieldValueAsync(Of Int64)(0)
+                    Dim id = Await reader.GetFieldValueAsync(Of Integer)(0)
                     ids.Add(id)
                 End While
             End Using
@@ -202,7 +202,7 @@ Module S_Database
         Return ids
     End Function
 
-    Public Function RowExists(id As Int64, table As String) As Boolean
+    Public Function RowExists(id As Integer, table As String) As Boolean
         Dim sql As String = $"SELECT EXISTS (SELECT 1 FROM {table} WHERE id = @id);"
 
         Using connection As New NpgsqlConnection(connectionString)
@@ -222,7 +222,7 @@ Module S_Database
         End Using
     End Function
 
-    Public Sub InsertRow(id As Int64, data As String, tableName As String)
+    Public Sub InsertRow(id As Integer, data As String, tableName As String)
         Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
 
         Using conn As New NpgsqlConnection(connectionString)
@@ -239,7 +239,7 @@ Module S_Database
         End Using
     End Sub
 
-    Public Sub InsertRow(id As Int64, data As String, tableName As String, columnName As String)
+    Public Sub InsertRow(id As Integer, data As String, tableName As String, columnName As String)
         Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
 
         Using conn As New NpgsqlConnection(connectionString)
@@ -256,7 +256,7 @@ Module S_Database
         End Using
     End Sub
 
-    Public Sub InsertRowByColumn(id As Int64, data As String, tableName As String, dataColumn As String, idColumn As String)
+    Public Sub InsertRowByColumn(id As Integer, data As String, tableName As String, dataColumn As String, idColumn As String)
         Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
 
         Dim sql As String = $"INSERT INTO {tableName} ({idColumn}, {dataColumn}) VALUES (@id, @data::jsonb);"
@@ -273,7 +273,7 @@ Module S_Database
         End Using
     End Sub
 
-    Public Function SelectRow(id As Int64, tableName As String, columnName As String) As JObject
+    Public Function SelectRow(id As Integer, tableName As String, columnName As String) As JObject
         Dim sql As String = $"SELECT {columnName} FROM {tableName} WHERE id = @id;"
 
         Using connection As New NpgsqlConnection(connectionString)
@@ -295,7 +295,7 @@ Module S_Database
         End Using
     End Function
 
-    Public Function SelectRowByColumn(columnName As String, value As Int64, tableName As String, dataColumn As String) As JObject
+    Public Function SelectRowByColumn(columnName As String, value As Integer, tableName As String, dataColumn As String) As JObject
         Dim sql As String = $"SELECT {dataColumn} FROM {tableName} WHERE {columnName} = @value;"
 
         Using connection As New NpgsqlConnection(connectionString)
@@ -1145,7 +1145,7 @@ Module S_Database
     Sub SaveAccount(index As Integer)
         Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
         Dim username As String = GetPlayerLogin(index)
-        Dim id As Int64 = GenerateIdFromString(username)
+        Dim id As Integer = GenerateIdFromString(username)
 
         If RowExists(id, "account") Then
             UpdateRowByColumn("id", id, "data", json, "account")
@@ -1160,7 +1160,7 @@ Module S_Database
 
         Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
 
-        Dim id As Int64 = GenerateIdFromString(username)
+        Dim id As Integer = GenerateIdFromString(username)
 
         InsertRowByColumn(id, json, "account", "data", "id")
     End Sub
@@ -1222,7 +1222,7 @@ Module S_Database
     Sub SaveBank(index As Integer)
         Dim json As String = JsonConvert.SerializeObject(Bank(index)).ToString()
         Dim username As String = GetPlayerLogin(index)
-        Dim id As Int64 = GenerateIdFromString(username)
+        Dim id As Integer = GenerateIdFromString(username)
 
         If RowExistsByColumn("id", id, "account") Then
             UpdateRowByColumn("id", id, "bank", json, "account")
@@ -1361,7 +1361,7 @@ Module S_Database
 
     Sub SaveCharacter(index As Integer, slot As Integer)
         Dim json As String = JsonConvert.SerializeObject(Player(index)).ToString()
-        Dim id As Int64 = GenerateIdFromString(GetPlayerLogin(index))
+        Dim id As Integer = GenerateIdFromString(GetPlayerLogin(index))
 
         If slot < 1 Or slot > MAX_CHARS Then Exit Sub
 
