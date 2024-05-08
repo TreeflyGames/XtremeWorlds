@@ -122,16 +122,19 @@ Module S_Database
         Return hex.ToString()
     End Function
 
-    Public Function HexToNumber(hexString As String) As Int64
-        If String.IsNullOrWhiteSpace(hexString) Or Not Regex.IsMatch(hexString, "^[0-9a-fA-F]+$") Then
-            Return 0
-        End If
+    Public Function GetStringHash(input As String) As Long
+        Using sha256Hash As SHA256 = SHA256.Create()
+            ' ComputeHash - returns byte array
+            Dim bytes As Byte() = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input))
 
-        Return Int64.Parse(hexString, NumberStyles.HexNumber)
-    End Function
+            ' Convert byte array to a long
+            If BitConverter.IsLittleEndian Then
+                Array.Reverse(bytes)
+            End If
 
-    Public Function GenerateIdFromString(input As String) As Int64
-        Return HexToNumber(StringToHex(input))
+            ' Use only the first 8 bytes (64 bits) to fit a Long
+            Return BitConverter.ToInt64(bytes, 0)
+        End Using
     End Function
 
     Public Sub UpdateRowByColumn(columnName As String, value As Int64, targetColumn As String, newValue As String, tableName As String)
@@ -1145,7 +1148,7 @@ Module S_Database
     Sub SaveAccount(index As Integer)
         Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
         Dim username As String = GetPlayerLogin(index)
-        Dim id As Int64 = GenerateIdFromString(username)
+        Dim id As Int64 = GetStringHash(username)
 
         If RowExists(id, "account") Then
             UpdateRowByColumn("id", id, "data", json, "account")
@@ -1160,7 +1163,7 @@ Module S_Database
 
         Dim json As String = JsonConvert.SerializeObject(Account(index)).ToString()
 
-        Dim id As Int64 = GenerateIdFromString(username)
+        Dim id As Int64 = GetStringHash(username)
 
         InsertRowByColumn(id, json, "account", "data", "id")
     End Sub
@@ -1168,7 +1171,7 @@ Module S_Database
     Function LoadAccount(index As Integer, username As String)
         Dim data As JObject
 
-        data = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
+        data = SelectRowByColumn("id", GetStringHash(username), "account", "data")
 
         If data Is Nothing Then
             Return False
@@ -1208,7 +1211,7 @@ Module S_Database
 #Region "Bank"
     Friend Sub LoadBank(index As Integer)
         Dim data As JObject
-        data = SelectRowByColumn("id", GenerateIdFromString(GetPlayerLogin(index)), "account", "bank")
+        data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "bank")
 
         If data Is Nothing Then
             ClearBank(index)
@@ -1222,7 +1225,7 @@ Module S_Database
     Sub SaveBank(index As Integer)
         Dim json As String = JsonConvert.SerializeObject(Bank(index)).ToString()
         Dim username As String = GetPlayerLogin(index)
-        Dim id As Int64 = GenerateIdFromString(username)
+        Dim id As Int64 = GetStringHash(username)
 
         If RowExistsByColumn("id", id, "account") Then
             UpdateRowByColumn("id", id, "bank", json, "account")
@@ -1343,7 +1346,7 @@ Module S_Database
     Function LoadCharacter(index As Integer, charNum As Integer) As Boolean
         Dim data As JObject
 
-        data = SelectRowByColumn("id", GenerateIdFromString(GetPlayerLogin(index)), "account", "character" & charNum.ToString)
+        data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "character" & charNum.ToString)
 
         If data Is Nothing Then
             Return False
@@ -1361,7 +1364,7 @@ Module S_Database
 
     Sub SaveCharacter(index As Integer, slot As Integer)
         Dim json As String = JsonConvert.SerializeObject(Player(index)).ToString()
-        Dim id As Int64 = GenerateIdFromString(GetPlayerLogin(index))
+        Dim id As Int64 = GetStringHash(GetPlayerLogin(index))
 
         If slot < 1 Or slot > MAX_CHARS Then Exit Sub
 

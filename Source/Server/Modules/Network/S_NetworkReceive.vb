@@ -285,7 +285,7 @@ Module S_NetworkReceive
                     Exit Sub
                 End If
 
-                userData = SelectRowByColumn("id", GenerateIdFromString(username), "account", "data")
+                userData = SelectRowByColumn("id", GetStringHash(username), "account", "data")
 
                 If Not userData Is Nothing Then
                     AlertMsg(index, DialogueMsg.NameTaken, MenuType.Register)
