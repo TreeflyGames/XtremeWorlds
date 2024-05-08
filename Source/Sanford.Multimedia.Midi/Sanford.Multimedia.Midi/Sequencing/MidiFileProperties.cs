@@ -266,7 +266,6 @@ namespace Sanford.Multimedia.Midi
             else
             {
                 Debug.Assert(SequenceType == SequenceType.Ppqn);
-                Debug.Assert(Division >= PpqnClock.PpqnMinValue);
             }
         }
 

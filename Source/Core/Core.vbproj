@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sanford.Multimedia.Midi\Source\Sanford.Multimedia.Midi.Core.csproj" />
+    <ProjectReference Include="..\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.Core.csproj" />
   </ItemGroup>
 
 </Project>
