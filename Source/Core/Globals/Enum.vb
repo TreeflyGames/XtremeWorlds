@@ -441,7 +441,8 @@
     End Enum
 
     Public Enum PictureType
-        TopLeft = 0
+        None = 0
+        TopLeft
         CenterScreen
         CenterEvent
         CenterPlayer
