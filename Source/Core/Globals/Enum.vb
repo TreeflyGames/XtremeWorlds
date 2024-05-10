@@ -90,7 +90,8 @@
 
     ''' <Summary> Consume Constant </Summary>
     Enum ConsumableType As Byte
-        HP = 0
+        None = 0
+        HP
         MP
         SP
         Exp
@@ -235,10 +236,10 @@
     ''' <Summary> Resource Skills </Summary>
     Public Enum ResourceType As Byte
         None = 0
-        Herbing
-        Woodcutting
-        Mining
-        Fishing
+        Herb
+        Woodcut
+        Mine
+        Fish
         Count
     End Enum
 
@@ -549,7 +550,8 @@
     End Enum
 
     Public Enum AlignmentType
-        Left = 0
+        None = 0
+        Left
         Right
         Center
     End Enum

@@ -110,13 +110,13 @@
 
     Public Function GetResourceSkillName(skillNum As ResourceType) As String
         Select Case skillNum
-            Case ResourceType.Herbing
+            Case ResourceType.Herb
                 GetResourceSkillName = "Herbalism"
-            Case ResourceType.Woodcutting
+            Case ResourceType.Woodcut
                 GetResourceSkillName = "Woodcutting"
-            Case ResourceType.Mining
+            Case ResourceType.Mine
                 GetResourceSkillName = "Mining"
-            Case ResourceType.Fishing
+            Case ResourceType.Fish
                 GetResourceSkillName = "Fishing"
         End Select
     End Function

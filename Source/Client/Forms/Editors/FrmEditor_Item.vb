@@ -135,7 +135,8 @@ Friend Class frmEditor_Item
 
             ' Build subtype cmb
             cmbSubType.Items.Clear()
-
+            
+            cmbSubType.Items.Add("None")
             cmbSubType.Items.Add("HP")
             cmbSubType.Items.Add("MP")
             cmbSubType.Items.Add("SP")
