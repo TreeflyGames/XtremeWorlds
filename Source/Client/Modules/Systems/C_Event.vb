@@ -2265,9 +2265,13 @@ newlist:
     Sub Packet_PlaySound(ByRef data() As Byte)
         Dim sound As String
         Dim buffer As New ByteStream(data)
-        sound = buffer.ReadString
+        Dim x As Integer, y As Integer
 
-        PlaySound(sound)
+        sound = buffer.ReadString
+        x = buffer.ReadInt32
+        y = buffer.ReadInt32
+
+        PlaySound(sound, x, y)
 
         buffer.Dispose()
     End Sub

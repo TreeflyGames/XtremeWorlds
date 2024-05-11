@@ -259,28 +259,7 @@ Module C_Animations
         x = ConvertMapX(x)
         y = ConvertMapY(y)
 
-        ' Clip to screen
-        If y < 0 Then
-            With sRect
-                .Y = .Y - y
-                .Height = .Height - (y * (-1))
-            End With
-
-            y = 0
-        End If
-
-        If x < 0 Then
-            With sRect
-                .X = .X - x
-                .Width = .Width - (y * (-1))
-            End With
-
-            x = 0
-        End If
-
-        If sRect.Width < 0 Or sRect.Height < 0 Then Exit Sub
-
-        RenderTexture(sprite, GfxType.Animation, Window, x, y, sRect.X, sRect.Y, sRect.Width, sRect.Height)
+        RenderTexture(sprite, GfxType.Animation, Window, x, y, sRect.X, sRect.Y, sRect.Width, sRect.Height, Width, Height)
 
     End Sub
 
@@ -319,7 +298,7 @@ Module C_Animations
                     Else
                         AnimInstance(index).FrameIndex(layer) = AnimInstance(index).FrameIndex(layer) + 1
                     End If
-                    If sound <> "" Then PlaySound(sound)
+                    If sound <> "" Then PlaySound(sound, AnimInstance(index).X, AnimInstance(index).Y)
                     AnimInstance(index).Timer(layer) = GetTickCount()
                 End If
             End If

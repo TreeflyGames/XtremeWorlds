@@ -1700,6 +1700,8 @@ Friend Module S_EventLogic
                                                                 buffer = New ByteStream(4)
                                                                 buffer.WriteInt32(ServerPackets.SPlaySound)
                                                                 buffer.WriteString((Trim(Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Text1)))
+                                                                buffer.WriteInt32(Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).X)
+                                                                buffer.WriteInt32(Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).Y)
                                                                 Socket.SendDataTo(i, buffer.Data, buffer.Head)
                                                                 buffer.Dispose()
                                                             Case EventType.StopSound

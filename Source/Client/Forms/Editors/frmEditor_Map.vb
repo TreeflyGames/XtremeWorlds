@@ -1456,7 +1456,7 @@ Public Class frmEditor_Map
     End Sub
 
     Private Sub brnAnimation_Click(sender As Object, e As EventArgs) Handles brnAnimation.Click
-        EditorAnimation = cmbAnimation.SelectedIndex + 1
+        EditorAnimation = cmbAnimation.SelectedIndex
         pnlAttributes.Visible = False
         fraAnimation.Visible = False
     End Sub

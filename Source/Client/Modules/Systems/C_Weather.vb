@@ -178,7 +178,7 @@ Friend Module C_Weather
         Else
             WeatherSoundPlayer.Loop() = False
         End If
-        WeatherSoundPlayer.Volume() = MaxVolume
+        WeatherSoundPlayer.Volume() = Types.Settings.SoundVolume
         WeatherSoundPlayer.Play()
 
         CurWeatherMusic = fileName

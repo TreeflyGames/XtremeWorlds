@@ -10,10 +10,11 @@ Public Class Settings
     Public MenuMusic As String = "menu.mid"
     Public Music As Boolean = True
     Public Sound As Boolean = True
-    Public Volume As Single = 100.0F
+    Public MusicVolume As Single = 100.0F
+    Public SoundVolume As Single = 100.0F
 
     Public MusicExt As String = ".mid"
-    Public SoundExt As String = ".wav"
+    Public SoundExt As String = ".ogg"
 
     Public Resolution As Byte = 13
     Public Vsync As Byte = 1
