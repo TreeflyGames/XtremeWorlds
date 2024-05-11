@@ -135,7 +135,7 @@ Module C_Sound
 
         ' Calculate and set the volume based on the position
         Dim calculatedVolume As Double = CalculateSoundVolume(x, y)
-        SoundPlayer.Volume = calculatedVolume * Types.Settings.SoundVolume ' Assuming MaxVolume is a predefined maximum volume level
+        SoundPlayer.Volume = calculatedVolume
 
         ' Play the sound
         SoundPlayer.Play()
