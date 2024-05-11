@@ -319,7 +319,7 @@ Module C_Animations
                             If sound <> "" Then PlaySound(sound, AnimInstance(index).X, AnimInstance(index).Y)
                         End If
                     Else
-                        AnimInstance(index).FrameIndex(layer) = AnimInstance(index).FrameIndex(layer) + 1
+                        AnimInstance(index).FrameIndex(layer) =+ 1
                     End If
                     AnimInstance(index).Timer(layer) = GetTickCount()
                 End If
