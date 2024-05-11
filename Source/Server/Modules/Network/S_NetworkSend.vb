@@ -451,7 +451,7 @@ Module S_NetworkSend
         If GetPlayerAccess(index) < AccessType.Moderator Then Exit Sub
 
         For i = 1 To Socket.HighIndex()
-            If i <> index Then
+            If i <> index And GetPlayerName(i)  <> "" Then
                 s = s & GetPlayerName(i) & ", "
                 n = n + 1
             End If
