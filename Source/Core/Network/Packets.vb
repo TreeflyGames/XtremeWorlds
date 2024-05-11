@@ -153,7 +153,6 @@
         SPlayerInvUpdate
         SPlayerWornEq
         SPlayerHP
-        SPlayerMP
         SPlayerSP
         SPlayerStats
         SPlayerData

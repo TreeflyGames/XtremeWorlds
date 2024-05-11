@@ -17,7 +17,6 @@ Module C_NetworkReceive
         Socket.PacketId(ServerPackets.SPlayerInvUpdate) = AddressOf Packet_PlayerInvUpdate
         Socket.PacketId(ServerPackets.SPlayerWornEq) = AddressOf Packet_PlayerWornEquipment
         Socket.PacketId(ServerPackets.SPlayerHP) = AddressOf Packet_PlayerHP
-        Socket.PacketId(ServerPackets.SPlayerMP) = AddressOf Packet_PlayerMP
         Socket.PacketId(ServerPackets.SPlayerSP) = AddressOf Packet_PlayerSP
         Socket.PacketId(ServerPackets.SPlayerStats) = AddressOf Packet_PlayerStats
         Socket.PacketId(ServerPackets.SPlayerData) = AddressOf Packet_PlayerData

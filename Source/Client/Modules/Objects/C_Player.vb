@@ -751,7 +751,7 @@ Module C_Player
         buffer.Dispose()
     End Sub
 
-    Sub Packet_PlayerMP(ByRef data() As Byte)
+    Sub Packet_PlayerSP(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
         SetPlayerVital(MyIndex, VitalType.SP, buffer.ReadInt32)
@@ -764,14 +764,6 @@ Module C_Player
         End If
 
         UpdateStats_UI()
-
-        buffer.Dispose()
-    End Sub
-
-    Sub Packet_PlayerSP(ByRef data() As Byte)
-        Dim buffer As New ByteStream(data)
-
-        SetPlayerVital(MyIndex, VitalType.SP, buffer.ReadInt32)
 
         buffer.Dispose()
     End Sub

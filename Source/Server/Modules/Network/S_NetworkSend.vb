@@ -417,8 +417,6 @@ Module S_NetworkSend
             Case VitalType.HP
                 buffer.WriteInt32(ServerPackets.SPlayerHP)
             Case VitalType.SP
-                buffer.WriteInt32(ServerPackets.SPlayerMP)
-            Case VitalType.SP
                 buffer.WriteInt32(ServerPackets.SPlayerSP)
         End Select
 
