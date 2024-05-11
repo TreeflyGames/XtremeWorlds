@@ -268,30 +268,44 @@ Module C_Graphics
                                 Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) = Nothing
                             Else
                                 Dim n As Integer = 0
-                                For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
-                                    If i > Windows(activeWindow).ActiveControl Then
-                                        If SetActiveControl(activeWindow, i) Then n = i
+                                For i As Integer = 1 To Windows(activeWindow).ControlCount
+                                    If i <> Windows(activeWindow).ActiveControl And Windows(activeWindow).LastControl <> i Then   
+                                        If SetActiveControl(activeWindow, i) Then
+                                            n = i
+                                            Exit For
+                                        End If
                                     End If
                                 Next
 
                                 If n = 0 Then
-                                    For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
-                                        SetActiveControl(activeWindow, i)
+                                    For i As Integer = 1 To Windows(activeWindow).ControlCount
+                                        If i <> Windows(activeWindow).ActiveControl Then
+                                             If SetActiveControl(activeWindow, i) Then
+                                                Exit For
+                                             End If
+                                        End If
                                     Next
                                 End If
                             End If
 
                         Case Keyboard.Key.Tab
                             Dim n As Integer = 0
-                            For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
-                                If i > Windows(activeWindow).ActiveControl Then
-                                    If SetActiveControl(activeWindow, i) Then n = i
+                            For i As Integer = 1 To Windows(activeWindow).ControlCount
+                                If i <> Windows(activeWindow).ActiveControl And Windows(activeWindow).LastControl <> i Then   
+                                    If SetActiveControl(activeWindow, i) Then
+                                        n = i
+                                        Exit For
+                                    End If
                                 End If
                             Next
 
                             If n = 0 Then
-                                For i As Integer = Windows(activeWindow).ControlCount To 1 Step -1
-                                    SetActiveControl(activeWindow, i)
+                                For i As Integer = 1 To Windows(activeWindow).ControlCount
+                                    If i <> Windows(activeWindow).ActiveControl Then
+                                         If SetActiveControl(activeWindow, i) Then
+                                            Exit For
+                                         End If
+                                    End If
                                 Next
                             End If
 

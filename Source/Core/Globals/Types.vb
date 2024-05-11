@@ -907,6 +907,7 @@ Public Module Types
         Dim Controls() As EntityStruct
         Dim ControlCount As Long
         Dim ActiveControl As Long
+        Dim LastControl As Long
     End Structure
 
     Public Structure CSMapStruct
