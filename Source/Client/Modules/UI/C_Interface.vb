@@ -26,7 +26,7 @@ Module C_Interface
     Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, color As Color, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef type() As GfxType, ByRef callback() As Action,
        Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
        Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
-       Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional locked As Boolean = False)
+       Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional locked As Boolean = False, Optional length As Byte = NAME_LENGTH)
 
         Dim i As Long
 
@@ -71,6 +71,7 @@ Module C_Interface
             .Min = Min
             .Value = value
             .Text = text
+            .Length = length
             .Align = align
             .Font = font
             .Color = color
@@ -807,7 +808,7 @@ Module C_Interface
 
     Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
         Optional text As String = "", Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
-        Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
+        Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False, Optional icon As Long = 0, Optional length As Byte = NAME_LENGTH,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef callback_enter As Action = Nothing)
 
         Dim design(EntState.Count - 1) As Long
@@ -833,7 +834,7 @@ Module C_Interface
         callback(EntState.Enter) = callback_enter
 
         ' create the textbox
-        CreateEntity(winNum, zOrder_Con, name, Color.White, EntityType.TextBox, design, image, type, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset,  , censor, icon, , isActive)
+        CreateEntity(winNum, zOrder_Con, name, Color.White, EntityType.TextBox, design, image, type, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset,  , censor, icon, , isActive, , , , length)
     End Sub
 
     Public Sub CreatePictureBox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
@@ -2980,7 +2981,7 @@ Module C_Interface
         CreateButton(WindowCount, "btnChat", 296, 124 + 16, 48, 20, "Say", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))
 
         ' Chat Textbox
-        CreateTextbox(WindowCount, "txtChat", 12, 127 + 16, 286, 25, , Georgia)
+        CreateTextbox(WindowCount, "txtChat", 12, 127 + 16, 286, 25, , Georgia, , , , , , , , , , , , , , , CHAT_LENGTH)
 
         ' buttons
         CreateButton(WindowCount, "btnUp", 328, 28, 11, 13, , , , 4, 52, 4, , , , , , , , New Action(AddressOf btnChat_Up))

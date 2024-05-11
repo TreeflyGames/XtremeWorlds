@@ -22,6 +22,7 @@
     Public Const MAX_SKILLS As Integer = 255
     Public Const MAX_TRADES As Byte = 35
     Public Const NAME_LENGTH As Byte = 21
+    Public Const CHAT_LENGTH As Byte = 70
     Public Const MAX_HOTBAR As Byte = 10
     Public Const MAX_MAPX As Byte = 32
     Public Const MAX_MAPY As Byte = 24

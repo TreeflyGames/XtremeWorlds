@@ -450,6 +450,10 @@ Module C_Graphics
                 Exit Sub
             End If
 
+            If Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text.Length >= Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Length Then
+                Exit Sub
+            End If
+
             ' Append character to text of the active control
             Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).Text &= character
         End If
