@@ -1009,6 +1009,28 @@ Module C_Interface
         End Select
     End Function
 
+    Public Function ActivateControl(Optional startIndex As Integer = 1, Optional skipLast As Boolean = True) As Integer
+        Dim currentActive As Integer = Windows(activeWindow).ActiveControl
+        Dim lastControl As Integer = Windows(activeWindow).LastControl
+
+        ' Attempt to activate the next available control
+        For i As Integer = startIndex To Windows(activeWindow).ControlCount
+            If i <> currentActive AndAlso (Not skipLast OrElse i <> lastControl) Then
+                If SetActiveControl(activeWindow, i) Then
+                    Return i  ' Return the index of the control that was activated
+                End If
+            End If
+        Next
+
+        ' If no control was activated and skipping the last control, try again without skipping
+        If skipLast Then
+            Return ActivateControl(1, False)  ' Recursive call without skipping the last control
+        Else
+            Return 0  ' Return 0 if no control could be activated after all attempts
+        End If
+    End Function
+
+
     Public Sub CentralizeWindow(curWindow As Long)
         With Windows(curWindow).Window
             .Left = (ResolutionWidth / 2) - (.Width / 2)

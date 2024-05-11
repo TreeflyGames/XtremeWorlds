@@ -170,6 +170,8 @@ Module C_Graphics
     End Sub
 
     Private Sub Window_KeyPressed(ByVal sender As Object, ByVal e As SFML.Window.KeyEventArgs)
+        Dim n As Integer = 0
+
         Console.WriteLine("Key Pressed: " & e.Code.ToString())
 
         If InGame Then
@@ -267,46 +269,18 @@ Module C_Graphics
                             If Not Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) IsNot Nothing Then
                                 Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl).CallBack(EntState.Enter) = Nothing
                             Else
-                                Dim n As Integer = 0
-                                For i As Integer = 1 To Windows(activeWindow).ControlCount
-                                    If i <> Windows(activeWindow).ActiveControl And Windows(activeWindow).LastControl <> i Then   
-                                        If SetActiveControl(activeWindow, i) Then
-                                            n = i
-                                            Exit For
-                                        End If
-                                    End If
-                                Next
-
+                                n = ActivateControl
+                       
                                 If n = 0 Then
-                                    For i As Integer = 1 To Windows(activeWindow).ControlCount
-                                        If i <> Windows(activeWindow).ActiveControl Then
-                                             If SetActiveControl(activeWindow, i) Then
-                                                Exit For
-                                             End If
-                                        End If
-                                    Next
+                                    ActivateControl(n, False)
                                 End If
                             End If
 
                         Case Keyboard.Key.Tab
-                            Dim n As Integer = 0
-                            For i As Integer = 1 To Windows(activeWindow).ControlCount
-                                If i <> Windows(activeWindow).ActiveControl And Windows(activeWindow).LastControl <> i Then   
-                                    If SetActiveControl(activeWindow, i) Then
-                                        n = i
-                                        Exit For
-                                    End If
-                                End If
-                            Next
-
+                            n = ActivateControl
+                       
                             If n = 0 Then
-                                For i As Integer = 1 To Windows(activeWindow).ControlCount
-                                    If i <> Windows(activeWindow).ActiveControl Then
-                                         If SetActiveControl(activeWindow, i) Then
-                                            Exit For
-                                         End If
-                                    End If
-                                Next
+                                ActivateControl(n, False)
                             End If
 
                         Case Else
