@@ -138,7 +138,6 @@ Friend Class frmEditor_Item
             
             cmbSubType.Items.Add("None")
             cmbSubType.Items.Add("HP")
-            cmbSubType.Items.Add("MP")
             cmbSubType.Items.Add("SP")
             cmbSubType.Items.Add("Exp")
 
