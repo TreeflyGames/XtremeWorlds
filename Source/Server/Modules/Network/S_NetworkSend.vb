@@ -546,7 +546,7 @@ Module S_NetworkSend
             buffer.WriteInt32(Map(mapNum).EventCount)
 
             If Map(mapNum).EventCount > 0 Then
-                For i = 0 To Map(mapNum).EventCount
+                For i = 1 To Map(mapNum).EventCount
                     With Map(mapNum).Events(i)
                         buffer.WriteString((.Name.Trim))
                         buffer.WriteByte(.Globals)

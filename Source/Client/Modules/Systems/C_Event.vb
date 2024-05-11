@@ -69,11 +69,10 @@ Friend Module C_EventSystem
         Dim count As Integer, i As Integer
 
         count = Map.EventCount
-
         If count = 0 Then Exit Sub
+
         For i = 0 To count
             If Map.Events(i).X = X And Map.Events(i).Y = Y Then
-                ' copy it
                 CopyEvent = Map.Events(i)
                 Exit Sub
             End If
@@ -89,7 +88,6 @@ Friend Module C_EventSystem
         If count > 0 Then
             For i = 0 To count
                 If Map.Events(i).X = X And Map.Events(i).Y = Y Then
-                    ' already an event - paste over it
                     EventNum = i
                 End If
             Next
@@ -97,13 +95,13 @@ Friend Module C_EventSystem
 
         ' couldn't find one - create one
         If EventNum = 0 Then
-            ' increment count
             AddEvent(X, Y, True)
             EventNum = count + 1
         End If
 
         ' copy it
         Map.Events(EventNum) = CopyEvent
+
         ' set position
         Map.Events(EventNum).X = X
         Map.Events(EventNum).Y = Y
