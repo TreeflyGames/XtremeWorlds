@@ -2334,111 +2334,74 @@ Module C_Graphics
         End If
     End Sub
 
-    Friend Sub EditorAnim_DrawAnim()
-        Dim animationNum As Integer
-        Dim sRECT As Rectangle
-        Dim dRECT As Rectangle
-        Dim width As Integer, height As Integer
-        Dim looptime As Integer
-        Dim FrameCount As Integer
-        Dim ShouldRender As Boolean
+    Friend Sub EditorAnim_DrawSprite()
+        With frmEditor_Animation
+            ProcessAnimation(.nudSprite0, .nudFrameCount0, .nudLoopTime0, 0, EditorAnimation_Anim1, .picSprite0)
+            ProcessAnimation(.nudSprite1, .nudFrameCount1, .nudLoopTime1, 1, EditorAnimation_Anim2, .picSprite1)
+        End With
+    End Sub
 
-        animationNum = frmEditor_Animation.nudSprite0.Value
-
-        If animationNum < 1 Or animationNum > NumAnimations Then
-            EditorAnimation_Anim1.Clear(ToSfmlColor(frmEditor_Animation.picSprite0.BackColor))
-            EditorAnimation_Anim1.Display()
-        Else
-            looptime = frmEditor_Animation.nudLoopTime0.Value
-            FrameCount = frmEditor_Animation.nudFrameCount0.Value
-
-            ShouldRender = False
-
-            ' check if we need to render new frame
-            If AnimEditorTimer(0) + looptime <= GetTickCount() Then
-                ' check if out of range
-                If AnimEditorFrame(0) >= FrameCount Then
-                    AnimEditorFrame(0) = 1
-                Else
-                    AnimEditorFrame(0) = AnimEditorFrame(0) + 1
-                End If
-                AnimEditorTimer(0) = GetTickCount()
-                ShouldRender = True
-            End If
-
-            If ShouldRender Then
-                If frmEditor_Animation.nudFrameCount0.Value > 0 Then
-                    ' total width divided by frame count
-                    height = AnimationGfxInfo(animationNum).Height
-                    width = AnimationGfxInfo(animationNum).Width / frmEditor_Animation.nudFrameCount0.Value
-                    With sRECT
-                        .Y = 0
-                        .Height = height
-                        .X = (AnimEditorFrame(0) - 1) * width
-                        .Width = width
-                    End With
-
-                    With dRECT
-                        .Y = 0
-                        .Height = height
-                        .X = 0
-                        .Width = width
-                    End With
-
-                    EditorAnimation_Anim1.Clear(ToSfmlColor(frmEditor_Animation.picSprite0.BackColor))
-                    RenderTexture(animationNum, GfxType.Animation, EditorAnimation_Anim1, dRECT.X, dRECT.Y, sRECT.X,
-                                 sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Width, dRECT.Height)
-                    EditorAnimation_Anim1.Display()
-                End If
-            End If
+    Public Sub ProcessAnimation(animationControl As NumericUpDown, 
+                            frameCountControl As NumericUpDown,
+                            loopCountControl As NumericUpDown,
+                            animationTimerIndex As Integer, 
+                            animationDisplay As RenderWindow, 
+                            backgroundColorControl As PictureBox)
+    
+        ' Retrieve the animation number and check its validity
+        Dim animationNum As Integer = animationControl.Value
+        If animationNum <= 0 Or animationNum > NumAnimations Then
+            animationDisplay.Clear(ToSfmlColor(backgroundColorControl.BackColor))
+            animationDisplay.Display()
+            Exit Sub
         End If
 
-        animationNum = frmEditor_Animation.nudSprite1.Value
+        ' Get dimensions and column count from controls and graphic info
+        Dim totalWidth As Integer = AnimationGfxInfo(animationNum).Width
+        Dim totalHeight As Integer = AnimationGfxInfo(animationNum).Height
+        Dim columns As Integer = frameCountControl.Value
 
-        If animationNum < 1 Or animationNum > NumAnimations Then
-            EditorAnimation_Anim2.Clear(ToSfmlColor(frmEditor_Animation.picSprite1.BackColor))
-            EditorAnimation_Anim2.Display()
-        Else
-            looptime = frmEditor_Animation.nudLoopTime1.Value
-            FrameCount = frmEditor_Animation.nudFrameCount1.Value
-            ShouldRender = False
+        ' Validate columns to avoid division by zero
+        If columns <= 0 Then Exit Sub
 
-            ' check if we need to render new frame
-            If AnimEditorTimer(1) + looptime <= GetTickCount() Then
-                ' check if out of range
-                If AnimEditorFrame(1) >= FrameCount Then
-                    AnimEditorFrame(1) = 1
-                Else
-                    AnimEditorFrame(1) = AnimEditorFrame(1) + 1
-                End If
-                AnimEditorTimer(1) = GetTickCount()
-                ShouldRender = True
+        ' Calculate frame dimensions
+        Dim frameWidth As Integer = totalWidth / columns
+
+        ' Assuming square frames for simplicity (adjust if frames are not square)
+        Dim frameHeight As Integer = frameWidth
+
+        Dim rows As Integer 
+
+        ' Calculate the number of rows and total frame count
+        If frameHeight > 0 Then
+            rows = totalHeight / frameHeight
+
+        End If
+
+        Dim frameCount As Integer = rows * columns
+
+        ' Retrieve loop timing and check frame rendering necessity
+        Dim looptime As Integer = loopCountControl.Value
+        If AnimEditorTimer(animationTimerIndex) + looptime <= GetTickCount() Then
+            If AnimEditorFrame(animationTimerIndex) >= frameCount Then
+                AnimEditorFrame(animationTimerIndex) = 1 ' Reset to the first frame if it exceeds the count
+            Else
+                AnimEditorFrame(animationTimerIndex) += 1
             End If
+            AnimEditorTimer(animationTimerIndex) = GetTickCount()
 
-            If ShouldRender Then
-                If frmEditor_Animation.nudFrameCount1.Value > 0 Then
-                    ' total width divided by frame count
-                    height = AnimationGfxInfo(animationNum).Height
-                    width = AnimationGfxInfo(animationNum).Width / frmEditor_Animation.nudFrameCount1.Value
-                    With sRECT
-                        .Y = 0
-                        .Height = height
-                        .X = (AnimEditorFrame(1) - 1) * width
-                        .Width = width
-                    End With
+            ' Render the frame if necessary
+            If frameCountControl.Value > 0 Then
+                Dim frameIndex As Integer = AnimEditorFrame(animationTimerIndex) - 1
+                Dim column As Integer = frameIndex Mod columns
+                Dim row As Integer = frameIndex \ columns
 
-                    With dRECT
-                        .Y = 0
-                        .Height = height
-                        .X = 0
-                        .Width = width
-                    End With
+                ' Calculate the source rectangle for the texture
+                Dim sRECT As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
 
-                    EditorAnimation_Anim2.Clear(ToSfmlColor(frmEditor_Animation.picSprite1.BackColor))
-                    RenderTexture(animationNum, GfxType.Animation, EditorAnimation_Anim2, dRECT.X, dRECT.Y, sRECT.X,
-                                 sRECT.Y, sRECT.Width, sRECT.Height, dRECT.Height, dRECT.Width)
-                    EditorAnimation_Anim2.Display()
-                End If
+                animationDisplay.Clear(ToSfmlColor(backgroundColorControl.BackColor))
+                RenderTexture(animationNum, GfxType.Animation, animationDisplay, 0, 0, sRECT.X, sRECT.Y, frameWidth, frameHeight, frameWidth, frameHeight)
+                animationDisplay.Display()
             End If
         End If
     End Sub

@@ -13,7 +13,7 @@ Module C_GameLogic
         Dim tmrweather As Integer, barTmr As Integer
         Dim tmr25 As Integer, tmr500 As Integer, tmr250 As Integer, tmrconnect As Integer, TickFPS As Integer
         Dim fadetmr As Integer, rendertmr As Integer
-        Dim animationtmr As Integer
+        Dim animationtmr(1) As Integer
 
         ' Main game loop
         While InGame Or InMenu
@@ -50,22 +50,44 @@ Module C_GameLogic
                     ShowAnimTimer = tick + 500
                 End If
 
-                If animationtmr < tick Then
-                    For x = 0 To Map.MaxX
-                        For y = 0 To Map.MaxY
-                            If IsValidMapPoint(x, y) Then
-                                If Map.Tile(x, y).Data1 > 0 And (Map.Tile(x, y).Type = TileType.Animation Or Map.Tile(x, y).Type2 = TileType.Animation)  Then
-                                    CreateAnimation(Map.Tile(x, y).Data1, x, y)
-                                    If Animation(Map.Tile(x, y).Data1).LoopTime(0) > 0 Then
-                                        animationtmr = tick + Animation(Map.Tile(x, y).Data1).LoopTime(0) * Animation(Map.Tile(x, y).Data1).Frames(0) * Animation(Map.Tile(x, y).Data1).LoopCount(0)
-                                    Else
-                                        animationtmr = tick + Animation(Map.Tile(x, y).Data1).LoopTime(1) * Animation(Map.Tile(x, y).Data1).Frames(1) * Animation(Map.Tile(x, y).Data1).LoopCount(1)
+                For layer As Integer = 0 To 1
+                    If animationtmr(layer) < tick Then
+                        For x = 0 To Map.MaxX
+                            For y = 0 To Map.MaxY
+                                If IsValidMapPoint(x, y) Then                                        
+                                    If Map.Tile(x, y).Data1 > 0 And (Map.Tile(x, y).Type = TileType.Animation Or Map.Tile(x, y).Type2 = TileType.Animation)  Then
+                                        Dim sprite As Integer = Animation(Map.Tile(x, y).Data1).Sprite(layer)
+
+                                        If sprite > 0 Then
+                                            LoadTexture(sprite, GfxType.Animation)
+                                            Dim graphicInfo As GraphicInfo = AnimationGfxInfo(sprite)
+
+                                            ' Get dimensions and column count from controls and graphic info
+                                            Dim totalWidth As Integer = graphicInfo.Width
+                                            Dim totalHeight As Integer = graphicInfo.Height
+                                            Dim columns As Integer = Animation(Map.Tile(x, y).Data1).Frames(layer)
+
+                                            ' Calculate frame dimensions
+                                            Dim frameWidth As Integer = totalWidth / columns
+                                            Dim frameHeight As Integer = frameWidth
+                                            Dim rows As Integer
+                                            If frameHeight > 0 Then
+                                                rows = totalHeight / frameHeight                                    
+                                            End If
+
+                                            Dim frameCount As Integer = rows * columns
+
+                                            animationtmr(layer) = tick + Animation(Map.Tile(x, y).Data1).LoopTime(layer) * frameCount * Animation(Map.Tile(x, y).Data1).LoopCount(layer)
+                                            CreateAnimation(Map.Tile(x, y).Data1, x, y)
+                                        Else
+                                            StreamAnimation(Map.Tile(x, y).Data1)
+                                        End If
                                     End If
                                 End If
-                            End If
+                            Next
                         Next
-                    Next
-                End If
+                    End If
+                Next
 
                 For i = 0 To Byte.MaxValue
                     CheckAnimInstance(i)
@@ -178,6 +200,7 @@ Module C_GameLogic
                         ' move
                         FogOffsetX = FogOffsetX - 1
                         FogOffsetY = FogOffsetY - 1
+
                         ' reset
                         If FogOffsetX < -255 Then FogOffsetX = 1
                         If FogOffsetY < -255 Then FogOffsetY = 1
@@ -316,7 +339,7 @@ Module C_GameLogic
             End If
 
             If Editor = EditorType.Animation Then
-                EditorAnim_DrawAnim()
+                EditorAnim_DrawSprite()
             End If
 
             Window.DispatchEvents()
