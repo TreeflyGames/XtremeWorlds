@@ -107,37 +107,37 @@ Friend Module C_EventSystem
         Map.Events(EventNum).Y = Y
     End Sub
 
-   Sub DeleteEvent(ByVal X As Integer, ByVal Y As Integer)
-    Dim i As Integer
-    Dim lowIndex As Integer = -1
-    Dim shifted As Boolean = False
+    Sub DeleteEvent(ByVal X As Integer, ByVal Y As Integer)
+        Dim i As Integer
+        Dim lowIndex As Integer = -1
+        Dim shifted As Boolean = False
 
-    If Editor <> EditorType.Map Then Exit Sub
-    If frmEditor_Events.Visible = True Then Exit Sub
+        If Editor <> EditorType.Map Then Exit Sub
+        If frmEditor_Events.Visible = True Then Exit Sub
 
-    ' First pass: find all events to delete and shift others down
-    For i = 1 To Map.EventCount
-        If Map.Events(i).X = X And Map.Events(i).Y = Y Then
-            ' Clear the event
-            ClearEvent(i)
-            lowIndex = i
-            shifted = True
-        ElseIf shifted Then
-            ' Shift this event down to fill the gap
-            Map.Events(lowIndex) = Map.Events(i)
-            lowIndex = lowIndex + 1
+        ' First pass: find all events to delete and shift others down
+        For i = 1 To Map.EventCount
+            If Map.Events(i).X = X And Map.Events(i).Y = Y Then
+                ' Clear the event
+                ClearEvent(i)
+                lowIndex = i
+                shifted = True
+            ElseIf shifted Then
+                ' Shift this event down to fill the gap
+                Map.Events(lowIndex) = Map.Events(i)
+                lowIndex = lowIndex + 1
+            End If
+        Next
+
+        ' Adjust the event count if anything was deleted
+        If lowIndex <> -1 Then
+            ' Set the new count
+            Map.EventCount = lowIndex - 1
+            ReDim Preserve MapEvents(Map.EventCount)
+            ReDim Preserve Map.Events(Map.EventCount)
+            TmpEvent = Nothing
         End If
-    Next
-
-    ' Adjust the event count if anything was deleted
-    If lowIndex <> -1 Then
-        ' Set the new count
-        Map.EventCount = lowIndex - 1
-        ReDim Preserve MapEvents(Map.EventCount)
-        ReDim Preserve Map.Events(Map.EventCount)
-        TmpEvent = Nothing
-    End If
-End Sub
+    End Sub
 
 
     Sub AddEvent(ByVal X As Integer, ByVal Y As Integer, Optional ByVal cancelLoad As Boolean = False)
