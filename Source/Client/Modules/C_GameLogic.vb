@@ -66,11 +66,16 @@ Module C_GameLogic
                                             Dim totalWidth As Integer = graphicInfo.Width
                                             Dim totalHeight As Integer = graphicInfo.Height
                                             Dim columns As Integer = Animation(Map.Tile(x, y).Data1).Frames(layer)
+                                            Dim frameWidth As Integer
 
                                             ' Calculate frame dimensions
-                                            Dim frameWidth As Integer = totalWidth / columns
+                                            If columns > 0 Then
+                                                framewidth = totalWidth / columns
+                                            End If
+
                                             Dim frameHeight As Integer = frameWidth
                                             Dim rows As Integer
+
                                             If frameHeight > 0 Then
                                                 rows = totalHeight / frameHeight                                    
                                             End If

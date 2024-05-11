@@ -187,9 +187,13 @@ Module C_Animations
         Dim totalWidth As Integer = graphicInfo.Width
         Dim totalHeight As Integer = graphicInfo.Height
         Dim columns As Integer = Animation(AnimInstance(index).Animation).Frames(layer)
+        Dim frameWidth As Integer
 
         ' Calculate frame dimensions
-        Dim frameWidth As Integer = totalWidth / columns
+        If columns > 0 Then
+            framewidth = totalWidth / columns
+        End If
+
         Dim frameHeight As Integer = frameWidth
         Dim rows As Integer
         If frameHeight > 0 Then
@@ -204,8 +208,14 @@ Module C_Animations
             frameIndex = AnimInstance(index).FrameIndex(layer) Mod frameCount
         End If
 
-        Dim column As Integer = frameIndex Mod columns
-        Dim row As Integer = frameIndex \ columns
+        Dim column As Integer
+        Dim row As Integer
+
+        If columns > 0 Then
+            column = frameIndex Mod columns
+            row = frameIndex \ columns
+        End If
+        
         Dim sRect As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
 
         ' Determine the position based on lock type and instance status
