@@ -524,7 +524,7 @@ Module C_GameLogic
                 AdminMsg(chatText)
             End If
 
-            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = vbNullString
+            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = ""
             Exit Sub
         End If
 
@@ -536,7 +536,7 @@ Module C_GameLogic
                 BroadcastMsg(chatText)
             End If
 
-            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = vbNullString
+            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = ""
             Exit Sub
         End If
 
@@ -548,7 +548,7 @@ Module C_GameLogic
                 SendPartyChatMsg(chatText)
             End If
 
-            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = vbNullString
+            Windows(GetWindowIndex("winChat")).Controls(GetControlIndex("winChat", "txtChat")).text = ""
             Exit Sub
         End If
 
@@ -1969,7 +1969,7 @@ Continue1:
                     Next
                 Else
                     .Controls(GetControlIndex("winShop", "lblName")).text = "Empty Slot"
-                    .Controls(GetControlIndex("winShop", "lblCost")).text = vbNullString
+                    .Controls(GetControlIndex("winShop", "lblCost")).text = ""
                     
                     ' draw the item
                     For i = 0 To 5
@@ -1993,7 +1993,7 @@ Continue1:
                     Next
                 Else
                     .Controls(GetControlIndex("winShop", "lblName")).text = "Empty Slot"
-                    .Controls(GetControlIndex("winShop", "lblCost")).text = vbNullString
+                    .Controls(GetControlIndex("winShop", "lblCost")).text = ""
                     
                     ' draw the item
                     For i = 0 To 5
@@ -2020,7 +2020,7 @@ Continue1:
         With Windows(GetWindowIndex("winParty"))
             ' clear controls first
             For i = 1 To 3
-                .Controls(GetControlIndex("winParty", "lblName" & i)).text = vbNullString
+                .Controls(GetControlIndex("winParty", "lblName" & i)).text = ""
                 .Controls(GetControlIndex("winParty", "picEmptyBar_HP" & i)).visible = False
                 .Controls(GetControlIndex("winParty", "picEmptyBar_SP" & i)).visible = False
                 .Controls(GetControlIndex("winParty", "picBar_HP" & i)).visible = False

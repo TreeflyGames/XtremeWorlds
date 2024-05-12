@@ -99,7 +99,7 @@ Module C_General
 
         ' clear chat
         For i = 1 To ChatLines
-            Chat(i).text = vbNullString
+            Chat(i).text = ""
         Next
     End Sub
 
