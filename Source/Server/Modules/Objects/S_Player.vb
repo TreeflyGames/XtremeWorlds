@@ -1138,7 +1138,7 @@ Module S_Player
 
             If .Type2 = TileType.Heal
                 VitalType = .Data1_2
-                amount = .Data2_2
+                amount += .Data2_2
             End If
 
             If VitalType > 0 Then
