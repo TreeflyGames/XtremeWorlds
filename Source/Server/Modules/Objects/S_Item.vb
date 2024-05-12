@@ -395,6 +395,7 @@ Friend Module S_Item
     Sub SendUpdateItemTo(index As Integer, itemNum As Integer)
         Dim buffer As ByteStream
         buffer = New ByteStream(4)
+
         buffer.WriteInt32(ServerPackets.SUpdateItem)
 
         buffer.WriteBlock(ItemData(itemNum))

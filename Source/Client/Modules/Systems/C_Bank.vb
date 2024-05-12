@@ -4,27 +4,19 @@ Imports Mirage.Sharp.Asfw
 
 Module C_Banks
 
-#Region "Globals & Types"
-
-    Friend Bank As Types.BankStruct
-
-    ' Stores the last bank item we showed in desc
-    Friend LastBankDesc As Integer
-
-    Friend InBank As Boolean
-
-    ' bank drag + drop
-    Friend DragBankSlotNum As Integer
-
-    Friend BankX As Integer
-    Friend BankY As Integer
-
-#End Region
-
 #Region "Database"
 
-    Sub ClearBank()
-        ReDim Bank.Item(MAX_BANK)
+    Sub ClearBanks()
+        Dim i As Integer, x As Integer
+
+        For x = 1 To MAX_PLAYERS
+            ReDim Bank(x).Item(MAX_BANK)
+
+            For i = 1 To MAX_BANK
+                Bank(x).Item(i).Num = 0
+                Bank(x).Item(i).Value = 0
+            Next
+        Next
     End Sub
 
 #End Region
@@ -36,8 +28,8 @@ Module C_Banks
         Dim buffer As New ByteStream(data)
 
         For i = 1 To MAX_BANK
-            Bank.Item(i).Num = buffer.ReadInt32
-            Bank.Item(i).Value = buffer.ReadInt32
+            SetBank(MyIndex, i, buffer.ReadInt32)
+            SetBankValue(MyIndex, i, buffer.ReadInt32)
         Next
 
         InBank = True

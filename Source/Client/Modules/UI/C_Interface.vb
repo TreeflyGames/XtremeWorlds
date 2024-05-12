@@ -2352,9 +2352,15 @@ Module C_Interface
         invNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
         If invNum > 0 Then
-            If InTrade = 0 And InShop = 0 And Not InBank Then
-                SendUseItem(invNum)
-            End If 
+            If InBank
+                DepositItem(invNum, GetPlayerInvValue(MyIndex, invNum))
+                Exit Sub
+            End If
+
+            If InShop > 0 Then
+                SellItem(invNum)
+                Exit Sub
+            End If
 
             ' exit out if we're offering that item
             If InTrade > 0 Then
@@ -2380,8 +2386,11 @@ Module C_Interface
 
                 ' trade the normal item
                 Call TradeItem(invNum, 0)
+                Exit Sub
             End If
         End If
+
+        SendUseItem(invNum)
 
         Inventory_MouseMove()
     End Sub
@@ -2452,7 +2461,6 @@ Module C_Interface
         ItemNum = IsBank(Windows(GetWindowIndex("winBank")).Window.Left, Windows(GetWindowIndex("winBank")).Window.Top)
 
         If ItemNum > 0 Then
-
             ' make sure we're not dragging the item
             If DragBox.Type = PartType.Item And DragBox.Value = ItemNum Then Exit Sub
             
@@ -2466,7 +2474,7 @@ Module C_Interface
                 X = Windows(GetWindowIndex("winBank")).Window.Left + Windows(GetWindowIndex("winBank")).Window.Width
             End If
 
-            ShowItemDesc(X, Y, Bank.Item(ItemNum).Num)
+            ShowItemDesc(X, Y, GetBank(MyIndex, ItemNum))
         Else
             Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
@@ -2484,7 +2492,7 @@ Module C_Interface
             ' drag it
             With DragBox
                 .Type = PartType.Item
-                .Value = Bank.Item(BankSlot).Num
+                .Value = GetBank(MyIndex, BankSlot)
                 .Origin = PartOriginType.Bank
 
                 .Slot = BankSlot
@@ -2500,8 +2508,23 @@ Module C_Interface
             End With
 
             ShowWindow(winIndex, , False)
+
             ' stop dragging inventory
             Windows(GetWindowIndex("winBank")).Window.state = EntState.Normal
+        End If
+
+        Bank_MouseMove
+    End Sub
+
+    Public Sub Bank_DblClick()
+        Dim BankSlot As Long, winIndex As Long, i As Long
+
+        ' is there an item?
+        BankSlot = IsBank(Windows(GetWindowIndex("winBank")).Window.Left, Windows(GetWindowIndex("winBank")).Window.Top)
+
+        If BankSlot > 0 Then
+            WithdrawItem(BankSlot, GetBankValue(MyIndex, bankSlot))
+            Exit Sub
         End If
 
         Bank_MouseMove
@@ -2628,7 +2651,7 @@ Module C_Interface
                     If DragBox.Origin = PartOriginType.Bank Then
                         If DragBox.Type = PartType.Item Then
     
-                            If Item(Bank.Item(DragBox.Slot).num).Type <> ItemType.Currency Then
+                            If Item(GetBank(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
                                 WithdrawItem(DragBox.Slot, 0)
                             Else
                                 Dialogue("Withdraw Item", "Enter the amount you wish to withdraw.", "", DialogueType.WithdrawItem, DialogueStyle.Input, DragBox.Slot)
@@ -3057,7 +3080,7 @@ Module C_Interface
 
         ' Gold amount
         CreatePictureBox(WindowCount, "picBlank", 8, 293, 186, 18, , , , , 67, 67, 67)
-        'CreateLabel(WindowCount, "lblGold", 42, 296, 100, FontSize, "Gold", Georgia, Color.Yellow)
+        CreateLabel(WindowCount, "lblGold", 42, 296, 100, FontSize, "g", Georgia, Color.Yellow)
 
         ' Drop
         CreateButton(WindowCount, "btnDrop", 155, 294, 38, 16, "Drop" , , , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , , 5, 3)
@@ -3484,7 +3507,7 @@ Module C_Interface
     End Sub
 
     Public Sub CreateWindow_Bank()
-        CreateWindow("winBank", "Bank", Georgia, zOrder_Win, 0, 0, 391, 373, 1, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Bank_MouseMove), New Action(AddressOf Bank_MouseDown), , New Action(AddressOf DrawBank))
+        CreateWindow("winBank", "Bank", Georgia, zOrder_Win, 0, 0, 391, 373, 1, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Bank_MouseMove), New Action(AddressOf Bank_MouseDown), New Action(AddressOf Bank_DblCLick), New Action(AddressOf DrawBank))
 
         ' Centralize it
         CentralizeWindow(windowCount)
@@ -3516,15 +3539,15 @@ Module C_Interface
         CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", Georgia, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
         
         ' Buying/Selling
-        CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , DesignType.ChkCustom_Buying, , , , , New Action(AddressOf chkShopBuying))
-        CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , ,  , DesignType.ChkCustom_Selling, , , , , New Action(AddressOf chkShopSelling))
+        CreateCheckbox(windowCount, "chkBuying", 173, 265, 64, 32, 1, , , , , , DesignType.ChkCustom_Buying, , , , , New Action(AddressOf chkShopBuying))
+        CreateCheckbox(windowCount, "chkSelling", 222, 265, 64, 32, 0, , , , ,  , DesignType.ChkCustom_Selling, , , , , New Action(AddressOf chkShopSelling))
 
         ' Labels
         CreateLabel(windowCount, "lblName", 56, 226, 300, FontSize, "Test Item", Georgia, Color.Black, AlignmentType.Left)
         CreateLabel(windowCount, "lblCost", 56, 240, 300,  FontSize, "1000g", Georgia, Color.Black, AlignmentType.Left)
         
         ' Gold
-        'CreateLabel(windowCount, "lblGold", 44, 269, 300, FontSize, "G", Georgia, Color.White)
+        CreateLabel(windowCount, "lblGold", 44, 269, 300, FontSize, "g", Georgia, Color.White)
     End Sub
 
     Public Sub DrawShopBackground()
@@ -3577,7 +3600,7 @@ Module C_Interface
                 
                 ' draw selected square
                 If shopSelectedSlot = i Then
-                    RenderTexture(35, GfxType.GUI, Window, Left, Top, 0, 0, 32, 32, 32, 32)
+                    RenderTexture(61, GfxType.GUI, Window, Left, Top, 0, 0, 32, 32, 32, 32)
                 End If
             
                 If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
@@ -3599,7 +3622,7 @@ Module C_Interface
                 
                 ' draw selected square
                 If shopSelectedSlot = i Then
-                    RenderTexture(30, GfxType.GUI, Window, Left, Top, 0, 0, 32, 32, 32, 32)
+                    RenderTexture(61, GfxType.GUI, Window, Left, Top, 0, 0, 32, 32, 32, 32)
                 End If
             
                 If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
@@ -4079,7 +4102,7 @@ Module C_Interface
 
         ' actually draw the icons
         For i = 1 To MAX_BANK
-            itemNum = Bank.Item(i).Num
+            itemNum = GetBank(MyIndex, i) 
 
             If itemNum > 0 And itemNum <= MAX_ITEMS Then
                 ' not dragging?
@@ -4094,10 +4117,10 @@ Module C_Interface
                         RenderTexture(itemIcon, GfxType.Item, Window, Left, top, 0, 0, 32, 32, 32, 32)
 
                         ' If item is a stack - draw the amount you have
-                        If Bank.Item(i).Value > 1 Then
+                        If GetBankValue(MyIndex, i)  > 1 Then
                             Y = top + 21
                             X = Left + 1
-                            amount = Bank.Item(i).Value
+                            amount = GetBankValue(MyIndex, i) 
 
                             ' Draw currency but with k, m, b etc. using a convertion function
                             If CLng(amount) < 1000000 Then

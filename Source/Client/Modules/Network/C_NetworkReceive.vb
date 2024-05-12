@@ -340,9 +340,7 @@ Module C_NetworkReceive
             SetPlayerInvValue(MyIndex, i, amount)
         Next
 
-        ' changes to inventory, need to clear any drop menu
-        TmpCurrencyItem = 0
-        CurrencyMenu = 0 ' clear
+        SetGoldLabel
 
         buffer.Dispose()
     End Sub
@@ -356,9 +354,7 @@ Module C_NetworkReceive
         SetPlayerInv(MyIndex, n, buffer.ReadInt32)
         SetPlayerInvValue(MyIndex, n, buffer.ReadInt32)
 
-        ' changes, clear drop menu
-        TmpCurrencyItem = 0
-        CurrencyMenu = 0 ' clear
+        SetGoldLabel
 
         buffer.Dispose()
     End Sub
@@ -371,10 +367,6 @@ Module C_NetworkReceive
             n = buffer.ReadInt32
             SetPlayerEquipment(MyIndex, n, i)
         Next
-
-        ' changes to inventory, need to clear any drop menu
-        TmpCurrencyItem = 0
-        CurrencyMenu = 0 ' clear
 
         buffer.Dispose()
     End Sub
@@ -870,10 +862,6 @@ Module C_NetworkReceive
             Item(n).Projectile = buffer.ReadInt32()
             Item(n).Ammo = buffer.ReadInt32()
         Next
-
-        ' changes to inventory, need to clear any drop menu
-        TmpCurrencyItem = 0
-        CurrencyMenu = 0 ' clear
 
         i = 0
         n = 0

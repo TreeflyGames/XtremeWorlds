@@ -1228,7 +1228,7 @@ Module S_Player
         Dim i As Integer
 
         ' Check for subscript out of range
-        If IsPlaying(index) = False Or Itemnum <= 0 Or ItemNum > MAX_ITEMS Then
+        If Itemnum <= 0 Or ItemNum > MAX_ITEMS Then
             Exit Function
         End If
 
@@ -1251,7 +1251,7 @@ Module S_Player
         FindItemSlot = 0
 
         ' Check for subscript out of range
-        If IsPlaying(index) = False Or Itemnum <= 0 Or ItemNum > MAX_ITEMS Then
+        If Itemnum <= 0 Or ItemNum > MAX_ITEMS Then
             Exit Function
         End If
 
@@ -1270,8 +1270,6 @@ Module S_Player
         Dim n As Integer
         Dim mapNum As Integer
         Dim Msg As String
-
-        If Not IsPlaying(index) Then Exit Sub
 
         mapNum = GetPlayerMap(index)
 

@@ -25,7 +25,6 @@
             Case VitalType.SP
                 GetPlayerMaxVital = 50 + (Player(index).Level + (GetPlayerStat(index, StatType.Spirit) / 2)) * 2
         End Select
-
     End Function
 
     Public Function GetPlayerStat(index As Integer, Stat As StatType) As Integer
@@ -310,6 +309,22 @@
 
     Public Sub SetPlayerSkill(index As Integer, Skillslot As Integer, Skillnum As Integer)
         Player(index).Skill(Skillslot).Num = Skillnum
+    End Sub
+
+    Public Function GetBank(index As Integer, bankslot As Byte) As Integer
+        GetBank = Bank(index).Item(bankslot).Num
+    End Function
+
+    Public Sub SetBank(index As Integer, bankSlot As Byte, itemNum As Integer)
+        Bank(index).Item(bankSlot).Num = itemNum
+    End Sub
+
+    Public Function GetBankValue(index As Integer, bankSlot As Byte) As Integer
+        GetBankValue = Bank(index).Item(bankSlot).Value
+    End Function
+
+    Public Sub SetBankValue(index As Integer, bankSlot As Byte, itemValue As Integer)
+        Bank(index).Item(bankSlot).Value = itemValue
     End Sub
 
 End Module

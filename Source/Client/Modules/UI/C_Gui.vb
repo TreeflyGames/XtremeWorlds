@@ -81,7 +81,7 @@ Friend Module C_Gui
         Dim i As Long
 
         For i = 1 To MAX_BANK
-            If Bank.Item(i).num > 0 Then
+            If GetBank(MyIndex, i) > 0 Then
                 With tempRec
                     .Top = StartY + BankTop + ((BankOffsetY + PicY) * ((i - 1) \ BankColumns))
                     .bottom = .Top + PicY

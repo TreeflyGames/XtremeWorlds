@@ -87,7 +87,7 @@ Module C_General
         ClearPets()
         ClearJobs()
         ClearMorals()
-        ClearBank()
+        ClearBanks()
         ClearParty()
 
         For i = 1 To MAX_PLAYERS

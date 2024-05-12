@@ -87,11 +87,6 @@ Module C_Globals
     Public PingToDraw As String
     Public ShowRClick As Boolean
 
-    Public LastSkillDesc As Integer ' Stores the last skill we showed in desc
-
-    Public TmpCurrencyItem As Integer
-
-    Public CurrencyMenu As Byte
     Public chatShowLine As String
 
     ' chat
@@ -125,6 +120,8 @@ Module C_Globals
 
     ' Player variables
     Public MyIndex As Integer ' Index of actual player
+
+    Public InBank As Boolean
 
     Public InventoryItemSelected As Integer
     Public SkillBuffer As Integer

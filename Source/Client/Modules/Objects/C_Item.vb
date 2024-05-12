@@ -60,6 +60,7 @@ Module C_Items
     Friend Sub Packet_UpdateItem(ByRef data() As Byte)
         Dim n As Integer, i As Integer
         Dim buffer As New ByteStream(data)
+
         n = buffer.ReadInt32
 
         ' Update the item
@@ -103,9 +104,6 @@ Module C_Items
 
         buffer.Dispose()
 
-        ' changes to inventory, need to clear any drop menu
-        TmpCurrencyItem = 0
-        CurrencyMenu = 0 ' clear
     End Sub
 
 #End Region

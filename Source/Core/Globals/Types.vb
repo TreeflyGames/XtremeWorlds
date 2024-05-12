@@ -185,7 +185,7 @@ Public Module Types
         Dim Y As Integer
 
         ' Used for locking to players/npcs
-        Dim lockindex As Integer
+        Dim LockIndex As Integer
         Dim LockType As Byte
 
         ' Timing

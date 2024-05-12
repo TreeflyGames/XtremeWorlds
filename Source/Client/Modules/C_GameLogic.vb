@@ -1000,34 +1000,6 @@ Continue1:
         buffer.Dispose()
     End Sub
 
-    Friend Function GetBankItemNum(bankslot As Byte) As Integer
-        GetBankItemNum = 0
-
-        If bankslot = 0 Then
-            GetBankItemNum = 0
-            Exit Function
-        End If
-
-        If bankslot > MAX_BANK Then
-            GetBankItemNum = 0
-            Exit Function
-        End If
-
-        GetBankItemNum = Bank.Item(bankslot).Num
-    End Function
-
-    Friend Sub SetBankItemNum(bankslot As Byte, itemnum As Integer)
-        Bank.Item(bankslot).Num = itemnum
-    End Sub
-
-    Friend Function GetBankItemValue(bankslot As Byte) As Integer
-        GetBankItemValue = Bank.Item(bankslot).Value
-    End Function
-
-    Friend Sub SetBankItemValue(bankslot As Byte, itemValue As Integer)
-        Bank.Item(bankslot).Value = itemValue
-    End Sub
-
     Friend Sub ClearActionMsg(index As Byte)
         ActionMsg(index).Message = ""
         ActionMsg(index).Created = 0
@@ -1036,57 +1008,6 @@ Continue1:
         ActionMsg(index).Scroll = 0
         ActionMsg(index).X = 0
         ActionMsg(index).Y = 0
-    End Sub
-
-    Friend Sub UpdateSkillWindow(skillnum As Integer)
-
-        If LastSkillDesc = skillnum Then Exit Sub
-
-        SkillDescName = Skill(skillnum).Name
-
-        Select Case Skill(skillnum).Type
-            Case SkillType.DamageHp
-                SkillDescType = Language.SkillDescription.LoseHp
-                SkillDescVital = Language.SkillDescription.Lose
-            Case SkillType.DamageMp
-                SkillDescType = Language.SkillDescription.LoseMp
-                SkillDescVital = Language.SkillDescription.Lose
-            Case SkillType.HealHp
-                SkillDescType = Language.SkillDescription.GainHp
-                SkillDescVital = Language.SkillDescription.Gain
-            Case SkillType.HealMp
-                SkillDescType = Language.SkillDescription.GainMp
-                SkillDescVital = Language.SkillDescription.Gain
-            Case SkillType.Warp
-                SkillDescType = Language.SkillDescription.Warp
-        End Select
-
-        SkillDescReqMp = Skill(skillnum).MpCost
-        SkillDescReqLvl = Skill(skillnum).LevelReq
-        SkillDescReqAccess = Skill(skillnum).AccessReq
-
-        If Skill(skillnum).JobReq > 0 Then
-            SkillDescReqClass = Trim$(Job(Skill(skillnum).JobReq).Name)
-        Else
-            SkillDescReqClass = Language.SkillDescription.None
-        End If
-
-        SkillDescCastTime = Skill(skillnum).CastTime & "s"
-        SkillDescCoolDown = Skill(skillnum).CdTime & "s"
-        SkillDescDamage = Skill(skillnum).Vital
-
-        If Skill(skillnum).IsAoE Then
-            SkillDescAoe = Skill(skillnum).AoE & Language.SkillDescription.Tiles
-        Else
-            SkillDescAoe = Language.SkillDescription.No
-        End If
-
-        If Skill(skillnum).Range > 0 Then
-            SkillDescRange = Skill(skillnum).Range & Language.SkillDescription.Tiles
-        Else
-            SkillDescRange = Language.SkillDescription.SelfCast
-        End If
-
     End Sub
 
     Friend Sub UpdateDrawMapName()
@@ -1616,7 +1537,7 @@ Continue1:
                     AddDescInfo("Bind on Equip", Color.White)
                 End If
 
-                AddDescInfo("Value: " & Item(itemNum).Price & " G", Color.Yellow)
+                AddDescInfo("Value: " & Item(itemNum).Price & " g", Color.Yellow)
             Case ItemType.Equipment
                 ' Damage/defense
                 If Item(itemNum).SubType = EquipmentType.Weapon Then
@@ -2159,5 +2080,19 @@ Continue1:
             ' set the width
             Width = Width + barDifference
         End If
+    End Sub
+
+    Public Sub SetGoldLabel()
+        Dim i As Long, Amount As Long
+
+        Amount = 0
+
+        For i = 1 To MAX_INV
+            If GetPlayerInv(MyIndex, i) = 1 Then
+                Amount = GetPlayerInvValue(MyIndex, i)
+            End If
+        Next
+        Windows(GetWindowIndex("winShop")).Controls(GetControlIndex("winShop", "lblGold")).text = Format$(Amount, "#,###,###,###") & "g"
+        Windows(GetWindowIndex("winInventory")).Controls(GetControlIndex("winInventory", "lblGold")).text = Format$(Amount, "#,###,###,###") & "g"
     End Sub
 End Module
