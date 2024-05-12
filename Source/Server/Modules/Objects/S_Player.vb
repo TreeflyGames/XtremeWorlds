@@ -1163,7 +1163,7 @@ Module S_Player
             End if
 
             If .Type2 = TileType.Trap Then
-                amount = .Data1_2
+                amount += .Data1_2
             End If
 
             If amount > 0 Then
