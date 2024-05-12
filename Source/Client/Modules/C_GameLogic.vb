@@ -1624,7 +1624,7 @@ Continue1:
                     AddDescInfo("Speed: " & (Item(itemNum).Speed / 1000) & "s", Color.White)
                 Else
                     If Item(itemNum).Data2 > 0 Then
-                        AddDescInfo("Defence: " & Item(itemNum).Data2, Color.White)
+                        AddDescInfo("Defense: " & Item(itemNum).Data2, Color.White)
                     End If
                 End If
 
