@@ -66,7 +66,6 @@ Module C_Shops
 
         Shop(shopnum).BuyRate = buffer.ReadInt32()
         Shop(shopnum).Name = Trim(buffer.ReadString())
-        Shop(shopnum).Face = buffer.ReadInt32()
 
         For i = 1 To MAX_TRADES
             Shop(shopnum).TradeItem(i).CostItem = buffer.ReadInt32()

@@ -296,13 +296,6 @@ Module C_Editors
                 .nudBuy.Value = 100
             End If
 
-            .nudFace.Value = Shop(EditorIndex).Face
-            If File.Exists(Paths.Graphics & "Faces\" & Shop(EditorIndex).Face & GfxExt) Then
-                .picFace.BackgroundImage = Drawing.Image.FromFile(Paths.Graphics & "Faces\" & Shop(EditorIndex).Face & GfxExt)
-            Else
-                .picFace.BackgroundImage = Nothing
-            End If
-
             .cmbItem.SelectedIndex = 0
             .cmbCostItem.SelectedIndex = 0
         End With

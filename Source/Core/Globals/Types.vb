@@ -102,7 +102,6 @@ Public Module Types
 
     Public Structure ShopStruct
         Dim Name As String
-        Dim Face As Byte
         Dim BuyRate As Integer
         Dim TradeItem() As TradeItemStruct
     End Structure

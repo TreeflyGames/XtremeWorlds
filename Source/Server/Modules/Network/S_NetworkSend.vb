@@ -263,7 +263,6 @@ Module S_NetworkSend
 
         buffer.WriteInt32(Shop(shopNum).BuyRate)
         buffer.WriteString((Shop(shopNum).Name.Trim))
-        buffer.WriteInt32(Shop(shopNum).Face)
 
         For i = 1 To MAX_TRADES
             buffer.WriteInt32(Shop(shopNum).TradeItem(i).CostItem)
@@ -284,7 +283,6 @@ Module S_NetworkSend
         buffer.WriteInt32(shopNum)
         buffer.WriteInt32(Shop(shopNum).BuyRate)
         buffer.WriteString(Shop(shopNum).Name.Trim)
-        buffer.WriteInt32(Shop(shopNum).Face)
 
         For i = 1 To MAX_TRADES
             buffer.WriteInt32(Shop(shopNum).TradeItem(i).CostItem)

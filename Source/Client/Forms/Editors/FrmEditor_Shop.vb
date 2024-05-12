@@ -71,17 +71,6 @@ Friend Class frmEditor_Shop
         ShopEditorInit()
     End Sub
 
-    Private Sub ScrlFace_Scroll(sender As Object, e As EventArgs) Handles nudFace.ValueChanged
-
-        If File.Exists(Paths.Graphics & "Faces\" & nudFace.Value & GfxExt) Then
-            picFace.BackgroundImage = Image.FromFile(Paths.Graphics & "\Faces\" & nudFace.Value & GfxExt)
-        Else
-            picFace.BackgroundImage = Nothing
-        End If
-
-        Shop(EditorIndex).Face = nudFace.Value
-    End Sub
-
     Private Sub frmEditor_Shop_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lstIndex.Items.Clear()
 
@@ -92,6 +81,8 @@ Friend Class frmEditor_Shop
 
         cmbItem.Items.Clear()
         cmbCostItem.Items.Clear()
+        cmbItem.Items.Add("None")
+        cmbCostItem.Items.Add("None")
 
         For i = 1 To MAX_ITEMS
             cmbItem.Items.Add(i & ": " & Trim$(Item(i).Name))

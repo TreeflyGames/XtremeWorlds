@@ -626,7 +626,6 @@ Module C_NetworkSend
 
         buffer.WriteInt32(Shop(shopnum).BuyRate)
         buffer.WriteString((Shop(shopnum).Name))
-        buffer.WriteInt32(Shop(shopnum).Face)
 
         For i = 1 To MAX_TRADES
             buffer.WriteInt32(Shop(shopnum).TradeItem(i).CostItem)

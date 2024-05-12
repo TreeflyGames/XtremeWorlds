@@ -8,6 +8,7 @@ Friend Class frmEditor_NPC
         nudSprite.Maximum = NumCharacters
 
         lstIndex.Items.Clear()
+
         ' Add the names
         For i = 1 To MAX_NPCS
             lstIndex.Items.Add(i & ": " & Trim$(NPC(i).Name))

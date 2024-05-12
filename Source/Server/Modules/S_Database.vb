@@ -1604,7 +1604,6 @@ Module S_Database
         buffer.WriteInt32(shopNum)
         buffer.WriteInt32(Shop(shopNum).BuyRate)
         buffer.WriteString((Shop(shopNum).Name))
-        buffer.WriteInt32(Shop(shopNum).Face)
 
         For i = 1 To MAX_TRADES
             buffer.WriteInt32(Shop(shopNum).TradeItem(i).CostItem)

@@ -1259,7 +1259,6 @@ Module S_NetworkReceive
 
         Shop(ShopNum).BuyRate = buffer.ReadInt32()
         Shop(ShopNum).Name = buffer.ReadString()
-        Shop(ShopNum).Face = buffer.ReadInt32()
 
         For i = 1 To MAX_TRADES
             Shop(ShopNum).TradeItem(i).CostItem = buffer.ReadInt32()
