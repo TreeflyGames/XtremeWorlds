@@ -257,6 +257,9 @@ Module C_Graphics
                 If Windows(activeWindow).ActiveControl > 0 Then
                     ' Handle input
                     Select Case e.Code
+                        Case Keyboard.Key.Insert
+                            SendRequestAdmin()
+
                         Case Keyboard.Key.Escape
 
                         Case Keyboard.Key.Backspace
@@ -304,13 +307,6 @@ Module C_Graphics
         If Inputs.MoveRight(e.Code) Then VbKeyRight = False
         If Inputs.Attack(e.Code) Then VbKeyControl = False
         If Inputs.Run(e.Code) Then VbKeyShift = False
-
-        'admin
-        If e.Code = Keyboard.Key.Insert Then
-            If GetPlayerAccess(MyIndex) > 0 Then
-                SendRequestAdmin()
-            End If
-        End If
 
         'HandleInterfaceEvents(EntState.KeyUp)
     End Sub

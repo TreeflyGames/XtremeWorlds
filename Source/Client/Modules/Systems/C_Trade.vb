@@ -43,6 +43,7 @@ Module C_Trade
     Sub Packet_TradeUpdate(ByRef data() As Byte)
         Dim datatype As Integer
         Dim buffer As New ByteStream(data)
+        
         datatype = buffer.ReadInt32
 
         If dataType = 0 Then ' ours!

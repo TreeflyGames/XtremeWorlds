@@ -397,7 +397,6 @@ Friend Module S_Item
         buffer = New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SUpdateItem)
-
         buffer.WriteBlock(ItemData(itemNum))
 
         Socket.SendDataTo(index, buffer.Data, buffer.Head)
@@ -407,8 +406,8 @@ Friend Module S_Item
     Sub SendUpdateItemToAll(itemNum As Integer)
         Dim buffer As ByteStream
         buffer = New ByteStream(4)
-        buffer.WriteInt32(ServerPackets.SUpdateItem)
 
+        buffer.WriteInt32(ServerPackets.SUpdateItem)
         buffer.WriteBlock(ItemData(itemNum))
 
         SendDataToAll(buffer.Data, buffer.Head)

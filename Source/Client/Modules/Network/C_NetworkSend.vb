@@ -471,6 +471,8 @@ Module C_NetworkSend
     End Sub
 
     Friend Sub SendRequestAdmin()
+        If GetPlayerAccess(MyIndex) < AccessType.Moderator Then Exit Sub
+
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CAdmin)

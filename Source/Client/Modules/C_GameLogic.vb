@@ -1476,6 +1476,7 @@ Continue1:
 
             .Controls(GetControlIndex("winDescription", "lblClass")).Text = jobName
             .Controls(GetControlIndex("winDescription", "lblClass")).Color = Color
+            
             ' level
             If Item(itemNum).LevelReq > 0 Then
                 levelTxt = "Level " & Item(itemNum).LevelReq
