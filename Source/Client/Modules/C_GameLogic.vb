@@ -1403,7 +1403,7 @@ Continue1:
         If invNum <= 0 Or invNum > MAX_INV Then Exit Sub
 
         ' show
-        If GetPlayerInv(MyIndex, invNum) Then
+        If GetPlayerInv(MyIndex, invNum) > 0 Then
             If Item(GetPlayerInv(MyIndex, invNum)).BindType > 0 And Player(MyIndex).Inv(invNum).Bound > 0 Then soulBound = True
             ShowItemDesc(x, y, GetPlayerInv(MyIndex, invNum))
         End If
@@ -2084,8 +2084,6 @@ Continue1:
 
     Public Sub SetGoldLabel()
         Dim i As Long, Amount As Long
-
-        Amount = 0
 
         For i = 1 To MAX_INV
             If GetPlayerInv(MyIndex, i) = 1 Then

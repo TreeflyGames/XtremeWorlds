@@ -102,6 +102,11 @@ Module C_Items
         Item(n).Projectile = buffer.ReadInt32()
         Item(n).Ammo = buffer.ReadInt32()
 
+        If n = descLastItem Then
+            descLastType = 0
+            descLastItem = 0
+        End If
+
         buffer.Dispose()
 
     End Sub
