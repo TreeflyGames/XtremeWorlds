@@ -1370,10 +1370,10 @@ Module S_Player
         FindOpenInvSlot = -1
     End Function
 
-    Function TakeInvItem(index As Integer, ItemNum As Integer, ItemVal As Integer) As Boolean
+    Function TakeInv(index As Integer, ItemNum As Integer, ItemVal As Integer) As Boolean
         Dim i As Integer
 
-        TakeInvItem = False
+        TakeInv = False
 
         ' Check for subscript out of range
         If IsPlaying(index) = False Or Itemnum <= 0 Or ItemNum > MAX_ITEMS Then
@@ -1388,16 +1388,16 @@ Module S_Player
 
                     ' Is what we are trying to take away more then what they have?  If so just set it to zero
                     If ItemVal >= GetPlayerInvValue(index, i) Then
-                        TakeInvItem = True
+                        TakeInv = True
                     Else
                         SetPlayerInvValue(index, i, GetPlayerInvValue(index, i) - ItemVal)
                         SendInventoryUpdate(index, i)
                     End If
                 Else
-                    TakeInvItem = True
+                    TakeInv = True
                 End If
 
-                If TakeInvItem Then
+                If TakeInv Then
                     SetPlayerInv(index, i, 0)
                     SetPlayerInvValue(index, i, 0)
                     ' Send the inventory update
@@ -1410,12 +1410,12 @@ Module S_Player
 
     End Function
 
-    Function GiveInvItem(index As Integer, ItemNum As Integer, ItemVal As Integer, Optional SendUpdate As Boolean = True) As Boolean
+    Function GiveInv(index As Integer, ItemNum As Integer, ItemVal As Integer, Optional SendUpdate As Boolean = True) As Boolean
         Dim i As Integer
 
         ' Check for subscript out of range
         If IsPlaying(index) = False Or Itemnum <= 0 Or ItemNum > MAX_ITEMS Then
-            GiveInvItem = False
+            GiveInv = False
             Exit Function
         End If
 
@@ -1426,10 +1426,10 @@ Module S_Player
             SetPlayerInv(index, i, ItemNum)
             SetPlayerInvValue(index, i, GetPlayerInvValue(index, i) + ItemVal)
             If SendUpdate Then SendInventoryUpdate(index, i)
-            GiveInvItem = True
+            GiveInv = True
         Else
             PlayerMsg(index, "Your inventory is full.", ColorType.BrightRed)
-            GiveInvItem = False
+            GiveInv = False
         End If
 
     End Function
@@ -1633,7 +1633,7 @@ Module S_Player
                         SetPlayerEquipment(index, itemNum, EquipmentType.Armor)
 
                         PlayerMsg(index, "You equip " & CheckGrammar(Item(itemNum).Name), ColorType.BrightGreen)
-                        TakeInvItem(index, itemNum, 0)
+                        TakeInv(index, itemNum, 0)
 
                         If tempitem > 0 Then ' Return their old equipment to their inventory.
                             m = FindOpenInvSlot(index, tempitem)
@@ -1658,7 +1658,7 @@ Module S_Player
                         SetPlayerEquipment(index, itemNum, EquipmentType.Helmet)
 
                         PlayerMsg(index, "You equip " & CheckGrammar(Item(itemNum).Name), ColorType.BrightGreen)
-                        TakeInvItem(index, itemNum, 1)
+                        TakeInv(index, itemNum, 1)
 
                         If tempitem > 0 Then ' give back the stored item
                             m = FindOpenInvSlot(index, tempitem)
@@ -1687,7 +1687,7 @@ Module S_Player
                         SetPlayerEquipment(index, itemNum, EquipmentType.Shield)
 
                         PlayerMsg(index, "You equip " & CheckGrammar(Item(itemNum).Name), ColorType.BrightGreen)
-                        TakeInvItem(index, itemNum, 1)
+                        TakeInv(index, itemNum, 1)
 
                         If tempitem > 0 Then ' give back the stored item
                             m = FindOpenInvSlot(index, tempitem)
@@ -1712,9 +1712,9 @@ Module S_Player
                         SendAnimation(GetPlayerMap(index), Item(itemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.HP, GetPlayerVital(index, VitalType.HP) + Item(itemNum).Data1)
                         If Item(itemNum).Stackable = 1 Then
-                            TakeInvItem(index, itemNum, 1)
+                            TakeInv(index, itemNum, 1)
                         Else
-                            TakeInvItem(index, itemNum, 0)
+                            TakeInv(index, itemNum, 0)
                         End If
                         SendVital(index, VitalType.HP)
 
@@ -1723,9 +1723,9 @@ Module S_Player
                         SendAnimation(GetPlayerMap(index), Item(itemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Item(itemNum).Data1)
                         If Item(itemNum).Stackable = 1 Then
-                            TakeInvItem(index, itemNum, 1)
+                            TakeInv(index, itemNum, 1)
                         Else
-                            TakeInvItem(index, itemNum, 0)
+                            TakeInv(index, itemNum, 0)
                         End If
                         SendVital(index, VitalType.SP)
 
@@ -1733,9 +1733,9 @@ Module S_Player
                         SendAnimation(GetPlayerMap(index), Item(itemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Item(itemNum).Data1)
                         If Item(itemNum).Stackable = 1 Then
-                            TakeInvItem(index, itemNum, 1)
+                            TakeInv(index, itemNum, 1)
                         Else
-                            TakeInvItem(index, itemNum, 0)
+                            TakeInv(index, itemNum, 0)
                         End If
                         SendVital(index, VitalType.SP)
 
@@ -1743,9 +1743,9 @@ Module S_Player
                         SendAnimation(GetPlayerMap(index), Item(itemNum).Animation, 0, 0, TargetType.Player, index)
                         SetPlayerExp(index, GetPlayerExp(index) + Item(itemNum).Data1)
                         If Item(itemNum).Stackable = 1 Then
-                            TakeInvItem(index, itemNum, 1)
+                            TakeInv(index, itemNum, 1)
                         Else
-                            TakeInvItem(index, itemNum, 0)
+                            TakeInv(index, itemNum, 0)
                         End If
                         SendExp(index)
 
@@ -1754,7 +1754,7 @@ Module S_Player
             Case ItemType.Projectile
                 If Item(itemNum).Ammo > 0 Then
                     If HasItem(index, Item(itemNum).Ammo) Then
-                        TakeInvItem(index, Item(itemNum).Ammo, 1)
+                        TakeInv(index, Item(itemNum).Ammo, 1)
                         PlayerFireProjectile(index)
                     Else
                         PlayerMsg(index, "No More " & Item(Item(GetPlayerEquipment(index, EquipmentType.Weapon)).Ammo).Name & " !", ColorType.BrightRed)
@@ -1784,9 +1784,9 @@ Module S_Player
 
             Case ItemType.Pet
                 If Item(itemNum).Stackable = 1 Then
-                    TakeInvItem(index, itemNum, 1)
+                    TakeInv(index, itemNum, 1)
                 Else
-                    TakeInvItem(index, itemNum, 0)
+                    TakeInv(index, itemNum, 0)
                 End If
                 n = Item(itemNum).Data1
                 AdoptPet(index, n)
@@ -1821,7 +1821,7 @@ Module S_Player
                         If Not HasSkill(index, n) Then
                             SetPlayerSkill(index, i, n)
                             SendAnimation(GetPlayerMap(index), Item(itemNum).Animation, 0, 0, TargetType.Player, index)
-                            TakeInvItem(index, itemNum, 0)
+                            TakeInv(index, itemNum, 0)
                             PlayerMsg(index, "You study the skill carefully.", ColorType.Yellow)
                             PlayerMsg(index, "You have learned a new skill!", ColorType.BrightGreen)
                             SendPlayerSkills(Index)
@@ -2305,10 +2305,12 @@ Module S_Player
 
 #Region "Bank"
 
-    Sub GiveBankItem(index As Integer, InvSlot As Integer, Amount As Integer)
+    Sub GiveBank(index As Integer, InvSlot As Integer, Amount As Integer)
         Dim BankSlot As Integer, itemnum As Integer
 
         If InvSlot <= 0 Or InvSlot > MAX_INV Then Exit Sub
+
+        If Amount <= 0 Then Amount = 1
 
         If GetPlayerInvValue(index, InvSlot) < 0 Then Exit Sub
         If GetPlayerInvValue(index, InvSlot) < Amount And GetPlayerInv(index, InvSlot) = 0 Then Exit Sub
@@ -2318,22 +2320,22 @@ Module S_Player
 
         If BankSlot > 0 Then
             If Item(GetPlayerInv(index, InvSlot)).Type = ItemType.Currency Or Item(GetPlayerInv(index, InvSlot)).Stackable = 1 Then
-                If GetPlayerBankItemNum(index, BankSlot) = GetPlayerInv(index, InvSlot) Then
-                    SetPlayerBankItemValue(index, BankSlot, GetPlayerBankItemValue(index, BankSlot) + Amount)
-                    TakeInvItem(index, GetPlayerInv(index, InvSlot), Amount)
+                If GetPlayerBank(index, BankSlot) = GetPlayerInv(index, InvSlot) Then
+                    SetPlayerBankValue(index, BankSlot, GetPlayerBankValue(index, BankSlot) + Amount)
+                    TakeInv(index, GetPlayerInv(index, InvSlot), Amount)
                 Else
-                    SetPlayerBankItemNum(index, BankSlot, GetPlayerInv(index, InvSlot))
-                    SetPlayerBankItemValue(index, BankSlot, Amount)
-                    TakeInvItem(index, GetPlayerInv(index, InvSlot), Amount)
+                    SetPlayerBank(index, BankSlot, GetPlayerInv(index, InvSlot))
+                    SetPlayerBankValue(index, BankSlot, Amount)
+                    TakeInv(index, GetPlayerInv(index, InvSlot), Amount)
                 End If
             Else
-                If GetPlayerBankItemNum(index, BankSlot) = GetPlayerInv(index, InvSlot) Then
-                    SetPlayerBankItemValue(index, BankSlot, GetPlayerBankItemValue(index, BankSlot) + 1)
-                    TakeInvItem(index, GetPlayerInv(index, InvSlot), 0)
+                If GetPlayerBank(index, BankSlot) = GetPlayerInv(index, InvSlot) Then
+                    SetPlayerBankValue(index, BankSlot, GetPlayerBankValue(index, BankSlot) + 1)
+                    TakeInv(index, GetPlayerInv(index, InvSlot), 0)
                 Else
-                    SetPlayerBankItemNum(index, BankSlot, itemnum)
-                    SetPlayerBankItemValue(index, BankSlot, 1)
-                    TakeInvItem(index, GetPlayerInv(index, InvSlot), 0)
+                    SetPlayerBank(index, BankSlot, itemnum)
+                    SetPlayerBankValue(index, BankSlot, 1)
+                    TakeInv(index, GetPlayerInv(index, InvSlot), 0)
                 End If
             End If
 
@@ -2342,20 +2344,20 @@ Module S_Player
 
     End Sub
 
-    Function GetPlayerBankItemNum(index As Integer, BankSlot As Byte) As Integer
-        GetPlayerBankItemNum = Bank(index).Item(BankSlot).Num
+    Function GetPlayerBank(index As Integer, BankSlot As Byte) As Integer
+        GetPlayerBank = Bank(index).Item(BankSlot).Num
     End Function
 
-    Sub SetPlayerBankItemNum(index As Integer, BankSlot As Byte, ItemNum As Integer)
+    Sub SetPlayerBank(index As Integer, BankSlot As Byte, ItemNum As Integer)
         Bank(index).Item(BankSlot).Num = ItemNum
     End Sub
 
-    Function GetPlayerBankItemValue(index As Integer, BankSlot As Byte) As Integer
-        GetPlayerBankItemValue = Bank(index).Item(BankSlot).Value
+    Function GetPlayerBankValue(index As Integer, BankSlot As Byte) As Integer
+        GetPlayerBankValue = Bank(index).Item(BankSlot).Value
     End Function
 
-    Sub SetPlayerBankItemValue(index As Integer, BankSlot As Byte, ItemValue As Integer)
-        Bank(index).Item(BankSlot).Value = ItemValue
+    Sub SetPlayerBankValue(index As Integer, BankSlot As Byte, Value As Integer)
+        Bank(index).Item(BankSlot).Value = Value
     End Sub
 
     Function FindOpenBankSlot(index As Integer, ItemNum As Integer) As Byte
@@ -2366,7 +2368,7 @@ Module S_Player
 
         If Item(ItemNum).Type = ItemType.Currency Or Item(ItemNum).Stackable = 1 Then
             For i = 1 To MAX_BANK
-                If GetPlayerBankItemNum(index, i) = ItemNum Then
+                If GetPlayerBank(index, i) = ItemNum Then
                     FindOpenBankSlot = i
                     Exit Function
                 End If
@@ -2374,7 +2376,7 @@ Module S_Player
         End If
 
         For i = 1 To MAX_BANK
-            If GetPlayerBankItemNum(index, i) = 0 Then
+            If GetPlayerBank(index, i) = 0 Then
                 FindOpenBankSlot = i
                 Exit Function
             End If
@@ -2382,35 +2384,35 @@ Module S_Player
 
     End Function
 
-    Sub TakeBankItem(index As Integer, BankSlot As Integer, Amount As Integer)
+    Sub TakeBank(index As Integer, BankSlot As Integer, Amount As Integer)
         Dim invSlot
 
         If BankSlot <= 0 Or BankSlot > MAX_BANK Then Exit Sub
 
-        If GetPlayerBankItemValue(index, BankSlot) <= 0 Then Exit Sub
+        If Amount <= 0 Then Amount = 1
 
-        If GetPlayerBankItemValue(index, BankSlot) < Amount Then Exit Sub
+        If GetPlayerBankValue(index, BankSlot) < Amount Then Exit Sub
 
-        invSlot = FindOpenInvSlot(index, GetPlayerBankItemNum(index, BankSlot))
+        invSlot = FindOpenInvSlot(index, GetPlayerBank(index, BankSlot))
 
         If invSlot > 0 Then
-            If Item(GetPlayerBankItemNum(index, BankSlot)).Type = ItemType.Currency Or Item(GetPlayerBankItemNum(index, BankSlot)).Stackable = 1 Then
-                GiveInvItem(index, GetPlayerBankItemNum(index, BankSlot), Amount)
-                SetPlayerBankItemValue(index, BankSlot, GetPlayerBankItemValue(index, BankSlot) - Amount)
-                If GetPlayerBankItemValue(index, BankSlot) < 0 Then
-                    SetPlayerBankItemNum(index, BankSlot, 0)
-                    SetPlayerBankItemValue(index, BankSlot, 0)
+            If Item(GetPlayerBank(index, BankSlot)).Type = ItemType.Currency Or Item(GetPlayerBank(index, BankSlot)).Stackable = 1 Then
+                GiveInv(index, GetPlayerBank(index, BankSlot), Amount)
+                SetPlayerBankValue(index, BankSlot, GetPlayerBankValue(index, BankSlot) - Amount)
+                If GetPlayerBankValue(index, BankSlot) <= 0 Then
+                    SetPlayerBank(index, BankSlot, 0)
+                    SetPlayerBankValue(index, BankSlot, 0)
                 End If
             Else
-                If GetPlayerBankItemNum(index, BankSlot) = GetPlayerInv(index, invSlot) Then
-                    If GetPlayerBankItemValue(index, BankSlot) > 1 Then
-                        GiveInvItem(index, GetPlayerBankItemNum(index, BankSlot), 0)
-                        SetPlayerBankItemValue(index, BankSlot, GetPlayerBankItemValue(index, BankSlot) - 1)
+                If GetPlayerBank(index, BankSlot) = GetPlayerInv(index, invSlot) Then
+                    If GetPlayerBankValue(index, BankSlot) > 1 Then
+                        GiveInv(index, GetPlayerBank(index, BankSlot), 0)
+                        SetPlayerBankValue(index, BankSlot, GetPlayerBankValue(index, BankSlot) - 1)
                     End If
                 Else
-                    GiveInvItem(index, GetPlayerBankItemNum(index, BankSlot), 0)
-                    SetPlayerBankItemNum(index, BankSlot, 0)
-                    SetPlayerBankItemValue(index, BankSlot, 0)
+                    GiveInv(index, GetPlayerBank(index, BankSlot), 0)
+                    SetPlayerBank(index, BankSlot, 0)
+                    SetPlayerBankValue(index, BankSlot, 0)
                 End If
             End If
 
@@ -2425,16 +2427,16 @@ Module S_Player
 
         If OldSlot = 0 Or NewSlot = 0 Then Exit Sub
 
-        OldNum = GetPlayerBankItemNum(index, OldSlot)
-        OldValue = GetPlayerBankItemValue(index, OldSlot)
-        NewNum = GetPlayerBankItemNum(index, NewSlot)
-        NewValue = GetPlayerBankItemValue(index, NewSlot)
+        OldNum = GetPlayerBank(index, OldSlot)
+        OldValue = GetPlayerBankValue(index, OldSlot)
+        NewNum = GetPlayerBank(index, NewSlot)
+        NewValue = GetPlayerBankValue(index, NewSlot)
 
-        SetPlayerBankItemNum(index, NewSlot, OldNum)
-        SetPlayerBankItemValue(index, NewSlot, OldValue)
+        SetPlayerBank(index, NewSlot, OldNum)
+        SetPlayerBankValue(index, NewSlot, OldValue)
 
-        SetPlayerBankItemNum(index, OldSlot, NewNum)
-        SetPlayerBankItemValue(index, OldSlot, NewValue)
+        SetPlayerBank(index, OldSlot, NewNum)
+        SetPlayerBankValue(index, OldSlot, NewValue)
 
         SendBank(index)
     End Sub

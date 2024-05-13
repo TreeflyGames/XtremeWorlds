@@ -362,7 +362,7 @@ Friend Module S_Resource
                                     MapResource(MapNum).ResourceData(Resource_num).Timer = GetTimeMs()
                                     SendMapResourceToMap(MapNum, Resource_num)
                                     SendActionMsg(MapNum, Trim$(Resource(Resource_index).SuccessMessage), ColorType.BrightGreen, 1, (GetPlayerX(index) * 32), (GetPlayerY(index) * 32))
-                                    GiveInvItem(index, Resource(Resource_index).ItemReward, 1)
+                                    GiveInv(index, Resource(Resource_index).ItemReward, 1)
                                     SendAnimation(MapNum, Resource(Resource_index).Animation, rX, rY)
                                     SetPlayerGatherSkillExp(index, ResourceType, GetPlayerGatherSkillExp(index, ResourceType) + Resource(Resource_index).ExpReward)
                                     'send msg

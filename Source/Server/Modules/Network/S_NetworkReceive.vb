@@ -603,7 +603,7 @@ Module S_NetworkReceive
             If Item(GetPlayerEquipment(index, EquipmentType.Weapon)).Projectile > 0 Then 'Item has a projectile
                 If Item(GetPlayerEquipment(index, EquipmentType.Weapon)).Ammo > 0 Then
                     If HasItem(index, Item(GetPlayerEquipment(index, EquipmentType.Weapon)).Ammo) Then
-                        TakeInvItem(index, Item(GetPlayerEquipment(index, EquipmentType.Weapon)).Ammo, 1)
+                        TakeInv(index, Item(GetPlayerEquipment(index, EquipmentType.Weapon)).Ammo, 1)
                         PlayerFireProjectile(index)
                         Exit Sub
                     Else
@@ -1726,9 +1726,9 @@ Module S_NetworkReceive
 
             ' it's fine, let's go ahead
             For i = 1 To .CostValue
-                TakeInvItem(index, .CostItem, .CostValue)
+                TakeInv(index, .CostItem, .CostValue)
             Next
-            GiveInvItem(index, .Item, .ItemValue)
+            GiveInv(index, .Item, .ItemValue)
         End With
 
         ' send confirmation message & reset their shop action
@@ -1748,10 +1748,10 @@ Module S_NetworkReceive
         invSlot = buffer.ReadInt32
 
         ' if invalid, exit out
-        If invSlot < 0 Or invSlot > MAX_INV Then Exit Sub
+        If invSlot <= 0 Or invSlot > MAX_INV Then Exit Sub
 
         ' has item?
-        If GetPlayerInv(index, invSlot) < 0 Or GetPlayerInv(index, invSlot) > MAX_ITEMS Then Exit Sub
+        If GetPlayerInv(index, invSlot) <= 0 Or GetPlayerInv(index, invSlot) > MAX_ITEMS Then Exit Sub
 
         ' seems to be valid
         itemNum = GetPlayerInv(index, invSlot)
@@ -1768,8 +1768,8 @@ Module S_NetworkReceive
         End If
 
         ' take item and give gold
-        TakeInvItem(index, itemNum, 1)
-        GiveInvItem(index, 1, price)
+        TakeInv(index, itemNum, 1)
+        GiveInv(index, 1, price)
 
         ' send confirmation message & reset their shop action
         PlayerMsg(index, "Sold the " & Trim(Item(GetPlayerInv(index, invSlot)).Name) & " !", ColorType.BrightGreen)
@@ -1797,19 +1797,19 @@ Module S_NetworkReceive
         invslot = buffer.ReadInt32
         amount = buffer.ReadInt32
 
-        GiveBankItem(index, invslot, amount)
+        GiveBank(index, invslot, amount)
 
         buffer.Dispose()
     End Sub
 
     Sub Packet_WithdrawItem(index As Integer, ByRef data() As Byte)
-        Dim bankslot As Integer, amount As Integer
+        Dim bankSlot As Integer, amount As Integer
         Dim buffer As New ByteStream(data)
 
-        bankslot = buffer.ReadInt32
+        bankSlot = buffer.ReadInt32
         amount = buffer.ReadInt32
 
-        TakeBankItem(index, bankslot, amount)
+        TakeBank(index, bankSlot, amount)
 
         buffer.Dispose()
     End Sub
@@ -1826,11 +1826,11 @@ Module S_NetworkReceive
         y = buffer.ReadInt32
 
         If GetPlayerAccess(index) >= AccessType.Mapper Then
-            'Set the  Information
+            ' Set the information
             SetPlayerX(index, x)
             SetPlayerY(index, y)
 
-            'send the stuff
+            ' send the stuff
             SendPlayerXY(index)
         End If
 
@@ -1971,12 +1971,12 @@ Module S_NetworkReceive
             ' player
             If tmpTradeItem2(i).Num > 0 Then
                 ' give away!
-                GiveInvItem(index, tmpTradeItem2(i).Num, tmpTradeItem2(i).Value, False)
+                GiveInv(index, tmpTradeItem2(i).Num, tmpTradeItem2(i).Value, False)
             End If
             ' target
             If tmpTradeItem(i).Num > 0 Then
                 ' give away!
-                GiveInvItem(tradeTarget, tmpTradeItem(i).Num, tmpTradeItem(i).Value, False)
+                GiveInv(tradeTarget, tmpTradeItem(i).Num, tmpTradeItem(i).Value, False)
             End If
         Next
 

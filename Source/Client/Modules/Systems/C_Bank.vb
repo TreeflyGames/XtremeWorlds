@@ -56,11 +56,11 @@ Module C_Banks
         buffer.Dispose()
     End Sub
 
-    Friend Sub WithdrawItem(bankslot As Integer, amount As Integer)
+    Friend Sub WithdrawItem(bankSlot As Integer, amount As Integer)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CWithdrawItem)
-        buffer.WriteInt32(bankslot)
+        buffer.WriteInt32(bankSlot)
         buffer.WriteInt32(amount)
 
         Socket.SendData(buffer.Data, buffer.Head)
@@ -79,6 +79,10 @@ Module C_Banks
     End Sub
 
     Friend Sub CloseBank()
+        If Windows(GetWindowIndex("winBank")).Window.visible Then
+            HideWindow(GetWindowIndex("winBank"))
+        End If
+
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CCloseBank)

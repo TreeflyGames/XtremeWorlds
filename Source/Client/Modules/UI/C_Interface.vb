@@ -2352,7 +2352,7 @@ Module C_Interface
         invNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
 
         If invNum > 0 Then
-            If InBank
+            If InBank Then
                 DepositItem(invNum, GetPlayerInvValue(MyIndex, invNum))
                 Exit Sub
             End If
@@ -3535,16 +3535,16 @@ Module C_Interface
         CreatePictureBox(windowCount, "picItem", 15, 224, 32, 32)
         
         ' Buttons
-        CreateButton(windowCount, "btnBuy", 190, 228, 70, 24, "Buy", Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnShopBuy))
-        CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", Georgia, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
+        CreateButton(windowCount, "btnBuy", 190, 228, 70, 24, "Buy", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnShopBuy))
+        CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", Arial, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
         
         ' Buying/Selling
         CreateCheckbox(windowCount, "chkBuying", 173, 265, 64, 32, 1, , , , , , DesignType.ChkCustom_Buying, , , , , New Action(AddressOf chkShopBuying))
         CreateCheckbox(windowCount, "chkSelling", 222, 265, 64, 32, 0, , , , ,  , DesignType.ChkCustom_Selling, , , , , New Action(AddressOf chkShopSelling))
 
         ' Labels
-        CreateLabel(windowCount, "lblName", 56, 226, 300, FontSize, "Test Item", Georgia, Color.Black, AlignmentType.Left)
-        CreateLabel(windowCount, "lblCost", 56, 240, 300,  FontSize, "1000g", Georgia, Color.Black, AlignmentType.Left)
+        CreateLabel(windowCount, "lblName", 56, 226, 300, FontSize, "Test Item", Arial, Color.Black, AlignmentType.Left)
+        CreateLabel(windowCount, "lblCost", 56, 240, 300,  FontSize, "1000g", Arial, Color.Black, AlignmentType.Left)
         
         ' Gold
         CreateLabel(windowCount, "lblGold", 44, 269, 300, FontSize, "g", Georgia, Color.White)
@@ -4105,6 +4105,7 @@ Module C_Interface
             itemNum = GetBank(MyIndex, i) 
 
             If itemNum > 0 And itemNum <= MAX_ITEMS Then
+                StreamItem(itemNum)
                 ' not dragging?
                 If Not (DragBox.Origin = PartOriginType.Bank And DragBox.Slot = i) Then
                     itemIcon = Item(itemNum).Icon

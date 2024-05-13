@@ -1576,13 +1576,13 @@ Friend Module S_EventLogic
                                                                         SetPlayerInvValue(i, FindItemSlot(i, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data1), Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data3)
                                                                     End If
                                                                 ElseIf Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data2 = 1 Then
-                                                                    GiveInvItem(i, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data1, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data3, True)
+                                                                    GiveInv(i, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data1, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data3, True)
                                                                 ElseIf Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data2 = 2 Then
                                                                     Dim itemAmount As Integer
                                                                     itemAmount = HasItem(i, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data1)
                                                                     ' Check Amount
                                                                     If itemAmount >= Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data3 Then
-                                                                        TakeInvItem(i, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data1, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data3)
+                                                                        TakeInv(i, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data1, Map(GetPlayerMap(i)).Events(.EventId).Pages(.PageId).CommandList(.CurList).Commands(.CurSlot).Data3)
                                                                     End If
                                                                 End If
                                                                 SendInventory(i)

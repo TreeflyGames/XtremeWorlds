@@ -107,7 +107,7 @@ Module C_Player
 
 #Region "Movement"
     Sub CheckMovement()
-        If IsTryingToMove() And CanMove() Then
+        If IsTryingToMove() AndAlso CanMove() Then
             ' Check if player has the shift key down for running
             If VbKeyShift Then
                 Player(MyIndex).Moving = MovementType.Walking
@@ -183,10 +183,6 @@ Module C_Player
             Exit Function
         End If
 
-        If InBank Then
-            CloseBank()
-        End If
-
         If InEvent Then
             CanMove = False
             Exit Function
@@ -206,6 +202,10 @@ Module C_Player
         If Not inSmallChat Then
             CanMove = False
             Exit Function
+        End If
+
+        If InBank Then
+            CloseBank()
         End If
 
         d = GetPlayerDir(MyIndex)
