@@ -184,8 +184,7 @@ Module C_Player
         End If
 
         If InBank Then
-            CanMove = False
-            Exit Function
+            CloseBank()
         End If
 
         If InEvent Then
@@ -202,10 +201,6 @@ Module C_Player
         If InTrade Then
             CanMove = False
             Exit Function
-        End If
-
-        If InBank Then
-            CloseBank()
         End If
 
         If Not inSmallChat Then
