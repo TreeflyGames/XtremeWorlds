@@ -85,7 +85,7 @@ Public Class frmEditor_Map
             ReDim Map.Tile(.MaxX, .MaxY)
             ReDim Autotile(.MaxX, .MaxY)
 
-            For i = 1 To MaxTileHistory
+            For i = 0 To MaxTileHistory
                 ReDim TileHistory(i).Tile(.MaxX, .MaxY)
             Next
 
@@ -97,7 +97,7 @@ Public Class frmEditor_Map
                     ReDim .Tile(X, Y).Layer(LayerType.Count - 1)
                     ReDim Autotile(X, Y).Layer(LayerType.Count - 1)
 
-                    For i = 1 To MaxTileHistory
+                    For i = 0 To MaxTileHistory
                         ReDim TileHistory(i).Tile(X, Y).Layer(LayerType.Count - 1)
                     Next
 

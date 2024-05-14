@@ -81,7 +81,7 @@ Module C_Maps
         ReDim Map.Npc(MAX_MAP_NPCS)
         ReDim Map.Tile(Map.MaxX, Map.MaxY)
         ReDim TileHistory(MaxTileHistory)
-        For i = 1 To MaxTileHistory
+        For i = 0 To MaxTileHistory
             ReDim TileHistory(i).Tile(Map.MaxX, Map.MaxY)
         Next
         HistoryIndex = 0
@@ -91,7 +91,7 @@ Module C_Maps
             For y = 0 To MAX_MAPY
                 ReDim Map.Tile(x, y).Layer(LayerType.Count - 1)
 
-                For i = 1 To MaxTileHistory
+                For i = 0 To MaxTileHistory
                     ReDim TileHistory(i).Tile(x, y).Layer(LayerType.Count - 1)
                 Next
 
@@ -268,7 +268,7 @@ Module C_Maps
             Map.Shop = buffer.ReadInt32
 
             ReDim Map.Tile(Map.MaxX, Map.MaxY)
-            For i = 1 To MaxTileHistory
+            For i = 0 To MaxTileHistory
                 ReDim TileHistory(i).Tile(Map.MaxX, Map.MaxY)
             Next
 
@@ -299,7 +299,7 @@ Module C_Maps
                     Next
 
                     ReDim Map.Tile(x, y).Layer(LayerType.Count - 1)
-                    For i = 1 To MaxTileHistory
+                    For i = 0 To MaxTileHistory
                         ReDim TileHistory(i).Tile(x, y).Layer(LayerType.Count - 1)
                     Next
 
