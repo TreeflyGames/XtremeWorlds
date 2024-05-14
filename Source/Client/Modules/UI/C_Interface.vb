@@ -2448,8 +2448,6 @@ Module C_Interface
         If Windows(GetWindowIndex("winBank")).Window.visible Then
             CloseBank
         End If
-
-        Windows(GetWindowIndex("winBank")).Window.visible = Not Windows(GetWindowIndex("winBank")).Window.visible
     End Sub
 
     Public Sub Bank_MouseMove()
