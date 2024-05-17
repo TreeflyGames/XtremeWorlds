@@ -946,7 +946,7 @@ Module S_Player
         Dim VitalType As Integer, Color As Integer, amount As Integer
 
         ' Check for subscript out of range
-        If Dir < DirectionType.Up Or Dir > DirectionType.Left Or Movement < MovementType.Standing Or Movement > MovementType.Running Then
+        If Dir <= DirectionType.None Or Dir > DirectionType.Left Or Movement < MovementType.Standing Or Movement > MovementType.Running Then
             Exit Sub
         End If
 

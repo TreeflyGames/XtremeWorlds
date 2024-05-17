@@ -983,7 +983,7 @@ Module S_Pet
     Sub PetMove(index As Integer, mapNum As Integer, dir As Integer, movement As Integer)
         Dim buffer As New ByteStream(4)
 
-        If mapNum <= 0 Or mapNum > MAX_MAPS Or index < 0 Or index > MAX_PLAYERS Or dir < DirectionType.Up Or dir > DirectionType.Right Or movement < 0 Or movement > 2 Then
+        If mapNum <= 0 Or mapNum > MAX_MAPS Or index < 0 Or index > MAX_PLAYERS Or dir <= DirectionType.None Or Dir > DirectionType.Left Or movement < 0 Or movement > 2 Then
             Exit Sub
         End If
 
@@ -1018,7 +1018,7 @@ Module S_Pet
         Dim i As Integer, n As Integer, n2 As Integer
         Dim x As Integer, y As Integer
 
-        If mapNum <= 0 Or mapNum > MAX_MAPS Or index < 0 Or index > MAX_PLAYERS Or dir < DirectionType.Up Or dir > DirectionType.Right Then
+        If mapNum <= 0 Or mapNum > MAX_MAPS Or index < 0 Or index > MAX_PLAYERS Or dir <= DirectionType.None Or Dir > DirectionType.Left Then
             Exit Function
         End If
 
@@ -1212,7 +1212,7 @@ Module S_Pet
     Sub PetDir(index As Integer, dir As Integer)
         Dim buffer As New ByteStream(4)
 
-        If index <= 0 Or index > MAX_PLAYERS Or dir < DirectionType.Up Or dir > DirectionType.Right Then Exit Sub
+        If index <= 0 Or index > MAX_PLAYERS Or dir <= DirectionType.None Or Dir > DirectionType.Left Then Exit Sub
 
         If TempPlayer(index).PetskillBuffer.Skill > 0 Then Exit Sub
 

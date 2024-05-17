@@ -15,8 +15,6 @@ Module S_GameLogic
     End Function
 
     Function GetNpcMaxVital(NpcNum As Integer, Vital As [Enum].VitalType) As Integer
-        GetNpcMaxVital = 0
-
         ' Prevent subscript out of range
         If NpcNum <= 0 Or NpcNum > MAX_NPCS Then Exit Function
 

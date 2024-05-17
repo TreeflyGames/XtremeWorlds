@@ -127,12 +127,12 @@ Module S_Npc
 #Region "Movement"
 
     Friend Function NpcTileIsOpen(mapNum As Integer, x As Integer, y As Integer) As Boolean
-        Dim LoopI As Integer
+        Dim i As Integer
         NpcTileIsOpen = True
 
         If PlayersOnMap(mapNum) Then
-            For LoopI = 1 To Socket.HighIndex
-                If GetPlayerMap(LoopI) = mapNum And GetPlayerX(LoopI) = x And GetPlayerY(LoopI) = y Then
+            For i = 1 To Socket.HighIndex
+                If GetPlayerMap(i) = mapNum And GetPlayerX(i) = x And GetPlayerY(i) = y Then
                     NpcTileIsOpen = False
                     Exit Function
                 End If
@@ -146,7 +146,7 @@ Module S_Npc
             End If
         Next
 
-        If Map(mapNum).Tile(x, y).Type <> TileType.NpcSpawn And Map(mapNum).Tile(x, y).Type <> TileType.Item Then
+        If Map(mapNum).Tile(x, y).Type <> TileType.NpcSpawn And Map(mapNum).Tile(x, y).Type <> TileType.Item And Map(mapNum).Tile(x, y).Type <> TileType.None Then
             NpcTileIsOpen = False
         End If
 
@@ -159,7 +159,7 @@ Module S_Npc
         Dim y As Integer
 
         ' Check for subscript out of range
-        If mapNum <= 0 Or mapNum > MAX_MAPS Or MapNpcNum <= 0 Or MapNpcNum > MAX_MAP_NPCS Or Dir < DirectionType.Up Or Dir > DirectionType.Right Then
+        If mapNum <= 0 Or mapNum > MAX_MAPS Or MapNpcNum <= 0 Or MapNpcNum > MAX_MAP_NPCS Or Dir <= DirectionType.None Or Dir > DirectionType.Left Then
             Exit Function
         End If
 
@@ -175,7 +175,7 @@ Module S_Npc
                     n2 = Map(mapNum).Tile(x, y - 1).Type2
 
                     ' Check to make sure that the tile is walkable
-                    If n <> TileType.Item And n <> TileType.NpcSpawn And n2 <> TileType.Item And n2 <> TileType.NpcSpawn Then
+                    If n <> TileType.None And n <> TileType.Item And n <> TileType.NpcSpawn And n2 <> TileType.None And n2 <> TileType.Item And n2 <> TileType.NpcSpawn Then
                         CanNpcMove = False
                         Exit Function
                     End If
@@ -208,7 +208,7 @@ Module S_Npc
                     n2 = Map(mapNum).Tile(x, y + 1).Type2
 
                     ' Check to make sure that the tile is walkable
-                    If n <> TileType.Item And n <> TileType.NpcSpawn And n2 <> TileType.Item And n2 <> TileType.NpcSpawn Then
+                    If n <> TileType.None And n <> TileType.Item And n <> TileType.NpcSpawn And n2 <> TileType.None And n2 <> TileType.Item And n2 <> TileType.NpcSpawn Then
                         CanNpcMove = False
                         Exit Function
                     End If
@@ -241,7 +241,7 @@ Module S_Npc
                     n2 = Map(mapNum).Tile(x - 1, y).Type2
 
                     ' Check to make sure that the tile is walkable
-                    If n <> TileType.Item And n <> TileType.NpcSpawn And n2 <> TileType.Item And n2 <> TileType.NpcSpawn Then
+                    If n <> TileType.None And n <> TileType.Item And n <> TileType.NpcSpawn And n2 <> TileType.None And n2 <> TileType.Item And n2 <> TileType.NpcSpawn Then
                         CanNpcMove = False
                         Exit Function
                     End If
@@ -274,7 +274,7 @@ Module S_Npc
                     n2 = Map(mapNum).Tile(x + 1, y).Type2
 
                     ' Check to make sure that the tile is walkable
-                    If n <> TileType.Item And n <> TileType.NpcSpawn And n2 <> TileType.Item And n2 <> TileType.NpcSpawn Then
+                    If n <> TileType.None And n <> TileType.Item And n <> TileType.NpcSpawn And n2 <> TileType.None And n2 <> TileType.Item And n2 <> TileType.NpcSpawn Then
                         CanNpcMove = False
                         Exit Function
                     End If
@@ -310,7 +310,7 @@ Module S_Npc
         Dim buffer As New ByteStream(4)
 
         ' Check for subscript out of range
-        If mapNum <= 0 Or mapNum > MAX_MAPS Or MapNpcNum <= 0 Or MapNpcNum > MAX_MAP_NPCS Or Dir < DirectionType.Up Or Dir > DirectionType.Right Or Movement < 0 Or Movement > 2 Then
+        If mapNum <= 0 Or mapNum > MAX_MAPS Or MapNpcNum <= 0 Or MapNpcNum > MAX_MAP_NPCS Or Dir <= DirectionType.None Or Dir > DirectionType.Left Or Movement < 0 Or Movement > 2 Then
             Exit Sub
         End If
 
@@ -370,7 +370,7 @@ Module S_Npc
         Dim buffer As New ByteStream(4)
 
         ' Check for subscript out of range
-        If mapNum <= 0 Or mapNum > MAX_MAPS Or MapNpcNum <= 0 Or MapNpcNum > MAX_MAP_NPCS Or Dir < DirectionType.Up Or Dir > DirectionType.Right Then
+        If mapNum <= 0 Or mapNum > MAX_MAPS Or MapNpcNum <= 0 Or MapNpcNum > MAX_MAP_NPCS Or Dir <= DirectionType.None Or Dir > DirectionType.Left Then
             Exit Sub
         End If
 

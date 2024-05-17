@@ -555,7 +555,7 @@ Module S_NetworkReceive
         buffer.Dispose()
 
         ' Prevent hacking
-        If dir < DirectionType.Up Or dir > DirectionType.Left Then Exit Sub
+        If dir <= DirectionType.None Or dir > DirectionType.Left Then Exit Sub
 
         SetPlayerDir(index, dir)
 

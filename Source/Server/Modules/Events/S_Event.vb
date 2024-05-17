@@ -84,7 +84,7 @@ Friend Module S_Event
         Dim n As Integer, n2 As Integer, z As Integer, begineventprocessing As Boolean
 
         ' Check for subscript out of range
-        If mapNum <= 0 Or mapNum > MAX_MAPS Or dir < DirectionType.Up Or dir > DirectionType.Right Then Exit Function
+        If mapNum <= 0 Or mapNum > MAX_MAPS Or dir <= DirectionType.None Or Dir > DirectionType.Left Then Exit Function
 
         CanEventMove = True
 
@@ -441,7 +441,7 @@ Friend Module S_Event
         Dim eventindex As Integer, i As Integer
 
         ' Check for subscript out of range
-        If mapNum <= 0 Or mapNum > MAX_MAPS Or dir < DirectionType.Up Or dir > DirectionType.Right Then
+        If mapNum <= 0 Or mapNum > MAX_MAPS Or dir <= DirectionType.None Or Dir > DirectionType.Left Then
             Exit Sub
         End If
 
@@ -485,7 +485,7 @@ Friend Module S_Event
         Dim eventindex As Integer, i As Integer
 
         ' Check for subscript out of range
-        If mapNum <= 0 Or mapNum > MAX_MAPS Or dir < DirectionType.Up Or dir > DirectionType.Right Then Exit Sub
+        If mapNum <= 0 Or mapNum > MAX_MAPS Or dir <= DirectionType.None Or Dir > DirectionType.Left Then Exit Sub
 
         If globalevent = False Then
             If TempPlayer(index).EventMap.CurrentEvents > 0 Then
