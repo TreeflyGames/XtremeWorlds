@@ -146,7 +146,7 @@ Module S_Npc
             End If
         Next
 
-        If Map(mapNum).Tile(x, y).Type <> TileType.NpcSpawn And Map(mapNum).Tile(x, y).Type <> TileType.Item And Map(mapNum).Tile(x, y).Type <> TileType.None Then
+        If Map(mapNum).Tile(x, y).Type <> TileType.NpcSpawn And Map(mapNum).Tile(x, y).Type <> TileType.Item And Map(mapNum).Tile(x, y).Type <> TileType.None And Map(mapNum).Tile(x, y).Type2 <> TileType.NpcSpawn And Map(mapNum).Tile(x, y).Type2 <> TileType.Item And Map(mapNum).Tile(x, y).Type2 <> TileType.None Then
             NpcTileIsOpen = False
         End If
 
