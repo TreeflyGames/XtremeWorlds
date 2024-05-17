@@ -169,7 +169,7 @@ Module S_Npc
 
         Select Case Dir
             Case DirectionType.Up
-                ' Check to make sure not outside of boundries
+                ' Check to make sure not outside of boundaries
                 If y > 0 Then
                     n = Map(mapNum).Tile(x, y - 1).Type
                     n2 = Map(mapNum).Tile(x, y - 1).Type2
@@ -202,7 +202,7 @@ Module S_Npc
                 End If
 
             Case DirectionType.Down
-                ' Check to make sure not outside of boundries
+                ' Check to make sure not outside of boundaries
                 If y < Map(mapNum).MaxY Then
                     n = Map(mapNum).Tile(x, y + 1).Type
                     n2 = Map(mapNum).Tile(x, y + 1).Type2
@@ -235,7 +235,7 @@ Module S_Npc
                 End If
 
             Case DirectionType.Left
-                ' Check to make sure not outside of boundries
+                ' Check to make sure not outside of boundaries
                 If x > 0 Then
                     n = Map(mapNum).Tile(x - 1, y).Type
                     n2 = Map(mapNum).Tile(x - 1, y).Type2
@@ -268,7 +268,7 @@ Module S_Npc
                 End If
 
             Case DirectionType.Right
-                ' Check to make sure not outside of boundries
+                ' Check to make sure not outside of boundaries
                 If x < Map(mapNum).MaxX Then
                     n = Map(mapNum).Tile(x + 1, y).Type
                     n2 = Map(mapNum).Tile(x + 1, y).Type2
