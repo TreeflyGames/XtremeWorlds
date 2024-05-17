@@ -188,12 +188,6 @@ Module C_Player
             Exit Function
         End If
 
-        ' make sure they're not in a shop
-        If InShop > 0 Then
-            CanMove = False
-            Exit Function
-        End If
-
         If InTrade Then
             CanMove = False
             Exit Function
@@ -202,6 +196,10 @@ Module C_Player
         If Not inSmallChat Then
             CanMove = False
             Exit Function
+        End If
+
+        If InShop > 0 Then
+            CloseShop
         End If
 
         If InBank Then
