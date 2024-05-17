@@ -16,8 +16,6 @@
     End Sub
 
     Public Function GetPlayerMaxVital(index As Integer, Vital As VitalType) As Integer
-        GetPlayerMaxVital = 0
-
         Select Case Vital
             Case VitalType.HP
                 GetPlayerMaxVital = 100 + (Player(index).Level + (GetPlayerStat(index, StatType.Vitality) / 2)) * 2
@@ -29,8 +27,6 @@
 
     Public Function GetPlayerStat(index As Integer, Stat As StatType) As Integer
         Dim x As Integer, i As Integer
-
-        If index = 0 Then Exit Function
 
         x = Player(index).Stat(Stat)
 
@@ -66,8 +62,6 @@
     End Function
 
     Public Sub SetPlayerVital(index As Integer, Vital As VitalType, Value As Integer)
-        If index = 0 Then Exit Sub
-
         Player(index).Vital(Vital) = Value
 
         If GetPlayerVital(index, Vital) > GetPlayerMaxVital(index, Vital) Then
