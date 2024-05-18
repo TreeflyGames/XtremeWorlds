@@ -153,6 +153,7 @@ Module C_Player
 
     Function CanMove() As Boolean
         Dim d As Integer
+
         CanMove = True
 
         If HoldPlayer = True Then
