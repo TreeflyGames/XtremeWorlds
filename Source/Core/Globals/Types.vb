@@ -46,10 +46,10 @@ Public Module Types
     End Structure
 
     Public Structure RectStruct
-        Dim Top As Integer
-        Dim Left As Integer
-        Dim Right As Integer
-        Dim Bottom As Integer
+        Dim Top As Double
+        Dim Left As Double
+        Dim Right As Double
+        Dim Bottom As Double
     End Structure
 
     Public Structure ResourceStruct
