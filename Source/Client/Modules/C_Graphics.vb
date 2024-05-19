@@ -1250,28 +1250,18 @@ Module C_Graphics
         ' Ensure startX is within bounds
         If startX < 0 Then
             offsetX = 0
-            If startX = -1 Then
-                If Player(MyIndex).XOffset > 0 Then
-                    offsetX = Player(MyIndex).XOffset
-                End If
-            End If
             startX = 0
         End If
 
         ' Ensure startY is within bounds
         If startY < 0 Then
             offsetY = 0
-            If startY = -1 Then
-                If Player(MyIndex).YOffset > 0 Then
-                    offsetY = Player(MyIndex).YOffset
-                End If
-            End If
             startY = 0
         End If
 
         ' Calculate endX and endY with smooth transitions
-        endX = startX + Types.Settings.CameraWidth + 4
-        endY = startY + Types.Settings.CameraHeight + 4
+        endX = startX + Types.Settings.CameraWidth
+        endY = startY + Types.Settings.CameraHeight
 
         ' Adjust endX if it exceeds map boundaries
         If endX > Map.MaxX Then
