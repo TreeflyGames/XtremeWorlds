@@ -1261,8 +1261,8 @@ Module C_Graphics
         End If
 
         ' Calculate endX and endY with smooth transitions
-        endX = startX + Types.Settings.CameraWidth
-        endY = startY + Types.Settings.CameraHeight
+        endX = startX + Types.Settings.CameraWidth + 3
+        endY = startY + Types.Settings.CameraHeight + 3
 
         ' Adjust endX if it exceeds map boundaries
         If endX > Map.MaxX Then
