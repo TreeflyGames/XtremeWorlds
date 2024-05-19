@@ -3410,11 +3410,13 @@ Module C_Interface
         Select Case descType
             Case 1 ' Inventory Item
                 texNum = Item(descItem).Icon
+
                 ' render sprite
                 RenderTexture(texNum, GfxType.Item, Window, xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
 
             Case 2 ' Skill Icon
                 texNum = Skill(descItem).Icon
+
                 ' render bar
                 With Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "picBar"))
                     If .Visible Then
@@ -3537,8 +3539,8 @@ Module C_Interface
         CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", Arial, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
         
         ' Buying/Selling
-        CreateCheckbox(windowCount, "chkBuying", 173, 265, 64, 32, 1, , , , , , DesignType.ChkCustom_Buying, , , , , New Action(AddressOf chkShopBuying))
-        CreateCheckbox(windowCount, "chkSelling", 222, 265, 64, 32, 0, , , , ,  , DesignType.ChkCustom_Selling, , , , , New Action(AddressOf chkShopSelling))
+        CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , DesignType.ChkCustom_Buying, , , , , New Action(AddressOf chkShopBuying))
+        CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , ,  , DesignType.ChkCustom_Selling, , , , , New Action(AddressOf chkShopSelling))
 
         ' Labels
         CreateLabel(windowCount, "lblName", 56, 226, 300, FontSize, "Test Item", Arial, Color.Black, AlignmentType.Left)
@@ -3635,7 +3637,7 @@ Module C_Interface
                             X = Left + 1
                             Amount = CStr(GetPlayerInvValue(MyIndex, i))
                         
-                            ' Draw currency but with k, m, b etc. using a convertion function
+                            ' Draw currency but with k, m, b etc. using a conversion function
                             If CLng(Amount) < 1000000 Then
                                 Color = ColorType.White
                             ElseIf CLng(Amount) > 1000000 And CLng(Amount) < 10000000 Then
