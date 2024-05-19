@@ -3718,9 +3718,11 @@ Module C_Interface
         shopNum = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
     
         If shopNum > 0 Then
-            ' set the active slot
-            shopSelectedSlot = shopNum
-            UpdateShop
+            If Shop(InShop).TradeItem(shopSelectedSlot).Item > 0 Then
+                ' set the active slot
+                shopSelectedSlot = shopNum
+                UpdateShop
+            End If
         End If
     
         Shop_MouseMove
