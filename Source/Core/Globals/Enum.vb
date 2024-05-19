@@ -523,8 +523,8 @@
         ' Checkboxes
         ChkNorm
         ChkChat
-        ChkCustom_Buying
-        ChkCustom_Selling
+        ChkBuying
+        ChkSelling
         ' Right-click Menu
         MenuHeader
         MenuOption

@@ -373,11 +373,11 @@ Module C_Interface
                             left = .Left + 22 - (TextWidth(.Text) / 2) + xO
                             RenderText(.Text, Window, left, .Top + yO + 4, .Color, Color.Black)
 
-                        Case DesignType.ChkCustom_Buying
+                        Case DesignType.ChkBuying
                             If .Value = 0 Then sprite = 58 Else sprite = 56
                             RenderTexture(sprite, GfxType.GUI, Window, .Left + xO, .Top + yO, 0, 0, 49, 20, 49, 20)
 
-                        Case DesignType.ChkCustom_Selling
+                        Case DesignType.ChkSelling
                             If .Value = 0 Then sprite = 59 Else sprite = 57
                             RenderTexture(sprite, GfxType.GUI, Window, .Left + xO, .Top + yO, 0, 0, 49, 20, 49, 20)
                     End Select
@@ -3539,8 +3539,8 @@ Module C_Interface
         CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", Arial, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
         
         ' Buying/Selling
-        CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , DesignType.ChkCustom_Buying, , , , , New Action(AddressOf chkShopBuying))
-        CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , ,  , DesignType.ChkCustom_Selling, , , , , New Action(AddressOf chkShopSelling))
+        CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , DesignType.ChkBuying, , , , , New Action(AddressOf chkShopBuying))
+        CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , ,  , DesignType.ChkSelling, , , , , New Action(AddressOf chkShopSelling))
 
         ' Labels
         CreateLabel(windowCount, "lblName", 56, 226, 300, FontSize, "Test Item", Arial, Color.Black, AlignmentType.Left)

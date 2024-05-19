@@ -1761,7 +1761,7 @@ Module S_NetworkReceive
         price = Item(itemNum).Price * multiplier
 
         ' item has cost?
-        If price < 0 Then
+        If price <= 0 Then
             PlayerMsg(index, "The shop doesn't want that item.", ColorType.Yellow)
             ResetShopAction(index)
             Exit Sub
@@ -1772,7 +1772,7 @@ Module S_NetworkReceive
         GiveInv(index, 1, price)
 
         ' send confirmation message & reset their shop action
-        PlayerMsg(index, "Sold the " & Trim(Item(GetPlayerInv(index, invSlot)).Name) & " !", ColorType.BrightGreen)
+        PlayerMsg(index, "Sold the " & Trim$(Item(GetPlayerInv(index, invSlot)).Name) & " for " & price & " " & Trim$(Item(itemNum).Name) & "!", ColorType.BrightGreen)
         ResetShopAction(index)
 
         buffer.Dispose()
