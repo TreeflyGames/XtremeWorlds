@@ -1817,7 +1817,7 @@ Continue1:
         Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1280x800")
         Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1280x768")
         Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1280x720")
-        Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1024x768")    
+        Combobox_AddItem(GetWindowIndex("winOptions"), GetControlIndex("winOptions", "cmbRes"), "1120x864")    
 
         ' fill the options screen
         With Windows(GetWindowIndex("winOptions"))

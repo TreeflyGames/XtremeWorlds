@@ -62,8 +62,8 @@ Module C_General
                 Width = 1280
                 Height = 720
             Case 13
-                Width = 1024
-                Height = 768
+                Width = 1120
+                Height = 864
             Case 14      
                 Width = Types.Settings.CameraWidth * PicX
                 Height = Types.Settings.CameraHeight * PicY
