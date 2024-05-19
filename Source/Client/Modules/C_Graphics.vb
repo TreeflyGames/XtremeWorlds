@@ -467,6 +467,7 @@ Module C_Graphics
         ResolutionHeight = e.Height - (e.Height Mod PicY)
         Types.Settings.CameraWidth = ResolutionWidth / PicX
         Types.Settings.CameraHeight = ResolutionHeight / PicY
+        Types.Settings.Resolution = 14
         Settings.Save()
 
         RefreshWindow = True

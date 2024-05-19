@@ -64,6 +64,9 @@ Module C_General
             Case 13
                 Width = 1024
                 Height = 768
+            Case 14      
+                Width = Types.Settings.CameraWidth * PicX
+                Height = Types.Settings.CameraHeight * PicY
         End Select
     End Function
 
