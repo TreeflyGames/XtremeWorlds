@@ -50,6 +50,7 @@ Partial Class FrmAdmin
         tabMapList = New TabPage()
         tabMapTools = New TabPage()
         tabEditors = New TabPage()
+        btnMoralEditor = New Button()
         btnPetEditor = New Button()
         btnJobEditor = New Button()
         btnProjectiles = New Button()
@@ -60,7 +61,6 @@ Partial Class FrmAdmin
         btnSkillEditor = New Button()
         btnShopEditor = New Button()
         btnAnimationEditor = New Button()
-        btnMoralEditor = New Button()
         TabControl1.SuspendLayout()
         tabModeration.SuspendLayout()
         CType(nudAdminSprite, ComponentModel.ISupportInitialize).BeginInit()
@@ -73,7 +73,7 @@ Partial Class FrmAdmin
         ' btnRespawn
         ' 
         btnRespawn.Location = New Point(227, 30)
-        btnRespawn.Margin = New Padding(5, 5, 5, 5)
+        btnRespawn.Margin = New Padding(5)
         btnRespawn.Name = "btnRespawn"
         btnRespawn.Size = New Size(177, 41)
         btnRespawn.TabIndex = 34
@@ -83,7 +83,7 @@ Partial Class FrmAdmin
         ' btnMapReport
         ' 
         btnMapReport.Location = New Point(10, 402)
-        btnMapReport.Margin = New Padding(5, 5, 5, 5)
+        btnMapReport.Margin = New Padding(5)
         btnMapReport.Name = "btnMapReport"
         btnMapReport.Size = New Size(397, 41)
         btnMapReport.TabIndex = 33
@@ -93,7 +93,7 @@ Partial Class FrmAdmin
         ' btnALoc
         ' 
         btnALoc.Location = New Point(23, 30)
-        btnALoc.Margin = New Padding(5, 5, 5, 5)
+        btnALoc.Margin = New Padding(5)
         btnALoc.Name = "btnALoc"
         btnALoc.Size = New Size(177, 41)
         btnALoc.TabIndex = 31
@@ -103,7 +103,7 @@ Partial Class FrmAdmin
         ' btnAdminSetSprite
         ' 
         btnAdminSetSprite.Location = New Point(223, 391)
-        btnAdminSetSprite.Margin = New Padding(5, 5, 5, 5)
+        btnAdminSetSprite.Margin = New Padding(5)
         btnAdminSetSprite.Name = "btnAdminSetSprite"
         btnAdminSetSprite.Size = New Size(180, 47)
         btnAdminSetSprite.TabIndex = 16
@@ -113,7 +113,7 @@ Partial Class FrmAdmin
         ' btnAdminWarpTo
         ' 
         btnAdminWarpTo.Location = New Point(223, 338)
-        btnAdminWarpTo.Margin = New Padding(5, 5, 5, 5)
+        btnAdminWarpTo.Margin = New Padding(5)
         btnAdminWarpTo.Name = "btnAdminWarpTo"
         btnAdminWarpTo.Size = New Size(180, 47)
         btnAdminWarpTo.TabIndex = 15
@@ -143,7 +143,7 @@ Partial Class FrmAdmin
         ' btnAdminSetAccess
         ' 
         btnAdminSetAccess.Location = New Point(15, 285)
-        btnAdminSetAccess.Margin = New Padding(5, 5, 5, 5)
+        btnAdminSetAccess.Margin = New Padding(5)
         btnAdminSetAccess.Name = "btnAdminSetAccess"
         btnAdminSetAccess.Size = New Size(388, 41)
         btnAdminSetAccess.TabIndex = 9
@@ -153,7 +153,7 @@ Partial Class FrmAdmin
         ' btnAdminWarpMe2
         ' 
         btnAdminWarpMe2.Location = New Point(212, 120)
-        btnAdminWarpMe2.Margin = New Padding(5, 5, 5, 5)
+        btnAdminWarpMe2.Margin = New Padding(5)
         btnAdminWarpMe2.Name = "btnAdminWarpMe2"
         btnAdminWarpMe2.Size = New Size(192, 41)
         btnAdminWarpMe2.TabIndex = 8
@@ -163,7 +163,7 @@ Partial Class FrmAdmin
         ' btnAdminWarp2Me
         ' 
         btnAdminWarp2Me.Location = New Point(10, 120)
-        btnAdminWarp2Me.Margin = New Padding(5, 5, 5, 5)
+        btnAdminWarp2Me.Margin = New Padding(5)
         btnAdminWarp2Me.Name = "btnAdminWarp2Me"
         btnAdminWarp2Me.Size = New Size(192, 41)
         btnAdminWarp2Me.TabIndex = 7
@@ -173,7 +173,7 @@ Partial Class FrmAdmin
         ' btnAdminBan
         ' 
         btnAdminBan.Location = New Point(212, 65)
-        btnAdminBan.Margin = New Padding(5, 5, 5, 5)
+        btnAdminBan.Margin = New Padding(5)
         btnAdminBan.Name = "btnAdminBan"
         btnAdminBan.Size = New Size(192, 41)
         btnAdminBan.TabIndex = 6
@@ -183,7 +183,7 @@ Partial Class FrmAdmin
         ' btnAdminKick
         ' 
         btnAdminKick.Location = New Point(10, 65)
-        btnAdminKick.Margin = New Padding(5, 5, 5, 5)
+        btnAdminKick.Margin = New Padding(5)
         btnAdminKick.Name = "btnAdminKick"
         btnAdminKick.Size = New Size(192, 41)
         btnAdminKick.TabIndex = 5
@@ -193,7 +193,7 @@ Partial Class FrmAdmin
         ' txtAdminName
         ' 
         txtAdminName.Location = New Point(137, 15)
-        txtAdminName.Margin = New Padding(5, 5, 5, 5)
+        txtAdminName.Margin = New Padding(5)
         txtAdminName.Name = "txtAdminName"
         txtAdminName.Size = New Size(264, 31)
         txtAdminName.TabIndex = 3
@@ -225,7 +225,7 @@ Partial Class FrmAdmin
         lstMaps.GridLines = True
         lstMaps.HeaderStyle = ColumnHeaderStyle.Nonclickable
         lstMaps.Location = New Point(10, 12)
-        lstMaps.Margin = New Padding(5, 5, 5, 5)
+        lstMaps.Margin = New Padding(5)
         lstMaps.MultiSelect = False
         lstMaps.Name = "lstMaps"
         lstMaps.Size = New Size(396, 376)
@@ -250,7 +250,7 @@ Partial Class FrmAdmin
         TabControl1.Controls.Add(tabMapTools)
         TabControl1.Controls.Add(tabEditors)
         TabControl1.Location = New Point(3, 3)
-        TabControl1.Margin = New Padding(5, 5, 5, 5)
+        TabControl1.Margin = New Padding(5)
         TabControl1.Name = "TabControl1"
         TabControl1.SelectedIndex = 0
         TabControl1.Size = New Size(430, 498)
@@ -275,9 +275,9 @@ Partial Class FrmAdmin
         tabModeration.Controls.Add(btnAdminWarpTo)
         tabModeration.Controls.Add(btnAdminSetSprite)
         tabModeration.Location = New Point(4, 34)
-        tabModeration.Margin = New Padding(5, 5, 5, 5)
+        tabModeration.Margin = New Padding(5)
         tabModeration.Name = "tabModeration"
-        tabModeration.Padding = New Padding(5, 5, 5, 5)
+        tabModeration.Padding = New Padding(5)
         tabModeration.Size = New Size(422, 460)
         tabModeration.TabIndex = 0
         tabModeration.Text = "Moderation"
@@ -286,7 +286,7 @@ Partial Class FrmAdmin
         ' nudAdminSprite
         ' 
         nudAdminSprite.Location = New Point(133, 400)
-        nudAdminSprite.Margin = New Padding(5, 5, 5, 5)
+        nudAdminSprite.Margin = New Padding(5)
         nudAdminSprite.Name = "nudAdminSprite"
         nudAdminSprite.Size = New Size(80, 31)
         nudAdminSprite.TabIndex = 33
@@ -294,7 +294,7 @@ Partial Class FrmAdmin
         ' nudAdminMap
         ' 
         nudAdminMap.Location = New Point(133, 341)
-        nudAdminMap.Margin = New Padding(5, 5, 5, 5)
+        nudAdminMap.Margin = New Padding(5)
         nudAdminMap.Name = "nudAdminMap"
         nudAdminMap.Size = New Size(80, 31)
         nudAdminMap.TabIndex = 32
@@ -302,7 +302,7 @@ Partial Class FrmAdmin
         ' btnLevelUp
         ' 
         btnLevelUp.Location = New Point(53, 173)
-        btnLevelUp.Margin = New Padding(5, 5, 5, 5)
+        btnLevelUp.Margin = New Padding(5)
         btnLevelUp.Name = "btnLevelUp"
         btnLevelUp.Size = New Size(313, 41)
         btnLevelUp.TabIndex = 31
@@ -314,7 +314,7 @@ Partial Class FrmAdmin
         cmbAccess.FormattingEnabled = True
         cmbAccess.Items.AddRange(New Object() {"Normal Player", "Moderator (GM)", "Mapper", "Developer", "Creator"})
         cmbAccess.Location = New Point(95, 234)
-        cmbAccess.Margin = New Padding(5, 5, 5, 5)
+        cmbAccess.Margin = New Padding(5)
         cmbAccess.Name = "cmbAccess"
         cmbAccess.Size = New Size(306, 33)
         cmbAccess.TabIndex = 17
@@ -324,9 +324,9 @@ Partial Class FrmAdmin
         tabMapList.Controls.Add(lstMaps)
         tabMapList.Controls.Add(btnMapReport)
         tabMapList.Location = New Point(4, 34)
-        tabMapList.Margin = New Padding(5, 5, 5, 5)
+        tabMapList.Margin = New Padding(5)
         tabMapList.Name = "tabMapList"
-        tabMapList.Padding = New Padding(5, 5, 5, 5)
+        tabMapList.Padding = New Padding(5)
         tabMapList.Size = New Size(422, 460)
         tabMapList.TabIndex = 2
         tabMapList.Text = "Map List"
@@ -337,9 +337,9 @@ Partial Class FrmAdmin
         tabMapTools.Controls.Add(btnRespawn)
         tabMapTools.Controls.Add(btnALoc)
         tabMapTools.Location = New Point(4, 34)
-        tabMapTools.Margin = New Padding(5, 5, 5, 5)
+        tabMapTools.Margin = New Padding(5)
         tabMapTools.Name = "tabMapTools"
-        tabMapTools.Padding = New Padding(5, 5, 5, 5)
+        tabMapTools.Padding = New Padding(5)
         tabMapTools.Size = New Size(422, 460)
         tabMapTools.TabIndex = 3
         tabMapTools.Text = "Map Tools"
@@ -359,113 +359,13 @@ Partial Class FrmAdmin
         tabEditors.Controls.Add(btnShopEditor)
         tabEditors.Controls.Add(btnAnimationEditor)
         tabEditors.Location = New Point(4, 34)
-        tabEditors.Margin = New Padding(5, 5, 5, 5)
+        tabEditors.Margin = New Padding(5)
         tabEditors.Name = "tabEditors"
-        tabEditors.Padding = New Padding(5, 5, 5, 5)
+        tabEditors.Padding = New Padding(5)
         tabEditors.Size = New Size(422, 460)
         tabEditors.TabIndex = 4
         tabEditors.Text = "Editors"
         tabEditors.UseVisualStyleBackColor = True
-        ' 
-        ' btnPetEditor
-        ' 
-        btnPetEditor.Location = New Point(217, 10)
-        btnPetEditor.Margin = New Padding(5, 5, 5, 5)
-        btnPetEditor.Name = "btnPetEditor"
-        btnPetEditor.Size = New Size(187, 48)
-        btnPetEditor.TabIndex = 68
-        btnPetEditor.Text = "Pet Editor"
-        btnPetEditor.UseVisualStyleBackColor = True
-        ' 
-        ' btnJobEditor
-        ' 
-        btnJobEditor.Location = New Point(10, 68)
-        btnJobEditor.Margin = New Padding(5, 5, 5, 5)
-        btnJobEditor.Name = "btnJobEditor"
-        btnJobEditor.Size = New Size(187, 48)
-        btnJobEditor.TabIndex = 66
-        btnJobEditor.Text = "Job Editor"
-        btnJobEditor.UseVisualStyleBackColor = True
-        ' 
-        ' btnProjectiles
-        ' 
-        btnProjectiles.Location = New Point(217, 68)
-        btnProjectiles.Margin = New Padding(5, 5, 5, 5)
-        btnProjectiles.Name = "btnProjectiles"
-        btnProjectiles.Size = New Size(187, 48)
-        btnProjectiles.TabIndex = 64
-        btnProjectiles.Text = "Projectile Editor"
-        btnProjectiles.UseVisualStyleBackColor = True
-        ' 
-        ' btnMapEditor
-        ' 
-        btnMapEditor.Location = New Point(12, 302)
-        btnMapEditor.Margin = New Padding(5, 5, 5, 5)
-        btnMapEditor.Name = "btnMapEditor"
-        btnMapEditor.Size = New Size(187, 48)
-        btnMapEditor.TabIndex = 55
-        btnMapEditor.Text = "Map Editor"
-        btnMapEditor.UseVisualStyleBackColor = True
-        ' 
-        ' btnItemEditor
-        ' 
-        btnItemEditor.Location = New Point(12, 185)
-        btnItemEditor.Margin = New Padding(5, 5, 5, 5)
-        btnItemEditor.Name = "btnItemEditor"
-        btnItemEditor.Size = New Size(187, 48)
-        btnItemEditor.TabIndex = 56
-        btnItemEditor.Text = "Item Editor"
-        btnItemEditor.UseVisualStyleBackColor = True
-        ' 
-        ' btnResourceEditor
-        ' 
-        btnResourceEditor.Location = New Point(217, 127)
-        btnResourceEditor.Margin = New Padding(5, 5, 5, 5)
-        btnResourceEditor.Name = "btnResourceEditor"
-        btnResourceEditor.Size = New Size(187, 48)
-        btnResourceEditor.TabIndex = 57
-        btnResourceEditor.Text = "Resource Editor"
-        btnResourceEditor.UseVisualStyleBackColor = True
-        ' 
-        ' btnNPCEditor
-        ' 
-        btnNPCEditor.Location = New Point(12, 127)
-        btnNPCEditor.Margin = New Padding(5, 5, 5, 5)
-        btnNPCEditor.Name = "btnNPCEditor"
-        btnNPCEditor.Size = New Size(187, 48)
-        btnNPCEditor.TabIndex = 58
-        btnNPCEditor.Text = "NPC Editor"
-        btnNPCEditor.UseVisualStyleBackColor = True
-        ' 
-        ' btnSkillEditor
-        ' 
-        btnSkillEditor.Location = New Point(12, 243)
-        btnSkillEditor.Margin = New Padding(5, 5, 5, 5)
-        btnSkillEditor.Name = "btnSkillEditor"
-        btnSkillEditor.Size = New Size(187, 48)
-        btnSkillEditor.TabIndex = 59
-        btnSkillEditor.Text = "Skill Editor"
-        btnSkillEditor.UseVisualStyleBackColor = True
-        ' 
-        ' btnShopEditor
-        ' 
-        btnShopEditor.Location = New Point(12, 360)
-        btnShopEditor.Margin = New Padding(5, 5, 5, 5)
-        btnShopEditor.Name = "btnShopEditor"
-        btnShopEditor.Size = New Size(187, 48)
-        btnShopEditor.TabIndex = 60
-        btnShopEditor.Text = "Shop Editor"
-        btnShopEditor.UseVisualStyleBackColor = True
-        ' 
-        ' btnAnimationEditor
-        ' 
-        btnAnimationEditor.Location = New Point(12, 10)
-        btnAnimationEditor.Margin = New Padding(5, 5, 5, 5)
-        btnAnimationEditor.Name = "btnAnimationEditor"
-        btnAnimationEditor.Size = New Size(187, 48)
-        btnAnimationEditor.TabIndex = 61
-        btnAnimationEditor.Text = "Animation Editor"
-        btnAnimationEditor.UseVisualStyleBackColor = True
         ' 
         ' btnMoralEditor
         ' 
@@ -477,6 +377,106 @@ Partial Class FrmAdmin
         btnMoralEditor.Text = "Moral Editor"
         btnMoralEditor.UseVisualStyleBackColor = True
         ' 
+        ' btnPetEditor
+        ' 
+        btnPetEditor.Location = New Point(217, 10)
+        btnPetEditor.Margin = New Padding(5)
+        btnPetEditor.Name = "btnPetEditor"
+        btnPetEditor.Size = New Size(187, 48)
+        btnPetEditor.TabIndex = 68
+        btnPetEditor.Text = "Pet Editor"
+        btnPetEditor.UseVisualStyleBackColor = True
+        ' 
+        ' btnJobEditor
+        ' 
+        btnJobEditor.Location = New Point(10, 68)
+        btnJobEditor.Margin = New Padding(5)
+        btnJobEditor.Name = "btnJobEditor"
+        btnJobEditor.Size = New Size(187, 48)
+        btnJobEditor.TabIndex = 66
+        btnJobEditor.Text = "Job Editor"
+        btnJobEditor.UseVisualStyleBackColor = True
+        ' 
+        ' btnProjectiles
+        ' 
+        btnProjectiles.Location = New Point(217, 68)
+        btnProjectiles.Margin = New Padding(5)
+        btnProjectiles.Name = "btnProjectiles"
+        btnProjectiles.Size = New Size(187, 48)
+        btnProjectiles.TabIndex = 64
+        btnProjectiles.Text = "Projectile Editor"
+        btnProjectiles.UseVisualStyleBackColor = True
+        ' 
+        ' btnMapEditor
+        ' 
+        btnMapEditor.Location = New Point(12, 302)
+        btnMapEditor.Margin = New Padding(5)
+        btnMapEditor.Name = "btnMapEditor"
+        btnMapEditor.Size = New Size(187, 48)
+        btnMapEditor.TabIndex = 55
+        btnMapEditor.Text = "Map Editor"
+        btnMapEditor.UseVisualStyleBackColor = True
+        ' 
+        ' btnItemEditor
+        ' 
+        btnItemEditor.Location = New Point(12, 185)
+        btnItemEditor.Margin = New Padding(5)
+        btnItemEditor.Name = "btnItemEditor"
+        btnItemEditor.Size = New Size(187, 48)
+        btnItemEditor.TabIndex = 56
+        btnItemEditor.Text = "Item Editor"
+        btnItemEditor.UseVisualStyleBackColor = True
+        ' 
+        ' btnResourceEditor
+        ' 
+        btnResourceEditor.Location = New Point(217, 127)
+        btnResourceEditor.Margin = New Padding(5)
+        btnResourceEditor.Name = "btnResourceEditor"
+        btnResourceEditor.Size = New Size(187, 48)
+        btnResourceEditor.TabIndex = 57
+        btnResourceEditor.Text = "Resource Editor"
+        btnResourceEditor.UseVisualStyleBackColor = True
+        ' 
+        ' btnNPCEditor
+        ' 
+        btnNPCEditor.Location = New Point(12, 127)
+        btnNPCEditor.Margin = New Padding(5)
+        btnNPCEditor.Name = "btnNPCEditor"
+        btnNPCEditor.Size = New Size(187, 48)
+        btnNPCEditor.TabIndex = 58
+        btnNPCEditor.Text = "NPC Editor"
+        btnNPCEditor.UseVisualStyleBackColor = True
+        ' 
+        ' btnSkillEditor
+        ' 
+        btnSkillEditor.Location = New Point(12, 243)
+        btnSkillEditor.Margin = New Padding(5)
+        btnSkillEditor.Name = "btnSkillEditor"
+        btnSkillEditor.Size = New Size(187, 48)
+        btnSkillEditor.TabIndex = 59
+        btnSkillEditor.Text = "Skill Editor"
+        btnSkillEditor.UseVisualStyleBackColor = True
+        ' 
+        ' btnShopEditor
+        ' 
+        btnShopEditor.Location = New Point(12, 360)
+        btnShopEditor.Margin = New Padding(5)
+        btnShopEditor.Name = "btnShopEditor"
+        btnShopEditor.Size = New Size(187, 48)
+        btnShopEditor.TabIndex = 60
+        btnShopEditor.Text = "Shop Editor"
+        btnShopEditor.UseVisualStyleBackColor = True
+        ' 
+        ' btnAnimationEditor
+        ' 
+        btnAnimationEditor.Location = New Point(12, 10)
+        btnAnimationEditor.Margin = New Padding(5)
+        btnAnimationEditor.Name = "btnAnimationEditor"
+        btnAnimationEditor.Size = New Size(187, 48)
+        btnAnimationEditor.TabIndex = 61
+        btnAnimationEditor.Text = "Animation Editor"
+        btnAnimationEditor.UseVisualStyleBackColor = True
+        ' 
         ' FrmAdmin
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
@@ -485,12 +485,11 @@ Partial Class FrmAdmin
         Controls.Add(TabControl1)
         FormBorderStyle = FormBorderStyle.FixedToolWindow
         Icon = CType(resources.GetObject("$this.Icon"), Icon)
-        Margin = New Padding(5, 5, 5, 5)
+        Margin = New Padding(5)
         MaximizeBox = False
         MinimizeBox = False
         Name = "FrmAdmin"
         ShowIcon = False
-        StartPosition = FormStartPosition.CenterParent
         Text = "Admin Panel"
         TabControl1.ResumeLayout(False)
         tabModeration.ResumeLayout(False)
