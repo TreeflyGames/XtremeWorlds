@@ -178,6 +178,8 @@ Module C_Animations
 #Region "Drawing"
 
     Friend Sub DrawAnimation(index As Integer, layer As Integer)
+        If AnimInstance(index).Animation = 0 Then Exit Sub
+
         Dim sprite As Integer = Animation(AnimInstance(index).Animation).Sprite(layer)
         If sprite < 1 Or sprite > NumAnimations Then Return
 
@@ -191,7 +193,7 @@ Module C_Animations
 
         ' Calculate frame dimensions
         If columns > 0 Then
-            framewidth = totalWidth / columns
+            frameWidth = totalWidth / columns
         End If
 
         Dim frameHeight As Integer = frameWidth
@@ -215,14 +217,14 @@ Module C_Animations
             column = frameIndex Mod columns
             row = frameIndex \ columns
         End If
-        
+
         Dim sRect As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
 
         ' Determine the position based on lock type and instance status
         Dim x As Integer, y As Integer
 
         If AnimInstance(index).LockType > 0 Then
-            Dim lockindex As Integer = AnimInstance(index).lockindex
+            Dim lockindex As Integer = AnimInstance(index).LockIndex
             Dim point As Point = GetLockedPosition(index, lockindex, frameWidth, frameHeight)
             x = point.X
             y = point.Y
