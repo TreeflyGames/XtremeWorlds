@@ -343,7 +343,7 @@ Public Class frmEditor_Map
     End Sub
 
     Private Sub BtnClearAttribute_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClearAttribute.Click
-        MapEditorClearAttributes()
+        Dialogue("Map Editor", "Clear Attributes: ", "Are you sure you wish to clear attributes?", DialogueType.ClearAttributes, DialogueStyle.YesNo)
     End Sub
 
     Private Sub ScrlNpcDir_Scroll(sender As Object, e As EventArgs) Handles scrlNpcDir.ValueChanged
@@ -1253,22 +1253,6 @@ Public Class frmEditor_Map
         fraShop.Visible = False
         fraHeal.Visible = False
         fraTrap.Visible = False
-    End Sub
-
-    Public Sub MapEditorClearAttributes()
-        Dim X As Integer
-        Dim Y As Integer
-
-        If MsgBox("Are you sure you wish to clear the attributes on this map?", vbYesNo, "MapEditor") = vbYes Then
-
-            For X = 0 To Map.MaxX
-                For Y = 0 To Map.MaxY
-                    Map.Tile(X, Y).Type = 0
-                Next
-            Next
-
-        End If
-
     End Sub
 
     Private Sub txtName_TextChanged(sender As Object, e As EventArgs) Handles txtName.TextChanged

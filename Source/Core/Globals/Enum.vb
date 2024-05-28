@@ -626,6 +626,7 @@
         UntradeAmount
         ClearLayer
         FillLayer
+        ClearAttributes
     End Enum
 
     Public Enum DialogueStyle

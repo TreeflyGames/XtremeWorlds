@@ -1283,6 +1283,14 @@ Continue1:
                             End With
                         Next
                     Next
+
+                Case DialogueType.ClearAttributes
+                    For X = 0 To Map.MaxX
+                        For Y = 0 To Map.MaxY
+                            Map.Tile(X, Y).Type = 0
+                            Map.Tile(X, Y).Type2 = 0
+                        Next
+                    Next
             End Select
 
         ElseIf Index = 3 Then ' No button
