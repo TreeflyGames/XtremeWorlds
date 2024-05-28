@@ -32,10 +32,6 @@ Module C_GameLogic
             If GameStarted() Then
                 'Calculate FPS
                 If tmr1000 < tick Then
-                    Fps = tmpfps
-                    Lps = tmplps
-                    tmpfps = 0
-                    tmplps = 0
                     GetPing()
                     tmr1000 = tick + 1000
                 End If
