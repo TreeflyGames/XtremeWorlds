@@ -2468,9 +2468,37 @@ Friend Module S_EventLogic
                 y = GetPlayerY(index)
             Case DirectionType.Right
 
-                If GetPlayerX(index) = Map(GetPlayerMap(index)).MaxX Then Exit Function
-                x = GetPlayerX(index) + 1
-                y = GetPlayerY(index)
+                If GetPlayerX(Index) = Map(GetPlayerMap(Index)).MaxX Then Exit Function
+                x = GetPlayerX(Index) + 1
+                y = GetPlayerY(Index)
+
+            Case DirectionType.UpRight
+
+                If GetPlayerX(Index) = Map(GetPlayerMap(Index)).MaxX Then Exit Function
+                If GetPlayerY(Index) = Map(GetPlayerMap(Index)).MaxY Then Exit Function
+                x = GetPlayerX(Index) + 1
+                y = GetPlayerY(Index) - 1
+
+            Case DirectionType.UpLeft
+
+                If GetPlayerX(Index) = Map(GetPlayerMap(Index)).MaxX Then Exit Function
+                If GetPlayerY(Index) = Map(GetPlayerMap(Index)).MaxY Then Exit Function
+                x = GetPlayerX(Index) - 1
+                y = GetPlayerY(Index) - 1
+
+            Case DirectionType.DownLeft
+
+                If GetPlayerX(Index) = Map(GetPlayerMap(Index)).MaxX Then Exit Function
+                If GetPlayerY(Index) = Map(GetPlayerMap(Index)).MaxY Then Exit Function
+                x = GetPlayerX(Index) - 1
+                y = GetPlayerY(Index) + 1
+
+            Case DirectionType.DownRight
+
+                If GetPlayerX(Index) = Map(GetPlayerMap(Index)).MaxX Then Exit Function
+                If GetPlayerY(Index) = Map(GetPlayerMap(Index)).MaxY Then Exit Function
+                x = GetPlayerX(Index) + 1
+                y = GetPlayerY(Index) + 1
         End Select
 
         If x <> TempPlayer(index).EventMap.EventPages(i).X Or y <> TempPlayer(index).EventMap.EventPages(i).Y Then Exit Function

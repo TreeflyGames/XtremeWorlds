@@ -74,8 +74,19 @@
     End Sub
 
     Public Function IsDirBlocked(ByRef Blockvar As Byte, ByRef Dir As Byte) As Boolean
-        Return Blockvar And (2 ^ Dir)
+        If Dir = DirectionType.UpRight Then
+            Return (Blockvar And (2 ^ DirectionType.Up)) Or (Blockvar And (2 ^ DirectionType.Right))
+        ElseIf Dir = DirectionType.UpLeft Then
+            Return (Blockvar And (2 ^ DirectionType.Up)) Or (Blockvar And (2 ^ DirectionType.Left))
+        ElseIf Dir = DirectionType.DownRight Then
+            Return (Blockvar And (2 ^ DirectionType.Down)) Or (Blockvar And (2 ^ DirectionType.Right))
+        ElseIf Dir = DirectionType.DownLeft Then
+            Return (Blockvar And (2 ^ DirectionType.Down)) Or (Blockvar And (2 ^ DirectionType.Left))
+        Else
+            Return Blockvar And (2 ^ Dir)
+        End If
     End Function
+
 
     Public Function GetPlayerNextLevel(index As Integer) As Integer
         GetPlayerNextLevel = (50 / 3) * ((GetPlayerLevel(index) + 1) ^ 3 - (6 * (GetPlayerLevel(index) + 1) ^ 2) + 17 * (GetPlayerLevel(index) + 1) - 12)

@@ -132,6 +132,30 @@ Module C_Player
                     SendPlayerMove()
                     Player(MyIndex).XOffset = PicX * -1
                     SetPlayerX(MyIndex, GetPlayerX(MyIndex) + 1)
+                Case DirectionType.UpLeft
+                    SendPlayerMove()
+                    Player(MyIndex).XOffset = PicX
+                    SetPlayerX(MyIndex, GetPlayerX(MyIndex) - 1)
+                    Player(MyIndex).YOffset = PicY
+                    SetPlayerY(MyIndex, GetPlayerY(MyIndex) - 1)
+                Case DirectionType.UpRight
+                    SendPlayerMove()
+                    Player(MyIndex).XOffset = PicX * -1
+                    SetPlayerX(MyIndex, GetPlayerX(MyIndex) + 1)
+                    Player(MyIndex).YOffset = PicY
+                    SetPlayerY(MyIndex, GetPlayerY(MyIndex) - 1)
+                Case DirectionType.DownLeft
+                    SendPlayerMove()
+                    Player(MyIndex).XOffset = PicX
+                    SetPlayerX(MyIndex, GetPlayerX(MyIndex) - 1)
+                    Player(MyIndex).YOffset = PicY * -1
+                    SetPlayerY(MyIndex, GetPlayerY(MyIndex) + 1)
+                Case DirectionType.DownRight
+                    SendPlayerMove()
+                    Player(MyIndex).XOffset = PicX * -1
+                    SetPlayerX(MyIndex, GetPlayerX(MyIndex) + 1)
+                    Player(MyIndex).YOffset = PicY * -1
+                    SetPlayerY(MyIndex, GetPlayerY(MyIndex) + 1)
             End Select
 
             If Player(MyIndex).XOffset = 0 And Player(MyIndex).YOffset = 0 Then
@@ -209,28 +233,19 @@ Module C_Player
 
         d = GetPlayerDir(MyIndex)
 
+        ' Check for cardinal movements if no diagonal movements
         If DirUp Then
             SetPlayerDir(MyIndex, DirectionType.Up)
-
-            ' Check to see if they are trying to go out of bounds
             If GetPlayerY(MyIndex) > 0 Then
                 If CheckDirection(DirectionType.Up) Then
                     CanMove = False
-
-                    ' Set the new direction if they weren't facing that direction
                     If d <> DirectionType.Up Then
                         SendPlayerDir()
                     End If
-
                     Exit Function
                 End If
-            Else
-
-                ' Check if they can warp to a new map
-                If Map.Up > 0 Then
-                    SendPlayerRequestNewMap()
-                End If
-
+            ElseIf Map.Up > 0 Then
+                SendPlayerRequestNewMap()
                 CanMove = False
                 Exit Function
             End If
@@ -238,26 +253,16 @@ Module C_Player
 
         If DirDown Then
             SetPlayerDir(MyIndex, DirectionType.Down)
-
-            ' Check to see if they are trying to go out of bounds
             If GetPlayerY(MyIndex) < Map.MaxY Then
                 If CheckDirection(DirectionType.Down) Then
                     CanMove = False
-
-                    ' Set the new direction if they weren't facing that direction
                     If d <> DirectionType.Down Then
                         SendPlayerDir()
                     End If
-
                     Exit Function
                 End If
-            Else
-
-                ' Check if they can warp to a new map
-                If Map.Down > 0 Then
-                    SendPlayerRequestNewMap()
-                End If
-
+            ElseIf Map.Down > 0 Then
+                SendPlayerRequestNewMap()
                 CanMove = False
                 Exit Function
             End If
@@ -265,26 +270,16 @@ Module C_Player
 
         If DirLeft Then
             SetPlayerDir(MyIndex, DirectionType.Left)
-
-            ' Check to see if they are trying to go out of bounds
             If GetPlayerX(MyIndex) > 0 Then
                 If CheckDirection(DirectionType.Left) Then
                     CanMove = False
-
-                    ' Set the new direction if they weren't facing that direction
                     If d <> DirectionType.Left Then
                         SendPlayerDir()
                     End If
-
                     Exit Function
                 End If
-            Else
-
-                ' Check if they can warp to a new map
-                If Map.Left > 0 Then
-                    SendPlayerRequestNewMap()
-                End If
-
+            ElseIf Map.Left > 0 Then
+                SendPlayerRequestNewMap()
                 CanMove = False
                 Exit Function
             End If
@@ -292,25 +287,79 @@ Module C_Player
 
         If DirRight Then
             SetPlayerDir(MyIndex, DirectionType.Right)
-
-            ' Check to see if they are trying to go out of bounds
             If GetPlayerX(MyIndex) < Map.MaxX Then
                 If CheckDirection(DirectionType.Right) Then
                     CanMove = False
-
-                    ' Set the new direction if they weren't facing that direction
                     If d <> DirectionType.Right Then
                         SendPlayerDir()
                     End If
-
                     Exit Function
                 End If
-            Else
-                ' Check if they can warp to a new map
-                If Map.Right > 0 Then
-                    SendPlayerRequestNewMap()
-                End If
+            ElseIf Map.Right > 0 Then
+                SendPlayerRequestNewMap()
+                CanMove = False
+                Exit Function
+            End If
+        End If
 
+        ' Check for diagonal movements first
+        If DirUp And DirRight Then
+            SetPlayerDir(MyIndex, DirectionType.UpRight)
+            If GetPlayerY(MyIndex) > 0 And GetPlayerX(MyIndex) < Map.MaxX Then
+                If CheckDirection(DirectionType.UpRight) Then
+                    CanMove = False
+                    If d <> DirectionType.UpRight Then
+                        SendPlayerDir()
+                    End If
+                    Exit Function
+                End If
+            ElseIf Map.Up > 0 And Map.Right > 0 Then
+                SendPlayerRequestNewMap()
+                CanMove = False
+                Exit Function
+            End If
+        ElseIf DirUp And DirLeft Then
+            SetPlayerDir(MyIndex, DirectionType.UpLeft)
+            If GetPlayerY(MyIndex) > 0 And GetPlayerX(MyIndex) > 0 Then
+                If CheckDirection(DirectionType.UpLeft) Then
+                    CanMove = False
+                    If d <> DirectionType.UpLeft Then
+                        SendPlayerDir()
+                    End If
+                    Exit Function
+                End If
+            ElseIf Map.Up > 0 And Map.Left > 0 Then
+                SendPlayerRequestNewMap()
+                CanMove = False
+                Exit Function
+            End If
+        ElseIf DirDown And DirRight Then
+            SetPlayerDir(MyIndex, DirectionType.DownRight)
+            If GetPlayerY(MyIndex) < Map.MaxY And GetPlayerX(MyIndex) < Map.MaxX Then
+                If CheckDirection(DirectionType.DownRight) Then
+                    CanMove = False
+                    If d <> DirectionType.DownRight Then
+                        SendPlayerDir()
+                    End If
+                    Exit Function
+                End If
+            ElseIf Map.Down > 0 And Map.Right > 0 Then
+                SendPlayerRequestNewMap()
+                CanMove = False
+                Exit Function
+            End If
+        ElseIf DirDown And DirLeft Then
+            SetPlayerDir(MyIndex, DirectionType.DownLeft)
+            If GetPlayerY(MyIndex) < Map.MaxY And GetPlayerX(MyIndex) > 0 Then
+                If CheckDirection(DirectionType.DownLeft) Then
+                    CanMove = False
+                    If d <> DirectionType.DownLeft Then
+                        SendPlayerDir()
+                    End If
+                    Exit Function
+                End If
+            ElseIf Map.Down > 0 And Map.Left > 0 Then
+                SendPlayerRequestNewMap()
                 CanMove = False
                 Exit Function
             End If
@@ -321,8 +370,6 @@ Module C_Player
     Function CheckDirection(direction As Byte) As Boolean
         Dim x As Integer, y As Integer
         Dim i As Integer
-
-        CheckDirection = False
 
         ' check directional blocking
         If IsDirBlocked(Map.Tile(GetPlayerX(MyIndex), GetPlayerY(MyIndex)).DirBlock, direction) Then
@@ -343,6 +390,18 @@ Module C_Player
             Case DirectionType.Right
                 x = GetPlayerX(MyIndex) + 1
                 y = GetPlayerY(MyIndex)
+            Case DirectionType.UpLeft
+                x = GetPlayerX(MyIndex) - 1
+                y = GetPlayerY(MyIndex) - 1
+            Case DirectionType.UpRight
+                x = GetPlayerX(MyIndex) + 1
+                y = GetPlayerY(MyIndex) - 1
+            Case DirectionType.DownLeft
+                x = GetPlayerX(MyIndex) - 1
+                y = GetPlayerY(MyIndex) + 1
+            Case DirectionType.DownRight
+                x = GetPlayerX(MyIndex) + 1
+                y = GetPlayerY(MyIndex) + 1
         End Select
 
         ' Check to see if the map tile is blocked or not
@@ -395,63 +454,82 @@ Module C_Player
     End Function
 
     Sub ProcessMovement(index As Integer)
-        Dim movementSpeed As Integer
+        Dim movementSpeed As Double
 
-        ' Check if player is walking, and if so process moving them over
+        ' Check if player is walking or running, and if so process moving them over
         Select Case Player(index).Moving
-            Case MovementType.Walking : movementSpeed = ((ElapsedTime / 1000) * (WalkSpeed * SizeX))
-            Case MovementType.Running : movementSpeed = ((ElapsedTime / 1000) * (RunSpeed * SizeX))
-            Case Else : Exit Sub
+            Case MovementType.Walking
+                movementSpeed = (ElapsedTime / 1000.0) * WalkSpeed * SizeX ' Adjust speed by elapsed time
+            Case MovementType.Running
+                movementSpeed = (ElapsedTime / 1000.0) * RunSpeed * SizeX ' Adjust speed by elapsed time
+            Case Else
+                Exit Sub
         End Select
 
+        ' Adjust speed for diagonal movement
+        If GetPlayerDir(index) = DirectionType.UpRight OrElse GetPlayerDir(index) = DirectionType.UpLeft OrElse GetPlayerDir(index) = DirectionType.DownRight OrElse GetPlayerDir(index) = DirectionType.DownLeft Then
+            movementSpeed /= Math.Sqrt(2)
+        End If
+
+        ' Update player offsets based on direction
         Select Case GetPlayerDir(index)
             Case DirectionType.Up
-                Player(Index).YOffset = Player(Index).YOffset - movementSpeed
-                If Player(Index).YOffset < 0 Then Player(Index).YOffset = 0
+                Player(index).YOffset -= movementSpeed
+                If Player(index).YOffset < 0 Then Player(index).YOffset = 0
             Case DirectionType.Down
-                Player(Index).YOffset = Player(Index).YOffset + movementSpeed
-                If Player(Index).YOffset > 0 Then Player(Index).YOffset = 0
+                Player(index).YOffset += movementSpeed
+                If Player(index).YOffset > 0 Then Player(index).YOffset = 0
             Case DirectionType.Left
-                Player(Index).XOffset = Player(Index).XOffset - movementSpeed
-                If Player(Index).XOffset < 0 Then Player(Index).XOffset = 0
+                Player(index).XOffset -= movementSpeed
+                If Player(index).XOffset < 0 Then Player(index).XOffset = 0
             Case DirectionType.Right
-                Player(Index).XOffset = Player(Index).XOffset + movementSpeed
-                If Player(Index).XOffset > 0 Then Player(Index).XOffset = 0
+                Player(index).XOffset += movementSpeed
+                If Player(index).XOffset > 0 Then Player(index).XOffset = 0
+            Case DirectionType.UpRight
+                Player(index).XOffset += movementSpeed
+                Player(index).YOffset -= movementSpeed
+                If Player(index).XOffset > 0 Then Player(index).XOffset = 0
+                If Player(index).YOffset < 0 Then Player(index).YOffset = 0
+            Case DirectionType.UpLeft
+                Player(index).XOffset -= movementSpeed
+                Player(index).YOffset -= movementSpeed
+                If Player(index).XOffset < 0 Then Player(index).XOffset = 0
+                If Player(index).YOffset < 0 Then Player(index).YOffset = 0
+            Case DirectionType.DownRight
+                Player(index).XOffset += movementSpeed
+                Player(index).YOffset += movementSpeed
+                If Player(index).XOffset > 0 Then Player(index).XOffset = 0
+                If Player(index).YOffset > 0 Then Player(index).YOffset = 0
+            Case DirectionType.DownLeft
+                Player(index).XOffset -= movementSpeed
+                Player(index).YOffset += movementSpeed
+                If Player(index).XOffset < 0 Then Player(index).XOffset = 0
+                If Player(index).YOffset > 0 Then Player(index).YOffset = 0
         End Select
 
         ' Check if completed walking over to the next tile
-        If Player(Index).Moving > 0 Then
-            If GetPlayerDir(Index) = DirectionType.Right Or GetPlayerDir(Index) = DirectionType.Down Then
-                If (Player(Index).XOffset >= 0) And (Player(Index).YOffset >= 0) Then
-                    Player(Index).Moving = 0
-                    If Player(Index).Steps = 1 Then
-                        Player(Index).Steps = 3
-                    Else
-                        Player(Index).Steps = 1
-                    End If
-                End If
-            Else
-                If (Player(Index).XOffset <= 0) And (Player(Index).YOffset <= 0) Then
-                    Player(Index).Moving = 0
-                    If Player(Index).Steps = 1 Then
-                        Player(Index).Steps = 3
-                    Else
-                        Player(Index).Steps = 1
-                    End If
+        If Player(index).Moving > 0 Then
+            If (Player(index).XOffset = 0 And Player(index).YOffset = 0) Then
+                Player(index).Moving = 0
+                If Player(index).Steps = 1 Then
+                    Player(index).Steps = 3
+                Else
+                    Player(index).Steps = 1
                 End If
             End If
         End If
 
     End Sub
 
+
 #End Region
 
 #Region "Attacking"
-    Sub CheckAttack()
+    Sub CheckAttack(Optional mouse As Boolean = False)
         Dim attackspeed As Integer, x As Integer, y As Integer
         Dim buffer As New ByteStream(4)
 
-        If VbKeyControl Then
+        If VbKeyControl Or mouse Then
             If InEvent = True Then Exit Sub
             If SkillBuffer > 0 Then Exit Sub ' currently casting a skill, can't attack
             If StunDuration > 0 Then Exit Sub ' stunned, can't attack
@@ -479,15 +557,33 @@ Module C_Player
                 Case DirectionType.Up
                     x = GetPlayerX(MyIndex)
                     y = GetPlayerY(MyIndex) - 1
+
                 Case DirectionType.Down
                     x = GetPlayerX(MyIndex)
                     y = GetPlayerY(MyIndex) + 1
+
                 Case DirectionType.Left
                     x = GetPlayerX(MyIndex) - 1
                     y = GetPlayerY(MyIndex)
                 Case DirectionType.Right
                     x = GetPlayerX(MyIndex) + 1
                     y = GetPlayerY(MyIndex)
+
+                Case DirectionType.UpRight
+                    x = GetPlayerX(MyIndex) + 1
+                    y = GetPlayerY(MyIndex) - 1
+
+                Case DirectionType.UpLeft
+                    x = GetPlayerX(MyIndex) - 1
+                    y = GetPlayerY(MyIndex) - 1
+
+                Case DirectionType.DownRight
+                    x = GetPlayerX(MyIndex) + 1
+                    y = GetPlayerY(MyIndex) + 1
+
+                Case DirectionType.DownLeft
+                    x = GetPlayerX(MyIndex) - 1
+                    y = GetPlayerY(MyIndex) + 1
             End Select
 
             If GetTickCount() > Player(MyIndex).EventTimer Then
@@ -608,6 +704,22 @@ Module C_Player
                 Case DirectionType.Right
 
                     If (Player(index).XOffset < -8) Then anim = Player(index).Steps
+                Case DirectionType.UpRight
+                    If (Player(index).XOffset < -8) Then anim = Player(index).Steps
+                    If (Player(index).YOffset > 8) Then anim = Player(index).Steps
+
+                Case DirectionType.UpLeft
+                    If (Player(index).XOffset > 8) Then anim = Player(index).Steps
+                    If (Player(index).YOffset > 8) Then anim = Player(index).Steps
+
+                Case DirectionType.DownRight
+                    If (Player(index).XOffset < -8) Then anim = Player(index).Steps
+                    If (Player(index).YOffset < -8) Then anim = Player(index).Steps
+
+                Case DirectionType.DownLeft
+                    If (Player(index).XOffset > 8) Then anim = Player(index).Steps
+                    If (Player(index).YOffset < -8) Then anim = Player(index).Steps
+
             End Select
 
         End If
@@ -631,6 +743,14 @@ Module C_Player
                 spriteleft = 0
             Case DirectionType.Left
                 spriteleft = 1
+            Case DirectionType.UpRight
+                spriteleft = 2
+            Case DirectionType.UpLeft
+                spriteleft = 1
+            Case DirectionType.DownLeft
+                spriteleft = 1
+            Case DirectionType.DownRight
+                spriteleft = 2
         End Select
 
         ' Calculate the X

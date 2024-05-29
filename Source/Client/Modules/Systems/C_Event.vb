@@ -2022,6 +2022,7 @@ newlist:
     Sub Packet_SwitchesAndVariables(ByRef data() As Byte)
         Dim i As Integer
         Dim buffer As New ByteStream(data)
+
         For i = 1 To MAX_SWITCHES
             Switches(i) = buffer.ReadString
         Next

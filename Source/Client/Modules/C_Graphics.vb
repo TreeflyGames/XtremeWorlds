@@ -325,37 +325,42 @@ Module C_Graphics
                 LastLeftClickTime = currentTime
             End If
 
-            ' if we're in the middle of choose the trade target or not
-            If PetAlive(MyIndex) Then
-                If IsInBounds() Then
-                    PetMove(CurX, CurY)
+            If InGame Then
+                ' if we're in the middle of choose the trade target or not
+                If PetAlive(MyIndex) Then
+                    If IsInBounds() Then
+                        PetMove(CurX, CurY)
+                    End If
+                End If
+
+                CheckAttack(True)
+
+                ' targetting
+                PlayerSearch(CurX, CurY, 0)
+            End If
+        ElseIf e.Button = Mouse.Button.Right Then
+            If InGame Then
+                If VbKeyShift Then
+                    ' admin warp if we're pressing shift and right clicking
+                    If GetPlayerAccess(MyIndex) >= AccessType.Moderator Then AdminWarp(CurX, CurY)
+                Else
+                    ' right-click menu
+                    For i = 1 To MAX_PLAYERS
+                        If IsPlaying(i) Then
+                            If GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
+                                If GetPlayerX(i) = CurX And GetPlayerY(i) = CurY Then
+                                    ShowPlayerMenu(i, CurMouseX, CurMouseY)
+                                End If
+                            End If
+                        End If
+                    Next
+                    PlayerSearch(CurX, CurY, 1)
                 End If
             End If
 
-            ' targetting
-            PlayerSearch(CurX, CurY, 0)
-
-        ElseIf e.Button = Mouse.Button.Right Then
-            If VbKeyShift = True Then
-                ' admin warp if we're pressing shift and right clicking
-                If GetPlayerAccess(MyIndex) >= AccessType.Moderator Then AdminWarp(CurX, CurY)
-            Else
-                ' right-click menu
-                For i = 1 To MAX_PLAYERS
-                    If IsPlaying(i) Then
-                        If GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
-                            If GetPlayerX(i) = CurX And GetPlayerY(i) = CurY Then
-                                ShowPlayerMenu(i, CurMouseX, CurMouseY)
-                            End If
-                        End If
-                    End If
-                Next
-                PlayerSearch(CurX, CurY, 1)
+            If Editor = EditorType.Map Then
+                frmEditor_Map.MapEditorMouseDown(e.Button, e.X, e.Y, False)
             End If
-        End If
-
-        If Editor = EditorType.Map Then
-            frmEditor_Map.MapEditorMouseDown(e.Button, e.X, e.Y, False)
         End If
 
         HandleInterfaceEvents(EntState.MouseDown)
@@ -1302,7 +1307,6 @@ Module C_Graphics
     Function Lerp(start As Double, [end] As Double, t As Double) As Double
         Return start + (t * ([end] - start))
     End Function
-
 
     Friend Sub Render_Graphics()
         Dim x As Integer, y As Integer, i As Integer

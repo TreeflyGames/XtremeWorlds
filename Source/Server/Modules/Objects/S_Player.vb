@@ -946,7 +946,7 @@ Module S_Player
         Dim VitalType As Integer, Color As Integer, amount As Integer
 
         ' Check for subscript out of range
-        If Dir <= DirectionType.None Or Dir > DirectionType.Left Or Movement < MovementType.Standing Or Movement > MovementType.Running Then
+        If Dir < DirectionType.Up Or Dir > DirectionType.DownRight Or Movement < MovementType.Standing Or Movement > MovementType.Running Then
             Exit Sub
         End If
 
@@ -970,7 +970,7 @@ Module S_Player
                                 SendPlayerMove(index, Movement)
                                 Moved = True
 
-                                'check for event
+                                ' Check for event
                                 For i = 1 To TempPlayer(index).EventMap.CurrentEvents
                                     TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index))
                                 Next
@@ -978,8 +978,8 @@ Module S_Player
                         End If
                     End If
                 Else
-                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then 
-                        ' Check to see if we can move them to the another map
+                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then
+                        ' Check to see if we can move them to another map
                         If Map(GetPlayerMap(index)).Up > 0 Then
                             NewMapY = Map(Map(GetPlayerMap(index)).Up).MaxY
                             PlayerWarp(index, Map(GetPlayerMap(index)).Up, GetPlayerX(index), NewMapY)
@@ -994,13 +994,13 @@ Module S_Player
                 If GetPlayerY(index) < Map(mapNum).MaxY Then
                     ' Check to make sure that the tile is walkable
                     If Not IsDirBlocked(Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).DirBlock, DirectionType.Down) Then
-                        If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index) + 1).Type <> TileType.Blocked And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index) + 1).Type2 <> TileType.Blocked  Then
+                        If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index) + 1).Type <> TileType.Blocked And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index) + 1).Type2 <> TileType.Blocked Then
                             If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index) + 1).Type <> TileType.Resource And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index) + 1).Type2 <> TileType.Resource Then
                                 SetPlayerY(index, GetPlayerY(index) + 1)
                                 SendPlayerMove(index, Movement)
                                 Moved = True
 
-                                'check for event
+                                ' Check for event
                                 For i = 1 To TempPlayer(index).EventMap.CurrentEvents
                                     TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index))
                                 Next
@@ -1008,8 +1008,8 @@ Module S_Player
                         End If
                     End If
                 Else
-                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then 
-                        ' Check to see if we can move them to the another map
+                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then
+                        ' Check to see if we can move them to another map
                         If Map(GetPlayerMap(index)).Down > 0 Then
                             PlayerWarp(index, Map(GetPlayerMap(index)).Down, GetPlayerX(index), 0)
                             DidWarp = True
@@ -1024,12 +1024,12 @@ Module S_Player
                     ' Check to make sure that the tile is walkable
                     If Not IsDirBlocked(Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).DirBlock, DirectionType.Left) Then
                         If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index)).Type <> TileType.Blocked And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index)).Type2 <> TileType.Blocked Then
-                            If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index)).Type <> TileType.Resource And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index)).Type2 <> TileType.Resource  Then
+                            If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index)).Type <> TileType.Resource And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index)).Type2 <> TileType.Resource Then
                                 SetPlayerX(index, GetPlayerX(index) - 1)
                                 SendPlayerMove(index, Movement)
                                 Moved = True
 
-                                'check for event
+                                ' Check for event
                                 For i = 1 To TempPlayer(index).EventMap.CurrentEvents
                                     TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index))
                                 Next
@@ -1037,8 +1037,8 @@ Module S_Player
                         End If
                     End If
                 Else
-                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then 
-                        ' Check to see if we can move them to the another map
+                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then
+                        ' Check to see if we can move them to another map
                         If Map(GetPlayerMap(index)).Left > 0 Then
                             NewMapX = Map(Map(GetPlayerMap(index)).Left).MaxX
                             PlayerWarp(index, Map(GetPlayerMap(index)).Left, NewMapX, GetPlayerY(index))
@@ -1059,7 +1059,7 @@ Module S_Player
                                 SendPlayerMove(index, Movement)
                                 Moved = True
 
-                                'check for event
+                                ' Check for event
                                 For i = 1 To TempPlayer(index).EventMap.CurrentEvents
                                     TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index))
                                 Next
@@ -1067,12 +1067,96 @@ Module S_Player
                         End If
                     End If
                 Else
-                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then 
-                        ' Check to see if we can move them to the another map
+                    If Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type <> TileType.NoXing And Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).Type2 <> TileType.NoXing Then
+                        ' Check to see if we can move them to another map
                         If Map(GetPlayerMap(index)).Right > 0 Then
                             PlayerWarp(index, Map(GetPlayerMap(index)).Right, 0, GetPlayerY(index))
                             DidWarp = True
                             Moved = True
+                        End If
+                    End If
+                End If
+
+            Case DirectionType.UpRight
+                ' Check to make sure not outside of boundaries
+                If GetPlayerY(index) > 0 AndAlso GetPlayerX(index) < Map(mapNum).MaxX Then
+                    ' Check to make sure that the tile is walkable
+                    If Not IsDirBlocked(Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).DirBlock, DirectionType.UpRight) Then
+                        If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) + 1, GetPlayerY(index) - 1).Type <> TileType.Blocked And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) + 1, GetPlayerY(index) - 1).Type2 <> TileType.Blocked Then
+                            If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) + 1, GetPlayerY(index) - 1).Type <> TileType.Resource And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) + 1, GetPlayerY(index) - 1).Type2 <> TileType.Resource Then
+                                SetPlayerX(index, GetPlayerX(index) + 1)
+                                SetPlayerY(index, GetPlayerY(index) - 1)
+                                SendPlayerMove(index, Movement)
+                                Moved = True
+
+                                ' Check for event
+                                For i = 1 To TempPlayer(index).EventMap.CurrentEvents
+                                    TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index))
+                                Next
+                            End If
+                        End If
+                    End If
+                End If
+
+            Case DirectionType.UpLeft
+                ' Check to make sure not outside of boundaries
+                If GetPlayerY(index) > 0 AndAlso GetPlayerX(index) > 0 Then
+                    ' Check to make sure that the tile is walkable
+                    If Not IsDirBlocked(Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).DirBlock, DirectionType.UpLeft) Then
+                        If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index) - 1).Type <> TileType.Blocked And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index) - 1).Type2 <> TileType.Blocked Then
+                            If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index) - 1).Type <> TileType.Resource And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index) - 1).Type2 <> TileType.Resource Then
+                                SetPlayerX(index, GetPlayerX(index) - 1)
+                                SetPlayerY(index, GetPlayerY(index) - 1)
+                                SendPlayerMove(index, Movement)
+                                Moved = True
+
+                                ' Check for event
+                                For i = 1 To TempPlayer(index).EventMap.CurrentEvents
+                                    TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index))
+                                Next
+                            End If
+                        End If
+                    End If
+                End If
+
+            Case DirectionType.DownRight
+                ' Check to make sure not outside of boundaries
+                If GetPlayerY(index) < Map(mapNum).MaxY AndAlso GetPlayerX(index) < Map(mapNum).MaxX Then
+                    ' Check to make sure that the tile is walkable
+                    If Not IsDirBlocked(Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).DirBlock, DirectionType.DownRight) Then
+                        If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) + 1, GetPlayerY(index) + 1).Type <> TileType.Blocked And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) + 1, GetPlayerY(index) + 1).Type2 <> TileType.Blocked Then
+                            If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) + 1, GetPlayerY(index) + 1).Type <> TileType.Resource And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) + 1, GetPlayerY(index) + 1).Type2 <> TileType.Resource Then
+                                SetPlayerX(index, GetPlayerX(index) + 1)
+                                SetPlayerY(index, GetPlayerY(index) + 1)
+                                SendPlayerMove(index, Movement)
+                                Moved = True
+
+                                ' Check for event
+                                For i = 1 To TempPlayer(index).EventMap.CurrentEvents
+                                    TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index))
+                                Next
+                            End If
+                        End If
+                    End If
+                End If
+
+            Case DirectionType.DownLeft
+                ' Check to make sure not outside of boundaries
+                If GetPlayerY(index) < Map(mapNum).MaxY AndAlso GetPlayerX(index) > 0 Then
+                    ' Check to make sure that the tile is walkable
+                    If Not IsDirBlocked(Map(GetPlayerMap(index)).Tile(GetPlayerX(index), GetPlayerY(index)).DirBlock, DirectionType.DownLeft) Then
+                        If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index) + 1).Type <> TileType.Blocked And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index) + 1).Type2 <> TileType.Blocked Then
+                            If Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index) + 1).Type <> TileType.Resource And Map(GetPlayerMap(index)).Tile(GetPlayerX(index) - 1, GetPlayerY(index) + 1).Type2 <> TileType.Resource Then
+                                SetPlayerX(index, GetPlayerX(index) - 1)
+                                SetPlayerY(index, GetPlayerY(index) + 1)
+                                SendPlayerMove(index, Movement)
+                                Moved = True
+
+                                ' Check for event
+                                For i = 1 To TempPlayer(index).EventMap.CurrentEvents
+                                    TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index))
+                                Next
+                            End If
                         End If
                     End If
                 End If

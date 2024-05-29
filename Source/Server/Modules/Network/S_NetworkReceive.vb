@@ -656,6 +656,34 @@ Module S_NetworkReceive
                 If GetPlayerX(index) = Map(GetPlayerMap(index)).MaxX Then Exit Sub
                 x = GetPlayerX(index) + 1
                 y = GetPlayerY(index)
+
+            Case DirectionType.UpRight
+
+                If GetPlayerX(index) = Map(GetPlayerMap(index)).MaxX Then Exit Sub
+                If GetPlayerY(index) = Map(GetPlayerMap(index)).MaxY Then Exit Sub
+                x = GetPlayerX(index) + 1
+                y = GetPlayerY(index) - 1
+
+            Case DirectionType.UpLeft
+
+                If GetPlayerX(index) = Map(GetPlayerMap(index)).MaxX Then Exit Sub
+                If GetPlayerY(index) = Map(GetPlayerMap(index)).MaxY Then Exit Sub
+                x = GetPlayerX(index) - 1
+                y = GetPlayerY(index) - 1
+
+            Case DirectionType.DownRight
+
+                If GetPlayerX(index) = Map(GetPlayerMap(index)).MaxX Then Exit Sub
+                If GetPlayerY(index) = Map(GetPlayerMap(index)).MaxY Then Exit Sub
+                x = GetPlayerX(index) + 1
+                y = GetPlayerY(index) + 1
+
+            Case DirectionType.DownLeft
+
+                If GetPlayerX(index) = Map(GetPlayerMap(index)).MaxX Then Exit Sub
+                If GetPlayerY(index) = Map(GetPlayerMap(index)).MaxY Then Exit Sub
+                x = GetPlayerX(index) - 1
+                y = GetPlayerY(index) + 1
         End Select
 
         CheckResource(index, x, y)

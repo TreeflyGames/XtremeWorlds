@@ -127,6 +127,10 @@
         Right
         Down
         Left
+        UpRight
+        UpLeft
+        DownLeft
+        DownRight
     End Enum
 
     ''' <Summary> Movement Constant </Summary>
