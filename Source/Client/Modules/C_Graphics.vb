@@ -1227,55 +1227,56 @@ Module C_Graphics
     End Sub
 
     Friend Function IsValidMapPoint(x As Integer, y As Integer) As Boolean
-        IsValidMapPoint = False
-
         If x < 0 Then Exit Function
         If y < 0 Then Exit Function
         If x > Map.MaxX Then Exit Function
         If y > Map.MaxY Then Exit Function
 
-        IsValidMapPoint = True
+        Return True
     End Function
-
-     Friend Sub UpdateCamera()
+    Friend Sub UpdateCamera()
         Dim offsetX As Double, offsetY As Double
         Dim startX As Double, startY As Double
         Dim endX As Double, endY As Double
+        Dim targetX As Double, targetY As Double
+        Dim lerpSpeed As Double = 0.1 ' Adjust this value for the desired speed
 
-        ' Calculate initial offsets
-        offsetX = Player(MyIndex).XOffset + PicX * 2
-        offsetY = Player(MyIndex).YOffset + PicY * 2
-        startX = GetPlayerX(MyIndex) - (Types.Settings.CameraWidth / 2)
-        startY = GetPlayerY(MyIndex) - (Types.Settings.CameraHeight / 2)
+        ' Calculate target positions
+        targetX = GetPlayerX(MyIndex) - (Types.Settings.CameraWidth / 2)
+        targetY = GetPlayerY(MyIndex) - (Types.Settings.CameraHeight / 2)
 
-        ' Ensure startX is within bounds
-        If startX < 0 Then
-            offsetX = 0
-            startX = 0
+        ' Ensure targetX is within bounds
+        If targetX < 0 Then
+            targetX = 0
+        ElseIf targetX + Types.Settings.CameraWidth > Map.MaxX - 3 Then
+            targetX = Map.MaxX - Types.Settings.CameraWidth - 3 ' Adjust for clamping
         End If
 
-        ' Ensure startY is within bounds
-        If startY < 0 Then
-            offsetY = 0
-            startY = 0
+        ' Ensure targetY is within bounds
+        If targetY < 0 Then
+            targetY = 0
+        ElseIf targetY + Types.Settings.CameraHeight > Map.MaxY - 3 Then
+            targetY = Map.MaxY - Types.Settings.CameraHeight - 3 ' Adjust for clamping
         End If
+
+        ' Smoothly interpolate the camera position
+        startX = Lerp(TileView.Left, targetX, lerpSpeed)
+        startY = Lerp(TileView.Top, targetY, lerpSpeed)
 
         ' Calculate endX and endY with smooth transitions
-        endX = startX + Types.Settings.CameraWidth + 3
-        endY = startY + Types.Settings.CameraHeight + 3
+        endX = startX + Types.Settings.CameraWidth
+        endY = startY + Types.Settings.CameraHeight
 
         ' Adjust endX if it exceeds map boundaries
         If endX > Map.MaxX Then
-            offsetX = 32
             endX = Map.MaxX
-            startX = endX - Types.Settings.CameraWidth
+            startX = endX - Types.Settings.CameraWidth - 3 ' Adjust for clamping
         End If
 
         ' Adjust endY if it exceeds map boundaries
         If endY > Map.MaxY Then
-            offsetY = 32
             endY = Map.MaxY
-            startY = endY - Types.Settings.CameraHeight
+            startY = endY - Types.Settings.CameraHeight - 3 ' Adjust for clamping
         End If
 
         ' Set the TileView properties
@@ -1288,8 +1289,8 @@ Module C_Graphics
 
         ' Set the Camera properties
         With Camera
-            .Y = offsetY
-            .X = offsetX
+            .Y = offsetY + PicX
+            .X = offsetX + PicY
             .Height = Types.Settings.CameraHeight * PicY
             .Width = Types.Settings.CameraWidth * PicX
         End With
@@ -1297,6 +1298,11 @@ Module C_Graphics
         ' Update the map name display
         UpdateDrawMapName()
     End Sub
+
+    Function Lerp(start As Double, [end] As Double, t As Double) As Double
+        Return start + (t * ([end] - start))
+    End Function
+
 
     Friend Sub Render_Graphics()
         Dim x As Integer, y As Integer, i As Integer
