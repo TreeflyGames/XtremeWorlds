@@ -7,8 +7,8 @@
 [submodule "SFML"]
 	path = Source/SFML
 	url = https://github.com/SFML/SFML.git
-[submodule "CSFML"]
-	path = CSFML
+[submodule "Source/CSFML"]
+	path = Source/CSFML
 	url = https://github.com/SFML/CSFML.git
 [submodule "SFML.Net"]
 	path = Source/SFML.Net
