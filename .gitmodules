@@ -1,3 +1,18 @@
 [submodule "source/NLua"]
 	path = source/NLua
 	url = https://github.com/NLua/NLua.git
+[submodule "DarkUI"]
+	path = DarkUI
+	url = https://github.com/RobinPerris/DarkUI.git
+[submodule "SFML"]
+	path = SFML
+	url = https://github.com/SFML/SFML.git
+[submodule "CSFML"]
+	path = CSFML
+	url = https://github.com/SFML/CSFML.git
+[submodule "SFML.Net"]
+	path = SFML.Net
+	url = https://github.com/SFML/SFML.Net.git
+[submodule "Sanford.Multimedia.Midi"]
+	path = Sanford.Multimedia.Midi
+	url = https://github.com/tebjan/Sanford.Multimedia.Midi.git
