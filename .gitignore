@@ -49,3 +49,8 @@ $tf*/
 *.idea
 *.vs
 Build
+SFML/
+SFML.Net/
+Sanford.Multimedia.Midi/
+DarkUI/
+CSFML/
