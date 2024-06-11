@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Configurations>Release;Debug</Configurations>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
@@ -17,20 +17,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSFML" Version="2.6.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLua" Version="1.7.2" />
     <PackageReference Include="Npgsql" Version="8.0.3" />
-    <PackageReference Include="SFML.Audio" Version="2.5.1" />
-    <PackageReference Include="SFML.Graphics" Version="2.5.1" />
-    <PackageReference Include="SFML.Net" Version="2.5.1" />
-    <PackageReference Include="SFML.System" Version="2.5.1" />
-    <PackageReference Include="SFML.Window" Version="2.5.1" />
+    <PackageReference Include="SFML.Audio" Version="2.6.0" />
+    <PackageReference Include="SFML.Graphics" Version="2.6.0" />
+    <PackageReference Include="SFML.Net" Version="2.6.0" />
+    <PackageReference Include="SFML.Window" Version="2.6.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Sanford.Multimedia.Midi\Source\Sanford.Multimedia.Midi.csproj" />
-    <ProjectReference Include="..\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.Core.csproj" />
+    <ProjectReference Include="..\DarkUI\DarkUI\DarkUI.csproj" />
+    <ProjectReference Include="..\Sanford.Multimedia.Midi\Source\Sanford.Multimedia.Midi.csproj" />
   </ItemGroup>
 
 </Project>

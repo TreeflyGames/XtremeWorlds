@@ -7904,9 +7904,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DarkUI\DarkUI\DarkUI.csproj" />
-    <ProjectReference Include="..\..\Sanford.Multimedia.Midi\Source\Sanford.Multimedia.Midi.csproj" />
-    <ProjectReference Include="..\..\SFML.Net\src\SFML.Window\SFML.Window.csproj" />
     <ProjectReference Include="..\Core\Core.vbproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
