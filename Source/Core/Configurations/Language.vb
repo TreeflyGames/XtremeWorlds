@@ -27,7 +27,7 @@ Public Class LanguageDef
         Public ButtonCredits As String = "Credits"
         Public ButtonExit As String = "Exit"
         Public NewsHeader As String = "Latest News"
-        Public News As String = "Welcome To the MirageWorlds.
+        Public News As String = "Welcome To the Mirage Worlds.
                                  This is a free open source VB.Net game engine!
                                  For help Or support please visit our site at
                                  https://giamon.com."

@@ -7,12 +7,12 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("MirageWorlds Client")>
+<Assembly: AssemblyTitle("Mirage Worlds Client")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("MirageWorlds Client")>
-<Assembly: AssemblyCopyright("Copyright ©  2015 - 2022")>
-<Assembly: AssemblyTrademark("Damian666 and Ituaki")>
+<Assembly: AssemblyProduct("Mirage Worlds Client")>
+<Assembly: AssemblyCopyright("Copyright © 2024")>
+<Assembly: AssemblyTrademark("Treefly Games")>
 
 <Assembly: ComVisible(False)>
 

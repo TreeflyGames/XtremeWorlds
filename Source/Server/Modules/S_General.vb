@@ -28,7 +28,7 @@ Module S_General
 
         Core.Time.Instance.GameSpeed = Types.Settings.TimeSpeed
 
-        Console.Title = "MirageWorlds Server"
+        Console.Title = "Mirage Worlds Server"
 
         time1 = GetTimeMs()
 
