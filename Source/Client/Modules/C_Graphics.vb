@@ -2520,25 +2520,6 @@ Module C_Graphics
         Return True
     End Function
 
-    Private Function AddToHashSet(hashSet As HashSet(Of Vector2i), x As Integer, y As Integer, centerCell As Vector2i,
-                                  <Out> ByRef cell As Vector2i) As Boolean
-        cell = New Vector2i(x, y)
-
-        If Not IsValidMapPoint(x, y) Or Map.Tile(x, y).Type = TileType.Blocked Or Map.Tile(x, y).Type2 = TileType.Blocked Then
-            Return False
-        End If
-
-        If x = Player(MyIndex).X And y = Player(MyIndex).Y Then
-            Return False
-        End If
-
-        If cell.Equals(centerCell) Then
-            Return False
-        End If
-
-        Return hashSet.Add(cell)
-    End Function
-
     Sub DrawMenuBG()
         ' row 1
         RenderTexture(1, GfxType.Picture, Window, ResolutionWidth - 512, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)

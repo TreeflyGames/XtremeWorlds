@@ -400,19 +400,6 @@ Module C_GameLogic
         End If
     End Sub
 
-    Sub DrawPing()
-
-        PingToDraw = Ping
-
-        Select Case Ping
-            Case -1
-                PingToDraw = Language.Game.PingSync
-            Case 0 To 5
-                PingToDraw = Language.Game.PingLocal
-        End Select
-
-    End Sub
-
     Friend Function IsInBounds()
         IsInBounds = False
 

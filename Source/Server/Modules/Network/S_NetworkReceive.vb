@@ -1168,7 +1168,7 @@ Module S_NetworkReceive
             Exit Sub
         End If
 
-        PlayerMsg(index, "Command /banlist is not available in Mirage Worlds... yet ;)", ColorType.Yellow)
+        PlayerMsg(index, "Command /banlist is not available in Mirage Worlds.", ColorType.Yellow)
     End Sub
 
     Sub Packet_DestroyBans(index As Integer, ByRef data() As Byte)
