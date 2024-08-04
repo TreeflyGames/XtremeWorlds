@@ -29,8 +29,8 @@ Public Class LanguageDef
         Public NewsHeader As String = "Latest News"
         Public News As String = "Welcome To the Mirage Worlds.
                                  This is a free open source VB.Net game engine!
-                                 For help Or support please visit our site at
-                                 https://giamon.com."
+                                 For help or support please visit our site at
+                                 https://web.miragesource.net/."
 
         ' Login Panel
         Public Login As String = "Login"
