@@ -33,7 +33,7 @@ Public Class Settings
     <XmlIgnore()> Public GameName As String = "Mirage Worlds"
     <XmlIgnore()> Public Website As String = "https://miragesource.net/"
 
-    <XmlIgnore()> Public Version As String = "1.9.3"
+    <XmlIgnore()> Public Version As String = "1.9.4"
 
     Public Welcome As String = "Welcome to Mirage Worlds, enjoy your stay!"
 

@@ -1,15 +1,6 @@
-﻿Imports System
-Imports System.Data
-Imports System.Globalization
-Imports System.IO
-Imports System.Numerics
-Imports System.Runtime.InteropServices.JavaScript
-Imports System.Runtime.InteropServices.JavaScript.JSType
-Imports System.Runtime.InteropServices.Marshalling
+﻿Imports System.IO
 Imports System.Security.Cryptography
 Imports System.Text
-Imports System.Text.Json.Nodes
-Imports System.Text.RegularExpressions
 Imports Core
 Imports Core.Types
 Imports Mirage.Sharp.Asfw
@@ -19,7 +10,7 @@ Imports Npgsql
 Imports NpgsqlTypes
 
 Module S_Database
-    Dim connectionString As String = "Host=localhost;Port=5432;Username=postgres;Password=mirage;Database=mirage"
+    Dim connectionString As String = Configuration.GetValue("Database:ConnectionString", "Host=localhost;Port=5432;Username=postgres;Password=mirage;Database=mirage")
 
     Public Sub ExecuteSql(connectionString As String, sql As String)
         Using connection As New NpgsqlConnection(connectionString)

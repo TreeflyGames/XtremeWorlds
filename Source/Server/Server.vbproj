@@ -43,6 +43,12 @@
     <None Remove="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="appsettings.server.secret.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.server.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Database\News.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

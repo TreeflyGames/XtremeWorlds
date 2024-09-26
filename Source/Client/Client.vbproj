@@ -111,6 +111,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Update="appsettings.client.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Contents\Graphics\Animations\10.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

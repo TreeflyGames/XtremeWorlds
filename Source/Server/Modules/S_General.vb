@@ -1,12 +1,11 @@
-﻿Imports System
-Imports System.Diagnostics
-Imports System.IO
-Imports System.Numerics
+﻿Imports System.IO
 Imports Core
 Imports Core.Database
 Imports Newtonsoft.Json.Linq
 
 Module S_General
+    Public Configuration As MirageConfiguration
+
     Friend ServerDestroyed As Boolean
     Friend MyIPAddress As String
     Friend myStopWatch As New Stopwatch()
@@ -23,6 +22,8 @@ Module S_General
         Dim time1 As Integer, time2 As Integer
 
         myStopWatch.Start()
+
+        Configuration = New MirageConfiguration("MIRAGE")
 
         Settings.Load()
 
@@ -258,8 +259,8 @@ Module S_General
                 End If
 
                 shutDownLastTimer = time
-            End If    
+            End If
         End If
-End Sub
+    End Sub
 
 End Module
