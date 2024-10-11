@@ -477,6 +477,8 @@ Module C_Maps
             End If
         End If
 
+        Types.Map(GetPlayerMap(MyIndex)) = Map
+
         buffer.Dispose()
 
         InitAutotiles()
