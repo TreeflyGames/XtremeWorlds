@@ -1272,33 +1272,21 @@ Module C_Graphics
         startY = Lerp(TileView.Top, targetY, lerpSpeed)
 
         ' Calculate endX and endY with smooth transitions
-        endX = startX + Types.Settings.CameraWidth
-        endY = startY + Types.Settings.CameraHeight
-
-        ' Adjust endX if it exceeds map boundaries
-        If endX > Map.MaxX Then
-            endX = Map.MaxX
-            startX = endX - Types.Settings.CameraWidth - 3 ' Adjust for clamping
-        End If
-
-        ' Adjust endY if it exceeds map boundaries
-        If endY > Map.MaxY Then
-            endY = Map.MaxY
-            startY = endY - Types.Settings.CameraHeight - 3 ' Adjust for clamping
-        End If
+        endX = startX + Types.Settings.CameraWidth + 3
+        endY = startY + Types.Settings.CameraHeight + 3
 
         ' Set the TileView properties
         With TileView
             .Top = startY
-            .Bottom = endY
+            .Bottom = endY 
             .Left = startX
             .Right = endX
         End With
 
         ' Set the Camera properties
         With Camera
-            .Y = offsetY + PicX
-            .X = offsetX + PicY
+            .Y = offsetY
+            .X = offsetX
             .Height = Types.Settings.CameraHeight * PicY
             .Width = Types.Settings.CameraWidth * PicX
         End With
