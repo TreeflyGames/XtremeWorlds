@@ -664,7 +664,7 @@ Module C_Graphics
             End If
 
             Window = New RenderWindow(New VideoMode(ResolutionWidth, ResolutionHeight), Types.Settings.GameName, Styles.Default, WindowSettings)
-            
+
             CenterWindow(Window)
             Window.SetVerticalSyncEnabled(Types.Settings.Vsync)
             If Types.Settings.Vsync = 0 Then
@@ -1239,6 +1239,7 @@ Module C_Graphics
 
         Return True
     End Function
+
     Friend Sub UpdateCamera()
         Dim offsetX As Double, offsetY As Double
         Dim startX As Double, startY As Double

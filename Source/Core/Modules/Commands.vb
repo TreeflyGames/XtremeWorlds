@@ -212,7 +212,7 @@
 
     Public Sub SetPlayerY(index As Integer, y As Integer)
         If GetPlayerMap(index) < 0 Or GetPlayerMap(index) > MAX_MAPS Then Exit Sub
-        If y < 0 Or y > Map(Player(index).Map).MaxY Then Exit Sub
+        If y < 0 Or y > Map(GetPlayerMap(index)).MaxY Then Exit Sub
 
         Player(index).Y = y
     End Sub
