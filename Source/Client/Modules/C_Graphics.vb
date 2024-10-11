@@ -342,7 +342,9 @@ Module C_Graphics
             If InGame Then
                 If VbKeyShift Then
                     ' admin warp if we're pressing shift and right clicking
-                    If GetPlayerAccess(MyIndex) >= AccessType.Moderator Then AdminWarp(CurX, CurY)
+                    If GetPlayerAccess(MyIndex) >= AccessType.Moderator Then
+                        AdminWarp(CurX, CurY)
+                    End If
                 Else
                     ' right-click menu
                     For i = 1 To MAX_PLAYERS
