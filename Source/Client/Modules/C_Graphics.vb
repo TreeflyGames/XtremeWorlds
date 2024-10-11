@@ -665,7 +665,7 @@ Module C_Graphics
                 Window = Nothing
             End If
 
-            Window = New RenderWindow(New VideoMode(ResolutionWidth, ResolutionHeight), Types.Settings.GameName, Styles.Default, WindowSettings)
+            Window = New RenderWindow(New VideoMode(ResolutionWidth, ResolutionHeight), Types.Settings.GameName, Styles.Close, WindowSettings)
 
             CenterWindow(Window)
             Window.SetVerticalSyncEnabled(Types.Settings.Vsync)
@@ -678,7 +678,7 @@ Module C_Graphics
             Dim iconImage As New Image(Paths.Gui + "icon.png")
             Window.SetIcon(iconImage.Size.X, iconImage.Size.Y, iconImage.Pixels)
 
-            Window.SetActive(true)
+            Window.SetActive(True)
             RefreshWindow = False
             RegisterEvents()
         End If
@@ -798,7 +798,7 @@ Module C_Graphics
                 textureArray = PictureTexture
                 spriteArray = PictureSprite
                 gfxInfoArray = PictureGfxInfo
-                basePath = Paths.Graphics & "pictures\" 
+                basePath = Paths.Graphics & "pictures\"
 
             Case GfxType.GUI
                 numAssets = NumInterface
@@ -871,7 +871,7 @@ Module C_Graphics
 
     Friend Sub RenderTexture(tmpSprite As Sprite, target As RenderWindow, dX As Integer, dY As Integer,
                             sX As Integer, sY As Integer, dW As Integer, dH As Integer, Optional sW As Integer = 1, Optional sH As Integer = 1, Optional alpha As Byte = 255, Optional red As Byte = 255, Optional green As Byte = 255, Optional blue As Byte = 255)
-        
+
         If tmpSprite Is Nothing Then Exit Sub
         If target Is Nothing Then Exit Sub
 
@@ -883,11 +883,11 @@ Module C_Graphics
         target.Draw(tmpSprite)
     End Sub
 
-    Friend Sub RenderTexture(index As Integer, gfxType As GfxType, ByRef target As RenderWindow, 
-                             dX As Integer, dY As Integer, sX As Integer, sY As Integer, 
-                             dW As Integer, dH As Integer, 
-                             Optional sW As Integer = 1, Optional sH As Integer = 1, 
-                             Optional alpha As Byte = 255, Optional red As Byte = 255, 
+    Friend Sub RenderTexture(index As Integer, gfxType As GfxType, ByRef target As RenderWindow,
+                             dX As Integer, dY As Integer, sX As Integer, sY As Integer,
+                             dW As Integer, dH As Integer,
+                             Optional sW As Integer = 1, Optional sH As Integer = 1,
+                             Optional alpha As Byte = 255, Optional red As Byte = 255,
                              Optional green As Byte = 255, Optional blue As Byte = 255)
 
         Dim textureArray() As Texture = Nothing
@@ -919,7 +919,7 @@ Module C_Graphics
         target.Draw(tmpSprite)
     End Sub
 
-    Private Sub ResolveTextureArrays(gfxType As GfxType, ByRef textureArray() As Texture, 
+    Private Sub ResolveTextureArrays(gfxType As GfxType, ByRef textureArray() As Texture,
                                      ByRef spriteArray() As Sprite, ByRef gfxInfoArray() As GraphicInfo)
         Select Case gfxType
             Case GfxType.Tileset
