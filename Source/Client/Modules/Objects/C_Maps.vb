@@ -82,7 +82,7 @@ Module C_Maps
         ReDim Map.Tile(Map.MaxX, Map.MaxY)
         ReDim TileHistory(MaxTileHistory)
         For i = 0 To MaxTileHistory
-            ReDim TileHistory(i).Tile(Map.MaxX, Map.MaxY)
+            ReDim TileHistory(i).Tile(MAX_MAPX,MAX_MAPY)
         Next
         HistoryIndex = 0
         TileHistoryHighIndex = 0
@@ -808,25 +808,19 @@ Module C_Maps
         Dim i As Integer, alpha As Byte
         Dim rect As New Rectangle(0, 0, 0, 0)
 
-        If GettingMap Then Exit Sub
-        If Map.Tile Is Nothing Then Exit Sub
-        If MapData = False Then Exit Sub
+        ' Check if the map or its tile data is not ready
+        If GettingMap OrElse Map.Tile Is Nothing OrElse MapData = False Then Exit Sub
+
+        ' Ensure x and y are within the bounds of the map
+        If x < 0 OrElse y < 0 OrElse x > Map.MaxX OrElse y > Map.MaxY Then Exit Sub
 
         For i = LayerType.Ground To LayerType.CoverAnim
+            ' Check if the tile's layer array is initialized
             If Map.Tile(x, y).Layer Is Nothing Then Exit Sub
 
-            If MapAnim = 1 Then
-                Select Case i
-                    Case LayerType.Mask
-                        i = LayerType.MaskAnim
-
-                    Case LayerType.Cover
-                        i = LayerType.CoverAnim
-                End Select
-            End If
-
-            ' skip tile if tileset isn't set
-            If Map.Tile(x, y).Layer(i).Tileset > 0 And Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
+            ' Check if this layer has a valid tileset
+            If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
+                ' Normal rendering state
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
                     With rect
                         .X = Map.Tile(x, y).Layer(i).X * PicX
@@ -835,17 +829,17 @@ Module C_Maps
                         .Height = PicY
                     End With
 
-                    If Editor = EditorType.Map And HideLayers Then
-                        If i = frmEditor_Map.cmbLayers.SelectedIndex Then
-                            alpha = 255
-                        Else
-                            alpha = 127
-                        End If
+                    ' Set transparency for layers if editing
+                    If Editor = EditorType.Map AndAlso HideLayers Then
+                        alpha = If(i = frmEditor_Map.cmbLayers.SelectedIndex, 255, 127)
                     Else
                         alpha = 255
                     End If
 
+                    ' Render the tile
                     RenderTexture(Map.Tile(x, y).Layer(i).Tileset, GfxType.Tileset, Window, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
+            
+                ' Autotile rendering state
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Types.Settings.Autotile Then
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
@@ -856,32 +850,36 @@ Module C_Maps
                 End If
             End If
         Next
-
     End Sub
 
-    Friend Sub DrawMapUpperTile(x As Integer, y As Integer)
+     Friend Sub DrawMapUpperTile(x As Integer, y As Integer)
         Dim i As Integer, alpha As Integer
         Dim rect As Rectangle
 
-        If GettingMap Then Exit Sub
-        If Map.Tile Is Nothing Then Exit Sub
-        If MapData = False Then Exit Sub
+        ' Exit early if map is still loading or tile data is not available
+        If GettingMap OrElse Map.Tile Is Nothing OrElse MapData = False Then Exit Sub
 
+        ' Ensure x and y are within valid map bounds
+        If x < 0 OrElse y < 0 OrElse x > Map.MaxX OrElse y > Map.MaxY Then Exit Sub
+
+        ' Loop through the layers from Fringe to RoofAnim
         For i = LayerType.Fringe To LayerType.RoofAnim
+            ' Ensure that the layer array exists for the current tile
             If Map.Tile(x, y).Layer Is Nothing Then Exit Sub
 
+            ' Handle animated layers
             If MapAnim = 1 Then
                 Select Case i
                     Case LayerType.Fringe
                         i = LayerType.Fringe
-
                     Case LayerType.Roof
                         i = LayerType.Roof
                 End Select
             End If
 
-            ' skip tile if tileset isn't set
-            If Map.Tile(x, y).Layer(i).Tileset > 0 And Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
+            ' Ensure the tileset is valid before proceeding
+            If Map.Tile(x, y).Layer(i).Tileset > 0 AndAlso Map.Tile(x, y).Layer(i).Tileset <= NumTileSets Then
+                ' Check if the render state is normal and render the tile
                 If Autotile(x, y).Layer(i).RenderState = RenderStateNormal Then
                     With rect
                         .X = Map.Tile(x, y).Layer(i).X * PicX
@@ -890,19 +888,20 @@ Module C_Maps
                         .Height = PicY
                     End With
 
-                    If Editor = EditorType.Map And HideLayers Then
-                        If i = frmEditor_Map.cmbLayers.SelectedIndex Then
-                            alpha = 255
-                        Else
-                            alpha = 127
-                        End If
+                    ' Adjust alpha transparency based on whether layers are hidden in editor mode
+                    If Editor = EditorType.Map AndAlso HideLayers Then
+                        alpha = If(i = frmEditor_Map.cmbLayers.SelectedIndex, 255, 127)
                     Else
                         alpha = 255
                     End If
 
+                    ' Render the tile with the calculated rectangle and transparency
                     RenderTexture(Map.Tile(x, y).Layer(i).Tileset, GfxType.Tileset, Window, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
+
+                ' Handle autotile rendering
                 ElseIf Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Types.Settings.Autotile Then
+                        ' Render autotiles
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
                         DrawAutoTile(i, ConvertMapX(x * PicX) + 16, ConvertMapY(y * PicY), 2, x, y, 0, False)
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY) + 16, 3, x, y, 0, False)
@@ -911,7 +910,6 @@ Module C_Maps
                 End If
             End If
         Next
-
     End Sub
 
 #End Region

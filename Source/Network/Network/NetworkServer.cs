@@ -166,7 +166,7 @@ namespace Mirage.Sharp.Asfw.Network
         return;
       this._listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
       this._listener.NoDelay = true;
-      this._listener.Bind((EndPoint) new IPEndPoint(IPAddress.Any, port));
+      this._listener?.Bind((EndPoint) new IPEndPoint(IPAddress.Any, port));
       this.IsListening = true;
       this._listener.Listen(backlog);
       this.ListenManager();
