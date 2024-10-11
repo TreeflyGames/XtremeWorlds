@@ -24,8 +24,8 @@ Module C_GameLogic
 
             frameTime = tick
 
-            DirDown = VbKeyDown
             DirUp = VbKeyUp
+            DirDown = VbKeyDown
             DirLeft = VbKeyLeft
             DirRight = VbKeyRight
 

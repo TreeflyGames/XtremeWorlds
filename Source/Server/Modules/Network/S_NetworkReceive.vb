@@ -497,7 +497,7 @@ Module S_NetworkReceive
         Dim tmpX As Integer, tmpY As Integer
         Dim buffer As New ByteStream(data)
 
-        If TempPlayer(index).GettingMap = True Then Exit Sub
+        If TempPlayer(index).GettingMap Then Exit Sub
 
         Dir = buffer.ReadInt32
         movement = buffer.ReadInt32
