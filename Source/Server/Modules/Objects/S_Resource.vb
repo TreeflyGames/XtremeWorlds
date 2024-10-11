@@ -310,6 +310,8 @@ Friend Module S_Resource
 
         MapNum = GetPlayerMap(index)
 
+        If x < 0 Or y < 0 Then Exit Sub
+
         If Map(MapNum).Tile(x, y).Type = TileType.Resource Or Map(MapNum).Tile(x, y).Type2 = TileType.Resource Then
             Resource_num = 0
             Resource_index = Map(MapNum).Tile(x, y).Data1
