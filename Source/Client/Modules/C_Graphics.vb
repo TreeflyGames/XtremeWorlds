@@ -1243,61 +1243,61 @@ Module C_Graphics
     End Function
 
     Friend Sub UpdateCamera()
-        Dim offsetX As Double, offsetY As Double
-        Dim startX As Double, startY As Double
-        Dim endX As Double, endY As Double
-        Dim targetX As Double, targetY As Double
-        Dim lerpSpeed As Double = 0.1 ' Adjust this value for the desired speed
+        Dim tileSize As Integer = 32 ' Tile size is 32x32 pixels
+        Dim lerpSpeed As Double = 0.2 ' Lerp speed for smooth camera movement
+        Dim mapMaxWidth As Double = Map.MaxX * tileSize
+        Dim mapMaxHeight As Double = Map.MaxY * tileSize
 
-        ' Calculate target positions
-        targetX = GetPlayerX(MyIndex) - (Types.Settings.CameraWidth / 2)
-        targetY = GetPlayerY(MyIndex) - (Types.Settings.CameraHeight / 2)
+        ' Get player's position in pixels
+        Dim playerPosX As Double = GetPlayerX(MyIndex)
+        Dim playerPosY As Double = GetPlayerY(MyIndex)
 
-        ' Ensure targetX is within bounds
-        If targetX < 0 Then
-            targetX = 0
-        ElseIf targetX + Types.Settings.CameraWidth > Map.MaxX - 3 Then
-            targetX = Map.MaxX - Types.Settings.CameraWidth - 3 ' Adjust for clamping
+        ' Calculate the target camera position to center on the player
+        Dim targetX As Double = playerPosX - (Types.Settings.CameraWidth / 2)
+        Dim targetY As Double = playerPosY - (Types.Settings.CameraHeight / 2)
+
+        ' Smoothly interpolate the camera position using Lerp
+        currentCameraX = Lerp(currentCameraX, targetX, lerpSpeed)
+        currentCameraY = Lerp(currentCameraY, targetY, lerpSpeed)
+
+        ' Clamp the camera position within the map bounds after interpolation
+        If currentCameraX < 0 Then
+            currentCameraX = 0
+        ElseIf currentCameraX + Types.Settings.CameraWidth > mapMaxWidth Then
+            currentCameraX = mapMaxWidth - Types.Settings.CameraWidth
         End If
 
-        ' Ensure targetY is within bounds
-        If targetY < 0 Then
-            targetY = 0
-        ElseIf targetY + Types.Settings.CameraHeight > Map.MaxY - 3 Then
-            targetY = Map.MaxY - Types.Settings.CameraHeight - 3 ' Adjust for clamping
+        If currentCameraY < 0 Then
+            currentCameraY = 0
+        ElseIf currentCameraY + Types.Settings.CameraHeight > mapMaxHeight Then
+            currentCameraY = mapMaxHeight - Types.Settings.CameraHeight
         End If
 
-        ' Smoothly interpolate the camera position
-        startX = Lerp(TileView.Left, targetX, lerpSpeed)
-        startY = Lerp(TileView.Top, targetY, lerpSpeed)
-
-        ' Calculate endX and endY with smooth transitions
-        endX = startX + Types.Settings.CameraWidth + 3
-        endY = startY + Types.Settings.CameraHeight + 3
-
-        ' Set the TileView properties
+        ' Set the TileView properties based on the clamped camera position
         With TileView
-            .Top = startY
-            .Bottom = endY 
-            .Left = startX
-            .Right = endX
+            .Top = currentCameraY
+            .Bottom = currentCameraY + Types.Settings.CameraHeight + 2
+            .Left = currentCameraX
+            .Right = currentCameraX + Types.Settings.CameraWidth
         End With
 
-        ' Set the Camera properties
+        ' Update the Camera properties
         With Camera
-            .Y = offsetY
-            .X = offsetX
+            .Y = CurrentCameraX
+            .X = currentCameraX
             .Height = Types.Settings.CameraHeight * PicY
             .Width = Types.Settings.CameraWidth * PicX
         End With
 
-        ' Update the map name display
+        ' Optional: Update the map name display
         UpdateDrawMapName()
     End Sub
 
+    ' Linear interpolation function to smooth camera movements
     Function Lerp(start As Double, [end] As Double, t As Double) As Double
         Return start + (t * ([end] - start))
     End Function
+
 
     Friend Sub Render_Graphics()
         Dim x As Integer, y As Integer, i As Integer
@@ -1317,8 +1317,8 @@ Module C_Graphics
 
         ' Draw lower tiles
         If NumTileSets > 0 Then
-            For x = TileView.Left To TileView.Right
-                For y = TileView.Top To TileView.Bottom
+            For x = TileView.Left - 1 To TileView.Right + 1
+                For y = TileView.Top - 1 To TileView.Bottom + 1
                     If IsValidMapPoint(x, y) Then
                         DrawMapLowerTile(x, y)
                     End If
@@ -1527,8 +1527,8 @@ Module C_Graphics
 
         If Editor = EditorType.Map Then
             If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock Then
-                For x = TileView.Left To TileView.Right
-                    For y = TileView.Top To TileView.Bottom
+                For x = TileView.Left - 1 To TileView.Right + 1
+                    For y = TileView.Top - 1 To TileView.Bottom + 1
                         If IsValidMapPoint(x, y) Then
                             Call DrawDirections(x, y)
                         End If

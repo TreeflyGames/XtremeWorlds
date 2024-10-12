@@ -130,8 +130,8 @@ Module C_Text
         Dim tA As Integer
 
         If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
-            For X = TileView.Left To TileView.Right
-                For y = TileView.Top To TileView.Bottom
+            For X = TileView.Left - 1 To TileView.Right + 1
+                For y = TileView.Top - 1 To TileView.Bottom + 1
                     If IsValidMapPoint(X, y) Then
                         With Map.Tile(X, y)
                             tX = ((ConvertMapX(X * PicX)) - 4) + (PicX * 0.5)

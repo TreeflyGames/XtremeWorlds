@@ -260,4 +260,8 @@ Module C_Globals
     Public InitJobEditor As Boolean
     Public InitMoralEditor As Boolean
     Public InitAdminForm As Boolean
+
+    Public MovementSpeed As Double
+    Public CurrentCameraX As Double
+    Public CurrentCameraY As Double
 End Module

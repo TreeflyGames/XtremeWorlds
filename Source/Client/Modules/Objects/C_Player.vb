@@ -454,8 +454,6 @@ Module C_Player
     End Function
 
     Sub ProcessMovement(index As Integer)
-        Dim movementSpeed As Double
-
         ' Check if player is walking or running, and if so process moving them over
         Select Case Player(index).Moving
             Case MovementType.Walking
@@ -468,41 +466,43 @@ Module C_Player
 
         ' Adjust speed for diagonal movement
         If GetPlayerDir(index) = DirectionType.UpRight OrElse GetPlayerDir(index) = DirectionType.UpLeft OrElse GetPlayerDir(index) = DirectionType.DownRight OrElse GetPlayerDir(index) = DirectionType.DownLeft Then
-            movementSpeed /= Math.Sqrt(2)
+            movementSpeed = Math.Sqrt(MovementSpeed)
         End If
+
+        MovementSpeed = Math.Round(MovementSpeed)
 
         ' Update player offsets based on direction
         Select Case GetPlayerDir(index)
             Case DirectionType.Up
-                Player(index).YOffset -= movementSpeed
+                Player(index).YOffset -= MovementSpeed
                 If Player(index).YOffset < 0 Then Player(index).YOffset = 0
             Case DirectionType.Down
-                Player(index).YOffset += movementSpeed
+                Player(index).YOffset += MovementSpeed
                 If Player(index).YOffset > 0 Then Player(index).YOffset = 0
             Case DirectionType.Left
-                Player(index).XOffset -= movementSpeed
+                Player(index).XOffset -= MovementSpeed
                 If Player(index).XOffset < 0 Then Player(index).XOffset = 0
             Case DirectionType.Right
-                Player(index).XOffset += movementSpeed
+                Player(index).XOffset += MovementSpeed
                 If Player(index).XOffset > 0 Then Player(index).XOffset = 0
             Case DirectionType.UpRight
-                Player(index).XOffset += movementSpeed
-                Player(index).YOffset -= movementSpeed
+                Player(index).XOffset += MovementSpeed
+                Player(index).YOffset -= MovementSpeed
                 If Player(index).XOffset > 0 Then Player(index).XOffset = 0
                 If Player(index).YOffset < 0 Then Player(index).YOffset = 0
             Case DirectionType.UpLeft
-                Player(index).XOffset -= movementSpeed
-                Player(index).YOffset -= movementSpeed
+                Player(index).XOffset -= MovementSpeed
+                Player(index).YOffset -= MovementSpeed
                 If Player(index).XOffset < 0 Then Player(index).XOffset = 0
                 If Player(index).YOffset < 0 Then Player(index).YOffset = 0
             Case DirectionType.DownRight
-                Player(index).XOffset += movementSpeed
-                Player(index).YOffset += movementSpeed
+                Player(index).XOffset += MovementSpeed
+                Player(index).YOffset += MovementSpeed
                 If Player(index).XOffset > 0 Then Player(index).XOffset = 0
                 If Player(index).YOffset > 0 Then Player(index).YOffset = 0
             Case DirectionType.DownLeft
-                Player(index).XOffset -= movementSpeed
-                Player(index).YOffset += movementSpeed
+                Player(index).XOffset -= MovementSpeed
+                Player(index).YOffset += MovementSpeed
                 If Player(index).XOffset < 0 Then Player(index).XOffset = 0
                 If Player(index).YOffset > 0 Then Player(index).YOffset = 0
         End Select
