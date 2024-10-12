@@ -1276,9 +1276,9 @@ Module C_Graphics
         ' Set the TileView properties based on the clamped camera position
         With TileView
             .Top = currentCameraY
-            .Bottom = currentCameraY + Types.Settings.CameraHeight + 2
+            .Bottom = currentCameraY + Types.Settings.CameraHeight + 3
             .Left = currentCameraX
-            .Right = currentCameraX + Types.Settings.CameraWidth + 2
+            .Right = currentCameraX + Types.Settings.CameraWidth + 3
         End With
 
         ' Update the Camera properties
