@@ -2746,6 +2746,7 @@ nextevent:
                     MapEvents(id).XOffset = MapEvents(id).XOffset + ((ElapsedTime / 1000) * (MapEvents(id).MovementSpeed * SizeX))
                     If MapEvents(id).XOffset > 0 Then MapEvents(id).XOffset = 0
             End Select
+
             ' Check if completed walking over to the next tile
             If MapEvents(id).Moving > 0 Then
                 If MapEvents(id).Dir = DirectionType.Right Or MapEvents(id).Dir = DirectionType.Down Then

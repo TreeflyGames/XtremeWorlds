@@ -1298,7 +1298,6 @@ Module C_Graphics
         Return start + (t * ([end] - start))
     End Function
 
-
     Friend Sub Render_Graphics()
         Dim x As Integer, y As Integer, i As Integer
 

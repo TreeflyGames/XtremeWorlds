@@ -160,7 +160,7 @@ Module C_GameLogic
                 If walkTimer < tick Then
                     For i = 1 To MAX_PLAYERS
                         If IsPlaying(i) Then
-                            ProcessMovement(i)
+                            ProcessPlayerMovement(i)
                             If PetAlive(i) Then
                                 ProcessPetMovement(i)
                             End If

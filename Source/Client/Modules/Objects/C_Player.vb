@@ -453,7 +453,7 @@ Module C_Player
 
     End Function
 
-    Sub ProcessMovement(index As Integer)
+    Sub ProcessPlayerMovement(index As Integer)
         ' Check if player is walking or running, and if so process moving them over
         Select Case Player(index).Moving
             Case MovementType.Walking

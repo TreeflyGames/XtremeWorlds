@@ -82,8 +82,8 @@ Public Module C_Constants
     Public Night As Boolean
 
     ' Speed moving vars
-    Public Const WalkSpeed As Byte = 6
-    Public Const RunSpeed As Byte = 12
+    Public Const WalkSpeed As Byte = 4
+    Public Const RunSpeed As Byte = 8
 
     ' Tile size constants
     Public Const PicX As Integer = 32
