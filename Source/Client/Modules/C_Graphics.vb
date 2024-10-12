@@ -1278,7 +1278,7 @@ Module C_Graphics
             .Top = currentCameraY
             .Bottom = currentCameraY + Types.Settings.CameraHeight + 2
             .Left = currentCameraX
-            .Right = currentCameraX + Types.Settings.CameraWidth
+            .Right = currentCameraX + Types.Settings.CameraWidth + 2
         End With
 
         ' Update the Camera properties
