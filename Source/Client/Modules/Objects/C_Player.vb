@@ -180,6 +180,11 @@ Module C_Player
 
         CanMove = True
 
+        If Player(MyIndex).XOffset <> 0 Or Player(MyIndex).YOffset <> 0 Then
+            CanMove = False
+            Exit Function
+        End If
+
         If HoldPlayer = True Then
             CanMove = False
             Exit Function
@@ -232,6 +237,137 @@ Module C_Player
         End If
 
         d = GetPlayerDir(MyIndex)
+
+        Select Case d
+            Case DirectionType.Up
+
+                If GetPlayerY(MyIndex) <= 0 Then
+                    DirUp = False
+                    SetPlayerDir(MyIndex, DirectionType.Down)
+                    Exit Function
+                End If
+
+            Case DirectionType.Down
+
+                If GetPlayerY(MyIndex) >= Map.MaxY Then
+                    DirDown = False
+                    SetPlayerDir(MyIndex, DirectionType.Up)
+                    Exit Function
+                End If
+
+            Case DirectionType.Left
+
+                If GetPlayerX(MyIndex) <= 0 Then
+                    DirLeft = False
+                    SetPlayerDir(MyIndex, DirectionType.Right)
+                    Exit Function
+                End If
+
+            Case DirectionType.Right
+
+                If GetPlayerX(MyIndex) >= Map.MaxX Then
+                    DirRight = False
+                    SetPlayerDir(MyIndex, DirectionType.Left)
+                    Exit Function
+                End If
+
+            Case DirectionType.UpLeft
+
+                 If GetPlayerY(MyIndex) <= 0 And GetPlayerX(MyIndex) <= 0 Then
+                    DirUp = False
+                    DirDown = True
+                    SetPlayerDir(MyIndex, DirectionType.Down)
+                    DirLeft = False
+                    DirRight = True
+                    SetPlayerDir(MyIndex, DirectionType.Right)
+                    Exit Function
+                End If
+
+                If GetPlayerY(MyIndex) <= 0 Then
+                    DirUp = False
+                    SetPlayerDir(MyIndex, DirectionType.Down)
+                    Exit Function
+                End If
+
+                If GetPlayerX(MyIndex) <= 0 Then
+                    DirLeft = False
+                    SetPlayerDir(MyIndex, DirectionType.Right)
+                    Exit Function
+                End If
+
+            Case DirectionType.UpRight
+
+                If GetPlayerY(MyIndex) >= Map.MaxY And GetPlayerX(MyIndex) >= Map.MaxX Then
+                    DirUp = False
+                    DirDown = True
+                    SetPlayerDir(MyIndex, DirectionType.Down)
+                    DirRight = False
+                    DirLeft = True
+                    SetPlayerDir(MyIndex, DirectionType.Left)
+                    Exit Function
+                End If
+
+                If GetPlayerY(MyIndex) <= 0 Then
+                    DirUp = False
+                    SetPlayerDir(MyIndex, DirectionType.Down)
+                    Exit Function
+                End If
+
+                If GetPlayerX(MyIndex) <= 0 Then
+                    DirLeft = False
+                    SetPlayerDir(MyIndex, DirectionType.Right)
+                    Exit Function
+                End If
+
+            Case DirectionType.DownLeft
+
+                If GetPlayerY(MyIndex) >= Map.MaxY And GetPlayerX(MyIndex) <= 0 Then
+                    DirDown = False
+                    DirUp = True
+                    SetPlayerDir(MyIndex, DirectionType.Up)
+                    DirLeft = False
+                    DirRight = True
+                    SetPlayerDir(MyIndex, DirectionType.Right)
+                    Exit Function
+                End If
+
+                If GetPlayerY(MyIndex) <= 0 Then
+                    DirDown = False
+                    SetPlayerDir(MyIndex, DirectionType.Up)
+                    Exit Function
+                End If
+
+                If GetPlayerX(MyIndex) <= 0 Then
+                    DirLeft = False
+                    SetPlayerDir(MyIndex, DirectionType.Right)
+                    Exit Function
+                End If
+
+            Case DirectionType.DownRight
+
+                If GetPlayerY(MyIndex) >= Map.MaxY And GetPlayerX(MyIndex) >= Map.MaxX Then
+                    DirDown = False
+                    DirUp = True
+                    SetPlayerDir(MyIndex, DirectionType.Up)
+                    DirRight = False
+                    DirLeft = True
+                    SetPlayerDir(MyIndex, DirectionType.Left)
+                    Exit Function
+                End If
+
+                If GetPlayerY(MyIndex) >= Map.MaxY Then
+                    DirDown = False
+                    SetPlayerDir(MyIndex, DirectionType.Up)
+                    Exit Function
+                End If
+
+                If GetPlayerX(MyIndex) >= Map.MaxX Then
+                    DirRight = False
+                    SetPlayerDir(MyIndex, DirectionType.Left)
+                    Exit Function
+                End If
+
+        End Select
 
         ' Check for cardinal movements if no diagonal movements
         If DirUp Then
@@ -457,16 +593,16 @@ Module C_Player
         ' Check if player is walking or running, and if so process moving them over
         Select Case Player(index).Moving
             Case MovementType.Walking
-                movementSpeed = (ElapsedTime / 1000.0) * WalkSpeed * SizeX ' Adjust speed by elapsed time
+                MovementSpeed = (ElapsedTime / 1000.0) * WalkSpeed * SizeX ' Adjust speed by elapsed time
             Case MovementType.Running
-                movementSpeed = (ElapsedTime / 1000.0) * RunSpeed * SizeX ' Adjust speed by elapsed time
+                MovementSpeed = (ElapsedTime / 1000.0) * RunSpeed * SizeX ' Adjust speed by elapsed time
             Case Else
                 Exit Sub
         End Select
 
         ' Adjust speed for diagonal movement
         If GetPlayerDir(index) = DirectionType.UpRight OrElse GetPlayerDir(index) = DirectionType.UpLeft OrElse GetPlayerDir(index) = DirectionType.DownRight OrElse GetPlayerDir(index) = DirectionType.DownLeft Then
-            movementSpeed = Math.Sqrt(MovementSpeed)
+            MovementSpeed = Math.Sqrt(MovementSpeed)
         End If
 
         MovementSpeed = Math.Round(MovementSpeed)
@@ -483,6 +619,11 @@ Module C_Player
                 Player(index).XOffset -= MovementSpeed
                 If Player(index).XOffset < 0 Then Player(index).XOffset = 0
             Case DirectionType.Right
+                If GetPlayerX(index) >= Map.MaxX Then
+                    SetPlayerDir(index, DirectionType.Left)
+                    Exit Sub
+                End If
+
                 Player(index).XOffset += MovementSpeed
                 If Player(index).XOffset > 0 Then Player(index).XOffset = 0
             Case DirectionType.UpRight

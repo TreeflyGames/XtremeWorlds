@@ -1466,8 +1466,8 @@ Module C_Graphics
         End If
 
         If NumTileSets > 0 Then
-            For x = TileView.Left To TileView.Right
-                For y = TileView.Top To TileView.Bottom
+            For x = TileView.Left - 1 To TileView.Right + 1
+                For y = TileView.Top - 1 To TileView.Bottom + 1
                     If IsValidMapPoint(x, y) Then
                         DrawMapUpperTile(x, y)
                     End If
@@ -1769,8 +1769,8 @@ Module C_Graphics
     End Sub
 
     Friend Sub DrawGrid()
-        For x = TileView.Left To TileView.Right
-            For y = TileView.Top To TileView.Bottom
+        For x = TileView.Left - 1 To TileView.Right
+            For y = TileView.Top - 1 To TileView.Bottom
                 If IsValidMapPoint(x, y) Then
 
                     Dim rec As New RectangleShape With {
