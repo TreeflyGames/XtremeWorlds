@@ -50,7 +50,8 @@ Module C_GameLogic
                     If animationtmr(layer) < tick Then
                         For x = 0 To Map.MaxX
                             For y = 0 To Map.MaxY
-                                If IsValidMapPoint(x, y) Then                                        
+                                If IsValidMapPoint(x, y) Then   
+                                    on Error GoTo mapsync
                                     If Map.Tile(x, y).Data1 > 0 And (Map.Tile(x, y).Type = TileType.Animation Or Map.Tile(x, y).Type2 = TileType.Animation)  Then
                                         Dim sprite As Integer = Animation(Map.Tile(x, y).Data1).Sprite(layer)
 
@@ -87,6 +88,8 @@ Module C_GameLogic
                                 End If
                             Next
                         Next
+                        mapsync:
+                        
                     End If
                 Next
 
