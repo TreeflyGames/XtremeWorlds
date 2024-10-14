@@ -400,3 +400,4 @@ FodyWeavers.xsd
 # Mirage specific ignores.
 [Bb]uild/
 *.secret.json
+/.idea

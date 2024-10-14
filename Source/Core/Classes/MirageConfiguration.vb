@@ -11,13 +11,13 @@ Public Class MirageConfiguration
     Public Sub New(Optional envPrefix As String = "MIRAGE")
         Dim currentEnvironment As String = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
 
-        Dim files As IEnumerable(Of String) = Directory.GetFiles(Application.StartupPath) _
+        Dim files As IEnumerable(Of String) = Directory.GetFiles(AppContext.BaseDirectory) _
             .Where(Function(name) name.Contains("appsettings")) _
             .Where(Function(name) Not name.Contains(".development")) _
             .Where(Function(name) Not name.Contains(".production")) _
             .Where(Function(name) name.EndsWith(".json"))
 
-        Dim envfiles As IEnumerable(Of String) = Directory.GetFiles(Application.StartupPath) _
+        Dim envfiles As IEnumerable(Of String) = Directory.GetFiles(AppContext.BaseDirectory) _
             .Where(Function(name) name.Contains("appsettings")) _
             .Where(Function(name) name.EndsWith($".{currentEnvironment}.json"))
 
