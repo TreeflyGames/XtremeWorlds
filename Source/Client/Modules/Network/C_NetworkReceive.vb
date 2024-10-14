@@ -1050,6 +1050,8 @@ Module C_NetworkReceive
             MapNames(i) = Trim(buffer.ReadString())
         Next
 
+        InitMapReport = True
+
         buffer.Dispose()
     End Sub
 

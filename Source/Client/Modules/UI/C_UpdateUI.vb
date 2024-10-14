@@ -37,6 +37,7 @@ Module C_UpdateUI
 #End Region
 
     Sub UpdateUi()
+
         if InitEventEditorForm Then
             with frmEditor_Events
                 .Show()
@@ -49,6 +50,15 @@ Module C_UpdateUI
                 .Show()
             End With
             InitAdminForm = False
+        End If
+
+        If InitMapReport Then
+            For i = 1 To MapNames.Length - 1
+                Dim item1 As New ListViewItem(i.ToString)
+                item1.SubItems.Add(MapNames(i))
+                FrmAdmin.lstMaps.Items.Add(item1)
+            Next
+            InitMapReport = False
         End If
 
         If InitMapEditor Then
