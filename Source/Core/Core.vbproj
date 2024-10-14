@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Configurations>Release;Debug</Configurations>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
