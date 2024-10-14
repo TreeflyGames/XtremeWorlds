@@ -31,7 +31,7 @@ If you are a programmer then you will probably prefer to compile the most recent
 
 How do I access the editors?
 ============================
-Log into the game with the client. On the server, open the player list, right-click on your character, and promote yourself to an admin. Go back to the client and tap Insert for each of the editor options.
+Log into the game with the client. On the server, type the command /access name 5 to promote yourself to owner. Now, go back to the client and tap Insert for each of the editor options.
 
 Support & Updates:
 ==================
