@@ -7908,6 +7908,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vbproj" />
+    <ProjectReference Include="..\DarkUI\DarkUI\DarkUI.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
     <ProjectReference Include="..\Sanford.Multimedia.Midi\Source\Sanford.Multimedia.Midi.csproj" />
   </ItemGroup>
