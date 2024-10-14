@@ -88,15 +88,13 @@ Module S_General
         time2 = GetTimeMs()
 
         Console.Clear()
-        Console.WriteLine("___  ____                       _    _            _     _     ")
-        Console.WriteLine("|  \/  (_)                     | |  | |          | |   | |    ")
-        Console.WriteLine("| .  . |_ _ __ __ _  __ _  ___ | |  | | ___  _ __| | __| |___ ")
-        Console.WriteLine("| |\/| | | '__/ _` |/ _` |/ _ \| |/\| |/ _ \| '__| |/ _` / __|")
-        Console.WriteLine("| |  | | | | | (_| | (_| |  __/\  /\  / (_) | |  | | (_| \__ \")
-        Console.WriteLine("\_|  |_/_|_|  \__,_|\__, |\___| \/  \/ \___/|_|  |_|\__,_|___/")
-        Console.WriteLine("                     __/ |                                    ")
-        Console.WriteLine("                    |___/                                     ")
-
+        Console.WriteLine(" __   ___                        __          __        _     _     ")
+        Console.WriteLine(" \ \ / / |                       \ \        / /       | |   | |")
+        Console.WriteLine("  \ V /| |_ _ __ ___ _ __ ___   __\ \  /\  / /__  _ __| | __| |___ ")
+        Console.WriteLine("  > < | __| '__/ _ \ '_ ` _ \ / _ \ \/  \/ / _ \| '__| |/ _` / __|")
+        Console.WriteLine(" / . \| |_| | |  __/ | | | | |  __/\  /\  / (_) | |  | | (_| \__ \")
+        Console.WriteLine("/_/ \_\\__|_|  \___|_| |_| |_|\___| \/  \/ \___/|_|  |_|\__,_|___/")
+ 
         Console.WriteLine("Initialization complete. Server loaded in " & time2 - time1 & "ms.")
         Console.WriteLine("")
         Console.WriteLine("Use /help for the available commands.")
