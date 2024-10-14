@@ -1062,7 +1062,7 @@ Continue1:
             Case DialogueMsg.Outdated
                 header = "Wrong Version"
                 body = "Your game client is the wrong version."
-                body2 = "Please re-load the game or wait for a patch."
+                body2 = "Please reload the game or wait for a patch."
 
             Case DialogueMsg.Maintenance
                 header = "Connection Refused"

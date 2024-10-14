@@ -27,10 +27,10 @@ Public Class LanguageDef
         Public ButtonCredits As String = "Credits"
         Public ButtonExit As String = "Exit"
         Public NewsHeader As String = "Latest News"
-        Public News As String = "Welcome To the Mirage Worlds.
+        Public News As String = "Welcome To the XtremeWorlds.
                                  This is a free open source VB.Net game engine!
                                  For help or support please visit our site at
-                                 https://web.miragesource.net/."
+                                 https://xtremeworlds.com/."
 
         ' Login Panel
         Public Login As String = "Login"
