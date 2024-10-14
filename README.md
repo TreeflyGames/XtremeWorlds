@@ -1,4 +1,4 @@
-Xtreme Worlds Game Engine
+XtremeWorlds Game Engine
 =================
 
 Simple 2D ORPG Game Engine written in VB.Net
@@ -6,7 +6,7 @@ Based on the Orion+ conversion and MirageBasic.
 
 What is it?
 ===========
-This is a tile-based 2D ORPG game engine. It features a client and server application setup with a basic GUI.
+This is a tile-based 2D MMORPG game engine. It features a client and server application setup with a basic GUI. It has live editing built-in, with team-based features to allow fluid updating.
 
 Setup
 ===========
