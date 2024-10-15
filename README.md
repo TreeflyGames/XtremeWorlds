@@ -36,6 +36,6 @@ Log into the game with the client. On the server, type the command /access name 
 Support & Updates:
 ==================
 Visit our website or go to our DIscord for support.
-https://discord.gg/ruZmPsmsZz
+https://discord.gg/ARYaWbN6b2
 
 I'm working on updating it to a more usable base.
