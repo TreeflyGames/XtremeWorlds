@@ -41,8 +41,8 @@ Module S_Console
 
                     Console.WriteLine("/help, shows this message.")
                     Console.WriteLine("/exit, closes down the server.")
-                    Console.WriteLine("/access, Sets player access level, use with '/access name level goes from 1 for Player, to 5 to Owner.")
-                    Console.WriteLine("/kick, Kicks user from server, use with '/kick name'")
+                    Console.WriteLine("/access, sets player access level, use with '/access name level goes from 1 for Player, to 5 to Owner.")
+                    Console.WriteLine("/kick, kicks user from server, use with '/kick name'")
                     Console.WriteLine("/ban, bans user from server, use with '/ban name'")
                     Console.WriteLine("/shutdown, shuts down the server after 60 seconds or a value you specify")
 
