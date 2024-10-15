@@ -39,12 +39,12 @@ Module S_Console
                 Case "/help"
 #Region " Body "
 
-                    Console.WriteLine("/help, Shows this message.")
-                    Console.WriteLine("/exit, Closes down the server.")
-                    Console.WriteLine("/access, Sets player access level, use with '/access playername level goes from 1 for Player, to 5 to Creator.")
-                    Console.WriteLine("/kick, Kicks user from server, use with '/kick playername'")
-                    Console.WriteLine("/ban, Bans user from server, use with '/ban playername'")
-                    Console.WriteLine("/shutdown, Shuts down the server after 60 seconds or a value you specify")
+                    Console.WriteLine("/help, shows this message.")
+                    Console.WriteLine("/exit, closes down the server.")
+                    Console.WriteLine("/access, Sets player access level, use with '/access name level goes from 1 for Player, to 5 to Owner.")
+                    Console.WriteLine("/kick, Kicks user from server, use with '/kick name'")
+                    Console.WriteLine("/ban, bans user from server, use with '/ban name'")
+                    Console.WriteLine("/shutdown, shuts down the server after 60 seconds or a value you specify")
 
 #End Region
 
@@ -113,10 +113,10 @@ Module S_Console
                                 SendPlayerData(Pindex)
                                 PlayerMsg(Pindex, "Your access has been set to Developer!", ColorType.BrightCyan)
                                 Console.WriteLine("Successfully set the access level to " & Access & " for player " & Name)
-                            Case AccessType.Creator
+                            Case AccessType.Owner
                                 SetPlayerAccess(Pindex, Access)
                                 SendPlayerData(Pindex)
-                                PlayerMsg(Pindex, "Your access has been set to Creator!", ColorType.BrightCyan)
+                                PlayerMsg(Pindex, "Your access has been set to Owner!", ColorType.BrightCyan)
                                 Console.WriteLine("Successfully set the access level to " & Access & " for player " & Name)
                             Case Else
                                 Console.WriteLine("Failed to set the access level to " & Access & " for player " & Name)

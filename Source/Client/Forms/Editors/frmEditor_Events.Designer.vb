@@ -2822,7 +2822,7 @@ Partial Class frmEditor_Events
         ' 
         cmbSetAccess.DrawMode = DrawMode.OwnerDrawFixed
         cmbSetAccess.FormattingEnabled = True
-        cmbSetAccess.Items.AddRange(New Object() {"0: Player", "1: Moderator", "2: Mapper", "3: Developer", "4: Creator"})
+        cmbSetAccess.Items.AddRange(New Object() {"0: Player", "1: Moderator", "2: Mapper", "3: Developer", "4: Owner"})
         cmbSetAccess.Location = New Point(55, 37)
         cmbSetAccess.Margin = New Padding(5)
         cmbSetAccess.Name = "cmbSetAccess"

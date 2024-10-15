@@ -148,7 +148,7 @@
         Moderator
         Mapper
         Developer
-        Creator
+        Owner
     End Enum
 
     ''' <Summary> Npc Behavior Constant </Summary>

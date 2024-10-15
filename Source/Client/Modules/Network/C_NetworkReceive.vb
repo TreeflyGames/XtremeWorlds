@@ -734,8 +734,8 @@ Module C_NetworkReceive
             Case AccessType.Mapper
                 color = ColorType.Green
             Case AccessType.Developer
-                color = ColorType.Magenta
-            Case AccessType.Creator
+                color = ColorType.BrightBlue
+            Case AccessType.Owner
                 color = ColorType.Yellow
             Case Else
                 color = ColorType.White

@@ -1175,7 +1175,7 @@ Module S_NetworkReceive
         Dim filename As String
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AccessType.Creator Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Owner Then Exit Sub
 
         filename = Paths.Database & "banlist.txt"
 
@@ -1384,7 +1384,7 @@ Module S_NetworkReceive
         Dim i As Integer
 
         ' Prevent hacking
-        If GetPlayerAccess(index) < AccessType.Creator Then Exit Sub
+        If GetPlayerAccess(index) < AccessType.Owner Then Exit Sub
 
         ' The index
         n = FindPlayer(buffer.ReadString)

@@ -600,7 +600,7 @@ Partial Class frmEditor_Item
         ' 
         cmbAccessReq.DrawMode = DrawMode.OwnerDrawFixed
         cmbAccessReq.FormattingEnabled = True
-        cmbAccessReq.Items.AddRange(New Object() {"Player", "Moderator", "Mapper", "Developer", "Creator"})
+        cmbAccessReq.Items.AddRange(New Object() {"Player", "Moderator", "Mapper", "Developer", "Owneer"})
         cmbAccessReq.Location = New Point(200, 75)
         cmbAccessReq.Margin = New Padding(5)
         cmbAccessReq.Name = "cmbAccessReq"

@@ -843,11 +843,11 @@ Module C_GameLogic
 
                     SendBan(command(1))
 
-                ' // Creator Admin Commands //
+                ' // Owner Admin Commands //
                 ' Giving another player access
                 Case "/bandestroy"
 
-                    If GetPlayerAccess(MyIndex) < AccessType.Creator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Owner Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If
@@ -856,7 +856,7 @@ Module C_GameLogic
 
                 Case "/access"
 
-                    If GetPlayerAccess(MyIndex) < AccessType.Creator Then
+                    If GetPlayerAccess(MyIndex) < AccessType.Owner Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
                         GoTo Continue1
                     End If

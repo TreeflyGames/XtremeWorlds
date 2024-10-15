@@ -63,7 +63,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub BtnAdminSetAccess_Click(sender As Object, e As EventArgs) Handles btnAdminSetAccess.Click
-        If GetPlayerAccess(MyIndex) < AccessType.Creator Then
+        If GetPlayerAccess(MyIndex) < AccessType.Owner Then
             AddText("You need to be a high enough staff member to do this!", ColorType.BrightRed)
             Exit Sub
         End If

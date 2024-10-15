@@ -955,9 +955,9 @@ Module C_Player
                     color = SFML.Graphics.Color.Green
                     backcolor = SFML.Graphics.Color.Black
                 Case AccessType.Developer
-                    color = SFML.Graphics.Color.Magenta
+                    color = SFML.Graphics.Color.Blue
                     backcolor = SFML.Graphics.Color.Black
-                Case AccessType.Creator
+                Case AccessType.Owner
                     color = SFML.Graphics.Color.Yellow
                     backcolor = SFML.Graphics.Color.Black
             End Select
