@@ -35,6 +35,7 @@ Log into the game with the client. On the server, type the command /access name 
 
 Support & Updates:
 ==================
-The home for this engine is [https://miragesource.net](https://web.miragesource.net/) if you need support or tips in game creation feel free to visit us. If you find any bugs feel free to report them on the official Mirage Source discord: https://discord.gg/49yhWHByFp
+Visit our website or go to our DIscord for support.
+https://discord.gg/ruZmPsmsZz
 
-I'm working on updating it to a more useable base.
+I'm working on updating it to a more usable base.
