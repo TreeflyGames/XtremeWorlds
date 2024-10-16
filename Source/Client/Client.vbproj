@@ -7,7 +7,6 @@
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <MyType>WindowsForms</MyType>
-    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>181BBD77C201FB969E61DF100063FD42A08B2BE6</ManifestCertificateThumbprint>
     <ManifestKeyFile>MirageWorlds.pfx</ManifestKeyFile>
@@ -35,9 +34,7 @@
 	<ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
 	<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
@@ -7913,6 +7910,7 @@
     <None Update="Scripting\Scripts\TestMusicScript.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="icon.ico" />
     <Content Include="Resources\Clear.png" />
     <Content Include="Resources\Exit.png" />
     <Content Include="Resources\Fill.png" />
@@ -7949,5 +7947,7 @@
   </ItemGroup>
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
 </Project>

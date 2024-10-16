@@ -30,25 +30,25 @@ Partial Class FrmGame
         ' picscreen
         ' 
         picscreen.Location = New Point(0, 0)
-        picscreen.Margin = New Padding(5, 5, 5, 5)
+        picscreen.Margin = New Padding(4, 3, 4, 3)
         picscreen.Name = "picscreen"
-        picscreen.Size = New Size(1050, 847)
+        picscreen.Size = New Size(735, 508)
         picscreen.TabIndex = 4
         picscreen.TabStop = False
         ' 
         ' FrmGame
         ' 
-        AutoScaleDimensions = New SizeF(10F, 25F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         BackColor = Color.FromArgb(CByte(224), CByte(224), CByte(224))
         BackgroundImageLayout = ImageLayout.Stretch
-        ClientSize = New Size(1058, 860)
+        ClientSize = New Size(741, 516)
         Controls.Add(picscreen)
         DoubleBuffered = True
         FormBorderStyle = FormBorderStyle.FixedSingle
         Icon = CType(resources.GetObject("$this.Icon"), Icon)
-        Margin = New Padding(5, 5, 5, 5)
+        Margin = New Padding(4, 3, 4, 3)
         MaximizeBox = False
         Name = "FrmGame"
         Opacity = 0R
