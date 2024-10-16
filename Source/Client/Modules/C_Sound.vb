@@ -1,16 +1,16 @@
 ﻿Imports System.IO
-Imports SFML.Audio
 Imports Core
-Imports System.Runtime.Intrinsics.X86
 Imports Core.Paths
+Imports ManagedBass
+Imports ManagedBass.Midi
 
 Module C_Sound
 
-    'Music + Sound Players
-    Friend SoundPlayer As Sound
-    Friend ExtraSoundPlayer As Sound
-    Friend MusicPlayer As Music
-    Friend PreviewPlayer As Music
+    ' Sound and Music handles for ManagedBass
+    Friend MusicStream As Integer
+    Friend PreviewStream As Integer
+    Friend SoundStream As Integer
+    Friend ExtraSoundStream As Integer
 
     Friend MusicCache() As String
     Friend SoundCache() As String
@@ -19,8 +19,11 @@ Module C_Sound
     Friend FadeOutSwitch As Boolean
     Friend CurrentMusic As String
 
+    Friend SoundFontHandle As Integer
+
+
     Sub PlayMusic(fileName As String)
-        if fileName = "None" Then
+        If fileName = "None" Then
             Exit Sub
         End If
 
@@ -29,47 +32,101 @@ Module C_Sound
             Exit Sub
         End If
 
-        if fileName = CurrentMusic Then
+        If fileName = CurrentMusic Then
             Exit Sub
         End If
 
-        If Types.Settings.MusicExt = ".mid" Then
-            MidiPlayer.Dispose()
-            MidiPlayer.Load(Paths.Music & fileName)
-            MidiPlayer.Play()
+        If Path.GetExtension(fileName).ToLower() = ".mid" Then
+            StopMusic()
+            PlayMidi(Paths.Music & fileName)
             CurrentMusic = fileName
             Exit Sub
         End If
 
         Try
-            If MusicPlayer Is Nothing Then
-                MusicPlayer = New Music(Paths.Music & fileName)
-                MusicPlayer.Loop() = True
-                MusicPlayer.Volume() = Types.Settings.MusicVolume
-                MusicPlayer.Play()
+            StopMusic() ' Stop any currently playing music before starting a new one
+
+            MusicStream = Bass.CreateStream(Paths.Music & fileName, 0, 0, BassFlags.Loop)
+            If MusicStream <> 0 Then
+                Bass.ChannelPlay(MusicStream)
+                Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, Types.Settings.MusicVolume / 100.0F)
                 CurrentMusic = fileName
                 FadeInSwitch = True
-            Else
-                CurrentMusic = fileName
-                FadeOutSwitch = True
             End If
         Catch ex As Exception
-
+            MessageBox.Show($"Error playing music: {ex.Message}")
         End Try
     End Sub
 
-    Sub StopMusic()
-        If Not MusicPlayer Is Nothing Then
-            MusicPlayer.Stop()
-            MusicPlayer.Dispose()
-            MusicPlayer = Nothing
-            CurrentMusic = ""
+    Sub InitializeBASS()
+        ' Initialize BASS with the default output device
+        If Not Bass.Init(-1, 44100, DeviceInitFlags.Default) Then
+            MessageBox.Show($"Failed to initialize BASS. Error: {Bass.LastError}")
+            Exit Sub
         End If
 
-        If MidiPlayer.midiSequence Is Nothing Or MidiPlayer.midiSequencer Is Nothing Then
+        ' Load the SoundFont (.sf2) for MIDI playback
+        Dim soundFontPath As String = "GeneralUser.sf2"
+        If Not File.Exists(soundFontPath) Then
+            MessageBox.Show($"SoundFont not found: {soundFontPath}")
             Exit Sub
+        End If
+
+        ' Initialize the SoundFont
+        SoundFontHandle = BassMidi.FontInit(soundFontPath, BassFlags.Default)
+        If SoundFontHandle = 0 Then
+            MessageBox.Show($"Failed to load SoundFont. Error: {Bass.LastError}")
+            Exit Sub
+        End If
+
+        ' Set the volume for the SoundFont
+        BassMidi.FontSetVolume(SoundFontHandle, 1.0F) ' 100% volume
+    End Sub
+
+    Sub PlayMidi(filePath As String)
+        StopMusic() ' Ensure previous music is stopped
+        
+        ' Load and play the MIDI file using ManagedBass.Midi
+        MusicStream = BassMidi.CreateStream(filePath, 0, 0, BassFlags.Loop, 44100)
+
+        ' Correctly set the SoundFont for the MIDI stream
+        Dim font As New MidiFont With {
+            .Handle = SoundFontHandle, ' Use the SoundFont handle
+            .Preset = -1, ' -1 means all presets from the SoundFont
+            .Bank = 0 ' Bank 0 (General MIDI bank)
+        }
+
+        ' Create an array with the MidiFont structure
+        Dim fonts() As MidiFont = {font}
+
+        ' Set the fonts for the MIDI stream and check if it succeeded
+        Dim fontCount As Integer = BassMidi.StreamSetFonts(MusicStream, fonts, fonts.Length)
+
+        If fontCount = 0 Then
+            MessageBox.Show($"Failed to assign SoundFont. Error: {Bass.LastError}")
+        End If
+
+        ' Ensure the file exists before attempting to load it
+        If Not File.Exists(filePath) Then
+            MessageBox.Show($"MIDI file not found: {filePath}")
+            Exit Sub
+        End If
+
+        If MusicStream <> 0 Then
+            Bass.ChannelPlay(MusicStream)
+            Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, Types.Settings.MusicVolume / 100.0F)
         Else
-            MidiPlayer.Dispose()
+            ' Log the last error if stream creation fails
+            Dim errorCode As Errors = Bass.LastError
+            MessageBox.Show($"Failed to load MIDI file. Error: {errorCode}")
+        End If
+    End Sub
+
+    Sub StopMusic()
+        If MusicStream <> 0 Then
+            Bass.ChannelStop(MusicStream)
+            Bass.StreamFree(MusicStream)
+            MusicStream = 0
             CurrentMusic = ""
         End If
     End Sub
@@ -77,138 +134,100 @@ Module C_Sound
     Sub PlayPreview(fileName As String)
         If Types.Settings.Music = 0 Or Not File.Exists(Paths.Music & fileName) Then Exit Sub
 
-        If PreviewPlayer Is Nothing Then
-            Try
-                PreviewPlayer = New Music(Paths.Music & fileName)
-                PreviewPlayer.Loop() = True
-                PreviewPlayer.Volume() = Types.Settings.MusicVolume
-                PreviewPlayer.Play()
-            Catch ex As Exception
+        Try
+            StopPreview() ' Stop previous preview if one exists
 
-            End Try
-        Else
-            Try
-                StopPreview()
-                PreviewPlayer = New Music(Paths.Music & fileName)
-                PreviewPlayer.Loop() = True
-                PreviewPlayer.Volume() = Types.Settings.MusicVolume
-                PreviewPlayer.Play()
-            Catch ex As Exception
-
-            End Try
-        End If
+            PreviewStream = Bass.CreateStream(Paths.Music & fileName, 0, 0, BassFlags.Default)
+            If PreviewStream <> 0 Then
+                Bass.ChannelPlay(PreviewStream)
+                Bass.ChannelSetAttribute(PreviewStream, ChannelAttribute.Volume, Types.Settings.MusicVolume / 100.0F)
+            End If
+        Catch ex As Exception
+            MessageBox.Show($"Error playing preview: {ex.Message}")
+        End Try
     End Sub
 
     Sub StopPreview()
-        If PreviewPlayer Is Nothing Then Exit Sub
-        PreviewPlayer.Stop()
-        PreviewPlayer.Dispose()
-        PreviewPlayer = Nothing
+        If PreviewStream <> 0 Then
+            Bass.ChannelStop(PreviewStream)
+            Bass.StreamFree(PreviewStream)
+            PreviewStream = 0
+        End If
     End Sub
 
     Sub PlaySound(fileName As String, x As Integer, y As Integer, Optional looped As Boolean = False)
-        ' Exit if sound is disabled or file does not exist
         If Types.Settings.Sound = 0 Or Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
 
-        ' Attempt to create a new sound buffer from the file
-        Dim buffer As SoundBuffer
         Try
-            buffer = New SoundBuffer(Paths.Sounds & fileName)
+            StopSound() ' Stop previous sound if any
+
+            SoundStream = Bass.CreateStream(Paths.Sounds & fileName, 0, 0, If(looped, BassFlags.Loop, BassFlags.Default))
+            If SoundStream <> 0 Then
+                Dim calculatedVolume As Double = CalculateSoundVolume(x, y)
+                Bass.ChannelSetAttribute(SoundStream, ChannelAttribute.Volume, calculatedVolume / 100.0F)
+                Bass.ChannelPlay(SoundStream)
+            End If
         Catch ex As Exception
-            MessageBox.Show($"Failed to load sound file: {ex.Message}")
-            Exit Sub
+            MessageBox.Show($"Failed to load sound: {ex.Message}")
         End Try
-
-        ' Check if the sound player needs to be initialized
-        If SoundPlayer Is Nothing Then
-            SoundPlayer = New Sound()
-        Else
-            ' Stop the current sound if the player is already initialized
-            SoundPlayer.Stop()
-        End If
-
-        ' Set the sound buffer to the player
-        SoundPlayer.SoundBuffer = buffer
-
-        ' Set looping based on the parameter
-        SoundPlayer.Loop = looped
-
-        ' Calculate and set the volume based on the position
-        Dim calculatedVolume As Double = CalculateSoundVolume(x, y)
-        SoundPlayer.Volume = calculatedVolume
-
-        ' Play the sound
-        SoundPlayer.Play()
     End Sub
 
     Sub StopSound()
-        If SoundPlayer Is Nothing Then Exit Sub
-        SoundPlayer.Dispose()
-        SoundPlayer = Nothing
+        If SoundStream <> 0 Then
+            Bass.ChannelStop(SoundStream)
+            Bass.StreamFree(SoundStream)
+            SoundStream = 0
+        End If
     End Sub
 
     Sub PlayExtraSound(fileName As String, Optional looped As Boolean = False)
         If Types.Settings.Sound = 0 Or Not File.Exists(Paths.Sounds & fileName) Then Exit Sub
 
-        Dim buffer As SoundBuffer
-        If ExtraSoundPlayer Is Nothing Then
-            ExtraSoundPlayer = New Sound()
-            buffer = New SoundBuffer(Paths.Sounds & fileName)
-            ExtraSoundPlayer.SoundBuffer = buffer
-            If looped = True Then
-                ExtraSoundPlayer.Loop() = True
-            Else
-                ExtraSoundPlayer.Loop() = False
+        Try
+            StopExtraSound()
+
+            ExtraSoundStream = Bass.CreateStream(Paths.Sounds & fileName, 0, 0, If(looped, BassFlags.Loop, BassFlags.Default))
+            If ExtraSoundStream <> 0 Then
+                Bass.ChannelSetAttribute(ExtraSoundStream, ChannelAttribute.Volume, Types.Settings.SoundVolume / 100.0F)
+                Bass.ChannelPlay(ExtraSoundStream)
             End If
-            ExtraSoundPlayer.Volume() = Types.Settings.SoundVolume
-            ExtraSoundPlayer.Play()
-        Else
-            ExtraSoundPlayer.Stop()
-            buffer = New SoundBuffer(Paths.Sounds & fileName)
-            ExtraSoundPlayer.SoundBuffer = buffer
-            If looped = True Then
-                ExtraSoundPlayer.Loop() = True
-            Else
-                ExtraSoundPlayer.Loop() = False
-            End If
-            ExtraSoundPlayer.Volume() = Types.Settings.SoundVolume
-            ExtraSoundPlayer.Play()
-        End If
+        Catch ex As Exception
+            MessageBox.Show($"Failed to load extra sound: {ex.Message}")
+        End Try
     End Sub
 
     Sub StopExtraSound()
-        If ExtraSoundPlayer Is Nothing Then Exit Sub
-        ExtraSoundPlayer.Dispose()
-        ExtraSoundPlayer = Nothing
+        If ExtraSoundStream <> 0 Then
+            Bass.ChannelStop(ExtraSoundStream)
+            Bass.StreamFree(ExtraSoundStream)
+            ExtraSoundStream = 0
+        End If
     End Sub
 
+    ' The fade methods should directly adjust the volume of the ManagedBass streams
     Sub FadeIn()
-
-        If MusicPlayer Is Nothing Then Exit Sub
-
-        If MusicPlayer.Volume() >= Types.Settings.MusicVolume Then FadeInSwitch = False
-        MusicPlayer.Volume() = MusicPlayer.Volume() + 3
-
+        If MusicStream <> 0 Then
+            Dim currentVolume As Single
+            Bass.ChannelGetAttribute(MusicStream, ChannelAttribute.Volume, currentVolume)
+            If currentVolume < Types.Settings.MusicVolume / 100.0F Then
+                Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, currentVolume + 0.03F)
+            Else
+                FadeInSwitch = False
+            End If
+        End If
     End Sub
 
     Sub FadeOut()
-        Dim tmpmusic As String
-        If MusicPlayer Is Nothing Then Exit Sub
-
-        If MusicPlayer.Volume() = 0 Or MusicPlayer.Volume() < 3 Then
-            FadeOutSwitch = False
-            If CurrentMusic = "" Then
-                StopMusic()
+        If MusicStream <> 0 Then
+            Dim currentVolume As Single
+            Bass.ChannelGetAttribute(MusicStream, ChannelAttribute.Volume, currentVolume)
+            If currentVolume > 0 Then
+                Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, currentVolume - 0.03F)
             Else
-                tmpmusic = CurrentMusic
+                FadeOutSwitch = False
                 StopMusic()
-                PlayMusic(tmpmusic)
             End If
         End If
-        If MusicPlayer Is Nothing Then Exit Sub
-
-        MusicPlayer.Volume() = MusicPlayer.Volume() - 3
-
     End Sub
 
     Public Function CalculateSoundVolume(ByRef x As Integer, ByRef y As Integer) As Double
@@ -229,8 +248,8 @@ Module C_Sound
         If x > -1 OrElse y > -1 Then
             If x = -1 Then x = 0
             If y = -1 Then y = 0
-            X1 = CInt((Player(MyIndex).X * 32) + Player(MyIndex).xOffset)
-            Y1 = CInt((Player(MyIndex).Y * 32) + Player(MyIndex).yOffset)
+            X1 = CInt((Player(MyIndex).X * 32) + Player(MyIndex).XOffset)
+            Y1 = CInt((Player(MyIndex).Y * 32) + Player(MyIndex).YOffset)
             X2 = x * 32
             Y2 = y * 32
 
@@ -260,6 +279,13 @@ Module C_Sound
 
         Return CalculateSoundVolume
     End Function
+
+    Sub FreeBASS()
+        If SoundFontHandle <> 0 Then
+            BassMidi.FontFree(SoundFontHandle)
+        End If
+        Bass.Free()
+    End Sub
 
 
 End Module

@@ -23,12 +23,19 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
 	<SingleInstance>True</SingleInstance>
+	<Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>..\..\Build\Server\</OutputPath>
+    <DefineConstants>SERVER</DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <OutputPath>..\..\Build\Server\</OutputPath>
     <DefineConstants>SERVER</DefineConstants>
     <DefineDebug>false</DefineDebug>

@@ -6,6 +6,8 @@ Imports SFML.System
 Imports Core.Enum
 Imports SFML.Window
 Imports FxResources.System
+Imports ManagedBass
+Imports ManagedBass.Midi
 
 Public Class frmEditor_Map
 #Region "Frm"
@@ -378,19 +380,30 @@ Public Class frmEditor_Map
 #Region "Settings"
 
     Private Sub BtnPreview_Click(sender As Object, e As EventArgs) Handles btnPreview.Click
-        If PreviewPlayer Is Nothing Then
-            If lstMusic.SelectedIndex > 0 Then
-                If Types.Settings.MusicExt = ".mid" Then
-                    MidiPlayer.Load(Paths.Music & lstMusic.Items(lstMusic.SelectedIndex).ToString)
-                    Play
-                Else
-                    StopMusic
-                    PlayPreview(lstMusic.Items(lstMusic.SelectedIndex).ToString)
+        If lstMusic.SelectedIndex > 0 Then
+            Dim selectedFile As String = lstMusic.Items(lstMusic.SelectedIndex).ToString()
+
+            ' If the selected music file is a MIDI file
+            If Types.Settings.MusicExt = ".mid" Then
+                ' Stop any current music
+                StopMusic()
+
+                ' Load and play the MIDI file using ManagedBass.Midi
+                If File.Exists(Paths.Music & selectedFile) Then
+                    Dim MidiPlayer = BassMidi.CreateStream(Paths.Music & selectedFile, BassFlags.Loop, 0)
+                    If MidiPlayer <> 0 Then
+                        Bass.ChannelPlay(MidiPlayer)
+                    Else
+                        MessageBox.Show("Failed to load MIDI file.")
+                    End If
                 End If
+            Else
+                ' Stop any existing music
+                StopMusic()
+
+                ' Play the preview of a regular audio file (e.g., MP3, OGG, etc.)
+                PlayPreview(Paths.Music & selectedFile)
             End If
-        Else
-            StopPreview
-            PlayMusic(Map.Music)
         End If
     End Sub
 
@@ -613,12 +626,10 @@ Public Class frmEditor_Map
         cmbParallax.SelectedIndex = Map.Parallax
 
         tabpages.SelectedIndex = 0
-
-        scrlMapBrightness.Value = Map.Brightness
-
-        chkTint.Checked = map.MapTint
-        scrlMapRed.Value = map.MapTintR
-        scrlMapGreen.Value = map.MapTintG
+scrlMapBrightness.Value = Map.Brightness
+chkTint.Checked = map.MapTint
+scrlMapRed.Value = map.MapTintR
+scrlMapGreen.Value = map.MapTintG
         scrlMapBlue.Value = map.MapTintB
         scrlMapAlpha.Value = map.MapTintA
 

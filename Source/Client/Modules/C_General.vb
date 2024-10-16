@@ -1,4 +1,5 @@
 ﻿Imports Core
+Imports ManagedBass
 
 Module C_General
     Friend Function GetTickCount() As Integer
@@ -16,8 +17,8 @@ Module C_General
         Settings.Load()
         Languages.Load()
         Inputs.Load()
-        MidiPlayer.Initialize()
         LoadGraphics()
+        InitializeBASS()
         InitNetwork()
         InitInterface()
         Ping = -1
@@ -170,6 +171,7 @@ Module C_General
     Friend Sub DestroyGame()
         ' break out of GameLoop
         InGame = False
+        FreeBASS
         Application.Exit()
         End
     End Sub
