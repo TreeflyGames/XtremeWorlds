@@ -9,7 +9,7 @@
     <MyType>WindowsForms</MyType>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>181BBD77C201FB969E61DF100063FD42A08B2BE6</ManifestCertificateThumbprint>
-    <ManifestKeyFile>MirageWorlds.pfx</ManifestKeyFile>
+    <ManifestKeyFile>XtremeWorlds.pfx</ManifestKeyFile>
     <GenerateManifests>false</GenerateManifests>
     <TargetZone>LocalIntranet</TargetZone>
     <SignManifests>false</SignManifests>
