@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Reflection
 Imports Core
 Imports Core.Database
 Imports Mirage.Sharp.Asfw
@@ -175,9 +176,15 @@ Module S_NetworkReceive
                 ' Get the data
                 username = EKeyPair.DecryptString(buffer.ReadString()).ToLower
                 password = EKeyPair.DecryptString(buffer.ReadString())
+                
+                ' Get the current executing assembly
+                Dim assembly As Assembly = Assembly.GetExecutingAssembly()
+
+                ' Retrieve the version information
+                Dim version As Version = assembly.GetName().Version
 
                 ' Check versions
-                If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
+                If EKeyPair.DecryptString(buffer.ReadString) <> version.ToString() Then
                     AlertMsg(index, DialogueMsg.Outdated, MenuType.Login)
                     Exit Sub
                 End If
@@ -268,9 +275,15 @@ Module S_NetworkReceive
                     End If
 
                 Next
+                
+                ' Get the current executing assembly
+                Dim assembly As Assembly = Assembly.GetExecutingAssembly()
+
+                ' Retrieve the version information
+                Dim version As Version = assembly.GetName().Version
 
                 ' Check versions
-                If EKeyPair.DecryptString(buffer.ReadString) <> Types.Settings.Version Then
+                If EKeyPair.DecryptString(buffer.ReadString) <> version.ToString() Then
                     AlertMsg(index, DialogueMsg.Outdated, MenuType.Register)
                     Exit Sub
                 End If

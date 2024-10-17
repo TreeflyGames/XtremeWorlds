@@ -2,6 +2,7 @@
 Imports Mirage.Sharp.Asfw
 Imports Core
 Imports System.Buffers
+Imports System.Reflection
 
 Module C_NetworkSend
     Friend Sub SendAddChar(name As String, sexNum As Integer, jobNum As Integer)
@@ -43,7 +44,13 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CLogin)
         buffer.WriteString((EKeyPair.EncryptString(name)))
         buffer.WriteString((EKeyPair.EncryptString(pass)))
-        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
+        
+        ' Get the current executing assembly
+        Dim assembly As Assembly = Assembly.GetExecutingAssembly()
+
+        ' Retrieve the version information
+        Dim version As Version = assembly.GetName().Version
+        buffer.WriteString(EKeyPair.EncryptString(version.ToString()))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()
@@ -55,7 +62,13 @@ Module C_NetworkSend
         buffer.WriteInt32(ClientPackets.CRegister)
         buffer.WriteString((EKeyPair.EncryptString(name)))
         buffer.WriteString((EKeyPair.EncryptString(pass)))
-        buffer.WriteString((EKeyPair.EncryptString(Types.Settings.Version)))
+        
+        ' Get the current executing assembly
+        Dim assembly As Assembly = Assembly.GetExecutingAssembly()
+
+        ' Retrieve the version information
+        Dim version As Version = assembly.GetName().Version
+        buffer.WriteString(EKeyPair.EncryptString(version.ToString()))
         Socket.SendData(buffer.Data, buffer.Head)
 
         buffer.Dispose()

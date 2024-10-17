@@ -33,8 +33,6 @@ Public Class Settings
     <XmlIgnore()> Public GameName As String = "XtremeWorlds"
     <XmlIgnore()> Public Website As String = "https://xtremeworlds.com/"
 
-    <XmlIgnore()> Public Version As String = "1.9.7"
-
     Public Welcome As String = "Welcome to XtremeWorlds, enjoy your stay!"
 
     Public TimeSpeed As Integer = 1
