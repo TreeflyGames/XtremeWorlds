@@ -8,7 +8,6 @@ Module C_Sound
 
     ' Sound and Music handles for ManagedBass
     Friend MusicStream As Integer
-    Friend PreviewStream As Integer
     Friend SoundStream As Integer
     Friend ExtraSoundStream As Integer
 
@@ -128,30 +127,6 @@ Module C_Sound
             Bass.StreamFree(MusicStream)
             MusicStream = 0
             CurrentMusic = ""
-        End If
-    End Sub
-
-    Sub PlayPreview(fileName As String)
-        If Types.Settings.Music = 0 Or Not File.Exists(Paths.Music & fileName) Then Exit Sub
-
-        Try
-            StopPreview() ' Stop previous preview if one exists
-
-            PreviewStream = Bass.CreateStream(Paths.Music & fileName, 0, 0, BassFlags.Default)
-            If PreviewStream <> 0 Then
-                Bass.ChannelPlay(PreviewStream)
-                Bass.ChannelSetAttribute(PreviewStream, ChannelAttribute.Volume, Types.Settings.MusicVolume / 100.0F)
-            End If
-        Catch ex As Exception
-            MessageBox.Show($"Error playing preview: {ex.Message}")
-        End Try
-    End Sub
-
-    Sub StopPreview()
-        If PreviewStream <> 0 Then
-            Bass.ChannelStop(PreviewStream)
-            Bass.StreamFree(PreviewStream)
-            PreviewStream = 0
         End If
     End Sub
 

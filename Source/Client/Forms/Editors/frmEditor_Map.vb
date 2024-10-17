@@ -385,24 +385,9 @@ Public Class frmEditor_Map
 
             ' If the selected music file is a MIDI file
             If Types.Settings.MusicExt = ".mid" Then
-                ' Stop any current music
-                StopMusic()
-
-                ' Load and play the MIDI file using ManagedBass.Midi
-                If File.Exists(Paths.Music & selectedFile) Then
-                    Dim MidiPlayer = BassMidi.CreateStream(Paths.Music & selectedFile, BassFlags.Loop, 0)
-                    If MidiPlayer <> 0 Then
-                        Bass.ChannelPlay(MidiPlayer)
-                    Else
-                        MessageBox.Show("Failed to load MIDI file.")
-                    End If
-                End If
+                PlayMidi(Paths.Music & selectedFile)
             Else
-                ' Stop any existing music
-                StopMusic()
-
-                ' Play the preview of a regular audio file (e.g., MP3, OGG, etc.)
-                PlayPreview(Paths.Music & selectedFile)
+                PlayMusic(selectedFile)
             End If
         End If
     End Sub
