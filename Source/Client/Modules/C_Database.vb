@@ -26,7 +26,7 @@ Module C_Database
         Dim i As Integer
         i = 1
 
-        While File.Exists(Paths.Graphics & "characters\" & i & GfxExt)
+        While File.Exists(Paths.Graphics & "Characters\" & i & GfxExt)
             NumCharacters = NumCharacters + 1
             i = i + 1
         End While
@@ -37,7 +37,7 @@ Module C_Database
         Dim i As Integer
         i = 1
 
-        While File.Exists(Paths.Graphics & "paperdolls\" & i & GfxExt)
+        While File.Exists(Paths.Graphics & "Paperdolls\" & i & GfxExt)
             NumPaperdolls = NumPaperdolls + 1
             i = i + 1
         End While
@@ -48,7 +48,7 @@ Module C_Database
         Dim i As Integer
         i = 1
 
-        While File.Exists(Paths.Graphics & "animations\" & i & GfxExt)
+        While File.Exists(Paths.Graphics & "Animations\" & i & GfxExt)
             NumAnimations = NumAnimations + 1
             i = i + 1
         End While
@@ -135,7 +135,7 @@ Module C_Database
         Dim i As Integer
         i = 1
 
-        While File.Exists(Paths.Gui & "gradients\" & i & GfxExt)
+        While File.Exists(Paths.Gui & "Gradients\" & i & GfxExt)
             NumGradients = NumGradients + 1
             i = i + 1
         End While
@@ -146,7 +146,7 @@ Module C_Database
         Dim i As Integer
         i = 1
 
-        While File.Exists(Paths.Gui & "designs\" & i & GfxExt)
+        While File.Exists(Paths.Gui & "Designs\" & i & GfxExt)
             NumDesigns = NumDesigns + 1
             i = i + 1
         End While
