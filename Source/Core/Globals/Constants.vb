@@ -18,7 +18,7 @@
     Public Const MAX_PLAYERS As Integer = 500
     Public Const MAX_PLAYER_SKILLS As Byte = 35
     Public Const MAX_RESOURCES As Integer = 100
-    Public Const MAX_SHOPS As Integer = 50
+    Public Const MAX_SHOPS As Integer = 100
     Public Const MAX_SKILLS As Integer = 255
     Public Const MAX_TRADES As Byte = 35
     Public Const NAME_LENGTH As Byte = 21
