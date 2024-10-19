@@ -1140,9 +1140,9 @@ Module [Interface]
 
                     ' render text
                     If Not .Censor Then
-                        Client.RenderText(.Text & taddText, .Left + xO + .xOffset, .Top + yO + .yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
+                        RenderText(.Text & taddText, .Left + xO + .xOffset, .Top + yO + .yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
                     Else
-                        Client.RenderText(CensorText(.Text) & taddText, .Left + xO + .xOffset, .Top + yO + .yOffset, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
+                        RenderText(CensorText(.Text) & taddText, .Left + xO + .xOffset, .Top + yO + .yOffset, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
                     End If
 
                 ' buttons
@@ -1184,7 +1184,7 @@ Module [Interface]
                         hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2) - 2
                     End If
 
-                    Client.RenderText(.Text, hor_centre, ver_centre, .Color, Microsoft.Xna.Framework.Color.Black)
+                    RenderText(.Text, hor_centre, ver_centre, .Color, Microsoft.Xna.Framework.Color.Black)
 
                 ' labels
                 Case EntityType.Label
@@ -1200,12 +1200,12 @@ Module [Interface]
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        Client.RenderText(textArray(i), .Left - xO, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
+                                        RenderText(textArray(i), .Left - xO, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
-                                    Client.RenderText(.Text, .Left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                                    RenderText(.Text, .Left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
                                 End If
 
                             Case AlignmentType.Right
@@ -1219,13 +1219,13 @@ Module [Interface]
 
                                     For i = 1 To count
                                         left = .Left + .Width - TextWidth(textArray(i))
-                                        Client.RenderText(textArray(i), left + xO - FontSize, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
+                                        RenderText(textArray(i), left + xO - FontSize, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
                                     left = .Left + .Width - TextWidth(.Text)
-                                    Client.RenderText(.Text, left + xO - FontSize, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                                    RenderText(.Text, left + xO - FontSize, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
                                 End If
 
                             Case AlignmentType.Center
@@ -1239,13 +1239,13 @@ Module [Interface]
 
                                     For i = 1 To count
                                         left = .Left + (.Width \ 2) - (TextWidth(textArray(i)) \ 2) - 4
-                                        Client.RenderText(textArray(i), left + xO, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
+                                        RenderText(textArray(i), left + xO, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' Just one line
                                     left = .Left + (.Width \ 2) - (TextWidth(.Text) \ 2) - FontSize
-                                    Client.RenderText(.Text, left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                                    RenderText(.Text, left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
                                 End If
                         End Select
                     End If
@@ -1271,7 +1271,7 @@ Module [Interface]
                             End Select
 
                             ' render text
-                            Client.RenderText(.Text, left, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                            RenderText(.Text, left, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
 
                         Case DesignType.ChkChat
                             If .Value = 0 Then .Alpha = 150 Else .Alpha = 255
@@ -1281,7 +1281,7 @@ Module [Interface]
 
                             ' render text
                             left = .Left + 22 - (TextWidth(.Text) / 2) + xO
-                            Client.RenderText(.Text, left, .Top + yO + 4, .Color, Microsoft.Xna.Framework.Color.Black)
+                            RenderText(.Text, left, .Top + yO + 4, .Color, Microsoft.Xna.Framework.Color.Black)
 
                         Case DesignType.ChkBuying
                             If .Value = 0 Then sprite = 58 Else sprite = 56
@@ -1302,7 +1302,7 @@ Module [Interface]
                             ' render the text
                             If .Value > 0 Then
                                 If .Value <= UBound(.List) Then
-                                    Client.RenderText(.List(.Value), .Left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                                    RenderText(.List(.Value), .Left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
                                 End If
                             End If
 
@@ -1351,9 +1351,9 @@ Module [Interface]
                             left = x + (.Width \ 2) - (TextWidth(.List(i)) \ 2)
 
                             If i = .Value Or i = .Group Then
-                                Client.RenderText(.List(i), left, y, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
+                                RenderText(.List(i), left, y, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
                             Else
-                                Client.RenderText(.List(i), left, y, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
+                                RenderText(.List(i), left, y, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
                             End If
                             y = y + 16
                         Next
@@ -1375,7 +1375,7 @@ Module [Interface]
                     Client.EnqueueTexture(IO.Path.Combine(Path.Items, .Icon & GfxExt), .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
-                    Client.RenderText(.Text, .Left + 32, .Top + 4, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
+                    RenderText(.Text, .Left + 32, .Top + 4, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
 
                 Case DesignType.Win_NoBar
                     ' render window
@@ -1390,7 +1390,7 @@ Module [Interface]
                     Client.EnqueueTexture(IO.Path.Combine(Path.Items, .Icon & GfxExt), .Left + .xOffset, .Top - 16 + .yOffset, 0, 0, .Width, .Height, .Width, .Height)
 
                     ' render the caption
-                    Client.RenderText(.Text, .Left + 32, .Top + 4, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
+                    RenderText(.Text, .Left + 32, .Top + 4, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
 
                 Case DesignType.Win_Desc
                     RenderDesign(DesignType.Win_Desc, .Left, .Top, .Width, .Height)
@@ -2112,7 +2112,7 @@ Module [Interface]
         y = yO + 60
         For I = 1 To count
             x = xO + 118 + (200 \ 2) - (TextWidth(textArray(I)) \ 2)
-            Client.RenderText(
+            RenderText(
                 textArray(I),
                 x, y,
                 Microsoft.Xna.Framework.Color.White,
@@ -2176,7 +2176,7 @@ End Sub
         Client.RenderTexture(Client.InterfaceTexture(46), xO + 174, yO + 123, 0, 22, 171, 22, 171, 22)
 
         ' call the chat render
-        Client.DrawChat()
+        DrawChat()
     End Sub
 
     Public Sub OnDraw_ChatSmall()
@@ -3390,7 +3390,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
                                     Color = Client.QbColorToXnaColor(ColorType.BrightGreen)
                                 End If
 
-                                Client.RenderText(ConvertCurrency(Amount), x, y, Color, Color, , Georgia)
+                                RenderText(ConvertCurrency(Amount), x, y, Color, Color, , Georgia)
                             End If
                         End If
                     End If
@@ -3463,7 +3463,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
         y = 18
         count = UBound(descText)
         For I = 1 To count
-            Client.RenderText(descText(I).Text, xO + 141 - (TextWidth(descText(I).Text) \ 2), yO + y, descText(I).Color, Microsoft.Xna.Framework.Color.Black)
+            RenderText(descText(I).Text, xO + 141 - (TextWidth(descText(I).Text) \ 2), yO + y, descText(I).Color, Microsoft.Xna.Framework.Color.Black)
             y = y + 12
         Next
     End Sub
@@ -4124,7 +4124,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
             ' Draw the numbers
             sS = Str(i)
             If i = MAX_Hotbar Then sS = "0"
-            Client.RenderText(sS, xO + 4, yO + 19, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.White)
+            RenderText(sS, xO + 4, yO + 19, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.White)
         Next
     End Sub
 
@@ -4195,7 +4195,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
                                 Color = ColorType.BrightGreen
                             End If
                         
-                            Client.RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
+                            RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
                         End If
                     End If
                 End If
@@ -4294,7 +4294,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
                               color = ColorType.BrightGreen
                           End If
 
-                          Client.RenderText(ConvertCurrency(amount), X, Y, Client.QbColorToXnaColor(color), Client.QbColorToXnaColor(color))
+                          RenderText(ConvertCurrency(amount), X, Y, Client.QbColorToXnaColor(color), Client.QbColorToXnaColor(color))
                       End If
                   End If
               End If
@@ -4392,7 +4392,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
                               Color = ColorType.BrightGreen
                           End If
                   
-                          Client.RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
+                          RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
                       End If
                   End If
               End If
@@ -4436,7 +4436,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
                           Color = ColorType.BrightGreen
                       End If
                   
-                      Client.RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
+                      RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
                   End If
               End If
           End If

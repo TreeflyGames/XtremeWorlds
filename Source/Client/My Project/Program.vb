@@ -761,16 +761,15 @@ Public Class GameClient
 
         ' Dispose the texture to free memory
         whiteTexture.Dispose()
-End Sub
+    End Sub
 
-''' <summary>
-''' Draws a rectangle with a fill color and an outline.
-''' </summary>
-''' <param name="spriteBatch">The SpriteBatch used for drawing.</param>
-''' <param name="rect">The Rectangle to be drawn.</param>
-''' <param name="fillColor">The color to fill the rectangle.</param>
-''' <param name="outlineColor">The color of the outline.</param>
-''' <param name="outlineThickness">The thickness of the outline.</param>
+    ''' <summary>
+    ''' Draws a rectangle with a fill color and an outline.
+    ''' </summary>
+    ''' <param name="rect">The Rectangle to be drawn.</param>
+    ''' <param name="fillColor">The color to fill the rectangle.</param>
+    ''' <param name="outlineColor">The color of the outline.</param>
+    ''' <param name="outlineThickness">The thickness of the outline.</param>
     Public Sub DrawRectangleWithOutline(
         rect As Rectangle,
         fillColor As Color,
@@ -781,12 +780,12 @@ End Sub
         Dim whiteTexture As New Texture2D(spriteBatch.GraphicsDevice, 1, 1)
         whiteTexture.SetData(New Color() {Color.White})
 
-' Draw the filled rectangle
+        ' Draw the filled rectangle
         spriteBatch.Draw(whiteTexture, rect, fillColor)
 
         ' Draw the outline if thickness > 0
         If outlineThickness > 0 Then
-' Define outline rectangles (left, top, right, bottom)
+            ' Define outline rectangles (left, top, right, bottom)
             Dim left As New Rectangle(rect.Left, rect.Top, CInt(outlineThickness), rect.Height)
             Dim top As New Rectangle(rect.Left, rect.Top, rect.Width, CInt(outlineThickness))
             Dim right As New Rectangle(rect.Right - CInt(outlineThickness), rect.Top, CInt(outlineThickness), rect.Height)
@@ -795,17 +794,16 @@ End Sub
             ' Draw the outline rectangles
             spriteBatch.Draw(whiteTexture, left, outlineColor)
             spriteBatch.Draw(whiteTexture, top, outlineColor)
-spriteBatch.Draw(whiteTexture, right, outlineColor)
-spriteBatch.Draw(whiteTexture, bottom, outlineColor)
-End If
+            spriteBatch.Draw(whiteTexture, right, outlineColor)
+            spriteBatch.Draw(whiteTexture, bottom, outlineColor)
+        End If
 
-' Dispose the texture after use
-whiteTexture.Dispose()
-End Sub
+        ' Dispose the texture after use
+        whiteTexture.Dispose()
+    End Sub
 
-' Helper function to draw the selection rectangle
     Public Sub DrawSelectionRectangle()
-Dim selectionRect As New Rectangle(
+        Dim selectionRect As New Rectangle(
             EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY,
             EditorTileWidth * PicX, EditorTileHeight * PicY
         )
@@ -816,14 +814,13 @@ Dim selectionRect As New Rectangle(
         spriteBatch.End()
     End Sub
 
-' Helper function to draw an outlined rectangle using SpriteBatch
     Private Sub DrawOutlineRectangle(x As Integer, y As Integer, width As Integer, height As Integer, color As Color, thickness As Single)
         Dim whiteTexture As New Texture2D(spriteBatch.GraphicsDevice, 1, 1)
 
         spriteBatch.Begin()
 
-' Define four rectangles for the outline
-Dim left As New Rectangle(x, y, thickness, height)
+        ' Define four rectangles for the outline
+        Dim left As New Rectangle(x, y, thickness, height)
         Dim top As New Rectangle(x, y, width, thickness)
         Dim right As New Rectangle(x + width - thickness, y, thickness, height)
         Dim bottom As New Rectangle(x, y + height - thickness, width, thickness)
@@ -832,18 +829,56 @@ Dim left As New Rectangle(x, y, thickness, height)
         spriteBatch.Draw(whiteTexture, left, color)
         spriteBatch.Draw(whiteTexture, top, color)
         spriteBatch.Draw(whiteTexture, right, color)
-spriteBatch.Draw(whiteTexture, bottom, color)
-spriteBatch.End()
-End Sub
+        spriteBatch.Draw(whiteTexture, bottom, color)
+        spriteBatch.End()
+    End Sub
 
-#Region "Drawing"
-Friend Sub DrawEmote(x2 As Integer, y2 As Integer, sprite As Integer)
-Dim rec As Rectangle
-Dim x As Integer, y As Integer, anim As Integer
+    Public Function QbColorToXnaColor(qbColor As Integer) As Color
+        Select Case qbColor
+            Case ColorType.Black
+                Return Color.Black
+            Case ColorType.Blue
+                Return Color.Blue
+            Case ColorType.Green
+                Return Color.Green
+            Case ColorType.Cyan
+                Return Color.Cyan
+            Case ColorType.Red
+                Return Color.Red
+            Case ColorType.Magenta
+                Return Color.Magenta
+            Case ColorType.Brown
+                Return Color.Brown
+            Case ColorType.Gray
+                Return Color.LightGray
+            Case ColorType.DarkGray
+                Return Color.Gray
+            Case ColorType.BrightBlue
+                Return Color.LightBlue
+            Case ColorType.BrightGreen
+                Return Color.LightGreen
+            Case ColorType.BrightCyan
+                Return Color.LightCyan
+            Case ColorType.BrightRed
+                Return Color.LightCoral
+            Case ColorType.Pink
+                Return Color.Orchid
+            Case ColorType.Yellow
+                Return Color.Yellow
+            Case ColorType.White
+                Return Color.White
+            Case Else
+                Throw New ArgumentOutOfRangeException(NameOf(qbColor), "Invalid QbColor value.")
+        End Select
+    End Function
+
+    Friend Sub DrawEmote(x2 As Integer, y2 As Integer, sprite As Integer)
+        Dim rec As Rectangle
+        Dim x As Integer, y As Integer, anim As Integer
 
         If sprite < 1 Or sprite > NumEmotes Then Exit Sub
-If ShowAnimLayers = True Then
-anim = 1
+            If ShowAnimLayers = True Then
+            anim = 1
         Else
             anim = 0
         End If
@@ -916,84 +951,91 @@ anim = 1
         Dim anim As Byte
         Dim x As Integer
         Dim y As Integer
-        Dim sprite As Integer, spriteleft As Integer
+        Dim sprite As Integer, spriteLeft As Integer
         Dim rect As Rectangle
-        Dim attackspeed As Integer
+        Dim attackSpeed As Integer = 1000
 
+        ' Check if NPC exists
         If MyMapNPC(MapNPCNum).Num = 0 Then Exit Sub
 
+        ' Ensure NPC is within the tile view range
         If MyMapNPC(MapNPCNum).X < TileView.Left Or MyMapNPC(MapNPCNum).X > TileView.Right Then Exit Sub
         If MyMapNPC(MapNPCNum).Y < TileView.Top Or MyMapNPC(MapNPCNum).Y > TileView.Bottom Then Exit Sub
-StreamNpc(MyMapNPC(MapNPCNum).Num)
-sprite = Type.NPC(MyMapNPC(MapNPCNum).Num).Sprite
-If sprite < 1 Or sprite > NumCharacters Then Exit Sub
-attackspeed = 1000
 
-' Reset frame
+        ' Stream NPC if not yet loaded
+        StreamNpc(MyMapNPC(MapNPCNum).Num)
+
+        ' Get the sprite of the NPC
+        sprite = Type.NPC(MyMapNPC(MapNPCNum).Num).Sprite
+
+        ' Validate sprite
+        If sprite < 1 Or sprite > NumCharacters Then Exit Sub
+
+        ' Reset animation frame
         anim = 0
 
-' Check for attacking animation
-        If MyMapNPC(MapNPCNum).AttackTimer + (attackspeed / 2) > GetTickCount() Then
-If MyMapNPC(MapNPCNum).Attacking = 1 Then
-anim = 3
-            End If
+        ' Check for attacking animation
+        If MyMapNPC(MapNPCNum).AttackTimer + (attackSpeed / 2) > GetTickCount() AndAlso MyMapNPC(MapNPCNum).Attacking = 1 Then
+            anim = 3
         Else
-' If not attacking, walk normally
-Select Case MyMapNPC(MapNPCNum).Dir
-Case DirectionType.Up
-                    If (MyMapNPC(MapNPCNum).YOffset > 8) Then anim = MyMapNPC(MapNPCNum).Steps
+            ' Walking animation based on direction
+            Select Case MyMapNPC(MapNPCNum).Dir
+                Case DirectionType.Up
+                    If MyMapNPC(MapNPCNum).YOffset > 8 Then anim = MyMapNPC(MapNPCNum).Steps
                 Case DirectionType.Down
-                    If (MyMapNPC(MapNPCNum).YOffset < -8) Then anim = MyMapNPC(MapNPCNum).Steps
-Case DirectionType.Left
-If (MyMapNPC(MapNPCNum).XOffset > 8) Then anim = MyMapNPC(MapNPCNum).Steps
+                    If MyMapNPC(MapNPCNum).YOffset < -8 Then anim = MyMapNPC(MapNPCNum).Steps
+                Case DirectionType.Left
+                    If MyMapNPC(MapNPCNum).XOffset > 8 Then anim = MyMapNPC(MapNPCNum).Steps
                 Case DirectionType.Right
-If (MyMapNPC(MapNPCNum).XOffset < -8) Then anim = MyMapNPC(MapNPCNum).Steps
-End Select
+                    If MyMapNPC(MapNPCNum).XOffset < -8 Then anim = MyMapNPC(MapNPCNum).Steps
+            End Select
         End If
 
-' Check to see if we want to stop making him attack
-With MyMapNPC(MapNPCNum)
-            If .AttackTimer + attackspeed < GetTickCount() Then
+        ' Reset attacking state if attack timer has passed
+        With MyMapNPC(MapNPCNum)
+            If .AttackTimer + attackSpeed < GetTickCount() Then
                 .Attacking = 0
-.AttackTimer = 0
-End If
-End With
+                .AttackTimer = 0
+            End If
+        End With
 
-' Set the left
+        ' Set sprite sheet position based on direction
         Select Case MyMapNPC(MapNPCNum).Dir
             Case DirectionType.Up
-spriteleft = 3
+                spriteLeft = 3
             Case DirectionType.Right
-spriteleft = 2
+                spriteLeft = 2
             Case DirectionType.Down
-                spriteleft = 0
+                spriteLeft = 0
             Case DirectionType.Left
-spriteleft = 1
-End Select
+                spriteLeft = 1
+        End Select
 
-        rect = New Rectangle((anim) * (CharacterGfxInfo(sprite).Width / 4), spriteleft * (CharacterGfxInfo(sprite).Height / 4),
-                               (CharacterGfxInfo(sprite).Width / 4), (CharacterGfxInfo(sprite).Height / 4))
+        ' Create the rectangle for rendering the sprite
+        rect = New Rectangle(anim * (CharacterGfxInfo(sprite).Width / 4), spriteLeft * (CharacterGfxInfo(sprite).Height / 4),
+                             CharacterGfxInfo(sprite).Width / 4, CharacterGfxInfo(sprite).Height / 4)
 
-        ' Calculate the X
+        ' Calculate X and Y coordinates for rendering
         x = MyMapNPC(MapNPCNum).X * PicX + MyMapNPC(MapNPCNum).XOffset - ((CharacterGfxInfo(sprite).Width / 4 - 32) / 2)
 
-        ' Is the player's height more than 32..?
-        If (CharacterGfxInfo(sprite).Height / 4) > 32 Then
-            ' Create a 32 pixel offset for larger sprites
-            y = MyMapNPC(MapNPCNum).Y * PicY + MyMapNPC(MapNPCNum).YOffset - ((CharacterGfxInfo(sprite).Height / 4) - 32)
-Else
-' Proceed as normal
+        If CharacterGfxInfo(sprite).Height / 4 > 32 Then
+            ' Larger sprites need an offset for height adjustment
+            y = MyMapNPC(MapNPCNum).Y * PicY + MyMapNPC(MapNPCNum).YOffset - (CharacterGfxInfo(sprite).Height / 4 - 32)
+        Else
+            ' Normal sprite height
             y = MyMapNPC(MapNPCNum).Y * PicY + MyMapNPC(MapNPCNum).YOffset
         End If
 
+        ' Draw shadow and NPC sprite
         DrawShadow(x, y + 16)
         DrawCharacterSprite(sprite, x, y, rect)
     End Sub
-Friend Sub DrawMapItem(itemNum As Integer)
-Dim srcrec As Rectangle, destrec As Rectangle
-Dim picNum As Integer
-Dim x As Integer, y As Integer
-StreamItem(MyMapItem(itemNum).Num)
+
+    Friend Sub DrawMapItem(itemNum As Integer)
+        Dim srcrec As Rectangle, destrec As Rectangle
+        Dim picNum As Integer
+        Dim x As Integer, y As Integer
+        StreamItem(MyMapItem(itemNum).Num)
 
         picNum = Type.Item(MyMapItem(itemNum).Num).Icon
 
@@ -1002,7 +1044,7 @@ StreamItem(MyMapItem(itemNum).Num)
         With MyMapItem(itemNum)
             If .X < TileView.Left Or .X > TileView.Right Then Exit Sub
             If .Y < TileView.Top Or .Y > TileView.Bottom Then Exit Sub
-End With
+        End With
 
         srcrec = New Rectangle(0, 0, PicX, PicY)
         destrec = New Rectangle(ConvertMapX(MyMapItem(itemNum).X * PicX), ConvertMapY(MyMapItem(itemNum).Y * PicY), PicX, PicY)
@@ -1144,15 +1186,14 @@ End With
         Dim Left As Long, Top As Long, Width As Long, Height As Long
         Dim tmpX As Long, tmpY As Long, barWidth As Long, i As Long, NpcNum As Long
 
-' dynamic bar calculations
-Width = BarGfxInfo.Width
+        ' dynamic bar calculations
+        Width = BarGfxInfo.Width
         Height = BarGfxInfo.Height / 4
 
-' render npc health bars
-For i = 1 To MAX_MAP_NPCS
-NpcNum = Type.MyMapNPC(i).Num
-
-' exists?
+        ' render npc health bars
+        For i = 1 To MAX_MAP_NPCS
+            NpcNum = Type.MyMapNPC(i).Num
+            ' exists?
             If NpcNum > 0 Then
                 ' alive?
                 If Type.MyMapNPC(i).Vital(VitalType.HP) > 0 And Type.MyMapNPC(i).Vital(VitalType.HP) < Type.NPC(NPCNum).HP Then
@@ -1160,17 +1201,17 @@ NpcNum = Type.MyMapNPC(i).Num
                     tmpX = Type.MyMapNPC(i).X * PicX + Type.MyMapNPC(i).XOffset + 16 - (Width / 2)
                     tmpY = Type.MyMapNPC(i).Y * PicY + Type.MyMapNPC(i).YOffset + 35
 
-' calculate the width to fill
+                    ' calculate the width to fill
                     If Width > 0 Then BarWidth_NpcHP_Max(i) = ((Type.MyMapNPC(i).Vital(VitalType.HP) / Width) / (Type.NPC(NPCNum).HP / Width)) * Width
 
-' draw bar background
+                    ' draw bar background
                     Top = Height * 3 ' HP bar background
                     Left = 0
                     RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
 
-' draw the bar proper
-Top = 0 ' HP bar
-Left = 0
+                    ' draw the bar proper
+                    Top = 0 ' HP bar
+                    Left = 0
                     RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_NpcHP(i), Height, BarWidth_NpcHP(i), Height)
                 End If
             End If
@@ -1179,7 +1220,7 @@ Left = 0
         For i = 1 To MAX_PLAYERS
             If GetPlayerMap(i) = GetPlayerMap(i) Then
                 If GetPlayerVital(i, VitalType.HP) > 0 And GetPlayerVital(i, VitalType.HP) < GetPlayerMaxVital(i, VitalType.HP) Then
-' lock to Player
+                    ' lock to Player
                     tmpX = GetPlayerX(i) * PicX + Type.Player(i).XOffset + 16 - (Width / 2)
                     tmpY = GetPlayerY(i) * PicY + Type.Player(i).YOffset + 35
 
@@ -1240,99 +1281,6 @@ Left = 0
         Next
     End Sub
 
-    Sub DrawMapName()
-        RenderText(Language.Game.MapName & MyMap.Name, ResolutionWidth / 2 - TextWidth(MyMap.Name), FontSize, DrawMapNameColor, Color.Black)
-    End Sub
-
-    Friend Sub DrawGrid()
-        ' Drawing rectangles with outline in the loop
-        For x = TileView.Left - 1 To TileView.Right
-            For y = TileView.Top - 1 To TileView.Bottom
-                If IsValidMapPoint(x, y) Then
-                    ' Calculate the position and size
-                    Dim posX As Integer = ConvertMapX((x - 1) * PicX)
-                    Dim posY As Integer = ConvertMapY((y - 1) * PicY)
-                    Dim rectWidth As Integer = PicX
-                    Dim rectHeight As Integer = PicY
-
-                    ' Draw the transparent rectangle
-                    spriteBatch.Begin()
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, rectWidth, rectHeight), Color.Transparent)
-            
-                    ' Draw the outline (top, bottom, left, and right lines)
-                    Dim outlineColor As Color = Color.White
-                    Dim thickness As Integer = 1
-
-                    ' Top
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, rectWidth, thickness), outlineColor)
-' Bottom
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY + rectHeight - thickness, rectWidth, thickness), outlineColor)
-                    ' Left
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, thickness, rectHeight), outlineColor)
-' Right
-spriteBatch.Draw(TransparentTexture, New Rectangle(posX + rectWidth - thickness, posY, thickness, rectHeight), outlineColor)
-spriteBatch.End()
-                End If
-Next
-Next
-End Sub
-Friend Sub DrawTileOutline()
-' Assuming CreatePixelTexture has already been called
-        spriteBatch.Begin()
-
-' Example rectangle (replace with your own logic)
-Dim rect As New Rectangle(100, 100, 200, 100)
-        Dim fillColor As Color = Color.Transparent
-        Dim outlineColor As Color = Color.Blue
-Dim outlineThickness As Integer = 2
-
-' Define rec2 as a Rectangle
-Dim rec As Rectangle
-        Dim rec2 As Rectangle
-
-' Draw the rectangle with outline
-        DrawRectangleWithOutline(rect, fillColor, outlineColor, outlineThickness)
-spriteBatch.End()
-
-' Render the tileset texture based on editor logic
-        If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
-' No rendering logic here, but set size based on attributes
-            rec2.Size = New Point(rec.Width, rec.Height)
-Else
-            If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then
-                RenderTexture(TilesetTexture(frmEditor_Map.cmbTileSets.SelectedIndex + 1),
-                              ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY),
-                              EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY,
-                              rec.Width, rec.Height, rec.Width, rec.Height)
-
-                rec2.Size = New Point(rec.Width, rec.Height)
-            Else
-                If frmEditor_Map.cmbAutoTile.SelectedIndex > 0 Then
-                    RenderTexture(TilesetTexture(frmEditor_Map.cmbTileSets.SelectedIndex + 1),
-                                  ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY),
-                                  EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY,
-                                  rec.Width, rec.Height, rec.Width, rec.Height)
-
-                    rec2.Size = New Point(rec.Width, rec.Height)
-                Else
-                    RenderTexture(TilesetTexture(frmEditor_Map.cmbTileSets.SelectedIndex + 1),
-                                  ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY),
-                                  EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY,
-                                  EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY,
-                                  EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
-
-                    rec2.Size = New Point(EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
-                End If
-            End If
-        End If
-
-        ' Set the position and draw (adjust based on MonoGame logic)
-        Dim position As New Vector2(ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY))
-        spriteBatch.Begin()
-        spriteBatch.Draw(PixelTexture, New Rectangle(CInt(position.X), CInt(position.Y), CInt(rec2.Size.X), CInt(rec2.Size.Y)), Color.White)
-        spriteBatch.End()
-    End Sub
-
     Friend Sub DrawEyeDropper()
         spriteBatch.Begin()
 
@@ -1343,31 +1291,104 @@ Else
         Dim outlineColor As Color = Color.Cyan      ' Cyan outline
         Dim outlineThickness As Integer = 1         ' Thickness of outline
 
-' Draw the rectangle with an outline.
-DrawRectangle(position, size, fillColor, outlineColor, outlineThickness)
-spriteBatch.End()
+        ' Draw the rectangle with an outline.
+        DrawRectangle(position, size, fillColor, outlineColor, outlineThickness)
+        spriteBatch.End()
+    End Sub
 
+    Friend Sub DrawGrid()
+        ' Use a single Begin/End pair to improve performance
+        spriteBatch.Begin()
+
+        ' Iterate over the tiles in the visible range
+        For x = TileView.Left - 1 To TileView.Right
+            For y = TileView.Top - 1 To TileView.Bottom
+                If IsValidMapPoint(x, y) Then
+                    ' Calculate the tile position and size
+                    Dim posX As Integer = ConvertMapX((x - 1) * PicX)
+                    Dim posY As Integer = ConvertMapY((y - 1) * PicY)
+                    Dim rectWidth As Integer = PicX
+                    Dim rectHeight As Integer = PicY
+
+                    ' Draw the transparent rectangle as the tile background
+                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, rectWidth, rectHeight), Color.Transparent)
+
+                    ' Define the outline color and thickness
+                    Dim outlineColor As Color = Color.White
+                    Dim thickness As Integer = 1
+
+                    ' Draw the tile outline (top, bottom, left, right)
+                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, rectWidth, thickness), outlineColor) ' Top
+                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY + rectHeight - thickness, rectWidth, thickness), outlineColor) ' Bottom
+                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, thickness, rectHeight), outlineColor) ' Left
+                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX + rectWidth - thickness, posY, thickness, rectHeight), outlineColor) ' Right
+                End If
+            Next
+        Next
+
+        spriteBatch.End()
+    End Sub
+
+    Friend Sub DrawTileOutline()
+        ' Begin the sprite batch for drawing
+        spriteBatch.Begin()
+
+        ' Example rectangle (replace with your actual logic)
+        Dim rect As New Rectangle(100, 100, 200, 100)
+        Dim fillColor As Color = Color.Transparent
+        Dim outlineColor As Color = Color.Blue
+        Dim outlineThickness As Integer = 2
+
+        ' Draw the outlined rectangle
+        DrawRectangleWithOutline(rect, fillColor, outlineColor, outlineThickness)
+
+        ' Render the tileset texture if in the correct editor tab
+        If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
+            ' No specific rendering here; only setting size for attributes
+        Else
+            Dim selectedTileTexture = TilesetTexture(frmEditor_Map.cmbTileSets.SelectedIndex + 1)
+            Dim rec2 As New Rectangle()
+
+            If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then
+                RenderTexture(selectedTileTexture,
+                              ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY),
+                              EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY,
+                              PicX, PicY)
+            ElseIf frmEditor_Map.cmbAutoTile.SelectedIndex > 0 Then
+                RenderTexture(selectedTileTexture,
+                              ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY),
+                              EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY,
+                              EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
+            End If
+
+            ' Draw a filled rectangle for the tile selection
+            Dim position As New Vector2(ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY))
+            spriteBatch.Draw(PixelTexture, New Rectangle(CInt(position.X), CInt(position.Y), CInt(rec2.Width), CInt(rec2.Height)), Color.White)
+        End If
+
+        ' End the sprite batch
+        spriteBatch.End()
     End Sub
 
     Friend Sub DrawMapTint()
         If MyMap.MapTint = 0 Then Exit Sub ' Skip if no tint is applied
 
-' Create a new texture matching the camera size
+        ' Create a new texture matching the camera size
         Dim tintTexture As New Texture2D(GraphicsDevice, ResolutionWidth, ResolutionHeight)
         Dim tintPixels(ResolutionWidth * ResolutionHeight - 1) As Color
 
         ' Define the tint color with the given RGBA values
         Dim tintColor As New Color(CurrentTintR, CurrentTintG, CurrentTintB, CurrentTintA)
 
-' Fill the texture's pixel array with the tint color
+        ' Fill the texture's pixel array with the tint color
         For i = 0 To tintPixels.Length - 1
             tintPixels(i) = tintColor
         Next
 
-' Set the pixel data on the texture
-tintTexture.SetData(tintPixels)
+        ' Set the pixel data on the texture
+        tintTexture.SetData(tintPixels)
 
-' Start the sprite batch
+        ' Start the sprite batch
         spriteBatch.Begin()
 
         ' Draw the tinted texture over the entire camera view
@@ -1381,7 +1402,6 @@ tintTexture.SetData(tintPixels)
         tintTexture.Dispose()
     End Sub
 
-
     Friend Sub DrawMapFade()
         If Not UseFade Then Exit Sub ' Exit if fading is disabled
 
@@ -1389,12 +1409,12 @@ tintTexture.SetData(tintPixels)
         Dim fadeTexture As New Texture2D(GraphicsDevice, ResolutionWidth, ResolutionHeight)
         Dim blackPixels(ResolutionWidth * ResolutionHeight - 1) As Color
 
-' Fill the pixel array with black color and specified alpha for the fade effect
-For i = 0 To blackPixels.Length - 1
-            blackPixels(i) = New Color(0, 0, 0, FadeAmount)
-Next
+        ' Fill the pixel array with black color and specified alpha for the fade effect
+        For i = 0 To blackPixels.Length - 1
+                    blackPixels(i) = New Color(0, 0, 0, FadeAmount)
+        Next
 
-' Set the texture's pixel data
+        ' Set the texture's pixel data
         fadeTexture.SetData(blackPixels)
 
         ' Start the sprite batch
@@ -1407,9 +1427,9 @@ Next
 
         spriteBatch.End()
 
-' Dispose of the texture to free resources
-fadeTexture.Dispose()
-End Sub
+        ' Dispose of the texture to free resources
+        fadeTexture.Dispose()
+    End Sub
 
     Friend Sub DrawTarget(x2 As Integer, y2 As Integer)
         Dim rec As Rectangle
@@ -1421,11 +1441,11 @@ End Sub
             .Height = TargetGfxInfo.Height
             .X = 0
             .Width = TargetGfxInfo.Width / 2
-End With
-x = ConvertMapX(x2 + 4)
+        End With
+        x = ConvertMapX(x2 + 4)
         y = ConvertMapY(y2 - 32)
-width = (rec.Right - rec.Left)
-height = (rec.Bottom - rec.Top)
+        width = (rec.Right - rec.Left)
+        height = (rec.Bottom - rec.Top)
 
         RenderTexture(TargetTexture, x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
@@ -1444,7 +1464,7 @@ height = (rec.Bottom - rec.Top)
 
         x = ConvertMapX(x2 + 4)
         y = ConvertMapY(y2 - 32)
-width = (rec.Right - rec.Left)
+        width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
         RenderTexture(TargetTexture, x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
@@ -1482,7 +1502,7 @@ width = (rec.Right - rec.Left)
         End If
     End Sub
 
-    Friend Sub EditorNpc_DrawSprite()
+    Friend Sub EditorNPC_DrawSprite()
         Dim Sprite As Integer
 
         Sprite = frmEditor_NPC.nudSprite.Value
@@ -1568,12 +1588,12 @@ width = (rec.Right - rec.Left)
         ' Apply night overlay using the multiply blend state
         spriteBatch.Begin(SpriteSortMode.Immediate, MultiplyBlendState)
         spriteBatch.Draw(NightTexture, Vector2.Zero, Color.White)
-spriteBatch.End()
-End Sub
+        spriteBatch.End()
+    End Sub
 
     Private Sub UpdateLightTiles()
-For Each light As LightTileStruct In TileLights
-' Adjust scale for flickering lights
+        For Each light As LightTileStruct In TileLights
+            ' Adjust scale for flickering lights
             Dim scale As Vector2 = If(light.IsFlicker, 
                 light.Scale + New Vector2(CSng(Random.NextDouble(-0.004F, 0.004F))), 
                 light.Scale)
@@ -1583,35 +1603,38 @@ For Each light As LightTileStruct In TileLights
         Next
     End Sub
 
-    Private Sub RenderLightTiles(tiles As List(Of Vector2), scale As Vector2, color As Color, texture As Texture2D)
-' Start the sprite batch with additive blending to simulate light effects
+   Private Sub RenderLightTiles(tiles As List(Of Vector2), scale As Vector2, color As Color, texture As Texture2D)
+        ' Start the sprite batch with additive blending for light effects
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive)
 
-' Iterate through each tile and draw the light texture on it
+        ' Iterate through each tile and render the light texture on it
         For Each tile As Vector2 In tiles
-' Calculate the screen position based on the tile's coordinates
-            Dim position As Vector2 = New Vector2(ConvertMapX(tile.X * 32), ConvertMapY(tile.Y * 32))
+            ' Calculate the screen position based on the tile's coordinates
+            Dim position As Vector2 = New Vector2(
+                ConvertMapX(tile.X * 32),
+                ConvertMapY(tile.Y * 32)
+            )
 
             ' Draw the light texture at the calculated position with scaling and color
             spriteBatch.Draw(
                 texture,        ' The light texture
                 position,       ' Screen position of the tile
-Nothing,        ' Draw the entire texture (no source rectangle)
-                color,          ' Apply the provided color (e.g., white or tinted)
-0.0F,           ' No rotation
+                Nothing,        ' No source rectangle (use full texture)
+                color,          ' Tint color for the light (e.g., white)
+                0.0F,           ' No rotation
                 Vector2.Zero,   ' Origin at the top-left corner
-scale,          ' Scale factor for the light texture
-                SpriteEffects.None, ' No special sprite effects
-                0.0F            ' Layer depth (0 for foreground)
+                scale,          ' Scale factor for the texture
+                SpriteEffects.None, ' No special effects
+                0.0F            ' Layer depth (0 for front-most)
             )
         Next
 
         ' End the sprite batch
         spriteBatch.End()
-End Sub
+    End Sub
 
     Private Sub RenderPlayerLight()
-' Calculate player light position
+        ' Calculate player light position
         Dim playerX As Integer = ConvertMapX(Type.Player(MyIndex).X * 32) + 56 + 
                                  Type.Player(MyIndex).XOffset - (LightTexture.Width / 2)
         Dim playerY As Integer = ConvertMapY(Type.Player(MyIndex).Y * 32) + 56 + 
@@ -1626,41 +1649,49 @@ End Sub
     End Sub
 
     Private Sub InitializeLightTiles()
-TileLights = New List(Of LightTileStruct)()
+        ' Ensure thread safety by clearing and reinitializing the list
+        SyncLock TileLights
+            TileLights = New List(Of LightTileStruct)()
+        End SyncLock
 
+        ' Iterate through all the tiles on the map
         For x As Integer = 0 To MyMap.MaxX
-For y As Integer = 0 To MyMap.MaxY
-                If IsValidMapPoint(x, y) AndAlso 
-                   (MyMap.Tile(x, y).Type = TileType.Light OrElse MyMap.Tile(x, y).Type2 = TileType.Light) Then
+            For y As Integer = 0 To MyMap.MaxY
+                If IsValidMapPoint(x, y) AndAlso
+                   (MyMap.Tile(x, y).Type = TileType.Light OrElse
+                    MyMap.Tile(x, y).Type2 = TileType.Light) Then
 
-' Get all tiles affected by the light
+                    ' Get all tiles affected by the light using field of view (FOV)
                     Dim tiles = AppendFov(x, y, MyMap.Tile(x, y).Data1, True)
                     tiles.Add(New Microsoft.Xna.Framework.Vector2(x, y))
 
-' Calculate the light scale, with optional flickering
-Dim scale As Vector2 = If(MyMap.Tile(x, y).Data2 = 1, 
+                    ' Calculate the light scale with optional flickering
+                    Dim scale As Vector2 = If(MyMap.Tile(x, y).Data2 = 1,
                         New Vector2(0.35F) + New Vector2(CSng(Random.NextDouble(-0.01F, 0.01F))),
                         New Vector2(0.35F))
 
-' Render the tiles based on dynamic or static Setting
-If Type.Setting.DynamicLightRendering Then
+                    ' Render the tiles dynamically or statically based on settings
+                    If Type.Setting.DynamicLightRendering Then
                         RenderLightTiles(tiles, scale, Color.White, LightTexture)
                     Else
                         RenderStaticLightTiles(tiles, scale, MyMap.Tile(x, y).Data1)
                     End If
 
-                    ' Add the light source to the list
-                    TileLights.Add(New LightTileStruct With {
-.Tiles = tiles,
-.IsFlicker = MyMap.Tile(x, y).Data2 = 1,
-.Scale = scale
-})
-End If
-Next
-Next
-End Sub
-Private Sub RenderStaticLightTiles(tiles As List(Of Microsoft.Xna.Framework.Vector2), scale As Vector2, data1 As Integer)
-' Begin the sprite batch for rendering with additive blending
+                    ' Add the light source to the list safely
+                    SyncLock TileLights
+                        TileLights.Add(New LightTileStruct With {
+                            .Tiles = tiles,
+                            .IsFlicker = MyMap.Tile(x, y).Data2 = 1,
+                            .Scale = scale
+                        })
+                    End SyncLock
+                End If
+            Next
+        Next
+    End Sub
+
+    Private Sub RenderStaticLightTiles(tiles As List(Of Microsoft.Xna.Framework.Vector2), scale As Vector2, data1 As Integer)
+        ' Begin the sprite batch for rendering with additive blending
         spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive)
 
         ' Determine the light intensity based on the data1 parameter
@@ -1678,7 +1709,7 @@ Private Sub RenderStaticLightTiles(tiles As List(Of Microsoft.Xna.Framework.Vect
             spriteBatch.Draw(
                 LightTexture,    ' Texture to draw
                 position,        ' Screen position
-Nothing,         ' No source rectangle (draw entire texture)
+                Nothing,         ' No source rectangle (draw entire texture)
                 lightColor,      ' Tint color with alpha
                 0.0F,            ' No rotation
                 Vector2.Zero,    ' Origin point (top-left)
@@ -1691,7 +1722,6 @@ Nothing,         ' No source rectangle (draw entire texture)
         ' End the sprite batch
         spriteBatch.End()
     End Sub
-
 
     Friend Sub EditorSkill_DrawIcon()
         Dim skillNum As Integer
@@ -1727,7 +1757,7 @@ Nothing,         ' No source rectangle (draw entire texture)
         Dim animationNum As Integer = animationControl.Value
         If animationNum <= 0 OrElse animationNum > NumAnimations Then Exit Sub
 
-' Retrieve animation texture dimensions
+        ' Retrieve animation texture dimensions
         Dim totalWidth As Integer = AnimationGfxInfo(animationNum).Width
         Dim totalHeight As Integer = AnimationGfxInfo(animationNum).Height
 
@@ -1746,7 +1776,7 @@ Nothing,         ' No source rectangle (draw entire texture)
         ' Get loop time from the control
         Dim looptime As Integer = loopCountControl.Value
 
-' Check if it's time to update the frame
+        ' Check if it's time to update the frame
         If AnimEditorTimer(animationTimerIndex) + looptime <= GetTickCount() Then
             If AnimEditorFrame(animationTimerIndex) >= frameCount Then
                 AnimEditorFrame(animationTimerIndex) = 1 ' Loop back to the first frame
@@ -1796,7 +1826,7 @@ Nothing,         ' No source rectangle (draw entire texture)
                     ' it's a player
                     If Not GetPlayerMap(.Target) = GetPlayerMap(MyIndex) Then Exit Sub
 
-' it's on our map - get co-ords
+                    ' it's on our map - get co-ords
                     x = ConvertMapX((Type.Player(.Target).X * 32) + Type.Player(.Target).XOffset) + 16
                     y = ConvertMapY((Type.Player(.Target).Y * 32) + Type.Player(.Target).YOffset) - 32
                 Case TargetType.Event
@@ -1908,16 +1938,17 @@ Nothing,         ' No source rectangle (draw entire texture)
                 End If
 
                 RenderTexture(WeatherTexture, ConvertMapX(WeatherParticle(i).X), ConvertMapY(WeatherParticle(i).Y), spriteLeft * 32, 0, 32, 32, 32, 32)
-End If
-Next
-End Sub
-Friend Sub DrawFog()
-Dim fogNum As Integer = CurrentFog
+            End If
+        Next
+    End Sub
+
+    Friend Sub DrawFog()
+        Dim fogNum As Integer = CurrentFog
 
         If fogNum <= 0 Or fogNum > NumFogs Then Exit Sub
 
         Dim sX As Integer = 0
-Dim sY As Integer = 0
+        Dim sY As Integer = 0
         Dim sW As Integer = FogGfxInfo(fogNum).Width  ' Using the full width of the fog texture
         Dim sH As Integer = FogGfxInfo(fogNum).Height ' Using the full height of the fog texture
 
@@ -1929,45 +1960,6 @@ Dim sY As Integer = 0
 
         RenderTexture(FogTexture(fogNum), dX, dY, sX, sY, dW, dH, sW, sH, CurrentFogOpacity)
     End Sub
-
-    Public Function QbColorToXnaColor(qbColor As Integer) As Color
-Select Case qbColor
-Case ColorType.Black
-Return Color.Black
-            Case ColorType.Blue
-                Return Color.Blue
-            Case ColorType.Green
-                Return Color.Green
-            Case ColorType.Cyan
-                Return Color.Cyan
-            Case ColorType.Red
-                Return Color.Red
-            Case ColorType.Magenta
-                Return Color.Magenta
-            Case ColorType.Brown
-                Return Color.Brown
-            Case ColorType.Gray
-                Return Color.LightGray
-            Case ColorType.DarkGray
-                Return Color.Gray
-            Case ColorType.BrightBlue
-                Return Color.LightBlue
-            Case ColorType.BrightGreen
-                Return Color.LightGreen
-            Case ColorType.BrightCyan
-                Return Color.LightCyan
-            Case ColorType.BrightRed
-                Return Color.LightCoral
-            Case ColorType.Pink
-                Return Color.Orchid
-            Case ColorType.Yellow
-                Return Color.Yellow
-            Case ColorType.White
-                Return Color.White
-            Case Else
-                Throw New ArgumentOutOfRangeException(NameOf(qbColor), "Invalid QbColor value.")
-        End Select
-    End Function
 
     Friend Sub DrawPlayer(index As Integer)
         Dim anim As Byte, x As Integer, y As Integer
@@ -2274,8 +2266,8 @@ Return Color.Black
         ' Define the position on the map where the graphic will be drawn
         Dim position As New Vector2(x, y)
 
-' Render the graphic using SpriteBatch
-spriteBatch.Begin()
+        ' Render the graphic using SpriteBatch
+        spriteBatch.Begin()
 
         spriteBatch.Draw(CharacterTexture(gfxIndex), 
                          position, 
@@ -2300,12 +2292,12 @@ spriteBatch.Begin()
             ' Adjust position if the tile is larger than 32x32
             If srcRect.Height > 32 Then y -= PicY
 
-' Define destination rectangle
+            ' Define destination rectangle
             Dim destRect As New Rectangle(x, y, srcRect.Width, srcRect.Height)
 
             RenderTexture(TilesetTexture(gfxIndex), destRect.X, destRect.Y, srcRect.X, srcRect.Y, destRect.Width, destRect.Height, srcRect.Width, srcRect.Height)
-Else
-' Draw fallback outline if the tileset graphic is invalid
+        Else
+            ' Draw fallback outline if the tileset graphic is invalid
             DrawOutlineRectangle(x, y, PicX, PicY, Color.Blue, 0.6F)
         End If
     End Sub
@@ -2401,281 +2393,5 @@ Else
         End Select
 
     End Sub
-
-    Friend Sub RenderText(text As String, x As Integer, y As Integer, frontColor As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
-
-    End Sub
-
-    ' Method to draw text with back and front layers
-    Private Sub DrawTextWithShadow(text As String, fontName As FontType,
-                               x As Integer, y As Integer, textSize As Single,
-                               backColor As Color, frontColor As Color)
-
-' Select the font based on the provided font type
-        Dim selectedFont As SpriteFont = Fonts(fontName)
-
-' Calculate the shadow position
-        Dim shadowPosition As New Vector2(x + 1, y + 1)
-
-        ' Draw the shadow (backString equivalent)
-        spriteBatch.DrawString(selectedFont, text, shadowPosition, backColor,
-                               0.0F, Vector2.Zero, textSize / 16.0F, SpriteEffects.None, 0.0F)
-
-        ' Draw the main text (frontString equivalent)
-        spriteBatch.DrawString(selectedFont, text, New Vector2(x, y), frontColor,
-                               0.0F, Vector2.Zero, textSize / 16.0F, SpriteEffects.None, 0.0F)
-    End Sub
-
-    Friend Sub DrawNpcName(MapNpcNum As Integer)
-        Dim textX As Integer
-        Dim textY As Integer
-        Dim color As Color, backcolor As Color
-        Dim npcNum As Integer
-
-        npcNum = MyMapNPC(MapNPCNum).Num
-
-        Select Case Type.NPC(NPCNum).Behaviour
-            Case 0 ' attack on sight
-                color = Color.Red
-                backcolor = Color.Black
-            Case 1, 4 ' attack when attacked + guard
-                color = Color.Green
-                backcolor = Color.Black
-Case 2, 3, 5 ' friendly + shopkeeper + quest
-                color = Color.Yellow
-                backcolor = Color.Black
-        End Select
-
-        textX = ConvertMapX(MyMapNPC(MapNPCNum).X * PicX) + MyMapNPC(MapNPCNum).XOffset + (PicX \ 2) - (TextWidth((Type.NPC(NPCNum).Name))) / 2 - 2
-        If Type.NPC(NPCNum).Sprite < 1 Or Type.NPC(NPCNum).Sprite > NumCharacters Then
-            textY = ConvertMapY(MyMapNPC(MapNPCNum).Y * PicY) + MyMapNPC(MapNPCNum).YOffset - 16
-        Else
-            textY = ConvertMapY(MyMapNPC(MapNPCNum).Y * PicY) + MyMapNPC(MapNPCNum).YOffset - (CharacterGfxInfo(Type.NPC(NPCNum).Sprite).Height / 4) + 16
-        End If
-
-        ' Draw name
-        RenderText(Type.NPC(NPCNum).Name, textX, textY, color, backcolor)
-End Sub
-
-    Friend Sub DrawEventName(index As Integer)
-Dim textX As Integer
-        Dim textY As Integer
-        Dim color As Color, backcolor As Color
-        Dim name As String
-
-        color = Color.Yellow
-        backcolor = Color.Black
-
-        name = MapEvents(index).Name
-
-        ' calc pos
-        textX = ConvertMapX(MapEvents(index).X * PicX) + MapEvents(index).XOffset + (PicX \ 2) - (TextWidth(name)) \ 2 - 2
-       If MapEvents(index).GraphicType = 0 Then
-            textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
-ElseIf MapEvents(index).GraphicType = 1 Then
-If MapEvents(index).Graphic < 1 Or MapEvents(index).Graphic > NumCharacters Then
-textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
-Else
-' Determine location for text
-                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (CharacterGfxInfo(MapEvents(index).Graphic).Height \ 4) + 16
-End If
-        ElseIf MapEvents(index).GraphicType = 2 Then
-If MapEvents(index).GraphicY2 > 0 Then
-                textX = textX + (MapEvents(index).GraphicY2 * PicY) \ 2 - 16
-                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (MapEvents(index).GraphicY2 * PicY) + 16
-            Else
-                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 32 + 16
-            End If
-        End If
-
-        ' Draw name
-        RenderText(name, textX, textY, color, backcolor)
-    End Sub
-
-    Public Sub DrawMapAttributes()
-Dim X As Integer
-        Dim y As Integer
-        Dim tX As Integer
-        Dim tY As Integer
-Dim tA As Integer
-If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
-For X = TileView.Left - 1 To TileView.Right + 1
-For y = TileView.Top - 1 To TileView.Bottom + 1
-If IsValidMapPoint(X, y) Then
-                        With MyMap.Tile(X, y)
-                            tX = ((ConvertMapX(X * PicX)) - 4) + (PicX * 0.5)
-                            tY = ((ConvertMapY(y * PicY)) - 7) + (PicY * 0.5)
-
-                            If EditorAttribute = 1 Then
-                                tA = .Type
-Else
-                                tA = .Type2
-                            End If
-
-                            Select Case tA
-                                Case TileType.Blocked
-                                    RenderText("B", tX, tY, (Color.Red), (Color.Black))
-                                Case TileType.Warp
-                                    RenderText("W", tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Item
-                                    RenderText("I", tX, tY, (Color.White), (Color.Black))
-                                Case TileType.NPCAvoid
-                                    RenderText("N", tX, tY, (Color.White), (Color.Black))
-                                Case TileType.Resource
-                                    RenderText("R", tX, tY, (Color.Green), (Color.Black))
-                                Case TileType.NPCSpawn
-                                    RenderText("S", tX, tY, (Color.Yellow), (Color.Black))
-                                Case TileType.Shop
-                                    RenderText("S", tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Bank
-                                    RenderText("B", tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Heal
-                                    RenderText("H", tX, tY, (Color.Green), (Color.Black))
-                                Case TileType.Trap
-                                    RenderText("T", tX, tY, (Color.Red), (Color.Black))
-                                Case TileType.Light
-                                    RenderText("L", tX, tY, (Color.Yellow), (Color.Black))
-Case TileType.Animation
-                                    RenderText("A", tX, tY, (Color.Red), (Color.Black))
-                                Case TileType.NoXing
-                                    RenderText("X", tX, tY, (Color.Red), (Color.Black))
-                            End Select
-End With
-                    End If
-                Next
-Next
-End If
-End Sub
-
-    Sub DrawActionMsg(index As Integer)
-        Dim x As Integer, y As Integer, i As Integer, time As Integer
-
-        ' how long we want each message to appear
-        Select Case ActionMsg(index).Type
-            Case ActionMsgType.Static
-                time = 1500
-
-                If ActionMsg(index).Y > 0 Then
-                    x = ActionMsg(index).X + Int(PicX \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
-                    y = ActionMsg(index).Y - Int(PicY \ 2) - 2
-                Else
-                    x = ActionMsg(index).X + Int(PicX \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
-                    y = ActionMsg(index).Y - Int(PicY \ 2) + 18
-                End If
-
-            Case ActionMsgType.Scroll
-                time = 1500
-
-                If ActionMsg(index).Y > 0 Then
-                    x = ActionMsg(index).X + Int(PicX \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
-                    y = ActionMsg(index).Y - Int(PicY \ 2) - 2 - (ActionMsg(index).Scroll * 0.6)
-                    ActionMsg(index).Scroll = ActionMsg(index).Scroll + 1
-                Else
-                    x = ActionMsg(index).X + Int(PicX \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
-                    y = ActionMsg(index).Y - Int(PicY \ 2) + 18 + (ActionMsg(index).Scroll * 0.6)
-                    ActionMsg(index).Scroll = ActionMsg(index).Scroll + 1
-                End If
-
-            Case ActionMsgType.Screen
-                time = 3000
-
-                ' This will kill any action screen messages that there in the system
-                For i = Byte.MaxValue To 1 Step -1
-                    If ActionMsg(i).Type = ActionMsgType.Screen Then
-                        If i <> index Then
-                            ClearActionMsg(index)
-                            index = i
-                        End If
-                    End If
-                Next
-                x = (ResolutionWidth \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
-                y = 425
-
-        End Select
-
-        x = ConvertMapX(x)
-        y = ConvertMapY(y)
-
-        If GetTickCount() < ActionMsg(index).Created + time Then
-            RenderText(ActionMsg(index).Message, x, y, QbColorToXnaColor(ActionMsg(index).Color), (Color.Black))
-        Else
-            ClearActionMsg(index)
-        End If
-
-    End Sub
-
-    Sub DrawChat()
-        Dim xO As Long, yO As Long, Color As Integer, yOffset As Long, rLines As Integer, lineCount As Integer
-        Dim tmpText As String, i As Long, isVisible As Boolean, topWidth As Integer, tmpArray() As String, x As Integer
-        Dim Color2 As Color
-
-        ' set the position
-        xO = 19
-        yO = ResolutionHeight - 40
-
-        ' loop through chat
-        rLines = 1
-        i = 1 + ChatScroll
-
-        Do While rLines <= 8
-            If i > CHAT_LINES Then Exit Do
-            lineCount = 0
-
-            ' exit out early if we come to a blank string
-            If Len(Chat(i).Text) = 0 Then Exit Do
-
-            ' get visible state
-            isVisible = True
-            If inSmallChat Then
-                If Not Chat(i).Visible Then isVisible = False
-            End If
-
-            If Type.Setting.ChannelState(Type.Chat(i).Channel) = 0 Then isVisible = False
-
-            ' make sure it's visible
-            If isVisible Then
-                ' render line
-                Color = Chat(i).Color
-                Color2 = QbColorToXnaColor(Color)
-
-                ' check if we need to word wrap
-                If TextWidth(Chat(i).Text) > ChatWidth Then
-                    ' word wrap
-                    tmpText = WordWrap(Chat(i).Text, ChatWidth)
-
-                    ' can't have it going offscreen.
-                    If rLines + lineCount > 9 Then Exit Do
-
-                    ' continue on
-                    yOffset = yOffset - (14 * lineCount)
-                    RenderText(tmpText, xO, yO + yOffset, Color2, Color2)
-                    rLines = rLines + lineCount
-
-                    ' set the top width
-                    tmpArray = Split(tmpText, vbNewLine)
-                    For x = 0 To UBound(tmpArray)
-                        If TextWidth(tmpArray(x)) > topWidth Then topWidth = TextWidth(tmpArray(x))
-                    Next
-                Else
-                    ' normal
-                    yOffset = yOffset - 14
-
-                    RenderText(Chat(i).Text, xO, yO + yOffset, Color2, Color2)
-                    rLines = rLines + 1
-
-                    ' set the top width
-                    If TextWidth(Chat(i).Text) > topWidth Then topWidth = TextWidth(Chat(i).Text)
-                End If
-            End If
-            ' increment chat pointer
-            i = i + 1
-        Loop
-
-        ' get the height of the small chat box
-        SetChatHeight(rLines * 14)
-        SetChatWidth(topWidth)
-    End Sub
-
-#End Region
 
 End Class

@@ -280,7 +280,7 @@ Module Text
         If Type.NPC(NPCNum).Sprite < 1 Or Type.NPC(NPCNum).Sprite > NumCharacters Then
             textY = ConvertMapY(MyMapNPC(MapNPCNum).Y * PicY) + MyMapNPC(MapNPCNum).YOffset - 16
         Else
-            textY = ConvertMapY(MyMapNPC(MapNPCNum).Y * PicY) + MyMapNPC(MapNPCNum).YOffset - (CharacterGfxInfo(Type.NPC(NPCNum).Sprite).Height / 4) + 16
+            textY = ConvertMapY(MyMapNPC(MapNPCNum).Y * PicY) + MyMapNPC(MapNPCNum).YOffset - (Client.CharacterGfxInfo(Type.NPC(NPCNum).Sprite).Height / 4) + 16
         End If
 
         ' Draw name
@@ -307,7 +307,7 @@ Module Text
                 textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
             Else
                 ' Determine location for text
-                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (CharacterGfxInfo(MapEvents(index).Graphic).Height \ 4) + 16
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (Client.CharacterGfxInfo(MapEvents(index).Graphic).Height \ 4) + 16
             End If
         ElseIf MapEvents(index).GraphicType = 2 Then
             If MapEvents(index).GraphicY2 > 0 Then
@@ -505,6 +505,10 @@ Module Text
         ' get the height of the small chat box
         SetChatHeight(rLines * 14)
         SetChatWidth(topWidth)
+    End Sub
+
+    Sub DrawMapName()
+        RenderText(Language.Game.MapName & MyMap.Name, ResolutionWidth / 2 - TextWidth(MyMap.Name), FontSize, DrawMapNameColor, Color.Black)
     End Sub
 
 End Module

@@ -753,7 +753,7 @@ Module General
             For i = 1 To CurrentEvents
                If MapEvents(i).Visible = 1 Then
                    If MapEvents(i).ShowName = 1 Then
-                        Client.DrawEventName(i)
+                        DrawEventName(i)
                     End If
                 End If
             Next
@@ -761,7 +761,7 @@ Module General
 
         For i = 1 To MAX_MAP_NPCS
             If Type.MyMapNPC(i).Num > 0 Then
-                Client.DrawNpcName(i)
+                DrawNpcName(i)
             End If
         Next
 
@@ -769,7 +769,7 @@ Module General
         Client.DrawPicture()
 
         For i = 1 To Byte.MaxValue
-            Client.DrawActionMsg(i)
+            DrawActionMsg(i)
         Next
 
         If MyEditorType = EditorType.Map Then
@@ -783,7 +783,7 @@ Module General
                 Next
             End If
 
-            Client.DrawMapAttributes()
+            DrawMapAttributes()
         End If
 
         For i = 1 To Byte.MaxValue
@@ -794,7 +794,7 @@ Module General
 
         If Bfps Then
             Dim fps As String = "FPS: " & GameFps
-            Call Client.RenderText(fps, Camera.Left - 24, Camera.Top + 60, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
+            Call RenderText(fps, Camera.Left - 24, Camera.Top + 60, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
         End If
 
         ' draw cursor, player X and Y locations
@@ -803,12 +803,12 @@ Module General
             Dim Loc As String = "loc X: " & GetPlayerX(MyIndex) & " Y: " & GetPlayerY(MyIndex)
             Dim Map As String = " (Map #" & GetPlayerMap(MyIndex) & ")"
 
-            Call Client.RenderText(Cur, DrawLocX, DrawLocY + 105,Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
-            Call Client.RenderText(Loc, DrawLocX, DrawLocY + 120, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
-            Call Client.RenderText(Map, DrawLocX, DrawLocY + 135, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
+            Call RenderText(Cur, DrawLocX, DrawLocY + 105,Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
+            Call RenderText(Loc, DrawLocX, DrawLocY + 120, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
+            Call RenderText(Map, DrawLocX, DrawLocY + 135, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
         End If
 
-        Client.DrawMapName()
+        DrawMapName()
 
         If MyEditorType = EditorType.Map And frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpEvents Then
             Client.DrawEvents()

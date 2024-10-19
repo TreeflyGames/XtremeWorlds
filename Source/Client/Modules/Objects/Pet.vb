@@ -558,7 +558,7 @@ Module Pet
         End If
 
         ' Draw name
-        Client.RenderText(name, textX, textY, color, backcolor)
+        RenderText(name, textX, textY, color, backcolor)
     End Sub
 
 #End Region
