@@ -347,31 +347,6 @@ Public Class GameClient
         Next
     End Sub
 
-    ' Load a specific texture and add it to the cache
-    Public Function LoadTexture(relativePath As String) As Texture2D
-        Try
-            If Not TextureCache.ContainsKey(relativePath) Then
-                Dim fullPath As String = IO.Path.Combine(Core.Path.Graphics, relativePath)
-
-                If Not File.Exists(fullPath) Then
-                    Console.WriteLine($"Texture not found: {fullPath}")
-                    Return Nothing
-                End If
-
-                Using stream As New FileStream(fullPath, FileMode.Open)
-                    Dim texture As Texture2D = Texture2D.FromStream(GraphicsDevice, stream)
-                    TextureCache(relativePath) = texture
-                    Console.WriteLine($"Loaded texture: {relativePath}")
-                End Using
-            End If
-
-            Return TextureCache(relativePath)
-        Catch ex As Exception
-            Console.WriteLine($"Error loading texture {relativePath}: {ex.Message}")
-            Return Nothing
-        End Try
-    End Function
-
     Public Sub EnqueueTexture(ByRef texturePath As String, dX As Integer, dY As Integer,
                           sX As Integer, sY As Integer, dW As Integer, dH As Integer,
                           Optional sW As Integer = 1, Optional sH As Integer = 1,
@@ -2181,15 +2156,15 @@ Return Color.Black
 
             Case 1 ' Character Graphic
                 If frmEditor_Event.nudGraphic.Value > 0 And frmEditor_Event.nudGraphic.Value <= NumCharacters Then
-                    Dim texture = LoadTexture($"characters/{frmEditor_Event.nudGraphic.Value}{GfxExt}")
-                    RenderToPictureBox(frmEditor_Event.picGraphic, texture)
+                    RenderToPictureBox(frmEditor_Event.picGraphic, GetTexture(IO.Path.Combine(Core.Path.Characters, frmEditor_Event.nudGraphic.Value & GfxExt)))
                 Else
                     frmEditor_Event.picGraphic.BackgroundImage = Nothing
                 End If
 
             Case 2 ' Tileset Graphic
                 If frmEditor_Event.nudGraphic.Value > 0 And frmEditor_Event.nudGraphic.Value <= NumTileSets Then
-                    Dim texture = LoadTexture($"tilesets/{frmEditor_Event.nudGraphic.Value}.png")
+                    Dim texture As Texture2D = GetTexture(IO.Path.Combine(Core.Path.Tilesets, frmEditor_Event.nudGraphic.Value & GfxExt))
+                    RenderToPictureBox(frmEditor_Event.picGraphic, texture)
                     RenderToPictureBox(frmEditor_Event.picGraphicSel, texture)
                 Else
                     frmEditor_Event.picGraphicSel.BackgroundImage = Nothing
@@ -2256,8 +2231,8 @@ For y As Integer = 0 To renderTarget.Height - 1
                 Continue For
             End If
 
-' Render event based on its graphic type
-Select Case MyMap.Event(i).Pages(1).GraphicType
+            ' Render event based on its graphic type
+            Select Case MyMap.Event(i).Pages(1).GraphicType
                 Case 0 ' Text Event
                     Dim tX = x + (PicX \ 2) - 4
                     Dim tY = y + (PicY \ 2) - 7
