@@ -256,7 +256,7 @@ Module Text
                                0.0F, Vector2.Zero, textSize / 16.0F, SpriteEffects.None, 0.0F)
     End Sub
 
-    Friend Sub DrawNpcName(MapNpcNum As Integer)
+    Friend Sub DrawNPCName(MapNpcNum As Integer)
         Dim textX As Integer
         Dim textY As Integer
         Dim color As Color, backcolor As Color

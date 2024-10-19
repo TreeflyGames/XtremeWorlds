@@ -1,11 +1,74 @@
-﻿Imports System.Drawing
+﻿Imports System.Configuration
+Imports System.Drawing
 Imports System.IO
 Imports Core
+Imports Microsoft.Xna.Framework.Graphics
 Imports Mirage.Sharp.Asfw
 Imports Mirage.Sharp.Asfw.IO
 
 Module Map
 #Region "Drawing"
+    Friend Sub DrawThunderEffect()
+        If DrawThunder > 0 Then
+            ' Create a temporary texture matching the camera size
+            Using thunderTexture As New Texture2D(Client.GraphicsDevice, ResolutionWidth, ResolutionHeight)
+                ' Create an array to store pixel data
+                Dim whitePixels(ResolutionWidth * ResolutionHeight - 1) As Microsoft.Xna.Framework.Color
+
+                ' Fill the pixel array with semi-transparent white pixels
+                For i = 0 To whitePixels.Length - 1
+                    whitePixels(i) = New Microsoft.Xna.Framework.Color(255, 255, 255, 150) ' White with 150 alpha
+                Next
+
+                ' Set the pixel data for the texture
+                thunderTexture.SetData(whitePixels)
+
+                ' Begin SpriteBatch to render the thunder effect
+                Client.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive)
+                Client.SpriteBatch.Draw(thunderTexture, New Microsoft.Xna.Framework.Rectangle(0, 0, ResolutionWidth, ResolutionHeight), Microsoft.Xna.Framework.Color.White)
+                Client.SpriteBatch.End()
+            End Using
+
+            ' Decrease the thunder counter
+            DrawThunder -= 1
+        End If
+    End Sub
+
+    Friend Sub DrawWeather()
+        Dim i As Integer, spriteLeft As Integer
+
+        For i = 1 To MaxWeatherParticles
+            If WeatherParticle(i).InUse Then
+                If WeatherParticle(i).Type = [Enum].Weather.Storm Then
+                    spriteLeft = 0
+                Else
+                    spriteLeft = WeatherParticle(i).Type - 1
+                End If
+
+                Client.RenderTexture(Client.WeatherTexture, ConvertMapX(WeatherParticle(i).X), ConvertMapY(WeatherParticle(i).Y), spriteLeft * 32, 0, 32, 32, 32, 32)
+            End If
+        Next
+    End Sub
+
+    Friend Sub DrawFog()
+        Dim fogNum As Integer = CurrentFog
+
+        If fogNum <= 0 Or fogNum > NumFogs Then Exit Sub
+
+        Dim sX As Integer = 0
+        Dim sY As Integer = 0
+        Dim sW As Integer = Client.FogGfxInfo(fogNum).Width  ' Using the full width of the fog texture
+        Dim sH As Integer = Client.FogGfxInfo(fogNum).Height ' Using the full height of the fog texture
+
+        ' These should match the scale calculations for full coverage plus extra area
+        Dim dX As Integer = (FogOffsetX * 2.5) - 50
+        Dim dY As Integer = (FogOffsetY * 3.5) - 50
+        Dim dW As Integer = Client.FogGfxInfo(fogNum).Width + 200
+        Dim dH As Integer = Client.FogGfxInfo(fogNum).Height + 200
+
+        Client.RenderTexture(Client.FogTexture(fogNum), dX, dY, sX, sY, dW, dH, sW, sH, CurrentFogOpacity)
+    End Sub
+
     Friend Sub DrawMapLowerTile(x As Integer, y As Integer)
         Dim i As Integer, alpha As Byte
         Dim rect As New Rectangle(0, 0, 0, 0)
@@ -42,7 +105,7 @@ Module Map
 
                     ' Render the tile
                     Client.RenderTexture(Client.TilesetTexture(MyMap.Tile(x, y).Layer(i).Tileset), ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
-     
+
                 ' Autotile rendering state
                 ElseIf Type.Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Type.Setting.Autotile Then
@@ -135,6 +198,7 @@ Module Map
                 Case 2
                     WaterfallFrame = 0
             End Select
+
             ' animate autotiles
             Select Case forceFrame - 1
                 Case 0
@@ -158,6 +222,297 @@ Module Map
         If MyMap.Tile(x, y).Layer Is Nothing Then Exit Sub
         Client.RenderTexture(Client.TilesetTexture(MyMap.Tile(x, y).Layer(layerNum).Tileset), dX, dY, Type.Autotile(x, y).Layer(layerNum).SrcX(quarterNum) + xOffset, Type.Autotile(x, y).Layer(layerNum).SrcY(quarterNum) + yOffset, 16, 16, 16, 16)
     End Sub
+
+      Public Sub DrawNight()
+        ' Exit if not in-game or certain conditions are not met
+        If Not inGame OrElse Client.NightTexture Is Nothing OrElse GettingMap OrElse 
+           (MyEditorType = EditorType.Map And Not Night) OrElse MyMap.Indoors Then Exit Sub
+
+        ' Initialize light sources if needed
+        If TileLights Is Nothing Then
+            InitializeLightTiles()
+        Else
+            UpdateLightTiles()
+        End If
+
+        ' Render the player’s personal light
+        RenderPlayerLight()
+
+        ' Apply night overlay using the multiply blend state
+        Client.SpriteBatch.Begin(SpriteSortMode.Immediate, Client.MultiplyBlendState)
+        Client.SpriteBatch.Draw(Client.NightTexture, Microsoft.Xna.Framework.Vector2.Zero, Microsoft.Xna.Framework.Color.White)
+        Client.SpriteBatch.End()
+    End Sub
+
+    Private Sub UpdateLightTiles()
+        For Each light As LightTileStruct In TileLights
+            ' Adjust scale for flickering lights
+            Dim scale As Microsoft.Xna.Framework.Vector2 = If(light.IsFlicker, 
+                light.Scale + New Microsoft.Xna.Framework.Vector2(CSng(Random.NextDouble(-0.004F, 0.004F))), 
+                light.Scale)
+
+            ' Render the updated light tiles
+            RenderLightTiles(light.Tiles, scale, Microsoft.Xna.Framework.Color.White, Client.LightTexture)
+        Next
+    End Sub
+
+   Private Sub RenderLightTiles(tiles As List(Of Microsoft.Xna.Framework.Vector2), scale As Microsoft.Xna.Framework.Vector2, color As Microsoft.Xna.Framework.Color, texture As Texture2D)
+        ' Start the sprite batch with additive blending for light effects
+        Client.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive)
+
+        ' Iterate through each tile and render the light texture on it
+        For Each tile As Microsoft.Xna.Framework.Vector2 In tiles
+            ' Calculate the screen position based on the tile's coordinates
+            Dim position As Microsoft.Xna.Framework.Vector2 = New Microsoft.Xna.Framework.Vector2(
+                ConvertMapX(tile.X * 32),
+                ConvertMapY(tile.Y * 32)
+            )
+
+            ' Draw the light texture at the calculated position with scaling and color
+            Client.SpriteBatch.Draw(
+                texture,        ' The light texture
+                position,       ' Screen position of the tile
+                Nothing,        ' No source rectangle (use full texture)
+                color,          ' Tint color for the light (e.g., white)
+                0.0F,           ' No rotation
+                Microsoft.Xna.Framework.Vector2.Zero,   ' Origin at the top-left corner
+                scale,          ' Scale factor for the texture
+                SpriteEffects.None, ' No special effects
+                0.0F            ' Layer depth (0 for front-most)
+            )
+        Next
+
+        ' End the sprite batch
+        Client.SpriteBatch.End()
+    End Sub
+
+    Private Sub RenderPlayerLight()
+        ' Calculate player light position
+        Dim playerX As Integer = ConvertMapX(Type.Player(MyIndex).X * 32) + 56 + 
+                                 Type.Player(MyIndex).XOffset - (Client.LightTexture.Width / 2)
+        Dim playerY As Integer = ConvertMapY(Type.Player(MyIndex).Y * 32) + 56 + 
+                                 Type.Player(MyIndex).YOffset - (Client.LightTexture.Height / 2)
+
+        ' Render the light texture with appropriate parameters
+        Client.RenderTexture(
+            Client.LightTexture, playerX, playerY, 0, 0, 
+            Client.LightTexture.Width, Client.LightTexture.Height, 
+            Client.LightTexture.Width, Client.LightTexture.Height
+        )
+    End Sub
+
+    Private Sub InitializeLightTiles()
+        ' Ensure thread safety by clearing and reinitializing the list
+        SyncLock TileLights
+            TileLights = New List(Of LightTileStruct)()
+        End SyncLock
+
+        ' Iterate through all the tiles on the map
+        For x As Integer = 0 To MyMap.MaxX
+            For y As Integer = 0 To MyMap.MaxY
+                If IsValidMapPoint(x, y) AndAlso
+                   (MyMap.Tile(x, y).Type = TileType.Light OrElse
+                    MyMap.Tile(x, y).Type2 = TileType.Light) Then
+
+                    ' Get all tiles affected by the light using field of view (FOV)
+                    Dim tiles = AppendFov(x, y, MyMap.Tile(x, y).Data1, True)
+                    tiles.Add(New Microsoft.Xna.Framework.Vector2(x, y))
+
+                    ' Calculate the light scale with optional flickering
+                    Dim scale As Microsoft.Xna.Framework.Vector2 = If(MyMap.Tile(x, y).Data2 = 1,
+                        New Microsoft.Xna.Framework.Vector2(0.35F) + New Microsoft.Xna.Framework.Vector2(CSng(Random.NextDouble(-0.01F, 0.01F))),
+                        New Microsoft.Xna.Framework.Vector2(0.35F))
+
+                    ' Render the tiles dynamically or statically based on settings
+                    If Type.Setting.DynamicLightRendering Then
+                        RenderLightTiles(tiles, scale, Microsoft.Xna.Framework.Color.White, Client.LightTexture)
+                    Else
+                        RenderStaticLightTiles(tiles, scale, MyMap.Tile(x, y).Data1)
+                    End If
+
+                    ' Add the light source to the list safely
+                    SyncLock TileLights
+                        TileLights.Add(New LightTileStruct With {
+                            .Tiles = tiles,
+                            .IsFlicker = MyMap.Tile(x, y).Data2 = 1,
+                            .Scale = scale
+                        })
+                    End SyncLock
+                End If
+            Next
+        Next
+    End Sub
+
+    Private Sub RenderStaticLightTiles(tiles As List(Of Microsoft.Xna.Framework.Vector2), scale As Microsoft.Xna.Framework.Vector2, data1 As Integer)
+        ' Begin the sprite batch for rendering with additive blending
+        Client.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive)
+
+        ' Determine the light intensity based on the data1 parameter
+        Dim alpha As Byte = If(data1 > 0, CByte(255 / data1), 255)
+
+        ' Render each tile with the static light texture
+        For Each tile As Microsoft.Xna.Framework.Vector2 In tiles
+            ' Calculate the position on the screen
+            Dim position As Microsoft.Xna.Framework.Vector2 = New Microsoft.Xna.Framework.Vector2(ConvertMapX(tile.X * 32), ConvertMapY(tile.Y * 32))
+
+            ' Set the light color with calculated alpha transparency
+            Dim lightColor As New Microsoft.Xna.Framework.Color(255, 255, 255, alpha)
+
+            ' Draw the light texture at the calculated position with the given scale
+            Client.SpriteBatch.Draw(
+                Client.LightTexture,    ' Texture to draw
+                position,        ' Screen position
+                Nothing,         ' No source rectangle (draw entire texture)
+                lightColor,      ' Tint color with alpha
+                0.0F,            ' No rotation
+                Microsoft.Xna.Framework.Vector2.Zero,    ' Origin point (top-left)
+                scale,           ' Scale factor for light size
+                SpriteEffects.None, ' No sprite effects
+                0.0F             ' Layer depth
+            )
+        Next
+
+        ' End the sprite batch
+        Client.SpriteBatch.End()
+    End Sub
+
+    Friend Sub DrawMapTint()
+        If MyMap.MapTint = 0 Then Exit Sub ' Skip if no tint is applied
+
+        ' Create a new texture matching the camera size
+        Dim tintTexture As New Texture2D(Client.GraphicsDevice, ResolutionWidth, ResolutionHeight)
+        Dim tintPixels(ResolutionWidth * ResolutionHeight - 1) As Microsoft.Xna.Framework.Color
+
+        ' Define the tint color with the given RGBA values
+        Dim tintColor As New Microsoft.Xna.Framework.Color(CurrentTintR, CurrentTintG, CurrentTintB, CurrentTintA)
+
+        ' Fill the texture's pixel array with the tint color
+        For i = 0 To tintPixels.Length - 1
+            tintPixels(i) = tintColor
+        Next
+
+        ' Set the pixel data on the texture
+        tintTexture.SetData(tintPixels)
+
+        ' Start the sprite batch
+        Client.SpriteBatch.Begin()
+
+        ' Draw the tinted texture over the entire camera view
+        Client.SpriteBatch.Draw(tintTexture, 
+                         New Microsoft.Xna.Framework.Rectangle(0, 0, ResolutionWidth, ResolutionHeight), 
+                         Microsoft.Xna.Framework.Color.White)
+
+        Client.SpriteBatch.End()
+
+        ' Dispose of the temporary texture to free resources
+        tintTexture.Dispose()
+    End Sub
+
+    Friend Sub DrawMapFade()
+        If Not UseFade Then Exit Sub ' Exit if fading is disabled
+
+        ' Create a new texture matching the camera view size
+        Dim fadeTexture As New Texture2D(Client.GraphicsDevice, ResolutionWidth, ResolutionHeight)
+        Dim blackPixels(ResolutionWidth * ResolutionHeight - 1) As Microsoft.Xna.Framework.Color
+
+        ' Fill the pixel array with black color and specified alpha for the fade effect
+        For i = 0 To blackPixels.Length - 1
+            blackPixels(i) = New Microsoft.Xna.Framework.Color(0, 0, 0, FadeAmount)
+        Next
+
+        ' Set the texture's pixel data
+        fadeTexture.SetData(blackPixels)
+
+        ' Start the sprite batch
+        Client.SpriteBatch.Begin()
+
+        ' Draw the fade texture over the entire camera view
+        Client.SpriteBatch.Draw(fadeTexture, 
+                         New Microsoft.Xna.Framework.Rectangle(0, 0, ResolutionWidth, ResolutionHeight), 
+                         Microsoft.Xna.Framework.Color.White)
+
+        Client.SpriteBatch.End()
+
+        ' Dispose of the texture to free resources
+        fadeTexture.Dispose()
+    End Sub
+
+    
+    Friend Sub DrawPanorama(index As Integer)
+        If MyMap.Indoors Then Exit Sub
+
+        If index < 1 Or index > NumPanoramas Then Exit Sub
+
+        Client.RenderTexture(Client.PanoramaTexture(index),
+                      0, 0, 0, 0,
+                      Client.PanoramaGfxInfo(index).Width, Client.PanoramaGfxInfo(index).Height,
+                      Client.PanoramaGfxInfo(index).Width, Client.PanoramaGfxInfo(index).Height)
+    End Sub
+
+    Friend Sub DrawParallax(index As Integer)
+        Dim horz As Single = 0
+        Dim vert As Single = 0
+
+        If MyMap.Moral = MyMap.Indoors Then Exit Sub
+        If index < 1 Or index > NumParallax Then Exit Sub
+
+        ' Calculate horizontal and vertical offsets based on player position
+        horz = ConvertMapX(GetPlayerX(MyIndex)) * 2.5F - 50
+        vert = ConvertMapY(GetPlayerY(MyIndex)) * 2.5F - 50
+
+        Client.RenderTexture(Client.ParallaxTexture(index),
+                      CInt(horz), CInt(vert), 0, 0,
+                      Client.ParallaxGfxInfo(index).Width, Client.ParallaxGfxInfo(index).Height,
+                      Client.ParallaxGfxInfo(index).Width, Client.ParallaxGfxInfo(index).Height)
+    End Sub
+
+    Friend Sub DrawPicture(Optional index As Integer = 0, Optional type As Integer = 0)
+        If index = 0 Then
+            index = Picture.Index
+        End If
+
+        If type = 0 Then
+            type = Picture.SpriteType
+        End If
+
+        If index < 1 Or index > NumPictures Then Exit Sub
+        If type < 0 Or type >= PictureType.Count Then Exit Sub
+
+        Dim posX As Integer = 0
+        Dim posY As Integer = 0
+
+        ' Determine position based on type
+        Select Case type
+            Case PictureType.TopLeft
+                posX = 0 - Picture.xOffset
+                posY = 0 - Picture.yOffset
+
+            Case PictureType.CenterScreen
+                posX = Client.PictureTexture(index).Width / 2 - Client.PictureGfxInfo(index).Width / 2 - Picture.xOffset
+                posY = Client.PictureTexture(index).Height / 2 - Client.PictureGfxInfo(index).Height / 2 - Picture.yOffset
+
+            Case PictureType.CenterEvent
+                If CurrentEvents < Picture.EventId Then
+                    ' Reset picture details and exit if event is invalid
+                    Picture.EventId = 0
+                    Picture.Index = 0
+                    Picture.SpriteType = 0
+                    Picture.xOffset = 0
+                    Picture.yOffset = 0
+                    Exit Sub
+                End If
+                posX = ConvertMapX(MapEvents(Picture.EventId).X * 32) / 2 - Picture.xOffset
+                posY = ConvertMapY(MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset
+
+            Case PictureType.CenterPlayer
+                posX = ConvertMapX(Core.Type.Player(MyIndex).X * 32) / 2 - Picture.xOffset
+                posY = ConvertMapY(Core.Type.Player(MyIndex).Y * 32) / 2 - Picture.yOffset
+        End Select
+
+        Client.RenderTexture(Client.PictureTexture(index), posX, posY, 0, 0,
+                      Client.PictureGfxInfo(index).Width,  Client.PictureGfxInfo(index).Height, Client.PictureGfxInfo(index).Width,  Client.PictureGfxInfo(index).Height)
+    End Sub
+
 #End Region
 
 #Region "Database"
@@ -186,7 +541,7 @@ Module Map
         For i = 0 To MaxTileHistory
             ReDim TileHistory(i).Tile(MAX_MAPX,MAX_MAPY)
         Next
-        HistoryIndex = 0
+HistoryIndex = 0
         TileHistoryHighIndex = 0
 
         For x = 0 To MAX_MAPX
@@ -635,7 +990,7 @@ Module Map
 
         With MyMapNPC(NPCNum)
             .Num = buffer.ReadInt32
-            .X = buffer.ReadInt32
+.X = buffer.ReadInt32
             .Y = buffer.ReadInt32
             .Dir = buffer.ReadInt32
             .Vital(VitalType.HP) = buffer.ReadInt32

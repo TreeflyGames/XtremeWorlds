@@ -559,11 +559,11 @@ Module General
         UpdateCamera()
 
         If NumPanoramas > 0 And MyMap.Panorama > 0 Then
-            Client.DrawPanorama(MyMap.Panorama)
+            DrawPanorama(MyMap.Panorama)
         End If
 
         If NumParallax > 0 And MyMap.Parallax > 0 Then
-            Client.DrawParallax(MyMap.Parallax)
+            DrawParallax(MyMap.Parallax)
         End If
 
         ' Draw lower tiles
@@ -723,10 +723,10 @@ Module General
             Next
         End If
 
-        Client.DrawNight()
-        Client.DrawWeather()
-        Client.DrawThunderEffect()
-        Client.DrawMapTint()
+        DrawNight()
+        DrawWeather()
+        DrawThunderEffect()
+        DrawMapTint()
 
         ' Draw out a square at mouse cursor
        If MapGrid = True And MyEditorType = EditorType.Map Then
@@ -761,12 +761,12 @@ Module General
 
         For i = 1 To MAX_MAP_NPCS
             If Type.MyMapNPC(i).Num > 0 Then
-                DrawNpcName(i)
+                DrawNPCName(i)
             End If
         Next
 
-        Client.DrawFog()
-        Client.DrawPicture()
+        DrawFog()
+        DrawPicture()
 
         For i = 1 To Byte.MaxValue
             DrawActionMsg(i)
@@ -820,7 +820,7 @@ Module General
         End If
 
         Client.DrawBars()
-        Client.DrawMapFade()
+        DrawMapFade()
         RenderEntities()
         Client.RenderTexture(Client.CursorTexture, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
     End Sub
