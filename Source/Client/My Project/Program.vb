@@ -2143,7 +2143,7 @@ Return Color.Black
             textY = ConvertMapY(GetPlayerY(index) * PicY) + Type.Player(index).YOffset - (CharacterGfxInfo(GetPlayerSprite(index)).Height / 4) + 16
         End If
 
-' Draw name
+        ' Draw name
         RenderText(name, textX, textY, color, backcolor)
     End Sub
 
@@ -2207,8 +2207,8 @@ Return Color.Black
         ' Create a new Bitmap
         Dim bitmap As New Drawing.Bitmap(renderTarget.Width, renderTarget.Height, Imaging.PixelFormat.Format32bppArgb)
 
-' Copy the pixel data to the Bitmap
-For y As Integer = 0 To renderTarget.Height - 1
+        ' Copy the pixel data to the Bitmap
+        For y As Integer = 0 To renderTarget.Height - 1
             For x As Integer = 0 To renderTarget.Width - 1
                 Dim color As Color = data(y * renderTarget.Width + x)
                 bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B))
