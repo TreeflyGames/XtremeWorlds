@@ -1279,16 +1279,16 @@ Public Class frmEditor_Map
         Dim destRect As New Rectangle(0, 0, Math.Min(srcRect.Width, picBackSelect.Width), Math.Min(srcRect.Height, picBackSelect.Height))
 
         ' Begin the sprite batch and draw the tileset texture
-        Client.spriteBatch.Begin()
-        Client.spriteBatch.Draw(
+        Client.SpriteBatch.Begin()
+        Client.SpriteBatch.Draw(
             Client.TilesetTexture(tileset), destRect, srcRect, Color.White
         )
-        Client.spriteBatch.End()
+        Client.SpriteBatch.End()
 
         ' Draw the editor animation overlay (optional)
-        Client.spriteBatch.Begin()
-        Client.spriteBatch.Draw(Client.EditorAnimation_Anim1, Vector2.Zero, Color.White)
-        Client.spriteBatch.End()
+        Client.SpriteBatch.Begin()
+        Client.SpriteBatch.Draw(Client.EditorAnimation_Anim1, Vector2.Zero, Color.White)
+        Client.SpriteBatch.End()
 
         ' Draw the selection rectangle
         Client.DrawSelectionRectangle()
@@ -1297,9 +1297,9 @@ Public Class frmEditor_Map
         Client.GraphicsDevice.SetRenderTarget(Nothing)
 
         ' Display the tileset on the screen by drawing the render target
-        Client.spriteBatch.Begin()
-        Client.spriteBatch.Draw(Client.TilesetWindow, Vector2.Zero, Color.White)
-        Client.spriteBatch.End()
+        Client.SpriteBatch.Begin()
+        Client.SpriteBatch.Draw(Client.TilesetWindow, Vector2.Zero, Color.White)
+        Client.SpriteBatch.End()
     End Sub
 
     ' Helper function to set tile dimensions based on the selected autotile type

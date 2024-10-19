@@ -22,11 +22,92 @@ Module General
         Settings.Load()
         Languages.Load()
         Input.Load()
+        CheckAnimations()
+        CheckCharacters()
+        CheckEmotes()
+        CheckTilesets()
+        CheckFogs()
+        CheckItems()
+        CheckPanoramas()
+        CheckPaperdolls()
+        CheckParallax()
+        CheckPictures()
+        CheckProjectile()
+        CheckResources()
+        CheckSkills()
+        ChecKInterface()
+        CheckGradients()
+        CheckDesigns()
         InitializeBASS()
         InitNetwork()
         InitInterface()
         Ping = -1
     End Sub
+
+    Friend Sub CheckAnimations()
+        NumAnimations = GetFileCount(Core.Path.Animations)
+    End Sub
+
+    Friend Sub CheckCharacters()
+        NumCharacters = GetFileCount(Core.Path.Characters)
+    End Sub
+
+    Friend Sub CheckEmotes()
+        NumEmotes = GetFileCount(Core.Path.Emotes)
+    End Sub
+
+    Friend Sub CheckTilesets()
+        NumTileSets = GetFileCount(Core.Path.Tilesets)
+    End Sub
+
+    Friend Sub CheckFogs()
+        NumFogs = GetFileCount(Core.Path.Fogs)
+    End Sub
+
+    Friend Sub CheckItems()
+        NumItems = GetFileCount(Core.Path.Items)
+    End Sub
+
+    Friend Sub CheckPanoramas()
+        NumPanoramas = GetFileCount(Core.Path.Panoramas)
+    End Sub
+
+    Friend Sub CheckPaperdolls()
+        NumPaperdolls = GetFileCount(Core.Path.Paperdolls)
+    End Sub
+
+    Friend Sub CheckParallax()
+        NumParallax = GetFileCount(Core.Path.Parallax)
+    End Sub
+
+    Friend Sub CheckPictures()
+        NumPictures = GetFileCount(Core.Path.Pictures)
+    End Sub
+
+    Friend Sub CheckProjectile()
+        NumProjectiles = GetFileCount(Core.Path.Projectiles)
+    End Sub
+
+    Friend Sub CheckResources()
+        NumResources = GetFileCount(Core.Path.Resources)
+    End Sub
+
+    Friend Sub CheckSkills()
+        NumSkills = GetFileCount(Core.Path.Skills)
+    End Sub
+
+    Friend Sub CheckInterface()
+        NumInterface = GetFileCount(Core.Path.Gui)
+    End Sub
+
+    Friend Sub CheckGradients()
+        NumGradients = GetFileCount(Core.Path.Gradients)
+    End Sub
+
+    Friend Sub CheckDesigns()
+        NumDesigns = GetFileCount(Core.Path.Designs)
+    End Sub
+
 
     Function GetResolutionSize(Resolution As Byte, ByRef Width As Integer, ByRef Height As Integer)
         Select Case Resolution

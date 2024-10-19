@@ -173,118 +173,6 @@ Public Class GameClient
         Public Property Color As Color
     End Class
 
-    Friend Sub CheckAnimations()
-        Dim count As Integer = GetFileCount(Core.Path.Animations)
-        NumAnimations = count
-        ReDim Client.AnimationTexture(count - 1)
-        LoadTextures(Client.AnimationTexture, Core.Path.Animations)
-    End Sub
-
-    Friend Sub CheckCharacters()
-        Dim count As Integer = GetFileCount(Core.Path.Characters)
-        NumCharacters = count
-        ReDim Client.CharacterTexture(count - 1)
-        LoadTextures(Client.CharacterTexture, Core.Path.Characters)
-    End Sub
-
-    Friend Sub CheckEmotes()
-        Dim count As Integer = GetFileCount(Core.Path.Emotes)
-        NumEmotes = count
-        ReDim Client.EmoteTexture(count - 1)
-        LoadTextures(Client.EmoteTexture, Core.Path.Emotes)
-    End Sub
-
-    Friend Sub CheckTilesets()
-        Dim count As Integer = GetFileCount(Core.Path.Tilesets)
-        NumTileSets = count
-        ReDim Client.TilesetTexture(count - 1)
-        LoadTextures(Client.TilesetTexture, Core.Path.Tilesets)
-    End Sub
-
-    Friend Sub CheckFogs()
-        Dim count As Integer = GetFileCount(Core.Path.Fogs)
-        NumFogs = count
-        ReDim Client.FogTexture(count - 1)
-        LoadTextures(Client.FogTexture, Core.Path.Fogs)
-    End Sub
-
-    Friend Sub CheckItems()
-        Dim count As Integer = GetFileCount(Core.Path.Items)
-        NumItems = count
-        ReDim Client.ItemTexture(count - 1)
-        LoadTextures(Client.ItemTexture, Core.Path.Items)
-    End Sub
-
-    Friend Sub CheckPanoramas()
-        Dim count As Integer = GetFileCount(Core.Path.Panoramas)
-        NumPanoramas = count
-        ReDim Client.PanoramaTexture(count - 1)
-        LoadTextures(Client.PanoramaTexture, Core.Path.Panoramas)
-    End Sub
-
-    Friend Sub CheckPaperdolls()
-        Dim count As Integer = GetFileCount(Core.Path.Paperdolls)
-        NumPaperdolls = count
-        ReDim Client.PaperdollTexture(count - 1)
-        LoadTextures(Client.PaperdollTexture, Core.Path.Paperdolls)
-    End Sub
-
-    Friend Sub CheckParallax()
-        Dim count As Integer = GetFileCount(Core.Path.Parallax)
-        NumParallax = count
-        ReDim Client.ParallaxTexture(count - 1)
-        LoadTextures(Client.ParallaxTexture, Core.Path.Parallax)
-    End Sub
-
-    Friend Sub CheckPictures()
-        Dim count As Integer = GetFileCount(Core.Path.Pictures)
-        NumPictures = count
-        ReDim Client.PictureTexture(count - 1)
-        LoadTextures(Client.PictureTexture, Core.Path.Pictures)
-    End Sub
-
-    Friend Sub CheckProjectile()
-        Dim count As Integer = GetFileCount(Core.Path.Projectiles)
-        NumProjectiles = count
-        ReDim Client.ProjectileTexture(count - 1)
-        LoadTextures(Client.ProjectileTexture, Core.Path.Projectiles)
-    End Sub
-
-    Friend Sub CheckResources()
-        Dim count As Integer = GetFileCount(Core.Path.Resources)
-        NumResources = count
-        ReDim Client.ResourceTexture(count - 1)
-        LoadTextures(Client.ResourceTexture, Core.Path.Resources)
-    End Sub
-
-    Friend Sub CheckSkills()
-        Dim count As Integer = GetFileCount(Core.Path.Skills)
-        NumSkills = count
-        ReDim Client.SkillTexture(count - 1)
-        LoadTextures(Client.SkillTexture, Core.Path.Skills)
-    End Sub
-
-    Friend Sub CheckInterface()
-        Dim count As Integer = GetFileCount(Core.Path.Gui)
-        NumInterface = count
-        ReDim Client.InterfaceTexture(count - 1)
-        LoadTextures(Client.InterfaceTexture, Core.Path.Gui)
-    End Sub
-
-    Friend Sub CheckGradients()
-        Dim count As Integer = GetFileCount(Core.Path.Gradients)
-        NumGradients = count
-        ReDim Client.GradientTexture(count - 1)
-        LoadTextures(Client.GradientTexture, Core.Path.Gradients)
-    End Sub
-
-    Friend Sub CheckDesigns()
-        Dim count As Integer = GetFileCount(Core.Path.Designs)
-        NumDesigns = count
-        ReDim DesignTexture(count - 1)
-        LoadTextures(DesignTexture, Core.Path.Designs)
-    End Sub
-
     Public Sub RenderTexture(ByRef texture As Texture2D, dX As Integer, dY As Integer,
                          sX As Integer, sY As Integer, dW As Integer, dH As Integer,
                          Optional sW As Integer = 1, Optional sH As Integer = 1,
@@ -305,9 +193,105 @@ Public Class GameClient
         Dim color As New Color(red, green, blue, alpha)
 
         ' Draw the texture using SpriteBatch
-        spriteBatch.Begin()
-        spriteBatch.Draw(texture, destinationRect, sourceRect, color)
-        spriteBatch.End()
+        SpriteBatch.Begin()
+        SpriteBatch.Draw(texture, destinationRect, sourceRect, color)
+        SpriteBatch.End()
+    End Sub
+
+    Private Sub LoadAnimations()
+        Dim count As Integer = GetFileCount(Core.Path.Animations)
+        ReDim Client.AnimationTexture(count - 1)
+        LoadTextures(Client.AnimationTexture, Core.Path.Animations)
+    End Sub
+
+    Private Sub LoadCharacters()
+        Dim count As Integer = GetFileCount(Core.Path.Characters)
+        ReDim Client.CharacterTexture(count - 1)
+        LoadTextures(Client.CharacterTexture, Core.Path.Characters)
+    End Sub
+
+    Private Sub LoadEmotes()
+        Dim count As Integer = GetFileCount(Core.Path.Emotes)
+        ReDim Client.EmoteTexture(count - 1)
+        LoadTextures(Client.EmoteTexture, Core.Path.Emotes)
+    End Sub
+
+    Private Sub LoadTilesets()
+        Dim count As Integer = GetFileCount(Core.Path.Tilesets)
+        ReDim Client.TilesetTexture(count - 1)
+        LoadTextures(Client.TilesetTexture, Core.Path.Tilesets)
+    End Sub
+
+    Private Sub LoadFogs()
+        Dim count As Integer = GetFileCount(Core.Path.Fogs)
+        ReDim Client.FogTexture(count - 1)
+        LoadTextures(Client.FogTexture, Core.Path.Fogs)
+    End Sub
+
+    Private Sub LoadItems()
+        Dim count As Integer = GetFileCount(Core.Path.Items)
+        ReDim Client.ItemTexture(count - 1)
+        LoadTextures(Client.ItemTexture, Core.Path.Items)
+    End Sub
+
+    Private Sub LoadPanoramas()
+        Dim count As Integer = GetFileCount(Core.Path.Panoramas)
+        ReDim Client.PanoramaTexture(count - 1)
+        LoadTextures(Client.PanoramaTexture, Core.Path.Panoramas)
+    End Sub
+
+    Private Sub LoadPaperdolls()
+        Dim count As Integer = GetFileCount(Core.Path.Paperdolls)
+        ReDim Client.PaperdollTexture(count - 1)
+        LoadTextures(Client.PaperdollTexture, Core.Path.Paperdolls)
+    End Sub
+
+    Private Sub LoadParallax()
+        Dim count As Integer = GetFileCount(Core.Path.Parallax)
+        ReDim Client.ParallaxTexture(count - 1)
+        LoadTextures(Client.ParallaxTexture, Core.Path.Parallax)
+    End Sub
+
+    Private Sub LoadPictures()
+        Dim count As Integer = GetFileCount(Core.Path.Pictures)
+        ReDim Client.PictureTexture(count - 1)
+        LoadTextures(Client.PictureTexture, Core.Path.Pictures)
+    End Sub
+
+    Private Sub LoadProjectile()
+        Dim count As Integer = GetFileCount(Core.Path.Projectiles)
+        ReDim Client.ProjectileTexture(count - 1)
+        LoadTextures(Client.ProjectileTexture, Core.Path.Projectiles)
+    End Sub
+
+    Private Sub LoadResources()
+        Dim count As Integer = GetFileCount(Core.Path.Resources)
+        ReDim Client.ResourceTexture(count - 1)
+        LoadTextures(Client.ResourceTexture, Core.Path.Resources)
+    End Sub
+
+    Private Sub LoadSkills()
+        Dim count As Integer = GetFileCount(Core.Path.Skills)
+        ReDim Client.SkillTexture(count - 1)
+        LoadTextures(Client.SkillTexture, Core.Path.Skills)
+    End Sub
+
+    Private Sub LoadInterface()
+        Dim count As Integer = GetFileCount(Core.Path.Gui)
+        ReDim Client.InterfaceTexture(count - 1)
+        LoadTextures(Client.InterfaceTexture, Core.Path.Gui)
+    End Sub
+
+    Private Sub LoadGradients()
+        Dim count As Integer = GetFileCount(Core.Path.Gradients)
+        ReDim Client.GradientTexture(count - 1)
+        LoadTextures(Client.GradientTexture, Core.Path.Gradients)
+    End Sub
+
+    Private Sub LoadDesigns()
+        Dim count As Integer = GetFileCount(Core.Path.Designs)
+        ReDim DesignTexture(count - 1)
+        LoadTextures(DesignTexture, Core.Path.Designs)
     End Sub
 
     Protected Overrides Sub LoadContent()
@@ -318,22 +302,22 @@ Public Class GameClient
 
         'FontTester = Client.Content.Load(Of SpriteFont)("Georgia") ' Adjust to your font asset name
 
-        CheckAnimations()
-        CheckCharacters()
-        CheckEmotes()
-        CheckTilesets()
-        CheckFogs()
-        CheckItems()
-        CheckPanoramas()
-        CheckPaperdolls()
-        CheckParallax()
-        CheckPictures()
-        CheckProjectile()
-        CheckResources()
-        CheckSkills()
-        ChecKInterface()
-        CheckGradients()
-        CheckDesigns()
+        LoadAnimations()
+        LoadCharacters()
+        LoadEmotes()
+        LoadTilesets()
+        LoadFogs()
+        LoadItems()
+        LoadPanoramas()
+        LoadPaperdolls()
+        LoadParallax()
+        LoadPictures()
+        LoadProjectile()
+        LoadResources()
+        LoadSkills()
+        LoadInterface()
+        LoadGradients()
+        LoadDesigns()
     End Sub
 
     Public Sub LoadTextures(ByRef textureArray() As Texture2D, folderPath As String)
@@ -394,15 +378,15 @@ Public Class GameClient
     Protected Overrides Sub Draw(gameTime As GameTime)
         GraphicsDevice.Clear(Color.CornflowerBlue)
 
-        spriteBatch.Begin()
+        SpriteBatch.Begin()
 
         ' Dequeue and process all render commands
         Dim command As RenderCommand
         While renderQueue.TryDequeue(command)
-            spriteBatch.Draw(GetTexture(command.texturePath), command.dRect, command.sRect, command.Color)
+            SpriteBatch.Draw(GetTexture(command.texturePath), command.dRect, command.sRect, command.Color)
         End While
 
-        spriteBatch.End()
+        SpriteBatch.End()
 
         MyBase.Draw(gameTime)
     End Sub
@@ -737,12 +721,12 @@ Public Class GameClient
     ' Draw a filled rectangle with an optional outline
     Public Sub DrawRectangle(position As Vector2, size As Vector2, fillColor As Color, outlineColor As Color, outlineThickness As Single)
         ' Create a 1x1 white texture for drawing
-        Dim whiteTexture As New Texture2D(spriteBatch.GraphicsDevice, 1, 1)
+        Dim whiteTexture As New Texture2D(SpriteBatch.GraphicsDevice, 1, 1)
 
         whiteTexture.SetData(New Color() {Color.White})
 
         ' Draw the filled rectangle
-        spriteBatch.Draw(whiteTexture, New Rectangle(position.ToPoint(), size.ToPoint()), fillColor)
+        SpriteBatch.Draw(whiteTexture, New Rectangle(position.ToPoint(), size.ToPoint()), fillColor)
 
 '        Draw the outline if thickness > 0
         If outlineThickness > 0 Then
@@ -753,10 +737,10 @@ Public Class GameClient
             Dim bottom As New Rectangle(New Point(CInt(position.X), CInt(position.Y + size.Y - outlineThickness)), New Point(CInt(size.X), CInt(outlineThickness)))
 
             ' Draw the outline rectangles
-            spriteBatch.Draw(whiteTexture, left, outlineColor)
-            spriteBatch.Draw(whiteTexture, top, outlineColor)
-            spriteBatch.Draw(whiteTexture, right, outlineColor)
-            spriteBatch.Draw(whiteTexture, bottom, outlineColor)
+            SpriteBatch.Draw(whiteTexture, left, outlineColor)
+            SpriteBatch.Draw(whiteTexture, top, outlineColor)
+            SpriteBatch.Draw(whiteTexture, right, outlineColor)
+            SpriteBatch.Draw(whiteTexture, bottom, outlineColor)
         End If
 
         ' Dispose the texture to free memory
@@ -777,11 +761,11 @@ Public Class GameClient
         outlineThickness As Single)
 
         ' Create a 1x1 white texture
-        Dim whiteTexture As New Texture2D(spriteBatch.GraphicsDevice, 1, 1)
+        Dim whiteTexture As New Texture2D(SpriteBatch.GraphicsDevice, 1, 1)
         whiteTexture.SetData(New Color() {Color.White})
 
         ' Draw the filled rectangle
-        spriteBatch.Draw(whiteTexture, rect, fillColor)
+        SpriteBatch.Draw(whiteTexture, rect, fillColor)
 
         ' Draw the outline if thickness > 0
         If outlineThickness > 0 Then
@@ -792,10 +776,10 @@ Public Class GameClient
             Dim bottom As New Rectangle(rect.Left, rect.Bottom - CInt(outlineThickness), rect.Width, CInt(outlineThickness))
 
             ' Draw the outline rectangles
-            spriteBatch.Draw(whiteTexture, left, outlineColor)
-            spriteBatch.Draw(whiteTexture, top, outlineColor)
-            spriteBatch.Draw(whiteTexture, right, outlineColor)
-            spriteBatch.Draw(whiteTexture, bottom, outlineColor)
+            SpriteBatch.Draw(whiteTexture, left, outlineColor)
+            SpriteBatch.Draw(whiteTexture, top, outlineColor)
+            SpriteBatch.Draw(whiteTexture, right, outlineColor)
+            SpriteBatch.Draw(whiteTexture, bottom, outlineColor)
         End If
 
         ' Dispose the texture after use
@@ -809,15 +793,15 @@ Public Class GameClient
         )
 
         ' Begin the sprite batch and draw a semi-transparent overlay (optional)
-        spriteBatch.Begin()
-        spriteBatch.Draw(TilesetWindow, selectionRect, Color.Red * 0.4F)
-        spriteBatch.End()
+        SpriteBatch.Begin()
+        SpriteBatch.Draw(TilesetWindow, selectionRect, Color.Red * 0.4F)
+        SpriteBatch.End()
     End Sub
 
     Private Sub DrawOutlineRectangle(x As Integer, y As Integer, width As Integer, height As Integer, color As Color, thickness As Single)
-        Dim whiteTexture As New Texture2D(spriteBatch.GraphicsDevice, 1, 1)
+        Dim whiteTexture As New Texture2D(SpriteBatch.GraphicsDevice, 1, 1)
 
-        spriteBatch.Begin()
+        SpriteBatch.Begin()
 
         ' Define four rectangles for the outline
         Dim left As New Rectangle(x, y, thickness, height)
@@ -826,11 +810,11 @@ Public Class GameClient
         Dim bottom As New Rectangle(x, y + height - thickness, width, thickness)
 
         ' Draw the outline
-        spriteBatch.Draw(whiteTexture, left, color)
-        spriteBatch.Draw(whiteTexture, top, color)
-        spriteBatch.Draw(whiteTexture, right, color)
-        spriteBatch.Draw(whiteTexture, bottom, color)
-        spriteBatch.End()
+        SpriteBatch.Draw(whiteTexture, left, color)
+        SpriteBatch.Draw(whiteTexture, top, color)
+        SpriteBatch.Draw(whiteTexture, right, color)
+        SpriteBatch.Draw(whiteTexture, bottom, color)
+        SpriteBatch.End()
     End Sub
 
     Public Function QbColorToXnaColor(qbColor As Integer) As Color
@@ -1207,7 +1191,7 @@ Public Class GameClient
     End Sub
 
     Friend Sub DrawEyeDropper()
-        spriteBatch.Begin()
+        SpriteBatch.Begin()
 
         ' Define rectangle parameters.
         Dim position As New Vector2(ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY))
@@ -1218,12 +1202,12 @@ Public Class GameClient
 
         ' Draw the rectangle with an outline.
         DrawRectangle(position, size, fillColor, outlineColor, outlineThickness)
-        spriteBatch.End()
+        SpriteBatch.End()
     End Sub
 
     Friend Sub DrawGrid()
         ' Use a single Begin/End pair to improve performance
-        spriteBatch.Begin()
+        SpriteBatch.Begin()
 
         ' Iterate over the tiles in the visible range
         For x = TileView.Left - 1 To TileView.Right
@@ -1236,27 +1220,27 @@ Public Class GameClient
                     Dim rectHeight As Integer = PicY
 
                     ' Draw the transparent rectangle as the tile background
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, rectWidth, rectHeight), Color.Transparent)
+                    SpriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, rectWidth, rectHeight), Color.Transparent)
 
                     ' Define the outline color and thickness
                     Dim outlineColor As Color = Color.White
                     Dim thickness As Integer = 1
 
                     ' Draw the tile outline (top, bottom, left, right)
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, rectWidth, thickness), outlineColor) ' Top
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY + rectHeight - thickness, rectWidth, thickness), outlineColor) ' Bottom
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, thickness, rectHeight), outlineColor) ' Left
-                    spriteBatch.Draw(TransparentTexture, New Rectangle(posX + rectWidth - thickness, posY, thickness, rectHeight), outlineColor) ' Right
+                    SpriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, rectWidth, thickness), outlineColor) ' Top
+                    SpriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY + rectHeight - thickness, rectWidth, thickness), outlineColor) ' Bottom
+                    SpriteBatch.Draw(TransparentTexture, New Rectangle(posX, posY, thickness, rectHeight), outlineColor) ' Left
+                    SpriteBatch.Draw(TransparentTexture, New Rectangle(posX + rectWidth - thickness, posY, thickness, rectHeight), outlineColor) ' Right
                 End If
             Next
         Next
 
-        spriteBatch.End()
+        SpriteBatch.End()
     End Sub
 
     Friend Sub DrawTileOutline()
         ' Begin the sprite batch for drawing
-        spriteBatch.Begin()
+        SpriteBatch.Begin()
 
         ' Example rectangle (replace with your actual logic)
         Dim rect As New Rectangle(100, 100, 200, 100)
@@ -1288,11 +1272,11 @@ Public Class GameClient
 
             ' Draw a filled rectangle for the tile selection
             Dim position As New Vector2(ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY))
-            spriteBatch.Draw(PixelTexture, New Rectangle(CInt(position.X), CInt(position.Y), CInt(rec2.Width), CInt(rec2.Height)), Color.White)
+            SpriteBatch.Draw(PixelTexture, New Rectangle(CInt(position.X), CInt(position.Y), CInt(rec2.Width), CInt(rec2.Height)), Color.White)
         End If
 
         ' End the sprite batch
-        spriteBatch.End()
+        SpriteBatch.End()
     End Sub
 
     Friend Sub DrawTarget(x2 As Integer, y2 As Integer)
@@ -1502,7 +1486,7 @@ Public Class GameClient
         GraphicsDevice.Clear(Color.Black) ' Clear with background color
 
         ' Begin SpriteBatch for rendering
-        spriteBatch.Begin()
+        SpriteBatch.Begin()
 
         ' Calculate the current frame index and its position in the texture
         Dim frameIndex As Integer = AnimEditorFrame(animationTimerIndex) - 1
@@ -1511,12 +1495,12 @@ Public Class GameClient
         Dim sourceRect As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
 
         ' Render the texture to the target
-        spriteBatch.Draw(AnimationTexture(animationNum), 
+        SpriteBatch.Draw(AnimationTexture(animationNum), 
                          New Rectangle(0, 0, frameWidth, frameHeight), 
                          sourceRect, 
                          Color.White)
 
-        spriteBatch.End()
+        SpriteBatch.End()
 
         ' Reset to the default back buffer
         GraphicsDevice.SetRenderTarget(Nothing)
@@ -1821,9 +1805,9 @@ Public Class GameClient
         GraphicsDevice.Clear(Color.CornflowerBlue)
 
         ' Begin SpriteBatch and render the texture
-        spriteBatch.Begin()
-        spriteBatch.Draw(texture, New Rectangle(0, 0, pictureBox.Width, pictureBox.Height), Color.White)
-        spriteBatch.End()
+        SpriteBatch.Begin()
+        SpriteBatch.Draw(texture, New Rectangle(0, 0, pictureBox.Width, pictureBox.Height), Color.White)
+        SpriteBatch.End()
 
         ' Reset to the back buffer
         GraphicsDevice.SetRenderTarget(Nothing)
@@ -1915,14 +1899,14 @@ Public Class GameClient
         Dim position As New Vector2(x, y)
 
         ' Render the graphic using SpriteBatch
-        spriteBatch.Begin()
+        SpriteBatch.Begin()
 
-        spriteBatch.Draw(CharacterTexture(gfxIndex), 
+        SpriteBatch.Draw(CharacterTexture(gfxIndex), 
                          position, 
                          sourceRect, 
                          Color.White)
 
-        spriteBatch.End()
+        SpriteBatch.End()
     End Sub
 
     Private Sub RenderTilesetGraphic(eventData As EventStruct, x As Integer, y As Integer)
