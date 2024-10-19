@@ -232,4 +232,279 @@ Module Text
 
     End Function
 
+    Friend Sub RenderText(text As String, x As Integer, y As Integer, frontColor As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
+
+    End Sub
+
+    ' Method to draw text with back and front layers
+    Private Sub DrawTextWithShadow(text As String, fontName As FontType,
+                               x As Integer, y As Integer, textSize As Single,
+                               backColor As Color, frontColor As Color)
+
+        ' Select the font based on the provided font type
+        Dim selectedFont As SpriteFont = Client.Fonts(fontName)
+
+        ' Calculate the shadow position
+        Dim shadowPosition As New Vector2(x + 1, y + 1)
+
+        ' Draw the shadow (backString equivalent)
+        Client.SpriteBatch.DrawString(selectedFont, text, shadowPosition, backColor,
+                               0.0F, Vector2.Zero, textSize / 16.0F, SpriteEffects.None, 0.0F)
+
+        ' Draw the main text (frontString equivalent)
+        Client.SpriteBatch.DrawString(selectedFont, text, New Vector2(x, y), frontColor,
+                               0.0F, Vector2.Zero, textSize / 16.0F, SpriteEffects.None, 0.0F)
+    End Sub
+
+    Friend Sub DrawNpcName(MapNpcNum As Integer)
+        Dim textX As Integer
+        Dim textY As Integer
+        Dim color As Color, backcolor As Color
+        Dim npcNum As Integer
+
+        npcNum = MyMapNPC(MapNPCNum).Num
+
+        Select Case Type.NPC(NPCNum).Behaviour
+            Case 0 ' attack on sight
+                color = Color.Red
+                backcolor = Color.Black
+            Case 1, 4 ' attack when attacked + guard
+                color = Color.Green
+                backcolor = Color.Black
+            Case 2, 3, 5 ' friendly + shopkeeper + quest
+                color = Color.Yellow
+                backcolor = Color.Black
+        End Select
+
+        textX = ConvertMapX(MyMapNPC(MapNPCNum).X * PicX) + MyMapNPC(MapNPCNum).XOffset + (PicX \ 2) - (TextWidth((Type.NPC(NPCNum).Name))) / 2 - 2
+        If Type.NPC(NPCNum).Sprite < 1 Or Type.NPC(NPCNum).Sprite > NumCharacters Then
+            textY = ConvertMapY(MyMapNPC(MapNPCNum).Y * PicY) + MyMapNPC(MapNPCNum).YOffset - 16
+        Else
+            textY = ConvertMapY(MyMapNPC(MapNPCNum).Y * PicY) + MyMapNPC(MapNPCNum).YOffset - (CharacterGfxInfo(Type.NPC(NPCNum).Sprite).Height / 4) + 16
+        End If
+
+        ' Draw name
+        RenderText(Type.NPC(NPCNum).Name, textX, textY, color, backcolor)
+    End Sub
+
+    Friend Sub DrawEventName(index As Integer)
+        Dim textX As Integer
+        Dim textY As Integer
+        Dim color As Color, backcolor As Color
+        Dim name As String
+
+        color = Color.Yellow
+        backcolor = Color.Black
+
+        name = MapEvents(index).Name
+
+        ' calc pos
+        textX = ConvertMapX(MapEvents(index).X * PicX) + MapEvents(index).XOffset + (PicX \ 2) - (TextWidth(name)) \ 2 - 2
+       If MapEvents(index).GraphicType = 0 Then
+            textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
+        ElseIf MapEvents(index).GraphicType = 1 Then
+            If MapEvents(index).Graphic < 1 Or MapEvents(index).Graphic > NumCharacters Then
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
+            Else
+                ' Determine location for text
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (CharacterGfxInfo(MapEvents(index).Graphic).Height \ 4) + 16
+            End If
+        ElseIf MapEvents(index).GraphicType = 2 Then
+            If MapEvents(index).GraphicY2 > 0 Then
+                textX = textX + (MapEvents(index).GraphicY2 * PicY) \ 2 - 16
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (MapEvents(index).GraphicY2 * PicY) + 16
+            Else
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 32 + 16
+            End If
+        End If
+
+        ' Draw name
+        RenderText(name, textX, textY, color, backcolor)
+    End Sub
+
+    Public Sub DrawMapAttributes()
+        Dim X As Integer
+        Dim y As Integer
+        Dim tX As Integer
+        Dim tY As Integer
+        Dim tA As Integer
+
+        If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
+            For X = TileView.Left - 1 To TileView.Right + 1
+                For y = TileView.Top - 1 To TileView.Bottom + 1
+                    If IsValidMapPoint(X, y) Then
+                        With MyMap.Tile(X, y)
+                            tX = ((ConvertMapX(X * PicX)) - 4) + (PicX * 0.5)
+                            tY = ((ConvertMapY(y * PicY)) - 7) + (PicY * 0.5)
+
+                            If EditorAttribute = 1 Then
+                                tA = .Type
+                            Else
+                                tA = .Type2
+                            End If
+
+                            Select Case tA
+                                Case TileType.Blocked
+                                    RenderText("B", tX, tY, (Color.Red), (Color.Black))
+                                Case TileType.Warp
+                                    RenderText("W", tX, tY, (Color.Blue), (Color.Black))
+                                Case TileType.Item
+                                    RenderText("I", tX, tY, (Color.White), (Color.Black))
+                                Case TileType.NPCAvoid
+                                    RenderText("N", tX, tY, (Color.White), (Color.Black))
+                                Case TileType.Resource
+                                    RenderText("R", tX, tY, (Color.Green), (Color.Black))
+                                Case TileType.NPCSpawn
+                                    RenderText("S", tX, tY, (Color.Yellow), (Color.Black))
+                                Case TileType.Shop
+                                    RenderText("S", tX, tY, (Color.Blue), (Color.Black))
+                                Case TileType.Bank
+                                    RenderText("B", tX, tY, (Color.Blue), (Color.Black))
+                                Case TileType.Heal
+                                    RenderText("H", tX, tY, (Color.Green), (Color.Black))
+                                Case TileType.Trap
+                                    RenderText("T", tX, tY, (Color.Red), (Color.Black))
+                                Case TileType.Light
+                                    RenderText("L", tX, tY, (Color.Yellow), (Color.Black))
+                                Case TileType.Animation
+                                    RenderText("A", tX, tY, (Color.Red), (Color.Black))
+                                Case TileType.NoXing
+                                    RenderText("X", tX, tY, (Color.Red), (Color.Black))
+                            End Select
+                        End With
+                    End If
+                Next
+            Next
+        End If
+    End Sub
+
+    Sub DrawActionMsg(index As Integer)
+        Dim x As Integer, y As Integer, i As Integer, time As Integer
+
+        ' how long we want each message to appear
+        Select Case ActionMsg(index).Type
+            Case ActionMsgType.Static
+                time = 1500
+
+                If ActionMsg(index).Y > 0 Then
+                    x = ActionMsg(index).X + Int(PicX \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
+                    y = ActionMsg(index).Y - Int(PicY \ 2) - 2
+                Else
+                    x = ActionMsg(index).X + Int(PicX \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
+                    y = ActionMsg(index).Y - Int(PicY \ 2) + 18
+                End If
+
+            Case ActionMsgType.Scroll
+                time = 1500
+
+                If ActionMsg(index).Y > 0 Then
+                    x = ActionMsg(index).X + Int(PicX \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
+                    y = ActionMsg(index).Y - Int(PicY \ 2) - 2 - (ActionMsg(index).Scroll * 0.6)
+                    ActionMsg(index).Scroll = ActionMsg(index).Scroll + 1
+                Else
+                    x = ActionMsg(index).X + Int(PicX \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
+                    y = ActionMsg(index).Y - Int(PicY \ 2) + 18 + (ActionMsg(index).Scroll * 0.6)
+                    ActionMsg(index).Scroll = ActionMsg(index).Scroll + 1
+                End If
+
+            Case ActionMsgType.Screen
+                time = 3000
+
+                ' This will kill any action screen messages that there in the system
+                For i = Byte.MaxValue To 1 Step -1
+                    If ActionMsg(i).Type = ActionMsgType.Screen Then
+                        If i <> index Then
+                            ClearActionMsg(index)
+                            index = i
+                        End If
+                    End If
+                Next
+                x = (ResolutionWidth \ 2) - ((Len(ActionMsg(index).Message)) \ 2) * 8
+                y = 425
+
+        End Select
+
+        x = ConvertMapX(x)
+        y = ConvertMapY(y)
+
+        If GetTickCount() < ActionMsg(index).Created + time Then
+            RenderText(ActionMsg(index).Message, x, y, Client.QbColorToXnaColor(ActionMsg(index).Color), (Color.Black))
+        Else
+            ClearActionMsg(index)
+        End If
+
+    End Sub
+
+    Sub DrawChat()
+        Dim xO As Long, yO As Long, Color As Integer, yOffset As Long, rLines As Integer, lineCount As Integer
+        Dim tmpText As String, i As Long, isVisible As Boolean, topWidth As Integer, tmpArray() As String, x As Integer
+        Dim Color2 As Color
+
+        ' set the position
+        xO = 19
+        yO = ResolutionHeight - 40
+
+        ' loop through chat
+        rLines = 1
+        i = 1 + ChatScroll
+
+        Do While rLines <= 8
+            If i > CHAT_LINES Then Exit Do
+            lineCount = 0
+
+            ' exit out early if we come to a blank string
+            If Len(Chat(i).Text) = 0 Then Exit Do
+
+            ' get visible state
+            isVisible = True
+            If inSmallChat Then
+                If Not Chat(i).Visible Then isVisible = False
+            End If
+
+            If Type.Setting.ChannelState(Type.Chat(i).Channel) = 0 Then isVisible = False
+
+            ' make sure it's visible
+            If isVisible Then
+                ' render line
+                Color = Chat(i).Color
+                Color2 = Client.QbColorToXnaColor(Color)
+
+                ' check if we need to word wrap
+                If TextWidth(Chat(i).Text) > ChatWidth Then
+                    ' word wrap
+                    tmpText = WordWrap(Chat(i).Text, ChatWidth)
+
+                    ' can't have it going offscreen.
+                    If rLines + lineCount > 9 Then Exit Do
+
+                    ' continue on
+                    yOffset = yOffset - (14 * lineCount)
+                    RenderText(tmpText, xO, yO + yOffset, Color2, Color2)
+                    rLines = rLines + lineCount
+
+                    ' set the top width
+                    tmpArray = Split(tmpText, vbNewLine)
+                    For x = 0 To UBound(tmpArray)
+                        If TextWidth(tmpArray(x)) > topWidth Then topWidth = TextWidth(tmpArray(x))
+                    Next
+                Else
+                    ' normal
+                    yOffset = yOffset - 14
+
+                    RenderText(Chat(i).Text, xO, yO + yOffset, Color2, Color2)
+                    rLines = rLines + 1
+
+                    ' set the top width
+                    If TextWidth(Chat(i).Text) > topWidth Then topWidth = TextWidth(Chat(i).Text)
+                End If
+            End If
+            ' increment chat pointer
+            i = i + 1
+        Loop
+
+        ' get the height of the small chat box
+        SetChatHeight(rLines * 14)
+        SetChatWidth(topWidth)
+    End Sub
+
 End Module
