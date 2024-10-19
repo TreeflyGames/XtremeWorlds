@@ -207,7 +207,7 @@ Partial Class frmEditor_Skill
         DarkGroupBox8.Size = New Size(423, 348)
         DarkGroupBox8.TabIndex = 2
         DarkGroupBox8.TabStop = False
-        DarkGroupBox8.Text = "Cast Settings"
+        DarkGroupBox8.Text = "Cast Setting"
         ' 
         ' cmbAnim
         ' 
@@ -358,7 +358,7 @@ Partial Class frmEditor_Skill
         DarkGroupBox7.Size = New Size(423, 148)
         DarkGroupBox7.TabIndex = 1
         DarkGroupBox7.TabStop = False
-        DarkGroupBox7.Text = "HoT & DoT Settings "
+        DarkGroupBox7.Text = "HoT & DoT Setting "
         ' 
         ' nudInterval
         ' 
@@ -437,7 +437,7 @@ Partial Class frmEditor_Skill
         DarkGroupBox6.Size = New Size(423, 150)
         DarkGroupBox6.TabIndex = 0
         DarkGroupBox6.TabStop = False
-        DarkGroupBox6.Text = "Warp Settings"
+        DarkGroupBox6.Text = "Warp Setting"
         ' 
         ' nudY
         ' 
@@ -548,7 +548,7 @@ Partial Class frmEditor_Skill
         DarkGroupBox3.Size = New Size(550, 622)
         DarkGroupBox3.TabIndex = 0
         DarkGroupBox3.TabStop = False
-        DarkGroupBox3.Text = "Basic Settings"
+        DarkGroupBox3.Text = "Basic Setting"
         ' 
         ' chkKnockBack
         ' 

@@ -166,8 +166,8 @@
         SCheckForMap
         SMapData
         SMapItemData
-        SMapNpcData
-        SMapNpcUpdate
+        SMapNPCData
+        SMapNPCUpdate
         SMapDone
         SGlobalMsg
         SAdminMsg
@@ -197,7 +197,7 @@
         SAnimationEditor
         SUpdateAnimation
         SAnimation
-        SMapNpcVitals
+        SMapNPCVitals
         SCooldown
         SClearSkillBuffer
         SSayMsg

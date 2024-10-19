@@ -29,7 +29,7 @@ Public Class LuaScripting
         lua.State.Encoding = Encoding.UTF8
 
         ' Register scripts during initialization
-        For Each script In Directory.GetFiles(Paths.Scripts)
+        For Each script In Directory.GetFiles(Core.PAth.Scripts)
             Console.WriteLine($"Registering Lua script '{script}'")
             AddScriptFromFile(script)
         Next

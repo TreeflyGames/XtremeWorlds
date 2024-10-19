@@ -120,8 +120,8 @@ Partial Class frmEditor_Map
         cmbNpcList = New ComboBox()
         lstMapNpc = New ListBox()
         ComboBox23 = New ComboBox()
-        tpSettings = New TabPage()
-        fraMapSettings = New GroupBox()
+        tpSetting = New TabPage()
+        fraMapSetting = New GroupBox()
         Label22 = New Label()
         lstShop = New ComboBox()
         Label8 = New Label()
@@ -132,7 +132,7 @@ Partial Class frmEditor_Map
         lblMap = New Label()
         txtRight = New TextBox()
         txtUp = New TextBox()
-        fraBootSettings = New GroupBox()
+        fraBootSetting = New GroupBox()
         chkIndoors = New CheckBox()
         chkNoMapRespawn = New CheckBox()
         txtBootMap = New TextBox()
@@ -208,10 +208,10 @@ Partial Class frmEditor_Map
         tpAttributes.SuspendLayout()
         tpNpcs.SuspendLayout()
         fraNpcs.SuspendLayout()
-        tpSettings.SuspendLayout()
-        fraMapSettings.SuspendLayout()
+        tpSetting.SuspendLayout()
+        fraMapSetting.SuspendLayout()
         fraMapLinks.SuspendLayout()
-        fraBootSettings.SuspendLayout()
+        fraBootSetting.SuspendLayout()
         fraMaxSizes.SuspendLayout()
         GroupBox2.SuspendLayout()
         tpDirBlock.SuspendLayout()
@@ -994,7 +994,7 @@ Partial Class frmEditor_Map
         tabpages.Controls.Add(tpTiles)
         tabpages.Controls.Add(tpAttributes)
         tabpages.Controls.Add(tpNpcs)
-        tabpages.Controls.Add(tpSettings)
+        tabpages.Controls.Add(tpSetting)
         tabpages.Controls.Add(tpDirBlock)
         tabpages.Controls.Add(tpEvents)
         tabpages.Controls.Add(tpEffects)
@@ -1258,38 +1258,38 @@ Partial Class frmEditor_Map
         ComboBox23.Size = New Size(218, 33)
         ComboBox23.TabIndex = 68
         ' 
-        ' tpSettings
+        ' tpSetting
         ' 
-        tpSettings.Controls.Add(fraMapSettings)
-        tpSettings.Controls.Add(fraMapLinks)
-        tpSettings.Controls.Add(fraBootSettings)
-        tpSettings.Controls.Add(fraMaxSizes)
-        tpSettings.Controls.Add(GroupBox2)
-        tpSettings.Controls.Add(txtName)
-        tpSettings.Controls.Add(Label6)
-        tpSettings.Location = New Point(4, 34)
-        tpSettings.Margin = New Padding(6, 5, 6, 5)
-        tpSettings.Name = "tpSettings"
-        tpSettings.Padding = New Padding(6, 5, 6, 5)
-        tpSettings.Size = New Size(778, 1010)
-        tpSettings.TabIndex = 2
-        tpSettings.Text = "Settings"
-        tpSettings.UseVisualStyleBackColor = True
+        tpSetting.Controls.Add(fraMapSetting)
+        tpSetting.Controls.Add(fraMapLinks)
+        tpSetting.Controls.Add(fraBootSetting)
+        tpSetting.Controls.Add(fraMaxSizes)
+        tpSetting.Controls.Add(GroupBox2)
+        tpSetting.Controls.Add(txtName)
+        tpSetting.Controls.Add(Label6)
+        tpSetting.Location = New Point(4, 34)
+        tpSetting.Margin = New Padding(6, 5, 6, 5)
+        tpSetting.Name = "tpSetting"
+        tpSetting.Padding = New Padding(6, 5, 6, 5)
+        tpSetting.Size = New Size(778, 1010)
+        tpSetting.TabIndex = 2
+        tpSetting.Text = "Setting"
+        tpSetting.UseVisualStyleBackColor = True
         ' 
-        ' fraMapSettings
+        ' fraMapSetting
         ' 
-        fraMapSettings.Controls.Add(Label22)
-        fraMapSettings.Controls.Add(lstShop)
-        fraMapSettings.Controls.Add(Label8)
-        fraMapSettings.Controls.Add(lstMoral)
-        fraMapSettings.Location = New Point(10, 62)
-        fraMapSettings.Margin = New Padding(6, 5, 6, 5)
-        fraMapSettings.Name = "fraMapSettings"
-        fraMapSettings.Padding = New Padding(6, 5, 6, 5)
-        fraMapSettings.Size = New Size(387, 132)
-        fraMapSettings.TabIndex = 15
-        fraMapSettings.TabStop = False
-        fraMapSettings.Text = "Settings"
+        fraMapSetting.Controls.Add(Label22)
+        fraMapSetting.Controls.Add(lstShop)
+        fraMapSetting.Controls.Add(Label8)
+        fraMapSetting.Controls.Add(lstMoral)
+        fraMapSetting.Location = New Point(10, 62)
+        fraMapSetting.Margin = New Padding(6, 5, 6, 5)
+        fraMapSetting.Name = "fraMapSetting"
+        fraMapSetting.Padding = New Padding(6, 5, 6, 5)
+        fraMapSetting.Size = New Size(387, 132)
+        fraMapSetting.TabIndex = 15
+        fraMapSetting.TabStop = False
+        fraMapSetting.Text = "Setting"
         ' 
         ' Label22
         ' 
@@ -1393,24 +1393,24 @@ Partial Class frmEditor_Map
         txtUp.TabIndex = 1
         txtUp.Text = "0"
         ' 
-        ' fraBootSettings
+        ' fraBootSetting
         ' 
-        fraBootSettings.Controls.Add(chkIndoors)
-        fraBootSettings.Controls.Add(chkNoMapRespawn)
-        fraBootSettings.Controls.Add(txtBootMap)
-        fraBootSettings.Controls.Add(Label5)
-        fraBootSettings.Controls.Add(txtBootY)
-        fraBootSettings.Controls.Add(Label3)
-        fraBootSettings.Controls.Add(txtBootX)
-        fraBootSettings.Controls.Add(Label4)
-        fraBootSettings.Location = New Point(10, 430)
-        fraBootSettings.Margin = New Padding(6, 5, 6, 5)
-        fraBootSettings.Name = "fraBootSettings"
-        fraBootSettings.Padding = New Padding(6, 5, 6, 5)
-        fraBootSettings.Size = New Size(387, 209)
-        fraBootSettings.TabIndex = 13
-        fraBootSettings.TabStop = False
-        fraBootSettings.Text = "Respawn Settings"
+        fraBootSetting.Controls.Add(chkIndoors)
+        fraBootSetting.Controls.Add(chkNoMapRespawn)
+        fraBootSetting.Controls.Add(txtBootMap)
+        fraBootSetting.Controls.Add(Label5)
+        fraBootSetting.Controls.Add(txtBootY)
+        fraBootSetting.Controls.Add(Label3)
+        fraBootSetting.Controls.Add(txtBootX)
+        fraBootSetting.Controls.Add(Label4)
+        fraBootSetting.Location = New Point(10, 430)
+        fraBootSetting.Margin = New Padding(6, 5, 6, 5)
+        fraBootSetting.Name = "fraBootSetting"
+        fraBootSetting.Padding = New Padding(6, 5, 6, 5)
+        fraBootSetting.Size = New Size(387, 209)
+        fraBootSetting.TabIndex = 13
+        fraBootSetting.TabStop = False
+        fraBootSetting.Text = "Respawn Setting"
         ' 
         ' chkIndoors
         ' 
@@ -1504,7 +1504,7 @@ Partial Class frmEditor_Map
         fraMaxSizes.Size = New Size(356, 150)
         fraMaxSizes.TabIndex = 12
         fraMaxSizes.TabStop = False
-        fraMaxSizes.Text = "Size Settings"
+        fraMaxSizes.Text = "Size Setting"
         ' 
         ' txtMaxY
         ' 
@@ -2053,14 +2053,14 @@ Partial Class frmEditor_Map
         tpNpcs.ResumeLayout(False)
         fraNpcs.ResumeLayout(False)
         fraNpcs.PerformLayout()
-        tpSettings.ResumeLayout(False)
-        tpSettings.PerformLayout()
-        fraMapSettings.ResumeLayout(False)
-        fraMapSettings.PerformLayout()
+        tpSetting.ResumeLayout(False)
+        tpSetting.PerformLayout()
+        fraMapSetting.ResumeLayout(False)
+        fraMapSetting.PerformLayout()
         fraMapLinks.ResumeLayout(False)
         fraMapLinks.PerformLayout()
-        fraBootSettings.ResumeLayout(False)
-        fraBootSettings.PerformLayout()
+        fraBootSetting.ResumeLayout(False)
+        fraBootSetting.PerformLayout()
         fraMaxSizes.ResumeLayout(False)
         fraMaxSizes.PerformLayout()
         GroupBox2.ResumeLayout(False)
@@ -2135,7 +2135,7 @@ Partial Class frmEditor_Map
     Friend WithEvents tabpages As System.Windows.Forms.TabControl
     Friend WithEvents tpTiles As System.Windows.Forms.TabPage
     Friend WithEvents tpNpcs As System.Windows.Forms.TabPage
-    Friend WithEvents tpSettings As System.Windows.Forms.TabPage
+    Friend WithEvents tpSetting As System.Windows.Forms.TabPage
     Friend WithEvents fraNpcs As System.Windows.Forms.GroupBox
     Friend WithEvents ComboBox23 As System.Windows.Forms.ComboBox
     Friend WithEvents txtName As System.Windows.Forms.TextBox
@@ -2146,7 +2146,7 @@ Partial Class frmEditor_Map
     Friend WithEvents lblMap As System.Windows.Forms.Label
     Friend WithEvents txtRight As System.Windows.Forms.TextBox
     Friend WithEvents txtUp As System.Windows.Forms.TextBox
-    Friend WithEvents fraBootSettings As System.Windows.Forms.GroupBox
+    Friend WithEvents fraBootSetting As System.Windows.Forms.GroupBox
     Friend WithEvents txtBootMap As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents txtBootY As System.Windows.Forms.TextBox
@@ -2160,7 +2160,7 @@ Partial Class frmEditor_Map
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents lstMusic As System.Windows.Forms.ListBox
-    Friend WithEvents fraMapSettings As System.Windows.Forms.GroupBox
+    Friend WithEvents fraMapSetting As System.Windows.Forms.GroupBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents lstMoral As System.Windows.Forms.ComboBox
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator

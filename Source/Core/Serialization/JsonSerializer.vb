@@ -25,7 +25,7 @@ Namespace Serialization
         End Function
 
         Public Function Read(filename As String) As InputType Implements ISerializer(Of InputType, String).Read
-            If Not Directory.Exists(Path.GetDirectoryName(filename)) Then Return Nothing
+            If Not Directory.Exists(IO.Path.GetDirectoryName(filename)) Then Return Nothing
             If Not File.Exists(filename) Then Return Nothing
 
             Dim fileStream As New StreamReader(filename)
@@ -36,7 +36,7 @@ Namespace Serialization
         End Function
 
         Public Sub Write(filename As String, rawObject As InputType) Implements ISerializer(Of InputType, String).Write
-            If Not Directory.Exists(Path.GetDirectoryName(filename)) Then Directory.CreateDirectory(Path.GetDirectoryName(filename))
+            If Not Directory.Exists(IO.Path.GetDirectoryName(filename)) Then Directory.CreateDirectory(IO.Path.GetDirectoryName(filename))
 
             Dim fileStream As New StreamWriter(filename, False)
 

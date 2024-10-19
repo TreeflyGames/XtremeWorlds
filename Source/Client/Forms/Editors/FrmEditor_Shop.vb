@@ -7,14 +7,14 @@ Friend Class frmEditor_Shop
         Dim tmpindex As Integer
 
         tmpindex = lstIndex.SelectedIndex
-        Shop(EditorIndex).Name = Trim$(txtName.Text)
+        Type.Shop(EditorIndex).Name = txtName.Text
         lstIndex.Items.RemoveAt(EditorIndex - 1)
-        lstIndex.Items.Insert(EditorIndex - 1, EditorIndex & ": " & Shop(EditorIndex).Name)
+        lstIndex.Items.Insert(EditorIndex - 1, EditorIndex & ": " & Type.Shop(EditorIndex).Name)
         lstIndex.SelectedIndex = tmpindex
     End Sub
 
     Private Sub ScrlBuy_Scroll(sender As Object, e As EventArgs) Handles nudBuy.ValueChanged
-        Shop(EditorIndex).BuyRate = nudBuy.Value
+        Type.Shop(EditorIndex).BuyRate = nudBuy.Value
     End Sub
 
     Private Sub BtnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
@@ -22,7 +22,7 @@ Friend Class frmEditor_Shop
 
         index = lstTradeItem.SelectedIndex + 1
 
-        With Shop(EditorIndex).TradeItem(index)
+        With Type.Shop(EditorIndex).TradeItem(index)
             .Item = cmbItem.SelectedIndex + 1
             .ItemValue = nudItemValue.Value
             .CostItem = cmbCostItem.SelectedIndex + 1
@@ -35,7 +35,7 @@ Friend Class frmEditor_Shop
         Dim index As Integer
 
         index = lstTradeItem.SelectedIndex + 1
-        With Shop(EditorIndex).TradeItem(index)
+        With Type.Shop(EditorIndex).TradeItem(index)
             .Item = 0
             .ItemValue = 0
             .CostItem = 0
@@ -65,7 +65,7 @@ Friend Class frmEditor_Shop
 
         tmpindex = lstIndex.SelectedIndex
         lstIndex.Items.RemoveAt(EditorIndex - 1)
-        lstIndex.Items.Insert(EditorIndex - 1, EditorIndex & ": " & Shop(EditorIndex).Name)
+        lstIndex.Items.Insert(EditorIndex - 1, EditorIndex & ": " & Type.Shop(EditorIndex).Name)
         lstIndex.SelectedIndex = tmpindex
 
         ShopEditorInit()
@@ -76,7 +76,7 @@ Friend Class frmEditor_Shop
 
         ' Add the names
         For i = 1 To MAX_SHOPS
-            lstIndex.Items.Add(i & ": " & Trim$(Shop(i).Name))
+            lstIndex.Items.Add(i & ": " & Type.Shop(i).Name)
         Next
 
         cmbItem.Items.Clear()
@@ -85,8 +85,8 @@ Friend Class frmEditor_Shop
         cmbCostItem.Items.Add("None")
 
         For i = 1 To MAX_ITEMS
-            cmbItem.Items.Add(i & ": " & Trim$(Item(i).Name))
-            cmbCostItem.Items.Add(i & ": " & Trim$(Item(i).Name))
+            cmbItem.Items.Add(i & ": " & Type.Item(i).Name)
+            cmbCostItem.Items.Add(i & ": " & Type.Item(i).Name)
         Next
 
     End Sub

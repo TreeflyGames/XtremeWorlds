@@ -26,7 +26,7 @@ Friend Class FrmAdmin
             Exit Sub
         End If
 
-        SendBan(Trim$(txtAdminName.Text))
+        SendBan(txtAdminName.Text)
     End Sub
 
     Private Sub BtnAdminKick_Click(sender As Object, e As EventArgs) Handles btnAdminKick.Click
@@ -35,7 +35,7 @@ Friend Class FrmAdmin
             Exit Sub
         End If
 
-        SendKick(Trim$(txtAdminName.Text))
+        SendKick(txtAdminName.Text)
     End Sub
 
     Private Sub BtnAdminWarp2Me_Click(sender As Object, e As EventArgs) Handles btnAdminWarp2Me.Click
@@ -44,9 +44,9 @@ Friend Class FrmAdmin
             Exit Sub
         End If
 
-        If IsNumeric(Trim$(txtAdminName.Text)) Then Exit Sub
+        If IsNumeric(txtAdminName.Text) Then Exit Sub
 
-        WarpToMe(Trim$(txtAdminName.Text))
+        WarpToMe(txtAdminName.Text)
     End Sub
 
     Private Sub BtnAdminWarpMe2_Click(sender As Object, e As EventArgs) Handles btnAdminWarpMe2.Click
@@ -55,11 +55,11 @@ Friend Class FrmAdmin
             Exit Sub
         End If
 
-        If IsNumeric(Trim$(txtAdminName.Text)) Then
+        If IsNumeric(txtAdminName.Text) Then
             Exit Sub
         End If
 
-        WarpMeTo(Trim$(txtAdminName.Text))
+        WarpMeTo(txtAdminName.Text)
     End Sub
 
     Private Sub BtnAdminSetAccess_Click(sender As Object, e As EventArgs) Handles btnAdminSetAccess.Click
@@ -68,11 +68,11 @@ Friend Class FrmAdmin
             Exit Sub
         End If
 
-        If IsNumeric(Trim$(txtAdminName.Text)) Or cmbAccess.SelectedIndex < 0 Then
+        If IsNumeric(txtAdminName.Text) Or cmbAccess.SelectedIndex < 0 Then
             Exit Sub
         End If
 
-        SendSetAccess(Trim$(txtAdminName.Text), cmbAccess.SelectedIndex)
+        SendSetAccess(txtAdminName.Text, cmbAccess.SelectedIndex)
     End Sub
 
     Private Sub BtnAdminSetSprite_Click(sender As Object, e As EventArgs) Handles btnAdminSetSprite.Click
@@ -89,7 +89,7 @@ Friend Class FrmAdmin
 #Region "Editors"
 
     Private Sub btnAnimationEditor_Click(sender As Object, e As EventArgs) Handles btnAnimationEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -103,7 +103,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnClassEditor_Click(sender As Object, e As EventArgs) Handles btnJobEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -117,7 +117,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnItemEditor_Click(sender As Object, e As EventArgs) Handles btnItemEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -131,7 +131,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub BtnMapEditor_Click(sender As Object, e As EventArgs) Handles btnMapEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -145,7 +145,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnNPCEditor_Click(sender As Object, e As EventArgs) Handles btnNPCEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -159,7 +159,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnPetEditor_Click(sender As Object, e As EventArgs) Handles btnPetEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -173,7 +173,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnProjectiles_Click(sender As Object, e As EventArgs) Handles btnProjectiles.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -187,7 +187,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnResourceEditor_Click(sender As Object, e As EventArgs) Handles btnResourceEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -201,7 +201,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnShopEditor_Click(sender As Object, e As EventArgs) Handles btnShopEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -215,7 +215,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnSkillEditor_Click(sender As Object, e As EventArgs) Handles btnSkillEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If
@@ -281,7 +281,7 @@ Friend Class FrmAdmin
     End Sub
 
     Private Sub btnMoralEditor_Click(sender As Object, e As EventArgs) Handles btnMoralEditor.Click
-        If Editor <> -1 Then
+        If MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub
         End If

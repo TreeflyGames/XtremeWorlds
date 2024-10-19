@@ -42,8 +42,8 @@ Public Class Settings
     Public Autotile As Boolean = True
 
      Public Shared Sub Load()
-        Dim configPath As String = Paths.Config()
-        Dim configFile As String = Path.Combine(configPath, "Settings.xml")
+        Dim configPath As String = Core.PAth.Config()
+        Dim configFile As String = IO.Path.Combine(configPath, "Settings.xml")
 
         Directory.CreateDirectory(configPath)
 
@@ -63,23 +63,23 @@ Public Class Settings
         Try
             Using reader As New StreamReader(configFile)
                 Dim serializer As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
-                Types.Settings = CType(serializer.Deserialize(reader), Settings)
+                Type.Setting = CType(serializer.Deserialize(reader), Settings)
             End Using
         Catch ex As Exception
-            Types.Settings = New Settings() ' Default to new settings if reading fails
+            Type.Setting = New Settings() ' Default to new settings if reading fails
         End Try
     End Sub
 
     Public Shared Sub Save()
-        Dim configPath As String = Paths.Config()
-        Dim configFile As String = Path.Combine(configPath, "Settings.xml")
+        Dim configPath As String = Core.PAth.Config()
+        Dim configFile As String = IO.Path.Combine(configPath, "Settings.xml")
 
         Directory.CreateDirectory(configPath)
 
         Try
             Using writer = New StreamWriter(configFile)
                 Dim serializer As New XmlSerializer(GetType(Settings), New XmlRootAttribute("Settings"))
-                serializer.Serialize(writer, Types.Settings)
+                serializer.Serialize(writer, Type.Setting)
             End Using
         Catch ex As Exception
             Console.WriteLine(ex.Message)

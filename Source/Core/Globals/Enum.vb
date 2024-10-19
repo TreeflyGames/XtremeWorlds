@@ -177,7 +177,7 @@
     Enum TargetType As Byte
         None = 0
         Player
-        Npc
+        NPC
         [Event]
         Pet
     End Enum
@@ -321,7 +321,7 @@
         ChangeGraphic
     End Enum
 
-    ' Event Types
+    ' Event Type
     Public Enum EventType
         None = 0
 
@@ -423,26 +423,6 @@
         Job
         Projectile
         Moral
-    End Enum
-
-    Public Enum GfxType
-        None = 0
-        Tileset
-        Character
-        Paperdoll
-        Item
-        Resource
-        Animation
-        Fog
-        Skill
-        Projectile
-        Emote
-        Panorama
-        Parallax
-        Picture
-        GUI
-        Gradient
-        Design
     End Enum
 
     Public Enum PictureType
@@ -657,6 +637,13 @@
         Skill
         Hotbar
         Bank
+    End Enum
+
+    Public Enum MouseButton
+        None = 0
+        Left
+        Right
+        Middle
     End Enum
 
 End Module

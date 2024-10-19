@@ -378,7 +378,7 @@ namespace Mirage.Sharp.Asfw.Network
         }
         catch (Exception ex)
         {
-            // Handle other types of exceptions
+            // Handle other Type of exceptions
             Console.WriteLine($"An unexpected exception occurred during send operation: {ex.Message}");
         }
     }

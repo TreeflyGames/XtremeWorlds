@@ -7,18 +7,18 @@
         End Sub
 
         Function Find(Name As String) As Boolean
-            Return names.Contains(Trim$(LCase(Name)))
+            Return names.Contains(LCase(Name))
         End Function
 
         Function Find(Name As String, ByRef RetValue As Boolean) As CharList
-            RetValue = names.Contains(Trim$(LCase(Name)))
+            RetValue = names.Contains(LCase(Name))
             Return Me
         End Function
 
         Function Add(Name As String) As CharList
             If Find(Name) Then Return Me
 
-            names.Add(Trim$(LCase(Name)))
+            names.Add(LCase(Name))
 
             Return Me
         End Function
@@ -26,7 +26,7 @@
         Function Remove(Name As String) As CharList
             If Not Find(Name) Then Return Me
 
-            names.Remove(Trim$(LCase(Name)))
+            names.Remove(LCase(Name))
 
             Return Me
         End Function

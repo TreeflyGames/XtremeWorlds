@@ -1,18 +1,18 @@
 ﻿Public Module Commands
     Public Function GetPlayerLogin(index As Integer) As String
-        GetPlayerLogin = Trim$(Account(index).Login)
+        GetPlayerLogin = Type.Account(index).Login
     End Function
 
     Public Sub SetPlayerLogin(index As Integer, login As String)
-        Account(index).Login = login.Trim
+        Type.Account(index).Login = login
     End Sub
 
     Public Function GetPlayerPassword(index As Integer) As String
-        GetPlayerPassword = Trim$(Account(index).Password)
+        GetPlayerPassword = Type.Account(index).Password
     End Function
 
     Public Sub SetPlayerPassword(index As Integer, password As String)
-        Account(index).Password = password.Trim
+        Type.Account(index).Password = password
     End Sub
 
     Public Function GetPlayerMaxVital(index As Integer, Vital As VitalType) As Integer
@@ -32,8 +32,8 @@
 
         For i = 1 To EquipmentType.Count - 1
             If Player(index).Equipment(i) > 0 Then
-                If Item(Player(index).Equipment(i)).Add_Stat(Stat) > 0 Then
-                    x += Item(Player(index).Equipment(i)).Add_Stat(Stat)
+                If Type.Item(Player(index).Equipment(i)).Add_Stat(Stat) > 0 Then
+                    x += Type.Item(Player(index).Equipment(i)).Add_Stat(Stat)
                 End If
             End If
         Next
@@ -139,7 +139,7 @@
     End Function
 
     Public Function GetPlayerName(index As Integer) As String
-        Return Trim$(Player(index).Name)
+        Return Player(index).Name
     End Function
 
     Public Function GetPlayerGatherSkillLvl(index As Integer, skillSlot As Integer) As Integer
@@ -206,7 +206,7 @@
     Public Sub SetPlayerX(index As Integer, x As Integer)
         If GetPlayerMap(index) < 0 Or GetPlayerMap(index) > MAX_MAPS Then Exit Sub
         If x < 0 Then x = 0
-        If x > Map(GetPlayerMap(index)).MaxX Then x = Map(GetPlayerMap(index)).MaxX
+        If x > Type.Map(GetPlayerMap(index)).MaxX Then x = Type.Map(GetPlayerMap(index)).MaxX
 
         Player(index).X = x
     End Sub
@@ -214,7 +214,7 @@
     Public Sub SetPlayerY(index As Integer, y As Integer)
         If GetPlayerMap(index) < 0 Or GetPlayerMap(index) > MAX_MAPS Then Exit Sub
         If y < 0 Then y = 0
-        If y > Map(GetPlayerMap(index)).MaxY Then y = Map(GetPlayerMap(index)).MaxY
+        If y > Type.Map(GetPlayerMap(index)).MaxY Then y = Type.Map(GetPlayerMap(index)).MaxY
 
         Player(index).Y = y
     End Sub

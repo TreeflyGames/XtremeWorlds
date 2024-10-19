@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-    <MyType>Console</MyType>
+    <Type>Console</Type>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -55,7 +55,7 @@
     </None>
   </ItemGroup>
   <PropertyGroup>
-  <MyType>Empty</MyType>
+  <Type>Empty</Type>
   <OutputType>Exe</OutputType>
 </PropertyGroup>
   <ItemGroup>

@@ -224,7 +224,7 @@ Public Class LanguageDef
         Public Started As String = "Quest Started"
         Public Completed As String = "Quest Completed"
 
-        ' Quest Types
+        ' Quest Type
         Public Slay As String = "Defeat {0}/{1} {2}."
         Public Collect As String = "Collect {0}/{1} {2}."
         Public Talk As String = "Go talk To {0}."
@@ -262,7 +262,7 @@ Public Module Languages
     Public Language As New LanguageDef
 
     Public Sub Load()
-        Dim cf As String = Paths.Config()
+        Dim cf As String = Core.PAth.Config()
         Dim x As New XmlSerializer(GetType(LanguageDef), New XmlRootAttribute("Language"))
 
         Directory.CreateDirectory(cf)

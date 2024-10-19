@@ -227,7 +227,7 @@ Partial Class frmEditor_Item
         fraEquipment.Size = New Size(750, 472)
         fraEquipment.TabIndex = 2
         fraEquipment.TabStop = False
-        fraEquipment.Text = "Equipment Settings"
+        fraEquipment.Text = "Equipment Setting"
         ' 
         ' fraProjectile
         ' 
@@ -245,7 +245,7 @@ Partial Class frmEditor_Item
         fraProjectile.Size = New Size(542, 134)
         fraProjectile.TabIndex = 63
         fraProjectile.TabStop = False
-        fraProjectile.Text = "Projectile Settings"
+        fraProjectile.Text = "Projectile Setting"
         ' 
         ' cmbAmmo
         ' 

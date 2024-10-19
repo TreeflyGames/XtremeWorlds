@@ -7,7 +7,7 @@ Friend Class frmEditor_Projectile
 
         ' Add the names
         For i = 1 To MAX_PROJECTILES
-            lstIndex.Items.Add(i & ": " & Trim$(Projectile(i).Name))
+            lstIndex.Items.Add(i & ": " & Type.Projectile(i).Name)
         Next
         nudPic.Maximum = NumProjectiles
     End Sub
@@ -30,26 +30,26 @@ Friend Class frmEditor_Projectile
         Dim tmpindex As Integer
 
         tmpindex = lstIndex.SelectedIndex
-        Projectile(EditorIndex).Name = Trim$(txtName.Text)
+        Type.Projectile(EditorIndex).Name = txtName.Text
         lstIndex.Items.RemoveAt(EditorIndex - 1)
-        lstIndex.Items.Insert(EditorIndex - 1, EditorIndex & ": " & Projectile(EditorIndex).Name)
+        lstIndex.Items.Insert(EditorIndex - 1, EditorIndex & ": " & Type.Projectile(EditorIndex).Name)
         lstIndex.SelectedIndex = tmpindex
     End Sub
 
     Private Sub NudPic_ValueChanged(sender As Object, e As EventArgs) Handles nudPic.Click
-        Projectile(EditorIndex).Sprite = nudPic.Value
+        Type.Projectile(EditorIndex).Sprite = nudPic.Value
     End Sub
 
     Private Sub NudRange_ValueChanged(sender As Object, e As EventArgs) Handles nudRange.Click
-        Projectile(EditorIndex).Range = nudRange.Value
+        Type.Projectile(EditorIndex).Range = nudRange.Value
     End Sub
 
     Private Sub NudSpeed_ValueChanged(sender As Object, e As EventArgs) Handles nudSpeed.Click
-        Projectile(EditorIndex).Speed = nudSpeed.Value
+        Type.Projectile(EditorIndex).Speed = nudSpeed.Value
     End Sub
 
     Private Sub NudDamage_ValueChanged(sender As Object, e As EventArgs) Handles nudDamage.Click
-        Projectile(EditorIndex).Damage = nudDamage.Value
+        Type.Projectile(EditorIndex).Damage = nudDamage.Value
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
@@ -59,7 +59,7 @@ Friend Class frmEditor_Projectile
 
         tmpindex = lstIndex.SelectedIndex
         lstIndex.Items.RemoveAt(EditorIndex - 1)
-        lstIndex.Items.Insert(EditorIndex - 1, EditorIndex & ": " & Projectile(EditorIndex).Name)
+        lstIndex.Items.Insert(EditorIndex - 1, EditorIndex & ": " & Type.Projectile(EditorIndex).Name)
         lstIndex.SelectedIndex = tmpindex
 
         ProjectileEditorInit()

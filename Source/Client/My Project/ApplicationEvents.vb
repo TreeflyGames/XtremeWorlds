@@ -13,8 +13,8 @@ Namespace My
     Partial Friend Class MyApplication
 
         Private Sub MyApplication_UnhandledException(sender As Object, e As UnhandledExceptionEventArgs) Handles Me.UnhandledException
-            Dim myFilePath As String = Paths.Logs & "Errors.log"
-            Dim directoryPath As String = Path.GetDirectoryName(myFilePath)
+            Dim myFilePath As String = Core.Path.Logs & "Errors.log"
+            Dim directoryPath As String = IO.Path.GetDirectoryName(myFilePath)
 
             ' Check if the directory exists
             If Not Directory.Exists(directoryPath) Then

@@ -22,12 +22,12 @@ Public Module Log
         Dim objReader As StreamWriter
 
         ' Check if the directory exists
-        If Not Directory.Exists(Paths.Logs) Then
+        If Not Directory.Exists(Core.Path.Logs) Then
             ' Create the directory
-            Directory.CreateDirectory(Paths.Logs)
+            Directory.CreateDirectory(Core.PAth.Logs)
         End If
 
-        fullpath = Paths.Logs & FN
+        fullpath = Core.PAth.Logs & FN
         contents = GetFileContents(fullpath)
         contents = contents & vbNewLine & strData
 
@@ -47,7 +47,7 @@ Public Module Log
         Dim bAns = False
         Dim objReader As StreamWriter
 
-        fullpath = Paths.Database & fn
+        fullpath = Core.Path.Database & fn
         contents = GetFileContents(fullpath)
         contents = contents & vbNewLine & strData
 
