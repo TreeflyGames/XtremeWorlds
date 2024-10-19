@@ -201,7 +201,7 @@ Module Text
         Next TSLoop
     End Function
 
-    Friend Function Explode(str As String, splitChars As Char()) As String()
+    Public Function Explode(str As String, splitChars As Char()) As String()
 
         Dim parts As New List(Of String)()
         Dim startindex As Integer = 0
@@ -232,14 +232,8 @@ Module Text
 
     End Function
 
-    Friend Sub RenderText(text As String, x As Integer, y As Integer, frontColor As Color, backColor As Color, Optional textSize As Byte = FontSize, Optional fontName As String = "Georgia.ttf")
-
-    End Sub
-
-    ' Method to draw text with back and front layers
-    Private Sub DrawTextWithShadow(text As String, fontName As FontType,
-                               x As Integer, y As Integer, textSize As Single,
-                               backColor As Color, frontColor As Color)
+    Public Sub RenderText(text As String, x As Integer, y As Integer,
+                               frontColor As Microsoft.Xna.Framework.Color, backColor As Microsoft.Xna.Framework.Color, Optional fontName As FontType = FontType.Georgia, Optional textSize As Byte = FontSize)
 
         ' Select the font based on the provided font type
         Dim selectedFont As SpriteFont = Client.Fonts(fontName)
@@ -256,7 +250,7 @@ Module Text
                                0.0F, Vector2.Zero, textSize / 16.0F, SpriteEffects.None, 0.0F)
     End Sub
 
-    Friend Sub DrawNPCName(MapNpcNum As Integer)
+    Sub DrawNPCName(MapNpcNum As Integer)
         Dim textX As Integer
         Dim textY As Integer
         Dim color As Color, backcolor As Color
@@ -287,7 +281,7 @@ Module Text
         RenderText(Type.NPC(NPCNum).Name, textX, textY, color, backcolor)
     End Sub
 
-    Friend Sub DrawEventName(index As Integer)
+    Sub DrawEventName(index As Integer)
         Dim textX As Integer
         Dim textY As Integer
         Dim color As Color, backcolor As Color
@@ -509,6 +503,52 @@ Module Text
 
     Sub DrawMapName()
         RenderText(Language.Game.MapName & MyMap.Name, ResolutionWidth / 2 - TextWidth(MyMap.Name), FontSize, DrawMapNameColor, Color.Black)
+    End Sub
+
+    Sub DrawPlayerName(index As Integer)
+        Dim textX As Integer
+        Dim textY As Integer
+        Dim color As Color, backcolor As Color
+        Dim name As String
+
+        ' Check access level
+        If GetPlayerPK(index) = False Then
+            Select Case GetPlayerAccess(index)
+                Case AccessType.Player
+                    color = Color.White
+                    backcolor = Color.Black
+                Case AccessType.Moderator
+                    color = Color.Cyan
+                    backcolor = Color.White
+                Case AccessType.Mapper
+                    color = Color.Green
+                    backcolor = Color.Black
+                Case AccessType.Developer
+                    color =Color.Blue
+                    backcolor = Color.Black
+                Case AccessType.Owner
+                    color = Color.Yellow
+                    backcolor = Color.Black
+            End Select
+        Else
+            color = Color.Red
+        End If
+
+        name = Type.Player(index).Name
+
+        ' calc pos
+        textX = ConvertMapX(GetPlayerX(index) * PicX) + Type.Player(index).XOffset + (PicX \ 2) - 2
+        textX = textX - (TextWidth((name)) / 2)
+
+        If GetPlayerSprite(index) < 0 Or GetPlayerSprite(index) > NumCharacters Then
+            textY = ConvertMapY(GetPlayerY(index) * PicY) + Type.Player(MyIndex).YOffset - 16
+        Else
+            ' Determine location for text
+            textY = ConvertMapY(GetPlayerY(index) * PicY) + Type.Player(index).YOffset - (Client.CharacterGfxInfo(GetPlayerSprite(index)).Height / 4) + 16
+        End If
+
+        ' Draw name
+        RenderText(name, textX, textY, color, backcolor)
     End Sub
 
 End Module

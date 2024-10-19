@@ -1725,52 +1725,6 @@ Public Class GameClient
         End If
     End Sub
 
-    Friend Sub DrawPlayerName(index As Integer)
-        Dim textX As Integer
-        Dim textY As Integer
-        Dim color As Color, backcolor As Color
-        Dim name As String
-
-        ' Check access level
-        If GetPlayerPK(index) = False Then
-            Select Case GetPlayerAccess(index)
-                Case AccessType.Player
-                    color = Color.White
-                    backcolor = Color.Black
-                Case AccessType.Moderator
-                    color = Color.Cyan
-                    backcolor = Color.White
-                Case AccessType.Mapper
-                    color = Color.Green
-                    backcolor = Color.Black
-                Case AccessType.Developer
-                    color =Color.Blue
-                    backcolor = Color.Black
-                Case AccessType.Owner
-                    color = Color.Yellow
-                    backcolor = Color.Black
-            End Select
-        Else
-            color = Color.Red
-        End If
-
-        name = Type.Player(index).Name
-
-        ' calc pos
-        textX = ConvertMapX(GetPlayerX(index) * PicX) + Type.Player(index).XOffset + (PicX \ 2) - 2
-        textX = textX - (TextWidth((name)) / 2)
-
-        If GetPlayerSprite(index) < 0 Or GetPlayerSprite(index) > NumCharacters Then
-            textY = ConvertMapY(GetPlayerY(index) * PicY) + Type.Player(MyIndex).YOffset - 16
-        Else
-            ' Determine location for text
-            textY = ConvertMapY(GetPlayerY(index) * PicY) + Type.Player(index).YOffset - (CharacterGfxInfo(GetPlayerSprite(index)).Height / 4) + 16
-        End If
-
-        ' Draw name
-        RenderText(name, textX, textY, color, backcolor)
-    End Sub
-
     Public Sub EditorEvent_DrawGraphic()
         If Not frmEditor_Event.picGraphicSel.Visible Then Exit Sub
 
@@ -1963,13 +1917,13 @@ Public Class GameClient
                         If (MapEvents(id).XOffset < -8) Then anim = MapEvents(id).Steps
                 End Select
 
-' Set the left
-Select Case MapEvents(id).ShowDir
-Case DirectionType.Up
-spritetop = 3
+                ' Set the left
+                Select Case MapEvents(id).ShowDir
+                    Case DirectionType.Up
+                        spritetop = 3
                     Case DirectionType.Right
-spritetop = 2
-Case DirectionType.Down
+                        spritetop = 2
+                    Case DirectionType.Down
                         spritetop = 0
                     Case DirectionType.Left
                         spritetop = 1
@@ -1985,12 +1939,12 @@ Case DirectionType.Down
                 ' Calculate the X
                 x = MapEvents(id).X * PicX + MapEvents(id).XOffset - ((CharacterGfxInfo(MapEvents(id).Graphic).Width / 4 - 32) / 2)
 
-' Is the player's height more than 32..?
+                ' Is the player's height more than 32..?
                 If (CharacterGfxInfo(MapEvents(id).Graphic).Height * 4) > 32 Then
-' Create a 32 pixel offset for larger sprites
+                    ' Create a 32 pixel offset for larger sprites
                     y = MapEvents(id).Y * PicY + MapEvents(id).YOffset - ((CharacterGfxInfo(MapEvents(id).Graphic).Height / 4) - 32)
-Else
-' Proceed as normal
+                Else
+                    ' Proceed as normal
                     y = MapEvents(id).Y * PicY + MapEvents(id).YOffset
                 End If
                 ' render the actual sprite
@@ -2011,15 +1965,15 @@ Else
                         .Y = MapEvents(id).GraphicX * 32
                         .Width = .Left + 32
                     End With
-End If
-x = MapEvents(id).X * 32
+                End If
+                x = MapEvents(id).X * 32
                 y = MapEvents(id).Y * 32
                 x = x - ((sRect.Right - sRect.Left) / 2)
                 y = y - (sRect.Bottom - sRect.Top) + 32
 
                If MapEvents(id).GraphicY2 > 1 Then
                     RenderTexture(TilesetTexture(MapEvents(id).Graphic), ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
-Else
+                Else
                     RenderTexture(TilesetTexture(MapEvents(id).Graphic), ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 End If
         End Select

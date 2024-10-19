@@ -823,7 +823,7 @@ Module General
 
         For i = 1 To MAX_PLAYERS
             If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
-                Client.DrawPlayerName(i)
+                DrawPlayerName(i)
                 If PetAlive(i) Then
                     DrawPlayerPetName(i)
                 End If
