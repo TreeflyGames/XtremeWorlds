@@ -55,7 +55,7 @@ Module Text
 
     Public SplitChars As Char() = New Char() {" "c, "-"c, ControlChars.Tab}
 
-    Public Sub WordWrap(ByVal text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
+    Public Sub WordWrap(ByVal text As String, ByVal font As FontType, ByVal MaxLineLen As Long, ByRef theArray() As String)
         Dim lineCount As Long, i As Long, size As Long, lastSpace As Long, b As Long, tmpNum As Long
 
         'Too small of text
@@ -109,7 +109,7 @@ Module Text
 
                     b = lastSpace + 1
                     'Count all the words we ignored (the ones that weren't printed, but are before "i")
-                    size = TextWidth(Mid$(text, lastSpace, i - lastSpace))
+                    size = TextWidth(Mid$(text, lastSpace, i - lastSpace), font)
                 End If
             End If
 
@@ -124,7 +124,7 @@ Module Text
         Next
     End Sub
 
-    Public Function WordWrap(ByVal text As String, ByVal MaxLineLen As Integer, Optional ByRef lineCount As Long = 0) As String
+    Public Function WordWrap(ByVal text As String, ByVal font As FontType, ByVal MaxLineLen As Integer, Optional ByRef lineCount As Long = 0) As String
         Dim TempSplit() As String, TSLoop As Long, lastSpace As Long, size As Long, i As Long, b As Long, tmpNum As Long, skipCount As Long
 
         'Too small of text
@@ -162,7 +162,7 @@ Module Text
                         skipCount = skipCount - 1
                     ElseIf TSLoop > 0 Then
                         'Add up the size
-                        size = size + TextWidth(TempSplit(TSLoop))
+                        size = size + TextWidth(TempSplit(TSLoop), font)
 
                         'Check for too large of a size
                         If size > MaxLineLen Then
@@ -180,7 +180,7 @@ Module Text
                                 b = lastSpace + 1
 
                                 'Count all the words we ignored (the ones that weren't printed, but are before "i")
-                                size = TextWidth(Mid$(TempSplit(TSLoop), lastSpace, i - lastSpace))
+                                size = TextWidth(Mid$(TempSplit(TSLoop), lastSpace, i - lastSpace), font)
                             End If
                         End If
 
@@ -452,7 +452,7 @@ Module Text
                 ' check if we need to word wrap
                 If TextWidth(Chat(i).Text) > ChatWidth Then
                     ' word wrap
-                    tmpText = WordWrap(Chat(i).Text, ChatWidth)
+                    tmpText = WordWrap(Chat(i).Text, FontType.Georgia, ChatWidth)
 
                     ' can't have it going offscreen.
                     If rLines + lineCount > 9 Then Exit Do

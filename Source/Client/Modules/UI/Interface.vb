@@ -1195,58 +1195,58 @@ Module [Interface]
                                 ' check if need to word wrap
                                 If TextWidth(.Text, .font) > .Width Then
                                     ' wrap text
-                                    WordWrap(.Text, .Width, textArray)
+                                    WordWrap(.Text, .Font, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        RenderText(textArray(i), .Left - xO, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
+                                        RenderText(textArray(i), .Left - xO, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black, .Font)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
-                                    RenderText(.Text, .Left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                                    RenderText(.Text, .Left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black, .Font)
                                 End If
 
                             Case AlignmentType.Right
                                 ' check if need to word wrap
-                                If TextWidth(.Text, .font) > .Width Then
+                                If TextWidth(.Text, .Font) > .Width Then
                                     ' wrap text
-                                    WordWrap(.Text, .Width, textArray)
+                                    WordWrap(.Text, .Font, .Width, textArray)
 
                                     ' render text
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        left = .Left + .Width - TextWidth(textArray(i))
-                                        RenderText(textArray(i), left + xO - 10, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
+                                        left = .Left + .Width - TextWidth(textArray(i), .Font)
+                                        RenderText(textArray(i), left + xO - 10, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black, .Font)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
-                                    left = .Left + .Width - TextWidth(.Text)
-                                    RenderText(.Text, left + xO - 10, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                                    left = .Left + .Width - TextWidth(.Text, .Font)
+                                    RenderText(.Text, left + xO - 10, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black, .Font)
                                 End If
 
                             Case AlignmentType.Center
                                 ' Check if need to word wrap
                                 If TextWidth(.Text, .font) > .Width Then
                                     ' Wrap text
-                                    WordWrap(.Text, .Width, textArray)
+                                    WordWrap(.Text, .Font, .Width, textArray)
 
                                     ' Render text
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        left = .Left + (.Width \ 2) - (TextWidth(textArray(i)) \ 2) - 4
-                                        RenderText(textArray(i), left + xO, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
+                                        left = .Left + (.Width \ 2) - (TextWidth(textArray(i), .Font) \ 2) - 4
+                                        RenderText(textArray(i), left + xO, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black, .Font)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' Just one line
-                                    left = .Left + (.Width \ 2) - (TextWidth(.Text, .font) \ 2) - 10
-                                    RenderText(.Text, left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                                    left = .Left + (.Width \ 2) - (TextWidth(.Text, .Font) \ 2) - 10
+                                    RenderText(.Text, left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black, .Font)
                                 End If
                         End Select
                     End If
@@ -1266,9 +1266,9 @@ Module [Interface]
                                 Case AlignmentType.Left
                                     left = .Left + 18 + xO
                                 Case AlignmentType.Right
-                                    left = .Left + 18 + (.Width - 18) - TextWidth(.Text, .font) + xO
+                                    left = .Left + 18 + (.Width - 18) - TextWidth(.Text, .Font) + xO
                                 Case AlignmentType.Center
-                                    left = .Left + 18 + ((.Width - 18) / 2) - (TextWidth(.Text, .font) / 2) + xO
+                                    left = .Left + 18 + ((.Width - 18) / 2) - (TextWidth(.Text, .Font) / 2) + xO
                             End Select
 
                             ' render text
@@ -1281,7 +1281,7 @@ Module [Interface]
                             Client.RenderTexture(Client.InterfaceTexture(51), .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
 
                             ' render text
-                            left = .Left + 22 - (TextWidth(.Text, .font) / 2) + xO
+                            left = .Left + 22 - (TextWidth(.Text, .Font) / 2) + xO
                             RenderText(.Text, left, .Top + yO + 4, .Color, Microsoft.Xna.Framework.Color.Black)
 
                         Case DesignType.ChkBuying
@@ -1349,7 +1349,7 @@ Module [Interface]
                             End If
 
                             ' render text
-                            left = x + (.Width \ 2) - (TextWidth(.List(i)) \ 2)
+                            left = x + (.Width \ 2) - (TextWidth(.List(i), .Font) \ 2)
 
                             If i = .Value Or i = .Group Then
                                 RenderText(.List(i), left, y, Microsoft.Xna.Framework.Color.White, Microsoft.Xna.Framework.Color.Black)
@@ -2106,13 +2106,13 @@ Module [Interface]
         End If
 
         ' Wrap text to fit within 330 pixels
-        WordWrap(text, 330, textArray)
+        WordWrap(text, Windows(GetWindowIndex("winJob")).Window.Font, 330, textArray)
 
         ' Render each line of the wrapped text
         count = UBound(textArray)
         y = yO + 60
         For I = 1 To count
-            x = xO + 118 + (200 \ 2) - (TextWidth(textArray(I)) \ 2)
+            x = xO + 118 + (200 \ 2) - (TextWidth(textArray(I), Windows(GetWindowIndex("winJob")).Window.Font) \ 2)
             RenderText(
                 textArray(I),
                 x, y,
