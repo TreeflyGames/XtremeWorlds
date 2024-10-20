@@ -237,6 +237,8 @@ Module Text
         ' Select the font based on the provided font type
         Dim selectedFont As SpriteFont = Fonts(fontName)
 
+        If selectedFont Is Nothing Then Exit Sub
+
         ' Calculate the shadow position
         Dim shadowPosition As New Vector2(x + 1, y + 1)
 
