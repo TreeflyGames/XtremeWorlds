@@ -891,7 +891,7 @@ Public Module Type
         Dim xOffset As Long
         Dim yOffset As Long
         Dim Align As Byte
-        Dim Font As String
+        Dim Font As SpriteFont
         Dim zChange As Byte
         Dim OnDraw As Action
         Dim OrigLeft As Long

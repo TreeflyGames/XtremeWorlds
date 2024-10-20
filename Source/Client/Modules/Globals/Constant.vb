@@ -16,12 +16,6 @@ Public Module Constant
     Public Const EffectTypeWeather As Integer = 5
     Public Const EffectTypeTint As Integer = 6
 
-    ' Font variables
-    Public Const Georgia As String = "Georgia.ttf"
-    Public Const Arial As String = "Arial.ttf"
-    Public Const Verdana As String = "Verdana.ttf"
-    Public Const FontSize As Byte = 10
-
     ' Chat variables
     Public Const ChatWidth As Long = 316
 

@@ -4,7 +4,7 @@ Imports Microsoft.Xna.Framework.Graphics
 
 Module Text
     Friend Const MaxChatDisplayLines As Byte = 11
-    Friend Const ChatLineSpacing As Byte = FontSize ' Should be same height as font
+    Friend Const ChatLineSpacing As Byte = 10 ' Should be same height as font
     Friend Const MyChatTextLimit As Integer = 40
     Friend Const MyAmountValueLimit As Integer = 3
     Friend Const AllChatLineWidth As Integer = 40
@@ -80,12 +80,12 @@ Module Text
             End Select
 
             'Add up the size
-            size = size + FontSize
+            size = size + 10
 
             'Check for too large of a size
             If size > MaxLineLen Then
                 'Check if the last space was too far back
-                If i - lastSpace > FontSize Then
+                If i - lastSpace > 10 Then
                     'Too far away to the last space, so break at the last character
                     lineCount = lineCount + 1
                     ReDim Preserve theArray(lineCount)
@@ -232,7 +232,7 @@ Module Text
     End Function
 
     Public Sub RenderText(text As String, x As Integer, y As Integer,
-                               frontColor As Color, backColor As Color, Optional fontName As FontType = FontType.Georgia, Optional textSize As Byte = FontSize)
+                               frontColor As Color, backColor As Color, Optional fontName As FontType = FontType.Georgia, Optional textSize As Byte = 10)
 
         ' Select the font based on the provided font type
         Dim selectedFont As SpriteFont = Fonts(fontName)
@@ -503,7 +503,7 @@ Module Text
     End Sub
 
     Sub DrawMapName()
-        RenderText(Language.Game.MapName & MyMap.Name, ResolutionWidth / 2 - TextWidth(MyMap.Name), FontSize, DrawMapNameColor, Color.Black)
+        RenderText(Language.Game.MapName & MyMap.Name, ResolutionWidth / 2 - TextWidth(MyMap.Name), 10, DrawMapNameColor, Color.Black)
     End Sub
 
     Sub DrawPlayerName(index As Integer)

@@ -21,7 +21,7 @@ Module [Interface]
 
     Public Sub CreateEntity(winNum As Long, zOrder As Long, name As String, color As Microsoft.Xna.Framework.Color, tType As EntityType, ByRef design() As Long, ByRef image() As Long, ByRef texture() as String, ByRef callback() As Action,
        Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
-       Optional align As Byte = 0, Optional font As String = "Georgia.ttf", Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
+       Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
        Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional locked As Boolean = False, Optional length As Byte = NAME_LENGTH)
 
         Dim i As Long
@@ -69,7 +69,7 @@ Module [Interface]
             .Text = text
             .Length = length
             .Align = align
-            .Font = font
+            .Font = Fonts(font)
             .Color = color
             .Alpha = alpha
             .ClickThrough = clickThrough
@@ -148,7 +148,7 @@ Module [Interface]
         Windows(winIndex).Controls(controlIndex).List(count + 1) = text
     End Sub
 
-    Public Sub CreateWindow(name As String, caption As String, font As String, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long,
+    Public Sub CreateWindow(name As String, caption As String, font As FontType, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long,
        Optional visible As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional onDraw As Action = Nothing,
@@ -204,7 +204,7 @@ Module [Interface]
             .Height = height
             .Visible = visible
             .CanDrag = canDrag
-            .Font = font
+            .Font = Fonts(font)
             .Text = caption
             .xOffset = xOffset
             .yOffset = yOffset
@@ -224,7 +224,7 @@ Module [Interface]
     End Sub
 
     Public Sub CreateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
-        Optional text As String = "", Optional font As String = "Georgia.ttf", Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
+        Optional text As String = "", Optional font As FontType = FontType.Georgia, Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional isActive As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional image_norm As Long = 0,
         Optional image_hover As Long = 0, Optional image_mousedown As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0, Optional censor As Boolean = False, Optional icon As Long = 0, Optional length As Byte = NAME_LENGTH,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional ByRef callback_enter As Action = Nothing)
 
@@ -286,7 +286,7 @@ Module [Interface]
     End Sub
 
     Public Sub CreateButton(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
-       Optional text As String = "", Optional font As String = "Georgia.ttf", Optional icon As Long = 0, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
+       Optional text As String = "", Optional font As FontType = FontType.Georgia, Optional icon As Long = 0, Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
        Optional visible As Boolean = True, Optional alpha As Long = 255, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing,
        Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional tooltip As String = "", Optional censor As Boolean = False, Optional locked As Boolean = True)
@@ -316,7 +316,7 @@ Module [Interface]
         CreateEntity(winNum, zOrder_Con, name, Microsoft.Xna.Framework.Color.White, EntityType.Button, design, image, texture, callback, left, top, width, height, visible, , , , , text, , font, , alpha, xOffset, yOffset, , censor, icon, , , tooltip, , locked)
     End Sub
 
-    Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As String, color As Microsoft.Xna.Framework.Color,
+    Public Sub CreateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As FontType, color As Microsoft.Xna.Framework.Color,
        Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional censor As Boolean = False,
        Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional locked As Boolean = True)
 
@@ -336,7 +336,7 @@ Module [Interface]
         CreateEntity(winNum, zOrder_Con, name, Color.White, EntityType.Label, design, image, texture, callback, left, top, width, height, visible, , , , , text, align, font, , alpha, clickThrough, , , censor, , , , , , locked)
     End Sub
 
-    Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, Optional height As Long = 15, Optional value As Long = 0, Optional text As String = "", Optional font As String = Georgia,
+    Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, Optional height As Long = 15, Optional value As Long = 0, Optional text As String = "", Optional font As FontType = FontType.Georgia,
         Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255,
         Optional theDesign As Long = 0, Optional group As Long = 0, Optional censor As Boolean = False,
         Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing)
@@ -497,7 +497,7 @@ Module [Interface]
 
     Public Sub CreateWindow_Login()
         ' Create the window
-        CreateWindow("winLogin", "Login", Georgia, zOrder_Win, 0, 0, 276, 212, 45, True, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winLogin", "Login", FontType.Georgia, zOrder_Win, 0, 0, 276, 212, 45, True, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -516,26 +516,26 @@ Module [Interface]
         CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 16, 16, , , , 8, 9, 10, , , , , , , , New Action(AddressOf DestroyGame))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", Arial, , , ,  , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
-        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
+        CreateButton(WindowCount, "btnAccept", 67, 134, 67, 22, "Accept", FontType.Arial, , , ,  , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnLogin_Click))
+        CreateButton(WindowCount, "btnExit", 142, 134, 67, 22, "Exit", FontType.Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf DestroyGame))
 
         ' Labels
-        CreateLabel(WindowCount, "lblUsername", 72, 39, 142, FontSize, "Username", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblPassword", 72, 75, 142, FontSize, "Password", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblUsername", 72, 39, 142, 10, "Username", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblPassword", 72, 75, 142, 10, "Password", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Textboxes
         If Type.Setting.SaveUsername Then
-            CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Type.Setting.Username, Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+            CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, Type.Setting.Username, FontType.Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         Else
-            CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, "", Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+            CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, "", FontType.Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         End If
-        CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtPassword", 67, 86, 142, 19, , FontType.Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
 
         ' Checkbox
-        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, , Type.Setting.SaveUsername, "Save Username?", Arial, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
+        CreateCheckbox(WindowCount, "chkSaveUsername", 67, 114, 142, , Type.Setting.SaveUsername, "Save Username?", FontType.Arial, , , , DesignType.ChkNorm, , , , , New Action(AddressOf chkSaveUser_Click))
 
         ' Register Button
-        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", Arial,  , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
+        CreateButton(WindowCount, "btnRegister", 12, Windows(WindowCount).Window.Height - 35, 252, 22, "Create Account", FontType.Arial,  , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnRegister_Click))
 
         ' Set the active control
         If Not Len(Windows(GetWindowIndex("winLogin")).Controls(GetControlIndex("winLogin", "txtUsername")).Text) > 0 Then
@@ -547,7 +547,7 @@ Module [Interface]
 
     Public Sub CreateWindow_Register()
         ' Create the window
-        CreateWindow("winRegister", "Register Account", Georgia, zOrder_Win, 0, 0, 276, 202, 45, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winRegister", "Register Account", FontType.Georgia, zOrder_Win, 0, 0, 276, 202, 45, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -570,22 +570,22 @@ Module [Interface]
 
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 68, 152, 67, 22, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
-        CreateButton(WindowCount, "btnExit", 142, 152, 67, 22, "Back", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
+        CreateButton(WindowCount, "btnAccept", 68, 152, 67, 22, "Create", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSendRegister_Click))
+        CreateButton(WindowCount, "btnExit", 142, 152, 67, 22, "Back", FontType.Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnReturnMain_Click))
 
         ' Labels
-        CreateLabel(WindowCount, "lblUsername", 66, 39, 142, FontSize, "Username", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblPassword", 66, 75, 142, FontSize, "Password", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblRetypePassword", 66, 111, 142, FontSize, "Retype Password", Arial,  Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        'CreateLabel(WindowCount, "lblCode", 66, 147, 142, FontSize, "Secret Code", Arial, AlignmentType.Center)
-        'CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, FontSize, "Captcha", Arial, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblUsername", 66, 39, 142, 10, "Username", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblPassword", 66, 75, 142, 10, "Password", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblRetypePassword", 66, 111, 142, 10, "Retype Password", FontType.Arial,  Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        'CreateLabel(WindowCount, "lblCode", 66, 147, 142, 10, "Secret Code", FontType.Arial, AlignmentType.Center)
+        'CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, 10, "Captcha", FontType.Arial, AlignmentType.Center)
 
         ' Textboxes
-        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
-        CreateTextbox(WindowCount, "txtPassword", 67, 91, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
-        CreateTextbox(WindowCount, "txtRetypePassword", 67, 127, 142, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
-        'CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
-        'CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, , Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
+        CreateTextbox(WindowCount, "txtUsername", 67, 55, 142, 19, , FontType.Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtPassword", 67, 91, 142, 19, , FontType.Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        CreateTextbox(WindowCount, "txtRetypePassword", 67, 127, 142, 19, , FontType.Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, True)
+        'CreateTextbox(WindowCount, "txtCode", 67, 163, 142, 19, , FontType.Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
+        'CreateTextbox(WindowCount, "txtCaptcha", 67, 235, 142, 19, , FontType.Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
 
         ' CreatePictureBox(WindowCount, "picCaptcha", 67, 199, 156, 30, , , , , Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), Tex_Captcha(GlobalCaptcha), DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
 
@@ -594,7 +594,7 @@ Module [Interface]
 
     Public Sub CreateWindow_NewChar()
         ' Create window
-        CreateWindow("winNewChar", "Create Character", Georgia, zOrder_Win, 0, 0, 291, 172, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winNewChar", "Create Character", FontType.Georgia, zOrder_Win, 0, 0, 291, 172, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -610,26 +610,26 @@ Module [Interface]
 
         ' Name
         CreatePictureBox(WindowCount, "picShadow_1", 29, 42, 124, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblName", 29, 39, 124, FontSize, "Name", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblName", 29, 39, 124, 10, "Name", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Textbox
-        CreateTextbox(WindowCount, "txtName", 29, 55, 124, 19, , Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
+        CreateTextbox(WindowCount, "txtName", 29, 55, 124, 19, , FontType.Arial, AlignmentType.Left, , , , 5, 3, , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
 
         ' Sex
         CreatePictureBox(WindowCount, "picShadow_2", 29, 85, 124, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblGender", 29, 82, 124, FontSize, "Gender", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblGender", 29, 82, 124, 10, "Gender", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Checkboxes
-        CreateCheckbox(WindowCount, "chkMale", 29, 103, 55, , 1, "Male", Arial, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Male))
-        CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, , 0, "Female", Arial, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Female))
+        CreateCheckbox(WindowCount, "chkMale", 29, 103, 55, , 1, "Male", FontType.Arial, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Male))
+        CreateCheckbox(WindowCount, "chkFemale", 90, 103, 62, , 0, "Female", FontType.Arial, AlignmentType.Center, , , DesignType.ChkNorm, , , , , New Action(AddressOf chkNewChar_Female))
 
         ' Buttons
-        CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnNewChar_Accept))
-        CreateButton(WindowCount, "btnCancel", 93, 127, 60, 24, "Cancel", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnNewChar_Cancel))
+        CreateButton(WindowCount, "btnAccept", 29, 127, 60, 24, "Accept", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnNewChar_Accept))
+        CreateButton(WindowCount, "btnCancel", 93, 127, 60, 24, "Cancel", FontType.Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnNewChar_Cancel))
 
         ' Sprite
         CreatePictureBox(WindowCount, "picShadow_3", 175, 42, 76, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblSprite", 175, 39, 76, FontSize, "Sprite", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblSprite", 175, 39, 76, 10, "Sprite", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Scene
         CreatePictureBox(WindowCount, "picScene", 165, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , , New Action(AddressOf NewChar_OnDraw))
@@ -644,7 +644,7 @@ Module [Interface]
 
     Public Sub CreateWindow_Chars()
         ' Create the window
-        CreateWindow("winChars", "Characters", Georgia, zOrder_Win, 0, 0, 364, 229, 62, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winChars", "Characters", FontType.Georgia, zOrder_Win, 0, 0, 364, 229, 62, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -660,11 +660,11 @@ Module [Interface]
 
         ' Names
         CreatePictureBox(WindowCount, "picShadow_1", 22, 41, 98, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblCharName_1", 22, 37, 98, FontSize, "Blank Slot", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblCharName_1", 22, 37, 98, 10, "Blank Slot", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
         CreatePictureBox(WindowCount, "picShadow_2", 132, 41, 98, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblCharName_2", 132, 37, 98, FontSize, "Blank Slot", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblCharName_2", 132, 37, 98, 10, "Blank Slot", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
         CreatePictureBox(WindowCount, "picShadow_3", 242, 41, 98, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblCharName_3", 242, 37, 98, FontSize, "Blank Slot", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblCharName_3", 242, 37, 98, 10, "Blank Slot", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Scenery Boxes
         CreatePictureBox(WindowCount, "picScene_1", 23, 55, 96, 96, , , , , 11, 11, 11)
@@ -672,20 +672,20 @@ Module [Interface]
         CreatePictureBox(WindowCount, "picScene_3", 243, 55, 96, 96, , , , , 11, 11, 11, , , , , , , , , , New Action(AddressOf Chars_OnDraw))
 
         ' Create Buttons
-        CreateButton(WindowCount, "btnSelectChar_1", 22, 155, 98, 24, "Select", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_1))
-        CreateButton(WindowCount, "btnCreateChar_1", 22, 155, 98, 24, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_1))
-        CreateButton(WindowCount, "btnDelChar_1", 22, 183, 98, 24, "Delete", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_1))
-        CreateButton(WindowCount, "btnSelectChar_2", 132, 155, 98, 24, "Select", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_2))
-        CreateButton(WindowCount, "btnCreateChar_2", 132, 155, 98, 24, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_2))
-        CreateButton(WindowCount, "btnDelChar_2", 132, 183, 98, 24, "Delete", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_2))
-        CreateButton(WindowCount, "btnSelectChar_3", 242, 155, 98, 24, "Select", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click,, , New Action(AddressOf btnAcceptChar_3))
-        CreateButton(WindowCount, "btnCreateChar_3", 242, 155, 98, 24, "Create", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_3))
-        CreateButton(WindowCount, "btnDelChar_3", 242, 183, 98, 24, "Delete", Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_3))
+        CreateButton(WindowCount, "btnSelectChar_1", 22, 155, 98, 24, "Select", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_1))
+        CreateButton(WindowCount, "btnCreateChar_1", 22, 155, 98, 24, "Create", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_1))
+        CreateButton(WindowCount, "btnDelChar_1", 22, 183, 98, 24, "Delete", FontType.Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_1))
+        CreateButton(WindowCount, "btnSelectChar_2", 132, 155, 98, 24, "Select", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnAcceptChar_2))
+        CreateButton(WindowCount, "btnCreateChar_2", 132, 155, 98, 24, "Create", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_2))
+        CreateButton(WindowCount, "btnDelChar_2", 132, 183, 98, 24, "Delete", FontType.Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_2))
+        CreateButton(WindowCount, "btnSelectChar_3", 242, 155, 98, 24, "Select", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click,, , New Action(AddressOf btnAcceptChar_3))
+        CreateButton(WindowCount, "btnCreateChar_3", 242, 155, 98, 24, "Create", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnCreateChar_3))
+        CreateButton(WindowCount, "btnDelChar_3", 242, 183, 98, 24, "Delete", FontType.Arial, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnDelChar_3))
     End Sub
 
     Public Sub CreateWindow_Jobs()
         ' Create window
-        CreateWindow("winJob", "Select Job", Georgia, zOrder_Win, 0, 0, 364, 229, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
+        CreateWindow("winJob", "Select Job", FontType.Georgia, zOrder_Win, 0, 0, 364, 229, 17, False, 2, 6, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -701,14 +701,14 @@ Module [Interface]
 
         ' Job Name
         CreatePictureBox(WindowCount, "picShadow", 183, 42, 98, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblClassName", 183, 39, 98, FontSize, "Warrior", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblClassName", 183, 39, 98, 10, "Warrior", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Select Buttons
         CreateButton(WindowCount, "btnLeft", 171, 40, 11, 13, , , , 12, 14, 16, , , , , , , , New Action(AddressOf btnJobs_Left))
         CreateButton(WindowCount, "btnRight", 282, 40, 11, 13, , , , 13, 15, 17, , , , , , , , New Action(AddressOf btnJobs_Right))
 
         ' Accept Button
-        CreateButton(WindowCount, "btnAccept", 183, 185, 98, 22, "Accept", Arial, , , , ,  , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnJobs_Accept))
+        CreateButton(WindowCount, "btnAccept", 183, 185, 98, 22, "Accept", FontType.Arial, , , , ,  , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnJobs_Accept))
 
         ' Text background
         CreatePictureBox(WindowCount, "picBackground", 127, 55, 210, 124, , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
@@ -719,7 +719,7 @@ Module [Interface]
 
     Public Sub CreateWindow_Dialogue()
         ' Create dialogue window
-        CreateWindow("winDialogue", "Warning", Georgia, zOrder_Win, 0, 0, 348, 145, 38, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm, , , , , , , , , , False)
+        CreateWindow("winDialogue", "Warning", FontType.Georgia, zOrder_Win, 0, 0, 348, 145, 38, False, 3, 5, DesignType.Win_Norm, DesignType.Win_Norm, DesignType.Win_Norm, , , , , , , , , , False)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -735,19 +735,19 @@ Module [Interface]
 
         ' Header
         CreatePictureBox(WindowCount, "picShadow", 103, 44, 144, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblHeader", 103, 41, 144, FontSize, "Header", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblHeader", 103, 41, 144, 10, "Header", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Input
-        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, , Arial, AlignmentType.Center, , , , 5, 2, , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
+        CreateTextbox(WindowCount, "txtInput", 93, 75, 162, 18, , FontType.Arial, AlignmentType.Center, , , , 5, 2, , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
 
         ' Labels
-        CreateLabel(WindowCount, "lblBody_1", 15, 60, 314, FontSize, "Invalid username or password.", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblBody_2", 15, 75, 314, FontSize, "Please try again!", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblBody_1", 15, 60, 314, 10, "Invalid username or password.", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblBody_2", 15, 75, 314, 10, "Please try again!", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Buttons
-        CreateButton(WindowCount, "btnYes", 104, 98, 68, 24, "Yes", Arial, , , , , False, , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Yes))
-        CreateButton(WindowCount, "btnNo", 180, 98, 68, 24, "No", Arial, , ,  , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf Dialogue_No))
-        CreateButton(WindowCount, "btnOkay", 140, 98, 68, 24, "Okay", Arial, ,  , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Okay))
+        CreateButton(WindowCount, "btnYes", 104, 98, 68, 24, "Yes", FontType.Arial, , , , , False, , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Yes))
+        CreateButton(WindowCount, "btnNo", 180, 98, 68, 24, "No", FontType.Arial, , ,  , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf Dialogue_No))
+        CreateButton(WindowCount, "btnOkay", 140, 98, 68, 24, "Okay", FontType.Arial, ,  , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf Dialogue_Okay))
 
         ' Set active control
         SetActiveControl(WindowCount, GetControlIndex("winDialogue", "txtInput"))
@@ -755,12 +755,12 @@ Module [Interface]
 
     Public Sub CreateWindow_Party()
 ' Create window
-        CreateWindow("winParty", "", Georgia, zOrder_Win, 4, 78, 252, 158, 0, False , , , DesignType.Win_Party, DesignType.Win_Party, DesignType.Win_Party, , , , , , , , , , False)
+        CreateWindow("winParty", "", FontType.Georgia, zOrder_Win, 4, 78, 252, 158, 0, False , , , DesignType.Win_Party, DesignType.Win_Party, DesignType.Win_Party, , , , , , , , , , False)
     
         ' Name labels
-        CreateLabel(WindowCount, "lblName1", 60, 20, 173, FontSize, "Richard - Level 10", Arial, Microsoft.Xna.Framework.Color.White)
-        CreateLabel(WindowCount, "lblName2", 60, 60, 173, FontSize, "Anna - Level 18", Arial, Microsoft.Xna.Framework.Color.White)
-        CreateLabel(WindowCount, "lblName3", 60, 100, 173, FontSize, "Doleo - Level 25", Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblName1", 60, 20, 173, 10, "Richard - Level 10", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblName2", 60, 60, 173, 10, "Anna - Level 18", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblName3", 60, 100, 173, 10, "Doleo - Level 25", FontType.Arial, Microsoft.Xna.Framework.Color.White)
     
         ' Empty Bars - HP
         CreatePictureBox(WindowCount, "picEmptyBar_HP1", 58, 34, 173, 9, , , , , 62, 62, 62)
@@ -795,7 +795,7 @@ Module [Interface]
 
     Public Sub CreateWindow_Trade()
         ' Create window
-        CreateWindow("winTrade", "Trading with [Name]", Georgia, zOrder_Win, 0, 0, 412, 386, 112 , False, 2, 5,  DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , , , , New Action(AddressOf DrawTrade))
+        CreateWindow("winTrade", "Trading with [Name]", FontType.Georgia, zOrder_Win, 0, 0, 412, 386, 112 , False, 2, 5,  DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , , , , New Action(AddressOf DrawTrade))
 
         ' Centralize it
         CentralizeWindow(windowCount)
@@ -808,22 +808,22 @@ Module [Interface]
 
         ' Labels
         CreatePictureBox(windowCount, "picShadow", 36, 30, 142, 9, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        CreateLabel(windowCount, "lblYourTrade", 36, 27, 142, 9, "Robin's Offer", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblYourTrade", 36, 27, 142, 9, "Robin's Offer", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
         CreatePictureBox(windowCount, "picShadow", 36 + 200, 30, 142, 9, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        CreateLabel(windowCount, "lblTheirTrade", 36 + 200, 27, 142, 9, "Richard's Offer", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblTheirTrade", 36 + 200, 27, 142, 9, "Richard's Offer", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Buttons
-        CreateButton(windowCount, "btnAccept", 134, 340, 68, 24, "Accept", Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnTrade_Accept))
-        CreateButton(windowCount, "btnDecline", 210, 340, 68, 24, "Decline", Georgia, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnTrade_Close))
+        CreateButton(windowCount, "btnAccept", 134, 340, 68, 24, "Accept", FontType.Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnTrade_Accept))
+        CreateButton(windowCount, "btnDecline", 210, 340, 68, 24, "Decline", FontType.Georgia, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnTrade_Close))
 
         ' Labels
-        CreateLabel(windowCount, "lblStatus", 114, 322, 184, FontSize, "", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblStatus", 114, 322, 184, 10, "", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Amounts
-        CreateLabel(windowCount, "lblBlank", 25, 330, 100, FontSize, "Total Value", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(windowCount, "lblBlank", 285, 330, 100, FontSize, "Total Value", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(windowCount, "lblYourValue", 25, 344, 100, FontSize, "52,812g", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(windowCount, "lblTheirValue", 285, 344, 100, FontSize, "12,531g", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblBlank", 25, 330, 100, 10, "Total Value", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblBlank", 285, 330, 100, 10, "Total Value", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblYourValue", 25, 344, 100, 10, "52,812g", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(windowCount, "lblTheirValue", 285, 344, 100, 10, "12,531g", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Item Containers
         CreatePictureBox(windowCount, "picYour", 14, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Your), New Action(AddressOf TradeMouseMove_Your), New Action(AddressOf TradeDblClick_Your), New Action(AddressOf DrawYourTrade))
@@ -1219,13 +1219,13 @@ Module [Interface]
 
                                     For i = 1 To count
                                         left = .Left + .Width - TextWidth(textArray(i))
-                                        RenderText(textArray(i), left + xO - FontSize, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
+                                        RenderText(textArray(i), left + xO - 10, .Top + yO + yOffset, .Color, Microsoft.Xna.Framework.Color.Black)
                                         yOffset = yOffset + 14
                                     Next
                                 Else
                                     ' just one line
                                     left = .Left + .Width - TextWidth(.Text)
-                                    RenderText(.Text, left + xO - FontSize, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
+                                    RenderText(.Text, left + xO - 10, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
                                 End If
 
                             Case AlignmentType.Center
@@ -1244,7 +1244,7 @@ Module [Interface]
                                     Next
                                 Else
                                     ' Just one line
-                                    left = .Left + (.Width \ 2) - (TextWidth(.Text) \ 2) - FontSize
+                                    left = .Left + (.Width \ 2) - (TextWidth(.Text) \ 2) - 10
                                     RenderText(.Text, left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
                                 End If
                         End Select
@@ -2965,7 +2965,7 @@ End Sub
 
     Public Sub CreateWindow_EscMenu()
         ' Create window
-        CreateWindow("winEscMenu", "", Georgia, zOrder_Win, 0, 0, 210, 156, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , False, , , False)
+        CreateWindow("winEscMenu", "", FontType.Georgia, zOrder_Win, 0, 0, 210, 156, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , False, , , False)
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -2977,15 +2977,15 @@ End Sub
         CreatePictureBox(WindowCount, "picParchment", 6, 6, 198, 144, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
         
         ' Buttons
-        CreateButton(WindowCount, "btnReturn", 16, 16, 178, 28, "Return to Game", Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnEscMenu_Return))
-        CreateButton(WindowCount, "btnOptions", 16, 48, 178, 28, "Options", Georgia, , , , , , , DesignType.Orange, DesignType.Orange_Hover, DesignType.Orange_Click, , , New Action(AddressOf btnEscMenu_Options))
-        CreateButton(WindowCount, "btnMainMenu", 16, 80, 178, 28, "Back to Main Menu", Georgia, , , , , , , DesignType.Blue, DesignType.Blue_Hover, DesignType.Blue_Click, , , New Action(AddressOf btnEscMenu_MainMenu))
-        CreateButton(WindowCount, "btnExit", 16, 112, 178, 28, "Exit the Game", Georgia, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnEscMenu_Exit))
+        CreateButton(WindowCount, "btnReturn", 16, 16, 178, 28, "Return to Game", FontType.Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnEscMenu_Return))
+        CreateButton(WindowCount, "btnOptions", 16, 48, 178, 28, "Options", FontType.Georgia, , , , , , , DesignType.Orange, DesignType.Orange_Hover, DesignType.Orange_Click, , , New Action(AddressOf btnEscMenu_Options))
+        CreateButton(WindowCount, "btnMainMenu", 16, 80, 178, 28, "Back to Main Menu", FontType.Georgia, , , , , , , DesignType.Blue, DesignType.Blue_Hover, DesignType.Blue_Click, , , New Action(AddressOf btnEscMenu_MainMenu))
+        CreateButton(WindowCount, "btnExit", 16, 112, 178, 28, "Exit the Game", FontType.Georgia, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnEscMenu_Exit))
     End Sub
 
     Public Sub CreateWindow_Bars()
         ' Create window
-        CreateWindow("winBars", "", Georgia, zOrder_Win, 10, 10, 239, 77, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , False, , , False)
+        CreateWindow("winBars", "", FontType.Georgia, zOrder_Win, 10, 10, 239, 77, 0, False, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , False, , , False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
@@ -3007,34 +3007,34 @@ End Sub
         CreatePictureBox(WindowCount, "picExperience", 16, 45, 74, 14, , , , , 23, 23, 23)
 
         ' Labels
-        CreateLabel(WindowCount, "lblHP", 15, 14, 209, FontSize, "999/999", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblMP", 15, 31, 209, FontSize, "999/999", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblEXP", 15, 48, 209, FontSize, "999/999", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblHP", 15, 14, 209, 10, "999/999", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblMP", 15, 31, 209, 10, "999/999", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblEXP", 15, 48, 209, 10, "999/999", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
     End Sub
 
     Public Sub CreateWindow_Chat()
         ' Create window
-        CreateWindow("winChat", "", Georgia, zOrder_Win, 8, ResolutionHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , ,  False)
+        CreateWindow("winChat", "", FontType.Georgia, zOrder_Win, 8, ResolutionHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , ,  False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
 
         ' Channel boxes
-        CreateCheckbox(WindowCount, "chkGame", 10, 2, 49, 23, 1, "Game", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Game))
-        CreateCheckbox(WindowCount, "chkMap", 60, 2, 49, 23, 1, "Map", Arial, , , , DesignType.ChkChat, , , New Action(AddressOf chkChat_Map))
-        CreateCheckbox(WindowCount, "chkGlobal", 110, 2, 49, 23, 1, "Global", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Global))
-        CreateCheckbox(WindowCount, "chkParty", 160, 2, 49, 23, 1, "Party", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Party))
-        CreateCheckbox(WindowCount, "chkGuild", 210, 2, 49, 23, 1, "Guild", Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Guild))
-        CreateCheckbox(WindowCount, "chkPlayer", 260, 2, 49, 23, 1, "Player", Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Player))
+        CreateCheckbox(WindowCount, "chkGame", 10, 2, 49, 23, 1, "Game", FontType.Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Game))
+        CreateCheckbox(WindowCount, "chkMap", 60, 2, 49, 23, 1, "Map", FontType.Arial, , , , DesignType.ChkChat, , , New Action(AddressOf chkChat_Map))
+        CreateCheckbox(WindowCount, "chkGlobal", 110, 2, 49, 23, 1, "Global", FontType.Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Global))
+        CreateCheckbox(WindowCount, "chkParty", 160, 2, 49, 23, 1, "Party", FontType.Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Party))
+        CreateCheckbox(WindowCount, "chkGuild", 210, 2, 49, 23, 1, "Guild", FontType.Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Guild))
+        CreateCheckbox(WindowCount, "chkPlayer", 260, 2, 49, 23, 1, "Player", FontType.Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Player))
 
         ' Blank picturebox - ondraw wrapper
         CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
 
         ' Chat button
-        CreateButton(WindowCount, "btnChat", 296, 124 + 16, 48, 20, "Say", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))
+        CreateButton(WindowCount, "btnChat", 296, 124 + 16, 48, 20, "Say", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))
 
         ' Chat Textbox
-        CreateTextbox(WindowCount, "txtChat", 12, 127 + 16, 286, 25, , Georgia, , , , , , , , , , , , , , , CHAT_LENGTH)
+        CreateTextbox(WindowCount, "txtChat", 12, 127 + 16, 286, 25, , FontType.Georgia, , , , , , , , , , , , , , , CHAT_LENGTH)
 
         ' buttons
         CreateButton(WindowCount, "btnUp", 328, 28, 11, 13, , , , 4, 52, 4, , , , , , , , New Action(AddressOf btnChat_Up))
@@ -3060,23 +3060,23 @@ End Sub
 
     Public Sub CreateWindow_ChatSmall()
         ' Create window
-        CreateWindow("winChatSmall", "", Georgia, zOrder_Win, 8, 0, 0, 0, 0, False, , , , , , , , , , , , , , New Action(AddressOf OnDraw_ChatSmall), False, , , True)
+        CreateWindow("winChatSmall", "", FontType.Georgia, zOrder_Win, 8, 0, 0, 0, 0, False, , , , , , , , , , , , , , New Action(AddressOf OnDraw_ChatSmall), False, , , True)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
 
         ' Chat Label
-        CreateLabel(WindowCount, "lblMsg", 12, 140, 286, 25, "Press 'Enter' to open chatbox.", Georgia, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblMsg", 12, 140, 286, 25, "Press 'Enter' to open chatbox.", FontType.Georgia, Microsoft.Xna.Framework.Color.White)
     End Sub
 
     Public Sub CreateWindow_Hotbar()
         ' Create window
-        CreateWindow("winHotbar", "", Georgia, zOrder_Win, 372, 10, 418, 36, 0, False, , , , , , , , , , , New Action(AddressOf Hotbar_MouseMove), New Action(AddressOf Hotbar_MouseDown), New Action(AddressOf Hotbar_DblClick), New Action(AddressOf DrawHotbar), False, False)
+        CreateWindow("winHotbar", "", FontType.Georgia, zOrder_Win, 372, 10, 418, 36, 0, False, , , , , , , , , , , New Action(AddressOf Hotbar_MouseMove), New Action(AddressOf Hotbar_MouseDown), New Action(AddressOf Hotbar_DblClick), New Action(AddressOf DrawHotbar), False, False)
     End Sub
 
     Public Sub CreateWindow_Menu()
         ' Create window
-        CreateWindow("winMenu", "", Georgia, zOrder_Win, ResolutionWidth - 229, ResolutionHeight - 31, 229, 31, 0, False, , , , , , , , , , , , , , , , , False, False)
+        CreateWindow("winMenu", "", FontType.Georgia, zOrder_Win, ResolutionWidth - 229, ResolutionHeight - 31, 229, 31, 0, False, , , , , , , , , , , , , , , , , False, False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
@@ -3097,7 +3097,7 @@ End Sub
 
     Public Sub CreateWindow_Inventory()
         ' Create window
-        CreateWindow("winInventory", "Inventory", Georgia, zOrder_Win, 0, 0, 202, 319, 1, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Inventory_MouseMove), New Action(AddressOf Inventory_MouseDown), New Action(AddressOf Inventory_DblClick), New Action(AddressOf DrawInventory))
+        CreateWindow("winInventory", "Inventory", FontType.Georgia, zOrder_Win, 0, 0, 202, 319, 1, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Inventory_MouseMove), New Action(AddressOf Inventory_MouseDown), New Action(AddressOf Inventory_DblClick), New Action(AddressOf DrawInventory))
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -3110,7 +3110,7 @@ End Sub
 
         ' Gold amount
         CreatePictureBox(WindowCount, "picBlank", 8, 293, 186, 18, , , , , 67, 67, 67)
-        CreateLabel(WindowCount, "lblGold", 42, 296, 100, FontSize, "g", Georgia, Microsoft.Xna.Framework.Color.Yellow)
+        CreateLabel(WindowCount, "lblGold", 42, 296, 100, 10, "g", FontType.Georgia, Microsoft.Xna.Framework.Color.Yellow)
 
         ' Drop
         CreateButton(WindowCount, "btnDrop", 155, 294, 38, 16, "Drop" , , , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , , 5, 3)
@@ -3118,7 +3118,7 @@ End Sub
 
     Public Sub CreateWindow_Character()
         ' Create window
-        CreateWindow("winCharacter", "Character", Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_DblClick) , New Action(AddressOf DrawCharacter))
+        CreateWindow("winCharacter", "Character", FontType.Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_DblClick) , New Action(AddressOf DrawCharacter))
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -3142,24 +3142,24 @@ End Sub
         CreatePictureBox(WindowCount, "picWhiteBox", 13, 154, 148, 19, , , , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
 
 ' Labels
-CreateLabel(WindowCount, "lblName", 18, 36, 147, FontSize, "Name", Arial, Microsoft.Xna.Framework.Color.White)
-CreateLabel(WindowCount, "lblJob", 18, 56, 147, FontSize, "Job", Arial, Microsoft.Xna.Framework.Color.White)
-CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Microsoft.Xna.Framework.Color.White)
-        CreateLabel(WindowCount, "lblGuild", 18, 96, 147, FontSize, "Guild", Arial, Microsoft.Xna.Framework.Color.White)
-        CreateLabel(WindowCount, "lblHealth", 18, 116, 147, FontSize, "Health", Arial, Microsoft.Xna.Framework.Color.White)
-        CreateLabel(WindowCount, "lblSpirit", 18, 136, 147, FontSize, "Spirit", Arial, Microsoft.Xna.Framework.Color.White)
-        CreateLabel(WindowCount, "lblExperience", 18, 156, 147, FontSize, "Experience", Arial, Microsoft.Xna.Framework.Color.White)
-        CreateLabel(WindowCount, "lblName2", 13, 36, 147, FontSize, "Name", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblJob2", 13, 56, 147, FontSize, "", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblLevel2", 13, 76, 147, FontSize, "Level", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblGuild2", 13, 96, 147, FontSize, "Guild", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblHealth2", 13, 116, 147, FontSize, "Health", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblSpirit2", 13, 136, 147, FontSize, "Spirit", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblExperience2", 13, 156, 147, FontSize, "Experience", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+CreateLabel(WindowCount, "lblName", 18, 36, 147, 10, "Name", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+CreateLabel(WindowCount, "lblJob", 18, 56, 147, 10, "Job", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+CreateLabel(WindowCount, "lblLevel", 18, 76, 147, 10, "Level", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblGuild", 18, 96, 147, 10, "Guild", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblHealth", 18, 116, 147, 10, "Health", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblSpirit", 18, 136, 147, 10, "Spirit", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblExperience", 18, 156, 147, 10, "Experience", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblName2", 13, 36, 147, 10, "Name", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblJob2", 13, 56, 147, 10, "", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblLevel2", 13, 76, 147, 10, "Level", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblGuild2", 13, 96, 147, 10, "Guild", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblHealth2", 13, 116, 147, 10, "Health", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblSpirit2", 13, 136, 147, 10, "Spirit", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblExperience2", 13, 156, 147, 10, "Experience", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
 
         ' Attributes
         CreatePictureBox(WindowCount, "picShadow", 18, 176, 138, 9, , , , , , , , DesignType.BlackOval, DesignType.BlackOval, DesignType.BlackOval)
-        CreateLabel(WindowCount, "lblLabel", 18, 173, 138, FontSize, "Attributes", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblLabel", 18, 173, 138, 10, "Attributes", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Black boxes
         CreatePictureBox(WindowCount, "picBlackBox", 13, 186, 148, 19, , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
@@ -3170,12 +3170,12 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
         CreatePictureBox(WindowCount, "picBlackBox", 13, 286, 148, 19, , , , , , , , DesignType.TextBlack, DesignType.TextBlack, DesignType.TextBlack)
 
         ' Labels
-        CreateLabel(WindowCount, "lblLabel", 18, 188, 138, FontSize, "Strength", Arial, Microsoft.Xna.Framework.Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 208, 138, FontSize, "Vitality", Arial, Microsoft.Xna.Framework.Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 228, 138, FontSize, "Intelligence", Arial, Microsoft.Xna.Framework.Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 248, 138, FontSize, "Luck", Arial, Microsoft.Xna.Framework.Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 268, 138, FontSize, "Spirit", Arial, Microsoft.Xna.Framework.Color.Yellow)
-        CreateLabel(WindowCount, "lblLabel", 18, 288, 138, FontSize, "Stat Points", Arial, Microsoft.Xna.Framework.Color.Green)
+        CreateLabel(WindowCount, "lblLabel", 18, 188, 138, 10, "Strength", FontType.Arial, Microsoft.Xna.Framework.Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 208, 138, 10, "Vitality", FontType.Arial, Microsoft.Xna.Framework.Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 228, 138, 10, "Intelligence", FontType.Arial, Microsoft.Xna.Framework.Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 248, 138, 10, "Luck", FontType.Arial, Microsoft.Xna.Framework.Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 268, 138, 10, "Spirit", FontType.Arial, Microsoft.Xna.Framework.Color.Yellow)
+        CreateLabel(WindowCount, "lblLabel", 18, 288, 138, 10, "Stat Points", FontType.Arial, Microsoft.Xna.Framework.Color.Green)
 
         ' Buttons
         CreateButton(WindowCount, "btnStat_1", 144, 188, 15, 15, , , , 48, 49, 50, , , , , , , , New Action(AddressOf Character_SpendPoint1))
@@ -3192,12 +3192,12 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
         CreatePictureBox(WindowCount, "btnGreyStat_5", 144, 268, 15, 15, , , , , 47, 47, 47)
 
         ' Labels
-        CreateLabel(WindowCount, "lblStat_1", 50, 188, 100, 15, "255", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblStat_2", 50, 208, 100, 15, "255", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblStat_3", 50, 228, 100, 15, "255", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblStat_4", 50, 248, 100, 15, "255", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblStat_5", 50, 268, 100, 15, "255", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
-        CreateLabel(WindowCount, "lblPoints", 65, 288, 100, 15, "255", Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_1", 50, 188, 100, 15, "255", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_2", 50, 208, 100, 15, "255", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_3", 50, 228, 100, 15, "255", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_4", 50, 248, 100, 15, "255", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblStat_5", 50, 268, 100, 15, "255", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
+        CreateLabel(WindowCount, "lblPoints", 65, 288, 100, 15, "255", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Right)
     End Sub
 
 
@@ -3390,7 +3390,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
                                     Color = Client.QbColorToXnaColor(ColorType.BrightGreen)
                                 End If
 
-                                RenderText(ConvertCurrency(Amount), x, y, Color, Color, , Georgia)
+                                RenderText(ConvertCurrency(Amount), x, y, Color, Color, , FontType.Georgia)
                             End If
                         End If
                     End If
@@ -3404,13 +3404,13 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
 
     Public Sub CreateWindow_Description()
         ' Create window
-        CreateWindow("winDescription", "", Georgia, zOrder_Win, 0, 0, 193, 142, 0, False, , , DesignType.Win_Desc, DesignType.Win_Desc, DesignType.Win_Desc, , , , , , , , , , False)
+        CreateWindow("winDescription", "", FontType.Georgia, zOrder_Win, 0, 0, 193, 142, 0, False, , , DesignType.Win_Desc, DesignType.Win_Desc, DesignType.Win_Desc, , , , , , , , , , False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
 
         ' Name
-        CreateLabel(WindowCount, "lblName", 8, 12, 177, FontSize, "Flame Sword", Arial, Microsoft.Xna.Framework.Color.Blue, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblName", 8, 12, 177, 10, "Flame Sword", FontType.Arial, Microsoft.Xna.Framework.Color.Blue, AlignmentType.Center)
 
         ' Sprite box
         CreatePictureBox(WindowCount, "picSprite", 18, 32, 68, 68, , , , , , , , DesignType.DescPic, DesignType.DescPic, DesignType.DescPic, , , , , , , New Action(AddressOf Description_OnDraw))
@@ -3419,8 +3419,8 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
         CreatePictureBox(WindowCount, "picSep", 96, 28, 1, 92, , , , , 44, 44, 44)
 
         ' Requirements
-        CreateLabel(WindowCount, "lblClass", 5, 102, 92, FontSize, "Warrior", Georgia, Microsoft.Xna.Framework.Color.Green, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblLevel", 5, 114, 92, FontSize, "Level 20", Georgia, Microsoft.Xna.Framework.Color.Red, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblClass", 5, 102, 92, 10, "Warrior", FontType.Georgia, Microsoft.Xna.Framework.Color.Green, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblLevel", 5, 114, 92, 10, "Level 20", FontType.Georgia, Microsoft.Xna.Framework.Color.Red, AlignmentType.Center)
 
         ' Bar
         CreatePictureBox(WindowCount, "picBar", 19, 114, 66, 12, False, , , , 45, 45, 45)
@@ -3470,14 +3470,14 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
 
     Public Sub CreateWindow_DragBox()
         ' Create window
-        CreateWindow("winDragBox", "", Georgia, zOrder_Win, 0, 0, 32, 32, 0, false, , , , , , , , , , , , New Action(AddressOf DragBox_Check), , New Action(AddressOf DragBox_OnDraw))
+        CreateWindow("winDragBox", "", FontType.Georgia, zOrder_Win, 0, 0, 32, 32, 0, false, , , , , , , , , , , , New Action(AddressOf DragBox_Check), , New Action(AddressOf DragBox_OnDraw))
         
         ' Need to set up unique mouseup event
         Windows(WindowCount).Window.CallBack(entState.MouseUp) = New Action(AddressOf DragBox_Check)
     End Sub
 
     Public Sub CreateWindow_Options()
-        CreateWindow("winOptions", "", Georgia, zOrder_Win, 0, 0, 210, 212, 0, 0, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , , ,False, False)
+        CreateWindow("winOptions", "", FontType.Georgia, zOrder_Win, 0, 0, 210, 212, 0, 0, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , , ,False, False)
 
         ' Centralize it
         CentralizeWindow(windowCount)
@@ -3489,24 +3489,24 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
         CreatePictureBox(windowCount, "picParchment", 6, 6, 198, 200, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
 
         ' General
-        CreatePictureBox(windowCount, "picBlank", 35, 25, 140, FontSize, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        CreateLabel(windowCount, "lblBlank", 35, 22, 140, 0, "General Options", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreatePictureBox(windowCount, "picBlank", 35, 25, 140, 10, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(windowCount, "lblBlank", 35, 22, 140, 0, "General Options", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
     
         ' Check boxes
-        CreateCheckbox(windowCount, "chkMusic", 35, 40, 80, , , "Music", Georgia, , , , DesignType.ChkNorm)
-        CreateCheckbox(windowCount, "chkSound", 115, 40, 80, , , "Sound", Georgia, , , , DesignType.ChkNorm)
-        CreateCheckbox(windowCount, "chkAutotile", 35, 60, 80, , , "Autotile", Georgia, , , , DesignType.ChkNorm)
-        CreateCheckbox(windowCount, "chkFullscreen", 115, 60, 80, , , "Fullscreen", Georgia, , , , DesignType.ChkNorm)
+        CreateCheckbox(windowCount, "chkMusic", 35, 40, 80, , , "Music", FontType.Georgia, , , , DesignType.ChkNorm)
+        CreateCheckbox(windowCount, "chkSound", 115, 40, 80, , , "Sound", FontType.Georgia, , , , DesignType.ChkNorm)
+        CreateCheckbox(windowCount, "chkAutotile", 35, 60, 80, , , "Autotile", FontType.Georgia, , , , DesignType.ChkNorm)
+        CreateCheckbox(windowCount, "chkFullscreen", 115, 60, 80, , , "Fullscreen", FontType.Georgia, , , , DesignType.ChkNorm)
 
         ' Resolution
-        CreatePictureBox(windowCount, "picBlank", 35, 85, 140, FontSize, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        CreateLabel(windowCount, "lblBlank", 35, 92, 140, FontSize, "Select Resolution", Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreatePictureBox(windowCount, "picBlank", 35, 85, 140, 10, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(windowCount, "lblBlank", 35, 92, 140, 10, "Select Resolution", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' combobox
         CreateComboBox(windowCount, "cmbRes", 30, 100, 150, 18, DesignType.ComboNorm)
 
         ' Button
-        CreateButton(windowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)
+        CreateButton(windowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", FontType.Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)
 
         ' Populate the options screen
         SetOptionsScreen
@@ -3514,10 +3514,10 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
 
     Public Sub CreateWindow_Combobox()
         ' background window
-        CreateWindow("winComboMenuBG", "ComboMenuBG", Georgia, zOrder_Win, 0, 0, 800, 600, 0, False, , , , , , , , , , , , , New Action(AddressOf CloseComboMenu), , , False, False)
+        CreateWindow("winComboMenuBG", "ComboMenuBG", FontType.Georgia, zOrder_Win, 0, 0, 800, 600, 0, False, , , , , , , , , , , , , New Action(AddressOf CloseComboMenu), , , False, False)
 
         ' window
-        CreateWindow("winComboMenu", "ComboMenu", Georgia, zOrder_Win, 0, 0, 100, 100, 0, False, , , DesignType.ComboMenuNorm, , , , , , , , , , , , , , False, False)
+        CreateWindow("winComboMenu", "ComboMenu", FontType.Georgia, zOrder_Win, 0, 0, 100, 100, 0, False, , , DesignType.ComboMenuNorm, , , , , , , , , , , , , , False, False)
 
         ' centralize it
         CentralizeWindow(windowCount)
@@ -3525,7 +3525,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
 
     Public Sub CreateWindow_Skills()
         ' Create window
-        CreateWindow("winSkills", "Skills", Georgia, zOrder_Win, 0, 0, 202, 297, 109, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Skills_MouseMove), New Action(AddressOf Skills_MouseDown), New Action(AddressOf Skills_DblClick), New Action(AddressOf DrawSkills))
+        CreateWindow("winSkills", "Skills", FontType.Georgia, zOrder_Win, 0, 0, 202, 297, 109, False, 2, 7, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Skills_MouseMove), New Action(AddressOf Skills_MouseDown), New Action(AddressOf Skills_DblClick), New Action(AddressOf DrawSkills))
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -3538,7 +3538,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
     End Sub
 
     Public Sub CreateWindow_Bank()
-        CreateWindow("winBank", "Bank", Georgia, zOrder_Win, 0, 0, 391, 373, 1, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Bank_MouseMove), New Action(AddressOf Bank_MouseDown), New Action(AddressOf Bank_DblCLick), New Action(AddressOf DrawBank))
+        CreateWindow("winBank", "Bank", FontType.Georgia, zOrder_Win, 0, 0, 391, 373, 1, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Bank_MouseMove), New Action(AddressOf Bank_MouseDown), New Action(AddressOf Bank_DblCLick), New Action(AddressOf DrawBank))
 
         ' Centralize it
         CentralizeWindow(windowCount)
@@ -3550,7 +3550,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
 
     Public Sub CreateWindow_Shop()
         ' Create window
-        CreateWindow("winShop", "Shop", Georgia, zOrder_Win, 0, 0, 278, 293, 17, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Shop_MouseMove), New Action(AddressOf Shop_MouseDown), , New Action(AddressOf DrawShopBackground))
+        CreateWindow("winShop", "Shop", FontType.Georgia, zOrder_Win, 0, 0, 278, 293, 17, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Shop_MouseMove), New Action(AddressOf Shop_MouseDown), , New Action(AddressOf DrawShopBackground))
 
         ' Centralize it
         CentralizeWindow(windowCount)
@@ -3566,19 +3566,19 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
         CreatePictureBox(windowCount, "picItem", 15, 224, 32, 32)
         
         ' Buttons
-        CreateButton(windowCount, "btnBuy", 190, 228, 70, 24, "Buy", Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnShopBuy))
-        CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", Arial, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
+        CreateButton(windowCount, "btnBuy", 190, 228, 70, 24, "Buy", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnShopBuy))
+        CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", FontType.Arial, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
         
         ' Buying/Selling
         CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , DesignType.ChkBuying, , , , , New Action(AddressOf chkShopBuying))
         CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , ,  , DesignType.ChkSelling, , , , , New Action(AddressOf chkShopSelling))
 
 '        Labels
-        CreateLabel(windowCount, "lblName", 56, 226, 300, FontSize, "Test Item", Arial, Microsoft.Xna.Framework.Color.Black, AlignmentType.Left)
-        CreateLabel(windowCount, "lblCost", 56, 240, 300,  FontSize, "1000g", Arial, Microsoft.Xna.Framework.Color.Black, AlignmentType.Left)
+        CreateLabel(windowCount, "lblName", 56, 226, 300, 10, "Test Item", FontType.Arial, Microsoft.Xna.Framework.Color.Black, AlignmentType.Left)
+        CreateLabel(windowCount, "lblCost", 56, 240, 300,  10, "1000g", FontType.Arial, Microsoft.Xna.Framework.Color.Black, AlignmentType.Left)
 
         ' Gold
-        CreateLabel(windowCount, "lblGold", 44, 269, 300, FontSize, "g", Georgia, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(windowCount, "lblGold", 44, 269, 300, 10, "g", FontType.Georgia, Microsoft.Xna.Framework.Color.White)
     End Sub
 
     ' Shop
@@ -3860,7 +3860,7 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
 
     Public Sub CreateWindow_RightClick()
         ' Create window
-        CreateWindow("winRightClickBG", "", Georgia, zOrder_Win, 0, 0, 800, 600, 0, False, , , , , , , , , , , , New Action(AddressOf RightClick_Close), , , False)
+        CreateWindow("winRightClickBG", "", FontType.Georgia, zOrder_Win, 0, 0, 800, 600, 0, False, , , , , , , , , , , , New Action(AddressOf RightClick_Close), , , False)
         
         ' Centralize it
         CentralizeWindow(windowCount)
@@ -3868,19 +3868,19 @@ CreateLabel(WindowCount, "lblLevel", 18, 76, 147, FontSize, "Level", Arial, Micr
 
     Public Sub CreateWindow_PlayerMenu()
         ' Create window
-        CreateWindow("winPlayerMenu", "", Georgia, zOrder_Win, 0, 0, 110, 106, 0, False, , , DesignType.Win_Desc, DesignType.Win_Desc, DesignType.Win_Desc, , , , , , , New Action(AddressOf RightClick_Close), , , False)
+        CreateWindow("winPlayerMenu", "", FontType.Georgia, zOrder_Win, 0, 0, 110, 106, 0, False, , , DesignType.Win_Desc, DesignType.Win_Desc, DesignType.Win_Desc, , , , , , , New Action(AddressOf RightClick_Close), , , False)
         
         ' Centralize it
         CentralizeWindow(windowCount)
 
         ' Name
-        CreateButton(windowCount, "btnName", 8, 8, 94, 18, "[Name]", Georgia, , , , , , , DesignType.MenuHeader, DesignType.MenuHeader, DesignType.MenuHeader, , , New Action(AddressOf RightClick_Close))
+        CreateButton(windowCount, "btnName", 8, 8, 94, 18, "[Name]", FontType.Georgia, , , , , , , DesignType.MenuHeader, DesignType.MenuHeader, DesignType.MenuHeader, , , New Action(AddressOf RightClick_Close))
         
         ' Options
-        CreateButton(windowCount, "btnParty", 8, 26, 94, 18, "Invite to Party", Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Party))
-        CreateButton(windowCount, "btnTrade", 8, 44, 94, 18, "Request Trade", Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Trade))
-        CreateButton(windowCount, "btnGuild", 8, 62, 94, 18, "Invite to Guild", Georgia, , , , , , , DesignType.MenuOption, , , , , New Action(AddressOf PlayerMenu_Guild))
-        CreateButton(windowCount, "btnPM", 8, 80, 94, 18, "Private Message", Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Player))
+        CreateButton(windowCount, "btnParty", 8, 26, 94, 18, "Invite to Party", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Party))
+        CreateButton(windowCount, "btnTrade", 8, 44, 94, 18, "Request Trade", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Trade))
+        CreateButton(windowCount, "btnGuild", 8, 62, 94, 18, "Invite to Guild", FontType.Georgia, , , , , , , DesignType.MenuOption, , , , , New Action(AddressOf PlayerMenu_Guild))
+        CreateButton(windowCount, "btnPM", 8, 80, 94, 18, "Private Message", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Player))
     End Sub
 
     ' Right Click Menu
