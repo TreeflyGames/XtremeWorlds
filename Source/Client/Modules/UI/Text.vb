@@ -29,7 +29,7 @@ Module Text
     End Function
 
     ' Get the height of the text with optional scaling
-    Public Function GetTextHeight(text As String, Optional font As FontType = FontType.Georgia, Optional textSize As Single = 1.0F) As Integer
+    Public Function TextHeight(text As String, Optional font As FontType = FontType.Georgia, Optional textSize As Single = 1.0F) As Integer
         If Not Fonts.ContainsKey(font) Then Throw New ArgumentException("Font not found.")
         Dim textDimensions = Fonts(font).MeasureString(text)
         Return CInt(textDimensions.Y * textSize)

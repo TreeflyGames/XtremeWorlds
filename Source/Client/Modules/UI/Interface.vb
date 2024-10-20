@@ -1169,7 +1169,7 @@ Module [Interface]
                     xOffset = width
 
                     ' calculate the vertical center
-                    height = GetTextHeight(.Text)
+                    height = TextHeight(.Text, .Font)
 
                     If height > .Height Then
                         ver_centre = .Top + yO
@@ -1178,7 +1178,7 @@ Module [Interface]
                     End If
 
                     ' calculate the horizontal center
-                    width = TextWidth(.Text)
+                    width = TextWidth(.Text, .Font)
                     If width > .Width Then
                         hor_centre = .Left + xO + xOffset
                     Else
@@ -1193,7 +1193,7 @@ Module [Interface]
                         Select Case .Align
                             Case AlignmentType.Left
                                 ' check if need to word wrap
-                                If TextWidth(.Text) > .Width Then
+                                If TextWidth(.Text, .font) > .Width Then
                                     ' wrap text
                                     WordWrap(.Text, .Width, textArray)
 
@@ -1211,7 +1211,7 @@ Module [Interface]
 
                             Case AlignmentType.Right
                                 ' check if need to word wrap
-                                If TextWidth(.Text) > .Width Then
+                                If TextWidth(.Text, .font) > .Width Then
                                     ' wrap text
                                     WordWrap(.Text, .Width, textArray)
 
@@ -1231,7 +1231,7 @@ Module [Interface]
 
                             Case AlignmentType.Center
                                 ' Check if need to word wrap
-                                If TextWidth(.Text) > .Width Then
+                                If TextWidth(.Text, .font) > .Width Then
                                     ' Wrap text
                                     WordWrap(.Text, .Width, textArray)
 
@@ -1245,7 +1245,7 @@ Module [Interface]
                                     Next
                                 Else
                                     ' Just one line
-                                    left = .Left + (.Width \ 2) - (TextWidth(.Text) \ 2) - 10
+                                    left = .Left + (.Width \ 2) - (TextWidth(.Text, .font) \ 2) - 10
                                     RenderText(.Text, left + xO, .Top + yO, .Color, Microsoft.Xna.Framework.Color.Black)
                                 End If
                         End Select
@@ -1266,9 +1266,9 @@ Module [Interface]
                                 Case AlignmentType.Left
                                     left = .Left + 18 + xO
                                 Case AlignmentType.Right
-                                    left = .Left + 18 + (.Width - 18) - TextWidth(.Text) + xO
+                                    left = .Left + 18 + (.Width - 18) - TextWidth(.Text, .font) + xO
                                 Case AlignmentType.Center
-                                    left = .Left + 18 + ((.Width - 18) / 2) - (TextWidth(.Text) / 2) + xO
+                                    left = .Left + 18 + ((.Width - 18) / 2) - (TextWidth(.Text, .font) / 2) + xO
                             End Select
 
                             ' render text
@@ -1281,7 +1281,7 @@ Module [Interface]
                             Client.RenderTexture(Client.InterfaceTexture(51), .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
 
                             ' render text
-                            left = .Left + 22 - (TextWidth(.Text) / 2) + xO
+                            left = .Left + 22 - (TextWidth(.Text, .font) / 2) + xO
                             RenderText(.Text, left, .Top + yO + 4, .Color, Microsoft.Xna.Framework.Color.Black)
 
                         Case DesignType.ChkBuying
