@@ -14,22 +14,21 @@ Module Text
     Friend LastLineindex As Integer = 0
     Friend ScrollMod As Integer = 0
 
-    Function CensorText(input As String) As String
+    Public Function CensorText(input As String) As String
         Return New String("*"c, input.Length)
     End Function
 
     ' Declare and load the font
+    Public Fonts(FontType.Count - 1) As SpriteFont
     Public FontTester As SpriteFont
 
-    ' Function to get the width of the given text
-    Friend Function TextWidth(text As String, Optional textSize As Single = 1.0F) As Integer
+    Public Function TextWidth(text As String, Optional textSize As Single = 1.0F) As Integer
         If FontTester Is Nothing Then Exit Function
         Dim textDimensions = FontTester.MeasureString(text)
         Return CInt(textDimensions.X * textSize)
     End Function
 
-    ' Function to get the height of the given text
-    Friend Function GetTextHeight(text As String, Optional textSize As Single = 1.0F) As Integer
+    Public Function GetTextHeight(text As String, Optional textSize As Single = 1.0F) As Integer
         If FontTester Is Nothing Then Exit Function
         Dim textDimensions = FontTester.MeasureString(text)
         Return CInt(textDimensions.Y * textSize)
@@ -55,7 +54,7 @@ Module Text
         Chat(1).Channel = channel
     End Sub
 
-    Friend SplitChars As Char() = New Char() {" "c, "-"c, ControlChars.Tab}
+    Public SplitChars As Char() = New Char() {" "c, "-"c, ControlChars.Tab}
 
     Public Sub WordWrap(ByVal text As String, ByVal MaxLineLen As Long, ByRef theArray() As String)
         Dim lineCount As Long, i As Long, size As Long, lastSpace As Long, b As Long, tmpNum As Long
@@ -202,9 +201,9 @@ Module Text
     End Function
 
     Public Function Explode(str As String, splitChars As Char()) As String()
-
         Dim parts As New List(Of String)()
         Dim startindex As Integer = 0
+
         Explode = Nothing
 
         If str = Nothing Then Exit Function
@@ -233,10 +232,10 @@ Module Text
     End Function
 
     Public Sub RenderText(text As String, x As Integer, y As Integer,
-                               frontColor As Microsoft.Xna.Framework.Color, backColor As Microsoft.Xna.Framework.Color, Optional fontName As FontType = FontType.Georgia, Optional textSize As Byte = FontSize)
+                               frontColor As Color, backColor As Color, Optional fontName As FontType = FontType.Georgia, Optional textSize As Byte = FontSize)
 
         ' Select the font based on the provided font type
-        Dim selectedFont As SpriteFont = Client.Fonts(fontName)
+        Dim selectedFont As SpriteFont = Fonts(fontName)
 
         ' Calculate the shadow position
         Dim shadowPosition As New Vector2(x + 1, y + 1)

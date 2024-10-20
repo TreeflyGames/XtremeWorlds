@@ -50,8 +50,6 @@ Public Class GameClient
     Friend RenderTarget As RenderTarget2D
     Friend screenshotKey As Keys = Keys.F12 ' Key to trigger screenshot
 
-    Friend Fonts([Enum].FontType.Count - 1) As SpriteFont
-
     ' Graphics Declarations
     Friend TilesetTexture() As Texture2D
     Friend CharacterTexture() As Texture2D
