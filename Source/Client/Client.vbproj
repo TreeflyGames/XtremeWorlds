@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
 	<StartupObject>Client.FrmGame</StartupObject>
     <OutputType>WinExe</OutputType>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
@@ -48,14 +48,6 @@
     <DefineConstants>CLIENT</DefineConstants>
     <DefineDebug>false</DefineDebug>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Contents\**" />
-    <Compile Remove="Embedded\**" />
-    <EmbeddedResource Remove="Contents\**" />
-    <EmbeddedResource Remove="Embedded\**" />
-    <None Remove="Contents\**" />
-    <None Remove="Embedded\**" />
-  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="My Project\app.manifest" />
   </ItemGroup>
@@ -6991,6 +6983,7 @@
   <ItemGroup>
     <PackageReference Include="ManagedBass" Version="3.1.1" />
     <PackageReference Include="ManagedBass.Midi" Version="3.1.1" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.2.1105" />
   </ItemGroup>
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
