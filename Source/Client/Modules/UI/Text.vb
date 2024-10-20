@@ -1,8 +1,11 @@
 ﻿Imports Core
 Imports Microsoft.Xna.Framework
+Imports Microsoft.Xna.Framework.Content
 Imports Microsoft.Xna.Framework.Graphics
 
 Module Text
+    Public Fonts As New Dictionary(Of FontType, SpriteFont)
+
     Friend Const MaxChatDisplayLines As Byte = 11
     Friend Const ChatLineSpacing As Byte = 10 ' Should be same height as font
     Friend Const MyChatTextLimit As Integer = 40
@@ -18,26 +21,22 @@ Module Text
         Return New String("*"c, input.Length)
     End Function
 
-    ' Declare and load the font
-    Public Fonts(FontType.Count - 1) As SpriteFont
-    Public FontTester As SpriteFont
-
-    Public Function TextWidth(text As String, Optional textSize As Single = 1.0F) As Integer
-        If FontTester Is Nothing Then Exit Function
-        Dim textDimensions = FontTester.MeasureString(text)
+    ' Get the width of the text with optional scaling
+    Public Function TextWidth(text As String, Optional font As FontType = FontType.Georgia, Optional textSize As Single = 1.0F) As Integer
+        If Not Fonts.ContainsKey(font) Then Throw New ArgumentException("Font not found.")
+        Dim textDimensions = Fonts(font).MeasureString(text)
         Return CInt(textDimensions.X * textSize)
     End Function
 
-    Public Function GetTextHeight(text As String, Optional textSize As Single = 1.0F) As Integer
-        If FontTester Is Nothing Then Exit Function
-        Dim textDimensions = FontTester.MeasureString(text)
+    ' Get the height of the text with optional scaling
+    Public Function GetTextHeight(text As String, Optional font As FontType = FontType.Georgia, Optional textSize As Single = 1.0F) As Integer
+        If Not Fonts.ContainsKey(font) Then Throw New ArgumentException("Font not found.")
+        Dim textDimensions = Fonts(font).MeasureString(text)
         Return CInt(textDimensions.Y * textSize)
     End Function
 
     Public Sub AddText(ByVal text As String, ByVal Color As Integer, Optional ByVal alpha As Long = 255, Optional channel As Byte = 1)
         Dim i As Long
-
-        Chat_HighIndex = 0
 
         ' Move the rest of it up
         For i = (CHAT_LINES - 1) To 1 Step -1
@@ -232,29 +231,15 @@ Module Text
     End Function
 
     Public Sub RenderText(text As String, x As Integer, y As Integer,
-                               frontColor As Color, backColor As Color, Optional fontName As FontType = FontType.Georgia, Optional textSize As Byte = 10)
+                               frontColor As Color, backColor As Color, Optional font As FontType = FontType.Georgia, Optional textSize As Byte = 10)
 
-        ' Select the font based on the provided font type
-        Dim selectedFont As SpriteFont = Fonts(fontName)
-
-        If selectedFont Is Nothing Then Exit Sub
-
-        ' Calculate the shadow position
-        Dim shadowPosition As New Vector2(x + 1, y + 1)
-
-        ' Draw the shadow (backString equivalent)
-        Client.SpriteBatch.DrawString(selectedFont, text, shadowPosition, backColor,
-                               0.0F, Vector2.Zero, textSize / 16.0F, SpriteEffects.None, 0.0F)
-
-        ' Draw the main text (frontString equivalent)
-        Client.SpriteBatch.DrawString(selectedFont, text, New Vector2(x, y), frontColor,
-                               0.0F, Vector2.Zero, textSize / 16.0F, SpriteEffects.None, 0.0F)
+        Client.EnqueueText(text, Path.Fonts, x, y, font, frontColor, backColor)
     End Sub
 
     Sub DrawNPCName(MapNpcNum As Integer)
         Dim textX As Integer
         Dim textY As Integer
-        Dim color As Color, backcolor As Color
+        Dim color As Color, backColor As Color
         Dim npcNum As Integer
 
         npcNum = MyMapNPC(MapNPCNum).Num
@@ -262,13 +247,13 @@ Module Text
         Select Case Type.NPC(NPCNum).Behaviour
             Case 0 ' attack on sight
                 color = Color.Red
-                backcolor = Color.Black
+                backColor = Color.Black
             Case 1, 4 ' attack when attacked + guard
                 color = Color.Green
                 backcolor = Color.Black
             Case 2, 3, 5 ' friendly + shopkeeper + quest
                 color = Color.Yellow
-                backcolor = Color.Black
+                backColor = Color.Black
         End Select
 
         textX = ConvertMapX(MyMapNPC(MapNPCNum).X * PicX) + MyMapNPC(MapNPCNum).XOffset + (PicX \ 2) - (TextWidth((Type.NPC(NPCNum).Name))) / 2 - 2
@@ -509,7 +494,7 @@ Module Text
     Sub DrawPlayerName(index As Integer)
         Dim textX As Integer
         Dim textY As Integer
-        Dim color As Color, backcolor As Color
+        Dim color As Color, backColor As Color
         Dim name As String
 
         ' Check access level
@@ -517,19 +502,19 @@ Module Text
             Select Case GetPlayerAccess(index)
                 Case AccessType.Player
                     color = Color.White
-                    backcolor = Color.Black
+                    backColor = Color.Black
                 Case AccessType.Moderator
                     color = Color.Cyan
-                    backcolor = Color.White
+                    backColor = Color.White
                 Case AccessType.Mapper
                     color = Color.Green
-                    backcolor = Color.Black
+                    backColor = Color.Black
                 Case AccessType.Developer
                     color =Color.Blue
-                    backcolor = Color.Black
+                    backColor = Color.Black
                 Case AccessType.Owner
                     color = Color.Yellow
-                    backcolor = Color.Black
+                    backColor = Color.Black
             End Select
         Else
             color = Color.Red
@@ -549,7 +534,7 @@ Module Text
         End If
 
         ' Draw name
-        RenderText(name, textX, textY, color, backcolor)
+        RenderText(name, textX, textY, color, backColor)
     End Sub
 
 End Module

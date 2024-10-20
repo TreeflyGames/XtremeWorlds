@@ -38,6 +38,13 @@ Public Module [Path]
         End Get
     End Property
 
+    ''' <summary> Returns Fonts directory </summary>
+    Public ReadOnly Property Fonts As String
+        Get
+            Return IO.Path.Combine(Content, "Fonts")
+        End Get
+    End Property
+
     ''' <summary> Returns GUI directory </summary>
     Public ReadOnly Property Gui As String
         Get

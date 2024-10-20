@@ -646,4 +646,10 @@
         Middle
     End Enum
 
+    Public Enum RenderType
+        None = 0
+        Texture
+        Font
+    End Enum
+
 End Module

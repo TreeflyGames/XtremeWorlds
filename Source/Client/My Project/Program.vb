@@ -7,6 +7,7 @@ Imports SharpDX.Direct2D1
 Imports System.Runtime.InteropServices
 Imports System.Collections.Concurrent
 Imports System.Data
+Imports System.Net.Mime
 
 Public Class GameClient
     Inherits Game
@@ -165,10 +166,16 @@ Public Class GameClient
     End Sub
 
     Public Class RenderCommand
-        Public Property texturePath As String
+        Public Property Type As Byte
+        Public Property Path As String
+        Public Property Font As FontType
+        Public Property Text As String
         Public Property sRect As Rectangle
         Public Property dRect As Rectangle
+        Public Property X As Integer
+        Public Property Y As Integer
         Public Property Color As Color
+        Public Property Color2 As Color
     End Class
 
     Public Sub RenderTexture(ByRef texture As Texture2D, dX As Integer, dY As Integer,
@@ -288,8 +295,14 @@ Public Class GameClient
 
     Private Sub LoadDesigns()
         Dim count As Integer = GetFileCount(Core.Path.Designs)
-        ReDim DesignTexture(count - 1)
+        ReDim Client.DesignTexture(count - 1)
         LoadTextures(DesignTexture, Core.Path.Designs)
+    End Sub
+
+    Private Sub LoadFonts()
+        For i = 1 To FontType.Count - 1
+            Fonts(i) = LoadFont(Core.Path.Fonts, i)
+        Next
     End Sub
 
     Protected Overrides Sub LoadContent()
@@ -298,8 +311,7 @@ Public Class GameClient
         TransparentTexture = New Texture2D(GraphicsDevice, 1, 1)
         TransparentTexture.SetData(New Color() {Color.White})
 
-        'FontTester = Client.Content.Load(Of SpriteFont)("Georgia") ' Adjust to your font asset name
-
+        LoadFonts()
         LoadAnimations()
         LoadCharacters()
         LoadEmotes()
@@ -318,18 +330,38 @@ Public Class GameClient
         LoadDesigns()
     End Sub
 
-    Public Sub LoadTextures(ByRef textureArray() As Texture2D, folderPath As String)
-        If Not Directory.Exists(folderPath) Then Exit Sub
+    Public Function LoadFont(path As String, font As FontType) As SpriteFont
+        Return Content.Load(Of SpriteFont)(IO.Path.Combine(path, font))
+    End Function
 
-        Dim files = Directory.GetFiles(folderPath, "*" & GfxExt) ' Adjust for other formats if necessary
+    Public Sub LoadTextures(ByRef texture() As Texture2D, path As String)
+        If Not Directory.Exists(path) Then Exit Sub
+
+        Dim files = Directory.GetFiles(path, "*" & GfxExt) ' Adjust for other formats if necessary
         For i As Integer = 0 To files.Length - 1
             Using stream As New FileStream(files(i), FileMode.Open)
-                textureArray(i) = Texture2D.FromStream(GraphicsDevice, stream)
+                texture(i) = Texture2D.FromStream(GraphicsDevice, stream)
             End Using
         Next
     End Sub
 
-    Public Sub EnqueueTexture(ByRef texturePath As String, dX As Integer, dY As Integer,
+    Public Sub EnqueueText(ByRef text As String, path As String, x As Integer, y As Integer, font As FontType, frontColor As Color, backColor As Color)
+        ' Create the render command and enqueue it
+        Dim command As New RenderCommand With {
+            .Type = RenderType.Font,
+            .Font = font,
+            .Path = path,
+            .Text = text,
+            .X = x,
+            .Y = y,
+            .Color = frontColor,
+            .Color2 = backColor
+        }
+
+        RenderQueue.Enqueue(command)
+    End Sub
+
+    Public Sub EnqueueTexture(ByRef path As String, dX As Integer, dY As Integer,
                           sX As Integer, sY As Integer, dW As Integer, dH As Integer,
                           Optional sW As Integer = 1, Optional sH As Integer = 1,
                           Optional alpha As Byte = 255, Optional red As Byte = 255,
@@ -344,31 +376,32 @@ Public Class GameClient
 
         ' Enqueue the render command
         Dim command As New RenderCommand With {
-            .texturePath = texturePath,
+            .Type = RenderType.Texture,
+            .Path = path,
             .dRect = dRect,
             .sRect = sRect,
             .Color = color
         }
 
-        renderQueue.Enqueue(command)
+        RenderQueue.Enqueue(command)
     End Sub
 
     ' Load or retrieve a texture from the cache
-    Public Function GetTexture(texturePath As String) As Texture2D
-        If textureCache.ContainsKey(texturePath) Then
+    Public Function GetTexture(path As String) As Texture2D
+        If textureCache.ContainsKey(path) Then
             ' Return the already loaded texture
-            Return textureCache(texturePath)
+            Return textureCache(path)
         End If
 
         ' Load the texture and add it to the cache
         Try
-            Using stream As New FileStream(texturePath, FileMode.Open)
+            Using stream As New FileStream(path, FileMode.Open)
                 Dim texture As Texture2D = Texture2D.FromStream(graphicsDevice, stream)
-                textureCache(texturePath) = texture
+                textureCache(path) = texture
                 Return texture
             End Using
         Catch ex As Exception
-            Console.WriteLine($"Error loading texture from {texturePath}: {ex.Message}")
+            Console.WriteLine($"Error loading texture from {path}: {ex.Message}")
             Return Nothing
         End Try
     End Function
@@ -380,8 +413,24 @@ Public Class GameClient
 
         ' Dequeue and process all render commands
         Dim command As RenderCommand
-        While renderQueue.TryDequeue(command)
-            SpriteBatch.Draw(GetTexture(command.texturePath), command.dRect, command.sRect, command.Color)
+
+        While RenderQueue.TryDequeue(command)
+            Select Case command.Type
+                    Case RenderType.Texture
+                        SpriteBatch.Draw(GetTexture(command.path), command.dRect, command.sRect, command.Color)
+                    
+                    Case RenderType.Font
+                        ' Calculate the shadow position
+                        Dim shadowPosition As New Vector2(command.X + 1, command.Y + 1)
+
+                        ' Draw the shadow (backString equivalent)
+                        Client.SpriteBatch.DrawString(Fonts(command.Font), command.Text, shadowPosition, command.Color2,
+                                               0.0F, Vector2.Zero, 10 / 16.0F, SpriteEffects.None, 0.0F)
+
+                        ' Draw the main text (frontString equivalent)
+                        Client.SpriteBatch.DrawString(Fonts(command.Font), command.Text, New Vector2(command.X, command.Y), command.Color,
+                                               0.0F, Vector2.Zero, 10 / 16.0F, SpriteEffects.None, 0.0F)
+            End Select
         End While
 
         SpriteBatch.End()

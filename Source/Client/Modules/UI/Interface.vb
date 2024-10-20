@@ -69,7 +69,7 @@ Module [Interface]
             .Text = text
             .Length = length
             .Align = align
-            .Font = Fonts(font)
+            .Font = font
             .Color = color
             .Alpha = alpha
             .ClickThrough = clickThrough
@@ -204,7 +204,7 @@ Module [Interface]
             .Height = height
             .Visible = visible
             .CanDrag = canDrag
-            .Font = Fonts(font)
+            .Font = font
             .Text = caption
             .xOffset = xOffset
             .yOffset = yOffset
@@ -1170,6 +1170,7 @@ Module [Interface]
 
                     ' calculate the vertical center
                     height = GetTextHeight(.Text)
+
                     If height > .Height Then
                         ver_centre = .Top + yO
                     Else

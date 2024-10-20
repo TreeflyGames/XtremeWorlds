@@ -111,6 +111,15 @@
     <None Update="Content\Content.mgcb">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+    <None Update="Content\Fonts\1.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Fonts\2.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Fonts\3.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Content\Graphics\Animations\1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -6986,7 +6995,6 @@
   <ItemGroup>
     <PackageReference Include="ManagedBass" Version="3.1.1" />
     <PackageReference Include="ManagedBass.Midi" Version="3.1.1" />
-    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.2.1105" />
   </ItemGroup>
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
