@@ -62,4 +62,7 @@
     <ProjectReference Include="..\Core\Core.vbproj" />
      <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="System\Configuration\" />
+  </ItemGroup>
 </Project>

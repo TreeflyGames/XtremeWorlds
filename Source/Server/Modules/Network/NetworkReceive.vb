@@ -1,9 +1,7 @@
 ﻿Imports System.IO
 Imports System.Reflection
 Imports Core
-Imports Core.Database
 Imports Mirage.Sharp.Asfw
-Imports Mirage.Sharp.Asfw.IO
 Imports Newtonsoft.Json.Linq
 
 Module NetworkReceive
@@ -176,7 +174,7 @@ Module NetworkReceive
                 ' Get the data
                 username = EKeyPair.DecryptString(buffer.ReadString()).ToLower
                 password = EKeyPair.DecryptString(buffer.ReadString())
-                
+
                 ' Get the current executing assembly
                 Dim assembly As Assembly = Assembly.GetExecutingAssembly()
 
@@ -275,7 +273,7 @@ Module NetworkReceive
                     End If
 
                 Next
-                
+
                 ' Get the current executing assembly
                 Dim assembly As Assembly = Assembly.GetExecutingAssembly()
 
@@ -490,7 +488,7 @@ Module NetworkReceive
         End If
     End Sub
 
-     Private Sub Packet_AdminMsg(index As Integer, ByRef data() As Byte)
+    Private Sub Packet_AdminMsg(index As Integer, ByRef data() As Byte)
         Dim msg As String
         Dim s As String
         Dim buffer As New ByteStream(data)
@@ -858,52 +856,52 @@ Module NetworkReceive
         ' Prevent hacking
         If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
 
-        Dim buffer As New ByteStream(Compression.DecompressBytes(data))
+        Dim buffer As New ByteStream(Mirage.Sharp.Asfw.IO.Compression.DecompressBytes(data))
 
         mapNum = GetPlayerMap(index)
 
-        i = Type.Map(MapNum).Revision + 1
-        ClearMap(MapNum)
+        i = Type.Map(mapNum).Revision + 1
+        ClearMap(mapNum)
 
-        Type.Map(MapNum).Name = buffer.ReadString
-        Type.Map(MapNum).Music = buffer.ReadString
-        Type.Map(MapNum).Revision = i
-        Type.Map(MapNum).Moral = buffer.ReadInt32
-        Type.Map(MapNum).Tileset = buffer.ReadInt32
-        Type.Map(MapNum).Up = buffer.ReadInt32
-        Type.Map(MapNum).Down = buffer.ReadInt32
-        Type.Map(MapNum).Left = buffer.ReadInt32
-        Type.Map(MapNum).Right = buffer.ReadInt32
-        Type.Map(MapNum).BootMap = buffer.ReadInt32
-        Type.Map(MapNum).BootX = buffer.ReadInt32
-        Type.Map(MapNum).BootY = buffer.ReadInt32
-        Type.Map(MapNum).MaxX = buffer.ReadInt32
-        Type.Map(MapNum).MaxY = buffer.ReadInt32
-        Type.Map(MapNum).Weather = buffer.ReadInt32
-        Type.Map(MapNum).Fog = buffer.ReadInt32
-        Type.Map(MapNum).WeatherIntensity = buffer.ReadInt32
-        Type.Map(MapNum).FogOpacity = buffer.ReadInt32
-        Type.Map(MapNum).FogSpeed = buffer.ReadInt32
-        Type.Map(MapNum).MapTint = buffer.ReadInt32
-        Type.Map(MapNum).MapTintR = buffer.ReadInt32
-        Type.Map(MapNum).MapTintG = buffer.ReadInt32
-        Type.Map(MapNum).MapTintB = buffer.ReadInt32
-        Type.Map(MapNum).MapTintA = buffer.ReadInt32
-        Type.Map(MapNum).Panorama = buffer.ReadByte
-        Type.Map(MapNum).Parallax = buffer.ReadByte
-        Type.Map(MapNum).Brightness = buffer.ReadByte
-        Type.Map(MapNum).NoRespawn = buffer.ReadInt32
-        Type.Map(MapNum).Indoors = buffer.ReadInt32
-        Type.Map(MapNum).Shop = buffer.ReadInt32
+        Type.Map(mapNum).Name = buffer.ReadString
+        Type.Map(mapNum).Music = buffer.ReadString
+        Type.Map(mapNum).Revision = i
+        Type.Map(mapNum).Moral = buffer.ReadInt32
+        Type.Map(mapNum).Tileset = buffer.ReadInt32
+        Type.Map(mapNum).Up = buffer.ReadInt32
+        Type.Map(mapNum).Down = buffer.ReadInt32
+        Type.Map(mapNum).Left = buffer.ReadInt32
+        Type.Map(mapNum).Right = buffer.ReadInt32
+        Type.Map(mapNum).BootMap = buffer.ReadInt32
+        Type.Map(mapNum).BootX = buffer.ReadInt32
+        Type.Map(mapNum).BootY = buffer.ReadInt32
+        Type.Map(mapNum).MaxX = buffer.ReadInt32
+        Type.Map(mapNum).MaxY = buffer.ReadInt32
+        Type.Map(mapNum).Weather = buffer.ReadInt32
+        Type.Map(mapNum).Fog = buffer.ReadInt32
+        Type.Map(mapNum).WeatherIntensity = buffer.ReadInt32
+        Type.Map(mapNum).FogOpacity = buffer.ReadInt32
+        Type.Map(mapNum).FogSpeed = buffer.ReadInt32
+        Type.Map(mapNum).MapTint = buffer.ReadInt32
+        Type.Map(mapNum).MapTintR = buffer.ReadInt32
+        Type.Map(mapNum).MapTintG = buffer.ReadInt32
+        Type.Map(mapNum).MapTintB = buffer.ReadInt32
+        Type.Map(mapNum).MapTintA = buffer.ReadInt32
+        Type.Map(mapNum).Panorama = buffer.ReadByte
+        Type.Map(mapNum).Parallax = buffer.ReadByte
+        Type.Map(mapNum).Brightness = buffer.ReadByte
+        Type.Map(mapNum).NoRespawn = buffer.ReadInt32
+        Type.Map(mapNum).Indoors = buffer.ReadInt32
+        Type.Map(mapNum).Shop = buffer.ReadInt32
 
-        ReDim Type.Map(MapNum).Tile(Type.Map(MapNum).MaxX, Type.Map(MapNum).MaxY)
+        ReDim Type.Map(mapNum).Tile(Type.Map(mapNum).MaxX, Type.Map(mapNum).MaxY)
 
         For x = 1 To MAX_MAP_NPCS
             ClearMapNPC(x, mapNum)
-            Type.Map(MapNum).NPC(x) = buffer.ReadInt32
+            Type.Map(mapNum).NPC(x) = buffer.ReadInt32
         Next
 
-        With Type.Map(MapNum)
+        With Type.Map(mapNum)
             For x = 0 To .MaxX
                 For y = 0 To .MaxY
                     .Tile(x, y).Data1 = buffer.ReadInt32
@@ -927,12 +925,12 @@ Module NetworkReceive
 
         End With
 
-        Type.Map(MapNum).EventCount = buffer.ReadInt32
+        Type.Map(mapNum).EventCount = buffer.ReadInt32
 
-        If Type.Map(MapNum).EventCount > 0 Then
-            ReDim Type.Map(MapNum).Event(Type.Map(MapNum).EventCount)
-            For i = 0 To Type.Map(MapNum).EventCount
-                With Type.Map(MapNum).Event(i)
+        If Type.Map(mapNum).EventCount > 0 Then
+            ReDim Type.Map(mapNum).Event(Type.Map(mapNum).EventCount)
+            For i = 0 To Type.Map(mapNum).EventCount
+                With Type.Map(mapNum).Event(i)
                     .Name = buffer.ReadString
                     .Globals = buffer.ReadByte
                     .X = buffer.ReadInt32
@@ -940,11 +938,11 @@ Module NetworkReceive
                     .PageCount = buffer.ReadInt32
                 End With
 
-                If Type.Map(MapNum).Event(i).PageCount > 0 Then
-                    ReDim Type.Map(MapNum).Event(i).Pages(Type.Map(MapNum).Event(i).PageCount)
-                    ReDim TempPlayer(i).EventMap.EventPages(Type.Map(MapNum).Event(i).PageCount)
-                    For x = 0 To Type.Map(MapNum).Event(i).PageCount
-                        With Type.Map(MapNum).Event(i).Pages(x)
+                If Type.Map(mapNum).Event(i).PageCount > 0 Then
+                    ReDim Type.Map(mapNum).Event(i).Pages(Type.Map(mapNum).Event(i).PageCount)
+                    ReDim TempPlayer(i).EventMap.EventPages(Type.Map(mapNum).Event(i).PageCount)
+                    For x = 0 To Type.Map(mapNum).Event(i).PageCount
+                        With Type.Map(mapNum).Event(i).Pages(x)
                             .ChkVariable = buffer.ReadInt32
                             .VariableIndex = buffer.ReadInt32
                             .VariableCondition = buffer.ReadInt32
@@ -977,7 +975,7 @@ Module NetworkReceive
                             .RepeatMoveRoute = buffer.ReadInt32
 
                             If .MoveRouteCount > 0 Then
-                                ReDim Type.Map(MapNum).Event(i).Pages(x).MoveRoute(.MoveRouteCount)
+                                ReDim Type.Map(mapNum).Event(i).Pages(x).MoveRoute(.MoveRouteCount)
                                 For y = 0 To .MoveRouteCount
                                     .MoveRoute(y).Index = buffer.ReadInt32
                                     .MoveRoute(y).Data1 = buffer.ReadInt32
@@ -999,15 +997,15 @@ Module NetworkReceive
                             .QuestNum = buffer.ReadInt32
                         End With
 
-                        If Type.Map(MapNum).Event(i).Pages(x).CommandListCount > 0 Then
-                            ReDim Type.Map(MapNum).Event(i).Pages(x).CommandList(Type.Map(MapNum).Event(i).Pages(x).CommandListCount)
-                            For y = 0 To Type.Map(MapNum).Event(i).Pages(x).CommandListCount
-                                Type.Map(MapNum).Event(i).Pages(x).CommandList(y).CommandCount = buffer.ReadInt32
-                                Type.Map(MapNum).Event(i).Pages(x).CommandList(y).ParentList = buffer.ReadInt32
-                                If Type.Map(MapNum).Event(i).Pages(x).CommandList(y).CommandCount > 0 Then
-                                    ReDim Type.Map(MapNum).Event(i).Pages(x).CommandList(y).Commands(Type.Map(MapNum).Event(i).Pages(x).CommandList(y).CommandCount)
-                                    For z = 0 To Type.Map(MapNum).Event(i).Pages(x).CommandList(y).CommandCount
-                                        With Type.Map(MapNum).Event(i).Pages(x).CommandList(y).Commands(z)
+                        If Type.Map(mapNum).Event(i).Pages(x).CommandListCount > 0 Then
+                            ReDim Type.Map(mapNum).Event(i).Pages(x).CommandList(Type.Map(mapNum).Event(i).Pages(x).CommandListCount)
+                            For y = 0 To Type.Map(mapNum).Event(i).Pages(x).CommandListCount
+                                Type.Map(mapNum).Event(i).Pages(x).CommandList(y).CommandCount = buffer.ReadInt32
+                                Type.Map(mapNum).Event(i).Pages(x).CommandList(y).ParentList = buffer.ReadInt32
+                                If Type.Map(mapNum).Event(i).Pages(x).CommandList(y).CommandCount > 0 Then
+                                    ReDim Type.Map(mapNum).Event(i).Pages(x).CommandList(y).Commands(Type.Map(mapNum).Event(i).Pages(x).CommandList(y).CommandCount)
+                                    For z = 0 To Type.Map(mapNum).Event(i).Pages(x).CommandList(y).CommandCount
+                                        With Type.Map(mapNum).Event(i).Pages(x).CommandList(y).Commands(z)
                                             .Index = buffer.ReadByte
                                             .Text1 = buffer.ReadString
                                             .Text2 = buffer.ReadString
@@ -1051,10 +1049,10 @@ Module NetworkReceive
         End If
 
         ' Save the map
-        SaveMap(MapNum)
-        SendMapNPCsToMap(MapNum)
-        SpawnMapNPCs(MapNum)
-        SpawnGlobalEvents(MapNum)
+        SaveMap(mapNum)
+        SendMapNPCsToMap(mapNum)
+        SpawnMapNPCs(mapNum)
+        SpawnGlobalEvents(mapNum)
 
         For i = 1 To Socket.HighIndex()
             If IsPlaying(i) Then
@@ -1072,7 +1070,7 @@ Module NetworkReceive
 
         ' Respawn
         SpawnMapItems(GetPlayerMap(index))
-        CacheResources(MapNum)
+        CacheResources(mapNum)
 
         ' Refresh map for everyone online
         For i = 1 To Socket.HighIndex()
@@ -1189,7 +1187,7 @@ Module NetworkReceive
         ' Prevent hacking
         If GetPlayerAccess(index) < AccessType.Owner Then Exit Sub
 
-        filename = Core.Path.Database & "banlist.txt"
+        filename = System.IO.Path.Combine(Core.Path.Database, "banlist.txt")
 
         If File.Exists(filename) Then Kill(filename)
 
@@ -1297,21 +1295,21 @@ Module NetworkReceive
         ' Prevent hacking
         If ShopNum <= 0 Or ShopNum > MAX_SHOPS Then Exit Sub
 
-        Type.Shop(shopNum).BuyRate = buffer.ReadInt32()
-        Type.Shop(shopNum).Name = buffer.ReadString()
+        Type.Shop(ShopNum).BuyRate = buffer.ReadInt32()
+        Type.Shop(ShopNum).Name = buffer.ReadString()
 
         For i = 1 To MAX_TRADES
-            Type.Shop(shopNum).TradeItem(i).CostItem = buffer.ReadInt32()
-            Type.Shop(shopNum).TradeItem(i).CostValue = buffer.ReadInt32()
-            Type.Shop(shopNum).TradeItem(i).Item = buffer.ReadInt32()
-            Type.Shop(shopNum).TradeItem(i).ItemValue = buffer.ReadInt32()
+            Type.Shop(ShopNum).TradeItem(i).CostItem = buffer.ReadInt32()
+            Type.Shop(ShopNum).TradeItem(i).CostValue = buffer.ReadInt32()
+            Type.Shop(ShopNum).TradeItem(i).Item = buffer.ReadInt32()
+            Type.Shop(ShopNum).TradeItem(i).ItemValue = buffer.ReadInt32()
         Next
 
         buffer.Dispose()
 
         ' Save it
         SendUpdateShopToAll(ShopNum)
-        SaveShop(shopNum)
+        SaveShop(ShopNum)
         Addlog(GetPlayerLogin(index) & " saving shop #" & ShopNum & ".", ADMIN_LOG)
     End Sub
 
@@ -1352,39 +1350,39 @@ Module NetworkReceive
         ' Prevent hacking
         If skillnum <= 0 Or skillnum > MAX_SKILLS Then Exit Sub
 
-        Type.Skill(skillNum).AccessReq = buffer.ReadInt32()
-        Type.Skill(skillNum).AoE = buffer.ReadInt32()
-        Type.Skill(skillNum).CastAnim = buffer.ReadInt32()
-        Type.Skill(skillNum).CastTime = buffer.ReadInt32()
-        Type.Skill(skillNum).CdTime = buffer.ReadInt32()
-        Type.Skill(skillNum).JobReq = buffer.ReadInt32()
-        Type.Skill(skillNum).Dir = buffer.ReadInt32()
-        Type.Skill(skillNum).Duration = buffer.ReadInt32()
-        Type.Skill(skillNum).Icon = buffer.ReadInt32()
-        Type.Skill(skillNum).Interval = buffer.ReadInt32()
-        Type.Skill(skillNum).IsAoE = buffer.ReadInt32()
-        Type.Skill(skillNum).LevelReq = buffer.ReadInt32()
-        Type.Skill(skillNum).Map = buffer.ReadInt32()
-        Type.Skill(skillNum).MpCost = buffer.ReadInt32()
-        Type.Skill(skillNum).Name = buffer.ReadString()
-        Type.Skill(skillNum).Range = buffer.ReadInt32()
-        Type.Skill(skillNum).SkillAnim = buffer.ReadInt32()
-        Type.Skill(skillNum).StunDuration = buffer.ReadInt32()
-        Type.Skill(skillNum).Type = buffer.ReadInt32()
-        Type.Skill(skillNum).Vital = buffer.ReadInt32()
-        Type.Skill(skillNum).X = buffer.ReadInt32()
-        Type.Skill(skillNum).Y = buffer.ReadInt32()
+        Type.Skill(skillnum).AccessReq = buffer.ReadInt32()
+        Type.Skill(skillnum).AoE = buffer.ReadInt32()
+        Type.Skill(skillnum).CastAnim = buffer.ReadInt32()
+        Type.Skill(skillnum).CastTime = buffer.ReadInt32()
+        Type.Skill(skillnum).CdTime = buffer.ReadInt32()
+        Type.Skill(skillnum).JobReq = buffer.ReadInt32()
+        Type.Skill(skillnum).Dir = buffer.ReadInt32()
+        Type.Skill(skillnum).Duration = buffer.ReadInt32()
+        Type.Skill(skillnum).Icon = buffer.ReadInt32()
+        Type.Skill(skillnum).Interval = buffer.ReadInt32()
+        Type.Skill(skillnum).IsAoE = buffer.ReadInt32()
+        Type.Skill(skillnum).LevelReq = buffer.ReadInt32()
+        Type.Skill(skillnum).Map = buffer.ReadInt32()
+        Type.Skill(skillnum).MpCost = buffer.ReadInt32()
+        Type.Skill(skillnum).Name = buffer.ReadString()
+        Type.Skill(skillnum).Range = buffer.ReadInt32()
+        Type.Skill(skillnum).SkillAnim = buffer.ReadInt32()
+        Type.Skill(skillnum).StunDuration = buffer.ReadInt32()
+        Type.Skill(skillnum).Type = buffer.ReadInt32()
+        Type.Skill(skillnum).Vital = buffer.ReadInt32()
+        Type.Skill(skillnum).X = buffer.ReadInt32()
+        Type.Skill(skillnum).Y = buffer.ReadInt32()
 
         'projectiles
-        Type.Skill(skillNum).IsProjectile = buffer.ReadInt32()
-        Type.Skill(skillNum).Projectile = buffer.ReadInt32()
+        Type.Skill(skillnum).IsProjectile = buffer.ReadInt32()
+        Type.Skill(skillnum).Projectile = buffer.ReadInt32()
 
-        Type.Skill(skillNum).KnockBack = buffer.ReadInt32()
-        Type.Skill(skillNum).KnockBackTiles = buffer.ReadInt32()
+        Type.Skill(skillnum).KnockBack = buffer.ReadInt32()
+        Type.Skill(skillnum).KnockBackTiles = buffer.ReadInt32()
 
         ' Save it
         SendUpdateSkillToAll(skillnum)
-        SaveSkill(skillNum)
+        SaveSkill(skillnum)
         Addlog(GetPlayerLogin(index) & " saved Skill #" & skillnum & ".", ADMIN_LOG)
 
         buffer.Dispose()
@@ -1520,10 +1518,10 @@ Module NetworkReceive
         ' Check for an item
         For i = 1 To MAX_MAP_ITEMS
 
-           If Type.MapItem(GetPlayerMap(index), i).Num > 0 Then
+            If Type.MapItem(GetPlayerMap(index), i).Num > 0 Then
                 If Type.Item(Type.MapItem(GetPlayerMap(index), i).Num).Name <> "" Then
-                   If Type.MapItem(GetPlayerMap(index), i).X = x Then
-                       If Type.MapItem(GetPlayerMap(index), i).Y = y Then
+                    If Type.MapItem(GetPlayerMap(index), i).X = x Then
+                        If Type.MapItem(GetPlayerMap(index), i).Y = y Then
                             PlayerMsg(index, "You see " & CheckGrammar(Type.Item(Type.MapItem(GetPlayerMap(index), i).Num).Name) & ".", ColorType.BrightGreen)
                             Exit Sub
                         End If
@@ -1534,9 +1532,9 @@ Module NetworkReceive
 
         ' Check for an npc
         For i = 1 To MAX_MAP_NPCS
-           If MapNPC(GetPlayerMap(index)).NPC(i).Num > 0 Then
-               If MapNPC(GetPlayerMap(index)).NPC(i).X = x Then
-                   If MapNPC(GetPlayerMap(index)).NPC(i).Y = y Then
+            If MapNPC(GetPlayerMap(index)).NPC(i).Num > 0 Then
+                If MapNPC(GetPlayerMap(index)).NPC(i).X = x Then
+                    If MapNPC(GetPlayerMap(index)).NPC(i).Y = y Then
                         ' Change target
                         If TempPlayer(index).Target = 0 Then
                             TempPlayer(index).Target = i
@@ -1598,7 +1596,7 @@ Module NetworkReceive
         buffer.Dispose()
     End Sub
 
-     Sub Packet_SwapSkillSlots(index As Integer, ByRef data() As Byte)
+    Sub Packet_SwapSkillSlots(index As Integer, ByRef data() As Byte)
         Dim oldSlot As Integer, newSlot As Integer
         Dim buffer As New ByteStream(data)
 
@@ -1751,7 +1749,7 @@ Module NetworkReceive
         shopnum = TempPlayer(index).InShop
         If shopnum <= 0 Or shopnum > MAX_SHOPS Then Exit Sub
 
-        With Type.Shop(shopNum).TradeItem(shopslot)
+        With Type.Shop(shopnum).TradeItem(shopslot)
             ' check trade exists
             If .Item < 0 Then Exit Sub
 
@@ -1783,7 +1781,7 @@ Module NetworkReceive
         Dim price As Integer
         Dim multiplier As Double
         Dim buffer As New ByteStream(data)
-        
+
         invSlot = buffer.ReadInt32
 
         ' if invalid, exit out
@@ -1917,7 +1915,7 @@ Module NetworkReceive
 
         If status = 0 Then
             PlayerMsg(tradetarget, GetPlayerName(index) & " has declined your trade request.", ColorType.BrightRed)
-            PlayerMsg(index,"You have declined the trade with " & GetPlayerName(tradetarget) & ".", ColorType.BrightRed)
+            PlayerMsg(index, "You have declined the trade with " & GetPlayerName(tradetarget) & ".", ColorType.BrightRed)
             TempPlayer(index).TradeRequest = 0
             Exit Sub
         End If
@@ -1958,7 +1956,7 @@ Module NetworkReceive
         End If
     End Sub
 
-     Sub Packet_TradeInviteDecline(index As Integer, ByRef data() As Byte)
+    Sub Packet_TradeInviteDecline(index As Integer, ByRef data() As Byte)
         TempPlayer(index).TradeRequest = 0
     End Sub
 
@@ -2192,7 +2190,7 @@ Module NetworkReceive
 
         type = buffer.ReadInt32
         newSlot = buffer.ReadInt32
-        oldslot = buffer.ReadInt32
+        oldSlot = buffer.ReadInt32
         skill = buffer.ReadInt32
 
         If newSlot < 1 Or newSlot > MAX_Hotbar Then Exit Sub
@@ -2335,7 +2333,7 @@ Module NetworkReceive
     Private Sub Packet_CloseEditor(index As Integer, ByRef data() As Byte)
         ' Prevent hacking
         If GetPlayerAccess(index) < AccessType.Mapper Then Exit Sub
-        
+
         If TempPlayer(index).Editor = -1 Then Exit Sub
 
         TempPlayer(index).Editor = -1

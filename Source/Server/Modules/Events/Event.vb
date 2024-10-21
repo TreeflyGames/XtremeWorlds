@@ -50,19 +50,19 @@ Friend Module [Event]
     Sub SaveSwitches()
         Dim json As New JsonSerializer(Of String())()
 
-        json.Write(Core.Path.Database & "Switches.json", Switches)
+        json.Write(System.IO.Path.Combine(Core.Path.Database & "Switches.json"), Switches)
     End Sub
 
     Sub SaveVariables()
         Dim json As New JsonSerializer(Of String())()
 
-        json.Write(Core.Path.Database & "Variables.json", Variables)
+        json.Write(System.IO.Path.Combine(Core.Path.Database & "Variables.json"), Variables)
     End Sub
 
     Sub LoadSwitches()
         Dim json As New JsonSerializer(Of String())()
 
-        Switches = json.Read(Core.Path.Database & "Switches.json")
+        Switches = json.Read(System.IO.Path.Combine(Core.Path.Database & "Switches.json"))
 
         If Switches Is Nothing Then CreateSwitches()
     End Sub
@@ -70,7 +70,7 @@ Friend Module [Event]
     Sub LoadVariables()
         Dim json As New JsonSerializer(Of String())()
 
-        Variables = json.Read(Core.Path.Database & "Variables.json")
+        Variables = json.Read(System.IO.Path.Combine(Core.Path.Database & "Variables.json"))
 
         If Variables Is Nothing Then CreateVariables()
     End Sub

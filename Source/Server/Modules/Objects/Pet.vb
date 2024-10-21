@@ -1665,7 +1665,7 @@ Module S_Pet
             path(tim).Y = lastY
         Loop
 
-        'Ok we got a Core.Path. Now, lets look at the first step and see what direction we should take.
+        'Ok lets look at the first step and see what direction we should take.
         If path(1).X > lastX Then
             FindPetPath = DirectionType.Right
         ElseIf path(1).Y > lastY Then

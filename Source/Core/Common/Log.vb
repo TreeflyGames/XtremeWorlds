@@ -27,7 +27,7 @@ Public Module Log
             Directory.CreateDirectory(Core.Path.Logs)
         End If
 
-        fullpath = Core.Path.Logs & FN
+        fullpath = IO.Path.Combine(Core.Path.Logs, FN)
         contents = GetFileContents(fullpath)
         contents = contents & vbNewLine & strData
 
