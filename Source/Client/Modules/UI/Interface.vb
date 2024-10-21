@@ -1440,13 +1440,14 @@ Module [Interface]
                 bs = 4
                 ' render the wood box
                 RenderEntity_Square(9, left, top, width, height, bs, alpha)
+
             Case DesignType.Green
                 bs = 2
                 ' render the green box
                 RenderEntity_Square(2, left, top, width, height, bs, alpha)
 
                 ' render green gradient overlay
-                Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "1" & GfxExt), left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
+                Client.EnqueueTexture(IO.Path.Combine(Path.Gradients, "1" & GfxExt), left + bs, top + bs, 0, 0, width - (bs * 2), height - (bs * 2), 128, 128, alpha)
 
             Case DesignType.Green_Hover
                 bs = 2
