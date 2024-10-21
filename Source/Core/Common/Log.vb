@@ -47,7 +47,7 @@ Public Module Log
         Dim bAns = False
         Dim objReader As StreamWriter
 
-        fullpath = Core.Path.Database & fn
+        fullpath = System.IO.Path.Combine(Core.Path.Database, fn)
         contents = GetFileContents(fullpath)
         contents = contents & vbNewLine & strData
 
