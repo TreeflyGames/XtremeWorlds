@@ -183,97 +183,97 @@ Public Class GameClient
     Private Sub LoadAnimations()
         Dim count As Integer = GetFileCount(Core.Path.Animations)
         ReDim Client.AnimationTexture(count - 1)
-        LoadTextures(Client.AnimationTexture, Core.Path.Animations)
+        'LoadTextures(Client.AnimationTexture, Core.Path.Animations)
     End Sub
 
     Private Sub LoadCharacters()
         Dim count As Integer = GetFileCount(Core.Path.Characters)
         ReDim Client.CharacterTexture(count - 1)
-        LoadTextures(Client.CharacterTexture, Core.Path.Characters)
+        'LoadTextures(Client.CharacterTexture, Core.Path.Characters)
     End Sub
 
     Private Sub LoadEmotes()
         Dim count As Integer = GetFileCount(Core.Path.Emotes)
         ReDim Client.EmoteTexture(count - 1)
-        LoadTextures(Client.EmoteTexture, Core.Path.Emotes)
+        'LoadTextures(Client.EmoteTexture, Core.Path.Emotes)
     End Sub
 
     Private Sub LoadTilesets()
         Dim count As Integer = GetFileCount(Core.Path.Tilesets)
         ReDim Client.TilesetTexture(count - 1)
-        LoadTextures(Client.TilesetTexture, Core.Path.Tilesets)
+        'LoadTextures(Client.TilesetTexture, Core.Path.Tilesets)
     End Sub
 
     Private Sub LoadFogs()
         Dim count As Integer = GetFileCount(Core.Path.Fogs)
         ReDim Client.FogTexture(count - 1)
-        LoadTextures(Client.FogTexture, Core.Path.Fogs)
+        'LoadTextures(Client.FogTexture, Core.Path.Fogs)
     End Sub
 
     Private Sub LoadItems()
         Dim count As Integer = GetFileCount(Core.Path.Items)
         ReDim Client.ItemTexture(count - 1)
-        LoadTextures(Client.ItemTexture, Core.Path.Items)
+        'LoadTextures(Client.ItemTexture, Core.Path.Items)
     End Sub
 
     Private Sub LoadPanoramas()
         Dim count As Integer = GetFileCount(Core.Path.Panoramas)
         ReDim Client.PanoramaTexture(count - 1)
-        LoadTextures(Client.PanoramaTexture, Core.Path.Panoramas)
+        'LoadTextures(Client.PanoramaTexture, Core.Path.Panoramas)
     End Sub
 
     Private Sub LoadPaperdolls()
         Dim count As Integer = GetFileCount(Core.Path.Paperdolls)
         ReDim Client.PaperdollTexture(count - 1)
-        LoadTextures(Client.PaperdollTexture, Core.Path.Paperdolls)
+        'LoadTextures(Client.PaperdollTexture, Core.Path.Paperdolls)
     End Sub
 
     Private Sub LoadParallax()
         Dim count As Integer = GetFileCount(Core.Path.Parallax)
         ReDim Client.ParallaxTexture(count - 1)
-        LoadTextures(Client.ParallaxTexture, Core.Path.Parallax)
+        'LoadTextures(Client.ParallaxTexture, Core.Path.Parallax)
     End Sub
 
     Private Sub LoadPictures()
         Dim count As Integer = GetFileCount(Core.Path.Pictures)
         ReDim Client.PictureTexture(count - 1)
-        LoadTextures(Client.PictureTexture, Core.Path.Pictures)
+        'LoadTextures(Client.PictureTexture, Core.Path.Pictures)
     End Sub
 
     Private Sub LoadProjectile()
         Dim count As Integer = GetFileCount(Core.Path.Projectiles)
         ReDim Client.ProjectileTexture(count - 1)
-        LoadTextures(Client.ProjectileTexture, Core.Path.Projectiles)
+        'LoadTextures(Client.ProjectileTexture, Core.Path.Projectiles)
     End Sub
 
     Private Sub LoadResources()
         Dim count As Integer = GetFileCount(Core.Path.Resources)
         ReDim Client.ResourceTexture(count - 1)
-        LoadTextures(Client.ResourceTexture, Core.Path.Resources)
+        'LoadTextures(Client.ResourceTexture, Core.Path.Resources)
     End Sub
 
     Private Sub LoadSkills()
         Dim count As Integer = GetFileCount(Core.Path.Skills)
         ReDim Client.SkillTexture(count - 1)
-        LoadTextures(Client.SkillTexture, Core.Path.Skills)
+        'LoadTextures(Client.SkillTexture, Core.Path.Skills)
     End Sub
 
     Private Sub LoadInterface()
         Dim count As Integer = GetFileCount(Core.Path.Gui)
         ReDim Client.InterfaceTexture(count - 1)
-        LoadTextures(Client.InterfaceTexture, Core.Path.Gui)
+        'LoadTextures(Client.InterfaceTexture, Core.Path.Gui)
     End Sub
 
     Private Sub LoadGradients()
         Dim count As Integer = GetFileCount(Core.Path.Gradients)
         ReDim Client.GradientTexture(count - 1)
-        LoadTextures(Client.GradientTexture, Core.Path.Gradients)
+        'LoadTextures(Client.GradientTexture, Core.Path.Gradients)
     End Sub
 
     Private Sub LoadDesigns()
         Dim count As Integer = GetFileCount(Core.Path.Designs)
         ReDim Client.DesignTexture(count - 1)
-        LoadTextures(DesignTexture, Core.Path.Designs)
+        'LoadTextures(DesignTexture, Core.Path.Designs)
     End Sub
 
     Private Sub LoadFonts()
