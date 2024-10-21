@@ -1579,7 +1579,7 @@ Public Class GameClient
             End Select
 
             ' word wrap
-            WordWrap(.Msg, ChatBubbleWidth, FontType.Georgia, theArray)
+            WordWrap(.Msg, FontType.Georgia, ChatBubbleWidth, theArray)
 
             ' find max width
             tmpNum = UBound(theArray)
