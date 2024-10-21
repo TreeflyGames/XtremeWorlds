@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Xml
 Imports Core
 Imports Core.Path
 Imports ManagedBass
@@ -22,13 +23,14 @@ Module Sound
 
     Friend SoundFontHandle As Integer
 
-
     Sub PlayMusic(fileName As String)
+        Dim path = IO.Path.Combine(Core.Path.Music, fileName)
+
         If fileName = "None" Then
             Exit Sub
         End If
 
-        If Core.Type.Setting.Music = False Or Not File.Exists(Core.Path.Music & fileName) Then
+        If Core.Type.Setting.Music = False Or Not File.Exists(path) Then
             StopMusic()
             Exit Sub
         End If
@@ -39,7 +41,7 @@ Module Sound
 
         If IO.Path.GetExtension(fileName).ToLower() = ".mid" Then
             StopMusic()
-            PlayMidi(Core.Path.Music & fileName)
+            PlayMidi(path)
             CurrentMusic = fileName
             Exit Sub
         End If
@@ -47,7 +49,7 @@ Module Sound
         Try
             StopMusic() ' Stop any currently playing music before starting a new one
 
-            MusicStream = Bass.CreateStream(Core.Path.Music & fileName, 0, 0, BassFlags.Loop)
+            MusicStream = Bass.CreateStream(path, 0, 0, BassFlags.Loop)
             If MusicStream <> 0 Then
                 Bass.ChannelPlay(MusicStream)
                 Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, Core.Type.Setting.MusicVolume / 100.0F)
@@ -89,7 +91,7 @@ Module Sound
 
     Sub PlayMidi(filePath As String)
         StopMusic() ' Ensure previous music is stopped
-        
+
         ' Load and play the MIDI file using ManagedBass.Midi
         MusicStream = BassMidi.CreateStream(filePath, 0, 0, BassFlags.Loop, 44100)
 
