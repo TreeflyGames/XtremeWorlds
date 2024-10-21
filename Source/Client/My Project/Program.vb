@@ -14,8 +14,8 @@ Public Class GameClient
 
     Public Graphics As GraphicsDeviceManager
     Public SpriteBatch As Graphics.SpriteBatch
-    Public TextureCache As New Dictionary(Of String, Texture2D)()
-    Private ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GraphicInfo)()
+    Public ReadOnly TextureCache As New Dictionary(Of String, Texture2D)()
+    Public ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GraphicInfo)()
     Public ReadOnly MultiplyBlendState As New BlendState()
 
     ' Thread-safe queue to hold render commands
