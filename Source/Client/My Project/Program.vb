@@ -323,7 +323,14 @@ Public Class GameClient
                 graphcsInfo.Height = texture(i).Height
 
                 ' Store texture with a unique key (e.g., "Tileset_0", "Tileset_1", etc.)
-                GfxInfoCache.TryAdd($"{Core.Path.GetLastDirectoryName(path)}{i}", graphcsInfo)
+                Dim numGfx As String
+                If path = Core.Path.Misc Then
+                    numGfx = ""
+                Else
+                    numGfx = i + 1
+                End If
+
+                GfxInfoCache.TryAdd($"{Core.Path.GetLastDirectoryName(path)}{numGfx}", graphcsInfo)
             End Using
         Next
     End Sub
