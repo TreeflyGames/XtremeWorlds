@@ -241,8 +241,8 @@ Module [Interface]
         image(EntState.Hover) = image_hover
         image(EntState.MouseDown) = image_mousedown
         texture(EntState.Normal) = Path.Designs
-        texture(EntState.Hover) =  Path.Designs
-        texture(EntState.MouseDown) =  Path.Designs
+        texture(EntState.Hover) = Path.Designs
+        texture(EntState.MouseDown) = Path.Designs
         callback(EntState.Normal) = callback_norm
         callback(EntState.Hover) = callback_hover
         callback(EntState.MouseDown) = callback_mousedown
@@ -333,7 +333,7 @@ Module [Interface]
         callback(EntState.DblClick) = callback_dblclick
 
         ' create the label
-        CreateEntity(winNum, zOrder_Con, name, Color.White, EntityType.Label, design, image, texture, callback, left, top, width, height, visible, , , , , text, align, font, , alpha, clickThrough, , , censor, , , , , , locked)
+        CreateEntity(winNum, zOrder_Con, name, color.White, EntityType.Label, design, image, texture, callback, left, top, width, height, visible, , , , , text, align, font, , alpha, clickThrough, , , censor, , , , , , locked)
     End Sub
 
     Public Sub CreateCheckbox(winNum As Long, name As String, left As Long, top As Long, width As Long, Optional height As Long = 15, Optional value As Long = 0, Optional text As String = "", Optional font As FontType = FontType.Georgia,
@@ -576,7 +576,7 @@ Module [Interface]
         ' Labels
         CreateLabel(WindowCount, "lblUsername", 66, 39, 142, 10, "Username", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
         CreateLabel(WindowCount, "lblPassword", 66, 75, 142, 10, "Password", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(WindowCount, "lblRetypePassword", 66, 111, 142, 10, "Retype Password", FontType.Arial,  Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblRetypePassword", 66, 111, 142, 10, "Retype Password", FontType.Arial, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
         'CreateLabel(WindowCount, "lblCode", 66, 147, 142, 10, "Secret Code", FontType.Arial, AlignmentType.Center)
         'CreateLabel(WindowCount, "lblCaptcha", 66, 183, 142, 10, "Captcha", FontType.Arial, AlignmentType.Center)
 
@@ -754,29 +754,29 @@ Module [Interface]
     End Sub
 
     Public Sub CreateWindow_Party()
-' Create window
-        CreateWindow("winParty", "", FontType.Georgia, zOrder_Win, 4, 78, 252, 158, 0, False , , , DesignType.Win_Party, DesignType.Win_Party, DesignType.Win_Party, , , , , , , , , , False)
-    
+        ' Create window
+        CreateWindow("winParty", "", FontType.Georgia, zOrder_Win, 4, 78, 252, 158, 0, False, , , DesignType.Win_Party, DesignType.Win_Party, DesignType.Win_Party, , , , , , , , , , False)
+
         ' Name labels
         CreateLabel(WindowCount, "lblName1", 60, 20, 173, 10, "Richard - Level 10", FontType.Arial, Microsoft.Xna.Framework.Color.White)
         CreateLabel(WindowCount, "lblName2", 60, 60, 173, 10, "Anna - Level 18", FontType.Arial, Microsoft.Xna.Framework.Color.White)
         CreateLabel(WindowCount, "lblName3", 60, 100, 173, 10, "Doleo - Level 25", FontType.Arial, Microsoft.Xna.Framework.Color.White)
-    
+
         ' Empty Bars - HP
         CreatePictureBox(WindowCount, "picEmptyBar_HP1", 58, 34, 173, 9, , , , , 62, 62, 62)
         CreatePictureBox(WindowCount, "picEmptyBar_HP2", 58, 74, 173, 9, , , , , 62, 62, 62)
         CreatePictureBox(WindowCount, "picEmptyBar_HP3", 58, 114, 173, 9, , , , , 62, 62, 62)
-    
+
         ' Empty Bars - SP
         CreatePictureBox(WindowCount, "picEmptyBar_SP1", 58, 44, 173, 9, , , , , 63, 63, 63)
         CreatePictureBox(WindowCount, "picEmptyBar_SP2", 58, 84, 173, 9, , , , , 63, 63, 63)
         CreatePictureBox(WindowCount, "picEmptyBar_SP3", 58, 124, 173, 9, , , , , 63, 63, 63)
-    
+
         ' Filled bars - HP
         CreatePictureBox(WindowCount, "picBar_HP1", 58, 34, 173, 9, , , , , 64, 64, 64)
         CreatePictureBox(WindowCount, "picBar_HP2", 58, 74, 173, 9, , , , , 64, 64, 64)
         CreatePictureBox(WindowCount, "picBar_HP3", 58, 114, 173, 9, , , , , 64, 64, 64)
-    
+
         ' Filled bars - SP
         CreatePictureBox(WindowCount, "picBar_SP1", 58, 44, 173, 9, , , , , 65, 65, 65)
         CreatePictureBox(WindowCount, "picBar_SP2", 58, 84, 173, 9, , , , , 65, 65, 65)
@@ -795,39 +795,39 @@ Module [Interface]
 
     Public Sub CreateWindow_Trade()
         ' Create window
-        CreateWindow("winTrade", "Trading with [Name]", FontType.Georgia, zOrder_Win, 0, 0, 412, 386, 112 , False, 2, 5,  DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , , , , New Action(AddressOf DrawTrade))
+        CreateWindow("winTrade", "Trading with [Name]", FontType.Georgia, zOrder_Win, 0, 0, 412, 386, 112, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , , , , New Action(AddressOf DrawTrade))
 
         ' Centralize it
-        CentralizeWindow(windowCount)
+        CentralizeWindow(WindowCount)
 
         ' Close Button
-        CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 19, 5, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnTrade_Close))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnTrade_Close))
 
         ' Parchment
-        CreatePictureBox(windowCount, "picParchment", 10, 312, 392, 66, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreatePictureBox(WindowCount, "picParchment", 10, 312, 392, 66, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
 
         ' Labels
-        CreatePictureBox(windowCount, "picShadow", 36, 30, 142, 9, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        CreateLabel(windowCount, "lblYourTrade", 36, 27, 142, 9, "Robin's Offer", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreatePictureBox(windowCount, "picShadow", 36 + 200, 30, 142, 9, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        CreateLabel(windowCount, "lblTheirTrade", 36 + 200, 27, 142, 9, "Richard's Offer", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreatePictureBox(WindowCount, "picShadow", 36, 30, 142, 9, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(WindowCount, "lblYourTrade", 36, 27, 142, 9, "Robin's Offer", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreatePictureBox(WindowCount, "picShadow", 36 + 200, 30, 142, 9, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(WindowCount, "lblTheirTrade", 36 + 200, 27, 142, 9, "Richard's Offer", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Buttons
-        CreateButton(windowCount, "btnAccept", 134, 340, 68, 24, "Accept", FontType.Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnTrade_Accept))
-        CreateButton(windowCount, "btnDecline", 210, 340, 68, 24, "Decline", FontType.Georgia, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnTrade_Close))
+        CreateButton(WindowCount, "btnAccept", 134, 340, 68, 24, "Accept", FontType.Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnTrade_Accept))
+        CreateButton(WindowCount, "btnDecline", 210, 340, 68, 24, "Decline", FontType.Georgia, , , , , , , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnTrade_Close))
 
         ' Labels
-        CreateLabel(windowCount, "lblStatus", 114, 322, 184, 10, "", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblStatus", 114, 322, 184, 10, "", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Amounts
-        CreateLabel(windowCount, "lblBlank", 25, 330, 100, 10, "Total Value", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(windowCount, "lblBlank", 285, 330, 100, 10, "Total Value", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(windowCount, "lblYourValue", 25, 344, 100, 10, "52,812g", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-        CreateLabel(windowCount, "lblTheirValue", 285, 344, 100, 10, "12,531g", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblBlank", 25, 330, 100, 10, "Total Value", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblBlank", 285, 330, 100, 10, "Total Value", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblYourValue", 25, 344, 100, 10, "52,812g", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreateLabel(WindowCount, "lblTheirValue", 285, 344, 100, 10, "12,531g", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' Item Containers
-        CreatePictureBox(windowCount, "picYour", 14, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Your), New Action(AddressOf TradeMouseMove_Your), New Action(AddressOf TradeDblClick_Your), New Action(AddressOf DrawYourTrade))
-        CreatePictureBox(windowCount, "picTheir", 214, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf DrawTheirTrade))
+        CreatePictureBox(WindowCount, "picYour", 14, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Your), New Action(AddressOf TradeMouseMove_Your), New Action(AddressOf TradeDblClick_Your), New Action(AddressOf DrawYourTrade))
+        CreatePictureBox(WindowCount, "picTheir", 214, 46, 184, 260, , , , , , , , , , , , , , New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf TradeMouseMove_Their), New Action(AddressOf DrawTheirTrade))
     End Sub
 
     ' Rendering & Initialisation
@@ -1057,7 +1057,7 @@ Module [Interface]
         Next
     End Sub
 
-        Public Sub RenderEntities()
+    Public Sub RenderEntities()
         Dim i As Long, x As Long, curZOrder As Long
 
         ' don't render anything if we don't have any containers
@@ -1066,7 +1066,7 @@ Module [Interface]
         ' reset zOrder
         curZOrder = 1
 
-' loop through windows
+        ' loop through windows
         Do While curZOrder <= WindowCount
             For i = 1 To WindowCount
                 If curZOrder = Windows(i).Window.zOrder Then
@@ -1159,10 +1159,10 @@ Module [Interface]
 
                     ' render icon
                     If .Icon > 0 Then
-                        Width =  Client.ItemGfxInfo(.Icon).width
-                        Height =  Client.ItemGfxInfo(.Icon).height
+                        width = Client.ItemGfxInfo(.Icon).Width
+                        height = Client.ItemGfxInfo(.Icon).Height
 
-                        Client.EnqueueTexture(IO.Path.Combine(.Texture(.State), .Icon & GfxExt), .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, Width, Height, Width, Height)
+                        Client.EnqueueTexture(IO.Path.Combine(.Texture(.State), .Icon & GfxExt), .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, width, height, width, height)
                     End If
 
                     ' for changing the text space
@@ -1193,7 +1193,7 @@ Module [Interface]
                         Select Case .Align
                             Case AlignmentType.Left
                                 ' check if need to word wrap
-                                If TextWidth(.Text, .font) > .Width Then
+                                If TextWidth(.Text, .Font) > .Width Then
                                     ' wrap text
                                     WordWrap(.Text, .Font, .Width, textArray)
 
@@ -1231,7 +1231,7 @@ Module [Interface]
 
                             Case AlignmentType.Center
                                 ' Check if need to word wrap
-                                If TextWidth(.Text, .font) > .Width Then
+                                If TextWidth(.Text, .Font) > .Width Then
                                     ' Wrap text
                                     WordWrap(.Text, .Font, .Width, textArray)
 
@@ -1426,15 +1426,15 @@ Module [Interface]
                 RenderEntity_Square(1, left, top, width, height, bs, alpha)
 
                 ' render wood texture
-                Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "1" & GfxExt), Left + bs, Top + bs, 100, 100, Width - (bs * 2), Height - (bs * 2), Width - (bs * 2), Height - (bs * 2), alpha)
+                Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "1" & GfxExt), left + bs, top + bs, 100, 100, width - (bs * 2), height - (bs * 2), width - (bs * 2), height - (bs * 2), alpha)
 
             Case DesignType.Wood_Small
                 bs = 2
                 ' render the wood box
-                RenderEntity_Square(8, Left + bs, Top + bs, width, height, bs, alpha)
+                RenderEntity_Square(8, left + bs, top + bs, width, height, bs, alpha)
 
                 ' render wood texture
-                Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "1" & GfxExt), left + bs, top + bs, 100, 100, Width - (bs * 2), Height - (bs * 2), Width - (bs * 2), Height - (bs * 2))
+                Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "1" & GfxExt), left + bs, top + bs, 100, 100, width - (bs * 2), height - (bs * 2), width - (bs * 2), height - (bs * 2))
 
             Case DesignType.Wood_Empty
                 bs = 4
@@ -1607,8 +1607,8 @@ Module [Interface]
         ' Set the border size
         bs = borderSize
 
-        ' Draw centre
-        Client.EnqueueTexture(IO.Path.Combine(Path.Designs, sprite & GfxExt), x + bs, y + bs, bs + 1, bs + 1, width - (bs * 2), height - (bs * 2), , , , alpha)
+        ' Draw center
+        Client.EnqueueTexture(IO.Path.Combine(Path.Designs, sprite & GfxExt), x + bs, y + bs, bs + 1, bs + 1, width - (bs * 2), height - (bs * 2), , , alpha)
 
         ' Draw top side
         Client.EnqueueTexture(IO.Path.Combine(Path.Designs, sprite & GfxExt), x + bs, y, bs, 0, width - (bs * 2), bs, 1, bs, alpha)
@@ -1647,16 +1647,16 @@ Module [Interface]
 
     Sub TradeDblClick_Your()
         Dim Xo As Long, Yo As Long, ItemNum As Long
-        
+
         Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Left
         Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Top
         ItemNum = IsTrade(Xo, Yo)
-    
+
         ' make sure it exists
         If ItemNum > 0 Then
             If TradeYourOffer(ItemNum).Num = 0 Then Exit Sub
             If GetPlayerInv(MyIndex, TradeYourOffer(ItemNum).Num) = 0 Then Exit Sub
-        
+
             ' unoffer the item
             UntradeItem(ItemNum)
         End If
@@ -1671,7 +1671,7 @@ Module [Interface]
         Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Top
 
         ItemNum = IsTrade(Xo, Yo)
-    
+
         ' make sure it exists
         If ItemNum > 0 Then
             If TradeYourOffer(ItemNum).Num = 0 Then
@@ -1683,7 +1683,7 @@ Module [Interface]
                 Windows(GetWindowIndex("winDescription")).Window.Visible = False
                 Exit Sub
             End If
-        
+
             X = Windows(GetWindowIndex("winTrade")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             Y = Windows(GetWindowIndex("winTrade")).Window.Top - 6
 
@@ -1702,19 +1702,19 @@ Module [Interface]
 
     Sub TradeMouseMove_Their()
         Dim Xo As Long, Yo As Long, ItemNum As Long, X As Long, Y As Long
-        
+
         Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Left
         Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Top
 
         ItemNum = IsTrade(Xo, Yo)
-    
+
         ' make sure it exists
         If ItemNum > 0 Then
             If TradeTheirOffer(ItemNum).Num = 0 Then
                 Windows(GetWindowIndex("winDescription")).Window.Visible = False
                 Exit Sub
             End If
-        
+
             ' calc position
             X = Windows(GetWindowIndex("winTrade")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             Y = Windows(GetWindowIndex("winTrade")).Window.Top - 6
@@ -1742,22 +1742,22 @@ Module [Interface]
 
         With Windows(curWindow).Controls(curControl)
             ' linked to
-            Windows(GetWindowIndex("winComboMenu")).Window.linkedToWin = curWindow
-            Windows(GetWindowIndex("winComboMenu")).Window.linkedToCon = curControl
-        
+            Windows(GetWindowIndex("winComboMenu")).Window.LinkedToWin = curWindow
+            Windows(GetWindowIndex("winComboMenu")).Window.LinkedToCon = curControl
+
             ' set the size
-            Windows(GetWindowIndex("winComboMenu")).Window.Height = 2 + (UBound(.list) * 16)
+            Windows(GetWindowIndex("winComboMenu")).Window.Height = 2 + (UBound(.List) * 16)
             Windows(GetWindowIndex("winComboMenu")).Window.Left = Windows(curWindow).Window.Left + .Left + 2
             Top = Windows(curWindow).Window.Top + .Top + .Height
             If Top + Windows(GetWindowIndex("winComboMenu")).Window.Height > ResolutionHeight Then Top = ResolutionHeight - Windows(GetWindowIndex("winComboMenu")).Window.Height
             Windows(GetWindowIndex("winComboMenu")).Window.Top = Top
             Windows(GetWindowIndex("winComboMenu")).Window.Width = .Width - 4
-        
+
             ' set the values
             Windows(GetWindowIndex("winComboMenu")).Window.List = .List
             Windows(GetWindowIndex("winComboMenu")).Window.Value = .Value
             Windows(GetWindowIndex("winComboMenu")).Window.Group = 0
-        
+
             ' load the menu
             Windows(GetWindowIndex("winComboMenu")).Window.Visible = True
             Windows(GetWindowIndex("winComboMenuBG")).Window.Visible = True
@@ -1769,13 +1769,13 @@ Module [Interface]
     Sub ComboMenu_MouseMove(curWindow As Long)
         Dim y As Long, i As Long
         With Windows(curWindow).Window
-            y = curMouseY - .Top
+            y = CurMouseY - .Top
 
             ' find the option we're hovering over
-            If UBound(.list) > 0 Then
-                For i = 1 To UBound(.list)
+            If UBound(.List) > 0 Then
+                For i = 1 To UBound(.List)
                     If y >= (16 * (i - 1)) And y <= (16 * (i)) Then
-                        .group = i
+                        .Group = i
                     End If
                 Next
             End If
@@ -1786,14 +1786,14 @@ Module [Interface]
         Dim y As Long, i As Long
 
         With Windows(curWindow).Window
-            y = curMouseY - .Top
+            y = CurMouseY - .Top
 
             ' find the option we're hovering over
-            If UBound(.list) > 0 Then
-                For i = 1 To UBound(.list)
+            If UBound(.List) > 0 Then
+                For i = 1 To UBound(.List)
                     If y >= (16 * (i - 1)) And y <= (16 * (i)) Then
-                        Windows(.linkedToWin).Controls(.linkedToCon).value = i
-                        CloseComboMenu
+                        Windows(.LinkedToWin).Controls(.LinkedToCon).Value = i
+                        CloseComboMenu()
                     End If
                 Next
             End If
@@ -1908,20 +1908,20 @@ Module [Interface]
     End Sub
 
     Public Sub btnMenu_Map()
-        Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+        Windows(GetWindowIndex("winCharacter")).Window.Visible = Not Windows(GetWindowIndex("winCharacter")).Window.Visible
     End Sub
 
     Public Sub btnMenu_Guild()
-        Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+        Windows(GetWindowIndex("winCharacter")).Window.Visible = Not Windows(GetWindowIndex("winCharacter")).Window.Visible
     End Sub
 
     Public Sub btnMenu_Quest()
-        Windows(GetWindowIndex("winCharacter")).Window.visible = Not Windows(GetWindowIndex("winCharacter")).Window.visible
+        Windows(GetWindowIndex("winCharacter")).Window.Visible = Not Windows(GetWindowIndex("winCharacter")).Window.Visible
     End Sub
 
-' ##############
-' ## Esc Menu ##
-' ##############
+    ' ##############
+    ' ## Esc Menu ##
+    ' ##############
     Public Sub btnEscMenu_Return()
         HideWindow(GetWindowIndex("winEscMenu"))
     End Sub
@@ -1932,14 +1932,14 @@ Module [Interface]
     End Sub
 
     Public Sub btnEscMenu_MainMenu()
-        HideWindows
-        ShowWindow(GetWindowIndex("winLogin")) 
-        LogoutGame
+        HideWindows()
+        ShowWindow(GetWindowIndex("winLogin"))
+        LogoutGame()
     End Sub
 
     Public Sub btnEscMenu_Exit()
         HideWindow(GetWindowIndex("winEscMenu"))
-        DestroyGame
+        DestroyGame()
     End Sub
 
     Public Sub btnAcceptChar_1()
@@ -1987,19 +1987,19 @@ Module [Interface]
         ShowWindow(GetWindowIndex("winLogin"))
     End Sub
 
-     ' ##########
-     ' ## Bars ##
-     ' ##########
-     Public Sub Bars_OnDraw()
-         Dim xO As Long, yO As Long, Width As Long
+    ' ##########
+    ' ## Bars ##
+    ' ##########
+    Public Sub Bars_OnDraw()
+        Dim xO As Long, yO As Long, Width As Long
 
-         xO = Windows(GetWindowIndex("winBars")).Window.Left
-         yO = Windows(GetWindowIndex("winBars")).Window.Top
+        xO = Windows(GetWindowIndex("winBars")).Window.Left
+        yO = Windows(GetWindowIndex("winBars")).Window.Top
 
-         ' Bars
-         Client.RenderTexture(Client.InterfaceTexture(27), xO + 15, yO + 15, 0, 0, BarWidth_GuiHP, 13, BarWidth_GuiHP, 13)
-         Client.RenderTexture(Client.InterfaceTexture(28), xO + 15, yO + 32, 0, 0, BarWidth_GuiSP, 13, BarWidth_GuiSP, 13)
-         Client.RenderTexture(Client.InterfaceTexture(29), xO + 15, yO + 49, 0, 0, BarWidth_GuiEXP, 13, BarWidth_GuiEXP, 13)
+        ' Bars
+        Client.RenderTexture(Client.InterfaceTexture(27), xO + 15, yO + 15, 0, 0, BarWidth_GuiHP, 13, BarWidth_GuiHP, 13)
+        Client.RenderTexture(Client.InterfaceTexture(28), xO + 15, yO + 32, 0, 0, BarWidth_GuiSP, 13, BarWidth_GuiSP, 13)
+        Client.RenderTexture(Client.InterfaceTexture(29), xO + 15, yO + 49, 0, 0, BarWidth_GuiEXP, 13, BarWidth_GuiEXP, 13)
     End Sub
 
     ' #######################
@@ -2161,8 +2161,8 @@ Module [Interface]
 
     ' Chat
     Public Sub btnSay_Click()
-    HandlePressEnter()
-End Sub
+        HandlePressEnter()
+    End Sub
 
     Public Sub Chat_OnDraw()
         Dim winIndex As Long, xO As Long, yO As Long
@@ -2397,12 +2397,12 @@ End Sub
 
             ' exit out if we're offering that item
             If InTrade > 0 Then
-                For i = 1 To MAX_INV
+                For I = 1 To MAX_INV
                     If TradeYourOffer(I).Num = invNum Then
                         ' is currency?
-                        If Type.Item(GetPlayerInv(MyIndex, TradeYourOffer(i).Num)).Type = ItemType.Currency Then
+                        If Type.Item(GetPlayerInv(MyIndex, TradeYourOffer(I).Num)).Type = ItemType.Currency Then
                             ' only exit out if we're offering all of it
-                            If TradeYourOffer(i).Value = GetPlayerInvValue(MyIndex, TradeYourOffer(i).Num) Then
+                            If TradeYourOffer(I).Value = GetPlayerInvValue(MyIndex, TradeYourOffer(I).Num) Then
                                 Exit Sub
                             End If
                         Else
@@ -2436,7 +2436,7 @@ End Sub
 
         itemNum = IsInv(Windows(GetWindowIndex("winInventory")).Window.Left, Windows(GetWindowIndex("winInventory")).Window.Top)
         If itemNum > 0 Then
-        ' exit out if we're offering that item
+            ' exit out if we're offering that item
             If InTrade > 0 Then
                 For i = 1 To MAX_INV
                     If TradeYourOffer(i).Num = itemNum Then
@@ -2477,8 +2477,8 @@ End Sub
     ' ##    Bank   ##
     ' ###############
     Public Sub btnMenu_Bank()
-        If Windows(GetWindowIndex("winBank")).Window.visible Then
-            CloseBank
+        If Windows(GetWindowIndex("winBank")).Window.Visible Then
+            CloseBank()
         End If
     End Sub
 
@@ -2493,7 +2493,7 @@ End Sub
         If ItemNum > 0 Then
             ' make sure we're not dragging the item
             If DragBox.Type = PartType.Item And DragBox.Value = ItemNum Then Exit Sub
-            
+
             ' calc position
             X = Windows(GetWindowIndex("winBank")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             Y = Windows(GetWindowIndex("winBank")).Window.Top - 6
@@ -2530,7 +2530,7 @@ End Sub
 
             winIndex = GetWindowIndex("winDragBox")
             With Windows(winIndex).Window
-                .state = EntState.MouseDown
+                .State = EntState.MouseDown
                 .Left = CurMouseX - 16
                 .Top = CurMouseY - 16
                 .movedX = CurMouseX - .Left
@@ -2540,10 +2540,10 @@ End Sub
             ShowWindow(winIndex, , False)
 
             ' stop dragging inventory
-            Windows(GetWindowIndex("winBank")).Window.state = EntState.Normal
+            Windows(GetWindowIndex("winBank")).Window.State = EntState.Normal
         End If
 
-        Bank_MouseMove
+        Bank_MouseMove()
     End Sub
 
     Public Sub Bank_DblClick()
@@ -2553,11 +2553,11 @@ End Sub
         BankSlot = IsBank(Windows(GetWindowIndex("winBank")).Window.Left, Windows(GetWindowIndex("winBank")).Window.Top)
 
         If BankSlot > 0 Then
-            WithdrawItem(BankSlot, GetBankValue(MyIndex, bankSlot))
+            WithdrawItem(BankSlot, GetBankValue(MyIndex, BankSlot))
             Exit Sub
         End If
 
-        Bank_MouseMove
+        Bank_MouseMove()
     End Sub
 
     ' ##############
@@ -2576,15 +2576,15 @@ End Sub
         With DragBox
             Select Case .Type
                 Case PartType.Item
-                    If .value Then
-                        texNum = Type.Item(.value).Icon
+                    If .Value Then
+                        texNum = Type.Item(.Value).Icon
                         Client.RenderTexture(Client.ItemTexture(texNum), xO, yO, 0, 0, 32, 32, 32, 32)
                     End If
 
                 Case PartType.Skill
-                    If .value Then
-                        texNum = Type.Skill(.value).Icon
-                        Client.RenderTexture(CLient.SkillTexture(texNum), xO, yO, 0, 0, 32, 32, 32, 32)
+                    If .Value Then
+                        texNum = Type.Skill(.Value).Icon
+                        Client.RenderTexture(Client.SkillTexture(texNum), xO, yO, 0, 0, 32, 32, 32, 32)
                     End If
             End Select
         End With
@@ -2592,17 +2592,17 @@ End Sub
 
     Public Sub DragBox_Check()
         Dim winIndex As Long, I As Long, curWindow As Long, curControl As Long, tmpRec As RectStruct
-    
+
         winIndex = GetWindowIndex("winDragBox")
-    
+
         If DragBox.Type = PartType.None Then Exit Sub
 
         ' check for other windows
         For I = 1 To WindowCount
             With Windows(I).Window
-                If .visible Then
+                If .Visible Then
                     ' can't drag to self
-                    If .name <> "winDragBox" Then
+                    If .Name <> "winDragBox" Then
                         If CurMouseX >= .Left And CurMouseX <= .Left + .Width Then
                             If CurMouseY >= .Top And CurMouseY <= .Top + .Height Then
                                 If curWindow = 0 Then curWindow = I
@@ -2612,11 +2612,11 @@ End Sub
                     End If
                 End If
             End With
-         Next
+        Next
 
         ' we have a window - check if we can drop
         If curWindow Then
-            Select Case Windows(curWindow).Window.name
+            Select Case Windows(curWindow).Window.Name
                 Case "winBank"
                     If DragBox.Origin = PartOriginType.Bank Then
                         If DragBox.Type = PartType.Item Then
@@ -2624,13 +2624,13 @@ End Sub
                             For I = 1 To MAX_BANK
                                 With tmpRec
                                     .Top = Windows(curWindow).Window.Top + BankTop + ((BankOffsetY + 32) * ((I - 1) \ BankColumns))
-                                    .bottom = .Top + 32
+                                    .Bottom = .Top + 32
                                     .Left = Windows(curWindow).Window.Left + BankLeft + ((BankOffsetX + 32) * (((I - 1) Mod BankColumns)))
                                     .Right = .Left + 32
                                 End With
-    
+
                                 If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
-                                    If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
+                                    If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.Bottom Then
                                         ' switch the slots
                                         If DragBox.Slot <> I Then
                                             ChangeBankSlots(DragBox.Slot, I)
@@ -2641,16 +2641,16 @@ End Sub
                             Next
                         End If
                     End If
-                
+
                     If DragBox.Origin = PartOriginType.Inventory Then
                         If DragBox.Type = PartType.Item Then
-    
+
                             If Type.Item(GetPlayerInv(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
                                 DepositItem(DragBox.Slot, 1)
                             Else
                                 Dialogue("Deposit Item", "Enter the deposit quantity.", "", DialogueType.DepositItem, DialogueStyle.Input, DragBox.Slot)
                             End If
-    
+
                         End If
                     End If
 
@@ -2662,13 +2662,13 @@ End Sub
                             For I = 1 To MAX_INV
                                 With tmpRec
                                     .Top = Windows(curWindow).Window.Top + InvTop + ((InvOffsetY + 32) * ((I - 1) \ InvColumns))
-                                    .bottom = .Top + 32
+                                    .Bottom = .Top + 32
                                     .Left = Windows(curWindow).Window.Left + InvLeft + ((InvOffsetX + 32) * (((I - 1) Mod InvColumns)))
                                     .Right = .Left + 32
                                 End With
-                            
+
                                 If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
-                                    If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
+                                    If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.Bottom Then
                                         ' switch the slots
                                         If DragBox.Slot <> I Then SendChangeInvSlots(DragBox.Slot, I)
                                         Exit For
@@ -2677,33 +2677,33 @@ End Sub
                             Next
                         End If
                     End If
-                
+
                     If DragBox.Origin = PartOriginType.Bank Then
                         If DragBox.Type = PartType.Item Then
-    
+
                             If Type.Item(GetBank(MyIndex, DragBox.Slot)).Type <> ItemType.Currency Then
                                 WithdrawItem(DragBox.Slot, 0)
                             Else
                                 Dialogue("Withdraw Item", "Enter the amount you wish to withdraw.", "", DialogueType.WithdrawItem, DialogueStyle.Input, DragBox.Slot)
                             End If
-    
+
                         End If
                     End If
 
                 Case "winSkills"
                     If DragBox.Origin = PartOriginType.Skill Then
                         If DragBox.Type = PartType.Skill Then
-                             ' find the slot to switch with
+                            ' find the slot to switch with
                             For I = 1 To MAX_PLAYER_SKILLS
                                 With tmpRec
                                     .Top = Windows(curWindow).Window.Top + SkillTop + ((SkillOffsetY + 32) * ((I - 1) \ SkillColumns))
-                                    .bottom = .Top + 32
+                                    .Bottom = .Top + 32
                                     .Left = Windows(curWindow).Window.Left + SkillLeft + ((SkillOffsetX + 32) * (((I - 1) Mod SkillColumns)))
                                     .Right = .Left + 32
                                 End With
-                            
+
                                 If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
-                                    If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
+                                    If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.Bottom Then
                                         ' switch the slots
                                         If DragBox.Slot <> I Then SendChangeSkillSlots(DragBox.Slot, I)
                                         Exit For
@@ -2720,13 +2720,13 @@ End Sub
                             For I = 1 To MAX_Hotbar
                                 With tmpRec
                                     .Top = Windows(curWindow).Window.Top + HotbarTop
-                                    .bottom = .Top + 32
+                                    .Bottom = .Top + 32
                                     .Left = Windows(curWindow).Window.Left + HotbarLeft + ((I - 1) * HotbarOffsetX)
                                     .Right = .Left + 32
                                 End With
-                            
+
                                 If CurMouseX >= tmpRec.Left And CurMouseX <= tmpRec.Right Then
-                                    If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.bottom Then
+                                    If CurMouseY >= tmpRec.Top And CurMouseY <= tmpRec.Bottom Then
                                         ' set the Hotbar slot
                                         If DragBox.Origin <> PartOriginType.Hotbar Then
                                             If DragBox.Type = PartType.Item Then
@@ -2761,7 +2761,7 @@ End Sub
                     SendSetHotbarSlot(DragBox.Origin, DragBox.Slot, DragBox.Slot, 0)
             End Select
         End If
-    
+
         ' close window
         HideWindow(winIndex)
 
@@ -2769,7 +2769,7 @@ End Sub
             .Type = PartType.None
             .Slot = 0
             .Origin = PartOriginType.None
-            .value = 0
+            .Value = 0
         End With
     End Sub
 
@@ -2778,21 +2778,21 @@ End Sub
     ' ############
     Public Sub Skills_MouseDown()
         Dim slotNum As Long, winIndex As Long
-    
+
         ' is there an item?
         slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
-    
+
         If slotNum Then
             With DragBox
                 .Type = PartType.Skill
-                .value = Type.Player(MyIndex).Skill(slotNum).Num
+                .Value = Type.Player(MyIndex).Skill(slotNum).Num
                 .Origin = PartOriginType.Skill
                 .Slot = slotNum
             End With
-        
+
             winIndex = GetWindowIndex("winDragBox")
             With Windows(winIndex).Window
-                .state = EntState.MouseDown
+                .State = EntState.MouseDown
                 .Left = CurMouseX - 16
                 .Top = CurMouseY - 16
                 .movedX = CurMouseX - .Left
@@ -2802,22 +2802,22 @@ End Sub
             ShowWindow(winIndex, , False)
 
             ' stop dragging inventory
-            Windows(GetWindowIndex("winSkills")).Window.state = EntState.Normal
+            Windows(GetWindowIndex("winSkills")).Window.State = EntState.Normal
         End If
 
-        Skills_MouseMove
+        Skills_MouseMove()
     End Sub
 
     Public Sub Skills_DblClick()
         Dim slotNum As Long
 
         slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
-    
+
         If slotNum > 0 Then
             PlayerCastSkill(slotNum)
         End If
-    
-        Skills_MouseMove
+
+        Skills_MouseMove()
     End Sub
 
     Public Sub Skills_MouseMove()
@@ -2827,15 +2827,15 @@ End Sub
         If DragBox.Type <> PartType.None Then Exit Sub
 
         slotNum = IsSkill(Windows(GetWindowIndex("winSkills")).Window.Left, Windows(GetWindowIndex("winSkills")).Window.Top)
-    
+
         If slotNum > 0 Then
             ' make sure we're not dragging the item
-            If DragBox.Type = PartType.Item And DragBox.value = slotNum Then Exit Sub
+            If DragBox.Type = PartType.Item And DragBox.Value = slotNum Then Exit Sub
 
             ' calc position
             x = Windows(GetWindowIndex("winSkills")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             y = Windows(GetWindowIndex("winSkills")).Window.Top - 6
-            
+
             ' offscreen?
             If x < 0 Then
                 ' switch to right
@@ -2926,10 +2926,10 @@ End Sub
                 Case 1 ' inventory
                     ShowItemDesc(x, y, Type.Player(MyIndex).Hotbar(slotNum).Slot)
                 Case 2 ' skill
-                    ShowskillDesc(x, y, Type.Player(MyIndex).Hotbar(slotNum).Slot, 0)
+                    ShowSkillDesc(x, y, Type.Player(MyIndex).Hotbar(slotNum).Slot, 0)
             End Select
         Else
-             Windows(GetWindowIndex("winDescription")).Window.Visible = False
+            Windows(GetWindowIndex("winDescription")).Window.Visible = False
         End If
     End Sub
 
@@ -2971,13 +2971,13 @@ End Sub
 
         ' Centralize it
         CentralizeWindow(WindowCount)
-    
+
         ' Set the index for spawning controls
         zOrder_Con = 1
-    
+
         ' Parchment
         CreatePictureBox(WindowCount, "picParchment", 6, 6, 198, 144, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        
+
         ' Buttons
         CreateButton(WindowCount, "btnReturn", 16, 16, 178, 28, "Return to Game", FontType.Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnEscMenu_Return))
         CreateButton(WindowCount, "btnOptions", 16, 48, 178, 28, "Options", FontType.Georgia, , , , , , , DesignType.Orange, DesignType.Orange_Hover, DesignType.Orange_Click, , , New Action(AddressOf btnEscMenu_Options))
@@ -3016,7 +3016,7 @@ End Sub
 
     Public Sub CreateWindow_Chat()
         ' Create window
-        CreateWindow("winChat", "", FontType.Georgia, zOrder_Win, 8, ResolutionHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , ,  False)
+        CreateWindow("winChat", "", FontType.Georgia, zOrder_Win, 8, ResolutionHeight - 178, 352, 152, 0, False, , , , , , , , , , , , , , , False)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
@@ -3029,7 +3029,7 @@ End Sub
         CreateCheckbox(WindowCount, "chkGuild", 210, 2, 49, 23, 1, "Guild", FontType.Arial, , , , DesignType.ChkChat, , , , , New Action(AddressOf chkChat_Guild))
         CreateCheckbox(WindowCount, "chkPlayer", 260, 2, 49, 23, 1, "Player", FontType.Arial, , , , DesignType.ChkChat, , ,  , , New Action(AddressOf chkChat_Player))
 
-        ' Blank picturebox - ondraw wrapper
+        ' Blank picturebox
         CreatePictureBox(WindowCount, "picNull", 0, 0, 0, 0, , , , , , , , , , , , , , , , , New Action(AddressOf Chat_OnDraw))
 
         ' Chat button
@@ -3038,7 +3038,7 @@ End Sub
         ' Chat Textbox
         CreateTextbox(WindowCount, "txtChat", 12, 127 + 16, 286, 25, , FontType.Georgia, , , , , , , , , , , , , , , CHAT_LENGTH)
 
-        ' buttons
+        ' Buttons
         CreateButton(WindowCount, "btnUp", 328, 28, 11, 13, , , , 4, 52, 4, , , , , , , , New Action(AddressOf btnChat_Up))
         CreateButton(WindowCount, "btnDown", 327, 122, 11, 13, , , , 5, 53, 5, , , , , , , , New Action(AddressOf btnChat_Down))
 
@@ -3115,12 +3115,12 @@ End Sub
         CreateLabel(WindowCount, "lblGold", 42, 296, 100, 10, "g", FontType.Georgia, Microsoft.Xna.Framework.Color.Yellow)
 
         ' Drop
-        CreateButton(WindowCount, "btnDrop", 155, 294, 38, 16, "Drop" , , , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , , 5, 3)
+        CreateButton(WindowCount, "btnDrop", 155, 294, 38, 16, "Drop", , , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , , , , 5, 3)
     End Sub
 
     Public Sub CreateWindow_Character()
         ' Create window
-        CreateWindow("winCharacter", "Character", FontType.Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_DblClick) , New Action(AddressOf DrawCharacter))
+        CreateWindow("winCharacter", "Character", FontType.Georgia, zOrder_Win, 0, 0, 174, 356, 62, False, 2, 6, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_MouseMove), New Action(AddressOf Character_DblClick), New Action(AddressOf DrawCharacter))
 
         ' Centralize it
         CentralizeWindow(WindowCount)
@@ -3143,10 +3143,10 @@ End Sub
         CreatePictureBox(WindowCount, "picWhiteBox", 13, 134, 148, 19, , , , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
         CreatePictureBox(WindowCount, "picWhiteBox", 13, 154, 148, 19, , , , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite)
 
-' Labels
-CreateLabel(WindowCount, "lblName", 18, 36, 147, 10, "Name", FontType.Arial, Microsoft.Xna.Framework.Color.White)
-CreateLabel(WindowCount, "lblJob", 18, 56, 147, 10, "Job", FontType.Arial, Microsoft.Xna.Framework.Color.White)
-CreateLabel(WindowCount, "lblLevel", 18, 76, 147, 10, "Level", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        ' Labels
+        CreateLabel(WindowCount, "lblName", 18, 36, 147, 10, "Name", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblJob", 18, 56, 147, 10, "Job", FontType.Arial, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblLevel", 18, 76, 147, 10, "Level", FontType.Arial, Microsoft.Xna.Framework.Color.White)
         CreateLabel(WindowCount, "lblGuild", 18, 96, 147, 10, "Guild", FontType.Arial, Microsoft.Xna.Framework.Color.White)
         CreateLabel(WindowCount, "lblHealth", 18, 116, 147, 10, "Health", FontType.Arial, Microsoft.Xna.Framework.Color.White)
         CreateLabel(WindowCount, "lblSpirit", 18, 136, 147, 10, "Spirit", FontType.Arial, Microsoft.Xna.Framework.Color.White)
