@@ -2137,7 +2137,7 @@ Friend Module S_EventLogic
             path(tim).Y = LastY
         Loop
 
-        'Ok we got a Core.PAth. Now, lets look at the first step and see what direction we should take.
+        'Ok we got a Core.Path. Now, lets look at the first step and see what direction we should take.
         If path(1).X > LastX Then
             FindNpcPath = DirectionType.Right
         ElseIf path(1).Y > LastY Then

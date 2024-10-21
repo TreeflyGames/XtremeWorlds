@@ -50,19 +50,19 @@ Friend Module [Event]
     Sub SaveSwitches()
         Dim json As New JsonSerializer(Of String())()
 
-        json.Write(Core.PAth.Database & "Switches.json", Switches)
+        json.Write(Core.Path.Database & "Switches.json", Switches)
     End Sub
 
     Sub SaveVariables()
         Dim json As New JsonSerializer(Of String())()
 
-        json.Write(Core.PAth.Database & "Variables.json", Variables)
+        json.Write(Core.Path.Database & "Variables.json", Variables)
     End Sub
 
     Sub LoadSwitches()
         Dim json As New JsonSerializer(Of String())()
 
-        Switches = json.Read(Core.PAth.Database & "Switches.json")
+        Switches = json.Read(Core.Path.Database & "Switches.json")
 
         If Switches Is Nothing Then CreateSwitches()
     End Sub
@@ -70,7 +70,7 @@ Friend Module [Event]
     Sub LoadVariables()
         Dim json As New JsonSerializer(Of String())()
 
-        Variables = json.Read(Core.PAth.Database & "Variables.json")
+        Variables = json.Read(Core.Path.Database & "Variables.json")
 
         If Variables Is Nothing Then CreateVariables()
     End Sub
@@ -1051,7 +1051,7 @@ Friend Module [Event]
                 path(tim).Y = lastY
             Loop
 
-            'Ok we got a Core.PAth. Now, lets look at the first step and see what direction we should take.
+            'Ok we got a Core.Path. Now, lets look at the first step and see what direction we should take.
             If path(1).X > lastX Then
                 CanEventMoveTowardsPlayer = DirectionType.Right
             ElseIf path(1).Y > lastY Then

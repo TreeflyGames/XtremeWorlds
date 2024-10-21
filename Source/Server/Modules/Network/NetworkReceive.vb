@@ -1189,7 +1189,7 @@ Module NetworkReceive
         ' Prevent hacking
         If GetPlayerAccess(index) < AccessType.Owner Then Exit Sub
 
-        filename = Core.PAth.Database & "banlist.txt"
+        filename = Core.Path.Database & "banlist.txt"
 
         If File.Exists(filename) Then Kill(filename)
 

@@ -42,7 +42,7 @@ Public Class Settings
     Public Autotile As Boolean = True
 
      Public Shared Sub Load()
-        Dim configPath As String = Core.PAth.Config()
+        Dim configPath As String = Core.Path.Config()
         Dim configFile As String = IO.Path.Combine(configPath, "Settings.xml")
 
         Directory.CreateDirectory(configPath)
@@ -71,7 +71,7 @@ Public Class Settings
     End Sub
 
     Public Shared Sub Save()
-        Dim configPath As String = Core.PAth.Config()
+        Dim configPath As String = Core.Path.Config()
         Dim configFile As String = IO.Path.Combine(configPath, "Settings.xml")
 
         Directory.CreateDirectory(configPath)

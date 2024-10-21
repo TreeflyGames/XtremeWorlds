@@ -221,7 +221,7 @@ Module General
             counter = counter + 1
             ReDim Preserve SoundCache(counter)
 
-            SoundCache(counter) = IO.PAth.GetFileName(FileName)
+            SoundCache(counter) = IO.Path.GetFileName(FileName)
             Application.DoEvents()
         Next
     End Sub

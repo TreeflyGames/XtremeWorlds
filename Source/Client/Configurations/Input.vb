@@ -129,7 +129,7 @@ Public Class Input
             Dim configPath As String = Core.Path.Config()
             Directory.CreateDirectory(configPath) ' Ensure directory exists
 
-            Dim configFile As String = IO.PAth.Combine(configPath, "Inputs.xml")
+            Dim configFile As String = IO.Path.Combine(configPath, "Inputs.xml")
 
             Using writer As New StreamWriter(configFile)
                 Dim serializer As New XmlSerializer(GetType(Input), New XmlRootAttribute("Inputs"))

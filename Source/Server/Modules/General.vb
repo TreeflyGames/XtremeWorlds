@@ -197,7 +197,7 @@ Module General
 
     Sub ErrorHandler(sender As Object, args As UnhandledExceptionEventArgs)
         Dim e As Exception = DirectCast(args.ExceptionObject, Exception)
-        Dim myFilePath As String = Core.PAth.Logs & "Errors.log"
+        Dim myFilePath As String = Core.Path.Logs & "Errors.log"
 
         Using sw As New StreamWriter(File.Open(myFilePath, FileMode.Append))
             sw.WriteLine(DateTime.Now)

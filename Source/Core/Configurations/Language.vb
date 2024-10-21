@@ -262,7 +262,7 @@ Public Module Languages
     Public Language As New LanguageDef
 
     Public Sub Load()
-        Dim cf As String = Core.PAth.Config()
+        Dim cf As String = Core.Path.Config()
         Dim x As New XmlSerializer(GetType(LanguageDef), New XmlRootAttribute("Language"))
 
         Directory.CreateDirectory(cf)

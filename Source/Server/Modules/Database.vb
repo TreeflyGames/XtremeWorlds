@@ -1454,7 +1454,7 @@ Module Database
     Function IsBanned(index As Integer, IP As String) As Boolean
         Dim filename As String, line As String
 
-        filename = Core.PAth.Database & "banlist.txt"
+        filename = Core.Path.Database & "banlist.txt"
 
         ' Check if file exists
         If Not File.Exists(filename) Then
@@ -1480,7 +1480,7 @@ Module Database
     End Function
 
     Sub BanIndex(BanPlayerindex As Integer, BannedByindex As Integer)
-        Dim filename As String = Core.PAth.Database & "banlist.txt"
+        Dim filename As String = Core.Path.Database & "banlist.txt"
         Dim IP As String, i As Integer
 
         ' Make sure the file exists

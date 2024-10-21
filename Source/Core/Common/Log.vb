@@ -24,10 +24,10 @@ Public Module Log
         ' Check if the directory exists
         If Not Directory.Exists(Core.Path.Logs) Then
             ' Create the directory
-            Directory.CreateDirectory(Core.PAth.Logs)
+            Directory.CreateDirectory(Core.Path.Logs)
         End If
 
-        fullpath = Core.PAth.Logs & FN
+        fullpath = Core.Path.Logs & FN
         contents = GetFileContents(fullpath)
         contents = contents & vbNewLine & strData
 
