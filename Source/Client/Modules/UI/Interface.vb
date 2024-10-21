@@ -1159,8 +1159,8 @@ Module [Interface]
 
                     ' render icon
                     If .Icon > 0 Then
-                        width = Client.ItemGfxInfo(.Icon).Width
-                        height = Client.ItemGfxInfo(.Icon).Height
+                        width = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Items & .Icon)).Width
+                        height = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Items & .Icon)).Height
 
                         Client.EnqueueTexture(IO.Path.Combine(.Texture(.State), .Icon & GfxExt), .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, width, height, width, height)
                     End If
@@ -1182,10 +1182,10 @@ Module [Interface]
                     If width > .Width Then
                         hor_centre = .Left + xO + xOffset
                     Else
-                        hor_centre = .Left + xO + xOffset + ((.Width - width - xOffset) \ 2) - 2
+                        hor_centre = .Left + xO + xOffset + ((.Width - width) \ 2) - 2
                     End If
 
-                    RenderText(.Text, hor_centre, ver_centre, .Color, Microsoft.Xna.Framework.Color.Black)
+                    RenderText(.Text, hor_centre, ver_centre, .Color, Microsoft.Xna.Framework.Color.Black, .Font)
 
                 ' labels
                 Case EntityType.Label
@@ -2022,10 +2022,10 @@ Module [Interface]
                 If CharSprite(I) > 0 Then ' Ensure character sprite is valid
                     ' Define the rectangle for the character sprite
                     Dim rect As New Rectangle(
-                        Client.CharacterGfxInfo(CharSprite(I)).Width / 4,
-                        Client.CharacterGfxInfo(CharSprite(I)).Height / 4,
-                        Client.CharacterGfxInfo(CharSprite(I)).Width / 4,
-                        Client.CharacterGfxInfo(CharSprite(I)).Height / 4
+                         Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & CharSprite(I))).Width / 4,
+                         Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & CharSprite(I))).Height / 4,
+                         Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & CharSprite(I))).Width / 4,
+                         Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & CharSprite(I))).Height / 4
                     )
 
                     ' Ensure the sprite index is within bounds
@@ -2076,10 +2076,10 @@ Module [Interface]
             Client.CharacterTexture(imageChar),
             xO + 50, yO + 90,
             0, 0,
-            Client.CharacterGfxInfo(imageChar).Width / 4,
-            Client.CharacterGfxInfo(imageChar).Height / 4,
-            Client.CharacterGfxInfo(imageChar).Width / 4,
-            Client.CharacterGfxInfo(imageChar).Height / 4
+             Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Width / 4,
+             Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Height / 4,
+             Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Width / 4,
+             Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Height / 4
         )
     End Sub
 
@@ -2259,8 +2259,8 @@ Module [Interface]
             imageChar = Type.Job(newCharJob).FemaleSprite
         End If
 
-        Dim rect = New Rectangle((Client.CharacterGfxInfo(imageChar).Width / 4), (Client.CharacterGfxInfo(imageChar).Height / 4),
-                               (Client.CharacterGfxInfo(imageChar).Width / 4), (Client.CharacterGfxInfo(imageChar).Height / 4))
+        Dim rect = New Rectangle((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Width / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Height / 4),
+                               (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Width / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Height / 4))
 
 
         ' render char

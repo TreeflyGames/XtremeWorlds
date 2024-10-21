@@ -57,14 +57,14 @@ Module Map
 
         Dim sX As Integer = 0
         Dim sY As Integer = 0
-        Dim sW As Integer = Client.FogGfxInfo(fogNum).Width  ' Using the full width of the fog texture
-        Dim sH As Integer = Client.FogGfxInfo(fogNum).Height ' Using the full height of the fog texture
+        Dim sW As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Fogs & fogNum)).Width  ' Using the full width of the fog texture
+        Dim sH As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Fogs & fogNum)).Height ' Using the full height of the fog texture
 
         ' These should match the scale calculations for full coverage plus extra area
         Dim dX As Integer = (FogOffsetX * 2.5) - 50
         Dim dY As Integer = (FogOffsetY * 3.5) - 50
-        Dim dW As Integer = Client.FogGfxInfo(fogNum).Width + 200
-        Dim dH As Integer = Client.FogGfxInfo(fogNum).Height + 200
+        Dim dW As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Fogs & fogNum)).Width + 200
+        Dim dH As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Fogs & fogNum)).Height + 200
 
         Client.RenderTexture(Client.FogTexture(fogNum), dX, dY, sX, sY, dW, dH, sW, sH, CurrentFogOpacity)
     End Sub
@@ -445,8 +445,8 @@ Module Map
 
         Client.RenderTexture(Client.PanoramaTexture(index),
                       0, 0, 0, 0,
-                      Client.PanoramaGfxInfo(index).Width, Client.PanoramaGfxInfo(index).Height,
-                      Client.PanoramaGfxInfo(index).Width, Client.PanoramaGfxInfo(index).Height)
+                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Panoramas & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Panoramas & index)).Height,
+                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Panoramas & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Panoramas & index)).Height)
     End Sub
 
     Friend Sub DrawParallax(index As Integer)
@@ -462,8 +462,8 @@ Module Map
 
         Client.RenderTexture(Client.ParallaxTexture(index),
                       CInt(horz), CInt(vert), 0, 0,
-                      Client.ParallaxGfxInfo(index).Width, Client.ParallaxGfxInfo(index).Height,
-                      Client.ParallaxGfxInfo(index).Width, Client.ParallaxGfxInfo(index).Height)
+                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Parallax & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Parallax & index)).Height,
+                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Parallax & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Parallax & index)).Height)
     End Sub
 
     Friend Sub DrawPicture(Optional index As Integer = 0, Optional type As Integer = 0)
@@ -488,8 +488,8 @@ Module Map
                 posY = 0 - Picture.yOffset
 
             Case PictureType.CenterScreen
-                posX = Client.PictureTexture(index).Width / 2 - Client.PictureGfxInfo(index).Width / 2 - Picture.xOffset
-                posY = Client.PictureTexture(index).Height / 2 - Client.PictureGfxInfo(index).Height / 2 - Picture.yOffset
+                posX = Client.PictureTexture(index).Width / 2 - Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Width / 2 - Picture.xOffset
+                posY = Client.PictureTexture(index).Height / 2 - Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Height / 2 - Picture.yOffset
 
             Case PictureType.CenterEvent
                 If CurrentEvents < Picture.EventId Then
@@ -510,7 +510,7 @@ Module Map
         End Select
 
         Client.RenderTexture(Client.PictureTexture(index), posX, posY, 0, 0,
-                      Client.PictureGfxInfo(index).Width,  Client.PictureGfxInfo(index).Height, Client.PictureGfxInfo(index).Width,  Client.PictureGfxInfo(index).Height)
+                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Height, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Height)
     End Sub
 
 #End Region

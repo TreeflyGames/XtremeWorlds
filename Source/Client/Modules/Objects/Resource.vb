@@ -154,14 +154,14 @@ Module Resource
         ' src rect
         With rec
             .Y = 0
-            .Height = Client.ResourceGfxInfo(resourceSprite).Height
+            .Height = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Resources & resourceSprite)).Height
             .X = 0
-            .Width = Client.ResourceGfxInfo(resourceSprite).Width
+            .Width = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Resources & resourceSprite)).Width
         End With
 
         ' Set base x + y, then the offset due to size
-        x = (MyMapResource(resourceNum).X * PicX) - (Client.ResourceGfxInfo(resourceSprite).Width / 2) + 16
-        y = (MyMapResource(resourceNum).Y * PicY) - Client.ResourceGfxInfo(resourceSprite).Height + 32
+        x = (MyMapResource(resourceNum).X * PicX) - (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Resources & resourceSprite)).Width / 2) + 16
+        y = (MyMapResource(resourceNum).Y * PicY) - Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Resources & resourceSprite)).Height + 32
 
         DrawResource(resourceSprite, x, y, rec)
     End Sub

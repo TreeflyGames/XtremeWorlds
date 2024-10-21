@@ -191,4 +191,15 @@ Public Module [Path]
             Return IO.Path.Combine(Graphics, "Resources")
         End Get
     End Property
+
+    ''' <summary> Returns misc directory </summary>
+    Public ReadOnly Property Misc As String
+        Get
+            Return IO.Path.Combine(Graphics, "Misc")
+        End Get
+    End Property
+
+    Public Function GetLastDirectoryName(path As String) As String
+        Return IO.Path.GetFileName(IO.Path.GetDirectoryName(path.TrimEnd(IO.Path.DirectorySeparatorChar)))
+    End Function
 End Module

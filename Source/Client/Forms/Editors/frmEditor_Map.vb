@@ -1275,7 +1275,7 @@ Public Class frmEditor_Map
         SetAutoTileDimensions(cmbAutoTile.SelectedIndex)
 
         ' Define the source and destination rectangles for rendering
-        Dim srcRect As New Rectangle(0, 0, Client.TilesetGfxInfo(tileset).Width, Client.TilesetGfxInfo(tileset).Height)
+        Dim srcRect As New Rectangle(0, 0, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Tilesets & tileset)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Tilesets & tileset)).Height)
         Dim destRect As New Rectangle(0, 0, Math.Min(srcRect.Width, picBackSelect.Width), Math.Min(srcRect.Height, picBackSelect.Height))
 
         ' Begin the sprite batch and draw the tileset texture

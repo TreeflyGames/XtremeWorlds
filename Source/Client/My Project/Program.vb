@@ -15,6 +15,7 @@ Public Class GameClient
     Public Graphics As GraphicsDeviceManager
     Public SpriteBatch As Graphics.SpriteBatch
     Public TextureCache As New Dictionary(Of String, Texture2D)()
+    Private ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GraphicInfo)()
     Public ReadOnly MultiplyBlendState As New BlendState()
 
     ' Thread-safe queue to hold render commands
@@ -42,6 +43,13 @@ Public Class GameClient
         Public Width As Integer
         Public Height As Integer
     End Class
+
+    ' Method to retrieve a GraphicInfo object safely
+    Public Function GetGraphicInfo(key As String) As GraphicInfo
+        Dim result As GraphicInfo = Nothing
+        GfxInfoCache.TryGetValue(key, result)
+        Return result
+    End Function
 
 #Region "Declarations"
 
@@ -83,37 +91,6 @@ Public Class GameClient
     Friend BarTexture As Texture2D
     Friend PixelTexture As Texture2D
     Friend TransparentTexture As Texture2D
-
-    ' GraphicInfo Declarations
-    Friend TilesetGfxInfo() As GraphicInfo
-    Friend CharacterGfxInfo() As GraphicInfo
-    Friend PaperdollGfxInfo() As GraphicInfo
-    Friend ItemGfxInfo() As GraphicInfo
-    Friend ResourceGfxInfo() As GraphicInfo
-    Friend AnimationGfxInfo() As GraphicInfo
-    Friend SkillGfxInfo() As GraphicInfo
-    Friend ProjectileGfxInfo() As GraphicInfo
-    Friend FogGfxInfo() As GraphicInfo
-    Friend EmoteGfxInfo() As GraphicInfo
-    Friend PanoramaGfxInfo() As GraphicInfo
-    Friend ParallaxGfxInfo() As GraphicInfo
-    Friend PictureGfxInfo() As GraphicInfo
-
-    Friend BloodGfxInfo As GraphicInfo
-    Friend DirectionGfxInfo As GraphicInfo
-    Friend WeatherGfxInfo As GraphicInfo
-    Friend InterfaceGfxInfo() As GraphicInfo
-    Friend DesignGfxInfo() As GraphicInfo
-    Friend GradientGfxInfo() As GraphicInfo
-    Friend TargetGfxInfo As GraphicInfo
-    Friend ChatBubbleGfxInfo As GraphicInfo
-    Friend MapTintGfxInfo As GraphicInfo
-    Friend NightGfxInfo As GraphicInfo
-    Friend LightGfxInfo As GraphicInfo
-    Friend LightDynamicGfxInfo As GraphicInfo
-    Friend CursorGfxInfo As GraphicInfo
-    Friend ShadowGfxInfo As GraphicInfo
-    Friend BarGfxInfo As GraphicInfo
 
 #End Region
 
@@ -341,6 +318,12 @@ Public Class GameClient
         For i As Integer = 0 To files.Length - 1
             Using stream As New FileStream(files(i), FileMode.Open)
                 texture(i) = Texture2D.FromStream(GraphicsDevice, stream)
+                Dim graphcsInfo = New GraphicInfo
+                graphcsInfo.Width = texture(i).Width
+                graphcsInfo.Height = texture(i).Height
+
+                ' Store texture with a unique key (e.g., "Tileset_0", "Tileset_1", etc.)
+                GfxInfoCache.TryAdd($"{Core.Path.GetLastDirectoryName(path)}{i}", graphcsInfo)
             End Using
         Next
     End Sub
@@ -917,8 +900,8 @@ Public Class GameClient
         With rec
             .Y = 0
             .Height = PicX
-            .X = anim * (EmoteGfxInfo(sprite).Width / 2)
-            .Width = (EmoteGfxInfo(sprite).Width / 2)
+            .X = anim * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Emotes & sprite)).Width / 2)
+            .Width = (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Emotes & sprite)).Width / 2)
         End With
 
         x = ConvertMapX(x2)
@@ -964,10 +947,10 @@ Public Class GameClient
         If sprite < 1 Or sprite > NumPaperdolls Then Exit Sub
 
         With rec
-            .Y = spritetop * (PaperdollGfxInfo(sprite).Height / 4)
-            .Height = (PaperdollGfxInfo(sprite).Height / 4)
-            .X = anim * (PaperdollGfxInfo(sprite).Width / 4)
-            .Width = (PaperdollGfxInfo(sprite).Width / 4)
+            .Y = spritetop * Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Paperdolls & sprite)).Height / 4
+            .Height = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Paperdolls & sprite)).Height / 4
+            .X = anim * Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Paperdolls & sprite)).Width / 4
+            .Width = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Paperdolls & sprite)).Width / 4
         End With
 
         x = ConvertMapX(x2)
@@ -1043,18 +1026,18 @@ Public Class GameClient
         End Select
 
         ' Create the rectangle for rendering the sprite
-        rect = New Rectangle(anim * (CharacterGfxInfo(sprite).Width / 4), spriteLeft * (CharacterGfxInfo(sprite).Height / 4),
-                             CharacterGfxInfo(sprite).Width / 4, CharacterGfxInfo(sprite).Height / 4)
+        rect = New Rectangle(anim * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Width / 4), spriteLeft * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Height / 4),
+                              Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Width / 4, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Height / 4)
 
         ' Calculate X and Y coordinates for rendering
-        x = MyMapNPC(MapNPCNum).X * PicX + MyMapNPC(MapNPCNum).XOffset - ((CharacterGfxInfo(sprite).Width / 4 - 32) / 2)
+        x = MyMapNPC(MapNpcNum).X * PicX + MyMapNPC(MapNpcNum).XOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Width / 4 - 32) / 2)
 
-        If CharacterGfxInfo(sprite).Height / 4 > 32 Then
+        If Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Height / 4 > 32 Then
             ' Larger sprites need an offset for height adjustment
-            y = MyMapNPC(MapNPCNum).Y * PicY + MyMapNPC(MapNPCNum).YOffset - (CharacterGfxInfo(sprite).Height / 4 - 32)
+            y = MyMapNPC(MapNpcNum).Y * PicY + MyMapNPC(MapNpcNum).YOffset - (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Height / 4 - 32)
         Else
             ' Normal sprite height
-            y = MyMapNPC(MapNPCNum).Y * PicY + MyMapNPC(MapNPCNum).YOffset
+            y = MyMapNPC(MapNpcNum).Y * PicY + MyMapNPC(MapNpcNum).YOffset
         End If
 
         ' Draw shadow and NPC sprite
@@ -1143,8 +1126,8 @@ Public Class GameClient
         Dim tmpX As Long, tmpY As Long, barWidth As Long, i As Long, NpcNum As Long
 
         ' dynamic bar calculations
-        Width = BarGfxInfo.Width
-        Height = BarGfxInfo.Height / 4
+        Width = Client.GetGraphicInfo("Bars").Width
+        Height = Client.GetGraphicInfo("Bars").Height / 4
 
         ' render npc health bars
         For i = 1 To MAX_MAP_NPCS
@@ -1152,13 +1135,13 @@ Public Class GameClient
             ' exists?
             If NpcNum > 0 Then
                 ' alive?
-                If Type.MyMapNPC(i).Vital(VitalType.HP) > 0 And Type.MyMapNPC(i).Vital(VitalType.HP) < Type.NPC(NPCNum).HP Then
+                If Type.MyMapNPC(i).Vital(VitalType.HP) > 0 And Type.MyMapNPC(i).Vital(VitalType.HP) < Type.NPC(NpcNum).HP Then
                     ' lock to npc
                     tmpX = Type.MyMapNPC(i).X * PicX + Type.MyMapNPC(i).XOffset + 16 - (Width / 2)
                     tmpY = Type.MyMapNPC(i).Y * PicY + Type.MyMapNPC(i).YOffset + 35
 
                     ' calculate the width to fill
-                    If Width > 0 Then BarWidth_NpcHP_Max(i) = ((Type.MyMapNPC(i).Vital(VitalType.HP) / Width) / (Type.NPC(NPCNum).HP / Width)) * Width
+                    If Width > 0 Then BarWidth_NpcHP_Max(i) = ((Type.MyMapNPC(i).Vital(VitalType.HP) / Width) / (Type.NPC(NpcNum).HP / Width)) * Width
 
                     ' draw bar background
                     Top = Height * 3 ' HP bar background
@@ -1220,7 +1203,7 @@ Public Class GameClient
                         tmpY = GetPlayerY(i) * PicY + Type.Player(i).YOffset + 35 + Height
 
                         ' calculate the width to fill
-                        If Width > 0 Then barWidth = (GetTickCount - SkillBufferTimer) / ((Type.Skill(Type.Player(i).Skill(SkillBuffer).Num).CastTime * 1000)) * Width
+                        If Width > 0 Then barWidth = (GetTickCount() - SkillBufferTimer) / ((Type.Skill(Type.Player(i).Skill(SkillBuffer).Num).CastTime * 1000)) * Width
 
                         ' draw bar background
                         Top = Height * 3 ' cooldown bar background
@@ -1333,9 +1316,9 @@ Public Class GameClient
 
         With rec
             .Y = 0
-            .Height = TargetGfxInfo.Height
+            .Height = Client.GetGraphicInfo("Target").Height
             .X = 0
-            .Width = TargetGfxInfo.Width / 2
+            .Width = Client.GetGraphicInfo("Target").Width / 2
         End With
         x = ConvertMapX(x2 + 4)
         y = ConvertMapY(y2 - 32)
@@ -1352,9 +1335,9 @@ Public Class GameClient
 
         With rec
             .Y = 0
-            .Height = TargetGfxInfo.Height
-            .X = TargetGfxInfo.Width / 2
-            .Width = TargetGfxInfo.Width / 2 + TargetGfxInfo.Width / 2
+            .Height = Client.GetGraphicInfo("Target").Height
+            .X = Client.GetGraphicInfo("Target").Width / 2
+            .Width = Client.GetGraphicInfo("Target").Width / 2 + Client.GetGraphicInfo("Target").Width / 2
         End With
 
         x = ConvertMapX(x2 + 4)
@@ -1482,7 +1465,7 @@ Public Class GameClient
     End Sub
 
     Friend Sub EditorAnim_DrawSprite()
-        With frmEditor_Animation
+        With FrmEditor_Animation
             ProcessAnimation(.nudSprite0, .nudFrameCount0, .nudLoopTime0, 0, EditorAnimation_Anim1, .picSprite0)
             ProcessAnimation(.nudSprite1, .nudFrameCount1, .nudLoopTime1, 1, EditorAnimation_Anim2, .picSprite1)
         End With
@@ -1500,8 +1483,8 @@ Public Class GameClient
         If animationNum <= 0 OrElse animationNum > NumAnimations Then Exit Sub
 
         ' Retrieve animation texture dimensions
-        Dim totalWidth As Integer = AnimationGfxInfo(animationNum).Width
-        Dim totalHeight As Integer = AnimationGfxInfo(animationNum).Height
+        Dim totalWidth As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Animations & animationNum)).Width
+        Dim totalHeight As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Animations & animationNum)).Height
 
         ' Get the number of columns from the control
         Dim columns As Integer = frameCountControl.Value
@@ -1542,9 +1525,9 @@ Public Class GameClient
         Dim sourceRect As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
 
         ' Render the texture to the target
-        SpriteBatch.Draw(AnimationTexture(animationNum), 
-                         New Rectangle(0, 0, frameWidth, frameHeight), 
-                         sourceRect, 
+        SpriteBatch.Draw(AnimationTexture(animationNum),
+                         New Rectangle(0, 0, frameWidth, frameHeight),
+                         sourceRect,
                          Color.White)
 
         SpriteBatch.End()
@@ -1634,7 +1617,7 @@ Public Class GameClient
             Next
 
             ' check if it's timed out - close it if so
-            If .Timer + 5000 < GetTickCount Then
+            If .Timer + 5000 < GetTickCount() Then
                 .Active = False
             End If
         End With
@@ -1731,19 +1714,19 @@ Public Class GameClient
         End Select
 
         ' Calculate the X
-        x = Type.Player(index).X * PicX + Type.Player(index).XOffset - ((CharacterGfxInfo(spritenum).Width / 4 - 32) / 2)
+        x = Type.Player(index).X * PicX + Type.Player(index).XOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Width / 4 - 32) / 2)
 
         ' Is the player's height more than 32..?
-        If (CharacterGfxInfo(spritenum).Height) > 32 Then
+        If (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Height) > 32 Then
             ' Create a 32 pixel offset for larger sprites
-            y = GetPlayerY(index) * PicY + Type.Player(index).YOffset - ((CharacterGfxInfo(spritenum).Height / 4) - 32)
+            y = GetPlayerY(index) * PicY + Type.Player(index).YOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Height / 4) - 32)
         Else
             ' Proceed as normal
             y = GetPlayerY(index) * PicY + Type.Player(index).YOffset
         End If
 
-        rect = New Rectangle((anim) * (CharacterGfxInfo(spritenum).Width / 4), spriteleft * (CharacterGfxInfo(spritenum).Height / 4),
-                               (CharacterGfxInfo(spritenum).Width / 4), (CharacterGfxInfo(spritenum).Height / 4))
+        rect = New Rectangle((anim) * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Width / 4), spriteleft * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Height / 4),
+                               (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Width / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Height / 4))
 
         ' render the actual sprite
         DrawShadow(x, y + 16)
@@ -1881,7 +1864,7 @@ Public Class GameClient
         Dim gfxIndex As Integer = eventData.Pages(1).Graphic
 
         ' Validate the graphic index to ensure it’s within range
-        If gfxIndex <= 0 OrElse gfxIndex > NumCharacters Then Exit Sub 
+        If gfxIndex <= 0 OrElse gfxIndex > NumCharacters Then Exit Sub
 
         ' Get animation details (frame index and columns) from the event
         Dim frameIndex As Integer = eventData.Pages(1).GraphicX ' Example frame index
@@ -1902,9 +1885,9 @@ Public Class GameClient
         ' Render the graphic using SpriteBatch
         SpriteBatch.Begin()
 
-        SpriteBatch.Draw(CharacterTexture(gfxIndex), 
-                         position, 
-                         sourceRect, 
+        SpriteBatch.Draw(CharacterTexture(gfxIndex),
+                         position,
+                         sourceRect,
                          Color.White)
 
         SpriteBatch.End()
@@ -1938,16 +1921,16 @@ Public Class GameClient
     Friend Sub DrawEvent(id As Integer) ' draw on map, outside the editor
         Dim x As Integer, y As Integer, width As Integer, height As Integer, sRect As Rectangle, anim As Integer, spritetop As Integer
 
-       If MapEvents(id).Visible = 0 Then Exit Sub
+        If MapEvents(id).Visible = 0 Then Exit Sub
 
         Select Case MapEvents(id).GraphicType
             Case 0
                 Exit Sub
             Case 1
-               If MapEvents(id).Graphic <= 0 Or MapEvents(id).Graphic > NumCharacters Then Exit Sub
+                If MapEvents(id).Graphic <= 0 Or MapEvents(id).Graphic > NumCharacters Then Exit Sub
 
                 ' Reset frame
-               If MapEvents(id).Steps = 3 Then
+                If MapEvents(id).Steps = 3 Then
                     anim = 0
                 ElseIf MapEvents(id).Steps = 1 Then
                     anim = 2
@@ -1976,20 +1959,20 @@ Public Class GameClient
                         spritetop = 1
                 End Select
 
-               If MapEvents(id).WalkAnim = 1 Then anim = 0
-               If MapEvents(id).Moving = 0 Then anim = MapEvents(id).GraphicX
+                If MapEvents(id).WalkAnim = 1 Then anim = 0
+                If MapEvents(id).Moving = 0 Then anim = MapEvents(id).GraphicX
 
-                width = CharacterGfxInfo(MapEvents(id).Graphic).Width / 4
-                height = CharacterGfxInfo(MapEvents(id).Graphic).Height / 4
+                width = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Width / 4
+                height = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height / 4
 
-                sRect = New Rectangle((anim) * (CharacterGfxInfo(MapEvents(id).Graphic).Width / 4), spritetop * (CharacterGfxInfo(MapEvents(id).Graphic).Height / 4), (CharacterGfxInfo(MapEvents(id).Graphic).Width / 4), (CharacterGfxInfo(MapEvents(id).Graphic).Height / 4))
+                sRect = New Rectangle((anim) * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Width / 4), spritetop * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Width / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height / 4))
                 ' Calculate the X
-                x = MapEvents(id).X * PicX + MapEvents(id).XOffset - ((CharacterGfxInfo(MapEvents(id).Graphic).Width / 4 - 32) / 2)
+                x = MapEvents(id).X * PicX + MapEvents(id).XOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Width / 4 - 32) / 2)
 
                 ' Is the player's height more than 32..?
-                If (CharacterGfxInfo(MapEvents(id).Graphic).Height * 4) > 32 Then
+                If (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height * 4) > 32 Then
                     ' Create a 32 pixel offset for larger sprites
-                    y = MapEvents(id).Y * PicY + MapEvents(id).YOffset - ((CharacterGfxInfo(MapEvents(id).Graphic).Height / 4) - 32)
+                    y = MapEvents(id).Y * PicY + MapEvents(id).YOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height / 4) - 32)
                 Else
                     ' Proceed as normal
                     y = MapEvents(id).Y * PicY + MapEvents(id).YOffset
