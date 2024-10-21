@@ -13,6 +13,11 @@ Setup
 Install PostgreSQL and use the password for the database as mirage. You can change this in the source code.
 https://www.postgresql.org/
 
+Build
+===========
+If you don't pull the repo with a proper Git client, you need to init the submodules by running the following command in the terminal.  
+``git submodule update --init``
+
 Game Features:
 ==============
 Basic Character Creation/Class Selection
