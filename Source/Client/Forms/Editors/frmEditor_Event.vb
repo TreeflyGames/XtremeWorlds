@@ -904,12 +904,12 @@ Public Class frmEditor_Event
             GraphicSelY2 = 0
             If nudGraphic.Value <= 0 Or nudGraphic.Value > NumCharacters Then Exit Sub
             For i = 0 To 3
-                If GraphicSelX >= Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & nudGraphic.Value)).Width / 4 * i And GraphicSelX < Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & nudGraphic.Value)).Width / 4 * (i + 1) Then
+                If GraphicSelX >= Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value)).Width / 4 * i And GraphicSelX < Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value)).Width / 4 * (i + 1) Then
                     GraphicSelX = i
                 End If
             Next
             For i = 0 To 3
-                If GraphicSelY >= Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & nudGraphic.Value)).Height / 4 * i And GraphicSelY < Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & nudGraphic.Value)).Height / 4 * (i + 1) Then
+                If GraphicSelY >= Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value)).Height / 4 * i And GraphicSelY < Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value)).Height / 4 * (i + 1) Then
                     GraphicSelY = i
                 End If
             Next

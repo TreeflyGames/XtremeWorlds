@@ -45,7 +45,7 @@ Module Map
                     spriteLeft = WeatherParticle(i).Type - 1
                 End If
 
-                Client.RenderTexture(Client.WeatherTexture, ConvertMapX(WeatherParticle(i).X), ConvertMapY(WeatherParticle(i).Y), spriteLeft * 32, 0, 32, 32, 32, 32)
+                Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Misc, "Weather"), ConvertMapX(WeatherParticle(i).X), ConvertMapY(WeatherParticle(i).Y), spriteLeft * 32, 0, 32, 32, 32, 32)
             End If
         Next
     End Sub
@@ -57,16 +57,16 @@ Module Map
 
         Dim sX As Integer = 0
         Dim sY As Integer = 0
-        Dim sW As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Fogs & fogNum)).Width  ' Using the full width of the fog texture
-        Dim sH As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Fogs & fogNum)).Height ' Using the full height of the fog texture
+        Dim sW As Integer = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Fogs, fogNum)).Width  ' Using the full width of the fog texture
+        Dim sH As Integer = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Fogs, fogNum)).Height ' Using the full height of the fog texture
 
         ' These should match the scale calculations for full coverage plus extra area
         Dim dX As Integer = (FogOffsetX * 2.5) - 50
         Dim dY As Integer = (FogOffsetY * 3.5) - 50
-        Dim dW As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Fogs & fogNum)).Width + 200
-        Dim dH As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Fogs & fogNum)).Height + 200
+        Dim dW As Integer = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Fogs, fogNum)).Width + 200
+        Dim dH As Integer = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Fogs, fogNum)).Height + 200
 
-        Client.RenderTexture(Client.FogTexture(fogNum), dX, dY, sX, sY, dW, dH, sW, sH, CurrentFogOpacity)
+        Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Fogs, fogNum), dX, dY, sX, sY, dW, dH, sW, sH, CurrentFogOpacity)
     End Sub
 
     Friend Sub DrawMapLowerTile(x As Integer, y As Integer)
@@ -79,7 +79,7 @@ Module Map
         ' Ensure x and y are within the bounds of the map
         If x < 0 OrElse y < 0 OrElse x > MyMap.MaxX OrElse y > MyMap.MaxY Then Exit Sub
 
-        on Error GoTo mapSync
+        On Error GoTo mapsync
 
         For i = LayerType.Ground To LayerType.CoverAnim
             ' Check if the tile's layer array is initialized
@@ -104,9 +104,9 @@ Module Map
                     End If
 
                     ' Render the tile
-                    Client.RenderTexture(Client.TilesetTexture(MyMap.Tile(x, y).Layer(i).Tileset), ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
+                    Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Tilesets, MyMap.Tile(x, y).Layer(i).Tileset), ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
 
-                ' Autotile rendering state
+                    ' Autotile rendering state
                 ElseIf Type.Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Type.Setting.Autotile Then
                         DrawAutoTile(i, ConvertMapX(x * PicX), ConvertMapY(y * PicY), 1, x, y, 0, False)
@@ -118,7 +118,7 @@ Module Map
             End If
         Next
 
-        mapsync:
+mapsync:
     End Sub
 
     Friend Sub DrawMapUpperTile(x As Integer, y As Integer)
@@ -131,7 +131,7 @@ Module Map
         ' Ensure x and y are within valid map bounds
         If x < 0 OrElse y < 0 OrElse x > MyMap.MaxX OrElse y > MyMap.MaxY Then Exit Sub
 
-        on Error GoTo mapSync
+        On Error GoTo mapsync
 
         ' Loop through the layers from Fringe to RoofAnim
         For i = LayerType.Fringe To LayerType.RoofAnim
@@ -139,7 +139,7 @@ Module Map
             If MyMap.Tile(x, y).Layer Is Nothing Then Exit Sub
 
             ' Handle animated layers
-           If MapAnim = 1 Then
+            If MapAnim = 1 Then
                 Select Case i
                     Case LayerType.Fringe
                         i = LayerType.Fringe
@@ -167,9 +167,9 @@ Module Map
                     End If
 
                     ' Render the tile with the calculated rectangle and transparency
-                    Client.RenderTexture(Client.TilesetTexture(MyMap.Tile(x, y).Layer(i).Tileset), ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
+                    Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Tilesets, MyMap.Tile(x, y).Layer(i).Tileset), ConvertMapX(x * PicX), ConvertMapY(y * PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
 
-                ' Handle autotile rendering
+                    ' Handle autotile rendering
                 ElseIf Type.Autotile(x, y).Layer(i).RenderState = RenderStateAutotile Then
                     If Type.Setting.Autotile Then
                         ' Render autotiles
@@ -182,7 +182,7 @@ Module Map
             End If
         Next
 
-        mapsync:
+mapsync:
     End Sub
 
     Friend Sub DrawAutoTile(layerNum As Integer, dX As Integer, dY As Integer, quarterNum As Integer, x As Integer, y As Integer, Optional forceFrame As Integer = 0, Optional strict As Boolean = True)
@@ -220,160 +220,7 @@ Module Map
         End Select
 
         If MyMap.Tile(x, y).Layer Is Nothing Then Exit Sub
-        Client.RenderTexture(Client.TilesetTexture(MyMap.Tile(x, y).Layer(layerNum).Tileset), dX, dY, Type.Autotile(x, y).Layer(layerNum).SrcX(quarterNum) + xOffset, Type.Autotile(x, y).Layer(layerNum).SrcY(quarterNum) + yOffset, 16, 16, 16, 16)
-    End Sub
-
-      Public Sub DrawNight()
-        ' Exit if not in-game or certain conditions are not met
-        If Not inGame OrElse Client.NightTexture Is Nothing OrElse GettingMap OrElse 
-           (MyEditorType = EditorType.Map And Not Night) OrElse MyMap.Indoors Then Exit Sub
-
-        ' Initialize light sources if needed
-        If TileLights Is Nothing Then
-            InitializeLightTiles()
-        Else
-            UpdateLightTiles()
-        End If
-
-        ' Render the player’s personal light
-        RenderPlayerLight()
-
-        ' Apply night overlay using the multiply blend state
-        Client.SpriteBatch.Begin(SpriteSortMode.Immediate, Client.MultiplyBlendState)
-        Client.SpriteBatch.Draw(Client.NightTexture, Microsoft.Xna.Framework.Vector2.Zero, Microsoft.Xna.Framework.Color.White)
-        Client.SpriteBatch.End()
-    End Sub
-
-    Private Sub UpdateLightTiles()
-        For Each light As LightTileStruct In TileLights
-            ' Adjust scale for flickering lights
-            Dim scale As Microsoft.Xna.Framework.Vector2 = If(light.IsFlicker, 
-                light.Scale + New Microsoft.Xna.Framework.Vector2(CSng(Random.NextDouble(-0.004F, 0.004F))), 
-                light.Scale)
-
-            ' Render the updated light tiles
-            RenderLightTiles(light.Tiles, scale, Microsoft.Xna.Framework.Color.White, Client.LightTexture)
-        Next
-    End Sub
-
-   Private Sub RenderLightTiles(tiles As List(Of Microsoft.Xna.Framework.Vector2), scale As Microsoft.Xna.Framework.Vector2, color As Microsoft.Xna.Framework.Color, texture As Texture2D)
-        ' Start the sprite batch with additive blending for light effects
-        Client.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive)
-
-        ' Iterate through each tile and render the light texture on it
-        For Each tile As Microsoft.Xna.Framework.Vector2 In tiles
-            ' Calculate the screen position based on the tile's coordinates
-            Dim position As Microsoft.Xna.Framework.Vector2 = New Microsoft.Xna.Framework.Vector2(
-                ConvertMapX(tile.X * 32),
-                ConvertMapY(tile.Y * 32)
-            )
-
-            ' Draw the light texture at the calculated position with scaling and color
-            Client.SpriteBatch.Draw(
-                texture,        ' The light texture
-                position,       ' Screen position of the tile
-                Nothing,        ' No source rectangle (use full texture)
-                color,          ' Tint color for the light (e.g., white)
-                0.0F,           ' No rotation
-                Microsoft.Xna.Framework.Vector2.Zero,   ' Origin at the top-left corner
-                scale,          ' Scale factor for the texture
-                SpriteEffects.None, ' No special effects
-                0.0F            ' Layer depth (0 for front-most)
-            )
-        Next
-
-        ' End the sprite batch
-        Client.SpriteBatch.End()
-    End Sub
-
-    Private Sub RenderPlayerLight()
-        ' Calculate player light position
-        Dim playerX As Integer = ConvertMapX(Type.Player(MyIndex).X * 32) + 56 + 
-                                 Type.Player(MyIndex).XOffset - (Client.LightTexture.Width / 2)
-        Dim playerY As Integer = ConvertMapY(Type.Player(MyIndex).Y * 32) + 56 + 
-                                 Type.Player(MyIndex).YOffset - (Client.LightTexture.Height / 2)
-
-        ' Render the light texture with appropriate parameters
-        Client.RenderTexture(
-            Client.LightTexture, playerX, playerY, 0, 0, 
-            Client.LightTexture.Width, Client.LightTexture.Height, 
-            Client.LightTexture.Width, Client.LightTexture.Height
-        )
-    End Sub
-
-    Private Sub InitializeLightTiles()
-        ' Ensure thread safety by clearing and reinitializing the list
-        SyncLock TileLights
-            TileLights = New List(Of LightTileStruct)()
-        End SyncLock
-
-        ' Iterate through all the tiles on the map
-        For x As Integer = 0 To MyMap.MaxX
-            For y As Integer = 0 To MyMap.MaxY
-                If IsValidMapPoint(x, y) AndAlso
-                   (MyMap.Tile(x, y).Type = TileType.Light OrElse
-                    MyMap.Tile(x, y).Type2 = TileType.Light) Then
-
-                    ' Get all tiles affected by the light using field of view (FOV)
-                    Dim tiles = AppendFov(x, y, MyMap.Tile(x, y).Data1, True)
-                    tiles.Add(New Microsoft.Xna.Framework.Vector2(x, y))
-
-                    ' Calculate the light scale with optional flickering
-                    Dim scale As Microsoft.Xna.Framework.Vector2 = If(MyMap.Tile(x, y).Data2 = 1,
-                        New Microsoft.Xna.Framework.Vector2(0.35F) + New Microsoft.Xna.Framework.Vector2(CSng(Random.NextDouble(-0.01F, 0.01F))),
-                        New Microsoft.Xna.Framework.Vector2(0.35F))
-
-                    ' Render the tiles dynamically or statically based on settings
-                    If Type.Setting.DynamicLightRendering Then
-                        RenderLightTiles(tiles, scale, Microsoft.Xna.Framework.Color.White, Client.LightTexture)
-                    Else
-                        RenderStaticLightTiles(tiles, scale, MyMap.Tile(x, y).Data1)
-                    End If
-
-                    ' Add the light source to the list safely
-                    SyncLock TileLights
-                        TileLights.Add(New LightTileStruct With {
-                            .Tiles = tiles,
-                            .IsFlicker = MyMap.Tile(x, y).Data2 = 1,
-                            .Scale = scale
-                        })
-                    End SyncLock
-                End If
-            Next
-        Next
-    End Sub
-
-    Private Sub RenderStaticLightTiles(tiles As List(Of Microsoft.Xna.Framework.Vector2), scale As Microsoft.Xna.Framework.Vector2, data1 As Integer)
-        ' Begin the sprite batch for rendering with additive blending
-        Client.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive)
-
-        ' Determine the light intensity based on the data1 parameter
-        Dim alpha As Byte = If(data1 > 0, CByte(255 / data1), 255)
-
-        ' Render each tile with the static light texture
-        For Each tile As Microsoft.Xna.Framework.Vector2 In tiles
-            ' Calculate the position on the screen
-            Dim position As Microsoft.Xna.Framework.Vector2 = New Microsoft.Xna.Framework.Vector2(ConvertMapX(tile.X * 32), ConvertMapY(tile.Y * 32))
-
-            ' Set the light color with calculated alpha transparency
-            Dim lightColor As New Microsoft.Xna.Framework.Color(255, 255, 255, alpha)
-
-            ' Draw the light texture at the calculated position with the given scale
-            Client.SpriteBatch.Draw(
-                Client.LightTexture,    ' Texture to draw
-                position,        ' Screen position
-                Nothing,         ' No source rectangle (draw entire texture)
-                lightColor,      ' Tint color with alpha
-                0.0F,            ' No rotation
-                Microsoft.Xna.Framework.Vector2.Zero,    ' Origin point (top-left)
-                scale,           ' Scale factor for light size
-                SpriteEffects.None, ' No sprite effects
-                0.0F             ' Layer depth
-            )
-        Next
-
-        ' End the sprite batch
-        Client.SpriteBatch.End()
+        Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Tilesets, MyMap.Tile(x, y).Layer(layerNum).Tileset), dX, dY, Type.Autotile(x, y).Layer(layerNum).SrcX(quarterNum) + xOffset, Type.Autotile(x, y).Layer(layerNum).SrcY(quarterNum) + yOffset, 16, 16, 16, 16)
     End Sub
 
     Friend Sub DrawMapTint()
@@ -398,8 +245,8 @@ Module Map
         Client.SpriteBatch.Begin()
 
         ' Draw the tinted texture over the entire camera view
-        Client.SpriteBatch.Draw(tintTexture, 
-                         New Microsoft.Xna.Framework.Rectangle(0, 0, ResolutionWidth, ResolutionHeight), 
+        Client.SpriteBatch.Draw(tintTexture,
+                         New Microsoft.Xna.Framework.Rectangle(0, 0, ResolutionWidth, ResolutionHeight),
                          Microsoft.Xna.Framework.Color.White)
 
         Client.SpriteBatch.End()
@@ -427,8 +274,8 @@ Module Map
         Client.SpriteBatch.Begin()
 
         ' Draw the fade texture over the entire camera view
-        Client.SpriteBatch.Draw(fadeTexture, 
-                         New Microsoft.Xna.Framework.Rectangle(0, 0, ResolutionWidth, ResolutionHeight), 
+        Client.SpriteBatch.Draw(fadeTexture,
+                         New Microsoft.Xna.Framework.Rectangle(0, 0, ResolutionWidth, ResolutionHeight),
                          Microsoft.Xna.Framework.Color.White)
 
         Client.SpriteBatch.End()
@@ -437,16 +284,15 @@ Module Map
         fadeTexture.Dispose()
     End Sub
 
-    
     Friend Sub DrawPanorama(index As Integer)
         If MyMap.Indoors Then Exit Sub
 
         If index < 1 Or index > NumPanoramas Then Exit Sub
 
-        Client.RenderTexture(Client.PanoramaTexture(index),
+        Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Panoramas & index),
                       0, 0, 0, 0,
-                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Panoramas & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Panoramas & index)).Height,
-                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Panoramas & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Panoramas & index)).Height)
+                       Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Panoramas, index)).Width, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Panoramas, index)).Height,
+                       Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Panoramas, index)).Width, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Panoramas, index)).Height)
     End Sub
 
     Friend Sub DrawParallax(index As Integer)
@@ -460,10 +306,10 @@ Module Map
         horz = ConvertMapX(GetPlayerX(MyIndex)) * 2.5F - 50
         vert = ConvertMapY(GetPlayerY(MyIndex)) * 2.5F - 50
 
-        Client.RenderTexture(Client.ParallaxTexture(index),
+        Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Parallax, index),
                       CInt(horz), CInt(vert), 0, 0,
-                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Parallax & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Parallax & index)).Height,
-                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Parallax & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Parallax & index)).Height)
+                       Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Parallax, index)).Width, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Parallax, index)).Height,
+                       Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Parallax, index)).Width, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Parallax, index)).Height)
     End Sub
 
     Friend Sub DrawPicture(Optional index As Integer = 0, Optional type As Integer = 0)
@@ -488,8 +334,8 @@ Module Map
                 posY = 0 - Picture.yOffset
 
             Case PictureType.CenterScreen
-                posX = Client.PictureTexture(index).Width / 2 - Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Width / 2 - Picture.xOffset
-                posY = Client.PictureTexture(index).Height / 2 - Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Height / 2 - Picture.yOffset
+                posX = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Pictures, index)).Width / 2 - Client.GetGraphicInfo((Core.Path.Pictures & index)).Width / 2 - Picture.xOffset
+                posY = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Pictures, index)).Height / 2 - Client.GetGraphicInfo((Core.Path.Pictures & index)).Height / 2 - Picture.yOffset
 
             Case PictureType.CenterEvent
                 If CurrentEvents < Picture.EventId Then
@@ -509,8 +355,8 @@ Module Map
                 posY = ConvertMapY(Core.Type.Player(MyIndex).Y * 32) / 2 - Picture.yOffset
         End Select
 
-        Client.RenderTexture(Client.PictureTexture(index), posX, posY, 0, 0,
-                       Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Height, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Pictures & index)).Height)
+        Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Pictures, index), posX, posY, 0, 0,
+                       Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Pictures, index)).Width, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Pictures, index)).Height, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Pictures, index)).Width, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Pictures, index)).Height)
     End Sub
 
 #End Region

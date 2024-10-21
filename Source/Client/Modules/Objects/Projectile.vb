@@ -236,7 +236,7 @@ Friend Module Projectile
         ' src rect
         With rec
             .Top = 0
-            .Bottom = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Projectiles & sprite)).Height
+            .Bottom = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Projectiles, sprite)).Height
             .Left = MapProjectile(Type.Player(MyIndex).Map, projectileNum).Dir * PicX
             .Right = .Left + PicX
         End With
@@ -258,7 +258,7 @@ Friend Module Projectile
         y = ConvertMapY(y * PicY)
 
         ' Render texture
-        Client.RenderTexture(Client.ProjectileTexture(sprite), x, y, rec.Left, rec.Top, 32, 32)
+        Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Projectiles & sprite), x, y, rec.Left, rec.Top, 32, 32)
 
     End Sub
 

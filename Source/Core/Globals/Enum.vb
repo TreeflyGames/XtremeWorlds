@@ -33,9 +33,9 @@
         Blocked
         Warp
         Item
-        NpcAvoid
+        NPCAvoid
         Resource
-        NpcSpawn
+        NPCSpawn
         Shop
         Bank
         Heal

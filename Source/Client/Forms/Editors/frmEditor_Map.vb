@@ -260,11 +260,11 @@ Public Class frmEditor_Map
         fraResource.Visible = True
     End Sub
 
-    Private Sub BtnNpcSpawn_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNpcSpawn.Click
+    Private Sub BtnNPCSpawn_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNPCSpawn.Click
         SpawnNpcNum = lstNpc.SelectedIndex + 1
         SpawnNpcDir = scrlNpcDir.Value
         pnlAttributes.Visible = False
-        fraNpcSpawn.Visible = False
+        fraNPCSpawn.Visible = False
     End Sub
 
     Private Sub OptNPCSpawn_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles optNPCSpawn.CheckedChanged
@@ -287,7 +287,7 @@ Public Class frmEditor_Map
 
         ClearAttributeDialogue()
         pnlAttributes.Visible = True
-        fraNpcSpawn.Visible = True
+        fraNPCSpawn.Visible = True
     End Sub
 
     Private Sub BtnShop_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnShop.Click
@@ -1239,7 +1239,7 @@ Public Class frmEditor_Map
     End Sub
 
     Public Sub ClearAttributeDialogue()
-        fraNpcSpawn.Visible = False
+        fraNPCSpawn.Visible = False
         fraResource.Visible = False
         fraMapItem.Visible = False
         fraMapWarp.Visible = False
@@ -1275,13 +1275,13 @@ Public Class frmEditor_Map
         SetAutoTileDimensions(cmbAutoTile.SelectedIndex)
 
         ' Define the source and destination rectangles for rendering
-        Dim srcRect As New Rectangle(0, 0, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Tilesets & tileset)).Width, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Tilesets & tileset)).Height)
+        Dim srcRect As New Rectangle(0, 0, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Tilesets, tileset)).Width, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Tilesets, tileset)).Height)
         Dim destRect As New Rectangle(0, 0, Math.Min(srcRect.Width, picBackSelect.Width), Math.Min(srcRect.Height, picBackSelect.Height))
 
         ' Begin the sprite batch and draw the tileset texture
         Client.SpriteBatch.Begin()
         Client.SpriteBatch.Draw(
-            Client.TilesetTexture(tileset), destRect, srcRect, Color.White
+            Client.GetTexture(System.IO.Path.Combine(Core.Path.Tilesets, tileset & GfxExt)), destRect, srcRect, Color.White
         )
         Client.SpriteBatch.End()
 

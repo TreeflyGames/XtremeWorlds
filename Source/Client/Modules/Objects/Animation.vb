@@ -11,7 +11,7 @@ Module Animation
         Dim sprite As Integer = Type.Animation(AnimInstance(index).Animation).Sprite(layer)
         If sprite < 1 Or sprite > NumAnimations Then Return
 
-        Dim graphicInfo As GraphicInfo = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Animations & sprite))
+        Dim graphicInfo As GraphicInfo = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Animations, sprite))
 
         ' Get dimensions and column count from controls and graphic info
         Dim totalWidth As Integer = graphicInfo.Width
@@ -65,7 +65,7 @@ Module Animation
         y = ConvertMapY(y)
 
         ' Render the frame using the calculated source rectangle and position
-        Client.RenderTexture(Client.AnimationTexture(sprite), x, y, sRect.X, sRect.Y, frameWidth, frameHeight, frameWidth, frameHeight)
+        Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Animations, sprite & GfxExt), x, y, sRect.X, sRect.Y, frameWidth, frameHeight, frameWidth, frameHeight)
     End Sub
 
     Private Function GetLockedPosition(index As Integer, lockindex As Integer, width As Integer, height As Integer) As Point
@@ -90,8 +90,8 @@ Module Animation
                 End If
         End Select
 
-        Return New Point(x,y)
-End Function
+        Return New Point(x, y)
+    End Function
 
     Friend Sub CheckAnimInstance(index As Integer)
         Dim looptime As Integer
@@ -105,8 +105,8 @@ End Function
         StreamAnimation(AnimInstance(index).Animation)
 
         ' Get dimensions and column count from controls and graphic info
-        Dim totalWidth As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Animations & AnimInstance(index).Animation)).Width
-        Dim totalHeight As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Animations & AnimInstance(index).Animation)).Height
+        Dim totalWidth As Integer = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Animations, AnimInstance(index).Animation)).Width
+        Dim totalHeight As Integer = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Animations, AnimInstance(index).Animation)).Height
         Dim columns As Integer = Type.Animation(AnimInstance(index).Animation).Frames(layer)
 
         ' Calculate frame dimensions

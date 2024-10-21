@@ -199,7 +199,16 @@ Public Module [Path]
         End Get
     End Property
 
-    Public Function GetLastDirectoryName(path As String) As String
-        Return IO.Path.GetFileName(IO.Path.GetDirectoryName(path.TrimEnd(IO.Path.DirectorySeparatorChar)))
+    ' Helper function to check if a file path has an extension
+    Public Function EnsureFileExtension(path As String, Optional defaultExtension As String = ".png") As String
+        ' Check if the path has an extension
+        If String.IsNullOrWhiteSpace(IO.Path.GetExtension(path)) Then
+            ' If not, add the default extension
+            Return path & defaultExtension
+        End If
+
+        ' Return the original path if it already has an extension
+        Return path
     End Function
+
 End Module

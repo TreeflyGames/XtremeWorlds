@@ -337,7 +337,7 @@ Module General
                                         Dim sprite As Integer = Type.Animation(MyMap.Tile(x, y).Data1).Sprite(layer)
 
                                         If sprite > 0 Then
-                                            Dim graphicInfo As GameClient.GraphicInfo = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Animations & sprite))
+                                            Dim graphicInfo As GameClient.GraphicInfo = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Animations, sprite))
 
                                             ' Get dimensions and column count from controls and graphic info
                                             Dim totalWidth As Integer = graphicInfo.Width
@@ -804,7 +804,6 @@ Module General
             Next
         End If
 
-        DrawNight()
         DrawWeather()
         DrawThunderEffect()
         DrawMapTint()
@@ -903,13 +902,13 @@ Module General
         Client.DrawBars()
         DrawMapFade()
         RenderEntities()
-        Client.RenderTexture(Client.CursorTexture, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
+        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Cursor"), CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
     End Sub
 
     Friend Sub Render_Menu()
         DrawMenuBG()
         RenderEntities()
-        Client.RenderTexture(Client.CursorTexture, CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
+        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Cursor"), CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
     End Sub
 
 End Module

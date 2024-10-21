@@ -1159,8 +1159,8 @@ Module [Interface]
 
                     ' render icon
                     If .Icon > 0 Then
-                        width = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Items & .Icon)).Width
-                        height = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Items & .Icon)).Height
+                        width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Items, .Icon)).Width
+                        height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Items, .Icon)).Height
 
                         Client.EnqueueTexture(IO.Path.Combine(.Texture(.State), .Icon & GfxExt), .Left + xO + .xOffset, .Top + yO + .yOffset, 0, 0, width, height, width, height)
                     End If
@@ -1278,7 +1278,7 @@ Module [Interface]
                             If .Value = 0 Then .Alpha = 150 Else .Alpha = 255
 
                             ' render box
-                            Client.RenderTexture(Client.InterfaceTexture(51), .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
+                            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 51), .Left + xO, .Top + yO, 0, 0, 49, 23, 49, 23)
 
                             ' render text
                             left = .Left + 22 - (TextWidth(.Text, .Font) / 2) + xO
@@ -1997,9 +1997,9 @@ Module [Interface]
         yO = Windows(GetWindowIndex("winBars")).Window.Top
 
         ' Bars
-        Client.RenderTexture(Client.InterfaceTexture(27), xO + 15, yO + 15, 0, 0, BarWidth_GuiHP, 13, BarWidth_GuiHP, 13)
-        Client.RenderTexture(Client.InterfaceTexture(28), xO + 15, yO + 32, 0, 0, BarWidth_GuiSP, 13, BarWidth_GuiSP, 13)
-        Client.RenderTexture(Client.InterfaceTexture(29), xO + 15, yO + 49, 0, 0, BarWidth_GuiEXP, 13, BarWidth_GuiEXP, 13)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 27), xO + 15, yO + 15, 0, 0, BarWidth_GuiHP, 13, BarWidth_GuiHP, 13)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 28), xO + 15, yO + 32, 0, 0, BarWidth_GuiSP, 13, BarWidth_GuiSP, 13)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 29), xO + 15, yO + 49, 0, 0, BarWidth_GuiEXP, 13, BarWidth_GuiEXP, 13)
     End Sub
 
     ' #######################
@@ -2022,17 +2022,17 @@ Module [Interface]
                 If CharSprite(I) > 0 Then ' Ensure character sprite is valid
                     ' Define the rectangle for the character sprite
                     Dim rect As New Rectangle(
-                         Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & CharSprite(I))).Width / 4,
-                         Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & CharSprite(I))).Height / 4,
-                         Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & CharSprite(I))).Width / 4,
-                         Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & CharSprite(I))).Height / 4
+                         Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, CharSprite(I))).Width / 4,
+                         Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, CharSprite(I))).Height / 4,
+                         Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, CharSprite(I))).Width / 4,
+                         Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, CharSprite(I))).Height / 4
                     )
 
                     ' Ensure the sprite index is within bounds
                     If CharSprite(I) <= NumCharacters Then
                         ' Render the character sprite
-                        Client.RenderTexture(
-                            Client.CharacterTexture(CharSprite(I)),
+                        Client.EnqueueTexture(
+                            IO.Path.Combine(Core.Path.Characters, CharSprite(I)),
                             x + 30, yO + 100,
                             0, 0,
                             rect.Width, rect.Height,
@@ -2072,14 +2072,14 @@ Module [Interface]
         End Select
 
         ' Render the character's face
-        Client.RenderTexture(
-            Client.CharacterTexture(imageChar),
+        Client.EnqueueTexture(
+            IO.Path.Combine(Core.Path.Characters, imageChar),
             xO + 50, yO + 90,
             0, 0,
-             Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Width / 4,
-             Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Height / 4,
-             Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Width / 4,
-             Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Height / 4
+             Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, imageChar)).Width / 4,
+             Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, imageChar)).Height / 4,
+             Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, imageChar)).Width / 4,
+             Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, imageChar)).Height / 4
         )
     End Sub
 
@@ -2174,8 +2174,8 @@ Module [Interface]
         RenderDesign(DesignType.Win_Desc, xO, yO, 352, 152)
 
         ' draw the input box
-        Client.RenderTexture(Client.InterfaceTexture(46), xO + 7, yO + 123, 0, 0, 171, 22, 171, 22)
-        Client.RenderTexture(Client.InterfaceTexture(46), xO + 174, yO + 123, 0, 22, 171, 22, 171, 22)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 46), xO + 7, yO + 123, 0, 0, 171, 22, 171, 22)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 46), xO + 174, yO + 123, 0, 22, 171, 22, 171, 22)
 
         ' call the chat render
         DrawChat()
@@ -2259,12 +2259,12 @@ Module [Interface]
             imageChar = Type.Job(newCharJob).FemaleSprite
         End If
 
-        Dim rect = New Rectangle((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Width / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Height / 4),
-                               (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Width / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & imageChar)).Height / 4))
+        Dim rect = New Rectangle((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, imageChar)).Width / 4), (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, imageChar)).Height / 4),
+                               (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, imageChar)).Width / 4), (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, imageChar)).Height / 4))
 
 
         ' render char
-        Client.RenderTexture(Client.CharacterTexture(imageChar), xO + 190, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
+        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Characters, imageChar), xO + 190, yO + 100, 0, 0, rect.Width, rect.Height, rect.Width, rect.Height)
     End Sub
 
     Public Sub btnNewChar_Left()
@@ -2578,13 +2578,13 @@ Module [Interface]
                 Case PartType.Item
                     If .Value Then
                         texNum = Type.Item(.Value).Icon
-                        Client.RenderTexture(Client.ItemTexture(texNum), xO, yO, 0, 0, 32, 32, 32, 32)
+                        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, texNum), xO, yO, 0, 0, 32, 32, 32, 32)
                     End If
 
                 Case PartType.Skill
                     If .Value Then
                         texNum = Type.Skill(.Value).Icon
-                        Client.RenderTexture(Client.SkillTexture(texNum), xO, yO, 0, 0, 32, 32, 32, 32)
+                        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Skills, texNum), xO, yO, 0, 0, 32, 32, 32, 32)
                     End If
             End Select
         End With
@@ -3262,7 +3262,7 @@ Module [Interface]
             ' calc position
             x = Windows(GetWindowIndex("winCharacter")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
             y = Windows(GetWindowIndex("winCharacter")).Window.Top - 6
-            
+
             ' offscreen?
             If x < 0 Then
                 ' switch to right
@@ -3318,7 +3318,7 @@ Module [Interface]
         Height = Windows(GetWindowIndex("winInventory")).Window.Height
 
         ' render green
-        Client.RenderTexture(Client.InterfaceTexture(34), xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 34), xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
 
         Width = 76
         Height = 76
@@ -3327,14 +3327,14 @@ Module [Interface]
         ' render grid - row
         For i = 1 To 4
             If i = 4 Then Height = 38
-            Client.RenderTexture(Client.InterfaceTexture(35), xO + 4, y, 0, 0, Width, Height, Width, Height)
-            Client.RenderTexture(Client.InterfaceTexture(35), xO + 80, y, 0, 0, Width, Height, Width, Height)
-            Client.RenderTexture(Client.InterfaceTexture(35), xO + 156, y, 0, 0, 42, Height, 42, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), xO + 4, y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), xO + 80, y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), xO + 156, y, 0, 0, 42, Height, 42, Height)
             y = y + 76
         Next
 
         ' render bottom wood
-        Client.RenderTexture(Client.InterfaceTexture(1), xO + 4, yO + 289, 100, 100, 194, 26, 194, 26)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 1), xO + 4, yO + 289, 100, 100, 194, 26, 194, 26)
 
         ' actually draw the icons
         For i = 1 To MAX_INV
@@ -3375,7 +3375,7 @@ Module [Interface]
                             Left = xO + InvLeft + ((InvOffsetX + 32) * (((i - 1) Mod InvColumns)))
 
                             ' draw icon
-                            Client.RenderTexture(Client.ItemTexture(ItemIcon), Left, Top, 0, 0, 32, 32, 32, 32)
+                            Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, ItemIcon), Left, Top, 0, 0, 32, 32, 32, 32)
 
                             ' If item is a stack - draw the amount you have
                             If GetPlayerInvValue(MyIndex, i) > 1 Then
@@ -3445,7 +3445,7 @@ Module [Interface]
                 texNum = Type.Item(descItem).Icon
 
                 ' render sprite
-                Client.RenderTexture(Client.ItemTexture(texNum), xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
+                Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, texNum), xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
 
             Case 2 ' Skill Icon
                 texNum = Type.Skill(descItem).Icon
@@ -3453,12 +3453,12 @@ Module [Interface]
                 ' render bar
                 With Windows(GetWindowIndex("winDescription")).Controls(GetControlIndex("winDescription", "picBar"))
                     If .Visible Then
-                        Client.RenderTexture(Client.InterfaceTexture(45), xO + .Left, yO + .Top, 0, 12, .Value, 12, .Value, 12)
+                        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 45), xO + .Left, yO + .Top, 0, 12, .Value, 12, .Value, 12)
                     End If
                 End With
 
                 ' render sprite
-                Client.RenderTexture(Client.SkillTexture(texNum), xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
+                Client.EnqueueTexture(IO.Path.Combine(Core.Path.Skills, texNum), xO + 20, yO + 34, 0, 0, 64, 64, 32, 32)
         End Select
 
         ' render text array
@@ -3472,46 +3472,46 @@ Module [Interface]
 
     Public Sub CreateWindow_DragBox()
         ' Create window
-        CreateWindow("winDragBox", "", FontType.Georgia, zOrder_Win, 0, 0, 32, 32, 0, false, , , , , , , , , , , , New Action(AddressOf DragBox_Check), , New Action(AddressOf DragBox_OnDraw))
-        
+        CreateWindow("winDragBox", "", FontType.Georgia, zOrder_Win, 0, 0, 32, 32, 0, False, , , , , , , , , , , , New Action(AddressOf DragBox_Check), , New Action(AddressOf DragBox_OnDraw))
+
         ' Need to set up unique mouseup event
-        Windows(WindowCount).Window.CallBack(entState.MouseUp) = New Action(AddressOf DragBox_Check)
+        Windows(WindowCount).Window.CallBack(EntState.MouseUp) = New Action(AddressOf DragBox_Check)
     End Sub
 
     Public Sub CreateWindow_Options()
-        CreateWindow("winOptions", "", FontType.Georgia, zOrder_Win, 0, 0, 210, 212, 0, 0, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , , ,False, False)
+        CreateWindow("winOptions", "", FontType.Georgia, zOrder_Win, 0, 0, 210, 212, 0, 0, , , DesignType.Win_NoBar, DesignType.Win_NoBar, DesignType.Win_NoBar, , , , , , , , , , , , False, False)
 
         ' Centralize it
-        CentralizeWindow(windowCount)
+        CentralizeWindow(WindowCount)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
 
         ' Parchment
-        CreatePictureBox(windowCount, "picParchment", 6, 6, 198, 200, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreatePictureBox(WindowCount, "picParchment", 6, 6, 198, 200, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
 
         ' General
-        CreatePictureBox(windowCount, "picBlank", 35, 25, 140, 10, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        CreateLabel(windowCount, "lblBlank", 35, 22, 140, 0, "General Options", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
-    
+        CreatePictureBox(WindowCount, "picBlank", 35, 25, 140, 10, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(WindowCount, "lblBlank", 35, 22, 140, 0, "General Options", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+
         ' Check boxes
-        CreateCheckbox(windowCount, "chkMusic", 35, 40, 80, , , "Music", FontType.Georgia, , , , DesignType.ChkNorm)
-        CreateCheckbox(windowCount, "chkSound", 115, 40, 80, , , "Sound", FontType.Georgia, , , , DesignType.ChkNorm)
-        CreateCheckbox(windowCount, "chkAutotile", 35, 60, 80, , , "Autotile", FontType.Georgia, , , , DesignType.ChkNorm)
-        CreateCheckbox(windowCount, "chkFullscreen", 115, 60, 80, , , "Fullscreen", FontType.Georgia, , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkMusic", 35, 40, 80, , , "Music", FontType.Georgia, , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkSound", 115, 40, 80, , , "Sound", FontType.Georgia, , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkAutotile", 35, 60, 80, , , "Autotile", FontType.Georgia, , , , DesignType.ChkNorm)
+        CreateCheckbox(WindowCount, "chkFullscreen", 115, 60, 80, , , "Fullscreen", FontType.Georgia, , , , DesignType.ChkNorm)
 
         ' Resolution
-        CreatePictureBox(windowCount, "picBlank", 35, 85, 140, 10, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
-        CreateLabel(windowCount, "lblBlank", 35, 92, 140, 10, "Select Resolution", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
+        CreatePictureBox(WindowCount, "picBlank", 35, 85, 140, 10, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment)
+        CreateLabel(WindowCount, "lblBlank", 35, 92, 140, 10, "Select Resolution", FontType.Georgia, Microsoft.Xna.Framework.Color.White, AlignmentType.Center)
 
         ' combobox
-        CreateComboBox(windowCount, "cmbRes", 30, 100, 150, 18, DesignType.ComboNorm)
+        CreateComboBox(WindowCount, "cmbRes", 30, 100, 150, 18, DesignType.ComboNorm)
 
         ' Button
-        CreateButton(windowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", FontType.Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)
+        CreateButton(WindowCount, "btnConfirm", 65, 168, 80, 22, "Confirm", FontType.Georgia, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , AddressOf btnOptions_Confirm)
 
         ' Populate the options screen
-        SetOptionsScreen
+        SetOptionsScreen()
     End Sub
 
     Public Sub CreateWindow_Combobox()
@@ -3522,7 +3522,7 @@ Module [Interface]
         CreateWindow("winComboMenu", "ComboMenu", FontType.Georgia, zOrder_Win, 0, 0, 100, 100, 0, False, , , DesignType.ComboMenuNorm, , , , , , , , , , , , , , False, False)
 
         ' centralize it
-        CentralizeWindow(windowCount)
+        CentralizeWindow(WindowCount)
     End Sub
 
     Public Sub CreateWindow_Skills()
@@ -3540,14 +3540,14 @@ Module [Interface]
     End Sub
 
     Public Sub CreateWindow_Bank()
-        CreateWindow("winBank", "Bank", FontType.Georgia, zOrder_Win, 0, 0, 391, 373, 1, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Bank_MouseMove), New Action(AddressOf Bank_MouseDown), New Action(AddressOf Bank_DblCLick), New Action(AddressOf DrawBank))
+        CreateWindow("winBank", "Bank", FontType.Georgia, zOrder_Win, 0, 0, 391, 373, 1, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Bank_MouseMove), New Action(AddressOf Bank_MouseDown), New Action(AddressOf Bank_DblClick), New Action(AddressOf DrawBank))
 
         ' Centralize it
-        CentralizeWindow(windowCount)
+        CentralizeWindow(WindowCount)
 
         ' Set the index for spawning controls
         zOrder_Con = 1
-        CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 19, 5, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Bank))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 5, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnMenu_Bank))
     End Sub
 
     Public Sub CreateWindow_Shop()
@@ -3555,37 +3555,37 @@ Module [Interface]
         CreateWindow("winShop", "Shop", FontType.Georgia, zOrder_Win, 0, 0, 278, 293, 17, False, 2, 5, DesignType.Win_Empty, DesignType.Win_Empty, DesignType.Win_Empty, , , , , , New Action(AddressOf Shop_MouseMove), New Action(AddressOf Shop_MouseDown), , New Action(AddressOf DrawShopBackground))
 
         ' Centralize it
-        CentralizeWindow(windowCount)
+        CentralizeWindow(WindowCount)
 
         ' Close button
-        CreateButton(windowCount, "btnClose", Windows(windowCount).Window.Width - 19, 6, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnShop_Close))
-        
-        ' Parchment
-        CreatePictureBox(windowCount, "picParchment", 6, 215, 266, 50, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment, , , , , , , New Action(AddressOf DrawShop))
-        
-        ' Picture Box
-        CreatePictureBox(windowCount, "picItemBG", 13, 222, 36, 36, , , , , 30, 30, 30)
-        CreatePictureBox(windowCount, "picItem", 15, 224, 32, 32)
-        
-        ' Buttons
-        CreateButton(windowCount, "btnBuy", 190, 228, 70, 24, "Buy", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnShopBuy))
-        CreateButton(windowCount, "btnSell", 190, 228, 70, 24, "Sell", FontType.Arial, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
-        
-        ' Buying/Selling
-        CreateCheckbox(windowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , DesignType.ChkBuying, , , , , New Action(AddressOf chkShopBuying))
-        CreateCheckbox(windowCount, "chkSelling", 222, 265, 49, 20, 0, , , , ,  , DesignType.ChkSelling, , , , , New Action(AddressOf chkShopSelling))
+        CreateButton(WindowCount, "btnClose", Windows(WindowCount).Window.Width - 19, 6, 36, 36, , , , 8, 9, 10, , , , , , , , New Action(AddressOf btnShop_Close))
 
-'        Labels
-        CreateLabel(windowCount, "lblName", 56, 226, 300, 10, "Test Item", FontType.Arial, Microsoft.Xna.Framework.Color.Black, AlignmentType.Left)
-        CreateLabel(windowCount, "lblCost", 56, 240, 300,  10, "1000g", FontType.Arial, Microsoft.Xna.Framework.Color.Black, AlignmentType.Left)
+        ' Parchment
+        CreatePictureBox(WindowCount, "picParchment", 6, 215, 266, 50, , , , , , , , DesignType.Parchment, DesignType.Parchment, DesignType.Parchment, , , , , , , New Action(AddressOf DrawShop))
+
+        ' Picture Box
+        CreatePictureBox(WindowCount, "picItemBG", 13, 222, 36, 36, , , , , 30, 30, 30)
+        CreatePictureBox(WindowCount, "picItem", 15, 224, 32, 32)
+
+        ' Buttons
+        CreateButton(WindowCount, "btnBuy", 190, 228, 70, 24, "Buy", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnShopBuy))
+        CreateButton(WindowCount, "btnSell", 190, 228, 70, 24, "Sell", FontType.Arial, , , , , False, , DesignType.Red, DesignType.Red_Hover, DesignType.Red_Click, , , New Action(AddressOf btnShopSell))
+
+        ' Buying/Selling
+        CreateCheckbox(WindowCount, "chkBuying", 173, 265, 49, 20, 1, , , , , , DesignType.ChkBuying, , , , , New Action(AddressOf chkShopBuying))
+        CreateCheckbox(WindowCount, "chkSelling", 222, 265, 49, 20, 0, , , , ,  , DesignType.ChkSelling, , , , , New Action(AddressOf chkShopSelling))
+
+        '        Labels
+        CreateLabel(WindowCount, "lblName", 56, 226, 300, 10, "Test Item", FontType.Arial, Microsoft.Xna.Framework.Color.Black, AlignmentType.Left)
+        CreateLabel(WindowCount, "lblCost", 56, 240, 300, 10, "1000g", FontType.Arial, Microsoft.Xna.Framework.Color.Black, AlignmentType.Left)
 
         ' Gold
-        CreateLabel(windowCount, "lblGold", 44, 269, 300, 10, "g", FontType.Georgia, Microsoft.Xna.Framework.Color.White)
+        CreateLabel(WindowCount, "lblGold", 44, 269, 300, 10, "g", FontType.Georgia, Microsoft.Xna.Framework.Color.White)
     End Sub
 
     ' Shop
     Public Sub btnShop_Close()
-        CloseShop
+        CloseShop()
     End Sub
 
     Public Sub chkShopBuying()
@@ -3601,14 +3601,14 @@ Module [Interface]
 
         ' show buy button, hide sell
         With Windows(GetWindowIndex("winShop"))
-            .Controls(GetControlIndex("winShop", "btnSell")).visible = False
-            .Controls(GetControlIndex("winShop", "btnBuy")).visible = True
+            .Controls(GetControlIndex("winShop", "btnSell")).Visible = False
+            .Controls(GetControlIndex("winShop", "btnBuy")).Visible = True
         End With
 
         ' update the shop
-        shopIsSelling  = False
+        shopIsSelling = False
         shopSelectedSlot = 1
-        UpdateShop
+        UpdateShop()
     End Sub
 
     Public Sub chkShopSelling()
@@ -3619,19 +3619,19 @@ Module [Interface]
                 .Controls(GetControlIndex("winShop", "chkBuying")).Value = 0
                 .Controls(GetControlIndex("winShop", "chkSelling")).Value = 1
                 Exit Sub
-                End If
+            End If
         End With
 
         ' show sell button, hide buy
         With Windows(GetWindowIndex("winShop"))
-            .Controls(GetControlIndex("winShop", "btnBuy")).visible = False
-            .Controls(GetControlIndex("winShop", "btnSell")).visible = True
+            .Controls(GetControlIndex("winShop", "btnBuy")).Visible = False
+            .Controls(GetControlIndex("winShop", "btnSell")).Visible = True
         End With
 
         ' update the shop
-        shopIsSelling  = True
+        shopIsSelling = True
         shopSelectedSlot = 1
-        UpdateShop
+        UpdateShop()
     End Sub
 
     Public Sub btnShopBuy()
@@ -3644,17 +3644,17 @@ Module [Interface]
 
     Public Sub Shop_MouseDown()
         Dim shopNum As Long
-    
+
         ' is there an item?
         shopNum = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
         If shopNum > 0 Then
             If Type.Shop(InShop).TradeItem(shopSelectedSlot).Item > 0 Then
                 ' set the active slot
                 shopSelectedSlot = shopNum
-                UpdateShop
+                UpdateShop()
             End If
         End If
-        Shop_MouseMove
+        Shop_MouseMove()
     End Sub
 
     Public Sub Shop_MouseMove()
@@ -3663,7 +3663,7 @@ Module [Interface]
         If InShop = 0 Then Exit Sub
 
         shopSlot = IsShop(Windows(GetWindowIndex("winShop")).Window.Left, Windows(GetWindowIndex("winShop")).Window.Top)
-    
+
         If shopSlot > 0 Then
             ' calc position
             X = Windows(GetWindowIndex("winShop")).Window.Left - Windows(GetWindowIndex("winDescription")).Window.Width
@@ -3703,21 +3703,21 @@ Module [Interface]
         Windows(GetWindowIndex("winChatSmall")).Window.Top = ResolutionHeight - 162
 
         ' move menu
-        Windows(GetWindowIndex("winMenu")).Window.Left =ResolutionWidth - 242
-        Windows(GetWindowIndex("winMenu")).Window.Top =  - 42
+        Windows(GetWindowIndex("winMenu")).Window.Left = ResolutionWidth - 242
+        Windows(GetWindowIndex("winMenu")).Window.Top = -42
 
         ' move invitations
-        Windows(GetWindowIndex("winInvite_Party")).Window.Left =ResolutionWidth - 234
-        Windows(GetWindowIndex("winInvite_Party")).Window.Top = - 80
+        Windows(GetWindowIndex("winInvite_Party")).Window.Left = ResolutionWidth - 234
+        Windows(GetWindowIndex("winInvite_Party")).Window.Top = -80
 
         ' loop through
-        Top =  - 80
+        Top = -80
 
-        If Windows(GetWindowIndex("winInvite_Party")).Window.visible Then
+        If Windows(GetWindowIndex("winInvite_Party")).Window.Visible Then
             Top = Top - 37
         End If
 
-        Windows(GetWindowIndex("winInvite_Trade")).Window.Left = ResolutionWidth- 234
+        Windows(GetWindowIndex("winInvite_Trade")).Window.Left = ResolutionWidth - 234
         Windows(GetWindowIndex("winInvite_Trade")).Window.Top = Top
 
         ' re-size right-click background
@@ -3734,40 +3734,40 @@ Module [Interface]
 
         xO = Windows(GetWindowIndex("winSkills")).Window.Left
         yO = Windows(GetWindowIndex("winSkills")).Window.Top
-    
+
         Width = Windows(GetWindowIndex("winSkills")).Window.Width
         Height = Windows(GetWindowIndex("winSkills")).Window.Height
-    
+
         ' render green
-        Client.RenderTexture(Client.InterfaceTexture(34), xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
-    
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 34), xO + 4, yO + 23, 0, 0, Width - 8, Height - 27, 4, 4)
+
         Width = 76
         Height = 76
-    
+
         y = yO + 23
         ' render grid - row
         For i = 1 To 4
             If i = 4 Then Height = 42
-            Client.RenderTexture(Client.InterfaceTexture(35), xO + 4, y, 0, 0, Width, Height, Width, Height)
-            Client.RenderTexture(Client.InterfaceTexture(35), xO + 80, y, 0, 0, Width, Height, Width, Height)
-            Client.RenderTexture(Client.InterfaceTexture(35), xO + 156, y, 0, 0, 42, Height, 42, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), xO + 4, y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), xO + 80, y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), xO + 156, y, 0, 0, 42, Height, 42, Height)
             y = y + 76
         Next
-    
+
         ' actually draw the icons
         For i = 1 To MAX_PLAYER_SKILLS
-            StreamSkill(skillNum)
+            StreamSkill(Skillnum)
             Skillnum = Type.Player(MyIndex).Skill(i).Num
             If Skillnum > 0 And Skillnum <= MAX_SKILLS Then
                 ' not dragging?
                 If Not (DragBox.Origin = PartOriginType.Skill And DragBox.Slot = i) Then
-                    SkillPic = Type.Skill(skillNum).Icon
+                    SkillPic = Type.Skill(Skillnum).Icon
 
                     If SkillPic > 0 And SkillPic <= NumSkills Then
                         Top = yO + SkillTop + ((SkillOffsetY + 32) * ((i - 1) \ SkillColumns))
                         Left = xO + SkillLeft + ((SkillOffsetX + 32) * (((i - 1) Mod SkillColumns)))
-    
-                        Client.RenderTexture(Client.SkilLTexture(SkillPic), Left, Top, 0, 0, 32, 32, 32, 32)
+
+                        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Skills, SkillPic), Left, Top, 0, 0, 32, 32, 32, 32)
                     End If
                 End If
             End If
@@ -3791,7 +3791,7 @@ Module [Interface]
             ' let them know
             If Value = 0 Then
                 AddText("Music turned off.", ColorType.BrightGreen)
-                StopMusic
+                StopMusic()
             Else
                 AddText("Music tured on.", ColorType.BrightGreen)
                 ' play music
@@ -3799,7 +3799,7 @@ Module [Interface]
                 If Not musicFile = "None." Then
                     PlayMusic(musicFile)
                 Else
-                    StopMusic
+                    StopMusic()
                 End If
             End If
         End If
@@ -3815,7 +3815,7 @@ Module [Interface]
                 AddText("Sound tured on.", ColorType.BrightGreen)
             End If
         End If
-    
+
         ' autotiles
         Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkAutotile")).Value
         If Type.Setting.Autotile <> Value Then
@@ -3824,16 +3824,16 @@ Module [Interface]
             If Value = 0 Then
                 If InGame Then
                     AddText("Autotiles turned off.", ColorType.BrightGreen)
-                    initAutotiles
+                    InitAutotiles()
                 End If
             Else
                 If InGame Then
                     AddText("Autotiles turned on.", ColorType.BrightGreen)
-                    initAutotiles
+                    InitAutotiles()
                 End If
             End If
         End If
-    
+
         ' fullscreen
         Value = Windows(GetWindowIndex("winOptions")).Controls(GetControlIndex("winOptions", "chkFullscreen")).Value
         If Type.Setting.Fullscreen <> Value Then
@@ -3857,32 +3857,32 @@ Module [Interface]
         End If
 
         ' close
-        btnOptions_Close
+        btnOptions_Close()
     End Sub
 
     Public Sub CreateWindow_RightClick()
         ' Create window
         CreateWindow("winRightClickBG", "", FontType.Georgia, zOrder_Win, 0, 0, 800, 600, 0, False, , , , , , , , , , , , New Action(AddressOf RightClick_Close), , , False)
-        
+
         ' Centralize it
-        CentralizeWindow(windowCount)
+        CentralizeWindow(WindowCount)
     End Sub
 
     Public Sub CreateWindow_PlayerMenu()
         ' Create window
         CreateWindow("winPlayerMenu", "", FontType.Georgia, zOrder_Win, 0, 0, 110, 106, 0, False, , , DesignType.Win_Desc, DesignType.Win_Desc, DesignType.Win_Desc, , , , , , , New Action(AddressOf RightClick_Close), , , False)
-        
+
         ' Centralize it
-        CentralizeWindow(windowCount)
+        CentralizeWindow(WindowCount)
 
         ' Name
-        CreateButton(windowCount, "btnName", 8, 8, 94, 18, "[Name]", FontType.Georgia, , , , , , , DesignType.MenuHeader, DesignType.MenuHeader, DesignType.MenuHeader, , , New Action(AddressOf RightClick_Close))
-        
+        CreateButton(WindowCount, "btnName", 8, 8, 94, 18, "[Name]", FontType.Georgia, , , , , , , DesignType.MenuHeader, DesignType.MenuHeader, DesignType.MenuHeader, , , New Action(AddressOf RightClick_Close))
+
         ' Options
-        CreateButton(windowCount, "btnParty", 8, 26, 94, 18, "Invite to Party", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Party))
-        CreateButton(windowCount, "btnTrade", 8, 44, 94, 18, "Request Trade", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Trade))
-        CreateButton(windowCount, "btnGuild", 8, 62, 94, 18, "Invite to Guild", FontType.Georgia, , , , , , , DesignType.MenuOption, , , , , New Action(AddressOf PlayerMenu_Guild))
-        CreateButton(windowCount, "btnPM", 8, 80, 94, 18, "Private Message", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Player))
+        CreateButton(WindowCount, "btnParty", 8, 26, 94, 18, "Invite to Party", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Party))
+        CreateButton(WindowCount, "btnTrade", 8, 44, 94, 18, "Request Trade", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Trade))
+        CreateButton(WindowCount, "btnGuild", 8, 62, 94, 18, "Invite to Guild", FontType.Georgia, , , , , , , DesignType.MenuOption, , , , , New Action(AddressOf PlayerMenu_Guild))
+        CreateButton(WindowCount, "btnPM", 8, 80, 94, 18, "Private Message", FontType.Georgia, , , , , , , , DesignType.MenuOption, , , , New Action(AddressOf PlayerMenu_Player))
     End Sub
 
     ' Right Click Menu
@@ -3892,24 +3892,24 @@ Module [Interface]
         HideWindow(GetWindowIndex("winPlayerMenu"))
     End Sub
 
-     ' Player Menu
+    ' Player Menu
     Sub PlayerMenu_Party()
-        RightClick_Close
+        RightClick_Close()
         SendPartyRequest(GetPlayerName(PlayerMenuIndex))
     End Sub
 
     Sub PlayerMenu_Trade()
-        RightClick_Close
+        RightClick_Close()
         SendTradeRequest(GetPlayerName(PlayerMenuIndex))
     End Sub
 
     Sub PlayerMenu_Guild()
-        RightClick_Close
+        RightClick_Close()
         AddText("System not yet in place.", ColorType.BrightRed)
     End Sub
 
     Sub PlayerMenu_Player()
-        RightClick_Close
+        RightClick_Close()
         AddText("System not yet in place.", ColorType.BrightRed)
     End Sub
 
@@ -3927,17 +3927,17 @@ Module [Interface]
                 shopSelectedItem = Type.Shop(InShop).TradeItem(shopSelectedSlot).Item
                 ' labels
                 If shopSelectedItem > 0 Then
-                    .Controls(GetControlIndex("winShop", "lblName")).text = Type.Item(shopSelectedItem).Name
+                    .Controls(GetControlIndex("winShop", "lblName")).Text = Type.Item(shopSelectedItem).Name
                     ' check if it's gold
                     If Type.Shop(InShop).TradeItem(shopSelectedSlot).CostItem = 1 Then
                         ' it's gold
-                        .Controls(GetControlIndex("winShop", "lblCost")).text = Type.Shop(InShop).TradeItem(shopSelectedSlot).CostValue & "g"
+                        .Controls(GetControlIndex("winShop", "lblCost")).Text = Type.Shop(InShop).TradeItem(shopSelectedSlot).CostValue & "g"
                     Else
                         ' if it's one then just print the name
                         If Type.Shop(InShop).TradeItem(shopSelectedSlot).CostValue = 1 Then
-                            .Controls(GetControlIndex("winShop", "lblCost")).text = Type.Item(Type.Shop(InShop).TradeItem(shopSelectedSlot).CostItem).Name
+                            .Controls(GetControlIndex("winShop", "lblCost")).Text = Type.Item(Type.Shop(InShop).TradeItem(shopSelectedSlot).CostItem).Name
                         Else
-                            .Controls(GetControlIndex("winShop", "lblCost")).text = Type.Shop(InShop).TradeItem(shopSelectedSlot).CostValue & " " & Type.Item(Type.Shop(InShop).TradeItem(shopSelectedSlot).CostItem).Name
+                            .Controls(GetControlIndex("winShop", "lblCost")).Text = Type.Shop(InShop).TradeItem(shopSelectedSlot).CostValue & " " & Type.Item(Type.Shop(InShop).TradeItem(shopSelectedSlot).CostItem).Name
                         End If
                     End If
 
@@ -3947,12 +3947,12 @@ Module [Interface]
                         .Controls(GetControlIndex("winShop", "picItem")).Texture(i) = Path.Items
                     Next
                 Else
-                    .Controls(GetControlIndex("winShop", "lblName")).text = "Empty Slot"
-                    .Controls(GetControlIndex("winShop", "lblCost")).text = ""
-                
+                    .Controls(GetControlIndex("winShop", "lblName")).Text = "Empty Slot"
+                    .Controls(GetControlIndex("winShop", "lblCost")).Text = ""
+
                     ' draw the item
                     For i = 0 To 5
-                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = 0
+                        .Controls(GetControlIndex("winShop", "picItem")).Image(i) = 0
                         .Controls(GetControlIndex("winShop", "picItem")).Texture(i) = Nothing
                     Next
                 End If
@@ -3960,23 +3960,23 @@ Module [Interface]
                 shopSelectedItem = GetPlayerInv(MyIndex, shopSelectedSlot)
                 ' labels
                 If shopSelectedItem > 0 Then
-                    .Controls(GetControlIndex("winShop", "lblName")).text = Type.Item(shopSelectedItem).Name
+                    .Controls(GetControlIndex("winShop", "lblName")).Text = Type.Item(shopSelectedItem).Name
                     ' calc cost
                     CostValue = (Type.Item(shopSelectedItem).Price / 100) * Type.Shop(InShop).BuyRate
-                    .Controls(GetControlIndex("winShop", "lblCost")).text = CostValue & "g"
-                
-                    ' draw the item
-                    For i = 0 To 5
-                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = Type.Item(shopSelectedItem).Icon
-                        .Controls(GetControlIndex("winShop", "picItem")).Texture(i) = Path.Items
-                    Next
-                Else
-                    .Controls(GetControlIndex("winShop", "lblName")).text = "Empty Slot"
-                    .Controls(GetControlIndex("winShop", "lblCost")).text = ""
+                    .Controls(GetControlIndex("winShop", "lblCost")).Text = CostValue & "g"
 
                     ' draw the item
                     For i = 0 To 5
-                        .Controls(GetControlIndex("winShop", "picItem")).image(i) = 0
+                        .Controls(GetControlIndex("winShop", "picItem")).Image(i) = Type.Item(shopSelectedItem).Icon
+                        .Controls(GetControlIndex("winShop", "picItem")).Texture(i) = Path.Items
+                    Next
+                Else
+                    .Controls(GetControlIndex("winShop", "lblName")).Text = "Empty Slot"
+                    .Controls(GetControlIndex("winShop", "lblCost")).Text = ""
+
+                    ' draw the item
+                    For i = 0 To 5
+                        .Controls(GetControlIndex("winShop", "picItem")).Image(i) = 0
                         .Controls(GetControlIndex("winShop", "picItem")).Texture(i) = Nothing
                     Next
                 End If
@@ -4000,14 +4000,14 @@ Module [Interface]
         With Windows(GetWindowIndex("winParty"))
             ' clear controls first
             For i = 1 To 3
-                .Controls(GetControlIndex("winParty", "lblName" & i)).text = ""
-                .Controls(GetControlIndex("winParty", "picEmptyBar_HP" & i)).visible = False
-                .Controls(GetControlIndex("winParty", "picEmptyBar_SP" & i)).visible = False
-                .Controls(GetControlIndex("winParty", "picBar_HP" & i)).visible = False
-                .Controls(GetControlIndex("winParty", "picBar_SP" & i)).visible = False
-                .Controls(GetControlIndex("winParty", "picShadow" & i)).visible = False
-                .Controls(GetControlIndex("winParty", "picChar" & i)).visible = False
-                .Controls(GetControlIndex("winParty", "picChar" & i)).value = 0
+                .Controls(GetControlIndex("winParty", "lblName" & i)).Text = ""
+                .Controls(GetControlIndex("winParty", "picEmptyBar_HP" & i)).Visible = False
+                .Controls(GetControlIndex("winParty", "picEmptyBar_SP" & i)).Visible = False
+                .Controls(GetControlIndex("winParty", "picBar_HP" & i)).Visible = False
+                .Controls(GetControlIndex("winParty", "picBar_SP" & i)).Visible = False
+                .Controls(GetControlIndex("winParty", "picShadow" & i)).Visible = False
+                .Controls(GetControlIndex("winParty", "picChar" & i)).Visible = False
+                .Controls(GetControlIndex("winParty", "picChar" & i)).Value = 0
             Next
 
             ' labels
@@ -4020,22 +4020,22 @@ Module [Interface]
                     If pIndex <> MyIndex Then
                         If IsPlaying(pIndex) Then
                             ' name and level
-                            .Controls(GetControlIndex("winParty", "lblName" & cIn)).visible = True
-                            .Controls(GetControlIndex("winParty", "lblName" & cIn)).text = GetPlayerName(pIndex)
+                            .Controls(GetControlIndex("winParty", "lblName" & cIn)).Visible = True
+                            .Controls(GetControlIndex("winParty", "lblName" & cIn)).Text = GetPlayerName(pIndex)
                             ' picture
-                            .Controls(GetControlIndex("winParty", "picShadow" & cIn)).visible = True
-                            .Controls(GetControlIndex("winParty", "picChar" & cIn)).visible = True
+                            .Controls(GetControlIndex("winParty", "picShadow" & cIn)).Visible = True
+                            .Controls(GetControlIndex("winParty", "picChar" & cIn)).Visible = True
                             ' store the player's index as a value for later use
-                            .Controls(GetControlIndex("winParty", "picChar" & cIn)).value = pIndex
+                            .Controls(GetControlIndex("winParty", "picChar" & cIn)).Value = pIndex
                             For x = 0 To 5
                                 .Controls(GetControlIndex("winParty", "picChar" & cIn)).Image(x) = GetPlayerSprite(pIndex)
                                 .Controls(GetControlIndex("winParty", "picChar" & cIn)).Texture(x) = Path.Characters
                             Next
                             ' bars
-                            .Controls(GetControlIndex("winParty", "picEmptyBar_HP" & cIn)).visible = True
-                            .Controls(GetControlIndex("winParty", "picEmptyBar_SP" & cIn)).visible = True
-                            .Controls(GetControlIndex("winParty", "picBar_HP" & cIn)).visible = True
-                            .Controls(GetControlIndex("winParty", "picBar_SP" & cIn)).visible = True
+                            .Controls(GetControlIndex("winParty", "picEmptyBar_HP" & cIn)).Visible = True
+                            .Controls(GetControlIndex("winParty", "picEmptyBar_SP" & cIn)).Visible = True
+                            .Controls(GetControlIndex("winParty", "picBar_HP" & cIn)).Visible = True
+                            .Controls(GetControlIndex("winParty", "picBar_SP" & cIn)).Visible = True
                             ' increment control usage
                             cIn = cIn + 1
                         End If
@@ -4044,19 +4044,19 @@ Module [Interface]
             Next
 
             ' update the bars
-            UpdatePartyBars
+            UpdatePartyBars()
 
             ' set the window size
             Select Case Type.Party.MemberCount
-                Case 2: Height = 78
-                Case 3: Height = 118
-                Case 4: Height = 158
+                Case 2 : Height = 78
+                Case 3 : Height = 118
+                Case 4 : Height = 158
             End Select
             .Window.Height = Height
         End With
     End Sub
 
-     Sub DrawMenuBG()
+    Sub DrawMenuBG()
         ' row 1
         Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "1" & GfxExt), ResolutionWidth - 512, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
         Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "2" & GfxExt), ResolutionWidth - 1024, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
@@ -4082,8 +4082,8 @@ Module [Interface]
         yO = Windows(GetWindowIndex("winHotbar")).Window.Top
 
         ' Render start + end wood
-        Client.RenderTexture(Client.InterfaceTexture(31), xO - 1, yO + 3, 0, 0, 11, 26, 11, 26)
-        Client.RenderTexture(Client.InterfaceTexture(31), xO + 407, yO + 3, 0, 0, 11, 26, 11, 26)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 31), xO - 1, yO + 3, 0, 0, 11, 26, 11, 26)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 31), xO + 407, yO + 3, 0, 0, 11, 26, 11, 26)
         For i = 1 To MAX_Hotbar
             xO = Windows(GetWindowIndex("winHotbar")).Window.Left + HotbarLeft + ((i - 1) * HotbarOffsetX)
             yO = Windows(GetWindowIndex("winHotbar")).Window.Top + HotbarTop
@@ -4093,11 +4093,11 @@ Module [Interface]
             ' Don't render last one
             If i <> MAX_Hotbar Then
                 ' Render wood
-                Client.RenderTexture(Client.InterfaceTexture(32), xO + 30, yO + 3, 0, 0, 13, 26, 13, 26)
+                Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 32), xO + 30, yO + 3, 0, 0, 13, 26, 13, 26)
             End If
 
             ' Render box
-            Client.RenderTexture(Client.InterfaceTexture(30), xO - 2, yO - 2, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 30), xO - 2, yO - 2, 0, 0, Width, Height, Width, Height)
 
             ' Render icon
             If Not (DragBox.Origin = PartOriginType.Hotbar And DragBox.Slot = i) Then
@@ -4105,17 +4105,17 @@ Module [Interface]
                     Case PartOriginType.Inventory
                         StreamItem(Type.Player(MyIndex).Hotbar(i).Slot)
                         If Len(Type.Item(Type.Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Type.Item(Type.Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then
-                            Client.RenderTexture(Client.ItemTexture(Type.Item(Type.Player(MyIndex).Hotbar(i).Slot).Icon), xO, yO, 0, 0, 32, 32, 32, 32)
+                            Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, Type.Item(Type.Player(MyIndex).Hotbar(i).Slot).Icon), xO, yO, 0, 0, 32, 32, 32, 32)
                         End If
 
                     Case PartOriginType.Skill
                         StreamSkill(Type.Player(MyIndex).Hotbar(i).Slot)
                         If Len(Type.Skill(Type.Player(MyIndex).Hotbar(i).Slot).Name) > 0 And Type.Skill(Type.Player(MyIndex).Hotbar(i).Slot).Icon > 0 Then
-                            Client.RenderTexture(Client.SkilLTexture(Type.Skill(Type.Player(MyIndex).Hotbar(i).Slot).Icon), xO, yO, 0, 0, 32, 32, 32, 32)
+                            Client.EnqueueTexture(IO.Path.Combine(Core.Path.Skills, Type.Skill(Type.Player(MyIndex).Hotbar(i).Slot).Icon), xO, yO, 0, 0, 32, 32, 32, 32)
                             For t = 1 To MAX_PLAYER_SKILLS
                                 If GetPlayerSkill(MyIndex, t) > 0 Then
                                     If GetPlayerSkill(MyIndex, t) = Type.Player(MyIndex).Hotbar(i).Slot And GetPlayerSkillCD(MyIndex, t) > 0 Then
-                                        Client.RenderTexture(Client.SkillTexture(Type.Skill(Type.Player(MyIndex).Hotbar(i).Slot).Icon), xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
+                                        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Skills, Type.Skill(Type.Player(MyIndex).Hotbar(i).Slot).Icon), xO, yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100)
                                     End If
                                 End If
                             Next
@@ -4130,35 +4130,35 @@ Module [Interface]
         Next
     End Sub
 
-     Public Sub DrawShop()
+    Public Sub DrawShop()
         Dim Xo As Long, Yo As Long, ItemIcon As Long, ItemNum As Long, Amount As Long, i As Long, Top As Long, Left As Long, Y As Long, X As Long, Color As Long
 
         If InShop = 0 Then Exit Sub
 
         StreamShop(InShop)
-    
+
         Xo = Windows(GetWindowIndex("winShop")).Window.Left
         Yo = Windows(GetWindowIndex("winShop")).Window.Top
-    
+
         If Not shopIsSelling Then
             ' render the shop items
             For i = 1 To MAX_TRADES
                 ItemNum = Type.Shop(InShop).TradeItem(i).Item
-            
+
                 ' draw early
                 Top = Yo + ShopTop + ((ShopOffsetY + 32) * ((i - 1) \ ShopColumns))
                 Left = Xo + ShopLeft + ((ShopOffsetX + 32) * (((i - 1) Mod ShopColumns)))
-                
+
                 ' draw selected square
                 If shopSelectedSlot = i Then
-                    Client.RenderTexture(Client.InterfaceTexture(61), Left, Top, 0, 0, 32, 32, 32, 32)
+                    Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 61), Left, Top, 0, 0, 32, 32, 32, 32)
                 End If
-            
+
                 If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
                     ItemIcon = Type.Item(ItemNum).Icon
                     If ItemIcon > 0 And ItemIcon <= NumItems Then
                         ' draw item
-                        Client.RenderTexture(Client.ItemTexture(ItemIcon), Left, Top, 0, 0, 32, 32, 32, 32)
+                        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, ItemIcon), Left, Top, 0, 0, 32, 32, 32, 32)
                     End If
                 End If
             Next
@@ -4166,21 +4166,21 @@ Module [Interface]
             ' render the shop items
             For i = 1 To MAX_TRADES
                 ItemNum = GetPlayerInv(MyIndex, i)
-            
+
                 ' draw early
                 Top = Yo + ShopTop + ((ShopOffsetY + 32) * ((i - 1) \ ShopColumns))
                 Left = Xo + ShopLeft + ((ShopOffsetX + 32) * (((i - 1) Mod ShopColumns)))
-                
+
                 ' draw selected square
                 If shopSelectedSlot = i Then
-                    Client.RenderTexture(Client.InterfaceTexture(61), Left, Top, 0, 0, 32, 32, 32, 32)
+                    Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 61), Left, Top, 0, 0, 32, 32, 32, 32)
                 End If
-            
+
                 If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
                     ItemIcon = Type.Item(ItemNum).Icon
                     If ItemIcon > 0 And ItemIcon <= NumItems Then
                         ' draw item
-                        Client.RenderTexture(Client.ItemTexture(ItemIcon), Left, Top, 0, 0, 32, 32, 32, 32)
+                        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, ItemIcon), Left, Top, 0, 0, 32, 32, 32, 32)
 
                         ' If item is a stack - draw the amount you have
                         If GetPlayerInvValue(MyIndex, i) > 1 Then
@@ -4196,7 +4196,7 @@ Module [Interface]
                             ElseIf CLng(Amount) > 10000000 Then
                                 Color = ColorType.BrightGreen
                             End If
-                        
+
                             RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
                         End If
                     End If
@@ -4205,226 +4205,226 @@ Module [Interface]
         End If
     End Sub
 
-     Public Sub DrawShopBackground()
+    Public Sub DrawShopBackground()
         Dim Xo As Long, Yo As Long, Width As Long, Height As Long, i As Long, Y As Long
-    
+
         Xo = Windows(GetWindowIndex("winShop")).Window.Left
         Yo = Windows(GetWindowIndex("winShop")).Window.Top
         Width = Windows(GetWindowIndex("winShop")).Window.Width
         Height = Windows(GetWindowIndex("winShop")).Window.Height
-    
+
         ' render green
-        Client.RenderTexture(Client.InterfaceTexture(34), Xo + 4, Yo + 23, 0, 0, Width - 8, Height - 27, 4, 4)
-    
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 34), Xo + 4, Yo + 23, 0, 0, Width - 8, Height - 27, 4, 4)
+
         Width = 76
         Height = 76
-    
+
         Y = Yo + 23
         ' render grid - row
         For i = 1 To 3
             If i = 3 Then Height = 42
-            Client.RenderTexture(Client.InterfaceTexture(35), Xo + 4, Y, 0, 0, Width, Height, Width, Height)
-            Client.RenderTexture(Client.InterfaceTexture(35), Xo + 80, Y, 0, 0, Width, Height, Width, Height)
-            Client.RenderTexture(Client.InterfaceTexture(35), Xo + 156, Y, 0, 0, Width, Height, Width, Height)
-            Client.RenderTexture(Client.InterfaceTexture(35), Xo + 232, Y, 0, 0, 42, Height, 42, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 4, Y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 80, Y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 156, Y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 232, Y, 0, 0, 42, Height, 42, Height)
             Y = Y + 76
         Next
 
         ' render bottom wood
-        Client.RenderTexture(Client.InterfaceTexture(1), Xo + 4, Y - 34, 0, 0, 270, 72, 270, 72)
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 1), Xo + 4, Y - 34, 0, 0, 270, 72, 270, 72)
     End Sub
 
     Public Sub DrawBank()
-      Dim X As Long, Y As Long, Xo As Long, Yo As Long, width As Long, height As Long
-      Dim i As Long, itemNum As Long, itemIcon As Long
+        Dim X As Long, Y As Long, Xo As Long, Yo As Long, width As Long, height As Long
+        Dim i As Long, itemNum As Long, itemIcon As Long
 
-      Dim Left As Long, top As Long
-      Dim color As Long, skipItem As Boolean, amount As Long, tmpItem As Long
+        Dim Left As Long, top As Long
+        Dim color As Long, skipItem As Boolean, amount As Long, tmpItem As Long
 
-      Xo = Windows(GetWindowIndex("winBank")).Window.Left
-      Yo = Windows(GetWindowIndex("winBank")).Window.Top
-      width = Windows(GetWindowIndex("winBank")).Window.Width
-      height = Windows(GetWindowIndex("winBank")).Window.Height
-      
-      ' render green
-      Client.RenderTexture(Client.InterfaceTexture(34), Xo + 4, Yo + 23, 0, 0, width - 8, height - 27, 4, 4)
+        Xo = Windows(GetWindowIndex("winBank")).Window.Left
+        Yo = Windows(GetWindowIndex("winBank")).Window.Top
+        width = Windows(GetWindowIndex("winBank")).Window.Width
+        height = Windows(GetWindowIndex("winBank")).Window.Height
 
-      width = 76
-      height = 76
+        ' render green
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 34), Xo + 4, Yo + 23, 0, 0, width - 8, height - 27, 4, 4)
 
-      Y = Yo + 23
-      ' render grid - row
-      For i = 1 To 5
-          If i = 5 Then height = 42
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 4, Y, 0, 0, width, height, width, height)
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 80, Y, 0, 0, width, height, width, height)
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 156, Y, 0, 0, width, height, width, height)
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 232, Y, 0, 0, width, height, width, height)
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 308, Y, 0, 0, 79, height, 79, height)
-          Y = Y + 76
-      Next
+        width = 76
+        height = 76
 
-      ' actually draw the icons
-      For i = 1 To MAX_BANK
-          itemNum = GetBank(MyIndex, i) 
+        Y = Yo + 23
+        ' render grid - row
+        For i = 1 To 5
+            If i = 5 Then height = 42
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 4, Y, 0, 0, width, height, width, height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 80, Y, 0, 0, width, height, width, height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 156, Y, 0, 0, width, height, width, height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 232, Y, 0, 0, width, height, width, height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 308, Y, 0, 0, 79, height, 79, height)
+            Y = Y + 76
+        Next
 
-          If itemNum > 0 And itemNum <= MAX_ITEMS Then
-              StreamItem(itemNum)
-              ' not dragging?
-              If Not (DragBox.Origin = PartOriginType.Bank And DragBox.Slot = i) Then
-                  itemIcon = Type.Item(itemNum).Icon
+        ' actually draw the icons
+        For i = 1 To MAX_BANK
+            itemNum = GetBank(MyIndex, i)
 
-                  If itemIcon > 0 And itemIcon <= NumItems Then
-                      top = Yo + BankTop + ((BankOffsetY + 32) * ((i - 1) \ BankColumns))
-                      Left = Xo + BankLeft + ((BankOffsetX + 32) * (((i - 1) Mod BankColumns)))
+            If itemNum > 0 And itemNum <= MAX_ITEMS Then
+                StreamItem(itemNum)
+                ' not dragging?
+                If Not (DragBox.Origin = PartOriginType.Bank And DragBox.Slot = i) Then
+                    itemIcon = Type.Item(itemNum).Icon
 
-                      ' draw icon
-                      client.RenderTexture(Client.ItemTexture(itemIcon), Left, top, 0, 0, 32, 32, 32, 32)
+                    If itemIcon > 0 And itemIcon <= NumItems Then
+                        top = Yo + BankTop + ((BankOffsetY + 32) * ((i - 1) \ BankColumns))
+                        Left = Xo + BankLeft + ((BankOffsetX + 32) * (((i - 1) Mod BankColumns)))
 
-                      ' If item is a stack - draw the amount you have
-                      If GetBankValue(MyIndex, i)  > 1 Then
-                          Y = top + 21
-                          X = Left + 1
-                          amount = GetBankValue(MyIndex, i) 
+                        ' draw icon
+                        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, itemIcon), Left, top, 0, 0, 32, 32, 32, 32)
 
-                          ' Draw currency but with k, m, b etc. using a convertion function
-                          If CLng(amount) < 1000000 Then
-                              color = ColorType.White
-                          ElseIf CLng(amount) > 1000000 And CLng(amount) < 10000000 Then
-                              color = ColorType.Yellow
-                          ElseIf CLng(amount) > 10000000 Then
-                              color = ColorType.BrightGreen
-                          End If
+                        ' If item is a stack - draw the amount you have
+                        If GetBankValue(MyIndex, i) > 1 Then
+                            Y = top + 21
+                            X = Left + 1
+                            amount = GetBankValue(MyIndex, i)
 
-                          RenderText(ConvertCurrency(amount), X, Y, Client.QbColorToXnaColor(color), Client.QbColorToXnaColor(color))
-                      End If
-                  End If
-              End If
-          End If
-      Next
+                            ' Draw currency but with k, m, b etc. using a convertion function
+                            If CLng(amount) < 1000000 Then
+                                color = ColorType.White
+                            ElseIf CLng(amount) > 1000000 And CLng(amount) < 10000000 Then
+                                color = ColorType.Yellow
+                            ElseIf CLng(amount) > 10000000 Then
+                                color = ColorType.BrightGreen
+                            End If
+
+                            RenderText(ConvertCurrency(amount), X, Y, Client.QbColorToXnaColor(color), Client.QbColorToXnaColor(color))
+                        End If
+                    End If
+                End If
+            End If
+        Next
 
     End Sub
 
     Sub DrawTrade()
-      Dim Xo As Long, Yo As Long, Width As Long, Height As Long, i As Long, Y As Long, X As Long
-  
-      Xo = Windows(GetWindowIndex("winTrade")).Window.Left
-      Yo = Windows(GetWindowIndex("winTrade")).Window.Top
-      Width = Windows(GetWindowIndex("winTrade")).Window.Width
-      Height = Windows(GetWindowIndex("winTrade")).Window.Height
-  
-      ' render green
-      Client.RenderTexture(Client.InterfaceTexture(34), Xo + 4, Yo + 23, 0, 0, Width - 8, Height - 27, 4, 4)
-  
-      ' top wood
-      Client.RenderTexture(Client.InterfaceTexture(1), Xo + 4, Yo + 23, 100, 100, Width - 8, 18, Width - 8, 18)
-      
-      ' left wood
-      Client.RenderTexture(Client.InterfaceTexture(1), Xo + 4, Yo + 41, 350, 0, 5, Height - 45, 5, Height - 45)
-      
-      ' right wood
-      Client.RenderTexture(Client.InterfaceTexture(1), Xo + Width - 9, Yo + 41, 350, 0, 5, Height - 45, 5, Height - 45)
-      
-      ' centre wood
-      Client.RenderTexture(Client.InterfaceTexture(1), Xo + 203, Yo + 41, 350, 0, 6, Height - 45, 6, Height - 45)
-      
-      ' bottom wood
-      Client.RenderTexture(Client.InterfaceTexture(1), Xo + 4, Yo + 307, 100, 100, Width - 8, 75, Width - 8, 75)
-  
-      ' left
-      Width = 76
-      Height = 76
-      Y = Yo + 41
-      For i = 1 To 4
-          If i = 4 Then Height = 38
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 4 + 5, Y, 0, 0, Width, Height, Width, Height)
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 80 + 5, Y, 0, 0, Width, Height, Width, Height)
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 156 + 5, Y, 0, 0, 42, Height, 42, Height)
-          Y = Y + 76
-      Next
+        Dim Xo As Long, Yo As Long, Width As Long, Height As Long, i As Long, Y As Long, X As Long
 
-      ' right
-      Width = 76
-      Height = 76
-      Y = Yo + 41
-      For i = 1 To 4
-          If i = 4 Then Height = 38
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 4 + 205, Y, 0, 0, Width, Height, Width, Height)
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 80 + 205, Y, 0, 0, Width, Height, Width, Height)
-          Client.RenderTexture(Client.InterfaceTexture(35), Xo + 156 + 205, Y, 0, 0, 42, Height, 42, Height)
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top
+        Width = Windows(GetWindowIndex("winTrade")).Window.Width
+        Height = Windows(GetWindowIndex("winTrade")).Window.Height
 
-          Y = Y + 76
-      Next
-  End Sub
+        ' render green
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 34), Xo + 4, Yo + 23, 0, 0, Width - 8, Height - 27, 4, 4)
 
-  Sub DrawYourTrade()
-      Dim i As Long, ItemNum As Long, ItemPic As Long, Top As Long, Left As Long, Color As Long, Amount As String, X As Long, Y As Long
-      Dim Xo As Long, Yo As Long
+        ' top wood
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 1), Xo + 4, Yo + 23, 100, 100, Width - 8, 18, Width - 8, 18)
 
-      Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Left
-      Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Top
-  
-      ' your items
-      For i = 1 To MAX_INV
-          If TradeYourOffer(i).Num > 0 Then
-              ItemNum = GetPlayerInv(MyIndex, TradeYourOffer(i).Num)
-              If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
-                  StreamItem(itemNum)
-                  ItemPic = Type.Item(ItemNum).Icon
+        ' left wood
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 1), Xo + 4, Yo + 41, 350, 0, 5, Height - 45, 5, Height - 45)
 
-                  If ItemPic > 0 And ItemPic <= NumItems Then
-                      Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
-                      Left = Xo + TradeLeft + ((TradeOffsetX + 32) * (((i - 1) Mod TradeColumns)))
+        ' right wood
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 1), Xo + Width - 9, Yo + 41, 350, 0, 5, Height - 45, 5, Height - 45)
 
-                      ' draw icon
-                      Client.RenderTexture(Client.ItemTexture(ItemPic), Left, Top, 0, 0, 32, 32, 32, 32)
+        ' centre wood
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 1), Xo + 203, Yo + 41, 350, 0, 6, Height - 45, 6, Height - 45)
 
-                      ' If item is a stack - draw the amount you have
-                      If TradeYourOffer(i).Value > 1 Then
-                          Y = Top + 21
-                          X = Left + 1
-                          Amount = CStr(TradeYourOffer(i).Value)
-                  
-                          ' Draw currency but with k, m, b etc. using a convertion function
-                          If CLng(Amount) < 1000000 Then
-                              Color = ColorType.White
-                          ElseIf CLng(Amount) > 1000000 And CLng(Amount) < 10000000 Then
-                              Color = ColorType.Yellow
-                          ElseIf CLng(Amount) > 10000000 Then
-                              Color = ColorType.BrightGreen
-                          End If
-                  
-                          RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
-                      End If
-                  End If
-              End If
-          End If
-      Next
-  End Sub
+        ' bottom wood
+        Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 1), Xo + 4, Yo + 307, 100, 100, Width - 8, 75, Width - 8, 75)
 
-  Sub DrawTheirTrade()
-      Dim i As Long, ItemNum As Long, ItemPic As Long, Top As Long, Left As Long, Color As Long, Amount As String, X As Long, Y As Long
-      Dim Xo As Long, Yo As Long
+        ' left
+        Width = 76
+        Height = 76
+        Y = Yo + 41
+        For i = 1 To 4
+            If i = 4 Then Height = 38
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 4 + 5, Y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 80 + 5, Y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 156 + 5, Y, 0, 0, 42, Height, 42, Height)
+            Y = Y + 76
+        Next
 
-      Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Left
-      Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Top
+        ' right
+        Width = 76
+        Height = 76
+        Y = Yo + 41
+        For i = 1 To 4
+            If i = 4 Then Height = 38
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 4 + 205, Y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 80 + 205, Y, 0, 0, Width, Height, Width, Height)
+            Client.EnqueueTexture(System.IO.Path.Combine(Path.Gui & 35), Xo + 156 + 205, Y, 0, 0, 42, Height, 42, Height)
 
-      ' their items
-      For i = 1 To MAX_INV
-          ItemNum = TradeTheirOffer(i).Num
-          If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
-              StreamItem(ItemNum)
-              ItemPic = Type.Item(ItemNum).Icon
+            Y = Y + 76
+        Next
+    End Sub
 
-              If ItemPic > 0 And ItemPic <= NumItems Then
-                  Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
-                  Left = Xo + TradeLeft + ((TradeOffsetX + 32) * (((i - 1) Mod TradeColumns)))
+    Sub DrawYourTrade()
+        Dim i As Long, ItemNum As Long, ItemPic As Long, Top As Long, Left As Long, Color As Long, Amount As String, X As Long, Y As Long
+        Dim Xo As Long, Yo As Long
 
-                  ' draw icon
-                  Client.RenderTexture(Client.ItemTexture(ItemPic), Left, Top, 0, 0, 32, 32, 32, 32)
-              
-                  ' If item is a stack - draw the amount you have
-                  If TradeTheirOffer(i).Value > 1 Then
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picYour")).Top
+
+        ' your items
+        For i = 1 To MAX_INV
+            If TradeYourOffer(i).Num > 0 Then
+                ItemNum = GetPlayerInv(MyIndex, TradeYourOffer(i).Num)
+                If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
+                    StreamItem(ItemNum)
+                    ItemPic = Type.Item(ItemNum).Icon
+
+                    If ItemPic > 0 And ItemPic <= NumItems Then
+                        Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
+                        Left = Xo + TradeLeft + ((TradeOffsetX + 32) * (((i - 1) Mod TradeColumns)))
+
+                        ' draw icon
+                        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, ItemPic), Left, Top, 0, 0, 32, 32, 32, 32)
+
+                        ' If item is a stack - draw the amount you have
+                        If TradeYourOffer(i).Value > 1 Then
+                            Y = Top + 21
+                            X = Left + 1
+                            Amount = CStr(TradeYourOffer(i).Value)
+
+                            ' Draw currency but with k, m, b etc. using a convertion function
+                            If CLng(Amount) < 1000000 Then
+                                Color = ColorType.White
+                            ElseIf CLng(Amount) > 1000000 And CLng(Amount) < 10000000 Then
+                                Color = ColorType.Yellow
+                            ElseIf CLng(Amount) > 10000000 Then
+                                Color = ColorType.BrightGreen
+                            End If
+
+                            RenderText(ConvertCurrency(Amount), X, Y, Client.QbColorToXnaColor(Color), Client.QbColorToXnaColor(Color))
+                        End If
+                    End If
+                End If
+            End If
+        Next
+    End Sub
+
+    Sub DrawTheirTrade()
+        Dim i As Long, ItemNum As Long, ItemPic As Long, Top As Long, Left As Long, Color As Long, Amount As String, X As Long, Y As Long
+        Dim Xo As Long, Yo As Long
+
+        Xo = Windows(GetWindowIndex("winTrade")).Window.Left + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Left
+        Yo = Windows(GetWindowIndex("winTrade")).Window.Top + Windows(GetWindowIndex("winTrade")).Controls(GetControlIndex("winTrade", "picTheir")).Top
+
+        ' their items
+        For i = 1 To MAX_INV
+            ItemNum = TradeTheirOffer(i).Num
+            If ItemNum > 0 And ItemNum <= MAX_ITEMS Then
+                StreamItem(ItemNum)
+                ItemPic = Type.Item(ItemNum).Icon
+
+                If ItemPic > 0 And ItemPic <= NumItems Then
+                    Top = Yo + TradeTop + ((TradeOffsetY + 32) * ((i - 1) \ TradeColumns))
+                    Left = Xo + TradeLeft + ((TradeOffsetX + 32) * (((i - 1) Mod TradeColumns)))
+
+                    ' draw icon
+                    Client.EnqueueTexture(IO.Path.Combine(Core.Path.Items, ItemPic), Left, Top, 0, 0, 32, 32, 32, 32)
+
+                    ' If item is a stack - draw the amount you have
+                    If TradeTheirOffer(i).Value > 1 Then
                       Y = Top + 21
                       X = Left + 1
                       Amount = CStr(TradeTheirOffer(i).Value)

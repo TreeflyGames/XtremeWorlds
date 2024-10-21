@@ -117,7 +117,7 @@ Module Resource
 
         If rec.Width < 0 Or rec.Height < 0 Then Exit Sub
 
-        Client.RenderTexture(Client.ResourceTexture(resource), x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
+        Client.EnqueueTexture(System.IO.Path.Combine(Core.Path.Resources, resource), x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawMapResource(resourceNum As Integer)
@@ -154,14 +154,14 @@ Module Resource
         ' src rect
         With rec
             .Y = 0
-            .Height = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Resources & resourceSprite)).Height
+            .Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite)).Height
             .X = 0
-            .Width = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Resources & resourceSprite)).Width
+            .Width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite)).Width
         End With
 
         ' Set base x + y, then the offset due to size
-        x = (MyMapResource(resourceNum).X * PicX) - (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Resources & resourceSprite)).Width / 2) + 16
-        y = (MyMapResource(resourceNum).Y * PicY) - Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Resources & resourceSprite)).Height + 32
+        x = (MyMapResource(resourceNum).X * PicX) - (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite)).Width / 2) + 16
+        y = (MyMapResource(resourceNum).Y * PicY) - Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Resources, resourceSprite)).Height + 32
 
         DrawResource(resourceSprite, x, y, rec)
     End Sub

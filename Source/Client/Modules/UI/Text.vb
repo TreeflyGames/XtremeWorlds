@@ -260,11 +260,11 @@ Module Text
         If Type.NPC(NPCNum).Sprite < 1 Or Type.NPC(NPCNum).Sprite > NumCharacters Then
             textY = ConvertMapY(MyMapNPC(MapNPCNum).Y * PicY) + MyMapNPC(MapNPCNum).YOffset - 16
         Else
-            textY = ConvertMapY(MyMapNPC(MapNpcNum).Y * PicY) + MyMapNPC(MapNpcNum).YOffset - (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & Type.NPC(npcNum).Sprite)).Height / 4) + 16
+            textY = ConvertMapY(MyMapNPC(MapNpcNum).Y * PicY) + MyMapNPC(MapNpcNum).YOffset - (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, Type.NPC(npcNum).Sprite)).Height / 4) + 16
         End If
 
         ' Draw name
-        RenderText(Type.NPC(NPCNum).Name, textX, textY, color, backcolor)
+        RenderText(Type.NPC(npcNum).Name, textX, textY, color, backColor)
     End Sub
 
     Sub DrawEventName(index As Integer)
@@ -280,14 +280,14 @@ Module Text
 
         ' calc pos
         textX = ConvertMapX(MapEvents(index).X * PicX) + MapEvents(index).XOffset + (PicX \ 2) - (TextWidth(name)) \ 2 - 2
-       If MapEvents(index).GraphicType = 0 Then
+        If MapEvents(index).GraphicType = 0 Then
             textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
         ElseIf MapEvents(index).GraphicType = 1 Then
             If MapEvents(index).Graphic < 1 Or MapEvents(index).Graphic > NumCharacters Then
                 textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - 16
             Else
                 ' Determine location for text
-                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(index).Graphic)).Height \ 4) + 16
+                textY = ConvertMapY(MapEvents(index).Y * PicY) + MapEvents(index).YOffset - (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(index).Graphic)).Height \ 4) + 16
             End If
         ElseIf MapEvents(index).GraphicType = 2 Then
             If MapEvents(index).GraphicY2 > 0 Then
@@ -510,7 +510,7 @@ Module Text
                     color = Color.Green
                     backColor = Color.Black
                 Case AccessType.Developer
-                    color =Color.Blue
+                    color = Color.Blue
                     backColor = Color.Black
                 Case AccessType.Owner
                     color = Color.Yellow
@@ -530,7 +530,7 @@ Module Text
             textY = ConvertMapY(GetPlayerY(index) * PicY) + Type.Player(MyIndex).YOffset - 16
         Else
             ' Determine location for text
-            textY = ConvertMapY(GetPlayerY(index) * PicY) + Type.Player(index).YOffset - (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & GetPlayerSprite(index))).Height / 4) + 16
+            textY = ConvertMapY(GetPlayerY(index) * PicY) + Type.Player(index).YOffset - (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, GetPlayerSprite(index))).Height / 4) + 16
         End If
 
         ' Draw name

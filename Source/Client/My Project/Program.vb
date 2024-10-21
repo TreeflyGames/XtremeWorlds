@@ -14,7 +14,7 @@ Public Class GameClient
 
     Public Graphics As GraphicsDeviceManager
     Public SpriteBatch As Graphics.SpriteBatch
-    Public ReadOnly TextureCache As New Dictionary(Of String, Texture2D)()
+    Public ReadOnly TextureCache As New ConcurrentDictionary(Of String, Texture2D)()
     Public ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GraphicInfo)()
     Public ReadOnly MultiplyBlendState As New BlendState()
 
@@ -58,38 +58,6 @@ Public Class GameClient
     Friend EditorAnimation_Anim2 As RenderTarget2D
     Friend RenderTarget As RenderTarget2D
     Friend screenshotKey As Keys = Keys.F12 ' Key to trigger screenshot
-
-    ' Graphics Declarations
-    Friend TilesetTexture() As Texture2D
-    Friend CharacterTexture() As Texture2D
-    Friend PaperdollTexture() As Texture2D
-    Friend ItemTexture() As Texture2D
-    Friend ResourceTexture() As Texture2D
-    Friend AnimationTexture() As Texture2D
-    Friend SkillTexture() As Texture2D
-    Friend ProjectileTexture() As Texture2D
-    Friend FogTexture() As Texture2D
-    Friend EmoteTexture() As Texture2D
-    Friend PanoramaTexture() As Texture2D
-    Friend ParallaxTexture() As Texture2D
-    Friend PictureTexture() As Texture2D
-
-    Friend BloodTexture As Texture2D
-    Friend DirectionTexture As Texture2D
-    Friend WeatherTexture As Texture2D
-    Friend InterfaceTexture() As Texture2D
-    Friend DesignTexture() As Texture2D
-    Friend GradientTexture() As Texture2D
-    Friend TargetTexture As Texture2D
-    Friend ChatBubbleTexture As Texture2D
-    Friend MapTintTexture As Texture2D
-    Friend NightTexture As Texture2D
-    Friend LightTexture As Texture2D
-    Friend LightDynamicTexture As Texture2D
-    Friend CursorTexture As Texture2D
-    Friend ShadowTexture As Texture2D
-    Friend BarTexture As Texture2D
-    Friend PixelTexture As Texture2D
     Friend TransparentTexture As Texture2D
 
 #End Region
@@ -180,102 +148,6 @@ Public Class GameClient
         SpriteBatch.End()
     End Sub
 
-    Private Sub LoadAnimations()
-        Dim count As Integer = GetFileCount(Core.Path.Animations)
-        ReDim Client.AnimationTexture(count - 1)
-        'LoadTextures(Client.AnimationTexture, Core.Path.Animations)
-    End Sub
-
-    Private Sub LoadCharacters()
-        Dim count As Integer = GetFileCount(Core.Path.Characters)
-        ReDim Client.CharacterTexture(count - 1)
-        'LoadTextures(Client.CharacterTexture, Core.Path.Characters)
-    End Sub
-
-    Private Sub LoadEmotes()
-        Dim count As Integer = GetFileCount(Core.Path.Emotes)
-        ReDim Client.EmoteTexture(count - 1)
-        'LoadTextures(Client.EmoteTexture, Core.Path.Emotes)
-    End Sub
-
-    Private Sub LoadTilesets()
-        Dim count As Integer = GetFileCount(Core.Path.Tilesets)
-        ReDim Client.TilesetTexture(count - 1)
-        'LoadTextures(Client.TilesetTexture, Core.Path.Tilesets)
-    End Sub
-
-    Private Sub LoadFogs()
-        Dim count As Integer = GetFileCount(Core.Path.Fogs)
-        ReDim Client.FogTexture(count - 1)
-        'LoadTextures(Client.FogTexture, Core.Path.Fogs)
-    End Sub
-
-    Private Sub LoadItems()
-        Dim count As Integer = GetFileCount(Core.Path.Items)
-        ReDim Client.ItemTexture(count - 1)
-        'LoadTextures(Client.ItemTexture, Core.Path.Items)
-    End Sub
-
-    Private Sub LoadPanoramas()
-        Dim count As Integer = GetFileCount(Core.Path.Panoramas)
-        ReDim Client.PanoramaTexture(count - 1)
-        'LoadTextures(Client.PanoramaTexture, Core.Path.Panoramas)
-    End Sub
-
-    Private Sub LoadPaperdolls()
-        Dim count As Integer = GetFileCount(Core.Path.Paperdolls)
-        ReDim Client.PaperdollTexture(count - 1)
-        'LoadTextures(Client.PaperdollTexture, Core.Path.Paperdolls)
-    End Sub
-
-    Private Sub LoadParallax()
-        Dim count As Integer = GetFileCount(Core.Path.Parallax)
-        ReDim Client.ParallaxTexture(count - 1)
-        'LoadTextures(Client.ParallaxTexture, Core.Path.Parallax)
-    End Sub
-
-    Private Sub LoadPictures()
-        Dim count As Integer = GetFileCount(Core.Path.Pictures)
-        ReDim Client.PictureTexture(count - 1)
-        'LoadTextures(Client.PictureTexture, Core.Path.Pictures)
-    End Sub
-
-    Private Sub LoadProjectile()
-        Dim count As Integer = GetFileCount(Core.Path.Projectiles)
-        ReDim Client.ProjectileTexture(count - 1)
-        'LoadTextures(Client.ProjectileTexture, Core.Path.Projectiles)
-    End Sub
-
-    Private Sub LoadResources()
-        Dim count As Integer = GetFileCount(Core.Path.Resources)
-        ReDim Client.ResourceTexture(count - 1)
-        'LoadTextures(Client.ResourceTexture, Core.Path.Resources)
-    End Sub
-
-    Private Sub LoadSkills()
-        Dim count As Integer = GetFileCount(Core.Path.Skills)
-        ReDim Client.SkillTexture(count - 1)
-        'LoadTextures(Client.SkillTexture, Core.Path.Skills)
-    End Sub
-
-    Private Sub LoadInterface()
-        Dim count As Integer = GetFileCount(Core.Path.Gui)
-        ReDim Client.InterfaceTexture(count - 1)
-        'LoadTextures(Client.InterfaceTexture, Core.Path.Gui)
-    End Sub
-
-    Private Sub LoadGradients()
-        Dim count As Integer = GetFileCount(Core.Path.Gradients)
-        ReDim Client.GradientTexture(count - 1)
-        'LoadTextures(Client.GradientTexture, Core.Path.Gradients)
-    End Sub
-
-    Private Sub LoadDesigns()
-        Dim count As Integer = GetFileCount(Core.Path.Designs)
-        ReDim Client.DesignTexture(count - 1)
-        'LoadTextures(DesignTexture, Core.Path.Designs)
-    End Sub
-
     Private Sub LoadFonts()
         For i = 1 To FontType.Count - 1
             Fonts(i) = LoadFont(Core.Path.Fonts, i)
@@ -289,51 +161,11 @@ Public Class GameClient
         TransparentTexture.SetData(New Color() {Color.White})
 
         LoadFonts()
-        LoadAnimations()
-        LoadCharacters()
-        LoadEmotes()
-        LoadTilesets()
-        LoadFogs()
-        LoadItems()
-        LoadPanoramas()
-        LoadPaperdolls()
-        LoadParallax()
-        LoadPictures()
-        LoadProjectile()
-        LoadResources()
-        LoadSkills()
-        LoadInterface()
-        LoadGradients()
-        LoadDesigns()
     End Sub
 
     Public Function LoadFont(path As String, font As FontType) As SpriteFont
         Return Content.Load(Of SpriteFont)(IO.Path.Combine(path, font))
     End Function
-
-    Public Sub LoadTextures(ByRef texture() As Texture2D, path As String)
-        If Not Directory.Exists(path) Then Exit Sub
-
-        Dim files = Directory.GetFiles(path, "*" & GfxExt) ' Adjust for other formats if necessary
-        For i As Integer = 0 To files.Length - 1
-            Using stream As New FileStream(files(i), FileMode.Open)
-                texture(i) = Texture2D.FromStream(GraphicsDevice, stream)
-                Dim graphcsInfo = New GraphicInfo
-                graphcsInfo.Width = texture(i).Width
-                graphcsInfo.Height = texture(i).Height
-
-                ' Store texture with a unique key (e.g., "Tileset_0", "Tileset_1", etc.)
-                Dim numGfx As String
-                If path = Core.Path.Misc Then
-                    numGfx = ""
-                Else
-                    numGfx = i + 1
-                End If
-
-                GfxInfoCache.TryAdd($"{Core.Path.GetLastDirectoryName(path)}{numGfx}", graphcsInfo)
-            End Using
-        Next
-    End Sub
 
     Public Sub EnqueueText(ByRef text As String, path As String, x As Integer, y As Integer, font As FontType, frontColor As Color, backColor As Color)
         ' Create the render command and enqueue it
@@ -364,6 +196,8 @@ Public Class GameClient
         ' Create the color with the specified alpha and RGB values
         Dim color As New Color(red, green, blue, alpha)
 
+        path = EnsureFileExtension(path)
+
         ' Enqueue the render command
         Dim command As New RenderCommand With {
             .Type = RenderType.Texture,
@@ -378,16 +212,22 @@ Public Class GameClient
 
     ' Load or retrieve a texture from the cache
     Public Function GetTexture(path As String) As Texture2D
-        If textureCache.ContainsKey(path) Then
+        If TextureCache.ContainsKey(path) Then
             ' Return the already loaded texture
-            Return textureCache(path)
+            Return TextureCache(path)
         End If
 
         ' Load the texture and add it to the cache
         Try
             Using stream As New FileStream(path, FileMode.Open)
-                Dim texture As Texture2D = Texture2D.FromStream(graphicsDevice, stream)
-                textureCache(path) = texture
+                Dim texture As Texture2D = Texture2D.FromStream(GraphicsDevice, stream)
+                TextureCache(path) = texture
+
+                Dim graphcsInfo = New GraphicInfo
+                graphcsInfo.Width = texture.Width
+                graphcsInfo.Height = texture.Height
+
+                GfxInfoCache.TryAdd(path, graphcsInfo)
                 Return texture
             End Using
         Catch ex As Exception
@@ -397,7 +237,7 @@ Public Class GameClient
     End Function
 
     Protected Overrides Sub Draw(gameTime As GameTime)
-        GraphicsDevice.Clear(Color.CornflowerBlue)
+        GraphicsDevice.Clear(Color.Black)
 
         SpriteBatch.Begin()
 
@@ -406,19 +246,19 @@ Public Class GameClient
 
         While RenderQueue.TryDequeue(command)
             Select Case command.Type
-                    Case RenderType.Texture
-                        SpriteBatch.Draw(GetTexture(command.path), command.dRect, command.sRect, command.Color)
-                    
-                    Case RenderType.Font
-                        ' Calculate the shadow position
-                        Dim shadowPosition As New Vector2(command.X + 1, command.Y + 1)
+                Case RenderType.Texture
+                    SpriteBatch.Draw(GetTexture(command.Path), command.dRect, command.sRect, command.Color)
 
-                        ' Draw the shadow (backString equivalent)
-                        Client.SpriteBatch.DrawString(Fonts(command.Font), command.Text, shadowPosition, command.Color2,
+                Case RenderType.Font
+                    ' Calculate the shadow position
+                    Dim shadowPosition As New Vector2(command.X + 1, command.Y + 1)
+
+                    ' Draw the shadow (backString equivalent)
+                    Client.SpriteBatch.DrawString(Fonts(command.Font), command.Text, shadowPosition, command.Color2,
                                                0.0F, Vector2.Zero, 10 / 16.0F, SpriteEffects.None, 0.0F)
 
-                        ' Draw the main text (frontString equivalent)
-                        Client.SpriteBatch.DrawString(Fonts(command.Font), command.Text, New Vector2(command.X, command.Y), command.Color,
+                    ' Draw the main text (frontString equivalent)
+                    Client.SpriteBatch.DrawString(Fonts(command.Font), command.Text, New Vector2(command.X, command.Y), command.Color,
                                                0.0F, Vector2.Zero, 10 / 16.0F, SpriteEffects.None, 0.0F)
             End Select
         End While
@@ -542,17 +382,17 @@ Public Class GameClient
 
             If IsKeyPressed(Keys.I) Then
                 ' hide/show inventory
-                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Inv
+                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Inv()
             End If
 
             If IsKeyPressed(Keys.C) Then
                 ' hide/show char
-                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Char
+                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Char()
             End If
 
             If IsKeyPressed(Keys.K) Then
                 ' hide/show skills
-                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Skills
+                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Skills()
             End If
 
             If IsKeyPressed(Keys.Up) Then VbKeyUp = False
@@ -765,7 +605,7 @@ Public Class GameClient
         ' Draw the filled rectangle
         SpriteBatch.Draw(whiteTexture, New Rectangle(position.ToPoint(), size.ToPoint()), fillColor)
 
-'        Draw the outline if thickness > 0
+        '        Draw the outline if thickness > 0
         If outlineThickness > 0 Then
             ' Create the four sides of the outline
             Dim left As New Rectangle(position.ToPoint(), New Point(CInt(outlineThickness), CInt(size.Y)))
@@ -898,7 +738,7 @@ Public Class GameClient
         Dim x As Integer, y As Integer, anim As Integer
 
         If sprite < 1 Or sprite > NumEmotes Then Exit Sub
-            If ShowAnimLayers = True Then
+        If ShowAnimLayers = True Then
             anim = 1
         Else
             anim = 0
@@ -907,14 +747,14 @@ Public Class GameClient
         With rec
             .Y = 0
             .Height = PicX
-            .X = anim * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Emotes & sprite)).Width / 2)
-            .Width = (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Emotes & sprite)).Width / 2)
+            .X = anim * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Emotes, sprite)).Width / 2)
+            .Width = (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Emotes, sprite)).Width / 2)
         End With
 
         x = ConvertMapX(x2)
         y = ConvertMapY(y2) - (PicY + 16)
 
-        RenderTexture(EmoteTexture(sprite), x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        EnqueueTexture(System.IO.Path.Combine(Core.Path.Emotes, sprite), x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawDirections(x As Integer, y As Integer)
@@ -926,7 +766,7 @@ Public Class GameClient
         rec.Width = 32
         rec.Height = 32
 
-        RenderTexture(DirectionTexture, ConvertMapX(x * PicX), ConvertMapY(y * PicY), rec.X, rec.Y, rec.Width,
+        EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Direction"), ConvertMapX(x * PicX), ConvertMapY(y * PicY), rec.X, rec.Y, rec.Width,
                      rec.Height, rec.Width, rec.Height)
 
         ' render dir blobs
@@ -942,7 +782,7 @@ Public Class GameClient
             End If
             rec.Height = 8
 
-            RenderTexture(DirectionTexture, ConvertMapX(x * PicX) + DirArrowX(i), ConvertMapY(y * PicY) + DirArrowY(i), rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Direction"), ConvertMapX(x * PicX) + DirArrowX(i), ConvertMapY(y * PicY) + DirArrowY(i), rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
         Next
     End Sub
 
@@ -954,10 +794,10 @@ Public Class GameClient
         If sprite < 1 Or sprite > NumPaperdolls Then Exit Sub
 
         With rec
-            .Y = spritetop * Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Paperdolls & sprite)).Height / 4
-            .Height = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Paperdolls & sprite)).Height / 4
-            .X = anim * Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Paperdolls & sprite)).Width / 4
-            .Width = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Paperdolls & sprite)).Width / 4
+            .Y = spritetop * Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Height / 4
+            .Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Height / 4
+            .X = anim * Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Width / 4
+            .Width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Width / 4
         End With
 
         x = ConvertMapX(x2)
@@ -965,7 +805,7 @@ Public Class GameClient
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderTexture(PaperdollTexture(sprite), x, y, rec.X, rec.Y, rec.Width, rec.Height)
+        EnqueueTexture(System.IO.Path.Combine(Core.Path.Paperdolls, sprite), x, y, rec.X, rec.Y, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawNPC(MapNpcNum As Integer)
@@ -977,17 +817,17 @@ Public Class GameClient
         Dim attackSpeed As Integer = 1000
 
         ' Check if NPC exists
-        If MyMapNPC(MapNPCNum).Num = 0 Then Exit Sub
+        If MyMapNPC(MapNpcNum).Num = 0 Then Exit Sub
 
         ' Ensure NPC is within the tile view range
-        If MyMapNPC(MapNPCNum).X < TileView.Left Or MyMapNPC(MapNPCNum).X > TileView.Right Then Exit Sub
-        If MyMapNPC(MapNPCNum).Y < TileView.Top Or MyMapNPC(MapNPCNum).Y > TileView.Bottom Then Exit Sub
+        If MyMapNPC(MapNpcNum).X < TileView.Left Or MyMapNPC(MapNpcNum).X > TileView.Right Then Exit Sub
+        If MyMapNPC(MapNpcNum).Y < TileView.Top Or MyMapNPC(MapNpcNum).Y > TileView.Bottom Then Exit Sub
 
         ' Stream NPC if not yet loaded
-        StreamNpc(MyMapNPC(MapNPCNum).Num)
+        StreamNpc(MyMapNPC(MapNpcNum).Num)
 
         ' Get the sprite of the NPC
-        sprite = Type.NPC(MyMapNPC(MapNPCNum).Num).Sprite
+        sprite = Type.NPC(MyMapNPC(MapNpcNum).Num).Sprite
 
         ' Validate sprite
         If sprite < 1 Or sprite > NumCharacters Then Exit Sub
@@ -996,24 +836,24 @@ Public Class GameClient
         anim = 0
 
         ' Check for attacking animation
-        If MyMapNPC(MapNPCNum).AttackTimer + (attackSpeed / 2) > GetTickCount() AndAlso MyMapNPC(MapNPCNum).Attacking = 1 Then
+        If MyMapNPC(MapNpcNum).AttackTimer + (attackSpeed / 2) > GetTickCount() AndAlso MyMapNPC(MapNpcNum).Attacking = 1 Then
             anim = 3
         Else
             ' Walking animation based on direction
-            Select Case MyMapNPC(MapNPCNum).Dir
+            Select Case MyMapNPC(MapNpcNum).Dir
                 Case DirectionType.Up
-                    If MyMapNPC(MapNPCNum).YOffset > 8 Then anim = MyMapNPC(MapNPCNum).Steps
+                    If MyMapNPC(MapNpcNum).YOffset > 8 Then anim = MyMapNPC(MapNpcNum).Steps
                 Case DirectionType.Down
-                    If MyMapNPC(MapNPCNum).YOffset < -8 Then anim = MyMapNPC(MapNPCNum).Steps
+                    If MyMapNPC(MapNpcNum).YOffset < -8 Then anim = MyMapNPC(MapNpcNum).Steps
                 Case DirectionType.Left
-                    If MyMapNPC(MapNPCNum).XOffset > 8 Then anim = MyMapNPC(MapNPCNum).Steps
+                    If MyMapNPC(MapNpcNum).XOffset > 8 Then anim = MyMapNPC(MapNpcNum).Steps
                 Case DirectionType.Right
-                    If MyMapNPC(MapNPCNum).XOffset < -8 Then anim = MyMapNPC(MapNPCNum).Steps
+                    If MyMapNPC(MapNpcNum).XOffset < -8 Then anim = MyMapNPC(MapNpcNum).Steps
             End Select
         End If
 
         ' Reset attacking state if attack timer has passed
-        With MyMapNPC(MapNPCNum)
+        With MyMapNPC(MapNpcNum)
             If .AttackTimer + attackSpeed < GetTickCount() Then
                 .Attacking = 0
                 .AttackTimer = 0
@@ -1021,7 +861,7 @@ Public Class GameClient
         End With
 
         ' Set sprite sheet position based on direction
-        Select Case MyMapNPC(MapNPCNum).Dir
+        Select Case MyMapNPC(MapNpcNum).Dir
             Case DirectionType.Up
                 spriteLeft = 3
             Case DirectionType.Right
@@ -1033,15 +873,15 @@ Public Class GameClient
         End Select
 
         ' Create the rectangle for rendering the sprite
-        rect = New Rectangle(anim * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Width / 4), spriteLeft * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Height / 4),
-                              Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Width / 4, Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Height / 4)
+        rect = New Rectangle(anim * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4), spriteLeft * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4),
+                              Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4)
 
         ' Calculate X and Y coordinates for rendering
-        x = MyMapNPC(MapNpcNum).X * PicX + MyMapNPC(MapNpcNum).XOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Width / 4 - 32) / 2)
+        x = MyMapNPC(MapNpcNum).X * PicX + MyMapNPC(MapNpcNum).XOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4 - 32) / 2)
 
-        If Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Height / 4 > 32 Then
+        If Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4 > 32 Then
             ' Larger sprites need an offset for height adjustment
-            y = MyMapNPC(MapNpcNum).Y * PicY + MyMapNPC(MapNpcNum).YOffset - (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & sprite)).Height / 4 - 32)
+            y = MyMapNPC(MapNpcNum).Y * PicY + MyMapNPC(MapNpcNum).YOffset - (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4 - 32)
         Else
             ' Normal sprite height
             y = MyMapNPC(MapNpcNum).Y * PicY + MyMapNPC(MapNpcNum).YOffset
@@ -1073,7 +913,7 @@ Public Class GameClient
         x = ConvertMapX(MyMapItem(itemNum).X * PicX)
         y = ConvertMapY(MyMapItem(itemNum).Y * PicY)
 
-        RenderTexture(ItemTexture(picNum), x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width, srcrec.Height)
+        EnqueueTexture(IO.Path.Combine(Core.Path.Items, picNum), x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width, srcrec.Height)
     End Sub
 
     Friend Sub DrawCharacterSprite(sprite As Integer, x2 As Integer, y2 As Integer, sRECT As Rectangle)
@@ -1085,7 +925,7 @@ Public Class GameClient
         x = ConvertMapX(x2)
         y = ConvertMapY(y2)
 
-        RenderTexture(CharacterTexture(sprite), x, y, sRECT.X, sRECT.Y, sRECT.Width, sRECT.Height, sRECT.Width, sRECT.Height)
+        EnqueueTexture(IO.Path.Combine(Core.Path.Characters, sprite), x, y, sRECT.X, sRECT.Y, sRECT.Width, sRECT.Height, sRECT.Width, sRECT.Height)
     End Sub
 
     Friend Sub DrawShadow(x2 As Integer, y2 As Integer)
@@ -1101,7 +941,7 @@ Public Class GameClient
         srcrec = New Rectangle(0, 0, PicX, PicY)
         destrec = New Rectangle(ConvertMapX(x * PicX), ConvertMapY(y * PicY), PicX, PicY)
 
-        RenderTexture(ShadowTexture, x, y, srcrec.X, srcrec.Y, destrec.Width, destrec.Height, destrec.Width, destrec.Height)
+        EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Shadow"), x, y, srcrec.X, srcrec.Y, destrec.Width, destrec.Height, destrec.Width, destrec.Height)
     End Sub
 
     Friend Sub DrawBlood(index As Integer)
@@ -1123,7 +963,7 @@ Public Class GameClient
             srcrec = New Rectangle((.Sprite - 1) * PicX, 0, PicX, PicY)
             destrec = New Rectangle(ConvertMapX(.X * PicX), ConvertMapY(.Y * PicY), PicX, PicY)
 
-            RenderTexture(BloodTexture, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
+            Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Blood" & GfxExt), x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
 
         End With
     End Sub
@@ -1133,8 +973,8 @@ Public Class GameClient
         Dim tmpX As Long, tmpY As Long, barWidth As Long, i As Long, NpcNum As Long
 
         ' dynamic bar calculations
-        Width = Client.GetGraphicInfo("Bars").Width
-        Height = Client.GetGraphicInfo("Bars").Height / 4
+        Width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Width
+        Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Height / 4
 
         ' render npc health bars
         For i = 1 To MAX_MAP_NPCS
@@ -1153,12 +993,12 @@ Public Class GameClient
                     ' draw bar background
                     Top = Height * 3 ' HP bar background
                     Left = 0
-                    RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+                    Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Bars" & GfxExt), ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
 
                     ' draw the bar proper
                     Top = 0 ' HP bar
                     Left = 0
-                    RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_NpcHP(i), Height, BarWidth_NpcHP(i), Height)
+                    EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Bars" & GfxExt), ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_NpcHP(i), Height, BarWidth_NpcHP(i), Height)
                 End If
             End If
         Next
@@ -1176,12 +1016,12 @@ Public Class GameClient
                     ' draw bar background
                     Top = Height * 3 ' HP bar background
                     Left = 0
-                    RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+                    Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Bars" & GfxExt), ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
 
                     ' draw the bar proper
                     Top = 0 ' HP bar
                     Left = 0
-                    RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_PlayerHP(i), Height, BarWidth_PlayerHP(i), Height)
+                    Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Bars" & GfxExt), ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_PlayerHP(i), Height, BarWidth_PlayerHP(i), Height)
                 End If
 
                 If GetPlayerVital(i, VitalType.SP) > 0 And GetPlayerVital(i, VitalType.SP) < GetPlayerMaxVital(i, VitalType.SP) Then
@@ -1195,12 +1035,12 @@ Public Class GameClient
                     ' draw bar background
                     Top = Height * 3 ' SP bar background
                     Left = 0
-                    RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+                    EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Bars" & GfxExt), ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
 
                     ' draw the bar proper
                     Top = Height * 1 ' SP bar
                     Left = 0
-                    RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_PlayerSP(i), Height, BarWidth_PlayerSP(i), Height)
+                    EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Bars" & GfxExt), ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, BarWidth_PlayerSP(i), Height, BarWidth_PlayerSP(i), Height)
                 End If
 
                 If SkillBuffer > 0 Then
@@ -1215,12 +1055,12 @@ Public Class GameClient
                         ' draw bar background
                         Top = Height * 3 ' cooldown bar background
                         Left = 0
-                        RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
+                        EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Bars" & GfxExt), ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, Width, Height, Width, Height)
 
                         ' draw the bar proper
                         Top = Height * 2 ' cooldown bar
                         Left = 0
-                        RenderTexture(BarTexture, ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, barWidth, Height, barWidth, Height)
+                        EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Bars" & GfxExt), ConvertMapX(tmpX), ConvertMapY(tmpY), Left, Top, barWidth, Height, barWidth, Height)
                     End If
                 End If
             End If
@@ -1292,16 +1132,16 @@ Public Class GameClient
         If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpAttributes Then
             ' No specific rendering here; only setting size for attributes
         Else
-            Dim selectedTileTexture = TilesetTexture(frmEditor_Map.cmbTileSets.SelectedIndex + 1)
+            Dim selectedTileTexture = IO.Path.Combine(Core.Path.Tilesets, frmEditor_Map.cmbTileSets.SelectedIndex + 1)
             Dim rec2 As New Rectangle()
 
             If EditorTileWidth = 1 AndAlso EditorTileHeight = 1 Then
-                RenderTexture(selectedTileTexture,
+                EnqueueTexture(selectedTileTexture,
                               ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY),
                               EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY,
                               PicX, PicY)
             ElseIf frmEditor_Map.cmbAutoTile.SelectedIndex > 0 Then
-                RenderTexture(selectedTileTexture,
+                EnqueueTexture(selectedTileTexture,
                               ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY),
                               EditorTileSelStart.X * PicX, EditorTileSelStart.Y * PicY,
                               EditorTileSelEnd.X * PicX, EditorTileSelEnd.Y * PicY)
@@ -1309,7 +1149,7 @@ Public Class GameClient
 
             ' Draw a filled rectangle for the tile selection
             Dim position As New Vector2(ConvertMapX(CurX * PicX), ConvertMapY(CurY * PicY))
-            SpriteBatch.Draw(PixelTexture, New Rectangle(CInt(position.X), CInt(position.Y), CInt(rec2.Width), CInt(rec2.Height)), Color.White)
+            'SpriteBatch.Draw(PixelTexture, New Rectangle(CInt(position.X), CInt(position.Y), CInt(rec2.Width), CInt(rec2.Height)), Color.White)
         End If
 
         ' End the sprite batch
@@ -1323,7 +1163,7 @@ Public Class GameClient
 
         With rec
             .Y = 0
-            .Height = Client.GetGraphicInfo("Target").Height
+            .Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Height
             .X = 0
             .Width = Client.GetGraphicInfo("Target").Width / 2
         End With
@@ -1332,7 +1172,7 @@ Public Class GameClient
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderTexture(TargetTexture, x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
+        EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Target"), x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Friend Sub DrawHover(x2 As Integer, y2 As Integer)
@@ -1342,9 +1182,9 @@ Public Class GameClient
 
         With rec
             .Y = 0
-            .Height = Client.GetGraphicInfo("Target").Height
-            .X = Client.GetGraphicInfo("Target").Width / 2
-            .Width = Client.GetGraphicInfo("Target").Width / 2 + Client.GetGraphicInfo("Target").Width / 2
+            .Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Height
+            .X = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2
+            .Width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2 + Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2
         End With
 
         x = ConvertMapX(x2 + 4)
@@ -1352,7 +1192,7 @@ Public Class GameClient
         width = (rec.Right - rec.Left)
         height = (rec.Bottom - rec.Top)
 
-        RenderTexture(TargetTexture, x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
+        EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Target"), x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
     Friend Sub EditorItem_DrawIcon()
@@ -1490,8 +1330,8 @@ Public Class GameClient
         If animationNum <= 0 OrElse animationNum > NumAnimations Then Exit Sub
 
         ' Retrieve animation texture dimensions
-        Dim totalWidth As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Animations & animationNum)).Width
-        Dim totalHeight As Integer = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Animations & animationNum)).Height
+        Dim totalWidth As Integer = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Animations, animationNum)).Width
+        Dim totalHeight As Integer = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Animations, animationNum)).Height
 
         ' Get the number of columns from the control
         Dim columns As Integer = frameCountControl.Value
@@ -1532,7 +1372,7 @@ Public Class GameClient
         Dim sourceRect As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
 
         ' Render the texture to the target
-        SpriteBatch.Draw(AnimationTexture(animationNum),
+        SpriteBatch.Draw(Client.GetTexture(Core.Path.Animations & animationNum),
                          New Rectangle(0, 0, frameWidth, frameHeight),
                          sourceRect,
                          Color.White)
@@ -1583,37 +1423,37 @@ Public Class GameClient
             y2 = y - (UBound(theArray) * 12)
 
             ' render bubble - top left
-            RenderTexture(InterfaceTexture(33), x2 - 9, y2 - 5, 0, 0, 9, 5, 9, 5)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2 - 9, y2 - 5, 0, 0, 9, 5, 9, 5)
 
             ' top right
-            RenderTexture(InterfaceTexture(33), x2 + MaxWidth, y2 - 5, 119, 0, 9, 5, 9, 5)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2 + MaxWidth, y2 - 5, 119, 0, 9, 5, 9, 5)
 
             ' top
-            RenderTexture(InterfaceTexture(33), x2, y2 - 5, 9, 0, MaxWidth, 5, 5, 5)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2, y2 - 5, 9, 0, MaxWidth, 5, 5, 5)
 
             ' bottom left
-            RenderTexture(InterfaceTexture(33), x2 - 9, y, 0, 19, 9, 6, 9, 6)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2 - 9, y, 0, 19, 9, 6, 9, 6)
 
             ' bottom right
-            RenderTexture(InterfaceTexture(33), x2 + MaxWidth, y, 119, 19, 9, 6, 9, 6)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2 + MaxWidth, y, 119, 19, 9, 6, 9, 6)
 
             ' bottom - left half
-            RenderTexture(InterfaceTexture(33), x2, y, 9, 19, (MaxWidth \ 2) - 5, 6, 6, 6)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2, y, 9, 19, (MaxWidth \ 2) - 5, 6, 6, 6)
 
             ' bottom - right half
-            RenderTexture(InterfaceTexture(33), x2 + (MaxWidth \ 2) + 6, y, 9, 19, (MaxWidth \ 2) - 5, 6, 9, 6)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2 + (MaxWidth \ 2) + 6, y, 9, 19, (MaxWidth \ 2) - 5, 6, 9, 6)
 
             ' left
-            RenderTexture(InterfaceTexture(33), x2 - 9, y2, 0, 6, 9, (UBound(theArray) * 12), 9, 6)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2 - 9, y2, 0, 6, 9, (UBound(theArray) * 12), 9, 6)
 
             ' right
-            RenderTexture(InterfaceTexture(33), x2 + MaxWidth, y2, 119, 6, 9, (UBound(theArray) * 12), 9, 6)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2 + MaxWidth, y2, 119, 6, 9, (UBound(theArray) * 12), 9, 6)
 
             ' center
-            RenderTexture(InterfaceTexture(33), x2, y2, 9, 5, MaxWidth, (UBound(theArray) * 12), 9, 5)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x2, y2, 9, 5, MaxWidth, (UBound(theArray) * 12), 9, 5)
 
             ' little pointy bit
-            RenderTexture(InterfaceTexture(33), x - 5, y, 58, 19, 11, 11, 11, 11)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Gui, 33), x - 5, y, 58, 19, 11, 11, 11, 11)
 
             ' render each line centralized
             tmpNum = UBound(theArray)
@@ -1721,19 +1561,19 @@ Public Class GameClient
         End Select
 
         ' Calculate the X
-        x = Type.Player(index).X * PicX + Type.Player(index).XOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Width / 4 - 32) / 2)
+        x = Type.Player(index).X * PicX + Type.Player(index).XOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4 - 32) / 2)
 
         ' Is the player's height more than 32..?
-        If (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Height) > 32 Then
+        If (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height) > 32 Then
             ' Create a 32 pixel offset for larger sprites
-            y = GetPlayerY(index) * PicY + Type.Player(index).YOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Height / 4) - 32)
+            y = GetPlayerY(index) * PicY + Type.Player(index).YOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4) - 32)
         Else
             ' Proceed as normal
             y = GetPlayerY(index) * PicY + Type.Player(index).YOffset
         End If
 
-        rect = New Rectangle((anim) * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Width / 4), spriteleft * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Height / 4),
-                               (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Width / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & spritenum)).Height / 4))
+        rect = New Rectangle((anim) * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4), spriteleft * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4),
+                               (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4), (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4))
 
         ' render the actual sprite
         DrawShadow(x, y + 16)
@@ -1878,7 +1718,7 @@ Public Class GameClient
         Dim columns As Integer = eventData.Pages(1).GraphicY ' Example column count
 
         ' Calculate the frame size (assuming square frames for simplicity)
-        Dim frameWidth As Integer = CharacterTexture(gfxIndex).Width \ columns
+        Dim frameWidth As Integer = GetGraphicInfo(IO.Path.Combine(Core.Path.Characters, gfxIndex)).Width \ columns
         Dim frameHeight As Integer = frameWidth ' Adjust if non-square frames
 
         ' Calculate the source rectangle for the current frame
@@ -1889,15 +1729,7 @@ Public Class GameClient
         ' Define the position on the map where the graphic will be drawn
         Dim position As New Vector2(x, y)
 
-        ' Render the graphic using SpriteBatch
-        SpriteBatch.Begin()
-
-        SpriteBatch.Draw(CharacterTexture(gfxIndex),
-                         position,
-                         sourceRect,
-                         Color.White)
-
-        SpriteBatch.End()
+        EnqueueTexture(IO.Path.Combine(Core.Path.Characters, gfxIndex), position.X, position.Y, sourceRect.X, sourceRect.Y, frameWidth, frameHeight, sourceRect.Width, sourceRect.Height)
     End Sub
 
     Private Sub RenderTilesetGraphic(eventData As EventStruct, x As Integer, y As Integer)
@@ -1918,7 +1750,7 @@ Public Class GameClient
             ' Define destination rectangle
             Dim destRect As New Rectangle(x, y, srcRect.Width, srcRect.Height)
 
-            RenderTexture(TilesetTexture(gfxIndex), destRect.X, destRect.Y, srcRect.X, srcRect.Y, destRect.Width, destRect.Height, srcRect.Width, srcRect.Height)
+            EnqueueTexture(IO.Path.Combine(Core.Path.Tilesets, gfxIndex), destRect.X, destRect.Y, srcRect.X, srcRect.Y, destRect.Width, destRect.Height, srcRect.Width, srcRect.Height)
         Else
             ' Draw fallback outline if the tileset graphic is invalid
             DrawOutlineRectangle(x, y, PicX, PicY, Color.Blue, 0.6F)
@@ -1969,17 +1801,17 @@ Public Class GameClient
                 If MapEvents(id).WalkAnim = 1 Then anim = 0
                 If MapEvents(id).Moving = 0 Then anim = MapEvents(id).GraphicX
 
-                width = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Width / 4
-                height = Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height / 4
+                width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4
+                height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4
 
-                sRect = New Rectangle((anim) * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Width / 4), spritetop * (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Width / 4), (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height / 4))
+                sRect = New Rectangle((anim) * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4), spritetop * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4), (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4), (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4))
                 ' Calculate the X
-                x = MapEvents(id).X * PicX + MapEvents(id).XOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Width / 4 - 32) / 2)
+                x = MapEvents(id).X * PicX + MapEvents(id).XOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4 - 32) / 2)
 
                 ' Is the player's height more than 32..?
-                If (Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height * 4) > 32 Then
+                If (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height * 4) > 32 Then
                     ' Create a 32 pixel offset for larger sprites
-                    y = MapEvents(id).Y * PicY + MapEvents(id).YOffset - ((Client.GetGraphicInfo(Core.Path.GetLastDirectoryName(Core.Path.Characters & MapEvents(id).Graphic)).Height / 4) - 32)
+                    y = MapEvents(id).Y * PicY + MapEvents(id).YOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4) - 32)
                 Else
                     ' Proceed as normal
                     y = MapEvents(id).Y * PicY + MapEvents(id).YOffset
@@ -1987,8 +1819,8 @@ Public Class GameClient
                 ' render the actual sprite
                 DrawCharacterSprite(MapEvents(id).Graphic, x, y, sRect)
             Case 2
-               If MapEvents(id).Graphic < 1 Or MapEvents(id).Graphic > NumTileSets Then Exit Sub
-               If MapEvents(id).GraphicY2 > 0 Or MapEvents(id).GraphicX2 > 0 Then
+                If MapEvents(id).Graphic < 1 Or MapEvents(id).Graphic > NumTileSets Then Exit Sub
+                If MapEvents(id).GraphicY2 > 0 Or MapEvents(id).GraphicX2 > 0 Then
                     With sRect
                         .X = MapEvents(id).GraphicX * 32
                         .Y = MapEvents(id).GraphicY * 32
@@ -2008,10 +1840,10 @@ Public Class GameClient
                 x = x - ((sRect.Right - sRect.Left) / 2)
                 y = y - (sRect.Bottom - sRect.Top) + 32
 
-               If MapEvents(id).GraphicY2 > 1 Then
-                    RenderTexture(TilesetTexture(MapEvents(id).Graphic), ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
+                If MapEvents(id).GraphicY2 > 1 Then
+                    EnqueueTexture(IO.Path.Combine(Core.Path.Tilesets, MapEvents(id).Graphic), ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY) - PicY, sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 Else
-                    RenderTexture(TilesetTexture(MapEvents(id).Graphic), ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
+                    EnqueueTexture(IO.Path.Combine(Core.Path.Tilesets, MapEvents(id).Graphic), ConvertMapX(MapEvents(id).X * PicX), ConvertMapY(MapEvents(id).Y * PicY), sRect.Left, sRect.Top, sRect.Width, sRect.Height)
                 End If
         End Select
 

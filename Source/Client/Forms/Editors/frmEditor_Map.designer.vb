@@ -55,9 +55,9 @@ Partial Class frmEditor_Map
         lblMapWarpY = New Label()
         lblMapWarpX = New Label()
         lblMapWarpMap = New Label()
-        fraNpcSpawn = New GroupBox()
+        fraNPCSpawn = New GroupBox()
         lstNpc = New ComboBox()
-        btnNpcSpawn = New Button()
+        btnNPCSpawn = New Button()
         scrlNpcDir = New HScrollBar()
         lblNpcDir = New Label()
         fraHeal = New GroupBox()
@@ -195,7 +195,7 @@ Partial Class frmEditor_Map
         fraMapLight.SuspendLayout()
         fraAnimation.SuspendLayout()
         fraMapWarp.SuspendLayout()
-        fraNpcSpawn.SuspendLayout()
+        fraNPCSpawn.SuspendLayout()
         fraHeal.SuspendLayout()
         fraShop.SuspendLayout()
         fraResource.SuspendLayout()
@@ -380,7 +380,7 @@ Partial Class frmEditor_Map
         pnlAttributes.Controls.Add(fraMapLight)
         pnlAttributes.Controls.Add(fraAnimation)
         pnlAttributes.Controls.Add(fraMapWarp)
-        pnlAttributes.Controls.Add(fraNpcSpawn)
+        pnlAttributes.Controls.Add(fraNPCSpawn)
         pnlAttributes.Controls.Add(fraHeal)
         pnlAttributes.Controls.Add(fraShop)
         pnlAttributes.Controls.Add(fraResource)
@@ -573,20 +573,20 @@ Partial Class frmEditor_Map
         lblMapWarpMap.TabIndex = 0
         lblMapWarpMap.Text = "Map: 1"
         ' 
-        ' fraNpcSpawn
+        ' fraNPCSpawn
         ' 
-        fraNpcSpawn.Controls.Add(lstNpc)
-        fraNpcSpawn.Controls.Add(btnNpcSpawn)
-        fraNpcSpawn.Controls.Add(scrlNpcDir)
-        fraNpcSpawn.Controls.Add(lblNpcDir)
-        fraNpcSpawn.Location = New Point(6, 12)
-        fraNpcSpawn.Margin = New Padding(6, 5, 6, 5)
-        fraNpcSpawn.Name = "fraNpcSpawn"
-        fraNpcSpawn.Padding = New Padding(6, 5, 6, 5)
-        fraNpcSpawn.Size = New Size(290, 217)
-        fraNpcSpawn.TabIndex = 11
-        fraNpcSpawn.TabStop = False
-        fraNpcSpawn.Text = "Npc Spawn"
+        fraNPCSpawn.Controls.Add(lstNpc)
+        fraNPCSpawn.Controls.Add(btnNPCSpawn)
+        fraNPCSpawn.Controls.Add(scrlNpcDir)
+        fraNPCSpawn.Controls.Add(lblNpcDir)
+        fraNPCSpawn.Location = New Point(6, 12)
+        fraNPCSpawn.Margin = New Padding(6, 5, 6, 5)
+        fraNPCSpawn.Name = "fraNPCSpawn"
+        fraNPCSpawn.Padding = New Padding(6, 5, 6, 5)
+        fraNPCSpawn.Size = New Size(290, 217)
+        fraNPCSpawn.TabIndex = 11
+        fraNPCSpawn.TabStop = False
+        fraNPCSpawn.Text = "Npc Spawn"
         ' 
         ' lstNpc
         ' 
@@ -598,15 +598,15 @@ Partial Class frmEditor_Map
         lstNpc.Size = New Size(255, 33)
         lstNpc.TabIndex = 37
         ' 
-        ' btnNpcSpawn
+        ' btnNPCSpawn
         ' 
-        btnNpcSpawn.Location = New Point(66, 147)
-        btnNpcSpawn.Margin = New Padding(6, 5, 6, 5)
-        btnNpcSpawn.Name = "btnNpcSpawn"
-        btnNpcSpawn.Size = New Size(150, 53)
-        btnNpcSpawn.TabIndex = 6
-        btnNpcSpawn.Text = "Accept"
-        btnNpcSpawn.UseVisualStyleBackColor = True
+        btnNPCSpawn.Location = New Point(66, 147)
+        btnNPCSpawn.Margin = New Padding(6, 5, 6, 5)
+        btnNPCSpawn.Name = "btnNPCSpawn"
+        btnNPCSpawn.Size = New Size(150, 53)
+        btnNPCSpawn.TabIndex = 6
+        btnNPCSpawn.Text = "Accept"
+        btnNPCSpawn.UseVisualStyleBackColor = True
         ' 
         ' scrlNpcDir
         ' 
@@ -2010,7 +2010,7 @@ Partial Class frmEditor_Map
         ' 
         ' frmEditor_Map
         ' 
-        AutoScaleDimensions = New SizeF(10F, 25F)
+        AutoScaleDimensions = New SizeF(10.0F, 25.0F)
         AutoScaleMode = AutoScaleMode.Font
         AutoSize = True
         BackColor = SystemColors.Control
@@ -2031,8 +2031,8 @@ Partial Class frmEditor_Map
         fraAnimation.ResumeLayout(False)
         fraMapWarp.ResumeLayout(False)
         fraMapWarp.PerformLayout()
-        fraNpcSpawn.ResumeLayout(False)
-        fraNpcSpawn.PerformLayout()
+        fraNPCSpawn.ResumeLayout(False)
+        fraNPCSpawn.PerformLayout()
         fraHeal.ResumeLayout(False)
         fraHeal.PerformLayout()
         fraShop.ResumeLayout(False)
@@ -2112,8 +2112,8 @@ Partial Class frmEditor_Map
     Friend WithEvents btnResourceOk As System.Windows.Forms.Button
     Friend WithEvents scrlResource As System.Windows.Forms.HScrollBar
     Friend WithEvents lblResource As System.Windows.Forms.Label
-    Friend WithEvents fraNpcSpawn As System.Windows.Forms.GroupBox
-    Friend WithEvents btnNpcSpawn As System.Windows.Forms.Button
+    Friend WithEvents fraNPCSpawn As System.Windows.Forms.GroupBox
+    Friend WithEvents btnNPCSpawn As System.Windows.Forms.Button
     Friend WithEvents scrlNpcDir As System.Windows.Forms.HScrollBar
     Friend WithEvents lblNpcDir As System.Windows.Forms.Label
     Friend WithEvents lstNpc As System.Windows.Forms.ComboBox
