@@ -16,6 +16,11 @@ Public Class GameClient
     Public SpriteBatch As Graphics.SpriteBatch
     Public ReadOnly TextureCache As New ConcurrentDictionary(Of String, Texture2D)()
     Public ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GraphicInfo)()
+    Public ReadOnly MouseCache As New ConcurrentDictionary(Of String, Integer)
+
+
+    Private keyStateDict As New ConcurrentDictionary(Of Keys, Boolean)
+    Public ReadOnly KeyCache As New ConcurrentDictionary(Of Keys, Boolean)
     Public ReadOnly MultiplyBlendState As New BlendState()
 
     ' Thread-safe queue to hold render commands
@@ -69,16 +74,25 @@ Public Class GameClient
         Graphics = New GraphicsDeviceManager(Me)
 
         ' Set the desired window size
-        graphics.PreferredBackBufferWidth = ResolutionWidth
-        graphics.PreferredBackBufferHeight = ResolutionHeight
+        Graphics.PreferredBackBufferWidth = ResolutionWidth
+        Graphics.PreferredBackBufferHeight = ResolutionHeight
 
         ' Apply changes to ensure the window resizes
-        graphics.ApplyChanges()
+        Graphics.ApplyChanges()
 
         Content.RootDirectory = "Content"
 
         ' Hook into the Exiting event to handle window close
         AddHandler Me.Exiting, AddressOf OnWindowClosed
+    End Sub
+
+    ' Populate the dictionary in a shared Sub or Constructor
+    Public Sub InitializeMouseCache()
+        MouseCache.TryAdd("X", 0)
+        MouseCache.TryAdd("Y", 0)
+        MouseCache.TryAdd("LeftButton", 0)
+        MouseCache.TryAdd("RightButton", 0)
+        MouseCache.TryAdd("MiddleButton", 0)
     End Sub
 
     Protected Overrides Sub Initialize()
@@ -90,6 +104,8 @@ Public Class GameClient
             False,
             GraphicsDevice.PresentationParameters.BackBufferFormat,
             DepthFormat.Depth24)
+
+        InitializeMouseCache()
 
         InitializeMultiplyBlendState()
 
@@ -277,13 +293,18 @@ Public Class GameClient
         currentKeyboardState = Keyboard.GetState()
         currentMouseState = Mouse.GetState()
 
-        ' Convert adjusted coordinates to game world coordinates
-        CurX = TileView.Left + Math.Floor((currentMouseState.X + Camera.Left) / PicX)
-        CurY = TileView.Top + Math.Floor((currentMouseState.Y + Camera.Top) / PicY)
+        ' Update the mouse state
+        MouseCache("X") = currentMouseState.X
+        MouseCache("Y") = currentMouseState.Y
+        MouseCache("LeftButton") = If(currentMouseState.LeftButton = ButtonState.Pressed, 1, 0)
+        MouseCache("RightButton") = If(currentMouseState.RightButton = ButtonState.Pressed, 1, 0)
+        MouseCache("MiddleButton") = If(currentMouseState.MiddleButton = ButtonState.Pressed, 1, 0)
 
-        ' Store raw mouse coordinates for interface interactions
-        CurMouseX = currentMouseState.X
-        CurMouseY = currentMouseState.Y
+        ' Iterate through all keys in the Keys enum
+        Dim keyboardState As KeyboardState = Keyboard.GetState()
+        For Each key As Keys In System.[Enum].GetValues(GetType(Keys))
+            keyStateDict(key) = keyboardState.IsKeyDown(key)
+        Next
 
         If currentMouseState.Position <> previousMouseState.Position Then
             HandleInterfaceEvents(EntState.MouseMove)
@@ -963,7 +984,7 @@ Public Class GameClient
             srcrec = New Rectangle((.Sprite - 1) * PicX, 0, PicX, PicY)
             destrec = New Rectangle(ConvertMapX(.X * PicX), ConvertMapY(.Y * PicY), PicX, PicY)
 
-            Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Blood" & GfxExt), x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
+            Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Blood"), x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height)
 
         End With
     End Sub

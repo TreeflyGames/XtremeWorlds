@@ -310,6 +310,14 @@ Module General
             DirLeft = VbKeyLeft
             DirRight = VbKeyRight
 
+            ' Convert adjusted coordinates to game world coordinates
+            CurX = TileView.Left + Math.Floor((Client.MouseCache("X") + Camera.Left) / PicX)
+            CurY = TileView.Top + Math.Floor((Client.MouseCache("Y") + Camera.Top) / PicY)
+
+            ' Store raw mouse coordinates for interface interactions
+            CurMouseX = Client.MouseCache("X")
+            CurMouseY = Client.MouseCache("Y")
+
             If GameStarted() Then
                 'Calculate FPS
                 If tmr1000 < tick Then
