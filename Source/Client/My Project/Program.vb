@@ -1,4 +1,4 @@
-Imports Microsoft.Xna.Framework
+ï»¿Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Graphics
 Imports Microsoft.Xna.Framework.Input
 Imports Core
@@ -17,9 +17,6 @@ Public Class GameClient
     Public ReadOnly TextureCache As New ConcurrentDictionary(Of String, Texture2D)()
     Public ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GraphicInfo)()
     Public ReadOnly MouseCache As New ConcurrentDictionary(Of String, Integer)
-
-
-    Private keyStateDict As New ConcurrentDictionary(Of Keys, Boolean)
     Public ReadOnly KeyCache As New ConcurrentDictionary(Of Keys, Boolean)
     Public ReadOnly MultiplyBlendState As New BlendState()
 
@@ -83,7 +80,7 @@ Public Class GameClient
         Content.RootDirectory = "Content"
 
         ' Hook into the Exiting event to handle window close
-        AddHandler Me.Exiting, AddressOf OnWindowClosed
+        AddHandler Me.Exiting, AddressOf WindowClosed
     End Sub
 
     ' Populate the dictionary in a shared Sub or Constructor
@@ -303,130 +300,13 @@ Public Class GameClient
         ' Iterate through all keys in the Keys enum
         Dim keyboardState As KeyboardState = Keyboard.GetState()
         For Each key As Keys In System.[Enum].GetValues(GetType(Keys))
-            keyStateDict(key) = keyboardState.IsKeyDown(key)
+            KeyCache(key) = keyboardState.IsKeyDown(key)
         Next
-
-        If currentMouseState.Position <> previousMouseState.Position Then
-            HandleInterfaceEvents(EntState.MouseMove)
-        End If
-
-        ' Handle character input if a window and control are active
-        If activeWindow > 0 AndAlso activeControl > 0 AndAlso Not controlLocked Then
-            HandleTextInput()
-        End If
 
         ' Capture screenshot when the screenshot key is pressed
         If currentKeyboardState.IsKeyDown(screenshotKey) Then
             TakeScreenshot()
         End If
-
-        ' Process key inputs
-        If inGame Then
-            ' Handle mouse wheel scrolling
-            HandleMouseWheelScrolling()
-
-            If currentMouseState.LeftButton = ButtonState.Released Or currentMouseState.RightButton = ButtonState.Released Or currentMouseState.MiddleButton = ButtonState.Released Then
-                HandleInterfaceEvents(EntState.MouseUp)
-            End If
-
-            If currentMouseState.LeftButton = ButtonState.Pressed Then
-                Dim currentTime As Integer = Environment.TickCount
-
-                mouseButton = MouseButton.Left
-
-                ' Double-click detection
-                If currentTime - LastLeftClickTime <= DoubleClickTImer Then
-                    HandleInterfaceEvents(EntState.DblClick)
-                    LastLeftClickTime = 0 ' Reset to avoid triple-clicks
-                Else
-                    HandleInterfaceEvents(EntState.MouseDown)
-                    LastLeftClickTime = currentTime
-                End If
-
-                If inGame Then
-                    If PetAlive(MyIndex) AndAlso IsInBounds() Then
-                        PetMove(CurX, CurY)
-                    End If
-                    CheckAttack(True)
-                    PlayerSearch(CurX, CurY, 0)
-                End If
-            ElseIf currentMouseState.RightButton = ButtonState.Pressed Then
-                mouseButton = MouseButton.Right
-
-                If inGame Then
-                    If Keyboard.GetState().IsKeyDown(Keys.LeftShift) Then
-                        ' Admin warp if pressing Shift and right-clicking
-                        If GetPlayerAccess(MyIndex) >= AccessType.Moderator Then
-                            AdminWarp(CurX, CurY)
-                        End If
-                    Else
-                        ' Show right-click menu
-                        For i = 1 To MAX_PLAYERS
-                            If IsPlaying(i) AndAlso GetPlayerMap(i) = GetPlayerMap(MyIndex) AndAlso
-                               GetPlayerX(i) = CurX AndAlso GetPlayerY(i) = CurY Then
-                                ShowPlayerMenu(i, currentMouseState.X, currentMouseState.Y)
-                            End If
-                        Next
-
-                        PlayerSearch(CurX, CurY, 1)
-                    End If
-                End If
-            ElseIf currentMouseState.MiddleButton = ButtonState.Pressed Then
-                mouseButton = MouseButton.Middle
-            End If
-
-            If mouseButton <> MouseButton.None Then
-                If MyEditorType = EditorType.Map Then
-                    frmEditor_Map.MapEditorMouseDown(mouseButton, currentMouseState.X, currentMouseState.Y, False)
-                End If
-            End If
-
-            HandleMovement()
-
-            If IsKeyPressed(Keys.Escape) Then
-                If inMenu Then Exit Sub
-                ToggleMenu()
-            End If
-
-            If IsKeyPressed(Keys.Enter) Then
-                If inSmallChat Then
-                    ShowChat()
-                    inSmallChat = False
-                    Exit Sub
-                End If
-                HandlePressEnter()
-            End If
-
-            If IsKeyPressed(Keys.Space) Then
-                CheckMapGetItem()
-            End If
-
-            If IsKeyPressed(Keys.I) Then
-                ' hide/show inventory
-                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Inv()
-            End If
-
-            If IsKeyPressed(Keys.C) Then
-                ' hide/show char
-                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Char()
-            End If
-
-            If IsKeyPressed(Keys.K) Then
-                ' hide/show skills
-                If Not Windows(GetWindowIndex("winChat")).Window.Visible Then btnMenu_Skills()
-            End If
-
-            If IsKeyPressed(Keys.Up) Then VbKeyUp = False
-            If IsKeyPressed(Keys.Down) Then VbKeyDown = False
-            If IsKeyPressed(Keys.Left) Then VbKeyLeft = False
-            If IsKeyPressed(Keys.Right) Then VbKeyRight = False
-            If IsKeyPressed(Keys.LeftControl) Then VbKeyControl = False
-            If IsKeyPressed(Keys.LeftShift) Then VbKeyShift = False
-
-            HandleHotbarInput()
-        End If
-
-        If activeWindow > 0 Then HandleActiveWindowInput()
 
         ' Save the current state as the previous state for the next frame
         previousKeyboardState = currentKeyboardState
@@ -435,164 +315,7 @@ Public Class GameClient
         MyBase.Update(gameTime)
     End Sub
 
-    Private Sub HandleTextInput()
-        ' Get all pressed keys from the current frame
-        Dim pressedKeys = currentKeyboardState.GetPressedKeys()
-
-        For Each key In pressedKeys
-            ' Check if this key was newly pressed
-            If previousKeyboardState.IsKeyUp(key) Then
-                Dim character As Char = ConvertKeyToChar(key)
-
-                ' Ignore special control characters
-                If character = ChrW(8) OrElse character = ChrW(13) OrElse
-                   character = ChrW(9) OrElse character = ChrW(27) Then
-                    Continue For
-                End If
-
-                ' Ensure text length doesn't exceed the max length
-                If controlText.Length < maxTextLength Then
-                    controlText &= character ' Append the character to control text
-                    Console.WriteLine("Updated Control Text: " & controlText)
-                End If
-            End If
-        Next
-    End Sub
-
-    Private Function ConvertKeyToChar(key As Keys) As Char
-        ' Convert MonoGame Keys to corresponding Char (basic conversion)
-        Select Case key
-            Case Keys.A To Keys.Z
-                ' Handle letters (convert to lowercase for simplicity)
-                Return ChrW(key - Keys.A + AscW("a"c))
-            Case Keys.D0 To Keys.D9
-                ' Handle number keys
-                Return ChrW(key - Keys.D0 + AscW("0"c))
-            Case Keys.Space
-                Return " "c
-            Case Keys.OemPeriod
-                Return "."c
-            Case Else
-                ' Default to empty character for unsupported keys
-                Return ChrW(0)
-        End Select
-    End Function
-
-    Private Sub HandleMouseWheelScrolling()
-        ' Check if the scroll wheel has moved
-        Dim scrollDelta As Integer = currentMouseState.ScrollWheelValue - previousMouseState.ScrollWheelValue
-
-        If scrollDelta <> 0 Then
-            Console.WriteLine($"Mouse Wheel Scrolled: {scrollDelta}")
-
-            If MyEditorType = EditorType.Map Then
-                If scrollDelta > 0 Then ' Scrolling up
-                    If Keyboard.GetState().IsKeyDown(Keys.LeftShift) Then
-                        If frmEditor_Map.cmbLayers.SelectedIndex + 1 < LayerType.Count - 1 Then
-                            frmEditor_Map.cmbLayers.SelectedIndex += 1
-                        End If
-                    Else
-                        If frmEditor_Map.cmbTileSets.SelectedIndex > 0 Then
-                            frmEditor_Map.cmbTileSets.SelectedIndex -= 1
-                        End If
-                    End If
-                Else ' Scrolling down
-                    If Keyboard.GetState().IsKeyDown(Keys.LeftShift) Then
-                        If frmEditor_Map.cmbLayers.SelectedIndex > 0 Then
-                            frmEditor_Map.cmbLayers.SelectedIndex -= 1
-                        End If
-                    Else
-                        If frmEditor_Map.cmbTileSets.SelectedIndex + 1 < NumTileSets Then
-                            frmEditor_Map.cmbTileSets.SelectedIndex += 1
-                        End If
-                    End If
-                End If
-            End If
-
-            ' Scroll chat box based on the scroll direction
-            If scrollDelta > 0 Then
-                ScrollChatBox(0)
-            Else
-                ScrollChatBox(1)
-            End If
-
-            ' Handle interface events
-            HandleInterfaceEvents(EntState.MouseScroll)
-        End If
-    End Sub
-
-    Private Sub HandleMovement()
-        If currentKeyboardState.IsKeyDown(Keys.W) OrElse currentKeyboardState.IsKeyDown(Keys.Up) Then
-            VbKeyUp = True
-        End If
-
-        If currentKeyboardState.IsKeyDown(Keys.S) OrElse currentKeyboardState.IsKeyDown(Keys.Down) Then
-            VbKeyDown = True
-        End If
-
-        If currentKeyboardState.IsKeyDown(Keys.A) OrElse currentKeyboardState.IsKeyDown(Keys.Left) Then
-            VbKeyLeft = True
-        End If
-
-        If currentKeyboardState.IsKeyDown(Keys.D) OrElse currentKeyboardState.IsKeyDown(Keys.Right) Then
-            VbKeyRight = True
-        End If
-    End Sub
-
-    Private Sub ToggleMenu()
-        If Windows(GetWindowIndex("winOptions")).Window.Visible Then
-            HideWindow(GetWindowIndex("winOptions"))
-            CloseComboMenu()
-        ElseIf Windows(GetWindowIndex("winChat")).Window.Visible Then
-            HideChat()
-        ElseIf Windows(GetWindowIndex("winEscMenu")).Window.Visible Then
-            HideWindow(GetWindowIndex("winEscMenu"))
-        Else
-            ShowWindow(GetWindowIndex("winEscMenu"), True)
-        End If
-    End Sub
-
-    Private Sub HandleHotbarInput()
-        If inSmallChat Then
-            For i = 1 To MAX_Hotbar - 1
-                If IsKeyPressed(DirectCast(26 + i, Keys)) Then
-                    SendUseHotbarSlot(i)
-                End If
-            Next
-
-            If IsKeyPressed(Keys.NumPad0) Then
-                SendUseHotbarSlot(MAX_Hotbar)
-            End If
-        End If
-    End Sub
-
-    Private Sub HandleActiveWindowInput()
-        If Windows(activeWindow).Window.Visible Then
-            If Windows(activeWindow).ActiveControl > 0 Then
-                If IsKeyPressed(Keys.Insert) Then
-                    SendRequestAdmin()
-                ElseIf IsKeyPressed(Keys.Back) Then
-                    HandleBackspaceInput()
-                ElseIf IsKeyPressed(Keys.Enter) Then
-                    ActivateControl()
-                End If
-            End If
-        End If
-    End Sub
-
-    Private Sub HandleBackspaceInput()
-        Dim activeControl = Windows(activeWindow).Controls(Windows(activeWindow).ActiveControl)
-        If activeControl.Text.Length > 0 Then
-            activeControl.Text = activeControl.Text.Substring(0, activeControl.Text.Length - 1)
-        End If
-    End Sub
-
-    ' Utility function to detect single key press (current frame)
-    Private Function IsKeyPressed(key As Keys) As Boolean
-        Return currentKeyboardState.IsKeyDown(key) AndAlso previousKeyboardState.IsKeyUp(key)
-    End Function
-
-    Private Sub OnWindowClosed(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub WindowClosed(ByVal sender As Object, ByVal e As EventArgs)
         ' Handle any cleanup logic before the game exits
         Console.WriteLine("Window Closed")
         DestroyGame()
@@ -752,6 +475,52 @@ Public Class GameClient
             Case Else
                 Throw New ArgumentOutOfRangeException(NameOf(qbColor), "Invalid QbColor value.")
         End Select
+    End Function
+
+    Public Sub RenderToPictureBox(pictureBox As PictureBox, texture As Texture2D)
+        ' Create a new RenderTarget2D matching the PictureBox dimensions
+        Dim renderTarget As New RenderTarget2D(GraphicsDevice, pictureBox.Width, pictureBox.Height)
+
+        ' Set the render target and clear it
+        GraphicsDevice.SetRenderTarget(renderTarget)
+        GraphicsDevice.Clear(Color.CornflowerBlue)
+
+        ' Begin SpriteBatch and render the texture
+        SpriteBatch.Begin()
+        SpriteBatch.Draw(texture, New Rectangle(0, 0, pictureBox.Width, pictureBox.Height), Color.White)
+        SpriteBatch.End()
+
+        ' Reset to the back buffer
+        GraphicsDevice.SetRenderTarget(Nothing)
+
+        ' Save RenderTarget2D to a Bitmap
+        Dim bitmap As Drawing.Bitmap = RenderTargetToBitmap(renderTarget)
+
+        ' Display the bitmap in the PictureBox
+        pictureBox.Image = bitmap
+
+        ' Dispose of resources
+        renderTarget.Dispose()
+    End Sub
+
+    ' Convert RenderTarget2D to Bitmap
+    Private Function RenderTargetToBitmap(renderTarget As RenderTarget2D) As Drawing.Bitmap
+        ' Get the pixel data from RenderTarget2D
+        Dim data(renderTarget.Width * renderTarget.Height - 1) As Color
+        renderTarget.GetData(data)
+
+        ' Create a new Bitmap
+        Dim bitmap As New Drawing.Bitmap(renderTarget.Width, renderTarget.Height, Imaging.PixelFormat.Format32bppArgb)
+
+        ' Copy the pixel data to the Bitmap
+        For y As Integer = 0 To renderTarget.Height - 1
+            For x As Integer = 0 To renderTarget.Width - 1
+                Dim color As Color = data(y * renderTarget.Width + x)
+                bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B))
+            Next
+        Next
+
+        Return bitmap
     End Function
 
     Friend Sub DrawEmote(x2 As Integer, y2 As Integer, sprite As Integer)
@@ -1648,52 +1417,6 @@ Public Class GameClient
         End Select
     End Sub
 
-    Public Sub RenderToPictureBox(pictureBox As PictureBox, texture As Texture2D)
-        ' Create a new RenderTarget2D matching the PictureBox dimensions
-        Dim renderTarget As New RenderTarget2D(GraphicsDevice, pictureBox.Width, pictureBox.Height)
-
-        ' Set the render target and clear it
-        GraphicsDevice.SetRenderTarget(renderTarget)
-        GraphicsDevice.Clear(Color.CornflowerBlue)
-
-        ' Begin SpriteBatch and render the texture
-        SpriteBatch.Begin()
-        SpriteBatch.Draw(texture, New Rectangle(0, 0, pictureBox.Width, pictureBox.Height), Color.White)
-        SpriteBatch.End()
-
-        ' Reset to the back buffer
-        GraphicsDevice.SetRenderTarget(Nothing)
-
-        ' Save RenderTarget2D to a Bitmap
-        Dim bitmap As Drawing.Bitmap = RenderTargetToBitmap(renderTarget)
-
-        ' Display the bitmap in the PictureBox
-        pictureBox.Image = bitmap
-
-        ' Dispose of resources
-        renderTarget.Dispose()
-    End Sub
-
-    ' Convert RenderTarget2D to Bitmap
-    Private Function RenderTargetToBitmap(renderTarget As RenderTarget2D) As Drawing.Bitmap
-        ' Get the pixel data from RenderTarget2D
-        Dim data(renderTarget.Width * renderTarget.Height - 1) As Color
-        renderTarget.GetData(data)
-
-        ' Create a new Bitmap
-        Dim bitmap As New Drawing.Bitmap(renderTarget.Width, renderTarget.Height, Imaging.PixelFormat.Format32bppArgb)
-
-        ' Copy the pixel data to the Bitmap
-        For y As Integer = 0 To renderTarget.Height - 1
-            For x As Integer = 0 To renderTarget.Width - 1
-                Dim color As Color = data(y * renderTarget.Width + x)
-                bitmap.SetPixel(x, y, System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B))
-            Next
-        Next
-
-        Return bitmap
-    End Function
-
     Friend Sub DrawEvents()
         If MyMap.EventCount <= 0 Then Exit Sub ' Exit early if no events
 
@@ -1731,7 +1454,7 @@ Public Class GameClient
         ' Get the graphic index from the event's first page
         Dim gfxIndex As Integer = eventData.Pages(1).Graphic
 
-        ' Validate the graphic index to ensure it’s within range
+        ' Validate the graphic index to ensure itï¿½s within range
         If gfxIndex <= 0 OrElse gfxIndex > NumCharacters Then Exit Sub
 
         ' Get animation details (frame index and columns) from the event
@@ -1870,4 +1593,283 @@ Public Class GameClient
 
     End Sub
 
+
+    Friend Sub Render_Game()
+        Dim x As Integer, y As Integer, i As Integer
+
+        If GettingMap Then Exit Sub
+
+        UpdateCamera()
+
+        If NumPanoramas > 0 And MyMap.Panorama > 0 Then
+            DrawPanorama(MyMap.Panorama)
+        End If
+
+        If NumParallax > 0 And MyMap.Parallax > 0 Then
+            DrawParallax(MyMap.Parallax)
+        End If
+
+        ' Draw lower tiles
+        If NumTileSets > 0 Then
+            For x = TileView.Left - 1 To TileView.Right + 1
+                For y = TileView.Top - 1 To TileView.Bottom + 1
+                    If IsValidMapPoint(x, y) Then
+                        DrawMapLowerTile(x, y)
+                    End If
+                Next
+            Next
+        End If
+
+        ' events
+        If MyEditorType <> EditorType.Map Then
+            If CurrentEvents > 0 And CurrentEvents <= MyMap.EventCount Then
+                For i = 1 To CurrentEvents
+                    If MapEvents(i).Position = 0 Then
+                        Client.DrawEvent(i)
+                    End If
+                Next
+            End If
+        End If
+
+        ' blood
+        For i = 0 To Byte.MaxValue
+            Client.DrawBlood(i)
+        Next
+
+        ' Draw out the items
+        If NumItems > 0 Then
+            For i = 1 To MAX_MAP_ITEMS
+                If MyMapItem(i).Num > 0 Then
+                    Client.DrawMapItem(i)
+                End If
+            Next
+        End If
+
+        ' draw animations
+        If NumAnimations > 0 Then
+            For i = 0 To Byte.MaxValue
+                If AnimInstance(i).Used(0) Then
+                    DrawAnimation(i, 0)
+                End If
+            Next
+        End If
+
+        ' Y-based render. Renders Players, Npcs and Resources based on Y-axis.
+        For y = 0 To MyMap.MaxY
+            If NumCharacters > 0 Then
+                ' Players
+                For i = 1 To MAX_PLAYERS
+                    If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
+                        If Type.Player(i).Y = y Then
+                            Client.DrawPlayer(i)
+                        End If
+
+                        If PetAlive(i) Then
+                            If Type.Player(i).Pet.Y = y Then
+                                DrawPet(i)
+                            End If
+                        End If
+                    End If
+                Next
+
+                For i = 1 To MAX_MAP_NPCS
+                    If Type.MyMapNPC(i).Y = y Then
+                        Client.DrawNPC(i)
+                    End If
+                Next
+
+                If MyEditorType <> EditorType.Map Then
+                    If CurrentEvents > 0 And CurrentEvents <= MyMap.EventCount Then
+                        For i = 1 To CurrentEvents
+                            If MapEvents(i).Position = 1 Then
+                                If y = MapEvents(i).Y Then
+                                    Client.DrawEvent(i)
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+
+                ' Draw the target icon
+                If MyTarget > 0 Then
+                    If MyTargetType = TargetType.Player Then
+                        Client.DrawTarget(Type.Player(MyTarget).X * 32 - 16 + Type.Player(MyTarget).XOffset, Type.Player(MyTarget).Y * 32 + Type.Player(MyTarget).YOffset)
+                    ElseIf MyTargetType = TargetType.NPC Then
+                        Client.DrawTarget(MyMapNPC(MyTarget).X * 32 - 16 + MyMapNPC(MyTarget).XOffset, MyMapNPC(MyTarget).Y * 32 + MyMapNPC(MyTarget).YOffset)
+                    ElseIf MyTargetType = TargetType.Pet Then
+                        Client.DrawTarget(Type.Player(MyTarget).Pet.X * 32 - 16 + Type.Player(MyTarget).Pet.XOffset, (Type.Player(MyTarget).Pet.Y * 32) + Type.Player(MyTarget).Pet.YOffset)
+                    End If
+                End If
+
+                For i = 1 To MAX_PLAYERS
+                    If IsPlaying(i) Then
+                        If Type.Player(i).Map = Type.Player(MyIndex).Map Then
+                            If CurX = Type.Player(i).X And CurY = Type.Player(i).Y Then
+                                If MyTargetType = TargetType.Player And MyTarget = i Then
+
+                                Else
+                                    Client.DrawHover(Type.Player(i).X * 32 - 16, Type.Player(i).Y * 32 + Type.Player(i).YOffset)
+                                End If
+                            End If
+
+                        End If
+                    End If
+                Next
+            End If
+
+            ' Resources
+            If NumResources > 0 Then
+                If ResourcesInit Then
+                    If ResourceIndex > 0 Then
+                        For i = 0 To ResourceIndex
+                            If MyMapResource(i).Y = y Then
+                                DrawMapResource(i)
+                            End If
+                        Next
+                    End If
+                End If
+            End If
+        Next
+
+        ' animations
+        If NumAnimations > 0 Then
+            For i = 0 To Byte.MaxValue
+                If AnimInstance(i).Used(1) Then
+                    DrawAnimation(i, 1)
+                End If
+            Next
+        End If
+
+        If NumProjectiles > 0 Then
+            For i = 1 To MAX_PROJECTILES
+                If Type.MapProjectile(Type.Player(MyIndex).Map, i).ProjectileNum > 0 Then
+                    DrawProjectile(i)
+                End If
+            Next
+        End If
+
+        If CurrentEvents > 0 And CurrentEvents <= MyMap.EventCount Then
+            For i = 1 To CurrentEvents
+                If MapEvents(i).Position = 2 Then
+                    Client.DrawEvent(i)
+                End If
+            Next
+        End If
+
+        If NumTileSets > 0 Then
+            For x = TileView.Left - 1 To TileView.Right + 1
+                For y = TileView.Top - 1 To TileView.Bottom + 1
+                    If IsValidMapPoint(x, y) Then
+                        DrawMapUpperTile(x, y)
+                    End If
+                Next
+            Next
+        End If
+
+        DrawWeather()
+        DrawThunderEffect()
+        DrawMapTint()
+
+        ' Draw out a square at mouse cursor
+        If MapGrid = True And MyEditorType = EditorType.Map Then
+            Client.DrawGrid()
+        End If
+
+        If MyEditorType = EditorType.Map Then
+            Client.DrawTileOutline()
+            If EyeDropper = True Then
+                Client.DrawEyeDropper()
+            End If
+        End If
+
+        For i = 1 To MAX_PLAYERS
+            If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
+                DrawPlayerName(i)
+                If PetAlive(i) Then
+                    DrawPlayerPetName(i)
+                End If
+            End If
+        Next
+
+        If CurrentEvents > 0 AndAlso MyMap.EventCount >= CurrentEvents Then
+            For i = 1 To CurrentEvents
+                If MapEvents(i).Visible = 1 Then
+                    If MapEvents(i).ShowName = 1 Then
+                        DrawEventName(i)
+                    End If
+                End If
+            Next
+        End If
+
+        For i = 1 To MAX_MAP_NPCS
+            If Type.MyMapNPC(i).Num > 0 Then
+                DrawNPCName(i)
+            End If
+        Next
+
+        DrawFog()
+        DrawPicture()
+
+        For i = 1 To Byte.MaxValue
+            DrawActionMsg(i)
+        Next
+
+        If MyEditorType = EditorType.Map Then
+            If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock Then
+                For x = TileView.Left - 1 To TileView.Right + 1
+                    For y = TileView.Top - 1 To TileView.Bottom + 1
+                        If IsValidMapPoint(x, y) Then
+                            Call Client.DrawDirections(x, y)
+                        End If
+                    Next
+                Next
+            End If
+
+            DrawMapAttributes()
+        End If
+
+        For i = 1 To Byte.MaxValue
+            If ChatBubble(i).Active Then
+                Client.DrawChatBubble(i)
+            End If
+        Next
+
+        If Bfps Then
+            Dim fps As String = "FPS: " & GameFps
+            Call RenderText(fps, Camera.Left - 24, Camera.Top + 60, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
+        End If
+
+        ' draw cursor, player X and Y locations
+        If BLoc Then
+            Dim Cur As String = "Cur X: " & CurX & " Y: " & CurY
+            Dim Loc As String = "loc X: " & GetPlayerX(MyIndex) & " Y: " & GetPlayerY(MyIndex)
+            Dim Map As String = " (Map #" & GetPlayerMap(MyIndex) & ")"
+
+            Call RenderText(Cur, DrawLocX, DrawLocY + 105, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
+            Call RenderText(Loc, DrawLocX, DrawLocY + 120, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
+            Call RenderText(Map, DrawLocX, DrawLocY + 135, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
+        End If
+
+        DrawMapName()
+
+        If MyEditorType = EditorType.Map And frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpEvents Then
+            Client.DrawEvents()
+            Client.EditorEvent_DrawGraphic()
+        End If
+
+        If MyEditorType = EditorType.Projectile Then
+            EditorProjectile_DrawProjectile()
+        End If
+
+        Client.DrawBars()
+        DrawMapFade()
+        RenderEntities()
+        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Cursor"), CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
+    End Sub
+
+    Friend Sub Render_Menu()
+        DrawMenuBG()
+        RenderEntities()
+        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Cursor"), CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
+    End Sub
 End Class

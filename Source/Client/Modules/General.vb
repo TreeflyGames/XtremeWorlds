@@ -340,8 +340,8 @@ Module General
                         For x = 0 To MyMap.MaxX
                             For y = 0 To MyMap.MaxY
                                 If IsValidMapPoint(x, y) Then
-                                    on Error GoTo mapsync
-                                    If MyMap.Tile(x, y).Data1 > 0 And (MyMap.Tile(x, y).Type = TileType.Animation Or MyMap.Tile(x, y).Type2 = TileType.Animation)  Then
+                                    On Error GoTo mapsync
+                                    If MyMap.Tile(x, y).Data1 > 0 And (MyMap.Tile(x, y).Type = TileType.Animation Or MyMap.Tile(x, y).Type2 = TileType.Animation) Then
                                         Dim sprite As Integer = Type.Animation(MyMap.Tile(x, y).Data1).Sprite(layer)
 
                                         If sprite > 0 Then
@@ -355,7 +355,7 @@ Module General
 
                                             ' Calculate frame dimensions
                                             If columns > 0 Then
-                                                framewidth = totalWidth / columns
+                                                frameWidth = totalWidth / columns
                                             End If
 
                                             Dim frameHeight As Integer = frameWidth
@@ -376,8 +376,8 @@ Module General
                                 End If
                             Next
                         Next
-                        mapsync:
-                        
+mapsync:
+
                     End If
                 Next
 
@@ -461,11 +461,11 @@ Module General
                     ' Process npc movements (actually move them)
                     For i = 1 To MAX_MAP_NPCS
                         If MyMap.NPC(i) > 0 Then
-                        ProcessNpcMovement(i)
+                            ProcessNpcMovement(i)
                         End If
                     Next
 
-                    For I = 1 To CurrentEvents
+                    For i = 1 To CurrentEvents
                         ProcessEventMovement(i)
                     Next
 
@@ -555,7 +555,7 @@ Module General
 
                 ' Change map animation
                 If tmr250 < tick Then
-                   If MapAnim = 0 Then
+                    If MapAnim = 0 Then
                         MapAnim = 1
                     Else
                         MapAnim = 0
@@ -629,294 +629,15 @@ Module General
             End If
 
             If InGame Then
-                Render_Game
+                Client.Render_Game()
             Else
-                Render_Menu
+                Client.Render_Menu()
             End If
 
-            Application.DoEvents() 
+            Application.DoEvents()
             ResizeGUI()
             UpdateUI.UpdateUi()
         End While
-    End Sub
-
-    Friend Sub Render_Game()
-        Dim x As Integer, y As Integer, i As Integer
-
-        If GettingMap Then Exit Sub
-
-        UpdateCamera()
-
-        If NumPanoramas > 0 And MyMap.Panorama > 0 Then
-            DrawPanorama(MyMap.Panorama)
-        End If
-
-        If NumParallax > 0 And MyMap.Parallax > 0 Then
-            DrawParallax(MyMap.Parallax)
-        End If
-
-        ' Draw lower tiles
-        If NumTileSets > 0 Then
-            For x = TileView.Left - 1 To TileView.Right + 1
-                For y = TileView.Top - 1 To TileView.Bottom + 1
-                    If IsValidMapPoint(x, y) Then
-                        DrawMapLowerTile(x, y)
-                    End If
-                Next
-            Next
-        End If
-
-        ' events
-        If MyEditorType <> EditorType.Map Then
-            If CurrentEvents > 0 And CurrentEvents <= MyMap.EventCount Then
-                For i = 1 To CurrentEvents
-                   If MapEvents(i).Position = 0 Then
-                        Client.DrawEvent(i)
-                    End If
-                Next
-            End If
-        End If
-
-        ' blood
-        For i = 0 To Byte.MaxValue
-            Client.DrawBlood(i)
-        Next
-
-        ' Draw out the items
-        If NumItems > 0 Then
-            For i = 1 To MAX_MAP_ITEMS
-                If MyMapItem(i).Num > 0 Then
-                    Client.DrawMapItem(i)
-                End If
-            Next
-        End If
-
-        ' draw animations
-        If NumAnimations > 0 Then
-            For i = 0 To Byte.MaxValue
-                If AnimInstance(i).Used(0) Then
-                    DrawAnimation(i, 0)
-                End If
-            Next
-        End If
-
-        ' Y-based render. Renders Players, Npcs and Resources based on Y-axis.
-        For y = 0 To MyMap.MaxY
-            If NumCharacters > 0 Then
-                ' Players
-                For i = 1 To MAX_PLAYERS
-                    If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
-                        If Type.Player(i).Y = y Then
-                            Client.DrawPlayer(i)
-                        End If
-
-                        If PetAlive(i) Then
-                            If Type.Player(i).Pet.Y = y Then
-                                DrawPet(i)
-                            End If
-                        End If
-                    End If
-                Next
-
-                For i = 1 To MAX_MAP_NPCS
-                    If Type.MyMapNPC(i).Y = y Then
-                        Client.DrawNPC(i)
-                    End If
-                Next
-
-                If MyEditorType <> EditorType.Map Then
-                    If CurrentEvents > 0 And CurrentEvents <= MyMap.EventCount Then
-                        For i = 1 To CurrentEvents
-                           If MapEvents(i).Position = 1 Then
-                                If y = MapEvents(i).Y Then
-                                    Client.DrawEvent(i)
-                                End If
-                            End If
-                        Next
-                    End If
-                End If
-
-                ' Draw the target icon
-                If MyTarget > 0 Then
-                    If MyTargetType = TargetType.Player Then
-                        Client.DrawTarget(Type.Player(MyTarget).X * 32 - 16 + Type.Player(MyTarget).XOffset, Type.Player(MyTarget).Y * 32 + Type.Player(MyTarget).YOffset)
-                    ElseIf MyTargetType = TargetType.NPC Then
-                        Client.DrawTarget(MyMapNPC(MyTarget).X * 32 - 16 + MyMapNPC(MyTarget).XOffset, MyMapNPC(MyTarget).Y * 32 + MyMapNPC(MyTarget).YOffset)
-                    ElseIf MyTargetType = TargetType.Pet Then
-                        Client.DrawTarget(Type.Player(MyTarget).Pet.X * 32 - 16 + Type.Player(MyTarget).Pet.XOffset, (Type.Player(MyTarget).Pet.Y * 32) + Type.Player(MyTarget).Pet.YOffset)
-                    End If
-                End If
-
-                For i = 1 To MAX_PLAYERS
-                    If IsPlaying(i) Then
-                        If Type.Player(i).Map = Type.Player(MyIndex).Map Then
-                            If CurX = Type.Player(i).X And CurY = Type.Player(i).Y Then
-                                If MyTargetType = TargetType.Player And MyTarget = i Then
-                                
-                                Else
-                                    Client.DrawHover(Type.Player(i).X * 32 - 16, Type.Player(i).Y * 32 + Type.Player(i).YOffset)
-                                End If
-                            End If
-
-                        End If
-                    End If
-                Next
-            End If
-
-            ' Resources
-            If NumResources > 0 Then
-                If ResourcesInit Then
-                    If ResourceIndex > 0 Then
-                        For i = 0 To ResourceIndex
-                            If MyMapResource(i).Y = y Then
-                                DrawMapResource(i)
-                            End If
-                        Next
-                    End If
-                End If
-            End If
-        Next
-
-        ' animations
-        If NumAnimations > 0 Then
-            For i = 0 To Byte.MaxValue
-                If AnimInstance(i).Used(1) Then
-                    DrawAnimation(i, 1)
-                End If
-            Next
-        End If
-
-        If NumProjectiles > 0 Then
-            For i = 1 To MAX_PROJECTILES
-               If Type.MapProjectile(Type.Player(MyIndex).Map, i).ProjectileNum > 0 Then
-                    DrawProjectile(i)
-                End If
-            Next
-        End If
-
-        If CurrentEvents > 0 And CurrentEvents <= MyMap.EventCount Then
-            For i = 1 To CurrentEvents
-               If MapEvents(i).Position = 2 Then
-                    Client.DrawEvent(i)
-                End If
-            Next
-        End If
-
-        If NumTileSets > 0 Then
-            For x = TileView.Left - 1 To TileView.Right + 1
-                For y = TileView.Top - 1 To TileView.Bottom + 1
-                    If IsValidMapPoint(x, y) Then
-                        DrawMapUpperTile(x, y)
-                    End If
-                Next
-            Next
-        End If
-
-        DrawWeather()
-        DrawThunderEffect()
-        DrawMapTint()
-
-        ' Draw out a square at mouse cursor
-       If MapGrid = True And MyEditorType = EditorType.Map Then
-            Client.DrawGrid()
-        End If
-
-        If MyEditorType = EditorType.Map Then
-            Client.DrawTileOutline()
-            If EyeDropper = True Then
-                Client.DrawEyeDropper()
-            End If
-        End If
-
-        For i = 1 To MAX_PLAYERS
-            If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(MyIndex) Then
-                DrawPlayerName(i)
-                If PetAlive(i) Then
-                    DrawPlayerPetName(i)
-                End If
-            End If
-        Next
-
-        If CurrentEvents > 0 AndAlso MyMap.EventCount >= CurrentEvents Then
-            For i = 1 To CurrentEvents
-               If MapEvents(i).Visible = 1 Then
-                   If MapEvents(i).ShowName = 1 Then
-                        DrawEventName(i)
-                    End If
-                End If
-            Next
-        End If
-
-        For i = 1 To MAX_MAP_NPCS
-            If Type.MyMapNPC(i).Num > 0 Then
-                DrawNPCName(i)
-            End If
-        Next
-
-        DrawFog()
-        DrawPicture()
-
-        For i = 1 To Byte.MaxValue
-            DrawActionMsg(i)
-        Next
-
-        If MyEditorType = EditorType.Map Then
-            If frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpDirBlock Then
-                For x = TileView.Left - 1 To TileView.Right + 1
-                    For y = TileView.Top - 1 To TileView.Bottom + 1
-                        If IsValidMapPoint(x, y) Then
-                            Call Client.DrawDirections(x, y)
-                        End If
-                    Next
-                Next
-            End If
-
-            DrawMapAttributes()
-        End If
-
-        For i = 1 To Byte.MaxValue
-            If ChatBubble(i).Active Then
-                Client.DrawChatBubble(i)
-            End If
-        Next
-
-        If Bfps Then
-            Dim fps As String = "FPS: " & GameFps
-            Call RenderText(fps, Camera.Left - 24, Camera.Top + 60, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
-        End If
-
-        ' draw cursor, player X and Y locations
-        If BLoc Then
-            Dim Cur As String = "Cur X: " & CurX & " Y: " & CurY
-            Dim Loc As String = "loc X: " & GetPlayerX(MyIndex) & " Y: " & GetPlayerY(MyIndex)
-            Dim Map As String = " (Map #" & GetPlayerMap(MyIndex) & ")"
-
-            Call RenderText(Cur, DrawLocX, DrawLocY + 105,Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
-            Call RenderText(Loc, DrawLocX, DrawLocY + 120, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
-            Call RenderText(Map, DrawLocX, DrawLocY + 135, Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black)
-        End If
-
-        DrawMapName()
-
-        If MyEditorType = EditorType.Map And frmEditor_Map.tabpages.SelectedTab Is frmEditor_Map.tpEvents Then
-            Client.DrawEvents()
-            Client.EditorEvent_DrawGraphic()
-        End If
-
-        If MyEditorType = EditorType.Projectile Then
-            EditorProjectile_DrawProjectile()
-        End If
-
-        Client.DrawBars()
-        DrawMapFade()
-        RenderEntities()
-        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Cursor"), CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
-    End Sub
-
-    Friend Sub Render_Menu()
-        DrawMenuBG()
-        RenderEntities()
-        Client.EnqueueTexture(IO.Path.Combine(Core.Path.Misc, "Cursor"), CurMouseX, CurMouseY, 0, 0, 16, 16, 32, 32)
     End Sub
 
 End Module
