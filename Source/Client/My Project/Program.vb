@@ -15,7 +15,7 @@ Public Class GameClient
     Public Graphics As GraphicsDeviceManager
     Public SpriteBatch As Graphics.SpriteBatch
     Public ReadOnly TextureCache As New ConcurrentDictionary(Of String, Texture2D)()
-    Public ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GraphicInfo)()
+    Public ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GfxInfo)()
     Public ReadOnly MouseCache As New ConcurrentDictionary(Of String, Integer)
     Public ReadOnly KeyCache As New ConcurrentDictionary(Of Keys, Boolean)
     Public ReadOnly MultiplyBlendState As New BlendState()
@@ -44,14 +44,14 @@ Public Class GameClient
     Private maxTextLength As Integer = 20
 
     ' Ensure this class exists to store graphic info
-    Public Class GraphicInfo
+    Public Class GfxInfo
         Public Width As Integer
         Public Height As Integer
     End Class
 
-    ' Method to retrieve a GraphicInfo object safely
-    Public Function GetGraphicInfo(key As String) As GraphicInfo
-        Dim result As GraphicInfo = Nothing
+    ' Method to retrieve a GfxInfo object safely
+    Public Function GetGfxInfo(key As String) As GfxInfo
+        Dim result As GfxInfo = Nothing
         GfxInfoCache.TryGetValue(key, result)
         Return result
     End Function
@@ -230,7 +230,7 @@ Public Class GameClient
                 Dim texture As Texture2D = Texture2D.FromStream(GraphicsDevice, stream)
                 TextureCache(path) = texture
 
-                Dim graphcsInfo = New GraphicInfo
+                Dim graphcsInfo = New GfxInfo
                 graphcsInfo.Width = texture.Width
                 graphcsInfo.Height = texture.Height
 
@@ -548,8 +548,8 @@ Public Class GameClient
         With rec
             .Y = 0
             .Height = PicX
-            .X = anim * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Emotes, sprite)).Width / 2)
-            .Width = (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Emotes, sprite)).Width / 2)
+            .X = anim * (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Emotes, sprite)).Width / 2)
+            .Width = (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Emotes, sprite)).Width / 2)
         End With
 
         x = ConvertMapX(x2)
@@ -595,10 +595,10 @@ Public Class GameClient
         If sprite < 1 Or sprite > NumPaperdolls Then Exit Sub
 
         With rec
-            .Y = spritetop * Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Height / 4
-            .Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Height / 4
-            .X = anim * Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Width / 4
-            .Width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Width / 4
+            .Y = spritetop * Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Height / 4
+            .Height = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Height / 4
+            .X = anim * Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Width / 4
+            .Width = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Paperdolls, sprite)).Width / 4
         End With
 
         x = ConvertMapX(x2)
@@ -674,15 +674,15 @@ Public Class GameClient
         End Select
 
         ' Create the rectangle for rendering the sprite
-        rect = New Rectangle(anim * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4), spriteLeft * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4),
-                              Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4, Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4)
+        rect = New Rectangle(anim * (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4), spriteLeft * (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4),
+                              Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4, Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4)
 
         ' Calculate X and Y coordinates for rendering
-        x = MyMapNPC(MapNpcNum).X * PicX + MyMapNPC(MapNpcNum).XOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4 - 32) / 2)
+        x = MyMapNPC(MapNpcNum).X * PicX + MyMapNPC(MapNpcNum).XOffset - ((Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Width / 4 - 32) / 2)
 
-        If Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4 > 32 Then
+        If Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4 > 32 Then
             ' Larger sprites need an offset for height adjustment
-            y = MyMapNPC(MapNpcNum).Y * PicY + MyMapNPC(MapNpcNum).YOffset - (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4 - 32)
+            y = MyMapNPC(MapNpcNum).Y * PicY + MyMapNPC(MapNpcNum).YOffset - (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite)).Height / 4 - 32)
         Else
             ' Normal sprite height
             y = MyMapNPC(MapNpcNum).Y * PicY + MyMapNPC(MapNpcNum).YOffset
@@ -774,8 +774,8 @@ Public Class GameClient
         Dim tmpX As Long, tmpY As Long, barWidth As Long, i As Long, NpcNum As Long
 
         ' dynamic bar calculations
-        Width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Width
-        Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Height / 4
+        Width = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Width
+        Height = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Height / 4
 
         ' render npc health bars
         For i = 1 To MAX_MAP_NPCS
@@ -964,9 +964,9 @@ Public Class GameClient
 
         With rec
             .Y = 0
-            .Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Height
+            .Height = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Height
             .X = 0
-            .Width = Client.GetGraphicInfo("Target").Width / 2
+            .Width = Client.GetGfxInfo("Target").Width / 2
         End With
         x = ConvertMapX(x2 + 4)
         y = ConvertMapY(y2 - 32)
@@ -983,9 +983,9 @@ Public Class GameClient
 
         With rec
             .Y = 0
-            .Height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Height
-            .X = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2
-            .Width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2 + Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2
+            .Height = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Height
+            .X = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2
+            .Width = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2 + Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Target")).Width / 2
         End With
 
         x = ConvertMapX(x2 + 4)
@@ -1362,19 +1362,19 @@ Public Class GameClient
         End Select
 
         ' Calculate the X
-        x = Type.Player(index).X * PicX + Type.Player(index).XOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4 - 32) / 2)
+        x = Type.Player(index).X * PicX + Type.Player(index).XOffset - ((Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4 - 32) / 2)
 
         ' Is the player's height more than 32..?
-        If (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height) > 32 Then
+        If (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height) > 32 Then
             ' Create a 32 pixel offset for larger sprites
-            y = GetPlayerY(index) * PicY + Type.Player(index).YOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4) - 32)
+            y = GetPlayerY(index) * PicY + Type.Player(index).YOffset - ((Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4) - 32)
         Else
             ' Proceed as normal
             y = GetPlayerY(index) * PicY + Type.Player(index).YOffset
         End If
 
-        rect = New Rectangle((anim) * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4), spriteleft * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4),
-                               (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4), (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4))
+        rect = New Rectangle((anim) * (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4), spriteleft * (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4),
+                               (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Width / 4), (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum)).Height / 4))
 
         ' render the actual sprite
         DrawShadow(x, y + 16)
@@ -1473,7 +1473,7 @@ Public Class GameClient
         Dim columns As Integer = eventData.Pages(1).GraphicY ' Example column count
 
         ' Calculate the frame size (assuming square frames for simplicity)
-        Dim frameWidth As Integer = GetGraphicInfo(IO.Path.Combine(Core.Path.Characters, gfxIndex)).Width \ columns
+        Dim frameWidth As Integer = GetGfxInfo(IO.Path.Combine(Core.Path.Characters, gfxIndex)).Width \ columns
         Dim frameHeight As Integer = frameWidth ' Adjust if non-square frames
 
         ' Calculate the source rectangle for the current frame
@@ -1556,17 +1556,17 @@ Public Class GameClient
                 If MapEvents(id).WalkAnim = 1 Then anim = 0
                 If MapEvents(id).Moving = 0 Then anim = MapEvents(id).GraphicX
 
-                width = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4
-                height = Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4
+                width = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4
+                height = Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4
 
-                sRect = New Rectangle((anim) * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4), spritetop * (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4), (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4), (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4))
+                sRect = New Rectangle((anim) * (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4), spritetop * (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4), (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4), (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4))
                 ' Calculate the X
-                x = MapEvents(id).X * PicX + MapEvents(id).XOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4 - 32) / 2)
+                x = MapEvents(id).X * PicX + MapEvents(id).XOffset - ((Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Width / 4 - 32) / 2)
 
                 ' Is the player's height more than 32..?
-                If (Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height * 4) > 32 Then
+                If (Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height * 4) > 32 Then
                     ' Create a 32 pixel offset for larger sprites
-                    y = MapEvents(id).Y * PicY + MapEvents(id).YOffset - ((Client.GetGraphicInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4) - 32)
+                    y = MapEvents(id).Y * PicY + MapEvents(id).YOffset - ((Client.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, MapEvents(id).Graphic)).Height / 4) - 32)
                 Else
                     ' Proceed as normal
                     y = MapEvents(id).Y * PicY + MapEvents(id).YOffset
