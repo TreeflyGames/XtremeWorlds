@@ -93,13 +93,6 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="ManagedBass" />
-    <PackageReference Include="ManagedBass.Midi" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Graphics\Paperdolls\" />
-  </ItemGroup>
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <ApplicationIcon>icon.ico</ApplicationIcon>
