@@ -32,6 +32,9 @@ Public Class GameClient
     Private inMenu As Boolean = False
     Private inSmallChat As Boolean = False
 
+    ' Track the previous scroll value to compute delta
+    Private previousScrollValue As Integer = 0
+
     Private activeWindow As Integer = 0 ' Simulated window ID
     Private activeControl As Integer = 1 ' Example control ID
 
@@ -90,7 +93,23 @@ Public Class GameClient
         MouseCache.TryAdd("LeftButton", 0)
         MouseCache.TryAdd("RightButton", 0)
         MouseCache.TryAdd("MiddleButton", 0)
+        MouseCache.TryAdd("ScrollDelta", 0)
     End Sub
+
+    ' Get the current state of a specific key
+    Public Function GetKeyState(key As Keys) As Boolean
+        Return KeyCache.GetOrAdd(key, False)
+    End Function
+
+    ' Get the current state of a specific mouse button
+    Public Function GetMouseButtonState(button As String) As Boolean
+        Return MouseCache.GetOrAdd(button, 0) = 1
+    End Function
+
+    ' Get the current scroll delta from the cache
+    Public Function GetMouseScrollWheelDelta() As Integer
+        Return MouseCache.GetOrAdd("ScrollDelta", 0)
+    End Function
 
     Protected Overrides Sub Initialize()
         ' Create the RenderTarget2D with the same size as the screen
@@ -322,6 +341,16 @@ Public Class GameClient
         MouseCache("LeftButton") = If(currentMouseState.LeftButton = ButtonState.Pressed, 1, 0)
         MouseCache("RightButton") = If(currentMouseState.RightButton = ButtonState.Pressed, 1, 0)
         MouseCache("MiddleButton") = If(currentMouseState.MiddleButton = ButtonState.Pressed, 1, 0)
+
+        ' Calculate scroll delta
+        Dim currentScrollValue As Integer = mouseState.ScrollWheelValue
+        Dim delta As Integer = currentScrollValue - previousScrollValue
+
+        ' Update scroll delta in the cache
+        MouseCache("ScrollDelta") = delta
+
+        ' Save the current scroll value for the next frame
+        previousScrollValue = currentScrollValue
     End Sub
 
     Private Sub WindowClosed(ByVal sender As Object, ByVal e As EventArgs)

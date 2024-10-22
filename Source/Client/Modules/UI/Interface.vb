@@ -3213,13 +3213,13 @@ Module [Interface]
         yO = Windows(GetWindowIndex("winCharacter")).Window.Top
 
         ' Render bottom
-        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "37" & GfxExt), xO + 4, yO + 314, 0, 0, 40, 38, 40, 38)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "37" & GfxExt), xO + 44, yO + 314, 0, 0, 40, 38, 40, 38)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "37" & GfxExt), xO + 84, yO + 314, 0, 0, 40, 38, 40, 38)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "37" & GfxExt), xO + 124, yO + 314, 0, 0, 46, 38, 46, 38)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "37"), xO + 4, yO + 314, 0, 0, 40, 38, 40, 38)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "37"), xO + 44, yO + 314, 0, 0, 40, 38, 40, 38)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "37"), xO + 84, yO + 314, 0, 0, 40, 38, 40, 38)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "37"), xO + 124, yO + 314, 0, 0, 46, 38, 46, 38)
 
         ' render top wood
-        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "1" & GfxExt), xO + 4, yO + 23, 100, 100, 166, 291, 166, 291)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Gui, "1"), xO + 4, yO + 23, 100, 100, 166, 291, 166, 291)
 
         ' loop through equipment
         For i = 1 To EquipmentType.Count - 1
@@ -3233,7 +3233,7 @@ Module [Interface]
 
                 yO = Windows(GetWindowIndex("winCharacter")).Window.Top + EqTop
                 xO = Windows(GetWindowIndex("winCharacter")).Window.Left + EqLeft + ((EqOffsetX + 32) * (((i - 1) Mod EqColumns)))
-                Client.EnqueueTexture(IO.Path.Combine(Path.Items, ItemIcon & GfxExt), xO, yO, 0, 0, 32, 32, 32, 32)
+                Client.EnqueueTexture(IO.Path.Combine(Path.Items, ItemIcon), xO, yO, 0, 0, 32, 32, 32, 32)
             End If
         Next
     End Sub
@@ -4058,22 +4058,22 @@ Module [Interface]
 
     Sub DrawMenuBG()
         ' row 1
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "1" & GfxExt), ResolutionWidth - 512, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "2" & GfxExt), ResolutionWidth - 1024, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "3" & GfxExt), ResolutionWidth - 1536, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "4" & GfxExt), ResolutionWidth - 2048, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "1"), ResolutionWidth - 512, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "2"), -1024, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "3"), ResolutionWidth - 1536, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "4"), ResolutionWidth - 2048, ResolutionHeight - 512, 0, 0, 512, 512, 512, 512)
 
         ' row 2
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "5" & GfxExt), ResolutionWidth - 512, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "6" & GfxExt), ResolutionWidth - 1024, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "7" & GfxExt), ResolutionWidth - 1536, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "8" & GfxExt), ResolutionWidth - 2048, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "5"), ResolutionWidth - 512, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "6"), ResolutionWidth - 1024, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "7"), ResolutionWidth - 1536, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "8"), ResolutionWidth - 2048, ResolutionHeight - 1024, 0, 0, 512, 512, 512, 512)
 
         ' row 3
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "9" & GfxExt), ResolutionWidth - 512, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "10" & GfxExt), ResolutionWidth - 1024, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "11" & GfxExt), ResolutionWidth - 1536, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
-        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "12" & GfxExt), ResolutionWidth - 2048, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "9"), ResolutionWidth - 512, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "10"), ResolutionWidth - 1024, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "11"), ResolutionWidth - 1536, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
+        Client.EnqueueTexture(IO.Path.Combine(Path.Pictures, "12"), ResolutionWidth - 2048, ResolutionHeight - 1088, 0, 0, 512, 64, 512, 64)
     End Sub
 
     Public Sub DrawHotbar()
