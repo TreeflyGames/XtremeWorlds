@@ -1421,16 +1421,6 @@ Public Class frmEditor_Map
         Night = Not Night
     End Sub
 
-    Private Sub tsbScreenshot_Click(sender As Object, e As EventArgs) Handles tsbScreenshot.Click
-        If MyMap.Name = "" Then
-            MsgBox("Screenshot is done onlyIf Type.Map has a valid name.")
-            Exit Sub
-        End If
-
-        Client.TakeScreenshot()
-
-    End Sub
-
     Private Sub optAnimation_CheckedChanged(sender As Object, e As EventArgs) Handles optAnimation.CheckedChanged
         If optAnimation.Checked = False Then Exit Sub
 
