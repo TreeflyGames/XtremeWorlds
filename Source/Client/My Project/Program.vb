@@ -290,18 +290,8 @@ Public Class GameClient
         currentKeyboardState = Keyboard.GetState()
         currentMouseState = Mouse.GetState()
 
-        ' Update the mouse state
-        MouseCache("X") = currentMouseState.X
-        MouseCache("Y") = currentMouseState.Y
-        MouseCache("LeftButton") = If(currentMouseState.LeftButton = ButtonState.Pressed, 1, 0)
-        MouseCache("RightButton") = If(currentMouseState.RightButton = ButtonState.Pressed, 1, 0)
-        MouseCache("MiddleButton") = If(currentMouseState.MiddleButton = ButtonState.Pressed, 1, 0)
-
-        ' Iterate through all keys in the Keys enum
-        Dim keyboardState As KeyboardState = Keyboard.GetState()
-        For Each key As Keys In System.[Enum].GetValues(GetType(Keys))
-            KeyCache(key) = keyboardState.IsKeyDown(key)
-        Next
+        UpdateMouseCache()
+        UpdateKeyboardCache()
 
         ' Capture screenshot when the screenshot key is pressed
         If currentKeyboardState.IsKeyDown(screenshotKey) Then
@@ -313,6 +303,25 @@ Public Class GameClient
         previousMouseState = currentMouseState
 
         MyBase.Update(gameTime)
+    End Sub
+
+    Private Sub UpdateKeyboardCache()
+        Dim keyboardState As KeyboardState = Keyboard.GetState()
+        For Each key As Keys In System.[Enum].GetValues(GetType(Keys))
+            KeyCache(key) = keyboardState.IsKeyDown(key)
+        Next
+    End Sub
+
+    Private Sub UpdateMouseCache()
+        Dim mouseState As MouseState = Mouse.GetState()
+
+        ' Update the mouse state
+        MouseCache("X") = currentMouseState.X
+        MouseCache("Y") = currentMouseState.Y
+
+        MouseCache("LeftButton") = If(currentMouseState.LeftButton = ButtonState.Pressed, 1, 0)
+        MouseCache("RightButton") = If(currentMouseState.RightButton = ButtonState.Pressed, 1, 0)
+        MouseCache("MiddleButton") = If(currentMouseState.MiddleButton = ButtonState.Pressed, 1, 0)
     End Sub
 
     Private Sub WindowClosed(ByVal sender As Object, ByVal e As EventArgs)
