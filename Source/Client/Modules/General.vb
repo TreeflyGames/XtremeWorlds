@@ -621,18 +621,25 @@ mapsync:
                 Fps += 1
             End If
 
+            ' Add a 1ms wait to avoid race conditions or throttling
+            Threading.Thread.Sleep(1)
+
+            ' Clear the render queue
+            Client.RenderQueue.Clear()
+
+            ' Render game or menu based on state
+            If InGame Then
+                Client.Render_Game()
+            Else
+                Client.Render_Menu()
+            End If
+
             If MyEditorType = EditorType.Map Then
                 frmEditor_Map.DrawTileset()
             End If
 
             If MyEditorType = EditorType.Animation Then
                 Client.EditorAnim_DrawSprite()
-            End If
-
-            If InGame Then
-                Client.Render_Game()
-            Else
-                Client.Render_Menu()
             End If
 
             Application.DoEvents()
