@@ -51,8 +51,7 @@ Public Class GameClient
     ' Track the previous scroll value to compute delta
     Private previousScrollValue As Integer = 0
 
-    Private activeWindow As Integer = 0 ' Simulated window ID
-    Private activeControl As Integer = 1 ' Example control ID
+    Private elapsedTime As TimeSpan = TimeSpan.Zero
 
     ' Example control text (replace with actual GUI control management)
     Private controlText As String = ""
@@ -361,9 +360,6 @@ Public Class GameClient
         MyBase.Draw(gameTime)
     End Sub
     
-    Dim frameCount As Integer = 0
-    Dim elapsedTime As TimeSpan = TimeSpan.Zero
-    
     Protected Overrides Sub Update(gameTime As GameTime)
         MyBase.Update(gameTime)
 
@@ -379,15 +375,14 @@ Public Class GameClient
             TakeScreenshot()
         End If
         
-        frameCount += 1
+        GameFPS += 1
         elapsedTime += gameTime.ElapsedGameTime
-
+        
         If elapsedTime.TotalSeconds >= 1 Then
-            Console.WriteLine($"FPS: {frameCount}")
-            frameCount = 0
+            GameFPS = 0
             elapsedTime = TimeSpan.Zero
         End If
-
+        
         ' Save the current state as the previous state for the next frame
         previousKeyboardState = currentKeyboardState
         previousMouseState = currentMouseState
