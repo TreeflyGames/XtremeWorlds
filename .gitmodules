@@ -13,3 +13,6 @@
 [submodule "Source/Sanford.Multimedia.Midi"]
 	path = Source/Sanford.Multimedia.Midi
 	url = https://github.com/tebjan/Sanford.Multimedia.Midi.git
+[submodule "Source/DarkUI"]
+	path = Source/DarkUI
+	url = https://github.com/RobinPerris/DarkUI.git
