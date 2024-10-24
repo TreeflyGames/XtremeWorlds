@@ -176,7 +176,6 @@ Module [Global]
     Public CurY As Integer
     Public CurMouseX As Integer
     Public CurMouseY As Integer
-    Public L
 
     ' Game editors
     Public MyEditorType As Integer
