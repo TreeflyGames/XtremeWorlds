@@ -943,6 +943,13 @@ mapsync:
             Application.DoEvents()
             ResizeGUI()
             UpdateUI.UpdateUi()
+            
+            ' Signal that loading is complete
+            SyncLock loadLock
+                if IsLoading Then
+                    isLoading = False
+                End If
+            End SyncLock
         End While
     End Sub
 
