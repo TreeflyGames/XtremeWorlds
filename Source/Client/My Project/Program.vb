@@ -48,7 +48,6 @@ Public Class GameClient
         Public Property Texture As Texture2D
         Public Property Commands As New List(Of RenderCommand)()
         Public Property TextureID As Integer
-        Public Property WindowID As Integer
     End Class
     
     ' ManualResetEvent to signal when loading is complete
@@ -164,6 +163,7 @@ Public Class GameClient
         Public Property Y As Integer
         Public Property Color As Color
         Public Property Color2 As Color
+        Public Property WindowID As Integer
     End Class
     
     Private Sub LoadFonts()
@@ -220,7 +220,8 @@ Public Class GameClient
                 .X = x,
                 .Y = y,
                 .Color = frontColor,
-                .Color2 = backColor
+                .Color2 = backColor,
+                .WindowID = windowID
                 }
         
         ' Increment a counter (similar to TextureCounter) for tracking text commands
@@ -229,7 +230,7 @@ Public Class GameClient
         ' Try to update an existing batch with the same TextCounter
         If Not UpdateBatchInQueue(Client.TextureCounter, newCommand, windowID) Then
             ' Create a new batch if no matching batch was found
-            Dim batch = New RenderBatch() With {.TextureID = Client.TextureCounter, .WindowID = windowID}
+            Dim batch = New RenderBatch() With {.TextureID = Client.TextureCounter}
             batch.Commands.Add(newCommand)
 
             ' Enqueue the new batch
@@ -265,7 +266,8 @@ Public Class GameClient
                 .Path = path,
                 .dRect = dRect,
                 .sRect = sRect,
-                .Color = color
+                .Color = color,
+                .WindowID = windowID
                 }
 
         ' Increment the TextureCounter
@@ -276,8 +278,7 @@ Public Class GameClient
             ' Create a new batch if no matching batch was found
             Dim batch = New RenderBatch() With {
                     .Texture = texture,
-                    .TextureID = Client.TextureCounter,
-                    .WindowID = windowID
+                    .TextureID = Client.TextureCounter
                     }
             batch.Commands.Add(newCommand)
             batches.Enqueue(batch)
@@ -289,14 +290,6 @@ Public Class GameClient
 
         SyncLock BatchLock
             For Each batch In batchList
-                ' Check if the window or batch associated with the command is hidden
-                If batch.WindowID > 0 And IsWindowHidden(batch.WindowID) Then
-                    ' Remove all commands for this hidden window
-                    batch.Commands.Clear()
-                    batch.WindowID = 0
-                    Continue For ' Move to the next batch
-                End If
-                
                 If batch.TextureID = textureID Then
                     ' Search for an existing command and update its properties
                     Dim existingCommand = batch.Commands.FirstOrDefault(Function(cmd) cmd.Path = newCommand.Path)
@@ -319,8 +312,6 @@ Public Class GameClient
                     If batch.Texture Is Nothing And Not newCommand.Path.Equals(Core.Path.Fonts) Then
                         batch.Texture = GetTexture(newCommand.Path)
                     End If
-                    
-                    batch.WindowID = windowID
 
                     ' Ensure that only valid commands remain in the batch
                     CleanUpInvalidCommands(batch)
