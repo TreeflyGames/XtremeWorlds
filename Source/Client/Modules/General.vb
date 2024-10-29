@@ -659,6 +659,7 @@ Module General
 
                 If tmr25 < tick Then
                     PlayMusic(MyMap.Music)
+                    ProcessInputs()
                     tmr25 = tick + 25
                 End If
 
