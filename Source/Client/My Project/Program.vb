@@ -440,6 +440,7 @@ Public Class GameClient
         
         UpdateMouseCache()
         UpdateKeyCache()
+        ProcessInputs()
 
         If IsKeyStateActive(Keys.F12)
             TakeScreenshot()
