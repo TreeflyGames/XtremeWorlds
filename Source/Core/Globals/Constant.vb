@@ -1,7 +1,7 @@
 ﻿Public Module Constant
     Public Const MAX_ANIMATIONS As Integer = 100
     Public Const MAX_BANK As Byte = 90
-    Public Const MAX_JOBS As Byte = 10
+    Public Const MAX_JOBS As Byte = 3
     Public Const MAX_MORALS As Byte = 50
     Public Const MAX_COTS As Integer = 30
     Public Const MAX_INV As Byte = 35
@@ -23,7 +23,7 @@
     Public Const MAX_TRADES As Byte = 35
     Public Const NAME_LENGTH As Byte = 21
     Public Const CHAT_LENGTH As Byte = 70
-    Public Const MAX_Hotbar As Byte = 10
+    Public Const MAX_HOTBAR As Byte = 10
     Public Const MAX_MAPX As Byte = 32
     Public Const MAX_MAPY As Byte = 24
     Public Const MAX_PROJECTILES As Integer = 255

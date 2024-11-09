@@ -130,25 +130,32 @@ namespace Mirage.Sharp.Asfw.Network
     // Callback for handling the end of the disconnect
     private void DoDisconnect(IAsyncResult ar)
     {
-      int index = (int)ar.AsyncState;
+        int index = (int)ar.AsyncState;
 
-      try
-      {
-        // Complete the disconnection process
-        if (_socket.ContainsKey(index) && _socket[index] != null)
+        try
         {
-          _socket[index].EndDisconnect(ar);
-          _socket[index].Close();
-        }
+            // Complete the disconnection process
+            if (_socket.ContainsKey(index) && _socket[index] != null)
+            {
+                _socket[index].EndDisconnect(ar);
+                _socket[index].Close();
+            }
 
-        // Remove the socket and mark the index as available
-        _socket.Remove(index);
-        _unsignedIndex.Add(index);
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine($"Error in DoDisconnect: {ex.Message}");
-      }
+            // Remove the socket and mark the index as available
+            _socket.Remove(index);
+            _unsignedIndex.Add(index);
+
+            // Trigger the ConnectionLost event
+            NetworkServer.ConnectionArgs connectionLost = this.ConnectionLost;
+            if (connectionLost != null)
+            {
+                connectionLost(index);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in DoDisconnect: {ex.Message}");
+        }
     }
 
     // Fallback method to forcefully remove the socket if needed
@@ -195,50 +202,54 @@ namespace Mirage.Sharp.Asfw.Network
 
     public void StartListening(int port, int backlog)
     {
-      if (this._socket == null || this.IsListening || this._listener != null)
-        return;
-      this._listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-      this._listener.NoDelay = true;
-      this._listener?.Bind((EndPoint) new IPEndPoint(IPAddress.Any, port));
-      this.IsListening = true;
-      this._listener.Listen(backlog);
-      this.ListenManager();
+        if (this._socket == null || this.IsListening || this._listener != null)
+            return;
+        this._listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        this._listener.NoDelay = true;
+        this._listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE
+        this._listener.Bind(new IPEndPoint(IPAddress.Any, port));
+        this.IsListening = true;
+        this._listener.Listen(backlog);
+        this.ListenManager();
     }
 
     public void StopListening()
     {
-      if (!this.IsListening || this._socket == null)
+        if (!this.IsListening || this._socket == null)
         return;
-      this.IsListening = false;
-      if (this._listener == null)
+        this.IsListening = false;
+        if (this._listener == null)
         return;
-      this._listener.Close();
-      this._listener.Dispose();
-      this._listener = (Socket) null;
+        this._listener.Close();
+        this._listener.Dispose();
+        this._listener = (Socket) null;
     }
 
     private void DoAcceptClient(IAsyncResult ar)
     {
-      try
-      {
-        Socket socket = this.EndAccept(ar);
-        if (socket != null)
+        try
         {
-          int emptySlot = this.FindEmptySlot(this.MinimumIndex);
-          this._socket.Add(emptySlot, socket);
-          this._socket[emptySlot].ReceiveBufferSize = this._packetSize;
-          this._socket[emptySlot].SendBufferSize = this._packetSize;
-          this.BeginReceiveData(emptySlot);
-          NetworkServer.ConnectionArgs connectionReceived = this.ConnectionReceived;
-          if (connectionReceived != null)
-            connectionReceived(emptySlot);
+            Socket socket = this.EndAccept(ar);
+            if (socket != null)
+            {
+#if WINDOWS
+                socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE for the client socket
+#endif                
+                int emptySlot = this.FindEmptySlot(this.MinimumIndex);
+                this._socket.Add(emptySlot, socket);
+                this._socket[emptySlot].ReceiveBufferSize = this._packetSize;
+                this._socket[emptySlot].SendBufferSize = this._packetSize;
+                this.BeginReceiveData(emptySlot);
+                NetworkServer.ConnectionArgs connectionReceived = this.ConnectionReceived;
+                if (connectionReceived != null)
+                    connectionReceived(emptySlot);
+            }
         }
-      }
-      catch
-      {
-        return;
-      }
-      this.ListenManager();
+        catch
+        {
+            return;
+        }
+        this.ListenManager();
     }
 
     private Socket EndAccept(IAsyncResult ar = null)
@@ -319,7 +330,7 @@ namespace Mirage.Sharp.Asfw.Network
     }
 
     // Append received data to the ring buffer
-    AppendToRingBuffer(asyncState, receivedLength);
+    AppendToRingBuffer(ref asyncState, receivedLength);
 
     // Check for buffer overflow
     if (this.BufferLimit > 0 && asyncState.RingBuffer.Length > this.BufferLimit)
@@ -367,23 +378,25 @@ namespace Mirage.Sharp.Asfw.Network
       this.Disconnect(index);
       state.Dispose();
   }
-
+  
   // Append new data to the ring buffer safely
-  private void AppendToRingBuffer(NetworkServer.ReceiveState state, int length)
+  private void AppendToRingBuffer(ref NetworkServer.ReceiveState state, int length)
   {
-      if (state.RingBuffer == null)
-      {
-          state.RingBuffer = new byte[length];
-          Buffer.BlockCopy(state.Buffer, 0, state.RingBuffer, 0, length);
-      }
-      else
-      {
-          int oldLength = state.RingBuffer.Length;
-          byte[] newBuffer = new byte[oldLength + length];
-          Buffer.BlockCopy(state.RingBuffer, 0, newBuffer, 0, oldLength);
-          Buffer.BlockCopy(state.Buffer, 0, newBuffer, oldLength, length);
-          state.RingBuffer = newBuffer;
-      }
+    if (state.RingBuffer == null)
+    {
+      // Initialize RingBuffer if it's null
+      state.RingBuffer = new byte[length];
+      Buffer.BlockCopy(state.Buffer, 0, state.RingBuffer, 0, length);
+    }
+    else
+    {
+      // Expand RingBuffer if it already has data
+      int oldLength = state.RingBuffer.Length;
+      byte[] newBuffer = new byte[oldLength + length];
+      Buffer.BlockCopy(state.RingBuffer, 0, newBuffer, 0, oldLength);
+      Buffer.BlockCopy(state.Buffer, 0, newBuffer, oldLength, length);
+      state.RingBuffer = newBuffer;
+    }
   }
 
     private void PacketHandler(ref NetworkServer.ReceiveState so)

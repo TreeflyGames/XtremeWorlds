@@ -6,6 +6,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Configurations>Release;Debug</Configurations>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <DebugType>Full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
@@ -22,6 +24,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" />
+    <PackageReference Include="MonoGame.Library.SDL" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="NLua" />
     <PackageReference Include="Npgsql" />
