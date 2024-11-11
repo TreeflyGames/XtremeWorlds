@@ -1,27 +1,30 @@
 ﻿Imports System.Collections.Concurrent
 Imports System.IO
 Imports System.Threading
+Imports System.Xml
 Imports Core
+Imports Core.Enum
 Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Graphics
 Imports Microsoft.Xna.Framework.Input
+Imports SharpDX.Direct2D1
 
 Public Class GameClient
     Inherits Game
 
     Public Shared Graphics As GraphicsDeviceManager
-    Public Shared SpriteBatch As SpriteBatch
+    Public Shared SpriteBatch As Graphics.SpriteBatch
     Public Shared ReadOnly TextureCache As New ConcurrentDictionary(Of String, Texture2D)()
     Public Shared ReadOnly GfxInfoCache As New ConcurrentDictionary(Of String, GfxInfo)()
     Public Shared TextureCounter As Integer
     Public Shared LoadingCompleted As ManualResetEvent = New ManualResetEvent(False)
-    
+
     Public ReadOnly MultiplyBlendState As New BlendState()
 
     ' Queue to maintain FIFO order of batches
     Public Shared Batches As New ConcurrentDictionary(Of Integer, RenderBatch)()
     Public Shared ReadOnly BatchLock As New Object()
-    
+
     Private Shared _gameFps As Integer
     Private Shared ReadOnly FpsLock As New Object()
 
@@ -42,14 +45,14 @@ Public Class GameClient
     Public Class RenderBatch
         Public Property Texture As Texture2D
         Public Property TextureCounter As Integer
-        Public Property Font as SpriteFont
+        Public Property Font As SpriteFont
         Public Property Commands As New List(Of RenderCommand)()
     End Class
-    
+
     ' ManualResetEvent to signal when loading is complete
     Public Shared IsLoading As Boolean = True
     Public Shared ReadOnly LoadLock As New Object()
-    
+
     ' State tracking variables
     ' Shared keyboard and mouse states for cross-thread access
     Public Shared CurrentKeyboardState As KeyboardState
@@ -57,10 +60,10 @@ Public Class GameClient
 
     Public Shared CurrentMouseState As MouseState
     Public Shared PreviousMouseState As MouseState
-    
+
     ' Keep track of the key states to avoid repeated input
     Public Shared ReadOnly KeyStates As New Dictionary(Of Keys, Boolean)
-    
+
     ' Define a dictionary to store the last time a key was processed
     Public Shared KeyRepeatTimers As New Dictionary(Of Keys, DateTime)
 
@@ -75,11 +78,12 @@ Public Class GameClient
 
     Private elapsedTime As TimeSpan = TimeSpan.Zero
 
-    Private Shared TilesetWindow As RenderTarget2D
-    Private EditorAnimation_Anim1 As RenderTarget2D
-    Private EditorAnimation_Anim2 As RenderTarget2D
-    Private Shared RenderTarget As RenderTarget2D
+    Public Shared TilesetWindow As RenderTarget2D
+    Public Shared EditorAnimation_Anim1 As RenderTarget2D
+    Public Shared EditorAnimation_Anim2 As RenderTarget2D
+    Public Shared RenderTarget As RenderTarget2D
     Public Shared TransparentTexture As Texture2D
+    Public Shared PixelTexture As Texture2D
 
     ' Ensure this class exists to store graphic info
     Public Class GfxInfo
@@ -113,7 +117,7 @@ Public Class GameClient
 
         ' Set basic properties for GraphicsDeviceManager
         With Graphics
-            .IsFullScreen = Settings.FullScreen
+            .IsFullScreen = Settings.Fullscreen
             .PreferredBackBufferWidth = GameState.ResolutionWidth
             .PreferredBackBufferHeight = GameState.ResolutionHeight
             .SynchronizeWithVerticalRetrace = Settings.Vsync
@@ -123,9 +127,9 @@ Public Class GameClient
 
         ' Add handler for PreparingDeviceSettings
         AddHandler Graphics.PreparingDeviceSettings, Sub(sender, args)
-            args.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents
-            args.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = 8
-        End Sub
+                                                         args.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = Microsoft.Xna.Framework.Graphics.RenderTargetUsage.PreserveContents
+                                                         args.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = 8
+                                                     End Sub
 
 #If DEBUG Then
         Me.IsMouseVisible = True
@@ -137,7 +141,7 @@ Public Class GameClient
         AddHandler Me.Exiting, AddressOf OnWindowClose
         AddHandler Graphics.DeviceReset, AddressOf OnDeviceReset
     End Sub
-    
+
     Protected Overrides Sub Initialize()
         Window.Title = Settings.GameName
 
@@ -149,9 +153,9 @@ Public Class GameClient
             False,
             Graphics.GraphicsDevice.PresentationParameters.BackBufferFormat,
             DepthFormat.Depth24)
-        
+
         InitializeMultiplyBlendState()
-        
+
         ' Apply changes to GraphicsDeviceManager
         Try
             Graphics.ApplyChanges()
@@ -187,55 +191,55 @@ Public Class GameClient
         Public Property EntityID As Integer
         Public Property TextureID As Integer
     End Class
-    
-    Private Sub LoadFonts()
+
+    Private Shared Sub LoadFonts()
         For i = 1 To FontType.Count - 1
             Fonts(i) = LoadFont(Core.Path.Fonts, i)
         Next
     End Sub
-    
+
     ' Method to center the window using GraphicsAdapter
-    Private Sub CenterWindow()
+    Private Shared Sub CenterWindow()
         ' Get the primary display's resolution
         Dim displayMode As DisplayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode
 
         Dim screenWidth As Integer = displayMode.Width
         Dim screenHeight As Integer = displayMode.Height
 
-        Dim windowWidth As Integer = graphics.PreferredBackBufferWidth
-        Dim windowHeight As Integer = graphics.PreferredBackBufferHeight
+        Dim windowWidth As Integer = Graphics.PreferredBackBufferWidth
+        Dim windowHeight As Integer = Graphics.PreferredBackBufferHeight
 
         ' Calculate centered position
         Dim posX As Integer = (screenWidth - windowWidth) / 2
         Dim posY As Integer = (screenHeight - windowHeight) / 2
 
         ' Set the new window position
-        Window.Position = New Point(posX, posY)
+        Client.Window.Position = New Point(posX, posY)
     End Sub
-    
+
     Protected Overrides Sub LoadContent()
-        SpriteBatch = New SpriteBatch(GraphicsDevice)
+        SpriteBatch = New Graphics.SpriteBatch(GraphicsDevice)
 
         TransparentTexture = New Texture2D(GraphicsDevice, 1, 1)
         TransparentTexture.SetData(New Color() {Color.White})
 
         LoadFonts()
-        
+
         ' Signal that loading is complete
-        loadingCompleted.Set()
+        LoadingCompleted.Set()
     End Sub
 
-    Public Function LoadFont(path As String, font As [Enum].FontType) As SpriteFont
-        Return Content.Load(Of SpriteFont)(IO.Path.Combine(path, font))
+    Public Shared Function LoadFont(path As String, font As [Enum].FontType) As SpriteFont
+        Return Client.Content.Load(Of SpriteFont)(IO.Path.Combine(path, font))
     End Function
 
-    Public Shared Sub EnqueueText(ByRef text As String, path As String, x As Integer, y As Integer, 
+    Public Shared Sub EnqueueText(ByRef text As String, path As String, x As Integer, y As Integer,
                            font As FontType, frontColor As Color, backColor As Color,
                            Optional entityID As Integer = 0)
-        
-        SyncLock batchLock
+
+        SyncLock BatchLock
             TextureCounter += 1
-            
+
             ' Create the new render command
             Dim newCommand = New RenderCommand With {
                     .Type = RenderType.Font,
@@ -248,7 +252,7 @@ Public Class GameClient
                     .EntityID = entityID,
                     .TextureID = GenerateUniqueTextureID(.Path, TextureCounter)
                     }
-            
+
             ' Try to update an existing batch with the same TextCounter
             If Not UpdateBatches(newCommand) Then
                 ' Create a new batch if no matching batch was found
@@ -259,7 +263,7 @@ Public Class GameClient
                 batch.Commands.Add(newCommand)
 
                 ' Enqueue the new batch
-                batches.TryAdd(TextureCounter, batch)
+                Batches.TryAdd(TextureCounter, batch)
             End If
         End SyncLock
     End Sub
@@ -285,9 +289,9 @@ Public Class GameClient
             Return
         End If
 
-        SyncLock batchLock
+        SyncLock BatchLock
             TextureCounter += 1
-            
+
             ' Create a new render command
             Dim newCommand = New RenderCommand With {
                     .Type = RenderType.Texture,
@@ -298,7 +302,7 @@ Public Class GameClient
                     .EntityID = entityID,
                     .TextureID = GenerateUniqueTextureID(.Path, TextureCounter)
                     }
-            
+
             ' Try to update an existing batch with the same TextureID
             If Not UpdateBatches(newCommand) Then
                 ' Create a new batch if no matching batch was found
@@ -307,11 +311,11 @@ Public Class GameClient
                         .TextureCounter = TextureCounter
                         }
                 batch.Commands.Add(newCommand)
-                batches.TryAdd(TextureCounter, batch)
+                Batches.TryAdd(TextureCounter, batch)
             End If
         End SyncLock
     End Sub
-    
+
     Public Shared Sub RenderTexture(ByRef path As String, dX As Integer, dY As Integer,
                               sX As Integer, sY As Integer, dW As Integer, dH As Integer,
                               Optional sW As Integer = 1, Optional sH As Integer = 1,
@@ -331,20 +335,20 @@ Public Class GameClient
             Return
         End If
 
-        SpriteBatch.Draw(texture, dRect, sRect, Color)
+        SpriteBatch.Draw(texture, dRect, sRect, color)
     End Sub
-    
+
     Private Shared Function GenerateUniqueTextureID(path As String, index As Integer) As Integer
         Dim pathHash = path.GetHashCode() ' Generate a hash from the path
         Dim uniqueID = Math.Abs(pathHash + index) ' Ensure the ID is non-negative
 
         Return uniqueID
     End Function
-    
+
     Private Shared Function UpdateBatches(newCommand As RenderCommand) As Boolean
         Dim batchToUpdate As RenderBatch = Nothing
         Dim matchingCommand As RenderCommand
- 
+
         SyncLock BatchLock
             ' Iterate over each batch in the dictionary
             For Each key As Integer In Batches.Keys.ToList()
@@ -355,12 +359,12 @@ Public Class GameClient
                         Function(cmd) cmd.EntityID = newCommand.EntityID)
 
                     If matchingCommand IsNot Nothing Then
-                        If matchingCommand.EntityID > 0 And Not Gui.Windows(matchingCommand.EntityID).Visible = True
+                        If matchingCommand.EntityID > 0 And Not Gui.Windows(matchingCommand.EntityID).Visible = True Then
                             Batches.TryRemove(key, batchToUpdate)
                             Continue For
                         End If
                     End If
-                    
+
                     ' Search for an existing command in the dequeued batch.
                     matchingCommand = batchToUpdate.Commands.FirstOrDefault(
                         Function(cmd) cmd.TextureID = newCommand.TextureID)
@@ -381,7 +385,7 @@ Public Class GameClient
                         If newCommand.Type = RenderType.Texture Then
                             batchToUpdate.Texture = GetTexture(newCommand.Path)
                         End If
-                        
+
                         Continue For
                     End If
                 End If
@@ -389,28 +393,28 @@ Public Class GameClient
         End SyncLock
         Return False
     End Function
-    
+
     Public Shared Function GetTexture(path As String) As Texture2D
         If Not GameClient.TextureCache.ContainsKey(path) Then
             Dim texture = GameClient.LoadTexture(path)
-            return texture
+            Return texture
         End If
-        
+
         Return TextureCache(path)
     End Function
-    
+
     Public Shared Function LoadTexture(path As String) As Texture2D
         Try
             Using stream As New FileStream(path, FileMode.Open)
                 Dim texture = Texture2D.FromStream(GameClient.Graphics.GraphicsDevice, stream)
-                
+
                 ' Cache graphics information
                 Dim gfxInfo As New GfxInfo With {
                         .Width = texture.Width,
                         .Height = texture.Height
                         }
                 GfxInfoCache.TryAdd(path, gfxInfo)
-                
+
                 TextureCache(path) = texture
 
                 Return texture
@@ -420,14 +424,14 @@ Public Class GameClient
             Return Nothing
         End Try
     End Function
-    
+
     Protected Overrides Sub Draw(gameTime As GameTime)
         Graphics.GraphicsDevice.Clear(Color.Black)
 
         SyncLock LoadLock
-            If IsLoading = True then Exit Sub
+            If IsLoading = True Then Exit Sub
         End SyncLock
-        
+
         SpriteBatch.Begin()
         If GameState.InGame = True Then
             Render_Game()
@@ -438,9 +442,9 @@ Public Class GameClient
 
         MyBase.Draw(gameTime)
     End Sub
-    
+
     ' Render method to iterate over the batches and draw them.
-    Private Sub RenderBatches()
+    Private Shared Sub RenderBatches()
         SyncLock BatchLock
             For Each batch In Batches.Values
                 For Each renderCommand In batch.Commands.ToArray()
@@ -462,7 +466,7 @@ Public Class GameClient
             Next
         End SyncLock
     End Sub
-    
+
     Protected Overrides Sub Update(gameTime As GameTime)
         ' Ignore input if the window is minimized or inactive
         If Not IsActive OrElse Window.ClientBounds.Width = 0 Or Window.ClientBounds.Height = 0 Then
@@ -475,24 +479,24 @@ Public Class GameClient
         UpdateKeyCache()
         ProcessInputs()
 
-        If IsKeyStateActive(Keys.F12)
+        If IsKeyStateActive(Keys.F12) Then
             TakeScreenshot()
         End If
-        
+
         SetFps(_gameFps + 1)
         elapsedTime += gameTime.ElapsedGameTime
-        
+
         If elapsedTime.TotalSeconds >= 1 Then
-            Console.WriteLine("FPS: " & GetFps())    
+            Console.WriteLine("FPS: " & GetFps())
             SetFps(0)
             elapsedTime = TimeSpan.Zero
         End If
 
         MyBase.Update(gameTime)
     End Sub
-    
+
     ' Reset keyboard and mouse states
-    Private Sub ResetInputStates()
+    Private Shared Sub ResetInputStates()
         SyncLock InputLock
             CurrentKeyboardState = New KeyboardState()
             PreviousKeyboardState = New KeyboardState()
@@ -507,11 +511,11 @@ Public Class GameClient
             Dim keyboardState As KeyboardState = Keyboard.GetState()
 
             ' Update the previous and current states
-            PreviousKeyboardState = currentKeyboardState
+            PreviousKeyboardState = CurrentKeyboardState
             CurrentKeyboardState = keyboardState
         End SyncLock
     End Sub
-    
+
     Private Shared Sub UpdateMouseCache()
         SyncLock InputLock
             ' Get the current mouse state
@@ -522,14 +526,14 @@ Public Class GameClient
             CurrentMouseState = mouseState
         End SyncLock
     End Sub
-    
+
     Public Shared Function GetMouseScrollDelta() As Integer
         SyncLock ScrollLock
             ' Calculate the scroll delta between the previous and current states
             Return CurrentMouseState.ScrollWheelValue - PreviousMouseState.ScrollWheelValue
         End SyncLock
     End Function
-    
+
     Public Shared Function IsKeyStateActive(key As Keys) As Boolean
         SyncLock InputLock
             If CanProcessKey(key) = True Then
@@ -560,7 +564,7 @@ Public Class GameClient
             End Select
         End SyncLock
     End Function
-    
+
     Public Shared Function IsMouseButtonUp(button As MouseButton) As Boolean
         SyncLock InputLock
             Select Case button
@@ -575,8 +579,8 @@ Public Class GameClient
             End Select
         End SyncLock
     End Function
-    
-  Public Sub ProcessInputs()
+
+    Public Shared Sub ProcessInputs()
         SyncLock GameClient.InputLock
             ' Get the mouse position from the cache
             Dim mousePos As Tuple(Of Integer, Integer) = GameClient.GetMousePosition()
@@ -675,8 +679,8 @@ Public Class GameClient
             End If
         End SyncLock
     End Sub
-    
-    Private Sub HandleActiveWindowInput()
+
+    Private Shared Sub HandleActiveWindowInput()
         Dim key As Keys
 
         SyncLock GameClient.InputLock
@@ -711,9 +715,9 @@ Public Class GameClient
             End If
         End SyncLock
     End Sub
-    
+
     ' Handles the hotbar key presses using KeyboardState
-    Private Sub HandleHotbarInput()
+    Private Shared Sub HandleHotbarInput()
         If GameState.inSmallChat Then
             ' Iterate through hotbar slots and check for corresponding keys
             For i = 1 To MAX_HOTBAR
@@ -726,7 +730,7 @@ Public Class GameClient
         End If
     End Sub
 
-    Private Sub HandleTextInput()
+    Private Shared Sub HandleTextInput()
         SyncLock GameClient.InputLock
             ' Iterate over all pressed keys
             For Each key As Keys In GameClient.CurrentKeyboardState.GetPressedKeys()
@@ -807,7 +811,7 @@ Public Class GameClient
         HandleMouseClick(MouseButton.Left)
         HandleScrollWheel()
     End Sub
-    
+
     Private Shared Sub HandleScrollWheel()
         SyncLock GameClient.InputLock
             ' Handle scroll wheel (assuming delta calculation happens elsewhere)
@@ -817,8 +821,8 @@ Public Class GameClient
             ElseIf scrollValue < 0 Then
                 ScrollChatBox(1) ' Scroll down
             End If
-            
-            if scrollvalue <> 0 Then
+
+            If scrollValue <> 0 Then
                 Gui.HandleInterfaceEvents(EntState.MouseScroll)
             End If
         End SyncLock
@@ -890,7 +894,7 @@ Public Class GameClient
         ' Loop through all players and display the right-click menu for the matching one
         For i = 1 To MAX_PLAYERS
             If IsPlaying(i) AndAlso GetPlayerMap(i) = GetPlayerMap(GameState.MyIndex) Then
-                If GetPlayerX(i) = GameState.CurX AndAlso GetPlayerY(i) = GameState. CurY Then
+                If GetPlayerX(i) = GameState.CurX AndAlso GetPlayerY(i) = GameState.CurY Then
                     ' Use current mouse state for the X and Y positions
                     ShowPlayerMenu(i, GameClient.CurrentMouseState.X, GameClient.CurrentMouseState.Y)
                 End If
@@ -900,17 +904,17 @@ Public Class GameClient
         ' Perform player search at the current cursor position
         PlayerSearch(GameState.CurX, GameState.CurY, 1)
     End Sub
-    
-    Private Sub OnWindowClose(ByVal sender As Object, ByVal e As EventArgs)
+
+    Private Shared Sub OnWindowClose(ByVal sender As Object, ByVal e As EventArgs)
         DestroyGame()
         End
     End Sub
-    
-    Private Sub OnDeviceReset()
+
+    Private Shared Sub OnDeviceReset()
         Console.WriteLine("Device Reset")
     End Sub
 
-    Public Sub TakeScreenshot()
+    Public Shared Sub TakeScreenshot()
         ' Set the render target to our RenderTarget2D
         GameClient.Graphics.GraphicsDevice.SetRenderTarget(GameClient.RenderTarget)
 
@@ -918,7 +922,7 @@ Public Class GameClient
         GameClient.Graphics.GraphicsDevice.Clear(Color.Transparent)
 
         ' Draw everything to the render target
-        Draw(New GameTime()) ' Assuming Draw handles your game rendering
+        Client.Draw(New GameTime()) ' Assuming Draw handles your game rendering
 
         ' Reset the render target to the back buffer (main display)
         GameClient.Graphics.GraphicsDevice.SetRenderTarget(Nothing)
@@ -926,12 +930,12 @@ Public Class GameClient
         ' Save the contents of the RenderTarget2D to a PNG file
         Dim timestamp As String = DateTime.Now.ToString("yyyyMMdd_HHmmss")
         Using stream As New FileStream($"screenshot_{timestamp}.png", FileMode.Create)
-            GameClient.RenderTarget.SaveAsPng(stream, 
-                                              GameClient.RenderTarget.Width, 
+            GameClient.RenderTarget.SaveAsPng(stream,
+                                              GameClient.RenderTarget.Width,
                                               GameClient.RenderTarget.Height)
         End Using
     End Sub
-    
+
     ' Draw a filled rectangle with an optional outline
     Public Shared Sub DrawRectangle(position As Vector2, size As Vector2, fillColor As Color, outlineColor As Color, outlineThickness As Single)
         ' Create a 1x1 white texture for drawing
@@ -1012,7 +1016,7 @@ Public Class GameClient
         SpriteBatch.End()
     End Sub
 
-    Private Sub DrawOutlineRectangle(x As Integer, y As Integer, width As Integer, height As Integer, color As Color, thickness As Single)
+    Private Shared Sub DrawOutlineRectangle(x As Integer, y As Integer, width As Integer, height As Integer, color As Color, thickness As Single)
         Dim whiteTexture As New Texture2D(SpriteBatch.GraphicsDevice, 1, 1)
 
         SpriteBatch.Begin()
@@ -1069,7 +1073,7 @@ Public Class GameClient
                 Throw New ArgumentOutOfRangeException(NameOf(qbColor), "Invalid QbColor value.")
         End Select
     End Function
-    
+
     Friend Shared Sub DrawEmote(x2 As Integer, y2 As Integer, sprite As Integer)
         Dim rec As Rectangle
         Dim x As Integer, y As Integer, anim As Integer
@@ -1264,7 +1268,7 @@ Public Class GameClient
 
         RenderTexture(IO.Path.Combine(Core.Path.Characters, sprite), x, y, sRECT.X, sRECT.Y, sRECT.Width, sRECT.Height, sRECT.Width, sRECT.Height)
     End Sub
-    
+
     Friend Shared Sub DrawBlood(index As Integer)
         Dim srcrec As Rectangle
         Dim destrec As Rectangle
@@ -1435,7 +1439,7 @@ Public Class GameClient
 
         SpriteBatch.End()
     End Sub
-    
+
     Friend Shared Sub DrawTarget(x2 As Integer, y2 As Integer)
         Dim rec As Rectangle
         Dim x As Integer, y As Integer
@@ -1453,6 +1457,168 @@ Public Class GameClient
         height = (rec.Bottom - rec.Top)
 
         RenderTexture(IO.Path.Combine(Core.Path.Misc, "Target"), x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
+    End Sub
+
+    Public Shared Sub DrawTileset()
+        Dim tileset As Integer
+
+        If frmEditor_Map.Instance.cmbTileSets.SelectedIndex = -1 Then
+            Exit Sub
+        End If
+
+        tileset = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1
+
+        ' Get GfxInfo for the selected tileset
+        Dim gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
+
+        ' Create a new SpriteBatch for rendering
+        Dim spriteBatch As New Graphics.SpriteBatch(Graphics.GraphicsDevice)
+        Graphics.GraphicsDevice.Clear(Color.Black)
+
+        ' Begin the SpriteBatch with appropriate settings
+        spriteBatch.Begin()
+
+        ' Calculate the source rectangle
+        Dim sourceRect As New Rectangle(0, 0, gfxInfo.Width \ 4, gfxInfo.Height \ 4)
+
+        ' Calculate the destination rectangle
+        Dim destRect As New Rectangle(0, 0, frmEditor_Map.Instance.picBackSelect.Width, frmEditor_Map.Instance.picBackSelect.Height)
+
+        ' Draw the tileset texture
+        spriteBatch.Draw(GetTexture(System.IO.Path.Combine(Core.Path.Tilesets, tileset)), destRect, sourceRect, Color.White)
+
+        ' Draw the selection rectangle outline
+        Dim selectionRect As New Rectangle(GameState.EditorTileSelStart.X * GameState.PicX, GameState.EditorTileSelStart.Y * GameState.PicY, GameState.EditorTileWidth * GameState.PicX, GameState.EditorTileHeight * GameState.PicY)
+        DrawRectangleOutline(spriteBatch, selectionRect, Color.Red)
+
+        spriteBatch.End()
+
+        ' Present the rendered content to the screen
+        Graphics.GraphicsDevice.Present()
+    End Sub
+
+    Private Shared Sub DrawRectangleOutline(spriteBatch As Graphics.SpriteBatch, rect As Rectangle, color As Color)
+        ' Draw lines to form a rectangle outline
+        Dim lineThickness As Integer = 1 ' Change as needed
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y, rect.Width, lineThickness), color) ' Top
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y, lineThickness, rect.Height), color) ' Left
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X + rect.Width - lineThickness, rect.Y, lineThickness, rect.Height), color) ' Right
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y + rect.Height - lineThickness, rect.Width, lineThickness), color) ' Bottom
+    End Sub
+
+    Friend Shared Sub EditorItem_DrawIcon()
+        Dim itemnum As Integer
+        itemnum = frmEditor_Item.Instance.nudIcon.Value
+
+        If itemnum < 1 Or itemnum > GameState.NumItems Then
+            frmEditor_Item.Instance.picItem.BackgroundImage = Nothing
+            Exit Sub
+        End If
+        If File.Exists(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt)) Then
+            frmEditor_Item.Instance.picItem.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt))
+        Else
+            frmEditor_Item.Instance.picItem.BackgroundImage = Nothing
+        End If
+    End Sub
+
+    Friend Shared Sub EditorNPC_DrawSprite()
+        Dim Sprite As Integer
+
+        Sprite = frmEditor_NPC.Instance.nudSprite.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumCharacters Then
+            frmEditor_NPC.Instance.picSprite.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt)) Then
+            frmEditor_NPC.Instance.picSprite.Width =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt)).Width / 4
+            frmEditor_NPC.Instance.picSprite.Height =
+                Drawing.Image.FromFile(IO.Path.Combine(Sprite, GameState.GfxExt)).Height / 4
+            frmEditor_NPC.Instance.picSprite.BackgroundImage =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt))
+        End If
+    End Sub
+
+    Friend Shared Sub EditorResource_DrawSprite()
+        Dim Sprite As Integer
+
+        ' normal sprite
+        Sprite = frmEditor_Resource.Instance.nudNormalPic.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumResources Then
+            frmEditor_Resource.Instance.picNormalpic.BackgroundImage = Nothing
+        Else
+            If File.Exists(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt)) Then
+                frmEditor_Resource.Instance.picNormalpic.BackgroundImage =
+                    Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt))
+            End If
+
+        End If
+
+        ' exhausted sprite
+        Sprite = frmEditor_Resource.Instance.nudExhaustedPic.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumResources Then
+            frmEditor_Resource.Instance.picExhaustedPic.BackgroundImage = Nothing
+        Else
+            If File.Exists(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt)) Then
+                frmEditor_Resource.Instance.picExhaustedPic.BackgroundImage =
+                    Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt))
+            End If
+        End If
+    End Sub
+
+    Friend Shared Sub EditorEvent_DrawPicture()
+        Dim Sprite As Integer
+
+        Sprite = frmEditor_Event.Instance.nudShowPicture.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumPictures Then
+            frmEditor_Event.Instance.picShowPic.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)) Then
+            frmEditor_Event.Instance.picShowPic.Width =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)).Width
+            frmEditor_Event.Instance.picShowPic.Height =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)).Height
+            frmEditor_Event.Instance.picShowPic.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt))
+        End If
+    End Sub
+
+    Friend Shared Sub EditorSkill_DrawIcon()
+        Dim skillNum As Integer
+        skillNum = frmEditor_Skill.Instance.nudIcon.Value
+
+        If skillNum < 1 Or skillNum > GameState.NumItems Then
+            frmEditor_Skill.Instance.picSprite.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Skills, skillNum & GameState.GfxExt)) Then
+            frmEditor_Skill.Instance.picSprite.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Skills, skillNum & GameState.GfxExt))
+        Else
+            frmEditor_Skill.Instance.picSprite.BackgroundImage = Nothing
+        End If
+    End Sub
+
+    Friend Shared Sub EditorItem_DrawPaperdoll()
+        Dim Sprite As Integer
+
+        Sprite = frmEditor_Item.Instance.nudPaperdoll.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumPaperdolls Then
+            frmEditor_Item.Instance.picPaperdoll.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Paperdolls, Sprite & GameState.GfxExt)) Then
+            frmEditor_Item.Instance.picPaperdoll.BackgroundImage =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Paperdolls, Sprite & GameState.GfxExt))
+        End If
     End Sub
 
     Friend Shared Sub DrawHover(x2 As Integer, y2 As Integer)
@@ -1474,7 +1640,7 @@ Public Class GameClient
 
         RenderTexture(IO.Path.Combine(Core.Path.Misc, "Target"), x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
-    
+
     Public Shared Sub DrawChatBubble(ByVal Index As Long)
         Dim theArray() As String, x As Long, y As Long, i As Long, MaxWidth As Long, x2 As Long, y2 As Long, Color As Integer, tmpNum As Long
 
@@ -1693,7 +1859,7 @@ Public Class GameClient
             DrawEmote(x, y, Type.Player(GameState.MyIndex).Emote)
         End If
     End Sub
-    
+
     Friend Sub DrawEvents()
         If MyMap.EventCount <= 0 Then Exit Sub ' Exit early if no events
 
@@ -1753,7 +1919,7 @@ Public Class GameClient
         RenderTexture(IO.Path.Combine(Core.Path.Characters, gfxIndex), position.X, position.Y, sourceRect.X, sourceRect.Y, frameWidth, frameHeight, sourceRect.Width, sourceRect.Height)
     End Sub
 
-    Private Sub RenderTilesetGraphic(eventData As EventStruct, x As Integer, y As Integer)
+    Private Shared Sub RenderTilesetGraphic(eventData As EventStruct, x As Integer, y As Integer)
         Dim gfxIndex = eventData.Pages(1).Graphic
 
         If gfxIndex > 0 AndAlso gfxIndex <= GameState.NumTileSets Then
@@ -1776,6 +1942,201 @@ Public Class GameClient
             ' Draw fallback outline if the tileset graphic is invalid
             DrawOutlineRectangle(x, y, GameState.PicX, GameState.PicY, Color.Blue, 0.6F)
         End If
+    End Sub
+
+    Public Shared Sub EditorMap_DrawItem()
+        Dim itemnum As Integer
+
+        itemnum = Type.Item(frmEditor_Map.Instance.scrlMapItem.Value).Icon
+
+        If itemnum <= 0 Or itemnum > GameState.NumItems Then
+            frmEditor_Map.Instance.picMapItem.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt)) Then
+            frmEditor_Map.Instance.picMapItem.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt))
+        End If
+
+    End Sub
+
+    Public Shared Sub EditorEvent_DrawGraphic()
+        Dim sRect As RectStruct
+        Dim dRect As RectStruct
+        Dim targetBitmap As System.Drawing.Bitmap 'Bitmap we draw to
+        Dim sourceBitmap As System.Drawing.Bitmap 'This is our sprite or tileset that we are drawing from
+        Dim g As System.Drawing.Graphics 'This is our graphics Job that helps us draw to the targetBitmap
+
+        If frmEditor_Event.Instance.picGraphicSel.Visible Then
+            Select Case frmEditor_Event.Instance.cmbGraphic.SelectedIndex
+                Case 0
+                    'None
+                    frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
+                Case 1
+                    If frmEditor_Event.Instance.nudGraphic.Value > 0 And frmEditor_Event.Instance.nudGraphic.Value <= GameState.NumCharacters Then
+                        'Load character from Contents into our sourceBitmap
+                        sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "\characters\" & frmEditor_Event.Instance.nudGraphic.Value & ".png")
+                        targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
+
+                        ' Create the Graphics object
+                        g = System.Drawing.Graphics.FromImage(targetBitmap)
+
+                        ' This is the section we are pulling from the source graphic (using RectangleF)
+                        Dim sourceRect As New System.Drawing.RectangleF(0, 0, sourceBitmap.Width / 4.0F, sourceBitmap.Height / 4.0F)
+
+                        ' This is the rectangle in the target graphic we want to render to (using RectangleF)
+                        Dim destRect As New System.Drawing.RectangleF(0, 0, targetBitmap.Width / 4.0F, targetBitmap.Height / 4.0F)
+
+                        ' Draw the image using RectangleF for source and destination rectangles
+                        g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
+
+                        ' Draw a rectangle (using RectangleF)
+                        Dim graphicRectF As New System.Drawing.RectangleF(GraphicSelX * GameState.PicX, GraphicSelY * GameState.PicY, GraphicSelX2 * GameState.PicX, GraphicSelY2 * GameState.PicY)
+                        g.DrawRectangle(System.Drawing.Pens.Red, graphicRectF)
+
+                        ' Set the BackgroundImage properties of the forms
+                        frmEditor_Event.Instance.picGraphic.BackgroundImage = targetBitmap
+                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
+
+                        ' Dispose of the Graphics object
+                        g.Dispose()
+
+                    Else
+                        frmEditor_Event.Instance.picGraphic.BackgroundImage = Nothing
+                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
+                        Exit Sub
+                    End If
+                Case 2
+                    If frmEditor_Event.Instance.nudGraphic.Value > 0 And frmEditor_Event.Instance.nudGraphic.Value <= GameState.NumTileSets Then
+                        'Load tilesheet from Contents into our sourceBitmap
+                        sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "\tilesets\" & frmEditor_Event.Instance.nudGraphic.Value & ".png")
+                        targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
+
+                        If TmpEvent.Pages(CurPageNum).GraphicX2 = 0 And TmpEvent.Pages(CurPageNum).GraphicY2 = 0 Then
+                            sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
+                            sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
+                            sRect.Bottom = sRect.Top + 32
+                            sRect.Right = sRect.Left + 32
+
+                            With dRect
+                                dRect.Top = (193 / 2) - ((sRect.Bottom - sRect.Top) / 2)
+                                dRect.Bottom = dRect.Top + (sRect.Bottom - sRect.Top)
+                                dRect.Left = (120 / 2) - ((sRect.Right - sRect.Left) / 2)
+                                dRect.Right = dRect.Left + (sRect.Right - sRect.Left)
+                            End With
+                        Else
+                            sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
+                            sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
+                            sRect.Bottom = sRect.Top + ((TmpEvent.Pages(CurPageNum).GraphicY2 - TmpEvent.Pages(CurPageNum).GraphicY) * 32)
+                            sRect.Right = sRect.Left + ((TmpEvent.Pages(CurPageNum).GraphicX2 - TmpEvent.Pages(CurPageNum).GraphicX) * 32)
+
+                            With dRect
+                                dRect.Top = (193 / 2) - ((sRect.Bottom - sRect.Top) / 2)
+                                dRect.Bottom = dRect.Top + (sRect.Bottom - sRect.Top)
+                                dRect.Left = (120 / 2) - ((sRect.Right - sRect.Left) / 2)
+                                dRect.Right = dRect.Left + (sRect.Right - sRect.Left)
+                            End With
+
+                        End If
+
+                        g = System.Drawing.Graphics.FromImage(targetBitmap)
+
+                        Dim sourceRect As New Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height)  'This is the section we are pulling from the source graphic
+                        Dim destRect As New Rectangle(0, 0, targetBitmap.Width, targetBitmap.Height)     'This is the rectangle in the target graphic we want to render to
+
+                        ' Ensure destRect and sourceRect are RectangleF
+                        Dim destRectF As New System.Drawing.RectangleF(destRect.X, destRect.Y, destRect.Width, destRect.Height)
+                        Dim sourceRectF As New System.Drawing.RectangleF(sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height)
+
+                        ' Call DrawImage with RectangleF
+                        g.DrawImage(sourceBitmap, destRectF, sourceRectF, System.Drawing.GraphicsUnit.Pixel)
+
+                        ' For DrawRectangle, ensure the rectangle is of type Rectangle
+                        Dim rectF As New System.Drawing.RectangleF(GraphicSelX * GameState.PicX, GraphicSelY * GameState.PicY, GraphicSelX2 * GameState.PicX, GraphicSelY2 * GameState.PicY)
+                        g.DrawRectangle(System.Drawing.Pens.Red, rectF)
+
+                        g.Dispose()
+
+
+                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = targetBitmap
+                        frmEditor_Event.Instance.picGraphic.BackgroundImage = Nothing
+                    Else
+                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
+                        frmEditor_Event.Instance.picGraphic.BackgroundImage = Nothing
+                        Exit Sub
+                    End If
+            End Select
+        Else
+            If TmpEvent.PageCount > 0 Then
+                Select Case TmpEvent.Pages(CurPageNum).GraphicType
+                    Case 0
+                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
+                    Case 1
+                        If TmpEvent.Pages(CurPageNum).Graphic > 0 And TmpEvent.Pages(CurPageNum).Graphic <= GameState.NumCharacters Then
+                            'Load character from Contents into our sourceBitmap
+                            sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "\characters\" & TmpEvent.Pages(CurPageNum).Graphic & ".png")
+                            targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
+
+                            g = System.Drawing.Graphics.FromImage(targetBitmap)
+
+                            Dim sourceRect As New System.Drawing.Rectangle(0, 0, sourceBitmap.Width / 4, sourceBitmap.Height / 4)  'This is the section we are pulling from the source graphic
+                            Dim destRect As New System.Drawing.Rectangle(0, 0, targetBitmap.Width / 4, targetBitmap.Height / 4)     'This is the rectangle in the target graphic we want to render to
+
+                            g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
+                            g.Dispose()
+
+                            frmEditor_Event.Instance.picGraphic.BackgroundImage = targetBitmap
+                        Else
+                            frmEditor_Event.Instance.picGraphic.BackgroundImage = Nothing
+                            Exit Sub
+                        End If
+                    Case 2
+                        If TmpEvent.Pages(CurPageNum).Graphic > 0 And TmpEvent.Pages(CurPageNum).Graphic <= GameState.NumTileSets Then
+                            'Load tilesheet from Contents into our sourceBitmap
+                            sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "tilesets\" & TmpEvent.Pages(CurPageNum).Graphic & ".png")
+                            targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
+
+                            If TmpEvent.Pages(CurPageNum).GraphicX2 = 0 And TmpEvent.Pages(CurPageNum).GraphicY2 = 0 Then
+                                sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
+                                sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
+                                sRect.Bottom = sRect.Top + 32
+                                sRect.Right = sRect.Left + 32
+
+                                With dRect
+                                    dRect.Top = 0
+                                    dRect.Bottom = GameState.PicY
+                                    dRect.Left = 0
+                                    dRect.Right = GameState.PicX
+                                End With
+                            Else
+                                sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
+                                sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
+                                sRect.Bottom = TmpEvent.Pages(CurPageNum).GraphicY2 * 32
+                                sRect.Right = TmpEvent.Pages(CurPageNum).GraphicX2 * 32
+
+                                With dRect
+                                    dRect.Top = 0
+                                    dRect.Bottom = sRect.Bottom
+                                    dRect.Left = 0
+                                    dRect.Right = sRect.Right
+                                End With
+
+                            End If
+
+                            g = System.Drawing.Graphics.FromImage(targetBitmap)
+
+                            Dim sourceRect As New System.Drawing.Rectangle(sRect.Left, sRect.Top, sRect.Right, sRect.Bottom)  'This is the section we are pulling from the source graphic
+                            Dim destRect As New System.Drawing.Rectangle(dRect.Left, dRect.Top, dRect.Right, dRect.Bottom)     'This is the rectangle in the target graphic we want to render to
+
+                            g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
+                            g.Dispose()
+
+                            frmEditor_Event.Instance.picGraphic.BackgroundImage = targetBitmap
+                        End If
+                End Select
+            End If
+        End If
+
     End Sub
 
     Friend Shared Sub DrawEvent(id As Integer) ' draw on map, outside the editor
@@ -2059,7 +2420,7 @@ Public Class GameClient
         If GameState.MapGrid = 1 And GameState.MyEditorType = EditorType.Map Then
             GameClient.DrawGrid()
         End If
-        
+
         For i = 1 To MAX_PLAYERS
             If IsPlaying(i) And GetPlayerMap(i) = GetPlayerMap(GameState.MyIndex) Then
                 DrawPlayerName(i)

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net8.0</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
 	<MyType>Empty</MyType>
@@ -30,6 +30,10 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+	<UseWindowsForms>true</UseWindowsForms>
+	<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+	<ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+	<ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
     </PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
@@ -47,12 +51,12 @@
   </PropertyGroup>
     <ItemGroup>
         <Content Include="bass.dll" CopyToOutputDirectory="PreserveNewest" />
-        <Content  Include="bassmidi.dll" CopyToOutputDirectory="PreserveNewest" />
-        <Content  Include="libbass.dylib" CopyToOutputDirectory="PreserveNewest" />
-        <Content  Include="libbassmidi.dylib" CopyToOutputDirectory="PreserveNewest" />
-        <Content  Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
-        <Content  Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
-        <Content  Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="bassmidi.dll" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="libbass.dylib" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="libbassmidi.dylib" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
         <EmbeddedResource Include="Icon.bmp">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
@@ -64,6 +68,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="DarkUI" />
         <PackageReference Include="ManagedBass" />
         <PackageReference Include="ManagedBass.Midi" />
     </ItemGroup>

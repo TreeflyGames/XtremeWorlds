@@ -561,7 +561,7 @@ Module Database
         ' Load map data
         filename = AppDomain.CurrentDomain.BaseDirectory & "\maps\cs\map" & MapNum & ".ini"
 
-        ReDim csMap.MapData.NPC(MAX_MAP_NPCS)
+        ReDim csMap.MapData.Npc(MAX_MAP_NPCS)
 
         ' General
         With csMap.MapData
@@ -592,7 +592,7 @@ Module Database
 
             .BossNpc = Val(GetVar(filename, "General", "BossNpc"))
             For i = 1 To 30
-                .NPC(i) = Val(GetVar(filename, "General", "Npc" & i))
+                .Npc(i) = Val(GetVar(filename, "General", "Npc" & i))
             Next
         End With
 
@@ -643,7 +643,7 @@ Module Database
     End Function
 
     Sub ClearMapItem(index As Integer, mapNum As Integer)
-        MapItem(MapNum, index).PlayerName = ""
+        MapItem(mapNum, index).PlayerName = ""
     End Sub
 
     Sub ClearMapItems()
@@ -691,7 +691,7 @@ Module Database
                 'OFFSET 33: Stored as 2 bytes, the map music.
                 xwMap.Music = reader.ReadInt16()
 
-                'OFFSET 35: Stored as 2 bytes, the Boot map.
+                'OFFSET 35: Stored as 2 bytes, the Boot MyMap.
                 xwMap.BootMap = reader.ReadInt16()
 
                 'OFFSET 37: Stored as a single byte, the boot X
@@ -918,7 +918,7 @@ Module Database
         Next
 
         For i As Integer = 1 To 30
-            mwMap.NPC(i) = csMap.MapData.NPC(i)
+            mwMap.NPC(i) = csMap.MapData.Npc(i)
         Next
 
         Return mwMap

@@ -83,7 +83,7 @@ Public Class LanguageDef
         Public PingSync As String = "Sync"
         Public PingLocal As String = "Local"
 
-        Public MapReceive As String = "Receiving map..."
+        Public MapReceive As String = "Receiving MyMap..."
         Public DataReceive As String = "Receiving game data..."
 
         Public MapCurMap As String = "Map # {0}"

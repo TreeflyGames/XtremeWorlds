@@ -173,11 +173,11 @@ Module Animation
             .X = x
             .Y = y
             .LockType = 0
-            .lockindex = 0
+            .LockIndex = 0
             .Used(0) = 1
             .Used(1) = 1
 
-             sound = Type.Animation(.Animation).Sound
+            sound = Type.Animation(.Animation).Sound
             If sound <> "" Then PlaySound(sound, .X, .Y)
         End With
     End Sub

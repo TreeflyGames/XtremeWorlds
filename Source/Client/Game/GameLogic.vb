@@ -142,7 +142,7 @@ Module GameLogic
 
         ' hide/show chat window
         If chatText = "" Then
-            If Gui.Windows(Gui.GetWindowIndex("winChat")).Visible = True
+            If Gui.Windows(Gui.GetWindowIndex("winChat")).Visible = True Then
                 Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Text = ""
                 HideChat()
                 Exit Sub
@@ -157,7 +157,7 @@ Module GameLogic
                 AdminMsg(chatText)
             End If
 
-            Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).text = ""
+            Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Text = ""
             Exit Sub
         End If
 
@@ -169,7 +169,7 @@ Module GameLogic
                 BroadcastMsg(chatText)
             End If
 
-            Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).text = ""
+            Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Text = ""
             Exit Sub
         End If
 
@@ -181,7 +181,7 @@ Module GameLogic
                 SendPartyChatMsg(chatText)
             End If
 
-            Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).text = ""
+            Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Text = ""
             Exit Sub
         End If
 
@@ -570,7 +570,7 @@ Module GameLogic
                         GoTo Continue1
                     End If
 
-                    SendRequestEditNpc()
+                    SendRequestEditNPC()
 
                 Case "/editjob"
 
@@ -598,7 +598,7 @@ Module GameLogic
 
                     SendRequestEditShop()
 
-                    
+
                 Case "/editmoral"
                     If GetPlayerAccess(GameState.MyIndex) < AccessType.Developer Then
                         AddText(Language.Chat.AccessAlert, ColorType.BrightRed)
@@ -777,8 +777,8 @@ Continue1:
                 body = "There was a network error."
                 body2 = "Check logs folder for details."
 
-                Gui.HideWindows
-                Gui.ShowWindow(Gui.GetWindowIndex("winLogin")) 
+                Gui.HideWindows()
+                Gui.ShowWindow(Gui.GetWindowIndex("winLogin"))
         End Select
 
         ' set the dialogue up!
@@ -970,7 +970,7 @@ Continue1:
         Gui.ShowWindow(Gui.GetWindowIndex("winChat"), , False)
         Gui.HideWindow(Gui.GetWindowIndex("winChatSmall"))
         ' Set the active control
-        Gui.ActiveWIndow = Gui.GetWindowIndex("winChat")
+        Gui.ActiveWindow = Gui.GetWindowIndex("winChat")
         Gui.SetActiveControl(Gui.GetWindowIndex("winChat"), Gui.GetControlIndex("winChat", "txtChat"))
         GameState.inSmallChat = 0
         GameState.ChatScroll = 0
@@ -981,7 +981,7 @@ Continue1:
         Gui.HideWindow(Gui.GetWindowIndex("winChat"))
 
         ' Set the active control
-        Gui.ActiveWIndow = Gui.GetWindowIndex("winChat")
+        Gui.ActiveWindow = Gui.GetWindowIndex("winChat")
         Gui.SetActiveControl(Gui.GetWindowIndex("winChat"), Gui.GetControlIndex("winChat", "txtChat"))
 
         GameState.inSmallChat = 1
@@ -1116,7 +1116,7 @@ Continue1:
 
             .Controls(Gui.GetControlIndex("winDescription", "lblClass")).Text = jobName
             .Controls(Gui.GetControlIndex("winDescription", "lblClass")).Color = Color
-            
+
             ' level
             If Type.Item(itemNum).LevelReq > 0 Then
                 levelTxt = "Level " & Type.Item(itemNum).LevelReq
@@ -1173,7 +1173,7 @@ Continue1:
             Case ItemType.None, ItemType.Currency
                 ' binding
                 If Type.Item(itemNum).BindType = 1 Then
-                    AddDescInfo("Bind on Pickup",Microsoft.Xna.Framework. Color.White)
+                    AddDescInfo("Bind on Pickup", Microsoft.Xna.Framework.Color.White)
                 ElseIf Type.Item(itemNum).BindType = 2 Then
                     AddDescInfo("Bind on Equip", Microsoft.Xna.Framework.Color.White)
                 End If
@@ -1251,7 +1251,7 @@ Continue1:
                         Case ItemSubType.Exp
                             AddDescInfo("+" & Type.Item(itemNum).Data1 & " EXP", Microsoft.Xna.Framework.Color.White)
                     End Select
-                    
+
                 End If
 
                 AddDescInfo("Value: " & Type.Item(itemNum).Price & " G", Microsoft.Xna.Framework.Color.Yellow)
@@ -1266,58 +1266,58 @@ Continue1:
         ' set globals
         GameState.descType = 2 ' Skill
         GameState.descItem = Skillnum
-    
+
         ' set position
         Gui.Windows(Gui.GetWindowIndex("winDescription")).Left = x
         Gui.Windows(Gui.GetWindowIndex("winDescription")).Top = y
-    
+
         ' show the window
         Gui.ShowWindow(Gui.GetWindowIndex("winDescription"), , False)
-    
+
         ' exit out early if last is same
         If (GameState.descLastType = GameState.descType) And (GameState.descLastItem = GameState.descItem) Then Exit Sub
-    
+
         ' clear
         ReDim GameState.descText(1)
-    
+
         ' hide req. labels
         Gui.Windows(Gui.GetWindowIndex("winDescription")).Controls(Gui.GetControlIndex("winDescription", "lblLevel")).Visible = False
         Gui.Windows(Gui.GetWindowIndex("winDescription")).Controls(Gui.GetControlIndex("winDescription", "picBar")).Visible = True
-    
+
         ' set variables
         With Gui.Windows(Gui.GetWindowIndex("winDescription"))
             ' set name
-            .Controls(Gui.GetControlIndex("winDescription", "lblName")).Text = Type.Skill(skillNum).Name
-            .Controls(Gui.GetControlIndex("winDescription", "lblName")).Color =  Microsoft.Xna.Framework.Color.White
-        
+            .Controls(Gui.GetControlIndex("winDescription", "lblName")).Text = Type.Skill(Skillnum).Name
+            .Controls(Gui.GetControlIndex("winDescription", "lblName")).Color = Microsoft.Xna.Framework.Color.White
+
             ' find ranks
             If SkillSlot > 0 Then
                 ' draw the rank bar
                 barWidth = 66
                 'If Type.Skill(skillNum).rank > 0 Then
-                    'tmpWidth = ((PlayerSkills(SkillSlot).Uses / barWidth) / (Type.Skill(skillNum).NextUses / barWidth)) * barWidth
+                'tmpWidth = ((PlayerSkills(SkillSlot).Uses / barWidth) / (Type.Skill(skillNum).NextUses / barWidth)) * barWidth
                 'Else
-                    tmpWidth = 66
+                tmpWidth = 66
                 'End If
-                .Controls(Gui.GetControlIndex("winDescription", "picBar")).value = tmpWidth
+                .Controls(Gui.GetControlIndex("winDescription", "picBar")).Value = tmpWidth
                 ' does it rank up?
                 'If Type.Skill(skillNum).NextRank > 0 Then
-                    Color = ColorType.White
-                    'sUse = "Uses: " & PlayerSkills(SkillSlot).Uses & "/" & Type.Skill(skillNum).NextUses
-                    'If PlayerSkills(SkillSlot).Uses = Type.Skill(skillNum).NextUses Then
-                        'If Not GetPlayerLevel(GameState.MyIndex) >= Skill(Type.Skill(skillNum).NextRank).LevelReq Then
-                            'Color = BrightRed
-                            'sUse = "Lvl " & Skill(Type.Skill(skillNum).NextRank).LevelReq & " req."
-                        'End If
-                    'End If
+                Color = ColorType.White
+                'sUse = "Uses: " & PlayerSkills(SkillSlot).Uses & "/" & Type.Skill(skillNum).NextUses
+                'If PlayerSkills(SkillSlot).Uses = Type.Skill(skillNum).NextUses Then
+                'If Not GetPlayerLevel(GameState.MyIndex) >= Skill(Type.Skill(skillNum).NextRank).LevelReq Then
+                'Color = BrightRed
+                'sUse = "Lvl " & Skill(Type.Skill(skillNum).NextRank).LevelReq & " req."
+                'End If
+                'End If
                 'Else
-                    Color = ColorType.Gray
-                    sUse = "Max Rank"
+                Color = ColorType.Gray
+                sUse = "Max Rank"
                 'End If
                 ' show controls
                 .Controls(Gui.GetControlIndex("winDescription", "lblClass")).Visible = True
                 .Controls(Gui.GetControlIndex("winDescription", "picBar")).Visible = True
-                 'set vals
+                'set vals
                 .Controls(Gui.GetControlIndex("winDescription", "lblClass")).Text = sUse
                 .Controls(Gui.GetControlIndex("winDescription", "lblClass")).Color = Microsoft.Xna.Framework.Color.White
             Else
@@ -1326,8 +1326,8 @@ Continue1:
                 .Controls(Gui.GetControlIndex("winDescription", "picBar")).Visible = False
             End If
         End With
-    
-        Select Case Type.Skill(skillNum).Type
+
+        Select Case Type.Skill(Skillnum).Type
             Case SkillType.DamageHp
                 AddDescInfo("Damage HP", Microsoft.Xna.Framework.Color.White)
             Case SkillType.DamageMp
@@ -1339,35 +1339,35 @@ Continue1:
             Case SkillType.Warp
                 AddDescInfo("Warp", Microsoft.Xna.Framework.Color.White)
         End Select
-    
+
         ' more info
-        Select Case Type.Skill(skillNum).Type
+        Select Case Type.Skill(Skillnum).Type
             Case SkillType.DamageHp, SkillType.DamageMp, SkillType.HealHp, SkillType.HealMp
                 ' damage
-                AddDescInfo("Vital: " & Type.Skill(skillNum).Vital, Microsoft.Xna.Framework.Color.White)
-            
+                AddDescInfo("Vital: " & Type.Skill(Skillnum).Vital, Microsoft.Xna.Framework.Color.White)
+
                 ' mp cost
-                AddDescInfo("Cost: " & Type.Skill(skillNum).MPCost & " SP", Microsoft.Xna.Framework.Color.White)
-            
+                AddDescInfo("Cost: " & Type.Skill(Skillnum).MpCost & " SP", Microsoft.Xna.Framework.Color.White)
+
                 ' cast time
-                AddDescInfo("Cast Time: " & Type.Skill(skillNum).CastTime & "s", Microsoft.Xna.Framework.Color.White)
-            
+                AddDescInfo("Cast Time: " & Type.Skill(Skillnum).CastTime & "s", Microsoft.Xna.Framework.Color.White)
+
                 ' cd time
-                AddDescInfo("Cooldown: " & Type.Skill(skillNum).CDTime & "s", Microsoft.Xna.Framework.Color.White)
-            
+                AddDescInfo("Cooldown: " & Type.Skill(Skillnum).CdTime & "s", Microsoft.Xna.Framework.Color.White)
+
                 ' aoe
-                If Type.Skill(skillNum).AoE > 0 Then
-                    AddDescInfo("AoE: " & Type.Skill(skillNum).AoE, Microsoft.Xna.Framework.Color.White)
+                If Type.Skill(Skillnum).AoE > 0 Then
+                    AddDescInfo("AoE: " & Type.Skill(Skillnum).AoE, Microsoft.Xna.Framework.Color.White)
                 End If
-            
+
                 ' stun
-                If Type.Skill(skillNum).StunDuration > 0 Then
-                    AddDescInfo("Stun: " & Type.Skill(skillNum).StunDuration & "s", Microsoft.Xna.Framework.Color.White)
+                If Type.Skill(Skillnum).StunDuration > 0 Then
+                    AddDescInfo("Stun: " & Type.Skill(Skillnum).StunDuration & "s", Microsoft.Xna.Framework.Color.White)
                 End If
-            
+
                 ' dot
-                If Type.Skill(skillNum).Duration > 0 And Type.Skill(skillNum).Interval > 0 Then
-                    AddDescInfo("DoT: " & (Type.Skill(skillNum).Duration / Type.Skill(skillNum).Interval) & " tick", Microsoft.Xna.Framework.Color.White)
+                If Type.Skill(Skillnum).Duration > 0 And Type.Skill(Skillnum).Interval > 0 Then
+                    AddDescInfo("DoT: " & (Type.Skill(Skillnum).Duration / Type.Skill(Skillnum).Interval) & " tick", Microsoft.Xna.Framework.Color.White)
                 End If
         End Select
     End Sub
@@ -1421,7 +1421,7 @@ Continue1:
         Gui.Combobox_AddItem(Gui.GetWindowIndex("winOptions"), Gui.GetControlIndex("winOptions", "cmbRes"), "1280x800")
         Gui.Combobox_AddItem(Gui.GetWindowIndex("winOptions"), Gui.GetControlIndex("winOptions", "cmbRes"), "1280x768")
         Gui.Combobox_AddItem(Gui.GetWindowIndex("winOptions"), Gui.GetControlIndex("winOptions", "cmbRes"), "1280x720")
-        Gui.Combobox_AddItem(Gui.GetWindowIndex("winOptions"), Gui.GetControlIndex("winOptions", "cmbRes"), "1120x864")    
+        Gui.Combobox_AddItem(Gui.GetWindowIndex("winOptions"), Gui.GetControlIndex("winOptions", "cmbRes"), "1120x864")
 
         ' fill the options screen
         With Gui.Windows(Gui.GetWindowIndex("winOptions"))
@@ -1443,16 +1443,16 @@ Continue1:
         Gui.Windows(Gui.GetWindowIndex("winShop")).Controls(Gui.GetControlIndex("winShop", "btnSell")).Visible = False
         Gui.Windows(Gui.GetWindowIndex("winShop")).Controls(Gui.GetControlIndex("winShop", "btnBuy")).Visible = True
         GameState.shopIsSelling = 0
-    
+
         ' set the current item
-        Gui.UpdateShop
-    
+        Gui.UpdateShop()
+
         ' show the window
         Gui.ShowWindow(Gui.GetWindowIndex("winShop"))
     End Sub
 
     Public Sub CloseShop()
-        SendCloseShop
+        SendCloseShop()
         Gui.HideWindow(Gui.GetWindowIndex("winShop"))
         GameState.shopSelectedSlot = 0
         GameState.shopSelectedItem = 0
@@ -1467,16 +1467,16 @@ Continue1:
         If Type.Party.Leader = 0 Then
             Exit Sub
         End If
-    
+
         ' max bar width
         barWidth = 173
-    
+
         ' make sure we're in a party
         With Gui.Windows(Gui.GetWindowIndex("winParty"))
             For i = 1 To 3
                 ' get the pIndex from the control
                 If .Controls(Gui.GetControlIndex("winParty", "picChar" & i)).Visible = True Then
-                    pIndex = .Controls(Gui.GetControlIndex("winParty", "picChar" & i)).value
+                    pIndex = .Controls(Gui.GetControlIndex("winParty", "picChar" & i)).Value
                     ' make sure they exist
                     If pIndex > 0 Then
                         If IsPlaying(pIndex) Then
@@ -1508,11 +1508,11 @@ Continue1:
         ' set the controls up
         With Gui.Windows(Gui.GetWindowIndex("winTrade"))
             .Text = "Trading with " & GetPlayerName(InTrade)
-            .Controls(Gui.GetControlIndex("winTrade", "lblYourTrade")).text = GetPlayerName(GameState.MyIndex) & "'s Offer"
-            .Controls(Gui.GetControlIndex("winTrade", "lblTheirTrade")).text = GetPlayerName(InTrade) & "'s Offer"
-            .Controls(Gui.GetControlIndex("winTrade", "lblYourValue")).text = "0g"
-            .Controls(Gui.GetControlIndex("winTrade", "lblTheirValue")).text = "0g"
-            .Controls(Gui.GetControlIndex("winTrade", "lblStatus")).text = "Choose items to offer."
+            .Controls(Gui.GetControlIndex("winTrade", "lblYourTrade")).Text = GetPlayerName(GameState.MyIndex) & "'s Offer"
+            .Controls(Gui.GetControlIndex("winTrade", "lblTheirTrade")).Text = GetPlayerName(InTrade) & "'s Offer"
+            .Controls(Gui.GetControlIndex("winTrade", "lblYourValue")).Text = "0g"
+            .Controls(Gui.GetControlIndex("winTrade", "lblTheirValue")).Text = "0g"
+            .Controls(Gui.GetControlIndex("winTrade", "lblStatus")).Text = "Choose items to offer."
         End With
     End Sub
 
@@ -1521,7 +1521,7 @@ Continue1:
         If GameState.PlayerMenuIndex = 0 Or GameState.PlayerMenuIndex = GameState.MyIndex Then Exit Sub
         Gui.Windows(Gui.GetWindowIndex("winPlayerMenu")).Left = X - 5
         Gui.Windows(Gui.GetWindowIndex("winPlayerMenu")).Top = Y - 5
-        Gui.Windows(Gui.GetWindowIndex("winPlayerMenu")).Controls(Gui.GetControlIndex("winPlayerMenu", "btnName")).text = GetPlayerName(GameState.PlayerMenuIndex)
+        Gui.Windows(Gui.GetWindowIndex("winPlayerMenu")).Controls(Gui.GetControlIndex("winPlayerMenu", "btnName")).Text = GetPlayerName(GameState.PlayerMenuIndex)
         Gui.ShowWindow(Gui.GetWindowIndex("winRightClickBG"))
         Gui.ShowWindow(Gui.GetWindowIndex("winPlayerMenu"))
     End Sub
@@ -1556,8 +1556,8 @@ Continue1:
                 Amount = GetPlayerInvValue(GameState.MyIndex, i)
             End If
         Next
-        Gui.Windows(Gui.GetWindowIndex("winShop")).Controls(Gui.GetControlIndex("winShop", "lblGold")).text = Format$(Amount, "#,###,###,###") & "g"
-        Gui.Windows(Gui.GetWindowIndex("winInventory")).Controls(Gui.GetControlIndex("winInventory", "lblGold")).text = Format$(Amount, "#,###,###,###") & "g"
+        Gui.Windows(Gui.GetWindowIndex("winShop")).Controls(Gui.GetControlIndex("winShop", "lblGold")).Text = Format$(Amount, "#,###,###,###") & "g"
+        Gui.Windows(Gui.GetWindowIndex("winInventory")).Controls(Gui.GetControlIndex("winInventory", "lblGold")).Text = Format$(Amount, "#,###,###,###") & "g"
     End Sub
 
     Public Function Clamp(value As Integer, min As Integer, max As Integer) As Integer
@@ -1572,7 +1572,7 @@ Continue1:
         ConvertMapY = y - (GameState.TileView.Top * GameState.PicY) - GameState.Camera.Top
     End Function
 
-     Public Function IsValidMapPoint(x As Integer, y As Integer) As Boolean
+    Public Function IsValidMapPoint(x As Integer, y As Integer) As Boolean
         If x < 0 Then Exit Function
         If y < 0 Then Exit Function
         If x > Type.Map(GetPlayerMap(GameState.MyIndex)).MaxX Then Exit Function
@@ -1603,7 +1603,7 @@ Continue1:
         Dim yMin As Integer = Math.Max(0, yCenter - distance)
         Dim yMax As Integer = Math.Min(MyMap.MaxY, yCenter + distance)
 
-        Dim borderCells = New List(Of  Microsoft.Xna.Framework.Vector2)()
+        Dim borderCells = New List(Of Microsoft.Xna.Framework.Vector2)()
 
         ' Top and bottom border
         For x As Integer = xMin To xMax
@@ -1652,7 +1652,7 @@ Continue1:
         Return litTiles
     End Function
 
-      Private Sub PostProcessFovQuadrant(ByRef _inFov As List(Of Microsoft.Xna.Framework.Vector2), x As Integer, y As Integer,
+    Private Sub PostProcessFovQuadrant(ByRef _inFov As List(Of Microsoft.Xna.Framework.Vector2), x As Integer, y As Integer,
                                        quadrant As QuadrantType)
         Dim x1 As Integer = x
         Dim y1 As Integer = y
@@ -1687,7 +1687,7 @@ Continue1:
         End If
     End Sub
 
-     Public Function AppendFov(xOrigin As Integer, yOrigin As Integer, radius As Integer, lightWalls As Boolean) _
+    Public Function AppendFov(xOrigin As Integer, yOrigin As Integer, radius As Integer, lightWalls As Boolean) _
         As List(Of Microsoft.Xna.Framework.Vector2)
         Dim inFov = New List(Of Microsoft.Xna.Framework.Vector2)()
 
@@ -1732,11 +1732,11 @@ Continue1:
     End Function
 
     Private Function IsTransparent(x As Integer, y As Integer) As Boolean
-      If MyMap.Tile(x, y).Type = TileType.Blocked Or MyMap.Tile(x, y).Type2 = TileType.Blocked Then
-          Return False
-      End If
+        If MyMap.Tile(x, y).Type = TileType.Blocked Or MyMap.Tile(x, y).Type2 = TileType.Blocked Then
+            Return False
+        End If
 
-      Return True
+        Return True
     End Function
 
     Friend Sub UpdateCamera()

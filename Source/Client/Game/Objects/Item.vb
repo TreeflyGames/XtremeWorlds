@@ -30,7 +30,11 @@ Module Item
         Next
 
     End Sub
-    
+
+    Friend Sub ClearChangedItem()
+        ReDim GameState.Item_Changed(MAX_ITEMS)
+    End Sub
+
     Sub StreamItem(itemNum As Integer)
         If itemNum > 0 and Type.Item(itemNum).Name = "" Or GameState.Item_Loaded(itemNum) = 0 Then
             GameState.Item_Loaded(itemNum) = 1

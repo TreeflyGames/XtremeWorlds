@@ -227,7 +227,7 @@ Module Player
         End If
 
         If GameState.InShop > 0 Then
-            CloseShop
+            CloseShop()
         End If
 
         If GameState.InBank Then
@@ -271,7 +271,7 @@ Module Player
 
             Case DirectionType.UpLeft
 
-                 If GetPlayerY(GameState.MyIndex) <= 0 And GetPlayerX(GameState.MyIndex) <= 0 Then
+                If GetPlayerY(GameState.MyIndex) <= 0 And GetPlayerX(GameState.MyIndex) <= 0 Then
                     GameState.DirUp = 0
                     GameState.DirDown = 1
                     SetPlayerDir(GameState.MyIndex, DirectionType.Down)
@@ -575,9 +575,9 @@ Module Player
         End If
 
         For i = 1 To GameState.CurrentEvents
-           If MapEvents(i).Visible = True Then
-               If MapEvents(i).X = x And MapEvents(i).Y = y Then
-                   If MapEvents(i).WalkThrough = 0 Then
+            If MapEvents(i).Visible = True Then
+                If MapEvents(i).X = x And MapEvents(i).Y = y Then
+                    If MapEvents(i).WalkThrough = 0 Then
                         CheckDirection = 1
                         Exit Function
                     End If
@@ -728,8 +728,8 @@ Module Player
 
             If GetTickCount() > Type.Player(GameState.MyIndex).EventTimer Then
                 For i = 1 To GameState.CurrentEvents
-                   If MapEvents(i).Visible = True Then
-                       If MapEvents(i).X = x And MapEvents(i).Y = y Then
+                    If MapEvents(i).Visible = True Then
+                        If MapEvents(i).X = x And MapEvents(i).Y = y Then
                             buffer = New ByteStream(4)
                             buffer.WriteInt32(ClientPackets.CEvent)
                             buffer.WriteInt32(i)
@@ -766,7 +766,7 @@ Module Player
                 If Type.Player(GameState.MyIndex).Moving = 0 Then
                     If MyMap.Moral > 0 Then
                         If Type.Moral(MyMap.Moral).CanCast Then
-                            SendCast(skillSlot)
+                            SendCast(skillslot)
                         Else
                             AddText("Cannot cast here!", ColorType.BrightRed)
                         End If

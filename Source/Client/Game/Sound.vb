@@ -229,8 +229,8 @@ Module Sound
         If x > -1 OrElse y > -1 Then
             If x = -1 Then x = 0
             If y = -1 Then y = 0
-            X1 = CInt((Core.Type.Player(State.MyIndex).X * 32) + Core.Type.Player(State.MyIndex).XOffset)
-            Y1 = CInt((Core.Type.Player(State.MyIndex).Y * 32) + Core.Type.Player(State.MyIndex).YOffset)
+            X1 = CInt((Core.Player(State.MyIndex).X * 32) + Core.Player(State.MyIndex).XOffset)
+            Y1 = CInt((Core.Player(State.MyIndex).Y * 32) + Core.Player(State.MyIndex).YOffset)
             X2 = x * 32
             Y2 = y * 32
 

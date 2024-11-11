@@ -805,7 +805,7 @@ Module [Loop]
                 Throw New NotImplementedException
         End Select
 
-        ' Loop through all online players on the current map.
+        ' Loop through all online players on the current MyMap.
         For Each id In TempPlayer.Where(Function(p) p.InGame).Select(Function(p, i) i + 1).Where(Function(i) GetPlayerMap(i) = map And i <> index).ToArray()
             If IsInRange(range, x, y, GetPlayerX(id), GetPlayerY(id)) Then
 
@@ -815,7 +815,7 @@ Module [Loop]
                 ' Deal with healing abilities
                 If Not dealsDamage Then SkillPlayer_Effect(vital, True, id, amount, skillId)
 
-                ' Send our animation to the map.
+                ' Send our animation to the MyMap.
                 SendAnimation(map, Type.Skill(skillId).SkillAnim, 0, 0, TargetType.Player, id)
 
                 If IsPlayerDead(id) Then
@@ -838,7 +838,7 @@ Module [Loop]
                 ' Deal with healing abilities
                 If Not dealsDamage Then SkillNpc_Effect(vital, True, id, amount, skillId, map)
 
-                ' Send our animation to the map.
+                ' Send our animation to the MyMap.
                 SendAnimation(map, Type.Skill(skillId).SkillAnim, 0, 0, TargetType.NPC, id)
 
                 ' Handle our NPC death if it kills them

@@ -7,7 +7,7 @@ Friend Module Autotile
         ReDim Type.Autotile(MyMap.MaxX, MyMap.MaxY)
 
         For X = 0 To MyMap.MaxX
-            For Y = 0 To MyMap.MaxY
+            For y = 0 To MyMap.MaxY
                 ReDim Type.Autotile(x, y).Layer(LayerType.Count - 1)
                 For i = 1 To LayerType.Count - 1
                     ReDim Type.Autotile(x, y).Layer(i).SrcX(4)
@@ -246,8 +246,8 @@ Friend Module Autotile
         AutoSe(4).X = 48
         AutoSe(4).Y = 80
 
-        For X = 0 To MyMap.MaxX
-            For Y = 0 To MyMap.MaxY
+        For x = 0 To MyMap.MaxX
+            For y = 0 To MyMap.MaxY
                 For layerNum = 0 To LayerType.Count - 1
                     ' calculate the subtile positions and place them
                     CalculateAutotile(x, y, layerNum)

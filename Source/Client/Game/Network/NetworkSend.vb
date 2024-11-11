@@ -400,13 +400,13 @@ Module NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub PlayerSearch(curX As Integer, curY As Integer, rClick As Byte)
+    Sub PlayerSearch(CurX As Integer, CurY As Integer, rClick As Byte)
         Dim buffer As New ByteStream(4)
 
         If IsInBounds() Then
             buffer.WriteInt32(ClientPackets.CSearch)
-            buffer.WriteInt32(curX)
-            buffer.WriteInt32(curY)
+            buffer.WriteInt32(GameState.CurX)
+            buffer.WriteInt32(GameState.CurY)
             buffer.WriteInt32(rClick)
             Socket.SendData(buffer.Data, buffer.Head)
         End If

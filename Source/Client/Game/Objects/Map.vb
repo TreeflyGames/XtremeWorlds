@@ -95,9 +95,9 @@ Module Map
                         .Width = GameState.PicX
                         .Height = GameState.PicY
                     End With
-                    
+
                     alpha = 255
-                    
+
                     ' Render the tile
                     GameClient.RenderTexture(System.IO.Path.Combine(Core.Path.Tilesets, MyMap.Tile(x, y).Layer(i).Tileset), ConvertMapX(x * GameState.PicX), ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha)
 
@@ -341,8 +341,8 @@ mapsync:
                 posY = ConvertMapY(MapEvents(Picture.EventId).Y * 32) / 2 - Picture.yOffset
 
             Case PictureType.CenterPlayer
-                posX = ConvertMapX(Core.Type.Player(GameState.MyIndex).X * 32) / 2 - Picture.xOffset
-                posY = ConvertMapY(Core.Type.Player(GameState.MyIndex).Y * 32) / 2 - Picture.yOffset
+                posX = ConvertMapX(Core.Player(GameState.MyIndex).X * 32) / 2 - Picture.xOffset
+                posY = ConvertMapY(Core.Player(GameState.MyIndex).Y * 32) / 2 - Picture.yOffset
         End Select
 
         GameClient.RenderTexture(System.IO.Path.Combine(Core.Path.Pictures, index), posX, posY, 0, 0,
@@ -355,7 +355,7 @@ mapsync:
 
     Sub ClearMap()
         Dim i As Integer, x As Integer, y As Integer
-        
+
         MyMap.Name = ""
         MyMap.Tileset = 1
         MyMap.MaxX = MAX_MAPX
@@ -373,15 +373,15 @@ mapsync:
 
         ReDim MyMap.NPC(MAX_MAP_NPCS)
         ReDim MyMap.Tile(MyMap.MaxX, MyMap.MaxY)
-        
+
         ReDim TileHistory(GameState.MaxTileHistory)
         For i = 1 To GameState.MaxTileHistory
-            ReDim TileHistory(i).Tile(MAX_MAPX,MAX_MAPY)
+            ReDim TileHistory(i).Tile(MAX_MAPX, MAX_MAPY)
         Next
-        
+
         GameState.HistoryIndex = 0
         GameState.TileHistoryHighIndex = 0
-        
+
         For x = 0 To MAX_MAPX
             For y = 0 To MAX_MAPY
                 For l = 1 To LayerType.Count - 1
@@ -401,7 +401,7 @@ mapsync:
                     MyMap.Tile(x, y).DirBlock = 0
 
                     For i = 1 To GameState.MaxTileHistory
-                        Redim TileHistory(i).Tile(x, y).Layer(l)
+                        ReDim TileHistory(i).Tile(x, y).Layer(l)
                         TileHistory(i).Tile(x, y).Layer(l).Tileset = 0
                         TileHistory(i).Tile(x, y).Layer(l).X = 0
                         TileHistory(i).Tile(x, y).Layer(l).Y = 0
@@ -474,7 +474,7 @@ mapsync:
 
     Friend Sub Packet_EditMap(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
-        
+
         buffer.Dispose()
     End Sub
 
@@ -516,7 +516,7 @@ mapsync:
         buffer.Dispose()
     End Sub
 
-    Sub Packet_MapData(ByRef data() As Byte)
+    Sub MapData(ByRef data() As Byte)
         Dim x As Integer, y As Integer, i As Integer, j As Integer, mapNum As Integer
         Dim buffer As New ByteStream(Compression.DecompressBytes(data))
 
@@ -821,9 +821,9 @@ mapsync:
 
         npcNum = buffer.ReadInt32
 
-        With MyMapNPC(NPCNum)
+        With MyMapNPC(npcNum)
             .Num = buffer.ReadInt32
-.X = buffer.ReadInt32
+            .X = buffer.ReadInt32
             .Y = buffer.ReadInt32
             .Dir = buffer.ReadInt32
             .Vital(VitalType.HP) = buffer.ReadInt32
@@ -868,7 +868,7 @@ mapsync:
             AddText("The pathway is blocked.", ColorType.BrightRed)
             Exit Sub
         End If
- 
+
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ClientPackets.CRequestNewMap)
@@ -1083,11 +1083,11 @@ mapsync:
 
     Friend Sub ClearMapEvents()
         ReDim MapEvents(MyMap.EventCount)
-        
+
         For i = 0 To MyMap.EventCount
             MapEvents(i).Name = ""
         Next
-        
+
         GameState.CurrentEvents = 0
     End Sub
 

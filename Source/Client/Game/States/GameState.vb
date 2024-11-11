@@ -3,11 +3,9 @@ Imports Microsoft.Xna.Framework
 Imports Mirage.Sharp.Asfw.IO.Encryption
 
 Public Class GameState
-    Private Shared ReadOnly stateLock As New Object
-    
     Public Sub New()
     End Sub
-    
+
     Public Shared ResolutionHeight As Integer
     Public Shared ResolutionWidth As Integer
 
@@ -84,7 +82,7 @@ Public Class GameState
 
     ' Chat bubble
     Public Shared ChatBubbleindex As Integer
-    
+
     Public Shared chatShowLine As String
 
     ' chat
@@ -120,7 +118,7 @@ Public Class GameState
     Public Shared MyIndex As Integer ' Index of actual player
 
     Public Shared InBank As Boolean
-    
+
     Public Shared SkillBuffer As Integer
     Public Shared SkillBufferTimer As Integer
     Public Shared StunDuration As Integer
@@ -132,7 +130,7 @@ Public Class GameState
     ' Controls main gameloop
     Public Shared InGame As Boolean
     Public Shared InMenu As Boolean
-    
+
     Public Shared MapData As Boolean
     Public Shared PlayerData As Boolean
 
@@ -241,7 +239,7 @@ Public Class GameState
     Public Shared NumInterface As Integer
     Public Shared NumGradients As Integer
     Public Shared NumDesigns As Integer
-    
+
     Public Shared GameDestroyed As Boolean
 
     Public Shared VbKeyRight As Boolean
@@ -252,7 +250,7 @@ Public Class GameState
     Public Shared VbKeyControl As Boolean
     Public Shared VbKeyAlt As Boolean
     Public Shared VbKeyEnter As Boolean
-    
+
     Public Shared LastLeftClickTime As Integer
     Public Const DoubleClickTImer As Integer = 500 ' Time in milliseconds for double-click detection
 
@@ -340,7 +338,7 @@ Public Class GameState
     ' Map
     Public Const MaxTileHistory As Byte = 50
     Public Const TileSize As Byte = 32 ' Tile size is 32x32 pixels
-    
+
     ' Autotiles
     Public Const AutoInner As Byte = 1
 
@@ -368,19 +366,19 @@ Public Class GameState
     Public Shared WaterfallFrame As Integer
 
     Public Shared AutoTileFrame As Integer
-    
+
     Public Shared NumProjectiles As Integer
     Public Shared InitProjectileEditor As Boolean
     Public Const EditorProjectile As Byte = 10
     Public Shared ProjectileChanged(MAX_PROJECTILES) As Boolean
-    
+
     Public Shared ResourceIndex As Integer
     Public Shared ResourcesInit As Boolean
-    
+
     Public Const MaxWeatherParticles As Integer = 100
     Public Shared WeatherParticle(MaxWeatherParticles) As WeatherParticleStruct
 
-    Public Shared  FogOffsetX As Integer
+    Public Shared FogOffsetX As Integer
     Public Shared FogOffsetY As Integer
 
     Public Shared CurrentWeather As Integer
@@ -393,8 +391,34 @@ Public Class GameState
     Public Shared CurrentTintB As Integer
     Public Shared CurrentTintA As Integer
     Public Shared DrawThunder As Integer
-    
+
     Public Shared InShop As Integer ' is the player in a shop?
     Public Shared ShopAction As Byte ' stores the current shop action
+
+    ' Editors
+    Public Shared InitEditor As Boolean
+    Public Shared InitMapEditor As Boolean
+    Public Shared InitPetEditor As Boolean
+    Public Shared InitItemEditor As Boolean
+    Public Shared InitResourceEditor As Boolean
+    Public Shared InitNPCEditor As Boolean
+    Public Shared InitSkillEditor As Boolean
+    Public Shared InitShopEditor As Boolean
+    Public Shared InitAnimationEditor As Boolean
+    Public Shared InitJobEditor As Boolean
+    Public Shared InitMoralEditor As Boolean
+    Public Shared InitAdminForm As Boolean
+    Public Shared InitMapReport As Boolean
+
+    ' Editor edited items array
+    Public Shared Item_Changed(MAX_ITEMS) As Boolean
+    Public Shared NPC_Changed(MAX_NPCS) As Boolean
+    Public Shared Resource_Changed(MAX_RESOURCES) As Boolean
+    Public Shared Animation_Changed(MAX_ANIMATIONS) As Boolean
+    Public Shared Skill_Changed(MAX_SKILLS) As Boolean
+    Public Shared Shop_Changed(MAX_SHOPS) As Boolean
+    Public Shared Pet_Changed(MAX_PETS) As Boolean
+    Public Shared Job_Changed(MAX_JOBS) As Boolean
+    Public Shared Moral_Changed(MAX_MORALS) As Boolean
 
 End Class

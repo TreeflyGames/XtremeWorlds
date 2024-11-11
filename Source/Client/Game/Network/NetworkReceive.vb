@@ -28,7 +28,7 @@ Module NetworkReceive
         Socket.PacketId(ServerPackets.SAttack) = AddressOf Packet_Attack
         Socket.PacketId(ServerPackets.SNpcAttack) = AddressOf Packet_NpcAttack
         Socket.PacketId(ServerPackets.SCheckForMap) = AddressOf Packet_CheckMap
-        Socket.PacketId(ServerPackets.SMapData) = AddressOf Packet_MapData
+        Socket.PacketId(ServerPackets.SMapData) = AddressOf MapData
         Socket.PacketId(ServerPackets.SMapNPCData) = AddressOf Packet_MapNPCData
         Socket.PacketId(ServerPackets.SMapNPCUpdate) = AddressOf Packet_MapNPCUpdate
         Socket.PacketId(ServerPackets.SMapDone) = AddressOf Packet_MapDone
@@ -340,7 +340,7 @@ Module NetworkReceive
             SetPlayerInvValue(GameState.MyIndex, i, amount)
         Next
 
-        SetGoldLabel
+        SetGoldLabel()
 
         buffer.Dispose()
     End Sub
@@ -354,7 +354,7 @@ Module NetworkReceive
         SetPlayerInv(GameState.MyIndex, n, buffer.ReadInt32)
         SetPlayerInvValue(GameState.MyIndex, n, buffer.ReadInt32)
 
-        SetGoldLabel
+        SetGoldLabel()
 
         buffer.Dispose()
     End Sub
@@ -589,34 +589,34 @@ Module NetworkReceive
         Dim buffer As New ByteStream(data)
         skillnum = buffer.ReadInt32
 
-        Type.Skill(skillNum).AccessReq = buffer.ReadInt32()
-        Type.Skill(skillNum).AoE = buffer.ReadInt32()
-        Type.Skill(skillNum).CastAnim = buffer.ReadInt32()
-        Type.Skill(skillNum).CastTime = buffer.ReadInt32()
-        Type.Skill(skillNum).CdTime = buffer.ReadInt32()
-        Type.Skill(skillNum).JobReq = buffer.ReadInt32()
-        Type.Skill(skillNum).Dir = buffer.ReadInt32()
-        Type.Skill(skillNum).Duration = buffer.ReadInt32()
-        Type.Skill(skillNum).Icon = buffer.ReadInt32()
-        Type.Skill(skillNum).Interval = buffer.ReadInt32()
-        Type.Skill(skillNum).IsAoE = buffer.ReadInt32()
-        Type.Skill(skillNum).LevelReq = buffer.ReadInt32()
-        Type.Skill(skillNum).Map = buffer.ReadInt32()
-        Type.Skill(skillNum).MpCost = buffer.ReadInt32()
-        Type.Skill(skillNum).Name = buffer.ReadString()
-        Type.Skill(skillNum).Range = buffer.ReadInt32()
-        Type.Skill(skillNum).SkillAnim = buffer.ReadInt32()
-        Type.Skill(skillNum).StunDuration = buffer.ReadInt32()
-        Type.Skill(skillNum).Type = buffer.ReadInt32()
-        Type.Skill(skillNum).Vital = buffer.ReadInt32()
-        Type.Skill(skillNum).X = buffer.ReadInt32()
-        Type.Skill(skillNum).Y = buffer.ReadInt32()
+        Type.Skill(skillnum).AccessReq = buffer.ReadInt32()
+        Type.Skill(skillnum).AoE = buffer.ReadInt32()
+        Type.Skill(skillnum).CastAnim = buffer.ReadInt32()
+        Type.Skill(skillnum).CastTime = buffer.ReadInt32()
+        Type.Skill(skillnum).CdTime = buffer.ReadInt32()
+        Type.Skill(skillnum).JobReq = buffer.ReadInt32()
+        Type.Skill(skillnum).Dir = buffer.ReadInt32()
+        Type.Skill(skillnum).Duration = buffer.ReadInt32()
+        Type.Skill(skillnum).Icon = buffer.ReadInt32()
+        Type.Skill(skillnum).Interval = buffer.ReadInt32()
+        Type.Skill(skillnum).IsAoE = buffer.ReadInt32()
+        Type.Skill(skillnum).LevelReq = buffer.ReadInt32()
+        Type.Skill(skillnum).Map = buffer.ReadInt32()
+        Type.Skill(skillnum).MpCost = buffer.ReadInt32()
+        Type.Skill(skillnum).Name = buffer.ReadString()
+        Type.Skill(skillnum).Range = buffer.ReadInt32()
+        Type.Skill(skillnum).SkillAnim = buffer.ReadInt32()
+        Type.Skill(skillnum).StunDuration = buffer.ReadInt32()
+        Type.Skill(skillnum).Type = buffer.ReadInt32()
+        Type.Skill(skillnum).Vital = buffer.ReadInt32()
+        Type.Skill(skillnum).X = buffer.ReadInt32()
+        Type.Skill(skillnum).Y = buffer.ReadInt32()
 
-        Type.Skill(skillNum).IsProjectile = buffer.ReadInt32()
-        Type.Skill(skillNum).Projectile = buffer.ReadInt32()
+        Type.Skill(skillnum).IsProjectile = buffer.ReadInt32()
+        Type.Skill(skillnum).Projectile = buffer.ReadInt32()
 
-        Type.Skill(skillNum).KnockBack = buffer.ReadInt32()
-        Type.Skill(skillNum).KnockBackTiles = buffer.ReadInt32()
+        Type.Skill(skillnum).KnockBack = buffer.ReadInt32()
+        Type.Skill(skillnum).KnockBackTiles = buffer.ReadInt32()
 
         buffer.Dispose()
 
@@ -689,7 +689,7 @@ Module NetworkReceive
 
         mapNpcNum = buffer.ReadInt32
         For i = 1 To VitalType.Count - 1
-            MyMapNPC(MapNPCNum).Vital(i) = buffer.ReadInt32
+            MyMapNPC(mapNpcNum).Vital(i) = buffer.ReadInt32
         Next
 
         buffer.Dispose()
@@ -1046,7 +1046,7 @@ Module NetworkReceive
         For i = 1 To MAX_MAPS
             MapNames(i) = buffer.ReadString()
         Next
-        
+
         buffer.Dispose()
     End Sub
 
@@ -1063,14 +1063,14 @@ Module NetworkReceive
 
         buffer.Dispose()
     End Sub
-    
+
     Private Sub Packet_Critical(ByRef data() As Byte)
         GameState.ShakeTimerEnabled = 1
         GameState.ShakeTimer = GetTickCount()
     End Sub
 
     Private Sub Packet_RClick(ByRef data() As Byte)
- 
+
     End Sub
 
     Private Sub Packet_Emote(ByRef data() As Byte)
