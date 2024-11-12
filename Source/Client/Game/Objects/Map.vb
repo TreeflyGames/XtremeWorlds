@@ -475,6 +475,8 @@ mapsync:
     Friend Sub Packet_EditMap(ByRef data() As Byte)
         Dim buffer As New ByteStream(data)
 
+        GameState.InitMapEditor = True
+
         buffer.Dispose()
     End Sub
 

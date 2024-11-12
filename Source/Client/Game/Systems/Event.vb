@@ -262,7 +262,6 @@ Module [Event]
             End If
             frmEditor_Event.Instance.cmbPositioning.SelectedIndex = Integer.Parse(.Position)
             EventListCommands()
-            GameClient.EditorEvent_DrawGraphic()
         End With
 
     End Sub
@@ -1622,7 +1621,7 @@ newlist:
                 frmEditor_Event.Instance.fraDialogue.Visible = True
                 frmEditor_Event.Instance.fraShowPic.Visible = True
                 frmEditor_Event.Instance.fraCommands.Visible = False
-                GameClient.EditorEvent_DrawPicture()
+                DrawPicture()
             Case EventType.WaitMovement
                 IsEdit = True
                 frmEditor_Event.Instance.fraDialogue.Visible = True

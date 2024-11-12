@@ -1,6 +1,6 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.IO
+Imports System.Windows.Forms
 Imports Core
-Imports SFML.Graphics
 
 Friend Class frmEditor_Skill
 
@@ -188,6 +188,22 @@ Friend Class frmEditor_Skill
 
     Private Sub nudIcon_Click(sender As Object, e As EventArgs) Handles nudIcon.Click
         Skill(GameState.EditorIndex).Icon = nudIcon.Value
-        GameClient.EditorSkill_DrawIcon()
+        DrawIcon()
+    End Sub
+
+    Private Sub DrawIcon()
+        Dim skillNum As Integer
+        skillNum = nudIcon.Value
+
+        If skillNum < 1 Or skillNum > GameState.NumItems Then
+            picSprite.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Skills, skillNum & GameState.GfxExt)) Then
+            picSprite.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Skills, skillNum & GameState.GfxExt))
+        Else
+            picSprite.BackgroundImage = Nothing
+        End If
     End Sub
 End Class

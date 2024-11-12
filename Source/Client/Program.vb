@@ -825,7 +825,7 @@ Public Class GameClient
                 ScrollChatBox(0) ' Scroll up
 
                 If GameState.MyEditorType = EditorType.Map Then
-                    If VbKeyShift = Keys.LeftShift Then
+                    If GameState.VbKeyShift = Keys.LeftShift Then
                         If frmEditor_Map.Instance.cmbLayers.SelectedIndex + 1 < LayerType.Count - 1 Then
                             frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex + 1
                         End If
@@ -839,7 +839,7 @@ Public Class GameClient
                 End If
             ElseIf scrollValue < 0 Then
                 If GameState.MyEditorType = EditorType.Map Then
-                    If VbKeyShift = Keys.LeftShift Then
+                    If GameState.VbKeyShift = Keys.LeftShift Then
                         If frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0 Then
                             frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1
                         End If
@@ -1487,6 +1487,10 @@ Public Class GameClient
     Public Shared Sub DrawTileset()
         Dim tileset As Integer
 
+        If frmEditor_Map.Instance.cmbTileSets.InvokeRequired Then
+            frmEditor_Map.Instance.cmbTileSets.Invoke(New System.Windows.Forms.MethodInvoker(AddressOf DrawTileset))
+        End If
+
         If frmEditor_Map.Instance.cmbTileSets.SelectedIndex = -1 Then
             Exit Sub
         End If
@@ -1547,204 +1551,7 @@ Public Class GameClient
         spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y + rect.Height - lineThickness, rect.Width, lineThickness), color) ' Bottom
     End Sub
 
-    Friend Shared Sub EditorItem_DrawIcon()
-        Dim itemnum As Integer
-        itemnum = frmEditor_Item.Instance.nudIcon.Value
-
-        If itemnum < 1 Or itemnum > GameState.NumItems Then
-            frmEditor_Item.Instance.picItem.BackgroundImage = Nothing
-            Exit Sub
-        End If
-        If File.Exists(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt)) Then
-            frmEditor_Item.Instance.picItem.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt))
-        Else
-            frmEditor_Item.Instance.picItem.BackgroundImage = Nothing
-        End If
-    End Sub
-
-    Friend Shared Sub EditorNPC_DrawSprite()
-        Dim Sprite As Integer
-
-        Sprite = frmEditor_NPC.Instance.nudSprite.Value
-
-        If Sprite < 1 Or Sprite > GameState.NumCharacters Then
-            frmEditor_NPC.Instance.picSprite.BackgroundImage = Nothing
-            Exit Sub
-        End If
-
-        If File.Exists(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt)) Then
-            frmEditor_NPC.Instance.picSprite.Width =
-                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt)).Width / 4
-            frmEditor_NPC.Instance.picSprite.Height =
-                Drawing.Image.FromFile(IO.Path.Combine(Sprite, GameState.GfxExt)).Height / 4
-            frmEditor_NPC.Instance.picSprite.BackgroundImage =
-                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt))
-        End If
-    End Sub
-
-    Friend Shared Sub EditorResource_DrawSprite()
-        Dim Sprite As Integer
-
-        ' normal sprite
-        Sprite = frmEditor_Resource.Instance.nudNormalPic.Value
-
-        If Sprite < 1 Or Sprite > GameState.NumResources Then
-            frmEditor_Resource.Instance.picNormalpic.BackgroundImage = Nothing
-        Else
-            If File.Exists(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt)) Then
-                frmEditor_Resource.Instance.picNormalpic.BackgroundImage =
-                    Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt))
-            End If
-
-        End If
-
-        ' exhausted sprite
-        Sprite = frmEditor_Resource.Instance.nudExhaustedPic.Value
-
-        If Sprite < 1 Or Sprite > GameState.NumResources Then
-            frmEditor_Resource.Instance.picExhaustedPic.BackgroundImage = Nothing
-        Else
-            If File.Exists(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt)) Then
-                frmEditor_Resource.Instance.picExhaustedPic.BackgroundImage =
-                    Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt))
-            End If
-        End If
-    End Sub
-
-    Friend Shared Sub EditorEvent_DrawPicture()
-        Dim Sprite As Integer
-
-        Sprite = frmEditor_Event.Instance.nudShowPicture.Value
-
-        If Sprite < 1 Or Sprite > GameState.NumPictures Then
-            frmEditor_Event.Instance.picShowPic.BackgroundImage = Nothing
-            Exit Sub
-        End If
-
-        If File.Exists(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)) Then
-            frmEditor_Event.Instance.picShowPic.Width =
-                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)).Width
-            frmEditor_Event.Instance.picShowPic.Height =
-                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)).Height
-            frmEditor_Event.Instance.picShowPic.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt))
-        End If
-    End Sub
-
-    Friend Shared Sub EditorSkill_DrawIcon()
-        Dim skillNum As Integer
-        skillNum = frmEditor_Skill.Instance.nudIcon.Value
-
-        If skillNum < 1 Or skillNum > GameState.NumItems Then
-            frmEditor_Skill.Instance.picSprite.BackgroundImage = Nothing
-            Exit Sub
-        End If
-
-        If File.Exists(IO.Path.Combine(Core.Path.Skills, skillNum & GameState.GfxExt)) Then
-            frmEditor_Skill.Instance.picSprite.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Skills, skillNum & GameState.GfxExt))
-        Else
-            frmEditor_Skill.Instance.picSprite.BackgroundImage = Nothing
-        End If
-    End Sub
-
-    Friend Shared Sub EditorItem_DrawPaperdoll()
-        Dim Sprite As Integer
-
-        Sprite = frmEditor_Item.Instance.nudPaperdoll.Value
-
-        If Sprite < 1 Or Sprite > GameState.NumPaperdolls Then
-            frmEditor_Item.Instance.picPaperdoll.BackgroundImage = Nothing
-            Exit Sub
-        End If
-
-        If File.Exists(IO.Path.Combine(Core.Path.Paperdolls, Sprite & GameState.GfxExt)) Then
-            frmEditor_Item.Instance.picPaperdoll.BackgroundImage =
-                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Paperdolls, Sprite & GameState.GfxExt))
-        End If
-    End Sub
-
-    Friend Sub EditorAnim_DrawSprite()
-        With frmEditor_Animation.Instance
-            ' Ensure spriteBatch is created and disposed properly
-            Dim spriteBatch As New Graphics.SpriteBatch(Graphics.GraphicsDevice)
-
-            ' Call ProcessAnimation for each animation panel
-            ProcessAnimation(.nudSprite0, .nudFrameCount0, .nudLoopTime0, 0, EditorAnimation_Anim1, .picSprite0, spriteBatch)
-            ProcessAnimation(.nudSprite1, .nudFrameCount1, .nudLoopTime1, 1, EditorAnimation_Anim2, .picSprite1, spriteBatch)
-        End With
-    End Sub
-
-    Public Sub ProcessAnimation(animationControl As System.Windows.Forms.NumericUpDown,
-                            frameCountControl As System.Windows.Forms.NumericUpDown,
-                            loopCountControl As System.Windows.Forms.NumericUpDown,
-                            animationTimerIndex As Integer,
-                            animationDisplay As Texture2D,
-                            backgroundColorControl As System.Windows.Forms.PictureBox,
-                            spriteBatch As Graphics.SpriteBatch)
-
-        ' Retrieve the animation number and check its validity
-        Dim animationNum As Integer = animationControl.Value
-        If animationNum <= 0 Or animationNum > GameState.NumAnimations Then
-            spriteBatch.GraphicsDevice.Clear(ToMonoGameColor(backgroundColorControl.BackColor))
-            spriteBatch.End() ' Ensure spriteBatch is properly ended
-            Exit Sub
-        End If
-
-        Dim texture = GetTexture(System.IO.Path.Combine(Core.Path.Animations, animationNum & GameState.GfxExt))
-
-        ' Get dimensions and column count from controls and graphic info
-        Dim gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Animations, animationNum & GameState.GfxExt))
-        If gfxInfo Is Nothing OrElse texture Is Nothing Then Exit Sub
-
-        Dim totalWidth As Integer = gfxInfo.Width
-        Dim totalHeight As Integer = gfxInfo.Height
-        Dim columns As Integer = frameCountControl.Value
-
-        ' Validate columns to avoid division by zero
-        If columns <= 0 Then Exit Sub
-
-        ' Calculate frame dimensions
-        Dim frameWidth As Integer = totalWidth / columns
-
-        ' Assuming square frames for simplicity (adjust if frames are not square)
-        Dim frameHeight As Integer = frameWidth
-
-        Dim rows As Integer
-
-        ' Calculate the number of rows and total frame count
-        If frameHeight > 0 Then
-            rows = totalHeight / frameHeight
-        End If
-
-        Dim frameCount As Integer = rows * columns
-
-        ' Retrieve loop timing and check frame rendering necessity
-        Dim looptime As Integer = loopCountControl.Value
-        If GameState.AnimEditorTimer(animationTimerIndex) + looptime <= Environment.TickCount Then
-            If GameState.AnimEditorFrame(animationTimerIndex) >= frameCount Then
-                GameState.AnimEditorFrame(animationTimerIndex) = 1 ' Reset to the first frame if it exceeds the count
-            Else
-                GameState.AnimEditorFrame(animationTimerIndex) += 1
-            End If
-            GameState.AnimEditorTimer(animationTimerIndex) = Environment.TickCount
-
-            ' Render the frame if necessary
-            If frameCountControl.Value > 0 Then
-                Dim frameIndex As Integer = GameState.AnimEditorFrame(animationTimerIndex) - 1
-                Dim column As Integer = frameIndex Mod columns
-                Dim row As Integer = frameIndex \ columns
-
-                ' Calculate the source rectangle for the texture
-                Dim sRECT As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
-
-                spriteBatch.GraphicsDevice.Clear(ToMonoGameColor(backgroundColorControl.BackColor))
-                spriteBatch.Begin()
-                spriteBatch.Draw(texture, New Rectangle(0, 0, frameWidth, frameHeight), sRECT, Color.White)
-                spriteBatch.End()
-            End If
-        End If
-    End Sub
-
-    Private Function ToMonoGameColor(drawingColor As System.Drawing.Color) As Microsoft.Xna.Framework.Color
+    Public Shared Function ToMonoGameColor(drawingColor As System.Drawing.Color) As Microsoft.Xna.Framework.Color
         Return New Microsoft.Xna.Framework.Color(drawingColor.R, drawingColor.G, drawingColor.B, drawingColor.A)
     End Function
 
@@ -2079,217 +1886,6 @@ Public Class GameClient
             ' Draw fallback outline if the tileset graphic is invalid
             DrawOutlineRectangle(x, y, GameState.PicX, GameState.PicY, Color.Blue, 0.6F)
         End If
-    End Sub
-
-    Public Shared Sub EditorMap_DrawItem()
-        Dim itemnum As Integer
-
-        itemnum = Type.Item(frmEditor_Map.Instance.scrlMapItem.Value).Icon
-
-        If itemnum <= 0 Or itemnum > GameState.NumItems Then
-            frmEditor_Map.Instance.picMapItem.BackgroundImage = Nothing
-            Exit Sub
-        End If
-
-        If File.Exists(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt)) Then
-            frmEditor_Map.Instance.picMapItem.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt))
-        End If
-
-    End Sub
-
-    Friend Sub EditorProjectile_DrawProjectile()
-        Dim iconnum As Integer
-
-        iconnum = frmEditor_Projectile.Instance.nudPic.Value
-
-        If iconnum < 1 Or iconnum > GameState.NumProjectiles Then
-            frmEditor_Projectile.Instance.picProjectile.BackgroundImage = Nothing
-            Exit Sub
-        End If
-
-        If File.Exists(IO.Path.Combine(Core.Path.Projectiles, iconnum & GameState.GfxExt)) Then
-            frmEditor_Projectile.Instance.picProjectile.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Projectiles, iconnum & GameState.GfxExt))
-        End If
-
-    End Sub
-
-    Public Shared Sub EditorEvent_DrawGraphic()
-        Dim sRect As RectStruct
-        Dim dRect As RectStruct
-        Dim targetBitmap As System.Drawing.Bitmap 'Bitmap we draw to
-        Dim sourceBitmap As System.Drawing.Bitmap 'This is our sprite or tileset that we are drawing from
-        Dim g As System.Drawing.Graphics 'This is our graphics Job that helps us draw to the targetBitmap
-
-        If frmEditor_Event.Instance.picGraphicSel.Visible Then
-            Select Case frmEditor_Event.Instance.cmbGraphic.SelectedIndex
-                Case 0
-                    'None
-                    frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
-                Case 1
-                    If frmEditor_Event.Instance.nudGraphic.Value > 0 And frmEditor_Event.Instance.nudGraphic.Value <= GameState.NumCharacters Then
-                        'Load character from Contents into our sourceBitmap
-                        sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "\characters\" & frmEditor_Event.Instance.nudGraphic.Value & ".png")
-                        targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
-
-                        ' Create the Graphics object
-                        g = System.Drawing.Graphics.FromImage(targetBitmap)
-
-                        ' This is the section we are pulling from the source graphic (using RectangleF)
-                        Dim sourceRect As New System.Drawing.RectangleF(0, 0, sourceBitmap.Width / 4.0F, sourceBitmap.Height / 4.0F)
-
-                        ' This is the rectangle in the target graphic we want to render to (using RectangleF)
-                        Dim destRect As New System.Drawing.RectangleF(0, 0, targetBitmap.Width / 4.0F, targetBitmap.Height / 4.0F)
-
-                        ' Draw the image using RectangleF for source and destination rectangles
-                        g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
-
-                        ' Draw a rectangle (using RectangleF)
-                        Dim graphicRectF As New System.Drawing.RectangleF(GraphicSelX * GameState.PicX, GraphicSelY * GameState.PicY, GraphicSelX2 * GameState.PicX, GraphicSelY2 * GameState.PicY)
-                        g.DrawRectangle(System.Drawing.Pens.Red, graphicRectF)
-
-                        ' Set the BackgroundImage properties of the forms
-                        frmEditor_Event.Instance.picGraphic.BackgroundImage = targetBitmap
-                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
-
-                        ' Dispose of the Graphics object
-                        g.Dispose()
-
-                    Else
-                        frmEditor_Event.Instance.picGraphic.BackgroundImage = Nothing
-                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
-                        Exit Sub
-                    End If
-                Case 2
-                    If frmEditor_Event.Instance.nudGraphic.Value > 0 And frmEditor_Event.Instance.nudGraphic.Value <= GameState.NumTileSets Then
-                        'Load tilesheet from Contents into our sourceBitmap
-                        sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "\tilesets\" & frmEditor_Event.Instance.nudGraphic.Value & ".png")
-                        targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
-
-                        If TmpEvent.Pages(CurPageNum).GraphicX2 = 0 And TmpEvent.Pages(CurPageNum).GraphicY2 = 0 Then
-                            sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
-                            sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
-                            sRect.Bottom = sRect.Top + 32
-                            sRect.Right = sRect.Left + 32
-
-                            With dRect
-                                dRect.Top = (193 / 2) - ((sRect.Bottom - sRect.Top) / 2)
-                                dRect.Bottom = dRect.Top + (sRect.Bottom - sRect.Top)
-                                dRect.Left = (120 / 2) - ((sRect.Right - sRect.Left) / 2)
-                                dRect.Right = dRect.Left + (sRect.Right - sRect.Left)
-                            End With
-                        Else
-                            sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
-                            sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
-                            sRect.Bottom = sRect.Top + ((TmpEvent.Pages(CurPageNum).GraphicY2 - TmpEvent.Pages(CurPageNum).GraphicY) * 32)
-                            sRect.Right = sRect.Left + ((TmpEvent.Pages(CurPageNum).GraphicX2 - TmpEvent.Pages(CurPageNum).GraphicX) * 32)
-
-                            With dRect
-                                dRect.Top = (193 / 2) - ((sRect.Bottom - sRect.Top) / 2)
-                                dRect.Bottom = dRect.Top + (sRect.Bottom - sRect.Top)
-                                dRect.Left = (120 / 2) - ((sRect.Right - sRect.Left) / 2)
-                                dRect.Right = dRect.Left + (sRect.Right - sRect.Left)
-                            End With
-
-                        End If
-
-                        g = System.Drawing.Graphics.FromImage(targetBitmap)
-
-                        Dim sourceRect As New Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height)  'This is the section we are pulling from the source graphic
-                        Dim destRect As New Rectangle(0, 0, targetBitmap.Width, targetBitmap.Height)     'This is the rectangle in the target graphic we want to render to
-
-                        ' Ensure destRect and sourceRect are RectangleF
-                        Dim destRectF As New System.Drawing.RectangleF(destRect.X, destRect.Y, destRect.Width, destRect.Height)
-                        Dim sourceRectF As New System.Drawing.RectangleF(sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height)
-
-                        ' Call DrawImage with RectangleF
-                        g.DrawImage(sourceBitmap, destRectF, sourceRectF, System.Drawing.GraphicsUnit.Pixel)
-
-                        ' For DrawRectangle, ensure the rectangle is of type Rectangle
-                        Dim rectF As New System.Drawing.RectangleF(GraphicSelX * GameState.PicX, GraphicSelY * GameState.PicY, GraphicSelX2 * GameState.PicX, GraphicSelY2 * GameState.PicY)
-                        g.DrawRectangle(System.Drawing.Pens.Red, rectF)
-
-                        g.Dispose()
-
-
-                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = targetBitmap
-                        frmEditor_Event.Instance.picGraphic.BackgroundImage = Nothing
-                    Else
-                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
-                        frmEditor_Event.Instance.picGraphic.BackgroundImage = Nothing
-                        Exit Sub
-                    End If
-            End Select
-        Else
-            If TmpEvent.PageCount > 0 Then
-                Select Case TmpEvent.Pages(CurPageNum).GraphicType
-                    Case 0
-                        frmEditor_Event.Instance.picGraphicSel.BackgroundImage = Nothing
-                    Case 1
-                        If TmpEvent.Pages(CurPageNum).Graphic > 0 And TmpEvent.Pages(CurPageNum).Graphic <= GameState.NumCharacters Then
-                            'Load character from Contents into our sourceBitmap
-                            sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "\characters\" & TmpEvent.Pages(CurPageNum).Graphic & ".png")
-                            targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
-
-                            g = System.Drawing.Graphics.FromImage(targetBitmap)
-
-                            Dim sourceRect As New System.Drawing.Rectangle(0, 0, sourceBitmap.Width / 4, sourceBitmap.Height / 4)  'This is the section we are pulling from the source graphic
-                            Dim destRect As New System.Drawing.Rectangle(0, 0, targetBitmap.Width / 4, targetBitmap.Height / 4)     'This is the rectangle in the target graphic we want to render to
-
-                            g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
-                            g.Dispose()
-
-                            frmEditor_Event.Instance.picGraphic.BackgroundImage = targetBitmap
-                        Else
-                            frmEditor_Event.Instance.picGraphic.BackgroundImage = Nothing
-                            Exit Sub
-                        End If
-                    Case 2
-                        If TmpEvent.Pages(CurPageNum).Graphic > 0 And TmpEvent.Pages(CurPageNum).Graphic <= GameState.NumTileSets Then
-                            'Load tilesheet from Contents into our sourceBitmap
-                            sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "tilesets\" & TmpEvent.Pages(CurPageNum).Graphic & ".png")
-                            targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
-
-                            If TmpEvent.Pages(CurPageNum).GraphicX2 = 0 And TmpEvent.Pages(CurPageNum).GraphicY2 = 0 Then
-                                sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
-                                sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
-                                sRect.Bottom = sRect.Top + 32
-                                sRect.Right = sRect.Left + 32
-
-                                With dRect
-                                    dRect.Top = 0
-                                    dRect.Bottom = GameState.PicY
-                                    dRect.Left = 0
-                                    dRect.Right = GameState.PicX
-                                End With
-                            Else
-                                sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
-                                sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
-                                sRect.Bottom = TmpEvent.Pages(CurPageNum).GraphicY2 * 32
-                                sRect.Right = TmpEvent.Pages(CurPageNum).GraphicX2 * 32
-
-                                With dRect
-                                    dRect.Top = 0
-                                    dRect.Bottom = sRect.Bottom
-                                    dRect.Left = 0
-                                    dRect.Right = sRect.Right
-                                End With
-
-                            End If
-
-                            g = System.Drawing.Graphics.FromImage(targetBitmap)
-
-                            Dim sourceRect As New System.Drawing.Rectangle(sRect.Left, sRect.Top, sRect.Right, sRect.Bottom)  'This is the section we are pulling from the source graphic
-                            Dim destRect As New System.Drawing.Rectangle(dRect.Left, dRect.Top, dRect.Right, dRect.Bottom)     'This is the rectangle in the target graphic we want to render to
-
-                            g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
-                            g.Dispose()
-
-                            frmEditor_Event.Instance.picGraphic.BackgroundImage = targetBitmap
-                        End If
-                End Select
-            End If
-        End If
-
     End Sub
 
     Friend Shared Sub DrawEvent(id As Integer) ' draw on map, outside the editor
@@ -2646,19 +2242,10 @@ Public Class GameClient
 
         If GameState.MyEditorType = EditorType.Map Then
             DrawTileset()
-        End If
 
-        If GameState.MyEditorType = EditorType.Animation Then
-            EditorAnim_DrawSprite()
-        End If
-
-        If GameState.MyEditorType = EditorType.Map And frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
-            DrawEvents()
-            EditorEvent_DrawGraphic()
-        End If
-
-        If GameState.MyEditorType = EditorType.Projectile Then
-            EditorProjectile_DrawProjectile()
+            If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
+                DrawEvents()
+            End If
         End If
 
         GameClient.DrawBars()

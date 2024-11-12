@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Reflection
 Imports System.Text
 Imports Core
 Imports Microsoft.Xna.Framework
@@ -260,52 +261,55 @@ Module Text
         Dim tY As Integer
         Dim tA As Integer
 
-        If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpAttributes Then
-            For X = GameState.TileView.Left - 1 To GameState.TileView.Right + 1
-                For y = GameState.TileView.Top - 1 To GameState.TileView.Bottom + 1
-                    If IsValidMapPoint(X, y) Then
-                        With MyMap.Tile(X, y)
-                            tX = ((ConvertMapX(X * GameState.PicX)) - 4) + (GameState.PicX * 0.5)
-                            tY = ((ConvertMapY(y * GameState.PicY)) - 7) + (GameState.PicY * 0.5)
+        If frmEditor_Map.Instance.tabpages.InvokeRequired Then
+            frmEditor_Map.Instance.tabpages.Invoke(
+                Sub()
+                    For X = GameState.TileView.Left - 1 To GameState.TileView.Right + 1
+                        For y = GameState.TileView.Top - 1 To GameState.TileView.Bottom + 1
+                            If IsValidMapPoint(X, y) Then
+                                With MyMap.Tile(X, y)
+                                    tX = ((ConvertMapX(X * GameState.PicX)) - 4) + (GameState.PicX * 0.5)
+                                    tY = ((ConvertMapY(y * GameState.PicY)) - 7) + (GameState.PicY * 0.5)
 
-                            If GameState.EditorAttribute = 1 Then
-                                tA = .Type
-                            Else
-                                tA = .Type2
+                                    If GameState.EditorAttribute = 1 Then
+                                        tA = .Type
+                                    Else
+                                        tA = .Type2
+                                    End If
+
+                                    Select Case tA
+                                        Case TileType.Blocked
+                                            RenderText("B", tX, tY, (Color.Red), (Color.Black))
+                                        Case TileType.Warp
+                                            RenderText("W", tX, tY, (Color.Blue), (Color.Black))
+                                        Case TileType.Item
+                                            RenderText("I", tX, tY, (Color.White), (Color.Black))
+                                        Case TileType.NPCAvoid
+                                            RenderText("N", tX, tY, (Color.White), (Color.Black))
+                                        Case TileType.Resource
+                                            RenderText("R", tX, tY, (Color.Green), (Color.Black))
+                                        Case TileType.NPCSpawn
+                                            RenderText("S", tX, tY, (Color.Yellow), (Color.Black))
+                                        Case TileType.Shop
+                                            RenderText("S", tX, tY, (Color.Blue), (Color.Black))
+                                        Case TileType.Bank
+                                            RenderText("B", tX, tY, (Color.Blue), (Color.Black))
+                                        Case TileType.Heal
+                                            RenderText("H", tX, tY, (Color.Green), (Color.Black))
+                                        Case TileType.Trap
+                                            RenderText("T", tX, tY, (Color.Red), (Color.Black))
+                                        Case TileType.Light
+                                            RenderText("L", tX, tY, (Color.Yellow), (Color.Black))
+                                        Case TileType.Animation
+                                            RenderText("A", tX, tY, (Color.Red), (Color.Black))
+                                        Case TileType.NoXing
+                                            RenderText("X", tX, tY, (Color.Red), (Color.Black))
+                                    End Select
+                                End With
                             End If
-
-                            Select Case tA
-                                Case TileType.Blocked
-                                    RenderText("B", tX, tY, (Color.Red), (Color.Black))
-                                Case TileType.Warp
-                                    RenderText("W", tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Item
-                                    RenderText("I", tX, tY, (Color.White), (Color.Black))
-                                Case TileType.NPCAvoid
-                                    RenderText("N", tX, tY, (Color.White), (Color.Black))
-                                Case TileType.Resource
-                                    RenderText("R", tX, tY, (Color.Green), (Color.Black))
-                                Case TileType.NPCSpawn
-                                    RenderText("S", tX, tY, (Color.Yellow), (Color.Black))
-                                Case TileType.Shop
-                                    RenderText("S", tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Bank
-                                    RenderText("B", tX, tY, (Color.Blue), (Color.Black))
-                                Case TileType.Heal
-                                    RenderText("H", tX, tY, (Color.Green), (Color.Black))
-                                Case TileType.Trap
-                                    RenderText("T", tX, tY, (Color.Red), (Color.Black))
-                                Case TileType.Light
-                                    RenderText("L", tX, tY, (Color.Yellow), (Color.Black))
-                                Case TileType.Animation
-                                    RenderText("A", tX, tY, (Color.Red), (Color.Black))
-                                Case TileType.NoXing
-                                    RenderText("X", tX, tY, (Color.Red), (Color.Black))
-                            End Select
-                        End With
-                    End If
-                Next
-            Next
+                        Next
+                    Next
+                End Sub)
         End If
 
     End Sub

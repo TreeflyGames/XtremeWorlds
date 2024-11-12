@@ -2,13 +2,14 @@
 Imports System.Collections.Concurrent
 Imports System.Net.Mime
 Imports System.Text.RegularExpressions
+Imports System.Windows.Forms
 Imports Core
 Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Graphics
 Imports Microsoft.Xna.Framework.Input
 
 Public Class Gui
-   ' GUI
+    ' GUI
     Public Shared ReadOnly Windows As New ConcurrentDictionary(Of Long, Window)
     Public Shared ActiveWindow As Long
 
@@ -18,7 +19,7 @@ Public Class Gui
     ' Used for automatically the zOrder
     Private Shared zOrder_Win As Long
     Private Shared zOrder_Con As Long
-    
+
     ' Declare a timer to control when dragging can begin
     Private Shared dragTimer As New Stopwatch()
     Private Const dragInterval As Double = 50 ' Set the interval in milliseconds to start dragging
@@ -110,11 +111,11 @@ Public Class Gui
         Public Property Texture As List(Of String)
         Public Property CallBack As List(Of Action)
     End Class
-    
-      Public Shared Sub UpdateControl(winNum As Long, zOrder As Long, name As String, color As Microsoft.Xna.Framework.Color, tType As ControlType, design As List(Of Long), image As List(Of Long), texture As List(Of String), callback As List(Of Action),
-                                    Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
-                                    Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
-                                    Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional locked As Boolean = False, Optional length As Byte = NAME_LENGTH)
+
+    Public Shared Sub UpdateControl(winNum As Long, zOrder As Long, name As String, color As Microsoft.Xna.Framework.Color, tType As ControlType, design As List(Of Long), image As List(Of Long), texture As List(Of String), callback As List(Of Action),
+Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
+Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
+                                  Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional locked As Boolean = False, Optional length As Byte = NAME_LENGTH)
 
         ' Ensure the window exists in the Windows collection
         If Not Windows.ContainsKey(winNum) Then Exit Sub
@@ -161,10 +162,10 @@ Public Class Gui
         ' Add the new control to the specified window's controls list
         If Windows(winNum).Controls Is Nothing Then Windows(winNum).Controls = New List(Of Control)()
         Windows(winNum).Controls.Add(newControl)
-        
+
         ' Update active control if necessary
         If isActive Then Windows(winNum).ActiveControl = Gui.Windows(winNum).Controls.Count - 1
-        
+
         ' set the zOrder
         zOrder_Con = zOrder_Con + 1
     End Sub
@@ -184,38 +185,26 @@ Public Class Gui
                 If Windows(i).zOrder > oldZOrder Then
                     Windows(i).zOrder = Windows(i).zOrder - 1
                 End If
-
             Next
-
             .zOrder = Windows.Count
         End With
-
     End Sub
-
     Public Shared Sub SortWindows()
         Dim tempWindow As Window
         Dim i As Long, x As Long
-
         x = 1
-
         While x <> 0
             x = 0
-
             For i = 1 To Windows.Count
-
                 If Windows(i).zOrder > Windows(i + 1).zOrder Then
                     tempWindow = Windows(i)
                     Windows(i) = Windows(i + 1)
                     Windows(i + 1) = tempWindow
                     x = 1
                 End If
-
             Next
-
         End While
-
-    End Sub    
-
+    End Sub
     Public Shared Sub Combobox_AddItem(winName As String, controlIndex As Long, text As String)
         ' Ensure the List property is initialized as a List(Of String) in Control class
         If Windows(winName).Controls(controlIndex).List Is Nothing Then
@@ -223,8 +212,8 @@ Public Class Gui
         End If
         Windows(winName).Controls(controlIndex).List.Add(text)
     End Sub
-    
-      Public Shared Sub UpdateWindow(name As String, caption As String, font As FontType, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long,
+
+    Public Shared Sub UpdateWindow(name As String, caption As String, font As FontType, zOrder As Long, left As Long, top As Long, width As Long, height As Long, icon As Long,
                                    Optional visible As Boolean = True, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional design_norm As Long = 0, Optional design_hover As Long = 0, Optional design_mousedown As Long = 0,
                                    Optional image_norm As Long = 0, Optional image_hover As Long = 0, Optional image_mousedown As Long = 0,
                                    Optional callback_norm As Action = Nothing, Optional callback_hover As Action = Nothing, Optional callback_mousemove As Action = Nothing, Optional callback_mousedown As Action = Nothing, Optional callback_dblclick As Action = Nothing, Optional onDraw As Action = Nothing,
@@ -248,7 +237,7 @@ Public Class Gui
         callback(EntState.MouseDown) = callback_mousedown
         callback(EntState.MouseMove) = callback_mousemove
         callback(EntState.DblClick) = callback_dblclick
-  
+
         ' Create a new instance of Window and populate it
         Dim newWindow As New Window With {
                 .Name = name,
@@ -257,7 +246,7 @@ Public Class Gui
                 .Top = top,
                 .OrigLeft = left,
                 .OrigTop = top,
-                .Width = width,
+.Width = width,
                 .Height = height,
                 .Visible = visible,
                 .CanDrag = canDrag,
@@ -275,12 +264,12 @@ Public Class Gui
                 .Image = image,
                 .CallBack = callback
                 }
-        
+
         ' Add the new control to the specified window's controls list
         Windows.TryAdd(Windows.Count + 1, newWindow)
 
         ' Set the active window if visible
-        If visible Then activeWindow = Gui.Windows.Count
+        If visible Then ActiveWindow = Gui.Windows.Count
     End Sub
 
     Public Shared Sub UpdateTextbox(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long,
@@ -381,7 +370,6 @@ Public Class Gui
     Public Shared Sub UpdateLabel(winNum As Long, name As String, left As Long, top As Long, width As Long, height As Long, text As String, font As FontType, color As Microsoft.Xna.Framework.Color,
                                   Optional align As Byte = AlignmentType.Left, Optional visible As Boolean = True, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional censor As Boolean = False,
                                   Optional ByRef callback_norm As Action = Nothing, Optional ByRef callback_hover As Action = Nothing, Optional ByRef callback_mousedown As Action = Nothing, Optional ByRef callback_mousemove As Action = Nothing, Optional ByRef callback_dblclick As Action = Nothing, Optional locked As Boolean = True)
-
         Dim design As New List(Of Long)(Enumerable.Repeat(0L, EntState.Count).ToList())
         Dim image As New List(Of Long)(Enumerable.Repeat(0L, EntState.Count).ToList())
         Dim texture As New List(Of String)(Enumerable.Repeat(Path.Designs, EntState.Count).ToList())
@@ -944,13 +932,13 @@ Public Class Gui
         Dim i As Long, curWindow As Long, curControl As Long, callBack As Action, x As Long
 
         ' Check for MouseDown to start the drag timer
-        If GameClient.CurrentMouseState.LeftButton = ButtonState.Pressed AndAlso GameClient.PreviousMouseState.LeftButton = ButtonState.Released Then
+        If GameClient.CurrentMouseState.LeftButton = Microsoft.Xna.Framework.Input.ButtonState.Pressed AndAlso GameClient.PreviousMouseState.LeftButton = Microsoft.Xna.Framework.Input.ButtonState.Released Then
             dragTimer.Restart() ' Start the timer on initial mouse down
             canDrag = False ' Reset drag flag to ensure it doesn't drag immediately
         End If
 
         ' Check for MouseUp to reset dragging
-        If GameClient.CurrentMouseState.LeftButton = ButtonState.Released Then
+        If GameClient.CurrentMouseState.LeftButton = Microsoft.Xna.Framework.Input.ButtonState.Released Then
             canDrag = False
             dragTimer.Reset() ' Stop the timer on mouse up
         End If
@@ -4535,6 +4523,155 @@ Public Class Gui
         ' No active control found, return Nothing
         Return Nothing
     End Function
+
+    Shared Sub UpdateForms()
+        If InitEventEditorForm Then
+            With frmEditor_Event.Instance
+                .Show()
+            End With
+            InitEventEditorForm = False
+        End If
+
+        If GameState.InitAdminForm Then
+            With FrmAdmin.Instance
+                .Show()
+            End With
+            GameState.InitAdminForm = False
+        End If
+
+        If GameState.InitMapReport Then
+            For i = 1 To MapNames.Length - 1
+                Dim item1 As New ListViewItem(i.ToString)
+                item1.SubItems.Add(Type.MapNames(i))
+                FrmAdmin.Instance.lstMaps.Items.Add(item1)
+            Next
+            GameState.InitMapReport = False
+        End If
+
+        If GameState.InitMapEditor Then
+            With frmEditor_Map.Instance
+                GameState.MyEditorType = EditorType.Map
+                GameState.EditorIndex = 1
+                .Show()
+                .MapEditorInit()
+            End With
+            GameState.InitMapEditor = False
+        End If
+
+        If GameState.InitPetEditor Then
+            With frmEditor_Pet.Instance
+                GameState.MyEditorType = EditorType.Pet
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                PetEditorInit()
+            End With
+            GameState.InitPetEditor = False
+        End If
+
+        If GameState.InitAnimationEditor Then
+            With frmEditor_Animation.Instance
+                GameState.MyEditorType = EditorType.Animation
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                AnimationEditorInit()
+            End With
+            GameState.InitAnimationEditor = False
+        End If
+
+        If GameState.InitItemEditor Then
+            With frmEditor_Item.Instance
+                GameState.MyEditorType = EditorType.Item
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                ItemEditorInit()
+            End With
+            GameState.InitItemEditor = False
+        End If
+
+        If GameState.InitJobEditor Then
+            With frmEditor_Job.Instance
+                GameState.MyEditorType = EditorType.Job
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+
+                JobEditorInit()
+            End With
+            GameState.InitJobEditor = False
+        End If
+
+        If GameState.InitMoralEditor Then
+            With frmEditor_Moral.Instance
+                GameState.MyEditorType = EditorType.Moral
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                MoralEditorInit()
+            End With
+            GameState.InitMoralEditor = False
+        End If
+
+        If GameState.InitResourceEditor Then
+            With frmEditor_Resource.Instance
+                GameState.MyEditorType = EditorType.Resource
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                ResourceEditorInit()
+            End With
+            GameState.InitResourceEditor = False
+        End If
+
+        If GameState.InitNPCEditor Then
+            With frmEditor_NPC.Instance
+                GameState.MyEditorType = EditorType.NPC
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                NpcEditorInit()
+            End With
+            GameState.InitNPCEditor = False
+        End If
+
+        If GameState.InitSkillEditor Then
+            With frmEditor_Skill.Instance
+                GameState.MyEditorType = EditorType.Skill
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                SkillEditorInit()
+            End With
+            GameState.InitSkillEditor = False
+        End If
+
+        If GameState.InitShopEditor Then
+            With frmEditor_Shop.Instance
+                GameState.MyEditorType = EditorType.Shop
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                ShopEditorInit()
+            End With
+            GameState.InitShopEditor = False
+        End If
+
+        If GameState.InitProjectileEditor Then
+            With frmEditor_Projectile.Instance
+                GameState.MyEditorType = EditorType.Projectile
+                GameState.EditorIndex = 1
+                .Show()
+                .lstIndex.SelectedIndex = 0
+                ProjectileEditorInit()
+            End With
+
+            GameState.InitProjectileEditor = False
+        End If
+
+        Application.DoEvents()
+    End Sub
 
 
 End Class

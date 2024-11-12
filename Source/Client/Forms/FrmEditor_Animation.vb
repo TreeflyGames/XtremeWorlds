@@ -1,5 +1,6 @@
 ﻿Imports System.Windows.Forms
 Imports Core
+Imports Microsoft.Xna.Framework
 
 Friend Class frmEditor_Animation
     Private Sub NudSprite0_ValueChanged(sender As Object, e As EventArgs) Handles nudSprite0.Click
@@ -89,9 +90,6 @@ Friend Class frmEditor_Animation
 
         nudSprite0.Maximum = GameState.NumAnimations
         nudSprite1.Maximum = GameState.NumAnimations
-
-        'EditorAnimation_Anim1 = New RenderWindow(picSprite0.Handle)
-        'EditorAnimation_Anim2 = New RenderWindow(picSprite1.Handle)
     End Sub
 
     Private Sub CmbSound_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSound.SelectedIndexChanged
@@ -100,5 +98,96 @@ Friend Class frmEditor_Animation
 
     Private Sub frmEditor_Animation_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         AnimationEditorCancel()
+    End Sub
+
+    Public Sub ProcessAnimation(animationControl As System.Windows.Forms.NumericUpDown,
+                            frameCountControl As System.Windows.Forms.NumericUpDown,
+                            loopCountControl As System.Windows.Forms.NumericUpDown,
+                            animationTimerIndex As Integer,
+                            animationDisplay As Graphics.Texture2D,
+                            backgroundColorControl As System.Windows.Forms.PictureBox,
+                            spriteBatch As Graphics.SpriteBatch)
+
+        ' Retrieve the animation number and check its validity
+        Dim animationNum As Integer = animationControl.Value
+        If animationNum <= 0 Or animationNum > GameState.NumAnimations Then
+            spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor))
+            spriteBatch.End() ' Ensure spriteBatch is properly ended
+            Exit Sub
+        End If
+
+        Dim texture = GameClient.GetTexture(System.IO.Path.Combine(Core.Path.Animations, animationNum & GameState.GfxExt))
+
+        ' Get dimensions and column count from controls and graphic info
+        Dim gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Animations, animationNum & GameState.GfxExt))
+        If gfxInfo Is Nothing OrElse texture Is Nothing Then Exit Sub
+
+        Dim totalWidth As Integer = gfxInfo.Width
+        Dim totalHeight As Integer = gfxInfo.Height
+        Dim columns As Integer = frameCountControl.Value
+
+        ' Validate columns to avoid division by zero
+        If columns <= 0 Then Exit Sub
+
+        ' Calculate frame dimensions
+        Dim frameWidth As Integer = totalWidth / columns
+
+        ' Assuming square frames for simplicity (adjust if frames are not square)
+        Dim frameHeight As Integer = frameWidth
+
+        Dim rows As Integer
+
+        ' Calculate the number of rows and total frame count
+        If frameHeight > 0 Then
+            rows = totalHeight / frameHeight
+        End If
+
+        Dim frameCount As Integer = rows * columns
+
+        ' Retrieve loop timing and check frame rendering necessity
+        Dim looptime As Integer = loopCountControl.Value
+        If GameState.AnimEditorTimer(animationTimerIndex) + looptime <= Environment.TickCount Then
+            If GameState.AnimEditorFrame(animationTimerIndex) >= frameCount Then
+                GameState.AnimEditorFrame(animationTimerIndex) = 1 ' Reset to the first frame if it exceeds the count
+            Else
+                GameState.AnimEditorFrame(animationTimerIndex) += 1
+            End If
+            GameState.AnimEditorTimer(animationTimerIndex) = Environment.TickCount
+
+            ' Render the frame if necessary
+            If frameCountControl.Value > 0 Then
+                Dim frameIndex As Integer = GameState.AnimEditorFrame(animationTimerIndex) - 1
+                Dim column As Integer = frameIndex Mod columns
+                Dim row As Integer = frameIndex \ columns
+
+                ' Calculate the source rectangle for the texture
+                Dim sRECT As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
+
+                spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor))
+                spriteBatch.Begin()
+                spriteBatch.Draw(texture, New Rectangle(0, 0, frameWidth, frameHeight), sRECT, Color.White)
+                spriteBatch.End()
+            End If
+        End If
+    End Sub
+
+    Private Sub picSprite0_Paint(sender As Object, e As PaintEventArgs) Handles picSprite0.Paint
+        With frmEditor_Animation.Instance
+            ' Ensure spriteBatch is created and disposed properly
+            Dim spriteBatch As New Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice)
+
+            ' Call ProcessAnimation for each animation panel
+            ProcessAnimation(.nudSprite0, .nudFrameCount0, .nudLoopTime0, 0, GameClient.EditorAnimation_Anim1, .picSprite0, spriteBatch)
+        End With
+    End Sub
+
+    Private Sub picSprite1_Paint(sender As Object, e As PaintEventArgs) Handles picSprite1.Paint
+        With frmEditor_Animation.Instance
+            ' Ensure spriteBatch is created and disposed properly
+            Dim spriteBatch As New Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice)
+
+            ' Call ProcessAnimation for each animation panel
+            ProcessAnimation(.nudSprite1, .nudFrameCount1, .nudLoopTime1, 1, GameClient.EditorAnimation_Anim2, .picSprite1, spriteBatch)
+        End With
     End Sub
 End Class

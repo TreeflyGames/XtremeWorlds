@@ -111,7 +111,6 @@ Module Editors
             .cmbSkill6.SelectedIndex = NPC(GameState.EditorIndex).Skill(6)
         End With
 
-        GameClient.EditorNpc_DrawSprite()
         GameState.NPC_Changed(GameState.EditorIndex) = True
     End Sub
 
@@ -171,8 +170,6 @@ Module Editors
         End With
 
         frmEditor_Resource.Instance.Visible = True
-
-        GameClient.EditorResource_DrawSprite()
 
         GameState.Resource_Changed(GameState.EditorIndex) = True
     End Sub
@@ -251,7 +248,6 @@ Module Editors
         End With
 
         GameState.Skill_Changed(GameState.EditorIndex) = True
-        GameClient.EditorSkill_DrawIcon()
     End Sub
 
     Friend Sub SkillEditorOk()
@@ -541,8 +537,6 @@ Module Editors
         End With
 
         GameState.Item_Changed(GameState.EditorIndex) = True
-        GameClient.EditorItem_DrawIcon()
-        GameClient.EditorItem_DrawPaperdoll()
     End Sub
 
     Friend Sub ItemEditorCancel()

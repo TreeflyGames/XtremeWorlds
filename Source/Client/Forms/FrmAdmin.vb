@@ -102,7 +102,7 @@ Friend Class FrmAdmin
         SendRequestEditAnimation()
     End Sub
 
-    Private Sub btnClassEditor_Click(sender As Object, e As EventArgs) Handles btnJobEditor.Click
+    Private Sub btnJobEditor_Click(sender As Object, e As EventArgs) Handles btnJobEditor.Click
         If GameState.MyEditorType <> -1 Then
             MsgBox("You are already in an Editor. Please close the editor to use another one.")
             Exit Sub

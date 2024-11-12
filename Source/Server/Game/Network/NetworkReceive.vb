@@ -2275,7 +2275,7 @@ Module NetworkReceive
 
         SendJobs(index)
 
-        SendClassEditor(index)
+        SendJobEditor(index)
     End Sub
 
     Sub Packet_SaveJob(index As Integer, ByRef data() As Byte)

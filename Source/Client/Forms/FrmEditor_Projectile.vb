@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.IO
+Imports System.Windows.Forms
 Imports Core
 
 Friend Class frmEditor_Projectile
@@ -39,6 +40,7 @@ Friend Class frmEditor_Projectile
 
     Private Sub NudPic_ValueChanged(sender As Object, e As EventArgs) Handles nudPic.Click
         Type.Projectile(GameState.EditorIndex).Sprite = nudPic.Value
+        Drawicon()
     End Sub
 
     Private Sub NudRange_ValueChanged(sender As Object, e As EventArgs) Handles nudRange.Click
@@ -69,4 +71,21 @@ Friend Class frmEditor_Projectile
     Private Sub frmEditor_Projectile_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ProjectileEditorCancel
     End Sub
+
+    Private Sub Drawicon()
+        Dim iconnum As Integer
+
+        iconnum = nudPic.Value
+
+        If iconnum < 1 Or iconnum > GameState.NumProjectiles Then
+            picProjectile.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Projectiles, iconnum & GameState.GfxExt)) Then
+            picProjectile.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Projectiles, iconnum & GameState.GfxExt))
+        End If
+
+    End Sub
+
 End Class

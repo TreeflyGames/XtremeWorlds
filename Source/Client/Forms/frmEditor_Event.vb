@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.IO
 Imports System.Windows.Forms
+Imports System.Xml
 Imports Core
 
 Friend Class frmEditor_Event
@@ -226,7 +227,186 @@ Friend Class frmEditor_Event
         txtName.Text = TmpEvent.Name
 
         EventEditorLoadPage(CurPageNum)
-        GameClient.EditorEvent_DrawGraphic()
+        DrawGraphic()
+    End Sub
+
+    Public Sub DrawGraphic()
+        Dim sRect As RectStruct
+        Dim dRect As RectStruct
+        Dim targetBitmap As System.Drawing.Bitmap 'Bitmap we draw to
+        Dim sourceBitmap As System.Drawing.Bitmap 'This is our sprite or tileset that we are drawing from
+        Dim g As System.Drawing.Graphics 'This is our graphics Job that helps us draw to the targetBitmap
+
+        If picGraphicSel.Visible Then
+            Select Case cmbGraphic.SelectedIndex
+                Case 0
+                    'None
+                    picGraphicSel.BackgroundImage = Nothing
+                Case 1
+                    If nudGraphic.Value > 0 And nudGraphic.Value <= GameState.NumCharacters Then
+                        'Load character from Contents into our sourceBitmap
+                        sourceBitmap = New System.Drawing.Bitmap(IO.Path.Combine(Core.Path.Characters, nudGraphic.Value & GameState.GfxExt))
+                        targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
+
+                        ' Create the Graphics object
+                        g = System.Drawing.Graphics.FromImage(targetBitmap)
+
+                        ' This is the section we are pulling from the source graphic (using RectangleF)
+                        Dim sourceRect As New System.Drawing.RectangleF(0, 0, sourceBitmap.Width / 4.0F, sourceBitmap.Height / 4.0F)
+
+                        ' This is the rectangle in the target graphic we want to render to (using RectangleF)
+                        Dim destRect As New System.Drawing.RectangleF(0, 0, targetBitmap.Width / 4.0F, targetBitmap.Height / 4.0F)
+
+                        ' Draw the image using RectangleF for source and destination rectangles
+                        g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
+
+                        ' Draw a rectangle (using RectangleF)
+                        Dim graphicRectF As New System.Drawing.RectangleF(GraphicSelX * GameState.PicX, GraphicSelY * GameState.PicY, GraphicSelX2 * GameState.PicX, GraphicSelY2 * GameState.PicY)
+                        g.DrawRectangle(System.Drawing.Pens.Red, graphicRectF)
+
+                        ' Set the BackgroundImage properties of the forms
+                        picGraphic.BackgroundImage = targetBitmap
+                        picGraphicSel.BackgroundImage = Nothing
+
+                        ' Dispose of the Graphics object
+                        g.Dispose()
+
+                    Else
+                        picGraphic.BackgroundImage = Nothing
+                        picGraphicSel.BackgroundImage = Nothing
+                        Exit Sub
+                    End If
+                Case 2
+                    If nudGraphic.Value > 0 And nudGraphic.Value <= GameState.NumTileSets Then
+                        'Load tilesheet from Contents into our sourceBitmap
+                        sourceBitmap = New System.Drawing.Bitmap(IO.Path.Combine(Core.Path.Tilesets, nudGraphic.Value & GameState.GfxExt))
+                        targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
+
+                        If TmpEvent.Pages(CurPageNum).GraphicX2 = 0 And TmpEvent.Pages(CurPageNum).GraphicY2 = 0 Then
+                            sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
+                            sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
+                            sRect.Bottom = sRect.Top + 32
+                            sRect.Right = sRect.Left + 32
+
+                            With dRect
+                                dRect.Top = (193 / 2) - ((sRect.Bottom - sRect.Top) / 2)
+                                dRect.Bottom = dRect.Top + (sRect.Bottom - sRect.Top)
+                                dRect.Left = (120 / 2) - ((sRect.Right - sRect.Left) / 2)
+                                dRect.Right = dRect.Left + (sRect.Right - sRect.Left)
+                            End With
+                        Else
+                            sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
+                            sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
+                            sRect.Bottom = sRect.Top + ((TmpEvent.Pages(CurPageNum).GraphicY2 - TmpEvent.Pages(CurPageNum).GraphicY) * 32)
+                            sRect.Right = sRect.Left + ((TmpEvent.Pages(CurPageNum).GraphicX2 - TmpEvent.Pages(CurPageNum).GraphicX) * 32)
+
+                            With dRect
+                                dRect.Top = (193 / 2) - ((sRect.Bottom - sRect.Top) / 2)
+                                dRect.Bottom = dRect.Top + (sRect.Bottom - sRect.Top)
+                                dRect.Left = (120 / 2) - ((sRect.Right - sRect.Left) / 2)
+                                dRect.Right = dRect.Left + (sRect.Right - sRect.Left)
+                            End With
+
+                        End If
+
+                        g = System.Drawing.Graphics.FromImage(targetBitmap)
+
+                        Dim sourceRect As New Rectangle(0, 0, sourceBitmap.Width, sourceBitmap.Height)  'This is the section we are pulling from the source graphic
+                        Dim destRect As New Rectangle(0, 0, targetBitmap.Width, targetBitmap.Height)     'This is the rectangle in the target graphic we want to render to
+
+                        ' Ensure destRect and sourceRect are RectangleF
+                        Dim destRectF As New System.Drawing.RectangleF(destRect.X, destRect.Y, destRect.Width, destRect.Height)
+                        Dim sourceRectF As New System.Drawing.RectangleF(sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height)
+
+                        ' Call DrawImage with RectangleF
+                        g.DrawImage(sourceBitmap, destRectF, sourceRectF, System.Drawing.GraphicsUnit.Pixel)
+
+                        ' For DrawRectangle, ensure the rectangle is of type Rectangle
+                        Dim rectF As New System.Drawing.RectangleF(GraphicSelX * GameState.PicX, GraphicSelY * GameState.PicY, GraphicSelX2 * GameState.PicX, GraphicSelY2 * GameState.PicY)
+                        g.DrawRectangle(System.Drawing.Pens.Red, rectF)
+
+                        g.Dispose()
+
+
+                        picGraphicSel.BackgroundImage = targetBitmap
+                        picGraphic.BackgroundImage = Nothing
+                    Else
+                        picGraphicSel.BackgroundImage = Nothing
+                        picGraphic.BackgroundImage = Nothing
+                        Exit Sub
+                    End If
+            End Select
+        Else
+            If TmpEvent.PageCount > 0 Then
+                Select Case TmpEvent.Pages(CurPageNum).GraphicType
+                    Case 0
+                        picGraphicSel.BackgroundImage = Nothing
+                    Case 1
+                        If TmpEvent.Pages(CurPageNum).Graphic > 0 And TmpEvent.Pages(CurPageNum).Graphic <= GameState.NumCharacters Then
+                            'Load character from Contents into our sourceBitmap
+                            sourceBitmap = New System.Drawing.Bitmap(IO.Path.Combine(Core.Path.Characters, TmpEvent.Pages(CurPageNum).Graphic & GameState.GfxExt))
+                            targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
+
+                            g = System.Drawing.Graphics.FromImage(targetBitmap)
+
+                            Dim sourceRect As New System.Drawing.Rectangle(0, 0, sourceBitmap.Width / 4, sourceBitmap.Height / 4)  'This is the section we are pulling from the source graphic
+                            Dim destRect As New System.Drawing.Rectangle(0, 0, targetBitmap.Width / 4, targetBitmap.Height / 4)     'This is the rectangle in the target graphic we want to render to
+
+                            g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
+                            g.Dispose()
+
+                            picGraphic.BackgroundImage = targetBitmap
+                        Else
+                            picGraphic.BackgroundImage = Nothing
+                            Exit Sub
+                        End If
+                    Case 2
+                        If TmpEvent.Pages(CurPageNum).Graphic > 0 And TmpEvent.Pages(CurPageNum).Graphic <= GameState.NumTileSets Then
+                            'Load tilesheet from Contents into our sourceBitmap
+                            sourceBitmap = New System.Drawing.Bitmap(Core.Path.Graphics & "tilesets\" & TmpEvent.Pages(CurPageNum).Graphic & ".png")
+                            targetBitmap = New System.Drawing.Bitmap(sourceBitmap.Width, sourceBitmap.Height) 'Create our target Bitmap
+
+                            If TmpEvent.Pages(CurPageNum).GraphicX2 = 0 And TmpEvent.Pages(CurPageNum).GraphicY2 = 0 Then
+                                sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
+                                sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
+                                sRect.Bottom = sRect.Top + 32
+                                sRect.Right = sRect.Left + 32
+
+                                With dRect
+                                    dRect.Top = 0
+                                    dRect.Bottom = GameState.PicY
+                                    dRect.Left = 0
+                                    dRect.Right = GameState.PicX
+                                End With
+                            Else
+                                sRect.Top = TmpEvent.Pages(CurPageNum).GraphicY * 32
+                                sRect.Left = TmpEvent.Pages(CurPageNum).GraphicX * 32
+                                sRect.Bottom = TmpEvent.Pages(CurPageNum).GraphicY2 * 32
+                                sRect.Right = TmpEvent.Pages(CurPageNum).GraphicX2 * 32
+
+                                With dRect
+                                    dRect.Top = 0
+                                    dRect.Bottom = sRect.Bottom
+                                    dRect.Left = 0
+                                    dRect.Right = sRect.Right
+                                End With
+
+                            End If
+
+                            g = System.Drawing.Graphics.FromImage(targetBitmap)
+
+                            Dim sourceRect As New System.Drawing.Rectangle(sRect.Left, sRect.Top, sRect.Right, sRect.Bottom)  'This is the section we are pulling from the source graphic
+                            Dim destRect As New System.Drawing.Rectangle(dRect.Left, dRect.Top, dRect.Right, dRect.Bottom)     'This is the rectangle in the target graphic we want to render to
+
+                            g.DrawImage(sourceBitmap, destRect, sourceRect, System.Drawing.GraphicsUnit.Pixel)
+                            g.Dispose()
+
+                            picGraphic.BackgroundImage = targetBitmap
+                        End If
+                End Select
+            End If
+        End If
+
     End Sub
 
     Private Sub frmEditor_Events_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -257,7 +437,7 @@ Friend Class frmEditor_Event
             TmpEvent.Pages(CurPageNum).GraphicType = tmpGraphicType
             TmpEvent.Pages(CurPageNum).Graphic = tmpGraphicIndex
             fraGraphic.Visible = False
-            GameClient.EditorEvent_DrawGraphic()
+            DrawGraphic()
         End If
     End Sub
 
@@ -866,11 +1046,11 @@ Friend Class frmEditor_Event
             If Me.nudGraphic.Value <= 0 Or Me.nudGraphic.Value > GameState.NumTileSets Then Exit Sub
 
         End If
-        GameClient.EditorEvent_DrawGraphic()
+        DrawGraphic()
     End Sub
 
     Private Sub NudGraphic_ValueChanged(sender As Object, e As EventArgs)
-        GameClient.EditorEvent_DrawGraphic()
+        DrawGraphic()
     End Sub
 
     Private Sub PicGraphicSel_Click(sender As Object, e As MouseEventArgs)
@@ -914,7 +1094,7 @@ Friend Class frmEditor_Event
                 End If
             Next
         End If
-        GameClient.EditorEvent_DrawGraphic()
+        DrawGraphic()
     End Sub
 
 #End Region
@@ -2410,7 +2590,27 @@ Friend Class frmEditor_Event
     End Sub
 
     Private Sub nudShowPicture_Click(sender As Object, e As EventArgs) Handles nudShowPicture.Click
-        GameClient.EditorEvent_DrawPicture()
+        DrawPicture()
+    End Sub
+
+    Private Sub DrawPicture()
+        Dim Sprite As Integer
+
+        Sprite = nudShowPicture.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumPictures Then
+            picShowPic.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)) Then
+            picShowPic.Width =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)).Width
+            picShowPic.Height =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt)).Height
+            picShowPic.BackgroundImage =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Pictures, Sprite & GameState.GfxExt))
+        End If
     End Sub
 
 #End Region

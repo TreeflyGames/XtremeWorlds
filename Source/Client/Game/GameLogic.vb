@@ -140,6 +140,8 @@ Module GameLogic
             chatText = Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Text
         End If
 
+        chatText = chatText.Replace(vbNullChar, String.Empty)
+
         ' hide/show chat window
         If chatText = "" Then
             If Gui.Windows(Gui.GetWindowIndex("winChat")).Visible = True Then

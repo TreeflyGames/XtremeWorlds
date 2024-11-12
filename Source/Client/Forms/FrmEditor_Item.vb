@@ -1,5 +1,7 @@
 ﻿
+Imports System.IO
 Imports System.Windows.Forms
+Imports System.Xml
 Imports Core
 
 Friend Class frmEditor_item
@@ -89,7 +91,7 @@ Friend Class frmEditor_item
 
     Private Sub NudPic_Click(sender As Object, e As EventArgs) Handles nudIcon.Click
         Type.Item(GameState.EditorIndex).Icon = nudIcon.Value
-        GameClient.EditorItem_DrawIcon()
+        DrawIcon()
     End Sub
 
     Private Sub CmbBind_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbBind.SelectedIndexChanged
@@ -300,7 +302,7 @@ Friend Class frmEditor_item
 
     Private Sub NudPaperdoll_ValueChanged(sender As Object, e As EventArgs) Handles nudPaperdoll.Click
         Type.Item(GameState.EditorIndex).Paperdoll = nudPaperdoll.Value
-        GameClient.EditorItem_DrawPaperdoll()
+        DrawPaperdoll()
     End Sub
 
     Private Sub NudStrength_ValueChanged(sender As Object, e As EventArgs) Handles nudStrength.Click
@@ -351,6 +353,38 @@ Friend Class frmEditor_item
         ItemEditorCancel()
     End Sub
 
+    Private Sub DrawIcon()
+        Dim itemnum As Integer
+
+        itemnum = nudIcon.Value
+
+        If itemnum < 1 Or itemnum > GameState.NumItems Then
+            picItem.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt)) Then
+            picItem.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt))
+        Else
+            picItem.BackgroundImage = Nothing
+        End If
+    End Sub
+
+    Private Sub DrawPaperdoll()
+        Dim Sprite As Integer
+
+        Sprite = nudPaperdoll.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumPaperdolls Then
+            picPaperdoll.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Paperdolls, Sprite & GameState.GfxExt)) Then
+            picPaperdoll.BackgroundImage =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Paperdolls, Sprite & GameState.GfxExt))
+        End If
+    End Sub
 
 #End Region
 

@@ -310,9 +310,10 @@ mapsync:
                 End If
                 fadetmr = tick + 30
             End If
-            
+
             Gui.ResizeGUI()
-            
+            Gui.UpdateForms()
+
             ' Signal that loading is complete
             SyncLock GameClient.LoadLock
                 if GameClient.IsLoading Then

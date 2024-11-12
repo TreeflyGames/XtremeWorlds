@@ -32,9 +32,23 @@ Public Class frmEditor_Map
 
         scrlFog.Maximum = GameState.NumFogs
 
-        'TilesetWindow = New RenderWindow(picBackSelect.Handle)
-
         TopMost = True
+    End Sub
+
+    Private Sub DrawItem()
+        Dim itemnum As Integer
+
+        itemnum = Type.Item(scrlMapItem.Value).Icon
+
+        If itemnum <= 0 Or itemnum > GameState.NumItems Then
+            picMapItem.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(System.IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt)) Then
+            picMapItem.BackgroundImage = Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt))
+        End If
+
     End Sub
 
 #End Region
@@ -219,7 +233,7 @@ Public Class frmEditor_Map
             scrlMapItemValue.Enabled = False
         End If
 
-        GameClient.EditorMap_DrawItem()
+        DrawItem()
         lblMapItem.Text = scrlMapItem.Value & ". " & Type.Item(scrlMapItem.Value).Name & " x" & scrlMapItemValue.Value
     End Sub
 
@@ -244,7 +258,7 @@ Public Class frmEditor_Map
         scrlMapItem.Maximum = MAX_ITEMS
         scrlMapItem.Value = 1
         lblMapItem.Text = Type.Item(scrlMapItem.Value).Name & " x" & scrlMapItemValue.Value
-        GameClient.EditorMap_DrawItem()
+        DrawItem()
     End Sub
 
     Private Sub BtnResourceOk_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnResourceOk.Click

@@ -1168,7 +1168,7 @@ Module NetworkSend
         buffer.Dispose()
     End Sub
 
-    Sub SendClassEditor(index As Integer)
+    Sub SendJobEditor(index As Integer)
         Dim buffer As New ByteStream(4)
 
         buffer.WriteInt32(ServerPackets.SJobEditor)

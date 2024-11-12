@@ -1,9 +1,10 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.IO
+Imports System.Windows.Forms
 Imports Core
 Friend Class frmEditor_Resource
 
     Private Sub ScrlNormalPic_Scroll(sender As Object, e As EventArgs) Handles nudNormalPic.ValueChanged
-        GameClient.EditorResource_DrawSprite()
+        DrawSprite()
         Type.Resource(GameState.EditorIndex).ResourceImage = nudNormalPic.Value
     End Sub
 
@@ -12,7 +13,7 @@ Friend Class frmEditor_Resource
     End Sub
 
     Private Sub ScrlExhaustedPic_Scroll(sender As Object, e As EventArgs) Handles nudExhaustedPic.ValueChanged
-        GameClient.EditorResource_DrawSprite()
+        DrawSprite()
         Type.Resource(GameState.EditorIndex).ExhaustedImage = nudExhaustedPic.Value
     End Sub
 
@@ -118,4 +119,34 @@ Friend Class frmEditor_Resource
     Private Sub frmEditor_Resource_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ResourceEditorCancel
     End Sub
+
+    Private Sub DrawSprite()
+        Dim Sprite As Integer
+
+        ' normal sprite
+        Sprite = nudNormalPic.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumResources Then
+            picNormalpic.BackgroundImage = Nothing
+        Else
+            If File.Exists(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt)) Then
+                picNormalpic.BackgroundImage =
+                    Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt))
+            End If
+
+        End If
+
+        ' exhausted sprite
+        Sprite = nudExhaustedPic.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumResources Then
+            picExhaustedPic.BackgroundImage = Nothing
+        Else
+            If File.Exists(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt)) Then
+                picExhaustedPic.BackgroundImage =
+                    Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Resources, Sprite & GameState.GfxExt))
+            End If
+        End If
+    End Sub
+
 End Class

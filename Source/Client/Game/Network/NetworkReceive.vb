@@ -130,7 +130,7 @@ Module NetworkReceive
         Socket.PacketId(ServerPackets.SResourceEditor) = AddressOf Packet_ResourceEditor
         Socket.PacketId(ServerPackets.SAnimationEditor) = AddressOf Packet_EditAnimation
         Socket.PacketId(ServerPackets.SProjectileEditor) = AddressOf HandleProjectileEditor
-        Socket.PacketId(ServerPackets.SJobEditor) = AddressOf Packet_ClassEditor
+        Socket.PacketId(ServerPackets.SJobEditor) = AddressOf Packet_JobEditor
         Socket.PacketId(ServerPackets.SPetEditor) = AddressOf Packet_PetEditor
         Socket.PacketId(ServerPackets.SUpdateMoral) = AddressOf Packet_UpdateMoral
         Socket.PacketId(ServerPackets.SMoralEditor) = AddressOf Packet_EditMoral
@@ -1110,39 +1110,39 @@ Module NetworkReceive
     '***  EDITORS  ***
     '*****************
     Private Sub Packet_EditAnimation(ByRef data() As Byte)
-
+        GameState.InitAnimationEditor = True
     End Sub
 
-    Private Sub Packet_ClassEditor(ByRef data() As Byte)
-
+    Private Sub Packet_JobEditor(ByRef data() As Byte)
+        GameState.InitJobEditor = True
     End Sub
 
     Sub Packet_EditItem(ByRef data() As Byte)
- 
+        GameState.InitItemEditor = True
     End Sub
 
     Private Sub Packet_NPCEditor(ByRef data() As Byte)
-
+        GameState.InitNPCEditor = True
     End Sub
 
     Private Sub Packet_ResourceEditor(ByRef data() As Byte)
-
+        GameState.InitResourceEditor = True
     End Sub
 
     Friend Sub Packet_PetEditor(ByRef data() As Byte)
-
+        GameState.InitPetEditor = True
     End Sub
 
     Friend Sub HandleProjectileEditor(ByRef data() As Byte)
-        GameState.InitProjectileEditor = 1
+        GameState.InitProjectileEditor = True
     End Sub
 
     Private Sub Packet_EditShop(ByRef data() As Byte)
-
+        GameState.InitShopEditor = True
     End Sub
 
     Private Sub Packet_EditSkill(ByRef data() As Byte)
-
+        GameState.InitSkillEditor = True
     End Sub
 
     Private Sub Packet_Clock(ByRef data() As Byte)

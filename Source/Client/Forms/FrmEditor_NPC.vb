@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.IO
+Imports System.Windows.Forms
 Imports Core
 
 Friend Class frmEditor_NPC
@@ -50,6 +51,26 @@ Friend Class frmEditor_NPC
         Next
     End Sub
 
+    Private Sub DrawSprite()
+        Dim Sprite As Integer
+
+        Sprite = nudSprite.Value
+
+        If Sprite < 1 Or Sprite > GameState.NumCharacters Then
+            picSprite.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt)) Then
+            picSprite.Width =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt)).Width / 4
+            picSprite.Height =
+                Drawing.Image.FromFile(IO.Path.Combine(Sprite, GameState.GfxExt)).Height / 4
+            picSprite.BackgroundImage =
+                Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Characters, Sprite & GameState.GfxExt))
+        End If
+    End Sub
+
     Private Sub lstIndex_Click(sender As Object, e As EventArgs) Handles lstIndex.Click
         NpcEditorInit()
     End Sub
@@ -98,7 +119,7 @@ Friend Class frmEditor_NPC
     Private Sub NudSprite_Click(sender As Object, e As EventArgs) Handles nudSprite.Click
         NPC(GameState.EditorIndex).Sprite = nudSprite.Value
 
-        GameClient.EditorNPC_DrawSprite()
+        DrawSprite()
     End Sub
 
     Private Sub NudRange_ValueChanged(sender As Object, e As EventArgs) Handles nudRange.ValueChanged
