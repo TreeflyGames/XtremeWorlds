@@ -1980,6 +1980,22 @@ Public Class GameClient
 
     End Sub
 
+    Friend Sub EditorProjectile_DrawProjectile()
+        Dim iconnum As Integer
+
+        iconnum = frmEditor_Projectile.Instance.nudPic.Value
+
+        If iconnum < 1 Or iconnum > GameState.NumProjectiles Then
+            frmEditor_Projectile.Instance.picProjectile.BackgroundImage = Nothing
+            Exit Sub
+        End If
+
+        If File.Exists(IO.Path.Combine(Core.Path.Projectiles, iconnum & GameState.GfxExt)) Then
+            frmEditor_Projectile.Instance.picProjectile.BackgroundImage = Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Projectiles, iconnum & GameState.GfxExt))
+        End If
+
+    End Sub
+
     Public Shared Sub EditorEvent_DrawGraphic()
         Dim sRect As RectStruct
         Dim dRect As RectStruct
@@ -2510,6 +2526,15 @@ Public Class GameClient
         End If
 
         DrawMapName()
+
+        If GameState.MyEditorType = EditorType.Map And frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
+            DrawEvents()
+            EditorEvent_DrawGraphic()
+        End If
+
+        If GameState.MyEditorType = EditorType.Projectile Then
+            EditorProjectile_DrawProjectile()
+        End If
 
         GameClient.DrawBars()
         DrawMapFade()
