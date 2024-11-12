@@ -1,4 +1,5 @@
-﻿Imports System.Text
+﻿Imports System.ComponentModel
+Imports System.Text
 Imports Core
 Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Content
@@ -250,6 +251,63 @@ Module Text
                                0.0F, Vector2.Zero, 12 / 16.0F, SpriteEffects.None, 0.0F)
         GameClient.SpriteBatch.DrawString(Fonts(font), sanitizedText, New Vector2(x, y), frontColor,
                                0.0F, Vector2.Zero, 12 / 16.0F, SpriteEffects.None, 0.0F)
+    End Sub
+
+    Public Sub DrawMapAttributes()
+        Dim X As Integer
+        Dim y As Integer
+        Dim tX As Integer
+        Dim tY As Integer
+        Dim tA As Integer
+
+        If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpAttributes Then
+            For X = GameState.TileView.Left - 1 To GameState.TileView.Right + 1
+                For y = GameState.TileView.Top - 1 To GameState.TileView.Bottom + 1
+                    If IsValidMapPoint(X, y) Then
+                        With MyMap.Tile(X, y)
+                            tX = ((ConvertMapX(X * GameState.PicX)) - 4) + (GameState.PicX * 0.5)
+                            tY = ((ConvertMapY(y * GameState.PicY)) - 7) + (GameState.PicY * 0.5)
+
+                            If GameState.EditorAttribute = 1 Then
+                                tA = .Type
+                            Else
+                                tA = .Type2
+                            End If
+
+                            Select Case tA
+                                Case TileType.Blocked
+                                    RenderText("B", tX, tY, (Color.Red), (Color.Black))
+                                Case TileType.Warp
+                                    RenderText("W", tX, tY, (Color.Blue), (Color.Black))
+                                Case TileType.Item
+                                    RenderText("I", tX, tY, (Color.White), (Color.Black))
+                                Case TileType.NPCAvoid
+                                    RenderText("N", tX, tY, (Color.White), (Color.Black))
+                                Case TileType.Resource
+                                    RenderText("R", tX, tY, (Color.Green), (Color.Black))
+                                Case TileType.NPCSpawn
+                                    RenderText("S", tX, tY, (Color.Yellow), (Color.Black))
+                                Case TileType.Shop
+                                    RenderText("S", tX, tY, (Color.Blue), (Color.Black))
+                                Case TileType.Bank
+                                    RenderText("B", tX, tY, (Color.Blue), (Color.Black))
+                                Case TileType.Heal
+                                    RenderText("H", tX, tY, (Color.Green), (Color.Black))
+                                Case TileType.Trap
+                                    RenderText("T", tX, tY, (Color.Red), (Color.Black))
+                                Case TileType.Light
+                                    RenderText("L", tX, tY, (Color.Yellow), (Color.Black))
+                                Case TileType.Animation
+                                    RenderText("A", tX, tY, (Color.Red), (Color.Black))
+                                Case TileType.NoXing
+                                    RenderText("X", tX, tY, (Color.Red), (Color.Black))
+                            End Select
+                        End With
+                    End If
+                Next
+            Next
+        End If
+
     End Sub
 
     Sub DrawNPCName(MapNpcNum As Integer)
