@@ -658,13 +658,13 @@ Public Class frmEditor_Map
         If GameState.MapData = True Then GameState.GettingMap = False
     End Sub
 
-    Public Sub MapEditorChooseTile(ByVal Button As Integer, ByVal X As Single, ByVal Y As Single)
+    Public Shared Sub MapEditorChooseTile(ByVal Button As Integer, ByVal X As Single, ByVal Y As Single)
         If Button = MouseButtons.Left Then 'Left Mouse Button
             GameState.EditorTileWidth = 1
             GameState.EditorTileHeight = 1
 
-            If cmbAutoTile.SelectedIndex > 0 Then
-                Select Case cmbAutoTile.SelectedIndex
+            If frmEditor_Map.Instance.cmbAutoTile.SelectedIndex > 0 Then
+                Select Case frmEditor_Map.Instance.cmbAutoTile.SelectedIndex
                     Case 1 ' autotile
                         GameState.EditorTileWidth = 2
                         GameState.EditorTileHeight = 3
@@ -722,12 +722,12 @@ Public Class frmEditor_Map
 
     End Sub
 
-    Public Sub MapEditorMouseDown(ByVal X As Integer, ByVal Y As Integer, Optional ByVal movedMouse As Boolean = True)
+    Public Shared Sub MapEditorMouseDown(ByVal X As Integer, ByVal Y As Integer, Optional ByVal movedMouse As Boolean = True)
         Dim i As Integer
         Dim CurLayer As Integer
         Dim tileChanged As Boolean
 
-        CurLayer = cmbLayers.SelectedIndex + 1
+        CurLayer = frmEditor_Map.Instance.cmbLayers.SelectedIndex + 1
 
         If GameState.EyeDropper Then
             MapEditorEyeDropper()
@@ -759,10 +759,10 @@ Public Class frmEditor_Map
         Next
 
         If Not IsInBounds() Then Exit Sub
-        If cmbAutoTile.SelectedIndex = -1 Then Exit Sub
+        If frmEditor_Map.Instance.cmbAutoTile.SelectedIndex = -1 Then Exit Sub
 
         If GameClient.IsMouseButtonDown(MouseButton.Left) Then
-            If optInfo.Checked Then
+            If frmEditor_Map.Instance.optInfo.Checked Then
                 Select Case MyMap.Tile(GameState.CurX, GameState.CurY).Type
                     Case TileType.Warp
                         AddText("Map: " + MyMap.Tile(GameState.CurX, GameState.CurY).Data1.ToString() + " X: " + MyMap.Tile(GameState.CurX, GameState.CurY).Data2.ToString() + " Y:" + MyMap.Tile(GameState.CurX, GameState.CurY).Data3.ToString(), ColorType.Gray)
@@ -774,20 +774,20 @@ Public Class frmEditor_Map
                 End Select
             End If
 
-            If tabpages.SelectedTab Is tpTiles Then
+            If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpTiles Then
                 If GameState.EditorTileWidth = 1 And GameState.EditorTileHeight = 1 Then 'single tile
-                    MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, False, cmbAutoTile.SelectedIndex)
+                    MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, False, frmEditor_Map.Instance.cmbAutoTile.SelectedIndex)
                 Else ' multi tile!
-                    If cmbAutoTile.SelectedIndex = 0 Then
+                    If frmEditor_Map.Instance.cmbAutoTile.SelectedIndex = 0 Then
                         MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, True)
                     Else
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, True, cmbAutoTile.SelectedIndex)
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, True, frmEditor_Map.Instance.cmbAutoTile.SelectedIndex)
                     End If
                 End If
-            ElseIf tabpages.SelectedTab Is tpAttributes Then
+            ElseIf frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpAttributes Then
                 With MyMap.Tile(GameState.CurX, GameState.CurY)
                     ' blocked tile
-                    If optBlocked.Checked = True Then
+                    If frmEditor_Map.Instance.optBlocked.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Blocked
                         Else
@@ -796,7 +796,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' warp tile
-                    If optWarp.Checked = True Then
+                    If frmEditor_Map.Instance.optWarp.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Warp
                             .Data1 = GameState.EditorWarpMap
@@ -811,7 +811,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' item spawn
-                    If optItem.Checked = True Then
+                    If frmEditor_Map.Instance.optItem.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Item
                             .Data1 = GameState.ItemEditorNum
@@ -826,7 +826,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' npc avoid
-                    If optNPCAvoid.Checked = True Then
+                    If frmEditor_Map.Instance.optNPCAvoid.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.NPCAvoid
                             .Data1 = 0
@@ -841,7 +841,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' resource
-                    If optResource.Checked = True Then
+                    If frmEditor_Map.Instance.optResource.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Resource
                             .Data1 = GameState.ResourceEditorNum
@@ -856,7 +856,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' npc spawn
-                    If optNPCSpawn.Checked = True Then
+                    If frmEditor_Map.Instance.optNPCSpawn.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.NPCSpawn
                             .Data1 = GameState.SpawnNpcNum
@@ -871,7 +871,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' shop
-                    If optShop.Checked = True Then
+                    If frmEditor_Map.Instance.optShop.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Shop
                             .Data1 = GameState.EditorShop
@@ -886,7 +886,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' bank
-                    If optBank.Checked = True Then
+                    If frmEditor_Map.Instance.optBank.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Bank
                             .Data1 = 0
@@ -901,7 +901,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' heal
-                    If optHeal.Checked = True Then
+                    If frmEditor_Map.Instance.optHeal.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Heal
                             .Data1 = GameState.MapEditorHealType
@@ -916,7 +916,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' trap
-                    If optTrap.Checked = True Then
+                    If frmEditor_Map.Instance.optTrap.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Trap
                             .Data1 = GameState.MapEditorHealAmount
@@ -931,7 +931,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' light
-                    If optLight.Checked Then
+                    If frmEditor_Map.Instance.optLight.Checked Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Light
                             .Data1 = GameState.EditorLight
@@ -946,7 +946,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' Animation
-                    If optAnimation.Checked = True Then
+                    If frmEditor_Map.Instance.optAnimation.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.Animation
                             .Data1 = GameState.EditorAnimation
@@ -961,7 +961,7 @@ Public Class frmEditor_Map
                     End If
 
                     ' No Xing
-                    If optNoXing.Checked = True Then
+                    If frmEditor_Map.Instance.optNoXing.Checked = True Then
                         If GameState.EditorAttribute = 1 Then
                             .Type = TileType.NoXing
                             .Data1 = 0
@@ -975,7 +975,7 @@ Public Class frmEditor_Map
                         End If
                     End If
                 End With
-            ElseIf tabpages.SelectedTab Is tpDirBlock Then
+            ElseIf frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpDirBlock Then
                 ' find what tile it is
                 X -= ((X \ GameState.PicX) * GameState.PicX)
                 Y -= ((Y \ GameState.PicY) * GameState.PicY)
@@ -991,7 +991,7 @@ Public Class frmEditor_Map
                         End If
                     End If
                 Next
-            ElseIf tabpages.SelectedTab Is tpEvents Then
+            ElseIf frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
                 If frmEditor_Event.Instance.Visible = False Then
                     If EventCopy Then
                         CopyEvent_Map(GameState.CurX, GameState.CurY)
@@ -1005,17 +1005,17 @@ Public Class frmEditor_Map
         End If
 
         If GameClient.IsMouseButtonDown(MouseButton.Right) Then
-            If tabpages.SelectedTab Is tpTiles Then
+            If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpTiles Then
                 If GameState.EditorTileWidth = 1 And GameState.EditorTileHeight = 1 Then 'single tile
-                    MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, False, cmbAutoTile.SelectedIndex, 1)
+                    MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, False, frmEditor_Map.Instance.cmbAutoTile.SelectedIndex, 1)
                 Else ' multi tile!
-                    If cmbAutoTile.SelectedIndex = 0 Then
+                    If frmEditor_Map.Instance.cmbAutoTile.SelectedIndex = 0 Then
                         MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, True, 0, 1)
                     Else
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, True, cmbAutoTile.SelectedIndex, 1)
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, True, frmEditor_Map.Instance.cmbAutoTile.SelectedIndex, 1)
                     End If
                 End If
-            ElseIf tabpages.SelectedTab Is tpAttributes Then
+            ElseIf frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpAttributes Then
                 With MyMap.Tile(GameState.CurX, GameState.CurY)
                     ' clear attribute
                     .Type = 0
@@ -1023,7 +1023,7 @@ Public Class frmEditor_Map
                     .Data2 = 0
                     .Data3 = 0
                 End With
-            ElseIf tabpages.SelectedTab Is tpEvents Then
+            ElseIf frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
                 DeleteEvent(GameState.CurX, GameState.CurY)
             End If
         End If
@@ -1052,7 +1052,7 @@ Public Class frmEditor_Map
         SendCloseEditor()
     End Sub
 
-    Public Sub MapEditorSetTile(ByVal X As Integer, ByVal Y As Integer, ByVal CurLayer As Integer, Optional ByVal multitile As Boolean = False, Optional ByVal theAutotile As Byte = 0, Optional eraseTile As Byte = 0)
+    Public Shared Sub MapEditorSetTile(ByVal X As Integer, ByVal Y As Integer, ByVal CurLayer As Integer, Optional ByVal multitile As Boolean = False, Optional ByVal theAutotile As Byte = 0, Optional eraseTile As Byte = 0)
         Dim x2 As Integer, y2 As Integer, newTileX As Integer, newTileY As Integer
 
         newTileX = GameState.EditorTileX
@@ -1071,7 +1071,7 @@ Public Class frmEditor_Map
                 If eraseTile Then
                     .Layer(CurLayer).Tileset = 0
                 Else
-                    .Layer(CurLayer).Tileset = cmbTileSets.SelectedIndex + 1
+                    .Layer(CurLayer).Tileset = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1
                 End If
                 .Layer(CurLayer).AutoTile = theAutotile
                 CacheRenderState(X, Y, CurLayer)
@@ -1090,7 +1090,7 @@ Public Class frmEditor_Map
                 If eraseTile Then
                     .Layer(CurLayer).Tileset = 0
                 Else
-                    .Layer(CurLayer).Tileset = cmbTileSets.SelectedIndex + 1
+                    .Layer(CurLayer).Tileset = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1
                 End If
                 .Layer(CurLayer).AutoTile = 0
                 CacheRenderState(X, Y, CurLayer)
@@ -1108,7 +1108,7 @@ Public Class frmEditor_Map
                                 If eraseTile Then
                                     .Layer(CurLayer).Tileset = 0
                                 Else
-                                    .Layer(CurLayer).Tileset = cmbTileSets.SelectedIndex + 1
+                                    .Layer(CurLayer).Tileset = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1
                                 End If
                                 .Layer(CurLayer).AutoTile = 0
                                 CacheRenderState(X, Y, CurLayer)
@@ -1122,7 +1122,7 @@ Public Class frmEditor_Map
         End If
     End Sub
 
-    Public Sub MapEditorHistory()
+    Public Shared Sub MapEditorHistory()
         Dim i As Long
 
         If GameState.HistoryIndex = GameState.MaxTileHistory Then
@@ -1148,16 +1148,16 @@ Public Class frmEditor_Map
         Dialogue("Map Editor", "Fill Layer: " & layer.ToString, "Are you sure you wish to fill this layer?", DialogueType.FillLayer, DialogueStyle.YesNo, cmbLayers.SelectedIndex + 1, cmbAutoTile.SelectedIndex + 1, tileX, tileY, cmbTileSets.SelectedIndex + 1)
     End Sub
 
-    Public Sub MapEditorEyeDropper()
+    Public Shared Sub MapEditorEyeDropper()
         Dim CurLayer As Integer
 
-        CurLayer = cmbLayers.SelectedIndex + 1
+        CurLayer = frmEditor_Map.Instance.cmbLayers.SelectedIndex + 1
 
         With MyMap.Tile(GameState.CurX, GameState.CurY)
             If .Layer(CurLayer).Tileset > 0 Then
-                cmbTileSets.SelectedIndex = .Layer(CurLayer).Tileset - 1
+                frmEditor_Map.Instance.cmbTileSets.SelectedIndex = .Layer(CurLayer).Tileset - 1
             Else
-                cmbTileSets.SelectedIndex = 1
+                frmEditor_Map.Instance.cmbTileSets.SelectedIndex = 1
             End If
             MapEditorChooseTile(MouseButtons.Left, .Layer(CurLayer).X * GameState.PicX, .Layer(CurLayer).Y * GameState.PicY)
             GameState.EyeDropper = Not GameState.EyeDropper

@@ -808,7 +808,7 @@ Public Class GameClient
     End Function
 
     Private Shared Sub HandleMouseInputs()
-        HandleMouseClick(MouseButton.Left)
+        HandleMouseClick()
         HandleScrollWheel()
     End Sub
 
@@ -828,9 +828,7 @@ Public Class GameClient
         End SyncLock
     End Sub
 
-    Private Shared _leftMouseHandled As Boolean = False
-
-    Private Shared Sub HandleMouseClick(button As MouseButton)
+    Private Shared Sub HandleMouseClick()
         SyncLock GameClient.InputLock
             Dim currentTime As Integer = Environment.TickCount
 
@@ -841,23 +839,18 @@ Public Class GameClient
             End If
 
             ' Check for MouseDown event (button pressed)
-            If GameClient.IsMouseButtonDown(button) Then
-                If Not _leftMouseHandled Then
-                    Gui.HandleInterfaceEvents(EntState.MouseDown)
-                    GameState.LastLeftClickTime = currentTime ' Track time for double-click detection
-                    _leftMouseHandled = True ' Set flag to indicate the left mouse button has been processed
-                End If
-            Else
-                _leftMouseHandled = False ' Reset flag when the button is released
+            If GameClient.IsMouseButtonDown(MouseButton.Left) Then
+                Gui.HandleInterfaceEvents(EntState.MouseDown)
+                GameState.LastLeftClickTime = currentTime ' Track time for double-click detection
             End If
 
             ' Check for MouseUp event (button released)
-            If Not GameClient.IsMouseButtonUp(button) Then
+            If Not GameClient.IsMouseButtonUp(MouseButton.Left) Then
                 Gui.HandleInterfaceEvents(EntState.MouseUp)
             End If
 
             ' Double-click detection for left button
-            If GameClient.IsMouseButtonDown(button) AndAlso
+            If GameClient.IsMouseButtonDown(MouseButton.Left) AndAlso
            currentTime - GameState.LastLeftClickTime <= GameState.DoubleClickTImer Then
                 Gui.HandleInterfaceEvents(EntState.DblClick)
                 GameState.LastLeftClickTime = 0 ' Reset double-click timer
@@ -865,17 +858,20 @@ Public Class GameClient
 
             ' In-game interactions for left click
             If GameState.InGame = True Then
-                If GameClient.IsMouseButtonDown(button) AndAlso Not _leftMouseHandled Then
+                If GameClient.IsMouseButtonDown(MouseButton.Left) Then
+                    If GameState.MyEditorType = EditorType.Map Then
+                        frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, False)
+                    End If
+
                     If PetAlive(GameState.MyIndex) AndAlso IsInBounds() Then
                         PetMove(GameState.CurX, GameState.CurY)
                     End If
                     CheckAttack(True)
                     PlayerSearch(GameState.CurX, GameState.CurY, 0)
-                    _leftMouseHandled = True ' Set flag after handling in-game interactions
                 End If
 
                 ' Right-click interactions
-                If GameClient.IsMouseButtonDown(MouseButton.Right) And GameState.InGame = True Then
+                If GameClient.IsMouseButtonDown(MouseButton.Right) Then
                     If GameState.VbKeyShift = True Then
                         ' Admin warp if Shift is held and the player has moderator access
                         If GetPlayerAccess(GameState.MyIndex) >= AccessType.Moderator Then
