@@ -48,17 +48,22 @@ Module Database
     End Function
 
     Public Sub CreateDatabase(databaseName As String)
-        If Not DatabaseExists("mirage") Then
-            Dim sql As String = $"CREATE DATABASE {databaseName};"
+        Dim checkDbExistsSql As String = $"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'"
+        Dim createDbSql As String = $"CREATE DATABASE {databaseName}"
 
-            ' Connect to the "postgres" maintenance database
-            Dim builder As New NpgsqlConnectionStringBuilder(connectionString)
-            builder.Database = "postgres"
+        Using connection As New NpgsqlConnection(connectionString)
+            connection.Open()
 
-            Dim maintenanceConnectionString As String = builder.ConnectionString
+            Using checkCommand As New NpgsqlCommand(checkDbExistsSql, connection)
+                Dim dbExists As Boolean = checkCommand.ExecuteScalar() IsNot Nothing
 
-            ExecuteSql(maintenanceConnectionString, sql)
-        End If
+                If Not dbExists Then
+                    Using createCommand As New NpgsqlCommand(createDbSql, connection)
+                        createCommand.ExecuteNonQuery()
+                    End Using
+                End If
+            End Using
+        End Using
     End Sub
 
     Public Function RowExistsByColumn(columnName As String, value As Int64, tableName As String) As Boolean
@@ -133,14 +138,14 @@ Module Database
     Public Sub UpdateRowByColumn(columnName As String, value As Int64, targetColumn As String, newValue As String, tableName As String)
         Dim sql As String = $"UPDATE {tableName} SET {targetColumn} = @newValue::jsonb WHERE {columnName} = @value;"
 
-        Dim jsonData As JObject = JObject.Parse(newValue) ' Parse the string into a JObject
+        newValue = newValue.Replace("\u0000", "")
 
         Using connection As New NpgsqlConnection(connectionString)
             connection.Open()
 
             Using command As New NpgsqlCommand(sql, connection)
                 command.Parameters.AddWithValue("@value", value)
-                command.Parameters.AddWithValue("@newValue", jsonData.ToString()) ' Convert JObject back to string
+                command.Parameters.AddWithValue("@newValue", newValue)
 
                 command.ExecuteNonQuery()
             End Using
@@ -219,8 +224,6 @@ Module Database
     End Function
 
     Public Sub InsertRow(id As Int64, data As String, tableName As String)
-        Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
-
         Using conn As New NpgsqlConnection(connectionString)
             conn.Open()
 
@@ -228,7 +231,7 @@ Module Database
                 cmd.Connection = conn
                 cmd.CommandText = $"INSERT INTO {tableName} (id, data) VALUES (@id, @data::jsonb);"
                 cmd.Parameters.AddWithValue("@id", id)
-                cmd.Parameters.AddWithValue("@data", jsonData.ToString()) ' Convert JObject back to string
+                cmd.Parameters.AddWithValue("@data", data) ' Convert JObject back to string
 
                 cmd.ExecuteNonQuery()
             End Using
@@ -236,8 +239,6 @@ Module Database
     End Sub
 
     Public Sub InsertRow(id As Int64, data As String, tableName As String, columnName As String)
-        Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
-
         Using conn As New NpgsqlConnection(connectionString)
             conn.Open()
 
@@ -245,7 +246,7 @@ Module Database
                 cmd.Connection = conn
                 cmd.CommandText = $"INSERT INTO {tableName} (id, data) VALUES (@id, @data::jsonb);"
                 cmd.Parameters.AddWithValue("@id", id)
-                cmd.Parameters.AddWithValue("@" + columnName, jsonData.ToString()) ' Convert JObject back to string
+                cmd.Parameters.AddWithValue("@" + columnName, data) ' Convert JObject back to string
 
                 cmd.ExecuteNonQuery()
             End Using
@@ -253,8 +254,6 @@ Module Database
     End Sub
 
     Public Sub InsertRowByColumn(id As Int64, data As String, tableName As String, dataColumn As String, idColumn As String)
-        Dim jsonData As JObject = JObject.Parse(data) ' Parse the string into a JObject
-
         Dim sql As String = $"INSERT INTO {tableName} ({idColumn}, {dataColumn}) VALUES (@id, @data::jsonb);"
 
         Using connection As New NpgsqlConnection(connectionString)
@@ -262,7 +261,7 @@ Module Database
 
             Using command As New NpgsqlCommand(sql, connection)
                 command.Parameters.AddWithValue("@id", id)
-                command.Parameters.AddWithValue("@data", jsonData.ToString()) ' Convert JObject back to string
+                command.Parameters.AddWithValue("@data", data) ' Convert JObject back to string
 
                 command.ExecuteNonQuery()
             End Using
@@ -561,10 +560,10 @@ Module Database
         ' Load map data
         filename = AppDomain.CurrentDomain.BaseDirectory & "\maps\cs\map" & MapNum & ".ini"
 
-        ReDim csMap.MapData.Npc(MAX_MAP_NPCS)
+        ReDim CsMap.MapData.NPC(MAX_MAP_NPCS)
 
         ' General
-        With csMap.MapData
+        With CsMap.MapData
             .Name = GetVar(filename, "General", "Name")
             .Music = GetVar(filename, "General", "Music")
             .Moral = Val(GetVar(filename, "General", "Moral"))
@@ -592,12 +591,12 @@ Module Database
 
             .BossNpc = Val(GetVar(filename, "General", "BossNpc"))
             For i = 1 To 30
-                .Npc(i) = Val(GetVar(filename, "General", "Npc" & i))
+                .NPC(i) = Val(GetVar(filename, "General", "Npc" & i))
             Next
         End With
 
         ' Redim the map
-        ReDim csMap.Tile(csMap.MapData.MaxX, csMap.MapData.MaxY)
+        ReDim CsMap.Tile(CsMap.MapData.MaxX, CsMap.MapData.MaxY)
 
         filename = AppDomain.CurrentDomain.BaseDirectory & "\maps\cs\map" & MapNum & ".dat"
 
@@ -606,16 +605,16 @@ Module Database
 
             With csMap
                 ' Assuming MAX_X and MAX_Y are the dimensions of your map
-                Dim MAX_X As Integer = csMap.MapData.MaxX
-                Dim MAX_Y As Integer = csMap.MapData.MaxY
+                Dim MAX_X As Integer = CsMap.MapData.MaxX
+                Dim MAX_Y As Integer = CsMap.MapData.MaxY
 
                 For x = 0 To MAX_X
                     For y = 0 To MAX_Y
                         ' Resize arrays only once if possible
-                        ReDim csMap.Tile(x, y).Autotile(LayerType.Count - 1)
-                        ReDim csMap.Tile(x, y).Layer(LayerType.Count - 1)
+                        ReDim CsMap.Tile(x, y).Autotile(LayerType.Count - 1)
+                        ReDim CsMap.Tile(x, y).Layer(LayerType.Count - 1)
 
-                        With csMap.Tile(x, y)
+                        With CsMap.Tile(x, y)
                             .Type = binaryReader.ReadByte()
                             .Data1 = binaryReader.ReadInt32()
                             .Data2 = binaryReader.ReadInt32()
@@ -643,7 +642,7 @@ Module Database
     End Function
 
     Sub ClearMapItem(index As Integer, mapNum As Integer)
-        MapItem(mapNum, index).PlayerName = ""
+        MapItem(MapNum, index).PlayerName = ""
     End Sub
 
     Sub ClearMapItems()
@@ -873,27 +872,27 @@ Module Database
 
         ReDim mwMap.NPC(MAX_MAP_NPCS)
 
-        mwMap.Name = csMap.MapData.Name
-        mwMap.MaxX = csMap.MapData.MaxX
-        mwMap.MaxY = csMap.MapData.MaxY
-        mwMap.BootMap = csMap.MapData.BootMap
-        mwMap.BootX = csMap.MapData.BootX
-        mwMap.BootY = csMap.MapData.BootY
-        mwMap.Moral = csMap.MapData.Moral
-        mwMap.Music = csMap.MapData.Music
-        mwMap.Fog = csMap.MapData.Fog
-        mwMap.Weather = csMap.MapData.Weather
-        mwMap.WeatherIntensity = csMap.MapData.WeatherIntensity
-        mwMap.Up = csMap.MapData.Up
-        mwMap.Down = csMap.MapData.Down
-        mwMap.Left = csMap.MapData.Left
-        mwMap.Right = csMap.MapData.Right
-        mwMap.MapTintA = csMap.MapData.Alpha
-        mwMap.MapTintR = csMap.MapData.Red
-        mwMap.MapTintG = csMap.MapData.Green
-        mwMap.MapTintB = csMap.MapData.Blue
-        mwMap.FogOpacity = csMap.MapData.FogOpacity
-        mwMap.FogSpeed = csMap.MapData.FogSpeed
+        mwMap.Name = CsMap.MapData.Name
+        mwMap.MaxX = CsMap.MapData.MaxX
+        mwMap.MaxY = CsMap.MapData.MaxY
+        mwMap.BootMap = CsMap.MapData.BootMap
+        mwMap.BootX = CsMap.MapData.BootX
+        mwMap.BootY = CsMap.MapData.BootY
+        mwMap.Moral = CsMap.MapData.Moral
+        mwMap.Music = CsMap.MapData.Music
+        mwMap.Fog = CsMap.MapData.Fog
+        mwMap.Weather = CsMap.MapData.Weather
+        mwMap.WeatherIntensity = CsMap.MapData.WeatherIntensity
+        mwMap.Up = CsMap.MapData.Up
+        mwMap.Down = CsMap.MapData.Down
+        mwMap.Left = CsMap.MapData.Left
+        mwMap.Right = CsMap.MapData.Right
+        mwMap.MapTintA = CsMap.MapData.Alpha
+        mwMap.MapTintR = CsMap.MapData.Red
+        mwMap.MapTintG = CsMap.MapData.Green
+        mwMap.MapTintB = CsMap.MapData.Blue
+        mwMap.FogOpacity = CsMap.MapData.FogOpacity
+        mwMap.FogSpeed = CsMap.MapData.FogSpeed
 
         ReDim mwMap.Tile(mwMap.MaxX, mwMap.MaxY)
 
@@ -903,22 +902,22 @@ Module Database
                 ' Resize arrays only once if possible
                 ReDim mwMap.Tile(x, y).Layer(LayerType.Count - 1)
 
-                mwMap.Tile(x, y).Data1 = csMap.Tile(x, y).Data1
-                mwMap.Tile(x, y).Data2 = csMap.Tile(x, y).Data2
-                mwMap.Tile(x, y).Data3 = csMap.Tile(x, y).Data3
-                mwMap.Tile(x, y).DirBlock = csMap.Tile(x, y).DirBlock
+                mwMap.Tile(x, y).Data1 = CsMap.Tile(x, y).Data1
+                mwMap.Tile(x, y).Data2 = CsMap.Tile(x, y).Data2
+                mwMap.Tile(x, y).Data3 = CsMap.Tile(x, y).Data3
+                mwMap.Tile(x, y).DirBlock = CsMap.Tile(x, y).DirBlock
 
                 For i As Integer = LayerType.Ground To LayerType.Count - 1
-                    mwMap.Tile(x, y).Layer(i).X = csMap.Tile(x, y).Layer(i).x
-                    mwMap.Tile(x, y).Layer(i).Y = csMap.Tile(x, y).Layer(i).y
-                    mwMap.Tile(x, y).Layer(i).Tileset = csMap.Tile(x, y).Layer(i).TileSet
-                    mwMap.Tile(x, y).Layer(i).AutoTile = csMap.Tile(x, y).Autotile(i)
+                    mwMap.Tile(x, y).Layer(i).X = CsMap.Tile(x, y).Layer(i).x
+                    mwMap.Tile(x, y).Layer(i).Y = CsMap.Tile(x, y).Layer(i).y
+                    mwMap.Tile(x, y).Layer(i).Tileset = CsMap.Tile(x, y).Layer(i).TileSet
+                    mwMap.Tile(x, y).Layer(i).AutoTile = CsMap.Tile(x, y).Autotile(i)
                 Next
             Next
         Next
 
         For i As Integer = 1 To 30
-            mwMap.NPC(i) = csMap.MapData.Npc(i)
+            mwMap.NPC(i) = CsMap.MapData.NPC(i)
         Next
 
         Return mwMap
