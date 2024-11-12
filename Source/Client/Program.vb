@@ -818,12 +818,37 @@ Public Class GameClient
             Dim scrollValue = GameClient.GetMouseScrollDelta()
             If scrollValue > 0 Then
                 ScrollChatBox(0) ' Scroll up
-            ElseIf scrollValue < 0 Then
-                ScrollChatBox(1) ' Scroll down
-            End If
 
-            If scrollValue <> 0 Then
-                Gui.HandleInterfaceEvents(EntState.MouseScroll)
+                If GameState.MyEditorType = EditorType.Map Then
+                    If VbKeyShift = Keys.LeftShift Then
+                        If frmEditor_Map.Instance.cmbLayers.SelectedIndex + 1 < LayerType.Count - 1 Then
+                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex + 1
+                        End If
+
+                    Else
+                        If frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0 Then
+                            frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex - 1
+                        End If
+                    End If
+
+                End If
+            ElseIf scrollValue < 0 Then
+                If GameState.MyEditorType = EditorType.Map Then
+                    If VbKeyShift = Keys.LeftShift Then
+                        If frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0 Then
+                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1
+                        End If
+                    Else
+                        If frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets Then
+                            frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1
+                        End If
+                    End If
+                    ScrollChatBox(1) ' Scroll down
+                End If
+
+                If scrollValue <> 0 Then
+                    Gui.HandleInterfaceEvents(EntState.MouseScroll)
+                End If
             End If
         End SyncLock
     End Sub
@@ -862,7 +887,6 @@ Public Class GameClient
                     If GameState.MyEditorType = EditorType.Map Then
                         frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, False)
                     End If
-
                     If PetAlive(GameState.MyIndex) AndAlso IsInBounds() Then
                         PetMove(GameState.CurX, GameState.CurY)
                     End If
