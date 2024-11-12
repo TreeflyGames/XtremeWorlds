@@ -1743,7 +1743,6 @@ Public Class GameClient
         Return New Microsoft.Xna.Framework.Color(drawingColor.R, drawingColor.G, drawingColor.B, drawingColor.A)
     End Function
 
-
     Friend Shared Sub DrawHover(x2 As Integer, y2 As Integer)
         Dim rec As Rectangle
         Dim x As Integer, y As Integer
@@ -1796,7 +1795,7 @@ Public Class GameClient
             tmpNum = UBound(theArray)
 
             For i = 1 To tmpNum
-                If GetTextWidth(theArray(i), 15) > MaxWidth Then MaxWidth = GetTextWidth(theArray(i), 15)
+                If GetTextWidth(theArray(i), FontType.Georgia) > MaxWidth Then MaxWidth = GetTextWidth(theArray(i), FontType.Georgia)
             Next
 
             ' calculate the new position
