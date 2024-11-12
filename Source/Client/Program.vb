@@ -1491,9 +1491,13 @@ Public Class GameClient
         ' Get GfxInfo for the selected tileset
         Dim gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
 
+        ' Create a render target for drawing
+        Dim renderTarget As New RenderTarget2D(Graphics.GraphicsDevice, frmEditor_Map.Instance.picBackSelect.Width, frmEditor_Map.Instance.picBackSelect.Height)
+        Graphics.GraphicsDevice.SetRenderTarget(renderTarget)
+        Graphics.GraphicsDevice.Clear(Color.Black)
+
         ' Create a new SpriteBatch for rendering
         Dim spriteBatch As New Graphics.SpriteBatch(Graphics.GraphicsDevice)
-        Graphics.GraphicsDevice.Clear(Color.Black)
 
         ' Begin the SpriteBatch with appropriate settings
         spriteBatch.Begin()
@@ -1504,8 +1508,10 @@ Public Class GameClient
         ' Calculate the destination rectangle
         Dim destRect As New Rectangle(0, 0, frmEditor_Map.Instance.picBackSelect.Width, frmEditor_Map.Instance.picBackSelect.Height)
 
+        Dim texture = GetTexture(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
+
         ' Draw the tileset texture
-        spriteBatch.Draw(GetTexture(System.IO.Path.Combine(Core.Path.Tilesets, tileset)), destRect, sourceRect, Color.White)
+        spriteBatch.Draw(texture, destRect, sourceRect, Color.White)
 
         ' Draw the selection rectangle outline
         Dim selectionRect As New Rectangle(GameState.EditorTileSelStart.X * GameState.PicX, GameState.EditorTileSelStart.Y * GameState.PicY, GameState.EditorTileWidth * GameState.PicX, GameState.EditorTileHeight * GameState.PicY)
@@ -1513,8 +1519,18 @@ Public Class GameClient
 
         spriteBatch.End()
 
-        ' Present the rendered content to the screen
-        Graphics.GraphicsDevice.Present()
+        ' Reset the render target to the back buffer
+        Graphics.GraphicsDevice.SetRenderTarget(Nothing)
+
+        ' Convert the render target to a Texture2D and set it as the background image of the PictureBox
+        Dim stream As New IO.MemoryStream()
+        renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height)
+        frmEditor_Map.Instance.picBackSelect.Image = Drawing.Image.FromStream(stream)
+
+        ' Dispose of the render target and sprite batch
+        stream.Dispose()
+        renderTarget.Dispose()
+        spriteBatch.Dispose()
     End Sub
 
     Private Shared Sub DrawRectangleOutline(spriteBatch As Graphics.SpriteBatch, rect As Rectangle, color As Color)
@@ -1640,6 +1656,93 @@ Public Class GameClient
                 Drawing.Image.FromFile(IO.Path.Combine(Core.Path.Paperdolls, Sprite & GameState.GfxExt))
         End If
     End Sub
+
+    Friend Sub EditorAnim_DrawSprite()
+        With frmEditor_Animation.Instance
+            ' Ensure spriteBatch is created and disposed properly
+            Dim spriteBatch As New Graphics.SpriteBatch(Graphics.GraphicsDevice)
+
+            ' Call ProcessAnimation for each animation panel
+            ProcessAnimation(.nudSprite0, .nudFrameCount0, .nudLoopTime0, 0, EditorAnimation_Anim1, .picSprite0, spriteBatch)
+            ProcessAnimation(.nudSprite1, .nudFrameCount1, .nudLoopTime1, 1, EditorAnimation_Anim2, .picSprite1, spriteBatch)
+        End With
+    End Sub
+
+    Public Sub ProcessAnimation(animationControl As System.Windows.Forms.NumericUpDown,
+                            frameCountControl As System.Windows.Forms.NumericUpDown,
+                            loopCountControl As System.Windows.Forms.NumericUpDown,
+                            animationTimerIndex As Integer,
+                            animationDisplay As Texture2D,
+                            backgroundColorControl As System.Windows.Forms.PictureBox,
+                            spriteBatch As Graphics.SpriteBatch)
+
+        ' Retrieve the animation number and check its validity
+        Dim animationNum As Integer = animationControl.Value
+        If animationNum <= 0 Or animationNum > GameState.NumAnimations Then
+            spriteBatch.GraphicsDevice.Clear(ToMonoGameColor(backgroundColorControl.BackColor))
+            spriteBatch.End() ' Ensure spriteBatch is properly ended
+            Exit Sub
+        End If
+
+        Dim texture = GetTexture(System.IO.Path.Combine(Core.Path.Animations, animationNum & GameState.GfxExt))
+
+        ' Get dimensions and column count from controls and graphic info
+        Dim gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Animations, animationNum & GameState.GfxExt))
+        If gfxInfo Is Nothing OrElse texture Is Nothing Then Exit Sub
+
+        Dim totalWidth As Integer = gfxInfo.Width
+        Dim totalHeight As Integer = gfxInfo.Height
+        Dim columns As Integer = frameCountControl.Value
+
+        ' Validate columns to avoid division by zero
+        If columns <= 0 Then Exit Sub
+
+        ' Calculate frame dimensions
+        Dim frameWidth As Integer = totalWidth / columns
+
+        ' Assuming square frames for simplicity (adjust if frames are not square)
+        Dim frameHeight As Integer = frameWidth
+
+        Dim rows As Integer
+
+        ' Calculate the number of rows and total frame count
+        If frameHeight > 0 Then
+            rows = totalHeight / frameHeight
+        End If
+
+        Dim frameCount As Integer = rows * columns
+
+        ' Retrieve loop timing and check frame rendering necessity
+        Dim looptime As Integer = loopCountControl.Value
+        If GameState.AnimEditorTimer(animationTimerIndex) + looptime <= Environment.TickCount Then
+            If GameState.AnimEditorFrame(animationTimerIndex) >= frameCount Then
+                GameState.AnimEditorFrame(animationTimerIndex) = 1 ' Reset to the first frame if it exceeds the count
+            Else
+                GameState.AnimEditorFrame(animationTimerIndex) += 1
+            End If
+            GameState.AnimEditorTimer(animationTimerIndex) = Environment.TickCount
+
+            ' Render the frame if necessary
+            If frameCountControl.Value > 0 Then
+                Dim frameIndex As Integer = GameState.AnimEditorFrame(animationTimerIndex) - 1
+                Dim column As Integer = frameIndex Mod columns
+                Dim row As Integer = frameIndex \ columns
+
+                ' Calculate the source rectangle for the texture
+                Dim sRECT As New Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight)
+
+                spriteBatch.GraphicsDevice.Clear(ToMonoGameColor(backgroundColorControl.BackColor))
+                spriteBatch.Begin()
+                spriteBatch.Draw(texture, New Rectangle(0, 0, frameWidth, frameHeight), sRECT, Color.White)
+                spriteBatch.End()
+            End If
+        End If
+    End Sub
+
+    Private Function ToMonoGameColor(drawingColor As System.Drawing.Color) As Microsoft.Xna.Framework.Color
+        Return New Microsoft.Xna.Framework.Color(drawingColor.R, drawingColor.G, drawingColor.B, drawingColor.A)
+    End Function
+
 
     Friend Shared Sub DrawHover(x2 As Integer, y2 As Integer)
         Dim rec As Rectangle
@@ -2526,6 +2629,14 @@ Public Class GameClient
         End If
 
         DrawMapName()
+
+        If GameState.MyEditorType = EditorType.Map Then
+            DrawTileset()
+        End If
+
+        If GameState.MyEditorType = EditorType.Animation Then
+            EditorAnim_DrawSprite()
+        End If
 
         If GameState.MyEditorType = EditorType.Map And frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
             DrawEvents()
