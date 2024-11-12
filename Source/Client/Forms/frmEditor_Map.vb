@@ -10,6 +10,7 @@ Imports ManagedBass
 Imports ManagedBass.Midi
 Imports System.Windows.Forms
 Imports Microsoft.Xna.Framework
+Imports Microsoft.Xna.Framework.Graphics
 
 Public Class frmEditor_Map
 #Region "Frm"
@@ -49,6 +50,69 @@ Public Class frmEditor_Map
             picMapItem.BackgroundImage = Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Items, itemnum & GameState.GfxExt))
         End If
 
+    End Sub
+
+    Public Sub DrawTileset()
+        Dim tileset As Integer
+
+        If cmbTileSets.SelectedIndex = -1 Then
+            Exit Sub
+        End If
+
+        tileset = cmbTileSets.SelectedIndex + 1
+
+        ' Get GfxInfo for the selected tileset
+        Dim gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
+
+        ' Create a render target for drawing
+        Dim renderTarget As New RenderTarget2D(GameClient.Graphics.GraphicsDevice, frmEditor_Map.Instance.picBackSelect.Width, frmEditor_Map.Instance.picBackSelect.Height)
+        GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget)
+        GameClient.Graphics.GraphicsDevice.Clear(Color.Black)
+
+        ' Create a new SpriteBatch for rendering
+        Dim spriteBatch As New Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice)
+
+        ' Begin the SpriteBatch with appropriate settings
+        spriteBatch.Begin()
+
+        ' Calculate the source rectangle
+        Dim sourceRect As New Rectangle(0, 0, gfxInfo.Width \ 4, gfxInfo.Height \ 4)
+
+        ' Calculate the destination rectangle
+        Dim destRect As New Rectangle(0, 0, picBackSelect.Width, picBackSelect.Height)
+
+        Dim texture = GameClient.GetTexture(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
+
+        ' Draw the tileset texture
+        spriteBatch.Draw(texture, destRect, sourceRect, Color.White)
+
+        ' Draw the selection rectangle outline
+        Dim selectionRect As New Rectangle(GameState.EditorTileSelStart.X * GameState.PicX, GameState.EditorTileSelStart.Y * GameState.PicY, GameState.EditorTileWidth * GameState.PicX, GameState.EditorTileHeight * GameState.PicY)
+        DrawRectangleOutline(spriteBatch, selectionRect, Color.Red)
+
+        spriteBatch.End()
+
+        ' Reset the render target to the back buffer
+        GameClient.Graphics.GraphicsDevice.SetRenderTarget(Nothing)
+
+        ' Convert the render target to a Texture2D and set it as the background image of the PictureBox
+        Dim stream As New System.IO.MemoryStream()
+        renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height)
+        picBackSelect.Image = Drawing.Image.FromStream(stream)
+
+        ' Dispose of the render target and sprite batch
+        stream.Dispose()
+        renderTarget.Dispose()
+        spriteBatch.Dispose()
+    End Sub
+
+    Private Sub DrawRectangleOutline(spriteBatch As Graphics.SpriteBatch, rect As Rectangle, color As Color)
+        ' Draw lines to form a rectangle outline
+        Dim lineThickness As Integer = 1 ' Change as needed
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y, rect.Width, lineThickness), color) ' Top
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y, lineThickness, rect.Height), color) ' Left
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X + rect.Width - lineThickness, rect.Y, lineThickness, rect.Height), color) ' Right
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y + rect.Height - lineThickness, rect.Width, lineThickness), color) ' Bottom
     End Sub
 
 #End Region
@@ -702,8 +766,6 @@ Public Class frmEditor_Map
 
             GameState.EditorTileSelStart = New Point(GameState.EditorTileX, GameState.EditorTileY)
             GameState.EditorTileSelEnd = New Point(GameState.EditorTileX + GameState.EditorTileWidth, GameState.EditorTileY + GameState.EditorTileHeight)
-
-            GameClient.DrawTileset()
         End If
     End Sub
 
@@ -730,8 +792,6 @@ Public Class frmEditor_Map
 
             GameState.EditorTileSelStart = New Point(GameState.EditorTileX, GameState.EditorTileY)
             GameState.EditorTileSelEnd = New Point(GameState.EditorTileWidth, GameState.EditorTileHeight)
-
-            GameClient.DrawTileset()
         End If
 
     End Sub
@@ -1433,6 +1493,10 @@ Public Class frmEditor_Map
 
     Private Sub tsbDeleteMap_Click(sender As Object, e As EventArgs) Handles tsbDeleteMap.Click
         ClearMap()
+    End Sub
+
+    Private Sub picBackSelect_Paint(sender As Object, e As PaintEventArgs) Handles picBackSelect.Paint
+        DrawTileset()
     End Sub
 
 #End Region

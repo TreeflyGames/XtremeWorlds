@@ -1484,73 +1484,6 @@ Public Class GameClient
         RenderTexture(IO.Path.Combine(Core.Path.Misc, "Target"), x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height)
     End Sub
 
-    Public Shared Sub DrawTileset()
-        Dim tileset As Integer
-
-        If frmEditor_Map.Instance.cmbTileSets.InvokeRequired Then
-            frmEditor_Map.Instance.cmbTileSets.Invoke(New System.Windows.Forms.MethodInvoker(AddressOf DrawTileset))
-        End If
-
-        If frmEditor_Map.Instance.cmbTileSets.SelectedIndex = -1 Then
-            Exit Sub
-        End If
-
-        tileset = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1
-
-        ' Get GfxInfo for the selected tileset
-        Dim gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
-
-        ' Create a render target for drawing
-        Dim renderTarget As New RenderTarget2D(Graphics.GraphicsDevice, frmEditor_Map.Instance.picBackSelect.Width, frmEditor_Map.Instance.picBackSelect.Height)
-        Graphics.GraphicsDevice.SetRenderTarget(renderTarget)
-        Graphics.GraphicsDevice.Clear(Color.Black)
-
-        ' Create a new SpriteBatch for rendering
-        Dim spriteBatch As New Graphics.SpriteBatch(Graphics.GraphicsDevice)
-
-        ' Begin the SpriteBatch with appropriate settings
-        spriteBatch.Begin()
-
-        ' Calculate the source rectangle
-        Dim sourceRect As New Rectangle(0, 0, gfxInfo.Width \ 4, gfxInfo.Height \ 4)
-
-        ' Calculate the destination rectangle
-        Dim destRect As New Rectangle(0, 0, frmEditor_Map.Instance.picBackSelect.Width, frmEditor_Map.Instance.picBackSelect.Height)
-
-        Dim texture = GetTexture(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
-
-        ' Draw the tileset texture
-        spriteBatch.Draw(texture, destRect, sourceRect, Color.White)
-
-        ' Draw the selection rectangle outline
-        Dim selectionRect As New Rectangle(GameState.EditorTileSelStart.X * GameState.PicX, GameState.EditorTileSelStart.Y * GameState.PicY, GameState.EditorTileWidth * GameState.PicX, GameState.EditorTileHeight * GameState.PicY)
-        DrawRectangleOutline(spriteBatch, selectionRect, Color.Red)
-
-        spriteBatch.End()
-
-        ' Reset the render target to the back buffer
-        Graphics.GraphicsDevice.SetRenderTarget(Nothing)
-
-        ' Convert the render target to a Texture2D and set it as the background image of the PictureBox
-        Dim stream As New IO.MemoryStream()
-        renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height)
-        frmEditor_Map.Instance.picBackSelect.Image = Drawing.Image.FromStream(stream)
-
-        ' Dispose of the render target and sprite batch
-        stream.Dispose()
-        renderTarget.Dispose()
-        spriteBatch.Dispose()
-    End Sub
-
-    Private Shared Sub DrawRectangleOutline(spriteBatch As Graphics.SpriteBatch, rect As Rectangle, color As Color)
-        ' Draw lines to form a rectangle outline
-        Dim lineThickness As Integer = 1 ' Change as needed
-        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y, rect.Width, lineThickness), color) ' Top
-        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y, lineThickness, rect.Height), color) ' Left
-        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X + rect.Width - lineThickness, rect.Y, lineThickness, rect.Height), color) ' Right
-        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(rect.X, rect.Y + rect.Height - lineThickness, rect.Width, lineThickness), color) ' Bottom
-    End Sub
-
     Public Shared Function ToMonoGameColor(drawingColor As System.Drawing.Color) As Microsoft.Xna.Framework.Color
         Return New Microsoft.Xna.Framework.Color(drawingColor.R, drawingColor.G, drawingColor.B, drawingColor.A)
     End Function
@@ -2241,8 +2174,6 @@ Public Class GameClient
         DrawMapName()
 
         If GameState.MyEditorType = EditorType.Map Then
-            DrawTileset()
-
             If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
                 DrawEvents()
             End If
