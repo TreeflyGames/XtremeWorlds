@@ -51,7 +51,7 @@ Module Database
         Dim checkDbExistsSql As String = $"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'"
         Dim createDbSql As String = $"CREATE DATABASE {databaseName}"
 
-        Using connection As New NpgsqlConnection(connectionString)
+        Using connection As New NpgsqlConnection(connectionString.Substring(0, connectionString.LastIndexOf(";"c)))
             connection.Open()
 
             Using checkCommand As New NpgsqlCommand(checkDbExistsSql, connection)
@@ -59,7 +59,11 @@ Module Database
 
                 If Not dbExists Then
                     Using createCommand As New NpgsqlCommand(createDbSql, connection)
-                        createCommand.ExecuteNonQuery()
+                        Dim discard = createCommand.ExecuteNonQuery()
+
+                        Using dbConnection As New NpgsqlConnection(connectionString)
+                            dbConnection.Close()
+                        End Using
                     End Using
                 End If
             End Using
