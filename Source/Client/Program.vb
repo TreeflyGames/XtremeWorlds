@@ -600,7 +600,7 @@ Public Class GameClient
             ' hide/show chat window
             If Gui.Windows(Gui.GetWindowIndex("winChat")).Visible = True Then
                 Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Text = ""
-                HideChat()
+                Gui.HideChat()
                 Exit Sub
             End If
 
@@ -656,7 +656,7 @@ Public Class GameClient
 
             If GameClient.CurrentKeyboardState.IsKeyDown(Keys.Enter) Then
                 If Gui.Windows(Gui.GetWindowIndex("winChatSmall")).Visible = True Then
-                    ShowChat()
+                    Gui.ShowChat()
                     GameState.inSmallChat = 0
                     Exit Sub
                 End If

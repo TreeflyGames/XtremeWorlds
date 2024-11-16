@@ -146,7 +146,7 @@ Module GameLogic
         If chatText = "" Then
             If Gui.Windows(Gui.GetWindowIndex("winChat")).Visible = True Then
                 Gui.Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Text = ""
-                HideChat()
+                Gui.HideChat()
                 Exit Sub
             End If
         End If
@@ -966,28 +966,6 @@ Continue1:
         Else
             Dialogue("Invalid Connection", "Cannot connect to game server.", "Please try again.", DialogueType.Alert)
         End If
-    End Sub
-
-    Public Sub ShowChat()
-        Gui.ShowWindow(Gui.GetWindowIndex("winChat"), , False)
-        Gui.HideWindow(Gui.GetWindowIndex("winChatSmall"))
-        ' Set the active control
-        Gui.ActiveWindow = Gui.GetWindowIndex("winChat")
-        Gui.SetActiveControl(Gui.GetWindowIndex("winChat"), Gui.GetControlIndex("winChat", "txtChat"))
-        GameState.inSmallChat = 0
-        GameState.ChatScroll = 0
-    End Sub
-
-    Public Sub HideChat()
-        Gui.ShowWindow(Gui.GetWindowIndex("winChatSmall"), , False)
-        Gui.HideWindow(Gui.GetWindowIndex("winChat"))
-
-        ' Set the active control
-        Gui.ActiveWindow = Gui.GetWindowIndex("winChat")
-        Gui.SetActiveControl(Gui.GetWindowIndex("winChat"), Gui.GetControlIndex("winChat", "txtChat"))
-
-        GameState.inSmallChat = 1
-        GameState.ChatScroll = 0
     End Sub
 
     Public Sub SetChatHeight(Height As Long)

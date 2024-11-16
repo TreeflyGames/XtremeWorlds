@@ -189,6 +189,7 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
             .zOrder = Windows.Count
         End With
     End Sub
+
     Public Shared Sub SortWindows()
         Dim tempWindow As Window
         Dim i As Long, x As Long
@@ -205,6 +206,7 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
             Next
         End While
     End Sub
+
     Public Shared Sub Combobox_AddItem(winName As String, controlIndex As Long, text As String)
         ' Ensure the List property is initialized as a List(Of String) in Control class
         If Windows(winName).Controls(controlIndex).List Is Nothing Then
@@ -383,7 +385,7 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
         callback(EntState.DblClick) = callback_dblclick
 
         ' Control the label
-        UpdateControl(winNum, zOrder_Con, name, color.White, ControlType.Label, design, image, texture, callback, left, top, width, height, visible, , , , , text, align, font, , alpha, clickThrough, , , censor, , , , , , locked)
+        UpdateControl(winNum, zOrder_Con, name, Color.White, ControlType.Label, design, image, texture, callback, left, top, width, height, visible, , , , , text, align, font, , alpha, clickThrough, , , censor, , , , , , locked)
     End Sub
 
     Public Shared Sub UpdateCheckBox(winNum As Long, name As String, left As Long, top As Long, width As Long, Optional height As Long = 15, Optional value As Long = 0, Optional text As String = "", Optional font As FontType = FontType.Georgia,
@@ -4191,7 +4193,7 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
     Public Shared Sub DrawShop()
         Dim Xo As Long, Yo As Long, ItemIcon As Long, ItemNum As Long, Amount As Long, i As Long, Top As Long, Left As Long, Y As Long, X As Long, Color As Long
 
-        If GameState.InShop < 1 or GameState.InShop > MAX_SHOPS Then Exit Sub
+        If GameState.InShop < 1 Or GameState.InShop > MAX_SHOPS Then Exit Sub
 
         StreamShop(GameState.InShop)
 
@@ -4299,8 +4301,8 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
         Dim Left As Long, top As Long
         Dim color As Long, skipItem As Boolean, amount As Long, tmpItem As Long
 
-        if GameState.MyIndex < 1 or GameState.MyIndex > MAX_PLAYERS then Exit Sub
-    
+        If GameState.MyIndex < 1 Or GameState.MyIndex > MAX_PLAYERS Then Exit Sub
+
         Xo = Windows(GetWindowIndex("winBank")).Left
         Yo = Windows(GetWindowIndex("winBank")).Top
         width = Windows(GetWindowIndex("winBank")).Width
@@ -4488,7 +4490,7 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
                         Y = Top + 21
                         X = Left + 1
                         Amount = CStr(TradeTheirOffer(i).Value)
-              
+
                         ' Draw currency but with k, m, b etc. using a convertion function
                         If CLng(Amount) < 1000000 Then
                             Color = ColorType.White
@@ -4497,14 +4499,14 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
                         ElseIf CLng(Amount) > 10000000 Then
                             Color = ColorType.BrightGreen
                         End If
-              
+
                         RenderText(ConvertCurrency(Amount), X, Y, GameClient.QbColorToXnaColor(Color), GameClient.QbColorToXnaColor(Color))
                     End If
                 End If
             End If
         Next
     End Sub
-    
+
     Public Shared Sub UpdateActiveControl(ByVal modifiedControl As Control)
         ' Ensure there is an active window and an active control to update
         If Gui.ActiveWindow > 0 AndAlso Gui.Windows(Gui.ActiveWindow).ActiveControl > 0 Then
@@ -4673,5 +4675,25 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
         Application.DoEvents()
     End Sub
 
+    Public Shared Sub ShowChat()
+        Gui.ShowWindow(Gui.GetWindowIndex("winChat"), , False)
+        Gui.HideWindow(Gui.GetWindowIndex("winChatSmall"))
+        ' Set the active control
+        Gui.ActiveWindow = Gui.GetWindowIndex("winChat")
+        Gui.SetActiveControl(Gui.GetWindowIndex("winChat"), Gui.GetControlIndex("winChat", "txtChat"))
+        GameState.inSmallChat = 0
+        GameState.ChatScroll = 0
+    End Sub
 
+    Public Shared Sub HideChat()
+        Gui.ShowWindow(Gui.GetWindowIndex("winChatSmall"), , False)
+        Gui.HideWindow(Gui.GetWindowIndex("winChat"))
+
+        ' Set the active control
+        Gui.ActiveWindow = Gui.GetWindowIndex("winChat")
+        Gui.SetActiveControl(Gui.GetWindowIndex("winChat"), Gui.GetControlIndex("winChat", "txtChat"))
+
+        GameState.inSmallChat = 1
+        GameState.ChatScroll = 0
+    End Sub
 End Class
