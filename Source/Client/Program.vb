@@ -817,6 +817,8 @@ Public Class GameClient
 
             End If
         ElseIf scrollValue < 0 Then
+            ScrollChatBox(1) ' Scroll down
+
             If GameState.MyEditorType = EditorType.Map Then
                 If GameState.VbKeyShift = Keys.LeftShift Then
                     If frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0 Then
@@ -827,7 +829,6 @@ Public Class GameClient
                         frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1
                     End If
                 End If
-                ScrollChatBox(1) ' Scroll down
             End If
 
             If scrollValue <> 0 Then
