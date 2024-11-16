@@ -1455,7 +1455,7 @@ Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Option
         End With
     End Sub
 
-    Public Shared Sub RenderDesign(design As Long, left As Long, top As Long, width As Long, height As Long, Optional alpha As Long = 255, Optional windowID As Integer = 0)
+    Public Shared Sub RenderDesign(design As Long, left As Long, top As Long, width As Long, height As Long, Optional alpha As Long = 255)
         Dim bs As Long
 
         Select Case design
