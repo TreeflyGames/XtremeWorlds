@@ -2113,17 +2113,24 @@ Public Class GameClient
         Next
 
         If GameState.MyEditorType = EditorType.Map Then
-            If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpDirBlock Then
-                For x = GameState.TileView.Left - 1 To GameState.TileView.Right + 1
-                    For y = GameState.TileView.Top - 1 To GameState.TileView.Bottom + 1
-                        If IsValidMapPoint(x, y) Then
-                            Call DrawDirections(x, y)
-                        End If
-                    Next
-                Next
-            End If
+            If frmEditor_Map.Instance.InvokeRequired Then
+                frmEditor_Map.Instance.Invoke(Sub()
+                                                  If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpDirBlock Then
+                                                      If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpDirBlock Then
+                                                          For x = GameState.TileView.Left - 1 To GameState.TileView.Right + 1
+                                                              For y = GameState.TileView.Top - 1 To GameState.TileView.Bottom + 1
+                                                                  If IsValidMapPoint(x, y) Then
+                                                                      Call DrawDirections(x, y)
+                                                                  End If
+                                                              Next
+                                                          Next
+                                                      End If
 
-            DrawMapAttributes()
+                                                  End If
+                                              End Sub)
+
+                DrawMapAttributes()
+            End If
         End If
 
         For i = 1 To Byte.MaxValue
