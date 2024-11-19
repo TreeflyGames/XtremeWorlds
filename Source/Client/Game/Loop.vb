@@ -16,7 +16,7 @@ Module [Loop]
 
             tick = GetTickCount()
             GameState.ElapsedTime = tick - frameTime ' Set the time difference for time-based movement
-            
+
             frameTime = tick
 
             If GameStarted() Then
@@ -312,7 +312,6 @@ mapsync:
             End If
 
             Gui.ResizeGUI()
-            Gui.UpdateForms()
 
             ' Signal that loading is complete
             SyncLock GameClient.LoadLock

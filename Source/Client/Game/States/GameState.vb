@@ -265,6 +265,8 @@ Public Class GameState
     Public Const EffectTypeWeather As Integer = 5
     Public Const EffectTypeTint As Integer = 6
 
+    Public Shared MapNames(MAX_MAPS) As String
+
     ' Chat variables
     Public Const ChatWidth As Long = 316
 

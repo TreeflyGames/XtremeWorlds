@@ -1043,7 +1043,6 @@ Public Module Type
     Public Blood(Byte.MaxValue) As BloodStruct
     Public Chat(CHAT_LINES) As ChatStruct
     Public TileLights As List(Of LightTileStruct)
-    Public MapNames(MAX_MAPS) As String
     Public MapTile(,) As TileStruct
     Public TileHistory() As TileHistoryStruct
     Public Autotile(,) As AutotileStruct
