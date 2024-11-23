@@ -65,10 +65,10 @@
     <ItemGroup>
         <ProjectReference Include="..\Core\Core.vbproj" />
         <ProjectReference Include="..\Network\Asfw.csproj" />
+        <ProjectReference Include="..\DarkUI\DarkUI.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="DarkUI" />
         <PackageReference Include="ManagedBass" />
         <PackageReference Include="ManagedBass.Midi" />
     </ItemGroup>
