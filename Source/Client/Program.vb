@@ -2152,12 +2152,8 @@ Public Class GameClient
         DrawMapName()
 
         If GameState.MyEditorType = EditorType.Map Then
-            If frmEditor_Map.Instance.InvokeRequired Then
-                frmEditor_Map.Instance.Invoke(Sub()
-                                                  If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
-                                                      DrawEvents()
-                                                  End If
-                                              End Sub)
+            If frmEditor_Map.Instance.tabpages.SelectedTab Is frmEditor_Map.Instance.tpEvents Then
+                DrawEvents()
             End If
         End If
 
