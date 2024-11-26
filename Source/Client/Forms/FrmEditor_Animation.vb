@@ -7,12 +7,10 @@ Imports Microsoft.Xna.Framework.Graphics
 Friend Class frmEditor_Animation
     Private Sub NudSprite0_ValueChanged(sender As Object, e As EventArgs) Handles nudSprite0.Click
         Type.Animation(GameState.EditorIndex).Sprite(0) = nudSprite0.Value
-        DrawAnimationSprite0()
     End Sub
 
     Private Sub NudSprite1_ValueChanged(sender As Object, e As EventArgs) Handles nudSprite1.Click
         Type.Animation(GameState.EditorIndex).Sprite(1) = nudSprite1.Value
-        DrawAnimationSprite1()
     End Sub
 
     Private Sub NudLoopCount0_ValueChanged(sender As Object, e As EventArgs) Handles nudLoopCount0.Click
@@ -25,12 +23,10 @@ Friend Class frmEditor_Animation
 
     Private Sub NudFrameCount0_ValueChanged(sender As Object, e As EventArgs) Handles nudFrameCount0.Click
         Type.Animation(GameState.EditorIndex).Frames(0) = nudFrameCount0.Value
-        DrawAnimationSprite0()
     End Sub
 
     Private Sub NudFrameCount1_ValueChanged(sender As Object, e As EventArgs) Handles nudFrameCount1.Click
         Type.Animation(GameState.EditorIndex).Frames(1) = nudFrameCount1.Value
-        DrawAnimationSprite1()
     End Sub
 
     Private Sub NudLoopTime0_ValueChanged(sender As Object, e As EventArgs) Handles nudLoopTime0.Click
