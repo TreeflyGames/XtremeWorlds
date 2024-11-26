@@ -1,25 +1,18 @@
 Imports System.Windows.Forms
 Imports Core.Enum
+Imports Microsoft.Xna.Framework
 
 Module Program
     Private WithEvents updateTimer As Timer
 
     Sub Main()
-        ' Start the application on the UI thread
-        Application.EnableVisualStyles()
-        Application.SetCompatibleTextRenderingDefault(False)
-
         ' Initialize and start the timer
         updateTimer = New Timer()
         updateTimer.Interval = 25 ' Set the interval to 25 milliseconds
         AddHandler updateTimer.Tick, AddressOf UpdateForms
         updateTimer.Start()
 
-        ' Create and start the asynchronous tasks
-        Dim startupTask = Task.Run(Sub() Startup())
-        Dim clientTask = Task.Run(Sub() Client.Run())
-
-        Application.Run()
+        Client.Run()
     End Sub
 
     Sub UpdateForms()

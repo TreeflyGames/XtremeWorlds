@@ -76,7 +76,7 @@ Public Class frmEditor_Map
         spriteBatch.Begin()
 
         ' Calculate the source rectangle
-        Dim sourceRect As New Rectangle(0, 0, gfxInfo.Width \ 4, gfxInfo.Height \ 4)
+        Dim sourceRect As New Rectangle(0, 0, gfxInfo.Width, gfxInfo.Height)
 
         ' Calculate the destination rectangle
         Dim destRect As New Rectangle(0, 0, picBackSelect.Width, picBackSelect.Height)
