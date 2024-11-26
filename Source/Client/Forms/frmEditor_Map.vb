@@ -53,23 +53,36 @@ Public Class frmEditor_Map
     End Sub
 
     Public Sub DrawTileset()
-        Dim tileset As Integer
+        Dim tilesetIndex As Integer
 
+        ' Ensure a tileset is selected
         If cmbTileSets.SelectedIndex = -1 Then
             Exit Sub
         End If
 
-        tileset = cmbTileSets.SelectedIndex + 1
+        ' Get the selected tileset index
+        tilesetIndex = cmbTileSets.SelectedIndex + 1
 
-        ' Get GfxInfo for the selected tileset
-        Dim gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
+        ' Get the graphics information for the selected tileset
+        Dim tilesetPath As String = System.IO.Path.Combine(Core.Path.Tilesets, tilesetIndex.ToString())
+        Dim gfxInfo = GameClient.GetGfxInfo(tilesetPath)
+
+        ' Handle varying tileset sizes
+        Dim texture = GameClient.GetTexture(tilesetPath)
+        If texture Is Nothing Then
+            Exit Sub
+        End If
+
+        ' Use the dimensions of the PictureBox (picBackSelect)
+        Dim picWidth As Integer = frmEditor_Map.Instance.picBackSelect.Width
+        Dim picHeight As Integer = frmEditor_Map.Instance.picBackSelect.Height
 
         ' Create a render target for drawing
-        Dim renderTarget As New RenderTarget2D(GameClient.Graphics.GraphicsDevice, frmEditor_Map.Instance.picBackSelect.Width, frmEditor_Map.Instance.picBackSelect.Height)
+        Dim renderTarget As New RenderTarget2D(GameClient.Graphics.GraphicsDevice, picWidth, picHeight)
         GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget)
         GameClient.Graphics.GraphicsDevice.Clear(Color.Black)
 
-        ' Create a new SpriteBatch for rendering
+        ' Create a SpriteBatch for rendering
         Dim spriteBatch As New Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice)
 
         ' Begin the SpriteBatch with appropriate settings
@@ -78,32 +91,45 @@ Public Class frmEditor_Map
         ' Calculate the source rectangle
         Dim sourceRect As New Rectangle(0, 0, gfxInfo.Width, gfxInfo.Height)
 
-        ' Calculate the destination rectangle
-        Dim destRect As New Rectangle(0, 0, picBackSelect.Width, picBackSelect.Height)
+        ' Calculate the destination rectangle, preserving aspect ratio
+        Dim scaleX As Single = picWidth / gfxInfo.Width
+        Dim scaleY As Single = picHeight / gfxInfo.Height
+        Dim scale As Single = Math.Min(scaleX, scaleY)
 
-        Dim texture = GameClient.GetTexture(System.IO.Path.Combine(Core.Path.Tilesets, tileset))
+        Dim destWidth As Integer = CInt(gfxInfo.Width * scale)
+        Dim destHeight As Integer = CInt(gfxInfo.Height * scale)
+        Dim destRect As New Rectangle(0, 0, destWidth, destHeight)
 
-        ' Draw the tileset texture
+        ' Draw the tileset texture at the top-left
         spriteBatch.Draw(texture, destRect, sourceRect, Color.White)
 
-        ' Draw the selection rectangle outline
-        Dim selectionRect As New Rectangle(GameState.EditorTileSelStart.X * GameState.PicX, GameState.EditorTileSelStart.Y * GameState.PicY, GameState.EditorTileWidth * GameState.PicX, GameState.EditorTileHeight * GameState.PicY)
-        DrawRectangleOutline(spriteBatch, selectionRect, Color.Red)
-
+        ' End the SpriteBatch
         spriteBatch.End()
 
         ' Reset the render target to the back buffer
         GameClient.Graphics.GraphicsDevice.SetRenderTarget(Nothing)
 
-        ' Convert the render target to a Texture2D and set it as the background image of the PictureBox
-        Dim stream As New System.IO.MemoryStream()
-        renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height)
-        picBackSelect.Image = Drawing.Image.FromStream(stream)
+        ' Convert the render target to a Texture2D and set it as the PictureBox background
+        Using stream As New System.IO.MemoryStream()
+            renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height)
+            stream.Position = 0
+            picBackSelect.Image = Drawing.Image.FromStream(stream)
+        End Using
 
         ' Dispose of the render target and sprite batch
-        stream.Dispose()
         renderTarget.Dispose()
         spriteBatch.Dispose()
+    End Sub
+
+
+    Public Sub DrawSelectionRectangle(spriteBatch As SpriteBatch, renderTarget As RenderTarget2D)
+        Dim selectionRect As New Rectangle(
+            GameState.EditorTileSelStart.X * GameState.PicX, GameState.EditorTileSelStart.Y * GameState.PicY,
+            GameState.EditorTileWidth * GameState.PicX, GameState.EditorTileHeight * GameState.PicY
+        )
+
+        ' Begin the sprite batch and draw a semi-transparent overlay (optional)
+        spriteBatch.Draw(renderTarget, selectionRect, Color.Red * 0.4F)
     End Sub
 
     Private Sub DrawRectangleOutline(spriteBatch As Graphics.SpriteBatch, rect As Rectangle, color As Color)

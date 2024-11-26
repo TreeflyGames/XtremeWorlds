@@ -66,7 +66,7 @@ Public Class GameClient
     Public Shared KeyRepeatTimers As New Dictionary(Of Keys, DateTime)
 
     ' Minimum interval (in milliseconds) between repeated key inputs
-    Private Const KeyRepeatInterval As Byte = 100
+    Private Const KeyRepeatInterval As Byte = 125
 
     ' Lock object to ensure thread safety
     Public Shared ReadOnly InputLock As New Object()
@@ -76,9 +76,6 @@ Public Class GameClient
 
     Private elapsedTime As TimeSpan = TimeSpan.Zero
 
-    Public Shared TilesetWindow As RenderTarget2D
-    Public Shared EditorAnimation_Anim1 As RenderTarget2D
-    Public Shared EditorAnimation_Anim2 As RenderTarget2D
     Public Shared RenderTarget As RenderTarget2D
     Public Shared TransparentTexture As Texture2D
     Public Shared PixelTexture As Texture2D
@@ -1018,22 +1015,8 @@ Public Class GameClient
         whiteTexture.Dispose()
     End Sub
 
-    Public Shared Sub DrawSelectionRectangle()
-        Dim selectionRect As New Rectangle(
-            GameState.EditorTileSelStart.X * GameState.PicX, GameState.EditorTileSelStart.Y * GameState.PicY,
-            GameState.EditorTileWidth * GameState.PicX, GameState.EditorTileHeight * GameState.PicY
-        )
-
-        ' Begin the sprite batch and draw a semi-transparent overlay (optional)
-        SpriteBatch.Begin()
-        SpriteBatch.Draw(TilesetWindow, selectionRect, Color.Red * 0.4F)
-        SpriteBatch.End()
-    End Sub
-
     Private Shared Sub DrawOutlineRectangle(x As Integer, y As Integer, width As Integer, height As Integer, color As Color, thickness As Single)
         Dim whiteTexture As New Texture2D(SpriteBatch.GraphicsDevice, 1, 1)
-
-        SpriteBatch.Begin()
 
         ' Define four rectangles for the outline
         Dim left As New Rectangle(x, y, thickness, height)
@@ -1046,7 +1029,6 @@ Public Class GameClient
         SpriteBatch.Draw(whiteTexture, top, color)
         SpriteBatch.Draw(whiteTexture, right, color)
         SpriteBatch.Draw(whiteTexture, bottom, color)
-        SpriteBatch.End()
     End Sub
 
     Public Shared Function QbColorToXnaColor(qbColor As Integer) As Color
