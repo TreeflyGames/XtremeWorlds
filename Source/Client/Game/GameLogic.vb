@@ -1383,6 +1383,34 @@ Continue1:
         GameState.InMenu = True
         GameState.InGame = False
 
+        Select Case GameState.MyEditorType
+            Case EditorType.Item
+                frmEditor_Item.Instance.Dispose()
+            Case EditorType.Job
+                frmEditor_Job.Instance.Dispose()
+            Case EditorType.Map
+                frmEditor_Map.Instance.Dispose()
+                frmEditor_Event.Instance.Dispose()
+            Case EditorType.NPC
+                frmEditor_NPC.Instance.Dispose()
+            Case EditorType.Pet
+                frmEditor_Pet.Instance.Dispose()
+            Case EditorType.Projectile
+                frmEditor_Projectile.Instance.Dispose()
+            Case EditorType.Resource
+                frmEditor_Resource.Instance.Dispose()
+            Case EditorType.Shop
+                frmEditor_Shop.Instance.Dispose()
+            Case EditorType.Skill
+                frmEditor_Skill.Instance.Dispose()
+            Case EditorType.Animation
+                frmEditor_Animation.Instance.Dispose()
+            Case EditorType.Moral
+                frmEditor_Moral.Instance.Dispose()
+        End Select
+
+        FrmAdmin.Instance.Dispose()
+
         DestroyNetwork()
         InitNetwork()
     End Sub
