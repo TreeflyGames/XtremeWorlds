@@ -219,6 +219,7 @@ Public Class GameClient
         TransparentTexture = New Texture2D(GraphicsDevice, 1, 1)
         TransparentTexture.SetData(New Color() {Color.White})
         PixelTexture = New Texture2D(GraphicsDevice, 1, 1)
+        PixelTexture.SetData(New Color() {Color.White})
 
         LoadFonts()
         Startup()
@@ -502,6 +503,7 @@ Public Class GameClient
         End If
 
         GameLoop()
+        UpdateForms()
 
         MyBase.Update(gameTime)
     End Sub
@@ -918,7 +920,6 @@ Public Class GameClient
 
     Private Shared Sub OnWindowClose(ByVal sender As Object, ByVal e As EventArgs)
         DestroyGame()
-        End
     End Sub
 
     Private Shared Sub OnDeviceReset()
