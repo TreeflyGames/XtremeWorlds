@@ -839,7 +839,7 @@ Public Class frmEditor_Map
 
     End Sub
 
-    Public Shared Sub MapEditorMouseDown(ByVal X As Integer, ByVal Y As Integer, Optional ByVal movedMouse As Boolean = True)
+    Public Sub MapEditorMouseDown(ByVal X As Integer, ByVal Y As Integer, Optional ByVal movedMouse As Boolean = True)
         Dim i As Integer
         Dim CurLayer As Integer
         Dim tileChanged As Boolean

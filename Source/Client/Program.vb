@@ -845,7 +845,7 @@ Public Class GameClient
 
         ' Handle MouseMove event when the mouse moves
         If GameClient.CurrentMouseState.X <> GameClient.PreviousMouseState.X OrElse
-       GameClient.CurrentMouseState.Y <> GameClient.PreviousMouseState.Y Then
+            GameClient.CurrentMouseState.Y <> GameClient.PreviousMouseState.Y Then
             Gui.HandleInterfaceEvents(EntState.MouseMove)
         End If
 
@@ -871,7 +871,7 @@ Public Class GameClient
         If GameState.InGame = True Then
             If GameClient.IsMouseButtonDown(MouseButton.Left) Then
                 If GameState.MyEditorType = EditorType.Map Then
-                    frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, False)
+                    frmEditor_Map.Instance.MapEditorMouseDown(GameState.CurX, GameState.CurY, False)
                 End If
                 If PetAlive(GameState.MyIndex) AndAlso IsInBounds() Then
                     PetMove(GameState.CurX, GameState.CurY)
