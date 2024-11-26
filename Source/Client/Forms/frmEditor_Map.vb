@@ -102,6 +102,7 @@ Public Class frmEditor_Map
 
         ' Draw the tileset texture at the top-left
         spriteBatch.Draw(texture, destRect, sourceRect, Color.White)
+        DrawSelectionRectangle(spriteBatch, scale)
 
         ' End the SpriteBatch
         spriteBatch.End()
@@ -122,14 +123,30 @@ Public Class frmEditor_Map
     End Sub
 
 
-    Public Sub DrawSelectionRectangle(spriteBatch As SpriteBatch, renderTarget As RenderTarget2D)
-        Dim selectionRect As New Rectangle(
-            GameState.EditorTileSelStart.X * GameState.PicX, GameState.EditorTileSelStart.Y * GameState.PicY,
-            GameState.EditorTileWidth * GameState.PicX, GameState.EditorTileHeight * GameState.PicY
-        )
+    Public Sub DrawSelectionRectangle(spriteBatch As SpriteBatch, scale As Single)
+        ' Scale the selection rectangle based on the scale factor
+        Dim scaledX As Integer = CInt(GameState.EditorTileSelStart.X * GameState.PicX * scale)
+        Dim scaledY As Integer = CInt(GameState.EditorTileSelStart.Y * GameState.PicY * scale)
+        Dim scaledWidth As Integer = CInt(GameState.EditorTileWidth * GameState.PicX * scale)
+        Dim scaledHeight As Integer = CInt(GameState.EditorTileHeight * GameState.PicY * scale)
 
-        ' Begin the sprite batch and draw a semi-transparent overlay (optional)
-        spriteBatch.Draw(renderTarget, selectionRect, Color.Red * 0.4F)
+        ' Define the scaled selection rectangle
+        Dim selectionRect As New Rectangle(scaledX, scaledY, scaledWidth, scaledHeight)
+
+        ' Line thickness in pixels (adjust based on scaling if needed)
+        Dim lineThickness As Integer = CInt(1 * scale)
+
+        ' Top border
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(selectionRect.X, selectionRect.Y, selectionRect.Width, lineThickness), Color.Red)
+
+        ' Bottom border
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(selectionRect.X, selectionRect.Y + selectionRect.Height - lineThickness, selectionRect.Width, lineThickness), Color.Red)
+
+        ' Left border
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(selectionRect.X, selectionRect.Y, lineThickness, selectionRect.Height), Color.Red)
+
+        ' Right border
+        spriteBatch.Draw(GameClient.PixelTexture, New Rectangle(selectionRect.X + selectionRect.Width - lineThickness, selectionRect.Y, lineThickness, selectionRect.Height), Color.Red)
     End Sub
 
     Private Sub DrawRectangleOutline(spriteBatch As Graphics.SpriteBatch, rect As Rectangle, color As Color)
