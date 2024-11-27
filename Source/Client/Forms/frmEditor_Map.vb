@@ -32,8 +32,6 @@ Public Class frmEditor_Map
         GameState.DirArrowY(DirectionType.Right) = 12
 
         scrlFog.Maximum = GameState.NumFogs
-
-        TopMost = True
     End Sub
 
     Private Sub DrawItem()

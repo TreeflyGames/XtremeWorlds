@@ -10,6 +10,7 @@ Module Program
     Sub UpdateForms()
         If InitEventEditorForm Then
             With frmEditor_Event.Instance
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
             End With
             InitEventEditorForm = False
@@ -17,6 +18,7 @@ Module Program
 
         If GameState.InitAdminForm Then
             With FrmAdmin.Instance
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
             End With
             GameState.InitAdminForm = False
@@ -35,6 +37,7 @@ Module Program
             With frmEditor_Map.Instance
                 GameState.MyEditorType = EditorType.Map
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .MapEditorInit()
             End With
@@ -45,6 +48,7 @@ Module Program
             With frmEditor_Pet.Instance
                 GameState.MyEditorType = EditorType.Pet
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 PetEditorInit()
@@ -56,6 +60,7 @@ Module Program
             With frmEditor_Animation.Instance
                 GameState.MyEditorType = EditorType.Animation
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 AnimationEditorInit()
@@ -67,6 +72,7 @@ Module Program
             With frmEditor_Item.Instance
                 GameState.MyEditorType = EditorType.Item
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 ItemEditorInit()
@@ -78,6 +84,7 @@ Module Program
             With frmEditor_Job.Instance
                 GameState.MyEditorType = EditorType.Job
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
 
@@ -90,6 +97,7 @@ Module Program
             With frmEditor_Moral.Instance
                 GameState.MyEditorType = EditorType.Moral
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 MoralEditorInit()
@@ -101,6 +109,7 @@ Module Program
             With frmEditor_Resource.Instance
                 GameState.MyEditorType = EditorType.Resource
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 ResourceEditorInit()
@@ -112,6 +121,7 @@ Module Program
             With frmEditor_NPC.Instance
                 GameState.MyEditorType = EditorType.NPC
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 NpcEditorInit()
@@ -123,6 +133,7 @@ Module Program
             With frmEditor_Skill.Instance
                 GameState.MyEditorType = EditorType.Skill
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 SkillEditorInit()
@@ -134,6 +145,7 @@ Module Program
             With frmEditor_Shop.Instance
                 GameState.MyEditorType = EditorType.Shop
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 ShopEditorInit()
@@ -145,6 +157,7 @@ Module Program
             With frmEditor_Projectile.Instance
                 GameState.MyEditorType = EditorType.Projectile
                 GameState.EditorIndex = 1
+                .Owner = Form.FromHandle(Client.Window.Handle)
                 .Show()
                 .lstIndex.SelectedIndex = 0
                 ProjectileEditorInit()
