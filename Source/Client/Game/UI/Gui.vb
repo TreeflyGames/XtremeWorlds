@@ -102,7 +102,6 @@ Public Class Gui
         Public Property Group As Long
         Public Property Censor As Boolean
         Public Property Icon As Long
-        Public Property Locked As Boolean
         Public Property State As EntState
         Public Property List As List(Of String)
 
@@ -116,7 +115,7 @@ Public Class Gui
     Public Shared Sub UpdateControl(winNum As Long, zOrder As Long, name As String, color As Microsoft.Xna.Framework.Color, tType As ControlType, design As List(Of Long), image As List(Of Long), texture As List(Of String), callback As List(Of Action),
         Optional left As Long = 0, Optional top As Long = 0, Optional width As Long = 0, Optional height As Long = 0, Optional visible As Boolean = True, Optional canDrag As Boolean = False, Optional Max As Long = 0, Optional Min As Long = 0, Optional value As Long = 0, Optional text As String = "",
         Optional align As Byte = 0, Optional font As FontType = FontType.Georgia, Optional alpha As Long = 255, Optional clickThrough As Boolean = False, Optional xOffset As Long = 0, Optional yOffset As Long = 0, Optional zChange As Byte = 0, Optional censor As Boolean = False, Optional icon As Long = 0,
-                                  Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional locked As Boolean = False, Optional length As Byte = NAME_LENGTH)
+                                  Optional onDraw As Action = Nothing, Optional isActive As Boolean = True, Optional tooltip As String = "", Optional group As Long = 0, Optional length As Byte = NAME_LENGTH)
 
         ' Ensure the window exists in the Windows collection
         If Not Windows.ContainsKey(winNum) Then Exit Sub
@@ -153,7 +152,6 @@ Public Class Gui
                 .Group = group,
                 .Censor = censor,
                 .Icon = icon,
-                .Locked = locked,
                 .Design = design,
                 .Image = image,
                 .Texture = texture,
@@ -303,7 +301,7 @@ Public Class Gui
         callback(EntState.Enter) = callback_enter
 
         ' Control the textbox
-        UpdateControl(winNum, zOrder_Con, name, Microsoft.Xna.Framework.Color.White, ControlType.TextBox, design, image, texture, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , censor, icon, , isActive, , , , length)
+        UpdateControl(winNum, zOrder_Con, name, Microsoft.Xna.Framework.Color.White, ControlType.TextBox, design, image, texture, callback, left, top, width, height, visible, , , , , text, align, font, alpha, , xOffset, yOffset, , censor, icon, , isActive, , , length)
     End Sub
 
 
@@ -463,10 +461,6 @@ Public Class Gui
     End Function
 
     Public Shared Function SetActiveControl(curWindow As Long, curControl As Long) As Boolean
-        If Windows(curWindow).Controls(curControl).Locked Then
-            Exit Function
-        End If
-
         ' make sure it's something which CAN be active
         Select Case Windows(curWindow).Controls(curControl).Type
             Case ControlType.TextBox
@@ -530,6 +524,7 @@ Public Class Gui
 
     Public Shared Sub ShowWindow(curWindow As Long, Optional forced As Boolean = False, Optional resetPosition As Boolean = True)
         If curWindow = 0 Then Exit Sub
+
         Windows(curWindow).Visible = True
 
         If forced = True Then
@@ -3101,7 +3096,7 @@ Public Class Gui
         UpdateButton(Windows.Count, "btnChat", 296, 124 + 16, 48, 20, "Say", FontType.Arial, , , , , , , DesignType.Green, DesignType.Green_Hover, DesignType.Green_Click, , , New Action(AddressOf btnSay_Click))
 
         ' Chat Textbox
-        UpdateTextbox(Windows.Count, "txtChat", 12, 127 + 16, 286, 25, , FontType.Georgia, , , , , , , , , , , , , , , CHAT_LENGTH)
+        UpdateTextbox(Windows.Count, "txtChat", 12, 127 + 16, 286, 25, , FontType.Georgia, , False, , , , , , , , , , , , , CHAT_LENGTH)
 
         ' Buttons
         UpdateButton(Windows.Count, "btnUp", 328, 28, 11, 13, , , , 4, 52, 4, , , , , , , , New Action(AddressOf btnChat_Up))
@@ -4535,6 +4530,7 @@ Public Class Gui
         ' Set the active control
         Gui.ActiveWindow = Gui.GetWindowIndex("winChat")
         Gui.SetActiveControl(Gui.GetWindowIndex("winChat"), Gui.GetControlIndex("winChat", "txtChat"))
+        Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Visible = True
         GameState.inSmallChat = 0
         GameState.ChatScroll = 0
     End Sub
@@ -4546,6 +4542,7 @@ Public Class Gui
         ' Set the active control
         Gui.ActiveWindow = Gui.GetWindowIndex("winChat")
         Gui.SetActiveControl(Gui.GetWindowIndex("winChat"), Gui.GetControlIndex("winChat", "txtChat"))
+        Windows(Gui.GetWindowIndex("winChat")).Controls(Gui.GetControlIndex("winChat", "txtChat")).Visible = False
 
         GameState.inSmallChat = 1
         GameState.ChatScroll = 0
