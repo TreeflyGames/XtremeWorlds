@@ -1,6 +1,7 @@
 ﻿
 Imports System.Collections.Concurrent
 Imports System.Net.Mime
+Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 Imports Core
@@ -1190,7 +1191,7 @@ Public Class Gui
                     finalText = finalText.Replace(vbNullChar, String.Empty)
 
                     ' Measure the text size
-                    Dim actualSize = Fonts(.Font).MeasureString(finalText)
+                    Dim actualSize = Fonts(.Font).MeasureString(FilterUnsupportedCharacters(finalText, .Font))
                     Dim actualWidth = actualSize.X
                     Dim actualHeight = actualSize.Y
 
@@ -1225,7 +1226,7 @@ Public Class Gui
                     End If
 
                     ' Measure button text size and apply padding
-                    Dim textSize = Fonts(.Font).MeasureString(.Text)
+                    Dim textSize = Fonts(.Font).MeasureString(FilterUnsupportedCharacters(.Text, .Font))
                     Dim actualWidth = textSize.X
                     Dim actualHeight = textSize.Y
 
@@ -1246,7 +1247,7 @@ Public Class Gui
                                     WordWrap(.Text, .Font, .Width, textArray)
                                     count = UBound(textArray)
                                     For i = 1 To count
-                                        Dim actualSize = Fonts(.Font).MeasureString(textArray(i))
+                                        Dim actualSize = Fonts(.Font).MeasureString(FilterUnsupportedCharacters(textArray(i), .Font))
                                         Dim actualWidth = actualSize.X
                                         Dim padding = actualWidth / 6.0
                                         left = .Left + xO + .xOffset + padding
@@ -1279,7 +1280,7 @@ Public Class Gui
                                         yOffset += 14
                                     Next
                                 Else
-                                    Dim actualSize = Fonts(.Font).MeasureString(.Text)
+                                    Dim actualSize = Fonts(.Font).MeasureString(FilterUnsupportedCharacters(.Text, .Font))
                                     Dim actualWidth = actualSize.X
                                     left = .Left + .Width - actualSize.X + xO + .xOffset
 
@@ -1293,7 +1294,7 @@ Public Class Gui
                                     count = UBound(textArray)
 
                                     For i = 1 To count
-                                        Dim actualSize = Fonts(.Font).MeasureString(textArray(i))
+                                        Dim actualSize = Fonts(.Font).MeasureString(FilterUnsupportedCharacters(textArray(i), .Font))
                                         Dim actualWidth = actualSize.X
                                         Dim actualHeight = actualSize.Y
                                         Dim padding = actualWidth / 6.0
@@ -1305,7 +1306,7 @@ Public Class Gui
                                         yOffset += 14
                                     Next
                                 Else
-                                    Dim actualSize = Fonts(.Font).MeasureString(.Text)
+                                    Dim actualSize = Fonts(.Font).MeasureString(FilterUnsupportedCharacters(.Text, .Font))
                                     Dim actualWidth = actualSize.X
                                     Dim actualHeight = actualSize.Y
                                     Dim padding = actualWidth / 6.0
@@ -4548,4 +4549,17 @@ Public Class Gui
         GameState.inSmallChat = 1
         GameState.ChatScroll = 0
     End Sub
+
+    Private Shared Function FilterUnsupportedCharacters(text As String, fontType As FontType) As String
+        Dim supportedText As New StringBuilder()
+        For Each ch As Char In text
+            If Fonts(fontType).Characters.Contains(ch) Then
+                supportedText.Append(ch)
+            Else
+                ' Replace unsupported character with a placeholder or remove it
+                supportedText.Append("?")
+            End If
+        Next
+        Return supportedText.ToString()
+    End Function
 End Class
