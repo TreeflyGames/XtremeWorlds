@@ -329,6 +329,9 @@ Module GameLogic
                     AddText(Language.Chat.AdminGblMsg, ColorType.Yellow)
                     AddText(Language.Chat.AdminPvtMsg, ColorType.Yellow)
 
+                Case "/acp"
+                    SendRequestAdmin()
+
                 ' Kicking a player
                 Case "/kick"
 
