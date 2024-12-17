@@ -3,11 +3,41 @@ Imports Core.Enum
 Imports Microsoft.Xna.Framework
 
 Module Program
+    Private updateFormsTimer As Timer
+
     Sub Main()
+        ' Set visual styles and text rendering default before any forms are created
+        Application.EnableVisualStyles()
+        Application.SetCompatibleTextRenderingDefault(False)
+
+        Dim gameThread As New Threading.Thread(AddressOf RunGame)
+        gameThread.IsBackground = True
+        gameThread.Start()
+
+        ' Initialize and start the timer for updating forms
+        updateFormsTimer = New Timer()
+        AddHandler updateFormsTimer.Tick, AddressOf UpdateForms
+        updateFormsTimer.Interval = 100 ' Adjust the interval as needed
+        updateFormsTimer.Start()
+
+        ' Add a Windows Forms message loop to keep the application running
+        Application.Run()
+    End Sub
+
+    Sub RunGame()
         Client.Run()
     End Sub
 
-    Sub UpdateForms()
+    Private Sub UpdateForms(sender As Object, e As EventArgs)
+        ' Check if there are any open forms
+        If Application.OpenForms.Count > 0 Then
+            ' Check if the current thread is the UI thread
+            If Application.OpenForms(0).InvokeRequired Then
+                ' Marshal the call to the UI thread
+                Application.OpenForms(0).Invoke(New EventHandler(AddressOf UpdateForms), sender, e)
+            End If
+        End If
+
         If InitEventEditorForm Then
             With frmEditor_Event.Instance
                 .Owner = Form.FromHandle(Client.Window.Handle)

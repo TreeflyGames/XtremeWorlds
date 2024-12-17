@@ -495,7 +495,6 @@ Public Class GameClient
         End If
 
         GameLoop()
-        UpdateForms()
 
         MyBase.Update(gameTime)
     End Sub
