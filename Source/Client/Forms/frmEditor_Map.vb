@@ -76,7 +76,7 @@ Public Class frmEditor_Map
         Dim picHeight As Integer = frmEditor_Map.Instance.picBackSelect.Height
 
         ' Create a render target for drawing
-        Dim renderTarget As New RenderTarget2D(GameClient.Graphics.GraphicsDevice, picWidth, picHeight)
+        Dim renderTarget As New RenderTarget2D(GameClient.Graphics.GraphicsDevice, picWidth, picHeight, False, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents)
         GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget)
         GameClient.Graphics.GraphicsDevice.Clear(Color.Black)
 
@@ -119,7 +119,6 @@ Public Class frmEditor_Map
         renderTarget.Dispose()
         spriteBatch.Dispose()
     End Sub
-
 
     Public Sub DrawSelectionRectangle(spriteBatch As SpriteBatch, scale As Single)
         ' Scale the selection rectangle based on the scale factor
@@ -741,7 +740,6 @@ Public Class frmEditor_Map
 
         ' show the form
         Visible = True
-
     End Sub
 
     Public Sub MapEditorInit()
@@ -1537,7 +1535,9 @@ Public Class frmEditor_Map
     End Sub
 
     Private Sub picBackSelect_Paint(sender As Object, e As PaintEventArgs) Handles picBackSelect.Paint
-        DrawTileset()
+        If Not Client.IsActive Then
+            DrawTileset()
+        End If
     End Sub
 
 #End Region

@@ -7,6 +7,7 @@ Imports Core.Enum
 Imports Microsoft.Xna.Framework
 Imports Microsoft.Xna.Framework.Graphics
 Imports Microsoft.Xna.Framework.Input
+Imports SharpDX.Win32
 
 Public Class GameClient
     Inherits Game
@@ -75,6 +76,8 @@ Public Class GameClient
     Public Shared RenderTarget As RenderTarget2D
     Public Shared TransparentTexture As Texture2D
     Public Shared PixelTexture As Texture2D
+
+    Public Shared IsLoaded As Boolean
 
     ' Ensure this class exists to store graphic info
     Public Class GfxInfo
@@ -219,6 +222,7 @@ Public Class GameClient
 
         LoadFonts()
         Startup()
+        IsLoaded = True
     End Sub
 
     Public Shared Function LoadFont(path As String, font As [Enum].FontType) As SpriteFont
