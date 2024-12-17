@@ -192,11 +192,15 @@ Friend Class frmEditor_Animation
     End Sub
 
     Private Sub picSprite0_Paint(sender As Object, e As PaintEventArgs) Handles picSprite0.Paint
-        DrawAnimationSprite0()
+        If Not Client.IsActive Then
+            DrawAnimationSprite0()
+        End If
     End Sub
 
     Private Sub picSprite1_Paint(sender As Object, e As PaintEventArgs) Handles picSprite1.Paint
-        DrawAnimationSprite1()
+        If Not Client.IsActive Then
+            DrawAnimationSprite1()
+        End If
     End Sub
 
     Private Sub DrawAnimationSprite0()
