@@ -201,12 +201,5 @@ Module Program
         frmEditor_Animation.Instance.picSprite1.Invalidate()
 
         Application.DoEvents()
-
-        ' Only tick when the client is loaded
-        If Client.IsLoaded Then
-            If Not Client.IsActive Then
-                Client.Tick()
-            End If
-        End If
     End Sub
 End Module
