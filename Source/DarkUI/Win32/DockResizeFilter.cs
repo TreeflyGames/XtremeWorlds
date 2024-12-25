@@ -25,7 +25,7 @@ namespace DarkUI.Win32
             _dockPanel = dockPanel;
 
             _dragTimer = new Timer();
-            _dragTimer.Interval = 1;
+            _dragTimer.Interval = 0;
             _dragTimer.Tick += DragTimer_Tick;
         }
 

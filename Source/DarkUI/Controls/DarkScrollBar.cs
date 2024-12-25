@@ -153,7 +153,7 @@ namespace DarkUI.Controls
             SetStyle(ControlStyles.Selectable, false);
 
             _scrollTimer = new Timer();
-            _scrollTimer.Interval = 1;
+            _scrollTimer.Interval = 0;
             _scrollTimer.Tick += ScrollTimerTick;
         }
 

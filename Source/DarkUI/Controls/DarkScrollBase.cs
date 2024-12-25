@@ -125,7 +125,7 @@ namespace DarkUI.Controls
             _hScrollBar.MouseDown += delegate { Select(); };
 
             _dragTimer = new Timer();
-            _dragTimer.Interval = 1;
+            _dragTimer.Interval = 0;
             _dragTimer.Tick += DragTimer_Tick;
         }
 
