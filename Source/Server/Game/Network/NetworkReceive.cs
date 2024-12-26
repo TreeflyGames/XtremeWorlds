@@ -306,7 +306,7 @@ namespace Server
                     password = Global.EKeyPair.DecryptString(buffer.ReadString());
 
                     var loopTo = Strings.Len(username);
-                    for (i = 0; i <= (int)loopTo; i++)
+                    for (i = 1; i <= (int)loopTo; i++)
                     {
                         n = Strings.AscW(Strings.Mid(username, i, 1));
 
@@ -434,7 +434,7 @@ namespace Server
                 }
 
                 var loopTo = Strings.Len(name);
-                for (i = 0; i <= (int)loopTo; i++)
+                for (i = 1; i <= (int)loopTo; i++)
                 {
                     n = Strings.AscW(Strings.Mid(name, i, 1));
 

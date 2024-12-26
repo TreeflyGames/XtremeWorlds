@@ -1855,7 +1855,7 @@ namespace Client
                             }
 
                             // Render the image if present
-                            if ((withBlock.Image[(int)withBlock.State] > 0L))
+                            if (withBlock.Image[(int)withBlock.State] > 0L)
                             {
                                 string argpath1 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
                                 GameClient.RenderTexture(ref argpath1, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height, (byte)withBlock.Alpha);
@@ -1896,7 +1896,7 @@ namespace Client
                             }
 
                             // Enqueue the button image if present
-                            if ((withBlock.Image[(int)withBlock.State] > 0L))
+                            if (withBlock.Image[(int)withBlock.State] > 0L)
                             {
                                 string argpath2 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
                                 GameClient.RenderTexture(ref argpath2, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height);
