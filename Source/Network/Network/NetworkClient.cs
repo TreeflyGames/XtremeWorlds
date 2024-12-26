@@ -266,55 +266,58 @@ namespace Mirage.Sharp.Asfw.Network
       this._socket.BeginReceive(this._receiveBuffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), (object) null);
     }
 
-    private void DoReceive(IAsyncResult ar)
-    {
-      if (this._socket == null)
-        return;
-      int length1;
-      try
-      {
-        length1 = this._socket.EndReceive(ar);
-      }
-      catch
-      {
-        NetworkClient.CrashReportArgs crashReport = this.CrashReport;
-        if (crashReport != null)
-          crashReport("ConnectionForciblyClosedException");
-        this.Disconnect();
-        return;
-      }
-      if (length1 < 1)
-      {
-        if (this._socket == null)
-          return;
-        NetworkClient.CrashReportArgs crashReport = this.CrashReport;
-        if (crashReport != null)
-          crashReport("BufferUnderflowException");
-        this.Disconnect();
-      }
-      else
-      {
-        NetworkClient.TrafficInfoArgs trafficReceived = this.TrafficReceived;
-        if (trafficReceived != null)
-          trafficReceived(length1, ref this._receiveBuffer);
-        if (this._packetRing == null)
+        private void DoReceive(IAsyncResult ar)
         {
-          this._packetRing = new byte[length1];
-          Buffer.BlockCopy((Array) this._receiveBuffer, 0, (Array) this._packetRing, 0, length1);
+            if (this._socket == null)
+                return;
+            int length1;
+            try
+            {
+                length1 = this._socket.EndReceive(ar);
+            }
+            catch
+            {
+                NetworkClient.CrashReportArgs crashReport = this.CrashReport;
+                if (crashReport != null)
+                    crashReport("ConnectionForciblyClosedException");
+                this.Disconnect();
+                return;
+            }
+            if (length1 < 1)
+            {
+                if (this._socket == null)
+                {
+                    Console.WriteLine("Socket is null after receiving data.");
+                    return;
+                }
+                NetworkClient.CrashReportArgs crashReport = this.CrashReport;
+                if (crashReport != null)
+                    crashReport("BufferUnderflowException");
+                this.Disconnect();
+            }
+            else
+            {
+                NetworkClient.TrafficInfoArgs trafficReceived = this.TrafficReceived;
+                if (trafficReceived != null)
+                    trafficReceived(length1, ref this._receiveBuffer);
+                if (this._packetRing == null)
+                {
+                    this._packetRing = new byte[length1];
+                    Buffer.BlockCopy((Array)this._receiveBuffer, 0, (Array)this._packetRing, 0, length1);
+                }
+                else
+                {
+                    int length2 = this._packetRing.Length;
+                    byte[] dst = new byte[length2 + length1];
+                    Buffer.BlockCopy((Array)this._packetRing, 0, (Array)dst, 0, length2);
+                    Buffer.BlockCopy((Array)this._receiveBuffer, 0, (Array)dst, length2, length1);
+                    this._packetRing = dst;
+                }
+                this.PacketHandler();
+                this._receiveBuffer = new byte[this._packetSize];
+                this._socket?.BeginReceive(this._receiveBuffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), (object)null);
+            }
         }
-        else
-        {
-          int length2 = this._packetRing.Length;
-          byte[] dst = new byte[length2 + length1];
-          Buffer.BlockCopy((Array) this._packetRing, 0, (Array) dst, 0, length2);
-          Buffer.BlockCopy((Array) this._receiveBuffer, 0, (Array) dst, length2, length1);
-          this._packetRing = dst;
-        }
-        this.PacketHandler();
-        this._receiveBuffer = new byte[this._packetSize];
-        this._socket?.BeginReceive(this._receiveBuffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), (object) null);
-      }
-    }
 
     private void PacketHandler()
     {
