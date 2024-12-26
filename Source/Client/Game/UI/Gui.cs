@@ -587,6 +587,7 @@ namespace Client
                 UpdateZOrder(curWindow, forced);
                 ActiveWindow = curWindow;
                 HandleInterfaceEvents(Core.Enum.EntState.MouseMove);
+                SetActiveControl(curWindow, 0);
             }
             else if (Conversions.ToBoolean(Windows[curWindow].zChange))
             {
@@ -998,7 +999,7 @@ namespace Client
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
             Action argcallback_norm = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, ref argcallback_dblclick, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_mousedown, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
 
             // Parchment
             Action argcallback_hover = null;
