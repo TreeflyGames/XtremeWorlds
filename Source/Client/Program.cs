@@ -474,6 +474,10 @@ namespace Client
         private static DateTime lastInputTime = DateTime.MinValue;
         private const int inputCooldown = 250;
 
+        // Handle Escape key to toggle menus
+        private static DateTime lastMouseClickTime = DateTime.MinValue;
+        private const int mouseClickCooldown = 250;
+
         public static void ProcessInputs()
         {
             // Get the mouse position from the cache
@@ -835,8 +839,13 @@ namespace Client
             // Check for MouseDown event (button pressed)
             if (IsMouseButtonDown(MouseButton.Left))
             {
-                Gui.HandleInterfaceEvents(EntState.MouseDown);
-                GameState.LastLeftClickTime = currentTime; // Track time for double-click detection
+                if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= mouseClickCooldown)
+                {
+                    Gui.HandleInterfaceEvents(EntState.MouseDown);
+                    lastMouseClickTime = DateTime.Now; // Update last mouse click time
+                    GameState.LastLeftClickTime = currentTime; // Track time for double-click detection
+                }
+                
             }
 
             // Check for MouseUp event (button released)
