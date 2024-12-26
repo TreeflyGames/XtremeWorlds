@@ -105,38 +105,19 @@ namespace Client
             Core.Log.Add(err, logFileName);
         }
 
-        /* TODO ERROR: Skipped IfDirectiveTrivia
-        #If DEBUG Then
-        */
         private static void Socket_TrafficReceived(int size, ref byte[] data)
         {
             Console.WriteLine("Traffic Received : [Size: " + size + "]");
             byte[] tmpData = data;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42024 ' Unused local variable
-            */
-            int breakPointDummy;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42024 ' Unused local variable
-            */        // Put breakline on BreakPointDummy to look at what is contained in data at runtime in the VS logger.
+            // Put breakline on tmpData to look at what is contained in data at runtime in the VS logger.
         }
 
         private static void Socket_PacketReceived(int size, int header, ref byte[] data)
         {
             Console.WriteLine("Packet Received : [Size: " + size + "| Packet: " + ((Packets.ServerPackets)header).ToString() + "]");
             byte[] tmpData = data;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Disable Warning BC42024 ' Unused local variable
-            */
-            int breakPointDummy;
-            /* TODO ERROR: Skipped WarningDirectiveTrivia
-            #Enable Warning BC42024 ' Unused local variable
-            */        // Put breakline on BreakPointDummy to look at what is contained in data at runtime in the VS logger.
+            // Put breakline on tmpData to look at what is contained in data at runtime in the VS logger.
         }
-
-        /* TODO ERROR: Skipped EndIfDirectiveTrivia
-        #End If
-        */
         #endregion
 
     }
