@@ -767,7 +767,7 @@ namespace Client
             Action argcallback_dblclick = null;
             Action argcallback_norm = null;
             Action argcallback_hover = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousemove, ref argcallback_mousedown, ref argcallback_dblclick, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
 
             // Parchment
             Action argcallback_mousedown1 = null;
@@ -805,12 +805,12 @@ namespace Client
             var argcallback_mousedown5 = new Action(btnSendRegister_Click);
             Action argcallback_mousemove5 = null;
             Action argcallback_dblclick5 = null;
-            Gui.UpdateButton(Windows.Count, "btnAccept", 68L, 152L, 67L, 22L, "Accept", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousemove5, ref argcallback_mousedown5, ref argcallback_dblclick5, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnAccept", 68L, 152L, 67L, 22L, "Accept", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown5, ref argcallback_mousemove5, ref argcallback_dblclick5, 0L, 0L, "", false, true);
 
             var argcallback_mousedown6 = new Action(btnReturnMain_Click);
             Action argcallback_mousemove6 = null;
             Action argcallback_dblclick6 = null;
-            Gui.UpdateButton(Windows.Count, "btnExit", 142L, 152L, 67L, 22L, "Back", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousemove6, ref argcallback_mousedown6, ref argcallback_dblclick6, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnExit", 142L, 152L, 67L, 22L, "Back", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown6, ref argcallback_mousemove6, ref argcallback_dblclick6, 0L, 0L, "", false, true);
 
             // Labels
             Action argcallback_norm4 = null;
@@ -1188,10 +1188,10 @@ namespace Client
             Action argcallback_norm = null;
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_mousemove, ref argcallback_dblclick, ref argcallback_mousedown, ref argcallback_mousemove, 0L, 0L, "", false, true);
+            Action argcallback_hover = null;
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
 
             // Parchment
-            Action argcallback_hover = null;
             Action argcallback_mousedown1 = null;
             Action argcallback_mousemove1 = null;
             Action argcallback_dblclick1 = null;
