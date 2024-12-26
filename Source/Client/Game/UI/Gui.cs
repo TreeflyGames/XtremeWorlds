@@ -842,21 +842,21 @@ namespace Client
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
             Action argcallback_enter = null;
-            UpdateTextbox(Windows.Count, "txtUsername", 67L, 55L, 142L, 19L, "", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Left, true, 255L, true, 5L, 3L, 0L, 0L, 0L, 0L, 0L, 0L, false, 0L, Constant.NAME_LENGTH, ref argcallback_norm7, ref argcallback_hover7, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, ref argcallback_enter);
+            UpdateTextbox(Windows.Count, "txtUsername", 67L, 55L, 142L, 19L, "", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Left, true, 255L, true, 5L, 3L, 0L, 0L, 0L, (long)Core.Enum.DesignType.TextWhite, (long)Core.Enum.DesignType.TextWhite, (long)Core.Enum.DesignType.TextWhite, false, 0L, Constant.NAME_LENGTH, ref argcallback_norm7, ref argcallback_hover7, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, ref argcallback_enter);
             Action argcallback_norm8 = null;
             Action argcallback_hover8 = null;
             Action argcallback_mousedown11 = null;
             Action argcallback_mousemove11 = null;
             Action argcallback_dblclick11 = null;
             Action argcallback_enter1 = null;
-            UpdateTextbox(Windows.Count, "txtPassword", 67L, 90L, 142L, 19L, "", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Left, true, 255L, true, 5L, 3L, 0L, 0L, 0L, 0L, 0L, 0L, true, 0L, Constant.NAME_LENGTH, ref argcallback_norm8, ref argcallback_hover8, ref argcallback_mousedown11, ref argcallback_mousemove11, ref argcallback_dblclick11, ref argcallback_enter1);
+            UpdateTextbox(Windows.Count, "txtPassword", 67L, 90L, 142L, 19L, "", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Left, true, 255L, true, 5L, 3L, 0L, 0L, 0L, (long)Core.Enum.DesignType.TextWhite, (long)Core.Enum.DesignType.TextWhite, (long)Core.Enum.DesignType.TextWhite, true, 0L, Constant.NAME_LENGTH, ref argcallback_norm8, ref argcallback_hover8, ref argcallback_mousedown11, ref argcallback_mousemove11, ref argcallback_dblclick11, ref argcallback_enter1);
             Action argcallback_norm9 = null;
             Action argcallback_hover9 = null;
             Action argcallback_mousedown12 = null;
             Action argcallback_mousemove12 = null;
             Action argcallback_dblclick12 = null;
             Action argcallback_enter2 = null;
-            UpdateTextbox(Windows.Count, "txtRetypePassword", 67L, 127L, 142L, 19L, "", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Left, true, 255L, true, 5L, 3L, 0L, 0L, 0L, 0L, 0L, 0L, true, 0L, Constant.NAME_LENGTH, ref argcallback_norm9, ref argcallback_hover9, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, ref argcallback_enter2);
+            UpdateTextbox(Windows.Count, "txtRetypePassword", 67L, 127L, 142L, 19L, "", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Left, true, 255L, true, 5L, 3L, 0L, 0L, 0L, (long)Core.Enum.DesignType.TextWhite, (long)Core.Enum.DesignType.TextWhite, (long)Core.Enum.DesignType.TextWhite, true, 0L, Constant.NAME_LENGTH, ref argcallback_norm9, ref argcallback_hover9, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, ref argcallback_enter2);
             // UpdateTextbox(Windows.Count, "txtCode", 67, 163, 142, 19, , FontType.Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
             // UpdateTextbox(Windows.Count, "txtCaptcha", 67, 235, 142, 19, , FontType.Arial, , AlignmentType.Left, , , , , , DesignType.TextWhite, DesignType.TextWhite, DesignType.TextWhite, False)
 
