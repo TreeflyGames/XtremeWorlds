@@ -69,7 +69,7 @@ namespace Server
             foreach (var id in ids.Result)
             {
                 var loopTo = Core.Constant.MAX_CHARS;
-                for (i = 0; i <= (int)loopTo; i++)
+                for (i = 1; i <= (int)loopTo; i++)
                 {
                     data = Database.SelectRowByColumn("id", id, "account", "character" + i.ToString());
                     if (data is not null)

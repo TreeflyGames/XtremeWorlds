@@ -60,7 +60,7 @@ namespace Server
             buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerChars);
 
             // loop through each character. clear, load, add. repeat.
-            for (int i = 0, loopTo = Core.Constant.MAX_CHARS; i <= (int)loopTo; i++)
+            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= (int)loopTo; i++)
             {
                 Database.LoadCharacter((int)index, Conversions.ToInteger(i));
 

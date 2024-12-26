@@ -207,7 +207,7 @@ namespace Server
             string dataTable = "id SERIAL PRIMARY KEY, data jsonb";
             string playerTable = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb";
 
-            for (int i = 0, loopTo = Core.Constant.MAX_CHARS; i <= (int)loopTo; i++)
+            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= (int)loopTo; i++)
                 playerTable += $", character{i} jsonb";
 
             string[] tableNames = new[] { "job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile", "moral" };
@@ -324,7 +324,11 @@ namespace Server
 
         public static void InsertRowByColumn(long id, string data, string tableName, string dataColumn, string idColumn)
         {
-            string sql = $"INSERT INTO {tableName} ({idColumn}, {dataColumn}) VALUES (@id, @data::jsonb);";
+            string sql = $@"
+        INSERT INTO {tableName} ({idColumn}, {dataColumn}) 
+        VALUES (@id, @data::jsonb)
+        ON CONFLICT ({idColumn}) 
+        DO UPDATE SET {dataColumn} = @data::jsonb;";
 
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -333,7 +337,7 @@ namespace Server
                 using (var command = new NpgsqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@id", id);
-                    command.Parameters.AddWithValue("@data", data); // Convert JObject back to string
+                    command.Parameters.AddWithValue("@data", data); // Ensure this is properly serialized JSON
 
                     command.ExecuteNonQuery();
                 }
@@ -379,7 +383,7 @@ namespace Server
 
                 using (var command = new NpgsqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@value", value);
+                    command.Parameters.AddWithValue("@value", Math.Abs(value));
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -1367,7 +1371,6 @@ namespace Server
         public static object LoadAccount(int index, string username)
         {
             JObject data;
-
             data = SelectRowByColumn("id", GetStringHash(username), "account", "data");
 
             if (data is null)
@@ -1552,7 +1555,6 @@ namespace Server
         public static bool LoadCharacter(int index, int charNum)
         {
             JObject data;
-
             data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "character" + charNum.ToString());
 
             if (data is null)
