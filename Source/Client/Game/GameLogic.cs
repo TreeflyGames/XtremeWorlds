@@ -1368,7 +1368,7 @@ namespace Client
             GameState.newCharGender = (long)Core.Enum.SexType.Male;
             Gui.Windows[Gui.GetWindowIndex("winJob")].Controls[(int)Gui.GetControlIndex("winJob", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob].Name;
             Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "txtName")].Text = "";
-            Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "chkMale")].Value = 0L;
+            Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "chkMale")].Value = 1L;
             Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
             Gui.ShowWindow(Gui.GetWindowIndex("winJob"));
         }
