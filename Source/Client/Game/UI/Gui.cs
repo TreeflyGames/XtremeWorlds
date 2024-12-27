@@ -3496,7 +3496,7 @@ namespace Client
         public static void btnNewChar_Accept()
         {
             string name;
-            name = Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Text;
+            name = FilterUnsupportedCharacters(Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Text, Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Font);
             HideWindows();
             GameLogic.AddChar(name, (int)GameState.newCharGender, (int)GameState.newCharJob, (int)GameState.newCharSprite);
         }
@@ -6911,19 +6911,17 @@ namespace Client
 
         private static string FilterUnsupportedCharacters(string text, Core.Enum.FontType fontType)
         {
-            if (text == null) return "";
+            if (text == null)
+            {
+                return string.Empty; // or handle it as appropriate
+            }
 
             var supportedText = new StringBuilder();
             foreach (char ch in text)
             {
                 if (Text.Fonts[fontType].Characters.Contains(ch))
                 {
-                    supportedText.Append(ch);
-                }
-                else
-                {
-                    // Replace unsupported character with a placeholder or remove it
-                    supportedText.Append("?");
+                    supportedText.Append(ch);           
                 }
             }
             return supportedText.ToString();
