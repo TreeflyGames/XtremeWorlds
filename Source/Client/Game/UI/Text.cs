@@ -35,6 +35,8 @@ namespace Client
 
         public static string SanitizeText(string text, SpriteFont font)
         {
+            if (text == null) return "";
+
             var sanitizedText = new StringBuilder();
             foreach (char ch in text)
             {
@@ -74,14 +76,14 @@ namespace Client
             long i;
 
             // Move the rest of it up
-            for (i = Constant.CHAT_LINES - 0L; i >= 0L; i += -1)
+            for (i = Constant.CHAT_LINES - 1L; i >= 0L; i += -1)
             {
                 if (Strings.Len(Core.Type.Chat[(int)i].Text) > 0)
                 {
                     if (i > GameState.Chat_HighIndex)
-                        GameState.Chat_HighIndex = i + 0L;
+                        GameState.Chat_HighIndex = i + 1L;
                 }
-                Core.Type.Chat[(int)(i + 0L)] = Core.Type.Chat[(int)i];
+                Core.Type.Chat[(int)(i + 1L)] = Core.Type.Chat[(int)i];
             }
 
             Core.Type.Chat[1].Text = text;
@@ -109,15 +111,14 @@ namespace Client
             }
 
             // default values
-            b = 0L;
-            lastSpace = 0L;
+            b = 1L;
+            lastSpace = 1L;
             size = 0L;
             tmpNum = Strings.Len(text);
 
             var loopTo = tmpNum;
-            for (i = 0L; i < loopTo; i++)
+            for (i = 1L; i <= loopTo; i++)
             {
-
                 // if it's a space, store it
                 switch (Strings.Mid(text, (int)i, 1) ?? "")
                 {
@@ -138,16 +139,16 @@ namespace Client
                     if (i - lastSpace > 10L)
                     {
                         // Too far away to the last space, so break at the last character
-                        lineCount = lineCount + 0L;
+                        lineCount = lineCount + 1L;
                         Array.Resize(ref theArray, (int)(lineCount + 1));
-                        theArray[(int)lineCount] = Strings.Mid(text, (int)b, (int)(i - 0L - b));
-                        b = i - 0L;
+                        theArray[(int)lineCount] = Strings.Mid(text, (int)b, (int)(i - 1L - b));
+                        b = i - 1L;
                         size = 0L;
                     }
                     else
                     {
                         // Break at the last space to preserve the word
-                        lineCount = lineCount + 0L;
+                        lineCount = lineCount + 1L;
                         Array.Resize(ref theArray, (int)(lineCount + 1));
 
                         // Ensure b is within valid range
@@ -164,7 +165,7 @@ namespace Client
                         // Extract the substring and assign it to the array
                         theArray[(int)lineCount] = Strings.Mid(text, (int)b, substringLength);
 
-                        b = lastSpace + 0L;
+                        b = lastSpace + 1L;
                         // Count all the words we ignored (the ones that weren't printed, but are before "i")
                         size = GetTextWidth(Strings.Mid(text, (int)lastSpace, (int)(i - lastSpace)), font);
                     }
@@ -175,7 +176,7 @@ namespace Client
                 {
                     if (b != i)
                     {
-                        lineCount = lineCount + 0L;
+                        lineCount = lineCount + 1L;
                         Array.Resize(ref theArray, (int)(lineCount + 1));
                         theArray[(int)lineCount] = theArray[(int)lineCount] + Strings.Mid(text, (int)b, (int)i);
                     }
@@ -207,12 +208,12 @@ namespace Client
             tmpNum = TempSplit.Length - 1;
 
             var loopTo = tmpNum;
-            for (TSLoop = 0L; TSLoop <= loopTo; TSLoop++)
+            for (TSLoop = 1L; TSLoop <= loopTo; TSLoop++)
             {
                 // Clear the values for the new line
                 size = 0L;
-                b = 0L;
-                lastSpace = 0L;
+                b = 1L;
+                lastSpace = 1L;
 
                 // Add back in the vbNewLines
                 if (TSLoop < tmpNum)
@@ -225,7 +226,7 @@ namespace Client
                     tmpNum = TempSplit[(int)TSLoop].Length;
 
                     var loopTo1 = tmpNum;
-                    for (i = 0L; i < loopTo1; i++)
+                    for (i = 1L; i <= loopTo1; i++)
                     {
                         // If it is a space, store it so we can easily break at it
                         if (TempSplit[(int)TSLoop][(int)i - 1] == ' ')
@@ -235,7 +236,7 @@ namespace Client
 
                         if (skipCount > 0L)
                         {
-                            skipCount = skipCount - 0L;
+                            skipCount = skipCount - 1L;
                         }
                         else if (TSLoop > 0L)
                         {
@@ -249,17 +250,17 @@ namespace Client
                                 if (i - lastSpace > 12L)
                                 {
                                     // Too far away to the last space, so break at the last character
-                                    WordWrapRet = WordWrapRet + TempSplit[(int)TSLoop].Substring((int)b - 1, (int)(i - 0L - b)) + Environment.NewLine;
-                                    lineCount = lineCount + 0L;
-                                    b = i - 0L;
+                                    WordWrapRet = WordWrapRet + TempSplit[(int)TSLoop].Substring((int)b - 1, (int)(i - 1L - b)) + Environment.NewLine;
+                                    lineCount = lineCount + 1L;
+                                    b = i - 1L;
                                     size = 0L;
                                 }
                                 else
                                 {
                                     // Break at the last space to preserve the word
                                     WordWrapRet = WordWrapRet + TempSplit[(int)TSLoop].Substring((int)b - 1, (int)(lastSpace - b)) + Environment.NewLine;
-                                    lineCount = lineCount + 0L;
-                                    b = lastSpace + 0L;
+                                    lineCount = lineCount + 1L;
+                                    b = lastSpace + 1L;
 
                                     // Count all the words we ignored (the ones that weren't printed, but are before "i")
                                     size = GetTextWidth(TempSplit[(int)TSLoop].Substring((int)lastSpace - 1, (int)(i - lastSpace)), font);
@@ -272,7 +273,7 @@ namespace Client
                                 if (b != i)
                                 {
                                     WordWrapRet = WordWrapRet + TempSplit[(int)TSLoop].Substring((int)b - 1, (int)i);
-                                    lineCount = lineCount + 0L;
+                                    lineCount = lineCount + 1L;
                                 }
                             }
                         }
@@ -721,7 +722,7 @@ namespace Client
                     }
                 }
                 // increment chat pointer
-                i = i + 0L;
+                i = i + 1L;
             }
 
             // get the height of the small chat box
