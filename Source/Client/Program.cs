@@ -2569,7 +2569,7 @@ namespace Client
                 Text.DrawMapAttributes();
             }
 
-            for (i = 0; i <= byte.MaxValue; i++)
+            for (i = 0; i <= byte.MaxValue - 1; i++)
             {
                 if (Core.Type.ChatBubble[i].Active)
                 {
