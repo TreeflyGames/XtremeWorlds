@@ -212,7 +212,7 @@ namespace Server
                         return;
                     }
 
-                    if (username.Length > Core.Constant.NAME_LENGTH | username.Length < 3)
+                    if (username.Length > Core.Constant.NAME_LENGTH | username.Length < Core.Constant.MIN_NAME_LENGTH)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength);
                         return;
@@ -335,7 +335,7 @@ namespace Server
                         return;
                     }
 
-                    if (username.Length > Core.Constant.NAME_LENGTH | username.Length < 3)
+                    if (username.Length > Core.Constant.NAME_LENGTH | username.Length < Core.Constant.MIN_NAME_LENGTH)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.Register);
                         return;
@@ -434,7 +434,7 @@ namespace Server
                     return;
                 }
 
-                if (name.Length > Core.Constant.NAME_LENGTH | name.Length < 3)
+                if (name.Length > Core.Constant.NAME_LENGTH | name.Length < Core.Constant.MIN_NAME_LENGTH)
                 {
                     NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.NewChar);
                     return;

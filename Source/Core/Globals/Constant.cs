@@ -26,6 +26,7 @@ namespace Core
         public const int MAX_SKILLS = 255;
         public const byte MAX_TRADES = 35;
         public const byte NAME_LENGTH = 21;
+        public const byte MIN_NAME_LENGTH = 3;
         public const byte CHAT_LENGTH = 70;
         public const byte MAX_HOTBAR = 10;
         public const byte MAX_MAPX = 32;
