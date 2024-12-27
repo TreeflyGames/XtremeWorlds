@@ -2089,7 +2089,7 @@ namespace Client
 
                                         // render text
                                         left = (long)Math.Round(withBlock.Left + 22L - Text.GetTextWidth(withBlock.Text, withBlock.Font) / 2d + xO);
-                                        Text.RenderText(withBlock.Text, (int)left, (int)(withBlock.Top + yO + 4L), withBlock.Color, Color.Black);
+                                        Text.RenderText(withBlock.Text, (int)left + 8, (int)(withBlock.Top + yO + 4L), withBlock.Color, Color.Black);
                                         break;
                                     }
 

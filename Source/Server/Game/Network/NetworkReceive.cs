@@ -450,7 +450,6 @@ namespace Server
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.NewChar);
                         return;
                     }
-
                 }
 
                 // Check if name is already in use
@@ -483,7 +482,6 @@ namespace Server
 
                 buffer.Dispose();
             }
-
         }
 
         private static void Packet_DelChar(int index, ref byte[] data)
