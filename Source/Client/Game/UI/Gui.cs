@@ -3250,7 +3250,7 @@ namespace Client
         public static void btnJobs_Right()
         {
             // Exit if the job is invalid or exceeds limits
-            if (GameState.newCharJob >= Constant.MAX_JOBS || string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob ].Desc) & GameState.newCharJob >= Constant.MAX_JOBS)
+            if (GameState.newCharJob >= Constant.MAX_JOBS - 1 || string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob ].Desc) & GameState.newCharJob >= Constant.MAX_JOBS)
                 return;
 
             // Move to the next job
