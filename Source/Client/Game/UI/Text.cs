@@ -329,7 +329,7 @@ namespace Client
 
         public static void RenderText(string text, int x, int y, Color frontColor, Color backColor, Core.Enum.FontType font = Core.Enum.FontType.Georgia)
         {
-
+            if (text == null) return;
             string sanitizedText = new string(text.Where(c => Fonts[font].Characters.Contains(c)).ToArray());
             GameClient.SpriteBatch.DrawString(Fonts[font], sanitizedText, new Vector2(x + 1, y + 1), backColor, 0.0f, Vector2.Zero, 12f / 16.0f, SpriteEffects.None, 0.0f);
             GameClient.SpriteBatch.DrawString(Fonts[font], sanitizedText, new Vector2(x, y), frontColor, 0.0f, Vector2.Zero, 12f / 16.0f, SpriteEffects.None, 0.0f);

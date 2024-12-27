@@ -413,7 +413,7 @@ namespace Server
                 slot = (byte)buffer.ReadInt32();
                 name = buffer.ReadString();
                 sexNum = buffer.ReadInt32();
-                jobNum = buffer.ReadInt32() + 1;
+                jobNum = buffer.ReadInt32();
 
                 if (slot < 1 | slot > Core.Constant.MAX_CHARS)
                 {

@@ -175,7 +175,7 @@ namespace Client
                         }
                     case (int)Core.Enum.MenuType.Job:
                         {
-                            Gui.ShowWindow(Gui.GetWindowIndex("winJob"));
+                            Gui.ShowWindow(Gui.GetWindowIndex("winJobs"));
                             break;
                         }
                     case (int)Core.Enum.MenuType.NewChar:
@@ -237,7 +237,7 @@ namespace Client
             Settings.Username = Gui.Windows[Gui.GetWindowIndex("winLogin")].Controls[(int)Gui.GetControlIndex("winLogin", "txtUsername")].Text;
             Settings.Save();
 
-            for (var i = 0L; i <= Constant.MAX_CHARS; i++)
+            for (var i = 1L; i <= Constant.MAX_CHARS; i++)
             {
                 GameState.CharName[(int)i] = buffer.ReadString();
                 GameState.CharSprite[(int)i] = buffer.ReadInt32();

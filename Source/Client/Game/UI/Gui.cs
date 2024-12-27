@@ -1108,7 +1108,7 @@ namespace Client
         public static void UpdateWindow_Jobs()
         {
             // Control window
-            UpdateWindow("winJob", "Select Job", Core.Enum.FontType.Georgia, zOrder_Win, 0L, 0L, 364L, 229L, 17L, false, 2L, 6L, (long)Core.Enum.DesignType.Win_Norm, (long)Core.Enum.DesignType.Win_Norm, (long)Core.Enum.DesignType.Win_Norm);
+            UpdateWindow("winJobs", "Select Job", Core.Enum.FontType.Georgia, zOrder_Win, 0L, 0L, 364L, 229L, 17L, false, 2L, 6L, (long)Core.Enum.DesignType.Win_Norm, (long)Core.Enum.DesignType.Win_Norm, (long)Core.Enum.DesignType.Win_Norm);
 
             // Centralize it
             CentralizeWindow(Windows.Count);
@@ -3028,7 +3028,7 @@ namespace Client
 
         public static void btnDelChar_1()
         {
-            GameLogic.Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", (byte)Core.Enum.DialogueType.DelChar, (byte)Core.Enum.DialogueStyle.YesNo, 0L);
+            GameLogic.Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", (byte)Core.Enum.DialogueType.DelChar, (byte)Core.Enum.DialogueStyle.YesNo, 1L);
         }
 
         public static void btnDelChar_2()
@@ -3141,8 +3141,8 @@ namespace Client
             long yO;
 
             // Get window coordinates
-            xO = Windows[GetWindowIndex("winJob")].Left;
-            yO = Windows[GetWindowIndex("winJob")].Top;
+            xO = Windows[GetWindowIndex("winJobs")].Left;
+            yO = Windows[GetWindowIndex("winJobs")].Top;
 
             // Determine character image based on job
             switch (GameState.newCharJob)
@@ -3184,8 +3184,8 @@ namespace Client
             long x;
 
             // Get window coordinates
-            xO = Windows[GetWindowIndex("winJob")].Left;
-            yO = Windows[GetWindowIndex("winJob")].Top;
+            xO = Windows[GetWindowIndex("winJobs")].Left;
+            yO = Windows[GetWindowIndex("winJobs")].Top;
 
             // Get job description or use default
             if (string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob ].Desc))
@@ -3215,17 +3215,17 @@ namespace Client
             }
 
             // Wrap text to fit within 330 pixels
-            Text.WordWrap(text, Windows[GetWindowIndex("winJob")].Font, 330L, ref textArray);
+            Text.WordWrap(text, Windows[GetWindowIndex("winJobs")].Font, 330L, ref textArray);
 
             count = Information.UBound(textArray);
             y = yO + 60L;
             var loopTo = count;
             for (i = 1L; i <= loopTo; i++)
             {
-                x = xO + 118L + 200 / 2 - Text.GetTextWidth(textArray[(int)i], Windows[GetWindowIndex("winJob")].Font) / 2;
+                x = xO + 118L + 200 / 2 - Text.GetTextWidth(textArray[(int)i], Windows[GetWindowIndex("winJobs")].Font) / 2;
                 // Render each line of the wrapped text
-                string sanitizedText = new string(textArray[(int)i].Where(c => Text.Fonts[Windows[GetWindowIndex("winJob")].Font].Characters.Contains(c)).ToArray());
-                var actualSize = Text.Fonts[Windows[GetWindowIndex("winJob")].Font].MeasureString(sanitizedText);
+                string sanitizedText = new string(textArray[(int)i].Where(c => Text.Fonts[Windows[GetWindowIndex("winJobs")].Font].Characters.Contains(c)).ToArray());
+                var actualSize = Text.Fonts[Windows[GetWindowIndex("winJobs")].Font].MeasureString(sanitizedText);
                 float actualWidth = actualSize.X;
                 float actualHeight = actualSize.Y;
 
@@ -3244,7 +3244,7 @@ namespace Client
                 GameState.newCharJob = 0L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJob")].Controls[(int)GetControlIndex("winJob", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[(int)GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob].Name;
         }
 
         public static void btnJobs_Right()
@@ -3257,12 +3257,12 @@ namespace Client
             GameState.newCharJob += 1L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJob")].Controls[(int)GetControlIndex("winJob", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob ].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[(int)GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob ].Name;
         }
 
         public static void btnJobs_Accept()
         {
-            HideWindow(GetWindowIndex("winJob"));
+            HideWindow(GetWindowIndex("winJobs"));
             ShowWindow(GetWindowIndex("winNewChar"));
         }
 
@@ -3490,7 +3490,7 @@ namespace Client
             GameState.newCharSprite = 1L;
             GameState.newCharGender = (long)Core.Enum.SexType.Male;
             HideWindows();
-            ShowWindow(GetWindowIndex("winJob"));
+            ShowWindow(GetWindowIndex("winJobs"));
         }
 
         public static void btnNewChar_Accept()
@@ -6911,6 +6911,8 @@ namespace Client
 
         private static string FilterUnsupportedCharacters(string text, Core.Enum.FontType fontType)
         {
+            if (text == null) return "";
+
             var supportedText = new StringBuilder();
             foreach (char ch in text)
             {
