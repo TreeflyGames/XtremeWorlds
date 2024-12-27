@@ -1364,7 +1364,7 @@ namespace Client
         {
             Gui.HideWindows();
             GameState.newCharJob = 0L;
-            GameState.newCharSprite = 0L;
+            GameState.newCharSprite = 1L;
             GameState.newCharGender = (long)Core.Enum.SexType.Male;
             Gui.Windows[Gui.GetWindowIndex("winJob")].Controls[(int)Gui.GetControlIndex("winJob", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob].Name;
             Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "txtName")].Text = "";
@@ -1408,13 +1408,13 @@ namespace Client
                 {
                     if (GameState.ChatScroll < Constant.CHAT_LINES)
                     {
-                        GameState.ChatScroll = GameState.ChatScroll + 0L;
+                        GameState.ChatScroll = GameState.ChatScroll + 1L;
                     }
                 }
             }
             else if (GameState.ChatScroll > 0L)
             {
-                GameState.ChatScroll = GameState.ChatScroll - 0L;
+                GameState.ChatScroll = GameState.ChatScroll - 1L;
             }
         }
 
@@ -1427,7 +1427,7 @@ namespace Client
             for (i = 0L; i <= Constant.MAX_HOTBAR; i++)
             {
                 tempRec.Top = (int)(StartY + GameState.HotbarTop);
-                tempRec.Left = (int)(StartX + (i - 0L) * GameState.HotbarOffsetX);
+                tempRec.Left = (int)(StartX + (i - 1L) * GameState.HotbarOffsetX);
                 tempRec.Right = tempRec.Left + GameState.PicX;
                 tempRec.Bottom = tempRec.Top + GameState.PicY;
 
@@ -1979,9 +1979,9 @@ namespace Client
         {
             long count;
             count = Information.UBound(GameState.descText);
-            Array.Resize(ref GameState.descText, (int)(count + 0L + 1));
-            GameState.descText[(int)(count + 0L)].Text = text;
-            GameState.descText[(int)(count + 0L)].Color = GameClient.ToDrawingColor(color);
+            Array.Resize(ref GameState.descText, (int)(count + 1L + 1));
+            GameState.descText[(int)(count + 1L)].Text = text;
+            GameState.descText[(int)(count + 1L)].Color = GameClient.ToDrawingColor(color);
         }
 
         public static void LogoutGame()
@@ -2490,15 +2490,15 @@ namespace Client
             tileWidth = (long)Math.Round(GameState.ResolutionWidth / 32d);
             tileHeight = (long)Math.Round(GameState.ResolutionHeight / 32d);
 
-            ScreenX = (tileWidth + 0L) * GameState.PicX;
-            ScreenY = (tileHeight + 0L) * GameState.PicY;
+            ScreenX = (tileWidth + 1L) * GameState.PicX;
+            ScreenY = (tileHeight + 1L) * GameState.PicY;
 
             offsetX = Core.Type.Player[GameState.MyIndex].XOffset + GameState.PicX;
             offsetY = Core.Type.Player[GameState.MyIndex].YOffset + GameState.PicY;
-            StartX = GetPlayerX(GameState.MyIndex) - (tileWidth + 0L) / 2L - 0L;
-            StartY = GetPlayerY(GameState.MyIndex) - (tileHeight + 0L) / 2L - 0L;
+            StartX = GetPlayerX(GameState.MyIndex) - (tileWidth + 1L) / 2L - 1L;
+            StartY = GetPlayerY(GameState.MyIndex) - (tileHeight + 1L) / 2L - 1L;
 
-            if (tileWidth + 0L <= Core.Type.MyMap.MaxX)
+            if (tileWidth + 1L <= Core.Type.MyMap.MaxX)
             {
                 if (StartX < 0L)
                 {
@@ -2515,7 +2515,7 @@ namespace Client
                     StartX = 0L;
                 }
 
-                EndX = StartX + tileWidth + 0L + 0L;
+                EndX = StartX + tileWidth + 1L + 1L;
 
                 if (EndX > Core.Type.MyMap.MaxX)
                 {
@@ -2530,15 +2530,15 @@ namespace Client
                     }
 
                     EndX = Core.Type.MyMap.MaxX;
-                    StartX = EndX - tileWidth - 0L;
+                    StartX = EndX - tileWidth - 1L;
                 }
             }
             else
             {
-                EndX = StartX + tileWidth + 0L + 0L;
+                EndX = StartX + tileWidth + 1L + 1L;
             }
 
-            if (tileHeight + 0L <= Core.Type.MyMap.MaxY)
+            if (tileHeight + 1L <= Core.Type.MyMap.MaxY)
             {
                 if (StartY < 0L)
                 {
@@ -2555,7 +2555,7 @@ namespace Client
                     StartY = 0L;
                 }
 
-                EndY = StartY + tileHeight + 0L + 0L;
+                EndY = StartY + tileHeight + 1L + 1L;
 
                 if (EndY > Core.Type.MyMap.MaxY)
                 {
@@ -2570,20 +2570,20 @@ namespace Client
                     }
 
                     EndY = Core.Type.MyMap.MaxY;
-                    StartY = EndY - tileHeight - 0L;
+                    StartY = EndY - tileHeight - 1L;
                 }
             }
             else
             {
-                EndY = StartY + tileHeight + 0L + 0L;
+                EndY = StartY + tileHeight + 1L + 1L;
             }
 
-            if (tileWidth + 0L == Core.Type.MyMap.MaxX)
+            if (tileWidth + 1L == Core.Type.MyMap.MaxX)
             {
                 offsetX = 0L;
             }
 
-            if (tileHeight + 0L == Core.Type.MyMap.MaxY)
+            if (tileHeight + 1L == Core.Type.MyMap.MaxY)
             {
                 offsetY = 0L;
             }

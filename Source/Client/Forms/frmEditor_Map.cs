@@ -972,8 +972,8 @@ namespace Client
             if (Button == (int)MouseButtons.Left) // Left Mouse Button
             {
                 // convert the pixel number to tile number
-                X = (long)Math.Round(X) / GameState.PicX + 0L;
-                Y = (long)Math.Round(Y) / GameState.PicY + 0L;
+                X = (long)Math.Round(X) / GameState.PicX + 1L;
+                Y = (long)Math.Round(Y) / GameState.PicY + 1L;
 
                 // check it's not out of bounds
                 if (X < 0f)
@@ -1544,7 +1544,7 @@ namespace Client
             {
                 for (i = 0L; i <= GameState.MaxTileHistory - 1; i++)
                 {
-                    Core.Type.TileHistory[(int)i] = Core.Type.TileHistory[(int)(i + 0L)];
+                    Core.Type.TileHistory[(int)i] = Core.Type.TileHistory[(int)(i + 1L)];
                     GameState.TileHistoryHighIndex = GameState.TileHistoryHighIndex - 1;
                 }
             }

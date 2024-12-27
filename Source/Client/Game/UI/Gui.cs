@@ -226,11 +226,11 @@ namespace Client
                 var loopTo = Windows.Count - 1;
                 for (i = 1L; i <= loopTo; i++)
                 {
-                    if (Windows[i].zOrder > Windows[i + 0L].zOrder)
+                    if (Windows[i].zOrder > Windows[i + 1L].zOrder)
                     {
                         tempWindow = Windows[i];
-                        Windows[i] = Windows[i + 0L];
-                        Windows[i + 0L] = tempWindow;
+                        Windows[i] = Windows[i + 1L];
+                        Windows[i + 1L] = tempWindow;
                         x = 0L;
                     }
                 }
@@ -1070,39 +1070,39 @@ namespace Client
             var argcallback_mousedown10 = new Action(btnAcceptChar_1);
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_1", 22L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, ref argcallback_dblclick10, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_1", 22L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, 0L, 0L, "", false, true);
             var argcallback_mousedown11 = new Action(btnCreateChar_1);
             Action argcallback_mousemove11 = null;
             Action argcallback_dblclick11 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_1", 22L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_mousedown11, ref argcallback_mousemove11, ref argcallback_dblclick11, ref argcallback_dblclick11, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_1", 22L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown11, ref argcallback_mousemove11, ref argcallback_dblclick11, 0L, 0L, "", false, true);
             var argcallback_mousedown12 = new Action(btnDelChar_1);
             Action argcallback_mousemove12 = null;
             Action argcallback_dblclick12 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_1", 22L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, ref argcallback_dblclick12, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_1", 22L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, 0L, 0L, "", false, true);
             var argcallback_mousedown13 = new Action(btnAcceptChar_2);
             Action argcallback_mousemove13 = null;
             Action argcallback_dblclick13 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_2", 132L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, ref argcallback_dblclick13, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_2", 132L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false, true);
             var argcallback_mousedown14 = new Action(btnCreateChar_2);
             Action argcallback_mousemove14 = null;
             Action argcallback_dblclick14 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_2", 132L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, ref argcallback_dblclick14, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_2", 132L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false, true);
             var argcallback_mousedown15 = new Action(btnDelChar_2);
             Action argcallback_mousemove15 = null;
             Action argcallback_dblclick15 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_2", 132L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_mousedown15, ref argcallback_mousemove15, ref argcallback_dblclick15, ref argcallback_dblclick15, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_2", 132L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown15, ref argcallback_mousemove15, ref argcallback_dblclick15, 0L, 0L, "", false, true);
             var argcallback_mousedown16 = new Action(btnAcceptChar_3);
             Action argcallback_mousemove16 = null;
             Action argcallback_dblclick16 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_3", 242L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_mousedown16, ref argcallback_mousemove16, ref argcallback_dblclick16, ref argcallback_dblclick16, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_3", 242L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown16, ref argcallback_mousemove16, ref argcallback_dblclick16, 0L, 0L, "", false, true);
             var argcallback_mousedown17 = new Action(btnCreateChar_3);
             Action argcallback_mousemove17 = null;
             Action argcallback_dblclick17 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_3", 242L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_mousedown17, ref argcallback_mousemove17, ref argcallback_dblclick17, ref argcallback_dblclick17, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_3", 242L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown17, ref argcallback_mousemove17, ref argcallback_dblclick17, 0L, 0L, "", false, true);
             var argcallback_mousedown18 = new Action(btnDelChar_3);
             Action argcallback_mousemove18 = null;
             Action argcallback_dblclick18 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_3", 242L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_mousedown18, ref argcallback_mousemove18, ref argcallback_dblclick18, ref argcallback_dblclick18, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_3", 242L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown18, ref argcallback_mousemove18, ref argcallback_dblclick18, 0L, 0L, "", false, true);
         }
 
         public static void UpdateWindow_Jobs()
@@ -1836,7 +1836,7 @@ namespace Client
                                 RenderDesign(withBlock.Design[(int)withBlock.State], withBlock.Left + xO, withBlock.Top + yO, withBlock.Width, withBlock.Height, withBlock.Alpha);
                             }
 
-                            if ((withBlock.Image[(int)withBlock.State] > 0L))
+                            if (withBlock.Image[(int)withBlock.State] > 0L)
                             {
                                 string argpath = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], withBlock.Image[(int)withBlock.State].ToString());
                                 GameClient.RenderTexture(ref argpath, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, (int)withBlock.Width, (int)withBlock.Height, (int)withBlock.Width, (int)withBlock.Height, (byte)withBlock.Alpha);
@@ -2195,7 +2195,7 @@ namespace Client
                                     if (i == withBlock.Value || i == withBlock.Group)
                                     {
                                         string argpath1 = System.IO.Path.Combine(Path.Gui, "1");
-                                        GameClient.RenderTexture(ref argpath1, (int)x, (int)(y - 0L), 0, 0, (int)withBlock.Width, 15, 255, 0, 0, 0);
+                                        GameClient.RenderTexture(ref argpath1, (int)x, (int)(y - 1L), 0, 0, (int)withBlock.Width, 15, 255, 0, 0, 0);
                                     }
 
                                     // Render the text, centered
@@ -2576,7 +2576,7 @@ namespace Client
 
             // Draw center
             string argpath = System.IO.Path.Combine(Path.Designs, sprite.ToString());
-            GameClient.RenderTexture(ref argpath, (int)(x + bs), (int)(y + bs), (int)(bs + 0L), (int)(bs + 0L), (int)(width - bs * 2L), (int)(height - bs * 2L), alpha: (byte)alpha);
+            GameClient.RenderTexture(ref argpath, (int)(x + bs), (int)(y + bs), (int)(bs + 1L), (int)(bs + 1L), (int)(width - bs * 2L), (int)(height - bs * 2L), alpha: (byte)alpha);
 
             // Draw top side
             string argpath1 = System.IO.Path.Combine(Path.Designs, sprite.ToString());
@@ -2792,7 +2792,7 @@ namespace Client
                     var loopTo = (long)(withBlock.List.Count - 1);
                     for (i = 0L; i < loopTo; i++)
                     {
-                        if (y >= 16L * (i - 0L) & y <= 16L * i)
+                        if (y >= 16L * (i - 1L) & y <= 16L * i)
                         {
                             withBlock.Group = i;
                         }
@@ -2816,7 +2816,7 @@ namespace Client
                     var loopTo = (long)withBlock.List.Count;
                     for (i = 0L; i < loopTo; i++)
                     {
-                        if (y >= 16L * (i - 0L) & y <= 16L * i)
+                        if (y >= 16L * (i - 1L) & y <= 16L * i)
                         {
                             Windows[withBlock.LinkedToWin].Controls[(int)withBlock.LinkedToCon].Value = i;
                             CloseComboMenu();
@@ -3106,7 +3106,7 @@ namespace Client
             x = xO + 24L;
 
             // Loop through all characters and render them if they exist
-            for (i = 0L; i <= Constant.MAX_CHARS; i++)
+            for (i = 1L; i <= Constant.MAX_CHARS; i++)
             {
                 if (!string.IsNullOrEmpty(GameState.CharName[(int)i])) // Ensure character name exists
                 {
@@ -3149,15 +3149,15 @@ namespace Client
             {
                 case 0L: // Warrior
                     {
-                        imageChar = 0L;
+                        imageChar = 1L;
                         break;
                     }
-                case 2L: // Wizard
+                case 1L: // Wizard
                     {
                         imageChar = 2L;
                         break;
                     }
-                case 3L: // Whisperer
+                case 2L: // Whisperer
                     {
                         imageChar = 3L;
                         break;
@@ -3188,7 +3188,7 @@ namespace Client
             yO = Windows[GetWindowIndex("winJob")].Top;
 
             // Get job description or use default
-            if (string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob].Desc))
+            if (string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob ].Desc))
             {
                 switch (GameState.newCharJob)
                 {
@@ -3197,12 +3197,12 @@ namespace Client
                             text = "The way of a warrior has never been an easy one. ...";
                             break;
                         }
-                    case 2L: // Wizard
+                    case 1L: // Wizard
                         {
                             text = "Wizards are often mistrusted characters who ... enjoy setting things on fire.";
                             break;
                         }
-                    case 3L: // Whisperer
+                    case 2L: // Whisperer
                         {
                             text = "The art of healing comes with pressure and guilt, ...";
                             break;
@@ -3220,7 +3220,7 @@ namespace Client
             count = Information.UBound(textArray);
             y = yO + 60L;
             var loopTo = count;
-            for (i = 0L; i < loopTo; i++)
+            for (i = 1L; i <= loopTo; i++)
             {
                 x = xO + 118L + 200 / 2 - Text.GetTextWidth(textArray[(int)i], Windows[GetWindowIndex("winJob")].Font) / 2;
                 // Render each line of the wrapped text
@@ -3239,7 +3239,7 @@ namespace Client
         public static void btnJobs_Left()
         {
             // Move to the previous job
-            GameState.newCharJob -= 0L;
+            GameState.newCharJob -= 1L;
             if (GameState.newCharJob <= 0L)
                 GameState.newCharJob = 0L;
 
@@ -3250,14 +3250,14 @@ namespace Client
         public static void btnJobs_Right()
         {
             // Exit if the job is invalid or exceeds limits
-            if (GameState.newCharJob > Constant.MAX_JOBS || string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob].Desc) & GameState.newCharJob >= Constant.MAX_JOBS)
+            if (GameState.newCharJob >= Constant.MAX_JOBS || string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob ].Desc) & GameState.newCharJob >= Constant.MAX_JOBS)
                 return;
 
             // Move to the next job
-            GameState.newCharJob += 0L;
+            GameState.newCharJob += 1L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJob")].Controls[(int)GetControlIndex("winJob", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob].Name;
+            Windows[GetWindowIndex("winJob")].Controls[(int)GetControlIndex("winJob", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob ].Name;
         }
 
         public static void btnJobs_Accept()
@@ -3433,7 +3433,7 @@ namespace Client
             }
             else
             {
-                GameState.newCharSprite = GameState.newCharSprite - 0L;
+                GameState.newCharSprite = GameState.newCharSprite - 1L;
             }
         }
 
@@ -3456,7 +3456,7 @@ namespace Client
             }
             else
             {
-                GameState.newCharSprite = GameState.newCharSprite + 0L;
+                GameState.newCharSprite = GameState.newCharSprite + 1L;
             }
         }
 
@@ -3891,9 +3891,9 @@ namespace Client
                                     // find the slot to switch with
                                     for (i = 0L; i <= Constant.MAX_BANK; i++)
                                     {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.BankTop + (GameState.BankOffsetY + 32L) * ((i - 0L) / GameState.BankColumns);
+                                        tmpRec.Top = Windows[curWindow].Top + GameState.BankTop + (GameState.BankOffsetY + 32L) * ((i - 1L) / GameState.BankColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.BankLeft + (GameState.BankOffsetX + 32L) * ((i - 0L) % GameState.BankColumns);
+                                        tmpRec.Left = Windows[curWindow].Left + GameState.BankLeft + (GameState.BankOffsetX + 32L) * ((i - 1L) % GameState.BankColumns);
                                         tmpRec.Right = tmpRec.Left + 32d;
 
                                         if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
@@ -3942,9 +3942,9 @@ namespace Client
                                     // find the slot to switch with
                                     for (i = 0L; i <= Constant.MAX_INV; i++)
                                     {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 0L) / GameState.InvColumns);
+                                        tmpRec.Top = Windows[curWindow].Top + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 1L) / GameState.InvColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.InvLeft + (GameState.InvOffsetX + 32L) * ((i - 0L) % GameState.InvColumns);
+                                        tmpRec.Left = Windows[curWindow].Left + GameState.InvLeft + (GameState.InvOffsetX + 32L) * ((i - 1L) % GameState.InvColumns);
                                         tmpRec.Right = tmpRec.Left + 32d;
 
                                         if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
@@ -3990,9 +3990,9 @@ namespace Client
                                     // find the slot to switch with
                                     for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS; i++)
                                     {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * ((i - 0L) / GameState.SkillColumns);
+                                        tmpRec.Top = Windows[curWindow].Top + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * ((i - 1L) / GameState.SkillColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * ((i - 0L) % GameState.SkillColumns);
+                                        tmpRec.Left = Windows[curWindow].Left + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * ((i - 1L) % GameState.SkillColumns);
                                         tmpRec.Right = tmpRec.Left + 32d;
 
                                         if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
@@ -4023,7 +4023,7 @@ namespace Client
                                     {
                                         tmpRec.Top = Windows[curWindow].Top + GameState.HotbarTop;
                                         tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.HotbarLeft + (i - 0L) * GameState.HotbarOffsetX;
+                                        tmpRec.Left = Windows[curWindow].Left + GameState.HotbarLeft + (i - 1L) * GameState.HotbarOffsetX;
                                         tmpRec.Right = tmpRec.Left + 32d;
 
                                         if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
@@ -5052,7 +5052,7 @@ namespace Client
                     }
 
                     yO = Windows[GetWindowIndex("winCharacter")].Top + GameState.EqTop;
-                    xO = Windows[GetWindowIndex("winCharacter")].Left + GameState.EqLeft + (GameState.EqOffsetX + 32L) * ((i - 0L) % GameState.EqColumns);
+                    xO = Windows[GetWindowIndex("winCharacter")].Left + GameState.EqLeft + (GameState.EqOffsetX + 32L) * ((i - 1L) % GameState.EqColumns);
                     string argpath5 = System.IO.Path.Combine(Path.Items, ItemIcon.ToString());
                     GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
                 }
@@ -5245,8 +5245,8 @@ namespace Client
                         {
                             if (ItemIcon > 0L & ItemIcon <= GameState.NumItems)
                             {
-                                Top = yO + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 0L) / GameState.InvColumns);
-                                Left = xO + GameState.InvLeft + (GameState.InvOffsetX + 32L) * ((i - 0L) % GameState.InvColumns);
+                                Top = yO + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 1L) / GameState.InvColumns);
+                                Left = xO + GameState.InvLeft + (GameState.InvOffsetX + 32L) * ((i - 1L) % GameState.InvColumns);
 
                                 // draw icon
                                 string argpath5 = System.IO.Path.Combine(Path.Items, ItemIcon.ToString());
@@ -5256,7 +5256,7 @@ namespace Client
                                 if (GetPlayerInvValue(GameState.MyIndex, (int)i) > 1)
                                 {
                                     y = Top + 20L;
-                                    x = Left + 0L;
+                                    x = Left + 1L;
                                     Amount = (GetPlayerInvValue(GameState.MyIndex, (int)i) - amountModifier).ToString();
 
                                     // Draw currency but with k, m, b etc. using a convertion function
@@ -5869,8 +5869,8 @@ namespace Client
 
                         if (SkillPic > 0L & SkillPic <= GameState.NumSkills)
                         {
-                            Top = yO + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * ((i - 0L) / GameState.SkillColumns);
-                            Left = xO + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * ((i - 0L) % GameState.SkillColumns);
+                            Top = yO + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * ((i - 1L) / GameState.SkillColumns);
+                            Left = xO + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * ((i - 1L) % GameState.SkillColumns);
 
                             string argpath4 = System.IO.Path.Combine(Path.Skills, SkillPic.ToString());
                             GameClient.RenderTexture(ref argpath4, (int)Left, (int)Top, 0, 0, 32, 32, 32, 32);
@@ -6243,7 +6243,7 @@ namespace Client
                                 withBlock.Controls[(int)GetControlIndex("winParty", "picBar_HP" + cIn)].Visible = true;
                                 withBlock.Controls[(int)GetControlIndex("winParty", "picBar_SP" + cIn)].Visible = true;
                                 // increment control usage
-                                cIn = cIn + 0L;
+                                cIn = cIn + 1L;
                             }
                         }
                     }
@@ -6326,12 +6326,12 @@ namespace Client
 
             // Render start + end wood
             string argpath = System.IO.Path.Combine(Path.Gui, 31.ToString());
-            GameClient.RenderTexture(ref argpath, (int)(xO - 0L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
+            GameClient.RenderTexture(ref argpath, (int)(xO - 1L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
             string argpath1 = System.IO.Path.Combine(Path.Gui, 31.ToString());
             GameClient.RenderTexture(ref argpath1, (int)(xO + 407L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
             for (i = 0L; i <= Constant.MAX_HOTBAR; i++)
             {
-                xO = Windows[GetWindowIndex("winHotbar")].Left + GameState.HotbarLeft + (i - 0L) * GameState.HotbarOffsetX;
+                xO = Windows[GetWindowIndex("winHotbar")].Left + GameState.HotbarLeft + (i - 1L) * GameState.HotbarOffsetX;
                 yO = Windows[GetWindowIndex("winHotbar")].Top + GameState.HotbarTop;
                 Width = 36L;
                 Height = 36L;
@@ -6428,8 +6428,8 @@ namespace Client
                     ItemNum = Core.Type.Shop[GameState.InShop].TradeItem[(int)i].Item;
 
                     // draw early
-                    Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * ((i - 0L) / GameState.ShopColumns);
-                    Left = Xo + GameState.ShopLeft + (GameState.ShopOffsetX + 32L) * ((i - 0L) % GameState.ShopColumns);
+                    Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * ((i - 1L) / GameState.ShopColumns);
+                    Left = Xo + GameState.ShopLeft + (GameState.ShopOffsetX + 32L) * ((i - 1L) % GameState.ShopColumns);
 
                     // draw selected square
                     if (GameState.shopSelectedSlot == i)
@@ -6458,8 +6458,8 @@ namespace Client
                     ItemNum = GetPlayerInv(GameState.MyIndex, (int)i);
 
                     // draw early
-                    Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * ((i - 0L) / GameState.ShopColumns);
-                    Left = Xo + GameState.ShopLeft + (GameState.ShopOffsetX + 32L) * ((i - 0L) % GameState.ShopColumns);
+                    Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * ((i - 1L) / GameState.ShopColumns);
+                    Left = Xo + GameState.ShopLeft + (GameState.ShopOffsetX + 32L) * ((i - 1L) % GameState.ShopColumns);
 
                     // draw selected square
                     if (GameState.shopSelectedSlot == i)
@@ -6481,7 +6481,7 @@ namespace Client
                             if (GetPlayerInvValue(GameState.MyIndex, (int)i) > 1)
                             {
                                 Y = Top + 20L;
-                                X = Left + 0L;
+                                X = Left + 1L;
                                 Amount = Conversions.ToLong(GetPlayerInvValue(GameState.MyIndex, (int)i).ToString());
 
                                 // Draw currency but with k, m, b etc. using a conversion function
@@ -6617,8 +6617,8 @@ namespace Client
 
                         if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                         {
-                            top = Yo + GameState.BankTop + (GameState.BankOffsetY + 32L) * ((i - 0L) / GameState.BankColumns);
-                            Left = Xo + GameState.BankLeft + (GameState.BankOffsetX + 32L) * ((i - 0L) % GameState.BankColumns);
+                            top = Yo + GameState.BankTop + (GameState.BankOffsetY + 32L) * ((i - 1L) / GameState.BankColumns);
+                            Left = Xo + GameState.BankLeft + (GameState.BankOffsetX + 32L) * ((i - 1L) % GameState.BankColumns);
 
                             // draw icon
                             string argpath6 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
@@ -6628,7 +6628,7 @@ namespace Client
                             if (GetBankValue(GameState.MyIndex, (byte)i) > 1)
                             {
                                 Y = top + 20L;
-                                X = Left + 0L;
+                                X = Left + 1L;
                                 amount = GetBankValue(GameState.MyIndex, (byte)i);
 
                                 // Draw currency but with k, m, b etc. using a convertion function
@@ -6759,8 +6759,8 @@ namespace Client
 
                         if (ItemPic > 0L & ItemPic <= GameState.NumItems)
                         {
-                            Top = Yo + GameState.TradeTop + (GameState.TradeOffsetY + 32L) * ((i - 0L) / GameState.TradeColumns);
-                            Left = Xo + GameState.TradeLeft + (GameState.TradeOffsetX + 32L) * ((i - 0L) % GameState.TradeColumns);
+                            Top = Yo + GameState.TradeTop + (GameState.TradeOffsetY + 32L) * ((i - 1L) / GameState.TradeColumns);
+                            Left = Xo + GameState.TradeLeft + (GameState.TradeOffsetX + 32L) * ((i - 1L) % GameState.TradeColumns);
 
                             // draw icon
                             string argpath = System.IO.Path.Combine(Path.Items, ItemPic.ToString());
@@ -6770,7 +6770,7 @@ namespace Client
                             if (Core.Type.TradeYourOffer[(int)i].Value > 1)
                             {
                                 Y = Top + 20L;
-                                X = Left + 0L;
+                                X = Left + 1L;
                                 Amount = Core.Type.TradeYourOffer[(int)i].Value.ToString();
 
                                 // Draw currency but with k, m, b etc. using a convertion function
@@ -6823,8 +6823,8 @@ namespace Client
 
                     if (ItemPic > 0L & ItemPic <= GameState.NumItems)
                     {
-                        Top = Yo + GameState.TradeTop + (GameState.TradeOffsetY + 32L) * ((i - 0L) / GameState.TradeColumns);
-                        Left = Xo + GameState.TradeLeft + (GameState.TradeOffsetX + 32L) * ((i - 0L) % GameState.TradeColumns);
+                        Top = Yo + GameState.TradeTop + (GameState.TradeOffsetY + 32L) * ((i - 1L) / GameState.TradeColumns);
+                        Left = Xo + GameState.TradeLeft + (GameState.TradeOffsetX + 32L) * ((i - 1L) % GameState.TradeColumns);
 
                         // draw icon
                         string argpath = System.IO.Path.Combine(Path.Items, ItemPic.ToString());
@@ -6834,7 +6834,7 @@ namespace Client
                         if (Core.Type.TradeTheirOffer[(int)i].Value > 1)
                         {
                             Y = Top + 20L;
-                            X = Left + 0L;
+                            X = Left + 1L;
                             Amount = Core.Type.TradeTheirOffer[(int)i].Value.ToString();
 
                             // Draw currency but with k, m, b etc. using a convertion function
