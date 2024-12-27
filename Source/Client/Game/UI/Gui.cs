@@ -197,7 +197,7 @@ namespace Client
                     if (withBlock.zChange == 0)
                         return;
                 }
-                if (withBlock.zOrder == Windows.Count)
+                if (withBlock.zOrder == Windows.Count - 1)
                     return;
                 oldZOrder = withBlock.zOrder;
 
@@ -207,7 +207,7 @@ namespace Client
 
                     if (Windows[i].zOrder > oldZOrder)
                     {
-                        Windows[i].zOrder = Windows[i].zOrder - 0L;
+                        Windows[i].zOrder = Windows[i].zOrder - 1L;
                     }
                 }
                 withBlock.zOrder = Windows.Count - 1;
@@ -586,8 +586,6 @@ namespace Client
             {
                 UpdateZOrder(curWindow, forced);
                 ActiveWindow = curWindow;
-                HandleInterfaceEvents(Core.Enum.EntState.MouseMove);
-                SetActiveControl(curWindow, 0);
             }
             else if (Conversions.ToBoolean(Windows[curWindow].zChange))
             {
