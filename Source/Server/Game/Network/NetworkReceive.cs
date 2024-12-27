@@ -224,7 +224,7 @@ namespace Server
                         return;
                     }
 
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(Database.LoadAccount(index, username), 0, false)))
+                    if (!Database.LoadAccount(index, username))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Login, (byte)MenuType.Login);
                         return;

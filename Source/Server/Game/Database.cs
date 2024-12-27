@@ -178,7 +178,7 @@ namespace Server
                 }
 
                 // Use only the first 8 bytes (64 bits) to fit a Long
-                return BitConverter.ToInt64(bytes, 0);
+                return Math.Abs((BitConverter.ToInt64(bytes, 0)));
             }
         }
 
@@ -324,11 +324,14 @@ namespace Server
 
         public static void InsertRowByColumn(long id, string data, string tableName, string dataColumn, string idColumn)
         {
+            // Sanitize the data string
+            data = data.Replace("\\u0000", "");
+
             string sql = $@"
-        INSERT INTO {tableName} ({idColumn}, {dataColumn}) 
-        VALUES (@id, @data::jsonb)
-        ON CONFLICT ({idColumn}) 
-        DO UPDATE SET {dataColumn} = @data::jsonb;";
+            INSERT INTO {tableName} ({idColumn}, {dataColumn}) 
+            VALUES (@id, @data::jsonb)
+            ON CONFLICT ({idColumn}) 
+            DO UPDATE SET {dataColumn} = @data::jsonb;";
 
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -1368,7 +1371,7 @@ namespace Server
             InsertRowByColumn(id, json, "account", "data", "id");
         }
 
-        public static object LoadAccount(int index, string username)
+        public static bool LoadAccount(int index, string username)
         {
             JObject data;
             data = SelectRowByColumn("id", GetStringHash(username), "account", "data");
