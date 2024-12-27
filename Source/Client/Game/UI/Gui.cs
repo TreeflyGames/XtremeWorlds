@@ -521,7 +521,7 @@ namespace Client
             }
 
             // Attempt to activate the next available control, starting from the given index
-            for (int i = startIndex, loopTo = Windows[ActiveWindow].Controls.Count - 1; i < loopTo; i++)
+            for (int i = startIndex, loopTo = Windows[ActiveWindow].Controls.Count - 1; i <= loopTo; i++)
             {
                 if (i != currentActive && (!skipLast || i != lastControl))
                 {
@@ -533,7 +533,7 @@ namespace Client
             }
 
             // If we reached the end, wrap around and start from the beginning
-            for (int i = 0, loopTo1 = startIndex - 1; i < loopTo1; i++)
+            for (int i = 0, loopTo1 = startIndex - 1; i <= loopTo1; i++)
             {
                 if (i != currentActive && (!skipLast || i != lastControl))
                 {
