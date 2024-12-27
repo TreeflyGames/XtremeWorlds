@@ -4614,7 +4614,7 @@ namespace Client
         public static void UpdateWindow_Inventory()
         {
             // Control window
-            UpdateWindow("winInventory", "Inventory", Core.Enum.FontType.Georgia, zOrder_Win, 0L, 0L, 202L, 319L, 0L, false, 2L, 7L, (long)Core.Enum.DesignType.Win_Empty, (long)Core.Enum.DesignType.Win_Empty, (long)Core.Enum.DesignType.Win_Empty, callback_mousemove: new Action(Inventory_MouseMove), callback_mousedown: new Action(Inventory_MouseDown), callback_dblclick: new Action(Inventory_DblClick), onDraw: new Action(DrawInventory));
+            UpdateWindow("winInventory", "Inventory", Core.Enum.FontType.Georgia, zOrder_Win, 0L, 0L, 202L, 319L, 1L, false, 2L, 7L, (long)Core.Enum.DesignType.Win_Empty, (long)Core.Enum.DesignType.Win_Empty, (long)Core.Enum.DesignType.Win_Empty, callback_mousemove: new Action(Inventory_MouseMove), callback_mousedown: new Action(Inventory_MouseDown), callback_dblclick: new Action(Inventory_DblClick), onDraw: new Action(DrawInventory));
 
             // Centralize it
             CentralizeWindow(Windows.Count);
@@ -5184,9 +5184,9 @@ namespace Client
 
             y = yO + 23L;
             // render grid - row
-            for (i = 0L; i <= 4L; i++)
+            for (i = 0L; i <= 3L; i++)
             {
-                if (i == 4L)
+                if (i == 3L)
                     Height = 38L;
                 string argpath1 = System.IO.Path.Combine(Path.Gui, 35.ToString());
                 GameClient.RenderTexture(ref argpath1, (int)(xO + 4L), (int)y, 0, 0, (int)Width, (int)Height, (int)Width, (int)Height);
@@ -5844,9 +5844,9 @@ namespace Client
 
             y = yO + 23L;
             // render grid - row
-            for (i = 0L; i <= 4L; i++)
+            for (i = 0L; i <= 3L; i++)
             {
-                if (i == 4L)
+                if (i == 3L)
                     Height = 42L;
                 string argpath1 = System.IO.Path.Combine(Path.Gui, 35.ToString());
                 GameClient.RenderTexture(ref argpath1, (int)(xO + 4L), (int)y, 0, 0, (int)Width, (int)Height, (int)Width, (int)Height);
