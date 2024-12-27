@@ -4363,30 +4363,30 @@ namespace Client
             UpdatePictureBox(Windows.Count, "picParchment", 6L, 6L, 198L, 144L, design_norm: (long)Core.Enum.DesignType.Parchment, design_hover: (long)Core.Enum.DesignType.Parchment, design_mousedown: (long)Core.Enum.DesignType.Parchment, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick, onDraw: ref argonDraw);
 
             // Buttons
-            var argcallback_norm1 = new Action(btnEscMenu_Return);
+            Action argcallback_norm1 = null;
             Action argcallback_hover1 = null;
-            Action argcallback_mousedown1 = null;
+            Action argcallback_mousedown1 = new Action(btnEscMenu_Return);
             Action argcallback_mousemove1 = null;
             Action argcallback_dblclick1 = null;
             Gui.UpdateButton(Windows.Count, "btnReturn", 16L, 16L, 178L, 28L, "Return to Game", Core.Enum.FontType.Georgia, design_norm: (long)Core.Enum.DesignType.Green, design_hover: (long)Core.Enum.DesignType.Green_Hover, design_mousedown: (long)Core.Enum.DesignType.Green_Click, callback_norm: ref argcallback_norm1, callback_hover: ref argcallback_hover1, callback_mousedown: ref argcallback_mousedown1, callback_mousemove: ref argcallback_mousemove1, callback_dblclick: ref argcallback_dblclick1);
 
-            var argcallback_norm2 = new Action(btnEscMenu_Options);
+            Action argcallback_norm2 = null;
             Action argcallback_hover2 = null;
-            Action argcallback_mousedown2 = null;
+            Action argcallback_mousedown2 = new Action(btnEscMenu_Options);
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
             Gui.UpdateButton(Windows.Count, "btnOptions", 16L, 48L, 178L, 28L, "Options", Core.Enum.FontType.Georgia, design_norm: (long)Core.Enum.DesignType.Orange, design_hover: (long)Core.Enum.DesignType.Orange_Hover, design_mousedown: (long)Core.Enum.DesignType.Orange_Click, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2);
 
-            var argcallback_norm3 = new Action(btnEscMenu_MainMenu);
+            Action argcallback_norm3 = null;
             Action argcallback_hover3 = null;
-            Action argcallback_mousedown3 = null;
+            Action argcallback_mousedown3 = new Action(btnEscMenu_MainMenu);
             Action argcallback_mousemove3 = null;
             Action argcallback_dblclick3 = null;
             Gui.UpdateButton(Windows.Count, "btnMainMenu", 16L, 80L, 178L, 28L, "Back to Main Menu", Core.Enum.FontType.Georgia, design_norm: (long)Core.Enum.DesignType.Blue, design_hover: (long)Core.Enum.DesignType.Blue_Hover, design_mousedown: (long)Core.Enum.DesignType.Blue_Click, callback_norm: ref argcallback_norm3, callback_hover: ref argcallback_hover3, callback_mousedown: ref argcallback_mousedown3, callback_mousemove: ref argcallback_mousemove3, callback_dblclick: ref argcallback_dblclick3);
 
-            var argcallback_norm4 = new Action(btnEscMenu_Exit);
+            Action argcallback_norm4 = null;
             Action argcallback_hover4 = null;
-            Action argcallback_mousedown4 = null;
+            Action argcallback_mousedown4 = new Action(btnEscMenu_Exit);
             Action argcallback_mousemove4 = null;
             Action argcallback_dblclick4 = null;
             Gui.UpdateButton(Windows.Count, "btnExit", 16L, 112L, 178L, 28L, "Exit the Game", Core.Enum.FontType.Georgia, design_norm: (long)Core.Enum.DesignType.Red, design_hover: (long)Core.Enum.DesignType.Red_Hover, design_mousedown: (long)Core.Enum.DesignType.Red_Click, callback_norm: ref argcallback_norm4, callback_hover: ref argcallback_hover4, callback_mousedown: ref argcallback_mousedown4, callback_mousemove: ref argcallback_mousemove4, callback_dblclick: ref argcallback_dblclick4);
