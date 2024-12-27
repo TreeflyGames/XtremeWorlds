@@ -372,9 +372,15 @@ namespace Mirage.Sharp.Asfw.Network
 
                 int dataLength = packetLength - 4;
                 byte[] data = new byte[dataLength];
-                if (dataLength > 0)
+                if (packetIdIndex + 4 + dataLength <= length)
                 {
                     Buffer.BlockCopy(this._packetRing, packetIdIndex + 4, data, 0, dataLength);
+                }
+                else
+                {
+                    Console.WriteLine("Data length exceeds buffer bounds. Clearing buffer.");
+                    this._packetRing = null;
+                    return;
                 }
 
                 // Invoke packet handlers
