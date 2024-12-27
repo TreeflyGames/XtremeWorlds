@@ -791,7 +791,7 @@ namespace Client
             textX = GameLogic.ConvertMapX(GetPlayerX(index) * GameState.PicX) + Core.Type.Player[index].XOffset + GameState.PicX / 2 - 6;
             textX = (int)Math.Round(textX - GetTextWidth(name) / 6d);
 
-            if (GetPlayerSprite(index) < 0 | GetPlayerSprite(index) > GameState.NumCharacters)
+            if (GetPlayerSprite(index) <= 0 | GetPlayerSprite(index) > GameState.NumCharacters)
             {
                 textY = GameLogic.ConvertMapY(GetPlayerY(index) * GameState.PicY) + Core.Type.Player[GameState.MyIndex].YOffset - 16;
             }
