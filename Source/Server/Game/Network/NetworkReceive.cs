@@ -257,6 +257,10 @@ namespace Server
                     NetworkSend.SendJobs(index);
                 }
             }
+            else
+            {
+                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
+            }
         }
 
         private static void Packet_Register(int index, ref byte[] data)
@@ -394,7 +398,10 @@ namespace Server
                     }
                 }
             }
-
+            else
+            {
+                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
+            }
         }
 
         private static void Packet_AddChar(int index, ref byte[] data)
@@ -456,7 +463,7 @@ namespace Server
                 if (sexNum < (byte) SexType.Male | sexNum > (byte) SexType.Female)
                     return;
 
-                if (jobNum <= 0 | jobNum > Core.Constant.MAX_JOBS)
+                if (jobNum < 0 | jobNum > Core.Constant.MAX_JOBS)
                     return;
 
                 if (sexNum == (byte) SexType.Male)
