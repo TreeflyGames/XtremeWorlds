@@ -847,7 +847,6 @@ namespace Client
                             break;
                         }
 
-
                     case "/editmoral":
                         {
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
@@ -971,10 +970,9 @@ namespace Client
             // find the body/header
             switch (Index)
             {
-
                 case (long)Core.Enum.DialogueMsg.Connection:
                     {
-                        header = "Connection Problem";
+                        header = "Invalid Connection";
                         body = "You lost connection to the server.";
                         body2 = "Please try again later.";
                         break;

@@ -304,7 +304,7 @@ namespace Client
         public static void GameInit()
         {
             // Send a request to the server to open the admin menu if the user wants it.
-            if (Conversions.ToInteger(Settings.OpenAdminPanelOnLogin) == 1)
+            if (Settings.OpenAdminPanelOnLogin == true)
             {
                 if (GetPlayerAccess(GameState.MyIndex) > 0)
                 {
