@@ -932,11 +932,11 @@ namespace Client
             var argcallback_mousedown7 = new Action(chkNewChar_Male);
             Action argcallback_mousemove7 = null;
             Action argcallback_dblclick7 = null;
-            Gui.UpdateCheckBox(Windows.Count, "chkMale", 29L, 103L, 55L, 15L, 0L, "Male", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Center, true, 255L, 0L, 0L, false, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown7, ref argcallback_mousemove7, ref argcallback_dblclick7);
+            Gui.UpdateCheckBox(Windows.Count, "chkMale", 29L, 103L, 55L, 15L, 0L, "Male", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Center, true, 255L, (long)Core.Enum.DesignType.ChkNorm, 0L, false, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown7, ref argcallback_mousemove7, ref argcallback_dblclick7);
             var argcallback_mousedown8 = new Action(chkNewChar_Female);
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
-            Gui.UpdateCheckBox(Windows.Count, "chkFemale", 90L, 103L, 62L, 15L, 0L, "Female", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Center, true, 255L, 0L, 0L, false, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown8, ref argcallback_mousemove8, ref argcallback_dblclick8);
+            Gui.UpdateCheckBox(Windows.Count, "chkFemale", 90L, 103L, 62L, 15L, 0L, "Female", Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Center, true, 255L, (long)Core.Enum.DesignType.ChkNorm, 0L, false, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown8, ref argcallback_mousemove8, ref argcallback_dblclick8);
 
             // Buttons
             var argcallback_mousedown9 = new Action(btnNewChar_Accept);
@@ -971,11 +971,11 @@ namespace Client
             var argcallback_mousedown13 = new Action(btnNewChar_Left);
             Action argcallback_mousemove13 = null;
             Action argcallback_dblclick13 = null;
-            Gui.UpdateButton(Windows.Count, "btnLeft", 163L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 12L, 14L, 16L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnLeft", 163L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 12L, 14L, 16L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false, false);
             var argcallback_mousedown14 = new Action(btnNewChar_Right);
             Action argcallback_mousemove14 = null;
             Action argcallback_dblclick14 = null;
-            Gui.UpdateButton(Windows.Count, "btnRight", 252L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 13L, 15L, 17L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnRight", 252L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 13L, 15L, 17L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false, false);
 
             // Set the active control
             SetActiveControl(GetWindowIndex("winNewChar"), GetControlIndex("winNewChar", "txtName"));
@@ -3382,7 +3382,6 @@ namespace Client
         // ###################
         public static void NewChar_OnDraw()
         {
-            long imageFace;
             long imageChar;
             long xO;
             long yO;
@@ -3392,14 +3391,15 @@ namespace Client
 
             if (GameState.newCharGender == (long)Core.Enum.SexType.Male)
             {
-                imageFace = Core.Type.Job[(int)GameState.newCharJob].MaleSprite;
                 imageChar = Core.Type.Job[(int)GameState.newCharJob].MaleSprite;
             }
             else
             {
-                imageFace = Core.Type.Job[(int)GameState.newCharJob].FemaleSprite;
                 imageChar = Core.Type.Job[(int)GameState.newCharJob].FemaleSprite;
             }
+
+            if (imageChar == 0)
+                imageChar = 1;
 
             var gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, imageChar.ToString()));
             if (gfxInfo is null)
@@ -3452,7 +3452,7 @@ namespace Client
 
             if (GameState.newCharSprite >= spriteCount)
             {
-                GameState.newCharSprite = 0L;
+                GameState.newCharSprite = 1L;
             }
             else
             {
@@ -3462,20 +3462,22 @@ namespace Client
 
         public static void chkNewChar_Male()
         {
-            GameState.newCharSprite = 0L;
+            GameState.newCharSprite = 1L;
             GameState.newCharGender = (long)Core.Enum.SexType.Male;
             if (Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value == 0L)
             {
                 Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
+                Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value = 1L;
             }
         }
 
         public static void chkNewChar_Female()
         {
-            GameState.newCharSprite = 0L;
+            GameState.newCharSprite = 1L;
             GameState.newCharGender = (long)Core.Enum.SexType.Female;
             if (Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value == 0L)
             {
+                Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 1L;
                 Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value = 0L;
             }
         }
@@ -3485,7 +3487,7 @@ namespace Client
             Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Text = "";
             Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value = 0L;
             Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
-            GameState.newCharSprite = 0L;
+            GameState.newCharSprite = 1L;
             GameState.newCharGender = (long)Core.Enum.SexType.Male;
             HideWindows();
             ShowWindow(GetWindowIndex("winJob"));
