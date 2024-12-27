@@ -20,7 +20,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SAlertMsg);
+            buffer.WriteInt32((byte) ServerPackets.SAlertMsg);
             buffer.WriteInt32(menuNo);
             buffer.WriteInt32(menuReset);
             buffer.WriteInt32(kick ? 1 : 0);
@@ -34,7 +34,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SGlobalMsg);
+            buffer.WriteInt32((byte) ServerPackets.SGlobalMsg);
             buffer.WriteString(msg);
             NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
 
@@ -45,7 +45,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerMsg);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerMsg);
             buffer.WriteString(msg);
             buffer.WriteInt32(color);
 
@@ -57,7 +57,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerChars);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerChars);
 
             // loop through each character. clear, load, add. repeat.
             for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= (int)loopTo; i++)
@@ -82,7 +82,7 @@ namespace Server
             int n;
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SUpdateJob);
+            buffer.WriteInt32((byte) ServerPackets.SUpdateJob);
             buffer.WriteInt32(jobNum);
 
             buffer.WriteString(Core.Type.Job[jobNum].Name);
@@ -112,7 +112,7 @@ namespace Server
         public static void SendCloseTrade(int index)
         {
             var buffer = new ByteStream(4);
-            buffer.WriteInt32((byte)(byte) ServerPackets.SCloseTrade);
+            buffer.WriteInt32((byte) ServerPackets.SCloseTrade);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
@@ -122,7 +122,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerEXP);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerEXP);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerExp(index));
             buffer.WriteInt32(GetPlayerNextLevel(index));
@@ -135,7 +135,7 @@ namespace Server
         {
             var Buffer = new ByteStream(4);
 
-            Buffer.WriteInt32((byte)(byte) ServerPackets.SLoginOK);
+            Buffer.WriteInt32((byte) ServerPackets.SLoginOK);
             Buffer.WriteInt32(index);
             NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
 
@@ -146,7 +146,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SInGame);
+            buffer.WriteInt32((byte) ServerPackets.SInGame);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
@@ -157,7 +157,7 @@ namespace Server
             int i;
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SJobData);
+            buffer.WriteInt32((byte) ServerPackets.SJobData);
 
             var loopTo = Core.Constant.MAX_JOBS - 1;
             for (i = 0; i <= (int)loopTo; i++)
@@ -172,7 +172,7 @@ namespace Server
             int i;
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SJobData);
+            buffer.WriteInt32((byte) ServerPackets.SJobData);
             buffer.WriteBlock(Database.JobData(jobNum));
             NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -182,7 +182,7 @@ namespace Server
         {
             ByteStream buffer;
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte)(byte) ServerPackets.SUpdateJob);
+            buffer.WriteInt32((byte) ServerPackets.SUpdateJob);
 
             buffer.WriteBlock(Database.JobData(jobNum));
 
@@ -194,7 +194,7 @@ namespace Server
         {
             ByteStream buffer;
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte)(byte) ServerPackets.SUpdateJob);
+            buffer.WriteInt32((byte) ServerPackets.SUpdateJob);
 
             buffer.WriteBlock(Database.JobData(jobNum));
 
@@ -208,7 +208,7 @@ namespace Server
             int n;
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerInv);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerInv);
 
             var loopTo = Core.Constant.MAX_INV;
             for (i = 0; i <= (int)loopTo; i++)
@@ -226,7 +226,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SLeftMap);
+            buffer.WriteInt32((byte) ServerPackets.SLeftMap);
             buffer.WriteInt32(index);
             NetworkConfig.SendDataToAllBut(index, ref buffer.Data, buffer.Head);
 
@@ -237,7 +237,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SLeftGame);
+            buffer.WriteInt32((byte) ServerPackets.SLeftGame);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -247,7 +247,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SMapWornEq);
+            buffer.WriteInt32((byte) ServerPackets.SMapWornEq);
             buffer.WriteInt32(index);
             for (int i = 0, loopTo = (int)(EquipmentType.Count - 1); i <= (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
@@ -261,7 +261,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SMapWornEq);
+            buffer.WriteInt32((byte) ServerPackets.SMapWornEq);
             buffer.WriteInt32(PlayerNum);
             for (int i = 0, loopTo = (int)(EquipmentType.Count - 1); i <= (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerEquipment(PlayerNum, (EquipmentType)i));
@@ -290,7 +290,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SUpdateShop);
+            buffer.WriteInt32((byte) ServerPackets.SUpdateShop);
 
             buffer.WriteInt32(shopNum);
 
@@ -313,7 +313,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SUpdateShop);
+            buffer.WriteInt32((byte) ServerPackets.SUpdateShop);
 
             buffer.WriteInt32(shopNum);
             buffer.WriteInt32(Core.Type.Shop[shopNum].BuyRate);
@@ -349,7 +349,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SUpdateSkill);
+            buffer.WriteInt32((byte) ServerPackets.SUpdateSkill);
             buffer.WriteInt32(skillnum);
             buffer.WriteInt32(Core.Type.Skill[skillnum].AccessReq);
             buffer.WriteInt32(Core.Type.Skill[skillnum].AoE);
@@ -389,7 +389,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SUpdateSkill);
+            buffer.WriteInt32((byte) ServerPackets.SUpdateSkill);
             buffer.WriteInt32(skillnum);
             buffer.WriteInt32(Core.Type.Skill[skillnum].AccessReq);
             buffer.WriteInt32(Core.Type.Skill[skillnum].AoE);
@@ -428,7 +428,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerStats);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerStats);
             buffer.WriteInt32(index);
 
             for (int i = 0, loopTo = (int)(StatType.Count - 1); i <= (int)loopTo; i++)
@@ -455,12 +455,12 @@ namespace Server
             {
                 case var @case when @case == (VitalType) VitalType.HP:
                     {
-                        buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerHP);
+                        buffer.WriteInt32((byte) ServerPackets.SPlayerHP);
                         break;
                     }
                 case var case1 when case1 == (VitalType) VitalType.SP:
                     {
-                        buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerSP);
+                        buffer.WriteInt32((byte) ServerPackets.SPlayerSP);
                         break;
                     }
             }
@@ -527,7 +527,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerWornEq);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerWornEq);
 
             for (int i = 0, loopTo = (int)(EquipmentType.Count - 1); i <= (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
@@ -770,7 +770,7 @@ namespace Server
 
             data = Compression.CompressBytes(buffer.ToArray());
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte)(byte) ServerPackets.SMapData);
+            buffer.WriteInt32((byte) ServerPackets.SMapData);
             buffer.WriteBlock(data);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -807,7 +807,7 @@ namespace Server
             var buffer = new ByteStream(4);
             int i;
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerData);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerData);
             buffer.WriteInt32(index);
             buffer.WriteString(GetPlayerName(index));
             buffer.WriteInt32(Player.GetPlayerJob(index));
@@ -840,7 +840,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerXY);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerXY);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerX(index));
             buffer.WriteInt32(GetPlayerY(index));
@@ -855,7 +855,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerXY);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerXY);
             buffer.WriteInt32(playerNum);
             buffer.WriteInt32(GetPlayerX(playerNum));
             buffer.WriteInt32(GetPlayerY(playerNum));
@@ -870,7 +870,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerXY);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerXY);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerX(index));
             buffer.WriteInt32(GetPlayerY(index));
@@ -885,7 +885,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerMove);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerMove);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerX(index));
             buffer.WriteInt32(GetPlayerY(index));
@@ -901,7 +901,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SMapMsg);
+            buffer.WriteInt32((byte) ServerPackets.SMapMsg);
             buffer.WriteString(Msg);
 
             NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
@@ -913,7 +913,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SAdminMsg);
+            buffer.WriteInt32((byte) ServerPackets.SAdminMsg);
             buffer.WriteString(Msg);
 
             for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= (int)loopTo; i++)
@@ -931,7 +931,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SActionMsg);
+            buffer.WriteInt32((byte) ServerPackets.SActionMsg);
             buffer.WriteString(Message);
             buffer.WriteInt32(Color);
             buffer.WriteInt32(MsgType);
@@ -954,7 +954,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SSayMsg);
+            buffer.WriteInt32((byte) ServerPackets.SSayMsg);
             buffer.WriteString(GetPlayerName(index));
             buffer.WriteInt32(GetPlayerAccess(index));
             buffer.WriteInt32(GetPlayerPK(index));
@@ -971,7 +971,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SSayMsg);
+            buffer.WriteInt32((byte) ServerPackets.SSayMsg);
             buffer.WriteString(GetPlayerName(index));
             buffer.WriteInt32(GetPlayerAccess(index));
             buffer.WriteInt32(GetPlayerPK(index));
@@ -995,7 +995,7 @@ namespace Server
             var buffer = new ByteStream(4);
             int n;
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SPlayerInvUpdate);
+            buffer.WriteInt32((byte) ServerPackets.SPlayerInvUpdate);
 
             buffer.WriteInt32(InvSlot);
 
@@ -1011,7 +1011,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SOpenShop);
+            buffer.WriteInt32((byte) ServerPackets.SOpenShop);
             buffer.WriteInt32(ShopNum);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1022,7 +1022,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SResetShopAction);
+            buffer.WriteInt32((byte) ServerPackets.SResetShopAction);
 
             NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
 
@@ -1034,7 +1034,7 @@ namespace Server
             var buffer = new ByteStream(4);
             int i;
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SBank);
+            buffer.WriteInt32((byte) ServerPackets.SBank);
 
             var loopTo = Core.Constant.MAX_BANK;
             for (i = 0; i <= (int)loopTo; i++)
@@ -1051,7 +1051,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SClearSkillBuffer);
+            buffer.WriteInt32((byte) ServerPackets.SClearSkillBuffer);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1062,7 +1062,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.STradeInvite);
+            buffer.WriteInt32((byte) ServerPackets.STradeInvite);
             buffer.WriteInt32(Tradeindex);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1073,7 +1073,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.STrade);
+            buffer.WriteInt32((byte) ServerPackets.STrade);
             buffer.WriteInt32(TradeTarget);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
@@ -1093,7 +1093,7 @@ namespace Server
             if (tradeTarget == 0)
                 return;
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.STradeUpdate);
+            buffer.WriteInt32((byte) ServerPackets.STradeUpdate);
             buffer.WriteInt32(DataType);
 
             if (DataType == 0) // own inventory
@@ -1161,7 +1161,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.STradeStatus);
+            buffer.WriteInt32((byte) ServerPackets.STradeStatus);
             buffer.WriteInt32(Status);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1172,7 +1172,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SStunned);
+            buffer.WriteInt32((byte) ServerPackets.SStunned);
             buffer.WriteInt32(Core.Type.TempPlayer[index].StunDuration);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
@@ -1184,7 +1184,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SBlood);
+            buffer.WriteInt32((byte) ServerPackets.SBlood);
             buffer.WriteInt32(X);
             buffer.WriteInt32(Y);
 
@@ -1198,7 +1198,7 @@ namespace Server
             int i;
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SSkills);
+            buffer.WriteInt32((byte) ServerPackets.SSkills);
 
             var loopTo = Core.Constant.MAX_PLAYER_SKILLS;
             for (i = 0; i <= (int)loopTo; i++)
@@ -1212,7 +1212,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SCooldown);
+            buffer.WriteInt32((byte) ServerPackets.SCooldown);
             buffer.WriteInt32(Slot);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
@@ -1224,7 +1224,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.STarget);
+            buffer.WriteInt32((byte) ServerPackets.STarget);
             buffer.WriteInt32(Target);
             buffer.WriteInt32(TargetType);
 
@@ -1238,7 +1238,7 @@ namespace Server
             var buffer = new ByteStream(4);
             int I;
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SMapReport);
+            buffer.WriteInt32((byte) ServerPackets.SMapReport);
 
             var loopTo = Core.Constant.MAX_MAPS - 1;
             for (var i = 0; i <= (int)loopTo; i++)
@@ -1253,7 +1253,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SAdmin);
+            buffer.WriteInt32((byte) ServerPackets.SAdmin);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1265,7 +1265,7 @@ namespace Server
             var buffer = new ByteStream(4);
             int I;
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SMapNames);
+            buffer.WriteInt32((byte) ServerPackets.SMapNames);
 
             var loopTo = Core.Constant.MAX_MAPS - 1;
             for (var i = 0; i <= (int)loopTo; i++)
@@ -1281,7 +1281,7 @@ namespace Server
             var buffer = new ByteStream(4);
             int i;
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SHotbar);
+            buffer.WriteInt32((byte) ServerPackets.SHotbar);
 
             var loopTo = Core.Constant.MAX_HOTBAR;
             for (i = 0; i <= (int)loopTo; i++)
@@ -1299,7 +1299,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SCritical);
+            buffer.WriteInt32((byte) ServerPackets.SCritical);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1310,7 +1310,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SKeyPair);
+            buffer.WriteInt32((byte) ServerPackets.SKeyPair);
             buffer.WriteString(Global.EKeyPair.ExportKeyString(false));
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1321,7 +1321,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SrClick);
+            buffer.WriteInt32((byte) ServerPackets.SrClick);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1332,7 +1332,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SJobEditor);
+            buffer.WriteInt32((byte) ServerPackets.SJobEditor);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -1343,7 +1343,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SEmote);
+            buffer.WriteInt32((byte) ServerPackets.SEmote);
 
             buffer.WriteInt32(index);
             buffer.WriteInt32(Emote);
@@ -1357,7 +1357,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte)(byte) ServerPackets.SChatBubble);
+            buffer.WriteInt32((byte) ServerPackets.SChatBubble);
 
             buffer.WriteInt32(Target);
             buffer.WriteInt32(TargetType);
@@ -1373,7 +1373,7 @@ namespace Server
         {
             var Buffer = new ByteStream(4);
 
-            Buffer.WriteInt32((byte)(byte) ServerPackets.SAttack);
+            Buffer.WriteInt32((byte) ServerPackets.SAttack);
 
             Buffer.WriteInt32(index);
             NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), ref Buffer.Data, Buffer.Head);

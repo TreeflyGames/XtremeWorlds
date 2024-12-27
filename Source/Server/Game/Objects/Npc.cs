@@ -278,7 +278,7 @@ namespace Server
                             n2 = (int)Core.Type.Map[MapNum].Tile[x, y + 1].Type2;
 
                             // Check to make sure that the tile is walkable
-                            if (n != (byte)TileType.None & n != (byte)(byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)(byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
+                            if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
                             {
                                 CanNPCMoveRet = Conversions.ToBoolean(0);
                                 return CanNPCMoveRet;
@@ -326,7 +326,7 @@ namespace Server
                             n2 = (int)Core.Type.Map[MapNum].Tile[x - 1, y].Type2;
 
                             // Check to make sure that the tile is walkable
-                            if (n != (byte)TileType.None & n != (byte)(byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)(byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
+                            if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
                             {
                                 CanNPCMoveRet = Conversions.ToBoolean(0);
                                 return CanNPCMoveRet;
@@ -374,7 +374,7 @@ namespace Server
                             n2 = (int)Core.Type.Map[MapNum].Tile[x + 1, y].Type2;
 
                             // Check to make sure that the tile is walkable
-                            if (n != (byte)TileType.None & n != (byte)(byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)(byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
+                            if (n != (byte)TileType.None & n != (byte)TileType.Item & n != (byte)TileType.NPCSpawn & n2 != (byte)TileType.None & n2 != (byte)TileType.Item & n2 != (byte)TileType.NPCSpawn)
                             {
                                 CanNPCMoveRet = Conversions.ToBoolean(0);
                                 return CanNPCMoveRet;
