@@ -511,6 +511,10 @@ namespace Server
 
                 buffer.Dispose();
             }
+            else
+            {
+                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
+            }
         }
 
         private static void Packet_SayMessage(int index, ref byte[] data)
