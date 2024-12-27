@@ -965,7 +965,7 @@ namespace Client
 
             // Scene
             var argonDraw4 = new Action(NewChar_OnDraw);
-            Gui.UpdatePictureBox(Windows.Count, "picScene", 165L, 55L, 96L, 96L, true, false, 255L, true, 10L, 10L, 10L, 0L, 0L, 0L, "", ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, ref argonDraw4);
+            Gui.UpdatePictureBox(Windows.Count, "picScene", 165L, 55L, 96L, 96L, true, false, 255L, true, 11L, 11L, 11L, 0L, 0L, 0L, "", ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, ref argonDraw4);
 
             // Buttons
             var argcallback_mousedown13 = new Action(btnNewChar_Left);
@@ -1055,16 +1055,16 @@ namespace Client
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
             Action argonDraw4 = null;
-            UpdatePictureBox(Windows.Count, "picScene_1", 23L, 55L, 96L, 96L, true, false, 255L, true, 10L, 10L, 10L, 0L, 0L, 0L, "", ref argcallback_norm7, ref argcallback_hover7, ref argcallback_mousedown8, ref argcallback_mousemove8, ref argcallback_dblclick8, ref argonDraw4);
+            UpdatePictureBox(Windows.Count, "picScene_1", 23L, 55L, 96L, 96L, true, false, 255L, true, 11L, 11L, 11L, 0L, 0L, 0L, "", ref argcallback_norm7, ref argcallback_hover7, ref argcallback_mousedown8, ref argcallback_mousemove8, ref argcallback_dblclick8, ref argonDraw4);
             Action argcallback_norm8 = null;
             Action argcallback_hover8 = null;
             Action argcallback_mousedown9 = null;
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
             Action argonDraw5 = null;
-            UpdatePictureBox(Windows.Count, "picScene_2", 133L, 55L, 96L, 96L, true, false, 255L, true, 10L, 10L, 10L, 0L, 0L, 0L, "", ref argcallback_norm8, ref argcallback_hover8, ref argcallback_mousedown9, ref argcallback_mousemove9, ref argcallback_dblclick9, ref argonDraw5);
+            UpdatePictureBox(Windows.Count, "picScene_2", 133L, 55L, 96L, 96L, true, false, 255L, true, 11L, 11L, 11L, 0L, 0L, 0L, "", ref argcallback_norm8, ref argcallback_hover8, ref argcallback_mousedown9, ref argcallback_mousemove9, ref argcallback_dblclick9, ref argonDraw5);
             var argonDraw6 = new Action(Chars_OnDraw);
-            Gui.UpdatePictureBox(Windows.Count, "picScene_3", 243L, 55L, 96L, 96L, true, false, 255L, true, 10L, 10L, 10L, 0L, 0L, 0L, "", ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown1, ref argcallback_mousemove1, ref argcallback_dblclick1, ref argonDraw6);
+            Gui.UpdatePictureBox(Windows.Count, "picScene_3", 243L, 55L, 96L, 96L, true, false, 255L, true, 11L, 11L, 11L, 0L, 0L, 0L, "", ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown1, ref argcallback_mousemove1, ref argcallback_dblclick1, ref argonDraw6);
 
             // Control Buttons
             var argcallback_mousedown10 = new Action(btnAcceptChar_1);
