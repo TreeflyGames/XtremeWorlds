@@ -931,7 +931,7 @@ namespace Client
             index = GameState.ChatBubbleindex;
 
             // Loop through and see if that player/NPC already has a chat bubble
-            for (i = 0; i <= byte.MaxValue; i++)
+            for (i = 0; i <= byte.MaxValue - 1; i++)
             {
                 if (Core.Type.ChatBubble[i].TargetType == targetType)
                 {

@@ -1683,7 +1683,7 @@ namespace Client
                         }
                 }
 
-                withBlock.Msg = withBlock.Msg.Replace("", string.Empty);
+                withBlock.Msg = withBlock.Msg.Replace("\0", string.Empty);
 
                 // word wrap
                 Text.WordWrap(withBlock.Msg, FontType.Georgia, GameState.ChatBubbleWidth, ref theArray);
@@ -1750,7 +1750,7 @@ namespace Client
                 tmpNum = Information.UBound(theArray);
 
                 var loopTo1 = tmpNum;
-                for (i = 0L; i <= loopTo1; i++)
+                for (i = 1L; i <= loopTo1; i++)
                 {
                     // Measure button text size and apply padding
                     var textSize = Text.Fonts[FontType.Georgia].MeasureString(theArray[(int)i]);
