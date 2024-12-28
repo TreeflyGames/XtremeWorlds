@@ -4646,7 +4646,7 @@ namespace Client
             UpdateLabel(Windows.Count, "lblGold", 42L, 296L, 100L, 10L, "g", Core.Enum.FontType.Georgia, Color.Yellow, callback_norm: ref argcallback_norm1, callback_hover: ref argcallback_hover1, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2);
 
             // Drop
-            Gui.UpdateButton(Windows.Count, "btnDrop", 155L, 294L, 38L, 16L, "Drop", Core.Enum.FontType.Georgia, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 5L, 3L, "", false, true);
+            //Gui.UpdateButton(Windows.Count, "btnDrop", 155L, 294L, 38L, 16L, "Drop", Core.Enum.FontType.Georgia, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 5L, 3L, "", false, true);
         }
 
         public static void UpdateWindow_Character()
