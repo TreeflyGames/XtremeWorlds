@@ -108,7 +108,10 @@ namespace Server
                 {
                     if (Core.Type.Account[i].Login.ToLower() == login)
                     {
-                        Player.LeftGame(i);
+                        if (index != i)
+                        {
+                            Player.LeftGame(i);
+                        }
                     }
                 }
             }
