@@ -1074,15 +1074,16 @@ namespace Server
 
         internal static void HandleUseChar(int index)
         {
-            if (!NetworkConfig.IsPlaying(index))
-            {
-                // Send an ok to client to start receiving in game data
-                NetworkSend.SendLoginOK(index);
-                JoinGame(index);
-                string text = string.Format("{0} | {1} has began playing {2}.", GetPlayerLogin(index), GetPlayerName(index), Settings.GameName);
-                Core.Log.Add(text, Constant.PLAYER_LOG);
-                Console.WriteLine(text);
-            }
+            // Set the flag so we know the person is in the game
+            Core.Type.TempPlayer[index].InGame = true;
+
+            // Send an ok to client to start receiving in game data
+            NetworkSend.SendLoginOK(index);
+            JoinGame(index);
+            string text = string.Format("{0} | {1} has began playing {2}.", GetPlayerLogin(index), GetPlayerName(index), Settings.GameName);
+            Core.Log.Add(text, Constant.PLAYER_LOG);
+            Console.WriteLine(text);
+            
         }
 
         #endregion
@@ -2727,9 +2728,6 @@ namespace Server
         public static void JoinGame(int index)
         {
             int i;
-
-            // Set the flag so we know the person is in the game
-            Core.Type.TempPlayer[index].InGame = true;
 
             // Notify everyone that a player has joined the game.
             NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), Settings.GameName));
