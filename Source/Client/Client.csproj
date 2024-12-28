@@ -84,7 +84,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.vbproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
   <ItemGroup>
