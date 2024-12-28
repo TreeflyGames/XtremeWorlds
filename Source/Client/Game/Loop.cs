@@ -113,7 +113,7 @@ namespace Client
                     }
                 }
 
-                for (i = 0; i <= byte.MaxValue; i++)
+                for (i = 0; i <= byte.MaxValue - 1; i++)
                     Animation.CheckAnimInstance(i);
 
                 if (tick > Event.EventChatTimer)

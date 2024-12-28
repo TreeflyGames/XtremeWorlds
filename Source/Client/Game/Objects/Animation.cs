@@ -296,7 +296,7 @@ namespace Client
 
             AnimInstance = new Core.Type.AnimInstanceStruct[(byte.MaxValue + 1)];
 
-            for (i = 0; i <= byte.MaxValue; i++)
+            for (i = 0; i <= byte.MaxValue - 1; i++)
             {
                 for (int X = 0; X <= 1; X++)
                     AnimInstance[i].Timer = new int[X + 1];

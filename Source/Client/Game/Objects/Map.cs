@@ -929,7 +929,7 @@ namespace Client
 
             GameState.MapData = Conversions.ToBoolean(1);
 
-            for (i = 0; i <= byte.MaxValue; i++)
+            for (i = 0; i <= byte.MaxValue - 1; i++)
                 GameLogic.ClearActionMsg((byte)i);
 
             GameState.CurrentWeather = Core.Type.MyMap.Weather;
@@ -995,7 +995,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= byte.MaxValue; i++)
+            for (i = 0; i <= byte.MaxValue - 1; i++)
                 GameLogic.ClearActionMsg((byte)i);
 
             GameState.CurrentWeather = Core.Type.MyMap.Weather;

@@ -2307,7 +2307,7 @@ namespace Client
             }
 
             // blood
-            for (i = 0; i <= byte.MaxValue; i++)
+            for (i = 0; i <= byte.MaxValue - 1; i++)
                 DrawBlood(i);
 
             // Draw out the items
@@ -2325,7 +2325,7 @@ namespace Client
             // draw animations
             if (GameState.NumAnimations > 0)
             {
-                for (i = 0; i <= byte.MaxValue; i++)
+                for (i = 0; i <= byte.MaxValue - 1; i++)
                 {
                     if (Animation.AnimInstance[i].Used[0])
                     {
@@ -2449,7 +2449,7 @@ namespace Client
             // animations
             if (GameState.NumAnimations > 0)
             {
-                for (i = 0; i <= byte.MaxValue; i++)
+                for (i = 0; i <= byte.MaxValue - 1; i++)
                 {
                     if (Animation.AnimInstance[i].Used[1])
                     {
@@ -2545,7 +2545,7 @@ namespace Client
             Map.DrawFog();
             Map.DrawPicture();
 
-            for (i = 0; i <= byte.MaxValue; i++)
+            for (i = 0; i <= byte.MaxValue - 1; i++)
                 Text.DrawActionMsg(i);
 
             if (GameState.MyEditorType == (int)EditorType.Map)

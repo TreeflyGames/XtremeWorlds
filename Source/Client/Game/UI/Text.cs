@@ -599,7 +599,7 @@ namespace Client
                         time = 3000;
 
                         // This will kill any action screen messages that there in the system
-                        for (i = byte.MaxValue; i >= 0; i -= 1)
+                        for (i = byte.MaxValue - 1; i >= 0; i -= 1)
                         {
                             if (Core.Type.ActionMsg[i].Type == (int)Core.Enum.ActionMsgType.Screen)
                             {

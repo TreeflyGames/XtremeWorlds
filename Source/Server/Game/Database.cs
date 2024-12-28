@@ -1058,7 +1058,7 @@ namespace Server
                 MapTintB = (byte)csMap.MapData.Blue,
                 FogOpacity = (byte)csMap.MapData.FogOpacity,
                 FogSpeed = (byte)csMap.MapData.FogSpeed,
-                Tile = new TileStruct[csMap.MapData.MaxX + 1, csMap.MapData.MaxY + 1],
+                Tile = new TileStruct[csMap.MapData.MaxX, csMap.MapData.MaxY],
                 NPC = new int[Core.Constant.MAX_MAP_NPCS + 1]
             };
 
