@@ -1600,9 +1600,9 @@ namespace Client
 
             GameState.HistoryIndex = GameState.HistoryIndex - 1;
 
-            for (int x = 0, loopTo = Core.Type.MyMap.MaxX; x <= loopTo; x++)
+            for (int x = 0, loopTo = Core.Type.MyMap.MaxX - 1; x <= loopTo; x++)
             {
-                for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY; y <= loopTo1; y++)
+                for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY - 1; y <= loopTo1; y++)
                 {
                     for (int i = 0; i <= (int)LayerType.Count - 1; i++)
                     {
@@ -1652,9 +1652,9 @@ namespace Client
 
             GameState.HistoryIndex = GameState.HistoryIndex + 1;
 
-            for (int x = 0, loopTo = Core.Type.MyMap.MaxX; x <= loopTo; x++)
+            for (int x = 0, loopTo = Core.Type.MyMap.MaxX -1; x <= loopTo; x++)
             {
-                for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY; y <= loopTo1; y++)
+                for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY - 1; y <= loopTo1; y++)
                 {
                     for (int i = 0; i <= (int)LayerType.Count - 1; i++)
                     {

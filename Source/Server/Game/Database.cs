@@ -1062,9 +1062,9 @@ namespace Server
                 NPC = new int[Core.Constant.MAX_MAP_NPCS]
             };
 
-            for (int y = 0; y <= mwMap.MaxX; y++)
+            for (int y = 0; y <= mwMap.MaxX - 1; y++)
             {
-                for (int x = 0; x <= mwMap.MaxY; x++)
+                for (int x = 0; x <= mwMap.MaxY - 1; x++)
                 {
                     mwMap.Tile[x, y].Layer = new TileDataStruct[(int)LayerType.Count - 1];
                     mwMap.Tile[x, y].Data1 = csMap.Tile[x, y].Data1;

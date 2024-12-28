@@ -580,9 +580,9 @@ namespace Server
                 for (int i = 0, loopTo = Core.Constant.MAX_MAP_NPCS - 1; i <= (int)loopTo; i++)
                     buffer.WriteInt32(Core.Type.Map[mapNum].NPC[Conversions.ToInteger(i)]);
 
-                for (int X = 0, loopTo1 = Core.Type.Map[mapNum].MaxX; X <= (int)loopTo1; X++)
+                for (int X = 0, loopTo1 = Core.Type.Map[mapNum].MaxX - 1; X <= (int)loopTo1; X++)
                 {
-                    for (int Y = 0, loopTo2 = Core.Type.Map[mapNum].MaxY; Y <= (int)loopTo2; Y++)
+                    for (int Y = 0, loopTo2 = Core.Type.Map[mapNum].MaxY -1; Y <= (int)loopTo2; Y++)
                     {
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data1);
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data2);
