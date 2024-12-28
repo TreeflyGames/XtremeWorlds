@@ -82,10 +82,10 @@ namespace Server
             int y;
             var Resource_Count = default(int);
 
-            var loopTo = (int)Core.Type.Map[MapNum].MaxX;
+            var loopTo = (int)Core.Type.Map[MapNum].MaxX - 1;
             for (x = 0; x <= (int)loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.Map[MapNum].MaxY;
+                var loopTo1 = (int)Core.Type.Map[MapNum].MaxY - 1;
                 for (y = 0; y <= (int)loopTo1; y++)
                 {
 

@@ -593,12 +593,12 @@ namespace Server
             Core.Type.Map[MapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS];
             Core.Type.Map[MapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[MapNum].MaxX), (Core.Type.Map[MapNum].MaxY)];
 
-            var loopTo = Core.Constant.MAX_MAPX;
+            var loopTo = Core.Constant.MAX_MAPX - 1;
             for (x = 0; x <= (int)loopTo; x++)
             {
-                var loopTo1 = Core.Constant.MAX_MAPY;
+                var loopTo1 = Core.Constant.MAX_MAPY - 1;
                 for (y = 0; y <= (int)loopTo1; y++)
-                    Core.Type.Map[MapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
+                    Core.Type.Map[MapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count -1];
             }
 
             Core.Type.Map[MapNum].EventCount = 0;
@@ -740,8 +740,8 @@ namespace Server
                 {
                     for (y = 0L; y <= MAX_Y; y++)
                     {
-                        csMap.Tile[x, y].Autotile = new byte[(int)LayerType.Count];
-                        csMap.Tile[x, y].Layer = new CSTileDataStruct[(int)LayerType.Count];
+                        csMap.Tile[x, y].Autotile = new byte[(int)LayerType.Count - 1];
+                        csMap.Tile[x, y].Layer = new CSTileDataStruct[(int)LayerType.Count - 1];
 
                         var withBlock1 = csMap.Tile[x, y];
                         withBlock1.Type = binaryReader.ReadByte();
@@ -1066,7 +1066,7 @@ namespace Server
             {
                 for (int x = 0; x <= mwMap.MaxY; x++)
                 {
-                    mwMap.Tile[x, y].Layer = new TileDataStruct[(int)LayerType.Count];
+                    mwMap.Tile[x, y].Layer = new TileDataStruct[(int)LayerType.Count - 1];
                     mwMap.Tile[x, y].Data1 = csMap.Tile[x, y].Data1;
                     mwMap.Tile[x, y].Data2 = csMap.Tile[x, y].Data2;
                     mwMap.Tile[x, y].Data3 = csMap.Tile[x, y].Data3;

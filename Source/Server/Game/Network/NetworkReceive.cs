@@ -1118,7 +1118,7 @@ namespace Server
                         withBlock.Tile[x, y].Data2_2 = buffer.ReadInt32();
                         withBlock.Tile[x, y].Data3_2 = buffer.ReadInt32();
                         withBlock.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
-                        withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
+                        withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count - 1];
                         var loopTo3 = LayerType.Count - 1;
                         for (i = 0; i <= (int)loopTo3; i++)
                         {
