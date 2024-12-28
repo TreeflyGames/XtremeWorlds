@@ -1916,7 +1916,6 @@ namespace Server
             }
 
             NetworkSend.SendExp(index);
-            NetworkSend.SendPlayerData(index);
 
         }
 
