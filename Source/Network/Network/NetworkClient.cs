@@ -257,7 +257,7 @@ namespace Mirage.Sharp.Asfw.Network
             {
                 length1 = this._socket.EndReceive(ar);
             }
-            catch
+            catch (Exception e)
             {
                 NetworkClient.CrashReportArgs crashReport = this.CrashReport;
                 if (crashReport != null)

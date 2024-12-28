@@ -45,9 +45,9 @@ namespace Client
         public static Core.Type.TextStruct[] descText;
 
         // New char
-        public static long newCharSprite;
-        public static long newCharJob;
-        public static long newCharGender;
+        public static long NewCharSprite;
+        public static long NewCharJob;
+        public static long NewCnarGender;
 
         // chars
         public static string[] CharName = new string[(Constant.MAX_CHARS + 1)];

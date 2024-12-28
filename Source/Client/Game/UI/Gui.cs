@@ -3147,7 +3147,7 @@ namespace Client
             yO = Windows[GetWindowIndex("winJobs")].Top;
 
             // Determine character image based on job
-            switch (GameState.newCharJob)
+            switch (GameState.NewCharJob)
             {
                 case 0L: // Warrior
                     {
@@ -3190,9 +3190,9 @@ namespace Client
             yO = Windows[GetWindowIndex("winJobs")].Top;
 
             // Get job description or use default
-            if (string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob ].Desc))
+            if (string.IsNullOrEmpty(Core.Type.Job[(int)GameState.NewCharJob ].Desc))
             {
-                switch (GameState.newCharJob)
+                switch (GameState.NewCharJob)
                 {
                     case 0L: // Warrior
                         {
@@ -3213,7 +3213,7 @@ namespace Client
             }
             else
             {
-                text = Core.Type.Job[(int)GameState.newCharJob].Desc;
+                text = Core.Type.Job[(int)GameState.NewCharJob].Desc;
             }
 
             // Wrap text to fit within 330 pixels
@@ -3241,31 +3241,34 @@ namespace Client
         public static void btnJobs_Left()
         {
             // Move to the previous job
-            GameState.newCharJob -= 1L;
-            if (GameState.newCharJob <= 0L)
-                GameState.newCharJob = 0L;
+            GameState.NewCharJob -= 1L;
+            if (GameState.NewCharJob <= 0L)
+                GameState.NewCharJob = 0L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJobs")].Controls[(int)GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[(int)GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob].Name;
         }
 
         public static void btnJobs_Right()
         {
             // Exit if the job is invalid or exceeds limits
-            if (GameState.newCharJob >= Constant.MAX_JOBS - 1 || string.IsNullOrEmpty(Core.Type.Job[(int)GameState.newCharJob ].Desc) & GameState.newCharJob >= Constant.MAX_JOBS)
+            if (GameState.NewCharJob >= Constant.MAX_JOBS - 1 || string.IsNullOrEmpty(Core.Type.Job[(int)GameState.NewCharJob ].Desc) & GameState.NewCharJob >= Constant.MAX_JOBS)
                 return;
 
             // Move to the next job
-            GameState.newCharJob += 1L;
+            GameState.NewCharJob += 1L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJobs")].Controls[(int)GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob ].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[(int)GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob ].Name;
         }
 
         public static void btnJobs_Accept()
         {
             HideWindow(GetWindowIndex("winJobs"));
             ShowWindow(GetWindowIndex("winNewChar"));
+            Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "txtName")].Text = "";
+            Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "chkMale")].Value = 1L;
+            Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
         }
 
         public static void btnJobs_Close()
@@ -3391,13 +3394,13 @@ namespace Client
             xO = Windows[GetWindowIndex("winNewChar")].Left;
             yO = Windows[GetWindowIndex("winNewChar")].Top;
 
-            if (GameState.newCharGender == (long)Core.Enum.SexType.Male)
+            if (GameState.NewCnarGender == (long)Core.Enum.SexType.Male)
             {
-                imageChar = Core.Type.Job[(int)GameState.newCharJob].MaleSprite;
+                imageChar = Core.Type.Job[(int)GameState.NewCharJob].MaleSprite;
             }
             else
             {
-                imageChar = Core.Type.Job[(int)GameState.newCharJob].FemaleSprite;
+                imageChar = Core.Type.Job[(int)GameState.NewCharJob].FemaleSprite;
             }
 
             if (imageChar == 0)
@@ -3420,22 +3423,22 @@ namespace Client
         {
             long spriteCount;
 
-            if (GameState.newCharGender == (long)Core.Enum.SexType.Male)
+            if (GameState.NewCnarGender == (long)Core.Enum.SexType.Male)
             {
-                spriteCount = Core.Type.Job[(int)GameState.newCharJob].MaleSprite;
+                spriteCount = Core.Type.Job[(int)GameState.NewCharJob].MaleSprite;
             }
             else
             {
-                spriteCount = Core.Type.Job[(int)GameState.newCharJob].FemaleSprite;
+                spriteCount = Core.Type.Job[(int)GameState.NewCharJob].FemaleSprite;
             }
 
-            if (GameState.newCharSprite <= 0L)
+            if (GameState.NewCharSprite <= 0L)
             {
-                GameState.newCharSprite = spriteCount;
+                GameState.NewCharSprite = spriteCount;
             }
             else
             {
-                GameState.newCharSprite = GameState.newCharSprite - 1L;
+                GameState.NewCharSprite = GameState.NewCharSprite - 1L;
             }
         }
 
@@ -3443,29 +3446,29 @@ namespace Client
         {
             long spriteCount;
 
-            if (GameState.newCharGender == (long)Core.Enum.SexType.Male)
+            if (GameState.NewCnarGender == (long)Core.Enum.SexType.Male)
             {
-                spriteCount = Core.Type.Job[(int)GameState.newCharJob].MaleSprite;
+                spriteCount = Core.Type.Job[(int)GameState.NewCharJob].MaleSprite;
             }
             else
             {
-                spriteCount = Core.Type.Job[(int)GameState.newCharJob].FemaleSprite;
+                spriteCount = Core.Type.Job[(int)GameState.NewCharJob].FemaleSprite;
             }
 
-            if (GameState.newCharSprite >= spriteCount)
+            if (GameState.NewCharSprite >= spriteCount)
             {
-                GameState.newCharSprite = 1L;
+                GameState.NewCharSprite = 1L;
             }
             else
             {
-                GameState.newCharSprite = GameState.newCharSprite + 1L;
+                GameState.NewCharSprite = GameState.NewCharSprite + 1L;
             }
         }
 
         public static void chkNewChar_Male()
         {
-            GameState.newCharSprite = 1L;
-            GameState.newCharGender = (long)Core.Enum.SexType.Male;
+            GameState.NewCharSprite = 1L;
+            GameState.NewCnarGender = (long)Core.Enum.SexType.Male;
             if (Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value == 0L)
             {
                 Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
@@ -3475,8 +3478,8 @@ namespace Client
 
         public static void chkNewChar_Female()
         {
-            GameState.newCharSprite = 1L;
-            GameState.newCharGender = (long)Core.Enum.SexType.Female;
+            GameState.NewCharSprite = 1L;
+            GameState.NewCnarGender = (long)Core.Enum.SexType.Female;
             if (Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value == 0L)
             {
                 Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 1L;
@@ -3489,8 +3492,8 @@ namespace Client
             Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Text = "";
             Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value = 0L;
             Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
-            GameState.newCharSprite = 1L;
-            GameState.newCharGender = (long)Core.Enum.SexType.Male;
+            GameState.NewCharSprite = 1L;
+            GameState.NewCnarGender = (long)Core.Enum.SexType.Male;
             HideWindows();
             ShowWindow(GetWindowIndex("winJobs"));
         }
@@ -3500,7 +3503,7 @@ namespace Client
             string name;
             name = FilterUnsupportedCharacters(Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Text, Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Font);
             HideWindows();
-            GameLogic.AddChar(name, (int)GameState.newCharGender, (int)GameState.newCharJob, (int)GameState.newCharSprite);
+            GameLogic.AddChar(name, (int)GameState.NewCnarGender, (int)GameState.NewCharJob, (int)GameState.NewCharSprite);
         }
 
         // #####################

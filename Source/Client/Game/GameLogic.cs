@@ -1361,13 +1361,10 @@ namespace Client
         public static void ShowJobs()
         {
             Gui.HideWindows();
-            GameState.newCharJob = 0L;
-            GameState.newCharSprite = 1L;
-            GameState.newCharGender = (long)Core.Enum.SexType.Male;
-            Gui.Windows[Gui.GetWindowIndex("winJobs")].Controls[(int)Gui.GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.newCharJob].Name;
-            Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "txtName")].Text = "";
-            Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "chkMale")].Value = 1L;
-            Gui.Windows[Gui.GetWindowIndex("winNewChar")].Controls[(int)Gui.GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
+            GameState.NewCharJob = 0L;
+            GameState.NewCharSprite = 1L;
+            GameState.NewCnarGender = (long)Core.Enum.SexType.Male;
+            Gui.Windows[Gui.GetWindowIndex("winJobs")].Controls[(int)Gui.GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob].Name;
             Gui.ShowWindow(Gui.GetWindowIndex("winJobs"));
         }
 

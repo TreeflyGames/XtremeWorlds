@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
 using static Core.Type;
+using SharpDX.Direct2D1;
 
 namespace Client
 {
@@ -646,8 +647,6 @@ namespace Client
 
             GameState.MapData = Conversions.ToBoolean(0);
 
-            ClearMap();
-
             if (buffer.ReadInt32() == 1)
             {
                 mapNum = buffer.ReadInt32();
@@ -681,18 +680,15 @@ namespace Client
                 Core.Type.MyMap.NoRespawn = Conversions.ToBoolean(buffer.ReadInt32());
                 Core.Type.MyMap.Indoors = Conversions.ToBoolean(buffer.ReadInt32());
                 Core.Type.MyMap.Shop = buffer.ReadInt32();
+                Core.Type.MyMap.Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
 
-                Core.Type.MyMap.Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX + 1), (Core.Type.MyMap.MaxY + 1)];
-                for (i = 0; i <= GameState.MaxTileHistory; i++)
-                    Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX + 1), (Core.Type.MyMap.MaxY + 1)];
-
-                for (x = 1; x <= Constant.MAX_MAP_NPCS - 1; x++)
+                for (x = 0; x <= Constant.MAX_MAP_NPCS - 1; x++)
                     Core.Type.MyMap.NPC[x] = buffer.ReadInt32();
 
-                var loopTo = (int)Core.Type.MyMap.MaxX;
+                var loopTo = (int)Core.Type.MyMap.MaxX - 1;
                 for (x = 0; x <= loopTo; x++)
                 {
-                    var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                    var loopTo1 = (int)Core.Type.MyMap.MaxY - 1;
                     for (y = 0; y <= loopTo1; y++)
                     {
                         Core.Type.MyMap.Tile[x, y].Data1 = buffer.ReadInt32();
@@ -703,7 +699,7 @@ namespace Client
                         Core.Type.MyMap.Tile[x, y].Data3_2 = buffer.ReadInt32();
                         Core.Type.MyMap.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
 
-                        for (j = 1; j <= GameState.MaxTileHistory; j++)
+                        for (j = 0; j <= GameState.MaxTileHistory - 1; j++)
                         {
                             Core.Type.TileHistory[j].Tile[x, y].Data1 = Core.Type.MyMap.Tile[x, y].Data1;
                             Core.Type.TileHistory[j].Tile[x, y].Data2 = Core.Type.MyMap.Tile[x, y].Data2;
@@ -716,19 +712,18 @@ namespace Client
                             Core.Type.TileHistory[j].Tile[x, y].Type2 = Core.Type.MyMap.Tile[x, y].Type2;
                         }
 
-                        Core.Type.MyMap.Tile[x, y].Layer = new Core.Type.TileDataStruct[10];
-                        for (i = 0; i <= GameState.MaxTileHistory; i++)
-                            Core.Type.TileHistory[i].Tile[x, y].Layer = new Core.Type.TileDataStruct[10];
-
-                        for (i = 0; i <= (int)Core.Enum.LayerType.Count - 1; i++)
-                        {
+                        Core.Type.MyMap.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count - 1)];
+                        for (i = 0; i < (int)Core.Enum.LayerType.Count - 1; i++)
+                        {  
                             Core.Type.MyMap.Tile[x, y].Layer[i].Tileset = buffer.ReadInt32();
                             Core.Type.MyMap.Tile[x, y].Layer[i].X = buffer.ReadInt32();
                             Core.Type.MyMap.Tile[x, y].Layer[i].Y = buffer.ReadInt32();
                             Core.Type.MyMap.Tile[x, y].Layer[i].AutoTile = (byte)buffer.ReadInt32();
 
-                            for (j = 1; j <= GameState.MaxTileHistory; j++)
+                            for (j = 0; j <= GameState.MaxTileHistory - 1; j++)
                             {
+                                Core.Type.TileHistory[j].Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
+                                Core.Type.TileHistory[j].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count - 1)];
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].Tileset = Core.Type.MyMap.Tile[x, y].Layer[i].Tileset;
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].X = Core.Type.MyMap.Tile[x, y].Layer[i].X;
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].Y = Core.Type.MyMap.Tile[x, y].Layer[i].Y;
@@ -1095,10 +1090,10 @@ namespace Client
             for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
                 buffer.WriteInt32(Core.Type.MyMap.NPC[i]);
 
-            var loopTo = (int)Core.Type.MyMap.MaxX;
+            var loopTo = (int)Core.Type.MyMap.MaxX - 1;
             for (x = 0; x <= loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                var loopTo1 = (int)Core.Type.MyMap.MaxY - 1;
                 for (y = 0; y <= loopTo1; y++)
                 {
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data1);
@@ -1108,7 +1103,7 @@ namespace Client
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data2_2);
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data3_2);
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].DirBlock);
-                    for (i = 0; i <= (int)Core.Enum.LayerType.Count - 1; i++)
+                    for (i = 0; i < (int)Core.Enum.LayerType.Count - 1; i++)
                     {
                         buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Layer[i].Tileset);
                         buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Layer[i].X);

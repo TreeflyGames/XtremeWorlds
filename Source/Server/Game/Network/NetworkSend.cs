@@ -591,7 +591,7 @@ namespace Server
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data2_2);
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data3_2);
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].DirBlock);
-                        for (int i = 0, loopTo3 = (int)(LayerType.Count - 1); i <= (int)loopTo3; i++)
+                        for (int i = 0, loopTo3 = (int)(LayerType.Count - 1); i < (int)loopTo3; i++)
                         {
                             buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Layer[Conversions.ToInteger(i)].Tileset);
                             buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Layer[Conversions.ToInteger(i)].X);

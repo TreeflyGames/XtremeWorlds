@@ -319,7 +319,7 @@ namespace Client
                 for (y = 0; y <= loopTo1; y++)
                 {
                     Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
-                    for (int i = 0; i <= (int)Core.Enum.LayerType.Count - 1; i++)
+                    for (int i = 0; i < (int)Core.Enum.LayerType.Count - 1; i++)
                     {
                         Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
                         Core.Type.Autotile[x, y].Layer[i].SrcY = new int[5];
@@ -394,13 +394,13 @@ namespace Client
             Core.Type.AutoSe[4].X = 48;
             Core.Type.AutoSe[4].Y = 80;
 
-            var loopTo2 = (int)Core.Type.MyMap.MaxX;
+            var loopTo2 = (int)Core.Type.MyMap.MaxX - 1;
             for (x = 0; x <= loopTo2; x++)
             {
-                var loopTo3 = (int)Core.Type.MyMap.MaxY;
+                var loopTo3 = (int)Core.Type.MyMap.MaxY - 1;
                 for (y = 0; y <= loopTo3; y++)
                 {
-                    for (layerNum = 0; layerNum <= (int)Core.Enum.LayerType.Count - 1; layerNum++)
+                    for (layerNum = 0; layerNum < (int)Core.Enum.LayerType.Count - 1; layerNum++)
                     {
                         // calculate the subtile positions and place them
                         CalculateAutotile(x, y, layerNum);

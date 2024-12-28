@@ -1604,7 +1604,7 @@ namespace Client
             {
                 for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY - 1; y <= loopTo1; y++)
                 {
-                    for (int i = 0; i <= (int)LayerType.Count - 1; i++)
+                    for (int i = 0; i < (int)LayerType.Count - 1; i++)
                     {
                         {
                             ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
@@ -1656,7 +1656,7 @@ namespace Client
             {
                 for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY - 1; y <= loopTo1; y++)
                 {
-                    for (int i = 0; i <= (int)LayerType.Count - 1; i++)
+                    for (int i = 0; i < (int)LayerType.Count - 1; i++)
                     {
                         {
                             ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
@@ -1746,7 +1746,7 @@ namespace Client
                             Core.Type.Tile[X, Y].Type = withBlock.Type;
                             Core.Type.Tile[X, Y].DirBlock = withBlock.DirBlock;
 
-                            for (i = 0; i <= (int)LayerType.Count - 1; i++)
+                            for (i = 0; i < (int)LayerType.Count - 1; i++)
                             {
                                 Core.Type.Tile[X, Y].Layer[i].X = withBlock.Layer[i].X;
                                 Core.Type.Tile[X, Y].Layer[i].Y = withBlock.Layer[i].Y;
@@ -1784,7 +1784,7 @@ namespace Client
                             withBlock1.Type = Core.Type.Tile[X, Y].Type;
                             withBlock1.DirBlock = Core.Type.Tile[X, Y].DirBlock;
 
-                            for (i = 0; i <= (int)LayerType.Count - 1; i++)
+                            for (i = 0; i < (int)LayerType.Count - 1; i++)
                             {
                                 withBlock1.Layer[i].X = Core.Type.Tile[X, Y].Layer[i].X;
                                 withBlock1.Layer[i].Y = Core.Type.Tile[X, Y].Layer[i].Y;
