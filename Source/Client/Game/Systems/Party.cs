@@ -86,7 +86,7 @@ namespace Client
                 return;
 
             // set vitals
-            for (int i = 0; i <= (int)Core.Enum.VitalType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.VitalType.Count - 1; i++)
                 Core.Type.Player[playerNum].Vital[i] = buffer.ReadInt32();
 
             GameLogic.UpdatePartyBars();

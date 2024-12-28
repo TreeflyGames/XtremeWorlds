@@ -74,7 +74,7 @@ namespace Client
             Core.Type.Player[index].Steps = 0;
 
             Core.Type.Player[index].Vital = new int[3];
-            for (int x = 0; x <= (int)Core.Enum.VitalType.Count - 1; x++)
+            for (int x = 0; x < (int)Core.Enum.VitalType.Count - 1; x++)
                 Core.Type.Player[index].Vital[x] = 0;
 
             Core.Type.Player[index].X = 0;

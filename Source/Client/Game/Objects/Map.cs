@@ -740,8 +740,8 @@ namespace Client
 
                 if (Core.Type.MyMap.EventCount > 0)
                 {
-                    Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount + 1];
-                    var loopTo2 = Core.Type.MyMap.EventCount;
+                    Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
+                    var loopTo2 = Core.Type.MyMap.EventCount - 1;
                     for (i = 0; i <= loopTo2; i++)
                     {
                         {
@@ -755,8 +755,8 @@ namespace Client
 
                         if (Core.Type.MyMap.Event[i].PageCount > 0)
                         {
-                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
-                            var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
+                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
+                            var loopTo3 = Core.Type.MyMap.Event[i].PageCount - 1;
                             for (x = 0; x <= loopTo3; x++)
                             {
                                 {
@@ -794,8 +794,8 @@ namespace Client
 
                                     if (withBlock1.MoveRouteCount > 0)
                                     {
-                                        Core.Type.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock1.MoveRouteCount + 1];
-                                        var loopTo4 = withBlock1.MoveRouteCount;
+                                        Core.Type.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock1.MoveRouteCount];
+                                        var loopTo4 = withBlock1.MoveRouteCount - 1;
                                         for (y = 0; y <= loopTo4; y++)
                                         {
                                             withBlock1.MoveRoute[y].Index = buffer.ReadInt32();
@@ -820,16 +820,16 @@ namespace Client
 
                                 if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount + 1];
-                                    var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
+                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
+                                    var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
                                     for (y = 0; y <= loopTo5; y++)
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
-                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount + 1];
-                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z <= loopTo6; z++)
+                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
+                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1; z <= loopTo6; z++)
                                             {
                                                 {
                                                     ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
@@ -854,8 +854,8 @@ namespace Client
                                                     withBlock2.MoveRouteCount = buffer.ReadInt32();
                                                     if (withBlock2.MoveRouteCount > 0)
                                                     {
-                                                        Array.Resize(ref withBlock2.MoveRoute, withBlock2.MoveRouteCount + 1);
-                                                        for (int w = 0, loopTo7 = withBlock2.MoveRouteCount; w <= loopTo7; w++)
+                                                        Array.Resize(ref withBlock2.MoveRoute, withBlock2.MoveRouteCount);
+                                                        for (int w = 0, loopTo7 = withBlock2.MoveRouteCount - 1; w <= loopTo7; w++)
                                                         {
                                                             withBlock2.MoveRoute[w].Index = buffer.ReadInt32();
                                                             withBlock2.MoveRoute[w].Data1 = buffer.ReadInt32();
@@ -891,7 +891,7 @@ namespace Client
                 Core.Type.MyMapNPC[i].X = (byte)buffer.ReadInt32();
                 Core.Type.MyMapNPC[i].Y = (byte)buffer.ReadInt32();
                 Core.Type.MyMapNPC[i].Dir = buffer.ReadInt32();
-                for (int n = 1; n <= (int)Core.Enum.VitalType.Count - 1; n++)
+                for (int n = 1; n < (int)Core.Enum.VitalType.Count - 1; n++)
                     Core.Type.MyMapNPC[i].Vital[n] = buffer.ReadInt32();
             }
 
@@ -899,11 +899,11 @@ namespace Client
             {
                 GameState.ResourceIndex = buffer.ReadInt32();
                 GameState.ResourcesInit = Conversions.ToBoolean(0);
-                Core.Type.MapResource = new Core.Type.MapResourceStruct[GameState.ResourceIndex + 1];
+                Core.Type.MapResource = new Core.Type.MapResourceStruct[GameState.ResourceIndex];
 
                 if (GameState.ResourceIndex > 0)
                 {
-                    var loopTo8 = GameState.ResourceIndex;
+                    var loopTo8 = GameState.ResourceIndex - 1;
                     for (i = 0; i <= loopTo8; i++)
                     {
                         Core.Type.MyMapResource[i].State = buffer.ReadByte();

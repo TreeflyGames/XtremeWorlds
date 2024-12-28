@@ -607,7 +607,7 @@ namespace Server
 
                 if (Core.Type.Map[mapNum].EventCount > 0)
                 {
-                    for (int i = 0, loopTo4 = Core.Type.Map[mapNum].EventCount; i <= (int)loopTo4; i++)
+                    for (int i = 0, loopTo4 = Core.Type.Map[mapNum].EventCount - 1; i <= (int)loopTo4; i++)
                     {
                         {
                             ref var withBlock = ref Core.Type.Map[mapNum].Event[i];
@@ -620,7 +620,7 @@ namespace Server
 
                         if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                         {
-                            for (int X = 0, loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount; X <= (int)loopTo5; X++)
+                            for (int X = 0, loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount - 1; X <= (int)loopTo5; X++)
                             {
                                 {
                                     ref var withBlock1 = ref Core.Type.Map[mapNum].Event[i].Pages[X];
@@ -652,7 +652,7 @@ namespace Server
 
                                     if (withBlock1.MoveRouteCount > 0)
                                     {
-                                        for (int Y = 0, loopTo6 = withBlock1.MoveRouteCount; Y <= (int)loopTo6; Y++)
+                                        for (int Y = 0, loopTo6 = withBlock1.MoveRouteCount - 1; Y <= (int)loopTo6; Y++)
                                         {
                                             buffer.WriteInt32(withBlock1.MoveRoute[Y].Index);
                                             buffer.WriteInt32(withBlock1.MoveRoute[Y].Data1);
@@ -676,13 +676,13 @@ namespace Server
 
                                 if (Core.Type.Map[mapNum].Event[i].Pages[X].CommandListCount > 0)
                                 {
-                                    for (int Y = 0, loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[X].CommandListCount; Y <= (int)loopTo7; Y++)
+                                    for (int Y = 0, loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[X].CommandListCount - 1; Y <= (int)loopTo7; Y++)
                                     {
                                         buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount);
                                         buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].ParentList);
                                         if (Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount > 0)
                                         {
-                                            for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount; z <= (int)loopTo8; z++)
+                                            for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].CommandCount - 1; z <= (int)loopTo8; z++)
                                             {
                                                 {
                                                     ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[X].CommandList[Y].Commands[z];
@@ -707,7 +707,7 @@ namespace Server
                                                     buffer.WriteInt32(withBlock2.MoveRouteCount);
                                                     if (withBlock2.MoveRouteCount > 0)
                                                     {
-                                                        for (int w = 0, loopTo9 = withBlock2.MoveRouteCount; w <= (int)loopTo9; w++)
+                                                        for (int w = 0, loopTo9 = withBlock2.MoveRouteCount - 1; w <= (int)loopTo9; w++)
                                                         {
                                                             buffer.WriteInt32(withBlock2.MoveRoute[w].Index);
                                                             buffer.WriteInt32(withBlock2.MoveRoute[w].Data1);
@@ -756,7 +756,7 @@ namespace Server
                 buffer.WriteInt32(1);
                 buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceCount);
 
-                for (int i = 0, loopTo12 = Core.Type.MapResource[GetPlayerMap(index)].ResourceCount; i <= (int)loopTo12; i++)
+                for (int i = 0, loopTo12 = Core.Type.MapResource[GetPlayerMap(index)].ResourceCount - 1; i <= (int)loopTo12; i++)
                 {
                     buffer.WriteByte(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[Conversions.ToInteger(i)].State);
                     buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[Conversions.ToInteger(i)].X);

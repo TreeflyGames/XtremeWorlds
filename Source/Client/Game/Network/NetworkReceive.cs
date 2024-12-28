@@ -619,7 +619,7 @@ namespace Client
                 withBlock.Y = (byte)buffer.ReadInt32();
                 withBlock.Dir = buffer.ReadInt32();
 
-                for (i = 0; i <= (int)Core.Enum.VitalType.Count - 1; i++)
+                for (i = 0; i < (int)Core.Enum.VitalType.Count - 1; i++)
                     withBlock.Vital[i] = buffer.ReadInt32();
                 // Client use only
                 withBlock.XOffset = 0;
@@ -800,7 +800,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             mapNPCNum = buffer.ReadInt32();
-            for (int i = 0; i <= (int)Core.Enum.VitalType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.VitalType.Count - 1; i++)
                 Core.Type.MyMapNPC[mapNPCNum].Vital[i] = buffer.ReadInt32();
 
             buffer.Dispose();

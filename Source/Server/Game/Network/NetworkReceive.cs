@@ -1094,7 +1094,7 @@ namespace Server
             Core.Type.Map[mapNum].Indoors = Conversions.ToBoolean(buffer.ReadInt32());
             Core.Type.Map[mapNum].Shop = buffer.ReadInt32();
 
-            Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX + 1), (Core.Type.Map[mapNum].MaxY + 1)];
+            Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
             var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
             for (x = 0; x <= (int)loopTo; x++)
@@ -1105,10 +1105,10 @@ namespace Server
 
             {
                 ref var withBlock = ref Core.Type.Map[mapNum];
-                var loopTo1 = (int)withBlock.MaxX;
+                var loopTo1 = (int)withBlock.MaxX - 1;
                 for (x = 0; x <= (int)loopTo1; x++)
                 {
-                    var loopTo2 = (int)withBlock.MaxY;
+                    var loopTo2 = (int)withBlock.MaxY - 1;
                     for (y = 0; y <= (int)loopTo2; y++)
                     {
                         withBlock.Tile[x, y].Data1 = buffer.ReadInt32();
@@ -1120,7 +1120,7 @@ namespace Server
                         withBlock.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
                         withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count - 1];
                         var loopTo3 = LayerType.Count - 1;
-                        for (i = 0; i <= (int)loopTo3; i++)
+                        for (i = 0; i < (int)loopTo3; i++)
                         {
                             withBlock.Tile[x, y].Layer[i].Tileset = buffer.ReadInt32();
                             withBlock.Tile[x, y].Layer[i].X = buffer.ReadInt32();
@@ -1138,8 +1138,8 @@ namespace Server
 
             if (Core.Type.Map[mapNum].EventCount > 0)
             {
-                Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[Core.Type.Map[mapNum].EventCount + 1];
-                var loopTo4 = Core.Type.Map[mapNum].EventCount;
+                Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[Core.Type.Map[mapNum].EventCount];
+                var loopTo4 = Core.Type.Map[mapNum].EventCount - 1;
                 for (i = 0; i <= (int)loopTo4; i++)
                 {
                     {
@@ -1153,11 +1153,11 @@ namespace Server
 
                     if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                     {
-                        Core.Type.Map[mapNum].Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.Map[mapNum].Event[i].PageCount + 1];
+                        Core.Type.Map[mapNum].Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.Map[mapNum].Event[i].PageCount];
                         ;
-                        Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount + 1);
+                        Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount);
 
-                        var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount;
+                        var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount - 1;
                         for (x = 0; x <= (int)loopTo5; x++)
                         {
                             {
@@ -1195,8 +1195,8 @@ namespace Server
 
                                 if (withBlock2.MoveRouteCount > 0)
                                 {
-                                    Core.Type.Map[mapNum].Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock2.MoveRouteCount + 1];
-                                    var loopTo6 = withBlock2.MoveRouteCount;
+                                    Core.Type.Map[mapNum].Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock2.MoveRouteCount];
+                                    var loopTo6 = withBlock2.MoveRouteCount - 1;
                                     for (y = 0; y <= (int)loopTo6; y++)
                                     {
                                         withBlock2.MoveRoute[y].Index = buffer.ReadInt32();
@@ -1221,16 +1221,16 @@ namespace Server
 
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
                             {
-                                Core.Type.Map[mapNum].Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount + 1];
-                                var loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount;
+                                Core.Type.Map[mapNum].Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount];
+                                var loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount - 1;
                                 for (y = 0; y <= (int)loopTo7; y++)
                                 {
                                     Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                     Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                     if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount + 1];
-                                        for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount; z <= (int)loopTo8; z++)
+                                        Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount];
+                                        for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount - 1; z <= (int)loopTo8; z++)
                                         {
                                             {
                                                 ref var withBlock3 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];
@@ -1256,8 +1256,8 @@ namespace Server
                                                 int tmpcount = withBlock3.MoveRouteCount;
                                                 if (tmpcount > 0)
                                                 {
-                                                    Array.Resize(ref withBlock3.MoveRoute, tmpcount + 1);
-                                                    for (int w = 0, loopTo9 = tmpcount; w <= (int)loopTo9; w++)
+                                                    Array.Resize(ref withBlock3.MoveRoute, tmpcount);
+                                                    for (int w = 0, loopTo9 = tmpcount - 1; w <= (int)loopTo9; w++)
                                                     {
                                                         withBlock3.MoveRoute[w].Index = buffer.ReadInt32();
                                                         withBlock3.MoveRoute[w].Data1 = buffer.ReadInt32();
@@ -2342,10 +2342,10 @@ namespace Server
                 // clear out their trade offers
                 Core.Type.TempPlayer[tradetarget].InTrade = index;
                 ;
-                Array.Resize(ref Core.Type.TempPlayer[index].TradeOffer, Core.Constant.MAX_INV + 1);
-                Array.Resize(ref Core.Type.TempPlayer[tradetarget].TradeOffer, Core.Constant.MAX_INV + 1);
+                Array.Resize(ref Core.Type.TempPlayer[index].TradeOffer, Core.Constant.MAX_INV);
+                Array.Resize(ref Core.Type.TempPlayer[tradetarget].TradeOffer, Core.Constant.MAX_INV);
 
-                for (int i = 0, loopTo = Core.Constant.MAX_INV; i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = Core.Constant.MAX_INV - 1; i <= (int)loopTo; i++)
                 {
                     Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
                     Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
