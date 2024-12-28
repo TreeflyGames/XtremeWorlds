@@ -143,22 +143,22 @@ namespace Server
                 return;
 
             // init the request
-            Party_Invite(index, Core.Type.TempPlayer[index].Target);
+            Invite(index, Core.Type.TempPlayer[index].Target);
         }
 
         internal static void Packet_AcceptParty(int index, ref byte[] data)
         {
-            Party_InviteAccept(Core.Type.TempPlayer[index].PartyInvite, index);
+            InviteAccept(Core.Type.TempPlayer[index].PartyInvite, index);
         }
 
         internal static void Packet_DeclineParty(int index, ref byte[] data)
         {
-            Party_InviteDecline(Core.Type.TempPlayer[index].PartyInvite, index);
+            InviteDecline(Core.Type.TempPlayer[index].PartyInvite, index);
         }
 
         internal static void Packet_LeaveParty(int index, ref byte[] data)
         {
-            Party_PlayerLeave(index);
+            PlayerLeave(index);
         }
 
         internal static void Packet_PartyChatMsg(int index, ref byte[] data)
@@ -206,7 +206,7 @@ namespace Server
             }
         }
 
-        private static void Party_RemoveFromParty(int index, int partyNum)
+        private static void RemoveFromParty(int index, int partyNum)
         {
             for (int i = 0, loopTo = Core.Constant.MAX_PARTY_MEMBERS; i <= (int)loopTo; i++)
             {
@@ -219,12 +219,12 @@ namespace Server
                 }
             }
 
-            Party_CountMembers(partyNum);
+            CountMembers(partyNum);
             SendPartyUpdate(partyNum);
             SendPartyUpdateTo(index);
         }
 
-        internal static void Party_PlayerLeave(int index)
+        internal static void PlayerLeave(int index)
         {
             int partyNum;
             int i;
@@ -234,7 +234,7 @@ namespace Server
             if (partyNum > 0)
             {
                 // find out how many members we have
-                Party_CountMembers(partyNum);
+                CountMembers(partyNum);
 
                 // make sure there's more than 2 people
                 if (PartyField[partyNum].MemberCount > 2)
@@ -256,13 +256,13 @@ namespace Server
                         }
                         // leave party
                         PartyMsg(partyNum, string.Format("{0} has left the party.", GetPlayerName(index)));
-                        Party_RemoveFromParty(index, partyNum);
+                        RemoveFromParty(index, partyNum);
                     }
                     else
                     {
                         // not the leader, just leave
                         PartyMsg(partyNum, string.Format("{0} has left the party.", GetPlayerName(index)));
-                        Party_RemoveFromParty(index, partyNum);
+                        RemoveFromParty(index, partyNum);
                     }
                 }
                 else
@@ -271,7 +271,7 @@ namespace Server
                     PartyMsg(partyNum, "The party has been disbanded.");
 
                     // remove leader
-                    Party_RemoveFromParty(PartyField[partyNum].Leader, partyNum);
+                    RemoveFromParty(PartyField[partyNum].Leader, partyNum);
 
                     // clear out everyone's party
                     var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS;
@@ -281,7 +281,7 @@ namespace Server
                         // player exist?
                         if (index > 0)
                         {
-                            Party_RemoveFromParty(index, partyNum);
+                            RemoveFromParty(index, partyNum);
                         }
                     }
 
@@ -291,7 +291,7 @@ namespace Server
             }
         }
 
-        internal static void Party_Invite(int index, int target)
+        internal static void Invite(int index, int target)
         {
             int partyNum;
             int i;
@@ -361,7 +361,7 @@ namespace Server
             }
         }
 
-        internal static void Party_InviteAccept(int index, int target)
+        internal static void InviteAccept(int index, int target)
         {
             var partyNum = default(int);
             int i;
@@ -380,7 +380,7 @@ namespace Server
                         // add to the party
                         PartyField[partyNum].Member[i] = target;
                         // recount party
-                        Party_CountMembers(partyNum);
+                        CountMembers(partyNum);
                         // send update to all - including new player
                         SendPartyUpdate(partyNum);
                         SendPartyVitals(partyNum, target);
@@ -432,7 +432,7 @@ namespace Server
             }
         }
 
-        internal static void Party_InviteDecline(int index, int target)
+        internal static void InviteDecline(int index, int target)
         {
             NetworkSend.PlayerMsg(index, string.Format("{0} has declined to join your party.", GetPlayerName(target)), (int) ColorType.BrightRed);
             NetworkSend.PlayerMsg(target, "You declined to join the party.", (int) ColorType.Yellow);
@@ -441,7 +441,7 @@ namespace Server
             Core.Type.TempPlayer[target].PartyInvite = 0;
         }
 
-        internal static void Party_CountMembers(int partyNum)
+        internal static void CountMembers(int partyNum)
         {
             int i;
             var highindex = default(int);
@@ -495,10 +495,10 @@ namespace Server
             }
 
             // if we're here it means that we need to re-count again
-            Party_CountMembers(partyNum);
+            CountMembers(partyNum);
         }
 
-        internal static void Party_ShareExp(int partyNum, int exp, int index, int mapNum)
+        internal static void ShareExp(int partyNum, int exp, int index, int mapNum)
         {
             int expShare;
             int leftOver;

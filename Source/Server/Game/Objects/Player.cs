@@ -2778,7 +2778,7 @@ namespace Server
 
                 // Check if the player was in a party, and if so cancel it out so the other player doesn't continue to get half exp
                 // leave party.
-                Party.Party_PlayerLeave(index);
+                Party.PlayerLeave(index);
 
                 // cancel any trade they're in
                 if (Core.Type.TempPlayer[index].InTrade > 0)
@@ -2917,7 +2917,7 @@ namespace Server
             // Is our player in a party? If so, hand out exp to everyone.
             if (Party.IsPlayerInParty(index))
             {
-                Party.Party_ShareExp(Party.GetPlayerParty(index), Experience, index, GetPlayerMap(index));
+                Party.ShareExp(Party.GetPlayerParty(index), Experience, index, GetPlayerMap(index));
             }
             else
             {
@@ -2951,7 +2951,7 @@ namespace Server
                 if (Conversions.ToInteger(Party.IsPlayerInParty(attacker)) > 0)
                 {
                     // pass through party exp share function
-                    Party.Party_ShareExp(Party.GetPlayerParty(attacker), exp, attacker, GetPlayerMap(attacker));
+                    Party.ShareExp(Party.GetPlayerParty(attacker), exp, attacker, GetPlayerMap(attacker));
                 }
                 else
                 {

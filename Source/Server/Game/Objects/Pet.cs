@@ -2585,7 +2585,7 @@ namespace Server
                 if (Core.Type.TempPlayer[attacker].InParty > 0)
                 {
                     // pass through party sharing function
-                    Party.Party_ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, mapNum);
+                    Party.ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, mapNum);
                 }
                 else
                 {
@@ -3063,7 +3063,7 @@ namespace Server
                     if (Core.Type.TempPlayer[attacker].InParty > 0)
                     {
                         // pass through party exp share function
-                        Party.Party_ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, GetPlayerMap(attacker));
+                        Party.ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, GetPlayerMap(attacker));
                     }
                     else
                     {
@@ -4639,7 +4639,7 @@ namespace Server
                     if (Core.Type.TempPlayer[attacker].InParty > 0)
                     {
                         // pass through party exp share function
-                        Party.Party_ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, GetPlayerMap(attacker));
+                        Party.ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, GetPlayerMap(attacker));
                     }
                     else
                     {
