@@ -590,8 +590,8 @@ namespace Server
             Core.Type.Map[MapNum].Name = "";
             Core.Type.Map[MapNum].MaxX = Core.Constant.MAX_MAPX;
             Core.Type.Map[MapNum].MaxY = Core.Constant.MAX_MAPY;
-            Core.Type.Map[MapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS + 1];
-            Core.Type.Map[MapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[MapNum].MaxX + 1), (Core.Type.Map[MapNum].MaxY + 1)];
+            Core.Type.Map[MapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS];
+            Core.Type.Map[MapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[MapNum].MaxX), (Core.Type.Map[MapNum].MaxY)];
 
             var loopTo = Core.Constant.MAX_MAPX;
             for (x = 0; x <= (int)loopTo; x++)
@@ -725,7 +725,7 @@ namespace Server
             }
 
             // Redim the map
-            csMap.Tile = new CSTileStruct[csMap.MapData.MaxX + 1, csMap.MapData.MaxY + 1];
+            csMap.Tile = new CSTileStruct[csMap.MapData.MaxX, csMap.MapData.MaxY];
 
             filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + MapNum + ".dat";
 
@@ -993,7 +993,7 @@ namespace Server
             var mwMap = new MapStruct
             {
                 Tile = new TileStruct[16, 12],
-                NPC = new int[Core.Constant.MAX_MAP_NPCS + 1]
+                NPC = new int[Core.Constant.MAX_MAP_NPCS]
             };
 
             mwMap.Name = xwMap.Name;
@@ -1059,7 +1059,7 @@ namespace Server
                 FogOpacity = (byte)csMap.MapData.FogOpacity,
                 FogSpeed = (byte)csMap.MapData.FogSpeed,
                 Tile = new TileStruct[csMap.MapData.MaxX, csMap.MapData.MaxY],
-                NPC = new int[Core.Constant.MAX_MAP_NPCS + 1]
+                NPC = new int[Core.Constant.MAX_MAP_NPCS]
             };
 
             for (int y = 0; y <= mwMap.MaxX; y++)
