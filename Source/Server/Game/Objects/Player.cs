@@ -1117,7 +1117,7 @@ namespace Server
             ByteStream buffer;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | MapNum <= 0 | MapNum > Core.Constant.MAX_MAPS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | MapNum < 0 | MapNum > Core.Constant.MAX_MAPS)
                 return;
 
             // Check if you are out of bounds
