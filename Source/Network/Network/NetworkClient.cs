@@ -16,7 +16,7 @@ namespace Mirage.Sharp.Asfw.Network
     private int _packetCount;
     private int _packetSize;
     private bool _connecting;
-    public NetworkClient.DataArgs[] PacketId;
+    public NetworkClient.DataArgs[] PacketID;
     private const int ReconnectInterval = 5000; // 5 seconds
     private const int MaxReconnectDuration = 30000; // 30 seconds
     
@@ -55,7 +55,7 @@ namespace Mirage.Sharp.Asfw.Network
 
         this._packetCount = packetCount;
         this._packetSize = packetSize;
-        this.PacketId = new NetworkClient.DataArgs[packetCount];
+        this.PacketID = new NetworkClient.DataArgs[packetCount];
     }
 
     public void Dispose()
@@ -66,14 +66,14 @@ namespace Mirage.Sharp.Asfw.Network
       this._socket?.Close();
       this._socket?.Dispose();
       this._socket = (Socket) null;
-      this.PacketId = (NetworkClient.DataArgs[]) null;
+      this.PacketID = (NetworkClient.DataArgs[]) null;
       this.ConnectionSuccess = (NetworkClient.ConnectionArgs) null;
       this.ConnectionFailed = (NetworkClient.ConnectionArgs) null;
       this.ConnectionLost = (NetworkClient.ConnectionArgs) null;
       this.CrashReport = (NetworkClient.CrashReportArgs) null;
       this.PacketReceived = (NetworkClient.PacketInfoArgs) null;
       this.TrafficReceived = (NetworkClient.TrafficInfoArgs) null;
-      this.PacketId = (NetworkClient.DataArgs[]) null;
+      this.PacketID = (NetworkClient.DataArgs[]) null;
     }
 
     public void Connect(string ip, int port)
@@ -303,7 +303,7 @@ namespace Mirage.Sharp.Asfw.Network
 
         private void PacketHandler()
         {
-            if (this._packetRing == null || this.PacketId == null)
+            if (this._packetRing == null || this.PacketID == null)
             {
                 this.CrashReport?.Invoke("NullReferenceException");
                 this.Disconnect();
@@ -334,18 +334,18 @@ namespace Mirage.Sharp.Asfw.Network
                     return;
                 }
 
-                int packetIdIndex = num + 4;
-                if (packetIdIndex + 4 > length)
+                int PacketIDIndex = num + 4;
+                if (PacketIDIndex + 4 > length)
                 {
                     Console.WriteLine("Packet ID out of range. Clearing buffer.");
                     this._packetRing = null;
                     return;
                 }
 
-                int packetId = BitConverter.ToInt32(this._packetRing, packetIdIndex);
+                int PacketID = BitConverter.ToInt32(this._packetRing, PacketIDIndex);
 
                 // Validate packet ID
-                if (packetId < 0 || packetId >= this.PacketId.Length || this.PacketId[packetId] == null)
+                if (PacketID < 0 || PacketID >= this.PacketID.Length || this.PacketID[PacketID] == null)
                 {
                     Console.WriteLine("Invalid packet ID. Clearing buffer.");
                     this._packetRing = null;
@@ -354,9 +354,9 @@ namespace Mirage.Sharp.Asfw.Network
 
                 int dataLength = packetLength - 4;
                 byte[] data = new byte[dataLength];
-                if (packetIdIndex + 4 + dataLength <= length)
+                if (PacketIDIndex + 4 + dataLength <= length)
                 {
-                    Buffer.BlockCopy(this._packetRing, packetIdIndex + 4, data, 0, dataLength);
+                    Buffer.BlockCopy(this._packetRing, PacketIDIndex + 4, data, 0, dataLength);
                 }
                 else
                 {
@@ -366,8 +366,8 @@ namespace Mirage.Sharp.Asfw.Network
                 }
 
                 // Invoke packet handlers
-                this.PacketReceived?.Invoke(dataLength, packetId, ref data);
-                this.PacketId[packetId]?.Invoke(ref data);
+                this.PacketReceived?.Invoke(dataLength, PacketID, ref data);
+                this.PacketID[PacketID]?.Invoke(ref data);
 
                 num += packetLength;
             }

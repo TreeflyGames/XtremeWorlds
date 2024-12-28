@@ -13,7 +13,7 @@ namespace Mirage.Sharp.Asfw.Network
     private IAsyncResult _pendingAccept;
     private int _packetCount;
     private int _packetSize;
-    public NetworkServer.DataArgs[] PacketId;
+    public NetworkServer.DataArgs[] PacketID;
 
     public int BufferLimit { get; set; }
 
@@ -55,7 +55,7 @@ namespace Mirage.Sharp.Asfw.Network
       this.ClientLimit = clientLimit;
       this._packetCount = packetCount;
       this._packetSize = packetSize;
-      this.PacketId = new NetworkServer.DataArgs[packetCount];
+      this.PacketID = new NetworkServer.DataArgs[packetCount];
     }
 
     public void Dispose()
@@ -70,7 +70,7 @@ namespace Mirage.Sharp.Asfw.Network
       }
       this._socket.Clear();
       this._socket = (Dictionary<int, Socket>) null;
-      this.PacketId = (NetworkServer.DataArgs[]) null;
+      this.PacketID = (NetworkServer.DataArgs[]) null;
       this._unsignedIndex.Clear();
       this._unsignedIndex = (List<int>) null;
       this.AccessCheck = (NetworkServer.AccessArgs) null;
@@ -79,7 +79,7 @@ namespace Mirage.Sharp.Asfw.Network
       this.CrashReport = (NetworkServer.CrashReportArgs) null;
       this.PacketReceived = (NetworkServer.PacketInfoArgs) null;
       this.TrafficReceived = (NetworkServer.TrafficInfoArgs) null;
-      this.PacketId = (NetworkServer.DataArgs[]) null;
+      this.PacketID = (NetworkServer.DataArgs[]) null;
     }
 
     public bool IsConnected(int index)
@@ -421,7 +421,7 @@ namespace Mirage.Sharp.Asfw.Network
               int int32_2 = BitConverter.ToInt32(so.RingBuffer, startIndex);
               if (int32_2 >= 0 && int32_2 < this._packetCount)
               {
-                if (this.PacketId[int32_2] != null)
+                if (this.PacketID[int32_2] != null)
                 {
                   if (this.AccessCheck != null)
                   {
@@ -436,7 +436,7 @@ namespace Mirage.Sharp.Asfw.Network
                   NetworkServer.PacketInfoArgs packetReceived = this.PacketReceived;
                   if (packetReceived != null)
                     packetReceived(length2, int32_2, ref data);
-                  this.PacketId[int32_2](index, ref data);
+                  this.PacketID[int32_2](index, ref data);
                   num = startIndex + int32_1;
                   --so.PacketCount;
                   flag = true;
