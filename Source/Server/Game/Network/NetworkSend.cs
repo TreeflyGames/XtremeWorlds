@@ -582,7 +582,7 @@ namespace Server
 
                 for (int X = 0, loopTo1 = Core.Type.Map[mapNum].MaxX - 1; X <= (int)loopTo1; X++)
                 {
-                    for (int Y = 0, loopTo2 = Core.Type.Map[mapNum].MaxY -1; Y <= (int)loopTo2; Y++)
+                    for (int Y = 0, loopTo2 = Core.Type.Map[mapNum].MaxY - 1; Y <= (int)loopTo2; Y++)
                     {
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data1);
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data2);
