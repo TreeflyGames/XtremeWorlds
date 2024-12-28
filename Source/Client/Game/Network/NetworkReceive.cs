@@ -231,7 +231,7 @@ namespace Client
             long I;
             long winNum;
             long conNum;
-            var isSlotEmpty = new bool[(Constant.MAX_CHARS + 1)];
+            var isSlotEmpty = new bool[Constant.MAX_CHARS];
             long x;
 
             Settings.Username = Gui.Windows[Gui.GetWindowIndex("winLogin")].Controls[(int)Gui.GetControlIndex("winLogin", "txtUsername")].Text;

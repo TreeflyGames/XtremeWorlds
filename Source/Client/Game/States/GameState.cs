@@ -50,17 +50,17 @@ namespace Client
         public static long NewCnarGender;
 
         // chars
-        public static string[] CharName = new string[(Constant.MAX_CHARS + 1)];
-        public static long[] CharSprite = new long[(Constant.MAX_CHARS + 1)];
-        public static long[] CharAccess = new long[(Constant.MAX_CHARS + 1)];
-        public static long[] CharJob = new long[(Constant.MAX_CHARS + 1)];
+        public static string[] CharName = new string[(Constant.MAX_CHARS)];
+        public static long[] CharSprite = new long[(Constant.MAX_CHARS)];
+        public static long[] CharAccess = new long[(Constant.MAX_CHARS)];
+        public static long[] CharJob = new long[(Constant.MAX_CHARS)];
         public static byte CharNum;
 
         // elastic bars
-        public static long[] BarWidth_NPCHP = new long[(Constant.MAX_MAP_NPCS + 1)];
+        public static long[] BarWidth_NPCHP = new long[(Constant.MAX_MAP_NPCS)];
         public static long[] BarWidth_PlayerHP = new long[501];
         public static long[] BarWidth_PlayerSP = new long[501];
-        public static long[] BarWidth_NPCHP_Max = new long[(Constant.MAX_MAP_NPCS + 1)];
+        public static long[] BarWidth_NPCHP_Max = new long[(Constant.MAX_MAP_NPCS)];
         public static long[] BarWidth_PlayerHP_Max = new long[501];
         public static long[] BarWidth_PlayerSP_Max = new long[501];
         public static long BarWidth_GuiHP;
