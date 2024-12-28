@@ -65,7 +65,7 @@ namespace Server
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target = 0;
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = 0; // clear
 
-                var loopTo = (VitalType) VitalType.Count - 1;
+                var loopTo = VitalType.Count - 1;
                 for (i = 0; i <= (int)loopTo; i++)
                     Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[i] = GameLogic.GetNPCMaxVital(NPCNum, (Core.Enum.VitalType)i);
 
@@ -791,10 +791,10 @@ namespace Server
             Core.Type.MapNPC[mapNum].NPC[MapNPCNum].StopRegen = 0;
             Core.Type.MapNPC[mapNum].NPC[MapNPCNum].StopRegenTimer = General.GetTimeMs();
 
-            if (Damage >= GetPlayerVital(victim, (VitalType) VitalType.HP))
+            if (Damage >= GetPlayerVital(victim, VitalType.HP))
             {
                 // Say damage
-                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPlayerVital(victim, (VitalType) VitalType.HP), (int) ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
+                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPlayerVital(victim, VitalType.HP), (int) ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
 
                 // Set NPC target to 0
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target = 0;
@@ -809,8 +809,8 @@ namespace Server
             else
             {
                 // Player not dead, just do the damage
-                SetPlayerVital(victim, (VitalType) VitalType.HP, GetPlayerVital(victim, (VitalType) VitalType.HP) - Damage);
-                NetworkSend.SendVital(victim, (VitalType) VitalType.HP);
+                SetPlayerVital(victim, VitalType.HP, GetPlayerVital(victim, VitalType.HP) - Damage);
+                NetworkSend.SendVital(victim, VitalType.HP);
                 Animation.SendAnimation(mapNum, Core.Type.NPC[Core.Type.MapNPC[GetPlayerMap(victim)].NPC[MapNPCNum].Num].Animation, 0, 0, (byte)TargetType.Player, victim);
 
                 // send the sound
@@ -1466,7 +1466,7 @@ namespace Server
             buffer.WriteInt32((byte) ServerPackets.SMapNPCVitals);
             buffer.WriteInt32(MapNPCNum);
 
-            var loopTo = (VitalType) VitalType.Count - 1;
+            var loopTo = VitalType.Count - 1;
             for (i = 0; i <= (int)loopTo; i++)
                 buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Vital[i]);
 

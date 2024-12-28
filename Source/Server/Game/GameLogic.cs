@@ -37,12 +37,12 @@ namespace Server
 
             switch (Vital)
             {
-                case (VitalType) VitalType.HP:
+                case VitalType.HP:
                     {
                         GetNPCMaxVitalRet = Core.Type.NPC[NPCNum].HP;
                         break;
                     }
-                case (VitalType) VitalType.SP:
+                case VitalType.SP:
                     {
                         GetNPCMaxVitalRet = (int)Core.Type.NPC[NPCNum].Stat[(byte)StatType.Intelligence] * 2;
                         break;

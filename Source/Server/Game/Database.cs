@@ -1616,7 +1616,7 @@ namespace Server
                 Core.Type.Player[index].Y = Core.Type.Job[jobNum].StartY;
                 Core.Type.Player[index].Dir = (byte) DirectionType.Down;
 
-                var loopTo1 = (VitalType) VitalType.Count - 1;
+                var loopTo1 = VitalType.Count - 1;
                 for (i = 0; i <= (int)loopTo1; i++)
                     SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
 

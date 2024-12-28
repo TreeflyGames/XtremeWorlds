@@ -441,7 +441,7 @@ namespace Server
 
         public static void SendVitals(int index)
         {
-            for (int i = 0, loopTo = (int)((VitalType) VitalType.Count - 1); i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (int)(VitalType.Count - 1); i <= (int)loopTo; i++)
                 SendVital(index, (VitalType)i);
         }
 
@@ -453,12 +453,12 @@ namespace Server
             // Get our packet type.
             switch (Vital)
             {
-                case var @case when @case == (VitalType) VitalType.HP:
+                case var @case when @case == VitalType.HP:
                     {
                         buffer.WriteInt32((byte) ServerPackets.SPlayerHP);
                         break;
                     }
-                case var case1 when case1 == (VitalType) VitalType.SP:
+                case var case1 when case1 == VitalType.SP:
                     {
                         buffer.WriteInt32((byte) ServerPackets.SPlayerSP);
                         break;
@@ -747,8 +747,8 @@ namespace Server
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].X);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Y);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Dir);
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(int)(VitalType) VitalType.HP]);
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(int)(VitalType) VitalType.SP]);
+                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(int)VitalType.HP]);
+                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(int)VitalType.SP]);
             }
 
             if (Core.Type.MapResource[GetPlayerMap(index)].ResourceCount > 0)

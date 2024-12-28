@@ -980,7 +980,7 @@ namespace Client
             whiteTexture.Dispose();
         }
 
-        /// <summary>
+    /// <summary>
     /// Draws a rectangle with a fill color and an outline.
     /// </summary>
     /// <param name="rect">The Rectangle to be drawn.</param>

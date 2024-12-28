@@ -209,8 +209,8 @@ namespace Server
             buffer.WriteInt32(index);
 
             buffer.WriteInt32(GetPetNum(index));
-            buffer.WriteInt32(GetPetVital(index, (VitalType) VitalType.HP));
-            buffer.WriteInt32(GetPetVital(index, (VitalType) VitalType.SP));
+            buffer.WriteInt32(GetPetVital(index, VitalType.HP));
+            buffer.WriteInt32(GetPetVital(index, VitalType.SP));
             buffer.WriteInt32(GetPetLevel(index));
 
             for (int i = 0, loopTo = (byte)StatType.Count - 1; i <= (int)loopTo; i++)
@@ -223,8 +223,8 @@ namespace Server
             buffer.WriteInt32(GetPetY(index));
             buffer.WriteInt32(GetPetDir(index));
 
-            buffer.WriteInt32(GetPetMaxVital(index, (VitalType) VitalType.HP));
-            buffer.WriteInt32(GetPetMaxVital(index, (VitalType) VitalType.SP));
+            buffer.WriteInt32(GetPetMaxVital(index, VitalType.HP));
+            buffer.WriteInt32(GetPetMaxVital(index, VitalType.SP));
 
             buffer.WriteInt32(Core.Type.Player[index].Pet.Alive);
 
@@ -286,28 +286,28 @@ namespace Server
 
             buffer.WriteInt32(index);
 
-            if (vital == (VitalType) VitalType.HP)
+            if (vital == VitalType.HP)
             {
                 buffer.WriteInt32(1);
             }
-            else if (vital == (VitalType) VitalType.SP)
+            else if (vital == VitalType.SP)
             {
                 buffer.WriteInt32(2);
             }
 
             switch (vital)
             {
-                case var @case when @case == (VitalType) VitalType.HP:
+                case var @case when @case == VitalType.HP:
                     {
-                        buffer.WriteInt32(GetPetMaxVital(index, (VitalType) VitalType.HP));
-                        buffer.WriteInt32(GetPetVital(index, (VitalType) VitalType.HP));
+                        buffer.WriteInt32(GetPetMaxVital(index, VitalType.HP));
+                        buffer.WriteInt32(GetPetVital(index, VitalType.HP));
                         break;
                     }
 
-                case var case1 when case1 == (VitalType) VitalType.SP:
+                case var case1 when case1 == VitalType.SP:
                     {
-                        buffer.WriteInt32(GetPetMaxVital(index, (VitalType) VitalType.SP));
-                        buffer.WriteInt32(GetPetVital(index, (VitalType) VitalType.SP));
+                        buffer.WriteInt32(GetPetMaxVital(index, VitalType.SP));
+                        buffer.WriteInt32(GetPetVital(index, VitalType.SP));
                         break;
                     }
             }
@@ -1074,26 +1074,26 @@ namespace Server
                             {
                                 if (PetAlive(playerindex) & tickCount > givePetHpTimer + 10000)
                                 {
-                                    if (GetPetVital(playerindex, (VitalType) VitalType.HP) > 0)
+                                    if (GetPetVital(playerindex, VitalType.HP) > 0)
                                     {
-                                        SetPetVital(playerindex, (VitalType) VitalType.HP, GetPetVital(playerindex, (VitalType) VitalType.HP) + GetPetVitalRegen(playerindex, (VitalType) VitalType.HP));
-                                        SetPetVital(playerindex, (VitalType) VitalType.SP, GetPetVital(playerindex, (VitalType) VitalType.SP) + GetPetVitalRegen(playerindex, (VitalType) VitalType.SP));
+                                        SetPetVital(playerindex, VitalType.HP, GetPetVital(playerindex, VitalType.HP) + GetPetVitalRegen(playerindex, VitalType.HP));
+                                        SetPetVital(playerindex, VitalType.SP, GetPetVital(playerindex, VitalType.SP) + GetPetVitalRegen(playerindex, VitalType.SP));
 
                                         // Check if they have more then they should and if so just set it to Core.Constant.MAX
-                                        if (GetPetVital(playerindex, (VitalType) VitalType.HP) > GetPetMaxVital(playerindex, (VitalType) VitalType.HP))
+                                        if (GetPetVital(playerindex, VitalType.HP) > GetPetMaxVital(playerindex, VitalType.HP))
                                         {
-                                            SetPetVital(playerindex, (VitalType) VitalType.HP, GetPetMaxVital(playerindex, (VitalType) VitalType.HP));
+                                            SetPetVital(playerindex, VitalType.HP, GetPetMaxVital(playerindex, VitalType.HP));
                                         }
 
-                                        if (GetPetVital(playerindex, (VitalType) VitalType.SP) > GetPetMaxVital(playerindex, (VitalType) VitalType.SP))
+                                        if (GetPetVital(playerindex, VitalType.SP) > GetPetMaxVital(playerindex, VitalType.SP))
                                         {
-                                            SetPetVital(playerindex, (VitalType) VitalType.SP, GetPetMaxVital(playerindex, (VitalType) VitalType.SP));
+                                            SetPetVital(playerindex, VitalType.SP, GetPetMaxVital(playerindex, VitalType.SP));
                                         }
 
-                                        if (!(GetPetVital(playerindex, (VitalType) VitalType.HP) == GetPetMaxVital(playerindex, (VitalType) VitalType.HP)))
+                                        if (!(GetPetVital(playerindex, VitalType.HP) == GetPetMaxVital(playerindex, VitalType.HP)))
                                         {
-                                            SendPetVital(playerindex, (VitalType) VitalType.HP);
-                                            SendPetVital(playerindex, (VitalType) VitalType.SP);
+                                            SendPetVital(playerindex, VitalType.HP);
+                                            SendPetVital(playerindex, VitalType.SP);
                                         }
                                     }
                                 }
@@ -1194,8 +1194,8 @@ namespace Server
 
             if (Core.Type.Pet[petNum].StatType == 0)
             {
-                Core.Type.Player[index].Pet.Health = GetPlayerMaxVital(index, (VitalType) VitalType.HP);
-                Core.Type.Player[index].Pet.Mana = GetPlayerMaxVital(index, (VitalType) VitalType.SP);
+                Core.Type.Player[index].Pet.Health = GetPlayerMaxVital(index, VitalType.HP);
+                Core.Type.Player[index].Pet.Mana = GetPlayerMaxVital(index, VitalType.SP);
                 Core.Type.Player[index].Pet.Level = GetPlayerLevel(index);
 
                 for (int i = 0, loopTo = (byte)StatType.Count - 1; i <= (int)loopTo; i++)
@@ -1210,8 +1210,8 @@ namespace Server
 
                 Core.Type.Player[index].Pet.Level = Core.Type.Pet[petNum].Level;
                 Core.Type.Player[index].Pet.AdoptiveStats = 0;
-                Core.Type.Player[index].Pet.Health = GetPetMaxVital(index, (VitalType) VitalType.HP);
-                Core.Type.Player[index].Pet.Mana = GetPetMaxVital(index, (VitalType) VitalType.SP);
+                Core.Type.Player[index].Pet.Health = GetPetMaxVital(index, VitalType.HP);
+                Core.Type.Player[index].Pet.Mana = GetPetMaxVital(index, VitalType.SP);
             }
 
             Core.Type.Player[index].Pet.X = GetPlayerX(index);
@@ -2270,13 +2270,13 @@ namespace Server
 
             switch (vital)
             {
-                case var @case when @case == (VitalType) VitalType.HP:
+                case var @case when @case == VitalType.HP:
                     {
                         i = GetPlayerStat(index, (StatType)((byte)(StatType.Spirit) * 0.8d + 6));
                         break;
                     }
 
-                case var case1 when case1 == (VitalType) VitalType.SP:
+                case var case1 when case1 == VitalType.SP:
                     {
                         i = GetPlayerStat(index, (StatType)((byte)(StatType.Spirit) / 4 + 12.5d));
                         break;
@@ -2858,10 +2858,10 @@ namespace Server
             Core.Type.MapNPC[mapNum].NPC[MapNPCNum].StopRegen = 0;
             Core.Type.MapNPC[mapNum].NPC[MapNPCNum].StopRegenTimer = General.GetTimeMs();
 
-            if (damage >= GetPetVital(victim, (VitalType) VitalType.HP))
+            if (damage >= GetPetVital(victim, VitalType.HP))
             {
                 // Say damage
-                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, (VitalType) VitalType.HP), (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(victim) * 32, GetPetY(victim) * 32);
+                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, VitalType.HP), (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(victim) * 32, GetPetY(victim) * 32);
 
                 // kill pet
                 NetworkSend.PlayerMsg(victim, "Your " + GetPetName(victim) + " was killed by a " + Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Name + ".", (int) ColorType.BrightRed);
@@ -2874,8 +2874,8 @@ namespace Server
             else
             {
                 // Pet not dead, just do the damage
-                SetPetVital(victim, (VitalType) VitalType.HP, GetPetVital(victim, (VitalType) VitalType.HP) - damage);
-                SendPetVital(victim, (VitalType) VitalType.HP);
+                SetPetVital(victim, VitalType.HP, GetPetVital(victim, VitalType.HP) - damage);
+                SendPetVital(victim, VitalType.HP);
                 Animation.SendAnimation(mapNum, Core.Type.NPC[Core.Type.MapNPC[GetPlayerMap(victim)].NPC[MapNPCNum].Num].Animation, 0, 0, (byte)TargetType.Pet, victim);
 
                 // Say damage
@@ -2975,7 +2975,7 @@ namespace Server
             }
 
             // Make sure they have more then 0 hp
-            if (GetPlayerVital(victim, (VitalType) VitalType.HP) <= 0)
+            if (GetPlayerVital(victim, VitalType.HP) <= 0)
                 return CanPetAttackPlayerRet;
 
             // Check to make sure that they dont have access
@@ -3029,9 +3029,9 @@ namespace Server
             Core.Type.TempPlayer[attacker].PetStopRegen = true;
             Core.Type.TempPlayer[attacker].PetStopRegenTimer = General.GetTimeMs();
 
-            if (damage >= GetPlayerVital(victim, (VitalType) VitalType.HP))
+            if (damage >= GetPlayerVital(victim, VitalType.HP))
             {
-                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPlayerVital(victim, (VitalType) VitalType.HP), (int) ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
+                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPlayerVital(victim, VitalType.HP), (int) ColorType.BrightRed, 1, GetPlayerX(victim) * 32, GetPlayerY(victim) * 32);
 
                 // send the sound
                 // If skillNum > 0 Then SendMapSound(victim, GetPlayerX(victim), GetPlayerY(victim), SoundEntity.seSkill, skillNum)
@@ -3125,8 +3125,8 @@ namespace Server
             else
             {
                 // Player not dead, just do the damage
-                SetPlayerVital(victim, (VitalType) VitalType.HP, GetPlayerVital(victim, (VitalType) VitalType.HP) - damage);
-                NetworkSend.SendVital(victim, (VitalType) VitalType.HP);
+                SetPlayerVital(victim, VitalType.HP, GetPlayerVital(victim, VitalType.HP) - damage);
+                NetworkSend.SendVital(victim, VitalType.HP);
 
                 // send the sound
                 // If skillNum > 0 Then SendMapSound(victim, GetPlayerX(victim), GetPlayerY(victim), SoundEntity.seSkill, skillNum)
@@ -3372,9 +3372,9 @@ namespace Server
             Core.Type.TempPlayer[attacker].PetStopRegen = true;
             Core.Type.TempPlayer[attacker].PetStopRegenTimer = General.GetTimeMs();
 
-            if (damage >= GetPetVital(victim, (VitalType) VitalType.HP))
+            if (damage >= GetPetVital(victim, VitalType.HP))
             {
-                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, (VitalType) VitalType.HP), (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(victim) * 32, GetPetY(victim) * 32);
+                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, VitalType.HP), (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(victim) * 32, GetPetY(victim) * 32);
 
                 // send the sound
                 // If Skillnum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, Skillnum
@@ -3434,8 +3434,8 @@ namespace Server
             else
             {
                 // Player not dead, just do the damage
-                SetPetVital(victim, (VitalType) VitalType.HP, GetPetVital(victim, (VitalType) VitalType.HP) - damage);
-                SendPetVital(victim, (VitalType) VitalType.HP);
+                SetPetVital(victim, VitalType.HP, GetPetVital(victim, VitalType.HP) - damage);
+                SendPetVital(victim, VitalType.HP);
 
                 // Set pet to begin attacking the other pet if it isn't dead or dosent have another target
                 if (Core.Type.TempPlayer[victim].PetTarget < 0 & Core.Type.TempPlayer[victim].PetBehavior != PetBehaviourGoto)
@@ -3568,7 +3568,7 @@ namespace Server
             mpCost = Core.Type.Skill[skillnum].MpCost;
 
             // Check if they have enough MP
-            if (GetPetVital(index, (VitalType) VitalType.SP) < mpCost)
+            if (GetPetVital(index, VitalType.SP) < mpCost)
             {
                 NetworkSend.PlayerMsg(index, "Your " + GetPetName(index) + " does not have enough mana!", (int) ColorType.BrightRed);
                 return;
@@ -4195,7 +4195,7 @@ namespace Server
 
                 if (increment)
                 {
-                    SetPetVital(index, (VitalType) VitalType.HP, GetPetVital(index, (VitalType) VitalType.HP) + damage);
+                    SetPetVital(index, VitalType.HP, GetPetVital(index, VitalType.HP) + damage);
 
                     if (Core.Type.Skill[skillnum].Duration > 0)
                     {
@@ -4207,20 +4207,20 @@ namespace Server
                 {
                     if (vital == (int) VitalType.HP)
                     {
-                        SetPetVital(index, (VitalType) VitalType.HP, GetPetVital(index, (VitalType) VitalType.HP) - damage);
+                        SetPetVital(index, VitalType.HP, GetPetVital(index, VitalType.HP) - damage);
                     }
                     else if (vital == (int) VitalType.SP)
                     {
-                        SetPetVital(index, (VitalType) VitalType.SP, GetPetVital(index, (VitalType) VitalType.SP) - damage);
+                        SetPetVital(index, VitalType.SP, GetPetVital(index, VitalType.SP) - damage);
                     }
                 }
             }
 
-            if (GetPetVital(index, (VitalType) VitalType.HP) > GetPetMaxVital(index, (VitalType) VitalType.HP))
-                SetPetVital(index, (VitalType) VitalType.HP, GetPetMaxVital(index, (VitalType) VitalType.HP));
+            if (GetPetVital(index, VitalType.HP) > GetPetMaxVital(index, VitalType.HP))
+                SetPetVital(index, VitalType.HP, GetPetMaxVital(index, VitalType.HP));
 
-            if (GetPetVital(index, (VitalType) VitalType.SP) > GetPetMaxVital(index, (VitalType) VitalType.SP))
-                SetPetVital(index, (VitalType) VitalType.SP, GetPetMaxVital(index, (VitalType) VitalType.SP));
+            if (GetPetVital(index, VitalType.SP) > GetPetMaxVital(index, VitalType.SP))
+                SetPetVital(index, VitalType.SP, GetPetMaxVital(index, VitalType.SP));
 
         }
 
@@ -4324,8 +4324,8 @@ namespace Server
                             if (CanPetAttackPet(withBlock.Caster, index, withBlock.Skill))
                             {
                                 PetAttackPet(withBlock.Caster, index, Core.Type.Skill[withBlock.Skill].Vital);
-                                SendPetVital(index, (VitalType) VitalType.HP);
-                                SendPetVital(index, (VitalType) VitalType.SP);
+                                SendPetVital(index, VitalType.HP);
+                                SendPetVital(index, VitalType.SP);
                             }
                         }
                         else if (withBlock.AttackerType == (byte)TargetType.Player)
@@ -4333,8 +4333,8 @@ namespace Server
                             if (CanPlayerAttackPet(withBlock.Caster, index, Convert.ToBoolean(withBlock.Skill)))
                             {
                                 PlayerAttackPet(withBlock.Caster, index, Core.Type.Skill[withBlock.Skill].Vital);
-                                SendPetVital(index, (VitalType) VitalType.HP);
-                                SendPetVital(index, (VitalType) VitalType.SP);
+                                SendPetVital(index, VitalType.HP);
+                                SendPetVital(index, VitalType.SP);
                             }
                         }
 
@@ -4371,16 +4371,16 @@ namespace Server
                     if (General.GetTimeMs() > withBlock.Timer + Core.Type.Skill[withBlock.Skill].Interval * 1000)
                     {
                         NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + Core.Type.Skill[withBlock.Skill].Vital, (int) ColorType.BrightGreen, (byte) ActionMsgType.Scroll, Core.Type.Player[index].Pet.X * 32, Core.Type.Player[index].Pet.Y * 32);
-                        SetPetVital(index, (VitalType) VitalType.HP, GetPetVital(index, (VitalType) VitalType.HP) + Core.Type.Skill[withBlock.Skill].Vital);
+                        SetPetVital(index, VitalType.HP, GetPetVital(index, VitalType.HP) + Core.Type.Skill[withBlock.Skill].Vital);
 
-                        if (GetPetVital(index, (VitalType) VitalType.HP) > GetPetMaxVital(index, (VitalType) VitalType.HP))
-                            SetPetVital(index, (VitalType) VitalType.HP, GetPetMaxVital(index, (VitalType) VitalType.HP));
+                        if (GetPetVital(index, VitalType.HP) > GetPetMaxVital(index, VitalType.HP))
+                            SetPetVital(index, VitalType.HP, GetPetMaxVital(index, VitalType.HP));
 
-                        if (GetPetVital(index, (VitalType) VitalType.SP) > GetPetMaxVital(index, (VitalType) VitalType.SP))
-                            SetPetVital(index, (VitalType) VitalType.SP, GetPetMaxVital(index, (VitalType) VitalType.SP));
+                        if (GetPetVital(index, VitalType.SP) > GetPetMaxVital(index, VitalType.SP))
+                            SetPetVital(index, VitalType.SP, GetPetMaxVital(index, VitalType.SP));
 
-                        SendPetVital(index, (VitalType) VitalType.HP);
-                        SendPetVital(index, (VitalType) VitalType.SP);
+                        SendPetVital(index, VitalType.HP);
+                        SendPetVital(index, VitalType.SP);
                         withBlock.Timer = General.GetTimeMs();
 
                         // check if DoT is still active - if player died it'll have been purged
@@ -4539,7 +4539,7 @@ namespace Server
             }
 
             // Make sure they have more then 0 hp
-            if (GetPetVital(victim, (VitalType) VitalType.HP) <= 0)
+            if (GetPetVital(victim, VitalType.HP) <= 0)
                 return CanPlayerAttackPetRet;
 
             // Check to make sure that they dont have access
@@ -4610,9 +4610,9 @@ namespace Server
             Core.Type.TempPlayer[attacker].StopRegen = 0;
             Core.Type.TempPlayer[attacker].StopRegenTimer = General.GetTimeMs();
 
-            if (damage >= GetPetVital(victim, (VitalType) VitalType.HP))
+            if (damage >= GetPetVital(victim, VitalType.HP))
             {
-                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, (VitalType) VitalType.HP), (int) ColorType.BrightRed, 1, GetPetX(victim) * 32, GetPetY(victim) * 32);
+                NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, VitalType.HP), (int) ColorType.BrightRed, 1, GetPetX(victim) * 32, GetPetY(victim) * 32);
 
                 // send the sound
                 // If Skillnum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, Skillnum
@@ -4669,8 +4669,8 @@ namespace Server
             else
             {
                 // Pet not dead, just do the damage
-                SetPetVital(victim, (VitalType) VitalType.HP, GetPetVital(victim, (VitalType) VitalType.HP) - damage);
-                SendPetVital(victim, (VitalType) VitalType.HP);
+                SetPetVital(victim, VitalType.HP, GetPetVital(victim, VitalType.HP) - damage);
+                SendPetVital(victim, VitalType.HP);
 
                 // Set pet to begin attacking the other pet if it isn't dead or dosent have another target
                 if (Core.Type.TempPlayer[victim].PetTarget < 0 & Core.Type.TempPlayer[victim].PetBehavior != PetBehaviourGoto)
@@ -5004,13 +5004,13 @@ namespace Server
 
             switch (vital)
             {
-                case var @case when @case == (VitalType) VitalType.HP:
+                case var @case when @case == VitalType.HP:
                     {
                         GetPetVitalRet = Core.Type.Player[index].Pet.Health;
                         break;
                     }
 
-                case var case1 when case1 == (VitalType) VitalType.SP:
+                case var case1 when case1 == VitalType.SP:
                     {
                         GetPetVitalRet = Core.Type.Player[index].Pet.Mana;
                         break;
@@ -5029,13 +5029,13 @@ namespace Server
 
             switch (vital)
             {
-                case var @case when @case == (VitalType) VitalType.HP:
+                case var @case when @case == VitalType.HP:
                     {
                         Core.Type.Player[index].Pet.Health = amount;
                         break;
                     }
 
-                case var case1 when case1 == (VitalType) VitalType.SP:
+                case var case1 when case1 == VitalType.SP:
                     {
                         Core.Type.Player[index].Pet.Mana = amount;
                         break;
@@ -5049,13 +5049,13 @@ namespace Server
             int GetPetMaxVitalRet = default;
             switch (vital)
             {
-                case var @case when @case == (VitalType) VitalType.HP:
+                case var @case when @case == VitalType.HP:
                     {
                         GetPetMaxVitalRet = Core.Type.Player[index].Pet.Level * 4 + (int)Core.Type.Player[index].Pet.Stat[(byte)StatType.Luck] * 10 + 150;
                         break;
                     }
 
-                case var case1 when case1 == (VitalType) VitalType.SP:
+                case var case1 when case1 == VitalType.SP:
                     {
                         GetPetMaxVitalRet = (int)Math.Round(((double)(Core.Type.Player[index].Pet.Level * 4) + (double)Core.Type.Player[index].Pet.Stat[(byte)StatType.Spirit] / 2d) * 5d + 50d);
                         break;

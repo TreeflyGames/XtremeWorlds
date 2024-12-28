@@ -4434,7 +4434,7 @@ namespace Client
             Action argonDraw3 = null;
             UpdatePictureBox(Windows.Count, "picEXP_Blank", 15L, 49L, 209L, 13L, image_norm: 26L, image_hover: 26L, image_mousedown: 26L, callback_norm: ref argcallback_norm3, callback_hover: ref argcallback_hover3, callback_mousedown: ref argcallback_mousedown3, callback_mousemove: ref argcallback_mousemove3, callback_dblclick: ref argcallback_dblclick3, onDraw: ref argonDraw3);
 
-            // Draw the bars
+            // Bars
             Action argcallback_norm4 = null;
             Action argcallback_hover4 = null;
             Action argcallback_mousedown4 = null;
@@ -4442,8 +4442,6 @@ namespace Client
             Action argcallback_dblclick4 = null;
             var argonDraw4 = new Action(Bars_OnDraw);
             Gui.UpdatePictureBox(Windows.Count, "picBlank", 0L, 0L, 0L, 0L, callback_norm: ref argcallback_norm4, callback_hover: ref argcallback_hover4, callback_mousedown: ref argcallback_mousedown4, callback_mousemove: ref argcallback_mousemove4, callback_dblclick: ref argcallback_dblclick4, onDraw: ref argonDraw4);
-
-            // Bar Labels
             Action argcallback_norm5 = null;
             Action argcallback_hover5 = null;
             Action argcallback_mousedown5 = null;
@@ -4472,19 +4470,19 @@ namespace Client
             Action argcallback_mousedown8 = null;
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
-            UpdateLabel(Windows.Count, "lblHP", 15L, 14L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8);
+            UpdateLabel(Windows.Count, "lblHP", 15L, 14L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8, locked: true);
             Action argcallback_norm9 = null;
             Action argcallback_hover9 = null;
             Action argcallback_mousedown9 = null;
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
-            UpdateLabel(Windows.Count, "lblMP", 15L, 30L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9);
+            UpdateLabel(Windows.Count, "lblMP", 15L, 30L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9, locked: true);
             Action argcallback_norm10 = null;
             Action argcallback_hover10 = null;
             Action argcallback_mousedown10 = null;
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            UpdateLabel(Windows.Count, "lblEXP", 15L, 48L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm10, callback_hover: ref argcallback_hover10, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10);
+            UpdateLabel(Windows.Count, "lblEXP", 15L, 48L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm10, callback_hover: ref argcallback_hover10, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, locked: true);
         }
 
         public static void UpdateWindow_Chat()

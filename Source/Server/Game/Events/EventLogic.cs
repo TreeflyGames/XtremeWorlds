@@ -2791,14 +2791,14 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.RestoreHP:
                                                                     {
-                                                                        SetPlayerVital(i, (VitalType) VitalType.HP, GetPlayerMaxVital(i, (VitalType) VitalType.HP));
-                                                                        NetworkSend.SendVital(i, (VitalType) VitalType.HP);
+                                                                        SetPlayerVital(i, VitalType.HP, GetPlayerMaxVital(i, VitalType.HP));
+                                                                        NetworkSend.SendVital(i, VitalType.HP);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.RestoreSP:
                                                                     {
-                                                                        SetPlayerVital(i, (VitalType) VitalType.SP, GetPlayerMaxVital(i, (VitalType) VitalType.SP));
-                                                                        NetworkSend.SendVital(i, (VitalType) VitalType.SP);
+                                                                        SetPlayerVital(i, VitalType.SP, GetPlayerMaxVital(i, VitalType.SP));
+                                                                        NetworkSend.SendVital(i, VitalType.SP);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.LevelUp:

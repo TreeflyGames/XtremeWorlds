@@ -93,7 +93,7 @@ namespace Server
             }
 
             // Make sure they have more then 0 hp
-            if (GetPlayerVital(victim, (VitalType) VitalType.HP) <= 0)
+            if (GetPlayerVital(victim, VitalType.HP) <= 0)
                 return CanPlayerAttackPlayerRet;
 
             // Check to make sure that they dont have access
@@ -759,7 +759,7 @@ namespace Server
             Core.Type.TempPlayer[attacker].StopRegenTimer = General.GetTimeMs();
 
             // Deal damage to our player.
-            SetPlayerVital(victim, (VitalType) VitalType.HP, GetPlayerVital(victim, (VitalType) VitalType.HP) - Damage);
+            SetPlayerVital(victim, VitalType.HP, GetPlayerVital(victim, VitalType.HP) - Damage);
 
             // Send all the visuals to our player.
             if (Weapon > 0)
@@ -779,7 +779,7 @@ namespace Server
             if (!IsPlayerDead(victim))
             {
                 // Send our player's new vitals to everyone that needs them.
-                NetworkSend.SendVital(victim, (VitalType)(VitalType) VitalType.HP);
+                NetworkSend.SendVital(victim, (VitalType)VitalType.HP);
             }
             else
             {
@@ -864,7 +864,7 @@ namespace Server
             IsPlayerDeadRet = false;
             if (index <= 0 | index > Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
                 return IsPlayerDeadRet;
-            if (GetPlayerVital(index, (VitalType) VitalType.HP) < 0)
+            if (GetPlayerVital(index, VitalType.HP) < 0)
                 IsPlayerDeadRet = true;
             return IsPlayerDeadRet;
         }
@@ -1187,7 +1187,7 @@ namespace Server
 
                     if (Core.Type.MapNPC[OldMap].NPC[i].Num > 0)
                     {
-                        Core.Type.MapNPC[OldMap].NPC[i].Vital[(byte) VitalType.HP] = GameLogic.GetNPCMaxVital(Core.Type.MapNPC[OldMap].NPC[i].Num, (VitalType) VitalType.HP);
+                        Core.Type.MapNPC[OldMap].NPC[i].Vital[(byte) VitalType.HP] = GameLogic.GetNPCMaxVital(Core.Type.MapNPC[OldMap].NPC[i].Num, VitalType.HP);
                     }
 
                 }
@@ -2331,7 +2331,7 @@ namespace Server
                                 {
                                     NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + Core.Type.Item[itemNum].Data1, (int) ColorType.BrightGreen, (byte) ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
                                     Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                                    SetPlayerVital(index, (VitalType) VitalType.HP, GetPlayerVital(index, (VitalType) VitalType.HP) + Core.Type.Item[itemNum].Data1);
+                                    SetPlayerVital(index, VitalType.HP, GetPlayerVital(index, VitalType.HP) + Core.Type.Item[itemNum].Data1);
                                     if (Core.Type.Item[itemNum].Stackable == 1)
                                     {
                                         TakeInv(index, itemNum, 1);
@@ -2340,7 +2340,7 @@ namespace Server
                                     {
                                         TakeInv(index, itemNum, 0);
                                     }
-                                    NetworkSend.SendVital(index, (VitalType) VitalType.HP);
+                                    NetworkSend.SendVital(index, VitalType.HP);
                                     break;
                                 }
 
@@ -2348,7 +2348,7 @@ namespace Server
                                 {
                                     NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + Core.Type.Item[itemNum].Data1, (int) ColorType.BrightBlue, (byte) ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
                                     Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                                    SetPlayerVital(index, (VitalType) VitalType.SP, GetPlayerVital(index, (VitalType) VitalType.SP) + Core.Type.Item[itemNum].Data1);
+                                    SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Core.Type.Item[itemNum].Data1);
                                     if (Core.Type.Item[itemNum].Stackable == 1)
                                     {
                                         TakeInv(index, itemNum, 1);
@@ -2357,14 +2357,14 @@ namespace Server
                                     {
                                         TakeInv(index, itemNum, 0);
                                     }
-                                    NetworkSend.SendVital(index, (VitalType) VitalType.SP);
+                                    NetworkSend.SendVital(index, VitalType.SP);
                                     break;
                                 }
 
                             case (byte)ConsumableType.SP:
                                 {
                                     Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                                    SetPlayerVital(index, (VitalType) VitalType.SP, GetPlayerVital(index, (VitalType) VitalType.SP) + Core.Type.Item[itemNum].Data1);
+                                    SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) + Core.Type.Item[itemNum].Data1);
                                     if (Core.Type.Item[itemNum].Stackable == 1)
                                     {
                                         TakeInv(index, itemNum, 1);
@@ -2373,7 +2373,7 @@ namespace Server
                                     {
                                         TakeInv(index, itemNum, 0);
                                     }
-                                    NetworkSend.SendVital(index, (VitalType) VitalType.SP);
+                                    NetworkSend.SendVital(index, VitalType.SP);
                                     break;
                                 }
 
@@ -2837,7 +2837,7 @@ namespace Server
         public static void OnDeath(int index)
         {
             // Set HP to nothing
-            SetPlayerVital(index, (VitalType) VitalType.HP, 0);
+            SetPlayerVital(index, VitalType.HP, 0);
 
             // Warp player away
             SetPlayerDir(index, (byte) DirectionType.Down);
@@ -2863,6 +2863,7 @@ namespace Server
             // Restore vitals
             for (int i = 0, loopTo = (byte) VitalType.Count - 1; i <= (int)loopTo; i++)
                 SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
+
             NetworkSend.SendVitals(index);
 
             // If the player the attacker killed was a pk then take it away
@@ -2888,12 +2889,12 @@ namespace Server
 
             switch (Vital)
             {
-                case (VitalType) VitalType.HP:
+                case VitalType.HP:
                     {
                         i = GetPlayerStat(index, StatType.Vitality) / 2;
                         break;
                     }
-                case (VitalType) VitalType.SP:
+                case VitalType.SP:
                     {
                         i = GetPlayerStat(index, StatType.Spirit) / 2;
                         break;
@@ -3002,7 +3003,7 @@ namespace Server
             MPCost = Core.Type.Skill[skillnum].MpCost;
 
             // Check if they have enough MP
-            if (GetPlayerVital(index, (VitalType) VitalType.SP) < MPCost)
+            if (GetPlayerVital(index, VitalType.SP) < MPCost)
             {
                 NetworkSend.PlayerMsg(index, "Not enough mana!", (int) ColorType.Yellow);
                 return;

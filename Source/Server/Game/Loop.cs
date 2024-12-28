@@ -723,7 +723,7 @@ namespace Server
 
             switch (vital)
             {
-                case var @case when @case == (VitalType) VitalType.HP:
+                case var @case when @case == VitalType.HP:
                     {
                         i = (int)Core.Type.NPC[NPCNum].Stat[(int)StatType.Vitality] / 3;
 
@@ -732,7 +732,7 @@ namespace Server
                         GetNPCVitalRegenRet = i;
                         break;
                     }
-                case var case1 when case1 == (VitalType) VitalType.SP:
+                case var case1 when case1 == VitalType.SP:
                     {
                         i = (int)Core.Type.NPC[NPCNum].Stat[(int)StatType.Intelligence] / 3;
 
@@ -807,7 +807,7 @@ namespace Server
                 return;
 
             // Check if the player is able to cast the Skill.
-            if (GetPlayerVital(index, (VitalType) VitalType.SP) < Core.Type.Skill[skillId].MpCost)
+            if (GetPlayerVital(index, VitalType.SP) < Core.Type.Skill[skillId].MpCost)
             {
                 NetworkSend.PlayerMsg(index, "Not enough mana!", (int) ColorType.BrightRed);
                 return;
@@ -974,28 +974,28 @@ namespace Server
             {
                 case (byte)SkillType.DamageHp:
                     {
-                        vital = (VitalType) VitalType.HP;
+                        vital = VitalType.HP;
                         dealsDamage = Conversions.ToBoolean(1);
                         break;
                     }
 
                 case (byte)SkillType.DamageMp:
                     {
-                        vital = (VitalType) VitalType.SP;
+                        vital = VitalType.SP;
                         dealsDamage = Conversions.ToBoolean(1);
                         break;
                     }
 
                 case (byte)SkillType.HealHp:
                     {
-                        vital = (VitalType) VitalType.HP;
+                        vital = VitalType.HP;
                         dealsDamage = Conversions.ToBoolean(0);
                         break;
                     }
 
                 case (byte)SkillType.HealMp:
                     {
-                        vital = (VitalType) VitalType.SP;
+                        vital = VitalType.SP;
                         dealsDamage = Conversions.ToBoolean(0);
                         break;
                     }
@@ -1163,8 +1163,8 @@ namespace Server
 
         private static void FinalizeCast(int index, int SkillSlot, int skillCost)
         {
-            SetPlayerVital(index, (VitalType) VitalType.SP, GetPlayerVital(index, (VitalType) VitalType.SP) - skillCost);
-            NetworkSend.SendVital(index, (VitalType) VitalType.SP);
+            SetPlayerVital(index, VitalType.SP, GetPlayerVital(index, VitalType.SP) - skillCost);
+            NetworkSend.SendVital(index, VitalType.SP);
             Core.Type.TempPlayer[index].SkillCD[SkillSlot] = General.GetTimeMs() + Core.Type.Skill[SkillSlot].CdTime * 1000;
             NetworkSend.SendCooldown(index, SkillSlot);
         }
@@ -1278,10 +1278,10 @@ namespace Server
                     }
                 // Select Case Type.Skill(skillNum).Type
                 // Case (byte)SkillType.HEALHP
-                // SkillPlayer_Effect((VitalType) VitalType.HP, True, NPCNum, Vital, skillnum)
+                // SkillPlayer_Effect(VitalType.HP, True, NPCNum, Vital, skillnum)
                 // DidCast = 1
                 // Case (byte)SkillType.HEALMP
-                // SkillPlayer_Effect((VitalType) VitalType.SP, True, NPCNum, Vital, skillnum)
+                // SkillPlayer_Effect(VitalType.SP, True, NPCNum, Vital, skillnum)
                 // DidCast = 1
                 // Case (byte)SkillType.WARP
                 // SendAnimation(MapNum, Type.Skill(skillNum).SkillAnim, 0, 0, TargetType.PLAYER, NPCNum)

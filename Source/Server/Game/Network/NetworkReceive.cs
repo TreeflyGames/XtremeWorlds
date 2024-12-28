@@ -885,7 +885,7 @@ namespace Server
                 {
                     NetworkSend.PlayerMsg(index, " Stats for " + GetPlayerName(i) + " ", (int) ColorType.Yellow);
                     NetworkSend.PlayerMsg(index, "Level: " + GetPlayerLevel(i) + "  Exp: " + GetPlayerExp(i) + "/" + GetPlayerNextLevel(i), (int) ColorType.Yellow);
-                    NetworkSend.PlayerMsg(index, "HP: " + GetPlayerVital(i, (VitalType) VitalType.HP) + "/" + GetPlayerMaxVital(i, (VitalType) VitalType.HP) + "  MP: " + GetPlayerVital(i, (VitalType) VitalType.SP) + "/" + GetPlayerMaxVital(i, (VitalType) VitalType.SP) + "  SP: " + GetPlayerVital(i, (VitalType) VitalType.SP) + "/" + GetPlayerMaxVital(i, (VitalType) VitalType.SP), (int) ColorType.Yellow);
+                    NetworkSend.PlayerMsg(index, "HP: " + GetPlayerVital(i, VitalType.HP) + "/" + GetPlayerMaxVital(i, VitalType.HP) + "  MP: " + GetPlayerVital(i, VitalType.SP) + "/" + GetPlayerMaxVital(i, VitalType.SP) + "  SP: " + GetPlayerVital(i, VitalType.SP) + "/" + GetPlayerMaxVital(i, VitalType.SP), (int) ColorType.Yellow);
                     NetworkSend.PlayerMsg(index, "Strength: " + GetPlayerStat(i, StatType.Strength) + "  Defense: " + GetPlayerStat(i, StatType.Luck) + "  Magic: " + GetPlayerStat(i, StatType.Intelligence) + "  Speed: " + GetPlayerStat(i, StatType.Spirit), (int) ColorType.Yellow);
                     n = GetPlayerStat(i, StatType.Strength) / 2 + GetPlayerLevel(i) / 2;
                     i = GetPlayerStat(i, StatType.Luck) / 2 + GetPlayerLevel(i) / 2;
@@ -1021,7 +1021,7 @@ namespace Server
 
             NetworkSend.PlayerMsg(index, "Stats: " + GetPlayerName(index), (int) ColorType.Yellow);
             NetworkSend.PlayerMsg(index, "Level: " + GetPlayerLevel(index) + "  Exp: " + GetPlayerExp(index) + "/" + GetPlayerNextLevel(index), (int) ColorType.Yellow);
-            NetworkSend.PlayerMsg(index, "HP: " + GetPlayerVital(index, (VitalType) VitalType.HP) + "/" + GetPlayerMaxVital(index, (VitalType) VitalType.HP) + "  MP: " + GetPlayerVital(index, (VitalType) VitalType.SP) + "/" + GetPlayerMaxVital(index, (VitalType) VitalType.SP) + "  SP: " + GetPlayerVital(index, (VitalType) VitalType.SP) + "/" + GetPlayerMaxVital(index, (VitalType) VitalType.SP), (int) ColorType.Yellow);
+            NetworkSend.PlayerMsg(index, "HP: " + GetPlayerVital(index, VitalType.HP) + "/" + GetPlayerMaxVital(index, VitalType.HP) + "  MP: " + GetPlayerVital(index, VitalType.SP) + "/" + GetPlayerMaxVital(index, VitalType.SP) + "  SP: " + GetPlayerVital(index, VitalType.SP) + "/" + GetPlayerMaxVital(index, VitalType.SP), (int) ColorType.Yellow);
             NetworkSend.PlayerMsg(index, "STR: " + GetPlayerStat(index, StatType.Strength) + "  DEF: " + GetPlayerStat(index, StatType.Luck) + "  MAGI: " + GetPlayerStat(index, StatType.Intelligence) + "  Speed: " + GetPlayerStat(index, StatType.Spirit), (int) ColorType.Yellow);
             n = GetPlayerStat(index, StatType.Strength) / 2 + GetPlayerLevel(index) / 2;
             i = GetPlayerStat(index, StatType.Luck) / 2 + GetPlayerLevel(index) / 2;
