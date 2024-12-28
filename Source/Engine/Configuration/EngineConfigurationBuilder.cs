@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Configuration.Interfaces;
+using System.Collections;
 
 namespace Configuration
 {
@@ -99,9 +100,16 @@ namespace Configuration
             LoadJsonFiles(files);
         }
 
-        public void LoadEnvironmentVariables(string prefix = "XW")
+        public void LoadEnvironmentVariables(string prefix = "Mirage")
         {
             var unused = this.AddEnvironmentVariables(prefix);
+
+            // Add the value of the Mirage environmental variable
+            string envValue = Environment.GetEnvironmentVariable(prefix);
+            if (!string.IsNullOrEmpty(envValue))
+            {
+                _properties[prefix] = envValue;
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Configuration.Interfaces
     {
 
         void LoadEnvironmentSettingsFiles();
-        void LoadEnvironmentVariables(string prefix = "XW");
+        void LoadEnvironmentVariables(string prefix = "Mirage");
         void LoadSettingsFiles();
     }
 }
