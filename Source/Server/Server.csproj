@@ -67,6 +67,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Engine\Engine.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
 </Project>

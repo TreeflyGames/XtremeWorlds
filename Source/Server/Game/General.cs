@@ -8,6 +8,11 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 using static Core.Type;
+using Configuration.Interfaces;
+using EngineServices.Providers.Interfaces;
+using Configuration;
+using EngineServices.Providers;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Server
 {
@@ -16,7 +21,8 @@ namespace Server
     {
         public static Core.Random Random = new Core.Random();
 
-        public static MirageConfiguration Configuration;
+        public static IEngineConfiguration Configuration;
+        public static IEngineServiceProvider Services;
 
         internal static bool ServerDestroyed;
         internal static string MyIPAddress;
@@ -33,14 +39,28 @@ namespace Server
         public static void InitServer()
         {
             int i;
-            int F;
-            int x;
             int time1;
             int time2;
 
             myStopWatch.Start();
 
-            Configuration = new MirageConfiguration("MIRAGE");
+            // Create the service provider.
+            using (IEngineConfigurationBuilder builder = new EngineConfigurationBuilder())
+            {
+                // Add setting files and environment variables to the builder.
+                builder.LoadSettingsFiles();
+                builder.LoadEnvironmentSettingsFiles();
+                builder.LoadEnvironmentVariables();
+
+                // The service provider will build and add the configuration to itself automatically.
+                var argconfigurationBuilder = builder;
+                Services = new EngineServiceProvider(ref argconfigurationBuilder);
+            }
+
+            // TODO -> Implement services here, they need to be registered before the first Services.ServiceProvider call.
+
+            // Get the configuration from the service provider.
+            Configuration = Services.ServiceProvider.GetRequiredService<IEngineConfiguration>();
 
             Settings.Load();
 
@@ -151,7 +171,7 @@ namespace Server
             {
                 Console.Title = $"{Settings.GameName} <IP {MyIPAddress}:{Settings.Port}> ({CountPlayersOnline()} Players Online) - Current Errors: {Global.ErrorCount} - Time: {TimeType.Instance.ToString()}";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.Title = $"{Settings.GameName}";
                 return;
