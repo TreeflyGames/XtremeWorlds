@@ -222,10 +222,8 @@ namespace Server
             {
                 conn.Open();
 
-                using (var cmd = new NpgsqlCommand())
+                using (var cmd = new NpgsqlCommand($"CREATE TABLE IF NOT EXISTS {tableName} ({layout});", conn))
                 {
-                    cmd.Connection = conn;
-                    cmd.CommandText = $"CREATE TABLE IF NOT EXISTS {tableName} ({layout});";
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -598,7 +596,7 @@ namespace Server
             {
                 var loopTo1 = Core.Constant.MAX_MAPY - 1;
                 for (y = 0; y <= (int)loopTo1; y++)
-                    Core.Type.Map[MapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count -1];
+                    Core.Type.Map[MapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count - 1];
             }
 
             Core.Type.Map[MapNum].EventCount = 0;
