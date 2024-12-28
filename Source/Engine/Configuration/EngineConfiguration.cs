@@ -47,7 +47,14 @@ namespace Configuration
 
         public IConfigurationSection GetSection(string key)
         {
-            return _configSections.ContainsKey(key) ? new EngineConfigurationSection(key, key, null, _configSections[key]) : new EngineConfigurationSection(key, key, null);
+            if (_configSections.ContainsKey(key))
+            {
+                return new EngineConfigurationSection(key, key, null, _configSections[key]);
+            }
+            else
+            {
+                return new EngineConfigurationSection(key, key, _configDictionary[key]);
+            }
         }
 
         public IEnumerable<IConfigurationSection> GetChildren()
