@@ -1200,10 +1200,10 @@ namespace Client
             SetPlayerAccess(i, buffer.ReadInt32());
             SetPlayerPk(i, buffer.ReadInt32());
 
-            for (x = 1; x <= (int)Core.Enum.StatType.Count - 1; x++)
+            for (x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
                 SetPlayerStat(i, (Core.Enum.StatType)x, buffer.ReadInt32());
 
-            for (x = 1; x <= (int)Core.Enum.ResourceType.Count - 1; x++)
+            for (x = 0; x <= (int)Core.Enum.ResourceType.Count - 1; x++)
             {
                 Core.Type.Player[i].GatherSkills[x].SkillLevel = buffer.ReadInt32();
                 Core.Type.Player[i].GatherSkills[x].SkillCurExp = buffer.ReadInt32();
@@ -1233,7 +1233,7 @@ namespace Client
                     Gui.UpdateStats_UI();
 
                     // stats
-                    for (x = 1; x <= (int)Core.Enum.StatType.Count - 1; x++)
+                    for (x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
                         withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblStat_" + x)].Text = GetPlayerStat(GameState.MyIndex, (Core.Enum.StatType)x).ToString();
 
                     // points
@@ -1242,12 +1242,12 @@ namespace Client
                     // grey out buttons
                     if (GetPlayerPoints(GameState.MyIndex) == 0)
                     {
-                        for (x = 1; x <= (int)Core.Enum.StatType.Count - 1; x++)
+                        for (x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
                             withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + x)].Visible = true;
                     }
                     else
                     {
-                        for (x = 1; x <= (int)Core.Enum.StatType.Count - 1; x++)
+                        for (x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
                             withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + x)].Visible = false;
                     }
                 }
