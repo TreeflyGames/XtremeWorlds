@@ -49,6 +49,7 @@ namespace Server
         {
             if (Socket is not null)
                 return;
+
             // Establish some Rulez
             Socket = new NetworkServer((int)Packets.ClientPackets.Count, 8192, Core.Constant.MAX_PLAYERS)
             {

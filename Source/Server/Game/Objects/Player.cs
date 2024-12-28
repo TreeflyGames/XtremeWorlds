@@ -1074,6 +1074,12 @@ namespace Server
 
         internal static void HandleUseChar(int index)
         {
+            if (NetworkConfig.IsLoggedIn(index) == false)
+            {
+                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
+                return;
+            }
+
             // Set the flag so we know the person is in the game
             Core.Type.TempPlayer[index].InGame = true;
 
