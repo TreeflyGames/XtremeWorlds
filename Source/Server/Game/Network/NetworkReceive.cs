@@ -474,6 +474,11 @@ namespace Server
                     sprite = Core.Type.Job[jobNum].FemaleSprite;
                 }
 
+                if (sprite == 0)
+                {
+                    sprite = 1;
+                }
+
                 // Everything went ok, add the character
                 Core.Type.Char.Add(name);
                 Database.AddChar(index, slot, name, (byte)sexNum, (byte)jobNum, sprite);
