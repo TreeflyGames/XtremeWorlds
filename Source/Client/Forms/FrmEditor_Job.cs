@@ -147,11 +147,11 @@ namespace Client
             if (lstStartItems.SelectedIndex < 0)
                 return;
 
-            Core.Type.Job[GameState.EditorIndex].StartItem[lstStartItems.SelectedIndex + 1] = cmbItems.SelectedIndex + 1;
-            Core.Type.Job[GameState.EditorIndex].StartValue[lstStartItems.SelectedIndex + 1] = (int)Math.Round(nudItemAmount.Value);
+            Core.Type.Job[GameState.EditorIndex].StartItem[lstStartItems.SelectedIndex] = cmbItems.SelectedIndex;
+            Core.Type.Job[GameState.EditorIndex].StartValue[lstStartItems.SelectedIndex] = (int)Math.Round(nudItemAmount.Value);
 
             lstStartItems.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_DROP_ITEMS; i++)
+            for (int i = 0; i <= Constant.MAX_DROP_ITEMS - 1; i++)
                 lstStartItems.Items.Add(Core.Type.Item[Core.Type.Job[GameState.EditorIndex].StartItem[i]].Name + " X " + Core.Type.Job[GameState.EditorIndex].StartValue[i]);
             lstStartItems.SelectedIndex = 0;
         }

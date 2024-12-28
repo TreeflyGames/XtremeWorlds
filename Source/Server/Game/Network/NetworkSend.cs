@@ -91,10 +91,10 @@ namespace Server
             buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
             buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
 
-            for (int q = 0, loopTo = (int)(StatType.Count - 1); q <= (int)loopTo; q++)
+            for (int q = 0, loopTo = (int)(StatType.Count - 1); q < (int)loopTo; q++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[Conversions.ToInteger(q)]);
 
-            for (int q = 0; q <= 5; q++)
+            for (int q = 0; q <= 4; q++)
             {
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);
@@ -431,7 +431,7 @@ namespace Server
             buffer.WriteInt32((byte) ServerPackets.SPlayerStats);
             buffer.WriteInt32(index);
 
-            for (int i = 0, loopTo = (int)(StatType.Count - 1); i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (int)(StatType.Count - 1); i < (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
@@ -441,7 +441,7 @@ namespace Server
 
         public static void SendVitals(int index)
         {
-            for (int i = 0, loopTo = (int)(VitalType.Count - 1); i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (int)(VitalType.Count - 1); i < (int)loopTo; i++)
                 SendVital(index, (VitalType)i);
         }
 
@@ -453,12 +453,12 @@ namespace Server
             // Get our packet type.
             switch (Vital)
             {
-                case var @case when @case == VitalType.HP:
+                case VitalType.HP:
                     {
                         buffer.WriteInt32((byte) ServerPackets.SPlayerHP);
                         break;
                     }
-                case var case1 when case1 == VitalType.SP:
+                case VitalType.SP:
                     {
                         buffer.WriteInt32((byte) ServerPackets.SPlayerSP);
                         break;
@@ -500,7 +500,7 @@ namespace Server
             if (GetPlayerAccess(index) < (int)AccessType.Moderator)
                 return;
 
-            var loopTo = NetworkConfig.Socket.HighIndex;
+            var loopTo = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (i != index & GetPlayerName(i) != "")
@@ -783,7 +783,7 @@ namespace Server
             byte[] data;
 
             // Send all players on current map to index
-            var loopTo = NetworkConfig.Socket.HighIndex;
+            var loopTo = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (GetPlayerMap(i) == GetPlayerMap(index))
@@ -819,7 +819,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerPK(index));
 
             var loopTo = (int)StatType.Count - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
 
             var loopTo1 = (int)ResourceType.Count - 1;
@@ -916,7 +916,7 @@ namespace Server
             buffer.WriteInt32((byte) ServerPackets.SAdminMsg);
             buffer.WriteString(Msg);
 
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex - 1; i <= (int)loopTo; i++)
             {
                 if (GetPlayerAccess(i) >= (int)AccessType.Moderator)
                 {

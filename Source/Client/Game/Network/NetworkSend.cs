@@ -800,7 +800,7 @@ namespace Client
             for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[i]);
 
-            for (q = 1; q <= 5; q++)
+            for (q = 0; q <= 4; q++)
             {
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);

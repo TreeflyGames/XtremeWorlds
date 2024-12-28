@@ -753,7 +753,7 @@ namespace Server
             }
 
             // Try to attack a player
-            var loopTo = NetworkConfig.Socket.HighIndex;
+            var loopTo = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 Tempindex = i;
@@ -1284,7 +1284,7 @@ namespace Server
             NPC.SpawnMapNPCs(mapNum);
             EventLogic.SpawnGlobalEvents(mapNum);
 
-            var loopTo10 = NetworkConfig.Socket.HighIndex;
+            var loopTo10 = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo10; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
@@ -1309,7 +1309,7 @@ namespace Server
             Resource.CacheResources(mapNum);
 
             // Refresh map for everyone online
-            var loopTo12 = NetworkConfig.Socket.HighIndex;
+            var loopTo12 = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo12; i++)
             {
                 if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
@@ -1775,7 +1775,7 @@ namespace Server
                 return;
 
             // Check for a player
-            var loopTo = NetworkConfig.Socket.HighIndex;
+            var loopTo = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
 
@@ -2786,10 +2786,10 @@ namespace Server
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
                 var loopTo = (byte)StatType.Count - 1;
-                for (x = 0; x <= (int)loopTo; x++)
+                for (x = 0; x < (int)loopTo; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
-                for (int q = 0; q <= 5; q++)
+                for (int q = 0; q <= 4; q++)
                 {
                     withBlock.StartItem[q] = buffer.ReadInt32();
                     withBlock.StartValue[q] = buffer.ReadInt32();

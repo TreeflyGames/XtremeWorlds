@@ -6127,7 +6127,7 @@ namespace Client
                         }
 
                         // draw the item
-                        for (i = 0L; i <= 5L; i++)
+                        for (i = 0L; i <= 4L; i++)
                         {
                             withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Image[(int)i] = Core.Type.Item[(int)GameState.shopSelectedItem].Icon;
                             withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Texture[(int)i] = Path.Items;
@@ -6139,7 +6139,7 @@ namespace Client
                         withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = "";
 
                         // draw the item
-                        for (i = 0L; i <= 5L; i++)
+                        for (i = 0L; i <= 4L; i++)
                         {
                             withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Image[(int)i] = 0L;
                             withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Texture[(int)i] = null;
@@ -6158,7 +6158,7 @@ namespace Client
                         withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = CostValue + "g";
 
                         // draw the item
-                        for (i = 0L; i <= 5L; i++)
+                        for (i = 0L; i <= 4L; i++)
                         {
                             withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Image[(int)i] = Core.Type.Item[(int)GameState.shopSelectedItem].Icon;
                             withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Texture[(int)i] = Path.Items;
@@ -6170,7 +6170,7 @@ namespace Client
                         withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = "";
 
                         // draw the item
-                        for (i = 0L; i <= 5L; i++)
+                        for (i = 0L; i <= 4L; i++)
                         {
                             withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Image[(int)i] = 0L;
                             withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Texture[(int)i] = null;
@@ -6237,7 +6237,7 @@ namespace Client
                                 withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + cIn)].Visible = true;
                                 // store the player's index as a value for later use
                                 withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + cIn)].Value = pIndex;
-                                for (x = 0L; x <= 5L; x++)
+                                for (x = 0L; x <= 4L; x++)
                                 {
                                     withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + cIn)].Image[(int)x] = GetPlayerSprite((int)pIndex);
                                     withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + cIn)].Texture[(int)x] = Path.Characters;
@@ -6590,9 +6590,9 @@ namespace Client
 
             Y = Yo + 23L;
             // render grid - row
-            for (i = 0L; i <= 5L; i++)
+            for (i = 0L; i <= 4L; i++)
             {
-                if (i == 5L)
+                if (i == 4L)
                     height = 42L;
                 string argpath1 = System.IO.Path.Combine(Path.Gui, 35.ToString());
                 GameClient.RenderTexture(ref argpath1, (int)(Xo + 4L), (int)Y, 0, 0, (int)width, (int)height, (int)width, (int)height);
@@ -6608,7 +6608,7 @@ namespace Client
             }
 
             // actually draw the icons
-            for (i = 0L; i <= Constant.MAX_BANK; i++)
+            for (i = 0L; i <= Constant.MAX_BANK - 1; i++)
             {
                 itemNum = GetBank(GameState.MyIndex, (byte)i);
 

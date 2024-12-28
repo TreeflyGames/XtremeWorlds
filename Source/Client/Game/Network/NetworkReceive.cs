@@ -318,7 +318,7 @@ namespace Client
                 for (int q = 0; q < (int)Core.Enum.StatType.Count - 1; q++)
                     withBlock.Stat[q] = buffer.ReadInt32();
 
-                for (int q = 0; q <= 5; q++)
+                for (int q = 0; q <= 4; q++)
                 {
                     withBlock.StartItem[q] = buffer.ReadInt32();
                     withBlock.StartValue[q] = buffer.ReadInt32();
@@ -340,31 +340,30 @@ namespace Client
             var buffer = new ByteStream(data);
 
             for (i = 0; i <= Constant.MAX_JOBS - 1; i++)
-            {
+            {          
+                ref var withBlock = ref Core.Type.Job[i];
+                withBlock.Name = buffer.ReadString();
+                withBlock.Desc = buffer.ReadString();
+
+                withBlock.MaleSprite = buffer.ReadInt32();
+                withBlock.FemaleSprite = buffer.ReadInt32();
+
+                for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
+                    withBlock.Stat[x] = buffer.ReadInt32();
+
+                for (int q = 0; q <= 5; q++)
                 {
-                    ref var withBlock = ref Core.Type.Job[i];
-                    withBlock.Name = buffer.ReadString();
-                    withBlock.Desc = buffer.ReadString();
-
-                    withBlock.MaleSprite = buffer.ReadInt32();
-                    withBlock.FemaleSprite = buffer.ReadInt32();
-
-                    for (x = 1; x < (int)Core.Enum.StatType.Count - 1; x++)
-                        withBlock.Stat[x] = buffer.ReadInt32();
-
-                    for (int q = 1; q <= 5; q++)
-                    {
-                        withBlock.StartItem[q] = buffer.ReadInt32();
-                        withBlock.StartValue[q] = buffer.ReadInt32();
-                    }
-
-                    withBlock.StartMap = buffer.ReadInt32();
-                    withBlock.StartX = buffer.ReadByte();
-                    withBlock.StartY = buffer.ReadByte();
-                    withBlock.BaseExp = buffer.ReadInt32();
+                    withBlock.StartItem[q] = buffer.ReadInt32();
+                    withBlock.StartValue[q] = buffer.ReadInt32();
                 }
 
+                withBlock.StartMap = buffer.ReadInt32();
+                withBlock.StartX = buffer.ReadByte();
+                withBlock.StartY = buffer.ReadByte();
+                withBlock.BaseExp = buffer.ReadInt32();
             }
+
+            
 
             buffer.Dispose();
         }
@@ -951,10 +950,10 @@ namespace Client
                     withBlock.MaleSprite = buffer.ReadInt32();
                     withBlock.FemaleSprite = buffer.ReadInt32();
 
-                    for (int q = 1; q < (int)Core.Enum.StatType.Count - 1; q++)
+                    for (int q = 0; q < (int)Core.Enum.StatType.Count - 1; q++)
                         withBlock.Stat[q] = buffer.ReadInt32();
 
-                    for (int q = 1; q <= 5; q++)
+                    for (int q = 0; q < 5; q++)
                     {
                         withBlock.StartItem[q] = buffer.ReadInt32();
                         withBlock.StartValue[q] = buffer.ReadInt32();
@@ -1058,7 +1057,7 @@ namespace Client
             z = 0;
 
             x = buffer.ReadInt32();
-            var loopTo6 = x;
+            var loopTo6 = x - 1;
             for (i = 0; i <= loopTo6; i++)
             {
                 n = buffer.ReadInt32();
@@ -1067,7 +1066,7 @@ namespace Client
                 Core.Type.NPC[n].AttackSay = buffer.ReadString();
                 Core.Type.NPC[n].Behaviour = buffer.ReadByte();
 
-                for (z = 0; z <= 5; z++)
+                for (z = 0; z <= 4; z++)
                 {
                     Core.Type.NPC[n].DropChance[z] = buffer.ReadInt32();
                     Core.Type.NPC[n].DropItem[z] = buffer.ReadInt32();
@@ -1083,7 +1082,7 @@ namespace Client
                 Core.Type.NPC[n].SpawnSecs = buffer.ReadInt32();
                 Core.Type.NPC[n].Sprite = buffer.ReadInt32();
 
-                for (z = 1; z < (int)Core.Enum.StatType.Count - 1; z++)
+                for (z = 0; z < (int)Core.Enum.StatType.Count - 1; z++)
                     Core.Type.NPC[n].Stat[z] = buffer.ReadByte();
 
                 Core.Type.NPC[n].Skill = new byte[(Constant.MAX_NPC_SKILLS + 1)];
@@ -1101,7 +1100,7 @@ namespace Client
 
             x = buffer.ReadInt32();
 
-            var loopTo7 = x;
+            var loopTo7 = x - 1;
             for (i = 0; i <= loopTo7; i++)
             {
                 n = buffer.ReadInt32();
@@ -1109,7 +1108,7 @@ namespace Client
                 Core.Type.Shop[n].BuyRate = buffer.ReadInt32();
                 Core.Type.Shop[n].Name = buffer.ReadString();
 
-                for (z = 1; z <= Constant.MAX_TRADES; z++)
+                for (z = 0; z <= Constant.MAX_TRADES - 1; z++)
                 {
                     Core.Type.Shop[n].TradeItem[z].CostItem = buffer.ReadInt32();
                     Core.Type.Shop[n].TradeItem[z].CostValue = buffer.ReadInt32();
@@ -1126,7 +1125,7 @@ namespace Client
 
             x = buffer.ReadInt32();
 
-            var loopTo8 = x;
+            var loopTo8 = x - 1;
             for (i = 0; i <= loopTo8; i++)
             {
                 n = buffer.ReadInt32();
@@ -1169,7 +1168,7 @@ namespace Client
 
             x = buffer.ReadInt32();
 
-            var loopTo9 = x;
+            var loopTo9 = x - 1;
             for (i = 0; i <= loopTo9; i++)
             {
                 n = buffer.ReadInt32();

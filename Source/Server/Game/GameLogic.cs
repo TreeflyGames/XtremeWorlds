@@ -15,7 +15,7 @@ namespace Server
             int n;
             n = 0;
 
-            var loopTo = NetworkConfig.Socket.HighIndex;
+            var loopTo = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (GetPlayerMap(i) == MapNum)
@@ -58,7 +58,7 @@ namespace Server
             int FindPlayerRet = default;
             int i;
 
-            var loopTo = NetworkConfig.Socket.HighIndex;
+            var loopTo = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 // Trim and convert both names to uppercase for case-insensitive comparison

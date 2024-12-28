@@ -40,9 +40,9 @@ namespace Server
 
         public static void CreateSwitches()
         {
-            Switches = new string[Core.Constant.MAX_SWITCHES + 1];
+            Switches = new string[Core.Constant.MAX_SWITCHES];
 
-            for (int i = 0, loopTo = Core.Constant.MAX_SWITCHES; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_SWITCHES - 1; i <= (int)loopTo; i++)
                 Switches[Conversions.ToInteger(i)] = string.Empty;
 
             SaveSwitches();
@@ -50,9 +50,9 @@ namespace Server
 
         public static void CreateVariables()
         {
-            Variables = new string[Core.Constant.NAX_VARIABLES + 1];
+            Variables = new string[Core.Constant.NAX_VARIABLES];
 
-            for (int i = 0, loopTo = Core.Constant.NAX_VARIABLES; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.NAX_VARIABLES - 1; i <= (int)loopTo; i++)
                 Variables[Conversions.ToInteger(i)] = string.Empty;
 
             SaveVariables();
@@ -137,7 +137,7 @@ namespace Server
                             }
 
                             // Check for player collision
-                            for (i = 0; i <= NetworkConfig.Socket.HighIndex; i++)
+                            for (i = 0; i <= NetworkConfig.Socket.HighIndex - 1; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i) &&
                                     GetPlayerMap(i) == mapNum &&
@@ -311,7 +311,7 @@ namespace Server
             {
                 if (Core.Type.TempPlayer[playerindex].EventMap.CurrentEvents > 0)
                 {
-                    var loopTo = Core.Type.TempPlayer[playerindex].EventMap.CurrentEvents;
+                    var loopTo = Core.Type.TempPlayer[playerindex].EventMap.CurrentEvents - 1;
                     for (i = 0; i <= (int)loopTo; i++)
                     {
                         if (EventID == i)
@@ -367,7 +367,7 @@ namespace Server
             {
                 if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
                 {
-                    var loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents;
+                    var loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents - 1;
                     for (i = 0; i <= (int)loopTo; i++)
                     {
                         if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID > 0)
@@ -935,9 +935,9 @@ namespace Server
                 fx = x;
                 fy = y;
 
-                pos = new int[(Core.Type.Map[mapNum].MaxX + 1), (Core.Type.Map[mapNum].MaxY + 1)];
+                pos = new int[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
-                var loopTo = Core.Type.TempPlayer[playerID].EventMap.CurrentEvents;
+                var loopTo = Core.Type.TempPlayer[playerID].EventMap.CurrentEvents - 1;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
                     if (Core.Type.TempPlayer[playerID].EventMap.EventPages[i].Visible == true)
@@ -961,10 +961,10 @@ namespace Server
                 while (Conversions.ToInteger(reachable) == 0)
                 {
                     // we loop through all squares
-                    var loopTo1 = (int)Core.Type.Map[mapNum].MaxY;
+                    var loopTo1 = (int)Core.Type.Map[mapNum].MaxY - 1;
                     for (j = 0; j <= (int)loopTo1; j++)
                     {
-                        var loopTo2 = (int)Core.Type.Map[mapNum].MaxX;
+                        var loopTo2 = (int)Core.Type.Map[mapNum].MaxX - 1;
                         for (i = 0; i <= (int)loopTo2; i++)
                         {
                             // If j = 10 And i = 0 Then MsgBox "hi!"
@@ -1038,10 +1038,10 @@ namespace Server
                     {
                         // reset sum
                         sum = 0;
-                        var loopTo3 = (int)Core.Type.Map[mapNum].MaxY;
+                        var loopTo3 = (int)Core.Type.Map[mapNum].MaxY - 1;
                         for (j = 0; j <= (int)loopTo3; j++)
                         {
-                            var loopTo4 = (int)Core.Type.Map[mapNum].MaxX;
+                            var loopTo4 = (int)Core.Type.Map[mapNum].MaxX - 1;
                             for (i = 0; i <= (int)loopTo4; i++)
                                 // we add up ALL the squares
                                 sum = sum + pos[i, j];
@@ -1547,7 +1547,7 @@ namespace Server
 
             if (Core.Type.TempPlayer[index].EventProcessingCount > 0)
             {
-                var loopTo = Core.Type.TempPlayer[index].EventProcessingCount;
+                var loopTo = Core.Type.TempPlayer[index].EventProcessingCount - 1;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
                     if (Core.Type.TempPlayer[index].EventProcessing[i].EventID == EventID & Core.Type.TempPlayer[index].EventProcessing[i].PageID == PageID)
@@ -1629,11 +1629,11 @@ namespace Server
             int i;
             var buffer = new ByteStream(data);
 
-            var loopTo = Core.Constant.MAX_SWITCHES;
+            var loopTo = Core.Constant.MAX_SWITCHES - 1;
             for (i = 0; i <= (int)loopTo; i++)
                 Switches[i] = buffer.ReadString();
 
-            var loopTo1 = Core.Constant.NAX_VARIABLES;
+            var loopTo1 = Core.Constant.NAX_VARIABLES - 1;
             for (i = 0; i <= (int)loopTo1; i++)
                 Variables[i] = buffer.ReadString();
 
@@ -1711,11 +1711,11 @@ namespace Server
 
             buffer.WriteInt32((byte) ServerPackets.SSwitchesAndVariables);
 
-            var loopTo = Core.Constant.MAX_SWITCHES;
+            var loopTo = Core.Constant.MAX_SWITCHES - 1;
             for (i = 0; i <= (int)loopTo; i++)
                 buffer.WriteString(Switches[i]);
 
-            var loopTo1 = Core.Constant.NAX_VARIABLES;
+            var loopTo1 = Core.Constant.NAX_VARIABLES - 1;
             for (i = 0; i <= (int)loopTo1; i++)
                 buffer.WriteString(Variables[i]);
 
@@ -1748,7 +1748,7 @@ namespace Server
 
             if (Core.Type.Map[mapNum].EventCount > 0)
             {
-                var loopTo = Core.Type.Map[mapNum].EventCount;
+                var loopTo = Core.Type.Map[mapNum].EventCount - 1;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
                     {
@@ -1761,7 +1761,7 @@ namespace Server
                     }
                     if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                     {
-                        var loopTo1 = Core.Type.Map[mapNum].Event[i].PageCount;
+                        var loopTo1 = Core.Type.Map[mapNum].Event[i].PageCount - 1;
                         for (x = 0; x <= (int)loopTo1; x++)
                         {
                             {
@@ -1800,7 +1800,7 @@ namespace Server
 
                                 if (withBlock1.MoveRouteCount > 0)
                                 {
-                                    var loopTo2 = withBlock1.MoveRouteCount;
+                                    var loopTo2 = withBlock1.MoveRouteCount - 1;
                                     for (y = 0; y <= (int)loopTo2; y++)
                                     {
                                         buffer.WriteInt32(withBlock1.MoveRoute[y].Index);
@@ -1825,14 +1825,14 @@ namespace Server
 
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
                             {
-                                var loopTo3 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount;
+                                var loopTo3 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount - 1;
                                 for (y = 0; y <= (int)loopTo3; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        var loopTo4 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount;
+                                        var loopTo4 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount - 1;
                                         for (z = 0; z <= (int)loopTo4; z++)
                                         {
                                             {
@@ -1858,7 +1858,7 @@ namespace Server
                                                 buffer.WriteInt32(withBlock2.MoveRouteCount);
                                                 if (withBlock2.MoveRouteCount > 0)
                                                 {
-                                                    var loopTo5 = withBlock2.MoveRouteCount;
+                                                    var loopTo5 = withBlock2.MoveRouteCount - 1;
                                                     for (w = 0; w <= (int)loopTo5; w++)
                                                     {
                                                         buffer.WriteInt32(withBlock2.MoveRoute[w].Index);

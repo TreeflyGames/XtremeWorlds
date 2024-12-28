@@ -156,7 +156,7 @@ namespace Server
         public static int CountPlayersOnline()
         {
             int count = 0;
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex - 1; i <= (int)loopTo; i++)
             {
                 if (!NetworkConfig.IsPlaying(i))
                     continue;

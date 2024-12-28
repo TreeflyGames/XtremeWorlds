@@ -491,7 +491,7 @@ namespace Server
         {
             int i;
 
-            Core.Type.Job = new Core.Type.JobStruct[Core.Constant.MAX_JOBS + 1];
+            Core.Type.Job = new Core.Type.JobStruct[Core.Constant.MAX_JOBS];
 
             var loopTo = Core.Constant.MAX_JOBS - 1;
             for (i = 0; i <= (int)loopTo; i++)
@@ -1187,14 +1187,14 @@ namespace Server
             Core.Type.NPC[index].Name = "";
             Core.Type.NPC[index].AttackSay = "";
 
-            Core.Type.NPC[index].Stat = new byte[(int)StatType.Count];
+            Core.Type.NPC[index].Stat = new byte[(int)StatType.Count - 1];
 
-            for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS - 1; i <= (int)loopTo; i++)
             {
                 Core.Type.NPC[index].DropChance = new int[6];
                 Core.Type.NPC[index].DropItem = new int[6];
                 Core.Type.NPC[index].DropItemValue = new int[6];
-                Core.Type.NPC[index].Skill = new byte[Core.Constant.MAX_NPC_SKILLS + 1];
+                Core.Type.NPC[index].Skill = new byte[Core.Constant.MAX_NPC_SKILLS];
             }
         }
 
@@ -1254,7 +1254,7 @@ namespace Server
             Core.Type.Shop[index] = default;
             Core.Type.Shop[index].Name = "";
 
-            for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_TRADES - 1; i <= (int)loopTo; i++)
                 Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Conversions.ToInteger(i + 1)];
         }
 
@@ -1330,7 +1330,7 @@ namespace Server
 
         public static void SaveAllPlayersOnline()
         {
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex - 1; i <= (int)loopTo; i++)
             {
                 if (!NetworkConfig.IsPlaying(i))
                     continue;
@@ -1464,11 +1464,11 @@ namespace Server
             Core.Type.Player[index].Dir = 0;
 
             Core.Type.Player[index].Equipment = new int[(byte)EquipmentType.Count];
-            for (int i = 0, loopTo = (byte)EquipmentType.Count - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)EquipmentType.Count - 1; i < (int)loopTo; i++)
                 Core.Type.Player[index].Equipment[Conversions.ToInteger(i)] = 0;
 
-            Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[Core.Constant.MAX_INV + 1];
-            for (int i = 0, loopTo1 = Core.Constant.MAX_INV; i <= (int)loopTo1; i++)
+            Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[Core.Constant.MAX_INV];
+            for (int i = 0, loopTo1 = Core.Constant.MAX_INV - 1; i <= (int)loopTo1; i++)
             {
                 Core.Type.Player[index].Inv[Conversions.ToInteger(i)].Num = 0;
                 Core.Type.Player[index].Inv[Conversions.ToInteger(i)].Value = 0;
@@ -1482,8 +1482,8 @@ namespace Server
             Core.Type.Player[index].Points = 0;
             Core.Type.Player[index].Sex = 0;
 
-            Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[Core.Constant.MAX_PLAYER_SKILLS + 1];
-            for (int i = 0, loopTo2 = Core.Constant.MAX_PLAYER_SKILLS; i <= (int)loopTo2; i++)
+            Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[Core.Constant.MAX_PLAYER_SKILLS];
+            for (int i = 0, loopTo2 = Core.Constant.MAX_PLAYER_SKILLS - 1; i <= (int)loopTo2; i++)
             {
                 Core.Type.Player[index].Skill[Conversions.ToInteger(i)].Num = 0;
                 Core.Type.Player[index].Skill[Conversions.ToInteger(i)].CD = 0;
@@ -1492,39 +1492,39 @@ namespace Server
             Core.Type.Player[index].Sprite = 0;
 
             Core.Type.Player[index].Stat = new byte[(byte)StatType.Count];
-            for (int i = 0, loopTo3 = (byte)StatType.Count - 1; i <= (int)loopTo3; i++)
+            for (int i = 0, loopTo3 = (byte)StatType.Count - 1; i < (int)loopTo3; i++)
                 Core.Type.Player[index].Stat[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].Vital = new int[(byte) VitalType.Count];
-            for (int i = 0, loopTo4 = (byte) VitalType.Count - 1; i <= (int)loopTo4; i++)
+            for (int i = 0, loopTo4 = (byte) VitalType.Count - 1; i < (int)loopTo4; i++)
                 Core.Type.Player[index].Vital[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].X = 0;
             Core.Type.Player[index].Y = 0;
 
-            Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[Core.Constant.MAX_HOTBAR + 1];
-            for (int i = 0, loopTo5 = Core.Constant.MAX_HOTBAR; i <= (int)loopTo5; i++)
+            Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[Core.Constant.MAX_HOTBAR];
+            for (int i = 0, loopTo5 = Core.Constant.MAX_HOTBAR - 1; i <= (int)loopTo5; i++)
             {
                 Core.Type.Player[index].Hotbar[Conversions.ToInteger(i)].Slot = 0;
                 Core.Type.Player[index].Hotbar[Conversions.ToInteger(i)].SlotType = 0;
             }
 
-            Core.Type.Player[index].Switches = new byte[Core.Constant.MAX_SWITCHES + 1];
-            for (int i = 0, loopTo6 = Core.Constant.MAX_SWITCHES; i <= (int)loopTo6; i++)
+            Core.Type.Player[index].Switches = new byte[Core.Constant.MAX_SWITCHES];
+            for (int i = 0, loopTo6 = Core.Constant.MAX_SWITCHES - 1; i <= (int)loopTo6; i++)
                 Core.Type.Player[index].Switches[Conversions.ToInteger(i)] = 0;
-            Core.Type.Player[index].Variables = new int[Core.Constant.NAX_VARIABLES + 1];
-            for (int i = 0, loopTo7 = Core.Constant.NAX_VARIABLES; i <= (int)loopTo7; i++)
+            Core.Type.Player[index].Variables = new int[Core.Constant.NAX_VARIABLES];
+            for (int i = 0, loopTo7 = Core.Constant.NAX_VARIABLES - 1; i <= (int)loopTo7; i++)
                 Core.Type.Player[index].Variables[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(byte)ResourceType.Count];
-            for (int i = 0, loopTo8 = (byte)ResourceType.Count - 1; i <= (int)loopTo8; i++)
+            for (int i = 0, loopTo8 = (byte)ResourceType.Count - 1; i < (int)loopTo8; i++)
             {
                 Core.Type.Player[index].GatherSkills[Conversions.ToInteger(i)].SkillLevel = 0;
                 Core.Type.Player[index].GatherSkills[Conversions.ToInteger(i)].SkillCurExp = 0;
                 SetPlayerGatherSkillMaxExp(index, i, GetSkillNextLevel(index, i));
             }
 
-            for (int i = 0, loopTo9 = (byte)EquipmentType.Count - 1; i <= (int)loopTo9; i++)
+            for (int i = 0, loopTo9 = (byte)EquipmentType.Count - 1; i < (int)loopTo9; i++)
                 Core.Type.Player[index].Equipment[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].Pet.Num = 0;
@@ -1534,7 +1534,7 @@ namespace Server
 
             Core.Type.Player[index].Pet.Stat = new byte[(byte)StatType.Count];
 
-            for (int i = 0, loopTo10 = (byte)StatType.Count - 1; i <= (int)loopTo10; i++)
+            for (int i = 0, loopTo10 = (byte)StatType.Count - 1; i < (int)loopTo10; i++)
                 Core.Type.Player[index].Pet.Stat[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].Pet.Skill = new int[5];
@@ -1605,7 +1605,7 @@ namespace Server
                 Core.Type.Player[index].Level = 0;
 
                 var loopTo = (byte)StatType.Count - 1;
-                for (n = 0; n <= (int)loopTo; n++)
+                for (n = 0; n < (int)loopTo; n++)
                     Core.Type.Player[index].Stat[n] = (byte)Core.Type.Job[jobNum].Stat[n];
 
                 Core.Type.Player[index].Dir = (byte) DirectionType.Down;
@@ -1615,11 +1615,11 @@ namespace Server
                 Core.Type.Player[index].Dir = (byte) DirectionType.Down;
 
                 var loopTo1 = VitalType.Count - 1;
-                for (i = 0; i <= (int)loopTo1; i++)
+                for (i = 0; i < (int)loopTo1; i++)
                     SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
 
                 // set starter equipment
-                for (n = 0; n <= 5; n++)
+                for (n = 0; n <= 4; n++)
                 {
                     if (Core.Type.Job[jobNum].StartItem[n] > 0)
                     {
@@ -1630,7 +1630,7 @@ namespace Server
 
                 // set skills
                 var loopTo2 = ResourceType.Count - 1;
-                for (i = 0; i <= (int)loopTo2; i++)
+                for (i = 0; i < (int)loopTo2; i++)
                 {
                     Core.Type.Player[index].GatherSkills[i].SkillLevel = 0;
                     Core.Type.Player[index].GatherSkills[i].SkillCurExp = 0;
