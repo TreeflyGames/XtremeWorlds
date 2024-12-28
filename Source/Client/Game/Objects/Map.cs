@@ -6,6 +6,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
+using static Core.Type;
 
 namespace Client
 {
@@ -461,11 +462,8 @@ namespace Client
 
         public static void ClearMap()
         {
-            int i;
-            int x;
-            int y;
-
-            Core.Type.MyMap.Name = "";
+            // Reset basic map properties
+            Core.Type.MyMap.Name = string.Empty;
             Core.Type.MyMap.Tileset = 1;
             Core.Type.MyMap.MaxX = Constant.MAX_MAPX;
             Core.Type.MyMap.MaxY = Constant.MAX_MAPY;
@@ -475,62 +473,63 @@ namespace Client
             Core.Type.MyMap.Down = 0;
             Core.Type.MyMap.Left = 0;
             Core.Type.MyMap.Moral = 0;
-            Core.Type.MyMap.Music = "";
+            Core.Type.MyMap.Music = string.Empty;
             Core.Type.MyMap.Revision = 0;
             Core.Type.MyMap.Right = 0;
             Core.Type.MyMap.Up = 0;
 
-            Core.Type.MyMap.NPC = new int[(Constant.MAX_MAP_NPCS + 1)];
-            Core.Type.MyMap.Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX + 1), (Core.Type.MyMap.MaxY + 1)];
+            // Initialize NPC and Tile arrays
+            Core.Type.MyMap.NPC = new int[Constant.MAX_MAP_NPCS];
+            Core.Type.MyMap.Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
+            Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory]; 
 
-            Core.Type.TileHistory = new Core.Type.TileHistoryStruct[(GameState.MaxTileHistory + 1)];
-            for (i = 0; i <= GameState.MaxTileHistory; i++)
-                Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[(Constant.MAX_MAPX + 1), (Constant.MAX_MAPY + 1)];
-
+            // Reset tile history indices
             GameState.HistoryIndex = 0;
             GameState.TileHistoryHighIndex = 0;
 
-            for (x = 0; x <= Constant.MAX_MAPX; x++)
+            // Reset tiles and tile history
+            for (int x = 0; x <= Core.Type.MyMap.MaxX - 1; x++)
             {
-                for (y = 0; y <= Constant.MAX_MAPY; y++)
+                for (int y = 0; y <= Core.Type.MyMap.MaxY - 1; y++)
                 {
-                    for (int l = 0; l <= (int)Core.Enum.LayerType.Count - 1; l++)
+                    ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count - 1));
+
+                    for (int i = 0; i <= GameState.MaxTileHistory - 1; i++)
                     {
-                        Core.Type.MyMap.Tile[x, y].Layer = new Core.Type.TileDataStruct[l + 1];
-                        Core.Type.MyMap.Tile[x, y].Layer[l].Tileset = 0;
-                        Core.Type.MyMap.Tile[x, y].Layer[l].X = 0;
-                        Core.Type.MyMap.Tile[x, y].Layer[l].Y = 0;
-                        Core.Type.MyMap.Tile[x, y].Layer[l].AutoTile = 0;
-                        Core.Type.MyMap.Tile[x, y].Data1 = 0;
-                        Core.Type.MyMap.Tile[x, y].Data2 = 0;
-                        Core.Type.MyMap.Tile[x, y].Data3 = 0;
-                        Core.Type.MyMap.Tile[x, y].Data1_2 = 0;
-                        Core.Type.MyMap.Tile[x, y].Data2_2 = 0;
-                        Core.Type.MyMap.Tile[x, y].Data3_2 = 0;
-                        Core.Type.MyMap.Tile[x, y].Type = 0;
-                        Core.Type.MyMap.Tile[x, y].Type2 = 0;
-                        Core.Type.MyMap.Tile[x, y].DirBlock = 0;
-
-                        for (i = 0; i <= GameState.MaxTileHistory; i++)
-                        {
-                            Core.Type.TileHistory[i].Tile[x, y].Layer = new Core.Type.TileDataStruct[l + 1];
-                            Core.Type.TileHistory[i].Tile[x, y].Layer[l].Tileset = 0;
-                            Core.Type.TileHistory[i].Tile[x, y].Layer[l].X = 0;
-                            Core.Type.TileHistory[i].Tile[x, y].Layer[l].Y = 0;
-                            Core.Type.TileHistory[i].Tile[x, y].Layer[l].AutoTile = 0;
-                            Core.Type.TileHistory[i].Tile[x, y].Data1 = 0;
-                            Core.Type.TileHistory[i].Tile[x, y].Data2 = 0;
-                            Core.Type.TileHistory[i].Tile[x, y].Data3 = 0;
-                            Core.Type.TileHistory[i].Tile[x, y].Type = 0;
-                            Core.Type.TileHistory[i].Tile[x, y].DirBlock = 0;
-                        }
+                        Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
+                        ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count - 1));
                     }
-
                 }
             }
 
+            // Clear map events
             ClearMapEvents();
+        }
 
+        private static void ResetTile(ref Core.Type.TileStruct tile, int maxLayers)
+        {
+            tile.Layer = new Core.Type.TileDataStruct[maxLayers];
+
+            for (int l = 0; l < maxLayers; l++)
+            {
+                tile.Layer[l] = new Core.Type.TileDataStruct
+                {
+                    Tileset = 0,
+                    X = 0,
+                    Y = 0,
+                    AutoTile = 0
+                };
+            }
+
+            tile.Data1 = 0;
+            tile.Data2 = 0;
+            tile.Data3 = 0;
+            tile.Data1_2 = 0;
+            tile.Data2_2 = 0;
+            tile.Data3_2 = 0;
+            tile.Type = 0;
+            tile.Type2 = 0;
+            tile.DirBlock = 0;
         }
 
         public static void ClearMapItems()
