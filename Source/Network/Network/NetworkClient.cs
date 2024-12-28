@@ -241,24 +241,6 @@ namespace Mirage.Sharp.Asfw.Network
         Reconnect(); // Uses the stored IP and port
       }
     }
-
-    private void DoDisconnect(IAsyncResult ar)
-    {
-      if (_socket == null)
-        return;
-
-      try
-      {
-        _socket.EndDisconnect(ar);
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine($"Error in DoDisconnect: {ex.Message}");
-      }
-
-      Console.WriteLine("Disconnected. Attempting to reconnect...");
-      Reconnect(); // Use stored IP and port for reconnection
-    }
     
     private void BeginReceiveData()
     {

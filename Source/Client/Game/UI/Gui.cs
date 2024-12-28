@@ -571,8 +571,10 @@ namespace Client
             long i;
 
             var loopTo = Windows.Count - 1;
-            for (i = 1L; i < loopTo; i++)
+            for (i = 1L; i <= loopTo; i++)
+            {
                 HideWindow(i);
+            }
         }
 
         public static void ShowWindow(long curWindow, bool forced = false, bool resetPosition = true)

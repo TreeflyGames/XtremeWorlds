@@ -973,7 +973,7 @@ namespace Client
                 case (long)Core.Enum.DialogueMsg.Connection:
                     {
                         header = "Invalid Connection";
-                        body = "You lost connection to the server.";
+                        body = "You lost connection to the game server.";
                         body2 = "Please try again later.";
                         break;
                     }
