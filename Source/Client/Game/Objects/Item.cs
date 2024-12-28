@@ -12,10 +12,10 @@ namespace Client
         internal static void ClearItem(int index)
         {
             Core.Type.Item[index] = default;
-            for (int X = 0; X <= (int)Core.Enum.StatType.Count - 1; X++)
+            for (int X = 0; X < (int)Core.Enum.StatType.Count - 1; X++)
                 Core.Type.Item[index].Add_Stat = new byte[X + 1];
 
-            for (int X = 0; X <= (int)Core.Enum.StatType.Count - 1; X++)
+            for (int X = 0; X < (int)Core.Enum.StatType.Count - 1; X++)
                 Core.Type.Item[index].Stat_Req = new byte[X + 1];
 
             Core.Type.Item[index].Name = "";
@@ -63,7 +63,7 @@ namespace Client
             // Update the item
             Core.Type.Item[n].AccessReq = buffer.ReadInt32();
 
-            for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 Core.Type.Item[n].Add_Stat[i] = (byte)buffer.ReadInt32();
 
             Core.Type.Item[n].Animation = buffer.ReadInt32();
@@ -85,7 +85,7 @@ namespace Client
             Core.Type.Item[n].Stackable = (byte)buffer.ReadInt32();
             Core.Type.Item[n].Description = buffer.ReadString();
 
-            for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 Core.Type.Item[n].Stat_Req[i] = (byte)buffer.ReadInt32();
 
             Core.Type.Item[n].Type = (byte)buffer.ReadInt32();

@@ -451,7 +451,7 @@ namespace Client
 
                 withBlock.cmbItems.SelectedIndex = 0;
 
-                for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+                for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 {
                     if (Core.Type.Job[GameState.EditorIndex].Stat[i] == 0)
                         Core.Type.Job[GameState.EditorIndex].Stat[i] = 1;

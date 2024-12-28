@@ -382,7 +382,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= (int)Core.Enum.EquipmentType.Count - 1; i++)
+            for (i = 0L; i < (int)Core.Enum.EquipmentType.Count - 1; i++)
             {
                 if (Conversions.ToBoolean(GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i)))
                 {

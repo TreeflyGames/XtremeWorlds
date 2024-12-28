@@ -68,7 +68,7 @@ namespace Client
             }
 
             Core.Type.Player[index].Stat = new byte[6];
-            for (int x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
+            for (int x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
                 Core.Type.Player[index].Stat[x] = 0;
 
             Core.Type.Player[index].Steps = 0;
@@ -92,7 +92,7 @@ namespace Client
             Core.Type.Player[index].Pet.Level = 0;
 
             Core.Type.Player[index].Pet.Stat = new byte[6];
-            for (int x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
+            for (int x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
                 Core.Type.Player[index].Pet.Stat[x] = 0;
 
             Core.Type.Player[index].Pet.Skill = new int[5];
@@ -1178,7 +1178,7 @@ namespace Client
 
             index = buffer.ReadInt32();
 
-            for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 SetPlayerStat(index, (Core.Enum.StatType)i, buffer.ReadInt32());
 
             buffer.Dispose();
@@ -1200,7 +1200,7 @@ namespace Client
             SetPlayerAccess(i, buffer.ReadInt32());
             SetPlayerPk(i, buffer.ReadInt32());
 
-            for (x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
+            for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
                 SetPlayerStat(i, (Core.Enum.StatType)x, buffer.ReadInt32());
 
             for (x = 0; x <= (int)Core.Enum.ResourceType.Count - 1; x++)
@@ -1233,7 +1233,7 @@ namespace Client
                     Gui.UpdateStats_UI();
 
                     // stats
-                    for (x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
+                    for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
                         withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblStat_" + x)].Text = GetPlayerStat(GameState.MyIndex, (Core.Enum.StatType)x).ToString();
 
                     // points
@@ -1242,12 +1242,12 @@ namespace Client
                     // grey out buttons
                     if (GetPlayerPoints(GameState.MyIndex) == 0)
                     {
-                        for (x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
+                        for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
                             withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + x)].Visible = true;
                     }
                     else
                     {
-                        for (x = 0; x <= (int)Core.Enum.StatType.Count - 1; x++)
+                        for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
                             withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + x)].Visible = false;
                     }
                 }

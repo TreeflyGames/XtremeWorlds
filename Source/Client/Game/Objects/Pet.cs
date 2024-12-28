@@ -187,7 +187,7 @@ namespace Client
                 buffer.WriteInt32(withBlock.StatType);
                 buffer.WriteInt32(withBlock.LevelingType);
 
-                for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+                for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                     buffer.WriteInt32(withBlock.Stat[i]);
 
                 for (i = 0; i <= 4; i++)
@@ -220,7 +220,7 @@ namespace Client
             Core.Type.Player[n].Pet.Mana = buffer.ReadInt32();
             Core.Type.Player[n].Pet.Level = buffer.ReadInt32();
 
-            for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 Core.Type.Player[n].Pet.Stat[i] = (byte)buffer.ReadInt32();
 
             for (i = 0; i <= 4; i++)
@@ -263,7 +263,7 @@ namespace Client
                 withBlock.StatType = (byte)buffer.ReadInt32();
                 withBlock.LevelingType = (byte)buffer.ReadInt32();
 
-                for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+                for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                     withBlock.Stat[i] = (byte)buffer.ReadInt32();
 
                 for (i = 0; i <= 4; i++)

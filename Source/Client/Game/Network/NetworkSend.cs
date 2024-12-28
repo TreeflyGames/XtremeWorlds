@@ -642,7 +642,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.NPC[NPCNum].SpawnSecs);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
-            for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
             for (i = 0; i <= Constant.MAX_NPC_SKILLS; i++)
@@ -797,7 +797,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
             buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
 
-            for (i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[i]);
 
             for (q = 1; q <= 5; q++)
@@ -824,7 +824,7 @@ namespace Client
             buffer.WriteInt32(itemNum);
             buffer.WriteInt32(Core.Type.Item[itemNum].AccessReq);
 
-            for (int i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 buffer.WriteInt32(Core.Type.Item[itemNum].Add_Stat[i]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Animation);
@@ -846,7 +846,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.Item[itemNum].Stackable);
             buffer.WriteString(Core.Type.Item[itemNum].Description);
 
-            for (int i = 0; i <= (int)Core.Enum.StatType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 buffer.WriteInt32(Core.Type.Item[itemNum].Stat_Req[i]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Type);

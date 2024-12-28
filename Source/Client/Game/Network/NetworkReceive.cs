@@ -237,7 +237,7 @@ namespace Client
             Settings.Username = Gui.Windows[Gui.GetWindowIndex("winLogin")].Controls[(int)Gui.GetControlIndex("winLogin", "txtUsername")].Text;
             Settings.Save();
 
-            for (var i = 1L; i <= Constant.MAX_CHARS; i++)
+            for (var i = 0L; i <= Constant.MAX_CHARS - 1; i++)
             {
                 GameState.CharName[(int)i] = buffer.ReadString();
                 GameState.CharSprite[(int)i] = buffer.ReadInt32();
@@ -256,9 +256,9 @@ namespace Client
 
             // set GUi window up
             winNum = Gui.GetWindowIndex("winChars");
-            for (var i = 0L; i <= Constant.MAX_CHARS; i++)
+            for (var i = 0L; i <= Constant.MAX_CHARS - 1; i++)
             {
-                conNum = Gui.GetControlIndex("winChars", "lblCharName_" + i);
+                conNum = Gui.GetControlIndex("winChars", "lblCharName_" + (i + 1));
                 {
                     var withBlock = Gui.Windows[winNum].Controls[(int)conNum];
                     if (!isSlotEmpty[(int)i])
@@ -275,25 +275,25 @@ namespace Client
                 if (isSlotEmpty[(int)i])
                 {
                     // create button
-                    conNum = Gui.GetControlIndex("winChars", "btnCreateChar_" + i);
+                    conNum = Gui.GetControlIndex("winChars", "btnCreateChar_" + (i + 1));
                     Gui.Windows[winNum].Controls[(int)conNum].Visible = true;
                     // select button
-                    conNum = Gui.GetControlIndex("winChars", "btnSelectChar_" + i);
+                    conNum = Gui.GetControlIndex("winChars", "btnSelectChar_" + (i + 1));
                     Gui.Windows[winNum].Controls[(int)conNum].Visible = false;
                     // delete button
-                    conNum = Gui.GetControlIndex("winChars", "btnDelChar_" + i);
+                    conNum = Gui.GetControlIndex("winChars", "btnDelChar_" + (i + 1));
                     Gui.Windows[winNum].Controls[(int)conNum].Visible = false;
                 }
                 else
                 {
                     // create button
-                    conNum = Gui.GetControlIndex("winChars", "btnCreateChar_" + i);
+                    conNum = Gui.GetControlIndex("winChars", "btnCreateChar_" + (i + 1));
                     Gui.Windows[winNum].Controls[(int)conNum].Visible = false;
                     // select button
-                    conNum = Gui.GetControlIndex("winChars", "btnSelectChar_" + i);
+                    conNum = Gui.GetControlIndex("winChars", "btnSelectChar_" + (i + 1));
                     Gui.Windows[winNum].Controls[(int)conNum].Visible = true;
                     // delete button
-                    conNum = Gui.GetControlIndex("winChars", "btnDelChar_" + i);
+                    conNum = Gui.GetControlIndex("winChars", "btnDelChar_" + (i + 1));
                     Gui.Windows[winNum].Controls[(int)conNum].Visible = true;
                 }
             }
@@ -315,10 +315,10 @@ namespace Client
                 withBlock.MaleSprite = buffer.ReadInt32();
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
-                for (int q = 1; q <= (int)Core.Enum.StatType.Count - 1; q++)
+                for (int q = 0; q < (int)Core.Enum.StatType.Count - 1; q++)
                     withBlock.Stat[q] = buffer.ReadInt32();
 
-                for (int q = 1; q <= 5; q++)
+                for (int q = 0; q <= 5; q++)
                 {
                     withBlock.StartItem[q] = buffer.ReadInt32();
                     withBlock.StartValue[q] = buffer.ReadInt32();
@@ -349,7 +349,7 @@ namespace Client
                     withBlock.MaleSprite = buffer.ReadInt32();
                     withBlock.FemaleSprite = buffer.ReadInt32();
 
-                    for (x = 1; x <= (int)Core.Enum.StatType.Count - 1; x++)
+                    for (x = 1; x < (int)Core.Enum.StatType.Count - 1; x++)
                         withBlock.Stat[x] = buffer.ReadInt32();
 
                     for (int q = 1; q <= 5; q++)
@@ -428,7 +428,7 @@ namespace Client
             int n;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= (int)Core.Enum.EquipmentType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.EquipmentType.Count - 1; i++)
             {
                 n = buffer.ReadInt32();
                 SetPlayerEquipment(GameState.MyIndex, n, (Core.Enum.EquipmentType)i);
@@ -671,7 +671,7 @@ namespace Client
             Core.Type.NPC[i].SpawnSecs = buffer.ReadInt32();
             Core.Type.NPC[i].Sprite = buffer.ReadInt32();
 
-            for (x = 1; x <= (int)Core.Enum.StatType.Count - 1; x++)
+            for (x = 1; x < (int)Core.Enum.StatType.Count - 1; x++)
                 Core.Type.NPC[i].Stat[x] = buffer.ReadByte();
 
             for (x = 1; x <= Constant.MAX_NPC_SKILLS; x++)
@@ -922,7 +922,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             playernum = buffer.ReadInt32();
-            for (int i = 0; i <= (int)Core.Enum.EquipmentType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.EquipmentType.Count - 1; i++)
             {
                 n = buffer.ReadInt32();
                 SetPlayerEquipment(playernum, n, (Core.Enum.EquipmentType)i);
@@ -951,7 +951,7 @@ namespace Client
                     withBlock.MaleSprite = buffer.ReadInt32();
                     withBlock.FemaleSprite = buffer.ReadInt32();
 
-                    for (int q = 1; q <= (int)Core.Enum.StatType.Count - 1; q++)
+                    for (int q = 1; q < (int)Core.Enum.StatType.Count - 1; q++)
                         withBlock.Stat[q] = buffer.ReadInt32();
 
                     for (int q = 1; q <= 5; q++)
@@ -984,7 +984,7 @@ namespace Client
                 // Update the item
                 Core.Type.Item[n].AccessReq = buffer.ReadInt32();
 
-                for (z = 1; z <= (int)Core.Enum.StatType.Count - 1; z++)
+                for (z = 1; z < (int)Core.Enum.StatType.Count - 1; z++)
                     Core.Type.Item[n].Add_Stat[z] = (byte)buffer.ReadInt32();
 
                 Core.Type.Item[n].Animation = buffer.ReadInt32();
@@ -1006,7 +1006,7 @@ namespace Client
                 Core.Type.Item[n].Stackable = (byte)buffer.ReadInt32();
                 Core.Type.Item[n].Description = buffer.ReadString();
 
-                for (z = 1; z <= (int)Core.Enum.StatType.Count - 1; z++)
+                for (z = 1; z < (int)Core.Enum.StatType.Count - 1; z++)
                     Core.Type.Item[n].Stat_Req[z] = (byte)buffer.ReadInt32();
 
                 Core.Type.Item[n].Type = (byte)buffer.ReadInt32();
@@ -1083,7 +1083,7 @@ namespace Client
                 Core.Type.NPC[n].SpawnSecs = buffer.ReadInt32();
                 Core.Type.NPC[n].Sprite = buffer.ReadInt32();
 
-                for (z = 1; z <= (int)Core.Enum.StatType.Count - 1; z++)
+                for (z = 1; z < (int)Core.Enum.StatType.Count - 1; z++)
                     Core.Type.NPC[n].Stat[z] = buffer.ReadByte();
 
                 Core.Type.NPC[n].Skill = new byte[(Constant.MAX_NPC_SKILLS + 1)];

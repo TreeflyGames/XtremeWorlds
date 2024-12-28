@@ -3108,7 +3108,7 @@ namespace Client
             x = xO + 24L;
 
             // Loop through all characters and render them if they exist
-            for (i = 1L; i <= Constant.MAX_CHARS; i++)
+            for (i = 0L; i <= Constant.MAX_CHARS - 1; i++)
             {
                 if (!string.IsNullOrEmpty(GameState.CharName[(int)i])) // Ensure character name exists
                 {
@@ -5044,7 +5044,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath4, (int)(xO + 4L), (int)(yO + 23L), 100, 100, 166, 291, 166, 291);
 
             // loop through equipment
-            for (i = 0L; i <= (int)Core.Enum.EquipmentType.Count - 1; i++)
+            for (i = 0L; i < (int)Core.Enum.EquipmentType.Count - 1; i++)
             {
                 itemNum = GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i);
 
