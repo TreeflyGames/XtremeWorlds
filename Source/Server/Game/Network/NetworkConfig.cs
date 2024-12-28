@@ -83,11 +83,14 @@ namespace Server
             {
                 if (i != index)
                 {
-                    if ((Core.Type.Account[i].Login.ToLower() ?? "") != (login ?? ""))
+                    if (login != "" && Core.Type.Account[i].Login.ToLower() != "")
                     {
-                        if (Socket.ClientIp(i) == Socket.ClientIp(index))
+                        if (Core.Type.Account[i].Login.ToLower() != login)
                         {
-                            return true;
+                            if (Socket.ClientIp(i) == Socket.ClientIp(index))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -96,14 +99,17 @@ namespace Server
             return false;
         }
 
-        public static void CheckMultiAccounts(int index, string Login)
+        public static void CheckMultiAccounts(int index, string login)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i <= (int)loopTo; i++)
             {
-                if ((Core.Type.Account[i].Login.ToLower() ?? "") == (Login ?? ""))
+                if (login != "" && Core.Type.Account[i].Login.ToLower() != "")
                 {
-                    Player.LeftGame(i);
-                }         
+                    if (Core.Type.Account[i].Login.ToLower() == login)
+                    {
+                        Player.LeftGame(i);
+                    }
+                }
             }
         }
 
