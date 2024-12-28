@@ -218,7 +218,9 @@ namespace Server
                         return;
                     }
 
-                    if (NetworkConfig.IsMultiAccounts(index, username))
+                    NetworkConfig.CheckMultiAccounts(index, username);
+
+                    if (NetworkConfig.IsMultiAccounts(index))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Login);
                         return;
@@ -341,7 +343,9 @@ namespace Server
                         return;
                     }
 
-                    if (NetworkConfig.IsMultiAccounts(index, username))
+                    NetworkConfig.CheckMultiAccounts(index, username);
+
+                    if (NetworkConfig.IsMultiAccounts(index))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
                         return;

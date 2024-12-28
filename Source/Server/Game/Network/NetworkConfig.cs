@@ -77,19 +77,31 @@ namespace Server
             return Core.Type.TempPlayer[index].InGame;
         }
 
-        public static bool IsMultiAccounts(int index, string Login)
+        public static bool IsMultiAccounts(int index)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i <= (int)loopTo; i++)
             {
                 if (i != index)
                 {
-                    if ((Core.Type.Account[i].Login.ToLower() ?? "") == (Login ?? ""))
+                    if (Socket.ClientIp(i) == Socket.ClientIp(index))
                     {
                         return true;
                     }
                 }
             }
+            
             return false;
+        }
+
+        public static void CheckMultiAccounts(int index, string Login)
+        {
+            for (int i = 0, loopTo = Socket.HighIndex; i <= (int)loopTo; i++)
+            {
+                if ((Core.Type.Account[i].Login.ToLower() ?? "") == (Login ?? ""))
+                {
+                    Player.LeftGame(i);
+                }         
+            }
         }
 
         internal static void SendDataToAll(ref byte[] data, int head)
