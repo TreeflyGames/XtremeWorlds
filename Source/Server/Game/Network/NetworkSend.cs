@@ -91,7 +91,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
             buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
 
-            for (int q = 1, loopTo = (int)(StatType.Count - 1); q <= (int)loopTo; q++)
+            for (int q = 0, loopTo = (int)(StatType.Count - 1); q <= (int)loopTo; q++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[Conversions.ToInteger(q)]);
 
             for (int q = 0; q <= 5; q++)
