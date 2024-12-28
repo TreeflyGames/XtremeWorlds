@@ -23,11 +23,9 @@ namespace Server
 
     static class Database
     {
-        private static string connectionString = General.Configuration.GetValue("Database:ConnectionString", "Host=localhost;Port=5432;Username=postgres;Password=mirage;Database=mirage");
-
         public static void ExecuteSql(string connectionString, string sql)
         {
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection?.Open();
 
@@ -44,7 +42,7 @@ namespace Server
             {
                 string sql = "SELECT 1 FROM pg_database WHERE datname = @databaseName;";
 
-                using (var connection = new NpgsqlConnection(connectionString))
+                using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
                 {
                     connection.Open();
                     using (var command = new NpgsqlCommand(sql, connection))
@@ -76,7 +74,7 @@ namespace Server
             string checkDbExistsSql = $"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'";
             string createDbSql = $"CREATE DATABASE {databaseName}";
 
-            using (var connection = new NpgsqlConnection(connectionString.Substring(0, connectionString.LastIndexOf(';'))))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -90,7 +88,7 @@ namespace Server
                         {
                             createCommand.ExecuteNonQuery();
 
-                            using (var dbConnection = new NpgsqlConnection(connectionString))
+                            using (var dbConnection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
                             {
                                 dbConnection.Close();
                             }
@@ -104,7 +102,7 @@ namespace Server
         {
             string sql = $"SELECT EXISTS (SELECT 1 FROM {tableName} WHERE {columnName} = @value);";
 
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -122,7 +120,7 @@ namespace Server
         {
             string sqlCheck = $"SELECT column_name FROM information_schema.columns WHERE table_name='{table}' AND column_name='{columnName}';";
 
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -188,7 +186,7 @@ namespace Server
 
             newValue = newValue.Replace(@"\u0000", "");
 
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -220,7 +218,7 @@ namespace Server
 
         public static void CreateTable(string tableName, string layout)
         {
-            using (var conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 conn.Open();
 
@@ -237,7 +235,7 @@ namespace Server
         {
             var ids = new List<long>();
 
-            using (var conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 await conn.OpenAsync();
 
@@ -263,7 +261,7 @@ namespace Server
         {
             string sql = $"SELECT EXISTS (SELECT 1 FROM {table} WHERE id = @id);";
 
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -288,7 +286,7 @@ namespace Server
 
         public static void InsertRow(long id, string data, string tableName)
         {
-            using (var conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 conn.Open();
 
@@ -306,7 +304,7 @@ namespace Server
 
         public static void InsertRow(long id, string data, string tableName, string columnName)
         {
-            using (var conn = new NpgsqlConnection(connectionString))
+            using (var conn = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 conn.Open();
 
@@ -333,7 +331,7 @@ namespace Server
             ON CONFLICT ({idColumn}) 
             DO UPDATE SET {dataColumn} = @data::jsonb;";
 
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -351,7 +349,7 @@ namespace Server
         {
             string sql = $"SELECT {columnName} FROM {tableName} WHERE id = @id;";
 
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -380,7 +378,7 @@ namespace Server
         {
             string sql = $"SELECT {dataColumn} FROM {tableName} WHERE {columnName} = @value;";
 
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
