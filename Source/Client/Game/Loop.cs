@@ -149,7 +149,7 @@ namespace Client
                             GameState.ShakeTimerEnabled = Conversions.ToBoolean(0);
                         }
 
-                        GameState.ShakeCount = (byte)(GameState.ShakeCount + 1);
+                        GameState.ShakeCount += 1;
 
                         GameState.ShakeTimer = tick + 50;
                     }

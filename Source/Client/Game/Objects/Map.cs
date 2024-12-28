@@ -1119,7 +1119,7 @@ namespace Client
 
             if (Core.Type.MyMap.EventCount > 0)
             {
-                var loopTo2 = Core.Type.MyMap.EventCount;
+                var loopTo2 = Core.Type.MyMap.EventCount - 1;
                 for (i = 0; i <= loopTo2; i++)
                 {
                     {
@@ -1134,7 +1134,7 @@ namespace Client
                     }
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
-                        var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
+                        var loopTo3 = Core.Type.MyMap.Event[i].PageCount - 1;
                         for (x = 0; x <= loopTo3; x++)
                         {
                             {
@@ -1167,7 +1167,7 @@ namespace Client
 
                                 if (withBlock1.MoveRouteCount > 0)
                                 {
-                                    var loopTo4 = withBlock1.MoveRouteCount;
+                                    var loopTo4 = withBlock1.MoveRouteCount - 1;
                                     for (y = 0; y <= loopTo4; y++)
                                     {
                                         buffer.WriteInt32(withBlock1.MoveRoute[y].Index);
@@ -1192,14 +1192,14 @@ namespace Client
 
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
-                                var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
+                                var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
                                 for (y = 0; y <= loopTo5; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z <= loopTo6; z++)
+                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1; z <= loopTo6; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
@@ -1267,9 +1267,9 @@ namespace Client
 
         internal static void ClearMapEvents()
         {
-            Core.Type.MapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount + 1];
+            Core.Type.MapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount];
 
-            for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i <= loopTo; i++)
+            for (int i = 0, loopTo = Core.Type.MyMap.EventCount - 1; i <= loopTo; i++)
                 Core.Type.MapEvents[i].Name = "";
 
             GameState.CurrentEvents = 0;

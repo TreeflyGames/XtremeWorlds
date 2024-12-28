@@ -116,7 +116,7 @@ namespace Client
             if (EventNum == 0)
             {
                 AddEvent(X, Y, true);
-                EventNum = count + 1;
+                EventNum = count;
             }
 
             // copy it
@@ -160,8 +160,8 @@ namespace Client
             {
                 // Set the new count
                 Core.Type.MyMap.EventCount = lowIndex - 1;
-                Array.Resize(ref Core.Type.MapEvents, Core.Type.MyMap.EventCount + 1);
-                Array.Resize(ref Core.Type.MyMap.Event, Core.Type.MyMap.EventCount + 1);
+                Array.Resize(ref Core.Type.MapEvents, Core.Type.MyMap.EventCount);
+                Array.Resize(ref Core.Type.MyMap.Event, Core.Type.MyMap.EventCount);
                 TmpEvent = default;
             }
         }
@@ -194,7 +194,7 @@ namespace Client
             // increment count
             if (count == 0)
             {
-                count = 2;
+                count = 1;
             }
             else
             {
@@ -207,9 +207,9 @@ namespace Client
             Core.Type.MyMap.Event[count].X = X;
             Core.Type.MyMap.Event[count].Y = Y;
             // give it a new page
-            pageCount = Core.Type.MyMap.Event[count].PageCount + 1;
+            pageCount = Core.Type.MyMap.Event[count].PageCount;
             Core.Type.MyMap.Event[count].PageCount = pageCount;
-            Array.Resize(ref Core.Type.MyMap.Event[count].Pages, pageCount + 1);
+            Array.Resize(ref Core.Type.MyMap.Event[count].Pages, pageCount);
             // load the editor
             if (!cancelLoad)
                 EventEditorInit(count);
@@ -238,10 +238,10 @@ namespace Client
             InitEventEditorForm = true;
             if (TmpEvent.Pages[1].CommandListCount == 0)
             {
-                Array.Resize(ref TmpEvent.Pages[1].CommandList, 2);
+                Array.Resize(ref TmpEvent.Pages[1].CommandList, 1);
                 TmpEvent.Pages[1].CommandListCount = 1;
                 TmpEvent.Pages[1].CommandList[1].CommandCount = 1;
-                Array.Resize(ref TmpEvent.Pages[1].CommandList[1].Commands, TmpEvent.Pages[1].CommandList[1].CommandCount + 1);
+                Array.Resize(ref TmpEvent.Pages[1].CommandList[1].Commands, TmpEvent.Pages[1].CommandList[1].CommandCount);
             }
         }
 
@@ -353,8 +353,8 @@ namespace Client
 
             if (TmpEvent.Pages[CurPageNum].CommandListCount > 0)
             {
-                listleftoff = new int[TmpEvent.Pages[CurPageNum].CommandListCount + 1];
-                conditionalstage = new int[TmpEvent.Pages[CurPageNum].CommandListCount + 1];
+                listleftoff = new int[TmpEvent.Pages[CurPageNum].CommandListCount];
+                conditionalstage = new int[TmpEvent.Pages[CurPageNum].CommandListCount];
                 curlist = 1;
                 X = 0;
                 Array.Resize(ref EventList, X + 1);
@@ -1334,7 +1334,7 @@ namespace Client
                     X = X + 1;
                     Array.Resize(ref EventList, X + 1);
                     EventList[X].CommandList = curlist;
-                    EventList[X].CommandNum = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount + 1;
+                    EventList[X].CommandNum = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
                     frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@> ");
                     curlist = TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList;
                     goto newlist;
@@ -1371,9 +1371,9 @@ namespace Client
                 curlist = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex + 1].CommandList;
             }
 
-            TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount + 1;
-            Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList, TmpEvent.Pages[CurPageNum].CommandListCount + 1);
-            TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount + 1;
+            TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount;
+            Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList, TmpEvent.Pages[CurPageNum].CommandListCount);
+            TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
             p = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
             Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands, p + 1);
 
@@ -2344,7 +2344,7 @@ namespace Client
                         frmEditor_Event.Instance.fraMoveRoute.Visible = true;
                         frmEditor_Event.Instance.fraMoveRoute.BringToFront();
                         frmEditor_Event.Instance.lstMoveRoute.Items.Clear();
-                        ListOfEvents = new int[Core.Type.MyMap.EventCount + 1];
+                        ListOfEvents = new int[Core.Type.MyMap.EventCount];
                         ListOfEvents[0] = EditorEvent;
                         var loopTo = Core.Type.MyMap.EventCount;
                         for (i = 0; i <= loopTo; i++)
@@ -2798,7 +2798,7 @@ namespace Client
                         frmEditor_Event.Instance.fraMoveRouteWait.Visible = true;
                         frmEditor_Event.Instance.fraCommands.Visible = false;
                         frmEditor_Event.Instance.cmbMoveWait.Items.Clear();
-                        ListOfEvents = new int[Core.Type.MyMap.EventCount + 1];
+                        ListOfEvents = new int[Core.Type.MyMap.EventCount];
                         ListOfEvents[0] = EditorEvent;
                         frmEditor_Event.Instance.cmbMoveWait.Items.Add("This Event");
                         frmEditor_Event.Instance.cmbMoveWait.SelectedIndex = 0;
@@ -3440,8 +3440,8 @@ namespace Client
 
             if (Core.Type.MyMap.EventCount > 0)
             {
-                Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount + 1];
-                var loopTo = Core.Type.MyMap.EventCount;
+                Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
+                var loopTo = Core.Type.MyMap.EventCount - 1;
                 for (i = 0; i <= loopTo; i++)
                 {
                     {
@@ -3455,8 +3455,8 @@ namespace Client
 
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
-                        Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
-                        var loopTo1 = Core.Type.MyMap.Event[i].PageCount;
+                        Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
+                        var loopTo1 = Core.Type.MyMap.Event[i].PageCount - 1;
                         for (x = 0; x <= loopTo1; x++)
                         {
                             {
@@ -3490,8 +3490,8 @@ namespace Client
 
                                 if (withBlock1.MoveRouteCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock1.MoveRouteCount + 1];
-                                    var loopTo2 = withBlock1.MoveRouteCount;
+                                    Core.Type.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock1.MoveRouteCount];
+                                    var loopTo2 = withBlock1.MoveRouteCount - 1;
                                     for (y = 0; y <= loopTo2; y++)
                                     {
                                         withBlock1.MoveRoute[y].Index = buffer.ReadInt32();
@@ -3516,16 +3516,16 @@ namespace Client
 
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
-                                Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount + 1];
-                                var loopTo3 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
+                                Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
+                                var loopTo3 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
                                 for (y = 0; y <= loopTo3; y++)
                                 {
                                     Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                     Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                     if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount + 1];
-                                        var loopTo4 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount;
+                                        Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
+                                        var loopTo4 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1;
                                         for (z = 0; z <= loopTo4; z++)
                                         {
                                             {
@@ -3552,8 +3552,8 @@ namespace Client
 
                                                 if (withBlock2.MoveRouteCount > 0)
                                                 {
-                                                    withBlock2.MoveRoute = new Core.Type.MoveRouteStruct[withBlock2.MoveRouteCount + 1];
-                                                    var loopTo5 = withBlock2.MoveRouteCount;
+                                                    withBlock2.MoveRoute = new Core.Type.MoveRouteStruct[withBlock2.MoveRouteCount];
+                                                    var loopTo5 = withBlock2.MoveRouteCount - 1;
                                                     for (w = 0; w <= loopTo5; w++)
                                                     {
                                                         withBlock2.MoveRoute[w].Index = buffer.ReadInt32();

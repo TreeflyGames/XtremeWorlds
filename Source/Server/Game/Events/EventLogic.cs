@@ -3259,8 +3259,8 @@ namespace Server
             tmpCurList = CurList;
             tmpListLeftOff = ListLeftOff;
 
-            ListLeftOff = new int[Map[mapNum].Event[EventID].Pages[PageID].CommandListCount + 1];
-            CurrentListOption = new int[Map[mapNum].Event[EventID].Pages[PageID].CommandListCount + 1];
+            ListLeftOff = new int[Map[mapNum].Event[EventID].Pages[PageID].CommandListCount];
+            CurrentListOption = new int[Map[mapNum].Event[EventID].Pages[PageID].CommandListCount];
             CurList = 0;
             CurSlot = 0;
 
@@ -3677,8 +3677,8 @@ namespace Server
                 var loopTo = Map[MapNum].EventCount;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
-                    Event.TempEventMap[MapNum].EventCount = Event.TempEventMap[MapNum].EventCount + 1;
-                    Array.Resize(ref Event.TempEventMap[MapNum].Event, Event.TempEventMap[MapNum].EventCount + 1);
+                    Event.TempEventMap[MapNum].EventCount = Event.TempEventMap[MapNum].EventCount;
+                    Array.Resize(ref Event.TempEventMap[MapNum].Event, Event.TempEventMap[MapNum].EventCount);
                     if (Map[MapNum].Event[i].PageCount > 0)
                     {
                         if (Map[MapNum].Event[i].Globals == 1)
@@ -3778,7 +3778,7 @@ namespace Server
             if (Map[mapNum].EventCount > 0)
             {
                 ;
-                Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing, Map[mapNum].EventCount + 1);
+                Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing, Map[mapNum].EventCount);
 
                 Core.Type.TempPlayer[index].EventProcessingCount = Map[mapNum].EventCount;
             }

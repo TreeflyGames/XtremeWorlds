@@ -1974,9 +1974,9 @@ namespace Client
         {
             long count;
             count = Information.UBound(GameState.descText);
-            Array.Resize(ref GameState.descText, (int)(count + 1L + 1));
-            GameState.descText[(int)(count + 1L)].Text = text;
-            GameState.descText[(int)(count + 1L)].Color = GameClient.ToDrawingColor(color);
+            Array.Resize(ref GameState.descText, (int)(count + 1L));
+            GameState.descText[(int)(count)].Text = text;
+            GameState.descText[(int)(count)].Color = GameClient.ToDrawingColor(color);
         }
 
         public static void LogoutGame()

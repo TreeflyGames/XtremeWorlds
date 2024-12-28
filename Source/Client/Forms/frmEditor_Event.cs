@@ -756,9 +756,9 @@ namespace Client
                     {
                         fraMoveRoute.Visible = true;
                         lstMoveRoute.Items.Clear();
-                        Event.ListOfEvents = new int[Core.Type.MyMap.EventCount + 1];
+                        Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
                         Event.ListOfEvents[0] = Event.EditorEvent;
-                        for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i <= loopTo; i++)
+                        for (int i = 0, loopTo = Core.Type.MyMap.EventCount - 1; i <= loopTo; i++)
                         {
                             if (i != Event.EditorEvent)
                             {
@@ -781,12 +781,12 @@ namespace Client
                 case "Wait for Route Completion":
                     {
                         cmbMoveWait.Items.Clear();
-                        Event.ListOfEvents = new int[Core.Type.MyMap.EventCount + 1];
+                        Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
                         Event.ListOfEvents[0] = Event.EditorEvent;
                         cmbMoveWait.Items.Add("This Event");
                         cmbMoveWait.SelectedIndex = 0;
                         cmbMoveWait.Enabled = true;
-                        for (int i = 0, loopTo1 = Core.Type.MyMap.EventCount; i <= loopTo1; i++)
+                        for (int i = 0, loopTo1 = Core.Type.MyMap.EventCount - 1; i <= loopTo1; i++)
                         {
                             if (i != Event.EditorEvent)
                             {
@@ -2005,8 +2005,8 @@ namespace Client
             if (lstMoveRoute.SelectedIndex > -1)
             {
                 i = lstMoveRoute.SelectedIndex;
-                Event.TempMoveRouteCount = Event.TempMoveRouteCount + 1;
-                Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount + 1);
+                Event.TempMoveRouteCount = Event.TempMoveRouteCount;
+                Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount);
                 var loopTo = i;
                 for (X = Event.TempMoveRouteCount - 1; X >= loopTo; X -= 1)
                     Event.TempMoveRoute[X + 1] = Event.TempMoveRoute[X];
@@ -2026,7 +2026,7 @@ namespace Client
             else
             {
                 Event.TempMoveRouteCount = Event.TempMoveRouteCount + 1;
-                Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount + 1);
+                Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount);
                 Event.TempMoveRoute[Event.TempMoveRouteCount].Index = Index;
                 PopulateMoveRouteList();
                 // if set graphic then....
@@ -2060,7 +2060,7 @@ namespace Client
                 }
                 else
                 {
-                    Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount + 1);
+                    Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount);
                 }
                 PopulateMoveRouteList();
             }

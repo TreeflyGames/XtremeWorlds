@@ -92,7 +92,7 @@ namespace Server
                     if (Core.Type.Map[MapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[MapNum].Tile[x, y].Type2 == TileType.Resource)
                     {
                         Resource_Count += 0;
-                        Array.Resize(ref Core.Type.MapResource[MapNum].ResourceData, Resource_Count + 1);
+                        Array.Resize(ref Core.Type.MapResource[MapNum].ResourceData, Resource_Count);
                         Core.Type.MapResource[MapNum].ResourceData[Resource_Count].X = x;
                         Core.Type.MapResource[MapNum].ResourceData[Resource_Count].Y = y;
                         Core.Type.MapResource[MapNum].ResourceData[Resource_Count].Health = (byte)Core.Type.Resource[Core.Type.Map[MapNum].Tile[x, y].Data1].Health;
@@ -156,7 +156,7 @@ namespace Server
                 SetPlayerGatherSkillLvl(index, SkillSlot, GetPlayerGatherSkillLvl(index, SkillSlot) + 1);
                 SetPlayerGatherSkillExp(index, SkillSlot, expRollover);
                 SetPlayerGatherSkillMaxExp(index, SkillSlot, GetSkillNextLevel(index, SkillSlot));
-                level_count = level_count + 1;
+                level_count =+ 1;
             }
 
             if (level_count > 0)

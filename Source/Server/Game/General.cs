@@ -309,7 +309,7 @@ namespace Server
                 sw.WriteLine(GetExceptionInfo(e));
             }
 
-            Global.ErrorCount = Global.ErrorCount + 1;
+            Global.ErrorCount =+ 1;
 
             UpdateCaption();
         }

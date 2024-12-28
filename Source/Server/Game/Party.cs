@@ -525,7 +525,7 @@ namespace Server
                     {
                         if (GetPlayerMap(tmpindex) != mapNum)
                         {
-                            loseMemberCount = (byte)(loseMemberCount + 1);
+                            loseMemberCount =+ 1;
                         }
                     }
                 }
