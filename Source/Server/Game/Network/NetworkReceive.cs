@@ -196,8 +196,8 @@ namespace Server
                     }
 
                     // Get the data
-                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower();
-                    password = Global.EKeyPair.DecryptString(buffer.ReadString());
+                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
+                    password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
 
                     // Get the current executing assembly
                     var @assembly = Assembly.GetExecutingAssembly();
@@ -308,8 +308,8 @@ namespace Server
                     }
 
                     // Get the data
-                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower();
-                    password = Global.EKeyPair.DecryptString(buffer.ReadString());
+                    username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
+                    password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
 
                     var loopTo = Strings.Len(username);
                     for (i = 1; i <= (int)loopTo; i++)
@@ -1332,7 +1332,7 @@ namespace Server
             s = buffer.ReadInt32().ToString();
             buffer.Dispose();
 
-            // CheckIf Type.Map data is needed to be sent
+            // Check if data is needed to be sent
             if (Conversions.ToDouble(s) == 1d)
             {
                 NetworkSend.SendMapData(index, GetPlayerMap(index), true);
