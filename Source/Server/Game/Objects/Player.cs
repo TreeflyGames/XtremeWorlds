@@ -1241,7 +1241,7 @@ namespace Server
 
             switch (Dir)
             {
-                case var @case when @case == (byte) DirectionType.Up:
+                case (byte) DirectionType.Up:
                     {
                         // Check to make sure not outside of boundaries
                         if (GetPlayerY(index) > 0)
@@ -1279,7 +1279,7 @@ namespace Server
                         break;
                     }
 
-                case var case1 when case1 == (byte) DirectionType.Down:
+                case (byte) DirectionType.Down:
                     {
                         // Check to make sure not outside of boundaries
                         if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY)
@@ -1316,7 +1316,7 @@ namespace Server
                         break;
                     }
 
-                case var case2 when case2 == (byte) DirectionType.Left:
+                case (byte) DirectionType.Left:
                     {
                         // Check to make sure not outside of boundaries
                         if (GetPlayerX(index) > 0)
@@ -1354,7 +1354,7 @@ namespace Server
                         break;
                     }
 
-                case var case3 when case3 == (byte) DirectionType.Right:
+                case (byte) DirectionType.Right:
                     {
                         // Check to make sure not outside of boundaries
                         if (GetPlayerX(index) < Core.Type.Map[mapNum].MaxX)
@@ -1391,7 +1391,7 @@ namespace Server
                         break;
                     }
 
-                case var case4 when case4 == (byte) DirectionType.UpRight:
+                case (byte) DirectionType.UpRight:
                     {
                         // Check to make sure not outside of boundaries
                         if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[mapNum].MaxX)
@@ -1447,7 +1447,7 @@ namespace Server
                         break;
                     }
 
-                case var case6 when case6 == (byte) DirectionType.DownRight:
+                case (byte) DirectionType.DownRight:
                     {
                         // Check to make sure not outside of boundaries
                         if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY && GetPlayerX(index) < Core.Type.Map[mapNum].MaxX)
@@ -1475,7 +1475,7 @@ namespace Server
                         break;
                     }
 
-                case var case7 when case7 == (byte) DirectionType.DownLeft:
+                case (byte) DirectionType.DownLeft:
                     {
                         // Check to make sure not outside of boundaries
                         if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY && GetPlayerX(index) > 0)
