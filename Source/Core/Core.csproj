@@ -7,7 +7,7 @@
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
