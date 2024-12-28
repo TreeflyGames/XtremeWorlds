@@ -3030,17 +3030,17 @@ namespace Client
 
         public static void btnDelChar_1()
         {
-            GameLogic.Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", (byte)Core.Enum.DialogueType.DelChar, (byte)Core.Enum.DialogueStyle.YesNo, 1L);
+            GameLogic.Dialogue("Delete Character", "Deleting this character is permanent.", "Delete this character?", (byte)Core.Enum.DialogueType.DelChar, (byte)Core.Enum.DialogueStyle.YesNo, 1L);
         }
 
         public static void btnDelChar_2()
         {
-            GameLogic.Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", (byte)Core.Enum.DialogueType.DelChar, (byte)Core.Enum.DialogueStyle.YesNo, 2L);
+            GameLogic.Dialogue("Delete Character", "Deleting this character is permanent.", "Delete this character?", (byte)Core.Enum.DialogueType.DelChar, (byte)Core.Enum.DialogueStyle.YesNo, 2L);
         }
 
         public static void btnDelChar_3()
         {
-            GameLogic.Dialogue("Delete Character", "Deleting this character is permanent.", "Are you sure you want to delete this character?", (byte)Core.Enum.DialogueType.DelChar, (byte)Core.Enum.DialogueStyle.YesNo, 3L);
+            GameLogic.Dialogue("Delete Character", "Deleting this character is permanent.", "Delete this character?", (byte)Core.Enum.DialogueType.DelChar, (byte)Core.Enum.DialogueStyle.YesNo, 3L);
         }
 
         public static void btnCreateChar_1()
