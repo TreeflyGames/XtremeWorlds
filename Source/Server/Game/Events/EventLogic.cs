@@ -502,7 +502,7 @@ namespace Server
                                     }
 
                                     var Buffer = new ByteStream(4);
-                                    Buffer.WriteInt32((byte) ServerPackets.SSpawnEvent);
+                                    Buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
                                     Buffer.WriteInt32(id);
                                     {
                                         var withBlock1 = Core.Type.TempPlayer[i].EventMap.EventPages[x];
@@ -1166,7 +1166,7 @@ namespace Server
                                                             if (sendupdate)
                                                             {
                                                                 Buffer = new ByteStream(4);
-                                                                Buffer.WriteInt32((byte) ServerPackets.SSpawnEvent);
+                                                                Buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
                                                                 Buffer.WriteInt32(EventID);
                                                                 {
                                                                     var withBlock1 = Event.TempEventMap[i].Event[x];
@@ -1882,7 +1882,7 @@ namespace Server
                                                             if (sendupdate & Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID > 0)
                                                             {
                                                                 Buffer = new ByteStream(4);
-                                                                Buffer.WriteInt32((byte) ServerPackets.SSpawnEvent);
+                                                                Buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
                                                                 Buffer.WriteInt32(Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID);
                                                                 {
                                                                     var withBlock1 = Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID];
@@ -2139,7 +2139,7 @@ namespace Server
                                                                 case (byte)EventType.ShowText:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SEventChat);
+                                                                        buffer.WriteInt32((int) ServerPackets.SEventChat);
                                                                         buffer.WriteInt32(withBlock1.EventID);
                                                                         buffer.WriteInt32(withBlock1.PageID);
                                                                         buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
@@ -2173,7 +2173,7 @@ namespace Server
                                                                 case (byte)EventType.ShowChoices:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SEventChat);
+                                                                        buffer.WriteInt32((int) ServerPackets.SEventChat);
                                                                         buffer.WriteInt32(withBlock1.EventID);
                                                                         buffer.WriteInt32(withBlock1.PageID);
                                                                         buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data5);
@@ -2967,7 +2967,7 @@ namespace Server
                                                                 case (byte)EventType.PlayBgm:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SPlayBGM);
+                                                                        buffer.WriteInt32((int) ServerPackets.SPlayBGM);
                                                                         buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
                                                                         buffer.Dispose();
@@ -2976,7 +2976,7 @@ namespace Server
                                                                 case (byte)EventType.FadeoutBgm:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SFadeoutBGM);
+                                                                        buffer.WriteInt32((int) ServerPackets.SFadeoutBGM);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
                                                                         buffer.Dispose();
                                                                         break;
@@ -2984,7 +2984,7 @@ namespace Server
                                                                 case (byte)EventType.PlaySound:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SPlaySound);
+                                                                        buffer.WriteInt32((int) ServerPackets.SPlaySound);
                                                                         buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1);
                                                                         buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].X);
                                                                         buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].Y);
@@ -2995,7 +2995,7 @@ namespace Server
                                                                 case (byte)EventType.StopSound:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SStopSound);
+                                                                        buffer.WriteInt32((int) ServerPackets.SStopSound);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
                                                                         buffer.Dispose();
                                                                         break;
@@ -3113,7 +3113,7 @@ namespace Server
                                                                 case (byte)EventType.ShowPicture:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SPic);
+                                                                        buffer.WriteInt32((int) ServerPackets.SPic);
                                                                         buffer.WriteInt32(withBlock1.EventID);
                                                                         buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                         buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2);
@@ -3127,7 +3127,7 @@ namespace Server
                                                                 case (byte)EventType.HidePicture:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SPic);
+                                                                        buffer.WriteInt32((int) ServerPackets.SPic);
                                                                         buffer.WriteByte(0);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
 
@@ -3157,7 +3157,7 @@ namespace Server
                                                                 case (byte)EventType.HoldPlayer:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SHoldPlayer);
+                                                                        buffer.WriteInt32((int) ServerPackets.SHoldPlayer);
                                                                         buffer.WriteInt32(0);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
 
@@ -3167,7 +3167,7 @@ namespace Server
                                                                 case (byte)EventType.ReleasePlayer:
                                                                     {
                                                                         buffer = new ByteStream(4);
-                                                                        buffer.WriteInt32((byte) ServerPackets.SHoldPlayer);
+                                                                        buffer.WriteInt32((int) ServerPackets.SHoldPlayer);
                                                                         buffer.WriteInt32(1);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
 
@@ -4072,7 +4072,7 @@ namespace Server
                     if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID > 0)
                     {
                         buffer = new ByteStream(4);
-                        buffer.WriteInt32((int)(byte) ServerPackets.SSpawnEvent);
+                        buffer.WriteInt32((int)(int) ServerPackets.SSpawnEvent);
                         buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID);
                         {
                             var withBlock2 = Core.Type.TempPlayer[index].EventMap.EventPages[i];

@@ -135,7 +135,7 @@ namespace Server
 
             Core.Type.TempPlayer[index].Editor = (byte)EditorType.Projectile;
 
-            buffer.WriteInt32((byte) ServerPackets.SProjectileEditor);
+            buffer.WriteInt32((int) ServerPackets.SProjectileEditor);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -274,7 +274,7 @@ namespace Server
 
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdateProjectile);
+            buffer.WriteInt32((int) ServerPackets.SUpdateProjectile);
             buffer.WriteInt32(ProjectileNum);
             buffer.WriteString(Core.Type.Projectile[ProjectileNum].Name);
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Sprite);
@@ -293,7 +293,7 @@ namespace Server
 
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdateProjectile);
+            buffer.WriteInt32((int) ServerPackets.SUpdateProjectile);
             buffer.WriteInt32(ProjectileNum);
             buffer.WriteString(Core.Type.Projectile[ProjectileNum].Name);
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Sprite);
@@ -326,7 +326,7 @@ namespace Server
             ByteStream buffer;
 
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SMapProjectile);
+            buffer.WriteInt32((int) ServerPackets.SMapProjectile);
 
             {
                 var withBlock = Core.Type.MapProjectile[MapNum, ProjectileNum];

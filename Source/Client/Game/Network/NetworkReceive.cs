@@ -148,12 +148,12 @@ namespace Client
 
         private static void Packet_AlertMsg(ref byte[] data)
         {
-            int dialogueIndex;
+            byte dialogueIndex;
             int menuReset;
             int kick;
             var buffer = new ByteStream(data);
 
-            dialogueIndex = buffer.ReadInt32();
+            dialogueIndex = buffer.ReadByte();
             menuReset = buffer.ReadInt32();
             kick = buffer.ReadInt32();
 

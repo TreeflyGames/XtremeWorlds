@@ -96,7 +96,7 @@ namespace Client
         private static void Socket_CrashReport(string err)
         {
             GameLogic.LogoutGame();
-            GameLogic.DialogueAlert((long)Core.Enum.DialogueMsg.Crash);
+            GameLogic.DialogueAlert((byte)Core.Enum.DialogueMsg.Crash);
 
             var currentDateTime = DateTime.Now;
             string timestampForFileName = currentDateTime.ToString("yyyyMMdd_HHmmss");

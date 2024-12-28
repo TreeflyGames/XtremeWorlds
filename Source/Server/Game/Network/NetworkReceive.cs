@@ -682,7 +682,7 @@ namespace Server
             SetPlayerDir(index, dir);
 
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SPlayerDir);
+            buffer.WriteInt32((int) ServerPackets.SPlayerDir);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerDir(index));
             NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), ref buffer.Data, buffer.Head);
@@ -720,7 +720,7 @@ namespace Server
 
             // Send this packet so they can see the person attacking
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SAttack);
+            buffer.WriteInt32((int) ServerPackets.SAttack);
             buffer.WriteInt32(index);
             NetworkConfig.SendDataToMap(GetPlayerMap(index), ref buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -1532,7 +1532,7 @@ namespace Server
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Map;
 
             var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((byte) ServerPackets.SEditMap);
+            Buffer.WriteInt32((int) ServerPackets.SEditMap);
 
             NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
             Buffer.Dispose();
@@ -1562,7 +1562,7 @@ namespace Server
             NetworkSend.SendShops(index);
 
             var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((byte) ServerPackets.SShopEditor);
+            Buffer.WriteInt32((int) ServerPackets.SShopEditor);
             NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
 
             Buffer.Dispose();
@@ -1628,7 +1628,7 @@ namespace Server
             NetworkSend.SendSkills(index);
 
             var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((byte) ServerPackets.SSkillEditor);
+            Buffer.WriteInt32((int) ServerPackets.SSkillEditor);
             NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
 
             Buffer.Dispose();
@@ -1964,7 +1964,7 @@ namespace Server
         {
             ByteStream buffer;
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SSendPing);
+            buffer.WriteInt32((int) ServerPackets.SSendPing);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 

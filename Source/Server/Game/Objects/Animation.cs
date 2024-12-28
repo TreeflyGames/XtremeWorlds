@@ -126,7 +126,7 @@ namespace Server
             SendAnimations(index);
 
             var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((byte) ServerPackets.SAnimationEditor);
+            Buffer.WriteInt32((int) ServerPackets.SAnimationEditor);
             NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
             Buffer.Dispose();
         }
@@ -183,7 +183,7 @@ namespace Server
         public static void SendAnimation(int MapNum, int Anim, int X, int Y, byte LockType = 0, int Lockindex = 0)
         {
             var buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SAnimation);
+            buffer.WriteInt32((int) ServerPackets.SAnimation);
             buffer.WriteInt32(Anim);
             buffer.WriteInt32(X);
             buffer.WriteInt32(Y);
@@ -216,7 +216,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdateAnimation);
+            buffer.WriteInt32((int) ServerPackets.SUpdateAnimation);
 
             buffer.WriteBlock(AnimationData(AnimationNum));
 
@@ -228,7 +228,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdateAnimation);
+            buffer.WriteInt32((int) ServerPackets.SUpdateAnimation);
 
             buffer.WriteBlock(AnimationData(AnimationNum));
 

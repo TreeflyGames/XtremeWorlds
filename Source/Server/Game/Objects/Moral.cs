@@ -132,7 +132,7 @@ namespace Server
         {
             ByteStream buffer;
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SUpdateMoral);
+            buffer.WriteInt32((int) ServerPackets.SUpdateMoral);
 
             buffer.WriteBlock(MoralData(moralNum));
 
@@ -144,7 +144,7 @@ namespace Server
         {
             ByteStream buffer;
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SUpdateMoral);
+            buffer.WriteInt32((int) ServerPackets.SUpdateMoral);
 
             buffer.WriteBlock(MoralData(moralNum));
 
@@ -179,7 +179,7 @@ namespace Server
 
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Moral;
 
-            buffer.WriteInt32((byte) ServerPackets.SMoralEditor);
+            buffer.WriteInt32((int) ServerPackets.SMoralEditor);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();

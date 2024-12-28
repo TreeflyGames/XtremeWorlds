@@ -139,7 +139,7 @@ namespace Server
                 // If we suceeded in spawning then send it to everyone
                 if (spawned)
                 {
-                    buffer.WriteInt32((byte) ServerPackets.SSpawnNPC);
+                    buffer.WriteInt32((int) ServerPackets.SSpawnNPC);
                     buffer.WriteInt32(MapNPCNum);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X);
@@ -439,7 +439,7 @@ namespace Server
                     {
                         Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y = (byte)(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y - 1);
 
-                        buffer.WriteInt32((byte) ServerPackets.SNPCMove);
+                        buffer.WriteInt32((int) ServerPackets.SNPCMove);
                         buffer.WriteInt32(MapNPCNum);
                         buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X);
                         buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y);
@@ -453,7 +453,7 @@ namespace Server
                     {
                         Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y = (byte)(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y + 1);
 
-                        buffer.WriteInt32((byte) ServerPackets.SNPCMove);
+                        buffer.WriteInt32((int) ServerPackets.SNPCMove);
                         buffer.WriteInt32(MapNPCNum);
                         buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X);
                         buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y);
@@ -467,7 +467,7 @@ namespace Server
                     {
                         Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X = (byte)(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X - 1);
 
-                        buffer.WriteInt32((byte) ServerPackets.SNPCMove);
+                        buffer.WriteInt32((int) ServerPackets.SNPCMove);
                         buffer.WriteInt32(MapNPCNum);
                         buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X);
                         buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y);
@@ -481,7 +481,7 @@ namespace Server
                     {
                         Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X = (byte)(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X + 1);
 
-                        buffer.WriteInt32((byte) ServerPackets.SNPCMove);
+                        buffer.WriteInt32((int) ServerPackets.SNPCMove);
                         buffer.WriteInt32(MapNPCNum);
                         buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X);
                         buffer.WriteInt32(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y);
@@ -508,7 +508,7 @@ namespace Server
 
             Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Dir = Dir;
 
-            buffer.WriteInt32((byte) ServerPackets.SNPCDir);
+            buffer.WriteInt32((int) ServerPackets.SNPCDir);
             buffer.WriteInt32(MapNPCNum);
             buffer.WriteInt32(Dir);
 
@@ -779,7 +779,7 @@ namespace Server
             Name = Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Name;
 
             // Send this packet so they can see the npc attacking
-            buffer.WriteInt32((byte) ServerPackets.SNPCAttack);
+            buffer.WriteInt32((int) ServerPackets.SNPCAttack);
             buffer.WriteInt32(MapNPCNum);
             NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -852,7 +852,7 @@ namespace Server
                 return;
 
             // Send this packet so they can see the person attacking
-            buffer.WriteInt32((byte) ServerPackets.SNPCAttack);
+            buffer.WriteInt32((int) ServerPackets.SNPCAttack);
             buffer.WriteInt32(attacker);
             NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -883,7 +883,7 @@ namespace Server
 
                 // send npc death packet to map
                 buffer = new ByteStream(4);
-                buffer.WriteInt32((byte) ServerPackets.SNPCDead);
+                buffer.WriteInt32((int) ServerPackets.SNPCDead);
                 buffer.WriteInt32(victim);
                 NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
                 buffer.Dispose();
@@ -1197,7 +1197,7 @@ namespace Server
             int i;
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SMapNPCData);
+            buffer.WriteInt32((int) ServerPackets.SMapNPCData);
 
             var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
             for (i = 0; i <= (int)loopTo; i++)
@@ -1245,7 +1245,7 @@ namespace Server
             SendNPCs(index);
 
             var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((byte) ServerPackets.SNPCEditor);
+            Buffer.WriteInt32((int) ServerPackets.SNPCEditor);
             NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
 
             Buffer.Dispose();
@@ -1325,7 +1325,7 @@ namespace Server
             int i;
 
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SUpdateNPC);
+            buffer.WriteInt32((int) ServerPackets.SUpdateNPC);
 
             buffer.WriteInt32(NPCNum);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Animation);
@@ -1370,7 +1370,7 @@ namespace Server
             int i;
 
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SUpdateNPC);
+            buffer.WriteInt32((int) ServerPackets.SUpdateNPC);
 
             buffer.WriteInt32(NPCNum);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Animation);
@@ -1415,7 +1415,7 @@ namespace Server
             ByteStream buffer;
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SMapNPCData);
+            buffer.WriteInt32((int) ServerPackets.SMapNPCData);
 
             var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
             for (i = 0; i <= (int)loopTo; i++)
@@ -1438,7 +1438,7 @@ namespace Server
             ByteStream buffer;
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SMapNPCUpdate);
+            buffer.WriteInt32((int) ServerPackets.SMapNPCUpdate);
 
             buffer.WriteInt32(MapNPCNum);
 
@@ -1463,7 +1463,7 @@ namespace Server
             ByteStream buffer;
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SMapNPCVitals);
+            buffer.WriteInt32((int) ServerPackets.SMapNPCVitals);
             buffer.WriteInt32(MapNPCNum);
 
             var loopTo = VitalType.Count - 1;
@@ -1478,7 +1478,7 @@ namespace Server
         public static void SendNPCAttack(int index, int NPCNum)
         {
             var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((byte) ServerPackets.SAttack);
+            Buffer.WriteInt32((int) ServerPackets.SAttack);
 
             Buffer.WriteInt32(NPCNum);
             NetworkConfig.SendDataToMap(GetPlayerMap(index), ref Buffer.Data, Buffer.Head);
@@ -1488,7 +1488,7 @@ namespace Server
         public static void SendNPCDead(int MapNum, int index)
         {
             var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((byte) ServerPackets.SNPCDead);
+            Buffer.WriteInt32((int) ServerPackets.SNPCDead);
 
             Buffer.WriteInt32(index);
             NetworkConfig.SendDataToMap(MapNum, ref Buffer.Data, Buffer.Head);

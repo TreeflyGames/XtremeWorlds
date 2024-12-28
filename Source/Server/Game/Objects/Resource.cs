@@ -207,7 +207,7 @@ namespace Server
             Animation.SendAnimations(index);
             SendResources(index);
 
-            Buffer.WriteInt32((byte) ServerPackets.SResourceEditor);
+            Buffer.WriteInt32((int) ServerPackets.SResourceEditor);
             NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
 
             Buffer.Dispose();
@@ -277,7 +277,7 @@ namespace Server
 
             mapnum = GetPlayerMap(index);
 
-            buffer.WriteInt32((byte) ServerPackets.SMapResource);
+            buffer.WriteInt32((int) ServerPackets.SMapResource);
             buffer.WriteInt32(Core.Type.MapResource[mapnum].ResourceCount);
 
             if (Core.Type.MapResource[mapnum].ResourceCount > 0)
@@ -302,7 +302,7 @@ namespace Server
             int i;
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SMapResource);
+            buffer.WriteInt32((int) ServerPackets.SMapResource);
             buffer.WriteInt32(Core.Type.MapResource[MapNum].ResourceCount);
 
             if (Core.Type.MapResource[MapNum].ResourceCount > 0)
@@ -343,7 +343,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdateResource);
+            buffer.WriteInt32((int) ServerPackets.SUpdateResource);
 
             buffer.WriteBlock(ResourceData(ResourceNum));
 
@@ -355,7 +355,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdateResource);
+            buffer.WriteInt32((int) ServerPackets.SUpdateResource);
 
             buffer.WriteBlock(ResourceData(ResourceNum));
 

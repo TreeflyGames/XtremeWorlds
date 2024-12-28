@@ -40,7 +40,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SClock);
+            buffer.WriteInt32((int) ServerPackets.SClock);
             buffer.WriteInt32((int)TimeType.Instance.GameSpeed);
             buffer.WriteBytes(BitConverter.GetBytes(TimeType.Instance.Time.Ticks));
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
@@ -66,7 +66,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.STime);
+            buffer.WriteInt32((int) ServerPackets.STime);
             buffer.WriteByte((byte)TimeType.Instance.TimeOfDay);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 

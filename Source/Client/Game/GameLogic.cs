@@ -961,7 +961,7 @@ namespace Client
 
         }
 
-        public static void DialogueAlert(long Index)
+        public static void DialogueAlert(byte Index)
         {
             var header = default(string);
             var body = default(string);
@@ -970,7 +970,7 @@ namespace Client
             // find the body/header
             switch (Index)
             {
-                case (long)Core.Enum.DialogueMsg.Connection:
+                case (byte)Core.Enum.DialogueMsg.Connection:
                     {
                         header = "Invalid Connection";
                         body = "You lost connection to the game server.";
@@ -978,7 +978,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.Banned:
+                case (byte)Core.Enum.DialogueMsg.Banned:
                     {
                         header = "Banned";
                         body = "You have been banned, have a nice day!";
@@ -986,7 +986,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.Kicked:
+                case (byte)Core.Enum.DialogueMsg.Kicked:
                     {
                         header = "Kicked";
                         body = "You have been kicked.";
@@ -994,7 +994,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.Outdated:
+                case (byte)Core.Enum.DialogueMsg.Outdated:
                     {
                         header = "Wrong Version";
                         body = "Your game client is the wrong version.";
@@ -1002,7 +1002,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.Maintenance:
+                case (byte)Core.Enum.DialogueMsg.Maintenance:
                     {
                         header = "Connection Refused";
                         body = "The server is currently going under maintenance.";
@@ -1010,7 +1010,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.NameTaken:
+                case (byte)Core.Enum.DialogueMsg.NameTaken:
                     {
                         header = "Invalid Name";
                         body = "This name is already in use.";
@@ -1018,7 +1018,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.NameLength:
+                case (byte)Core.Enum.DialogueMsg.NameLength:
                     {
                         header = "Invalid Name";
                         body = "This name is too short or too long.";
@@ -1026,7 +1026,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.NameIllegal:
+                case (byte)Core.Enum.DialogueMsg.NameIllegal:
                     {
                         header = "Invalid Name";
                         body = "This name contains illegal characters.";
@@ -1034,7 +1034,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.Database:
+                case (byte)Core.Enum.DialogueMsg.Database:
                     {
                         header = "Invalid Connection";
                         body = "Cannot connect to database.";
@@ -1042,7 +1042,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.WrongPass:
+                case (byte)Core.Enum.DialogueMsg.WrongPass:
                     {
                         header = "Invalid Login";
                         body = "Invalid username or password.";
@@ -1051,7 +1051,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.Activate:
+                case (byte)Core.Enum.DialogueMsg.Activate:
                     {
                         header = "Inactive Account";
                         body = "Your account is not activated.";
@@ -1059,7 +1059,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.MaxChar:
+                case (byte)Core.Enum.DialogueMsg.MaxChar:
                     {
                         header = "Cannot Merge";
                         body = "You cannot merge a full account.";
@@ -1067,7 +1067,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.DelChar:
+                case (byte)Core.Enum.DialogueMsg.DelChar:
                     {
                         header = "Deleted Character";
                         body = "Your character was successfully deleted.";
@@ -1075,7 +1075,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.CreateAccount:
+                case (byte)Core.Enum.DialogueMsg.CreateAccount:
                     {
                         header = "Account Created";
                         body = "Your account was successfully created.";
@@ -1083,7 +1083,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.MultiAccount:
+                case (byte)Core.Enum.DialogueMsg.MultiAccount:
                     {
                         header = "Multiple Accounts";
                         body = "Multiple accounts are not authorized.";
@@ -1091,7 +1091,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.Login:
+                case (byte)Core.Enum.DialogueMsg.Login:
                     {
                         header = "Cannot Login";
                         body = "This account does not exist.";
@@ -1099,7 +1099,7 @@ namespace Client
                         break;
                     }
 
-                case (long)Core.Enum.DialogueMsg.Crash:
+                case (byte)Core.Enum.DialogueMsg.Crash:
                     {
                         header = "Error";
                         body = "There was a network error.";

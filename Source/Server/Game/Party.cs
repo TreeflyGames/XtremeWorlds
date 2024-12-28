@@ -56,7 +56,7 @@ namespace Server
         public static void SendPartyUpdate(int partyNum)
         {
             var buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SPartyUpdate);
+            buffer.WriteInt32((int) ServerPackets.SPartyUpdate);
 
             if (PartyField[partyNum].Leader == 0)
             {
@@ -82,7 +82,7 @@ namespace Server
             int i;
             int partyNum;
 
-            buffer.WriteInt32((byte) ServerPackets.SPartyUpdate);
+            buffer.WriteInt32((int) ServerPackets.SPartyUpdate);
 
             // check if we're in a party
             partyNum = Core.Type.TempPlayer[index].InParty;

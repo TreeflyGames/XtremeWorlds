@@ -335,7 +335,7 @@ namespace Server
             else if (Core.Type.Map[mapNum].Event[EventID].Pages[Core.Type.TempPlayer[playerindex].EventMap.EventPages[eventindex].PageID].DirFix == 0)
                 Core.Type.TempPlayer[playerindex].EventMap.EventPages[eventindex].Dir = dir;
 
-            buffer.WriteInt32((byte) ServerPackets.SEventDir);
+            buffer.WriteInt32((int) ServerPackets.SEventDir);
             buffer.WriteInt32(EventID);
 
             if (globalevent)
@@ -407,7 +407,7 @@ namespace Server
                         if (globalevent)
                         {
                             TempEventMap[mapNum].Event[eventindex].Y = TempEventMap[mapNum].Event[eventindex].Y - 1;
-                            buffer.WriteInt32((byte) ServerPackets.SEventMove);
+                            buffer.WriteInt32((int) ServerPackets.SEventMove);
                             buffer.WriteInt32(EventID);
                             buffer.WriteInt32(TempEventMap[mapNum].Event[eventindex].X);
                             buffer.WriteInt32(TempEventMap[mapNum].Event[eventindex].Y);
@@ -428,7 +428,7 @@ namespace Server
                         else
                         {
                             Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].Y = Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].Y - 1;
-                            buffer.WriteInt32((byte) ServerPackets.SEventMove);
+                            buffer.WriteInt32((int) ServerPackets.SEventMove);
                             buffer.WriteInt32(EventID);
                             buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].X);
                             buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].Y);
@@ -455,7 +455,7 @@ namespace Server
                         if (globalevent)
                         {
                             TempEventMap[mapNum].Event[eventindex].Y = TempEventMap[mapNum].Event[eventindex].Y + 1;
-                            buffer.WriteInt32((byte) ServerPackets.SEventMove);
+                            buffer.WriteInt32((int) ServerPackets.SEventMove);
                             buffer.WriteInt32(EventID);
                             buffer.WriteInt32(TempEventMap[mapNum].Event[eventindex].X);
                             buffer.WriteInt32(TempEventMap[mapNum].Event[eventindex].Y);
@@ -476,7 +476,7 @@ namespace Server
                         else
                         {
                             Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].Y = Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].Y + 1;
-                            buffer.WriteInt32((byte) ServerPackets.SEventMove);
+                            buffer.WriteInt32((int) ServerPackets.SEventMove);
                             buffer.WriteInt32(EventID);
                             buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].X);
                             buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].Y);
@@ -502,7 +502,7 @@ namespace Server
                         if (globalevent)
                         {
                             TempEventMap[mapNum].Event[eventindex].X = TempEventMap[mapNum].Event[eventindex].X - 1;
-                            buffer.WriteInt32((byte) ServerPackets.SEventMove);
+                            buffer.WriteInt32((int) ServerPackets.SEventMove);
                             buffer.WriteInt32(EventID);
                             buffer.WriteInt32(TempEventMap[mapNum].Event[eventindex].X);
                             buffer.WriteInt32(TempEventMap[mapNum].Event[eventindex].Y);
@@ -523,7 +523,7 @@ namespace Server
                         else
                         {
                             Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].X = Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].X - 1;
-                            buffer.WriteInt32((byte) ServerPackets.SEventMove);
+                            buffer.WriteInt32((int) ServerPackets.SEventMove);
                             buffer.WriteInt32(EventID);
                             buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].X);
                             buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].Y);
@@ -549,7 +549,7 @@ namespace Server
                         if (globalevent)
                         {
                             TempEventMap[mapNum].Event[eventindex].X = TempEventMap[mapNum].Event[eventindex].X + 1;
-                            buffer.WriteInt32((byte) ServerPackets.SEventMove);
+                            buffer.WriteInt32((int) ServerPackets.SEventMove);
                             buffer.WriteInt32(EventID);
                             buffer.WriteInt32(TempEventMap[mapNum].Event[eventindex].X);
                             buffer.WriteInt32(TempEventMap[mapNum].Event[eventindex].Y);
@@ -570,7 +570,7 @@ namespace Server
                         else
                         {
                             Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].X = Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].X + 1;
-                            buffer.WriteInt32((byte) ServerPackets.SEventMove);
+                            buffer.WriteInt32((int) ServerPackets.SEventMove);
                             buffer.WriteInt32(EventID);
                             buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].X);
                             buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].Y);
@@ -1654,7 +1654,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SSpecialEffect);
+            buffer.WriteInt32((int) ServerPackets.SSpecialEffect);
 
             switch (effectType)
             {
@@ -1709,7 +1709,7 @@ namespace Server
             var buffer = new ByteStream(4);
             int i;
 
-            buffer.WriteInt32((byte) ServerPackets.SSwitchesAndVariables);
+            buffer.WriteInt32((int) ServerPackets.SSwitchesAndVariables);
 
             var loopTo = Core.Constant.MAX_SWITCHES - 1;
             for (i = 0; i <= (int)loopTo; i++)
@@ -1742,7 +1742,7 @@ namespace Server
             int mapNum;
             int w;
 
-            buffer.WriteInt32((byte) ServerPackets.SMapEventData);
+            buffer.WriteInt32((int) ServerPackets.SMapEventData);
             mapNum = GetPlayerMap(index);
             buffer.WriteInt32(Core.Type.Map[mapNum].EventCount);
 

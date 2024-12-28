@@ -129,7 +129,7 @@ namespace Server
         public static void SendUpdatePetToAll(int petNum)
         {
             var buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SUpdatePet);
+            buffer.WriteInt32((int) ServerPackets.SUpdatePet);
 
             buffer.WriteInt32(petNum);
 
@@ -166,7 +166,7 @@ namespace Server
         public static void SendUpdatePetTo(int index, int petNum)
         {
             var buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SUpdatePet);
+            buffer.WriteInt32((int) ServerPackets.SUpdatePet);
 
             buffer.WriteInt32(petNum);
 
@@ -204,7 +204,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdatePlayerPet);
+            buffer.WriteInt32((int) ServerPackets.SUpdatePlayerPet);
 
             buffer.WriteInt32(index);
 
@@ -249,7 +249,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SPetAttack);
+            buffer.WriteInt32((int) ServerPackets.SPetAttack);
             buffer.WriteInt32(index);
             NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -259,7 +259,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SPetXY);
+            buffer.WriteInt32((int) ServerPackets.SPetXY);
             buffer.WriteInt32(index);
             buffer.WriteInt32(x);
             buffer.WriteInt32(y);
@@ -271,7 +271,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SPetExp);
+            buffer.WriteInt32((int) ServerPackets.SPetExp);
             buffer.WriteInt32(GetPetExp(index));
             buffer.WriteInt32(GetPetNextLevel(index));
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
@@ -282,7 +282,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SPetVital);
+            buffer.WriteInt32((int) ServerPackets.SPetVital);
 
             buffer.WriteInt32(index);
 
@@ -322,7 +322,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SClearPetSkillBuffer);
+            buffer.WriteInt32((int) ServerPackets.SClearPetSkillBuffer);
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -355,7 +355,7 @@ namespace Server
 
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Pet;
 
-            buffer.WriteInt32((byte) ServerPackets.SPetEditor);
+            buffer.WriteInt32((int) ServerPackets.SPetEditor);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
@@ -1265,7 +1265,7 @@ namespace Server
                     }
             }
 
-            buffer.WriteInt32((byte) ServerPackets.SPetMove);
+            buffer.WriteInt32((int) ServerPackets.SPetMove);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPetX(index));
             buffer.WriteInt32(GetPetY(index));
@@ -1568,7 +1568,7 @@ namespace Server
 
             Core.Type.Player[index].Pet.Dir = dir;
 
-            buffer.WriteInt32((byte) ServerPackets.SPetDir);
+            buffer.WriteInt32((int) ServerPackets.SPetDir);
             buffer.WriteInt32(index);
             buffer.WriteInt32(dir);
             NetworkConfig.SendDataToMap(GetPlayerMap(index), ref buffer.Data, buffer.Head);

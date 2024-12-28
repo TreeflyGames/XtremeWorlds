@@ -1100,7 +1100,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SLeftMap);
+            buffer.WriteInt32((int) ServerPackets.SLeftMap);
             buffer.WriteInt32(index);
             NetworkConfig.SendDataToMapBut(index, mapNum, ref buffer.Data, buffer.Head);
 
@@ -1201,7 +1201,7 @@ namespace Server
             Moral.SendUpdateMoralTo(index, Core.Type.Map[MapNum].Moral);
 
             buffer = new ByteStream(4);
-            buffer.WriteInt32((byte) ServerPackets.SCheckForMap);
+            buffer.WriteInt32((int) ServerPackets.SCheckForMap);
             buffer.WriteInt32(MapNum);
             buffer.WriteInt32(Core.Type.Map[MapNum].Revision);
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);

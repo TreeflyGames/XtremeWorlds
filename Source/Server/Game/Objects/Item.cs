@@ -138,7 +138,7 @@ namespace Server
             ByteStream buffer;
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SMapItemData);
+            buffer.WriteInt32((int) ServerPackets.SMapItemData);
 
             var loopTo = Core.Constant.MAX_MAP_ITEMS - 1;
             for (i = 0; i <= (int)loopTo; i++)
@@ -160,7 +160,7 @@ namespace Server
             ByteStream buffer;
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SMapItemData);
+            buffer.WriteInt32((int) ServerPackets.SMapItemData);
 
             var loopTo = Core.Constant.MAX_MAP_ITEMS - 1;
             for (i = 0; i <= (int)loopTo; i++)
@@ -211,7 +211,7 @@ namespace Server
                 Core.Type.MapItem[mapNum, i].X = (byte)x;
                 Core.Type.MapItem[mapNum, i].Y = (byte)y;
 
-                buffer.WriteInt32((byte) ServerPackets.SSpawnItem);
+                buffer.WriteInt32((int) ServerPackets.SSpawnItem);
                 buffer.WriteInt32(i);
                 buffer.WriteInt32(itemNum);
                 buffer.WriteInt32(ItemVal);
@@ -347,7 +347,7 @@ namespace Server
 
             var Buffer = new ByteStream(4);
 
-            Buffer.WriteInt32((byte) ServerPackets.SItemEditor);
+            Buffer.WriteInt32((int) ServerPackets.SItemEditor);
             NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
 
             Buffer.Dispose();
@@ -470,7 +470,7 @@ namespace Server
             ByteStream buffer;
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdateItem);
+            buffer.WriteInt32((int) ServerPackets.SUpdateItem);
             buffer.WriteBlock(ItemData(itemNum));
 
             NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
@@ -482,7 +482,7 @@ namespace Server
             ByteStream buffer;
             buffer = new ByteStream(4);
 
-            buffer.WriteInt32((byte) ServerPackets.SUpdateItem);
+            buffer.WriteInt32((int) ServerPackets.SUpdateItem);
             buffer.WriteBlock(ItemData(itemNum));
 
             NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
