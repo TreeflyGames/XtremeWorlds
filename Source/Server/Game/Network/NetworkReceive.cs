@@ -126,7 +126,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CReleasePet] = Pet.Packet_ReleasePet;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetSkill] = Pet.Packet_PetSkill;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetUseStatPoint] = Pet.Packet_UsePetStatPoint;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditPet] = Pet.Packet_RequestPet;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPet] = Pet.Packet_RequestPet;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_EditItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveItem] = Item.Packet_SaveItem;
