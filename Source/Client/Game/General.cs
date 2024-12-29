@@ -12,7 +12,7 @@ using static Core.Global.Command;
 namespace Client
 {
 
-    class General
+    static class General
     {
         public static GameClient Client = new GameClient();
         public static GameState State = new GameState();

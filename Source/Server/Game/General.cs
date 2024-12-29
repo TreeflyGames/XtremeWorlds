@@ -17,7 +17,7 @@ using static Core.Type;
 namespace Server
 {
 
-    class General
+    static class General
     {
         public static Core.Random Random = new Core.Random();
 
@@ -50,7 +50,6 @@ namespace Server
 
             // Create an early logging factory and logger.
             ILoggerFactory loggerFactory = loggingInitalizer.Initialize();
-            ILogger logger = loggerFactory.CreateLogger<General>();
 
             // Create a configuration builder and ojbect.
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
