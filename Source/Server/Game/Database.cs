@@ -1666,7 +1666,7 @@ namespace Server
             }
 
             // Cut off last portion of ip
-            IP = NetworkConfig.Socket.ClientIp(BanPlayerindex);
+            IP = NetworkConfig.Socket.ClientIP(BanPlayerindex);
 
             for (i = Strings.Len(IP); i >= 0; i -= 1)
             {
@@ -1735,7 +1735,7 @@ namespace Server
                 File.Create(filename).Dispose();
 
             // Cut off last portion of ip
-            IP = NetworkConfig.Socket.ClientIp(BanPlayerindex);
+            IP = NetworkConfig.Socket.ClientIP(BanPlayerindex);
 
             for (i = Strings.Len(IP); i >= 0; i -= 1)
             {

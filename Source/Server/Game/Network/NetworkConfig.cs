@@ -54,7 +54,7 @@ namespace Server
             Socket = new NetworkServer((int)Packets.ClientPackets.Count, 8192, Core.Constant.MAX_PLAYERS)
             {
                 BufferLimit = 2048000, // <- this is 2mb Core.Constant.MAX data storage
-                MinimumIndex = 1, // <- this prevents the network from giving us 0 as an index
+                MinimumIndex = 0, // <- this prevents the network from giving us 0 as an index
                 PacketAcceptLimit = 500, // Dunno what is a reasonable cap right now so why not? :P
                 PacketDisconnectCount = 100 // If the other thing was even remotely reasonable, this is DEFINITELY spam count!
             };
@@ -80,7 +80,7 @@ namespace Server
 
         public static bool IsMultiAccounts(int index, string login)
         {
-            for (int i = 1, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
             {
                 if (i != index)
                 {
@@ -88,7 +88,7 @@ namespace Server
                     {
                         if (Core.Type.Account[i].Login.ToLower() != login)
                         {
-                            if (Socket.ClientIp(i) == Socket.ClientIp(index))
+                            if (Socket.ClientIP(i) == Socket.ClientIP(index))
                             {
                                 return true;
                             }
@@ -102,7 +102,7 @@ namespace Server
 
         public static void CheckMultiAccounts(int index, string login)
         {
-            for (int i = 1, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
             {
                 if (login != "" && Core.Type.Account[i].Login.ToLower() != "")
                 {
@@ -119,13 +119,13 @@ namespace Server
 
         internal static void SendDataToAll(ref byte[] data, int head)
         {
-            for (int i = 1, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
                 Socket.SendDataTo(ref i, ref data, ref head);
         }
 
         public static void SendDataToAllBut(int index, ref byte[] data, int head)
         {
-            for (int i = 1, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
             {
                 if (i != index)
                 {
@@ -136,7 +136,7 @@ namespace Server
 
         public static void SendDataToMapBut(int index, int mapNum, ref byte[] data, int head)
         {
-            for (int i = 1, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
             {
                 if (GetPlayerMap(i) == mapNum & i != index)
                 {
@@ -150,7 +150,7 @@ namespace Server
             int i;
 
             var loopTo = Socket.HighIndex - 1;
-            for (i = 1; i <= (int)loopTo; i++)
+            for (i = 0; i <= (int)loopTo; i++)
             {
 
                 if (GetPlayerMap(i) == MapNum)
@@ -171,13 +171,13 @@ namespace Server
 
         internal static void Socket_ConnectionReceived(int index)
         {
-            Console.WriteLine("Connection received on index[" + index + "] - IP[" + Socket.ClientIp(index) + "]");
+            Console.WriteLine("Connection received on index[" + index + "] - IP[" + Socket.ClientIP(index) + "]");
             NetworkSend.SendKeyPair(index);
         }
 
         internal static void Socket_ConnectionLost(int index)
         {
-            Console.WriteLine("Connection lost on index [" + index + "] - IP[" + Socket.ClientIp(index) + "]");
+            Console.WriteLine("Connection lost on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
             Player.LeftGame(index);
         }
 

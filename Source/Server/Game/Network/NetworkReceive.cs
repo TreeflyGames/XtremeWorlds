@@ -175,7 +175,7 @@ namespace Server
                 {
                     // check if its banned
                     // Cut off last portion of ip
-                    IP = NetworkConfig.Socket.ClientIp(index);
+                    IP = NetworkConfig.Socket.ClientIP(index);
 
                     for (i = Strings.Len(IP); i >= 0; i -= 1)
                     {
@@ -251,8 +251,8 @@ namespace Server
                     }
 
                     // Show the player up on the socket status
-                    Log.Add(GetPlayerLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIp(index) + ".", Constant.PLAYER_LOG);
-                    Console.WriteLine(GetPlayerLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIp(index) + ".");
+                    Log.Add(GetPlayerLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".", Constant.PLAYER_LOG);
+                    Console.WriteLine(GetPlayerLogin(index) + " has logged in from " + NetworkConfig.Socket.ClientIP(index) + ".");
 
                     // send them to the character portal
                     NetworkSend.SendPlayerChars(index);
@@ -281,7 +281,7 @@ namespace Server
                 {
                     // check if its banned
                     // Cut off last portion of ip
-                    IP = NetworkConfig.Socket.ClientIp(index);
+                    IP = NetworkConfig.Socket.ClientIP(index);
 
                     for (i = Strings.Len(IP); i >= 0; i -= 1)
                     {

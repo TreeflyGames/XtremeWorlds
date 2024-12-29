@@ -225,9 +225,6 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             Buffer.BlockCopy(value, 256, iv, 0, 16);
             Buffer.BlockCopy(value, 272, encryptedPayload, 0, payloadLength);
 
-            // Log encrypted key for debugging
-            Console.WriteLine($"Encrypted Key Length: {encryptedKey.Length}");
-
             // Initialize AES
             using (var rijndaelManaged = Aes.Create())
             {

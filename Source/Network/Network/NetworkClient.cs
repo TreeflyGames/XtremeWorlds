@@ -490,7 +490,6 @@ namespace Mirage.Sharp.Asfw.Network
         }
     }
 
-
     public delegate void ConnectionArgs();
 
     public delegate void DataArgs(ref byte[] data);

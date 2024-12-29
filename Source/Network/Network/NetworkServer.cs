@@ -25,7 +25,7 @@ namespace Mirage.Sharp.Asfw.Network
 
     public int MinimumIndex { get; set; }
 
-    public List<int> ConnectionIds() => this._socket == null ? new List<int>() : new List<int>((IEnumerable<int>) this._socket.Keys);
+    public List<int> ConnectionID() => this._socket == null ? new List<int>() : new List<int>((IEnumerable<int>) this._socket.Keys);
 
     public int PacketAcceptLimit { get; set; }
 
@@ -94,7 +94,7 @@ namespace Mirage.Sharp.Asfw.Network
 
     public string GetIPv4() => Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString();
 
-    public string ClientIp(int index) => !this.IsConnected(index) ? "[Null]" : ((IPEndPoint) this._socket[index].RemoteEndPoint).Address.ToString();
+    public string ClientIP(int index) => !this.IsConnected(index) ? "[Null]" : ((IPEndPoint) this._socket[index].RemoteEndPoint).Address.ToString();
 
     public void Disconnect(int index)
     {
@@ -290,29 +290,15 @@ namespace Mirage.Sharp.Asfw.Network
         return;
     }
 
-    // Try to get the socket from the dictionary safely
-    if (!this._socket.TryGetValue(asyncState.Index, out Socket clientSocket) || clientSocket == null)
-    {
-        asyncState.Dispose();
-        Console.WriteLine($"Socket not found or closed for index: {asyncState.Index}");
-        return;
-    }
-
     int receivedLength;
     try
     {
         // Attempt to receive data from the socket
-        receivedLength = clientSocket.EndReceive(ar);
+        receivedLength = _socket[asyncState.Index].EndReceive(ar);
     }
     catch (Exception ex)
     {
         HandleSocketError(asyncState, "ConnectionForciblyClosedException", ex);
-        return;
-    }
-
-    if (receivedLength < 1)
-    {
-        HandleSocketError(asyncState, "BufferUnderflowException");
         return;
     }
 
@@ -338,7 +324,7 @@ namespace Mirage.Sharp.Asfw.Network
     }
 
     // Validate the socket connection
-    if (!clientSocket.Connected)
+    if (!_socket[asyncState.Index].Connected)
     {
         DisconnectAndDispose(asyncState.Index, asyncState);
         return;
@@ -353,8 +339,7 @@ namespace Mirage.Sharp.Asfw.Network
     try
     {
         // Begin receiving the next packet
-        clientSocket.BeginReceive(asyncState.Buffer, 0, this._packetSize, SocketFlags.None,
-            new AsyncCallback(this.DoReceive), asyncState);
+        _socket[asyncState.Index].BeginReceive(asyncState.Buffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), asyncState);
     }
     catch (Exception ex)
     {
@@ -521,25 +506,38 @@ namespace Mirage.Sharp.Asfw.Network
 
     public void SendDataTo(ref int index, ref byte[] data, ref int head)
     {
-      if (!this._socket.ContainsKey(index))
-        return;
+        if (!this._socket.ContainsKey(index))
+            return;
 
-      if (this._socket[index] == null || !this._socket[index].Connected)
-      {
-        this.Disconnect(index);
-      }
-      else
-      {
-        byte[] numArray = new byte[head + 4];
-        Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
-        Buffer.BlockCopy((Array) data, 0, (Array) numArray, 4, head);
-        this._socket[index].BeginSend(numArray, 0, head + 4, SocketFlags.None, new AsyncCallback(this.DoSend), (object) index);
-      }
+        if (this._socket[index] == null || !this._socket[index].Connected)
+        {
+            this.Disconnect(index);
+        }
+        else
+        {
+            byte[] numArray = new byte[head + 4];
+            Buffer.BlockCopy((Array)BitConverter.GetBytes(head), 0, (Array)numArray, 0, 4);
+            Buffer.BlockCopy((Array)data, 0, (Array)numArray, 4, head);
+            try
+            {
+                this._socket[index].BeginSend(numArray, 0, head + 4, SocketFlags.None, new AsyncCallback(this.DoSend), (object)index);
+            }
+            catch (SocketException ex)
+            {
+                Console.WriteLine($"SocketException during send: {ex.Message}");
+                this.Disconnect(index);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during send: {ex.Message}");
+                this.Disconnect(index);
+            }
+        }
     }
 
     public void SendDataToAll(ref byte[] data)
     {
-      for (int index = 1; index <= this.HighIndex; ++index)
+      for (int index = 0; index <= this.HighIndex; ++index)
       {
         if (this._socket.ContainsKey(index))
           this.SendDataTo(ref index, ref data);
@@ -552,7 +550,7 @@ namespace Mirage.Sharp.Asfw.Network
       Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
       Buffer.BlockCopy((Array) data, 0, (Array) numArray, 4, head);
       
-      for (int index = 1; index <= this.HighIndex; ++index)
+      for (int index = 0; index <= this.HighIndex; ++index)
       {
         if (this._socket.ContainsKey(index))
           this.SendDataTo(ref index, ref numArray);
