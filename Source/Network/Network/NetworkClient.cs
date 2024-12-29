@@ -248,146 +248,140 @@ namespace Mirage.Sharp.Asfw.Network
       this._socket.BeginReceive(this._receiveBuffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), (object) null);
     }
 
-        private void DoReceive(IAsyncResult ar)
+    private void DoReceive(IAsyncResult ar)
+    {
+        if (this._socket == null)
+            return;
+        int length1;
+        try
+        {
+            length1 = this._socket.EndReceive(ar);
+        }
+        catch (Exception e)
+        {
+            NetworkClient.CrashReportArgs crashReport = this.CrashReport;
+            if (crashReport != null)
+                crashReport("ConnectionForciblyClosedException");
+            this.Disconnect();
+            return;
+        }
+        if (length1 < 1)
         {
             if (this._socket == null)
-                return;
-            int length1;
-            try
             {
-                length1 = this._socket.EndReceive(ar);
-            }
-            catch (Exception e)
-            {
-                NetworkClient.CrashReportArgs crashReport = this.CrashReport;
-                if (crashReport != null)
-                    crashReport("ConnectionForciblyClosedException");
-                this.Disconnect();
+                Console.WriteLine("Socket is null after receiving data.");
                 return;
             }
-            if (length1 < 1)
+            NetworkClient.CrashReportArgs crashReport = this.CrashReport;
+            if (crashReport != null)
+                crashReport("BufferUnderflowException");
+            this.Disconnect();
+        }
+        else
+        {
+            NetworkClient.TrafficInfoArgs trafficReceived = this.TrafficReceived;
+            if (trafficReceived != null)
+                trafficReceived(length1, ref this._receiveBuffer);
+            if (this._packetRing == null)
             {
-                if (this._socket == null)
-                {
-                    Console.WriteLine("Socket is null after receiving data.");
-                    return;
-                }
-                NetworkClient.CrashReportArgs crashReport = this.CrashReport;
-                if (crashReport != null)
-                    crashReport("BufferUnderflowException");
-                this.Disconnect();
+                this._packetRing = new byte[length1];
+                Buffer.BlockCopy((Array)this._receiveBuffer, 0, (Array)this._packetRing, 0, length1);
             }
             else
             {
-                NetworkClient.TrafficInfoArgs trafficReceived = this.TrafficReceived;
-                if (trafficReceived != null)
-                    trafficReceived(length1, ref this._receiveBuffer);
-                if (this._packetRing == null)
-                {
-                    this._packetRing = new byte[length1];
-                    Buffer.BlockCopy((Array)this._receiveBuffer, 0, (Array)this._packetRing, 0, length1);
-                }
-                else
-                {
-                    int length2 = this._packetRing.Length;
-                    byte[] dst = new byte[length2 + length1];
-                    Buffer.BlockCopy((Array)this._packetRing, 0, (Array)dst, 0, length2);
-                    Buffer.BlockCopy((Array)this._receiveBuffer, 0, (Array)dst, length2, length1);
-                    this._packetRing = dst;
-                }
-                this.PacketHandler();
-                this._receiveBuffer = new byte[this._packetSize];
-                this._socket?.BeginReceive(this._receiveBuffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), (object)null);
+                int length2 = this._packetRing.Length;
+                byte[] dst = new byte[length2 + length1];
+                Buffer.BlockCopy((Array)this._packetRing, 0, (Array)dst, 0, length2);
+                Buffer.BlockCopy((Array)this._receiveBuffer, 0, (Array)dst, length2, length1);
+                this._packetRing = dst;
             }
+            this.PacketHandler();
+            this._receiveBuffer = new byte[this._packetSize];
+            this._socket?.BeginReceive(this._receiveBuffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), (object)null);
         }
+    }
 
         private void PacketHandler()
         {
-            if (this._packetRing == null || this.PacketID == null)
-            {
-                this.CrashReport?.Invoke("NullReferenceException");
-                this.Disconnect();
-                return;
-            }
-
-            int length = this._packetRing.Length;
+            int length1 = this._packetRing.Length;
             int num = 0;
-
-            while (num < length)
+            int count;
+            while (true)
             {
-                int remainingBytes = length - num;
-
-                // Validate minimum packet length
-                if (remainingBytes < 4)
+                count = length1 - num;
+                if (count >= 4)
                 {
-                    break;
-                }
-
-                int packetLength = BitConverter.ToInt32(this._packetRing, num);
-
-                // Validate packet length
-                if (packetLength < 4 || packetLength > remainingBytes)
-                {
-                    // Clear the packet ring and exit
-                    Console.WriteLine("Invalid packet detected. Clearing buffer.");
-                    this._packetRing = null;
-                    return;
-                }
-
-                int PacketIDIndex = num + 4;
-                if (PacketIDIndex + 4 > length)
-                {
-                    Console.WriteLine("Packet ID out of range. Clearing buffer.");
-                    this._packetRing = null;
-                    return;
-                }
-
-                int PacketID = BitConverter.ToInt32(this._packetRing, PacketIDIndex);
-
-                // Validate packet ID
-                if (PacketID < 0 || PacketID >= this.PacketID.Length || this.PacketID[PacketID] == null)
-                {
-                    Console.WriteLine("Invalid packet ID. Clearing buffer.");
-                    this._packetRing = null;
-                    return;
-                }
-
-                int dataLength = packetLength - 4;
-                byte[] data = new byte[dataLength];
-                if (PacketIDIndex + 4 + dataLength <= length)
-                {
-                    Buffer.BlockCopy(this._packetRing, PacketIDIndex + 4, data, 0, dataLength);
+                    int int32_1 = BitConverter.ToInt32(this._packetRing, num);
+                    if (int32_1 >= 4)
+                    {
+                        if (int32_1 <= count)
+                        {
+                            int startIndex = num + 4;
+                            int int32_2 = BitConverter.ToInt32(this._packetRing, startIndex);
+                            if (int32_2 >= 0 && int32_2 < this._packetCount)
+                            {
+                                if (this.PacketID[int32_2] != null)
+                                {
+                                    int length2 = int32_1 - 4;
+                                    byte[] data = new byte[length2];
+                                    if (length2 > 0)
+                                        Buffer.BlockCopy((Array)this._packetRing, startIndex + 4, (Array)data, 0, length2);
+                                    NetworkClient.PacketInfoArgs packetReceived = this.PacketReceived;
+                                    if (packetReceived != null)
+                                        packetReceived(length2, int32_2, ref data);
+                                    this.PacketID[int32_2](ref data);
+                                    num = startIndex + int32_1;
+                                }
+                                else
+                                    break;
+                            }
+                            else
+                                goto IndexOutOfRange;
+                        }
+                        else
+                            goto EmptyPacket;
+                    }
+                    else
+                        goto BrokenPacket;
                 }
                 else
-                {
-                    Console.WriteLine("Data length exceeds buffer bounds. Clearing buffer.");
-                    this._packetRing = null;
-                    return;
-                }
-
-                // Invoke packet handlers
-                this.PacketReceived?.Invoke(dataLength, PacketID, ref data);
-                this.PacketID[PacketID]?.Invoke(ref data);
-
-                num += packetLength;
+                    goto EmptyPacket;
             }
+            NetworkClient.CrashReportArgs crashReport1 = this.CrashReport;
 
-            // Trim remaining data in packet ring
-            if (num < length)
-            {
-                int remaining = length - num;
-                byte[] newBuffer = new byte[remaining];
-                Buffer.BlockCopy(this._packetRing, num, newBuffer, 0, remaining);
-                this._packetRing = newBuffer;
-            }
-            else
+            if (crashReport1 != null)
+                crashReport1("NullReferenceException");
+            this.Disconnect();
+            return;
+
+        IndexOutOfRange:
+            NetworkClient.CrashReportArgs crashReport2 = this.CrashReport;
+            if (crashReport2 != null)
+                crashReport2("IndexOutOfRangeException");
+            this.Disconnect();
+            return;
+
+        BrokenPacket:
+            NetworkClient.CrashReportArgs crashReport3 = this.CrashReport;
+            if (crashReport3 != null)
+                crashReport3("BrokenPacketException");
+            this.Disconnect();
+            return;
+
+        EmptyPacket:
+            if (count == 0)
             {
                 this._packetRing = null;
             }
+            else
+            {
+                byte[] dst = new byte[count];
+                Buffer.BlockCopy((Array)this._packetRing, num, (Array)dst, 0, count);
+                this._packetRing = dst;
+            }
         }
 
-
-        public void ReceiveData()
+    public void ReceiveData()
     {
       if (!this.ThreadControl)
         return;
@@ -439,7 +433,7 @@ namespace Mirage.Sharp.Asfw.Network
         {
             Console.WriteLine("Socket is not connected.");
             return; // Exit the method if the socket is not connected
-        }
+        }  
 
         if (data == null || data.Length < head)
         {
@@ -459,7 +453,6 @@ namespace Mirage.Sharp.Asfw.Network
             Console.WriteLine("Failed to send data: " + ex.Message);
         }
     }
-
 
     private void DoSend(IAsyncResult ar)
     {

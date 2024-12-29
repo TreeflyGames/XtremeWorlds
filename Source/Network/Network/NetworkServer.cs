@@ -587,7 +587,7 @@ namespace Mirage.Sharp.Asfw.Network
       {
         this._socket[asyncState].EndSend(ar);
       }
-      catch
+      catch (Exception e)
       {
         NetworkServer.CrashReportArgs crashReport = this.CrashReport;
         if (crashReport != null)
