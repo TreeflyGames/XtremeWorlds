@@ -1,10 +1,11 @@
-﻿using System;
-using Core;
-using static Core.Global.Command;
+﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-using Microsoft.Xna.Framework;
 using Mirage.Sharp.Asfw;
+using static Core.Global.Command;
+using Path = Core.Path;
+using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Client
 {

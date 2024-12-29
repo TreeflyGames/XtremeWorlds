@@ -16,3 +16,6 @@
 [submodule "Source/DarkUI"]
 	path = Source/DarkUI
 	url = https://github.com/RobinPerris/DarkUI.git
+[submodule "Source/Modules/Reoria.Engine"]
+	path = Source/Modules/Reoria.Engine
+	url = https://github.com/XerShade/Reoria.Engine.git

@@ -1,10 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using Core;
+﻿using Core;
 using Microsoft.VisualBasic;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Client
 {

@@ -1,31 +1,32 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using Core;
+﻿using Core;
 using Core.Common;
 using Core.Database;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
+using Reoria.Engine.Logging;
+using Reoria.Engine.Logging.Interfaces;
+using Reoria.Engine.Services;
+using Reoria.Engine.Services.Interfaces;
+using System.Diagnostics;
 using static Core.Type;
-using Configuration.Interfaces;
-using EngineServices.Providers.Interfaces;
-using Configuration;
-using EngineServices.Providers;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Server
 {
 
-    static class General
+    class General
     {
         public static Core.Random Random = new Core.Random();
 
-        public static IEngineConfiguration Configuration;
-        public static IEngineServiceProvider Services;
+        public static IConfiguration Configuration;
+        public static IEngineServiceContainer Services;
+        public static ILogger<T> GetLogger<T>() where T : class => Services.Provider.GetRequiredService<Logger<T>>();
 
         internal static bool ServerDestroyed;
-        internal static string MyIPAddress;
+        internal static string MyIPAddress = string.Empty;
         internal static Stopwatch myStopWatch = new Stopwatch();
         internal static Stopwatch shutDownTimer = new Stopwatch();
         internal static int shutDownLastTimer;
@@ -44,23 +45,27 @@ namespace Server
 
             myStopWatch.Start();
 
-            // Create the service provider.
-            using (IEngineConfigurationBuilder builder = new EngineConfigurationBuilder())
-            {
-                // Add setting files and environment variables to the builder.
-                builder.LoadSettingsFiles();
-                builder.LoadEnvironmentSettingsFiles();
-                builder.LoadEnvironmentVariables();
+            // Create the logging initalizer.
+            IEngineLoggingInitalizer loggingInitalizer = new SerilogLoggingInitalizer();
 
-                // The service provider will build and add the configuration to itself automatically.
-                var argconfigurationBuilder = builder;
-                Services = new EngineServiceProvider(ref argconfigurationBuilder);
-            }
+            // Create an early logging factory and logger.
+            ILoggerFactory loggerFactory = loggingInitalizer.Initialize();
+            ILogger logger = loggerFactory.CreateLogger<General>();
 
-            // TODO -> Implement services here, they need to be registered before the first Services.ServiceProvider call.
+            // Create a configuration builder and ojbect.
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.server.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.server.secret.json", optional: true, reloadOnChange: true);
+            Configuration = configurationBuilder.Build();
 
-            // Get the configuration from the service provider.
-            Configuration = Services.ServiceProvider.GetRequiredService<IEngineConfiguration>();
+            // Create the service container.
+            IEngineServiceContainer serviceContainer = new EngineServiceContainer(loggerFactory, Configuration)
+                .FindServiceLoaders()
+                .AddServices()
+                .ConfigureServices()
+                .BuildServiceProvider();
+            Services = serviceContainer;
 
             Settings.Load();
 

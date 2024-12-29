@@ -1,6 +1,10 @@
 ﻿using Core;
 using Microsoft.Xna.Framework;
 using Mirage.Sharp.Asfw.IO.Encryption;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Path = Core.Path;
 
 namespace Client
 {

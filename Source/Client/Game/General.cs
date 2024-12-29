@@ -1,19 +1,27 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Core;
-using static Core.Global.Command;
+﻿using Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.CompilerServices;
+using Reoria.Engine.Logging;
+using Reoria.Engine.Logging.Interfaces;
+using Reoria.Engine.Services;
+using Reoria.Engine.Services.Interfaces;
+using static Core.Global.Command;
 
 namespace Client
 {
 
-    static class General
+    class General
     {
         public static GameClient Client = new GameClient();
         public static GameState State = new GameState();
         public static Core.Random Random = new Core.Random();
         public static Gui Gui = new Gui();
+
+        public static IConfiguration Configuration;
+        public static IEngineServiceContainer Services;
+        public static ILogger<T> GetLogger<T>() where T : class => Services.Provider.GetRequiredService<Logger<T>>();
 
         internal static int GetTickCount()
         {
@@ -22,6 +30,27 @@ namespace Client
 
         public static void Startup()
         {
+            // Create the logging initalizer.
+            IEngineLoggingInitalizer loggingInitalizer = new SerilogLoggingInitalizer();
+
+            // Create an early logging factory and logger.
+            ILoggerFactory loggerFactory = loggingInitalizer.Initialize();
+
+            // Create a configuration builder and ojbect.
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.server.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.server.secret.json", optional: true, reloadOnChange: true);
+            Configuration = configurationBuilder.Build();
+
+            // Create the service container.
+            IEngineServiceContainer serviceContainer = new EngineServiceContainer(loggerFactory, Configuration)
+                .FindServiceLoaders()
+                .AddServices()
+                .ConfigureServices()
+                .BuildServiceProvider();
+            Services = serviceContainer;
+
             GameState.InMenu = true;
             ClearGameData();
             LoadGame();

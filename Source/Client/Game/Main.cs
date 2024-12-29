@@ -1,6 +1,5 @@
-﻿using System;
-using System.Windows.Forms;
-using static Core.Enum;
+﻿using static Core.Enum;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Client
 {

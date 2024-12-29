@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using Core;
-using static Core.Global.Command;
+﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-using Microsoft.Xna.Framework;
-using System.Net.Sockets;
-using Microsoft.VisualBasic.Devices;
+using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Text;
+using static Core.Global.Command;
+using Color = Microsoft.Xna.Framework.Color;
+using Path = Core.Path;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Client
 {
