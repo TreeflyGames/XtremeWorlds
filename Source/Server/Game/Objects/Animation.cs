@@ -125,10 +125,10 @@ namespace Server
 
             SendAnimations(index);
 
-            var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((int) ServerPackets.SAnimationEditor);
-            NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
-            Buffer.Dispose();
+            var buffer = new ByteStream(4);
+            buffer.WriteInt32((int) ServerPackets.SAnimationEditor);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            buffer.Dispose();
         }
 
         public static void Packet_SaveAnimation(int index, ref byte[] data)
@@ -165,10 +165,10 @@ namespace Server
 
         public static void Packet_RequestAnimation(int index, ref byte[] data)
         {
-            var Buffer = new ByteStream(data);
+            var buffer = new ByteStream(data);
             int n;
 
-            n = Buffer.ReadInt32();
+            n = buffer.ReadInt32();
 
             if (n <= 0 | n > Core.Constant.MAX_ANIMATIONS)
                 return;
@@ -220,7 +220,7 @@ namespace Server
 
             buffer.WriteBlock(AnimationData(AnimationNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 

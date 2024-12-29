@@ -421,7 +421,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -442,7 +442,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -469,7 +469,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -490,7 +490,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -516,7 +516,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -537,7 +537,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -563,7 +563,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -584,7 +584,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -1699,7 +1699,7 @@ namespace Server
                     }
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
 
         }
@@ -1725,7 +1725,7 @@ namespace Server
             }
             else
             {
-                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             }
 
             buffer.Dispose();
@@ -1881,7 +1881,7 @@ namespace Server
             }
 
             // End Event Data
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
             SendSwitchesAndVariables(index);
 

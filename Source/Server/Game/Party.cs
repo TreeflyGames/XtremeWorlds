@@ -37,7 +37,8 @@ namespace Server
             {
                 if (PartyField[partyNum].Member[i] > 0)
                 {
-                    NetworkConfig.Socket.SendDataTo(PartyField[partyNum].Member[i], data, data.Length);
+                    var dataSize = data.Length;
+                    NetworkConfig.Socket.SendDataTo(ref PartyField[partyNum].Member[i], ref data, ref dataSize);
                 }
             }
         }
@@ -49,7 +50,7 @@ namespace Server
 
             buffer.WriteString(Core.Type.Player[target].Name);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -102,7 +103,7 @@ namespace Server
                 buffer.WriteInt32(0);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 

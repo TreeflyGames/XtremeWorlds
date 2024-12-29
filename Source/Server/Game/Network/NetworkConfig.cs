@@ -120,7 +120,7 @@ namespace Server
         internal static void SendDataToAll(ref byte[] data, int head)
         {
             for (int i = 1, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
-                Socket.SendDataTo(i, data, head);
+                Socket.SendDataTo(ref i, ref data, ref head);
         }
 
         public static void SendDataToAllBut(int index, ref byte[] data, int head)
@@ -129,7 +129,7 @@ namespace Server
             {
                 if (i != index)
                 {
-                    Socket.SendDataTo(i, data, head);
+                    Socket.SendDataTo(ref i, ref data, ref head);
                 }
             }
         }
@@ -140,7 +140,7 @@ namespace Server
             {
                 if (GetPlayerMap(i) == mapNum & i != index)
                 {
-                    Socket.SendDataTo(i, data, head);
+                    Socket.SendDataTo(ref i, ref data, ref head);
                 }
             }
         }
@@ -155,16 +155,16 @@ namespace Server
 
                 if (GetPlayerMap(i) == MapNum)
                 {
-                    Socket.SendDataTo(i, data, head);
+                    Socket.SendDataTo(ref i, ref data, ref head);
                 }
 
             }
 
         }
 
-        public static void SendDataTo(int index, ref byte[] data, int head)
+        public static void SendDataTo(int index, ref byte[] data, ref int head)
         {
-            Socket.SendDataTo(index, data, head);
+            Socket.SendDataTo(ref index, ref data, ref head);
         }
 
         #region Events

@@ -137,7 +137,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SProjectileEditor);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
 
         }
@@ -301,7 +301,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Speed);
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Damage);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
 
         }

@@ -161,32 +161,33 @@ namespace Server
 
                                 if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == false & id > 0)
                                 {
-                                    var Buffer = new ByteStream(4);
-                                    Buffer.WriteInt32((int)Packets.ServerPackets.SSpawnEvent);
-                                    Buffer.WriteInt32(id);
+                                    var buffer = new ByteStream(4);
+                                    buffer.WriteInt32((int)Packets.ServerPackets.SSpawnEvent);
+                                    buffer.WriteInt32(id);
                                     {
                                         var withBlock = Core.Type.TempPlayer[i].EventMap.EventPages[x];
-                                        Buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock.EventID].Name);
-                                        Buffer.WriteInt32(withBlock.Dir);
-                                        Buffer.WriteByte(withBlock.GraphicType);
-                                        Buffer.WriteInt32(withBlock.Graphic);
-                                        Buffer.WriteInt32(withBlock.GraphicX);
-                                        Buffer.WriteInt32(withBlock.GraphicX2);
-                                        Buffer.WriteInt32(withBlock.GraphicY);
-                                        Buffer.WriteInt32(withBlock.GraphicY2);
-                                        Buffer.WriteInt32(withBlock.MovementSpeed);
-                                        Buffer.WriteInt32(withBlock.X);
-                                        Buffer.WriteInt32(withBlock.Y);
-                                        Buffer.WriteByte(withBlock.Position);
-                                        Buffer.WriteBoolean(withBlock.Visible);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].WalkAnim);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].DirFix);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].WalkThrough);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].ShowName);
-                                        Buffer.WriteInt32(withBlock.QuestNum);
+                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock.EventID].Name);
+                                        buffer.WriteInt32(withBlock.Dir);
+                                        buffer.WriteByte(withBlock.GraphicType);
+                                        buffer.WriteInt32(withBlock.Graphic);
+                                        buffer.WriteInt32(withBlock.GraphicX);
+                                        buffer.WriteInt32(withBlock.GraphicX2);
+                                        buffer.WriteInt32(withBlock.GraphicY);
+                                        buffer.WriteInt32(withBlock.GraphicY2);
+                                        buffer.WriteInt32(withBlock.MovementSpeed);
+                                        buffer.WriteInt32(withBlock.X);
+                                        buffer.WriteInt32(withBlock.Y);
+                                        buffer.WriteByte(withBlock.Position);
+                                        buffer.WriteBoolean(withBlock.Visible);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].WalkAnim);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].DirFix);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].WalkThrough);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].ShowName);
+                                        buffer.WriteInt32(withBlock.QuestNum);
                                     }
-                                    NetworkConfig.Socket.SendDataTo(i, Buffer.Data, Buffer.Head);
-                                    Buffer.Dispose();
+
+                                    NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
+                                    buffer.Dispose();
                                 }
                             }
                         }
@@ -501,34 +502,34 @@ namespace Server
                                         }
                                     }
 
-                                    var Buffer = new ByteStream(4);
-                                    Buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
-                                    Buffer.WriteInt32(id);
+                                    var buffer = new ByteStream(4);
+                                    buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
+                                    buffer.WriteInt32(id);
                                     {
                                         var withBlock1 = Core.Type.TempPlayer[i].EventMap.EventPages[x];
-                                        Buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Name);
-                                        Buffer.WriteInt32(withBlock1.Dir);
-                                        Buffer.WriteByte(withBlock1.GraphicType);
-                                        Buffer.WriteInt32(withBlock1.Graphic);
-                                        Buffer.WriteInt32(withBlock1.GraphicX);
-                                        Buffer.WriteInt32(withBlock1.GraphicX2);
-                                        Buffer.WriteInt32(withBlock1.GraphicY);
-                                        Buffer.WriteInt32(withBlock1.GraphicY2);
-                                        Buffer.WriteInt32(withBlock1.MovementSpeed);
-                                        Buffer.WriteInt32(withBlock1.X);
-                                        Buffer.WriteInt32(withBlock1.Y);
-                                        Buffer.WriteByte(withBlock1.Position);
-                                        Buffer.WriteBoolean(withBlock1.Visible);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkAnim);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].DirFix);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
-                                        Buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].QuestNum);
-                                        Buffer.WriteInt32(withBlock1.QuestNum);
+                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Name);
+                                        buffer.WriteInt32(withBlock1.Dir);
+                                        buffer.WriteByte(withBlock1.GraphicType);
+                                        buffer.WriteInt32(withBlock1.Graphic);
+                                        buffer.WriteInt32(withBlock1.GraphicX);
+                                        buffer.WriteInt32(withBlock1.GraphicX2);
+                                        buffer.WriteInt32(withBlock1.GraphicY);
+                                        buffer.WriteInt32(withBlock1.GraphicY2);
+                                        buffer.WriteInt32(withBlock1.MovementSpeed);
+                                        buffer.WriteInt32(withBlock1.X);
+                                        buffer.WriteInt32(withBlock1.Y);
+                                        buffer.WriteByte(withBlock1.Position);
+                                        buffer.WriteBoolean(withBlock1.Visible);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkAnim);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].DirFix);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
+                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].QuestNum);
+                                        buffer.WriteInt32(withBlock1.QuestNum);
                                     }
-                                    NetworkConfig.Socket.SendDataTo(i, Buffer.Data, Buffer.Head);
+                                    NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
 
-                                    Buffer.Dispose();
+                                    buffer.Dispose();
                                     z = 0;
                                 }
                             }
@@ -550,7 +551,7 @@ namespace Server
             bool IsGlobal;
             int mapNum;
             var actualmovespeed = default(int);
-            ByteStream Buffer;
+            ByteStream buffer;
             var z = default(int);
             var sendupdate = default(bool);
             var donotprocessmoveroute = default(bool);
@@ -1165,32 +1166,32 @@ namespace Server
 
                                                             if (sendupdate)
                                                             {
-                                                                Buffer = new ByteStream(4);
-                                                                Buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
-                                                                Buffer.WriteInt32(EventID);
+                                                                buffer = new ByteStream(4);
+                                                                buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
+                                                                buffer.WriteInt32(EventID);
                                                                 {
                                                                     var withBlock1 = Event.TempEventMap[i].Event[x];
-                                                                    Buffer.WriteString(Map[i].Event[x].Name);
-                                                                    Buffer.WriteInt32(withBlock1.Dir);
-                                                                    Buffer.WriteByte(withBlock1.GraphicType);
-                                                                    Buffer.WriteInt32(withBlock1.Graphic);
-                                                                    Buffer.WriteInt32(withBlock1.GraphicX);
-                                                                    Buffer.WriteInt32(withBlock1.GraphicX2);
-                                                                    Buffer.WriteInt32(withBlock1.GraphicY);
-                                                                    Buffer.WriteInt32(withBlock1.GraphicY2);
-                                                                    Buffer.WriteByte(withBlock1.MoveSpeed);
-                                                                    Buffer.WriteInt32(withBlock1.X);
-                                                                    Buffer.WriteInt32(withBlock1.Y);
-                                                                    Buffer.WriteByte(withBlock1.Position);
-                                                                    Buffer.WriteInt32(withBlock1.Active);
-                                                                    Buffer.WriteInt32(withBlock1.WalkingAnim);
-                                                                    Buffer.WriteInt32(withBlock1.FixedDir);
-                                                                    Buffer.WriteInt32(withBlock1.WalkThrough);
-                                                                    Buffer.WriteInt32(withBlock1.ShowName);
-                                                                    Buffer.WriteInt32(withBlock1.QuestNum);
+                                                                    buffer.WriteString(Map[i].Event[x].Name);
+                                                                    buffer.WriteInt32(withBlock1.Dir);
+                                                                    buffer.WriteByte(withBlock1.GraphicType);
+                                                                    buffer.WriteInt32(withBlock1.Graphic);
+                                                                    buffer.WriteInt32(withBlock1.GraphicX);
+                                                                    buffer.WriteInt32(withBlock1.GraphicX2);
+                                                                    buffer.WriteInt32(withBlock1.GraphicY);
+                                                                    buffer.WriteInt32(withBlock1.GraphicY2);
+                                                                    buffer.WriteByte(withBlock1.MoveSpeed);
+                                                                    buffer.WriteInt32(withBlock1.X);
+                                                                    buffer.WriteInt32(withBlock1.Y);
+                                                                    buffer.WriteByte(withBlock1.Position);
+                                                                    buffer.WriteInt32(withBlock1.Active);
+                                                                    buffer.WriteInt32(withBlock1.WalkingAnim);
+                                                                    buffer.WriteInt32(withBlock1.FixedDir);
+                                                                    buffer.WriteInt32(withBlock1.WalkThrough);
+                                                                    buffer.WriteInt32(withBlock1.ShowName);
+                                                                    buffer.WriteInt32(withBlock1.QuestNum);
                                                                 }
-                                                                NetworkConfig.SendDataToMap(i, ref Buffer.Data, Buffer.Head);
-                                                                Buffer.Dispose();
+                                                                NetworkConfig.SendDataToMap(i, ref buffer.Data, buffer.Head);
+                                                                buffer.Dispose();
                                                             }
                                                         }
                                                         donotprocessmoveroute = Conversions.ToBoolean(0);
@@ -1249,7 +1250,7 @@ namespace Server
             bool IsGlobal;
             int mapNum;
             var actualmovespeed = default(int);
-            ByteStream Buffer;
+            ByteStream buffer;
             var z = default(int);
             bool sendupdate;
             var donotprocessmoveroute = default(bool);
@@ -1881,32 +1882,32 @@ namespace Server
 
                                                             if (sendupdate & Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID > 0)
                                                             {
-                                                                Buffer = new ByteStream(4);
-                                                                Buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
-                                                                Buffer.WriteInt32(Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID);
+                                                                buffer = new ByteStream(4);
+                                                                buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
+                                                                buffer.WriteInt32(Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID);
                                                                 {
                                                                     var withBlock1 = Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID];
-                                                                    Buffer.WriteString(Map[GetPlayerMap(playerID)].Event[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID].Name);
-                                                                    Buffer.WriteInt32(withBlock1.Dir);
-                                                                    Buffer.WriteByte(withBlock1.GraphicType);
-                                                                    Buffer.WriteInt32(withBlock1.Graphic);
-                                                                    Buffer.WriteInt32(withBlock1.GraphicX);
-                                                                    Buffer.WriteInt32(withBlock1.GraphicX2);
-                                                                    Buffer.WriteInt32(withBlock1.GraphicY);
-                                                                    Buffer.WriteInt32(withBlock1.GraphicY2);
-                                                                    Buffer.WriteInt32(withBlock1.MoveSpeed);
-                                                                    Buffer.WriteInt32(withBlock1.X);
-                                                                    Buffer.WriteInt32(withBlock1.Y);
-                                                                    Buffer.WriteByte(withBlock1.Position);
-                                                                    Buffer.WriteBoolean(withBlock1.Visible);
-                                                                    Buffer.WriteInt32(withBlock1.WalkingAnim);
-                                                                    Buffer.WriteInt32(withBlock1.FixedDir);
-                                                                    Buffer.WriteInt32(withBlock1.WalkThrough);
-                                                                    Buffer.WriteInt32(withBlock1.ShowName);
-                                                                    Buffer.WriteInt32(withBlock1.QuestNum);
+                                                                    buffer.WriteString(Map[GetPlayerMap(playerID)].Event[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID].Name);
+                                                                    buffer.WriteInt32(withBlock1.Dir);
+                                                                    buffer.WriteByte(withBlock1.GraphicType);
+                                                                    buffer.WriteInt32(withBlock1.Graphic);
+                                                                    buffer.WriteInt32(withBlock1.GraphicX);
+                                                                    buffer.WriteInt32(withBlock1.GraphicX2);
+                                                                    buffer.WriteInt32(withBlock1.GraphicY);
+                                                                    buffer.WriteInt32(withBlock1.GraphicY2);
+                                                                    buffer.WriteInt32(withBlock1.MoveSpeed);
+                                                                    buffer.WriteInt32(withBlock1.X);
+                                                                    buffer.WriteInt32(withBlock1.Y);
+                                                                    buffer.WriteByte(withBlock1.Position);
+                                                                    buffer.WriteBoolean(withBlock1.Visible);
+                                                                    buffer.WriteInt32(withBlock1.WalkingAnim);
+                                                                    buffer.WriteInt32(withBlock1.FixedDir);
+                                                                    buffer.WriteInt32(withBlock1.WalkThrough);
+                                                                    buffer.WriteInt32(withBlock1.ShowName);
+                                                                    buffer.WriteInt32(withBlock1.QuestNum);
                                                                 }
-                                                                NetworkConfig.Socket.SendDataTo(playerID, Buffer.Data, Buffer.Head);
-                                                                Buffer.Dispose();
+                                                                NetworkConfig.Socket.SendDataTo(ref playerID, ref buffer.Data, ref buffer.Head);
+                                                                buffer.Dispose();
                                                             }
                                                         }
                                                         donotprocessmoveroute = Conversions.ToBoolean(0);
@@ -2165,7 +2166,7 @@ namespace Server
                                                                         {
                                                                             buffer.WriteInt32(2);
                                                                         }
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
                                                                         buffer.Dispose();
                                                                         withBlock1.WaitingForResponse = 0;
                                                                         break;
@@ -2242,7 +2243,7 @@ namespace Server
                                                                         {
                                                                             buffer.WriteInt32(2);
                                                                         }
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
                                                                         buffer.Dispose();
                                                                         withBlock1.WaitingForResponse = 0;
                                                                         break;
@@ -2969,7 +2970,7 @@ namespace Server
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SPlayBGM);
                                                                         buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1);
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
                                                                         buffer.Dispose();
                                                                         break;
                                                                     }
@@ -2977,7 +2978,7 @@ namespace Server
                                                                     {
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SFadeoutBGM);
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
                                                                         buffer.Dispose();
                                                                         break;
                                                                     }
@@ -2988,7 +2989,7 @@ namespace Server
                                                                         buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1);
                                                                         buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].X);
                                                                         buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].Y);
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
                                                                         buffer.Dispose();
                                                                         break;
                                                                     }
@@ -2996,7 +2997,7 @@ namespace Server
                                                                     {
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SStopSound);
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
                                                                         buffer.Dispose();
                                                                         break;
                                                                     }
@@ -3119,7 +3120,7 @@ namespace Server
                                                                         buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2);
                                                                         buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
                                                                         buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
 
                                                                         buffer.Dispose();
                                                                         break;
@@ -3129,7 +3130,7 @@ namespace Server
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SPic);
                                                                         buffer.WriteByte(0);
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
 
                                                                         buffer.Dispose();
                                                                         break;
@@ -3159,7 +3160,7 @@ namespace Server
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SHoldPlayer);
                                                                         buffer.WriteInt32(0);
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
 
                                                                         buffer.Dispose();
                                                                         break;
@@ -3169,7 +3170,7 @@ namespace Server
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SHoldPlayer);
                                                                         buffer.WriteInt32(1);
-                                                                        NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+                                                                        NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
 
                                                                         buffer.Dispose();
                                                                         break;
@@ -4095,7 +4096,7 @@ namespace Server
                             buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].ShowName);
                             buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].QuestNum);
                         }
-                        NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                        NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
                         buffer.Dispose();
                     }

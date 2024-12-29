@@ -1415,15 +1415,15 @@ namespace Client
 
         public void MapEditorCancel()
         {
-            ByteStream Buffer;
+            ByteStream buffer;
 
             if (GameState.MyEditorType != (int)EditorType.Map)
                 return;
 
-            Buffer = new ByteStream(4);
-            Buffer.WriteInt32((int)Packets.ClientPackets.CNeedMap);
-            Buffer.WriteInt32(1);
-            NetworkConfig.Socket?.SendData(Buffer.Data, Buffer.Head);
+            buffer = new ByteStream(4);
+            buffer.WriteInt32((int)Packets.ClientPackets.CNeedMap);
+            buffer.WriteInt32(1);
+            NetworkConfig.Socket?.SendData(buffer.Data, buffer.Head);
             GameState.MyEditorType = -1;
             GameState.GettingMap = true;
             NetworkSend.SendCloseEditor();

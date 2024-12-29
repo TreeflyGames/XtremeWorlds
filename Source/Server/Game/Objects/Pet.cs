@@ -194,7 +194,7 @@ namespace Server
                 buffer.WriteInt32(withBlock.EvolveNum);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
 
@@ -235,7 +235,7 @@ namespace Server
 
             if (ownerOnly)
             {
-                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             }
             else
             {
@@ -274,7 +274,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SPetExp);
             buffer.WriteInt32(GetPetExp(index));
             buffer.WriteInt32(GetPetNextLevel(index));
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -324,7 +324,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SClearPetSkillBuffer);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
 
@@ -356,7 +356,7 @@ namespace Server
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Pet;
 
             buffer.WriteInt32((int) ServerPackets.SPetEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
 
@@ -678,10 +678,10 @@ namespace Server
 
         public static void Packet_RequestPet(int index, ref byte[] data)
         {
-            var Buffer = new ByteStream(data);
+            var buffer = new ByteStream(data);
             int n;
 
-            n = Buffer.ReadInt32();
+            n = buffer.ReadInt32();
 
             if (n <= 0 | n > Core.Constant.MAX_RESOURCES)
                 return;

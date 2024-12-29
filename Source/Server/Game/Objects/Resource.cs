@@ -182,7 +182,7 @@ namespace Server
 
         public static void Packet_EditResource(int index, ref byte[] data)
         {
-            var Buffer = new ByteStream(4);
+            var buffer = new ByteStream(4);
 
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
@@ -207,10 +207,10 @@ namespace Server
             Animation.SendAnimations(index);
             SendResources(index);
 
-            Buffer.WriteInt32((int) ServerPackets.SResourceEditor);
-            NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
+            buffer.WriteInt32((int) ServerPackets.SResourceEditor);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
-            Buffer.Dispose();
+            buffer.Dispose();
         }
 
         public static void Packet_SaveResource(int index, ref byte[] data)
@@ -254,10 +254,10 @@ namespace Server
 
         public static void Packet_RequestResource(int index, ref byte[] data)
         {
-            var Buffer = new ByteStream(data);
+            var buffer = new ByteStream(data);
             int n;
 
-            n = Buffer.ReadInt32();
+            n = buffer.ReadInt32();
 
             if (n <= 0 | n > Core.Constant.MAX_RESOURCES)
                 return;
@@ -293,7 +293,7 @@ namespace Server
 
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -347,7 +347,7 @@ namespace Server
 
             buffer.WriteBlock(ResourceData(ResourceNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 

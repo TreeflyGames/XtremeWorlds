@@ -1244,11 +1244,11 @@ namespace Server
             NetworkSend.SendSkills(index);
             SendNPCs(index);
 
-            var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((int) ServerPackets.SNPCEditor);
-            NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
+            var buffer = new ByteStream(4);
+            buffer.WriteInt32((int) ServerPackets.SNPCEditor);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
-            Buffer.Dispose();
+            buffer.Dispose();
         }
 
         public static void Packet_SaveNPC(int index, ref byte[] data)
@@ -1360,7 +1360,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Level);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Damage);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -1428,7 +1428,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(byte) VitalType.SP]);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1477,22 +1477,22 @@ namespace Server
 
         public static void SendNPCAttack(int index, int NPCNum)
         {
-            var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((int) ServerPackets.SAttack);
+            var buffer = new ByteStream(4);
+            buffer.WriteInt32((int) ServerPackets.SAttack);
 
-            Buffer.WriteInt32(NPCNum);
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), ref Buffer.Data, Buffer.Head);
-            Buffer.Dispose();
+            buffer.WriteInt32(NPCNum);
+            NetworkConfig.SendDataToMap(GetPlayerMap(index), ref buffer.Data, buffer.Head);
+            buffer.Dispose();
         }
 
         public static void SendNPCDead(int MapNum, int index)
         {
-            var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((int) ServerPackets.SNPCDead);
+            var buffer = new ByteStream(4);
+            buffer.WriteInt32((int) ServerPackets.SNPCDead);
 
-            Buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMap(MapNum, ref Buffer.Data, Buffer.Head);
-            Buffer.Dispose();
+            buffer.WriteInt32(index);
+            NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+            buffer.Dispose();
         }
 
         #endregion

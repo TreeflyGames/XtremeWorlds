@@ -16,7 +16,7 @@ namespace Server
     static class NetworkSend
     {
 
-        public static void AlertMsg(long index, byte menuNo, int menuReset = 0, bool kick = true)
+        public static void AlertMsg(int index, byte menuNo, int menuReset = 0, bool kick = true)
         {
             var buffer = new ByteStream(4);
 
@@ -26,7 +26,7 @@ namespace Server
             buffer.WriteInt32(kick ? 1 : 0);
 
             Database.ClearAccount((int)index);
-            NetworkConfig.Socket.SendDataTo((int)index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -49,30 +49,30 @@ namespace Server
             buffer.WriteString(msg);
             buffer.WriteInt32(color);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
-        public static void SendPlayerChars(long index)
+        public static void SendPlayerChars(int index)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SPlayerChars);
 
             // loop through each character. clear, load, add. repeat.
-            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= (int)loopTo; i++)
+            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= loopTo; i++)
             {
-                Database.LoadCharacter((int)index, Conversions.ToInteger(i));
+                Database.LoadCharacter(index, Conversions.ToInteger(i));
 
-                buffer.WriteString(Core.Type.Player[(int)index].Name);
-                buffer.WriteInt32(Core.Type.Player[(int)index].Sprite);
-                buffer.WriteInt32(Core.Type.Player[(int)index].Access);
-                buffer.WriteInt32(Core.Type.Player[(int)index].Job);
+                buffer.WriteString(Core.Type.Player[index].Name);
+                buffer.WriteInt32(Core.Type.Player[index].Sprite);
+                buffer.WriteInt32(Core.Type.Player[index].Access);
+                buffer.WriteInt32(Core.Type.Player[index].Job);
 
-                Database.ClearCharacter((int)index);
+                Database.ClearCharacter(index);
             }
 
-            NetworkConfig.Socket.SendDataTo((int)index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -105,7 +105,7 @@ namespace Server
             buffer.WriteByte(Core.Type.Job[jobNum].StartY);
             buffer.WriteInt32(Core.Type.Job[jobNum].BaseExp);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -113,7 +113,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SCloseTrade);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -127,19 +127,19 @@ namespace Server
             buffer.WriteInt32(GetPlayerExp(index));
             buffer.WriteInt32(GetPlayerNextLevel(index));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
         public static void SendLoginOK(int index)
         {
-            var Buffer = new ByteStream(4);
+            var buffer = new ByteStream(4);
 
-            Buffer.WriteInt32((int) ServerPackets.SLoginOK);
-            Buffer.WriteInt32(index);
-            NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
+            buffer.WriteInt32((int) ServerPackets.SLoginOK);
+            buffer.WriteInt32(index);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
-            Buffer.Dispose();
+            buffer.Dispose();
         }
 
         public static void SendInGame(int index)
@@ -147,7 +147,7 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SInGame);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -163,7 +163,7 @@ namespace Server
             for (i = 0; i <= (int)loopTo; i++)
                 buffer.WriteBlock(Database.JobData(i));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -186,7 +186,7 @@ namespace Server
 
             buffer.WriteBlock(Database.JobData(jobNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -217,7 +217,7 @@ namespace Server
                 buffer.WriteInt32(GetPlayerInvValue(index, i));
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -239,7 +239,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SLeftGame);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -266,7 +266,7 @@ namespace Server
             for (int i = 0, loopTo = (int)(EquipmentType.Count - 1); i <= (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerEquipment(PlayerNum, (EquipmentType)i));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -305,7 +305,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].ItemValue);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -381,7 +381,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Skill[skillnum].KnockBack);
             buffer.WriteInt32(Core.Type.Skill[skillnum].KnockBackTiles);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -434,7 +434,7 @@ namespace Server
             for (int i = 0, loopTo = (int)(StatType.Count - 1); i < (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -469,7 +469,7 @@ namespace Server
 
             // Set and send related data.
             buffer.WriteInt32(amount);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
 
@@ -532,7 +532,7 @@ namespace Server
             for (int i = 0, loopTo = (int)(EquipmentType.Count - 1); i <= (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -772,7 +772,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SMapData);
             buffer.WriteBlock(data);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -781,6 +781,7 @@ namespace Server
         {
             int i;
             byte[] data;
+            int dataSize;
 
             // Send all players on current map to index
             var loopTo = NetworkConfig.Socket.HighIndex - 1;
@@ -789,8 +790,9 @@ namespace Server
                 if (GetPlayerMap(i) == GetPlayerMap(index))
                 {
                     data = PlayerData(i);
-                    NetworkConfig.Socket.SendDataTo(index, data, data.Length);
-                    SendPlayerXYTo(index, i);
+                    dataSize = data.Length;
+                    NetworkConfig.Socket.SendDataTo(ref index, ref data, ref dataSize);
+                    SendPlayerXYTo(index, i);         
                 }
             }
 
@@ -803,37 +805,39 @@ namespace Server
 
         public static byte[] PlayerData(int index)
         {
-            byte[] PlayerDataRet = default;
-            var buffer = new ByteStream(4);
-            int i;
+            byte[] playerDataRet;
 
-            buffer.WriteInt32((int) ServerPackets.SPlayerData);
-            buffer.WriteInt32(index);
-            buffer.WriteString(GetPlayerName(index));
-            buffer.WriteInt32(Player.GetPlayerJob(index));
-            buffer.WriteInt32(GetPlayerLevel(index));
-            buffer.WriteInt32(GetPlayerPoints(index));
-            buffer.WriteInt32(GetPlayerSprite(index));
-            buffer.WriteInt32(GetPlayerMap(index));
-            buffer.WriteInt32(GetPlayerAccess(index));
-            buffer.WriteInt32(GetPlayerPK(index));
-
-            var loopTo = (int)StatType.Count - 1;
-            for (i = 0; i < (int)loopTo; i++)
-                buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
-
-            var loopTo1 = (int)ResourceType.Count - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            using (var buffer = new ByteStream(4))
             {
-                buffer.WriteInt32(GetPlayerGatherSkillLvl(index, i));
-                buffer.WriteInt32(GetPlayerGatherSkillExp(index, i));
-                buffer.WriteInt32(GetPlayerGatherSkillMaxExp(index, i));
+                buffer.WriteInt32((int)ServerPackets.SPlayerData);
+                buffer.WriteInt32(index);
+                buffer.WriteString(GetPlayerName(index));
+                buffer.WriteInt32(GetPlayerJob(index));
+                buffer.WriteInt32(GetPlayerLevel(index));
+                buffer.WriteInt32(GetPlayerPoints(index));
+                buffer.WriteInt32(GetPlayerSprite(index));
+                buffer.WriteInt32(GetPlayerMap(index));
+                buffer.WriteInt32(GetPlayerAccess(index));
+                buffer.WriteInt32(GetPlayerPK(index));
+
+                foreach (StatType stat in System.Enum.GetValues(typeof(StatType)))
+                {
+                    if (stat == StatType.Count) continue;
+                    buffer.WriteInt32(GetPlayerStat(index, stat));
+                }
+
+                foreach (ResourceType resource in System.Enum.GetValues(typeof(ResourceType)))
+                {
+                    if (resource == ResourceType.Count) continue;
+                    buffer.WriteInt32(GetPlayerGatherSkillLvl(index, (int)resource));
+                    buffer.WriteInt32(GetPlayerGatherSkillExp(index, (int)resource));
+                    buffer.WriteInt32(GetPlayerGatherSkillMaxExp(index, (int)resource));
+                }
+
+                playerDataRet = buffer.ToArray();
             }
 
-            PlayerDataRet = buffer.ToArray();
-
-            buffer.Dispose();
-            return PlayerDataRet;
+            return playerDataRet;
         }
 
         public static void SendPlayerXY(int index)
@@ -846,7 +850,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerY(index));
             buffer.WriteInt32(GetPlayerDir(index));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -861,7 +865,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerY(playerNum));
             buffer.WriteInt32(GetPlayerDir(playerNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -920,7 +924,7 @@ namespace Server
             {
                 if (GetPlayerAccess(i) >= (int)AccessType.Moderator)
                 {
-                    NetworkConfig.SendDataTo(i, ref buffer.Data, buffer.Head);
+                    NetworkConfig.SendDataTo(i, ref buffer.Data, ref buffer.Head);
                 }
             }
 
@@ -940,7 +944,7 @@ namespace Server
 
             if (PlayerOnlyNum > 0)
             {
-                NetworkConfig.Socket.SendDataTo(PlayerOnlyNum, buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendDataTo(ref PlayerOnlyNum, ref buffer.Data, ref buffer.Head);
             }
             else
             {
@@ -1002,7 +1006,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerInv(index, InvSlot));
             buffer.WriteInt32(GetPlayerInvValue(index, InvSlot));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1013,7 +1017,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SOpenShop);
             buffer.WriteInt32(ShopNum);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1043,7 +1047,7 @@ namespace Server
                 buffer.WriteInt32(Bank[index].Item[i].Value);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -1053,7 +1057,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SClearSkillBuffer);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1064,7 +1068,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.STradeInvite);
             buffer.WriteInt32(Tradeindex);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1076,7 +1080,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.STrade);
             buffer.WriteInt32(TradeTarget);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1152,7 +1156,7 @@ namespace Server
             // send total worth of trade
             buffer.WriteInt32(totalWorth);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1163,7 +1167,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.STradeStatus);
             buffer.WriteInt32(Status);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1175,7 +1179,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SStunned);
             buffer.WriteInt32(Core.Type.TempPlayer[index].StunDuration);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1204,7 +1208,7 @@ namespace Server
             for (i = 0; i <= (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerSkill(index, i));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
@@ -1215,7 +1219,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SCooldown);
             buffer.WriteInt32(Slot);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1228,7 +1232,7 @@ namespace Server
             buffer.WriteInt32(Target);
             buffer.WriteInt32(TargetType);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1244,7 +1248,7 @@ namespace Server
             for (var i = 0; i <= (int)loopTo; i++)
                 buffer.WriteString(Core.Type.Map[i].Name);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1255,7 +1259,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SAdmin);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1271,7 +1275,7 @@ namespace Server
             for (var i = 0; i <= (int)loopTo; i++)
                 buffer.WriteString(Core.Type.Map[i].Name);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1290,7 +1294,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.Player[index].Hotbar[i].SlotType);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1301,7 +1305,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SCritical);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1312,7 +1316,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SKeyPair);
             buffer.WriteString(Global.EKeyPair.ExportKeyString(false));
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1323,7 +1327,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SrClick);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1334,7 +1338,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SJobEditor);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1371,13 +1375,13 @@ namespace Server
 
         public static void SendPlayerAttack(int index)
         {
-            var Buffer = new ByteStream(4);
+            var buffer = new ByteStream(4);
 
-            Buffer.WriteInt32((int) ServerPackets.SAttack);
+            buffer.WriteInt32((int) ServerPackets.SAttack);
 
-            Buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), ref Buffer.Data, Buffer.Head);
-            Buffer.Dispose();
+            buffer.WriteInt32(index);
+            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), ref buffer.Data, buffer.Head);
+            buffer.Dispose();
         }
 
     }

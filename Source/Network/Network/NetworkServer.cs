@@ -513,7 +513,7 @@ namespace Mirage.Sharp.Asfw.Network
       }
     }
 
-    public void SendDataTo(int index, byte[] data)
+    public void SendDataTo(ref int index, ref byte[] data)
     {
       if (!this._socket.ContainsKey(index))
         return;
@@ -523,7 +523,7 @@ namespace Mirage.Sharp.Asfw.Network
         this._socket[index].BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(this.DoSend), (object) index);
     }
 
-    public void SendDataTo(int index, byte[] data, int head)
+    public void SendDataTo(ref int index, ref byte[] data, ref int head)
     {
       if (!this._socket.ContainsKey(index))
         return;
@@ -541,16 +541,16 @@ namespace Mirage.Sharp.Asfw.Network
       }
     }
 
-    public void SendDataToAll(byte[] data)
+    public void SendDataToAll(ref byte[] data)
     {
       for (int index = 1; index <= this.HighIndex; ++index)
       {
         if (this._socket.ContainsKey(index))
-          this.SendDataTo(index, data);
+          this.SendDataTo(ref index, ref data);
       }
     }
 
-    public void SendDataToAll(byte[] data, int head)
+    public void SendDataToAll(ref byte[] data, ref int head)
     {
       byte[] numArray = new byte[head + 4];
       Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
@@ -559,20 +559,20 @@ namespace Mirage.Sharp.Asfw.Network
       for (int index = 1; index <= this.HighIndex; ++index)
       {
         if (this._socket.ContainsKey(index))
-          this.SendDataTo(index, numArray);
+          this.SendDataTo(ref index, ref numArray);
       }
     }
 
-    public void SendDataToAllBut(int index, byte[] data)
+    public void SendDataToAllBut(ref int index, ref byte[] data)
     {
       for (int index1 = 1; index1 <= this.HighIndex; ++index1)
       {
         if (this._socket.ContainsKey(index1) && index1 != index)
-          this.SendDataTo(index1, data);
+          this.SendDataTo(ref index1, ref data);
       }
     }
 
-    public void SendDataToAllBut(int index, byte[] data, int head)
+    public void SendDataToAllBut(ref int index, ref byte[] data, ref int head)
     {
       byte[] numArray = new byte[head + 4];
       Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
@@ -580,7 +580,7 @@ namespace Mirage.Sharp.Asfw.Network
       for (int index1 = 1; index1 <= this.HighIndex; ++index1)
       {
         if (this._socket.ContainsKey(index1) && index1 != index)
-          this.SendDataTo(index1, numArray);
+          this.SendDataTo(ref index1, ref numArray);
       }
     }
 

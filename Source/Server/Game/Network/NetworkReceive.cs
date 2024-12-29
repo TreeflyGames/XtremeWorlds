@@ -1531,11 +1531,11 @@ namespace Server
 
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Map;
 
-            var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((int) ServerPackets.SEditMap);
+            var buffer = new ByteStream(4);
+            buffer.WriteInt32((int) ServerPackets.SEditMap);
 
-            NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
-            Buffer.Dispose();
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            buffer.Dispose();
         }
 
         public static void Packet_EditShop(int index, ref byte[] data)
@@ -1561,11 +1561,11 @@ namespace Server
             Item.SendItems(index);
             NetworkSend.SendShops(index);
 
-            var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((int) ServerPackets.SShopEditor);
-            NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
+            var buffer = new ByteStream(4);
+            buffer.WriteInt32((int) ServerPackets.SShopEditor);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
-            Buffer.Dispose();
+            buffer.Dispose();
         }
 
         public static void Packet_SaveShop(int index, ref byte[] data)
@@ -1627,11 +1627,11 @@ namespace Server
             Animation.SendAnimations(index);
             NetworkSend.SendSkills(index);
 
-            var Buffer = new ByteStream(4);
-            Buffer.WriteInt32((int) ServerPackets.SSkillEditor);
-            NetworkConfig.Socket.SendDataTo(index, Buffer.Data, Buffer.Head);
+            var buffer = new ByteStream(4);
+            buffer.WriteInt32((int) ServerPackets.SSkillEditor);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
-            Buffer.Dispose();
+            buffer.Dispose();
         }
 
         public static void Packet_SaveSkill(int index, ref byte[] data)
@@ -1911,7 +1911,7 @@ namespace Server
                 if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanCast)
                 {
                     // set the skill buffer before casting
-                    Player.BufferSkill(index, n);
+                    Player.bufferSkill(index, n);
                 }
             }
         }
@@ -1966,7 +1966,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SSendPing);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
         }
@@ -1987,10 +1987,10 @@ namespace Server
 
         public static void Packet_RequestNPC(int index, ref byte[] data)
         {
-            var Buffer = new ByteStream(data);
+            var buffer = new ByteStream(data);
             int n;
 
-            n = Buffer.ReadInt32();
+            n = buffer.ReadInt32();
 
             if (n <= 0 | n > Core.Constant.MAX_NPCS)
                 return;
@@ -2047,10 +2047,10 @@ namespace Server
 
         public static void Packet_RequestSkill(int index, ref byte[] data)
         {
-            var Buffer = new ByteStream(data);
+            var buffer = new ByteStream(data);
             int n;
 
-            n = Buffer.ReadInt32();
+            n = buffer.ReadInt32();
 
             if (n <= 0 | n > Core.Constant.MAX_SKILLS)
                 return;
@@ -2060,10 +2060,10 @@ namespace Server
 
         public static void Packet_RequestShop(int index, ref byte[] data)
         {
-            var Buffer = new ByteStream(data);
+            var buffer = new ByteStream(data);
             int n;
 
-            n = Buffer.ReadInt32();
+            n = buffer.ReadInt32();
 
             if (n <= 0 | n > Core.Constant.MAX_SHOPS)
                 return;

@@ -1199,7 +1199,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SCheckForMap);
             buffer.WriteInt32(MapNum);
             buffer.WriteInt32(Core.Type.Map[MapNum].Revision);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
 
@@ -2959,7 +2959,7 @@ namespace Server
         #endregion
 
         #region Skills
-        internal static void BufferSkill(int index, int SkillSlot)
+        internal static void bufferSkill(int index, int SkillSlot)
         {
             int skillnum;
             int MPCost;
