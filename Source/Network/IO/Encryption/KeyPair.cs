@@ -9,21 +9,16 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
     public sealed class KeyPair : IDisposable
     {
         private RSACryptoServiceProvider _rsa;
-        private bool _disposed = false;
 
         public void Dispose()
         {
-            if (!_disposed)
-            {
-                _rsa?.Dispose();
-                _rsa = null;
-                _disposed = true;
-            }
+            _rsa?.Dispose();
+            _rsa = null;
         }
 
         private void CheckDisposed()
         {
-            if (_disposed)
+            if (_rsa == null)
                 GenerateKeys();
         }
 
@@ -39,7 +34,6 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public void GenerateKeys()
         {
             _rsa = new RSACryptoServiceProvider(2048);
-            _disposed = false;
         }
 
         public string ExportKeyString(bool exportPrivate = false)
