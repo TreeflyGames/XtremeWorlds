@@ -234,6 +234,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                 rijndaelManaged.KeySize = 256;
                 rijndaelManaged.BlockSize = 128;
                 rijndaelManaged.Mode = CipherMode.CBC;
+                rijndaelManaged.Padding = PaddingMode.PKCS7;
 
                 // Decrypt AES key
                 byte[] aesKey;
