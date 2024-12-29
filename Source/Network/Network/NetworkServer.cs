@@ -274,14 +274,8 @@ namespace Mirage.Sharp.Asfw.Network
 
     private void BeginReceiveData(int index)
     {
-      NetworkServer.ReceiveState state = new NetworkServer.ReceiveState(index, this._packetSize);
-      try
-      {
+        NetworkServer.ReceiveState state = new NetworkServer.ReceiveState(index, this._packetSize);
         this._socket[index].BeginReceive(state.Buffer, 0, this._packetSize, SocketFlags.None, new AsyncCallback(this.DoReceive), (object) state);
-      }
-      catch
-      {
-      }
     }
 
  private void DoReceive(IAsyncResult ar)
