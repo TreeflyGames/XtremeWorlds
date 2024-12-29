@@ -3050,14 +3050,14 @@ namespace Server
 
                 if (exp == 0)
                 {
-                    NetworkSend.PlayerMsg(victim, "You lost no exp.", (int) ColorType.BrightGreen);
-                    NetworkSend.PlayerMsg(attacker, "You received no exp.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(victim, "You lost no experience.", (int) ColorType.BrightGreen);
+                    NetworkSend.PlayerMsg(attacker, "You received no experience.", (int) ColorType.BrightRed);
                 }
                 else
                 {
                     SetPlayerExp(victim, GetPlayerExp(victim) - exp);
                     NetworkSend.SendExp(victim);
-                    NetworkSend.PlayerMsg(victim, "You lost " + exp + " exp.", (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(victim, "You lost " + exp + " experience.", (int) ColorType.BrightRed);
 
                     // check if we're in a party
                     if (Core.Type.TempPlayer[attacker].InParty > 0)
