@@ -70,60 +70,112 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
         public byte[] EncryptBytes(byte[] value)
         {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value), "Input data cannot be null.");
+
             CheckDisposed();
+
             if (_rsa == null)
                 throw new CryptographicException("Key not set.");
 
-            using (var rijndael = Aes.Create("AesManaged"))
+            using (var rijndael = Aes.Create())
             {
                 rijndael.KeySize = 256;
                 rijndael.BlockSize = 128;
                 rijndael.Mode = CipherMode.CBC;
+                rijndael.Padding = PaddingMode.PKCS7;
+
+                if (rijndael.Key == null || rijndael.IV == null)
+                    throw new CryptographicException("Failed to generate AES key or IV.");
 
                 using (var memoryStream = new MemoryStream())
                 {
-                    var encryptedKey = _rsa.Encrypt(rijndael.Key, false);
-                    if (encryptedKey.Length != 256)
-                        return Array.Empty<byte>();
-
-                    memoryStream.Write(encryptedKey, 0, encryptedKey.Length);
-                    memoryStream.Write(rijndael.IV, 0, 16);
-
-                    using (var encryptor = rijndael.CreateEncryptor())
-                    using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                    try
                     {
-                        cryptoStream.Write(value, 0, value.Length);
-                        cryptoStream.FlushFinalBlock();
+                        // Encrypt AES key with RSA
+                        var encryptedKey = _rsa.Encrypt(rijndael.Key, true); // Use OAEP padding for security
+
+                        if (encryptedKey.Length != 256)
+                            throw new CryptographicException("Invalid RSA-encrypted key length.");
+
+                        // Write encrypted key and IV to the output stream
+                        memoryStream.Write(encryptedKey, 0, encryptedKey.Length);
+                        memoryStream.Write(rijndael.IV, 0, rijndael.IV.Length);
+
+                        // Encrypt the data using AES
+                        using (var encryptor = rijndael.CreateEncryptor())
+                        using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                        {
+                            cryptoStream.Write(value, 0, value.Length);
+                            cryptoStream.FlushFinalBlock();
+                        }
+
+                        return memoryStream.ToArray();
                     }
-                    return memoryStream.ToArray();
+                    catch (CryptographicException ex)
+                    {
+                        Console.WriteLine($"Encryption failed: {ex.Message}");
+                        throw;
+                    }
                 }
             }
         }
 
         public async Task<byte[]> EncryptBytesAsync(byte[] value)
         {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value), "Input data cannot be null.");
+
             CheckDisposed();
+
             if (_rsa == null)
                 throw new CryptographicException("Key not set.");
 
-            using (var rijndael = Aes.Create("AesManaged"))
+            using (var rijndael = Aes.Create())
             {
                 rijndael.KeySize = 256;
                 rijndael.BlockSize = 128;
                 rijndael.Mode = CipherMode.CBC;
+                rijndael.Padding = PaddingMode.PKCS7;
+
+                if (rijndael.Key == null || rijndael.IV == null)
+                    throw new CryptographicException("Failed to generate AES key or IV.");
 
                 using (var memoryStream = new MemoryStream())
                 {
-                    await memoryStream.WriteAsync(_rsa.Encrypt(rijndael.Key, false), 0, 256);
-                    await memoryStream.WriteAsync(rijndael.IV, 0, 16);
-
-                    using (var encryptor = rijndael.CreateEncryptor())
-                    using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                    try
                     {
-                        await cryptoStream.WriteAsync(value, 0, value.Length);
-                        cryptoStream.FlushFinalBlock();
+                        // Encrypt AES key with RSA (using OAEP padding)
+                        var encryptedKey = _rsa.Encrypt(rijndael.Key, true);
+
+                        if (encryptedKey.Length != 256)
+                            throw new CryptographicException("Invalid RSA-encrypted key length.");
+
+                        // Write encrypted key and IV to the output stream asynchronously
+                        await memoryStream.WriteAsync(encryptedKey, 0, encryptedKey.Length);
+                        await memoryStream.WriteAsync(rijndael.IV, 0, rijndael.IV.Length);
+
+                        // Encrypt the data using AES
+                        using (var encryptor = rijndael.CreateEncryptor())
+                        {
+                            // Perform synchronous encryption in a separate task
+                            await Task.Run(() =>
+                            {
+                                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                                {
+                                    cryptoStream.Write(value, 0, value.Length);
+                                    cryptoStream.FlushFinalBlock();
+                                }
+                            });
+                        }
+
+                        return memoryStream.ToArray();
                     }
-                    return memoryStream.ToArray();
+                    catch (CryptographicException ex)
+                    {
+                        Console.WriteLine($"Encryption failed: {ex.Message}");
+                        throw;
+                    }
                 }
             }
         }
@@ -154,33 +206,55 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
         public byte[] DecryptBytes(byte[] value)
         {
-            if (this._rsa == null)
-                throw new CryptographicException("Key not set.");
-            if (this._rsa.PublicOnly)
-                return (byte[])null;
+            if (value == null)
+                throw new ArgumentNullException(nameof(value), "Input data cannot be null.");
             if (value.Length < 272)
-                return (byte[])null;
-            var rijndaelManaged = Aes.Create("AesManaged");
-            rijndaelManaged.KeySize = 256;
-            rijndaelManaged.BlockSize = 128;
-            rijndaelManaged.Mode = CipherMode.CBC;
-            byte[] numArray1 = new byte[256];
-            byte[] numArray2 = new byte[16];
-            int count = value.Length - 272;
-            byte[] numArray3 = new byte[count];
-            Buffer.BlockCopy((Array)value, 0, (Array)numArray1, 0, 256);
-            Buffer.BlockCopy((Array)value, 256, (Array)numArray2, 0, 16);
-            Buffer.BlockCopy((Array)value, 272, (Array)numArray3, 0, count);
-            using (ICryptoTransform decryptor = rijndaelManaged.CreateDecryptor(this._rsa.Decrypt(numArray1, false), numArray2))
+                throw new ArgumentException("Input data is too short to contain RSA-encrypted key, IV, and payload.", nameof(value));
+
+            if (_rsa == null)
+                throw new CryptographicException("Key not set.");
+            if (_rsa.PublicOnly)
+                throw new CryptographicException("Private key is required for decryption.");
+
+            // Extract RSA-encrypted AES key, IV, and payload
+            byte[] encryptedKey = new byte[256];
+            byte[] iv = new byte[16];
+            int payloadLength = value.Length - 272;
+            byte[] encryptedPayload = new byte[payloadLength];
+            Buffer.BlockCopy(value, 0, encryptedKey, 0, 256);
+            Buffer.BlockCopy(value, 256, iv, 0, 16);
+            Buffer.BlockCopy(value, 272, encryptedPayload, 0, payloadLength);
+
+            // Log encrypted key for debugging
+            Console.WriteLine($"Encrypted Key Length: {encryptedKey.Length}");
+
+            // Initialize AES
+            using (var rijndaelManaged = Aes.Create())
             {
-                using (MemoryStream memoryStream = new MemoryStream())
+                rijndaelManaged.KeySize = 256;
+                rijndaelManaged.BlockSize = 128;
+                rijndaelManaged.Mode = CipherMode.CBC;
+
+                // Decrypt AES key
+                byte[] aesKey;
+                try
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream((Stream)memoryStream, decryptor, CryptoStreamMode.Write))
-                    {
-                        cryptoStream.Write(numArray3, 0, count);
-                        cryptoStream.FlushFinalBlock();
-                        return memoryStream.ToArray();
-                    }
+                    aesKey = _rsa.Decrypt(encryptedKey, true); // Ensure padding matches
+                }
+                catch (CryptographicException ex)
+                {
+                    Console.WriteLine($"RSA decryption failed: {ex.Message}");
+                    throw;
+                }
+
+                // Decrypt payload
+                using (ICryptoTransform decryptor = rijndaelManaged.CreateDecryptor(aesKey, iv))
+                using (var memoryStream = new MemoryStream())
+                using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
+                {
+                    cryptoStream.Write(encryptedPayload, 0, payloadLength);
+                    cryptoStream.FlushFinalBlock();
+                    return memoryStream.ToArray();
                 }
             }
         }
