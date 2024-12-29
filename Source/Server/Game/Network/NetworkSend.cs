@@ -210,7 +210,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SPlayerInv);
 
-            var loopTo = Core.Constant.MAX_INV;
+            var loopTo = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 buffer.WriteInt32(GetPlayerInv(index, i));
@@ -1099,7 +1099,7 @@ namespace Server
             if (DataType == 0) // own inventory
             {
 
-                var loopTo = Core.Constant.MAX_INV;
+                var loopTo = Core.Constant.MAX_INV - 1;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
                     buffer.WriteInt32(Core.Type.TempPlayer[index].TradeOffer[i].Num);
@@ -1125,7 +1125,7 @@ namespace Server
             else if (DataType == 1) // other inventory
             {
 
-                var loopTo1 = Core.Constant.MAX_INV;
+                var loopTo1 = Core.Constant.MAX_INV - 1;
                 for (i = 0; i <= (int)loopTo1; i++)
                 {
                     buffer.WriteInt32(GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num));
@@ -1200,7 +1200,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SSkills);
 
-            var loopTo = Core.Constant.MAX_PLAYER_SKILLS;
+            var loopTo = Core.Constant.MAX_PLAYER_SKILLS - 1;
             for (i = 0; i <= (int)loopTo; i++)
                 buffer.WriteInt32(GetPlayerSkill(index, i));
 
@@ -1283,7 +1283,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SHotbar);
 
-            var loopTo = Core.Constant.MAX_HOTBAR;
+            var loopTo = Core.Constant.MAX_HOTBAR - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.Player[index].Hotbar[i].Slot);

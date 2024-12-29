@@ -92,7 +92,7 @@ namespace Server
             buffer.WriteInt32(itemNum);
             buffer.WriteInt32(Core.Type.Item[itemNum].AccessReq);
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
                 buffer.WriteInt32(Core.Type.Item[itemNum].Add_Stat[Conversions.ToInteger(i)]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Animation);
@@ -114,7 +114,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Item[itemNum].Stackable);
             buffer.WriteString(Core.Type.Item[itemNum].Description);
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i <= (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i < (int)loopTo1; i++)
                 buffer.WriteInt32(Core.Type.Item[itemNum].Stat_Req[Conversions.ToInteger(i)]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Type);
@@ -370,7 +370,7 @@ namespace Server
             // Update the item
             Core.Type.Item[n].AccessReq = buffer.ReadInt32();
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
                 Core.Type.Item[n].Add_Stat[Conversions.ToInteger(i)] = (byte)buffer.ReadInt32();
 
             Core.Type.Item[n].Animation = buffer.ReadInt32();
@@ -392,7 +392,7 @@ namespace Server
             Core.Type.Item[n].Stackable = (byte)buffer.ReadInt32();
             Core.Type.Item[n].Description = buffer.ReadString();
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i <= (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i < (int)loopTo1; i++)
                 Core.Type.Item[n].Stat_Req[Conversions.ToInteger(i)] = (byte)buffer.ReadInt32();
 
             Core.Type.Item[n].Type = (byte)buffer.ReadInt32();

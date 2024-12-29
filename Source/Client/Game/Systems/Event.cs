@@ -1362,13 +1362,13 @@ namespace Client
             int p;
             Core.Type.CommandListStruct oldCommandList;
 
-            if (frmEditor_Event.Instance.lstCommands.SelectedIndex + 1 == frmEditor_Event.Instance.lstCommands.Items.Count)
+            if (frmEditor_Event.Instance.lstCommands.SelectedIndex == frmEditor_Event.Instance.lstCommands.Items.Count)
             {
                 curlist = 1;
             }
             else
             {
-                curlist = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex + 1].CommandList;
+                curlist = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex].CommandList;
             }
 
             TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount;
@@ -1377,7 +1377,7 @@ namespace Client
             p = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
             Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands, p + 1);
 
-            if (frmEditor_Event.Instance.lstCommands.SelectedIndex + 1 == frmEditor_Event.Instance.lstCommands.Items.Count)
+            if (frmEditor_Event.Instance.lstCommands.SelectedIndex == frmEditor_Event.Instance.lstCommands.Items.Count)
             {
                 curslot = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount - 1;
             }
@@ -1390,7 +1390,7 @@ namespace Client
                 for (i = 0; i <= loopTo; i++)
                     TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i] = oldCommandList.Commands[i];
 
-                i = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex + 1].CommandNum;
+                i = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex].CommandNum;
                 if (i <= TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)
                 {
 
@@ -1398,7 +1398,7 @@ namespace Client
                     for (X = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount; X <= loopTo1; X++)
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[X + 1] = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[X];
 
-                    curslot = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex + 1].CommandNum;
+                    curslot = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex].CommandNum;
                 }
                 else
                 {
@@ -1825,7 +1825,7 @@ namespace Client
                 case (int)Core.Enum.EventType.SetAccess:
                     {
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = frmEditor_Event.Instance.cmbSetAccess.SelectedIndex + 1;
+                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = frmEditor_Event.Instance.cmbSetAccess.SelectedIndex;
                         break;
                     }
 
@@ -1840,7 +1840,7 @@ namespace Client
                     {
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = frmEditor_Event.Instance.txtChatbubbleText.Text;
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = frmEditor_Event.Instance.cmbChatBubbleTargetType.SelectedIndex + 1;
+                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = frmEditor_Event.Instance.cmbChatBubbleTargetType.SelectedIndex;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 = frmEditor_Event.Instance.cmbChatBubbleTarget.SelectedIndex;
                         break;
                     }
@@ -1965,7 +1965,7 @@ namespace Client
             int curlist;
             int curslot;
 
-            i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1;
+            i = frmEditor_Event.Instance.lstCommands.SelectedIndex;
             if (i == -1)
                 return;
             if (i > Information.UBound(EventList))
@@ -2830,7 +2830,7 @@ namespace Client
             int p;
             Core.Type.CommandListStruct oldCommandList;
 
-            i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1;
+            i = frmEditor_Event.Instance.lstCommands.SelectedIndex;
             if (i == -1)
                 return;
             if (i > Information.UBound(EventList))
@@ -2917,7 +2917,7 @@ namespace Client
             int curlist;
             int curslot;
 
-            i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1;
+            i = frmEditor_Event.Instance.lstCommands.SelectedIndex;
             if (i == -1)
                 return;
             if (i > Information.UBound(EventList))
@@ -3418,9 +3418,9 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_SWITCHES; i++)
+            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
                 Switches[i] = buffer.ReadString();
-            for (i = 0; i <= Constant.NAX_VARIABLES; i++)
+            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
                 Variables[i] = buffer.ReadString();
 
             buffer.Dispose();
@@ -3801,9 +3801,9 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSwitchesAndVariables);
 
-            for (i = 0; i <= Constant.MAX_SWITCHES; i++)
+            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
                 buffer.WriteString(Switches[i]);
-            for (i = 0; i <= Constant.NAX_VARIABLES; i++)
+            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
                 buffer.WriteString(Variables[i]);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);

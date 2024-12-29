@@ -183,7 +183,7 @@ namespace Server
                 buffer.WriteInt32(withBlock.StatType);
                 buffer.WriteInt32(withBlock.LevelingType);
 
-                for (int i = 0, loopTo = (byte)StatType.Count - 1; i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
                     buffer.WriteInt32(withBlock.Stat[Conversions.ToInteger(i)]);
 
                 for (int i = 0; i <= 4; i++)
@@ -213,7 +213,7 @@ namespace Server
             buffer.WriteInt32(GetPetVital(index, VitalType.SP));
             buffer.WriteInt32(GetPetLevel(index));
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
                 buffer.WriteInt32(GetPetStat(index, (StatType)i));
 
             for (int i = 0; i <= 4; i++)
@@ -1198,14 +1198,14 @@ namespace Server
                 Core.Type.Player[index].Pet.Mana = GetPlayerMaxVital(index, VitalType.SP);
                 Core.Type.Player[index].Pet.Level = GetPlayerLevel(index);
 
-                for (int i = 0, loopTo = (byte)StatType.Count - 1; i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
                     Core.Type.Player[index].Pet.Stat[Conversions.ToInteger(i)] = Core.Type.Player[index].Stat[Conversions.ToInteger(i)];
 
                 Core.Type.Player[index].Pet.AdoptiveStats = 0;
             }
             else
             {
-                for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i <= (int)loopTo1; i++)
+                for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i < (int)loopTo1; i++)
                     Core.Type.Player[index].Pet.Stat[Conversions.ToInteger(i)] = Core.Type.Pet[petNum].Stat[Conversions.ToInteger(i)];
 
                 Core.Type.Player[index].Pet.Level = Core.Type.Pet[petNum].Level;

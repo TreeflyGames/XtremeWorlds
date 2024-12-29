@@ -2841,7 +2841,7 @@ namespace Server
                                                                         {
                                                                             if (HasSkill(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1) == true)
                                                                             {
-                                                                                var loopTo5 = Core.Constant.MAX_PLAYER_SKILLS;
+                                                                                var loopTo5 = Core.Constant.MAX_PLAYER_SKILLS - 1;
                                                                                 for (p = 0; p <= (int)loopTo5; p++)
                                                                                 {
                                                                                     if (Core.Type.Player[i].Skill[p].Num == Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1)

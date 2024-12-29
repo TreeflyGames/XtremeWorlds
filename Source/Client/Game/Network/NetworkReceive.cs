@@ -351,7 +351,7 @@ namespace Client
                 for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
-                for (int q = 0; q <= 5; q++)
+                for (int q = 0; q <= 4; q++)
                 {
                     withBlock.StartItem[q] = buffer.ReadInt32();
                     withBlock.StartValue[q] = buffer.ReadInt32();
@@ -392,7 +392,7 @@ namespace Client
             int amount;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_INV; i++)
+            for (i = 0; i <= Constant.MAX_INV - 1; i++)
             {
                 invNum = buffer.ReadInt32();
                 amount = buffer.ReadInt32();
@@ -726,7 +726,7 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS; i++)
+            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
                 Core.Type.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadInt32();
 
             buffer.Dispose();
@@ -1383,7 +1383,7 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_HOTBAR; i++)
+            for (i = 0; i <= Constant.MAX_HOTBAR - 1; i++)
             {
                 Core.Type.Player[GameState.MyIndex].Hotbar[i].Slot = buffer.ReadInt32();
                 Core.Type.Player[GameState.MyIndex].Hotbar[i].SlotType = (byte)buffer.ReadInt32();

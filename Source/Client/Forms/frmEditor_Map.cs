@@ -70,7 +70,7 @@ namespace Client
             }
 
             // Get the selected tileset index
-            tilesetIndex = cmbTileSets.SelectedIndex + 1;
+            tilesetIndex = cmbTileSets.SelectedIndex;
 
             // Get the graphics information for the selected tileset
             string tilesetPath = System.IO.Path.Combine(Core.Path.Tilesets, tilesetIndex.ToString());
@@ -276,13 +276,13 @@ namespace Client
 
         private void TsbFill_Click(object sender, EventArgs e)
         {
-            LayerType layer = (LayerType)(cmbLayers.SelectedIndex + 1);
-            MapEditorFillLayer(layer, (byte)(cmbAutoTile.SelectedIndex + 1), (byte)GameState.EditorTileX, (byte)GameState.EditorTileY);
+            LayerType layer = (LayerType)(cmbLayers.SelectedIndex);
+            MapEditorFillLayer(layer, (byte)(cmbAutoTile.SelectedIndex), (byte)GameState.EditorTileX, (byte)GameState.EditorTileY);
         }
 
         private void TsbClear_Click(object sender, EventArgs e)
         {
-            LayerType layer = (LayerType)(cmbLayers.SelectedIndex + 1);
+            LayerType layer = (LayerType)(cmbLayers.SelectedIndex);
             MapEditorClearLayer(layer);
         }
 
@@ -322,7 +322,7 @@ namespace Client
                 cmbTileSets.SelectedIndex = 0;
             }
 
-            Core.Type.MyMap.Tileset = cmbTileSets.SelectedIndex + 1;
+            Core.Type.MyMap.Tileset = cmbTileSets.SelectedIndex;
 
             GameState.EditorTileSelStart = new Point(0, 0);
             GameState.EditorTileSelEnd = new Point(1, 1);
@@ -451,7 +451,7 @@ namespace Client
 
         private void BtnNPCSpawn_Click(object sender, EventArgs e)
         {
-            GameState.SpawnNPCNum = lstNPC.SelectedIndex + 1;
+            GameState.SpawnNPCNum = lstNPC.SelectedIndex;
             GameState.SpawnNPCDir = scrlNPCDir.Value;
             pnlAttributes.Visible = false;
             fraNPCSpawn.Visible = false;
@@ -488,7 +488,7 @@ namespace Client
 
         private void BtnShop_Click(object sender, EventArgs e)
         {
-            GameState.EditorShop = cmbShop.SelectedIndex + 1;
+            GameState.EditorShop = cmbShop.SelectedIndex;
             pnlAttributes.Visible = false;
             fraShop.Visible = false;
         }
@@ -1008,7 +1008,7 @@ namespace Client
             int CurLayer;
             var tileChanged = default(bool);
 
-            CurLayer = Instance.cmbLayers.SelectedIndex + 1;
+            CurLayer = Instance.cmbLayers.SelectedIndex;
 
             if (GameState.EyeDropper)
             {
@@ -1468,7 +1468,7 @@ namespace Client
                     }
                     else
                     {
-                        withBlock.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                        withBlock.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex;
                     }
                     withBlock.Layer[CurLayer].AutoTile = theAutotile;
                     Autotile.CacheRenderState(X, Y, CurLayer);
@@ -1492,7 +1492,7 @@ namespace Client
                     }
                     else
                     {
-                        withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                        withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex;
                     }
                     withBlock1.Layer[CurLayer].AutoTile = 0;
                     Autotile.CacheRenderState(X, Y, CurLayer);
@@ -1522,7 +1522,7 @@ namespace Client
                                     }
                                     else
                                     {
-                                        withBlock2.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                                        withBlock2.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex;
                                     }
                                     withBlock2.Layer[CurLayer].AutoTile = 0;
                                     Autotile.CacheRenderState(X, Y, CurLayer);
@@ -1562,19 +1562,19 @@ namespace Client
 
         public void MapEditorClearLayer(LayerType layer)
         {
-            GameLogic.Dialogue("Map Editor", "Clear Layer: " + layer.ToString(), "Are you sure you wish to clear this layer?", (byte)DialogueType.ClearLayer, (byte)DialogueStyle.YesNo, cmbLayers.SelectedIndex + 1, cmbAutoTile.SelectedIndex + 1);
+            GameLogic.Dialogue("Map Editor", "Clear Layer: " + layer.ToString(), "Are you sure you wish to clear this layer?", (byte)DialogueType.ClearLayer, (byte)DialogueStyle.YesNo, cmbLayers.SelectedIndex, cmbAutoTile.SelectedIndex);
         }
 
         public void MapEditorFillLayer(LayerType layer, byte theAutotile = 0, byte tileX = 0, byte tileY = 0)
         {
-            GameLogic.Dialogue("Map Editor", "Fill Layer: " + layer.ToString(), "Are you sure you wish to fill this layer?", (byte)DialogueType.FillLayer, (byte)DialogueStyle.YesNo, cmbLayers.SelectedIndex + 1, cmbAutoTile.SelectedIndex + 1, tileX, tileY, cmbTileSets.SelectedIndex + 1);
+            GameLogic.Dialogue("Map Editor", "Fill Layer: " + layer.ToString(), "Are you sure you wish to fill this layer?", (byte)DialogueType.FillLayer, (byte)DialogueStyle.YesNo, cmbLayers.SelectedIndex, cmbAutoTile.SelectedIndex, tileX, tileY, cmbTileSets.SelectedIndex);
         }
 
         public static void MapEditorEyeDropper()
         {
             int CurLayer;
 
-            CurLayer = Instance.cmbLayers.SelectedIndex + 1;
+            CurLayer = Instance.cmbLayers.SelectedIndex;
 
             {
                 ref var withBlock = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
@@ -1907,7 +1907,7 @@ namespace Client
 
         private void cmbAttribute_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GameState.EditorAttribute = (byte)(cmbAttribute.SelectedIndex + 1);
+            GameState.EditorAttribute = (byte)(cmbAttribute.SelectedIndex);
         }
 
         private void tsbDeleteMap_Click(object sender, EventArgs e)

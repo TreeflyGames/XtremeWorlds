@@ -1419,7 +1419,7 @@ namespace Client
             Core.Type.RectangleStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_HOTBAR; i++)
+            for (i = 0L; i <= Constant.MAX_HOTBAR - 1; i++)
             {
                 tempRec.Top = (int)(StartY + GameState.HotbarTop);
                 tempRec.Left = (int)(StartX + (i - 1L) * GameState.HotbarOffsetX);
@@ -2226,7 +2226,7 @@ namespace Client
             long i;
             var Amount = default(long);
 
-            for (i = 0L; i <= Constant.MAX_INV; i++)
+            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
             {
                 if (GetPlayerInv(GameState.MyIndex, (int)i) == 1)
                 {

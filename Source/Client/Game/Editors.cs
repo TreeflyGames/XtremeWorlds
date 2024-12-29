@@ -13,7 +13,7 @@ namespace Client
 
         internal static void AnimationEditorInit()
         {
-            GameState.EditorIndex = frmEditor_Animation.Instance.lstIndex.SelectedIndex + 1;
+            GameState.EditorIndex = frmEditor_Animation.Instance.lstIndex.SelectedIndex;
 
             {
                 ref var withBlock = ref Core.Type.Animation[GameState.EditorIndex];
@@ -95,7 +95,7 @@ namespace Client
         {
             {
                 var withBlock = frmEditor_NPC.Instance;
-                GameState.EditorIndex = withBlock.lstIndex.SelectedIndex + 1;
+                GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
 
                 withBlock.cmbDropSlot.SelectedIndex = 0;
 
@@ -180,7 +180,7 @@ namespace Client
         {
             int i;
 
-            GameState.EditorIndex = frmEditor_Resource.Instance.lstIndex.SelectedIndex + 1;
+            GameState.EditorIndex = frmEditor_Resource.Instance.lstIndex.SelectedIndex;
 
             {
                 var withBlock = frmEditor_Resource.Instance;
@@ -237,7 +237,7 @@ namespace Client
         {
             {
                 var withBlock = frmEditor_Skill.Instance;
-                GameState.EditorIndex = withBlock.lstIndex.SelectedIndex + 1;
+                GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
 
                 withBlock.cmbAnimCast.SelectedIndex = 0;
                 withBlock.cmbAnim.SelectedIndex = 0;
@@ -328,7 +328,7 @@ namespace Client
         #region Shop editor
         internal static void ShopEditorInit()
         {
-            GameState.EditorIndex = frmEditor_Shop.Instance.lstIndex.SelectedIndex + 1;
+            GameState.EditorIndex = frmEditor_Shop.Instance.lstIndex.SelectedIndex;
 
             {
                 var withBlock = frmEditor_Shop.Instance;
@@ -437,7 +437,7 @@ namespace Client
 
             {
                 var withBlock = frmEditor_Job.Instance;
-                GameState.EditorIndex = withBlock.lstIndex.SelectedIndex + 1;
+                GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
 
                 withBlock.txtName.Text = Core.Type.Job[GameState.EditorIndex].Name;
                 withBlock.txtDescription.Text = Core.Type.Job[GameState.EditorIndex].Desc;
@@ -490,7 +490,7 @@ namespace Client
         {
             int i;
 
-            GameState.EditorIndex = frmEditor_Item.Instance.lstIndex.SelectedIndex + 1;
+            GameState.EditorIndex = frmEditor_Item.Instance.lstIndex.SelectedIndex;
 
             {
                 ref var withBlock = ref Core.Type.Item[GameState.EditorIndex];
@@ -699,7 +699,7 @@ namespace Client
 
             {
                 var withBlock = frmEditor_Moral.Instance;
-                GameState.EditorIndex = withBlock.lstIndex.SelectedIndex + 1;
+                GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
 
                 withBlock.txtName.Text = Core.Type.Moral[GameState.EditorIndex].Name;
                 withBlock.cmbColor.SelectedIndex = Core.Type.Moral[GameState.EditorIndex].Color;
@@ -727,7 +727,7 @@ namespace Client
         #region Projectile Editor
         internal static void ProjectileEditorInit()
         {
-            GameState.EditorIndex = frmEditor_Projectile.Instance.lstIndex.SelectedIndex + 1;
+            GameState.EditorIndex = frmEditor_Projectile.Instance.lstIndex.SelectedIndex;
 
             {
                 ref var withBlock = ref Core.Type.Projectile[GameState.EditorIndex];
@@ -784,7 +784,7 @@ namespace Client
         {
             int i;
 
-            GameState.EditorIndex = frmEditor_Pet.Instance.lstIndex.SelectedIndex + 1;
+            GameState.EditorIndex = frmEditor_Pet.Instance.lstIndex.SelectedIndex;
 
             {
                 var withBlock = frmEditor_Pet.Instance;

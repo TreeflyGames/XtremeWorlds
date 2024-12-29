@@ -3587,7 +3587,7 @@ namespace Client
                 // exit out if we're offering that item
                 if (Trade.InTrade > 0)
                 {
-                    for (i = 0L; i <= Constant.MAX_INV; i++)
+                    for (i = 0L; i <= Constant.MAX_INV - 1; i++)
                     {
                         if (Core.Type.TradeYourOffer[(int)i].Num == invNum)
                         {
@@ -3642,7 +3642,7 @@ namespace Client
                 // exit out if we're offering that item
                 if (Trade.InTrade > 0)
                 {
-                    for (i = 0L; i <= Constant.MAX_INV; i++)
+                    for (i = 0L; i <= Constant.MAX_INV - 1; i++)
                     {
                         if (Core.Type.TradeYourOffer[(int)i].Num == itemNum)
                         {
@@ -3947,7 +3947,7 @@ namespace Client
                                 if (DragBox.Type == Core.Enum.PartType.Item)
                                 {
                                     // find the slot to switch with
-                                    for (i = 0L; i <= Constant.MAX_INV; i++)
+                                    for (i = 0L; i <= Constant.MAX_INV - 1; i++)
                                     {
                                         tmpRec.Top = Windows[curWindow].Top + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 1L) / GameState.InvColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
@@ -3995,7 +3995,7 @@ namespace Client
                                 if (DragBox.Type == Core.Enum.PartType.Skill)
                                 {
                                     // find the slot to switch with
-                                    for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS; i++)
+                                    for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
                                     {
                                         tmpRec.Top = Windows[curWindow].Top + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * ((i - 1L) / GameState.SkillColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
@@ -4026,7 +4026,7 @@ namespace Client
                                 if (DragBox.Type != Core.Enum.PartType.None)
                                 {
                                     // find the slot
-                                    for (i = 0L; i <= Constant.MAX_HOTBAR; i++)
+                                    for (i = 0L; i <= Constant.MAX_HOTBAR - 1; i++)
                                     {
                                         tmpRec.Top = Windows[curWindow].Top + GameState.HotbarTop;
                                         tmpRec.Bottom = tmpRec.Top + 32d;
@@ -5205,7 +5205,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath4, (int)(xO + 4L), (int)(yO + 289L), 100, 100, 194, 26, 194, 26);
 
             // actually draw the icons
-            for (i = 0L; i <= Constant.MAX_INV; i++)
+            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
             {
                 itemNum = GetPlayerInv(GameState.MyIndex, (int)i);
                 Item.StreamItem((int)itemNum);
@@ -5221,7 +5221,7 @@ namespace Client
                         amountModifier = 0L;
                         if (Trade.InTrade > 0)
                         {
-                            for (x = 0L; x <= Constant.MAX_INV; x++)
+                            for (x = 0L; x <= Constant.MAX_INV - 1; x++)
                             {
                                 tmpItem = GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)x].Num);
                                 if (Core.Type.TradeYourOffer[(int)x].Num == i)
@@ -5861,7 +5861,7 @@ namespace Client
             }
 
             // actually draw the icons
-            for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS; i++)
+            for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
             {
                 Database.StreamSkill((int)Skillnum);
                 Skillnum = Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num;
@@ -6334,7 +6334,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath, (int)(xO - 1L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
             string argpath1 = System.IO.Path.Combine(Path.Gui, 31.ToString());
             GameClient.RenderTexture(ref argpath1, (int)(xO + 407L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
-            for (i = 0L; i <= Constant.MAX_HOTBAR; i++)
+            for (i = 0L; i <= Constant.MAX_HOTBAR - 1; i++)
             {
                 xO = Windows[GetWindowIndex("winHotbar")].Left + GameState.HotbarLeft + (i - 1L) * GameState.HotbarOffsetX;
                 yO = Windows[GetWindowIndex("winHotbar")].Top + GameState.HotbarTop;
@@ -6377,7 +6377,7 @@ namespace Client
                                 {
                                     string argpath5 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
                                     GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
-                                    for (t = 0L; t <= Constant.MAX_PLAYER_SKILLS; t++)
+                                    for (t = 0L; t <= Constant.MAX_PLAYER_SKILLS - 1; t++)
                                     {
                                         if (GetPlayerSkill(GameState.MyIndex, (int)t) > 0)
                                         {
@@ -6752,7 +6752,7 @@ namespace Client
             Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
 
             // your items
-            for (i = 0L; i <= Constant.MAX_INV; i++)
+            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
             {
                 if (Core.Type.TradeYourOffer[(int)i].Num > 0)
                 {
@@ -6818,7 +6818,7 @@ namespace Client
             Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Top;
 
             // their items
-            for (i = 0L; i <= Constant.MAX_INV; i++)
+            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
             {
                 ItemNum = Core.Type.TradeTheirOffer[(int)i].Num;
                 if (ItemNum > 0L & ItemNum <= Constant.MAX_ITEMS)

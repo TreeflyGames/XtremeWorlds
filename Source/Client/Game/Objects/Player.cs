@@ -54,14 +54,14 @@ namespace Client
             Core.Type.Player[index].Sprite = 0;
 
             Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[(Constant.MAX_INV + 1)];
-            for (int x = 1; x <= Constant.MAX_INV; x++)
+            for (int x = 1; x <= Constant.MAX_INV - 1; x++)
             {
                 Core.Type.Player[index].Inv[x].Num = 0;
                 Core.Type.Player[index].Inv[x].Value = 0;
             }
 
             Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[(Constant.MAX_PLAYER_SKILLS + 1)];
-            for (int x = 1; x <= Constant.MAX_PLAYER_SKILLS; x++)
+            for (int x = 1; x <= Constant.MAX_PLAYER_SKILLS - 1; x++)
             {
                 Core.Type.Player[index].Skill[x].Num = 0;
                 Core.Type.Player[index].Skill[x].CD = 0;
@@ -1107,7 +1107,7 @@ namespace Client
                 return FindSkillRet;
             }
 
-            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS; i++)
+            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
             {
                 // Check to see if the player has the skill
                 if (GetPlayerSkill(GameState.MyIndex, i) == skillNum)

@@ -23,7 +23,7 @@ namespace Client
             cmbCondition_PlayerVarIndex.Enabled = false;
             cmbCondition_PlayerVarIndex.Items.Clear();
 
-            for (i = 0; i <= Constant.NAX_VARIABLES; i++)
+            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
                 cmbCondition_PlayerVarIndex.Items.Add(i + ". " + Event.Variables[i]);
             cmbCondition_PlayerVarIndex.SelectedIndex = 0;
             cmbCondition_PlayerVarCompare.SelectedIndex = 0;
@@ -33,7 +33,7 @@ namespace Client
             cmbCondition_PlayerSwitch.Enabled = false;
             cmbCondition_PlayerSwitch.Items.Clear();
 
-            for (i = 0; i <= Constant.MAX_SWITCHES; i++)
+            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
                 cmbCondition_PlayerSwitch.Items.Add(i + ". " + Event.Switches[i]);
             cmbCondition_PlayerSwitch.SelectedIndex = 0;
             cmbCondtion_PlayerSwitchCondition.Enabled = false;
@@ -87,13 +87,13 @@ namespace Client
 
             cmbSwitch.Items.Clear();
             cmbSwitch.Items.Add("None");
-            for (i = 0; i <= Constant.MAX_SWITCHES; i++)
+            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
                 cmbSwitch.Items.Add(i + ". " + Event.Switches[i]);
             cmbSwitch.SelectedIndex = 0;
             cmbVariable.Items.Clear();
             cmbVariable.Items.Add("None");
 
-            for (i = 0; i <= Constant.NAX_VARIABLES; i++)
+            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
                 cmbVariable.Items.Add(i + ". " + Event.Variables[i]);
             cmbVariable.SelectedIndex = 0;
             cmbChangeItemIndex.Items.Clear();
@@ -195,12 +195,12 @@ namespace Client
             // variables
             cmbPlayerVar.Items.Clear();
             cmbPlayerVar.Items.Add("None");
-            for (i = 0; i <= Constant.NAX_VARIABLES; i++)
+            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
                 cmbPlayerVar.Items.Add(i + ". " + Event.Variables[i]);
             // switches
             cmbPlayerSwitch.Items.Clear();
             cmbPlayerSwitch.Items.Add("None");
-            for (i = 0; i <= Constant.MAX_SWITCHES; i++)
+            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
                 cmbPlayerSwitch.Items.Add(i + ". " + Event.Switches[i]);
             cmbSelfSwitch.SelectedIndex = 0;
 
@@ -1749,7 +1749,7 @@ namespace Client
 
         private void LstCommands_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Event.CurCommand = lstCommands.SelectedIndex + 1;
+            Event.CurCommand = lstCommands.SelectedIndex;
         }
 
         private void BtnAddCommand_Click(object sender, EventArgs e)
@@ -1796,12 +1796,12 @@ namespace Client
             lstSwitches.Items.Clear();
             lstSwitches.Items.Add("None");
 
-            for (int i = 0; i <= Constant.MAX_SWITCHES; i++)
+            for (int i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstVariables.Items.Clear();
             lstVariables.Items.Add("None");
 
-            for (int i = 0; i <= Constant.NAX_VARIABLES; i++)
+            for (int i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
 
         }
@@ -1844,13 +1844,13 @@ namespace Client
             }
             lstSwitches.Items.Clear();
             lstSwitches.Items.Add("None");
-            for (int i = 0; i <= Constant.MAX_SWITCHES; i++)
+            for (int i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
             lstVariables.Items.Add("None");
 
-            for (int i = 0; i <= Constant.NAX_VARIABLES; i++)
+            for (int i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
             lstVariables.SelectedIndex = 0;
         }
@@ -1865,13 +1865,13 @@ namespace Client
             lstSwitches.Items.Clear();
             lstSwitches.Items.Add("None");
 
-            for (int i = 0; i <= Constant.MAX_SWITCHES; i++)
+            for (int i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
             lstVariables.Items.Add("None");
 
-            for (int i = 0; i <= Constant.NAX_VARIABLES; i++)
+            for (int i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
             lstVariables.SelectedIndex = 0;
         }

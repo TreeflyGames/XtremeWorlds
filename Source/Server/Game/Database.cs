@@ -1610,6 +1610,10 @@ namespace Server
 
                 Core.Type.Player[index].Dir = (byte) DirectionType.Down;
                 Core.Type.Player[index].Map = Core.Type.Job[jobNum].StartMap;
+
+                if (Core.Type.Player[index].Map == 0)
+                    Core.Type.Player[index].Map = 1;
+
                 Core.Type.Player[index].X = Core.Type.Job[jobNum].StartX;
                 Core.Type.Player[index].Y = Core.Type.Job[jobNum].StartY;
                 Core.Type.Player[index].Dir = (byte) DirectionType.Down;
@@ -1767,10 +1771,10 @@ namespace Server
             buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
             buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[Conversions.ToInteger(i)]);
 
-            for (q = 0; q <= 5; q++)
+            for (q = 0; q <= 4; q++)
             {
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);
@@ -1822,7 +1826,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].SpawnSecs);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i <= (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i < (int)loopTo1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[Conversions.ToInteger(i)]);
 
             for (int i = 0, loopTo2 = Core.Constant.MAX_NPC_SKILLS; i <= (int)loopTo2; i++)

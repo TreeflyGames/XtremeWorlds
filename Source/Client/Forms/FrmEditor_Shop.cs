@@ -31,13 +31,13 @@ namespace Client
         {
             int index;
 
-            index = lstTradeItem.SelectedIndex + 1;
+            index = lstTradeItem.SelectedIndex;
 
             {
                 ref var withBlock = ref Core.Type.Shop[GameState.EditorIndex].TradeItem[index];
-                withBlock.Item = cmbItem.SelectedIndex + 1;
+                withBlock.Item = cmbItem.SelectedIndex;
                 withBlock.ItemValue = (int)Math.Round(nudItemValue.Value);
-                withBlock.CostItem = cmbCostItem.SelectedIndex + 1;
+                withBlock.CostItem = cmbCostItem.SelectedIndex;
                 withBlock.CostValue = (int)Math.Round(nudCostValue.Value);
             }
             Editors.UpdateShopTrade();
@@ -47,7 +47,7 @@ namespace Client
         {
             int index;
 
-            index = lstTradeItem.SelectedIndex + 1;
+            index = lstTradeItem.SelectedIndex;
             {
                 ref var withBlock = ref Core.Type.Shop[GameState.EditorIndex].TradeItem[index];
                 withBlock.Item = 0;

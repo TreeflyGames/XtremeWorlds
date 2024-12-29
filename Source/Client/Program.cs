@@ -664,7 +664,7 @@ namespace Client
             if (GameState.inSmallChat)
             {
                 // Iterate through hotbar slots and check for corresponding keys
-                for (int i = 0; i <= Constant.MAX_HOTBAR; i++)
+                for (int i = 0; i <= Constant.MAX_HOTBAR - 1; i++)
                 {
                     // Check if the corresponding hotbar key is pressed
                     if (CurrentKeyboardState.IsKeyDown((Keys)((int)Keys.D0 + i)))
@@ -787,9 +787,9 @@ namespace Client
                 {
                     if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
                     {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex + 1 < (int)LayerType.Count - 1)
+                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count - 1)
                         {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex + 1;
+                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex;
                         }
                     }
 
@@ -813,9 +813,9 @@ namespace Client
                             frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1;
                         }
                     }
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
+                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex < GameState.NumTileSets)
                     {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex;
                     }
                 }
 

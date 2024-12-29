@@ -158,7 +158,7 @@ namespace Client
                 // check if we need to end the CD icon
                 if (GameState.NumSkills > 0)
                 {
-                    for (i = 0; i <= Constant.MAX_PLAYER_SKILLS; i++)
+                    for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
                     {
                         if (Core.Type.Player[GameState.MyIndex].Skill[i].Num > 0)
                         {

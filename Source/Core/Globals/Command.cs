@@ -411,7 +411,7 @@ namespace Core.Global
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS; i++)
+            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
             {
 
                 if (GetPlayerSkill(index, i) == 0)
@@ -444,7 +444,7 @@ namespace Core.Global
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS; i++)
+            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
             {
 
                 if (GetPlayerSkill(index, i) == skillNum)

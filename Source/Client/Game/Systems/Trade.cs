@@ -55,7 +55,7 @@ namespace Client
 
             if (datatype == 0) // ours!
             {
-                for (int i = 0; i <= Constant.MAX_INV; i++)
+                for (int i = 0; i <= Constant.MAX_INV - 1; i++)
                 {
                     Core.Type.TradeYourOffer[i].Num = buffer.ReadInt32();
                     Core.Type.TradeYourOffer[i].Value = buffer.ReadInt32();
@@ -65,7 +65,7 @@ namespace Client
             }
             else if (datatype == 1) // theirs
             {
-                for (int i = 0; i <= Constant.MAX_INV; i++)
+                for (int i = 0; i <= Constant.MAX_INV - 1; i++)
                 {
                     Core.Type.TradeTheirOffer[i].Num = buffer.ReadInt32();
                     Core.Type.TradeTheirOffer[i].Value = buffer.ReadInt32();

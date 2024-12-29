@@ -947,7 +947,7 @@ namespace Server
                     if (GetPlayerLevel(victim) >= 10)
                     {
 
-                        var loopTo = Core.Constant.MAX_INV;
+                        var loopTo = Core.Constant.MAX_INV - 1;
                         for (z = 0; z <= (int)loopTo; z++)
                         {
                             if (GetPlayerInv(victim, z) > 0)
@@ -995,7 +995,7 @@ namespace Server
                         else
                         {
 
-                            for (int x = 1, loopTo3 = Core.Constant.MAX_INV; x <= (int)loopTo3; x++)
+                            for (int x = 1, loopTo3 = Core.Constant.MAX_INV - 1; x <= (int)loopTo3; x++)
                             {
                                 if (GetPlayerInv(victim, x) > 0)
                                 {
@@ -1074,12 +1074,6 @@ namespace Server
 
         internal static void HandleUseChar(int index)
         {
-            if (NetworkConfig.IsLoggedIn(index) == false)
-            {
-                NetworkSend.AlertMsg(index, (byte)DialogueMsg.Connection, (byte)MenuType.Login);
-                return;
-            }
-
             // Set the flag so we know the person is in the game
             Core.Type.TempPlayer[index].InGame = true;
 
@@ -1148,6 +1142,7 @@ namespace Server
             SetPlayerMap(index, MapNum);
             SetPlayerX(index, X);
             SetPlayerY(index, Y);
+
             if (Pet.PetAlive(index))
             {
                 Pet.SetPetX(index, X);
@@ -1699,7 +1694,7 @@ namespace Server
                 return HasItemRet;
             }
 
-            var loopTo = Core.Constant.MAX_INV;
+            var loopTo = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 // Check to see if the player has the item
@@ -1733,7 +1728,7 @@ namespace Server
                 return FindItemSlotRet;
             }
 
-            var loopTo = Core.Constant.MAX_INV;
+            var loopTo = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 // Check to see if the player has the item
@@ -1860,7 +1855,7 @@ namespace Server
             if (Core.Type.Item[ItemNum].Type == (byte)ItemType.Currency | Core.Type.Item[ItemNum].Stackable == 1)
             {
                 // If currency then check to see if they already have an instance of the item and add it to that
-                var loopTo = Core.Constant.MAX_INV;
+                var loopTo = Core.Constant.MAX_INV - 1;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
                     if (GetPlayerInv(index, i) == ItemNum)
@@ -1871,7 +1866,7 @@ namespace Server
                 }
             }
 
-            var loopTo1 = Core.Constant.MAX_INV;
+            var loopTo1 = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo1; i++)
             {
                 // Try to find an open free slot
@@ -1899,7 +1894,7 @@ namespace Server
                 return TakeInvRet;
             }
 
-            var loopTo = Core.Constant.MAX_INV;
+            var loopTo = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
 
@@ -2786,7 +2781,7 @@ namespace Server
                     tradeTarget = Core.Type.TempPlayer[index].InTrade;
                     NetworkSend.PlayerMsg(tradeTarget, string.Format("{0} has declined the trade.", GetPlayerName(index)), (int) ColorType.BrightRed);
                     // clear out trade
-                    var loopTo = Core.Constant.MAX_INV;
+                    var loopTo = Core.Constant.MAX_INV - 1;
                     for (i = 0; i <= (int)loopTo; i++)
                     {
                         Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = 0;
@@ -2861,7 +2856,7 @@ namespace Server
             NetworkSend.SendClearSkillBuffer(index);
 
             // Restore vitals
-            for (int i = 0, loopTo = (byte) VitalType.Count - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte) VitalType.Count - 1; i < (int)loopTo; i++)
                 SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
 
             NetworkSend.SendVitals(index);

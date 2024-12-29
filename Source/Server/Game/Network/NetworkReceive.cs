@@ -2391,7 +2391,7 @@ namespace Server
             }
 
             // take their items
-            var loopTo = Core.Constant.MAX_INV;
+            var loopTo = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 // player
@@ -2423,7 +2423,7 @@ namespace Server
             }
 
             // taken all items. now they can't not get items because of no inventory space.
-            var loopTo1 = Core.Constant.MAX_INV;
+            var loopTo1 = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo1; i++)
             {
                 // player
@@ -2444,7 +2444,7 @@ namespace Server
             NetworkSend.SendInventory(tradeTarget);
 
             // they now have all the items. Clear out values + let them out of the trade.
-            var loopTo2 = Core.Constant.MAX_INV;
+            var loopTo2 = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo2; i++)
             {
                 Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
@@ -2469,7 +2469,7 @@ namespace Server
 
             tradeTarget = Core.Type.TempPlayer[index].InTrade;
 
-            for (int i = 0, loopTo = Core.Constant.MAX_INV; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_INV - 1; i <= (int)loopTo; i++)
             {
                 Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
                 Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
@@ -2517,7 +2517,7 @@ namespace Server
             {
 
                 // check if already offering same currency item
-                var loopTo = Core.Constant.MAX_INV;
+                var loopTo = Core.Constant.MAX_INV - 1;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
 
@@ -2548,7 +2548,7 @@ namespace Server
             else
             {
                 // make sure they're not already offering it
-                var loopTo1 = Core.Constant.MAX_INV;
+                var loopTo1 = Core.Constant.MAX_INV - 1;
                 for (i = 0; i <= (int)loopTo1; i++)
                 {
                     if (Core.Type.TempPlayer[index].TradeOffer[i].Num == invslot)
@@ -2560,7 +2560,7 @@ namespace Server
             }
 
             // not already offering - find earliest empty slot
-            var loopTo2 = Core.Constant.MAX_INV;
+            var loopTo2 = Core.Constant.MAX_INV - 1;
             for (i = 0; i <= (int)loopTo2; i++)
             {
                 if (Core.Type.TempPlayer[index].TradeOffer[i].Num == 0)

@@ -411,7 +411,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_INV; i++)
+            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
             {
                 if (GetPlayerInv(GameState.MyIndex, (int)i) > 0)
                 {
@@ -440,7 +440,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS; i++)
+            for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
             {
                 if (Conversions.ToBoolean(Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num))
                 {
@@ -526,7 +526,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_INV; i++)
+            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
             {
                 tempRec.Top = StartY + GameState.TradeTop + (GameState.TradeOffsetY + GameState.PicY) * ((i - 1L) / GameState.TradeColumns);
                 tempRec.Bottom = tempRec.Top + GameState.PicY;
