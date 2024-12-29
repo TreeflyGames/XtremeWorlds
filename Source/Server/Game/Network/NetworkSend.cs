@@ -838,8 +838,6 @@ namespace Server
             return PlayerDataRet;
         }
 
-
-
         public static void SendPlayerXY(int index)
         {
             var buffer = new ByteStream(4);
