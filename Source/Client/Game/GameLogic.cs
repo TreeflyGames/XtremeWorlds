@@ -1249,7 +1249,7 @@ namespace Client
 
                     case (long)Core.Enum.DialogueType.DelChar:
                         {
-                            NetworkSend.SendDelChar((int)GameState.diaData1);
+                            NetworkSend.SendDelChar((byte)GameState.diaData1);
                             break;
                         }
 

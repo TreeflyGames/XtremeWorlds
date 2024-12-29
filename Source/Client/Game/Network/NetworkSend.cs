@@ -16,7 +16,7 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CAddChar);
-            buffer.WriteInt32(GameState.CharNum);
+            buffer.WriteByte(GameState.CharNum);
             buffer.WriteString(name);
             buffer.WriteInt32(sexNum);
             buffer.WriteInt32(jobNum);
@@ -25,23 +25,23 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendUseChar(int slot)
+        internal static void SendUseChar(byte slot)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CUseChar);
-            buffer.WriteInt32(slot);
+            buffer.WriteByte(slot);
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
 
-        internal static void SendDelChar(int slot)
+        internal static void SendDelChar(byte slot)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CDelChar);
-            buffer.WriteInt32(slot);
+            buffer.WriteByte(slot);
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
 
             buffer.Dispose();

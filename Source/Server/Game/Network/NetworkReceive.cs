@@ -21,138 +21,138 @@ namespace Server
     {
         internal static void PacketRouter()
         {
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CCheckPing] = Packet_Ping;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CLogin] = Packet_Login;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRegister] = Packet_Register;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CAddChar] = Packet_AddChar;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CUseChar] = Packet_UseChar;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CDelChar] = Packet_DelChar;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSayMsg] = Packet_SayMessage;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CBroadcastMsg] = Packet_BroadCastMsg;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CPlayerMsg] = Packet_PlayerMsg;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CAdminMsg] = Packet_AdminMsg;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CPlayerMove] = Packet_PlayerMove;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CPlayerDir] = Packet_PlayerDirection;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CUseItem] = Packet_UseItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CAttack] = Packet_Attack;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CPlayerInfoRequest] = Packet_PlayerInfo;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CWarpMeTo] = Packet_WarpMeTo;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CWarpToMe] = Packet_WarpToMe;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CWarpTo] = Packet_WarpTo;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSetSprite] = Packet_SetSprite;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CGetStats] = Packet_GetStats;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestNewMap] = Packet_RequestNewMap;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveMap] = Packet_MapData;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CNeedMap] = Packet_NeedMap;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CMapGetItem] = Item.Packet_GetItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CMapDropItem] = Item.Packet_DropItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CMapRespawn] = Packet_RespawnMap;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CMapReport] = Packet_MapReport;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CKickPlayer] = Packet_KickPlayer;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CBanList] = Packet_Banlist;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CBanDestroy] = Packet_DestroyBans;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CBanPlayer] = Packet_BanPlayer;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CCheckPing] = Packet_Ping;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CLogin] = Packet_Login;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRegister] = Packet_Register;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CAddChar] = Packet_AddChar;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CUseChar] = Packet_UseChar;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CDelChar] = Packet_DelChar;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSayMsg] = Packet_SayMessage;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CBroadcastMsg] = Packet_BroadCastMsg;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerMsg] = Packet_PlayerMsg;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CAdminMsg] = Packet_AdminMsg;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerMove] = Packet_PlayerMove;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerDir] = Packet_PlayerDirection;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CUseItem] = Packet_UseItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CAttack] = Packet_Attack;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPlayerInfoRequest] = Packet_PlayerInfo;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CWarpMeTo] = Packet_WarpMeTo;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CWarpToMe] = Packet_WarpToMe;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CWarpTo] = Packet_WarpTo;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetSprite] = Packet_SetSprite;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CGetStats] = Packet_GetStats;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestNewMap] = Packet_RequestNewMap;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveMap] = Packet_MapData;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CNeedMap] = Packet_NeedMap;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CMapGetItem] = Item.Packet_GetItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CMapDropItem] = Item.Packet_DropItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CMapRespawn] = Packet_RespawnMap;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CMapReport] = Packet_MapReport;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CKickPlayer] = Packet_KickPlayer;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CBanList] = Packet_Banlist;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CBanDestroy] = Packet_DestroyBans;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CBanPlayer] = Packet_BanPlayer;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditMap] = Packet_EditMapRequest;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditMap] = Packet_EditMapRequest;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSetAccess] = Packet_SetAccess;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CWhosOnline] = Packet_WhosOnline;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSetMotd] = Packet_SetMotd;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSearch] = Packet_PlayerSearch;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSkills] = Packet_Skills;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CCast] = Packet_Cast;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CQuit] = Packet_QuitGame;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSwapInvSlots] = Packet_SwapInvSlots;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSwapSkillSlots] = Packet_SwapSkillSlots;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetAccess] = Packet_SetAccess;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CWhosOnline] = Packet_WhosOnline;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetMotd] = Packet_SetMotd;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSearch] = Packet_PlayerSearch;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSkills] = Packet_Skills;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CCast] = Packet_Cast;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CQuit] = Packet_QuitGame;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwapInvSlots] = Packet_SwapInvSlots;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwapSkillSlots] = Packet_SwapSkillSlots;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CCheckPing] = Packet_CheckPing;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CUnequip] = Packet_Unequip;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestPlayerData] = Packet_RequestPlayerData;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestItem] = Item.Packet_RequestItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestNPC] = Packet_RequestNPC;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestResource] = Resource.Packet_RequestResource;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSpawnItem] = Packet_SpawnItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CTrainStat] = Packet_TrainStat;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CCheckPing] = Packet_CheckPing;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CUnequip] = Packet_Unequip;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPlayerData] = Packet_RequestPlayerData;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestItem] = Item.Packet_RequestItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestNPC] = Packet_RequestNPC;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestResource] = Resource.Packet_RequestResource;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSpawnItem] = Packet_SpawnItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CTrainStat] = Packet_TrainStat;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestAnimation] = Animation.Packet_RequestAnimation;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestSkill] = Packet_RequestSkill;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestShop] = Packet_RequestShop;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestLevelUp] = Packet_RequestLevelUp;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CForgetSkill] = Packet_ForgetSkill;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CCloseShop] = Packet_CloseShop;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CBuyItem] = Packet_BuyItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSellItem] = Packet_SellItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CChangeBankSlots] = Packet_ChangeBankSlots;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CDepositItem] = Packet_DepositItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CWithdrawItem] = Packet_WithdrawItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CCloseBank] = Packet_CloseBank;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CAdminWarp] = Packet_AdminWarp;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestAnimation] = Animation.Packet_RequestAnimation;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestSkill] = Packet_RequestSkill;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestShop] = Packet_RequestShop;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestLevelUp] = Packet_RequestLevelUp;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CForgetSkill] = Packet_ForgetSkill;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CCloseShop] = Packet_CloseShop;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CBuyItem] = Packet_BuyItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSellItem] = Packet_SellItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CChangeBankSlots] = Packet_ChangeBankSlots;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CDepositItem] = Packet_DepositItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CWithdrawItem] = Packet_WithdrawItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CCloseBank] = Packet_CloseBank;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CAdminWarp] = Packet_AdminWarp;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CTradeInvite] = Packet_TradeInvite;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CHandleTradeInvite] = Packet_HandleTradeInvite;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CAcceptTrade] = Packet_AcceptTrade;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CDeclineTrade] = Packet_DeclineTrade;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CTradeItem] = Packet_TradeItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CUntradeItem] = Packet_UntradeItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CTradeInvite] = Packet_TradeInvite;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CHandleTradeInvite] = Packet_HandleTradeInvite;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CAcceptTrade] = Packet_AcceptTrade;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CDeclineTrade] = Packet_DeclineTrade;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CTradeItem] = Packet_TradeItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CUntradeItem] = Packet_UntradeItem;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CAdmin] = Packet_Admin;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CAdmin] = Packet_Admin;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSetHotbarSlot] = Packet_SetHotbarSlot;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CDeleteHotbarSlot] = Packet_DeleteHotbarSlot;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CUseHotbarSlot] = Packet_UseHotbarSlot;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetHotbarSlot] = Packet_SetHotbarSlot;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CDeleteHotbarSlot] = Packet_DeleteHotbarSlot;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CUseHotbarSlot] = Packet_UseHotbarSlot;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSkillLearn] = Packet_SkillLearn;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSkillLearn] = Packet_SkillLearn;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CEventChatReply] = Event.Packet_EventChatReply;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CEvent] = Event.Packet_Event;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestSwitchesAndVariables] = Event.Packet_RequestSwitchesAndVariables;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSwitchesAndVariables] = Event.Packet_SwitchesAndVariables;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CEventChatReply] = Event.Packet_EventChatReply;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CEvent] = Event.Packet_Event;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestSwitchesAndVariables] = Event.Packet_RequestSwitchesAndVariables;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwitchesAndVariables] = Event.Packet_SwitchesAndVariables;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestProjectiles] = Projectile.HandleRequestProjectile;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CClearProjectile] = Projectile.HandleClearProjectile;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestProjectiles] = Projectile.HandleRequestProjectile;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CClearProjectile] = Projectile.HandleClearProjectile;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CEmote] = Packet_Emote;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CEmote] = Packet_Emote;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestParty] = Party.Packet_PartyRquest;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CAcceptParty] = Party.Packet_AcceptParty;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CDeclineParty] = Party.Packet_DeclineParty;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CLeaveParty] = Party.Packet_LeaveParty;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CPartyChatMsg] = Party.Packet_PartyChatMsg;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestParty] = Party.Packet_PartyRquest;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CAcceptParty] = Party.Packet_AcceptParty;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CDeclineParty] = Party.Packet_DeclineParty;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CLeaveParty] = Party.Packet_LeaveParty;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPartyChatMsg] = Party.Packet_PartyChatMsg;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestPets] = Pet.Packet_RequestPets;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSummonPet] = Pet.Packet_SummonPet;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CPetMove] = Pet.Packet_PetMove;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSetBehaviour] = Pet.Packet_SetPetBehaviour;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CReleasePet] = Pet.Packet_ReleasePet;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CPetSkill] = Pet.Packet_PetSkill;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CPetUseStatPoint] = Pet.Packet_UsePetStatPoint;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditPet] = Pet.Packet_RequestPet;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestPets] = Pet.Packet_RequestPets;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSummonPet] = Pet.Packet_SummonPet;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetMove] = Pet.Packet_PetMove;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSetBehaviour] = Pet.Packet_SetPetBehaviour;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CReleasePet] = Pet.Packet_ReleasePet;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetSkill] = Pet.Packet_PetSkill;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CPetUseStatPoint] = Pet.Packet_UsePetStatPoint;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditPet] = Pet.Packet_RequestPet;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditItem] = Item.Packet_EditItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveItem] = Item.Packet_SaveItem;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditNPC] = NPC.Packet_EditNPC;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveNPC] = NPC.Packet_SaveNPC;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditShop] = Packet_EditShop;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveShop] = Packet_SaveShop;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditSkill] = Packet_EditSkill;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveSkill] = Packet_SaveSkill;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditResource] = Resource.Packet_EditResource;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveResource] = Resource.Packet_SaveResource;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditAnimation] = Animation.Packet_EditAnimation;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveAnimation] = Animation.Packet_SaveAnimation;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditProjectiles] = Projectile.HandleRequestEditProjectile;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveProjectile] = Projectile.HandleSaveProjectile;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditJob] = Packet_RequestEditJob;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveJob] = Packet_SaveJob;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditItem] = Item.Packet_EditItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveItem] = Item.Packet_SaveItem;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditNPC] = NPC.Packet_EditNPC;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveNPC] = NPC.Packet_SaveNPC;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditShop] = Packet_EditShop;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveShop] = Packet_SaveShop;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditSkill] = Packet_EditSkill;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveSkill] = Packet_SaveSkill;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditResource] = Resource.Packet_EditResource;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveResource] = Resource.Packet_SaveResource;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditAnimation] = Animation.Packet_EditAnimation;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveAnimation] = Animation.Packet_SaveAnimation;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditProjectiles] = Projectile.HandleRequestEditProjectile;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveProjectile] = Projectile.HandleSaveProjectile;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditJob] = Packet_RequestEditJob;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveJob] = Packet_SaveJob;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditPet] = Pet.Packet_RequestEditPet;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSavePet] = Pet.Packet_SavePet;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditPet] = Pet.Packet_RequestEditPet;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSavePet] = Pet.Packet_SavePet;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestMoral] = Moral.Packet_RequestMoral;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CRequestEditMoral] = Moral.Packet_RequestEditMoral;
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CSaveMoral] = Moral.Packet_SaveMoral;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestMoral] = Moral.Packet_RequestMoral;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditMoral] = Moral.Packet_RequestEditMoral;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveMoral] = Moral.Packet_SaveMoral;
 
-            NetworkConfig.Socket.PacketID[(byte)ClientPackets.CCloseEditor] = Packet_CloseEditor;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CCloseEditor] = Packet_CloseEditor;
 
         }
 
@@ -377,7 +377,7 @@ namespace Server
             {
                 if (NetworkConfig.IsLoggedIn(index))
                 {
-                    slot = (byte)buffer.ReadInt32();
+                    slot = buffer.ReadByte();
 
                     if (slot < 1 | slot > Core.Constant.MAX_CHARS)
                     {
@@ -421,7 +421,7 @@ namespace Server
 
             if (!NetworkConfig.IsPlaying(index))
             {
-                slot = (byte)buffer.ReadInt32();
+                slot = buffer.ReadByte();
                 name = buffer.ReadString();
                 sexNum = buffer.ReadInt32();
                 jobNum = buffer.ReadInt32();
@@ -500,7 +500,7 @@ namespace Server
 
             if (!NetworkConfig.IsPlaying(index))
             {
-                slot = (byte)buffer.ReadInt32();
+                slot = buffer.ReadByte();
 
                 if (slot < 1 | slot > Core.Constant.MAX_CHARS)
                 {
