@@ -1,13 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using Core;
-using static Core.Enum;
+﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
+using static Core.Enum;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Client
 {

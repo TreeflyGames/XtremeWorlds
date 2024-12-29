@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Core;
+﻿using Core;
+using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
-using Microsoft.VisualBasic;
 using static Core.Global.Command;
 
 namespace Client
