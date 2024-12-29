@@ -206,7 +206,9 @@ namespace Mirage.Sharp.Asfw.Network
             return;
         this._listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         this._listener.NoDelay = true;
-        this._listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE
+#if WINDOWS
+            this._listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE
+#endif
         this._listener.SendTimeout = 5000; // 5 seconds
         this._listener.ReceiveTimeout = 5000;
         this._listener.Bind(new IPEndPoint(IPAddress.Any, port));
@@ -236,7 +238,7 @@ namespace Mirage.Sharp.Asfw.Network
             {
 #if WINDOWS
                 socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE for the client socket
-#endif                
+#endif
                 int emptySlot = this.FindEmptySlot(this.MinimumIndex);
                 this._socket.Add(emptySlot, socket);
                 this._socket[emptySlot].ReceiveBufferSize = this._packetSize;
