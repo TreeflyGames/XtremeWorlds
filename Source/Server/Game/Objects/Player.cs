@@ -2747,8 +2747,8 @@ namespace Server
             NetworkSend.SendStats(index);
             NetworkSend.SendJoinMap(index);
             Pet.SendUpdatePlayerPet(index, true);
-            Time.SendTimeTo(index);
-            Time.SendGameClockTo(index);
+            //Time.SendTimeTo(index);
+            //Time.SendGameClockTo(index);
             Pet.SendPets(index);
             Projectile.SendProjectiles(index);
 

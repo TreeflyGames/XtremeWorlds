@@ -805,40 +805,40 @@ namespace Server
 
         public static byte[] PlayerData(int index)
         {
-            byte[] playerDataRet;
+            byte[] PlayerDataRet = default;
+            var buffer = new ByteStream(4);
+            int i;
 
-            using (var buffer = new ByteStream(4))
+            buffer.WriteInt32((int)ServerPackets.SPlayerData);
+            buffer.WriteInt32(index);
+            buffer.WriteString(GetPlayerName(index));
+            buffer.WriteInt32(GetPlayerJob(index));
+            buffer.WriteInt32(GetPlayerLevel(index));
+            buffer.WriteInt32(GetPlayerPoints(index));
+            buffer.WriteInt32(GetPlayerSprite(index));
+            buffer.WriteInt32(GetPlayerMap(index));
+            buffer.WriteInt32(GetPlayerAccess(index));
+            buffer.WriteInt32(GetPlayerPK(index));
+
+            var loopTo = (int)StatType.Count - 1;
+            for (i = 0; i < (int)loopTo; i++)
+                buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
+
+            var loopTo1 = (int)ResourceType.Count - 1;
+            for (i = 0; i <= (int)loopTo1; i++)
             {
-                buffer.WriteInt32((int)ServerPackets.SPlayerData);
-                buffer.WriteInt32(index);
-                buffer.WriteString(GetPlayerName(index));
-                buffer.WriteInt32(GetPlayerJob(index));
-                buffer.WriteInt32(GetPlayerLevel(index));
-                buffer.WriteInt32(GetPlayerPoints(index));
-                buffer.WriteInt32(GetPlayerSprite(index));
-                buffer.WriteInt32(GetPlayerMap(index));
-                buffer.WriteInt32(GetPlayerAccess(index));
-                buffer.WriteInt32(GetPlayerPK(index));
-
-                foreach (StatType stat in System.Enum.GetValues(typeof(StatType)))
-                {
-                    if (stat == StatType.Count) continue;
-                    buffer.WriteInt32(GetPlayerStat(index, stat));
-                }
-
-                foreach (ResourceType resource in System.Enum.GetValues(typeof(ResourceType)))
-                {
-                    if (resource == ResourceType.Count) continue;
-                    buffer.WriteInt32(GetPlayerGatherSkillLvl(index, (int)resource));
-                    buffer.WriteInt32(GetPlayerGatherSkillExp(index, (int)resource));
-                    buffer.WriteInt32(GetPlayerGatherSkillMaxExp(index, (int)resource));
-                }
-
-                playerDataRet = buffer.ToArray();
+                buffer.WriteInt32(GetPlayerGatherSkillLvl(index, i));
+                buffer.WriteInt32(GetPlayerGatherSkillExp(index, i));
+                buffer.WriteInt32(GetPlayerGatherSkillMaxExp(index, i));
             }
 
-            return playerDataRet;
+            PlayerDataRet = buffer.ToArray();
+
+            buffer.Dispose();
+            return PlayerDataRet;
         }
+
+
 
         public static void SendPlayerXY(int index)
         {
