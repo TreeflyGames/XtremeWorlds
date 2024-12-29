@@ -525,6 +525,7 @@ namespace Mirage.Sharp.Asfw.Network
     {
       if (!this._socket.ContainsKey(index))
         return;
+
       if (this._socket[index] == null || !this._socket[index].Connected)
       {
         this.Disconnect(index);
@@ -583,17 +584,7 @@ namespace Mirage.Sharp.Asfw.Network
     private void DoSend(IAsyncResult ar)
     {
       int asyncState = (int) ar.AsyncState;
-      try
-      {
-        this._socket[asyncState].EndSend(ar);
-      }
-      catch (Exception e)
-      {
-        NetworkServer.CrashReportArgs crashReport = this.CrashReport;
-        if (crashReport != null)
-          crashReport(asyncState, "ConnectionForciblyClosedException");
-        this.Disconnect(asyncState);
-      }
+      this._socket[asyncState].EndSend(ar);
     }
 
     private struct ReceiveState : IDisposable
