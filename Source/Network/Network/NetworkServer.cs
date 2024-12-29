@@ -412,23 +412,15 @@ namespace Mirage.Sharp.Asfw.Network
                     if (!this._socket.ContainsKey(index))
                       break;
                   }
-                  if (int32_2 >= 0 && int32_2 < this._packetCount)
-                  {
-                    if (this.PacketID[int32_2] != null)
-                    {
-                      int length2 = int32_1 - 4;
-                      byte[] data = new byte[length2];
-                      if (length2 > 0)
-                        Buffer.BlockCopy((Array)this._packetRing, startIndex + 4, (Array)data, 0, length2);
-                      NetworkClient.PacketInfoArgs packetReceived = this.PacketReceived;
-                      if (packetReceived != null)
-                        packetReceived(length2, int32_2, ref data);
-                      this.PacketID[int32_2](ref data);
-                      num = startIndex + int32_1;
-                    }
-                    else
-                      Console.WriteLine($"Invalid packet handler for {int32_2}.");
-                  }
+                  int length2 = int32_1 - 4;
+                  byte[] data = new byte[length2];
+                  if (length2 > 0)
+                    Buffer.BlockCopy((Array) so.RingBuffer, startIndex + 4, (Array) data, 0, length2);
+                  NetworkServer.PacketInfoArgs packetReceived = this.PacketReceived;
+                  if (packetReceived != null)
+                    packetReceived(length2, int32_2, ref data);
+                  this.PacketID[int32_2](index, ref data);
+                  num = startIndex + int32_1;
                   --so.PacketCount;
                   flag = true;
                 }
