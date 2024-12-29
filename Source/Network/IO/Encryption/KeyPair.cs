@@ -24,7 +24,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         private void CheckDisposed()
         {
             if (_disposed)
-                throw new ObjectDisposedException(nameof(KeyPair), "The RSA key has been disposed.");
+                GenerateKeys();
         }
 
         public bool PublicOnly
@@ -38,8 +38,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
         public void GenerateKeys()
         {
-            CheckDisposed();
             _rsa = new RSACryptoServiceProvider(2048);
+            _disposed = false;
         }
 
         public string ExportKeyString(bool exportPrivate = false)
