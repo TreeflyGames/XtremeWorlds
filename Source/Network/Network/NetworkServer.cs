@@ -207,6 +207,8 @@ namespace Mirage.Sharp.Asfw.Network
         this._listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         this._listener.NoDelay = true;
         this._listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true); // Enable SO_KEEPALIVE
+        this._listener.SendTimeout = 5000; // 5 seconds
+        this._listener.ReceiveTimeout = 5000;
         this._listener.Bind(new IPEndPoint(IPAddress.Any, port));
         this.IsListening = true;
         this._listener.Listen(backlog);
