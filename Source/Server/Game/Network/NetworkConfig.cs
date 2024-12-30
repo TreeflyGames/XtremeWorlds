@@ -138,26 +138,33 @@ namespace Server
         {
             for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
             {
-                if (GetPlayerMap(i) == mapNum & i != index)
+                if (IsPlaying(i))
                 {
-                    Socket.SendDataTo(ref i, ref data, ref head);
+                    if (i != index)
+                    {
+                        if (GetPlayerMap(i) == mapNum)
+                        {
+                            Socket.SendDataTo(ref i, ref data, ref head);
+                        }
+                    }
                 }
             }
         }
 
-        public static void SendDataToMap(int MapNum, ref byte[] data, int head)
+        public static void SendDataToMap(int mapNum, ref byte[] data, int head)
         {
             int i;
 
             var loopTo = Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
-
-                if (GetPlayerMap(i) == MapNum)
+                if (IsPlaying(i))
                 {
-                    Socket.SendDataTo(ref i, ref data, ref head);
+                    if (GetPlayerMap(i) == mapNum)
+                    {
+                        Socket.SendDataTo(ref i, ref data, ref head);
+                    }
                 }
-
             }
 
         }

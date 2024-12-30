@@ -2740,7 +2740,6 @@ namespace Server
             CheckEquippedItems(index);
             NetworkSend.SendInventory(index);
             NetworkSend.SendWornEquipment(index);
-            NetworkSend.SendMapEquipment(index);
             NetworkSend.SendExp(index);
             NetworkSend.SendHotbar(index);
             NetworkSend.SendPlayerSkills(index);
@@ -2750,6 +2749,7 @@ namespace Server
             //Time.SendGameClockTo(index);
             Pet.SendPets(index);
             Projectile.SendProjectiles(index);
+            NetworkSend.SendVitals(index);
 
             // Send welcome messages
             NetworkSend.SendWelcome(index);

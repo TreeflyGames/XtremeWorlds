@@ -787,20 +787,27 @@ namespace Server
             var loopTo = NetworkConfig.Socket.HighIndex - 1;
             for (i = 0; i <= (int)loopTo; i++)
             {
-                if (GetPlayerMap(i) == GetPlayerMap(index))
+                if (IsPlaying(i))
                 {
-                    data = PlayerData(i);
-                    dataSize = data.Length;
-                    NetworkConfig.Socket.SendDataTo(ref index, ref data, ref dataSize);
-                    SendPlayerXYTo(index, i);         
+                    if (GetPlayerMap(i) == GetPlayerMap(index))
+                    {
+                        if (i != index)
+                        {
+                            data = PlayerData(i);
+                            dataSize = data.Length;
+                            NetworkConfig.Socket.SendDataTo(ref index, ref data, ref dataSize);
+                            SendPlayerXYTo(index, i);
+                            NetworkSend.SendMapEquipmentTo(index, i);
+                        }
+                    }
                 }
             }
 
             // Send index's player data to everyone on the map including himself
             data = PlayerData(index);
             NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), ref data, data.Length);
-            SendVitals(index);
             SendPlayerXYToMap(index);
+            NetworkSend.SendMapEquipment(index);
         }
 
         public static byte[] PlayerData(int index)
