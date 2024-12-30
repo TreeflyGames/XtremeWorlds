@@ -358,8 +358,8 @@ namespace Mirage.Sharp.Asfw.Network
   // Helper to disconnect and dispose
   private void DisconnectAndDispose(int index, NetworkServer.ReceiveState state)
   {
-      this.Disconnect(index);
-      state.Dispose();
+    this.Disconnect(index);
+    state.Dispose();
   }
   
   // Append new data to the ring buffer safely
@@ -384,114 +384,114 @@ namespace Mirage.Sharp.Asfw.Network
 
     private void PacketHandler(ref NetworkServer.ReceiveState so)
     {
-      int index = so.Index;
-      int length1 = so.RingBuffer.Length;
-      int num = 0;
-      bool flag = false;
-      int count;
+        int index = so.Index;
+        int length1 = so.RingBuffer.Length;
+        int num = 0;
+        bool flag = false;
+        int count;
 
-      while (true)
-      {
-        count = length1 - num;
-        if (count >= 4)
+        while (true)
         {
-          int int32_1 = BitConverter.ToInt32(so.RingBuffer, num);
-          if (int32_1 >= 4)
-          {
-            if (int32_1 <= count)
+            count = length1 - num;
+            if (count >= 4)
             {
-              int startIndex = num + 4;
-              int int32_2 = BitConverter.ToInt32(so.RingBuffer, startIndex);
-              if (int32_2 >= 0 && int32_2 < this._packetCount)
-              {
-                if (this.PacketID[int32_2] != null)
+                int int32_1 = BitConverter.ToInt32(so.RingBuffer, num);
+                if (int32_1 >= 4)
                 {
-                  if (this.AccessCheck != null)
-                  {
-                    this.AccessCheck(index, int32_2);
-                    if (!this._socket.ContainsKey(index))
-                      break;
-                  }
-                  int length2 = int32_1 - 4;
-                  byte[] data = new byte[length2];
-                  if (length2 > 0)
-                    Buffer.BlockCopy((Array) so.RingBuffer, startIndex + 4, (Array) data, 0, length2);
-                  NetworkServer.PacketInfoArgs packetReceived = this.PacketReceived;
-                  if (packetReceived != null)
-                    packetReceived(length2, int32_2, ref data);
-                  this.PacketID[int32_2](index, ref data);
-                  num = startIndex + int32_1;
-                  --so.PacketCount;
-                  flag = true;
+                    if (int32_1 <= count)
+                    {
+                        int startIndex = num + 4;
+                        int int32_2 = BitConverter.ToInt32(so.RingBuffer, startIndex);
+                        if (int32_2 >= 0 && int32_2 < this._packetCount)
+                        {
+                            if (this.PacketID[int32_2] != null)
+                            {
+                                if (this.AccessCheck != null)
+                                {
+                                    this.AccessCheck(index, int32_2);
+                                    if (!this._socket.ContainsKey(index))
+                                        break;
+                                }
+                                int length2 = int32_1 - 4;
+                                byte[] data = new byte[length2];
+                                if (length2 > 0)
+                                    Buffer.BlockCopy((Array)so.RingBuffer, startIndex + 4, (Array)data, 0, length2);
+                                NetworkServer.PacketInfoArgs packetReceived = this.PacketReceived;
+                                if (packetReceived != null)
+                                    packetReceived(length2, int32_2, ref data);
+                                this.PacketID[int32_2](index, ref data);
+                                num = startIndex + int32_1;
+                                --so.PacketCount;
+                                flag = true;
+                            }
+                            else
+                                goto NullReference;
+                        }
+                        else
+                            goto IndexOutofRange;
+                    }
+                    else
+                        goto Overflow;
                 }
                 else
-                  goto NullReference;
-              }
-              else
-                goto IndexOutofRange;
+                    goto BrokenPacket;
             }
             else
-              goto Overflow;
-          }
-          else
-            goto BrokenPacket;
+                break; // Exit the loop if there are not enough bytes to read the packet size
+        }
+        so.Dispose();
+        return;
+    NullReference:
+        if (!this._socket.ContainsKey(index))
+        {
+            so.Dispose();
+            return;
+        }
+        NetworkServer.CrashReportArgs crashReport1 = this.CrashReport;
+        if (crashReport1 != null)
+            crashReport1(index, "NullReferenceException");
+        this.Disconnect(index);
+        so.Dispose();
+        return;
+    IndexOutofRange:
+        if (!this._socket.ContainsKey(index))
+        {
+            so.Dispose();
+            return;
+        }
+        NetworkServer.CrashReportArgs crashReport2 = this.CrashReport;
+        if (crashReport2 != null)
+            crashReport2(index, "IndexOutOfRangeException");
+        this.Disconnect(index);
+        so.Dispose();
+        return;
+    BrokenPacket:
+        if (!this._socket.ContainsKey(index))
+        {
+            so.Dispose();
+            return;
+        }
+        NetworkServer.CrashReportArgs crashReport3 = this.CrashReport;
+        if (crashReport3 != null)
+            crashReport3(index, "BrokenPacketException");
+        this.Disconnect(index);
+        so.Dispose();
+        return;
+    Overflow:
+        if (count == 0)
+        {
+            so.RingBuffer = (byte[])null;
+            so.PacketCount = 0;
         }
         else
-          goto Overflow;
-      }
-      so.Dispose();
-      return;
-    NullReference:
-      if (!this._socket.ContainsKey(index))
-      {
-        so.Dispose();
-        return;
-      }
-      NetworkServer.CrashReportArgs crashReport1 = this.CrashReport;
-      if (crashReport1 != null)
-        crashReport1(index, "NullReferenceException");
-      this.Disconnect(index);
-      so.Dispose();
-      return;
-    IndexOutofRange:
-      if (!this._socket.ContainsKey(index))
-      {
-        so.Dispose();
-        return;
-      }
-      NetworkServer.CrashReportArgs crashReport2 = this.CrashReport;
-      if (crashReport2 != null)
-        crashReport2(index, "IndexOutOfRangeException");
-      this.Disconnect(index);
-      so.Dispose();
-      return;
-    BrokenPacket:
-      if (!this._socket.ContainsKey(index))
-      {
-        so.Dispose();
-        return;
-      }
-      NetworkServer.CrashReportArgs crashReport3 = this.CrashReport;
-      if (crashReport3 != null)
-        crashReport3(index, "BrokenPacketException");
-      this.Disconnect(index);
-      so.Dispose();
-      return;
-    Overflow:
-      if (count == 0)
-      {
-        so.RingBuffer = (byte[]) null;
-        so.PacketCount = 0;
-      }
-      else
-      {
-        byte[] dst = new byte[count];
-        Buffer.BlockCopy((Array) so.RingBuffer, num, (Array) dst, 0, count);
-        so.RingBuffer = dst;
-        if (!flag)
-          return;
-        so.PacketCount = 1;
-      }
+        {
+            byte[] dst = new byte[count];
+            Buffer.BlockCopy((Array)so.RingBuffer, num, (Array)dst, 0, count);
+            so.RingBuffer = dst;
+            if (!flag)
+                return;
+            so.PacketCount = 1;
+        }
     }
 
     public void SendDataTo(ref int index, ref byte[] data)
