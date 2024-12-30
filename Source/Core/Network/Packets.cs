@@ -7,7 +7,6 @@ namespace Core
         // Packets sent by client to server
         public enum ClientPackets
         {
-            None = 0,
             CLogin,
             CRegister,
             CAddChar,
@@ -144,7 +143,6 @@ namespace Core
         // Packets sent by server to client
         public enum ServerPackets
         {
-            None = 0,
             SAlertMsg,
             SKeyPair,
             SLoginOK,
