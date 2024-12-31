@@ -52,7 +52,7 @@ namespace Server
         {
             int i;
 
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
@@ -77,7 +77,7 @@ namespace Server
         {
             int i;
 
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (NetworkConfig.IsPlaying(i))

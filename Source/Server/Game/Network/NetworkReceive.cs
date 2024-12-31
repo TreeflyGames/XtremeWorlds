@@ -753,7 +753,7 @@ namespace Server
             }
 
             // Try to attack a player
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 Tempindex = i;
@@ -1283,7 +1283,7 @@ namespace Server
             NPC.SpawnMapNPCs(mapNum);
             EventLogic.SpawnGlobalEvents(mapNum);
 
-            var loopTo10 = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo10 = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo10; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
@@ -1308,7 +1308,7 @@ namespace Server
             Resource.CacheResources(mapNum);
 
             // Refresh map for everyone online
-            var loopTo12 = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo12 = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo12; i++)
             {
                 if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
@@ -1774,7 +1774,7 @@ namespace Server
                 return;
 
             // Check for a player
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
 

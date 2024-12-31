@@ -1157,7 +1157,7 @@ namespace Server
             // send equipment of all people on new map
             if (GameLogic.GetTotalMapPlayers(MapNum) > 0)
             {
-                var loopTo = NetworkConfig.Socket.HighIndex - 1;
+                var loopTo = NetworkConfig.Socket.HighIndex;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
                     if (NetworkConfig.IsPlaying(i))

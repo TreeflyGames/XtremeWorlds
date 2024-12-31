@@ -500,7 +500,7 @@ namespace Server
             if (GetPlayerAccess(index) < (int)AccessType.Moderator)
                 return;
 
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (i != index & GetPlayerName(i) != "")
@@ -783,21 +783,18 @@ namespace Server
             int dataSize;
 
             // Send all players on current map to index
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (IsPlaying(i))
                 {
                     if (GetPlayerMap(i) == GetPlayerMap(index))
                     {
-                        if (i != index)
-                        {
-                            data = PlayerData(i);
-                            dataSize = data.Length;
-                            NetworkConfig.Socket.SendDataTo(ref index, ref data, ref dataSize);
-                            SendPlayerXYTo(index, i);
-                            NetworkSend.SendMapEquipmentTo(index, i);
-                        }
+                        data = PlayerData(i);
+                        dataSize = data.Length;
+                        NetworkConfig.Socket.SendDataTo(ref index, ref data, ref dataSize);
+                        SendPlayerXYTo(index, i);
+                        NetworkSend.SendMapEquipmentTo(index, i);
                     }
                 }
             }
@@ -924,7 +921,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SAdminMsg);
             buffer.WriteString(Msg);
 
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= (int)loopTo; i++)
             {
                 if (GetPlayerAccess(i) >= (int)AccessType.Moderator)
                 {

@@ -26,7 +26,7 @@ namespace Server
             int page;
             int compare;
 
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (Core.Type.TempPlayer[i].EventMap.CurrentEvents > 0 & Core.Type.TempPlayer[i].GettingMap == false)
@@ -210,7 +210,7 @@ namespace Server
             bool spawnevent;
             int p;
 
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (Core.Type.TempPlayer[i].EventMap.CurrentEvents > 0)
@@ -1252,7 +1252,7 @@ namespace Server
             bool sendupdate;
             var donotprocessmoveroute = default(bool);
 
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 playerID = i;
@@ -1965,7 +1965,7 @@ namespace Server
             bool endprocess;
 
             // Now, we process the damn things for commands :P
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
@@ -2015,7 +2015,7 @@ namespace Server
             }
 
             // That is it for starting parallel processes :D now we just have to make the code that actually processes the events to their fullest
-            var loopTo2 = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo2 = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo2; i++)
             {
                 if (NetworkConfig.IsPlaying(i))

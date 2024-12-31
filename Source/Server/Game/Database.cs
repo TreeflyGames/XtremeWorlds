@@ -1330,7 +1330,7 @@ namespace Server
 
         public static void SaveAllPlayersOnline()
         {
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= (int)loopTo; i++)
             {
                 if (!NetworkConfig.IsPlaying(i))
                     continue;

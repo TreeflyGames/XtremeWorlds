@@ -441,7 +441,7 @@ namespace Server
                 return;
 
             // Check for a player
-            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+            var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
 
@@ -713,7 +713,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAPS - 1;
             for (mapNum = 0; mapNum <= (int)loopTo; mapNum++)
             {
-                var loopTo1 = NetworkConfig.Socket.HighIndex - 1;
+                var loopTo1 = NetworkConfig.Socket.HighIndex;
                 for (playerindex = 0; playerindex <= (int)loopTo1; playerindex++)
                 {
                     tickCount = General.GetTimeMs();
@@ -730,7 +730,7 @@ namespace Server
                             if (!(Core.Type.TempPlayer[playerindex].PetStunDuration > 0))
                             {
 
-                                var loopTo2 = NetworkConfig.Socket.HighIndex - 1;
+                                var loopTo2 = NetworkConfig.Socket.HighIndex;
                                 for (i = 0; i <= (int)loopTo2; i++)
                                 {
                                     if (Core.Type.TempPlayer[playerindex].PetTargetType > 0)
@@ -1328,7 +1328,7 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo = NetworkConfig.Socket.HighIndex - 1;
+                            var loopTo = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i <= (int)loopTo; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
@@ -1387,7 +1387,7 @@ namespace Server
                                 return CanPetMoveRet;
                             }
 
-                            var loopTo2 = NetworkConfig.Socket.HighIndex - 1;
+                            var loopTo2 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i <= (int)loopTo2; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
@@ -1447,7 +1447,7 @@ namespace Server
                                 return CanPetMoveRet;
                             }
 
-                            var loopTo4 = NetworkConfig.Socket.HighIndex - 1;
+                            var loopTo4 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i <= (int)loopTo4; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
@@ -1506,7 +1506,7 @@ namespace Server
                                 return CanPetMoveRet;
                             }
 
-                            var loopTo6 = NetworkConfig.Socket.HighIndex - 1;
+                            var loopTo6 = NetworkConfig.Socket.HighIndex;
                             for (i = 0; i <= (int)loopTo6; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
@@ -2630,7 +2630,7 @@ namespace Server
                 NPC.SendNPCDead(mapNum, MapNPCNum);
 
                 // Loop through entire map and purge NPC from targets
-                var loopTo = NetworkConfig.Socket.HighIndex - 1;
+                var loopTo = NetworkConfig.Socket.HighIndex;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
 
@@ -3073,7 +3073,7 @@ namespace Server
                 }
 
                 // purge target info of anyone who targetted dead guy
-                var loopTo = NetworkConfig.Socket.HighIndex - 1;
+                var loopTo = NetworkConfig.Socket.HighIndex;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
 
@@ -3380,7 +3380,7 @@ namespace Server
                 // If Skillnum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, Skillnum
 
                 // purge target info of anyone who targetted dead guy
-                var loopTo = NetworkConfig.Socket.HighIndex - 1;
+                var loopTo = NetworkConfig.Socket.HighIndex;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
 
@@ -3886,7 +3886,7 @@ namespace Server
                                 {
                                     didCast = Conversions.ToBoolean(1);
 
-                                    var loopTo = NetworkConfig.Socket.HighIndex - 1;
+                                    var loopTo = NetworkConfig.Socket.HighIndex;
                                     for (i = 0; i <= (int)loopTo; i++)
                                     {
                                         if (NetworkConfig.IsPlaying(i) & i != index)
@@ -3960,7 +3960,7 @@ namespace Server
 
                                     didCast = Conversions.ToBoolean(1);
 
-                                    var loopTo2 = NetworkConfig.Socket.HighIndex - 1;
+                                    var loopTo2 = NetworkConfig.Socket.HighIndex;
                                     for (i = 0; i <= (int)loopTo2; i++)
                                     {
                                         if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(index))
@@ -4649,7 +4649,7 @@ namespace Server
                 }
 
                 // purge target info of anyone who targetted dead guy
-                var loopTo = NetworkConfig.Socket.HighIndex - 1;
+                var loopTo = NetworkConfig.Socket.HighIndex;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
                     if (NetworkConfig.IsPlaying(i) & NetworkConfig.Socket.IsConnected(i) & GetPlayerMap(i) == GetPlayerMap(attacker))
