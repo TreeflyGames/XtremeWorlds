@@ -224,7 +224,7 @@ namespace Client
                     }
 
                     var loopTo2 = GameState.CurrentEvents;
-                    for (i = 0; i <= loopTo2; i++)
+                    for (i = 0; i < loopTo2; i++)
                         Event.ProcessEventMovement(i);
 
                     walkTimer = tick + 25; // edit this value to change WalkTimer
