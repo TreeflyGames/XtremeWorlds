@@ -47,14 +47,14 @@ namespace Client
                 }
             }
 
-            if (Event.InitEventEditorForm)
+            if (GameState.InitEventEditorForm)
             {
                 {
                     var withBlock = frmEditor_Event.Instance;
                     withBlock.Owner = (Form)Control.FromHandle(General.Client.Window.Handle);
                     withBlock.Show();
                 }
-                Event.InitEventEditorForm = false;
+                GameState.InitEventEditorForm = false;
             }
 
             if (GameState.InitAdminForm)

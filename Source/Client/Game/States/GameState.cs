@@ -418,6 +418,7 @@ namespace Client
         public static bool InitMoralEditor;
         public static bool InitAdminForm;
         public static bool InitMapReport;
+        public static bool InitEventEditorForm;
 
         // Editor edited items array
         public static bool[] Item_Changed = new bool[501];

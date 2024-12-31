@@ -64,7 +64,6 @@ namespace Client
 
         internal static bool InEvent;
         internal static bool HoldPlayer;
-        internal static bool InitEventEditorForm;
 
         internal static Core.Type.PictureStruct Picture;
 
@@ -235,7 +234,7 @@ namespace Client
         {
             EditorEvent = EventNum;
             TmpEvent = Core.Type.MyMap.Event[EventNum];
-            InitEventEditorForm = true;
+            GameState.InitEventEditorForm = true;
             if (TmpEvent.Pages[1].CommandListCount == 0)
             {
                 Array.Resize(ref TmpEvent.Pages[1].CommandList, 1);
