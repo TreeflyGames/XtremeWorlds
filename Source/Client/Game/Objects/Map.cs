@@ -105,7 +105,7 @@ namespace Client
             try
             {
 
-                for (i = (int)Core.Enum.LayerType.Ground; i <= (int)Core.Enum.LayerType.CoverAnim; i++)
+                for (i = (int)Core.Enum.LayerType.Ground; i < (int)Core.Enum.LayerType.CoverAnim; i++)
                 {
                     // Check if the tile's layer array is initialized
                     if (Core.Type.MyMap.Tile[x, y].Layer is null)
@@ -166,7 +166,7 @@ namespace Client
             {
 
                 // Loop through the layers from Fringe to RoofAnim
-                for (i = (int)Core.Enum.LayerType.Fringe; i <= (int)Core.Enum.LayerType.RoofAnim; i++)
+                for (i = (int)Core.Enum.LayerType.Fringe; i < (int)Core.Enum.LayerType.RoofAnim; i++)
                 {
                     // Ensure that the layer array exists for the current tile
                     if (Core.Type.MyMap.Tile[x, y].Layer is null)

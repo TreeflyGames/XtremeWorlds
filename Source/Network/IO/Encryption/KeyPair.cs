@@ -237,7 +237,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                 byte[] aesKey;
                 try
                 {
-                    aesKey = _rsa.Decrypt(encryptedKey, true); // Ensure padding matches
+                    aesKey = _rsa?.Decrypt(encryptedKey, true); // Ensure padding matches
                 }
                 catch (CryptographicException ex)
                 {
