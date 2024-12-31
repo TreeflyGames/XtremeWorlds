@@ -234,11 +234,11 @@ namespace Client
                 withBlock.MaxX = (byte)Math.Round(Conversion.Val(txtMaxX.Text));
                 withBlock.MaxY = (byte)Math.Round(Conversion.Val(txtMaxY.Text));
 
-                withBlock.Tile = new Core.Type.TileStruct[(withBlock.MaxX + 1), (withBlock.MaxY + 1)];
-                Core.Type.Autotile = new Core.Type.AutotileStruct[(withBlock.MaxX + 1), (withBlock.MaxY + 1)];
+                withBlock.Tile = new Core.Type.TileStruct[(withBlock.MaxX), (withBlock.MaxY)];
+                Core.Type.Autotile = new Core.Type.AutotileStruct[(withBlock.MaxX), (withBlock.MaxY)];
 
-                for (int i = 0; i <= GameState.MaxTileHistory; i++)
-                    Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[(withBlock.MaxX + 1), (withBlock.MaxY + 1)];
+                for (int i = 0; i < GameState.MaxTileHistory; i++)
+                    Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[(withBlock.MaxX), (withBlock.MaxY)];
 
                 if (x2 > withBlock.MaxX)
                     x2 = withBlock.MaxX;
@@ -246,20 +246,20 @@ namespace Client
                     y2 = withBlock.MaxY;
 
                 var loopTo = (int)withBlock.MaxX;
-                for (X = 0; X <= loopTo; X++)
+                for (X = 0; X < loopTo; X++)
                 {
                     var loopTo1 = (int)withBlock.MaxY;
-                    for (Y = 0; Y <= loopTo1; Y++)
+                    for (Y = 0; Y < loopTo1; Y++)
                     {
                         withBlock.Tile[X, Y].Layer = new Core.Type.TileDataStruct[10];
                         Core.Type.Autotile[X, Y].Layer = new Core.Type.QuarterTileStruct[10];
 
-                        for (int i = 0; i <= GameState.MaxTileHistory; i++)
+                        for (int i = 0; i < GameState.MaxTileHistory; i++)
                             Core.Type.TileHistory[i].Tile[X, Y].Layer = new Core.Type.TileDataStruct[10];
 
-                        if (X <= x2)
+                        if (X < x2)
                         {
-                            if (Y <= y2)
+                            if (Y < y2)
                             {
                                 withBlock.Tile[X, Y] = tempArr[X, Y];
                             }
@@ -754,7 +754,7 @@ namespace Client
             General.CacheMusic();
 
             var loopTo = Information.UBound(Sound.MusicCache);
-            for (i = 0; i <= loopTo; i++)
+            for (i = 1; i <= loopTo; i++)
                 lstMusic.Items.Add(Sound.MusicCache[i]);
 
             var loopTo1 = lstMusic.Items.Count - 1;
@@ -1009,15 +1009,18 @@ namespace Client
 
             CurLayer = Instance.cmbLayers.SelectedIndex;
 
+            if (GameState.CurX < 0 || GameState.CurY < 0 || GameState.CurX > Core.Type.MyMap.MaxX || GameState.CurY > Core.Type.MyMap.MaxY)
+                return;
+
             if (GameState.EyeDropper)
             {
                 MapEditorEyeDropper();
                 return;
             }
 
-            for (int x2 = 0, loopTo = Core.Type.MyMap.MaxX; x2 <= loopTo; x2++)
+            for (int x2 = 0, loopTo = Core.Type.MyMap.MaxX; x2 < loopTo; x2++)
             {
-                for (int y2 = 0, loopTo1 = Core.Type.MyMap.MaxY; y2 <= loopTo1; y2++)
+                for (int y2 = 0, loopTo1 = Core.Type.MyMap.MaxY; y2 < loopTo1; y2++)
                 {
                     {
                         ref var withBlock = ref Core.Type.MyMap.Tile[x2, y2];
@@ -1046,6 +1049,7 @@ namespace Client
 
             if (GameLogic.IsInBounds())
                 return;
+
             if (Instance.cmbAutoTile.SelectedIndex == -1)
                 return;
 
@@ -1088,291 +1092,289 @@ namespace Client
                     }
                 }
                 else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
-                {
+                {                 
+                    ref var withBlock1 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
+                    // blocked tile
+                    if (Instance.optBlocked.Checked == true)
                     {
-                        ref var withBlock1 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
-                        // blocked tile
-                        if (Instance.optBlocked.Checked == true)
+                        if (GameState.EditorAttribute == 1)
                         {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Blocked;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Blocked;
-                            }
-                        }
-
-                        // warp tile
-                        if (Instance.optWarp.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Warp;
-                                withBlock1.Data1 = GameState.EditorWarpMap;
-                                withBlock1.Data2 = GameState.EditorWarpX;
-                                withBlock1.Data3 = GameState.EditorWarpY;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Warp;
-                                withBlock1.Data1_2 = GameState.EditorWarpMap;
-                                withBlock1.Data2_2 = GameState.EditorWarpX;
-                                withBlock1.Data3_2 = GameState.EditorWarpY;
-                            }
-                        }
-
-                        // item spawn
-                        if (Instance.optItem.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Item;
-                                withBlock1.Data1 = GameState.ItemEditorNum;
-                                withBlock1.Data2 = GameState.ItemEditorValue;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Item;
-                                withBlock1.Data1_2 = GameState.ItemEditorNum;
-                                withBlock1.Data2_2 = GameState.ItemEditorValue;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // NPC avoid
-                        if (Instance.optNPCAvoid.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.NPCAvoid;
-                                withBlock1.Data1 = 0;
-                                withBlock1.Data2 = 0;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.NPCAvoid;
-                                withBlock1.Data1_2 = 0;
-                                withBlock1.Data2_2 = 0;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // resource
-                        if (Instance.optResource.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Resource;
-                                withBlock1.Data1 = GameState.ResourceEditorNum;
-                                withBlock1.Data2 = 0;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Resource;
-                                withBlock1.Data1_2 = GameState.ResourceEditorNum;
-                                withBlock1.Data2_2 = 0;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // NPC spawn
-                        if (Instance.optNPCSpawn.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.NPCSpawn;
-                                withBlock1.Data1 = GameState.SpawnNPCNum;
-                                withBlock1.Data2 = GameState.SpawnNPCDir;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.NPCSpawn;
-                                withBlock1.Data1_2 = GameState.SpawnNPCNum;
-                                withBlock1.Data2_2 = GameState.SpawnNPCDir;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // shop
-                        if (Instance.optShop.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Shop;
-                                withBlock1.Data1 = GameState.EditorShop;
-                                withBlock1.Data2 = 0;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Shop;
-                                withBlock1.Data1_2 = GameState.EditorShop;
-                                withBlock1.Data2_2 = 0;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // bank
-                        if (Instance.optBank.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Bank;
-                                withBlock1.Data1 = 0;
-                                withBlock1.Data2 = 0;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Bank;
-                                withBlock1.Data1_2 = 0;
-                                withBlock1.Data2_2 = 0;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // heal
-                        if (Instance.optHeal.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Heal;
-                                withBlock1.Data1 = GameState.MapEditorHealType;
-                                withBlock1.Data2 = GameState.MapEditorHealAmount;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Heal;
-                                withBlock1.Data1_2 = GameState.MapEditorHealType;
-                                withBlock1.Data2_2 = GameState.MapEditorHealAmount;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // trap
-                        if (Instance.optTrap.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Trap;
-                                withBlock1.Data1 = GameState.MapEditorHealAmount;
-                                withBlock1.Data2 = 0;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Trap;
-                                withBlock1.Data1_2 = GameState.MapEditorHealAmount;
-                                withBlock1.Data2_2 = 0;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // light
-                        if (Instance.optLight.Checked)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Light;
-                                withBlock1.Data1 = GameState.EditorLight;
-                                withBlock1.Data2 = GameState.EditorFlicker;
-                                withBlock1.Data3 = GameState.EditorShadow;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Light;
-                                withBlock1.Data1_2 = GameState.EditorLight;
-                                withBlock1.Data2_2 = GameState.EditorFlicker;
-                                withBlock1.Data3_2 = GameState.EditorShadow;
-                            }
-                        }
-
-                        // Animation
-                        if (Instance.optAnimation.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.Animation;
-                                withBlock1.Data1 = GameState.EditorAnimation;
-                                withBlock1.Data2 = 0;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.Animation;
-                                withBlock1.Data1_2 = GameState.EditorAnimation;
-                                withBlock1.Data2_2 = 0;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-
-                        // No Xing
-                        if (Instance.optNoXing.Checked == true)
-                        {
-                            if (GameState.EditorAttribute == 1)
-                            {
-                                withBlock1.Type = TileType.NoXing;
-                                withBlock1.Data1 = 0;
-                                withBlock1.Data2 = 0;
-                                withBlock1.Data3 = 0;
-                            }
-                            else
-                            {
-                                withBlock1.Type2 = TileType.NoXing;
-                                withBlock1.Data1_2 = 0;
-                                withBlock1.Data2_2 = 0;
-                                withBlock1.Data3_2 = 0;
-                            }
-                        }
-                    }
-                }
-                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpDirBlock))
-                {
-                    // find what tile it is
-                    X -= X / GameState.PicX * GameState.PicX;
-                    Y -= Y / GameState.PicY * GameState.PicY;
-
-                    // see if it hits an arrow
-                    for (i = 0; i <= 4; i++)
-                    {
-                        // flip the value.
-                        if (X >= GameState.DirArrowX[i] & X <= GameState.DirArrowX[i] + 8)
-                        {
-                            if (Y >= GameState.DirArrowY[i] & Y <= GameState.DirArrowY[i] + 8)
-                            {
-                                // flip the value.
-                                bool localIsDirBlocked() { byte argdir = (byte)i; var ret = GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir); return ret; }
-
-                                byte argdir = (byte)i;
-                                GameLogic.SetDirBlock(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir, !localIsDirBlocked());
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
-                {
-                    if (frmEditor_Event.Instance.Visible == false)
-                    {
-                        if (Event.EventCopy)
-                        {
-                            Event.CopyEvent_Map(GameState.CurX, GameState.CurY);
-                        }
-                        else if (Event.EventPaste)
-                        {
-                            Event.PasteEvent_Map(GameState.CurX, GameState.CurY);
+                            withBlock1.Type = TileType.Blocked;
                         }
                         else
                         {
-                            Event.AddEvent(GameState.CurX, GameState.CurY);
+                            withBlock1.Type2 = TileType.Blocked;
                         }
+                    }
+
+                    // warp tile
+                    if (Instance.optWarp.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Warp;
+                            withBlock1.Data1 = GameState.EditorWarpMap;
+                            withBlock1.Data2 = GameState.EditorWarpX;
+                            withBlock1.Data3 = GameState.EditorWarpY;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Warp;
+                            withBlock1.Data1_2 = GameState.EditorWarpMap;
+                            withBlock1.Data2_2 = GameState.EditorWarpX;
+                            withBlock1.Data3_2 = GameState.EditorWarpY;
+                        }
+                    }
+
+                    // item spawn
+                    if (Instance.optItem.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Item;
+                            withBlock1.Data1 = GameState.ItemEditorNum;
+                            withBlock1.Data2 = GameState.ItemEditorValue;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Item;
+                            withBlock1.Data1_2 = GameState.ItemEditorNum;
+                            withBlock1.Data2_2 = GameState.ItemEditorValue;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // NPC avoid
+                    if (Instance.optNPCAvoid.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.NPCAvoid;
+                            withBlock1.Data1 = 0;
+                            withBlock1.Data2 = 0;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.NPCAvoid;
+                            withBlock1.Data1_2 = 0;
+                            withBlock1.Data2_2 = 0;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // resource
+                    if (Instance.optResource.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Resource;
+                            withBlock1.Data1 = GameState.ResourceEditorNum;
+                            withBlock1.Data2 = 0;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Resource;
+                            withBlock1.Data1_2 = GameState.ResourceEditorNum;
+                            withBlock1.Data2_2 = 0;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // NPC spawn
+                    if (Instance.optNPCSpawn.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.NPCSpawn;
+                            withBlock1.Data1 = GameState.SpawnNPCNum;
+                            withBlock1.Data2 = GameState.SpawnNPCDir;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.NPCSpawn;
+                            withBlock1.Data1_2 = GameState.SpawnNPCNum;
+                            withBlock1.Data2_2 = GameState.SpawnNPCDir;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // shop
+                    if (Instance.optShop.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Shop;
+                            withBlock1.Data1 = GameState.EditorShop;
+                            withBlock1.Data2 = 0;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Shop;
+                            withBlock1.Data1_2 = GameState.EditorShop;
+                            withBlock1.Data2_2 = 0;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // bank
+                    if (Instance.optBank.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Bank;
+                            withBlock1.Data1 = 0;
+                            withBlock1.Data2 = 0;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Bank;
+                            withBlock1.Data1_2 = 0;
+                            withBlock1.Data2_2 = 0;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // heal
+                    if (Instance.optHeal.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Heal;
+                            withBlock1.Data1 = GameState.MapEditorHealType;
+                            withBlock1.Data2 = GameState.MapEditorHealAmount;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Heal;
+                            withBlock1.Data1_2 = GameState.MapEditorHealType;
+                            withBlock1.Data2_2 = GameState.MapEditorHealAmount;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // trap
+                    if (Instance.optTrap.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Trap;
+                            withBlock1.Data1 = GameState.MapEditorHealAmount;
+                            withBlock1.Data2 = 0;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Trap;
+                            withBlock1.Data1_2 = GameState.MapEditorHealAmount;
+                            withBlock1.Data2_2 = 0;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // light
+                    if (Instance.optLight.Checked)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Light;
+                            withBlock1.Data1 = GameState.EditorLight;
+                            withBlock1.Data2 = GameState.EditorFlicker;
+                            withBlock1.Data3 = GameState.EditorShadow;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Light;
+                            withBlock1.Data1_2 = GameState.EditorLight;
+                            withBlock1.Data2_2 = GameState.EditorFlicker;
+                            withBlock1.Data3_2 = GameState.EditorShadow;
+                        }
+                    }
+
+                    // Animation
+                    if (Instance.optAnimation.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.Animation;
+                            withBlock1.Data1 = GameState.EditorAnimation;
+                            withBlock1.Data2 = 0;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.Animation;
+                            withBlock1.Data1_2 = GameState.EditorAnimation;
+                            withBlock1.Data2_2 = 0;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+
+                    // No Xing
+                    if (Instance.optNoXing.Checked == true)
+                    {
+                        if (GameState.EditorAttribute == 1)
+                        {
+                            withBlock1.Type = TileType.NoXing;
+                            withBlock1.Data1 = 0;
+                            withBlock1.Data2 = 0;
+                            withBlock1.Data3 = 0;
+                        }
+                        else
+                        {
+                            withBlock1.Type2 = TileType.NoXing;
+                            withBlock1.Data1_2 = 0;
+                            withBlock1.Data2_2 = 0;
+                            withBlock1.Data3_2 = 0;
+                        }
+                    }
+                }
+            }
+            else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpDirBlock))
+            {
+                // find what tile it is
+                X -= X / GameState.PicX * GameState.PicX;
+                Y -= Y / GameState.PicY * GameState.PicY;
+
+                // see if it hits an arrow
+                for (i = 0; i <= 4; i++)
+                {
+                    // flip the value.
+                    if (X >= GameState.DirArrowX[i] & X <= GameState.DirArrowX[i] + 8)
+                    {
+                        if (Y >= GameState.DirArrowY[i] & Y <= GameState.DirArrowY[i] + 8)
+                        {
+                            // flip the value.
+                            bool localIsDirBlocked() { byte argdir = (byte)i; var ret = GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir); return ret; }
+
+                            byte argdir = (byte)i;
+                            GameLogic.SetDirBlock(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir, !localIsDirBlocked());
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
+            {
+                if (frmEditor_Event.Instance.Visible == false)
+                {
+                    if (Event.EventCopy)
+                    {
+                        Event.CopyEvent_Map(GameState.CurX, GameState.CurY);
+                    }
+                    else if (Event.EventPaste)
+                    {
+                        Event.PasteEvent_Map(GameState.CurX, GameState.CurY);
+                    }
+                    else
+                    {
+                        Event.AddEvent(GameState.CurX, GameState.CurY);
                     }
                 }
             }
@@ -1725,7 +1727,7 @@ namespace Client
 
             if (GameState.CopyMap == false)
             {
-                Core.Type.Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX + 1), (Core.Type.MyMap.MaxY + 1)];
+                Core.Type.Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
                 GameState.TmpMaxX = Core.Type.MyMap.MaxX;
                 GameState.TmpMaxY = Core.Type.MyMap.MaxY;
 
@@ -1761,8 +1763,8 @@ namespace Client
             }
             else
             {
-                Core.Type.MyMap.Tile = new Core.Type.TileStruct[(GameState.TmpMaxX + 1), (GameState.TmpMaxY + 1)];
-                Core.Type.Autotile = new Core.Type.AutotileStruct[(GameState.TmpMaxX + 1), (GameState.TmpMaxY + 1)];
+                Core.Type.MyMap.Tile = new Core.Type.TileStruct[(GameState.TmpMaxX), (GameState.TmpMaxY)];
+                Core.Type.Autotile = new Core.Type.AutotileStruct[(GameState.TmpMaxX), (GameState.TmpMaxY)];
                 Core.Type.MyMap.MaxX = GameState.TmpMaxX;
                 Core.Type.MyMap.MaxY = GameState.TmpMaxY;
 

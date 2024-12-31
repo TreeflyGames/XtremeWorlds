@@ -11,13 +11,13 @@ namespace Client
             int y;
             int i;
 
-            Core.Type.Autotile = new Core.Type.AutotileStruct[(Core.Type.MyMap.MaxX + 1), (Core.Type.MyMap.MaxY + 1)];
+            Core.Type.Autotile = new Core.Type.AutotileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
 
             var loopTo = (int)Core.Type.MyMap.MaxX;
-            for (x = 0; x <= loopTo; x++)
+            for (x = 0; x < loopTo; x++)
             {
                 var loopTo1 = (int)Core.Type.MyMap.MaxY;
-                for (y = 0; y <= loopTo1; y++)
+                for (y = 0; y < loopTo1; y++)
                 {
                     Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
                     for (i = 0; i <= (int)Core.Enum.LayerType.Count - 1; i++)
@@ -311,12 +311,12 @@ namespace Client
             // We also give letters to each subtile for easy rendering tweaks. ;]
             // First, we need to re-size the array
 
-            Core.Type.Autotile = new Core.Type.AutotileStruct[(Core.Type.MyMap.MaxX + 1), (Core.Type.MyMap.MaxY + 1)];
+            Core.Type.Autotile = new Core.Type.AutotileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
             var loopTo = (int)Core.Type.MyMap.MaxX;
-            for (x = 0; x <= loopTo; x++)
+            for (x = 0; x < loopTo; x++)
             {
                 var loopTo1 = (int)Core.Type.MyMap.MaxY;
-                for (y = 0; y <= loopTo1; y++)
+                for (y = 0; y < loopTo1; y++)
                 {
                     Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
                     for (int i = 0; i < (int)Core.Enum.LayerType.Count - 1; i++)

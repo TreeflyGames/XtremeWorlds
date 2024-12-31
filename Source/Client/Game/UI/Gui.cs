@@ -1815,7 +1815,7 @@ namespace Client
             var left = default(long);
 
             // Check if the window and Control exist
-            if ((winNum < 0L | winNum > Windows.Count || entNum < 0L) | entNum > Windows[winNum].Controls.Count - 1)
+            if ((winNum < 0L | winNum >= Windows.Count || entNum < 0L) | entNum > Windows[winNum].Controls.Count - 1)
             {
                 return;
             }
@@ -2161,7 +2161,7 @@ namespace Client
             long left;
 
             // Check if the window exists
-            if (winNum < 0L || winNum > Windows.Count)
+            if (winNum < 0L || winNum >= Windows.Count)
             {
                 return;
             }
@@ -5004,7 +5004,6 @@ namespace Client
             Action argcallback_dblclick52 = null;
             UpdateLabel(Windows.Count, "lblPoints", 57L, 288L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm46, callback_hover: ref argcallback_hover46, callback_mousedown: ref argcallback_mousedown52, callback_mousemove: ref argcallback_mousemove52, callback_dblclick: ref argcallback_dblclick52);
         }
-
 
         // ###############
         // ## Character ##

@@ -3435,7 +3435,7 @@ namespace Server
             if (FY == -1)
                 FY = 0;
 
-            pos = new int[(Map[mapNum].MaxX + 1), (Map[mapNum].MaxY + 1)];
+            pos = new int[(Map[mapNum].MaxX), (Map[mapNum].MaxY)];
             // pos = MapBlocks(mapNum).Blocks
 
             pos[sX, sY] = 100 + tim;

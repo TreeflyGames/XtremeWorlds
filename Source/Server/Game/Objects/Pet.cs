@@ -1962,7 +1962,7 @@ namespace Server
             if (fy == -1)
                 return FindPetPathRet;
 
-            pos = new int[(Core.Type.Map[mapNum].MaxX + 1), (Core.Type.Map[mapNum].MaxY + 1)];
+            pos = new int[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
             // pos = MapBlocks(mapNum).Blocks
 
             pos[sX, sY] = 100 + tim;

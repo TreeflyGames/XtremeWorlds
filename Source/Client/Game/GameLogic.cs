@@ -2508,7 +2508,7 @@ namespace Client
                 {
                     offsetX = 32L;
 
-                    if (EndX == Core.Type.MyMap.MaxX + 1)
+                    if (EndX == Core.Type.MyMap.MaxX)
                     {
                         if (Core.Type.Player[GameState.MyIndex].XOffset < 0)
                         {
@@ -2548,7 +2548,7 @@ namespace Client
                 {
                     offsetY = 32L;
 
-                    if (EndY == Core.Type.MyMap.MaxY + 1)
+                    if (EndY == Core.Type.MyMap.MaxY)
                     {
                         if (Core.Type.Player[GameState.MyIndex].YOffset < 0)
                         {
@@ -2575,22 +2575,18 @@ namespace Client
                 offsetY = 0L;
             }
 
-            {
-                ref var withBlock = ref GameState.TileView;
-                withBlock.Top = StartY;
-                withBlock.Bottom = EndY;
-                withBlock.Left = StartX;
-                withBlock.Right = EndX;
-            }
+            ref var withBlock = ref GameState.TileView;
+            withBlock.Top = StartY;
+            withBlock.Bottom = EndY;
+            withBlock.Left = StartX;
+            withBlock.Right = EndX;
 
-            {
-                ref var withBlock1 = ref GameState.Camera;
-                withBlock1.Top = offsetY;
-                withBlock1.Bottom = withBlock1.Top + ScreenY;
-                withBlock1.Left = offsetX;
-                withBlock1.Right = withBlock1.Left + ScreenX;
-            }
-
+            ref var withBlock1 = ref GameState.Camera;
+            withBlock1.Top = offsetY;
+            withBlock1.Bottom = withBlock1.Top + ScreenY;
+            withBlock1.Left = offsetX;
+            withBlock1.Right = withBlock1.Left + ScreenX;
+            
             // Optional: Update the map name display
             UpdateDrawMapName();
         }
