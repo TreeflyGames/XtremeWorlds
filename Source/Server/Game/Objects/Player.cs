@@ -192,7 +192,7 @@ namespace Server
             GetPlayerDamageRet = 0;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index > Core.Constant.MAX_PLAYERS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index >= Core.Constant.MAX_PLAYERS)
             {
                 return GetPlayerDamageRet;
             }
@@ -220,7 +220,7 @@ namespace Server
             GetPlayerProtectionRet = 0;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index > Core.Constant.MAX_PLAYERS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index >= Core.Constant.MAX_PLAYERS)
             {
                 return GetPlayerProtectionRet;
             }
@@ -862,7 +862,7 @@ namespace Server
         {
             bool IsPlayerDeadRet = false;
             IsPlayerDeadRet = false;
-            if (index < 0 | index > Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
+            if (index < 0 | index >= Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
                 return IsPlayerDeadRet;
             if (GetPlayerVital(index, VitalType.HP) < 0)
                 IsPlayerDeadRet = true;
@@ -2874,7 +2874,7 @@ namespace Server
             var i = default(int);
 
             // Prevent subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index > Core.Constant.MAX_PLAYERS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index >= Core.Constant.MAX_PLAYERS)
             {
                 GetPlayerVitalRegenRet = 0;
                 return GetPlayerVitalRegenRet;

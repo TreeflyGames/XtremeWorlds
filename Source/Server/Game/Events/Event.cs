@@ -704,7 +704,7 @@ namespace Server
             // This Event returns a direction, 4 is not a valid direction so we assume fail unless otherwise told.
             CanEventMoveTowardsPlayerRet = 4;
 
-            if (playerID < 0 | playerID > Core.Constant.MAX_PLAYERS)
+            if (playerID < 0 | playerID >= Core.Constant.MAX_PLAYERS)
                 return CanEventMoveTowardsPlayerRet;
             if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return CanEventMoveTowardsPlayerRet;
@@ -1177,7 +1177,7 @@ namespace Server
             // This Event returns a direction, 5 is not a valid direction so we assume fail unless otherwise told.
             CanEventMoveAwayFromPlayerRet = 5;
 
-            if (playerID < 0 | playerID > Core.Constant.MAX_PLAYERS)
+            if (playerID < 0 | playerID >= Core.Constant.MAX_PLAYERS)
                 return CanEventMoveAwayFromPlayerRet;
             if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return CanEventMoveAwayFromPlayerRet;
@@ -1410,7 +1410,7 @@ namespace Server
             var distance = default(int);
             // This does not work for global events so this MUST be a player one....
 
-            if (playerID < 0 | playerID > Core.Constant.MAX_PLAYERS)
+            if (playerID < 0 | playerID >= Core.Constant.MAX_PLAYERS)
                 return GetDirToPlayerRet;
             if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return GetDirToPlayerRet;
@@ -1474,7 +1474,7 @@ namespace Server
             var distance = default(int);
             // This does not work for global events so this MUST be a player one....
 
-            if (playerID < 0 | playerID > Core.Constant.MAX_PLAYERS)
+            if (playerID < 0 | playerID >= Core.Constant.MAX_PLAYERS)
                 return GetDirAwayFromPlayerRet;
             if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return GetDirAwayFromPlayerRet;

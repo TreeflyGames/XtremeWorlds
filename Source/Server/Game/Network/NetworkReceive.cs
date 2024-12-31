@@ -569,7 +569,7 @@ namespace Server
             OtherPlayerindex = GameLogic.FindPlayer(OtherPlayer);
             if (OtherPlayerindex != index)
             {
-                if (OtherPlayerindex > 0)
+                if (OtherPlayerindex >= 0)
                 {
                     Log.Add(GetPlayerName(index) + " tells " + GetPlayerName(index) + ", '" + Msg + "'", Constant.PLAYER_LOG);
                     NetworkSend.PlayerMsg(OtherPlayerindex, GetPlayerName(index) + " tells you, '" + Msg + "'", (int) ColorType.Pink);
@@ -877,7 +877,7 @@ namespace Server
             name = buffer.ReadString();
             i = GameLogic.FindPlayer(name);
 
-            if (i > 0)
+            if (i >= 0)
             {
                 NetworkSend.PlayerMsg(index, "Account:  " + GetPlayerLogin(i) + ", Name: " + GetPlayerName(i), (int) ColorType.Yellow);
 
@@ -920,7 +920,7 @@ namespace Server
 
             if (n != index)
             {
-                if (n > 0)
+                if (n >= 0)
                 {
                     Player.PlayerWarp(index, GetPlayerMap(n), GetPlayerX(n), GetPlayerY(n));
                     NetworkSend.PlayerMsg(n, GetPlayerName(index) + " has warped to you.", (int) ColorType.Yellow);
@@ -954,7 +954,7 @@ namespace Server
 
             if (n != index)
             {
-                if (n > 0)
+                if (n >= 0)
                 {
                     Player.PlayerWarp(n, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index));
                     NetworkSend.PlayerMsg(n, "You have been summoned by " + GetPlayerName(index) + ".", (int) ColorType.Yellow);
@@ -1407,7 +1407,7 @@ namespace Server
 
             if (n != index)
             {
-                if (n > 0)
+                if (n >= 0)
                 {
                     if (GetPlayerAccess(n) < GetPlayerAccess(index))
                     {
@@ -1473,7 +1473,7 @@ namespace Server
 
             if (n != index)
             {
-                if (n > 0)
+                if (n >= 0)
                 {
                     if (GetPlayerAccess(n) < GetPlayerAccess(index))
                     {
@@ -1701,9 +1701,8 @@ namespace Server
             // Check for invalid access level
             if (i >= 1 | i <= 5)
             {
-
                 // Check if player is on
-                if (n > 0)
+                if (n >= 0)
                 {
 
                     // check to see if same level access is trying to change another access of the very same level and boot them if they are.
@@ -2284,7 +2283,7 @@ namespace Server
             // Check for a player
             tradetarget = GameLogic.FindPlayer(Name);
 
-            if (tradetarget < 0 | tradetarget > Core.Constant.MAX_PLAYERS)
+            if (tradetarget < 0 | tradetarget >= Core.Constant.MAX_PLAYERS)
                 return;
 
             // can't trade with yourself..

@@ -1231,7 +1231,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | index < 0 | index > Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left | movement < 0 | movement > 2)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | index < 0 | index >= Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left | movement < 0 | movement > 2)
             {
                 return;
             }
@@ -1285,12 +1285,12 @@ namespace Server
             int x;
             int y;
 
-            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | index < 0 | index > Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | index < 0 | index >= Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
             {
                 return CanPetMoveRet;
             }
 
-            if (index < 0 | index > Core.Constant.MAX_PLAYERS)
+            if (index < 0 | index >= Core.Constant.MAX_PLAYERS)
                 return CanPetMoveRet;
 
             x = GetPetX(index);
@@ -1560,7 +1560,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            if (index < 0 | index > Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
+            if (index < 0 | index >= Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
                 return;
 
             if (Core.Type.TempPlayer[index].PetSkillBuffer.Skill > 0)
@@ -2190,7 +2190,7 @@ namespace Server
             GetPetDamageRet = 0;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index > Core.Constant.MAX_PLAYERS | !PetAlive(index))
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | index < 0 | index >= Core.Constant.MAX_PLAYERS | !PetAlive(index))
             {
                 return GetPetDamageRet;
             }
@@ -2228,7 +2228,7 @@ namespace Server
             int x1;
             int y1;
 
-            if (index < 0 | index > Core.Constant.MAX_PLAYERS | !PetAlive(index))
+            if (index < 0 | index >= Core.Constant.MAX_PLAYERS | !PetAlive(index))
                 return IsPetByPlayerRet;
 
             IsPetByPlayerRet = Conversions.ToBoolean(0);
@@ -2262,7 +2262,7 @@ namespace Server
             int GetPetVitalRegenRet = default;
             var i = default(int);
 
-            if (index < 0 | index > Core.Constant.MAX_PLAYERS | !PetAlive(index))
+            if (index < 0 | index >= Core.Constant.MAX_PLAYERS | !PetAlive(index))
             {
                 GetPetVitalRegenRet = 0;
                 return GetPetVitalRegenRet;
@@ -4999,7 +4999,7 @@ namespace Server
         {
             int GetPetVitalRet = default;
 
-            if (index > Core.Constant.MAX_PLAYERS)
+            if (index >= Core.Constant.MAX_PLAYERS)
                 return GetPetVitalRet;
 
             switch (vital)
@@ -5024,7 +5024,7 @@ namespace Server
         public static void SetPetVital(int index, VitalType vital, int amount)
         {
 
-            if (index > Core.Constant.MAX_PLAYERS)
+            if (index >= Core.Constant.MAX_PLAYERS)
                 return;
 
             switch (vital)

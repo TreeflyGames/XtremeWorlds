@@ -585,7 +585,7 @@ namespace Server
         internal static bool IsPlayerInParty(int index)
         {
             bool IsPlayerInPartyRet = default;
-            if (index < 0 | index > Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
+            if (index < 0 | index >= Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
                 return IsPlayerInPartyRet;
             if (Core.Type.TempPlayer[index].InParty > 0)
                 IsPlayerInPartyRet = Conversions.ToBoolean(1);
@@ -595,7 +595,7 @@ namespace Server
         internal static int GetPlayerParty(int index)
         {
             int GetPlayerPartyRet = default;
-            if (index < 0 | index > Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
+            if (index < 0 | index >= Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
                 return GetPlayerPartyRet;
             GetPlayerPartyRet = Core.Type.TempPlayer[index].InParty;
             return GetPlayerPartyRet;
