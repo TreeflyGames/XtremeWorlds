@@ -43,6 +43,7 @@ namespace Client
                 {
                     // Marshal the call to the UI thread
                     Application.OpenForms[0].Invoke(new EventHandler(UpdateForms), sender, e);
+                    return;
                 }
             }
 
