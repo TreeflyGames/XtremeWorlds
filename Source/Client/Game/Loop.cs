@@ -29,7 +29,7 @@ namespace Client
         private static int rendertmr;
         private static int[] animationtmr = new int[2]; // Array of size 2
 
-        public static void GameLoop()
+        public static void Game()
         {
             tick = General.GetTickCount();
             GameState.ElapsedTime = tick - frameTime; // Set the time difference for time-based movement

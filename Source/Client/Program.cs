@@ -365,7 +365,7 @@ namespace Client
                 elapsedTime = TimeSpan.Zero;
             }
 
-            Loop.GameLoop();
+            Loop.Game();
 
             base.Update(gameTime);
         }
