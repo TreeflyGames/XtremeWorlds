@@ -379,7 +379,7 @@ namespace Server
 
             mapNum = GetPlayerMap(index);
 
-            if (x < 0 | y < 0)
+            if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
                 return;
 
             if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Resource)
