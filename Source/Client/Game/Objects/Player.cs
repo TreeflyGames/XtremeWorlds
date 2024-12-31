@@ -14,8 +14,8 @@ namespace Client
         {
             int i;
 
-            Core.Type.Account = new Core.Type.AccountStruct[501];
-            Core.Type.Player = new Core.Type.PlayerStruct[501];
+            Core.Type.Account = new Core.Type.AccountStruct[Constant.MAX_PLAYERS];
+            Core.Type.Player = new Core.Type.PlayerStruct[Constant.MAX_PLAYERS];
 
             for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
             {
@@ -41,7 +41,7 @@ namespace Client
             Core.Type.Player[index].Access = (byte)Core.Enum.AccessType.Player;
 
             Core.Type.Player[index].Equipment = new int[5];
-            for (int y = 0; y <= (int)Core.Enum.EquipmentType.Count - 1; y++)
+            for (int y = 0; y < (int)Core.Enum.EquipmentType.Count - 1; y++)
                 Core.Type.Player[index].Equipment[y] = -1;
 
             Core.Type.Player[index].Exp = 0;
@@ -53,14 +53,14 @@ namespace Client
             Core.Type.Player[index].Points = 0;
             Core.Type.Player[index].Sprite = 0;
 
-            Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[(Constant.MAX_INV + 1)];
+            Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[(Constant.MAX_INV)];
             for (int x = 1; x <= Constant.MAX_INV - 1; x++)
             {
                 Core.Type.Player[index].Inv[x].Num = 0;
                 Core.Type.Player[index].Inv[x].Value = 0;
             }
 
-            Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[(Constant.MAX_PLAYER_SKILLS + 1)];
+            Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[(Constant.MAX_PLAYER_SKILLS)];
             for (int x = 1; x <= Constant.MAX_PLAYER_SKILLS - 1; x++)
             {
                 Core.Type.Player[index].Skill[x].Num = 0;
@@ -82,7 +82,7 @@ namespace Client
             Core.Type.Player[index].Y = 0;
             Core.Type.Player[index].YOffset = 0;
 
-            Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[(Constant.MAX_HOTBAR + 1)];
+            Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[(Constant.MAX_HOTBAR)];
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[5];
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[5];
 

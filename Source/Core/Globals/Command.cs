@@ -59,7 +59,7 @@ namespace Core.Global
 
             x = Type.Player[index].Stat[(int)Stat];
 
-            for (i = 0; i <= (int)Enum.EquipmentType.Count - 1; i++)
+            for (i = 0; i < (int)Enum.EquipmentType.Count - 1; i++)
             {
                 if (Type.Player[index].Equipment[i] > 0)
                 {
