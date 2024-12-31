@@ -2336,7 +2336,7 @@ namespace Client
             }
 
             // Y-based render. Renders Players, NPCs and Resources based on Y-axis.
-            var loopTo3 = (int)Core.Type.MyMap.MaxY;
+            var loopTo3 = (int)Core.Type.MyMap.MaxY - 1;
             for (y = 0; y <= loopTo3; y++)
             {
                 if (GameState.NumCharacters > 0)
