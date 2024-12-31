@@ -38,11 +38,13 @@ namespace Client
             // Check if there are any open forms
             if (Application.OpenForms.Count > 0)
             {
-                // Check if the current thread is the UI thread
-                if (Application.OpenForms[0].InvokeRequired)
+                var mainForm = Application.OpenForms[0];
+
+                // Check if the main form is not disposed
+                if (!mainForm.IsDisposed)
                 {
                     // Marshal the call to the UI thread
-                    Application.OpenForms[0].Invoke(new EventHandler(UpdateForms), sender, e);
+                    mainForm.Invoke(new EventHandler(UpdateForms), sender, e);
                     return;
                 }
             }
