@@ -1602,6 +1602,9 @@ namespace Server
                 Core.Type.Player[index].Job = jobNum;
                 Core.Type.Player[index].Sprite = sprite;
 
+                if (Core.Type.Player[index].Sprite == 0)
+                    Core.Type.Player[index].Sprite = 1;
+
                 Core.Type.Player[index].Level = 0;
 
                 var loopTo = (byte)StatType.Count - 1;
