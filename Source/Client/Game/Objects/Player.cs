@@ -727,6 +727,12 @@ namespace Client
                     }
             }
 
+            if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
+            {
+                CheckDirectionRet = Conversions.ToBoolean(1);
+                return CheckDirectionRet;
+            }
+
             // Check to see if the map tile is blocked or not
             if (Core.Type.MyMap.Tile[x, y].Type == Core.Enum.TileType.Blocked | Core.Type.MyMap.Tile[x, y].Type2 == Core.Enum.TileType.Blocked)
             {

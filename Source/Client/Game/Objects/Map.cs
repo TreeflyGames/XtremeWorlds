@@ -100,7 +100,7 @@ namespace Client
                 return;
 
             // Ensure x and y are within the bounds of the map
-            if (x < 0 || y < 0 || x > Core.Type.MyMap.MaxX || y > Core.Type.MyMap.MaxY)
+            if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
                 return;
             try
             {
@@ -160,7 +160,7 @@ namespace Client
                 return;
 
             // Ensure x and y are within valid map bounds
-            if (x < 0 || y < 0 || x > Core.Type.MyMap.MaxX || y > Core.Type.MyMap.MaxY)
+            if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
                 return;
             try
             {
