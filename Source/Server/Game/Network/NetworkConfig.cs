@@ -80,7 +80,7 @@ namespace Server
 
         public static bool IsMultiAccounts(int index, string login)
         {
-            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= (int)loopTo; i++)
             {
                 if (i != index)
                 {
@@ -102,7 +102,7 @@ namespace Server
 
         public static void CheckMultiAccounts(int index, string login)
         {
-            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= (int)loopTo; i++)
             {
                 if (login != "" && Core.Type.Account[i].Login.ToLower() != "")
                 {
@@ -119,13 +119,13 @@ namespace Server
 
         internal static void SendDataToAll(ref byte[] data, int head)
         {
-            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= (int)loopTo; i++)
                 Socket.SendDataTo(ref i, ref data, ref head);
         }
 
         public static void SendDataToAllBut(int index, ref byte[] data, int head)
         {
-            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= (int)loopTo; i++)
             {
                 if (i != index)
                 {
@@ -136,7 +136,7 @@ namespace Server
 
         public static void SendDataToMapBut(int index, int mapNum, ref byte[] data, int head)
         {
-            for (int i = 0, loopTo = Socket.HighIndex - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Socket.HighIndex; i <= (int)loopTo; i++)
             {
                 if (IsPlaying(i))
                 {
@@ -155,7 +155,7 @@ namespace Server
         {
             int i;
 
-            var loopTo = Socket.HighIndex - 1;
+            var loopTo = Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
                 if (IsPlaying(i))

@@ -827,7 +827,7 @@ namespace Server
                 buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
 
             var loopTo1 = (int)ResourceType.Count - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            for (i = 0; i < (int)loopTo1; i++)
             {
                 buffer.WriteInt32(GetPlayerGatherSkillLvl(index, i));
                 buffer.WriteInt32(GetPlayerGatherSkillExp(index, i));
