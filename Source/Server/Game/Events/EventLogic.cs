@@ -3058,7 +3058,7 @@ namespace Server
                                                                         break;
                                                                     }
                                                                 // Do nothing, just a label
-                                                                case (byte)EventType.GotoLabel:
+                                                                case (byte)EventType.GoToLabel:
                                                                     {
                                                                         // Find the label's list of commands and slot
                                                                         FindEventLabel(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, GetPlayerMap(i), withBlock1.EventID, withBlock1.PageID, ref withBlock1.CurSlot, ref withBlock1.CurList, ref withBlock1.ListLeftOff);

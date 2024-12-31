@@ -1170,7 +1170,7 @@ namespace Client
                                         frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Label: [" + Strings.Trim(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1) + "]");
                                         break;
                                     }
-                                case (byte)Core.Enum.EventType.GotoLabel:
+                                case (byte)Core.Enum.EventType.GoToLabel:
                                     {
                                         frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Jump to Label: [" + Strings.Trim(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1) + "]");
                                         break;
@@ -1851,10 +1851,10 @@ namespace Client
                         break;
                     }
 
-                case (int)Core.Enum.EventType.GotoLabel:
+                case (int)Core.Enum.EventType.GoToLabel:
                     {
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = frmEditor_Event.Instance.txtGotoLabel.Text;
+                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = frmEditor_Event.Instance.txtGoToLabel.Text;
                         break;
                     }
 
@@ -2715,10 +2715,10 @@ namespace Client
                         frmEditor_Event.Instance.fraCommands.Visible = false;
                         break;
                     }
-                case (byte)Core.Enum.EventType.GotoLabel:
+                case (byte)Core.Enum.EventType.GoToLabel:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.txtGotoLabel.Text = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1;
+                        frmEditor_Event.Instance.txtGoToLabel.Text = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1;
                         frmEditor_Event.Instance.fraDialogue.Visible = true;
                         frmEditor_Event.Instance.fraGoToLabel.Visible = true;
                         frmEditor_Event.Instance.fraCommands.Visible = false;
@@ -3228,9 +3228,9 @@ namespace Client
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = frmEditor_Event.Instance.txtLabelName.Text;
                         break;
                     }
-                case (byte)Core.Enum.EventType.GotoLabel:
+                case (byte)Core.Enum.EventType.GoToLabel:
                     {
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = frmEditor_Event.Instance.txtGotoLabel.Text;
+                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = frmEditor_Event.Instance.txtGoToLabel.Text;
                         break;
                     }
                 case (byte)Core.Enum.EventType.SpawnNPC:

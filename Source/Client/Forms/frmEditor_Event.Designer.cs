@@ -502,7 +502,7 @@ namespace Client
             btnGoToLabelOk.Click += new EventHandler(BtnGoToLabelOk_Click);
             btnGoToLabelCancel = new DarkUI.Controls.DarkButton();
             btnGoToLabelCancel.Click += new EventHandler(BtnGoToLabelCancel_Click);
-            txtGotoLabel = new DarkUI.Controls.DarkTextBox();
+            txtGoToLabel = new DarkUI.Controls.DarkTextBox();
             DarkLabel60 = new DarkUI.Controls.DarkLabel();
             fraMapTint = new DarkUI.Controls.DarkGroupBox();
             btnMapTintOk = new DarkUI.Controls.DarkButton();
@@ -3669,7 +3669,7 @@ namespace Client
             fraGoToLabel.BorderColor = Color.FromArgb(90, 90, 90);
             fraGoToLabel.Controls.Add(btnGoToLabelOk);
             fraGoToLabel.Controls.Add(btnGoToLabelCancel);
-            fraGoToLabel.Controls.Add(txtGotoLabel);
+            fraGoToLabel.Controls.Add(txtGoToLabel);
             fraGoToLabel.Controls.Add(DarkLabel60);
             fraGoToLabel.ForeColor = Color.Gainsboro;
             fraGoToLabel.Location = new Point(668, 490);
@@ -3702,16 +3702,16 @@ namespace Client
             btnGoToLabelCancel.TabIndex = 26;
             btnGoToLabelCancel.Text = "Cancel";
             // 
-            // txtGotoLabel
+            // txtGoToLabel
             // 
-            txtGotoLabel.BackColor = Color.FromArgb(69, 73, 74);
-            txtGotoLabel.BorderStyle = BorderStyle.FixedSingle;
-            txtGotoLabel.ForeColor = Color.FromArgb(220, 220, 220);
-            txtGotoLabel.Location = new Point(130, 35);
-            txtGotoLabel.Margin = new Padding(5);
-            txtGotoLabel.Name = "txtGotoLabel";
-            txtGotoLabel.Size = new Size(272, 31);
-            txtGotoLabel.TabIndex = 1;
+            txtGoToLabel.BackColor = Color.FromArgb(69, 73, 74);
+            txtGoToLabel.BorderStyle = BorderStyle.FixedSingle;
+            txtGoToLabel.ForeColor = Color.FromArgb(220, 220, 220);
+            txtGoToLabel.Location = new Point(130, 35);
+            txtGoToLabel.Margin = new Padding(5);
+            txtGoToLabel.Name = "txtGoToLabel";
+            txtGoToLabel.Size = new Size(272, 31);
+            txtGoToLabel.TabIndex = 1;
             // 
             // DarkLabel60
             // 
@@ -5486,7 +5486,7 @@ namespace Client
         internal DarkUI.Controls.DarkTextBox txtChoices2;
         internal DarkUI.Controls.DarkTextBox txtChoices1;
         internal DarkUI.Controls.DarkGroupBox fraGoToLabel;
-        internal DarkUI.Controls.DarkTextBox txtGotoLabel;
+        internal DarkUI.Controls.DarkTextBox txtGoToLabel;
         internal DarkUI.Controls.DarkLabel DarkLabel60;
         internal DarkUI.Controls.DarkButton btnGoToLabelOk;
         internal DarkUI.Controls.DarkButton btnGoToLabelCancel;

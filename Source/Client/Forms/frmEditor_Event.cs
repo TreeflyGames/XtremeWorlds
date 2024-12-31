@@ -621,7 +621,7 @@ namespace Client
                 // GoTo Label
                 case "GoTo Label":
                     {
-                        txtGotoLabel.Text = "";
+                        txtGoToLabel.Text = "";
                         fraGoToLabel.Visible = true;
                         fraCommands.Visible = false;
                         fraDialogue.Visible = true;
@@ -2833,7 +2833,7 @@ namespace Client
         {
             if (Event.IsEdit == false)
             {
-                Event.AddCommand((int)Core.Enum.EventType.GotoLabel);
+                Event.AddCommand((int)Core.Enum.EventType.GoToLabel);
             }
             else
             {

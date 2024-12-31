@@ -386,7 +386,7 @@ namespace Core
 
             ShowChatBubble,
             Label,
-            GotoLabel,
+            GoToLabel,
             SpawnNPC,
             FadeIn,
             FadeOut,
