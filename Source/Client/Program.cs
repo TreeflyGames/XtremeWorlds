@@ -2298,7 +2298,7 @@ namespace Client
                 if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Core.Type.MyMap.EventCount)
                 {
                     var loopTo2 = GameState.CurrentEvents;
-                    for (i = 0; i <= loopTo2; i++)
+                    for (i = 0; i < loopTo2; i++)
                     {
                         if (Core.Type.MapEvents[i].Position == 0)
                         {
@@ -2375,7 +2375,7 @@ namespace Client
                         if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Core.Type.MyMap.EventCount)
                         {
                             var loopTo4 = GameState.CurrentEvents;
-                            for (i = 0; i <= loopTo4; i++)
+                            for (i = 0; i < loopTo4; i++)
                             {
                                 if (Core.Type.MapEvents[i].Position == 1)
                                 {
@@ -2474,7 +2474,7 @@ namespace Client
             if (GameState.CurrentEvents > 0 & GameState.CurrentEvents <= Core.Type.MyMap.EventCount)
             {
                 var loopTo6 = GameState.CurrentEvents;
-                for (i = 0; i <= loopTo6; i++)
+                for (i = 0; i < loopTo6; i++)
                 {
                     if (Core.Type.MapEvents[i].Position == 2)
                     {
@@ -2524,7 +2524,7 @@ namespace Client
             if (GameState.CurrentEvents > 0 && Core.Type.MyMap.EventCount >= GameState.CurrentEvents)
             {
                 var loopTo9 = GameState.CurrentEvents;
-                for (i = 0; i <= loopTo9; i++)
+                for (i = 0; i < loopTo9; i++)
                 {
                     if (Core.Type.MapEvents[i].Visible == true)
                     {

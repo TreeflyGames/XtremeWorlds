@@ -774,7 +774,7 @@ namespace Client
             }
 
             var loopTo = GameState.CurrentEvents;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.MapEvents[i].Visible == true)
                 {
