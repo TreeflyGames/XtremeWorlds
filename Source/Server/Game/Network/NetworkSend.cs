@@ -802,6 +802,7 @@ namespace Server
             NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), ref data, data.Length);
             SendPlayerXYToMap(index);
             NetworkSend.SendMapEquipment(index);
+            NetworkSend.SendVitals(index);
         }
 
         public static byte[] PlayerData(int index)

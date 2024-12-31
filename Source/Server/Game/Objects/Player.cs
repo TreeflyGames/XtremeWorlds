@@ -2749,7 +2749,6 @@ namespace Server
             //Time.SendGameClockTo(index);
             Pet.SendPets(index);
             Projectile.SendProjectiles(index);
-            NetworkSend.SendVitals(index);
 
             // Send welcome messages
             NetworkSend.SendWelcome(index);
