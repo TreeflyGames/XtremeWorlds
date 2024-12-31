@@ -1818,7 +1818,6 @@ namespace Server
                                 buffer.WriteByte(withBlock1.Trigger);
                                 buffer.WriteInt32(withBlock1.CommandListCount);
                                 buffer.WriteByte(withBlock1.Position);
-                                buffer.WriteInt32(withBlock1.QuestNum);
                             }
 
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)

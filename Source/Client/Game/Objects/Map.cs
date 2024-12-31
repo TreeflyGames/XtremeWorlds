@@ -815,7 +815,6 @@ namespace Client
                                     withBlock1.Trigger = buffer.ReadByte();
                                     withBlock1.CommandListCount = buffer.ReadInt32();
                                     withBlock1.Position = buffer.ReadByte();
-                                    withBlock1.QuestNum = buffer.ReadInt32();
                                 }
 
                                 if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
@@ -1187,7 +1186,6 @@ namespace Client
                                 buffer.WriteByte(withBlock1.Trigger);
                                 buffer.WriteInt32(withBlock1.CommandListCount);
                                 buffer.WriteByte(withBlock1.Position);
-                                buffer.WriteInt32(withBlock1.QuestNum);
                             }
 
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)

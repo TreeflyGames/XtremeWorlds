@@ -1216,7 +1216,6 @@ namespace Server
                                 withBlock2.Trigger = buffer.ReadByte();
                                 withBlock2.CommandListCount = buffer.ReadInt32();
                                 withBlock2.Position = buffer.ReadByte();
-                                withBlock2.QuestNum = buffer.ReadInt32();
                             }
 
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)

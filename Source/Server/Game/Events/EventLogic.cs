@@ -404,7 +404,6 @@ namespace Server
                                         withBlock.GraphicY = Map[mapNum].Event[id].Pages[z].GraphicY;
                                         withBlock.GraphicX2 = Map[mapNum].Event[id].Pages[z].GraphicX2;
                                         withBlock.GraphicY2 = Map[mapNum].Event[id].Pages[z].GraphicY2;
-                                        withBlock.QuestNum = Map[mapNum].Event[id].Pages[z].QuestNum;
                                         switch (Map[mapNum].Event[id].Pages[z].MoveSpeed)
                                         {
                                             case 0:
@@ -524,7 +523,6 @@ namespace Server
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].DirFix);
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
-                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].QuestNum);
                                         buffer.WriteInt32(withBlock1.QuestNum);
                                     }
                                     NetworkConfig.Socket.SendDataTo(ref i, ref buffer.Data, ref buffer.Head);
@@ -1188,7 +1186,6 @@ namespace Server
                                                                     buffer.WriteInt32(withBlock1.FixedDir);
                                                                     buffer.WriteInt32(withBlock1.WalkThrough);
                                                                     buffer.WriteInt32(withBlock1.ShowName);
-                                                                    buffer.WriteInt32(withBlock1.QuestNum);
                                                                 }
                                                                 NetworkConfig.SendDataToMap(i, ref buffer.Data, buffer.Head);
                                                                 buffer.Dispose();
@@ -3754,7 +3751,6 @@ namespace Server
                             Event.TempEventMap[MapNum].Event[Event.TempEventMap[MapNum].EventCount].FixedDir = Map[MapNum].Event[i].Pages[1].DirFix;
                             Event.TempEventMap[MapNum].Event[Event.TempEventMap[MapNum].EventCount].WalkingAnim = Map[MapNum].Event[i].Pages[1].WalkAnim;
                             Event.TempEventMap[MapNum].Event[Event.TempEventMap[MapNum].EventCount].ShowName = Map[MapNum].Event[i].Pages[1].ShowName;
-                            Event.TempEventMap[MapNum].Event[Event.TempEventMap[MapNum].EventCount].QuestNum = Map[MapNum].Event[i].Pages[1].QuestNum;
                         }
                     }
                 }
@@ -4055,7 +4051,6 @@ namespace Server
                                     withBlock1.WalkThrough = Map[mapNum].Event[i].Pages[z].WalkThrough;
                                     withBlock1.ShowName = Map[mapNum].Event[i].Pages[z].ShowName;
                                     withBlock1.FixedDir = Map[mapNum].Event[i].Pages[z].DirFix;
-                                    withBlock1.QuestNum = Map[mapNum].Event[i].Pages[z].QuestNum;
                                 }
                                 break;
                             }
@@ -4094,7 +4089,6 @@ namespace Server
                             buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].DirFix);
                             buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].WalkThrough);
                             buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].ShowName);
-                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].QuestNum);
                         }
                         NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 

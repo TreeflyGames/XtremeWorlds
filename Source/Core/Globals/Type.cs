@@ -638,7 +638,6 @@ namespace Core
             public int IgnoreIfCannotMove;
 
             public int MoveTimer;
-            public int QuestNum;
             public int MoveRouteComplete;
         }
 
@@ -740,8 +739,6 @@ namespace Core
             public CommandListStruct[] CommandList;
 
             public byte Position;
-
-            public int QuestNum;
 
             // For EventMap
             public int X;
