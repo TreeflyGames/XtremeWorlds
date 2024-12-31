@@ -131,7 +131,7 @@ namespace Server
                             int Access;
                             int.TryParse(parts[2], out Access);
 
-                            if (!(Pindex > 0))
+                            if (Pindex == -1)
                             {
                                 Console.WriteLine("Player name is empty or invalid. [Name not found]");
                             }
@@ -201,7 +201,7 @@ namespace Server
 
                             string Name = parts[1];
                             int Pindex = GameLogic.FindPlayer(Name);
-                            if (!(Pindex > 0))
+                            if (Pindex == -1)
                             {
                                 Console.WriteLine("Player name is empty or invalid.");
                             }
@@ -223,7 +223,7 @@ namespace Server
 
                             string Name = parts[1];
                             int Pindex = GameLogic.FindPlayer(Name);
-                            if (!(Pindex > 0))
+                            if (Pindex == -1)
                             {
                                 Console.WriteLine("Player name is empty or invalid. [Name not found]");
                             }

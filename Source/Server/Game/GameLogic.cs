@@ -69,7 +69,7 @@ namespace Server
                 }
             }
 
-            FindPlayerRet = 0;
+            FindPlayerRet = -1;
             return FindPlayerRet;
         }
 
