@@ -47,7 +47,7 @@ namespace Core.Database
         {
             if (names is null)
                 names = new List<string>();
-            if (names.Count <= 0)
+            if (names.Count < 0)
                 return this;
 
             names.Clear();

@@ -676,7 +676,7 @@ namespace Server
             buffer.Dispose();
 
             // Prevent hacking
-            if (dir <= (byte) DirectionType.None | dir > (byte) DirectionType.Left)
+            if (dir < (byte) DirectionType.Up | dir > (byte) DirectionType.Left)
                 return;
 
             SetPlayerDir(index, dir);
@@ -987,7 +987,7 @@ namespace Server
             buffer.Dispose();
 
             // Prevent hacking
-            if (n <= 0 | n > Core.Constant.MAX_MAPS)
+            if (n < 0 | n > Core.Constant.MAX_MAPS)
                 return;
 
             Player.PlayerWarp(index, n, GetPlayerX(index), GetPlayerY(index));
@@ -1579,7 +1579,7 @@ namespace Server
             ShopNum = buffer.ReadInt32();
 
             // Prevent hacking
-            if (ShopNum <= 0 | ShopNum > Core.Constant.MAX_SHOPS)
+            if (ShopNum < 0 | ShopNum > Core.Constant.MAX_SHOPS)
                 return;
 
             Core.Type.Shop[ShopNum].BuyRate = buffer.ReadInt32();
@@ -1641,7 +1641,7 @@ namespace Server
             skillnum = buffer.ReadInt32();
 
             // Prevent hacking
-            if (skillnum <= 0 | skillnum > Core.Constant.MAX_SKILLS)
+            if (skillnum < 0 | skillnum > Core.Constant.MAX_SKILLS)
                 return;
 
             Core.Type.Skill[skillnum].AccessReq = buffer.ReadInt32();
@@ -1713,7 +1713,7 @@ namespace Server
                         return;
                     }
 
-                    if (GetPlayerAccess(n) <= 0)
+                    if (GetPlayerAccess(n) < 0)
                     {
                         NetworkSend.GlobalMsg(GetPlayerName(n) + " has been blessed with administrative access.");
                     }
@@ -1991,7 +1991,7 @@ namespace Server
 
             n = buffer.ReadInt32();
 
-            if (n <= 0 | n > Core.Constant.MAX_NPCS)
+            if (n < 0 | n > Core.Constant.MAX_NPCS)
                 return;
 
             NPC.SendUpdateNPCTo(index, n);
@@ -2051,7 +2051,7 @@ namespace Server
 
             n = buffer.ReadInt32();
 
-            if (n <= 0 | n > Core.Constant.MAX_SKILLS)
+            if (n < 0 | n > Core.Constant.MAX_SKILLS)
                 return;
 
             NetworkSend.SendUpdateSkillTo(index, n);
@@ -2064,7 +2064,7 @@ namespace Server
 
             n = buffer.ReadInt32();
 
-            if (n <= 0 | n > Core.Constant.MAX_SHOPS)
+            if (n < 0 | n > Core.Constant.MAX_SHOPS)
                 return;
 
             NetworkSend.SendUpdateShopTo(index, n);
@@ -2127,7 +2127,7 @@ namespace Server
 
             // not in shop, exit out
             shopnum = Core.Type.TempPlayer[index].InShop;
-            if (shopnum <= 0 | shopnum > Core.Constant.MAX_SHOPS)
+            if (shopnum < 0 | shopnum > Core.Constant.MAX_SHOPS)
                 return;
 
             {
@@ -2169,11 +2169,11 @@ namespace Server
             invSlot = buffer.ReadInt32();
 
             // if invalid, exit out
-            if (invSlot <= 0 | invSlot > Core.Constant.MAX_INV)
+            if (invSlot < 0 | invSlot > Core.Constant.MAX_INV)
                 return;
 
             // has item?
-            if (GetPlayerInv(index, invSlot) <= 0 | GetPlayerInv(index, invSlot) > Core.Constant.MAX_ITEMS)
+            if (GetPlayerInv(index, invSlot) < 0 | GetPlayerInv(index, invSlot) > Core.Constant.MAX_ITEMS)
                 return;
 
             // seems to be valid
@@ -2184,7 +2184,7 @@ namespace Server
             price = (int)Math.Round(Core.Type.Item[itemNum].Price * multiplier);
 
             // item has cost?
-            if (price <= 0)
+            if (price < 0)
             {
                 NetworkSend.PlayerMsg(index, "The shop doesn't want that item.", (int) ColorType.Yellow);
                 NetworkSend.ResetShopAction(index);
@@ -2284,7 +2284,7 @@ namespace Server
             // Check for a player
             tradetarget = GameLogic.FindPlayer(Name);
 
-            if (tradetarget <= 0 | tradetarget > Core.Constant.MAX_PLAYERS)
+            if (tradetarget < 0 | tradetarget > Core.Constant.MAX_PLAYERS)
                 return;
 
             // can't trade with yourself..
@@ -2500,12 +2500,12 @@ namespace Server
 
             buffer.Dispose();
 
-            if (invslot <= 0 | invslot > Core.Constant.MAX_INV)
+            if (invslot < 0 | invslot > Core.Constant.MAX_INV)
                 return;
 
             itemnum = GetPlayerInv(index, invslot);
 
-            if (itemnum <= 0 | itemnum > Core.Constant.MAX_ITEMS)
+            if (itemnum < 0 | itemnum > Core.Constant.MAX_ITEMS)
                 return;
 
             // make sure they have the amount they offer
@@ -2591,9 +2591,9 @@ namespace Server
 
             buffer.Dispose();
 
-            if (tradeslot <= 0 | tradeslot > Core.Constant.MAX_INV)
+            if (tradeslot < 0 | tradeslot > Core.Constant.MAX_INV)
                 return;
-            if (Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num <= 0)
+            if (Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num < 0)
                 return;
 
             Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num = 0;

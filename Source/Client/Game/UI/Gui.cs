@@ -1815,7 +1815,7 @@ namespace Client
             var left = default(long);
 
             // Check if the window and Control exist
-            if ((winNum <= 0L | winNum > Windows.Count || entNum <= 0L) | entNum > Windows[winNum].Controls.Count - 1)
+            if ((winNum < 0L | winNum > Windows.Count || entNum < 0L) | entNum > Windows[winNum].Controls.Count - 1)
             {
                 return;
             }
@@ -2161,7 +2161,7 @@ namespace Client
             long left;
 
             // Check if the window exists
-            if (winNum <= 0L || winNum > Windows.Count)
+            if (winNum < 0L || winNum > Windows.Count)
             {
                 return;
             }
@@ -3239,7 +3239,7 @@ namespace Client
         {
             // Move to the previous job
             GameState.NewCharJob -= 1L;
-            if (GameState.NewCharJob <= 0L)
+            if (GameState.NewCharJob < 0L)
                 GameState.NewCharJob = 0L;
 
             // Update class name display
@@ -3429,7 +3429,7 @@ namespace Client
                 spriteCount = Core.Type.Job[(int)GameState.NewCharJob].FemaleSprite;
             }
 
-            if (GameState.NewCharSprite <= 0L)
+            if (GameState.NewCharSprite < 0L)
             {
                 GameState.NewCharSprite = spriteCount;
             }
@@ -5020,7 +5020,7 @@ namespace Client
             long itemNum;
             var ItemIcon = default(long);
 
-            if (GameState.MyIndex < 1 | GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             xO = Windows[GetWindowIndex("winCharacter")].Left;
@@ -5167,7 +5167,7 @@ namespace Client
             long amountModifier;
             long tmpItem;
 
-            if (GameState.MyIndex < 1 | GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             xO = Windows[GetWindowIndex("winInventory")].Left;
@@ -5826,7 +5826,7 @@ namespace Client
             long Top;
             long Left;
 
-            if (GameState.MyIndex < 1 | GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             xO = Windows[GetWindowIndex("winSkills")].Left;
@@ -6320,7 +6320,7 @@ namespace Client
             long t;
             string sS;
 
-            if (GameState.MyIndex < 1 | GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             xO = Windows[GetWindowIndex("winHotbar")].Left;
@@ -6570,7 +6570,7 @@ namespace Client
             long amount;
             long tmpItem;
 
-            if (GameState.MyIndex < 1 | GameState.MyIndex > Constant.MAX_PLAYERS)
+            if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
 
             Xo = Windows[GetWindowIndex("winBank")].Left;

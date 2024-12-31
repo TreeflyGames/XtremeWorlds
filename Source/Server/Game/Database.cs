@@ -579,49 +579,49 @@ namespace Server
             }
         }
 
-        public static void ClearMap(int MapNum)
+        public static void ClearMap(int mapNum)
         {
             int x;
             int y;
 
-            Core.Type.Map[MapNum].Tileset = 0;
-            Core.Type.Map[MapNum].Name = "";
-            Core.Type.Map[MapNum].MaxX = Core.Constant.MAX_MAPX;
-            Core.Type.Map[MapNum].MaxY = Core.Constant.MAX_MAPY;
-            Core.Type.Map[MapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS];
-            Core.Type.Map[MapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[MapNum].MaxX), (Core.Type.Map[MapNum].MaxY)];
+            Core.Type.Map[mapNum].Tileset = 0;
+            Core.Type.Map[mapNum].Name = "";
+            Core.Type.Map[mapNum].MaxX = Core.Constant.MAX_MAPX;
+            Core.Type.Map[mapNum].MaxY = Core.Constant.MAX_MAPY;
+            Core.Type.Map[mapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS];
+            Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
             var loopTo = Core.Constant.MAX_MAPX - 1;
             for (x = 0; x <= (int)loopTo; x++)
             {
                 var loopTo1 = Core.Constant.MAX_MAPY - 1;
                 for (y = 0; y <= (int)loopTo1; y++)
-                    Core.Type.Map[MapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count - 1];
+                    Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count - 1];
             }
 
-            Core.Type.Map[MapNum].EventCount = 0;
-            Core.Type.Map[MapNum].Event = new Core.Type.EventStruct[1];
+            Core.Type.Map[mapNum].EventCount = 0;
+            Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[1];
 
             // Reset the values for if a player is on the map or not
-            PlayersOnMap[MapNum] = false;
-            Core.Type.Map[MapNum].Tileset = 0;
-            Core.Type.Map[MapNum].Name = "";
-            Core.Type.Map[MapNum].Music = "";
-            Core.Type.Map[MapNum].MaxX = Core.Constant.MAX_MAPX;
-            Core.Type.Map[MapNum].MaxY = Core.Constant.MAX_MAPY;
+            PlayersOnMap[mapNum] = false;
+            Core.Type.Map[mapNum].Tileset = 0;
+            Core.Type.Map[mapNum].Name = "";
+            Core.Type.Map[mapNum].Music = "";
+            Core.Type.Map[mapNum].MaxX = Core.Constant.MAX_MAPX;
+            Core.Type.Map[mapNum].MaxY = Core.Constant.MAX_MAPY;
         }
 
-        public static void SaveMap(int MapNum)
+        public static void SaveMap(int mapNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.Map[MapNum]).ToString();
+            string json = JsonConvert.SerializeObject(Core.Type.Map[mapNum]).ToString();
 
-            if (RowExists(MapNum, "map"))
+            if (RowExists(mapNum, "map"))
             {
-                UpdateRow(MapNum, json, "map", "data");
+                UpdateRow(mapNum, json, "map", "data");
             }
             else
             {
-                InsertRow(MapNum, json, "map");
+                InsertRow(mapNum, json, "map");
             }
         }
 
@@ -634,7 +634,7 @@ namespace Server
                 LoadMap(i);
         }
 
-        public static void LoadMap(int MapNum)
+        public static void LoadMap(int mapNum)
         {
             // Get the base directory of the application
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -643,44 +643,44 @@ namespace Server
             string mapsDir = Path.Combine(baseDir, "maps");
             Directory.CreateDirectory(mapsDir);
 
-            Resource.CacheResources(MapNum);
+            Resource.CacheResources(mapNum);
 
-            if (File.Exists(mapsDir + @"\cs\map" + MapNum + ".ini"))
+            if (File.Exists(mapsDir + @"\cs\map" + mapNum + ".ini"))
             {
-                var csMap = LoadCSMap(MapNum);
-                Core.Type.Map[MapNum] = MapFromCSMap(csMap);
+                var csMap = LoadCSMap(mapNum);
+                Core.Type.Map[mapNum] = MapFromCSMap(csMap);
                 return;
             }
 
-            if (File.Exists(mapsDir + @"\xw\map" + MapNum + ".dat"))
+            if (File.Exists(mapsDir + @"\xw\map" + mapNum + ".dat"))
             {
-                var xwMap = LoadXWMap(mapsDir + @"\xw\map" + MapNum.ToString() + ".dat");
-                Core.Type.Map[MapNum] = MapFromXWMap(xwMap);
+                var xwMap = LoadXWMap(mapsDir + @"\xw\map" + mapNum.ToString() + ".dat");
+                Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
                 return;
             }
 
-            if (File.Exists(mapsDir + @"\sd\map" + MapNum + ".dat"))
+            if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
             {
                 // Dim sdMap As SDMapStruct = loadsdmap(Type.MapsDir & "\sd\map" & mapNum.ToString() & ".dat")
-                // Type.Map(MapNum) = MapFromSDMap(sdMap)
+                // Type.Map(mapNum) = MapFromSDMap(sdMap)
                 return;
             }
 
             JObject data;
 
-            data = SelectRow(MapNum, "map", "data");
+            data = SelectRow(mapNum, "map", "data");
 
             if (data is null)
             {
-                ClearMap(MapNum);
+                ClearMap(mapNum);
                 return;
             }
 
             var mapData = JObject.FromObject(data).ToObject<MapStruct>();
-            Core.Type.Map[MapNum] = mapData;
+            Core.Type.Map[mapNum] = mapData;
         }
 
-        public static CSMapStruct LoadCSMap(long MapNum)
+        public static CSMapStruct LoadCSMap(long mapNum)
         {
             string filename;
             long i;
@@ -689,7 +689,7 @@ namespace Server
             var csMap = new CSMapStruct();
 
             // Load map data
-            filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + MapNum + ".ini";
+            filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + mapNum + ".ini";
 
             // General
             {
@@ -725,7 +725,7 @@ namespace Server
             // Redim the map
             csMap.Tile = new CSTileStruct[csMap.MapData.MaxX, csMap.MapData.MaxY];
 
-            filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + MapNum + ".dat";
+            filename = AppDomain.CurrentDomain.BaseDirectory + @"\maps\cs\map" + mapNum + ".dat";
 
             using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
             using (var binaryReader = new BinaryReader(fileStream))
@@ -1172,13 +1172,13 @@ namespace Server
 
         }
 
-        public static void ClearMapNPCs(int MapNum)
+        public static void ClearMapNPCs(int mapNum)
         {
             int x;
 
             var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
             for (x = 0; x <= (int)loopTo; x++)
-                ClearMapNPC(x, MapNum);
+                ClearMapNPC(x, mapNum);
 
         }
 
@@ -1601,11 +1601,7 @@ namespace Server
                 Core.Type.Player[index].Sex = Sex;
                 Core.Type.Player[index].Job = jobNum;
                 Core.Type.Player[index].Sprite = sprite;
-
-                if (Core.Type.Player[index].Sprite == 0)
-                    Core.Type.Player[index].Sprite = 1;
-
-                Core.Type.Player[index].Level = 0;
+                Core.Type.Player[index].Level = 1;
 
                 var loopTo = (byte)StatType.Count - 1;
                 for (n = 0; n < (int)loopTo; n++)

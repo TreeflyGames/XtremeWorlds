@@ -45,7 +45,7 @@ namespace Client
 
             itemnum = Core.Type.Item[scrlMapItem.Value].Icon;
 
-            if (itemnum <= 0 | itemnum > GameState.NumItems)
+            if (itemnum < 0 | itemnum > GameState.NumItems)
             {
                 picMapItem.BackgroundImage = null;
                 return;

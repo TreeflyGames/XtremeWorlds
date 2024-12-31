@@ -380,6 +380,7 @@ namespace Client
 
             if (Core.Type.MyMap.Moral == Conversions.ToShort(Core.Type.MyMap.Indoors))
                 return;
+
             if (index < 1 | index > GameState.NumParallax)
                 return;
 
@@ -405,6 +406,7 @@ namespace Client
 
             if (index < 1 | index > GameState.NumPictures)
                 return;
+
             if (type < 0 | type >= (int)Core.Enum.PictureType.Count)
                 return;
 

@@ -170,7 +170,7 @@ namespace Server
 
             n = buffer.ReadInt32();
 
-            if (n <= 0 | n > Core.Constant.MAX_ANIMATIONS)
+            if (n < 0 | n > Core.Constant.MAX_ANIMATIONS)
                 return;
 
             SendUpdateAnimationTo(index, n);
@@ -180,7 +180,7 @@ namespace Server
 
         #region Outgoing Packets
 
-        public static void SendAnimation(int MapNum, int Anim, int X, int Y, byte LockType = 0, int Lockindex = 0)
+        public static void SendAnimation(int mapNum, int Anim, int X, int Y, byte LockType = 0, int Lockindex = 0)
         {
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SAnimation);
@@ -190,7 +190,7 @@ namespace Server
             buffer.WriteInt32(LockType);
             buffer.WriteInt32(Lockindex);
 
-            NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }

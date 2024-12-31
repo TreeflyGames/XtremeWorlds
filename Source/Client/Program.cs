@@ -1778,16 +1778,17 @@ namespace Client
             byte anim;
             int x;
             int y;
-            int spritenum;
+            int spriteNum;
             var spriteleft = default(int);
             int attackspeed;
             Rectangle rect;
 
-            spritenum = GetPlayerSprite(index);
+            spriteNum = GetPlayerSprite(index);
 
-            if (index < 1 | index > Constant.MAX_PLAYERS)
+            if (index < 0| index > Constant.MAX_PLAYERS)
                 return;
-            if (spritenum <= 0 | spritenum > GameState.NumCharacters)
+
+            if (spriteNum <= 0 | spriteNum > GameState.NumCharacters)
                 return;
 
             // speed from weapon
@@ -1941,13 +1942,13 @@ namespace Client
             }
 
             // Calculate the X
-            x = (int)Math.Round(Core.Type.Player[index].X * GameState.PicX + Core.Type.Player[index].XOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum.ToString())).Width / 4d - 32d) / 2d);
+            x = (int)Math.Round(Core.Type.Player[index].X * GameState.PicX + Core.Type.Player[index].XOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Width / 4d - 32d) / 2d);
 
             // Is the player's height more than 32..?
-            if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum.ToString())).Height > 32)
+            if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Height > 32)
             {
                 // Create a 32 pixel offset for larger sprites
-                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY + Core.Type.Player[index].YOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum.ToString())).Height / 4d - 32d));
+                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY + Core.Type.Player[index].YOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Height / 4d - 32d));
             }
             else
             {
@@ -1955,11 +1956,11 @@ namespace Client
                 y = GetPlayerY(index) * GameState.PicY + Core.Type.Player[index].YOffset;
             }
 
-            rect = new Rectangle((int)Math.Round(anim * (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum.ToString())).Width / 4d)), (int)Math.Round(spriteleft * (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum.ToString())).Height / 4d)), (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum.ToString())).Width / 4d), (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spritenum.ToString())).Height / 4d));
+            rect = new Rectangle((int)Math.Round(anim * (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Width / 4d)), (int)Math.Round(spriteleft * (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Height / 4d)), (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Width / 4d), (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Height / 4d));
 
             // render the actual sprite
             // DrawShadow(x, y + 16)
-            DrawCharacterSprite(spritenum, x, y, rect);
+            DrawCharacterSprite(spriteNum, x, y, rect);
 
             // check for paperdolling
             for (int i = 0; i <= (int)EquipmentType.Count - 1; i++)
@@ -2118,7 +2119,7 @@ namespace Client
                     }
                 case 1:
                     {
-                        if (Core.Type.MapEvents[id].Graphic <= 0 | Core.Type.MapEvents[id].Graphic > GameState.NumCharacters)
+                        if (Core.Type.MapEvents[id].Graphic < 0 | Core.Type.MapEvents[id].Graphic > GameState.NumCharacters)
                             return;
 
                         // Reset frame

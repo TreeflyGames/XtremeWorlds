@@ -186,12 +186,12 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void WarpTo(int MapNum)
+        internal static void WarpTo(int mapNum)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CWarpTo);
-            buffer.WriteInt32(MapNum);
+            buffer.WriteInt32(mapNum);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -434,13 +434,13 @@ namespace Client
                 return;
 
             // do basic checks
-            if (invNum <= 0 | invNum > Constant.MAX_INV)
+            if (invNum < 0 | invNum > Constant.MAX_INV)
                 return;
-            if (Core.Type.Player[GameState.MyIndex].Inv[invNum].Num <= 0 | Core.Type.Player[GameState.MyIndex].Inv[invNum].Num > Constant.MAX_ITEMS)
+            if (Core.Type.Player[GameState.MyIndex].Inv[invNum].Num < 0 | Core.Type.Player[GameState.MyIndex].Inv[invNum].Num > Constant.MAX_ITEMS)
                 return;
             if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, invNum)].Type == (byte)Core.Enum.ItemType.Currency | Core.Type.Item[GetPlayerInv(GameState.MyIndex, invNum)].Stackable == 1)
             {
-                if (amount <= 0 | amount > Core.Type.Player[GameState.MyIndex].Inv[invNum].Value)
+                if (amount < 0 | amount > Core.Type.Player[GameState.MyIndex].Inv[invNum].Value)
                     return;
             }
 
@@ -501,32 +501,32 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void ForgetSkill(int skillslot)
+        internal static void ForgetSkill(int skillSlot)
         {
             var buffer = new ByteStream(4);
 
             // Check for subscript out of range
-            if (skillslot < 0 | skillslot > Constant.MAX_PLAYER_SKILLS)
+            if (skillSlot < 0 | skillSlot > Constant.MAX_PLAYER_SKILLS)
                 return;
 
             // dont let them forget a skill which is in CD
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillslot].CD > 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].CD > 0)
             {
                 Text.AddText("Cannot forget a skill which is cooling down!", (int)Core.Enum.ColorType.Red);
                 return;
             }
 
             // dont let them forget a skill which is buffered
-            if (GameState.SkillBuffer == skillslot)
+            if (GameState.SkillBuffer == skillSlot)
             {
                 Text.AddText("Cannot forget a skill which you are casting!", (int)Core.Enum.ColorType.Red);
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillslot].Num > 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num > 0)
             {
                 buffer.WriteInt32((int)Packets.ClientPackets.CForgetSkill);
-                buffer.WriteInt32(skillslot);
+                buffer.WriteInt32(skillSlot);
                 NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             }
             else

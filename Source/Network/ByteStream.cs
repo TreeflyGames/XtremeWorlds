@@ -68,7 +68,7 @@ namespace Mirage.Sharp.Asfw
 
         public byte[] ReadBlock(int size)
         {
-            if (size <= 0 || Head + size > Data.Length)
+            if (size < 0 || Head + size > Data.Length)
                 return new byte[0];
 
             byte[] dst = new byte[size];
@@ -85,7 +85,7 @@ namespace Mirage.Sharp.Asfw
             int int32 = BitConverter.ToInt32(Data, Head);
             Head += 4;
 
-            if (int32 <= 0 || Head + int32 > Data.Length)
+            if (int32 < 0 || Head + int32 > Data.Length)
                 return new byte[0];
 
             byte[] dst = new byte[int32];
@@ -102,7 +102,7 @@ namespace Mirage.Sharp.Asfw
             int int32 = BitConverter.ToInt32(Data, Head);
             Head += 4;
 
-            if (int32 <= 0 || Head + int32 > Data.Length)
+            if (int32 < 0 || Head + int32 > Data.Length)
                 return "";
 
             string str = Encoding.UTF8.GetString(Data, Head, int32);

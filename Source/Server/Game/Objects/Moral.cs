@@ -199,7 +199,7 @@ namespace Server
             moralNum = buffer.ReadInt32();
 
             // Prevent hacking
-            if (moralNum <= 0 | moralNum > Core.Constant.MAX_MORALS)
+            if (moralNum < 0 | moralNum > Core.Constant.MAX_MORALS)
                 return;
 
             {

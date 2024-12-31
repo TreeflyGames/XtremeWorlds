@@ -36,7 +36,7 @@ namespace Mirage.Sharp.Asfw.Network
 
     public NetworkClient(int packetCount, int packetSize = 8192)
     {
-        if (packetSize <= 0)
+        if (packetSize < 0)
             packetSize = 8192;
 
         this._socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

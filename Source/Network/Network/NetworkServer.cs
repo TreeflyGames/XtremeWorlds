@@ -48,7 +48,7 @@ namespace Mirage.Sharp.Asfw.Network
       if (this._listener != null || this._socket != null)
         return;
 
-      if (packetSize <= 0)
+      if (packetSize < 0)
         packetSize = 8192;
       this._socket = new Dictionary<int, Socket>();
       this._unsignedIndex = new List<int>();

@@ -9,6 +9,7 @@ using static Core.Enum;
 using static Core.Packets;
 using static Core.Global.Command;
 using static Core.Type;
+using System.Buffers;
 
 namespace Server
 {
@@ -445,13 +446,12 @@ namespace Server
                 SendVital(index, (VitalType)i);
         }
 
-        public static void SendVital(int index, VitalType Vital)
+        public static void SendVital(int index, VitalType vital)
         {
             var buffer = new ByteStream(4);
-            int amount;
 
             // Get our packet type.
-            switch (Vital)
+            switch (vital)
             {
                 case VitalType.HP:
                     {
@@ -465,10 +465,8 @@ namespace Server
                     }
             }
 
-            amount = GetPlayerVital(index, Vital);
-
             // Set and send related data.
-            buffer.WriteInt32(amount);
+            buffer.WriteInt32(GetPlayerVital(index, vital));
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
@@ -902,19 +900,19 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void MapMsg(int MapNum, string Msg, byte Color)
+        public static void MapMsg(int mapNum, string Msg, byte Color)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SMapMsg);
             buffer.WriteString(Msg);
 
-            NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
 
-        public static void AdminMsg(int MapNum, string Msg, byte Color)
+        public static void AdminMsg(int mapNum, string Msg, byte Color)
         {
             var buffer = new ByteStream(4);
 
@@ -932,7 +930,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendActionMsg(int MapNum, string Message, int Color, int MsgType, int X, int Y, int PlayerOnlyNum = 0)
+        public static void SendActionMsg(int mapNum, string Message, int Color, int MsgType, int X, int Y, int PlayerOnlyNum = 0)
         {
             var buffer = new ByteStream(4);
 
@@ -949,13 +947,13 @@ namespace Server
             }
             else
             {
-                NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
             }
 
             buffer.Dispose();
         }
 
-        public static void SayMsg_Map(int MapNum, int index, string Message, int SayColor)
+        public static void SayMsg_Map(int mapNum, int index, string Message, int SayColor)
         {
             var buffer = new ByteStream(4);
 
@@ -967,7 +965,7 @@ namespace Server
             buffer.WriteString("[Map]");
             buffer.WriteInt32(SayColor);
 
-            NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -1185,7 +1183,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendBlood(int MapNum, int X, int Y)
+        public static void SendBlood(int mapNum, int X, int Y)
         {
             var buffer = new ByteStream(4);
 
@@ -1193,7 +1191,7 @@ namespace Server
             buffer.WriteInt32(X);
             buffer.WriteInt32(Y);
 
-            NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -1358,7 +1356,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendChatBubble(int MapNum, int Target, int TargetType, string Message, int Color)
+        public static void SendChatBubble(int mapNum, int Target, int TargetType, string Message, int Color)
         {
             var buffer = new ByteStream(4);
 
@@ -1368,7 +1366,7 @@ namespace Server
             buffer.WriteInt32(TargetType);
             buffer.WriteString(Message);
             buffer.WriteInt32(Color);
-            NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
 
             buffer.Dispose();
 

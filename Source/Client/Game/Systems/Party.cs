@@ -82,7 +82,7 @@ namespace Client
             }
 
             // exit out if wrong data
-            if (partyindex <= 0 | partyindex > Constant.MAX_PARTY_MEMBERS)
+            if (partyindex < 0 | partyindex > Constant.MAX_PARTY_MEMBERS)
                 return;
 
             // set vitals

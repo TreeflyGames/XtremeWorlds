@@ -375,7 +375,7 @@ namespace Server
             petNum = buffer.ReadInt32();
 
             // Prevent hacking
-            if (petNum <= 0 | petNum > Core.Constant.MAX_PETS)
+            if (petNum < 0 | petNum > Core.Constant.MAX_PETS)
                 return;
 
             {
@@ -683,7 +683,7 @@ namespace Server
 
             n = buffer.ReadInt32();
 
-            if (n <= 0 | n > Core.Constant.MAX_RESOURCES)
+            if (n < 0 | n > Core.Constant.MAX_RESOURCES)
                 return;
 
             SendUpdatePetTo(index, n);
@@ -1231,7 +1231,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS | index < 0 | index > Core.Constant.MAX_PLAYERS | dir <= (byte) DirectionType.None | dir > (byte) DirectionType.Left | movement < 0 | movement > 2)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | index < 0 | index > Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left | movement < 0 | movement > 2)
             {
                 return;
             }
@@ -1285,12 +1285,12 @@ namespace Server
             int x;
             int y;
 
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS | index < 0 | index > Core.Constant.MAX_PLAYERS | dir <= (byte) DirectionType.None | dir > (byte) DirectionType.Left)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | index < 0 | index > Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
             {
                 return CanPetMoveRet;
             }
 
-            if (index <= 0 | index > Core.Constant.MAX_PLAYERS)
+            if (index < 0 | index > Core.Constant.MAX_PLAYERS)
                 return CanPetMoveRet;
 
             x = GetPetX(index);
@@ -1560,7 +1560,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            if (index <= 0 | index > Core.Constant.MAX_PLAYERS | dir <= (byte) DirectionType.None | dir > (byte) DirectionType.Left)
+            if (index < 0 | index > Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
                 return;
 
             if (Core.Type.TempPlayer[index].PetSkillBuffer.Skill > 0)
@@ -1927,7 +1927,7 @@ namespace Server
 
         }
 
-        public static int FindPetPath(int MapNum, int index, int targetX, int targetY)
+        public static int FindPetPath(int mapNum, int index, int targetX, int targetY)
         {
             int FindPetPathRet = default;
 
@@ -1962,8 +1962,8 @@ namespace Server
             if (fy == -1)
                 return FindPetPathRet;
 
-            pos = new int[(Core.Type.Map[MapNum].MaxX + 1), (Core.Type.Map[MapNum].MaxY + 1)];
-            // pos = MapBlocks(MapNum).Blocks
+            pos = new int[(Core.Type.Map[mapNum].MaxX + 1), (Core.Type.Map[mapNum].MaxY + 1)];
+            // pos = MapBlocks(mapNum).Blocks
 
             pos[sX, sY] = 100 + tim;
             pos[fx, fy] = 2;
@@ -1978,10 +1978,10 @@ namespace Server
             {
 
                 // we loop through all squares
-                var loopTo = (int)Core.Type.Map[MapNum].MaxY;
+                var loopTo = (int)Core.Type.Map[mapNum].MaxY;
                 for (j = 0; j <= (int)loopTo; j++)
                 {
-                    var loopTo1 = (int)Core.Type.Map[MapNum].MaxX;
+                    var loopTo1 = (int)Core.Type.Map[mapNum].MaxX;
                     for (i = 0; i <= (int)loopTo1; i++)
                     {
 
@@ -1993,7 +1993,7 @@ namespace Server
                             // The part is to be extended, so do it
                             // We have to make sure that there is a pos(i+1,j) BEFORE we actually use it,
                             // because then we get error... If the square is on side, we dont test for this one!
-                            if (i < Core.Type.Map[MapNum].MaxX)
+                            if (i < Core.Type.Map[mapNum].MaxX)
                             {
 
                                 // If there isnt a wall, or any other... thing
@@ -2026,7 +2026,7 @@ namespace Server
                                 }
                             }
 
-                            if (j < Core.Type.Map[MapNum].MaxY)
+                            if (j < Core.Type.Map[mapNum].MaxY)
                             {
                                 if (pos[i, j + 1] == 0)
                                 {
@@ -2059,10 +2059,10 @@ namespace Server
                     // reset sum
                     sum = 0;
 
-                    var loopTo2 = (int)Core.Type.Map[MapNum].MaxY;
+                    var loopTo2 = (int)Core.Type.Map[mapNum].MaxY;
                     for (j = 0; j <= (int)loopTo2; j++)
                     {
-                        var loopTo3 = (int)Core.Type.Map[MapNum].MaxX;
+                        var loopTo3 = (int)Core.Type.Map[mapNum].MaxX;
                         for (i = 0; i <= (int)loopTo3; i++)
                             // we add up ALL the squares
                             sum += pos[i, j];
@@ -2106,7 +2106,7 @@ namespace Server
                 did = Conversions.ToBoolean(0);
 
                 // If we arent on edge
-                if (lastX < Core.Type.Map[MapNum].MaxX)
+                if (lastX < Core.Type.Map[mapNum].MaxX)
                 {
 
                     // check the square on the right of the solution. Is it a tim-1 one? or just a blank one
@@ -2135,7 +2135,7 @@ namespace Server
                 // We check the one below it
                 if (Conversions.ToInteger(did) == 0)
                 {
-                    if (lastY < Core.Type.Map[MapNum].MaxY)
+                    if (lastY < Core.Type.Map[mapNum].MaxY)
                     {
                         if (pos[lastX, lastY + 1] == 100 + tim)
                         {
@@ -2228,7 +2228,7 @@ namespace Server
             int x1;
             int y1;
 
-            if (index <= 0 | index > Core.Constant.MAX_PLAYERS | !PetAlive(index))
+            if (index < 0 | index > Core.Constant.MAX_PLAYERS | !PetAlive(index))
                 return IsPetByPlayerRet;
 
             IsPetByPlayerRet = Conversions.ToBoolean(0);
@@ -2262,7 +2262,7 @@ namespace Server
             int GetPetVitalRegenRet = default;
             var i = default(int);
 
-            if (index <= 0 | index > Core.Constant.MAX_PLAYERS | !PetAlive(index))
+            if (index < 0 | index > Core.Constant.MAX_PLAYERS | !PetAlive(index))
             {
                 GetPetVitalRegenRet = 0;
                 return GetPetVitalRegenRet;
@@ -2355,7 +2355,7 @@ namespace Server
             if (projectileSlot == 0)
                 projectileSlot = 0;
 
-            if (Skillnum <= 0 | Skillnum > Core.Constant.MAX_SKILLS)
+            if (Skillnum < 0 | Skillnum > Core.Constant.MAX_SKILLS)
                 return;
 
             projectileNum = Core.Type.Skill[Skillnum].Projectile;
@@ -2448,20 +2448,20 @@ namespace Server
             var npcY = default(int);
             int attackspeed;
 
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum <= 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | !PetAlive(attacker))
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | !PetAlive(attacker))
             {
                 return CanPetAttackNPCRet;
             }
 
             // Check for subscript out of range
-            if (Core.Type.MapNPC[GetPlayerMap(attacker)].NPC[MapNPCNum].Num <= 0)
+            if (Core.Type.MapNPC[GetPlayerMap(attacker)].NPC[MapNPCNum].Num < 0)
                 return CanPetAttackNPCRet;
 
             mapNum = GetPlayerMap(attacker);
             NPCNum = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
 
             // Make sure the npc isn't already dead
-            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] <= 0)
+            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] < 0)
                 return CanPetAttackNPCRet;
 
             // Make sure they are on the same map
@@ -2547,7 +2547,7 @@ namespace Server
             int NPCNum;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum <= 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | damage < 0 | !PetAlive(attacker))
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | damage < 0 | !PetAlive(attacker))
             {
                 return;
             }
@@ -2594,10 +2594,10 @@ namespace Server
                 }
 
                 // For n = 0 To 20
-                // If Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Num > 0 Then
-                // 'SpawnItem(Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Inventory(n).Num, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Inventory(n).Value, MapNum, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].x, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].y)
-                // 'MapNPC[MapNum].NPC[MapNPCNum].Inventory(n).Value = 0
-                // 'MapNPC[MapNum].NPC[MapNPCNum].Inventory(n).Num = 0
+                // If Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num > 0 Then
+                // 'SpawnItem(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Inventory(n).Num, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Inventory(n).Value, mapNum, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].y)
+                // 'MapNPC[mapNum].NPC[MapNPCNum].Inventory(n).Value = 0
+                // 'MapNPC[mapNum].NPC[MapNPCNum].Inventory(n).Num = 0
                 // End If
                 // Next
 
@@ -2610,14 +2610,14 @@ namespace Server
 
                 // clear DoTs and HoTs
                 // For i = 1 To Core.Constant.MAX_COTS
-                // With Core.Type.MapNPC[MapNum].NPC[MapNPCNum].DoT(i)
+                // With Core.Type.MapNPC[mapNum].NPC[MapNPCNum].DoT(i)
                 // .Skill = 0
                 // .Timer = 0
                 // .Caster = 0
                 // .StartTime = 0
                 // .Used = 0
                 // End With
-                // With Core.Type.MapNPC[MapNum].NPC[MapNPCNum].HoT(i)
+                // With Core.Type.MapNPC[mapNum].NPC[MapNPCNum].HoT(i)
                 // .Skill = 0
                 // .Timer = 0
                 // .Caster = 0
@@ -2670,7 +2670,7 @@ namespace Server
                 NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
 
                 // send the sound
-                // If Skillnum > 0 Then SendMapSound attacker, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].x, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].y, SoundEntity.seSkill, Skillnum
+                // If Skillnum > 0 Then SendMapSound attacker, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].y, SoundEntity.seSkill, Skillnum
 
                 // Set the NPC target to the player
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = (byte)TargetType.Pet; // player's pet
@@ -2702,7 +2702,7 @@ namespace Server
                     // DoT
                     if (Core.Type.Skill[skillnum].Duration > 0)
                     {
-                        // AddDoT_NPC(MapNum, MapNPCNum, Skillnum, attacker, 3)
+                        // AddDoT_NPC(mapNum, MapNPCNum, Skillnum, attacker, 3)
                     }
                 }
 
@@ -2771,20 +2771,20 @@ namespace Server
 
             CanNPCAttackPetRet = Conversions.ToBoolean(0);
 
-            if (MapNPCNum <= 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | !NetworkConfig.IsPlaying(index) | !PetAlive(index))
+            if (MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | !NetworkConfig.IsPlaying(index) | !PetAlive(index))
             {
                 return CanNPCAttackPetRet;
             }
 
             // Check for subscript out of range
-            if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[MapNPCNum].Num <= 0)
+            if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[MapNPCNum].Num < 0)
                 return CanNPCAttackPetRet;
 
             mapNum = GetPlayerMap(index);
             NPCNum = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
 
             // Make sure the npc isn't already dead
-            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] <= 0)
+            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] < 0)
                 return CanNPCAttackPetRet;
 
             // Make sure npcs dont attack more then once a second
@@ -2836,13 +2836,13 @@ namespace Server
             int mapNum;
 
             // Check for subscript out of range
-            if (MapNPCNum <= 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Conversions.ToInteger(NetworkConfig.IsPlaying(victim)) == 0 | !PetAlive(victim))
+            if (MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Conversions.ToInteger(NetworkConfig.IsPlaying(victim)) == 0 | !PetAlive(victim))
             {
                 return;
             }
 
             // Check for subscript out of range
-            if (Core.Type.MapNPC[GetPlayerMap(victim)].NPC[MapNPCNum].Num <= 0)
+            if (Core.Type.MapNPC[GetPlayerMap(victim)].NPC[MapNPCNum].Num < 0)
                 return;
 
             mapNum = GetPlayerMap(victim);
@@ -2851,7 +2851,7 @@ namespace Server
             // Send this packet so they can see the npc attacking
             NPC.SendNPCAttack(victim, MapNPCNum);
 
-            if (damage <= 0)
+            if (damage < 0)
                 return;
 
             // set the regen timer
@@ -2975,7 +2975,7 @@ namespace Server
             }
 
             // Make sure they have more then 0 hp
-            if (GetPlayerVital(victim, VitalType.HP) <= 0)
+            if (GetPlayerVital(victim, VitalType.HP) < 0)
                 return CanPetAttackPlayerRet;
 
             // Check to make sure that they dont have access
@@ -3299,7 +3299,7 @@ namespace Server
             }
 
             // Make sure they have more then 0 hp
-            if (Core.Type.Player[victim].Pet.Health <= 0)
+            if (Core.Type.Player[victim].Pet.Health < 0)
                 return CanPetAttackPetRet;
 
             // Check to make sure that they dont have access
@@ -3555,7 +3555,7 @@ namespace Server
             skillnum = Core.Type.Player[index].Pet.Skill[SkillSlot];
             mapNum = GetPlayerMap(index);
 
-            if (skillnum <= 0 | skillnum > Core.Constant.MAX_SKILLS)
+            if (skillnum < 0 | skillnum > Core.Constant.MAX_SKILLS)
                 return;
 
             // see if cooldown has finished
@@ -4539,7 +4539,7 @@ namespace Server
             }
 
             // Make sure they have more then 0 hp
-            if (GetPetVital(victim, VitalType.HP) <= 0)
+            if (GetPetVital(victim, VitalType.HP) < 0)
                 return CanPlayerAttackPetRet;
 
             // Check to make sure that they dont have access

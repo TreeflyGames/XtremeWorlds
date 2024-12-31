@@ -140,6 +140,7 @@ namespace Client
             // if doesn't exist then exit sub
             if (AnimInstance[index].Animation <= 0)
                 return;
+
             if (AnimInstance[index].Animation > Constant.MAX_ANIMATIONS)
                 return;
 

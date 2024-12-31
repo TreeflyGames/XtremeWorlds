@@ -716,7 +716,7 @@ namespace Server
             GetNPCVitalRegenRet = 0;
 
             // Prevent subscript out of range
-            if (NPCNum <= 0 | NPCNum > Core.Constant.MAX_NPCS)
+            if (NPCNum < 0 | NPCNum > Core.Constant.MAX_NPCS)
             {
                 return GetNPCVitalRegenRet;
             }
@@ -1284,7 +1284,7 @@ namespace Server
                 // SkillPlayer_Effect(VitalType.SP, True, NPCNum, Vital, skillnum)
                 // DidCast = 1
                 // Case (byte)SkillType.WARP
-                // SendAnimation(MapNum, Type.Skill(skillNum).SkillAnim, 0, 0, TargetType.PLAYER, NPCNum)
+                // SendAnimation(mapNum, Type.Skill(skillNum).SkillAnim, 0, 0, TargetType.PLAYER, NPCNum)
                 // PlayerWarp(NPCNum, Type.Skill(skillNum).Map, Type.Skill(skillNum).x, Type.Skill(skillNum).y)
                 // SendAnimation(GetPlayerMap(NPCNum), Type.Skill(skillNum).SkillAnim, 0, 0, TargetType.PLAYER, NPCNum)
                 // DidCast = 1
@@ -1589,7 +1589,7 @@ namespace Server
             string sSymbol;
             var color = default(int);
 
-            if (index <= 0 | index > Core.Constant.MAX_MAP_NPCS | damage <= 0 | Core.Type.MapNPC[mapNum].NPC[index].Vital[vital] <= 0)
+            if (index < 0 | index > Core.Constant.MAX_MAP_NPCS | damage < 0 | Core.Type.MapNPC[mapNum].NPC[index].Vital[vital] < 0)
                 return;
 
             if (damage > 0)

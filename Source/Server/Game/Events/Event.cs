@@ -104,7 +104,7 @@ namespace Server
             bool begineventprocessing;
 
             // Check for subscript out of range
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS | dir <= (int)DirectionType.None | dir > (int)DirectionType.Left)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | dir < (int)DirectionType.Up | dir > (int)DirectionType.Left)
                 return CanEventMoveRet;
 
             CanEventMoveRet = Conversions.ToBoolean(1);
@@ -300,7 +300,7 @@ namespace Server
             int i;
 
             // Check for subscript out of range
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS | dir <= (byte) DirectionType.None | dir > (byte) DirectionType.Left)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
             {
                 return;
             }
@@ -358,7 +358,7 @@ namespace Server
             int i;
 
             // Check for subscript out of range
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS | dir <= (byte) DirectionType.None | dir > (byte) DirectionType.Left)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
                 return;
 
             if (Conversions.ToInteger(globalevent) == 0)
@@ -706,7 +706,7 @@ namespace Server
 
             if (playerID < 0 | playerID > Core.Constant.MAX_PLAYERS)
                 return CanEventMoveTowardsPlayerRet;
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return CanEventMoveTowardsPlayerRet;
             if (EventID < 0 | EventID > Core.Type.TempPlayer[playerID].EventMap.CurrentEvents)
                 return CanEventMoveTowardsPlayerRet;
@@ -1179,7 +1179,7 @@ namespace Server
 
             if (playerID < 0 | playerID > Core.Constant.MAX_PLAYERS)
                 return CanEventMoveAwayFromPlayerRet;
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return CanEventMoveAwayFromPlayerRet;
             if (EventID < 0 | EventID > Core.Type.TempPlayer[playerID].EventMap.CurrentEvents)
                 return CanEventMoveAwayFromPlayerRet;
@@ -1412,7 +1412,7 @@ namespace Server
 
             if (playerID < 0 | playerID > Core.Constant.MAX_PLAYERS)
                 return GetDirToPlayerRet;
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return GetDirToPlayerRet;
             if (EventID < 0 | EventID > Core.Type.TempPlayer[playerID].EventMap.CurrentEvents)
                 return GetDirToPlayerRet;
@@ -1476,7 +1476,7 @@ namespace Server
 
             if (playerID < 0 | playerID > Core.Constant.MAX_PLAYERS)
                 return GetDirAwayFromPlayerRet;
-            if (mapNum <= 0 | mapNum > Core.Constant.MAX_MAPS)
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return GetDirAwayFromPlayerRet;
             if (EventID < 0 | EventID > Core.Type.TempPlayer[playerID].EventMap.CurrentEvents)
                 return GetDirAwayFromPlayerRet;

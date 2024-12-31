@@ -7,7 +7,7 @@ namespace Core
         /// <Summary> Text Color Contstant </Summary>
         public enum ColorType : byte
         {
-            Black = 0,
+            Black,
             Blue,
             Green,
             Cyan,
@@ -28,15 +28,14 @@ namespace Core
         /// <Summary> Sex Constant </Summary>
         public enum SexType : byte
         {
-            None = 0,
-            Male = 1,
+            Male,
             Female
         }
 
         /// <Summary> Tile Constant </Summary>
         public enum TileType : byte
         {
-            None = 0,
+            None,
             Blocked,
             Warp,
             Item,
@@ -85,7 +84,6 @@ namespace Core
         /// <Summary> Item Constant </Summary>
         public enum ItemType : byte
         {
-            None = 0,
             Equipment,
             Consumable,
             CommonEvent,
@@ -100,7 +98,6 @@ namespace Core
         /// <Summary> Consume Constant </Summary>
         public enum ConsumableType : byte
         {
-            None = 0,
             HP,
             MP,
             SP,
@@ -110,7 +107,6 @@ namespace Core
         /// <Summary> Sub Constant </Summary>
         public enum ItemSubType : byte
         {
-            None = 0,
             Weapon,
             Armor,
             Helmet,
@@ -134,7 +130,6 @@ namespace Core
         /// <Summary> Direction Constant </Summary>
         public enum DirectionType : byte
         {
-            None = 0,
             Up,
             Right,
             Down,
@@ -148,7 +143,6 @@ namespace Core
         /// <Summary> Movement Constant </Summary>
         public enum MovementType : byte
         {
-            None = 0,
             Standing,
             Walking,
             Running
@@ -157,7 +151,7 @@ namespace Core
         /// <Summary> Admin Constant </Summary>
         public enum AccessType : byte
         {
-            None = 0,
+            None,
             Player,
             Moderator,
             Mapper,
@@ -168,7 +162,6 @@ namespace Core
         /// <Summary> NPC Behavior Constant </Summary>
         public enum NPCBehavior : byte
         {
-            None = 0,
             AttackOnSight,
             AttackWhenAttacked,
             Friendly,
@@ -180,7 +173,6 @@ namespace Core
         /// <Summary> Skill Constant </Summary>
         public enum SkillType : byte
         {
-            None = 0,
             DamageHp,
             DamageMp,
             HealHp,
@@ -192,7 +184,7 @@ namespace Core
         /// <Summary> Target Constant </Summary>
         public enum TargetType : byte
         {
-            None = 0,
+            None,
             Player,
             NPC,
             Event,
@@ -202,7 +194,6 @@ namespace Core
         /// <Summary> Action Message Constant </Summary>
         public enum ActionMsgType : byte
         {
-            None = 0,
             Static,
             Scroll,
             Screen
@@ -211,7 +202,6 @@ namespace Core
         /// <Summary> Stats used by Players, NPCs and Job </Summary>
         public enum StatType : byte
         {
-            None = 0,
             Strength,
             Vitality,
             Luck,
@@ -224,7 +214,6 @@ namespace Core
         /// <Summary> Vitals used by Players, NPCs, and Job </Summary>
         public enum VitalType : byte
         {
-            None = 0,
             HP,
             SP,
 
@@ -234,7 +223,6 @@ namespace Core
         /// <Summary> Equipment used by Players </Summary>
         public enum EquipmentType : byte
         {
-            None = 0,
             Weapon,
             Armor,
             Helmet,
@@ -246,7 +234,6 @@ namespace Core
         /// <Summary> Layers in a map </Summary>
         public enum LayerType : byte
         {
-            None = 0,
             Ground,
             Mask,
             MaskAnim,
@@ -262,7 +249,6 @@ namespace Core
         /// <Summary> Resource Skills </Summary>
         public enum ResourceType : byte
         {
-            None = 0,
             Herb,
             Woodcut,
             Mine,
@@ -272,7 +258,6 @@ namespace Core
 
         public enum RarityType
         {
-            None = 0,
             Broken,
             Common,
             Uncommon,
@@ -282,7 +267,7 @@ namespace Core
 
         public enum Weather
         {
-            None = 0,
+            None,
             Rain,
             Snow,
             Hail,
@@ -291,18 +276,8 @@ namespace Core
             Fog
         }
 
-        public enum QuestStatusType
-        {
-            None = 0,
-            NotStarted,
-            Started,
-            Completed,
-            Repeatable
-        }
-
         public enum MoveRouteOpts
         {
-            None = 0,
             MoveUp,
             MoveDown,
             MoveLeft,
@@ -351,8 +326,6 @@ namespace Core
         // Event Type
         public enum EventType
         {
-            None = 0,
-
             // Message
             AddText,
 
@@ -431,7 +404,6 @@ namespace Core
 
         public enum CommonEventType
         {
-            None = 0,
             Switch,
             Variable,
             Key,
@@ -440,7 +412,6 @@ namespace Core
 
         public enum EditorType
         {
-            None = 0,
             Item,
             Map,
             NPC,
@@ -457,7 +428,6 @@ namespace Core
 
         public enum PictureType
         {
-            None = 0,
             TopLeft,
             CenterScreen,
             CenterEvent,
@@ -467,7 +437,6 @@ namespace Core
 
         public enum QuadrantType
         {
-            None = 0,
             NE,
             SE,
             SW,
@@ -476,14 +445,12 @@ namespace Core
 
         public enum WrapModeType
         {
-            None = 0,
             Characters,
             Font
         }
 
         public enum WrapType
         {
-            None = 0,
             BreakWord,
             Whitespace,
             Smart
@@ -491,7 +458,6 @@ namespace Core
 
         public enum ControlType
         {
-            None = 0,
             Label,
             Window,
             Button,
@@ -505,8 +471,6 @@ namespace Core
 
         public enum DesignType
         {
-            None = 0,
-
             // Boxes
             Wood = 1,
             Wood_Small,
@@ -557,7 +521,7 @@ namespace Core
 
         public enum EntState
         {
-            Normal = 0,
+            Normal,
             Hover,
             MouseDown,
             MouseMove,
@@ -572,7 +536,6 @@ namespace Core
 
         public enum AlignmentType
         {
-            None = 0,
             Left,
             Right,
             Center
@@ -580,14 +543,14 @@ namespace Core
 
         public enum PartType
         {
-            None = 0,
+            None,
             Item,
             Skill
         }
 
         public enum PartOriginType
         {
-            None = 0,
+            None,
             Inventory,
             Skill,
             Hotbar,
@@ -596,7 +559,7 @@ namespace Core
 
         public enum FontType
         {
-            None = 0,
+            None,
             Georgia,
             Arial,
             Verdana,
@@ -605,7 +568,6 @@ namespace Core
 
         public enum MenuType
         {
-            None = 0,
             Main,
             Login,
             Register,
@@ -617,7 +579,6 @@ namespace Core
 
         public enum DialogueMsg
         {
-            None = 0,
             Connection,
             Banned,
             Kicked,
@@ -640,7 +601,6 @@ namespace Core
 
         public enum DialogueType
         {
-            Name = 0,
             Trade,
             Forget,
             Party,
@@ -659,7 +619,6 @@ namespace Core
 
         public enum DialogueStyle
         {
-            None = 0,
             Okay,
             YesNo,
             Input
@@ -667,7 +626,6 @@ namespace Core
 
         public enum ChatChannel
         {
-            None = 0,
             Game,
             Map,
             Broadcast,
@@ -679,7 +637,7 @@ namespace Core
 
         public enum PartOriginsType
         {
-            None = 0,
+            None,
             Inventory,
             Skill,
             Hotbar,
@@ -688,7 +646,6 @@ namespace Core
 
         public enum MouseButton
         {
-            None = 0,
             Left,
             Right,
             Middle
@@ -696,7 +653,6 @@ namespace Core
 
         public enum RenderType
         {
-            None = 0,
             Texture,
             Font
         }

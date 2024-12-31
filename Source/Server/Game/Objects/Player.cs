@@ -93,7 +93,7 @@ namespace Server
             }
 
             // Make sure they have more then 0 hp
-            if (GetPlayerVital(victim, VitalType.HP) <= 0)
+            if (GetPlayerVital(victim, VitalType.HP) < 0)
                 return CanPlayerAttackPlayerRet;
 
             // Check to make sure that they dont have access
@@ -442,13 +442,13 @@ namespace Server
             int attackspeed;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum <= 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS)
             {
                 return CanPlayerAttackNPCRet;
             }
 
             // Check for subscript out of range
-            if (Core.Type.MapNPC[GetPlayerMap(attacker)].NPC[MapNPCNum].Num <= 0)
+            if (Core.Type.MapNPC[GetPlayerMap(attacker)].NPC[MapNPCNum].Num < 0)
             {
                 return CanPlayerAttackNPCRet;
             }
@@ -457,7 +457,7 @@ namespace Server
             NPCNum = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
 
             // Make sure the npc isn't already dead
-            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(int)VitalType.HP] <= 0)
+            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(int)VitalType.HP] < 0)
             {
                 return CanPlayerAttackNPCRet;
             }
@@ -549,11 +549,11 @@ namespace Server
         public static void PlayerAttackNPC(int attacker, int MapNPCNum, int Damage)
         {
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum <= 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Damage <= 0)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Damage < 0)
                 return;
 
-            var MapNum = GetPlayerMap(attacker);
-            var NPCNum = Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Num;
+            var mapNum = GetPlayerMap(attacker);
+            var NPCNum = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
             string Name = Core.Type.NPC[NPCNum].Name;
 
             // Check for weapon
@@ -564,42 +564,42 @@ namespace Server
             }
 
             // Deal damage to our NPC.
-            Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Vital[(int) VitalType.HP] = Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Vital[(int) VitalType.HP] - Damage;
+            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(int) VitalType.HP] = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(int) VitalType.HP] - Damage;
 
             // Set the NPC target to the player so they can come after them.
-            Core.Type.MapNPC[MapNum].NPC[MapNPCNum].TargetType = (int)TargetType.Player;
-            Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Target = attacker;
+            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = (int)TargetType.Player;
+            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target = attacker;
 
             // Check for any mobs on the map with the Guard behaviour so they can come after our player.
-            if (Core.Type.NPC[Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Num].Behaviour == (byte)NPCBehavior.Guard)
+            if (Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Behaviour == (byte)NPCBehavior.Guard)
             {
                 // Find all NPCs with the same ID as the current NPC in the group
-                var guards = Core.Type.MapNPC[MapNum].NPC.Where(npc => Operators.ConditionalCompareObjectEqual(npc.Num, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Num, false)).Select((npc, index) => index);
+                var guards = Core.Type.MapNPC[mapNum].NPC.Where(npc => Operators.ConditionalCompareObjectEqual(npc.Num, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num, false)).Select((npc, index) => index);
 
                 // Set the target for each guard NPC
                 foreach (var guardindex in guards)
                 {
-                    Core.Type.MapNPC[MapNum].NPC[guardindex].Target = attacker;
-                    Core.Type.MapNPC[MapNum].NPC[guardindex].TargetType = (byte)TargetType.Player;
+                    Core.Type.MapNPC[mapNum].NPC[guardindex].Target = attacker;
+                    Core.Type.MapNPC[mapNum].NPC[guardindex].TargetType = (byte)TargetType.Player;
                 }
             }
 
             // Send our general visual stuff.
-            NetworkSend.SendActionMsg(MapNum, "-" + Damage, (int) ColorType.BrightRed, 1, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X * 32, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y * 32);
-            NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[MapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Y);
+            NetworkSend.SendActionMsg(mapNum, "-" + Damage, (int) ColorType.BrightRed, 1, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y * 32);
+            NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
             NetworkSend.SendPlayerAttack(attacker);
             if (Weapon > 0)
             {
-                Animation.SendAnimation(MapNum, Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, MapNPCNum);
+                Animation.SendAnimation(mapNum, Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, MapNPCNum);
             }
 
             // Reset our attack timer.
             Core.Type.TempPlayer[attacker].AttackTimer = General.GetTimeMs();
 
-            if (!NPC.IsNPCDead(MapNum, MapNPCNum))
+            if (!NPC.IsNPCDead(mapNum, MapNPCNum))
             {
                 // Check if our NPC has something to share with our player.
-                if (Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Target == 0)
+                if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target == 0)
                 {
                     if ((Core.Type.NPC[NPCNum].AttackSay.Length) > 0)
                     {
@@ -607,11 +607,11 @@ namespace Server
                     }
                 }
 
-                NPC.SendMapNPCTo(MapNum, MapNPCNum);
+                NPC.SendMapNPCTo(mapNum, MapNPCNum);
             }
             else
             {
-                HandlePlayerKillNPC(MapNum, attacker, MapNPCNum);
+                HandlePlayerKillNPC(mapNum, attacker, MapNPCNum);
             }
         }
 
@@ -862,7 +862,7 @@ namespace Server
         {
             bool IsPlayerDeadRet = false;
             IsPlayerDeadRet = false;
-            if (index <= 0 | index > Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
+            if (index < 0 | index > Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
                 return IsPlayerDeadRet;
             if (GetPlayerVital(index, VitalType.HP) < 0)
                 IsPlayerDeadRet = true;
@@ -892,27 +892,27 @@ namespace Server
             OnDeath(victim);
         }
 
-        internal static void HandlePlayerKillNPC(int MapNum, int index, int MapNPCNum)
+        internal static void HandlePlayerKillNPC(int mapNum, int index, int MapNPCNum)
         {
             // Set our attacker's target to nothing.
             NetworkSend.SendTarget(index, 0, 0);
 
             // Hand out player experience
-            HandleNPCKillExperience(index, Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Num);
+            HandleNPCKillExperience(index, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num);
 
             // Drop items if we can.
-            NPC.DropNPCItems(MapNum, MapNPCNum);
+            NPC.DropNPCItems(mapNum, MapNPCNum);
 
             // Set our NPC's data to default so we know it's dead.
-            Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Num = 0;
-            Core.Type.MapNPC[MapNum].NPC[MapNPCNum].SpawnWait = General.GetTimeMs();
-            Core.Type.MapNPC[MapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] = 0;
+            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num = 0;
+            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].SpawnWait = General.GetTimeMs();
+            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] = 0;
 
             // Notify all our clients that the NPC has died.
-            NPC.SendNPCDead(MapNum, MapNPCNum);
+            NPC.SendNPCDead(mapNum, MapNPCNum);
 
             // Check if our dead NPC is targetted by another player and remove their targets.
-            foreach (var p in Core.Type.TempPlayer.Where((x, i) => x.InGame & GetPlayerMap((int)Operators.AddObject(i, 1)) == MapNum & Operators.ConditionalCompareObjectEqual(x.TargetType, TargetType.NPC, false) & Operators.ConditionalCompareObjectEqual(x.Target, MapNPCNum, false)).Select((x, i) => Operators.AddObject(i, 1)).ToArray())
+            foreach (var p in Core.Type.TempPlayer.Where((x, i) => x.InGame & GetPlayerMap((int)Operators.AddObject(i, 1)) == mapNum & Operators.ConditionalCompareObjectEqual(x.TargetType, TargetType.NPC, false) & Operators.ConditionalCompareObjectEqual(x.Target, MapNPCNum, false)).Select((x, i) => Operators.AddObject(i, 1)).ToArray())
             {
                 Core.Type.TempPlayer[(int)p].Target = 0;
                 Core.Type.TempPlayer[(int)p].TargetType = 0;
@@ -1104,21 +1104,21 @@ namespace Server
         #endregion
 
         #region Movement
-        public static void PlayerWarp(int index, int MapNum, int X, int Y, bool NoInstance = false)
+        public static void PlayerWarp(int index, int mapNum, int X, int Y, bool NoInstance = false)
         {
             int OldMap;
             int i;
             ByteStream buffer;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | MapNum < 0 | MapNum > Core.Constant.MAX_MAPS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return;
 
             // Check if you are out of bounds
-            if (X > Core.Type.Map[MapNum].MaxX)
-                X = Core.Type.Map[MapNum].MaxX;
-            if (Y > Core.Type.Map[MapNum].MaxY)
-                Y = Core.Type.Map[MapNum].MaxY;
+            if (X > Core.Type.Map[mapNum].MaxX)
+                X = Core.Type.Map[mapNum].MaxX;
+            if (Y > Core.Type.Map[mapNum].MaxY)
+                Y = Core.Type.Map[mapNum].MaxY;
 
             Core.Type.TempPlayer[index].EventProcessingCount = 0;
             Core.Type.TempPlayer[index].EventMap.CurrentEvents = 0;
@@ -1134,12 +1134,12 @@ namespace Server
             // Save old map to send erase player data to
             OldMap = GetPlayerMap(index);
 
-            if (OldMap != MapNum)
+            if (OldMap != mapNum)
             {
                 SendLeaveMap(index, OldMap);
             }
 
-            SetPlayerMap(index, MapNum);
+            SetPlayerMap(index, mapNum);
             SetPlayerX(index, X);
             SetPlayerY(index, Y);
 
@@ -1155,14 +1155,14 @@ namespace Server
             NetworkSend.SendPlayerXY(index);
 
             // send equipment of all people on new map
-            if (GameLogic.GetTotalMapPlayers(MapNum) > 0)
+            if (GameLogic.GetTotalMapPlayers(mapNum) > 0)
             {
                 var loopTo = NetworkConfig.Socket.HighIndex;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
                     if (NetworkConfig.IsPlaying(i))
                     {
-                        if (GetPlayerMap(i) == MapNum)
+                        if (GetPlayerMap(i) == mapNum)
                         {
                             NetworkSend.SendMapEquipmentTo(i, index);
                         }
@@ -1190,15 +1190,15 @@ namespace Server
             }
 
             // Sets it so we know to process npcs on the map
-            PlayersOnMap[MapNum] = true;
+            PlayersOnMap[mapNum] = true;
             Core.Type.TempPlayer[index].GettingMap = true;
 
-            Moral.SendUpdateMoralTo(index, Core.Type.Map[MapNum].Moral);
+            Moral.SendUpdateMoralTo(index, Core.Type.Map[mapNum].Moral);
 
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SCheckForMap);
-            buffer.WriteInt32(MapNum);
-            buffer.WriteInt32(Core.Type.Map[MapNum].Revision);
+            buffer.WriteInt32(mapNum);
+            buffer.WriteInt32(Core.Type.Map[mapNum].Revision);
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
             buffer.Dispose();
@@ -1689,7 +1689,7 @@ namespace Server
             int i;
 
             // Check for subscript out of range
-            if (ItemNum <= 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
             {
                 return HasItemRet;
             }
@@ -1723,7 +1723,7 @@ namespace Server
             FindItemSlotRet = 0;
 
             // Check for subscript out of range
-            if (ItemNum <= 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
             {
                 return FindItemSlotRet;
             }
@@ -1847,7 +1847,7 @@ namespace Server
             int i;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum <= 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
             {
                 return FindOpenInvSlotRet;
             }
@@ -1889,7 +1889,7 @@ namespace Server
             TakeInvRet = Conversions.ToBoolean(0);
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum <= 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
             {
                 return TakeInvRet;
             }
@@ -1942,7 +1942,7 @@ namespace Server
             int i;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum <= 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
             {
                 GiveInvRet = Conversions.ToBoolean(0);
                 return GiveInvRet;
@@ -1974,7 +1974,7 @@ namespace Server
             int i;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | invNum <= 0 | invNum > Core.Constant.MAX_INV)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | invNum < 0 | invNum > Core.Constant.MAX_INV)
             {
                 return;
             }
@@ -2159,12 +2159,12 @@ namespace Server
             var tempstr = new string[3];
 
             // Prevent hacking
-            if (InvNum <= 0 | InvNum > Core.Constant.MAX_INV)
+            if (InvNum < 0 | InvNum > Core.Constant.MAX_INV)
                 return;
 
             itemNum = GetPlayerInv(index, InvNum);
 
-            if (itemNum <= 0 | itemNum > Core.Constant.MAX_ITEMS)
+            if (itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
                 return;
 
             if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(CanPlayerUseItem(index, itemNum), 0, false)))
@@ -2980,7 +2980,7 @@ namespace Server
             skillnum = GetPlayerSkill(index, SkillSlot);
             mapNum = GetPlayerMap(index);
 
-            if (skillnum <= 0 | skillnum > Core.Constant.MAX_SKILLS)
+            if (skillnum < 0 | skillnum > Core.Constant.MAX_SKILLS)
                 return;
 
             // Make sure player has the skill
@@ -3140,10 +3140,10 @@ namespace Server
             int BankSlot;
             int itemnum;
 
-            if (InvSlot <= 0 | InvSlot > Core.Constant.MAX_INV)
+            if (InvSlot < 0 | InvSlot > Core.Constant.MAX_INV)
                 return;
 
-            if (Amount <= 0)
+            if (Amount < 0)
                 Amount = 0;
 
             if (GetPlayerInvValue(index, InvSlot) < 0)
@@ -3218,7 +3218,7 @@ namespace Server
 
             if (!NetworkConfig.IsPlaying(index))
                 return FindOpenBankSlotRet;
-            if (ItemNum <= 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
                 return FindOpenBankSlotRet;
 
             if (Core.Type.Item[ItemNum].Type == (byte)ItemType.Currency | Core.Type.Item[ItemNum].Stackable == 1)
@@ -3252,10 +3252,10 @@ namespace Server
         {
             object invSlot;
 
-            if (BankSlot <= 0 | BankSlot > Core.Constant.MAX_BANK)
+            if (BankSlot < 0 | BankSlot > Core.Constant.MAX_BANK)
                 return;
 
-            if (Amount <= 0)
+            if (Amount < 0)
                 Amount = 0;
 
             if (GetPlayerBankValue(index, (byte)BankSlot) < Amount)
@@ -3269,7 +3269,7 @@ namespace Server
                 {
                     GiveInv(index, GetPlayerBank(index, (byte)BankSlot), Amount);
                     SetPlayerBankValue(index, (byte)BankSlot, GetPlayerBankValue(index, (byte)BankSlot) - Amount);
-                    if (GetPlayerBankValue(index, (byte)BankSlot) <= 0)
+                    if (GetPlayerBankValue(index, (byte)BankSlot) < 0)
                     {
                         SetPlayerBank(index, (byte)BankSlot, 0);
                         SetPlayerBankValue(index, (byte)BankSlot, 0);

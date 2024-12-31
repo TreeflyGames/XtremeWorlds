@@ -73,16 +73,16 @@ namespace Server
 
         }
 
-        public static void ClearMapProjectile(int MapNum, int index)
+        public static void ClearMapProjectile(int mapNum, int index)
         {
 
-            MapProjectile[MapNum, index].ProjectileNum = 0;
-            MapProjectile[MapNum, index].Owner = 0;
-            MapProjectile[MapNum, index].OwnerType = 0;
-            MapProjectile[MapNum, index].X = 0;
-            MapProjectile[MapNum, index].Y = 0;
-            MapProjectile[MapNum, index].Dir = 0;
-            MapProjectile[MapNum, index].Timer = 0;
+            MapProjectile[mapNum, index].ProjectileNum = 0;
+            MapProjectile[mapNum, index].Owner = 0;
+            MapProjectile[mapNum, index].OwnerType = 0;
+            MapProjectile[mapNum, index].X = 0;
+            MapProjectile[mapNum, index].Y = 0;
+            MapProjectile[mapNum, index].Dir = 0;
+            MapProjectile[mapNum, index].Timer = 0;
 
         }
 
@@ -153,7 +153,7 @@ namespace Server
             ProjectileNum = buffer.ReadInt32();
 
             // Prevent hacking
-            if (ProjectileNum <= 0 | ProjectileNum > Core.Constant.MAX_PROJECTILES)
+            if (ProjectileNum < 0 | ProjectileNum > Core.Constant.MAX_PROJECTILES)
             {
                 return;
             }
@@ -321,7 +321,7 @@ namespace Server
 
         }
 
-        public static void SendProjectileToMap(int MapNum, int ProjectileNum)
+        public static void SendProjectileToMap(int mapNum, int ProjectileNum)
         {
             ByteStream buffer;
 
@@ -329,7 +329,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SMapProjectile);
 
             {
-                var withBlock = Core.Type.MapProjectile[MapNum, ProjectileNum];
+                var withBlock = Core.Type.MapProjectile[mapNum, ProjectileNum];
                 buffer.WriteInt32(ProjectileNum);
                 buffer.WriteInt32(withBlock.ProjectileNum);
                 buffer.WriteInt32(withBlock.Owner);
@@ -339,7 +339,7 @@ namespace Server
                 buffer.WriteInt32(withBlock.Y);
             }
 
-            NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
             buffer.Dispose();
 
         }

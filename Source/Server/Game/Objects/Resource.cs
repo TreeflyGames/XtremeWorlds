@@ -76,32 +76,32 @@ namespace Server
                 ClearResource(Conversions.ToInteger(i));
         }
 
-        internal static void CacheResources(int MapNum)
+        internal static void CacheResources(int mapNum)
         {
             int x;
             int y;
             var Resource_Count = default(int);
 
-            var loopTo = (int)Core.Type.Map[MapNum].MaxX - 1;
+            var loopTo = (int)Core.Type.Map[mapNum].MaxX - 1;
             for (x = 0; x <= (int)loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.Map[MapNum].MaxY - 1;
+                var loopTo1 = (int)Core.Type.Map[mapNum].MaxY - 1;
                 for (y = 0; y <= (int)loopTo1; y++)
                 {
 
-                    if (Core.Type.Map[MapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[MapNum].Tile[x, y].Type2 == TileType.Resource)
+                    if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Resource)
                     {
                         Resource_Count += 0;
-                        Array.Resize(ref Core.Type.MapResource[MapNum].ResourceData, Resource_Count);
-                        Core.Type.MapResource[MapNum].ResourceData[Resource_Count].X = x;
-                        Core.Type.MapResource[MapNum].ResourceData[Resource_Count].Y = y;
-                        Core.Type.MapResource[MapNum].ResourceData[Resource_Count].Health = (byte)Core.Type.Resource[Core.Type.Map[MapNum].Tile[x, y].Data1].Health;
+                        Array.Resize(ref Core.Type.MapResource[mapNum].ResourceData, Resource_Count);
+                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count].X = x;
+                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count].Y = y;
+                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count].Health = (byte)Core.Type.Resource[Core.Type.Map[mapNum].Tile[x, y].Data1].Health;
                     }
 
                 }
             }
 
-            Core.Type.MapResource[MapNum].ResourceCount = Resource_Count;
+            Core.Type.MapResource[mapNum].ResourceCount = Resource_Count;
         }
 
         public static byte[] ResourcesData()
@@ -225,7 +225,7 @@ namespace Server
             resourcenum = buffer.ReadInt32();
 
             // Prevent hacking
-            if (resourcenum <= 0 | resourcenum > Core.Constant.MAX_RESOURCES)
+            if (resourcenum < 0 | resourcenum > Core.Constant.MAX_RESOURCES)
                 return;
 
             Core.Type.Resource[resourcenum].Animation = buffer.ReadInt32();
@@ -259,7 +259,7 @@ namespace Server
 
             n = buffer.ReadInt32();
 
-            if (n <= 0 | n > Core.Constant.MAX_RESOURCES)
+            if (n < 0 | n > Core.Constant.MAX_RESOURCES)
                 return;
 
             SendUpdateResourceTo(index, n);
@@ -297,28 +297,28 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendMapResourceToMap(int MapNum, int Resource_num)
+        public static void SendMapResourceToMap(int mapNum, int Resource_num)
         {
             int i;
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SMapResource);
-            buffer.WriteInt32(Core.Type.MapResource[MapNum].ResourceCount);
+            buffer.WriteInt32(Core.Type.MapResource[mapNum].ResourceCount);
 
-            if (Core.Type.MapResource[MapNum].ResourceCount > 0)
+            if (Core.Type.MapResource[mapNum].ResourceCount > 0)
             {
 
-                var loopTo = Core.Type.MapResource[MapNum].ResourceCount;
+                var loopTo = Core.Type.MapResource[mapNum].ResourceCount;
                 for (i = 0; i <= (int)loopTo; i++)
                 {
-                    buffer.WriteByte(Core.Type.MapResource[MapNum].ResourceData[i].State);
-                    buffer.WriteInt32(Core.Type.MapResource[MapNum].ResourceData[i].X);
-                    buffer.WriteInt32(Core.Type.MapResource[MapNum].ResourceData[i].Y);
+                    buffer.WriteByte(Core.Type.MapResource[mapNum].ResourceData[i].State);
+                    buffer.WriteInt32(Core.Type.MapResource[mapNum].ResourceData[i].X);
+                    buffer.WriteInt32(Core.Type.MapResource[mapNum].ResourceData[i].Y);
                 }
 
             }
 
-            NetworkConfig.SendDataToMap(MapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -375,25 +375,25 @@ namespace Server
             int rX;
             int rY;
             int Damage;
-            int MapNum;
+            int mapNum;
 
-            MapNum = GetPlayerMap(index);
+            mapNum = GetPlayerMap(index);
 
             if (x < 0 | y < 0)
                 return;
 
-            if (Core.Type.Map[MapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[MapNum].Tile[x, y].Type2 == TileType.Resource)
+            if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Resource)
             {
                 Resource_num = 0;
-                Resource_index = Core.Type.Map[MapNum].Tile[x, y].Data1;
+                Resource_index = Core.Type.Map[mapNum].Tile[x, y].Data1;
                 ResourceType = (byte)Core.Type.Resource[Resource_index].ResourceType;
 
                 // Get the cache number
-                for (int i = 0, loopTo = Core.Type.MapResource[MapNum].ResourceCount; i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = Core.Type.MapResource[mapNum].ResourceCount; i <= (int)loopTo; i++)
                 {
-                    if (Core.Type.MapResource[MapNum].ResourceData[Conversions.ToInteger(i)].X == x)
+                    if (Core.Type.MapResource[mapNum].ResourceData[Conversions.ToInteger(i)].X == x)
                     {
-                        if (Core.Type.MapResource[MapNum].ResourceData[Conversions.ToInteger(i)].Y == y)
+                        if (Core.Type.MapResource[mapNum].ResourceData[Conversions.ToInteger(i)].Y == y)
                         {
                             Resource_num = Conversions.ToInteger(i);
                         }
@@ -425,11 +425,11 @@ namespace Server
                             }
 
                             // check if already cut down
-                            if (Core.Type.MapResource[MapNum].ResourceData[Resource_num].State == 0)
+                            if (Core.Type.MapResource[mapNum].ResourceData[Resource_num].State == 0)
                             {
 
-                                rX = Core.Type.MapResource[MapNum].ResourceData[Resource_num].X;
-                                rY = Core.Type.MapResource[MapNum].ResourceData[Resource_num].Y;
+                                rX = Core.Type.MapResource[mapNum].ResourceData[Resource_num].X;
+                                rY = Core.Type.MapResource[mapNum].ResourceData[Resource_num].Y;
 
                                 if (Core.Type.Resource[Resource_index].ToolRequired == 0)
                                 {
@@ -444,14 +444,14 @@ namespace Server
                                 if (Damage > 0)
                                 {
                                     // cut it down!
-                                    if (Core.Type.MapResource[MapNum].ResourceData[Resource_num].Health - Damage <= 0)
+                                    if (Core.Type.MapResource[mapNum].ResourceData[Resource_num].Health - Damage < 0)
                                     {
-                                        Core.Type.MapResource[MapNum].ResourceData[Resource_num].State = 0; // Cut
-                                        Core.Type.MapResource[MapNum].ResourceData[Resource_num].Timer = General.GetTimeMs();
-                                        SendMapResourceToMap(MapNum, Resource_num);
-                                        NetworkSend.SendActionMsg(MapNum, Core.Type.Resource[Resource_index].SuccessMessage, (int) ColorType.BrightGreen, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
+                                        Core.Type.MapResource[mapNum].ResourceData[Resource_num].State = 0; // Cut
+                                        Core.Type.MapResource[mapNum].ResourceData[Resource_num].Timer = General.GetTimeMs();
+                                        SendMapResourceToMap(mapNum, Resource_num);
+                                        NetworkSend.SendActionMsg(mapNum, Core.Type.Resource[Resource_index].SuccessMessage, (int) ColorType.BrightGreen, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
                                         Player.GiveInv(index, Core.Type.Resource[Resource_index].ItemReward, 1);
-                                        Animation.SendAnimation(MapNum, Core.Type.Resource[Resource_index].Animation, rX, rY);
+                                        Animation.SendAnimation(mapNum, Core.Type.Resource[Resource_index].Animation, rX, rY);
                                         SetPlayerGatherSkillExp(index, ResourceType, GetPlayerGatherSkillExp(index, ResourceType) + Core.Type.Resource[Resource_index].ExpReward);
                                         // send msg
                                         NetworkSend.PlayerMsg(index, string.Format("Your {0} has earned {1} experience. ({2}/{3})", GetResourceSkillName((ResourceType)ResourceType), Core.Type.Resource[Resource_index].ExpReward, GetPlayerGatherSkillExp(index, ResourceType), GetPlayerGatherSkillMaxExp(index, ResourceType)), (int) ColorType.BrightGreen);
@@ -462,20 +462,20 @@ namespace Server
                                     else
                                     {
                                         // just do the damage
-                                        Core.Type.MapResource[MapNum].ResourceData[Resource_num].Health = (byte)(Core.Type.MapResource[MapNum].ResourceData[Resource_num].Health - Damage);
-                                        NetworkSend.SendActionMsg(MapNum, "-" + Damage, (int) ColorType.BrightRed, 1, rX * 32, rY * 32);
-                                        Animation.SendAnimation(MapNum, Core.Type.Resource[Resource_index].Animation, rX, rY);
+                                        Core.Type.MapResource[mapNum].ResourceData[Resource_num].Health = (byte)(Core.Type.MapResource[mapNum].ResourceData[Resource_num].Health - Damage);
+                                        NetworkSend.SendActionMsg(mapNum, "-" + Damage, (int) ColorType.BrightRed, 1, rX * 32, rY * 32);
+                                        Animation.SendAnimation(mapNum, Core.Type.Resource[Resource_index].Animation, rX, rY);
                                     }
                                 }
                                 else
                                 {
                                     // too weak
-                                    NetworkSend.SendActionMsg(MapNum, "Miss!", (int) ColorType.BrightRed, 1, rX * 32, rY * 32);
+                                    NetworkSend.SendActionMsg(mapNum, "Miss!", (int) ColorType.BrightRed, 1, rX * 32, rY * 32);
                                 }
                             }
                             else
                             {
-                                NetworkSend.SendActionMsg(MapNum, Core.Type.Resource[Resource_index].EmptyMessage, (int) ColorType.BrightRed, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
+                                NetworkSend.SendActionMsg(mapNum, Core.Type.Resource[Resource_index].EmptyMessage, (int) ColorType.BrightRed, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
                             }
                         }
                         else

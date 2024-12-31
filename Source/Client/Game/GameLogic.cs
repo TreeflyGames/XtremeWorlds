@@ -1118,7 +1118,7 @@ namespace Client
             Gui.HideWindow(Gui.GetWindowIndex("winDialogue"));
         }
 
-        public static void Dialogue(string header, string body, string body2, byte Index, byte style = 1, long Data1 = 0L, long Data2 = 0L, long Data3 = 0L, long Data4 = 0L, long Data5 = 0L)
+        public static void Dialogue(string header, string body, string body2, byte Index, byte style = 0, long Data1 = 0L, long Data2 = 0L, long Data3 = 0L, long Data4 = 0L, long Data5 = 0L)
         {
             if (Gui.Windows[Gui.GetWindowIndex("winDialogue")].Visible == true)
                 return;
@@ -1444,7 +1444,7 @@ namespace Client
         {
             bool soulBound;
 
-            if (invNum <= 0L | invNum > Constant.MAX_INV)
+            if (invNum < 0L | invNum > Constant.MAX_INV)
                 return;
 
             // show
@@ -1585,11 +1585,6 @@ namespace Client
             // go through the rest of the text
             switch (Core.Type.Item[(int)itemNum].Type)
             {
-                case (byte)Core.Enum.ItemType.None:
-                    {
-                        AddDescInfo("No Type", Microsoft.Xna.Framework.Color.White);
-                        break;
-                    }
                 case (byte)Core.Enum.ItemType.Equipment:
                     {
                         switch (Core.Type.Item[(int)itemNum].SubType)
@@ -1658,7 +1653,6 @@ namespace Client
             // more info
             switch (Core.Type.Item[(int)itemNum].Type)
             {
-                case (byte)Core.Enum.ItemType.None:
                 case (byte)Core.Enum.ItemType.Currency:
                     {
                         // binding
@@ -1945,7 +1939,7 @@ namespace Client
 
         public static void ShowShopDesc(long X, long Y, long ItemNum)
         {
-            if (ItemNum <= 0L | ItemNum > Constant.MAX_ITEMS)
+            if (ItemNum < 0L | ItemNum > Constant.MAX_ITEMS)
                 return;
             // show
             ShowItemDesc(X, Y, ItemNum);
@@ -1956,7 +1950,7 @@ namespace Client
             bool soulBound;
 
             // rte9
-            if (eqNum <= 0L | eqNum > (int)Core.Enum.EquipmentType.Count - 1)
+            if (eqNum < 0L | eqNum > (int)Core.Enum.EquipmentType.Count - 1)
                 return;
 
             // show

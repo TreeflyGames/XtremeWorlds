@@ -8,7 +8,7 @@ namespace Server
 
     static class GameLogic
     {
-        public static int GetTotalMapPlayers(int MapNum)
+        public static int GetTotalMapPlayers(int mapNum)
         {
             int GetTotalMapPlayersRet = default;
             int i;
@@ -18,7 +18,7 @@ namespace Server
             var loopTo = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= (int)loopTo; i++)
             {
-                if (GetPlayerMap(i) == MapNum)
+                if (GetPlayerMap(i) == mapNum)
                 {
                     n = n + 1;
                 }
@@ -32,7 +32,7 @@ namespace Server
         {
             int GetNPCMaxVitalRet = default;
             // Prevent subscript out of range
-            if (NPCNum <= 0 | NPCNum > Core.Constant.MAX_NPCS)
+            if (NPCNum < 0 | NPCNum > Core.Constant.MAX_NPCS)
                 return GetNPCMaxVitalRet;
 
             switch (Vital)

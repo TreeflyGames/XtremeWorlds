@@ -413,7 +413,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.DownLeft:
                     {
 
-                        if (GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) <= 0)
+                        if (GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < 0)
                         {
                             GameState.DirDown = Conversions.ToBoolean(0);
                             GameState.DirUp = Conversions.ToBoolean(1);
@@ -928,7 +928,7 @@ namespace Client
 
             if (GameState.VbKeyControl | mouse)
             {
-                if (GameState.MyIndex < 1 | GameState.MyIndex > Constant.MAX_PLAYERS)
+                if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                     return;
                 if (Conversions.ToInteger(Event.InEvent) == 1)
                     return;
@@ -1022,7 +1022,7 @@ namespace Client
 
                 if (General.GetTickCount() > Core.Type.Player[GameState.MyIndex].EventTimer)
                 {
-                    for (int i = 0, loopTo = GameState.CurrentEvents; i <= loopTo; i++)
+                    for (int i = 0, loopTo = GameState.CurrentEvents; i < loopTo; i++)
                     {
                         if (Core.Type.MapEvents[i].Visible == true)
                         {
@@ -1042,28 +1042,28 @@ namespace Client
 
         }
 
-        internal static void PlayerCastSkill(int skillslot)
+        internal static void PlayerCastSkill(int skillSlot)
         {
             var buffer = new ByteStream(4);
 
             // Check for subscript out of range
-            if (skillslot <= 0 | skillslot > Constant.MAX_PLAYER_SKILLS)
+            if (skillSlot < 0 | skillSlot > Constant.MAX_PLAYER_SKILLS)
                 return;
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillslot].CD > 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].CD > 0)
             {
                 Text.AddText("Skill has not cooled down yet!", (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
             // Check if player has enough MP
-            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) < Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Skill[skillslot].Num].MpCost)
+            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) < Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].MpCost)
             {
-                Text.AddText("Not enough MP to cast " + Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Skill[skillslot].Num].Name + ".", (int)Core.Enum.ColorType.BrightRed);
+                Text.AddText("Not enough MP to cast " + Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].Name + ".", (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillslot].Num > 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num > 0)
             {
                 if (General.GetTickCount() > Core.Type.Player[GameState.MyIndex].AttackTimer + 1000)
                 {
@@ -1073,7 +1073,7 @@ namespace Client
                         {
                             if (Core.Type.Moral[Core.Type.MyMap.Moral].CanCast)
                             {
-                                NetworkSend.SendCast(skillslot);
+                                NetworkSend.SendCast(skillSlot);
                             }
                             else
                             {
@@ -1102,7 +1102,7 @@ namespace Client
             FindSkillRet = 0;
 
             // Check for subscript out of range
-            if (skillNum <= 0 | skillNum > Constant.MAX_SKILLS)
+            if (skillNum < 0 | skillNum > Constant.MAX_SKILLS)
             {
                 return FindSkillRet;
             }
