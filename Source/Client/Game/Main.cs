@@ -35,11 +35,11 @@ namespace Client
 
         private static void UpdateForms(object sender, EventArgs e)
         {
-            // Check if there are any open forms
-            if (Application.OpenForms.Count > 0)
-            {
-                var mainForm = Application.OpenForms[0];
+            var mainForm = Application.OpenForms.Count > 0 ? Application.OpenForms[0] : null;
 
+            // Check if there are any open forms
+            if (mainForm != null)
+            {
                 // Check if the main form is not disposed
                 if (!mainForm.IsDisposed)
                 {
