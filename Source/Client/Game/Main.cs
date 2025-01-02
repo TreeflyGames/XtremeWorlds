@@ -43,7 +43,7 @@ namespace Client
 
             var mainForm = Application.OpenForms.Count > 0 ? Application.OpenForms[0] : null;
 
-            if (mainForm != null && !mainForm.IsDisposed)
+            if (mainForm != null && !mainForm.IsDisposed & !mainForm.Disposing)
             {
                 mainForm.Invoke(new EventHandler(UpdateForms), sender, e);
                 isUpdating = false;
