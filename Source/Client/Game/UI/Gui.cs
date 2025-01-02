@@ -1,6 +1,7 @@
 ﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using SharpDX.Direct3D11;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -119,7 +120,7 @@ namespace Client
             public List<Action> CallBack { get; set; }
         }
 
-        public static void UpdateControl(long winNum, long zOrder, string name, Color color, Core.Enum.ControlType tType, List<long> design, List<long> image, List<string> texture, List<Action> callback, long left = 0L, long top = 0L, long width = 0L, long height = 0L, bool visible = true, bool canDrag = false, long Max = 0L, long Min = 0L, long value = 0L, string text = "", Core.Enum.AlignmentType align = 0, Core.Enum.FontType font = Core.Enum.FontType.Georgia, long alpha = 255L, bool clickThrough = false, long xOffset = 0L, long yOffset = 0L, byte zChange = 0, bool censor = false, long icon = 0L, Action onDraw = null, bool isActive = true, string tooltip = "", long @group = 0L, byte length = Constant.NAME_LENGTH)
+        public static void UpdateControl(long winNum, long zOrder, string name, Color color, Core.Enum.ControlType tType, List<long> design, List<long> image, List<string> texture, List<Action> callback, long left = 0L, long top = 0L, long width = 0L, long height = 0L, bool visible = true, bool canDrag = false, long Max = 0L, long Min = 0L, long value = 0L, string text = "", Core.Enum.AlignmentType align = 0, Core.Enum.FontType font = Core.Enum.FontType.Georgia, long alpha = 255L, bool clickThrough = false, long xOffset = 0L, long yOffset = 0L, byte zChange = 0, bool censor = false, long icon = 0L, Action onDraw = null, bool isActive = true, string tooltip = "", long @group = 0L, byte length = Constant.NAME_LENGTH, bool enabled = true)
         {
 
             // Ensure the window exists in the Windows collection
@@ -153,7 +154,7 @@ namespace Client
                 yOffset = yOffset,
                 zChange = zChange,
                 zOrder = zOrder,
-                Enabled = true,
+                Enabled = enabled,
                 OnDraw = onDraw,
                 Tooltip = tooltip,
                 Group = @group,
@@ -361,7 +362,7 @@ namespace Client
             UpdateControl(winNum, zOrder_Con, name, Color.White, Core.Enum.ControlType.PictureBox, design, image, texture, callback, left, top, width, height, visible, canDrag, clickThrough: Conversions.ToBoolean(alpha), xOffset: Conversions.ToLong(clickThrough), onDraw: onDraw);
         }
 
-        public static void UpdateButton(long winNum, string name, long left, long top, long width, long height, [Optional, DefaultParameterValue("")] string text, [Optional, DefaultParameterValue(Core.Enum.FontType.Georgia)] Core.Enum.FontType font, [Optional, DefaultParameterValue(0L)] long icon, [Optional, DefaultParameterValue(0L)] long image_norm, [Optional, DefaultParameterValue(0L)] long image_hover, [Optional, DefaultParameterValue(0L)] long image_mousedown, [Optional, DefaultParameterValue(true)] bool visible, [Optional, DefaultParameterValue(255L)] long alpha, [Optional, DefaultParameterValue(0L)] long design_norm, [Optional, DefaultParameterValue(0L)] long design_hover, [Optional, DefaultParameterValue(0L)] long design_mousedown, [Optional] ref Action callback_norm, [Optional] ref Action callback_hover, [Optional] ref Action callback_mousedown, [Optional] ref Action callback_mousemove, [Optional] ref Action callback_dblclick, long xOffset = 0L, long yOffset = 0L, string tooltip = "", bool censor = false, bool locked = true)
+        public static void UpdateButton(long winNum, string name, long left, long top, long width, long height, [Optional, DefaultParameterValue("")] string text, [Optional, DefaultParameterValue(Core.Enum.FontType.Georgia)] Core.Enum.FontType font, [Optional, DefaultParameterValue(0L)] long icon, [Optional, DefaultParameterValue(0L)] long image_norm, [Optional, DefaultParameterValue(0L)] long image_hover, [Optional, DefaultParameterValue(0L)] long image_mousedown, [Optional, DefaultParameterValue(true)] bool visible, [Optional, DefaultParameterValue(255L)] long alpha, [Optional, DefaultParameterValue(0L)] long design_norm, [Optional, DefaultParameterValue(0L)] long design_hover, [Optional, DefaultParameterValue(0L)] long design_mousedown, [Optional] ref Action callback_norm, [Optional] ref Action callback_hover, [Optional] ref Action callback_mousedown, [Optional] ref Action callback_mousemove, [Optional] ref Action callback_dblclick, long xOffset = 0L, long yOffset = 0L, string tooltip = "", bool censor = false)
         {
 
             var design = new List<long>(Enumerable.Repeat(0L, (int)Core.Enum.EntState.Count).ToList());
@@ -386,10 +387,10 @@ namespace Client
             callback[(int)Core.Enum.EntState.DblClick] = callback_dblclick;
 
             // Control the button 
-            UpdateControl(winNum, zOrder_Con, name, Color.White, Core.Enum.ControlType.Button, design, image, texture, callback, left, top, width, height, visible, text: text, font: font, clickThrough: Conversions.ToBoolean(alpha), xOffset: xOffset, yOffset: yOffset, censor: censor, icon: icon, tooltip: tooltip, length: Conversions.ToByte(locked));
+            UpdateControl(winNum, zOrder_Con, name, Color.White, Core.Enum.ControlType.Button, design, image, texture, callback, left, top, width, height, visible, text: text, font: font, clickThrough: Conversions.ToBoolean(alpha), xOffset: xOffset, yOffset: yOffset, censor: censor, icon: icon, tooltip: tooltip);
         }
 
-        public static void UpdateLabel(long winNum, string name, long left, long top, long width, long height, string text, Core.Enum.FontType font, Color color, [Optional, DefaultParameterValue(Core.Enum.AlignmentType.Left)] Core.Enum.AlignmentType align, [Optional, DefaultParameterValue(true)] bool visible, [Optional, DefaultParameterValue(255L)] long alpha, [Optional, DefaultParameterValue(false)] bool clickThrough, [Optional, DefaultParameterValue(false)] bool censor, [Optional] ref Action callback_norm, [Optional] ref Action callback_hover, [Optional] ref Action callback_mousedown, [Optional] ref Action callback_mousemove, [Optional] ref Action callback_dblclick, bool locked = true)
+        public static void UpdateLabel(long winNum, string name, long left, long top, long width, long height, string text, Core.Enum.FontType font, Color color, [Optional, DefaultParameterValue(Core.Enum.AlignmentType.Left)] Core.Enum.AlignmentType align, [Optional, DefaultParameterValue(true)] bool visible, [Optional, DefaultParameterValue(255L)] long alpha, [Optional, DefaultParameterValue(false)] bool clickThrough, [Optional, DefaultParameterValue(false)] bool censor, [Optional] ref Action callback_norm, [Optional] ref Action callback_hover, [Optional] ref Action callback_mousedown, [Optional] ref Action callback_mousemove, [Optional] ref Action callback_dblclick, [Optional] ref bool enabled)
         {
             var design = new List<long>(Enumerable.Repeat(0L, (int)Core.Enum.EntState.Count).ToList());
             var image = new List<long>(Enumerable.Repeat(0L, (int)Core.Enum.EntState.Count).ToList());
@@ -404,7 +405,7 @@ namespace Client
             callback[(int)Core.Enum.EntState.DblClick] = callback_dblclick;
 
             // Control the label
-            UpdateControl(winNum, zOrder_Con, name, Color.White, Core.Enum.ControlType.Label, design, image, texture, callback, left, top, width, height, visible, text: text, align: align, font: font, clickThrough: Conversions.ToBoolean(alpha), xOffset: Conversions.ToLong(clickThrough), censor: censor, length: Conversions.ToByte(locked));
+            UpdateControl(winNum, zOrder_Con, name, Color.White, Core.Enum.ControlType.Label, design, image, texture, callback, left, top, width, height, visible, text: text, align: align, font: font, clickThrough: Conversions.ToBoolean(alpha), xOffset: Conversions.ToLong(clickThrough), censor: censor, enabled: enabled);
         }
 
         public static void UpdateCheckBox(long winNum, string name, long left, long top, long width, [Optional, DefaultParameterValue(15L)] long height, [Optional, DefaultParameterValue(0L)] long value, [Optional, DefaultParameterValue("")] string text, [Optional, DefaultParameterValue(Core.Enum.FontType.Georgia)] Core.Enum.FontType font, [Optional, DefaultParameterValue(Core.Enum.AlignmentType.Left)] Core.Enum.AlignmentType align, [Optional, DefaultParameterValue(true)] bool visible, [Optional, DefaultParameterValue(255L)] long alpha, [Optional, DefaultParameterValue(0L)] long theDesign, [Optional, DefaultParameterValue(0L)] long @group, [Optional, DefaultParameterValue(false)] bool censor, [Optional] ref Action callback_norm, [Optional] ref Action callback_hover, [Optional] ref Action callback_mousedown, [Optional] ref Action callback_mousemove, [Optional] ref Action callback_dblclick)
@@ -684,13 +685,14 @@ namespace Client
             Action argcallback_mousedown6 = null;
             Action argcallback_mousemove6 = null;
             Action argcallback_dblclick6 = null;
-            UpdateLabel(Windows.Count, "lblUsername", 72L, 39L, 142L, 10L, "Username", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm6, callback_hover: ref argcallback_hover6, callback_mousedown: ref argcallback_mousedown6, callback_mousemove: ref argcallback_mousemove6, callback_dblclick: ref argcallback_dblclick6);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblUsername", 72L, 39L, 142L, 10L, "Username", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm6, callback_hover: ref argcallback_hover6, callback_mousedown: ref argcallback_mousedown6, callback_mousemove: ref argcallback_mousemove6, callback_dblclick: ref argcallback_dblclick6, enabled: ref enabled);
             Action argcallback_norm7 = null;
             Action argcallback_hover7 = null;
             Action argcallback_mousedown7 = null;
             Action argcallback_mousemove7 = null;
             Action argcallback_dblclick7 = null;
-            UpdateLabel(Windows.Count, "lblPassword", 72L, 75L, 142L, 10L, "Password", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm7, callback_hover: ref argcallback_hover7, callback_mousedown: ref argcallback_mousedown7, callback_mousemove: ref argcallback_mousemove7, callback_dblclick: ref argcallback_dblclick7);
+            UpdateLabel(Windows.Count, "lblPassword", 72L, 75L, 142L, 10L, "Password", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm7, callback_hover: ref argcallback_hover7, callback_mousedown: ref argcallback_mousedown7, callback_mousemove: ref argcallback_mousemove7, callback_dblclick: ref argcallback_dblclick7, enabled: ref enabled);
 
             // Textboxes
             if (Settings.SaveUsername == true)
@@ -765,7 +767,7 @@ namespace Client
             Action argcallback_dblclick = null;
             Action argcallback_norm = null;
             Action argcallback_hover = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false);
 
             // Parchment
             Action argcallback_mousedown1 = null;
@@ -803,12 +805,12 @@ namespace Client
             var argcallback_mousedown5 = new Action(btnSendRegister_Click);
             Action argcallback_mousemove5 = null;
             Action argcallback_dblclick5 = null;
-            Gui.UpdateButton(Windows.Count, "btnAccept", 68L, 152L, 67L, 22L, "Accept", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown5, ref argcallback_mousemove5, ref argcallback_dblclick5, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnAccept", 68L, 152L, 67L, 22L, "Accept", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown5, ref argcallback_mousemove5, ref argcallback_dblclick5, 0L, 0L, "", false);
 
             var argcallback_mousedown6 = new Action(btnReturnMain_Click);
             Action argcallback_mousemove6 = null;
             Action argcallback_dblclick6 = null;
-            Gui.UpdateButton(Windows.Count, "btnExit", 142L, 152L, 67L, 22L, "Back", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown6, ref argcallback_mousemove6, ref argcallback_dblclick6, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnExit", 142L, 152L, 67L, 22L, "Back", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown6, ref argcallback_mousemove6, ref argcallback_dblclick6, 0L, 0L, "", false);
 
             // Labels
             Action argcallback_norm4 = null;
@@ -816,19 +818,20 @@ namespace Client
             Action argcallback_mousedown7 = null;
             Action argcallback_mousemove7 = null;
             Action argcallback_dblclick7 = null;
-            UpdateLabel(Windows.Count, "lblUsername", 66L, 39L, 142L, 10L, "Username", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm4, ref argcallback_hover4, ref argcallback_mousedown7, ref argcallback_mousemove7, ref argcallback_dblclick7, true);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblUsername", 66L, 39L, 142L, 10L, "Username", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm4, ref argcallback_hover4, ref argcallback_mousedown7, ref argcallback_mousemove7, ref argcallback_dblclick7, enabled: ref enabled);
             Action argcallback_norm5 = null;
             Action argcallback_hover5 = null;
             Action argcallback_mousedown8 = null;
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
-            UpdateLabel(Windows.Count, "lblPassword", 66L, 75L, 142L, 10L, "Password", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm5, ref argcallback_hover5, ref argcallback_mousedown8, ref argcallback_mousemove8, ref argcallback_dblclick8, true);
+            UpdateLabel(Windows.Count, "lblPassword", 66L, 75L, 142L, 10L, "Password", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm5, ref argcallback_hover5, ref argcallback_mousedown8, ref argcallback_mousemove8, ref argcallback_dblclick8, enabled: ref enabled);
             Action argcallback_norm6 = null;
             Action argcallback_hover6 = null;
             Action argcallback_mousedown9 = null;
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
-            UpdateLabel(Windows.Count, "lblRetypePassword", 66L, 110L, 142L, 10L, "Retype Password", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm6, ref argcallback_hover6, ref argcallback_mousedown9, ref argcallback_mousemove9, ref argcallback_dblclick9, true);
+            UpdateLabel(Windows.Count, "lblRetypePassword", 66L, 110L, 142L, 10L, "Retype Password", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm6, ref argcallback_hover6, ref argcallback_mousedown9, ref argcallback_mousemove9, ref argcallback_dblclick9, enabled: ref enabled);
             // UpdateLabel(Windows.Count, "lblCode", 66, 147, 142, 10, "Secret Code", FontType.Arial, AlignmentType.Center)
             // UpdateLabel(Windows.Count, "lblCaptcha", 66, 183, 142, 10, "Captcha", FontType.Arial, AlignmentType.Center)
 
@@ -879,7 +882,7 @@ namespace Client
             Action argcallback_dblclick = null;
             Action argcallback_norm = null;
             Action argcallback_hover = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false);
 
             // Parchment
             Action argcallback_mousedown1 = null;
@@ -901,7 +904,8 @@ namespace Client
             Action argcallback_mousedown3 = null;
             Action argcallback_mousemove3 = null;
             Action argcallback_dblclick3 = null;
-            UpdateLabel(Windows.Count, "lblName", 29L, 39L, 124L, 10L, "Name", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm2, ref argcallback_hover2, ref argcallback_mousedown3, ref argcallback_mousemove3, ref argcallback_dblclick3, true);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblName", 29L, 39L, 124L, 10L, "Name", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm2, ref argcallback_hover2, ref argcallback_mousedown3, ref argcallback_mousemove3, ref argcallback_dblclick3, ref enabled);
 
             // Textbox
             Action argcallback_norm3 = null;
@@ -925,7 +929,7 @@ namespace Client
             Action argcallback_mousedown6 = null;
             Action argcallback_mousemove6 = null;
             Action argcallback_dblclick6 = null;
-            UpdateLabel(Windows.Count, "lblGender", 29L, 82L, 124L, 10L, "Gender", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm5, ref argcallback_hover5, ref argcallback_mousedown6, ref argcallback_mousemove6, ref argcallback_dblclick6, true);
+            UpdateLabel(Windows.Count, "lblGender", 29L, 82L, 124L, 10L, "Gender", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm5, ref argcallback_hover5, ref argcallback_mousedown6, ref argcallback_mousemove6, ref argcallback_dblclick6, ref enabled);
 
             // Checkboxes
             var argcallback_mousedown7 = new Action(chkNewChar_Male);
@@ -941,11 +945,11 @@ namespace Client
             var argcallback_mousedown9 = new Action(btnNewChar_Accept);
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
-            Gui.UpdateButton(Windows.Count, "btnAccept", 29L, 127L, 60L, 24L, "Accept", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown9, ref argcallback_mousemove9, ref argcallback_dblclick9, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnAccept", 29L, 127L, 60L, 24L, "Accept", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown9, ref argcallback_mousemove9, ref argcallback_dblclick9, 0L, 0L, "", false);
             var argcallback_mousedown10 = new Action(btnNewChar_Cancel);
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            Gui.UpdateButton(Windows.Count, "btnCancel", 93L, 127L, 60L, 24L, "Cancel", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnCancel", 93L, 127L, 60L, 24L, "Cancel", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, 0L, 0L, "", false);
 
             // Sprite
             Action argcallback_norm6 = null;
@@ -960,7 +964,7 @@ namespace Client
             Action argcallback_mousedown12 = null;
             Action argcallback_mousemove12 = null;
             Action argcallback_dblclick12 = null;
-            UpdateLabel(Windows.Count, "lblSprite", 175L, 39L, 76L, 10L, "Sprite", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm7, ref argcallback_hover7, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, true);
+            UpdateLabel(Windows.Count, "lblSprite", 175L, 39L, 76L, 10L, "Sprite", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm7, ref argcallback_hover7, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, ref enabled);
 
             // Scene
             var argonDraw4 = new Action(NewChar_OnDraw);
@@ -970,11 +974,11 @@ namespace Client
             var argcallback_mousedown13 = new Action(btnNewChar_Left);
             Action argcallback_mousemove13 = null;
             Action argcallback_dblclick13 = null;
-            Gui.UpdateButton(Windows.Count, "btnLeft", 163L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 12L, 14L, 16L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false, false);
+            Gui.UpdateButton(Windows.Count, "btnLeft", 163L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 12L, 14L, 16L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false);
             var argcallback_mousedown14 = new Action(btnNewChar_Right);
             Action argcallback_mousemove14 = null;
             Action argcallback_dblclick14 = null;
-            Gui.UpdateButton(Windows.Count, "btnRight", 252L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 13L, 15L, 17L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false, false);
+            Gui.UpdateButton(Windows.Count, "btnRight", 252L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 13L, 15L, 17L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false);
 
             // Set the active control
             SetActiveControl(GetWindowIndex("winNewChar"), GetControlIndex("winNewChar", "txtName"));
@@ -996,7 +1000,7 @@ namespace Client
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
             Action argcallback_norm = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_mousedown, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_mousedown, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false);
 
             // Parchment
             Action argcallback_hover = null;
@@ -1013,13 +1017,14 @@ namespace Client
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
             Action argonDraw1 = null;
+            bool enabled = false;
             UpdatePictureBox(Windows.Count, "picShadow_1", 22L, 40L, 98L, 9L, true, false, 255L, true, 0L, 0L, 0L, (long)Core.Enum.DesignType.BlackOval, (long)Core.Enum.DesignType.BlackOval, (long)Core.Enum.DesignType.BlackOval, "", ref argcallback_norm1, ref argcallback_hover1, ref argcallback_mousedown2, ref argcallback_mousemove2, ref argcallback_dblclick2, ref argonDraw1);
             Action argcallback_norm2 = null;
             Action argcallback_hover2 = null;
             Action argcallback_mousedown3 = null;
             Action argcallback_mousemove3 = null;
             Action argcallback_dblclick3 = null;
-            UpdateLabel(Windows.Count, "lblCharName_1", 22L, 37L, 98L, 10L, "Blank Slot", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm2, ref argcallback_hover2, ref argcallback_mousedown3, ref argcallback_mousemove3, ref argcallback_dblclick3, true);
+            UpdateLabel(Windows.Count, "lblCharName_1", 22L, 37L, 98L, 10L, "Blank Slot", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm2, ref argcallback_hover2, ref argcallback_mousedown3, ref argcallback_mousemove3, ref argcallback_dblclick3, ref enabled);
             Action argcallback_norm3 = null;
             Action argcallback_hover3 = null;
             Action argcallback_mousedown4 = null;
@@ -1032,7 +1037,7 @@ namespace Client
             Action argcallback_mousedown5 = null;
             Action argcallback_mousemove5 = null;
             Action argcallback_dblclick5 = null;
-            UpdateLabel(Windows.Count, "lblCharName_2", 132L, 37L, 98L, 10L, "Blank Slot", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm4, ref argcallback_hover4, ref argcallback_mousedown5, ref argcallback_mousemove5, ref argcallback_dblclick5, true);
+            UpdateLabel(Windows.Count, "lblCharName_2", 132L, 37L, 98L, 10L, "Blank Slot", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm4, ref argcallback_hover4, ref argcallback_mousedown5, ref argcallback_mousemove5, ref argcallback_dblclick5, ref enabled);
             Action argcallback_norm5 = null;
             Action argcallback_hover5 = null;
             Action argcallback_mousedown6 = null;
@@ -1045,7 +1050,7 @@ namespace Client
             Action argcallback_mousedown7 = null;
             Action argcallback_mousemove7 = null;
             Action argcallback_dblclick7 = null;
-            UpdateLabel(Windows.Count, "lblCharName_3", 242L, 37L, 98L, 10L, "Blank Slot", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm6, ref argcallback_hover6, ref argcallback_mousedown7, ref argcallback_mousemove7, ref argcallback_dblclick7, true);
+            UpdateLabel(Windows.Count, "lblCharName_3", 242L, 37L, 98L, 10L, "Blank Slot", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm6, ref argcallback_hover6, ref argcallback_mousedown7, ref argcallback_mousemove7, ref argcallback_dblclick7, ref enabled);
 
             // Scenery Boxes
             Action argcallback_norm7 = null;
@@ -1069,39 +1074,39 @@ namespace Client
             var argcallback_mousedown10 = new Action(btnAcceptChar_1);
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_1", 22L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_1", 22L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, 0L, 0L, "", false);
             var argcallback_mousedown11 = new Action(btnCreateChar_1);
             Action argcallback_mousemove11 = null;
             Action argcallback_dblclick11 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_1", 22L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown11, ref argcallback_mousemove11, ref argcallback_dblclick11, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_1", 22L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown11, ref argcallback_mousemove11, ref argcallback_dblclick11, 0L, 0L, "", false);
             var argcallback_mousedown12 = new Action(btnDelChar_1);
             Action argcallback_mousemove12 = null;
             Action argcallback_dblclick12 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_1", 22L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_1", 22L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, 0L, 0L, "", false);
             var argcallback_mousedown13 = new Action(btnAcceptChar_2);
             Action argcallback_mousemove13 = null;
             Action argcallback_dblclick13 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_2", 132L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_2", 132L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false);
             var argcallback_mousedown14 = new Action(btnCreateChar_2);
             Action argcallback_mousemove14 = null;
             Action argcallback_dblclick14 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_2", 132L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_2", 132L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false);
             var argcallback_mousedown15 = new Action(btnDelChar_2);
             Action argcallback_mousemove15 = null;
             Action argcallback_dblclick15 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_2", 132L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown15, ref argcallback_mousemove15, ref argcallback_dblclick15, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_2", 132L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown15, ref argcallback_mousemove15, ref argcallback_dblclick15, 0L, 0L, "", false);
             var argcallback_mousedown16 = new Action(btnAcceptChar_3);
             Action argcallback_mousemove16 = null;
             Action argcallback_dblclick16 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_3", 242L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown16, ref argcallback_mousemove16, ref argcallback_dblclick16, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_3", 242L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown16, ref argcallback_mousemove16, ref argcallback_dblclick16, 0L, 0L, "", false);
             var argcallback_mousedown17 = new Action(btnCreateChar_3);
             Action argcallback_mousemove17 = null;
             Action argcallback_dblclick17 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_3", 242L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown17, ref argcallback_mousemove17, ref argcallback_dblclick17, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_3", 242L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown17, ref argcallback_mousemove17, ref argcallback_dblclick17, 0L, 0L, "", false);
             var argcallback_mousedown18 = new Action(btnDelChar_3);
             Action argcallback_mousemove18 = null;
             Action argcallback_dblclick18 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_3", 242L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown18, ref argcallback_mousemove18, ref argcallback_dblclick18, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_3", 242L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown18, ref argcallback_mousemove18, ref argcallback_dblclick18, 0L, 0L, "", false);
         }
 
         public static void UpdateWindow_Jobs()
@@ -1121,7 +1126,7 @@ namespace Client
             Action argcallback_dblclick = null;
             Action argcallback_norm = null;
             Action argcallback_hover = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false);
 
             // Parchment
             var argonDraw = new Action(Jobs_DrawFace);
@@ -1138,24 +1143,25 @@ namespace Client
             Action argcallback_mousedown2 = null;
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
-            UpdateLabel(Windows.Count, "lblClassName", 183L, 39L, 98L, 10L, "Warrior", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm1, ref argcallback_hover1, ref argcallback_mousedown2, ref argcallback_mousemove2, ref argcallback_dblclick2, true);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblClassName", 183L, 39L, 98L, 10L, "Warrior", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, true, 255L, false, false, ref argcallback_norm1, ref argcallback_hover1, ref argcallback_mousedown2, ref argcallback_mousemove2, ref argcallback_dblclick2, ref enabled);
 
             // Select Buttons
             var argcallback_mousedown3 = new Action(btnJobs_Left);
             Action argcallback_mousemove3 = null;
             Action argcallback_dblclick3 = null;
-            Gui.UpdateButton(Windows.Count, "btnLeft", 170L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 12L, 14L, 16L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown3, ref argcallback_mousemove3, ref argcallback_dblclick3, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnLeft", 170L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 12L, 14L, 16L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown3, ref argcallback_mousemove3, ref argcallback_dblclick3, 0L, 0L, "", false);
 
             var argcallback_mousedown4 = new Action(btnJobs_Right);
             Action argcallback_mousemove4 = null;
             Action argcallback_dblclick4 = null;
-            Gui.UpdateButton(Windows.Count, "btnRight", 282L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 13L, 15L, 17L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown4, ref argcallback_mousemove4, ref argcallback_dblclick4, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnRight", 282L, 40L, 10L, 13L, "", Core.Enum.FontType.Georgia, 0L, 13L, 15L, 17L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown4, ref argcallback_mousemove4, ref argcallback_dblclick4, 0L, 0L, "", false);
 
             // Accept Button
             var argcallback_mousedown5 = new Action(btnJobs_Accept);
             Action argcallback_mousemove5 = null;
             Action argcallback_dblclick5 = null;
-            Gui.UpdateButton(Windows.Count, "btnAccept", 183L, 185L, 98L, 22L, "Accept", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown5, ref argcallback_mousemove5, ref argcallback_dblclick5, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnAccept", 183L, 185L, 98L, 22L, "Accept", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown5, ref argcallback_mousemove5, ref argcallback_dblclick5, 0L, 0L, "", false);
 
             // Text background
             Action argcallback_hover2 = null;
@@ -1187,7 +1193,7 @@ namespace Client
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
             Action argcallback_hover = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false);
 
             // Parchment
             Action argcallback_mousedown1 = null;
@@ -1209,7 +1215,8 @@ namespace Client
             Action argcallback_mousedown3 = null;
             Action argcallback_mousemove3 = null;
             Action argcallback_dblclick3 = null;
-            UpdateLabel(Windows.Count, "lblHeader", 103L, 40L, 144L, 10L, "Header", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown3, callback_mousemove: ref argcallback_mousemove3, callback_dblclick: ref argcallback_dblclick3);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblHeader", 103L, 40L, 144L, 10L, "Header", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown3, callback_mousemove: ref argcallback_mousemove3, callback_dblclick: ref argcallback_dblclick3, enabled: ref enabled);
 
             // Input
             Action argcallback_norm3 = null;
@@ -1226,27 +1233,27 @@ namespace Client
             Action argcallback_mousedown5 = null;
             Action argcallback_mousemove5 = null;
             Action argcallback_dblclick5 = null;
-            UpdateLabel(Windows.Count, "lblBody_1", 15L, 60L, 314L, 10L, "Invalid username or password.", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm4, callback_hover: ref argcallback_hover4, callback_mousedown: ref argcallback_mousedown5, callback_mousemove: ref argcallback_mousemove5, callback_dblclick: ref argcallback_dblclick5);
+            UpdateLabel(Windows.Count, "lblBody_1", 15L, 60L, 314L, 10L, "Invalid username or password.", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm4, callback_hover: ref argcallback_hover4, callback_mousedown: ref argcallback_mousedown5, callback_mousemove: ref argcallback_mousemove5, callback_dblclick: ref argcallback_dblclick5, enabled: ref enabled);
             Action argcallback_norm5 = null;
             Action argcallback_hover5 = null;
             Action argcallback_mousedown6 = null;
             Action argcallback_mousemove6 = null;
             Action argcallback_dblclick6 = null;
-            UpdateLabel(Windows.Count, "lblBody_2", 15L, 75L, 314L, 10L, "Please try again!", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm5, callback_hover: ref argcallback_hover5, callback_mousedown: ref argcallback_mousedown6, callback_mousemove: ref argcallback_mousemove6, callback_dblclick: ref argcallback_dblclick6);
+            UpdateLabel(Windows.Count, "lblBody_2", 15L, 75L, 314L, 10L, "Please try again!", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm5, callback_hover: ref argcallback_hover5, callback_mousedown: ref argcallback_mousedown6, callback_mousemove: ref argcallback_mousemove6, callback_dblclick: ref argcallback_dblclick6, enabled: ref enabled);
 
             // Buttons
             var argcallback_mousedown7 = new Action(Dialogue_Yes);
             Action argcallback_mousemove7 = null;
             Action argcallback_dblclick7 = null;
-            Gui.UpdateButton(Windows.Count, "btnYes", 104L, 98L, 68L, 24L, "Yes", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown7, ref argcallback_dblclick7, ref argcallback_mousemove7, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnYes", 104L, 98L, 68L, 24L, "Yes", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown7, ref argcallback_dblclick7, ref argcallback_mousemove7, 0L, 0L, "", false);
             var argcallback_mousedown8 = new Action(Dialogue_No);
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
-            Gui.UpdateButton(Windows.Count, "btnNo", 180L, 98L, 68L, 24L, "No", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown8, ref argcallback_mousemove8, ref argcallback_dblclick8, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnNo", 180L, 98L, 68L, 24L, "No", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown8, ref argcallback_mousemove8, ref argcallback_dblclick8, 0L, 0L, "", false);
             var argcallback_mousedown9 = new Action(Dialogue_Okay);
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
-            Gui.UpdateButton(Windows.Count, "btnOkay", 140L, 98L, 68L, 24L, "Okay", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown9, ref argcallback_mousemove9, ref argcallback_dblclick9, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnOkay", 140L, 98L, 68L, 24L, "Okay", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown9, ref argcallback_mousemove9, ref argcallback_dblclick9, 0L, 0L, "", false);
 
             // Set active control
             SetActiveControl(Windows.Count, GetControlIndex("winDialogue", "txtInput"));
@@ -1263,19 +1270,20 @@ namespace Client
             Action argcallback_mousedown = null;
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
-            UpdateLabel(Windows.Count, "lblName1", 60L, 20L, 173L, 10L, "Richard - Level 10", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblName1", 60L, 20L, 173L, 10L, "Richard - Level 10", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick, enabled: ref enabled);
             Action argcallback_norm1 = null;
             Action argcallback_hover1 = null;
             Action argcallback_mousedown1 = null;
             Action argcallback_mousemove1 = null;
             Action argcallback_dblclick1 = null;
-            UpdateLabel(Windows.Count, "lblName2", 60L, 60L, 173L, 10L, "Anna - Level 18", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm1, callback_hover: ref argcallback_hover1, callback_mousedown: ref argcallback_mousedown1, callback_mousemove: ref argcallback_mousemove1, callback_dblclick: ref argcallback_dblclick1);
+            UpdateLabel(Windows.Count, "lblName2", 60L, 60L, 173L, 10L, "Anna - Level 18", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm1, callback_hover: ref argcallback_hover1, callback_mousedown: ref argcallback_mousedown1, callback_mousemove: ref argcallback_mousemove1, callback_dblclick: ref argcallback_dblclick1, enabled: ref enabled);
             Action argcallback_norm2 = null;
             Action argcallback_hover2 = null;
             Action argcallback_mousedown2 = null;
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
-            UpdateLabel(Windows.Count, "lblName3", 60L, 100L, 173L, 10L, "Doleo - Level 25", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2);
+            UpdateLabel(Windows.Count, "lblName3", 60L, 100L, 173L, 10L, "Doleo - Level 25", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, enabled: ref enabled);
 
             // Empty Bars - HP
             Action argcallback_norm3 = null;
@@ -1426,11 +1434,12 @@ namespace Client
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
             Action argonDraw1 = null;
+            bool enabled = false;
             UpdatePictureBox(Windows.Count, "picShadow", 36L, 30L, 142L, 9L, design_norm: (long)Core.Enum.DesignType.Parchment, design_hover: (long)Core.Enum.DesignType.Parchment, design_mousedown: (long)Core.Enum.DesignType.Parchment, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, onDraw: ref argonDraw1);
             Action argcallback_mousedown3 = null;
             Action argcallback_mousemove3 = null;
             Action argcallback_dblclick3 = null;
-            UpdateLabel(Windows.Count, "lblYourTrade", 36L, 27L, 142L, 9L, "Robin's Offer", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown3, callback_mousemove: ref argcallback_mousemove3, callback_dblclick: ref argcallback_dblclick3);
+            UpdateLabel(Windows.Count, "lblYourTrade", 36L, 27L, 142L, 9L, "Robin's Offer", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown3, callback_mousemove: ref argcallback_mousemove3, callback_dblclick: ref argcallback_dblclick3, enabled: ref enabled);
             Action argcallback_mousedown4 = null;
             Action argcallback_mousemove4 = null;
             Action argcallback_dblclick4 = null;
@@ -1439,7 +1448,7 @@ namespace Client
             Action argcallback_mousedown5 = null;
             Action argcallback_mousemove5 = null;
             Action argcallback_dblclick5 = null;
-            UpdateLabel(Windows.Count, "lblTheirTrade", 36 + 200, 27L, 142L, 9L, "Richard's Offer", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown5, callback_mousemove: ref argcallback_mousemove5, callback_dblclick: ref argcallback_dblclick5);
+            UpdateLabel(Windows.Count, "lblTheirTrade", 36 + 200, 27L, 142L, 9L, "Richard's Offer", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown5, callback_mousemove: ref argcallback_mousemove5, callback_dblclick: ref argcallback_dblclick5, enabled: ref enabled);
 
             // Buttons
             var argcallback_mousedown6 = new Action(btnTrade_Accept);
@@ -1451,25 +1460,25 @@ namespace Client
             Action argcallback_mousedown8 = null;
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
-            UpdateLabel(Windows.Count, "lblStatus", 114L, 322L, 184L, 10L, "", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8);
+            UpdateLabel(Windows.Count, "lblStatus", 114L, 322L, 184L, 10L, "", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8, enabled: ref enabled);
 
             // Amounts
             Action argcallback_mousedown9 = null;
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
-            UpdateLabel(Windows.Count, "lblBlank", 25L, 330L, 100L, 10L, "Total Value", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9);
+            UpdateLabel(Windows.Count, "lblBlank", 25L, 330L, 100L, 10L, "Total Value", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9, enabled: ref enabled);
             Action argcallback_mousedown10 = null;
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            UpdateLabel(Windows.Count, "lblBlank", 285L, 330L, 100L, 10L, "Total Value", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10);
+            UpdateLabel(Windows.Count, "lblBlank", 285L, 330L, 100L, 10L, "Total Value", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, enabled: ref enabled);
             Action argcallback_mousedown11 = null;
             Action argcallback_mousemove11 = null;
             Action argcallback_dblclick11 = null;
-            UpdateLabel(Windows.Count, "lblYourValue", 25L, 344L, 100L, 10L, "52,812g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown11, callback_mousemove: ref argcallback_mousemove11, callback_dblclick: ref argcallback_dblclick11);
+            UpdateLabel(Windows.Count, "lblYourValue", 25L, 344L, 100L, 10L, "52,812g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown11, callback_mousemove: ref argcallback_mousemove11, callback_dblclick: ref argcallback_dblclick11, enabled: ref enabled);
             Action argcallback_mousedown12 = null;
             Action argcallback_mousemove12 = null;
             Action argcallback_dblclick12 = null;
-            UpdateLabel(Windows.Count, "lblTheirValue", 285L, 344L, 100L, 10L, "12,531g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown12, callback_mousemove: ref argcallback_mousemove12, callback_dblclick: ref argcallback_dblclick12);
+            UpdateLabel(Windows.Count, "lblTheirValue", 285L, 344L, 100L, 10L, "12,531g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown12, callback_mousemove: ref argcallback_mousemove12, callback_dblclick: ref argcallback_dblclick12, enabled: ref enabled);
 
             // Item Containers
             var argcallback_mousedown13 = new Action(TradeMouseMove_Your);
@@ -4470,19 +4479,20 @@ namespace Client
             Action argcallback_mousedown8 = null;
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
-            UpdateLabel(Windows.Count, "lblHP", 15L, 14L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8, locked: true);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblHP", 15L, 14L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8, enabled: ref enabled);
             Action argcallback_norm9 = null;
             Action argcallback_hover9 = null;
             Action argcallback_mousedown9 = null;
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
-            UpdateLabel(Windows.Count, "lblMP", 15L, 30L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9, locked: true);
+            UpdateLabel(Windows.Count, "lblMP", 15L, 30L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9, enabled: ref enabled);
             Action argcallback_norm10 = null;
             Action argcallback_hover10 = null;
             Action argcallback_mousedown10 = null;
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            UpdateLabel(Windows.Count, "lblEXP", 15L, 48L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm10, callback_hover: ref argcallback_hover10, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, locked: true);
+            UpdateLabel(Windows.Count, "lblEXP", 15L, 48L, 209L, 10L, "999/999", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm10, callback_hover: ref argcallback_hover10, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, enabled: ref enabled);
         }
 
         public static void UpdateWindow_Chat()
@@ -4567,7 +4577,8 @@ namespace Client
             Action argcallback_mousedown = null;
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
-            UpdateLabel(Windows.Count, "lblMsg", 12L, 140L, 286L, 25L, "Press 'Enter' to open chatbox.", Core.Enum.FontType.Georgia, Color.White, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblMsg", 12L, 140L, 286L, 25L, "Press 'Enter' to open chatbox.", Core.Enum.FontType.Georgia, Color.White, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick, enabled: ref enabled);
         }
 
         public static void UpdateWindow_Hotbar()
@@ -4628,7 +4639,7 @@ namespace Client
             Action argcallback_dblclick = null;
             Action argcallback_norm = null;
             Action argcallback_hover = null;
-            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false, true);
+            Gui.UpdateButton(Windows.Count, "btnClose", Windows[Windows.Count].Width - 19L, 5L, 16L, 16L, "", Core.Enum.FontType.Georgia, 0L, 8L, 9L, 10L, true, 255L, 0L, 0L, 0L, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 0L, 0L, "", false);
 
             // Gold amount
             Action argcallback_mousedown1 = null;
@@ -4641,7 +4652,8 @@ namespace Client
             Action argcallback_mousedown2 = null;
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
-            UpdateLabel(Windows.Count, "lblGold", 42L, 296L, 100L, 10L, "g", Core.Enum.FontType.Georgia, Color.Yellow, callback_norm: ref argcallback_norm1, callback_hover: ref argcallback_hover1, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblGold", 42L, 296L, 100L, 10L, "g", Core.Enum.FontType.Georgia, Color.Yellow, callback_norm: ref argcallback_norm1, callback_hover: ref argcallback_hover1, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, enabled: ref enabled);
 
             // Drop
             //Gui.UpdateButton(Windows.Count, "btnDrop", 155L, 294L, 38L, 16L, "Drop", Core.Enum.FontType.Georgia, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 5L, 3L, "", false, true);
@@ -4730,85 +4742,86 @@ namespace Client
             Action argcallback_mousedown9 = null;
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
-            UpdateLabel(Windows.Count, "lblName", 18L, 36L, 147L, 10L, "Name", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblName", 18L, 36L, 147L, 10L, "Name", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9, enabled: ref enabled);
             Action argcallback_norm9 = null;
             Action argcallback_hover9 = null;
             Action argcallback_mousedown10 = null;
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            UpdateLabel(Windows.Count, "lblJob", 18L, 56L, 147L, 10L, "Job", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10);
+            UpdateLabel(Windows.Count, "lblJob", 18L, 56L, 147L, 10L, "Job", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, enabled: ref enabled);
             Action argcallback_norm10 = null;
             Action argcallback_hover10 = null;
             Action argcallback_mousedown11 = null;
             Action argcallback_mousemove11 = null;
             Action argcallback_dblclick11 = null;
-            UpdateLabel(Windows.Count, "lblLevel", 18L, 76L, 147L, 10L, "Level", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm10, callback_hover: ref argcallback_hover10, callback_mousedown: ref argcallback_mousedown11, callback_mousemove: ref argcallback_mousemove11, callback_dblclick: ref argcallback_dblclick11);
+            UpdateLabel(Windows.Count, "lblLevel", 18L, 76L, 147L, 10L, "Level", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm10, callback_hover: ref argcallback_hover10, callback_mousedown: ref argcallback_mousedown11, callback_mousemove: ref argcallback_mousemove11, callback_dblclick: ref argcallback_dblclick11, enabled: ref enabled);
             Action argcallback_norm11 = null;
             Action argcallback_hover11 = null;
             Action argcallback_mousedown12 = null;
             Action argcallback_mousemove12 = null;
             Action argcallback_dblclick12 = null;
-            UpdateLabel(Windows.Count, "lblGuild", 18L, 96L, 147L, 10L, "Guild", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm11, callback_hover: ref argcallback_hover11, callback_mousedown: ref argcallback_mousedown12, callback_mousemove: ref argcallback_mousemove12, callback_dblclick: ref argcallback_dblclick12);
+            UpdateLabel(Windows.Count, "lblGuild", 18L, 96L, 147L, 10L, "Guild", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm11, callback_hover: ref argcallback_hover11, callback_mousedown: ref argcallback_mousedown12, callback_mousemove: ref argcallback_mousemove12, callback_dblclick: ref argcallback_dblclick12, enabled: ref enabled);
             Action argcallback_norm12 = null;
             Action argcallback_hover12 = null;
             Action argcallback_mousedown13 = null;
             Action argcallback_mousemove13 = null;
             Action argcallback_dblclick13 = null;
-            UpdateLabel(Windows.Count, "lblHealth", 18L, 116L, 147L, 10L, "Health", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm12, callback_hover: ref argcallback_hover12, callback_mousedown: ref argcallback_mousedown13, callback_mousemove: ref argcallback_mousemove13, callback_dblclick: ref argcallback_dblclick13);
+            UpdateLabel(Windows.Count, "lblHealth", 18L, 116L, 147L, 10L, "Health", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm12, callback_hover: ref argcallback_hover12, callback_mousedown: ref argcallback_mousedown13, callback_mousemove: ref argcallback_mousemove13, callback_dblclick: ref argcallback_dblclick13, enabled: ref enabled);
             Action argcallback_norm13 = null;
             Action argcallback_hover13 = null;
             Action argcallback_mousedown14 = null;
             Action argcallback_mousemove14 = null;
             Action argcallback_dblclick14 = null;
-            UpdateLabel(Windows.Count, "lblSpirit", 18L, 136L, 147L, 10L, "Spirit", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm13, callback_hover: ref argcallback_hover13, callback_mousedown: ref argcallback_mousedown14, callback_mousemove: ref argcallback_mousemove14, callback_dblclick: ref argcallback_dblclick14);
+            UpdateLabel(Windows.Count, "lblSpirit", 18L, 136L, 147L, 10L, "Spirit", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm13, callback_hover: ref argcallback_hover13, callback_mousedown: ref argcallback_mousedown14, callback_mousemove: ref argcallback_mousemove14, callback_dblclick: ref argcallback_dblclick14, enabled: ref enabled);
             Action argcallback_norm14 = null;
             Action argcallback_hover14 = null;
             Action argcallback_mousedown15 = null;
             Action argcallback_mousemove15 = null;
             Action argcallback_dblclick15 = null;
-            UpdateLabel(Windows.Count, "lblExperience", 18L, 156L, 147L, 10L, "Experience", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm14, callback_hover: ref argcallback_hover14, callback_mousedown: ref argcallback_mousedown15, callback_mousemove: ref argcallback_mousemove15, callback_dblclick: ref argcallback_dblclick15);
+            UpdateLabel(Windows.Count, "lblExperience", 18L, 156L, 147L, 10L, "Experience", Core.Enum.FontType.Arial, Color.White, callback_norm: ref argcallback_norm14, callback_hover: ref argcallback_hover14, callback_mousedown: ref argcallback_mousedown15, callback_mousemove: ref argcallback_mousemove15, callback_dblclick: ref argcallback_dblclick15, enabled: ref enabled);
             Action argcallback_norm15 = null;
             Action argcallback_hover15 = null;
             Action argcallback_mousedown16 = null;
             Action argcallback_mousemove16 = null;
             Action argcallback_dblclick16 = null;
-            UpdateLabel(Windows.Count, "lblName2", 13L, 36L, 147L, 10L, "Name", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm15, callback_hover: ref argcallback_hover15, callback_mousedown: ref argcallback_mousedown16, callback_mousemove: ref argcallback_mousemove16, callback_dblclick: ref argcallback_dblclick16);
+            UpdateLabel(Windows.Count, "lblName2", 13L, 36L, 147L, 10L, "Name", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm15, callback_hover: ref argcallback_hover15, callback_mousedown: ref argcallback_mousedown16, callback_mousemove: ref argcallback_mousemove16, callback_dblclick: ref argcallback_dblclick16, enabled: ref enabled);
             Action argcallback_norm16 = null;
             Action argcallback_hover16 = null;
             Action argcallback_mousedown17 = null;
             Action argcallback_mousemove17 = null;
             Action argcallback_dblclick17 = null;
-            UpdateLabel(Windows.Count, "lblJob2", 13L, 56L, 147L, 10L, "", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm16, callback_hover: ref argcallback_hover16, callback_mousedown: ref argcallback_mousedown17, callback_mousemove: ref argcallback_mousemove17, callback_dblclick: ref argcallback_dblclick17);
+            UpdateLabel(Windows.Count, "lblJob2", 13L, 56L, 147L, 10L, "", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm16, callback_hover: ref argcallback_hover16, callback_mousedown: ref argcallback_mousedown17, callback_mousemove: ref argcallback_mousemove17, callback_dblclick: ref argcallback_dblclick17, enabled: ref enabled);
             Action argcallback_norm17 = null;
             Action argcallback_hover17 = null;
             Action argcallback_mousedown18 = null;
             Action argcallback_mousemove18 = null;
             Action argcallback_dblclick18 = null;
-            UpdateLabel(Windows.Count, "lblLevel2", 13L, 76L, 147L, 10L, "Level", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm17, callback_hover: ref argcallback_hover17, callback_mousedown: ref argcallback_mousedown18, callback_mousemove: ref argcallback_mousemove18, callback_dblclick: ref argcallback_dblclick18);
+            UpdateLabel(Windows.Count, "lblLevel2", 13L, 76L, 147L, 10L, "Level", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm17, callback_hover: ref argcallback_hover17, callback_mousedown: ref argcallback_mousedown18, callback_mousemove: ref argcallback_mousemove18, callback_dblclick: ref argcallback_dblclick18, enabled: ref enabled);
             Action argcallback_norm18 = null;
             Action argcallback_hover18 = null;
             Action argcallback_mousedown19 = null;
             Action argcallback_mousemove19 = null;
             Action argcallback_dblclick19 = null;
-            UpdateLabel(Windows.Count, "lblGuild2", 13L, 96L, 147L, 10L, "Guild", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm18, callback_hover: ref argcallback_hover18, callback_mousedown: ref argcallback_mousedown19, callback_mousemove: ref argcallback_mousemove19, callback_dblclick: ref argcallback_dblclick19);
+            UpdateLabel(Windows.Count, "lblGuild2", 13L, 96L, 147L, 10L, "Guild", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm18, callback_hover: ref argcallback_hover18, callback_mousedown: ref argcallback_mousedown19, callback_mousemove: ref argcallback_mousemove19, callback_dblclick: ref argcallback_dblclick19, enabled: ref enabled);
             Action argcallback_norm19 = null;
             Action argcallback_hover19 = null;
             Action argcallback_mousedown20 = null;
             Action argcallback_mousemove20 = null;
             Action argcallback_dblclick20 = null;
-            UpdateLabel(Windows.Count, "lblHealth2", 13L, 116L, 147L, 10L, "Health", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm19, callback_hover: ref argcallback_hover19, callback_mousedown: ref argcallback_mousedown20, callback_mousemove: ref argcallback_mousemove20, callback_dblclick: ref argcallback_dblclick20);
+            UpdateLabel(Windows.Count, "lblHealth2", 13L, 116L, 147L, 10L, "Health", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm19, callback_hover: ref argcallback_hover19, callback_mousedown: ref argcallback_mousedown20, callback_mousemove: ref argcallback_mousemove20, callback_dblclick: ref argcallback_dblclick20, enabled: ref enabled);
             Action argcallback_norm20 = null;
             Action argcallback_hover20 = null;
             Action argcallback_mousedown21 = null;
             Action argcallback_mousemove21 = null;
             Action argcallback_dblclick21 = null;
-            UpdateLabel(Windows.Count, "lblSpirit2", 13L, 136L, 147L, 10L, "Spirit", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm20, callback_hover: ref argcallback_hover20, callback_mousedown: ref argcallback_mousedown21, callback_mousemove: ref argcallback_mousemove21, callback_dblclick: ref argcallback_dblclick21);
+            UpdateLabel(Windows.Count, "lblSpirit2", 13L, 136L, 147L, 10L, "Spirit", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm20, callback_hover: ref argcallback_hover20, callback_mousedown: ref argcallback_mousedown21, callback_mousemove: ref argcallback_mousemove21, callback_dblclick: ref argcallback_dblclick21, enabled: ref enabled);
             Action argcallback_norm21 = null;
             Action argcallback_hover21 = null;
             Action argcallback_mousedown22 = null;
             Action argcallback_mousemove22 = null;
             Action argcallback_dblclick22 = null;
-            UpdateLabel(Windows.Count, "lblExperience2", 13L, 156L, 147L, 10L, "Experience", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm21, callback_hover: ref argcallback_hover21, callback_mousedown: ref argcallback_mousedown22, callback_mousemove: ref argcallback_mousemove22, callback_dblclick: ref argcallback_dblclick22);
+            UpdateLabel(Windows.Count, "lblExperience2", 13L, 156L, 147L, 10L, "Experience", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm21, callback_hover: ref argcallback_hover21, callback_mousedown: ref argcallback_mousedown22, callback_mousemove: ref argcallback_mousemove22, callback_dblclick: ref argcallback_dblclick22, enabled: ref enabled);
 
             // Attributes
             Action argcallback_norm22 = null;
@@ -4823,7 +4836,7 @@ namespace Client
             Action argcallback_mousedown24 = null;
             Action argcallback_mousemove24 = null;
             Action argcallback_dblclick24 = null;
-            UpdateLabel(Windows.Count, "lblLabel", 18L, 173L, 138L, 10L, "Attributes", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm23, callback_hover: ref argcallback_hover23, callback_mousedown: ref argcallback_mousedown24, callback_mousemove: ref argcallback_mousemove24, callback_dblclick: ref argcallback_dblclick24);
+            UpdateLabel(Windows.Count, "lblLabel", 18L, 173L, 138L, 10L, "Attributes", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm23, callback_hover: ref argcallback_hover23, callback_mousedown: ref argcallback_mousedown24, callback_mousemove: ref argcallback_mousemove24, callback_dblclick: ref argcallback_dblclick24, enabled: ref enabled);
 
             // Black boxes
             Action argcallback_norm24 = null;
@@ -4875,37 +4888,37 @@ namespace Client
             Action argcallback_mousedown31 = null;
             Action argcallback_mousemove31 = null;
             Action argcallback_dblclick31 = null;
-            UpdateLabel(Windows.Count, "lblLabel", 18L, 188L, 138L, 10L, "Strength", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm30, callback_hover: ref argcallback_hover30, callback_mousedown: ref argcallback_mousedown31, callback_mousemove: ref argcallback_mousemove31, callback_dblclick: ref argcallback_dblclick31);
+            UpdateLabel(Windows.Count, "lblLabel", 18L, 188L, 138L, 10L, "Strength", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm30, callback_hover: ref argcallback_hover30, callback_mousedown: ref argcallback_mousedown31, callback_mousemove: ref argcallback_mousemove31, callback_dblclick: ref argcallback_dblclick3, enabled: ref enabled);
             Action argcallback_norm31 = null;
             Action argcallback_hover31 = null;
             Action argcallback_mousedown32 = null;
             Action argcallback_mousemove32 = null;
             Action argcallback_dblclick32 = null;
-            UpdateLabel(Windows.Count, "lblLabel", 18L, 208L, 138L, 10L, "Vitality", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm31, callback_hover: ref argcallback_hover31, callback_mousedown: ref argcallback_mousedown32, callback_mousemove: ref argcallback_mousemove32, callback_dblclick: ref argcallback_dblclick32);
+            UpdateLabel(Windows.Count, "lblLabel", 18L, 208L, 138L, 10L, "Vitality", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm31, callback_hover: ref argcallback_hover31, callback_mousedown: ref argcallback_mousedown32, callback_mousemove: ref argcallback_mousemove32, callback_dblclick: ref argcallback_dblclick32, enabled: ref enabled);
             Action argcallback_norm32 = null;
             Action argcallback_hover32 = null;
             Action argcallback_mousedown33 = null;
             Action argcallback_mousemove33 = null;
             Action argcallback_dblclick33 = null;
-            UpdateLabel(Windows.Count, "lblLabel", 18L, 228L, 138L, 10L, "Intelligence", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm32, callback_hover: ref argcallback_hover32, callback_mousedown: ref argcallback_mousedown33, callback_mousemove: ref argcallback_mousemove33, callback_dblclick: ref argcallback_dblclick33);
+            UpdateLabel(Windows.Count, "lblLabel", 18L, 228L, 138L, 10L, "Intelligence", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm32, callback_hover: ref argcallback_hover32, callback_mousedown: ref argcallback_mousedown33, callback_mousemove: ref argcallback_mousemove33, callback_dblclick: ref argcallback_dblclick3, enabled: ref enabled);
             Action argcallback_norm33 = null;
             Action argcallback_hover33 = null;
             Action argcallback_mousedown34 = null;
             Action argcallback_mousemove34 = null;
             Action argcallback_dblclick34 = null;
-            UpdateLabel(Windows.Count, "lblLabel", 18L, 248L, 138L, 10L, "Luck", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm33, callback_hover: ref argcallback_hover33, callback_mousedown: ref argcallback_mousedown34, callback_mousemove: ref argcallback_mousemove34, callback_dblclick: ref argcallback_dblclick34);
+            UpdateLabel(Windows.Count, "lblLabel", 18L, 248L, 138L, 10L, "Luck", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm33, callback_hover: ref argcallback_hover33, callback_mousedown: ref argcallback_mousedown34, callback_mousemove: ref argcallback_mousemove34, callback_dblclick: ref argcallback_dblclick34, enabled: ref enabled);
             Action argcallback_norm34 = null;
             Action argcallback_hover34 = null;
             Action argcallback_mousedown35 = null;
             Action argcallback_mousemove35 = null;
             Action argcallback_dblclick35 = null;
-            UpdateLabel(Windows.Count, "lblLabel", 18L, 268L, 138L, 10L, "Spirit", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm34, callback_hover: ref argcallback_hover34, callback_mousedown: ref argcallback_mousedown35, callback_mousemove: ref argcallback_mousemove35, callback_dblclick: ref argcallback_dblclick35);
+            UpdateLabel(Windows.Count, "lblLabel", 18L, 268L, 138L, 10L, "Spirit", Core.Enum.FontType.Arial, Color.Yellow, callback_norm: ref argcallback_norm34, callback_hover: ref argcallback_hover34, callback_mousedown: ref argcallback_mousedown35, callback_mousemove: ref argcallback_mousemove35, callback_dblclick: ref argcallback_dblclick35, enabled: ref enabled);
             Action argcallback_norm35 = null;
             Action argcallback_hover35 = null;
             Action argcallback_mousedown36 = null;
             Action argcallback_mousemove36 = null;
             Action argcallback_dblclick36 = null;
-            UpdateLabel(Windows.Count, "lblLabel", 18L, 288L, 138L, 10L, "Stat Points", Core.Enum.FontType.Arial, Color.Green, callback_norm: ref argcallback_norm35, callback_hover: ref argcallback_hover35, callback_mousedown: ref argcallback_mousedown36, callback_mousemove: ref argcallback_mousemove36, callback_dblclick: ref argcallback_dblclick36);
+            UpdateLabel(Windows.Count, "lblLabel", 18L, 288L, 138L, 10L, "Stat Points", Core.Enum.FontType.Arial, Color.Green, callback_norm: ref argcallback_norm35, callback_hover: ref argcallback_hover35, callback_mousedown: ref argcallback_mousedown36, callback_mousemove: ref argcallback_mousemove36, callback_dblclick: ref argcallback_dblclick36, enabled: ref enabled);
 
             // Buttons
             var argcallback_mousedown37 = new Action(Character_SpendPoint1);
@@ -4915,7 +4928,7 @@ namespace Client
             var argcallback_mousedown38 = new Action(Character_SpendPoint2);
             Action argcallback_mousemove38 = null;
             Action argcallback_dblclick38 = null;
-            Gui.UpdateButton(Windows.Count, "btnStat_2", 144L, 208L, 15L, 15L, image_norm: 48L, image_hover: 49L, image_mousedown: 50L, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown38, callback_mousemove: ref argcallback_mousemove38, callback_dblclick: ref argcallback_dblclick38);
+            Gui.UpdateButton(Windows.Count, "btnStat_2", 144L, 208L, 15L, 15L, image_norm: 48L, image_hover: 49L, image_mousedown: 50L, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown38, callback_mousemove: ref argcallback_mousemove38, callback_dblclick: ref argcallback_dblclick3);
             var argcallback_mousedown39 = new Action(Character_SpendPoint3);
             Action argcallback_mousemove39 = null;
             Action argcallback_dblclick39 = null;
@@ -4923,7 +4936,7 @@ namespace Client
             var argcallback_mousedown40 = new Action(Character_SpendPoint4);
             Action argcallback_mousemove40 = null;
             Action argcallback_dblclick40 = null;
-            Gui.UpdateButton(Windows.Count, "btnStat_4", 144L, 248L, 15L, 15L, image_norm: 48L, image_hover: 49L, image_mousedown: 50L, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown40, callback_mousemove: ref argcallback_mousemove40, callback_dblclick: ref argcallback_dblclick40);
+            Gui.UpdateButton(Windows.Count, "btnStat_4", 144L, 248L, 15L, 15L, image_norm: 48L, image_hover: 49L, image_mousedown: 50L, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown40, callback_mousemove: ref argcallback_mousemove40, callback_dblclick: ref argcallback_dblclick4);
             var argcallback_mousedown41 = new Action(Character_SpendPoint5);
             Action argcallback_mousemove41 = null;
             Action argcallback_dblclick41 = null;
@@ -4972,37 +4985,37 @@ namespace Client
             Action argcallback_mousedown47 = null;
             Action argcallback_mousemove47 = null;
             Action argcallback_dblclick47 = null;
-            UpdateLabel(Windows.Count, "lblStat_1", 42L, 188L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm41, callback_hover: ref argcallback_hover41, callback_mousedown: ref argcallback_mousedown47, callback_mousemove: ref argcallback_mousemove47, callback_dblclick: ref argcallback_dblclick47);
+            UpdateLabel(Windows.Count, "lblStat_1", 42L, 188L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm41, callback_hover: ref argcallback_hover41, callback_mousedown: ref argcallback_mousedown47, callback_mousemove: ref argcallback_mousemove47, callback_dblclick: ref argcallback_dblclick47, enabled: ref enabled);
             Action argcallback_norm42 = null;
             Action argcallback_hover42 = null;
             Action argcallback_mousedown48 = null;
             Action argcallback_mousemove48 = null;
             Action argcallback_dblclick48 = null;
-            UpdateLabel(Windows.Count, "lblStat_2", 42L, 208L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm42, callback_hover: ref argcallback_hover42, callback_mousedown: ref argcallback_mousedown48, callback_mousemove: ref argcallback_mousemove48, callback_dblclick: ref argcallback_dblclick48);
+            UpdateLabel(Windows.Count, "lblStat_2", 42L, 208L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm42, callback_hover: ref argcallback_hover42, callback_mousedown: ref argcallback_mousedown48, callback_mousemove: ref argcallback_mousemove48, callback_dblclick: ref argcallback_dblclick48, enabled: ref enabled);
             Action argcallback_norm43 = null;
             Action argcallback_hover43 = null;
             Action argcallback_mousedown49 = null;
             Action argcallback_mousemove49 = null;
             Action argcallback_dblclick49 = null;
-            UpdateLabel(Windows.Count, "lblStat_3", 42L, 228L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm43, callback_hover: ref argcallback_hover43, callback_mousedown: ref argcallback_mousedown49, callback_mousemove: ref argcallback_mousemove49, callback_dblclick: ref argcallback_dblclick49);
+            UpdateLabel(Windows.Count, "lblStat_3", 42L, 228L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm43, callback_hover: ref argcallback_hover43, callback_mousedown: ref argcallback_mousedown49, callback_mousemove: ref argcallback_mousemove49, callback_dblclick: ref argcallback_dblclick49, enabled: ref enabled);
             Action argcallback_norm44 = null;
             Action argcallback_hover44 = null;
             Action argcallback_mousedown50 = null;
             Action argcallback_mousemove50 = null;
             Action argcallback_dblclick50 = null;
-            UpdateLabel(Windows.Count, "lblStat_4", 42L, 248L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm44, callback_hover: ref argcallback_hover44, callback_mousedown: ref argcallback_mousedown50, callback_mousemove: ref argcallback_mousemove50, callback_dblclick: ref argcallback_dblclick50);
+            UpdateLabel(Windows.Count, "lblStat_4", 42L, 248L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm44, callback_hover: ref argcallback_hover44, callback_mousedown: ref argcallback_mousedown50, callback_mousemove: ref argcallback_mousemove50, callback_dblclick: ref argcallback_dblclick50, enabled: ref enabled);
             Action argcallback_norm45 = null;
             Action argcallback_hover45 = null;
             Action argcallback_mousedown51 = null;
             Action argcallback_mousemove51 = null;
             Action argcallback_dblclick51 = null;
-            UpdateLabel(Windows.Count, "lblStat_5", 42L, 268L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm45, callback_hover: ref argcallback_hover45, callback_mousedown: ref argcallback_mousedown51, callback_mousemove: ref argcallback_mousemove51, callback_dblclick: ref argcallback_dblclick51);
+            UpdateLabel(Windows.Count, "lblStat_5", 42L, 268L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm45, callback_hover: ref argcallback_hover45, callback_mousedown: ref argcallback_mousedown51, callback_mousemove: ref argcallback_mousemove51, callback_dblclick: ref argcallback_dblclick51, enabled: ref enabled);
             Action argcallback_norm46 = null;
             Action argcallback_hover46 = null;
             Action argcallback_mousedown52 = null;
             Action argcallback_mousemove52 = null;
             Action argcallback_dblclick52 = null;
-            UpdateLabel(Windows.Count, "lblPoints", 57L, 288L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm46, callback_hover: ref argcallback_hover46, callback_mousedown: ref argcallback_mousedown52, callback_mousemove: ref argcallback_mousemove52, callback_dblclick: ref argcallback_dblclick52);
+            UpdateLabel(Windows.Count, "lblPoints", 57L, 288L, 100L, 15L, "255", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Right, callback_norm: ref argcallback_norm46, callback_hover: ref argcallback_hover46, callback_mousedown: ref argcallback_mousedown52, callback_mousemove: ref argcallback_mousemove52, callback_dblclick: ref argcallback_dblclick5, enabled: ref enabled);
         }
 
         // ###############
@@ -5300,7 +5313,8 @@ namespace Client
             Action argcallback_mousedown = null;
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
-            UpdateLabel(Windows.Count, "lblName", 8L, 12L, 177L, 10L, "Flame Sword", Core.Enum.FontType.Arial, Color.Blue, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblName", 8L, 12L, 177L, 10L, "Flame Sword", Core.Enum.FontType.Arial, Color.Blue, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick, enabled: ref enabled);
 
             // Sprite box
             var argonDraw = new Action(Description_OnDraw);
@@ -5326,13 +5340,13 @@ namespace Client
             Action argcallback_mousedown2 = null;
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
-            UpdateLabel(Windows.Count, "lblClass", 5L, 102L, 92L, 10L, "Warrior", Core.Enum.FontType.Georgia, Color.Green, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2);
+            UpdateLabel(Windows.Count, "lblClass", 5L, 102L, 92L, 10L, "Warrior", Core.Enum.FontType.Georgia, Color.Green, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, enabled: ref enabled);
             Action argcallback_norm3 = null;
             Action argcallback_hover3 = null;
             Action argcallback_mousedown3 = null;
             Action argcallback_mousemove3 = null;
             Action argcallback_dblclick3 = null;
-            UpdateLabel(Windows.Count, "lblLevel", 5L, 114L, 92L, 10L, "Level 20", Core.Enum.FontType.Georgia, Color.Red, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm3, callback_hover: ref argcallback_hover3, callback_mousedown: ref argcallback_mousedown3, callback_mousemove: ref argcallback_mousemove3, callback_dblclick: ref argcallback_dblclick3);
+            UpdateLabel(Windows.Count, "lblLevel", 5L, 114L, 92L, 10L, "Level 20", Core.Enum.FontType.Georgia, Color.Red, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm3, callback_hover: ref argcallback_hover3, callback_mousedown: ref argcallback_mousedown3, callback_mousemove: ref argcallback_mousemove3, callback_dblclick: ref argcallback_dblclick3, enabled: ref enabled);
 
             // Bar
             Action argcallback_norm4 = null;
@@ -5448,7 +5462,8 @@ namespace Client
             Action argcallback_mousedown2 = null;
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
-            UpdateLabel(Windows.Count, "lblBlank", 35L, 22L, 140L, 0L, "General Options", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblBlank", 35L, 22L, 140L, 0L, "General Options", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm2, callback_hover: ref argcallback_hover2, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, enabled: ref enabled);
 
             // Check boxes
             Action argcallback_norm3 = null;
@@ -5489,7 +5504,7 @@ namespace Client
             Action argcallback_mousedown8 = null;
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
-            UpdateLabel(Windows.Count, "lblBlank", 35L, 92L, 140L, 10L, "Select Resolution", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8);
+            UpdateLabel(Windows.Count, "lblBlank", 35L, 92L, 140L, 10L, "Select Resolution", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8, enabled: ref enabled);
 
             // combobox
             UpdateComboBox(Windows.Count, "cmbRes", 30L, 100L, 150L, 18L, (long)Core.Enum.DesignType.ComboNorm);
@@ -5626,13 +5641,14 @@ namespace Client
             Action argcallback_mousedown8 = null;
             Action argcallback_mousemove8 = null;
             Action argcallback_dblclick8 = null;
-            UpdateLabel(Windows.Count, "lblName", 56L, 226L, 300L, 10L, "Test Item", Core.Enum.FontType.Arial, Color.Black, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm7, callback_hover: ref argcallback_hover7, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8);
+            bool enabled = false;
+            UpdateLabel(Windows.Count, "lblName", 56L, 226L, 300L, 10L, "Test Item", Core.Enum.FontType.Arial, Color.Black, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm7, callback_hover: ref argcallback_hover7, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8, enabled: ref enabled);
             Action argcallback_norm8 = null;
             Action argcallback_hover8 = null;
             Action argcallback_mousedown9 = null;
             Action argcallback_mousemove9 = null;
             Action argcallback_dblclick9 = null;
-            UpdateLabel(Windows.Count, "lblCost", 56L, 240L, 300L, 10L, "1000g", Core.Enum.FontType.Arial, Color.Black, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9);
+            UpdateLabel(Windows.Count, "lblCost", 56L, 240L, 300L, 10L, "1000g", Core.Enum.FontType.Arial, Color.Black, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown9, callback_mousemove: ref argcallback_mousemove9, callback_dblclick: ref argcallback_dblclick9, enabled: ref enabled);
 
             // Gold
             Action argcallback_norm9 = null;
@@ -5640,7 +5656,7 @@ namespace Client
             Action argcallback_mousedown10 = null;
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            UpdateLabel(Windows.Count, "lblGold", 44L, 269L, 300L, 10L, "g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10);
+            UpdateLabel(Windows.Count, "lblGold", 44L, 269L, 300L, 10L, "g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, enabled: ref enabled);
         }
 
         // Shop
