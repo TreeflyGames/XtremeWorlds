@@ -1938,7 +1938,7 @@ namespace Client
 
                     case Core.Enum.ControlType.Label:
                         {
-                            if (Strings.Len(withBlock.Text) > 0)
+                            if (Strings.Len(withBlock.Text) > 0 & withBlock.Font > 0)
                             {
                                 switch (withBlock.Align)
                                 {
