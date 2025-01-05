@@ -74,7 +74,7 @@ namespace Client
                 GameState.Chat_HighIndex = Constant.CHAT_LINES;
 
             // Move the rest of the chat lines up
-            for (int i = 0; i < Constant.CHAT_LINES - 1; i++)
+            for (int i = 0; i < GameState.Chat_HighIndex; i++)
             {
                 Core.Type.Chat[i + 1] = Core.Type.Chat[i];
             }
@@ -653,7 +653,7 @@ namespace Client
             {
                 if (i >= Constant.CHAT_LINES)
                     break;
-                lineCount = 0;
+                lineCount = 1;
 
                 // exit out early if we come to a blank string
                 if (Strings.Len(Core.Type.Chat[(int)i].Text) == 0)
@@ -691,7 +691,7 @@ namespace Client
                         // continue on
                         yOffset = yOffset - 14 * lineCount;
                         RenderText(tmpText, (int)xO, (int)(yO + yOffset), Color2, Color2);
-                        rLines = rLines + lineCount;
+                        rLines += lineCount;
 
                         // set the top width
                         tmpArray = Strings.Split(tmpText, Environment.NewLine);

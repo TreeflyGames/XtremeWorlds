@@ -706,7 +706,7 @@ namespace Client
                     {
                         var activeControl = Gui.GetActiveControl();
 
-                        if (activeControl is not null && activeControl.Visible && activeControl.Enabled)
+                        if (activeControl is not null && activeControl.Visible && activeControl.Enabled && activeControl.Text.Length < activeControl.Length)
                         {
                             // Append character to the control's text
                             activeControl.Text += Conversions.ToString(character.Value);
