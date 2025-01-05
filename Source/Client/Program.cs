@@ -665,7 +665,7 @@ namespace Client
             if (GameState.inSmallChat)
             {
                 // Iterate through hotbar slots and check for corresponding keys
-                for (int i = 0; i <= Constant.MAX_HOTBAR - 1; i++)
+                for (int i = 0; i < Constant.MAX_HOTBAR; i++)
                 {
                     // Check if the corresponding hotbar key is pressed
                     if (CurrentKeyboardState.IsKeyDown((Keys)((int)Keys.D0 + i)))

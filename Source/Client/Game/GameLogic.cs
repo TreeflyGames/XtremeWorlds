@@ -1388,11 +1388,6 @@ namespace Client
             GameState.actChatWidth = Width;
         }
 
-        public static void UpdateChat()
-        {
-            Settings.Save();
-        }
-
         public static void ScrollChatBox(byte direction)
         {
             if (direction == 0) // up
@@ -1417,7 +1412,7 @@ namespace Client
             Core.Type.RectangleStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_HOTBAR - 1; i++)
+            for (i = 0L; i < Constant.MAX_HOTBAR; i++)
             {
                 tempRec.Top = (int)(StartY + GameState.HotbarTop);
                 tempRec.Left = (int)(StartX + (i - 1L) * GameState.HotbarOffsetX);

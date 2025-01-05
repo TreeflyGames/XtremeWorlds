@@ -235,16 +235,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
                 // Decrypt AES key
                 byte[] aesKey;
-                try
-                {
-                    aesKey = _rsa?.Decrypt(encryptedKey, true); // Ensure padding matches
-                }
-                catch (CryptographicException ex)
-                {
-                    Console.WriteLine($"RSA decryption failed: {ex.Message}");
-                    throw;
-                }
-
+                aesKey = _rsa?.Decrypt(encryptedKey, true); // Ensure padding matches
+                
                 // Decrypt payload
                 using (ICryptoTransform decryptor = rijndaelManaged.CreateDecryptor(aesKey, iv))
                 using (var memoryStream = new MemoryStream())

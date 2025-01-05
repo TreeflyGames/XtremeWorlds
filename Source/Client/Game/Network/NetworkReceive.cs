@@ -900,7 +900,7 @@ namespace Client
             }
 
             // add to the chat box
-            Text.AddText(header + name + ": " + message, color, channel: channelType);
+            Text.AddText(header + " " + name + ": " + message, color, channel: channelType);
 
             buffer.Dispose();
         }
@@ -1385,7 +1385,7 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_HOTBAR - 1; i++)
+            for (i = 0; i < Constant.MAX_HOTBAR; i++)
             {
                 Core.Type.Player[GameState.MyIndex].Hotbar[i].Slot = buffer.ReadInt32();
                 Core.Type.Player[GameState.MyIndex].Hotbar[i].SlotType = (byte)buffer.ReadInt32();

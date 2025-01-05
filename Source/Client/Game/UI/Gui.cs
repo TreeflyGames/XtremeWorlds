@@ -3335,37 +3335,37 @@ namespace Client
         public static void chkChat_Game()
         {
             Settings.ChannelState[(int)Core.Enum.ChatChannel.Game] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkGame")].Value;
-            GameLogic.UpdateChat();
+            Settings.Save();
         }
 
         public static void chkChat_Map()
         {
             Settings.ChannelState[(int)Core.Enum.ChatChannel.Map] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkMap")].Value;
-            GameLogic.UpdateChat();
+            Settings.Save();
         }
 
         public static void chkChat_Global()
         {
             Settings.ChannelState[(int)Core.Enum.ChatChannel.Broadcast] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkGlobal")].Value;
-            GameLogic.UpdateChat();
+            Settings.Save();
         }
 
         public static void chkChat_Party()
         {
             Settings.ChannelState[(int)Core.Enum.ChatChannel.Party] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkParty")].Value;
-            GameLogic.UpdateChat();
+            Settings.Save();
         }
 
         public static void chkChat_Guild()
         {
             Settings.ChannelState[(int)Core.Enum.ChatChannel.Guild] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkGuild")].Value;
-            GameLogic.UpdateChat();
+            Settings.Save();
         }
 
         public static void chkChat_Player()
         {
             Settings.ChannelState[(int)Core.Enum.ChatChannel.Player] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkPlayer")].Value;
-            GameLogic.UpdateChat();
+            Settings.Save();
         }
 
         public static void btnChat_Up()
@@ -4032,7 +4032,7 @@ namespace Client
                                 if (DragBox.Type != Core.Enum.PartType.None)
                                 {
                                     // find the slot
-                                    for (i = 0L; i <= Constant.MAX_HOTBAR - 1; i++)
+                                    for (i = 0L; i < Constant.MAX_HOTBAR; i++)
                                     {
                                         tmpRec.Top = Windows[curWindow].Top + GameState.HotbarTop;
                                         tmpRec.Bottom = tmpRec.Top + 32d;
@@ -4504,21 +4504,21 @@ namespace Client
             zOrder_Con = 0L;
 
             // Channel boxes
-            var argcallback_norm = new Action(chkChat_Game);
+            Action argcallback_norm = null;
             Action argcallback_hover = null;
-            Action argcallback_mousedown = null;
+            Action argcallback_mousedown = new Action(chkChat_Game);
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
             Gui.UpdateCheckBox(Windows.Count, "chkGame", 10L, 2L, 49L, 23L, 0L, "Game", Core.Enum.FontType.Arial, theDesign: (long)Core.Enum.DesignType.ChkChat, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
-            argcallback_norm = new Action(chkChat_Map);
+            argcallback_mousedown = new Action(chkChat_Map);
             Gui.UpdateCheckBox(Windows.Count, "chkMap", 60L, 2L, 49L, 23L, 0L, "Map", Core.Enum.FontType.Arial, theDesign: (long)Core.Enum.DesignType.ChkChat, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
-            argcallback_norm = new Action(chkChat_Global);
+            argcallback_mousedown = new Action(chkChat_Global);
             Gui.UpdateCheckBox(Windows.Count, "chkGlobal", 110L, 2L, 49L, 23L, 0L, "Global", Core.Enum.FontType.Arial, theDesign: (long)Core.Enum.DesignType.ChkChat, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
-            argcallback_norm = new Action(chkChat_Party);
+            argcallback_mousedown = new Action(chkChat_Party);
             Gui.UpdateCheckBox(Windows.Count, "chkParty", 160L, 2L, 49L, 23L, 0L, "Party", Core.Enum.FontType.Arial, theDesign: (long)Core.Enum.DesignType.ChkChat, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
-            argcallback_norm = new Action(chkChat_Guild);
+            argcallback_mousedown = new Action(chkChat_Guild);
             Gui.UpdateCheckBox(Windows.Count, "chkGuild", 210L, 2L, 49L, 23L, 0L, "Guild", Core.Enum.FontType.Arial, theDesign: (long)Core.Enum.DesignType.ChkChat, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
-            argcallback_norm = new Action(chkChat_Player);
+            argcallback_mousedown = new Action(chkChat_Player);
             Gui.UpdateCheckBox(Windows.Count, "chkPlayer", 260L, 2L, 49L, 23L, 0L, "Player", Core.Enum.FontType.Arial, theDesign: (long)Core.Enum.DesignType.ChkChat, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
 
             // Blank picturebox
@@ -6346,7 +6346,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath, (int)(xO - 1L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
             string argpath1 = System.IO.Path.Combine(Path.Gui, 31.ToString());
             GameClient.RenderTexture(ref argpath1, (int)(xO + 407L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
-            for (i = 0L; i <= Constant.MAX_HOTBAR - 1; i++)
+            for (i = 0L; i < Constant.MAX_HOTBAR; i++)
             {
                 xO = Windows[GetWindowIndex("winHotbar")].Left + GameState.HotbarLeft + (i - 1L) * GameState.HotbarOffsetX;
                 yO = Windows[GetWindowIndex("winHotbar")].Top + GameState.HotbarTop;

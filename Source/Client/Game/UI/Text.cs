@@ -66,17 +66,17 @@ namespace Client
             return (int)Math.Round(textDimensions.Y * textSize);
         }
 
-        public static void AddText(string text, int Color, long alpha = 255L, byte channel = 0)
+        public static void AddText(string text, int Color, long alpha = 255L, byte channel = 1)
         {
-            // Move the rest of it up
-            for (int i = Constant.CHAT_LINES - 1; i >= 0; i--)
+            GameState.Chat_HighIndex += 1;
+
+            if (GameState.Chat_HighIndex > Constant.CHAT_LINES)
+                GameState.Chat_HighIndex = Constant.CHAT_LINES;
+
+            // Move the rest of the chat lines up
+            for (int i = 0; i < Constant.CHAT_LINES - 1; i++)
             {
-                if (!string.IsNullOrEmpty(Core.Type.Chat[i].Text))
-                {
-                    if (i > GameState.Chat_HighIndex)
-                        GameState.Chat_HighIndex = i + 1;
-                }
-                Core.Type.Chat[GameState.Chat_HighIndex] = Core.Type.Chat[i];
+                Core.Type.Chat[i + 1] = Core.Type.Chat[i];
             }
 
             // Add the new text
@@ -84,7 +84,7 @@ namespace Client
             Core.Type.Chat[0].Color = Color;
             Core.Type.Chat[0].Visible = true;
             Core.Type.Chat[0].Timer = General.GetTickCount();
-            Core.Type.Chat[0].Channel = channel;
+            Core.Type.Chat[0].Channel = (byte)(channel - 1);
         }
 
         public static void WordWrap(string text, Core.Enum.FontType font, long MaxLineLen, ref string[] theArray)
@@ -647,11 +647,11 @@ namespace Client
 
             // loop through chat
             rLines = 1;
-            i = 0L + GameState.ChatScroll;
+            i = GameState.ChatScroll;
 
             while (rLines <= 8)
             {
-                if (i > Constant.CHAT_LINES)
+                if (i >= Constant.CHAT_LINES)
                     break;
                 lineCount = 0;
 
@@ -667,7 +667,7 @@ namespace Client
                         isVisible = false;
                 }
 
-                if (Settings.ChannelState[Core.Type.Chat[(int)i].Channel] == 0)
+                if (Settings.ChannelState[Core.Type.Chat[i].Channel] == 0)
                     isVisible = false;
 
                 // make sure it's visible
@@ -678,7 +678,7 @@ namespace Client
                     Color2 = GameClient.QbColorToXnaColor(Color);
 
                     // check if we need to word wrap
-                    if (GetTextWidth(Core.Type.Chat[(int)i].Text) > GameState.ChatWidth)
+                    if (GetTextWidth(Core.Type.Chat[i].Text) > GameState.ChatWidth)
                     {
                         // word wrap
                         long arglineCount = 0L;
