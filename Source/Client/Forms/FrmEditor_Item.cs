@@ -430,7 +430,7 @@ namespace Client
             Editors.ItemEditorCancel();
         }
 
-        private void DrawIcon()
+        public void DrawIcon()
         {
             int itemnum;
 

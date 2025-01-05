@@ -60,11 +60,9 @@ namespace Client
                 cmbItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
         }
 
-        private void DrawSprite()
+        public void DrawSprite()
         {
-            int Sprite;
-
-            Sprite = (int)Math.Round(nudSprite.Value);
+            int Sprite = (int)Math.Round(nudSprite.Value);
 
             if (Sprite < 1 | Sprite > GameState.NumCharacters)
             {

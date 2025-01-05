@@ -241,7 +241,7 @@ namespace Client
             DrawIcon();
         }
 
-        private void DrawIcon()
+        public void DrawIcon()
         {
             int skillNum;
             skillNum = (int)Math.Round(nudIcon.Value);

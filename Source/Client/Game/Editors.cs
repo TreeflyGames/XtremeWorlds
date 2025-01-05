@@ -132,6 +132,8 @@ namespace Client
                 withBlock.cmbSkill4.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[4];
                 withBlock.cmbSkill5.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[5];
                 withBlock.cmbSkill6.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[6];
+
+                frmEditor_NPC.Instance.DrawSprite();
             }
 
             GameState.NPC_Changed[GameState.EditorIndex] = true;
@@ -287,6 +289,8 @@ namespace Client
                     withBlock.chkKnockBack.Checked = false;
                 }
                 withBlock.cmbKnockBackTiles.SelectedIndex = Core.Type.Skill[GameState.EditorIndex].KnockBackTiles;
+
+                frmEditor_Skill.Instance.DrawIcon();
             }
 
             GameState.Skill_Changed[GameState.EditorIndex] = true;
@@ -639,6 +643,8 @@ namespace Client
                 {
                     frmEditor_Item.Instance.chkStackable.Checked = false;
                 }
+
+                frmEditor_Item.Instance.DrawIcon();
             }
 
             GameState.Item_Changed[GameState.EditorIndex] = true;
@@ -736,6 +742,8 @@ namespace Client
                 frmEditor_Projectile.Instance.nudRange.Value = withBlock.Range;
                 frmEditor_Projectile.Instance.nudSpeed.Value = withBlock.Speed;
                 frmEditor_Projectile.Instance.nudDamage.Value = withBlock.Damage;
+
+                frmEditor_Projectile.Instance.Drawicon();
             }
 
             GameState.ProjectileChanged[GameState.EditorIndex] = true;
@@ -744,9 +752,7 @@ namespace Client
 
         internal static void ProjectileEditorOK()
         {
-            int i;
-
-            for (i = 0; i < Constant.MAX_PROJECTILES;  i++)
+            for (int i = 0; i < Constant.MAX_PROJECTILES;  i++)
             {
                 if (GameState.ProjectileChanged[i])
                 {
@@ -769,9 +775,7 @@ namespace Client
 
         internal static void ClearChanged_Projectile()
         {
-            int i;
-
-            for (i = 0; i < Constant.MAX_PROJECTILES;  i++)
+            for (int i = 0; i < Constant.MAX_PROJECTILES;  i++)
                 GameState.ProjectileChanged[i] = false;
 
         }

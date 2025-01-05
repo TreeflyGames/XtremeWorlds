@@ -92,21 +92,21 @@ namespace Client
             Editors.ProjectileEditorCancel();
         }
 
-        private void Drawicon()
+        public void Drawicon()
         {
-            int iconnum;
+            int iconNum;
 
-            iconnum = (int)Math.Round(nudPic.Value);
+            iconNum = (int)Math.Round(nudPic.Value);
 
-            if (iconnum < 1 | iconnum > GameState.NumProjectiles)
+            if (iconNum < 1 | iconNum > GameState.NumProjectiles)
             {
                 picProjectile.BackgroundImage = null;
                 return;
             }
 
-            if (File.Exists(System.IO.Path.Combine(Core.Path.Projectiles, iconnum + GameState.GfxExt)))
+            if (File.Exists(System.IO.Path.Combine(Core.Path.Projectiles, iconNum + GameState.GfxExt)))
             {
-                picProjectile.BackgroundImage = System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Projectiles, iconnum + GameState.GfxExt));
+                picProjectile.BackgroundImage = System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Projectiles, iconNum + GameState.GfxExt));
             }
 
         }
