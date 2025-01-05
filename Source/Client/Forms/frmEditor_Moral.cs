@@ -54,7 +54,7 @@ namespace Client
         {
             lstIndex.Items.Clear();
 
-            for (int i = 0; i <= Constant.MAX_MORALS; i++)
+            for (int i = 0; i < Constant.MAX_MORALS; i++)
                 lstIndex.Items.Add(i + ": " + Core.Type.Moral[i].Name);
         }
 

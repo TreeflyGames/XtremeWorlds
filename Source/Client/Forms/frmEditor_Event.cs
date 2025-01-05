@@ -41,7 +41,7 @@ namespace Client
             cmbCondition_HasItem.Enabled = false;
             cmbCondition_HasItem.Items.Clear();
 
-            for (i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbCondition_HasItem.Items.Add(i + ". " + Core.Type.Item[i].Name);
             cmbCondition_HasItem.SelectedIndex = 0;
             nudCondition_HasItem.Enabled = false;
@@ -99,7 +99,7 @@ namespace Client
             cmbChangeItemIndex.Items.Clear();
             cmbChangeItemIndex.Items.Add("None");
 
-            for (i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbChangeItemIndex.Items.Add(Core.Type.Item[i].Name);
             cmbChangeItemIndex.SelectedIndex = 0;
             nudChangeLevel.Minimum = 1m;
@@ -189,7 +189,7 @@ namespace Client
             // items
             cmbHasItem.Items.Clear();
             cmbHasItem.Items.Add("None");
-            for (i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbHasItem.Items.Add(i + ": " + Core.Type.Item[i].Name);
 
             // variables

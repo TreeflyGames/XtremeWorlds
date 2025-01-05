@@ -790,7 +790,7 @@ namespace Client
             lstMoral.Items.Add("None");
             lstMoral.SelectedIndex = 0;
 
-            for (i = 0; i <= Constant.MAX_MORALS; i++)
+            for (i = 0; i < Constant.MAX_MORALS; i++)
                 lstMoral.Items.Add(Core.Type.Moral[i].Name);
 
             var loopTo3 = lstMoral.Items.Count - 1;

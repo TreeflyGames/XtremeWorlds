@@ -33,26 +33,16 @@ namespace Client
             General.Client.Run();
         }
 
-        private static bool isUpdating = false;
-
 
         private static void UpdateForms(object sender, EventArgs e)
         {
-            if (isUpdating) return;
-            isUpdating = true;
-
             var mainForm = Application.OpenForms.Count > 0 ? Application.OpenForms[0] : null;
 
-            if (mainForm != null && !mainForm.IsDisposed & !mainForm.Disposing)
+            if (mainForm != null && !mainForm.IsDisposed & !mainForm.Disposing && mainForm.InvokeRequired)
             {
                 mainForm.Invoke(new EventHandler(UpdateForms), sender, e);
-                isUpdating = false;
                 return;
             }
-
-            // Your existing code here...
-
-            isUpdating = false;
 
             if (GameState.InitEventEditorForm)
             {

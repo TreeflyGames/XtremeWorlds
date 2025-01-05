@@ -102,7 +102,7 @@ namespace Client
             cmbItem.Items.Add("None");
             cmbCostItem.Items.Add("None");
 
-            for (int i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (int i = 0; i < Constant.MAX_ITEMS; i++)
             {
                 cmbItem.Items.Add(i + ": " + Core.Type.Item[i].Name);
                 cmbCostItem.Items.Add(i + ": " + Core.Type.Item[i].Name);

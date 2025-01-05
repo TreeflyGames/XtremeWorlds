@@ -25,13 +25,13 @@ namespace Client
             lstIndex.Items.Clear();
 
             // Add the names
-            for (int i = 0; i <= Constant.MAX_PETS; i++)
+            for (int i = 0; i < Constant.MAX_PETS; i++)
                 lstIndex.Items.Add(i + ": " + Core.Type.Pet[i].Name);
 
             cmbEvolve.Items.Clear();
             cmbEvolve.Items.Add("None");
             // Add the names
-            for (int i = 0; i <= Constant.MAX_PETS; i++)
+            for (int i = 0; i < Constant.MAX_PETS; i++)
                 cmbEvolve.Items.Add(i + ": " + Core.Type.Pet[i].Name);
         }
 

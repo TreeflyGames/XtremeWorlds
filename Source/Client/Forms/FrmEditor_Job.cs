@@ -24,7 +24,7 @@ namespace Client
 
             cmbItems.Items.Clear();
 
-            for (int i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (int i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbItems.Items.Add(i + ": " + Core.Type.Item[i].Name);
 
             lstIndex.Items.Clear();

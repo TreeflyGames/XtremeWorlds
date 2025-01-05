@@ -983,7 +983,7 @@ namespace Client
                 // Update the item
                 Core.Type.Item[n].AccessReq = buffer.ReadInt32();
 
-                for (z = 1; z < (int)Core.Enum.StatType.Count - 1; z++)
+                for (z = 0; z < (int)Core.Enum.StatType.Count - 1; z++)
                     Core.Type.Item[n].Add_Stat[z] = (byte)buffer.ReadInt32();
 
                 Core.Type.Item[n].Animation = buffer.ReadInt32();

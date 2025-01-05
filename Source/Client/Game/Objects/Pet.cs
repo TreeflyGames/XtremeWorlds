@@ -39,7 +39,7 @@ namespace Client
             Core.Type.Pet[index] = default;
             Core.Type.Pet[index].Name = "";
 
-            Core.Type.Pet[index].Stat = new byte[6];
+            Core.Type.Pet[index].Stat = new byte[(int)Core.Enum.StatType.Count];
             Core.Type.Pet[index].Skill = new int[5];
             GameState.Pet_Loaded[index] = 0;
         }
@@ -51,7 +51,7 @@ namespace Client
             Core.Type.Pet = new Core.Type.PetStruct[101];
             PetSkillCd = new int[5];
 
-            for (i = 0; i <= Constant.MAX_PETS; i++)
+            for (i = 0; i < Constant.MAX_PETS; i++)
                 ClearPet(i);
 
         }

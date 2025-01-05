@@ -20,9 +20,9 @@ namespace Client
         {
             int i;
 
-            Core.Type.Moral = new Core.Type.MoralStruct[(Constant.MAX_MORALS + 1)];
+            Core.Type.Moral = new Core.Type.MoralStruct[(Constant.MAX_MORALS)];
 
-            for (i = 0; i <= Constant.MAX_MORALS; i++)
+            for (i = 0; i < Constant.MAX_MORALS; i++)
                 ClearMoral(i);
         }
 

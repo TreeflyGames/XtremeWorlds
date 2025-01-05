@@ -506,7 +506,7 @@ namespace Client
                 frmEditor_Item.Instance.cmbAnimation.SelectedIndex = withBlock.Animation;
 
                 if (withBlock.ItemLevel == 0)
-                    withBlock.ItemLevel = 0;
+                    withBlock.ItemLevel = 1;
                 frmEditor_Item.Instance.nudItemLvl.Value = withBlock.ItemLevel;
 
                 // Type specific settings
@@ -656,7 +656,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (i = 0; i < Constant.MAX_ITEMS; i++)
             {
                 if (GameState.Item_Changed[i])
                 {
@@ -674,7 +674,7 @@ namespace Client
         #region Moral Editor
         internal static void MoralEditorOk()
         {
-            for (int i = 0; i <= Constant.MAX_MORALS; i++)
+            for (int i = 0; i < Constant.MAX_MORALS; i++)
             {
                 if (GameState.Moral_Changed[i])
                 {
@@ -719,7 +719,7 @@ namespace Client
 
         internal static void ClearChanged_Moral()
         {
-            for (int i = 0; i <= Constant.MAX_MORALS; i++)
+            for (int i = 0; i < Constant.MAX_MORALS; i++)
                 GameState.Moral_Changed[i] = false;
         }
         #endregion
@@ -887,7 +887,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_PETS; i++)
+            for (i = 0; i < Constant.MAX_PETS; i++)
             {
                 if (GameState.Pet_Changed[i])
                 {

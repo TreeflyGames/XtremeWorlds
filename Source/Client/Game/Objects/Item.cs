@@ -12,11 +12,8 @@ namespace Client
         internal static void ClearItem(int index)
         {
             Core.Type.Item[index] = default;
-            for (int X = 0; X < (int)Core.Enum.StatType.Count - 1; X++)
-                Core.Type.Item[index].Add_Stat = new byte[X + 1];
-
-            for (int X = 0; X < (int)Core.Enum.StatType.Count - 1; X++)
-                Core.Type.Item[index].Stat_Req = new byte[X + 1];
+            Array.Resize(ref Core.Type.Item[index].Add_Stat, (int)Core.Enum.StatType.Count);
+            Array.Resize(ref Core.Type.Item[index].Stat_Req, (int)Core.Enum.StatType.Count);
 
             Core.Type.Item[index].Name = "";
             Core.Type.Item[index].Description = "";
@@ -27,16 +24,16 @@ namespace Client
         {
             int i;
 
-            Core.Type.Item = new Core.Type.ItemStruct[501];
+            Core.Type.Item = new Core.Type.ItemStruct[Core.Constant.MAX_ITEMS];
 
-            for (i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (i = 0; i < Constant.MAX_ITEMS; i++)
                 ClearItem(i);
 
         }
 
         internal static void ClearChangedItem()
         {
-            GameState.Item_Changed = new bool[501];
+            GameState.Item_Changed = new bool[Core.Constant.MAX_ITEMS];
         }
 
         public static void StreamItem(int itemNum)

@@ -107,7 +107,7 @@ namespace Client
             // populate combo boxes
             cmbRewardItem.Items.Clear();
             cmbRewardItem.Items.Add("None");
-            for (int i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (int i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbRewardItem.Items.Add(i + ": " + Core.Type.Item[i].Name);
 
             cmbAnimation.Items.Clear();

@@ -216,14 +216,14 @@ namespace Client
         public static KeyPair EKeyPair = new KeyPair();
 
         // Stream Content
-        public static object[] Item_Loaded = new object[501];
-        public static object[] NPC_Loaded = new object[501];
-        public static object[] Resource_Loaded = new object[101];
-        public static object[] Animation_Loaded = new object[101];
-        public static object[] Skill_Loaded = new object[256];
-        public static object[] Shop_Loaded = new object[101];
-        public static object[] Pet_Loaded = new object[101];
-        public static object[] Moral_Loaded = new object[(Constant.MAX_MORALS + 1)];
+        public static object[] Item_Loaded = new object[Core.Constant.MAX_ITEMS];
+        public static object[] NPC_Loaded = new object[Core.Constant.MAX_NPCS];
+        public static object[] Resource_Loaded = new object[Core.Constant.MAX_RESOURCES];
+        public static object[] Animation_Loaded = new object[Core.Constant.MAX_RESOURCES];
+        public static object[] Skill_Loaded = new object[Core.Constant.MAX_SKILLS];
+        public static object[] Shop_Loaded = new object[Core.Constant.MAX_SHOPS];
+        public static object[] Pet_Loaded = new object[Core.Constant.MAX_PETS];
+        public static object[] Moral_Loaded = new object[(Constant.MAX_MORALS)];
 
         public static int[] AnimEditorFrame = new int[2];
         public static int[] AnimEditorTimer = new int[2];

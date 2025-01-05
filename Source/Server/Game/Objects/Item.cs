@@ -72,16 +72,16 @@ namespace Server
             Core.Type.Item[index].Name = "";
             Core.Type.Item[index].Description = "";
 
-            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < (int)loopTo; i++)
             {
-                Core.Type.Item[Conversions.ToInteger(i)].Add_Stat = new byte[(int)StatType.Count];
-                Core.Type.Item[Conversions.ToInteger(i)].Stat_Req = new byte[(int)StatType.Count];
+                Core.Type.Item[(i)].Add_Stat = new byte[(int)Core.Enum.StatType.Count];
+                Core.Type.Item[i].Stat_Req = new byte[(int)Core.Enum.StatType.Count];
             }
         }
 
         public static void ClearItems()
         {
-            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < (int)loopTo; i++)
                 ClearItem(Conversions.ToInteger(i));
         }
 
@@ -93,7 +93,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Item[itemNum].AccessReq);
 
             for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
-                buffer.WriteInt32(Core.Type.Item[itemNum].Add_Stat[Conversions.ToInteger(i)]);
+                buffer.WriteInt32(Core.Type.Item[itemNum].Add_Stat[i]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Animation);
             buffer.WriteInt32(Core.Type.Item[itemNum].BindType);
@@ -371,8 +371,8 @@ namespace Server
             // Update the item
             Core.Type.Item[n].AccessReq = buffer.ReadInt32();
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
-                Core.Type.Item[n].Add_Stat[Conversions.ToInteger(i)] = (byte)buffer.ReadInt32();
+            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < loopTo; i++)
+                Core.Type.Item[n].Add_Stat[i] = (byte)buffer.ReadInt32();
 
             Core.Type.Item[n].Animation = buffer.ReadInt32();
             Core.Type.Item[n].BindType = (byte)buffer.ReadInt32();

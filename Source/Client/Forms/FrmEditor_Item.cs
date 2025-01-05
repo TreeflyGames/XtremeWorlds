@@ -58,7 +58,7 @@ namespace Client
                 cmbAnimation.Items.Add(i + ": " + Core.Type.Animation[i].Name);
 
             cmbAmmo.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (int i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbAmmo.Items.Add(i + ": " + Core.Type.Item[i].Name);
 
             cmbProjectile.Items.Clear();
@@ -70,13 +70,13 @@ namespace Client
                 cmbSkills.Items.Add(i + ": " + Core.Type.Skill[i].Name);
 
             cmbPet.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_PETS; i++)
+            for (int i = 0; i < Constant.MAX_PETS; i++)
                 cmbPet.Items.Add(i + ": " + Core.Type.Pet[i].Name);
 
             lstIndex.Items.Clear();
 
             // Add the names
-            for (int i = 0; i <= Constant.MAX_ITEMS - 1; i++)
+            for (int i = 0; i < Constant.MAX_ITEMS; i++)
                 lstIndex.Items.Add(i + ": " + Core.Type.Item[i].Name);
             nudPaperdoll.Maximum = GameState.NumPaperdolls;
             nudSpanwAmount.Maximum = int.MaxValue;
