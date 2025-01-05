@@ -16,7 +16,7 @@ namespace Client
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            Editors.MoralEditorOk();
+            Editors.MoralEditorOK();
             Dispose();
         }
 

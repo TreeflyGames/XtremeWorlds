@@ -90,7 +90,7 @@ namespace Client
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            Editors.PetEditorOk();
+            Editors.PetEditorOK();
             Dispose();
         }
 

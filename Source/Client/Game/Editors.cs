@@ -56,7 +56,7 @@ namespace Client
             GameState.Animation_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void AnimationEditorOk()
+        internal static void AnimationEditorOK()
         {
             int i;
 
@@ -137,7 +137,7 @@ namespace Client
             GameState.NPC_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void NPCEditorOk()
+        internal static void NPCEditorOK()
         {
             int i;
 
@@ -204,7 +204,7 @@ namespace Client
             GameState.Resource_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void ResourceEditorOk()
+        internal static void ResourceEditorOK()
         {
             int i;
 
@@ -292,7 +292,7 @@ namespace Client
             GameState.Skill_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void SkillEditorOk()
+        internal static void SkillEditorOK()
         {
             int i;
 
@@ -376,7 +376,7 @@ namespace Client
             frmEditor_Shop.Instance.lstTradeItem.SelectedIndex = 0;
         }
 
-        internal static void ShopEditorOk()
+        internal static void ShopEditorOK()
         {
             int i;
 
@@ -410,7 +410,7 @@ namespace Client
         #endregion
 
         #region Job Editor
-        internal static void JobEditorOk()
+        internal static void JobEditorOK()
         {
             for (int i = 0; i < Constant.MAX_JOBS; i++)
             {
@@ -652,7 +652,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ItemEditorOk()
+        internal static void ItemEditorOK()
         {
             int i;
 
@@ -672,7 +672,7 @@ namespace Client
         #endregion
 
         #region Moral Editor
-        internal static void MoralEditorOk()
+        internal static void MoralEditorOK()
         {
             for (int i = 0; i < Constant.MAX_MORALS; i++)
             {
@@ -742,7 +742,7 @@ namespace Client
 
         }
 
-        internal static void ProjectileEditorOk()
+        internal static void ProjectileEditorOK()
         {
             int i;
 
@@ -883,7 +883,7 @@ namespace Client
             GameState.Pet_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void PetEditorOk()
+        internal static void PetEditorOK()
         {
             int i;
 

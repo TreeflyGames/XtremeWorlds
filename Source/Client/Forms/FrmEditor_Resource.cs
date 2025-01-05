@@ -72,7 +72,7 @@ namespace Client
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            Editors.ResourceEditorOk();
+            Editors.ResourceEditorOK();
             Dispose();
         }
 
