@@ -626,7 +626,7 @@ namespace Client
             buffer.WriteString(Core.Type.NPC[NPCNum].AttackSay);
             buffer.WriteByte(Core.Type.NPC[NPCNum].Behaviour);
 
-            for (i = 0; i <= Constant.MAX_DROP_ITEMS; i++)
+            for (i = 0; i < Constant.MAX_DROP_ITEMS; i++)
             {
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropChance[i]);
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItem[i]);

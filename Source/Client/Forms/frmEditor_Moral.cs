@@ -39,7 +39,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Moral[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Moral[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.MoralEditorInit();
@@ -55,7 +55,7 @@ namespace Client
             lstIndex.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_MORALS; i++)
-                lstIndex.Items.Add(i + ": " + Core.Type.Moral[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Moral[i].Name);
         }
 
         private void txtName_TextChanged(object sender, EventArgs e)
@@ -65,7 +65,7 @@ namespace Client
             tmpindex = lstIndex.SelectedIndex;
             Core.Type.Moral[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Moral[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Moral[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 

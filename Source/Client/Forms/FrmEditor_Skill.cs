@@ -20,7 +20,7 @@ namespace Client
             tmpindex = lstIndex.SelectedIndex;
             Core.Type.Skill[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Skill[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Skill[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
@@ -150,7 +150,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Skill[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Skill[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.SkillEditorInit();
@@ -171,24 +171,24 @@ namespace Client
             lstIndex.Items.Clear();
 
             // Add the names
-            for (int i = 0; i <= Constant.MAX_SKILLS - 1; i++)
-                lstIndex.Items.Add(i + ": " + Strings.Trim(Core.Type.Skill[i].Name));
+            for (int i = 0; i < Constant.MAX_SKILLS; i++)
+                lstIndex.Items.Add(i + 1 + ": " + Strings.Trim(Core.Type.Skill[i].Name));
 
             cmbAnimCast.Items.Clear();
             cmbAnim.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
+            for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
             {
-                cmbAnimCast.Items.Add(i + ": " + Core.Type.Animation[i].Name);
-                cmbAnim.Items.Add(i + ": " + Core.Type.Animation[i].Name);
+                cmbAnimCast.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
+                cmbAnim.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
             }
 
             cmbProjectile.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
-                cmbProjectile.Items.Add(i + ": " + Core.Type.Projectile[i].Name);
+            for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
+                cmbProjectile.Items.Add(i + 1 + ": " + Core.Type.Projectile[i].Name);
 
             cmbJob.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_JOBS - 1; i++)
-                cmbJob.Items.Add(i + ": " + Core.Type.Job[i].Name.Trim());
+            for (int i = 0; i < Constant.MAX_JOBS; i++)
+                cmbJob.Items.Add(i + 1 + ": " + Core.Type.Job[i].Name.Trim());
         }
 
         private void ChkProjectile_CheckedChanged(object sender, EventArgs e)

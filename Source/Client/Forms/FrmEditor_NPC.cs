@@ -24,13 +24,13 @@ namespace Client
 
             // Add the names
             for (int i = 0; i <= Constant.MAX_NPCS - 1; i++)
-                lstIndex.Items.Add(i + ": " + Strings.Trim(Core.Type.NPC[i].Name));
+                lstIndex.Items.Add(i + 1 + ": " + Strings.Trim(Core.Type.NPC[i].Name));
 
             // populate combo boxes
             cmbAnimation.Items.Clear();
             cmbAnimation.Items.Add("None");
-            for (int i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
-                cmbAnimation.Items.Add(i + ": " + Core.Type.Animation[i].Name);
+            for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
+                cmbAnimation.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
 
             cmbSkill1.Items.Clear();
             cmbSkill1.Items.Add("None");
@@ -44,20 +44,20 @@ namespace Client
             cmbSkill5.Items.Add("None");
             cmbSkill6.Items.Clear();
             cmbSkill6.Items.Add("None");
-            for (int i = 0; i <= Constant.MAX_SKILLS - 1; i++)
+            for (int i = 0; i < Constant.MAX_SKILLS; i++)
             {
-                cmbSkill1.Items.Add(i + ": " + Core.Type.Skill[i].Name);
-                cmbSkill2.Items.Add(i + ": " + Core.Type.Skill[i].Name);
-                cmbSkill3.Items.Add(i + ": " + Core.Type.Skill[i].Name);
-                cmbSkill4.Items.Add(i + ": " + Core.Type.Skill[i].Name);
-                cmbSkill5.Items.Add(i + ": " + Core.Type.Skill[i].Name);
-                cmbSkill6.Items.Add(i + ": " + Core.Type.Skill[i].Name);
+                cmbSkill1.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                cmbSkill2.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                cmbSkill3.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                cmbSkill4.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                cmbSkill5.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                cmbSkill6.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
             }
 
             cmbItem.Items.Clear();
             cmbItem.Items.Add("None");
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbItem.Items.Add(i + ": " + Core.Type.Item[i].Name);
+                cmbItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
         }
 
         private void DrawSprite()
@@ -99,7 +99,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.NPC[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.NPC[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.NPCEditorInit();
@@ -122,7 +122,7 @@ namespace Client
             tmpindex = lstIndex.SelectedIndex;
             Core.Type.NPC[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.NPC[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.NPC[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 

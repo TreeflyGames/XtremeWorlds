@@ -288,7 +288,7 @@ namespace Client
 
             Core.Type.Animation = new Core.Type.AnimationStruct[101];
 
-            for (i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
+            for (i = 0; i < Constant.MAX_ANIMATIONS; i++)
                 ClearAnimation(i);
         }
 

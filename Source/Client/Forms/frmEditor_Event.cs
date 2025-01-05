@@ -23,8 +23,8 @@ namespace Client
             cmbCondition_PlayerVarIndex.Enabled = false;
             cmbCondition_PlayerVarIndex.Items.Clear();
 
-            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
-                cmbCondition_PlayerVarIndex.Items.Add(i + ". " + Event.Variables[i]);
+            for (i = 0; i < Constant.NAX_VARIABLES; i++)
+                cmbCondition_PlayerVarIndex.Items.Add(i  + 1 + ". " + Event.Variables[i]);
             cmbCondition_PlayerVarIndex.SelectedIndex = 0;
             cmbCondition_PlayerVarCompare.SelectedIndex = 0;
             cmbCondition_PlayerVarCompare.Enabled = false;
@@ -33,8 +33,8 @@ namespace Client
             cmbCondition_PlayerSwitch.Enabled = false;
             cmbCondition_PlayerSwitch.Items.Clear();
 
-            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
-                cmbCondition_PlayerSwitch.Items.Add(i + ". " + Event.Switches[i]);
+            for (i = 0; i < Constant.MAX_SWITCHES; i++)
+                cmbCondition_PlayerSwitch.Items.Add(i  + 1 + ". " + Event.Switches[i]);
             cmbCondition_PlayerSwitch.SelectedIndex = 0;
             cmbCondtion_PlayerSwitchCondition.Enabled = false;
             cmbCondtion_PlayerSwitchCondition.SelectedIndex = 0;
@@ -42,21 +42,21 @@ namespace Client
             cmbCondition_HasItem.Items.Clear();
 
             for (i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbCondition_HasItem.Items.Add(i + ". " + Core.Type.Item[i].Name);
+                cmbCondition_HasItem.Items.Add(i  + 1 + ". " + Core.Type.Item[i].Name);
             cmbCondition_HasItem.SelectedIndex = 0;
             nudCondition_HasItem.Enabled = false;
             nudCondition_HasItem.Value = 1m;
             cmbCondition_JobIs.Enabled = false;
             cmbCondition_JobIs.Items.Clear();
 
-            for (i = 0; i <= Constant.MAX_JOBS - 1; i++)
-                cmbCondition_JobIs.Items.Add(i + ". " + Core.Type.Job[i].Name);
+            for (i = 0; i < Constant.MAX_JOBS; i++)
+                cmbCondition_JobIs.Items.Add(i  + 1 + ". " + Core.Type.Job[i].Name);
             cmbCondition_JobIs.SelectedIndex = 0;
             cmbCondition_LearntSkill.Enabled = false;
             cmbCondition_LearntSkill.Items.Clear();
 
-            for (i = 0; i <= Constant.MAX_SKILLS - 1; i++)
-                cmbCondition_LearntSkill.Items.Add(i + ". " + Strings.Trim(Core.Type.Skill[i].Name));
+            for (i = 0; i < Constant.MAX_SKILLS; i++)
+                cmbCondition_LearntSkill.Items.Add(i  + 1 + ". " + Strings.Trim(Core.Type.Skill[i].Name));
             cmbCondition_LearntSkill.SelectedIndex = 0;
             cmbCondition_LevelCompare.Enabled = false;
             cmbCondition_LevelCompare.SelectedIndex = 0;
@@ -87,14 +87,14 @@ namespace Client
 
             cmbSwitch.Items.Clear();
             cmbSwitch.Items.Add("None");
-            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
-                cmbSwitch.Items.Add(i + ". " + Event.Switches[i]);
+            for (i = 0; i < Constant.MAX_SWITCHES; i++)
+                cmbSwitch.Items.Add(i  + 1 + ". " + Event.Switches[i]);
             cmbSwitch.SelectedIndex = 0;
             cmbVariable.Items.Clear();
             cmbVariable.Items.Add("None");
 
-            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
-                cmbVariable.Items.Add(i + ". " + Event.Variables[i]);
+            for (i = 0; i < Constant.NAX_VARIABLES; i++)
+                cmbVariable.Items.Add(i  + 1 + ". " + Event.Variables[i]);
             cmbVariable.SelectedIndex = 0;
             cmbChangeItemIndex.Items.Clear();
             cmbChangeItemIndex.Items.Add("None");
@@ -108,21 +108,21 @@ namespace Client
             cmbChangeSkills.Items.Clear();
             cmbChangeSkills.Items.Add("None");
 
-            for (i = 0; i <= Constant.MAX_SKILLS - 1; i++)
+            for (i = 0; i < Constant.MAX_SKILLS; i++)
                 cmbChangeSkills.Items.Add(Core.Type.Skill[i].Name);
             cmbChangeSkills.SelectedIndex = 0;
             cmbChangeJob.Items.Clear();
             cmbChangeJob.Items.Add("None");
 
-            for (i = 0; i <= Constant.MAX_JOBS - 1; i++)
+            for (i = 0; i < Constant.MAX_JOBS; i++)
                 cmbChangeJob.Items.Add(Strings.Trim(Core.Type.Job[i].Name));
             cmbChangeJob.SelectedIndex = 0;
             nudChangeSprite.Maximum = GameState.NumCharacters;
             cmbPlayAnim.Items.Clear();
             cmbPlayAnim.Items.Add("None");
 
-            for (i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
-                cmbPlayAnim.Items.Add(i + ". " + Core.Type.Animation[i].Name);
+            for (i = 0; i < Constant.MAX_ANIMATIONS; i++)
+                cmbPlayAnim.Items.Add(i  + 1 + ". " + Core.Type.Animation[i].Name);
             cmbPlayAnim.SelectedIndex = 0;
 
             cmbPlayBGM.Items.Clear();
@@ -143,7 +143,7 @@ namespace Client
             cmbOpenShop.Items.Add("None");
 
             for (i = 0; i <= Constant.MAX_SHOPS - 1; i++)
-                cmbOpenShop.Items.Add(i + ". " + Core.Type.Shop[i].Name);
+                cmbOpenShop.Items.Add(i  + 1 + ". " + Core.Type.Shop[i].Name);
             cmbOpenShop.SelectedIndex = 0;
             cmbSpawnNPC.Items.Clear();
             cmbSpawnNPC.Items.Add("None");
@@ -152,7 +152,7 @@ namespace Client
             {
                 if (Core.Type.MyMap.NPC[i] > 0)
                 {
-                    cmbSpawnNPC.Items.Add(i + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
+                    cmbSpawnNPC.Items.Add(i  + 1 + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
                 }
                 else
                 {
@@ -190,18 +190,18 @@ namespace Client
             cmbHasItem.Items.Clear();
             cmbHasItem.Items.Add("None");
             for (i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbHasItem.Items.Add(i + ": " + Core.Type.Item[i].Name);
+                cmbHasItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
 
             // variables
             cmbPlayerVar.Items.Clear();
             cmbPlayerVar.Items.Add("None");
-            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
-                cmbPlayerVar.Items.Add(i + ". " + Event.Variables[i]);
+            for (i = 0; i < Constant.NAX_VARIABLES; i++)
+                cmbPlayerVar.Items.Add(i  + 1 + ". " + Event.Variables[i]);
             // switches
             cmbPlayerSwitch.Items.Clear();
             cmbPlayerSwitch.Items.Add("None");
-            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
-                cmbPlayerSwitch.Items.Add(i + ". " + Event.Switches[i]);
+            for (i = 0; i < Constant.MAX_SWITCHES; i++)
+                cmbPlayerSwitch.Items.Add(i  + 1 + ". " + Event.Switches[i]);
             cmbSelfSwitch.SelectedIndex = 0;
 
             // enable delete button
@@ -691,7 +691,7 @@ namespace Client
                             {
                                 cmbChangeJob.Items.Clear();
 
-                                for (int i = 0; i <= Constant.MAX_JOBS - 1; i++)
+                                for (int i = 0; i < Constant.MAX_JOBS; i++)
                                     cmbChangeJob.Items.Add(Strings.Trim(Core.Type.Job[i].Name));
                                 cmbChangeJob.SelectedIndex = 0;
                             }
@@ -837,7 +837,7 @@ namespace Client
                         cmbPlayAnimEvent.Items.Clear();
 
                         for (int i = 0, loopTo2 = Core.Type.MyMap.EventCount; i <= loopTo2; i++)
-                            cmbPlayAnimEvent.Items.Add(i + ". " + Core.Type.MyMap.Event[i].Name);
+                            cmbPlayAnimEvent.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                         cmbPlayAnimEvent.SelectedIndex = 0;
                         cmbAnimTargetType.SelectedIndex = 0;
                         cmbPlayAnim.SelectedIndex = 0;
@@ -1796,12 +1796,12 @@ namespace Client
             lstSwitches.Items.Clear();
             lstSwitches.Items.Add("None");
 
-            for (int i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
+            for (int i = 0; i < Constant.MAX_SWITCHES; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstVariables.Items.Clear();
             lstVariables.Items.Add("None");
 
-            for (int i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
+            for (int i = 0; i < Constant.NAX_VARIABLES; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
 
         }
@@ -1844,13 +1844,13 @@ namespace Client
             }
             lstSwitches.Items.Clear();
             lstSwitches.Items.Add("None");
-            for (int i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
+            for (int i = 0; i < Constant.MAX_SWITCHES; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
             lstVariables.Items.Add("None");
 
-            for (int i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
+            for (int i = 0; i < Constant.NAX_VARIABLES; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
             lstVariables.SelectedIndex = 0;
         }
@@ -1865,13 +1865,13 @@ namespace Client
             lstSwitches.Items.Clear();
             lstSwitches.Items.Add("None");
 
-            for (int i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
+            for (int i = 0; i < Constant.MAX_SWITCHES; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
             lstVariables.Items.Add("None");
 
-            for (int i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
+            for (int i = 0; i < Constant.NAX_VARIABLES; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
             lstVariables.SelectedIndex = 0;
         }
@@ -2470,7 +2470,7 @@ namespace Client
                     }
                     else
                     {
-                        cmbChatBubbleTarget.Items.Add(i + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
+                        cmbChatBubbleTarget.Items.Add(i  + 1 + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
                     }
                 }
                 cmbChatBubbleTarget.SelectedIndex = 0;
@@ -2481,7 +2481,7 @@ namespace Client
                 cmbChatBubbleTarget.Items.Clear();
 
                 for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i <= loopTo; i++)
-                    cmbChatBubbleTarget.Items.Add(i + ". " + Core.Type.MyMap.Event[i].Name);
+                    cmbChatBubbleTarget.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                 cmbChatBubbleTarget.SelectedIndex = 0;
             }
 

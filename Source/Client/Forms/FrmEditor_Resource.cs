@@ -84,7 +84,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Resource[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Resource[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.ResourceEditorInit();
@@ -102,18 +102,18 @@ namespace Client
 
             // Add the names
             for (int i = 0; i <= Constant.MAX_RESOURCES - 1; i++)
-                lstIndex.Items.Add(i + ": " + Core.Type.Resource[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Resource[i].Name);
 
             // populate combo boxes
             cmbRewardItem.Items.Clear();
             cmbRewardItem.Items.Add("None");
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbRewardItem.Items.Add(i + ": " + Core.Type.Item[i].Name);
+                cmbRewardItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
 
             cmbAnimation.Items.Clear();
             cmbAnimation.Items.Add("None");
-            for (int i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
-                cmbAnimation.Items.Add(i + ": " + Core.Type.Animation[i].Name);
+            for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
+                cmbAnimation.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
 
             nudExhaustedPic.Maximum = GameState.NumResources;
             nudNormalPic.Maximum = GameState.NumResources;
@@ -127,7 +127,7 @@ namespace Client
             tmpindex = lstIndex.SelectedIndex;
             Core.Type.Resource[GameState.EditorIndex].Name = txtName.Text;
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Resource[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Resource[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 

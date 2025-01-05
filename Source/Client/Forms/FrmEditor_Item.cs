@@ -36,7 +36,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Item[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Item[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.ItemEditorInit();
@@ -54,30 +54,30 @@ namespace Client
 
             // populate combo boxes
             cmbAnimation.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
-                cmbAnimation.Items.Add(i + ": " + Core.Type.Animation[i].Name);
+            for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
+                cmbAnimation.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
 
             cmbAmmo.Items.Clear();
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbAmmo.Items.Add(i + ": " + Core.Type.Item[i].Name);
+                cmbAmmo.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
 
             cmbProjectile.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_PROJECTILES - 1;  i++)
-                cmbProjectile.Items.Add(i + ": " + Core.Type.Projectile[i].Name);
+            for (int i = 0; i < Constant.MAX_PROJECTILES;  i++)
+                cmbProjectile.Items.Add(i + 1 + ": " + Core.Type.Projectile[i].Name);
 
             cmbSkills.Items.Clear();
-            for (int i = 0; i <= Constant.MAX_SKILLS - 1; i++)
-                cmbSkills.Items.Add(i + ": " + Core.Type.Skill[i].Name);
+            for (int i = 0; i < Constant.MAX_SKILLS; i++)
+                cmbSkills.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
 
             cmbPet.Items.Clear();
             for (int i = 0; i < Constant.MAX_PETS; i++)
-                cmbPet.Items.Add(i + ": " + Core.Type.Pet[i].Name);
+                cmbPet.Items.Add(i + 1 + ": " + Core.Type.Pet[i].Name);
 
             lstIndex.Items.Clear();
 
             // Add the names
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
-                lstIndex.Items.Add(i + ": " + Core.Type.Item[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
             nudPaperdoll.Maximum = GameState.NumPaperdolls;
             nudSpanwAmount.Maximum = int.MaxValue;
         }
@@ -242,7 +242,7 @@ namespace Client
             tmpindex = lstIndex.SelectedIndex;
             Core.Type.Item[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Item[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Item[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 

@@ -118,7 +118,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_PROJECTILES - 1;  i++)
+            for (i = 0; i < Constant.MAX_PROJECTILES;  i++)
                 ClearProjectile(i);
 
         }

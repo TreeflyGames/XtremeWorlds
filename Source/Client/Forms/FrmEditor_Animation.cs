@@ -61,7 +61,7 @@ namespace Client
             tmpindex = lstIndex.SelectedIndex;
             Core.Type.Animation[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Animation[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Animation[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
@@ -78,7 +78,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Animation[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Animation[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.AnimationEditorInit();
@@ -95,8 +95,8 @@ namespace Client
             lstIndex.Items.Clear();
 
             // Add the names
-            for (int i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
-                lstIndex.Items.Add(i + ": " + Core.Type.Animation[i].Name);
+            for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
+                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
 
             // find the music we have set
             cmbSound.Items.Clear();

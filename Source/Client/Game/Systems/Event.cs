@@ -2602,7 +2602,7 @@ namespace Client
                         frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Clear();
                         var loopTo2 = Core.Type.MyMap.EventCount;
                         for (i = 0; i <= loopTo2; i++)
-                            frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Add(i + ". " + Core.Type.MyMap.Event[i].Name);
+                            frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                         frmEditor_Event.Instance.cmbPlayAnimEvent.SelectedIndex = 0;
                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 == 0)
                         {
@@ -3417,9 +3417,9 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
+            for (i = 0; i < Constant.MAX_SWITCHES; i++)
                 Switches[i] = buffer.ReadString();
-            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
+            for (i = 0; i < Constant.NAX_VARIABLES; i++)
                 Variables[i] = buffer.ReadString();
 
             buffer.Dispose();
@@ -3799,9 +3799,9 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSwitchesAndVariables);
 
-            for (i = 0; i <= Constant.MAX_SWITCHES - 1; i++)
+            for (i = 0; i < Constant.MAX_SWITCHES; i++)
                 buffer.WriteString(Switches[i]);
-            for (i = 0; i <= Constant.NAX_VARIABLES - 1; i++)
+            for (i = 0; i < Constant.NAX_VARIABLES; i++)
                 buffer.WriteString(Variables[i]);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);

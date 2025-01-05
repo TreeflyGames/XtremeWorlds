@@ -2462,7 +2462,7 @@ namespace Client
 
             if (GameState.NumProjectiles > 0)
             {
-                for (i = 0; i <= Constant.MAX_PROJECTILES - 1;  i++)
+                for (i = 0; i < Constant.MAX_PROJECTILES;  i++)
                 {
                     if (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, i].ProjectileNum > 0)
                     {

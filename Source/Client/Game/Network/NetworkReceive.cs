@@ -339,7 +339,7 @@ namespace Client
             int x;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_JOBS - 1; i++)
+            for (i = 0; i < Constant.MAX_JOBS; i++)
             {          
                 ref var withBlock = ref Core.Type.Job[i];
                 withBlock.Name = buffer.ReadString();
@@ -938,7 +938,7 @@ namespace Client
             int x;
             var buffer = new ByteStream(Compression.DecompressBytes(data));
 
-            for (i = 0; i <= Constant.MAX_JOBS - 1; i++)
+            for (i = 0; i < Constant.MAX_JOBS; i++)
             {
                 {
                     ref var withBlock = ref Core.Type.Job[i];

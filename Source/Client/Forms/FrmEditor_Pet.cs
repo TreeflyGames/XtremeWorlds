@@ -26,13 +26,13 @@ namespace Client
 
             // Add the names
             for (int i = 0; i < Constant.MAX_PETS; i++)
-                lstIndex.Items.Add(i + ": " + Core.Type.Pet[i].Name);
+                lstIndex.Items.Add(i + 1 + ": " + Core.Type.Pet[i].Name);
 
             cmbEvolve.Items.Clear();
             cmbEvolve.Items.Add("None");
             // Add the names
             for (int i = 0; i < Constant.MAX_PETS; i++)
-                cmbEvolve.Items.Add(i + ": " + Core.Type.Pet[i].Name);
+                cmbEvolve.Items.Add(i + 1 + ": " + Core.Type.Pet[i].Name);
         }
 
         private void lstIndex_Click(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace Client
             tmpindex = lstIndex.SelectedIndex;
             Core.Type.Pet[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Pet[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Pet[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
@@ -263,7 +263,7 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + ": " + Core.Type.Pet[GameState.EditorIndex].Name);
+            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Pet[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.PetEditorInit();

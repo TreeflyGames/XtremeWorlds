@@ -54,7 +54,7 @@ namespace Client
         #region Jobs
         public static void ClearJobs()
         {
-            for (int i = 0; i <= Constant.MAX_JOBS - 1; i++)
+            for (int i = 0; i < Constant.MAX_JOBS; i++)
                 ClearJob(i);
         }
 
@@ -77,7 +77,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_SKILLS - 1; i++)
+            for (i = 0; i < Constant.MAX_SKILLS; i++)
                 ClearSkill(i);
 
         }

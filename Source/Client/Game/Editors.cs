@@ -60,7 +60,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
+            for (i = 0; i < Constant.MAX_ANIMATIONS; i++)
             {
                 if (GameState.Animation_Changed[i])
                 {
@@ -83,7 +83,7 @@ namespace Client
 
         internal static void ClearChanged_Animation()
         {
-            for (int i = 0; i <= Constant.MAX_ANIMATIONS - 1; i++)
+            for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
                 GameState.Animation_Changed[i] = false;
         }
 
@@ -296,7 +296,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_SKILLS - 1; i++)
+            for (i = 0; i < Constant.MAX_SKILLS; i++)
             {
                 if (GameState.Skill_Changed[i])
                 {
@@ -319,7 +319,7 @@ namespace Client
 
         internal static void ClearChanged_Skill()
         {
-            for (int i = 0; i <= Constant.MAX_SKILLS - 1; i++)
+            for (int i = 0; i < Constant.MAX_SKILLS; i++)
                 GameState.Skill_Changed[i] = false;
         }
 
@@ -368,7 +368,7 @@ namespace Client
                     }
                     else
                     {
-                        frmEditor_Shop.Instance.lstTradeItem.Items.Add(i + ": " + withBlock.ItemValue + "x " + Core.Type.Item[withBlock.Item].Name + " for " + withBlock.CostValue + "x " + Core.Type.Item[withBlock.CostItem].Name);
+                        frmEditor_Shop.Instance.lstTradeItem.Items.Add(i + 1 + ": " + withBlock.ItemValue + "x " + Core.Type.Item[withBlock.Item].Name + " for " + withBlock.CostValue + "x " + Core.Type.Item[withBlock.CostItem].Name);
                     }
                 }
             }
@@ -412,7 +412,7 @@ namespace Client
         #region Job Editor
         internal static void JobEditorOk()
         {
-            for (int i = 0; i <= Constant.MAX_JOBS - 1; i++)
+            for (int i = 0; i < Constant.MAX_JOBS; i++)
             {
                 if (GameState.Job_Changed[i])
                 {
@@ -477,7 +477,7 @@ namespace Client
 
         internal static void ClearChanged_Job()
         {
-            for (int i = 0; i <= Constant.MAX_JOBS - 1; i++)
+            for (int i = 0; i < Constant.MAX_JOBS; i++)
                 GameState.Job_Changed[i] = false;
         }
 
@@ -622,7 +622,7 @@ namespace Client
 
                 // Build cmbJobReq
                 frmEditor_Item.Instance.cmbJobReq.Items.Clear();
-                for (i = 0; i <= Constant.MAX_JOBS - 1; i++)
+                for (i = 0; i < Constant.MAX_JOBS; i++)
                     frmEditor_Item.Instance.cmbJobReq.Items.Add(Core.Type.Job[i].Name);
 
                 frmEditor_Item.Instance.cmbJobReq.SelectedIndex = withBlock.JobReq;
@@ -746,7 +746,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_PROJECTILES - 1;  i++)
+            for (i = 0; i < Constant.MAX_PROJECTILES;  i++)
             {
                 if (GameState.ProjectileChanged[i])
                 {
@@ -771,7 +771,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_PROJECTILES - 1;  i++)
+            for (i = 0; i < Constant.MAX_PROJECTILES;  i++)
                 GameState.ProjectileChanged[i] = false;
 
         }
@@ -794,12 +794,12 @@ namespace Client
                 withBlock.cmbSkill3.Items.Clear();
                 withBlock.cmbSkill4.Items.Clear();
 
-                for (i = 0; i <= Constant.MAX_SKILLS - 1; i++)
+                for (i = 0; i < Constant.MAX_SKILLS; i++)
                 {
-                    withBlock.cmbSkill1.Items.Add(i + ": " + Core.Type.Skill[i].Name);
-                    withBlock.cmbSkill2.Items.Add(i + ": " + Core.Type.Skill[i].Name);
-                    withBlock.cmbSkill3.Items.Add(i + ": " + Core.Type.Skill[i].Name);
-                    withBlock.cmbSkill4.Items.Add(i + ": " + Core.Type.Skill[i].Name);
+                    withBlock.cmbSkill1.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                    withBlock.cmbSkill2.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                    withBlock.cmbSkill3.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
+                    withBlock.cmbSkill4.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
                 }
                 withBlock.txtName.Text = Core.Type.Pet[GameState.EditorIndex].Name;
                 if (Core.Type.Pet[GameState.EditorIndex].Sprite < 0 | Core.Type.Pet[GameState.EditorIndex].Sprite > withBlock.nudSprite.Maximum)

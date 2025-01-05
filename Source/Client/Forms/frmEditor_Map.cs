@@ -834,7 +834,7 @@ namespace Client
             cmbAnimation.Items.Add("None");
             cmbAnimation.SelectedIndex = 0;
 
-            for (Y = 1; Y <= Constant.MAX_ANIMATIONS - 1; Y++)
+            for (Y = 1; Y < Constant.MAX_ANIMATIONS; Y++)
                 cmbAnimation.Items.Add(Y + ": " + Core.Type.Animation[Y].Name);
 
             lblMap.Text = "Map: ";
@@ -892,7 +892,7 @@ namespace Client
 
             // set shops for the shop attribute
             for (int i = 0; i <= Constant.MAX_SHOPS - 1; i++)
-                cmbShop.Items.Add(i + ": " + Core.Type.Shop[i].Name);
+                cmbShop.Items.Add(i + 1 + ": " + Core.Type.Shop[i].Name);
 
             // we're not in a shop
             cmbShop.SelectedIndex = 0;
