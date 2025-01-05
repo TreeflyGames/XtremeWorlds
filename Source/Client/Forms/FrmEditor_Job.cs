@@ -63,8 +63,8 @@ namespace Client
 
             tmpindex = lstIndex.SelectedIndex;
             Core.Type.Job[GameState.EditorIndex].Name = Strings.Trim(txtName.Text);
-            lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Job[GameState.EditorIndex].Name);
+            lstIndex.Items.RemoveAt(GameState.EditorIndex);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Job[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
         }
 
@@ -192,8 +192,8 @@ namespace Client
             Database.ClearJob(GameState.EditorIndex);
 
             tmpindex = lstIndex.SelectedIndex;
-            lstIndex.Items.RemoveAt(GameState.EditorIndex - 1);
-            lstIndex.Items.Insert(GameState.EditorIndex - 1, GameState.EditorIndex + 1 + ": " + Core.Type.Job[GameState.EditorIndex].Name);
+            lstIndex.Items.RemoveAt(GameState.EditorIndex);
+            lstIndex.Items.Insert(GameState.EditorIndex, GameState.EditorIndex + 1 + ": " + Core.Type.Job[GameState.EditorIndex].Name);
             lstIndex.SelectedIndex = tmpindex;
 
             Editors.JobEditorInit();
