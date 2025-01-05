@@ -1394,7 +1394,7 @@ namespace Client
 
         public static void Packet_EditMoral(ref byte[] data)
         {
-
+            GameState.InitMoralEditor = true;
         }
 
         public static void Packet_UpdateMoral(ref byte[] data)
