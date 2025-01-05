@@ -17,7 +17,7 @@ namespace Client
             Core.Type.Account = new Core.Type.AccountStruct[Constant.MAX_PLAYERS];
             Core.Type.Player = new Core.Type.PlayerStruct[Constant.MAX_PLAYERS];
 
-            for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+            for (i = 0; i < Constant.MAX_PLAYERS; i++)
             {
                 ClearAccount(i);
                 ClearPlayer(i);
@@ -752,7 +752,7 @@ namespace Client
             {
                 if (Core.Type.Moral[Core.Type.MyMap.Moral].PlayerBlock)
                 {
-                    for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+                    for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i))
                         {
@@ -768,7 +768,7 @@ namespace Client
                 // Check to see if a NPC is already on that tile
                 if (Core.Type.Moral[Core.Type.MyMap.Moral].NPCBlock)
                 {
-                    for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+                    for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
                         if (Core.Type.MyMapNPC[i].Num > 0 & Core.Type.MyMapNPC[i].X == x & Core.Type.MyMapNPC[i].Y == y)
                         {

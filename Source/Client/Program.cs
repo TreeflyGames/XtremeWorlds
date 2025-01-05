@@ -902,7 +902,7 @@ namespace Client
         private static void HandleRightClickMenu()
         {
             // Loop through all players and display the right-click menu for the matching one
-            for (int i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+            for (int i = 0; i < Constant.MAX_PLAYERS; i++)
             {
                 if (IsPlaying(i) && GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                 {
@@ -1425,7 +1425,7 @@ namespace Client
             Height = (long)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Misc, "Bars")).Height / 4d);
 
             // render NPC health bars
-            for (i = 0L; i <= Constant.MAX_MAP_NPCS - 1; i++)
+            for (i = 0L; i < Constant.MAX_MAP_NPCS; i++)
             {
                 NPCNum = Core.Type.MyMapNPC[(int)i].Num;
                 // exists?
@@ -1457,7 +1457,7 @@ namespace Client
                 }
             }
 
-            for (i = 0L; i <= Constant.MAX_PLAYERS - 1; i++)
+            for (i = 0L; i < Constant.MAX_PLAYERS; i++)
             {
                 if (GetPlayerMap((int)i) == GetPlayerMap((int)i))
                 {
@@ -2343,7 +2343,7 @@ namespace Client
                 if (GameState.NumCharacters > 0)
                 {
                     // Players
-                    for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+                    for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {
@@ -2362,7 +2362,7 @@ namespace Client
                         }
                     }
 
-                    for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+                    for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
                         if (Core.Type.MyMapNPC[i].Y == y)
                         {
@@ -2405,7 +2405,7 @@ namespace Client
                         }
                     }
 
-                    for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+                    for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i))
                         {
@@ -2509,7 +2509,7 @@ namespace Client
                 DrawGrid();
             }
 
-            for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+            for (i = 0; i < Constant.MAX_PLAYERS; i++)
             {
                 if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                 {
@@ -2536,7 +2536,7 @@ namespace Client
                 }
             }
 
-            for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
                 if (Core.Type.MyMapNPC[i].Num > 0)
                 {

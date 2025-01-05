@@ -389,7 +389,7 @@ namespace Core.Global
 
         public static string IsEditorLocked(int index, int id)
         {
-            for (int i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+            for (int i = 0; i < Constant.MAX_PLAYERS; i++)
             {
                 if (IsPlaying(i))
                 {

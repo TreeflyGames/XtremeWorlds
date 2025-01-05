@@ -216,7 +216,7 @@ namespace Client
             }
 
             // Check for NPC collision
-            for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
                 if (Core.Type.MyMapNPC[i].X == x & Core.Type.MyMapNPC[i].Y == y)
                 {
@@ -229,7 +229,7 @@ namespace Client
             }
 
             // Check for player collision
-            for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+            for (i = 0; i < Constant.MAX_PLAYERS; i++)
             {
                 if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                 {

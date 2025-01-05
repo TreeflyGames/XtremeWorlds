@@ -142,13 +142,13 @@ namespace Client
             cmbOpenShop.Items.Clear();
             cmbOpenShop.Items.Add("None");
 
-            for (i = 0; i <= Constant.MAX_SHOPS - 1; i++)
+            for (i = 0; i < Constant.MAX_SHOPS; i++)
                 cmbOpenShop.Items.Add(i  + 1 + ". " + Core.Type.Shop[i].Name);
             cmbOpenShop.SelectedIndex = 0;
             cmbSpawnNPC.Items.Clear();
             cmbSpawnNPC.Items.Add("None");
 
-            for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
                 if (Core.Type.MyMap.NPC[i] > 0)
                 {
@@ -2462,7 +2462,7 @@ namespace Client
                 cmbChatBubbleTarget.Visible = true;
                 cmbChatBubbleTarget.Items.Clear();
 
-                for (int i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+                for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
                 {
                     if (Core.Type.MyMap.NPC[i] < 0)
                     {

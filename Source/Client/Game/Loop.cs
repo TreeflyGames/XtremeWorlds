@@ -202,7 +202,7 @@ namespace Client
                 // Process input before rendering, otherwise input will be behind by 1 frame
                 if (walkTimer < tick)
                 {
-                    for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+                    for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i))
                         {
@@ -215,7 +215,7 @@ namespace Client
                     }
 
                     // Process NPC movements (actually move them)
-                    for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+                    for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
                         if (Core.Type.MyMap.NPC[i] > 0)
                         {
@@ -326,7 +326,7 @@ namespace Client
                     GameLogic.SetBarWidth(ref GameState.BarWidth_GuiHP_Max, ref GameState.BarWidth_GuiHP);
                     GameLogic.SetBarWidth(ref GameState.BarWidth_GuiSP_Max, ref GameState.BarWidth_GuiSP);
                     GameLogic.SetBarWidth(ref GameState.BarWidth_GuiEXP_Max, ref GameState.BarWidth_GuiEXP);
-                    for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+                    for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
                         if (Core.Type.MyMapNPC[i].Num > 0)
                         {
@@ -334,7 +334,7 @@ namespace Client
                         }
                     }
 
-                    for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+                    for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {

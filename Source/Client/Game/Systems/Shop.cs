@@ -25,7 +25,7 @@ namespace Client
 
             Core.Type.Shop = new Core.Type.ShopStruct[101];
 
-            for (i = 0; i <= Constant.MAX_SHOPS - 1; i++)
+            for (i = 0; i < Constant.MAX_SHOPS; i++)
                 ClearShop(i);
 
         }

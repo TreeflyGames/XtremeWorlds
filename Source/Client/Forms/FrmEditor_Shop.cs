@@ -94,7 +94,7 @@ namespace Client
             lstIndex.Items.Clear();
 
             // Add the names
-            for (int i = 0; i <= Constant.MAX_SHOPS - 1; i++)
+            for (int i = 0; i < Constant.MAX_SHOPS; i++)
                 lstIndex.Items.Add(i + 1 + ": " + Core.Type.Shop[i].Name);
 
             cmbItem.Items.Clear();

@@ -577,7 +577,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                 ClearMapNPC(i);
 
         }
@@ -606,7 +606,7 @@ namespace Client
             GameState.GettingMap = Conversions.ToBoolean(1);
 
             // Erase all players except self
-            for (i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+            for (i = 0; i < Constant.MAX_PLAYERS; i++)
             {
                 if (i != GameState.MyIndex)
                 {
@@ -684,7 +684,7 @@ namespace Client
                 Core.Type.MyMap.Shop = buffer.ReadInt32();
                 Core.Type.MyMap.Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
 
-                for (x = 0; x <= Constant.MAX_MAP_NPCS - 1; x++)
+                for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
                     Core.Type.MyMap.NPC[x] = buffer.ReadInt32();
 
                 var loopTo = (int)Core.Type.MyMap.MaxX - 1;
@@ -886,7 +886,7 @@ namespace Client
                 Core.Type.MyMapItem[i].Y = (byte)buffer.ReadInt32();
             }
 
-            for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
                 Core.Type.MyMapNPC[i].Num = buffer.ReadInt32();
                 Core.Type.MyMapNPC[i].X = (byte)buffer.ReadInt32();
@@ -949,7 +949,7 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
                     ref var withBlock = ref Core.Type.MyMapNPC[i];
                     withBlock.Num = buffer.ReadInt32();
@@ -1082,7 +1082,7 @@ namespace Client
             buffer.WriteInt32(Conversions.ToInteger(Core.Type.MyMap.Indoors));
             buffer.WriteInt32(Core.Type.MyMap.Shop);
 
-            for (i = 0; i <= Constant.MAX_MAP_NPCS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                 buffer.WriteInt32(Core.Type.MyMap.NPC[i]);
 
             var loopTo = (int)Core.Type.MyMap.MaxX - 1;

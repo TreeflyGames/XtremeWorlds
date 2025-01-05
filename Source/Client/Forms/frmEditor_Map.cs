@@ -465,7 +465,7 @@ namespace Client
 
             lstNPC.Items.Clear();
 
-            for (n = 1; n <= Constant.MAX_MAP_NPCS - 1; n++)
+            for (n = 0; n < Constant.MAX_MAP_NPCS; n++)
             {
                 if (Core.Type.MyMap.NPC[n] > 0)
                 {
@@ -772,7 +772,7 @@ namespace Client
             lstShop.Items.Add("None");
             lstShop.SelectedIndex = 0;
 
-            for (i = 0; i <= Constant.MAX_SHOPS - 1; i++)
+            for (i = 0; i < Constant.MAX_SHOPS; i++)
                 lstShop.Items.Add(Core.Type.Shop[i].Name);
 
             var loopTo2 = lstShop.Items.Count - 1;
@@ -821,7 +821,7 @@ namespace Client
             lstMapNPC.Items.Add("None");
             lstMapNPC.SelectedIndex = 0;
 
-            for (X = 1; X <= Constant.MAX_MAP_NPCS - 1; X++)
+            for (X = 0; X < Constant.MAX_MAP_NPCS; X++)
                 lstMapNPC.Items.Add(X + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[X]].Name));
 
             cmbNPCList.Items.Add("None");
@@ -891,7 +891,7 @@ namespace Client
             GameState.EditorTileSelEnd = new Point(1, 1);
 
             // set shops for the shop attribute
-            for (int i = 0; i <= Constant.MAX_SHOPS - 1; i++)
+            for (int i = 0; i < Constant.MAX_SHOPS; i++)
                 cmbShop.Items.Add(i + 1 + ": " + Core.Type.Shop[i].Name);
 
             // we're not in a shop

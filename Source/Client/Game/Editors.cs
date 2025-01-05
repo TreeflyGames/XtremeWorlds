@@ -382,7 +382,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_SHOPS - 1; i++)
+            for (i = 0; i < Constant.MAX_SHOPS; i++)
             {
                 if (GameState.Shop_Changed[i])
                 {
@@ -405,7 +405,7 @@ namespace Client
 
         internal static void ClearChanged_Shop()
         {
-            for (int i = 0; i <= Constant.MAX_SHOPS - 1; i++)
+            for (int i = 0; i < Constant.MAX_SHOPS; i++)
                 GameState.Shop_Changed[i] = false;
         }
 
