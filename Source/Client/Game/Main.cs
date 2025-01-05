@@ -66,9 +66,9 @@ namespace Client
 
             if (GameState.InitMapReport)
             {
-                for (int i = 0, loopTo = GameState.MapNames.Length - 1; i <= loopTo; i++)
+                for (int i = 1, loopTo = GameState.MapNames.Length - 1; i <= loopTo; i++)
                 {
-                    var item1 = new ListViewItem(i.ToString());
+                    var item1 = new ListViewItem((i).ToString());
                     item1.SubItems.Add(GameState.MapNames[i]);
                     FrmAdmin.Instance.lstMaps.Items.Add(item1);
                 }

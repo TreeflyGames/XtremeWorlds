@@ -309,7 +309,8 @@ namespace Client
 
             if (lstMaps.FocusedItem.Index == 0)
                 return;
-            NetworkSend.WarpTo(lstMaps.FocusedItem.Index);
+
+            NetworkSend.WarpTo(lstMaps.FocusedItem.Index + 1);
         }
 
         #endregion
