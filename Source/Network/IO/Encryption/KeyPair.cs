@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 
 namespace Mirage.Sharp.Asfw.IO.Encryption
 {
@@ -196,12 +197,22 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
         public string DecryptString(string value)
         {
-            if (this._rsa == null)
-                throw new CryptographicException("Key not set.");
-            if (this._rsa.PublicOnly)
-                return (string)null;
-            byte[] numArray = Convert.FromBase64String(value);
-            return numArray.Length >= 272 ? Encoding.UTF8.GetString(this.DecryptBytes(numArray)) : "";
+            try
+            {
+                if (_rsa == null)
+                    throw new CryptographicException("Key not set.");
+
+                if (_rsa.PublicOnly)
+                    return null;
+
+                byte[] numArray = Convert.FromBase64String(value);
+                return numArray.Length >= 272 ? Encoding.UTF8.GetString(this.DecryptBytes(numArray)) : "";
+            }
+            catch (CryptographicException ex)
+            {
+                Dispose();
+                return null;
+            }
         }
 
         public byte[] DecryptBytes(byte[] value)
@@ -216,36 +227,44 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             if (_rsa.PublicOnly)
                 throw new CryptographicException("Private key is required for decryption.");
 
-            // Extract RSA-encrypted AES key, IV, and payload
-            byte[] encryptedKey = new byte[256];
-            byte[] iv = new byte[16];
-            int payloadLength = value.Length - 272;
-            byte[] encryptedPayload = new byte[payloadLength];
-            Buffer.BlockCopy(value, 0, encryptedKey, 0, 256);
-            Buffer.BlockCopy(value, 256, iv, 0, 16);
-            Buffer.BlockCopy(value, 272, encryptedPayload, 0, payloadLength);
-
-            // Initialize AES
-            using (var rijndaelManaged = Aes.Create())
+            try
             {
-                rijndaelManaged.KeySize = 256;
-                rijndaelManaged.BlockSize = 128;
-                rijndaelManaged.Mode = CipherMode.CBC;
-                rijndaelManaged.Padding = PaddingMode.PKCS7;
+                // Extract RSA-encrypted AES key, IV, and payload
+                byte[] encryptedKey = new byte[256];
+                byte[] iv = new byte[16];
+                int payloadLength = value.Length - 272;
+                byte[] encryptedPayload = new byte[payloadLength];
+                Buffer.BlockCopy(value, 0, encryptedKey, 0, 256);
+                Buffer.BlockCopy(value, 256, iv, 0, 16);
+                Buffer.BlockCopy(value, 272, encryptedPayload, 0, payloadLength);
 
-                // Decrypt AES key
-                byte[] aesKey;
-                aesKey = _rsa?.Decrypt(encryptedKey, true); // Ensure padding matches
-                
-                // Decrypt payload
-                using (ICryptoTransform decryptor = rijndaelManaged.CreateDecryptor(aesKey, iv))
-                using (var memoryStream = new MemoryStream())
-                using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
+                // Initialize AES
+                using (var rijndaelManaged = Aes.Create())
                 {
-                    cryptoStream.Write(encryptedPayload, 0, payloadLength);
-                    cryptoStream.FlushFinalBlock();
-                    return memoryStream.ToArray();
+                    rijndaelManaged.KeySize = 256;
+                    rijndaelManaged.BlockSize = 128;
+                    rijndaelManaged.Mode = CipherMode.CBC;
+                    rijndaelManaged.Padding = PaddingMode.PKCS7;
+
+                    // Decrypt AES key
+                    byte[] aesKey;
+                    aesKey = _rsa?.Decrypt(encryptedKey, true); // Ensure padding matches
+
+                    // Decrypt payload
+                    using (ICryptoTransform decryptor = rijndaelManaged.CreateDecryptor(aesKey, iv))
+                    using (var memoryStream = new MemoryStream())
+                    using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
+                    {
+                        cryptoStream.Write(encryptedPayload, 0, payloadLength);
+                        cryptoStream.FlushFinalBlock();
+                        return memoryStream.ToArray();
+                    }
                 }
+            }
+            catch (CryptographicException ex)
+            {
+                Dispose();
+                return null;
             }
         }
     }
