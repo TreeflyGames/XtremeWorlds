@@ -236,7 +236,7 @@ namespace Client
                 var withBlock = Instance;
                 // Ensure spriteBatch is created and disposed properly
                 var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice);
-                var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height);
+                var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
 
                 // Call ProcessAnimation for each animation panel
                 ProcessAnimation(withBlock.nudSprite0, withBlock.nudFrameCount0, withBlock.nudLoopTime0, 0, renderTarget, withBlock.picSprite0, spriteBatch);

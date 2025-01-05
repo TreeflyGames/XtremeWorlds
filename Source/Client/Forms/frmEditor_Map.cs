@@ -87,7 +87,7 @@ namespace Client
             int picHeight = Instance.picBackSelect.Height;
 
             // Create a render target for drawing
-            var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, picWidth, picHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+            var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, picWidth, picHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
             GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget);
             GameClient.Graphics.GraphicsDevice.Clear(Color.Black);
 

@@ -1105,9 +1105,9 @@ namespace Core
             public SDLayerStruct MapLayer;
         }
 
-        public static ActionMsgStruct[] ActionMsg = new ActionMsgStruct[(byte.MaxValue + 1)];
-        public static BloodStruct[] Blood = new BloodStruct[(byte.MaxValue + 1)];
-        public static ChatStruct[] Chat = new ChatStruct[(int)(Constant.CHAT_LINES + 1)];
+        public static ActionMsgStruct[] ActionMsg = new ActionMsgStruct[(byte.MaxValue)];
+        public static BloodStruct[] Blood = new BloodStruct[(byte.MaxValue)];
+        public static ChatStruct[] Chat = new ChatStruct[(Constant.CHAT_LINES)];
         public static TileStruct[,] MapTile;
         public static TileHistoryStruct[] TileHistory;
         public static AutotileStruct[,] Autotile;

@@ -68,24 +68,23 @@ namespace Client
 
         public static void AddText(string text, int Color, long alpha = 255L, byte channel = 0)
         {
-            long i;
-
             // Move the rest of it up
-            for (i = Constant.CHAT_LINES - 1L; i >= 0L; i += -1)
+            for (int i = Constant.CHAT_LINES - 1; i >= 0; i--)
             {
-                if (Strings.Len(Core.Type.Chat[(int)i].Text) > 0)
+                if (!string.IsNullOrEmpty(Core.Type.Chat[i].Text))
                 {
                     if (i > GameState.Chat_HighIndex)
-                        GameState.Chat_HighIndex = i + 1L;
+                        GameState.Chat_HighIndex = i + 1;
                 }
-                Core.Type.Chat[(int)(i + 1L)] = Core.Type.Chat[(int)i];
+                Core.Type.Chat[GameState.Chat_HighIndex] = Core.Type.Chat[i];
             }
 
-            Core.Type.Chat[1].Text = text;
-            Core.Type.Chat[1].Color = Color;
-            Core.Type.Chat[1].Visible = true;
-            Core.Type.Chat[1].Timer = General.GetTickCount();
-            Core.Type.Chat[1].Channel = channel;
+            // Add the new text
+            Core.Type.Chat[0].Text = text;
+            Core.Type.Chat[0].Color = Color;
+            Core.Type.Chat[0].Visible = true;
+            Core.Type.Chat[0].Timer = General.GetTickCount();
+            Core.Type.Chat[0].Channel = channel;
         }
 
         public static void WordWrap(string text, Core.Enum.FontType font, long MaxLineLen, ref string[] theArray)

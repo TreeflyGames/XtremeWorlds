@@ -109,6 +109,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
     <MakeDir Directories="$(OutputPath)Content" />

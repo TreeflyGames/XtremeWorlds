@@ -273,15 +273,15 @@ namespace Client
             Bank.ClearBanks();
             Party.ClearParty();
 
-            for (int i = 0; i <= Constant.MAX_PLAYERS - 1; i++)
+            for (int i = 0; i < Constant.MAX_PLAYERS; i++)
                 Player.ClearPlayer(i);
 
             Animation.ClearAnimInstances();
             Autotile.ClearAutotiles();
 
             // clear chat
-            for (long i = 0L; i <= Constant.CHAT_LINES; i++)
-                Core.Type.Chat[(int)i].Text = "";
+            for (int i = 0; i < Constant.CHAT_LINES; i++)
+                Core.Type.Chat[i].Text = "";
         }
 
         internal static int GetFileCount(string folderName)
