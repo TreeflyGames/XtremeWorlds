@@ -74,9 +74,9 @@ namespace Client
                 GameState.Chat_HighIndex = Constant.CHAT_LINES;
 
             // Move the rest of the chat lines up
-            for (int i = 0; i < GameState.Chat_HighIndex; i++)
+            for (int i = (int)GameState.Chat_HighIndex; i > 0; i--)
             {
-                Core.Type.Chat[i + 1] = Core.Type.Chat[i];
+                Core.Type.Chat[i] = Core.Type.Chat[i - 1];
             }
 
             // Add the new text
