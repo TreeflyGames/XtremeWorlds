@@ -5805,14 +5805,14 @@ namespace Client
             long Top;
 
             // move Hotbar
-            Windows[GetWindowIndex("winHotbar")].Left = GameState.ResolutionWidth - 432;
+            Windows[GetWindowIndex("winHotbar")].Left = GameState.ResolutionWidth - 382;
 
             // move chat
             Windows[GetWindowIndex("winChat")].Top = GameState.ResolutionHeight - 178;
             Windows[GetWindowIndex("winChatSmall")].Top = GameState.ResolutionHeight - 162;
 
             // move menu
-            Windows[GetWindowIndex("winMenu")].Left = GameState.ResolutionWidth - 242;
+            Windows[GetWindowIndex("winMenu")].Left = GameState.ResolutionWidth - 238;
             Windows[GetWindowIndex("winMenu")].Top = GameState.ResolutionHeight - 42;
 
             // loop through
