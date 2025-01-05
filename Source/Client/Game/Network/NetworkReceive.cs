@@ -1212,8 +1212,10 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_MAPS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAPS; i++)
                 GameState.MapNames[i] = buffer.ReadString();
+
+            GameState.InitMapReport = true;
 
             buffer.Dispose();
         }
@@ -1227,7 +1229,7 @@ namespace Client
         {
             int i;
             var buffer = new ByteStream(data);
-            for (i = 0; i <= Constant.MAX_MAPS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAPS; i++)
                 GameState.MapNames[i] = buffer.ReadString();
 
             buffer.Dispose();
