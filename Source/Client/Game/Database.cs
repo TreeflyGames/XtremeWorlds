@@ -19,12 +19,10 @@ namespace Client
         #region NPC
 
         public static void ClearNPCs()
-        {
-            int i;
+        { 
+            Core.Type.NPC = new Core.Type.NPCStruct[Core.Constant.MAX_NPCS];
 
-            Core.Type.NPC = new Core.Type.NPCStruct[501];
-
-            for (i = 0; i <= Constant.MAX_NPCS - 1; i++)
+            for (int i = 0; i < Constant.MAX_NPCS; i++)
                 ClearNPC(i);
 
         }

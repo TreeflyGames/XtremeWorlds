@@ -1269,7 +1269,7 @@ namespace Server
             Core.Type.NPC[NPCNum].Behaviour = buffer.ReadByte();
 
             var loopTo = Core.Constant.MAX_DROP_ITEMS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < (int)loopTo; i++)
             {
                 Core.Type.NPC[NPCNum].DropChance[i] = buffer.ReadInt32();
                 Core.Type.NPC[NPCNum].DropItem[i] = buffer.ReadInt32();
@@ -1286,11 +1286,11 @@ namespace Server
             Core.Type.NPC[NPCNum].Sprite = buffer.ReadInt32();
 
             var loopTo1 = (byte)StatType.Count - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            for (i = 0; i < (int)loopTo1; i++)
                 Core.Type.NPC[NPCNum].Stat[i] = buffer.ReadByte();
 
             var loopTo2 = Core.Constant.MAX_NPC_SKILLS;
-            for (i = 0; i <= (int)loopTo2; i++)
+            for (i = 0; i < (int)loopTo2; i++)
                 Core.Type.NPC[NPCNum].Skill[i] = buffer.ReadByte();
 
             Core.Type.NPC[NPCNum].Level = buffer.ReadInt32();
@@ -1333,7 +1333,7 @@ namespace Server
             buffer.WriteByte(Core.Type.NPC[NPCNum].Behaviour);
 
             var loopTo = Core.Constant.MAX_DROP_ITEMS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < (int)loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropChance[i]);
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItem[i]);
@@ -1350,11 +1350,11 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
             var loopTo1 = (byte)StatType.Count - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            for (i = 0; i < (int)loopTo1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
             var loopTo2 = Core.Constant.MAX_NPC_SKILLS;
-            for (i = 0; i <= (int)loopTo2; i++)
+            for (i = 0; i < (int)loopTo2; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[i]);
 
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Level);
@@ -1395,10 +1395,10 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
             var loopTo1 = (byte)StatType.Count - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            for (i = 0; i < (int)loopTo1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
-            var loopTo2 = Core.Constant.MAX_NPC_SKILLS;
+            var loopTo2 = Core.Constant.MAX_NPC_SKILLS - 1;
             for (i = 0; i <= (int)loopTo2; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[i]);
 

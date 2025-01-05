@@ -23,7 +23,7 @@ namespace Client
             lstIndex.Items.Clear();
 
             // Add the names
-            for (int i = 0; i <= Constant.MAX_NPCS - 1; i++)
+            for (int i = 0; i < Constant.MAX_NPCS; i++)
                 lstIndex.Items.Add(i + 1 + ": " + Strings.Trim(Core.Type.NPC[i].Name));
 
             // populate combo boxes
@@ -73,7 +73,7 @@ namespace Client
             if (File.Exists(System.IO.Path.Combine(Core.Path.Characters, Sprite + GameState.GfxExt)))
             {
                 picSprite.Width = (int)Math.Round(System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, Sprite + GameState.GfxExt)).Width / 4d);
-                picSprite.Height = (int)Math.Round(System.Drawing.Image.FromFile(System.IO.Path.Combine(Sprite.ToString(), GameState.GfxExt)).Height / 4d);
+                picSprite.Height = (int)Math.Round(System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, Sprite + GameState.GfxExt)).Height / 4d);
                 picSprite.BackgroundImage = System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, Sprite + GameState.GfxExt));
             }
         }

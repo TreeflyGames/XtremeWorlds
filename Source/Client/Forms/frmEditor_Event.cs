@@ -805,7 +805,7 @@ namespace Client
                     {
                         // lets populate the combobox
                         cmbSpawnNPC.Items.Clear();
-                        for (int i = 0; i <= Constant.MAX_NPCS - 1; i++)
+                        for (int i = 0; i < Constant.MAX_NPCS; i++)
                             cmbSpawnNPC.Items.Add(Strings.Trim(Core.Type.NPC[i].Name));
                         cmbSpawnNPC.SelectedIndex = 0;
                         fraDialogue.Visible = true;

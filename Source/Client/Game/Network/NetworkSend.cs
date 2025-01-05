@@ -645,7 +645,7 @@ namespace Client
             for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
-            for (i = 0; i <= Constant.MAX_NPC_SKILLS; i++)
+            for (i = 0; i < Constant.MAX_NPC_SKILLS; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[i]);
 
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Level);

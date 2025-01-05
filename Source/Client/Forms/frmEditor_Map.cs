@@ -827,7 +827,7 @@ namespace Client
             cmbNPCList.Items.Add("None");
             cmbNPCList.SelectedIndex = 0;
 
-            for (Y = 1; Y <= Constant.MAX_NPCS - 1; Y++)
+            for (Y = 1; Y < Constant.MAX_NPCS; Y++)
                 cmbNPCList.Items.Add(Y + ": " + Strings.Trim(Core.Type.NPC[Y].Name));
 
             cmbAnimation.Items.Clear();

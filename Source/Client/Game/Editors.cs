@@ -141,9 +141,7 @@ namespace Client
 
         internal static void NPCEditorOK()
         {
-            int i;
-
-            for (i = 0; i <= Constant.MAX_NPCS - 1; i++)
+            for (int i = 0; i < Constant.MAX_NPCS; i++)
             {
                 if (GameState.NPC_Changed[i])
                 {
@@ -166,7 +164,7 @@ namespace Client
 
         internal static void ClearChanged_NPC()
         {
-            for (int i = 0; i <= Constant.MAX_NPCS - 1; i++)
+            for (int i = 0; i < Constant.MAX_NPCS; i++)
                 GameState.NPC_Changed[i] = false;
         }
 
