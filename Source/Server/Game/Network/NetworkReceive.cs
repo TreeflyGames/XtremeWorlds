@@ -1701,7 +1701,7 @@ namespace Server
             i = buffer.ReadInt32();
 
             // Check for invalid access level
-            if (i >= (int)Core.Enum.AccessType.Player | i <= (int)Core.Enum.AccessType.Owner)
+            if (i >= (int)Core.Enum.AccessType.Player && i <= (int)Core.Enum.AccessType.Owner)
             {
                 // Check if player is on
                 if (n >= 0)
