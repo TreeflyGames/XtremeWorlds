@@ -271,7 +271,7 @@ namespace Client
 
                 // Get the desired player from the user text
                 var loopTo = Strings.Len(chatText);
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
 
                     if ((Strings.Mid(chatText, i, 1) ?? "") != (Strings.Space(1) ?? ""))
@@ -1178,8 +1178,8 @@ namespace Client
         {
             long value;
             string diaInput;
-            int X;
-            int Y;
+            int x;
+            int y;
 
             diaInput = Gui.Windows[Gui.GetWindowIndex("winDialogue")].Controls[(int)Gui.GetControlIndex("winDialogue", "txtInput")].Text;
 
@@ -1259,16 +1259,16 @@ namespace Client
                             if (GameState.diaData2 > 0L)
                             {
                                 var loopTo = (int)Core.Type.MyMap.MaxX;
-                                for (X = 0; X <= loopTo; X++)
+                                for (x = 0; x < loopTo; x++)
                                 {
                                     var loopTo1 = (int)Core.Type.MyMap.MaxY;
-                                    for (Y = 0; Y <= loopTo1; Y++)
+                                    for (y = 0; y < loopTo1; y++)
                                     {
-                                        Core.Type.MyMap.Tile[X, Y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
-                                        Core.Type.MyMap.Tile[X, Y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
-                                        Core.Type.MyMap.Tile[X, Y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
-                                        Core.Type.MyMap.Tile[X, Y].Layer[(int)GameState.diaData1].AutoTile = (byte)GameState.diaData2;
-                                        Autotile.CacheRenderState(X, Y, (int)GameState.diaData1);
+                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
+                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
+                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
+                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = (byte)GameState.diaData2;
+                                        Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
                                     }
                                 }
 
@@ -1278,16 +1278,16 @@ namespace Client
                             else
                             {
                                 var loopTo2 = (int)Core.Type.MyMap.MaxX;
-                                for (X = 0; X <= loopTo2; X++)
+                                for (x = 0; x < loopTo2; x++)
                                 {
                                     var loopTo3 = (int)Core.Type.MyMap.MaxY;
-                                    for (Y = 0; Y <= loopTo3; Y++)
+                                    for (y = 0; y < loopTo3; y++)
                                     {
-                                        Core.Type.MyMap.Tile[X, Y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
-                                        Core.Type.MyMap.Tile[X, Y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
-                                        Core.Type.MyMap.Tile[X, Y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
-                                        Core.Type.MyMap.Tile[X, Y].Layer[(int)GameState.diaData1].AutoTile = 0;
-                                        Autotile.CacheRenderState(X, Y, (int)GameState.diaData1);
+                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].X = (int)GameState.diaData3;
+                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Y = (int)GameState.diaData4;
+                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].Tileset = (int)GameState.diaData5;
+                                        Core.Type.MyMap.Tile[x, y].Layer[(int)GameState.diaData1].AutoTile = 0;
+                                        Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
                                     }
                                 }
                             }
@@ -1298,18 +1298,18 @@ namespace Client
                     case (long)Core.Enum.DialogueType.ClearLayer:
                         {
                             var loopTo4 = (int)Core.Type.MyMap.MaxX;
-                            for (X = 0; X <= loopTo4; X++)
+                            for (x = 0; x < loopTo4; x++)
                             {
                                 var loopTo5 = (int)Core.Type.MyMap.MaxY;
-                                for (Y = 0; Y <= loopTo5; Y++)
+                                for (y = 0; y <= loopTo5; y++)
                                 {
                                     {
-                                        ref var withBlock = ref Core.Type.MyMap.Tile[X, Y];
+                                        ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
                                         withBlock.Layer[(int)GameState.diaData1].X = 0;
                                         withBlock.Layer[(int)GameState.diaData1].Y = 0;
                                         withBlock.Layer[(int)GameState.diaData1].Tileset = 0;
                                         withBlock.Layer[(int)GameState.diaData1].AutoTile = 0;
-                                        Autotile.CacheRenderState(X, Y, (int)GameState.diaData1);
+                                        Autotile.CacheRenderState(x, y, (int)GameState.diaData1);
                                     }
                                 }
                             }
@@ -1320,13 +1320,13 @@ namespace Client
                     case (long)Core.Enum.DialogueType.ClearAttributes:
                         {
                             var loopTo6 = (int)Core.Type.MyMap.MaxX;
-                            for (X = 0; X <= loopTo6; X++)
+                            for (x = 0; x < loopTo6; x++)
                             {
                                 var loopTo7 = (int)Core.Type.MyMap.MaxY;
-                                for (Y = 0; Y <= loopTo7; Y++)
+                                for (y = 0; y <= loopTo7; y++)
                                 {
-                                    Core.Type.MyMap.Tile[X, Y].Type = 0;
-                                    Core.Type.MyMap.Tile[X, Y].Type2 = 0;
+                                    Core.Type.MyMap.Tile[x, y].Type = 0;
+                                    Core.Type.MyMap.Tile[x, y].Type2 = 0;
                                 }
                             }
 

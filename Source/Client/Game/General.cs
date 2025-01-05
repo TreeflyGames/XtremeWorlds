@@ -300,33 +300,31 @@ namespace Client
 
         internal static void CacheMusic()
         {
-            Sound.MusicCache = new string[Directory.GetFiles(Core.Path.Music, "*" + Settings.MusicExt).Count() + 1];
+            Sound.MusicCache = new string[Directory.GetFiles(Core.Path.Music, "*" + Settings.MusicExt).Count()];
             string[] files = Directory.GetFiles(Core.Path.Music, "*" + Settings.MusicExt);
             string maxNum = Directory.GetFiles(Core.Path.Music, "*" + Settings.MusicExt).Count().ToString();
             int counter = 0;
 
             foreach (var FileName in files)
             {
-                counter = counter + 1;
                 Array.Resize(ref Sound.MusicCache, counter + 1);
-
                 Sound.MusicCache[counter] = System.IO.Path.GetFileName(FileName);
+                counter = counter + 1;
             }
         }
 
         internal static void CacheSound()
         {
-            Sound.SoundCache = new string[Directory.GetFiles(Core.Path.Sounds, "*" + Settings.SoundExt).Count() + 1];
+            Sound.SoundCache = new string[Directory.GetFiles(Core.Path.Sounds, "*" + Settings.SoundExt).Count()];
             string[] files = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.SoundExt);
             string maxNum = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.SoundExt).Count().ToString();
             int counter = 0;
 
             foreach (var FileName in files)
             {
-                counter = counter + 1;
                 Array.Resize(ref Sound.SoundCache, counter + 1);
-
                 Sound.SoundCache[counter] = System.IO.Path.GetFileName(FileName);
+                counter = counter + 1;
             }
         }
 

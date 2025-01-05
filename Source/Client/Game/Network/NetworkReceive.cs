@@ -976,7 +976,7 @@ namespace Client
             x = buffer.ReadInt32();
 
             var loopTo = x;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 n = buffer.ReadInt32();
 

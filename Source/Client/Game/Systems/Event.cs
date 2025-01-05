@@ -80,7 +80,7 @@ namespace Client
                 return;
 
             var loopTo = count;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
                 {
@@ -102,7 +102,7 @@ namespace Client
             if (count > 0)
             {
                 var loopTo = count;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
                     {
@@ -137,7 +137,7 @@ namespace Client
 
             // First pass: find all events to delete and shift others down
             var loopTo = Core.Type.MyMap.EventCount;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
                 {
@@ -178,7 +178,7 @@ namespace Client
             if (count > 0)
             {
                 var loopTo = count;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
                     {
@@ -361,7 +361,7 @@ namespace Client
                 ;
 
                 var loopTo = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     if (listleftoff[curlist] > 0)
                     {
@@ -1386,7 +1386,7 @@ namespace Client
                 TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList = oldCommandList.ParentList;
 
                 var loopTo = p - 1;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                     TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i] = oldCommandList.Commands[i];
 
                 i = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex].CommandNum;
@@ -2346,7 +2346,7 @@ namespace Client
                         ListOfEvents = new int[Core.Type.MyMap.EventCount];
                         ListOfEvents[0] = EditorEvent;
                         var loopTo = Core.Type.MyMap.EventCount;
-                        for (i = 0; i <= loopTo; i++)
+                        for (i = 0; i < loopTo; i++)
                         {
                             if (i != EditorEvent)
                             {
@@ -2863,7 +2863,7 @@ namespace Client
                     TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList = oldCommandList.ParentList;
                     TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = p;
                     var loopTo = p + 1;
-                    for (i = 0; i <= loopTo; i++)
+                    for (i = 0; i < loopTo; i++)
                     {
                         if (i != curslot)
                         {
@@ -3441,7 +3441,7 @@ namespace Client
             {
                 Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
                 var loopTo = Core.Type.MyMap.EventCount - 1;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     {
                         ref var withBlock = ref Core.Type.MyMap.Event[i];
@@ -3455,8 +3455,8 @@ namespace Client
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
                         Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
-                        var loopTo1 = Core.Type.MyMap.Event[i].PageCount - 1;
-                        for (x = 0; x <= loopTo1; x++)
+                        var loopTo1 = Core.Type.MyMap.Event[i].PageCount;
+                        for (x = 0; x < loopTo1; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
@@ -3516,7 +3516,7 @@ namespace Client
                             {
                                 Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
                                 var loopTo3 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
-                                for (y = 0; y <= loopTo3; y++)
+                                for (y = 0; y < loopTo3; y++)
                                 {
                                     Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                     Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
@@ -3605,7 +3605,7 @@ namespace Client
             {
                 EventChatType = 1;
                 var loopTo = choices;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     EventChoices[i] = buffer.ReadString();
                     EventChoiceVisible[i] = Conversions.ToBoolean(1);

@@ -129,7 +129,7 @@ namespace Client
 
             General.CacheMusic();
             var loopTo = Information.UBound(Sound.MusicCache);
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 cmbPlayBGM.Items.Add(Sound.MusicCache[i]);
             cmbPlayBGM.SelectedIndex = 0;
             cmbPlaySound.Items.Clear();
@@ -183,7 +183,7 @@ namespace Client
             tabPages.TabPages.Clear();
 
             var loopTo2 = Event.TmpEvent.PageCount;
-            for (i = 0; i <= loopTo2; i++)
+            for (i = 0; i < loopTo2; i++)
                 tabPages.TabPages.Add(Conversion.Str(i));
 
             // items
@@ -758,7 +758,7 @@ namespace Client
                         lstMoveRoute.Items.Clear();
                         Event.ListOfEvents = new int[Core.Type.MyMap.EventCount];
                         Event.ListOfEvents[0] = Event.EditorEvent;
-                        for (int i = 0, loopTo = Core.Type.MyMap.EventCount - 1; i <= loopTo; i++)
+                        for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
                         {
                             if (i != Event.EditorEvent)
                             {
@@ -786,7 +786,7 @@ namespace Client
                         cmbMoveWait.Items.Add("This Event");
                         cmbMoveWait.SelectedIndex = 0;
                         cmbMoveWait.Enabled = true;
-                        for (int i = 0, loopTo1 = Core.Type.MyMap.EventCount - 1; i <= loopTo1; i++)
+                        for (int i = 0, loopTo1 = Core.Type.MyMap.EventCount; i < loopTo1; i++)
                         {
                             if (i != Event.EditorEvent)
                             {
@@ -836,7 +836,7 @@ namespace Client
                     {
                         cmbPlayAnimEvent.Items.Clear();
 
-                        for (int i = 0, loopTo2 = Core.Type.MyMap.EventCount; i <= loopTo2; i++)
+                        for (int i = 0, loopTo2 = Core.Type.MyMap.EventCount; i < loopTo2; i++)
                             cmbPlayAnimEvent.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                         cmbPlayAnimEvent.SelectedIndex = 0;
                         cmbAnimTargetType.SelectedIndex = 0;
@@ -1063,7 +1063,7 @@ namespace Client
             tabPages.TabPages.Clear();
 
             var loopTo = Event.TmpEvent.PageCount;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 tabPages.TabPages.Add(Conversion.Str(i));
             btnDeletePage.Enabled = true;
         }
@@ -1087,7 +1087,7 @@ namespace Client
             // move everything else down a notch
             if (Event.CurPageNum < Event.TmpEvent.PageCount)
             {
-                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
+                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
                     Event.TmpEvent.Pages[i] = Event.TmpEvent.Pages[i];
             }
             Event.TmpEvent.PageCount = Event.TmpEvent.PageCount - 1;
@@ -1097,7 +1097,7 @@ namespace Client
             // set the tabs
             tabPages.TabPages.Clear();
 
-            for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i <= loopTo1; i++)
+            for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i < loopTo1; i++)
                 tabPages.TabPages.Add("0", Conversion.Str(i), "");
             // set the tab back
             if (Event.CurPageNum <= Event.TmpEvent.PageCount)
@@ -1398,7 +1398,7 @@ namespace Client
 
             // Will it let me do this?
             Event.TempMoveRoute = Event.TmpEvent.Pages[Event.CurPageNum].MoveRoute;
-            for (int i = 0, loopTo = Event.TempMoveRouteCount; i <= loopTo; i++)
+            for (int i = 0, loopTo = Event.TempMoveRouteCount; i < loopTo; i++)
             {
                 switch (Event.TempMoveRoute[i].Index)
                 {
@@ -1682,7 +1682,7 @@ namespace Client
             Event.CurPageNum = 1;
             tabPages.TabPages.Clear();
 
-            for (int i = 0, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
+            for (int i = 0, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
                 tabPages.TabPages.Add("0", i.ToString(), "0");
             Event.EventEditorLoadPage(Event.CurPageNum);
         }
@@ -2008,7 +2008,7 @@ namespace Client
                 Event.TempMoveRouteCount = Event.TempMoveRouteCount;
                 Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount);
                 var loopTo = i;
-                for (X = Event.TempMoveRouteCount - 1; X >= loopTo; X -= 1)
+                for (X = Event.TempMoveRouteCount; X > loopTo; X -= 1)
                     Event.TempMoveRoute[X + 1] = Event.TempMoveRoute[X];
                 Event.TempMoveRoute[i].Index = Index;
                 // if set graphic then...
@@ -2051,7 +2051,7 @@ namespace Client
             if (Index > 0 & Index <= Event.TempMoveRouteCount)
             {
                 var loopTo = Event.TempMoveRouteCount;
-                for (i = Index + 1; i <= loopTo; i++)
+                for (i = Index + 1; i < loopTo; i++)
                     Event.TempMoveRoute[i - 1] = Event.TempMoveRoute[i];
                 Event.TempMoveRouteCount = Event.TempMoveRouteCount - 1;
                 if (Event.TempMoveRouteCount == 0)
@@ -2074,7 +2074,7 @@ namespace Client
             lstMoveRoute.Items.Clear();
 
             var loopTo = Event.TempMoveRouteCount;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 switch (Event.TempMoveRoute[i].Index)
                 {
@@ -2480,7 +2480,7 @@ namespace Client
                 cmbChatBubbleTarget.Visible = true;
                 cmbChatBubbleTarget.Items.Clear();
 
-                for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i <= loopTo; i++)
+                for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
                     cmbChatBubbleTarget.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                 cmbChatBubbleTarget.SelectedIndex = 0;
             }

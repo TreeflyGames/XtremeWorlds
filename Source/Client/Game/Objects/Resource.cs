@@ -53,7 +53,7 @@ namespace Client
                 Array.Resize(ref Core.Type.MapResource, GameState.ResourceIndex + 1);
 
                 var loopTo = GameState.ResourceIndex;
-                for (i = 0; i <= loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     Core.Type.MyMapResource[i].State = buffer.ReadByte();
                     Core.Type.MyMapResource[i].X = buffer.ReadInt32();

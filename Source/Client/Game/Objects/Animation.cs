@@ -358,7 +358,7 @@ namespace Client
             n = buffer.ReadInt32();
             // Update the Animation
             var loopTo = Information.UBound(Core.Type.Animation[n].Frames);
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 Core.Type.Animation[n].Frames[i] = buffer.ReadInt32();
 
             var loopTo1 = Information.UBound(Core.Type.Animation[n].LoopCount);

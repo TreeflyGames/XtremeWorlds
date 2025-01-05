@@ -394,11 +394,11 @@ namespace Client
             Core.Type.AutoSe[4].X = 48;
             Core.Type.AutoSe[4].Y = 80;
 
-            var loopTo2 = (int)Core.Type.MyMap.MaxX - 1;
-            for (x = 0; x <= loopTo2; x++)
+            var loopTo2 = (int)Core.Type.MyMap.MaxX;
+            for (x = 0; x < loopTo2; x++)
             {
-                var loopTo3 = (int)Core.Type.MyMap.MaxY - 1;
-                for (y = 0; y <= loopTo3; y++)
+                var loopTo3 = (int)Core.Type.MyMap.MaxY;
+                for (y = 0; y < loopTo3; y++)
                 {
                     for (layerNum = 0; layerNum < (int)Core.Enum.LayerType.Count - 1; layerNum++)
                     {

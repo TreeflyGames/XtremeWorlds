@@ -754,11 +754,11 @@ namespace Client
             General.CacheMusic();
 
             var loopTo = Information.UBound(Sound.MusicCache);
-            for (i = 1; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 lstMusic.Items.Add(Sound.MusicCache[i]);
 
-            var loopTo1 = lstMusic.Items.Count - 1;
-            for (i = 0; i <= loopTo1; i++)
+            var loopTo1 = lstMusic.Items.Count;
+            for (i = 0; i < loopTo1; i++)
             {
                 if ((lstMusic.Items[i].ToString() ?? "") == (Core.Type.MyMap.Music ?? ""))
                 {
@@ -775,8 +775,8 @@ namespace Client
             for (i = 0; i < Constant.MAX_SHOPS; i++)
                 lstShop.Items.Add(Core.Type.Shop[i].Name);
 
-            var loopTo2 = lstShop.Items.Count - 1;
-            for (i = 0; i <= loopTo2; i++)
+            var loopTo2 = lstShop.Items.Count;
+            for (i = 0; i < loopTo2; i++)
             {
                 if ((lstShop.Items[i].ToString() ?? "") == (Core.Type.Shop[Core.Type.MyMap.Shop].Name ?? ""))
                 {
@@ -793,8 +793,8 @@ namespace Client
             for (i = 0; i < Constant.MAX_MORALS; i++)
                 lstMoral.Items.Add(Core.Type.Moral[i].Name);
 
-            var loopTo3 = lstMoral.Items.Count - 1;
-            for (i = 0; i <= loopTo3; i++)
+            var loopTo3 = lstMoral.Items.Count;
+            for (i = 0; i < loopTo3; i++)
             {
                 if ((lstMoral.Items[i].ToString() ?? "") == (Core.Type.Moral[Core.Type.MyMap.Moral].Name ?? ""))
                 {
@@ -1502,16 +1502,16 @@ namespace Client
             else // multitile
             {
                 y2 = 0; // starting tile for y axis
-                var loopTo = GameState.CurY + GameState.EditorTileHeight - 1;
-                for (Y = GameState.CurY; Y <= loopTo; Y++)
+                var loopTo = GameState.CurY + GameState.EditorTileHeight;
+                for (Y = GameState.CurY; Y < loopTo; Y++)
                 {
                     x2 = 0; // re-set x count every y loop
-                    var loopTo1 = GameState.CurX + GameState.EditorTileWidth - 1;
-                    for (X = GameState.CurX; X <= loopTo1; X++)
+                    var loopTo1 = GameState.CurX + GameState.EditorTileWidth;
+                    for (X = GameState.CurX; X < loopTo1; X++)
                     {
-                        if (X >= 0 & X <= Core.Type.MyMap.MaxX)
+                        if (X >= 0 & X < Core.Type.MyMap.MaxX)
                         {
-                            if (Y >= 0 & Y <= Core.Type.MyMap.MaxY)
+                            if (Y >= 0 & Y < Core.Type.MyMap.MaxY)
                             {
                                 {
                                     ref var withBlock2 = ref Core.Type.MyMap.Tile[X, Y];
@@ -1601,9 +1601,9 @@ namespace Client
 
             GameState.HistoryIndex = GameState.HistoryIndex - 1;
 
-            for (int x = 0, loopTo = Core.Type.MyMap.MaxX - 1; x <= loopTo; x++)
+            for (int x = 0, loopTo = Core.Type.MyMap.MaxX; x < loopTo; x++)
             {
-                for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY - 1; y <= loopTo1; y++)
+                for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY; y < loopTo1; y++)
                 {
                     for (int i = 0; i < (int)LayerType.Count - 1; i++)
                     {
@@ -1653,9 +1653,9 @@ namespace Client
 
             GameState.HistoryIndex = GameState.HistoryIndex + 1;
 
-            for (int x = 0, loopTo = Core.Type.MyMap.MaxX -1; x <= loopTo; x++)
+            for (int x = 0, loopTo = Core.Type.MyMap.MaxX; x < loopTo; x++)
             {
-                for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY - 1; y <= loopTo1; y++)
+                for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY; y < loopTo1; y++)
                 {
                     for (int i = 0; i < (int)LayerType.Count - 1; i++)
                     {
@@ -1722,8 +1722,8 @@ namespace Client
         private void tsbCopyMap_Click(object sender, EventArgs e)
         {
             int i;
-            int X;
-            int Y;
+            int x;
+            int y;
 
             if (GameState.CopyMap == false)
             {
@@ -1732,27 +1732,27 @@ namespace Client
                 GameState.TmpMaxY = Core.Type.MyMap.MaxY;
 
                 var loopTo = (int)Core.Type.MyMap.MaxX;
-                for (X = 0; X <= loopTo; X++)
+                for (x = 0; x < loopTo; x++)
                 {
                     var loopTo1 = (int)Core.Type.MyMap.MaxY;
-                    for (Y = 0; Y <= loopTo1; Y++)
+                    for (y = 0; y < loopTo1; y++)
                     {
                         {
-                            ref var withBlock = ref Core.Type.MyMap.Tile[X, Y];
-                            Core.Type.Tile[X, Y].Layer = new Core.Type.TileDataStruct[10];
+                            ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+                            Core.Type.Tile[x, y].Layer = new Core.Type.TileDataStruct[10];
 
-                            Core.Type.Tile[X, Y].Data1 = withBlock.Data1;
-                            Core.Type.Tile[X, Y].Data2 = withBlock.Data2;
-                            Core.Type.Tile[X, Y].Data3 = withBlock.Data3;
-                            Core.Type.Tile[X, Y].Type = withBlock.Type;
-                            Core.Type.Tile[X, Y].DirBlock = withBlock.DirBlock;
+                            Core.Type.Tile[x, y].Data1 = withBlock.Data1;
+                            Core.Type.Tile[x, y].Data2 = withBlock.Data2;
+                            Core.Type.Tile[x, y].Data3 = withBlock.Data3;
+                            Core.Type.Tile[x, y].Type = withBlock.Type;
+                            Core.Type.Tile[x, y].DirBlock = withBlock.DirBlock;
 
                             for (i = 0; i < (int)LayerType.Count - 1; i++)
                             {
-                                Core.Type.Tile[X, Y].Layer[i].X = withBlock.Layer[i].X;
-                                Core.Type.Tile[X, Y].Layer[i].Y = withBlock.Layer[i].Y;
-                                Core.Type.Tile[X, Y].Layer[i].Tileset = withBlock.Layer[i].Tileset;
-                                Core.Type.Tile[X, Y].Layer[i].AutoTile = withBlock.Layer[i].AutoTile;
+                                Core.Type.Tile[x, y].Layer[i].X = withBlock.Layer[i].X;
+                                Core.Type.Tile[x, y].Layer[i].Y = withBlock.Layer[i].Y;
+                                Core.Type.Tile[x, y].Layer[i].Tileset = withBlock.Layer[i].Tileset;
+                                Core.Type.Tile[x, y].Layer[i].AutoTile = withBlock.Layer[i].AutoTile;
                             }
                         }
                     }
@@ -1769,29 +1769,29 @@ namespace Client
                 Core.Type.MyMap.MaxY = GameState.TmpMaxY;
 
                 var loopTo2 = (int)Core.Type.MyMap.MaxX;
-                for (X = 0; X <= loopTo2; X++)
+                for (x = 0; x < loopTo2; x++)
                 {
                     var loopTo3 = (int)Core.Type.MyMap.MaxY;
-                    for (Y = 0; Y <= loopTo3; Y++)
+                    for (y = 0; y < loopTo3; y++)
                     {
                         {
-                            ref var withBlock1 = ref Core.Type.MyMap.Tile[X, Y];
-                            Array.Resize(ref Core.Type.MyMap.Tile[X, Y].Layer, 10);
-                            Array.Resize(ref Core.Type.Autotile[X, Y].Layer, 10);
+                            ref var withBlock1 = ref Core.Type.MyMap.Tile[x, y];
+                            Array.Resize(ref Core.Type.MyMap.Tile[x, y].Layer, 10);
+                            Array.Resize(ref Core.Type.Autotile[x, y].Layer, 10);
 
-                            withBlock1.Data1 = Core.Type.Tile[X, Y].Data1;
-                            withBlock1.Data2 = Core.Type.Tile[X, Y].Data2;
-                            withBlock1.Data3 = Core.Type.Tile[X, Y].Data3;
-                            withBlock1.Type = Core.Type.Tile[X, Y].Type;
-                            withBlock1.DirBlock = Core.Type.Tile[X, Y].DirBlock;
+                            withBlock1.Data1 = Core.Type.Tile[x, y].Data1;
+                            withBlock1.Data2 = Core.Type.Tile[x, y].Data2;
+                            withBlock1.Data3 = Core.Type.Tile[x, y].Data3;
+                            withBlock1.Type = Core.Type.Tile[x, y].Type;
+                            withBlock1.DirBlock = Core.Type.Tile[x, y].DirBlock;
 
                             for (i = 0; i < (int)LayerType.Count - 1; i++)
                             {
-                                withBlock1.Layer[i].X = Core.Type.Tile[X, Y].Layer[i].X;
-                                withBlock1.Layer[i].Y = Core.Type.Tile[X, Y].Layer[i].Y;
-                                withBlock1.Layer[i].Tileset = Core.Type.Tile[X, Y].Layer[i].Tileset;
-                                withBlock1.Layer[i].AutoTile = Core.Type.Tile[X, Y].Layer[i].AutoTile;
-                                Autotile.CacheRenderState(X, Y, i);
+                                withBlock1.Layer[i].X = Core.Type.Tile[x, y].Layer[i].X;
+                                withBlock1.Layer[i].Y = Core.Type.Tile[x, y].Layer[i].Y;
+                                withBlock1.Layer[i].Tileset = Core.Type.Tile[x, y].Layer[i].Tileset;
+                                withBlock1.Layer[i].AutoTile = Core.Type.Tile[x, y].Layer[i].AutoTile;
+                                Autotile.CacheRenderState(x, y, i);
                             }
                         }
                     }

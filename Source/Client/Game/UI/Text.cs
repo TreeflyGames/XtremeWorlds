@@ -696,7 +696,7 @@ namespace Client
                         // set the top width
                         tmpArray = Strings.Split(tmpText, Environment.NewLine);
                         var loopTo = Information.UBound(tmpArray);
-                        for (x = 0; x <= loopTo; x++)
+                        for (x = 0; x < loopTo; x++)
                         {
                             if (GetTextWidth(tmpArray[x]) > topWidth)
                                 topWidth = GetTextWidth(tmpArray[x]);

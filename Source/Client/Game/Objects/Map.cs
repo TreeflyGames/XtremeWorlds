@@ -687,11 +687,11 @@ namespace Client
                 for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
                     Core.Type.MyMap.NPC[x] = buffer.ReadInt32();
 
-                var loopTo = (int)Core.Type.MyMap.MaxX - 1;
-                for (x = 0; x <= loopTo; x++)
+                var loopTo = (int)Core.Type.MyMap.MaxX;
+                for (x = 0; x < loopTo; x++)
                 {
-                    var loopTo1 = (int)Core.Type.MyMap.MaxY - 1;
-                    for (y = 0; y <= loopTo1; y++)
+                    var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                    for (y = 0; y < loopTo1; y++)
                     {
                         Core.Type.MyMap.Tile[x, y].Data1 = buffer.ReadInt32();
                         Core.Type.MyMap.Tile[x, y].Data2 = buffer.ReadInt32();
@@ -759,7 +759,7 @@ namespace Client
                         {
                             Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
                             var loopTo3 = Core.Type.MyMap.Event[i].PageCount - 1;
-                            for (x = 0; x <= loopTo3; x++)
+                            for (x = 0; x < loopTo3; x++)
                             {
                                 {
                                     ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
@@ -1085,11 +1085,11 @@ namespace Client
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                 buffer.WriteInt32(Core.Type.MyMap.NPC[i]);
 
-            var loopTo = (int)Core.Type.MyMap.MaxX - 1;
-            for (x = 0; x <= loopTo; x++)
+            var loopTo = (int)Core.Type.MyMap.MaxX;
+            for (x = 0; x < loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.MyMap.MaxY - 1;
-                for (y = 0; y <= loopTo1; y++)
+                var loopTo1 = (int)Core.Type.MyMap.MaxY;
+                for (y = 0; y < loopTo1; y++)
                 {
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data1);
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data2);
@@ -1130,7 +1130,7 @@ namespace Client
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
                         var loopTo3 = Core.Type.MyMap.Event[i].PageCount - 1;
-                        for (x = 0; x <= loopTo3; x++)
+                        for (x = 0; x < loopTo3; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
