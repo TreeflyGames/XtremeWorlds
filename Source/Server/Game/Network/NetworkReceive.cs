@@ -9,6 +9,7 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Newtonsoft.Json.Linq;
+using Npgsql.Replication.PgOutput.Messages;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
@@ -1700,20 +1701,22 @@ namespace Server
             i = buffer.ReadInt32();
 
             // Check for invalid access level
-            if (i >= 1 | i <= 5)
+            if (i >= (int)Core.Enum.AccessType.Player | i <= (int)Core.Enum.AccessType.Owner)
             {
                 // Check if player is on
                 if (n >= 0)
                 {
-
-                    // check to see if same level access is trying to change another access of the very same level and boot them if they are.
-                    if (GetPlayerAccess(n) == GetPlayerAccess(index))
+                    if (n != index)
                     {
-                        NetworkSend.PlayerMsg(index, "Invalid access level.", (int) ColorType.BrightRed);
-                        return;
+                        // check to see if same level access is trying to change another access of the very same level and boot them if they are.
+                        if (GetPlayerAccess(n) == GetPlayerAccess(index))
+                        {
+                            NetworkSend.PlayerMsg(index, "Invalid access level.", (int)ColorType.BrightRed);
+                            return;
+                        }
                     }
 
-                    if (GetPlayerAccess(n) < 0)
+                    if (GetPlayerAccess(n) == (int)Core.Enum.AccessType.Player && i > (int)AccessType.Player)
                     {
                         NetworkSend.GlobalMsg(GetPlayerName(n) + " has been blessed with administrative access.");
                     }

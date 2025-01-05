@@ -97,7 +97,7 @@ namespace Client
                 return;
             }
 
-            NetworkSend.SendSetAccess(Strings.Trim(txtAdminName.Text), (byte)cmbAccess.SelectedIndex);
+            NetworkSend.SendSetAccess(txtAdminName.Text, (byte)(cmbAccess.SelectedIndex + 1));
         }
 
         private void BtnAdminSetSprite_Click(object sender, EventArgs e)
