@@ -973,6 +973,7 @@ namespace Client
                         header = "Invalid Connection";
                         body = "You lost connection to the game server.";
                         body2 = "Please try again later.";
+                        GameState.InGame = false;
                         break;
                     }
 
@@ -981,6 +982,7 @@ namespace Client
                         header = "Banned";
                         body = "You have been banned, have a nice day!";
                         body2 = "Please send all ban appeals to an administrator.";
+                        GameState.InGame = false;
                         break;
                     }
 
@@ -989,6 +991,7 @@ namespace Client
                         header = "Kicked";
                         body = "You have been kicked.";
                         body2 = "Please try and behave.";
+                        GameState.InGame = false;
                         break;
                     }
 
