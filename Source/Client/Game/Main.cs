@@ -60,6 +60,7 @@ namespace Client
                     var withBlock1 = FrmAdmin.Instance;
                     withBlock1.Owner = (Form)Control.FromHandle(General.Client.Window.Handle);
                     withBlock1.Show();
+                    withBlock1.txtAdminName.Text = Core.Global.Command.GetPlayerName(GameState.MyIndex);
                 }
                 GameState.InitAdminForm = false;
             }
