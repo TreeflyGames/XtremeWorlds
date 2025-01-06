@@ -1106,10 +1106,10 @@ namespace Server
 
             {
                 ref var withBlock = ref Core.Type.Map[mapNum];
-                var loopTo1 = (int)withBlock.MaxX - 1;
+                var loopTo1 = (int)withBlock.MaxX;
                 for (x = 0; x < (int)loopTo1; x++)
                 {
-                    var loopTo2 = (int)withBlock.MaxY - 1;
+                    var loopTo2 = (int)withBlock.MaxY;
                     for (y = 0; y < (int)loopTo2; y++)
                     {
                         withBlock.Tile[x, y].Data1 = buffer.ReadInt32();

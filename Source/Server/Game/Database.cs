@@ -17,6 +17,7 @@ using NpgsqlTypes;
 using static Core.Type;
 using static Core.Enum;
 using static Core.Global.Command;
+using System.Reflection;
 
 namespace Server
 {
@@ -562,7 +563,6 @@ namespace Server
         public static void ClearMaps()
         {
             Core.Type.Map = new Core.Type.MapStruct[Core.Constant.MAX_MAPS];
-            Core.Type.MapNPC = new Core.Type.MapDataStruct[Core.Constant.MAX_MAPS];
 
             for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
@@ -591,7 +591,7 @@ namespace Server
             Core.Type.Map[mapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS];
             Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
-            var loopTo = Core.Constant.MAX_MAPX ;
+            var loopTo = Core.Constant.MAX_MAPX;
             for (x = 0; x < (int)loopTo; x++)
             {
                 var loopTo1 = Core.Constant.MAX_MAPY;
@@ -734,9 +734,9 @@ namespace Server
                 int MAX_X = csMap.MapData.MaxX;
                 int MAX_Y = csMap.MapData.MaxY;
 
-                for (x = 0L; x <= MAX_X; x++)
+                for (x = 0L; x < MAX_X; x++)
                 {
-                    for (y = 0L; y <= MAX_Y; y++)
+                    for (y = 0L; y < MAX_Y; y++)
                     {
                         csMap.Tile[x, y].Autotile = new byte[(int)LayerType.Count];
                         csMap.Tile[x, y].Layer = new CSTileDataStruct[(int)LayerType.Count];
@@ -749,11 +749,11 @@ namespace Server
                         withBlock1.Data4 = binaryReader.ReadInt32();
                         withBlock1.Data5 = binaryReader.ReadInt32();
 
-                        for (i = 1L; i <= (int)LayerType.Count; i++)
+                        for (i = 0L; i < (int)LayerType.Count; i++)
                             withBlock1.Autotile[i] = binaryReader.ReadByte();
-                        withBlock1.DirBlock = binaryReader.ReadByte();
+                            withBlock1.DirBlock = binaryReader.ReadByte();
 
-                        for (i = 1L; i <= (int)LayerType.Count; i++)
+                        for (i = 0L; i < (int)LayerType.Count; i++)
                         {
                             withBlock1.Layer[i].TileSet = binaryReader.ReadInt32();
                             withBlock1.Layer[i].x = binaryReader.ReadInt32();
@@ -839,9 +839,9 @@ namespace Server
                     xwMap.Indoors = (byte)(reader.ReadByte() == 1 ? 1 : 0);
 
                     // Now, we decode the Tiles
-                    for (int y = 0; y <= 11; y++)
+                    for (int y = 0; y < 11; y++)
                     {
-                        for (int x = 0; x <= 15; x++)
+                        for (int x = 0; x < 15; x++)
                         {
                             xwMap.Tile[x, y].Ground = reader.ReadInt16(); // 42
                             xwMap.Tile[x, y].Mask = reader.ReadInt16(); // 44
@@ -883,7 +883,7 @@ namespace Server
             const int RowsPerTileset = 16;
 
             // Process each layer
-            for (int i = (int)LayerType.Ground; i <= (int)LayerType.Count; i++)
+            for (int i = (int)LayerType.Ground; i < (int)LayerType.Count; i++)
             {
                 int tileNumber = 0;
 
@@ -1011,9 +1011,9 @@ namespace Server
             mwMap.Indoors = xwMap.Indoors != 0;
 
             // Loop through each tile in xwMap and copy the data to map
-            for (int y = 0; y <= 11; y++)
+            for (int y = 0; y < 11; y++)
             {
-                for (int x = 0; x <= 15; x++)
+                for (int x = 0; x < 15; x++)
                     mwMap.Tile[x, y] = ConvertXWTileToTile(xwMap.Tile[x, y]);
             }
 
@@ -1060,9 +1060,9 @@ namespace Server
                 NPC = new int[Core.Constant.MAX_MAP_NPCS]
             };
 
-            for (int y = 0; y <= mwMap.MaxX - 1; y++)
+            for (int y = 0; y < mwMap.MaxX; y++)
             {
-                for (int x = 0; x <= mwMap.MaxY - 1; x++)
+                for (int x = 0; x < mwMap.MaxY; x++)
                 {
                     mwMap.Tile[x, y].Layer = new TileDataStruct[(int)LayerType.Count];
                     mwMap.Tile[x, y].Data1 = csMap.Tile[x, y].Data1;
@@ -1070,7 +1070,7 @@ namespace Server
                     mwMap.Tile[x, y].Data3 = csMap.Tile[x, y].Data3;
                     mwMap.Tile[x, y].DirBlock = csMap.Tile[x, y].DirBlock;
 
-                    for (int i = (int)LayerType.Ground; i <= (int)LayerType.Count; i++)
+                    for (int i = (int)LayerType.Ground; i < (int)LayerType.Count; i++)
                     {
                         mwMap.Tile[x, y].Layer[i].X = csMap.Tile[x, y].Layer[i].x;
                         mwMap.Tile[x, y].Layer[i].Y = csMap.Tile[x, y].Layer[i].y;
@@ -1080,7 +1080,7 @@ namespace Server
                 }
             }
 
-            for (int i = 0; i <= 30; i++)
+            for (int i = 0; i < 30; i++)
             {
                 mwMap.NPC[i] = csMap.MapData.NPC[i];
             }
@@ -1130,7 +1130,7 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_NPCS - 1;
+            var loopTo = Core.Constant.MAX_NPCS;
             for (i = 0; i < loopTo; i++)
                 LoadNPC(i);
         }
@@ -1153,33 +1153,30 @@ namespace Server
 
         public static void ClearMapNPC(int index, int mapNum)
         {
-            if (Core.Type.MapNPC[mapNum].NPC == null || Core.Type.MapNPC[mapNum].NPC.Length <= index)
-            {
-                Array.Resize(ref Core.Type.MapNPC[mapNum].NPC, index + 1);
-            }
             Core.Type.MapNPC[mapNum].NPC[index].Vital = new int[(int)VitalType.Count];
-            Core.Type.MapNPC[mapNum].NPC[index].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS + 1];
+            Core.Type.MapNPC[mapNum].NPC[index].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
         }
-
 
         public static void ClearAllMapNPCs()
         {
-            int i;
+            Core.Type.MapNPC = new MapDataStruct[Core.Constant.MAX_MAPS];
 
             var loopTo = Core.Constant.MAX_MAPS;
-            for (i = 0; i < loopTo; i++)
+            for (int i = 0; i < loopTo; i++)
+            {            
                 ClearMapNPCs(i);
-
+            }
         }
 
         public static void ClearMapNPCs(int mapNum)
         {
-            int x;
+            Core.Type.MapNPC[mapNum].NPC = new MapNPCStruct[Core.Constant.MAX_MAP_NPCS];
 
             var loopTo = Core.Constant.MAX_MAP_NPCS;
-            for (x = 0; x < (int)loopTo; x++)
+            for (int x = 0; x < loopTo; x++)
+            {        
                 ClearMapNPC(x, mapNum);
-
+            }
         }
 
         public static void ClearNPC(int index)
@@ -1200,6 +1197,8 @@ namespace Server
 
         public static void ClearNPCs()
         {
+            Core.Type.NPC = new NPCStruct[Core.Constant.MAX_NPCS];
+
             for (int i = 0, loopTo = Core.Constant.MAX_NPCS; i < loopTo; i++)
                 ClearNPC(Conversions.ToInteger(i));
 

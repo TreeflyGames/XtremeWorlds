@@ -491,9 +491,9 @@ namespace Client
             GameState.TileHistoryHighIndex = 0;
 
             // Reset tiles and tile history
-            for (int x = 0; x <= Core.Type.MyMap.MaxX - 1; x++)
+            for (int x = 0; x < Core.Type.MyMap.MaxX; x++)
             {
-                for (int y = 0; y <= Core.Type.MyMap.MaxY - 1; y++)
+                for (int y = 0; y < Core.Type.MyMap.MaxY; y++)
                 {
                     ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count));
 
@@ -537,9 +537,7 @@ namespace Client
 
         public static void ClearMapItems()
         {
-            int i;
-
-            for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
+            for (int i = 0; i < Constant.MAX_MAP_ITEMS; i++)
                 ClearMapItem(i);
 
         }
@@ -892,7 +890,7 @@ namespace Client
                 Core.Type.MyMapNPC[i].X = (byte)buffer.ReadInt32();
                 Core.Type.MyMapNPC[i].Y = (byte)buffer.ReadInt32();
                 Core.Type.MyMapNPC[i].Dir = buffer.ReadInt32();
-                for (int n = 1; n < (int)Core.Enum.VitalType.Count; n++)
+                for (int n = 0; n < (int)Core.Enum.VitalType.Count; n++)
                     Core.Type.MyMapNPC[i].Vital[n] = buffer.ReadInt32();
             }
 

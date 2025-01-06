@@ -1308,7 +1308,7 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_NPCS - 1;
+            var loopTo = Core.Constant.MAX_NPCS;
             for (i = 0; i < loopTo; i++)
             {
                 if (Strings.Len(Core.Type.NPC[i].Name) > 0)

@@ -1036,10 +1036,10 @@ namespace Server
                     {
                         // reset sum
                         sum = 0;
-                        var loopTo3 = (int)Core.Type.Map[mapNum].MaxY - 1;
+                        var loopTo3 = (int)Core.Type.Map[mapNum].MaxY;
                         for (j = 0; j < (int)loopTo3; j++)
                         {
-                            var loopTo4 = (int)Core.Type.Map[mapNum].MaxX - 1;
+                            var loopTo4 = (int)Core.Type.Map[mapNum].MaxX;
                             for (i = 0; i < loopTo4; i++)
                                 // we add up ALL the squares
                                 sum = sum + pos[i, j];

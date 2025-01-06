@@ -272,10 +272,10 @@ namespace Server
                 return;
 
             // Spawn what we have
-            var loopTo = (int)Core.Type.Map[mapNum].MaxX - 1;
+            var loopTo = (int)Core.Type.Map[mapNum].MaxX;
             for (x = 0; x < (int)loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.Map[mapNum].MaxY - 1;
+                var loopTo1 = (int)Core.Type.Map[mapNum].MaxY;
                 for (y = 0; y < (int)loopTo1; y++)
                 {
                     // Check if the tile type is an item or a saved tile incase someone drops something
@@ -285,7 +285,7 @@ namespace Server
                         // Check to see if its a currency and if they set the value to 0 set it to 1 automatically
                         if (Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1].Stackable == 1)
                         {
-                            if (Core.Type.Map[mapNum].Tile[x, y].Data2 < 0)
+                            if (Core.Type.Map[mapNum].Tile[x, y].Data2 < 1)
                             {
                                 SpawnItem(Core.Type.Map[mapNum].Tile[x, y].Data1, 1, mapNum, x, y);
                             }

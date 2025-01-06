@@ -217,7 +217,6 @@ namespace Server
             }
 
             Party.ClearParty();
-
             Console.WriteLine("Clearing Jobs...");
             Database.ClearJobs();
             Console.WriteLine("Clearing Morals...");
