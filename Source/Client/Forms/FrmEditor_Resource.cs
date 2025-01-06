@@ -101,7 +101,7 @@ namespace Client
             lstIndex.Items.Clear();
 
             // Add the names
-            for (int i = 0; i <= Constant.MAX_RESOURCES - 1; i++)
+            for (int i = 0; i < Constant.MAX_RESOURCES; i++)
                 lstIndex.Items.Add(i + 1 + ": " + Core.Type.Resource[i].Name);
 
             // populate combo boxes

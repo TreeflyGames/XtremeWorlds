@@ -35,7 +35,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_RESOURCES - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 LoadResource(i);
 
         }
@@ -67,12 +67,12 @@ namespace Server
         {
             Core.Type.MapResource = new Core.Type.MapResourceStruct[Core.Constant.MAX_MAPS];
 
-            for (int i = 0; i <= Core.Constant.MAX_MAPS - 1; i++)
+            for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
                 Core.Type.MapResource[i].ResourceData = new Core.Type.MapResourceCacheStruct[Core.Constant.MAX_RESOURCES + 1];
             }
 
-            for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES; i < loopTo; i++)
                 ClearResource(Conversions.ToInteger(i));
         }
 
@@ -83,10 +83,10 @@ namespace Server
             var Resource_Count = default(int);
 
             var loopTo = (int)Core.Type.Map[mapNum].MaxX - 1;
-            for (x = 0; x <= (int)loopTo; x++)
+            for (x = 0; x < (int)loopTo; x++)
             {
                 var loopTo1 = (int)Core.Type.Map[mapNum].MaxY - 1;
-                for (y = 0; y <= (int)loopTo1; y++)
+                for (y = 0; y < (int)loopTo1; y++)
                 {
 
                     if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Resource)
@@ -107,7 +107,7 @@ namespace Server
         public static byte[] ResourcesData()
         {
             var buffer = new ByteStream(4);
-            for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES; i < loopTo; i++)
             {
                 if (!(Strings.Len(Core.Type.Resource[Conversions.ToInteger(i)].Name) > 0))
                     continue;
@@ -284,7 +284,7 @@ namespace Server
             {
 
                 var loopTo = Core.Type.MapResource[mapnum].ResourceCount;
-                for (i = 0; i <= (int)loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     buffer.WriteByte(Core.Type.MapResource[mapnum].ResourceData[i].State);
                     buffer.WriteInt32(Core.Type.MapResource[mapnum].ResourceData[i].X);
@@ -309,7 +309,7 @@ namespace Server
             {
 
                 var loopTo = Core.Type.MapResource[mapNum].ResourceCount;
-                for (i = 0; i <= (int)loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
                     buffer.WriteByte(Core.Type.MapResource[mapNum].ResourceData[i].State);
                     buffer.WriteInt32(Core.Type.MapResource[mapNum].ResourceData[i].X);
@@ -327,7 +327,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_RESOURCES - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
 
                 if (Strings.Len(Core.Type.Resource[i].Name) > 0)
@@ -389,7 +389,7 @@ namespace Server
                 ResourceType = (byte)Core.Type.Resource[Resource_index].ResourceType;
 
                 // Get the cache number
-                for (int i = 0, loopTo = Core.Type.MapResource[mapNum].ResourceCount; i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = Core.Type.MapResource[mapNum].ResourceCount; i < loopTo; i++)
                 {
                     if (Core.Type.MapResource[mapNum].ResourceData[Conversions.ToInteger(i)].X == x)
                     {

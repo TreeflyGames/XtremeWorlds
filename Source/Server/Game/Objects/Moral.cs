@@ -22,7 +22,7 @@ namespace Server
             Core.Type.Moral = new Core.Type.MoralStruct[Core.Constant.MAX_MORALS + 1];
 
             var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 ClearMoral(i);
         }
 
@@ -62,7 +62,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 LoadMoral(i);
         }
 
@@ -85,7 +85,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 SaveMoral(i);
         }
 
@@ -118,7 +118,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (Strings.Len(Core.Type.Moral[i].Name) > 0)
                 {

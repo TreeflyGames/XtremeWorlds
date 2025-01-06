@@ -374,7 +374,7 @@ namespace Client
             pnlAttributes.Visible = true;
             fraMapWarp.Visible = true;
 
-            scrlMapWarpMap.Maximum = Constant.MAX_MAPS - 1;
+            scrlMapWarpMap.Maximum = Constant.MAX_MAPS;
             scrlMapWarpMap.Value = 1;
             scrlMapWarpX.Maximum = byte.MaxValue;
             scrlMapWarpY.Maximum = byte.MaxValue;
@@ -853,7 +853,7 @@ namespace Client
             cmbPanorama.Items.Add("None");
 
             var loopTo4 = GameState.NumPanoramas;
-            for (i = 0; i <= loopTo4; i++)
+            for (i = 0; i < loopTo4; i++)
                 cmbPanorama.Items.Add(i);
 
             cmbPanorama.SelectedIndex = Core.Type.MyMap.Panorama;
@@ -862,7 +862,7 @@ namespace Client
             cmbParallax.Items.Add("None");
 
             var loopTo5 = GameState.NumParallax;
-            for (i = 0; i <= loopTo5; i++)
+            for (i = 0; i < loopTo5; i++)
                 cmbParallax.Items.Add(i);
 
             cmbParallax.SelectedIndex = Core.Type.MyMap.Parallax;
@@ -901,7 +901,7 @@ namespace Client
             optBlocked.Checked = true;
 
             cmbTileSets.Items.Clear();
-            for (int i = 0, loopTo = GameState.NumTileSets; i <= loopTo; i++)
+            for (int i = 0, loopTo = GameState.NumTileSets; i < loopTo; i++)
                 cmbTileSets.Items.Add(i);
 
             cmbTileSets.SelectedIndex = 0;
@@ -1543,7 +1543,7 @@ namespace Client
 
             if (GameState.HistoryIndex == GameState.MaxTileHistory)
             {
-                for (i = 0L; i <= GameState.MaxTileHistory - 1; i++)
+                for (i = 0L; i <= GameState.MaxTileHistory; i++)
                 {
                     Core.Type.TileHistory[(int)i] = Core.Type.TileHistory[(int)(i + 1L)];
                     GameState.TileHistoryHighIndex = GameState.TileHistoryHighIndex - 1;
@@ -1605,7 +1605,7 @@ namespace Client
             {
                 for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY; y < loopTo1; y++)
                 {
-                    for (int i = 0; i < (int)LayerType.Count - 1; i++)
+                    for (int i = 0; i < (int)LayerType.Count; i++)
                     {
                         {
                             ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
@@ -1657,7 +1657,7 @@ namespace Client
             {
                 for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY; y < loopTo1; y++)
                 {
-                    for (int i = 0; i < (int)LayerType.Count - 1; i++)
+                    for (int i = 0; i < (int)LayerType.Count; i++)
                     {
                         {
                             ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
@@ -1747,7 +1747,7 @@ namespace Client
                             Core.Type.Tile[x, y].Type = withBlock.Type;
                             Core.Type.Tile[x, y].DirBlock = withBlock.DirBlock;
 
-                            for (i = 0; i < (int)LayerType.Count - 1; i++)
+                            for (i = 0; i < (int)LayerType.Count; i++)
                             {
                                 Core.Type.Tile[x, y].Layer[i].X = withBlock.Layer[i].X;
                                 Core.Type.Tile[x, y].Layer[i].Y = withBlock.Layer[i].Y;
@@ -1785,7 +1785,7 @@ namespace Client
                             withBlock1.Type = Core.Type.Tile[x, y].Type;
                             withBlock1.DirBlock = Core.Type.Tile[x, y].DirBlock;
 
-                            for (i = 0; i < (int)LayerType.Count - 1; i++)
+                            for (i = 0; i < (int)LayerType.Count; i++)
                             {
                                 withBlock1.Layer[i].X = Core.Type.Tile[x, y].Layer[i].X;
                                 withBlock1.Layer[i].Y = Core.Type.Tile[x, y].Layer[i].Y;

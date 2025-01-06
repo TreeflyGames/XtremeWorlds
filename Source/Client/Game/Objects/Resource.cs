@@ -23,7 +23,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_RESOURCES - 1; i++)
+            for (i = 0; i < Constant.MAX_RESOURCES; i++)
                 ClearResource(i);
 
         }

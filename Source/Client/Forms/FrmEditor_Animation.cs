@@ -103,7 +103,7 @@ namespace Client
 
             General.CacheSound();
 
-            for (int i = 0, loopTo = Information.UBound(Sound.SoundCache); i <= loopTo; i++)
+            for (int i = 0, loopTo = Information.UBound(Sound.SoundCache); i < loopTo; i++)
                 cmbSound.Items.Add(Sound.SoundCache[i]);
 
             nudSprite0.Maximum = GameState.NumAnimations;

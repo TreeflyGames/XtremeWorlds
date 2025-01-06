@@ -15,8 +15,8 @@ namespace Server
             int n;
             n = 0;
 
-            var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo; i++)
             {
                 if (GetPlayerMap(i) == mapNum)
                 {
@@ -58,8 +58,8 @@ namespace Server
             int FindPlayerRet = default;
             int i;
 
-            var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo; i++)
             {
                 // Trim and convert both names to uppercase for case-insensitive comparison
                 if (Strings.UCase(GetPlayerName(i)) == Strings.UCase(Name))

@@ -35,7 +35,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_ANIMATIONS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 LoadAnimation(i);
 
         }
@@ -72,7 +72,7 @@ namespace Server
 
         public static void ClearAnimations()
         {
-            for (int i = 0, loopTo = Core.Constant.MAX_ANIMATIONS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_ANIMATIONS; i < loopTo; i++)
                 ClearAnimation(Conversions.ToInteger(i));
         }
 
@@ -81,19 +81,19 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32(AnimationNum);
-            for (int i = 0, loopTo = Core.Type.Animation[AnimationNum].Frames.Length - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Type.Animation[AnimationNum].Frames.Length; i < loopTo; i++)
                 buffer.WriteInt32(Core.Type.Animation[AnimationNum].Frames[i]);
 
-            for (int i = 0, loopTo1 = Core.Type.Animation[AnimationNum].LoopCount.Length - 1; i <= (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = Core.Type.Animation[AnimationNum].LoopCount.Length; i < loopTo1; i++)
                 buffer.WriteInt32(Core.Type.Animation[AnimationNum].LoopCount[i]);
 
-            for (int i = 0, loopTo2 = Core.Type.Animation[AnimationNum].LoopTime.Length - 1; i <= (int)loopTo2; i++)
+            for (int i = 0, loopTo2 = Core.Type.Animation[AnimationNum].LoopTime.Length; i < loopTo2; i++)
                 buffer.WriteInt32(Core.Type.Animation[AnimationNum].LoopTime[i]);
 
             buffer.WriteString(Core.Type.Animation[AnimationNum].Name);
             buffer.WriteString(Core.Type.Animation[AnimationNum].Sound);
 
-            for (int i = 0, loopTo3 = Information.UBound(Core.Type.Animation[AnimationNum].Sprite); i <= (int)loopTo3; i++)
+            for (int i = 0, loopTo3 = Information.UBound(Core.Type.Animation[AnimationNum].Sprite); i < loopTo3; i++)
                 buffer.WriteInt32(Core.Type.Animation[AnimationNum].Sprite[i]);
 
             return buffer.ToArray();
@@ -139,19 +139,19 @@ namespace Server
             AnimNum = buffer.ReadInt32();
 
             // Update the Animation
-            for (int i = 0, loopTo = Information.UBound(Core.Type.Animation[AnimNum].Frames); i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Information.UBound(Core.Type.Animation[AnimNum].Frames); i < loopTo; i++)
                 Core.Type.Animation[AnimNum].Frames[i] = buffer.ReadInt32();
 
-            for (int i = 0, loopTo1 = Information.UBound(Core.Type.Animation[AnimNum].LoopCount); i <= (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = Information.UBound(Core.Type.Animation[AnimNum].LoopCount); i < loopTo1; i++)
                 Core.Type.Animation[AnimNum].LoopCount[i] = buffer.ReadInt32();
 
-            for (int i = 0, loopTo2 = Information.UBound(Core.Type.Animation[AnimNum].LoopTime); i <= (int)loopTo2; i++)
+            for (int i = 0, loopTo2 = Information.UBound(Core.Type.Animation[AnimNum].LoopTime); i < loopTo2; i++)
                 Core.Type.Animation[AnimNum].LoopTime[i] = buffer.ReadInt32();
 
             Core.Type.Animation[AnimNum].Name = buffer.ReadString();
             Core.Type.Animation[AnimNum].Sound = buffer.ReadString();
 
-            for (int i = 0, loopTo3 = Information.UBound(Core.Type.Animation[AnimNum].Sprite); i <= (int)loopTo3; i++)
+            for (int i = 0, loopTo3 = Information.UBound(Core.Type.Animation[AnimNum].Sprite); i < loopTo3; i++)
                 Core.Type.Animation[AnimNum].Sprite[i] = buffer.ReadInt32();
 
             buffer.Dispose();
@@ -200,7 +200,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_ANIMATIONS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
 
                 if (Strings.Len(Core.Type.Animation[i].Name) > 0)

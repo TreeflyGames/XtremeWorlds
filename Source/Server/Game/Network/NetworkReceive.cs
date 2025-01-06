@@ -313,7 +313,7 @@ namespace Server
                     password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
 
                     var loopTo = Strings.Len(username);
-                    for (i = 1; i <= (int)loopTo; i++)
+                    for (i = 1; i < loopTo; i++)
                     {
                         n = Strings.AscW(Strings.Mid(username, i, 1));
 
@@ -446,7 +446,7 @@ namespace Server
                 }
 
                 var loopTo = Strings.Len(name);
-                for (i = 1; i <= (int)loopTo; i++)
+                for (i = 1; i < loopTo; i++)
                 {
                     n = Strings.AscW(Strings.Mid(name, i, 1));
 
@@ -754,8 +754,8 @@ namespace Server
             }
 
             // Try to attack a player
-            var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo; i++)
             {
                 Tempindex = i;
 
@@ -770,8 +770,8 @@ namespace Server
             }
 
             // Try to attack a npc
-            var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+            for (i = 0; i < loopTo1; i++)
                 Player.TryPlayerAttackNPC(index, i);
 
             // Check tradeskills
@@ -1097,8 +1097,8 @@ namespace Server
 
             Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
-            var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
-            for (x = 0; x <= (int)loopTo; x++)
+            var loopTo = Core.Constant.MAX_MAP_NPCS;
+            for (x = 0; x < (int)loopTo; x++)
             {
                 Database.ClearMapNPC(x, mapNum);
                 Core.Type.Map[mapNum].NPC[x] = buffer.ReadInt32();
@@ -1107,10 +1107,10 @@ namespace Server
             {
                 ref var withBlock = ref Core.Type.Map[mapNum];
                 var loopTo1 = (int)withBlock.MaxX - 1;
-                for (x = 0; x <= (int)loopTo1; x++)
+                for (x = 0; x < (int)loopTo1; x++)
                 {
                     var loopTo2 = (int)withBlock.MaxY - 1;
-                    for (y = 0; y <= (int)loopTo2; y++)
+                    for (y = 0; y < (int)loopTo2; y++)
                     {
                         withBlock.Tile[x, y].Data1 = buffer.ReadInt32();
                         withBlock.Tile[x, y].Data2 = buffer.ReadInt32();
@@ -1141,7 +1141,7 @@ namespace Server
             {
                 Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[Core.Type.Map[mapNum].EventCount];
                 var loopTo4 = Core.Type.Map[mapNum].EventCount - 1;
-                for (i = 0; i <= (int)loopTo4; i++)
+                for (i = 0; i < loopTo4; i++)
                 {
                     {
                         ref var withBlock1 = ref Core.Type.Map[mapNum].Event[i];
@@ -1159,7 +1159,7 @@ namespace Server
                         Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount);
 
                         var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount - 1;
-                        for (x = 0; x <= (int)loopTo5; x++)
+                        for (x = 0; x < (int)loopTo5; x++)
                         {
                             {
                                 ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[x];
@@ -1197,8 +1197,8 @@ namespace Server
                                 if (withBlock2.MoveRouteCount > 0)
                                 {
                                     Core.Type.Map[mapNum].Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock2.MoveRouteCount];
-                                    var loopTo6 = withBlock2.MoveRouteCount - 1;
-                                    for (y = 0; y <= (int)loopTo6; y++)
+                                    var loopTo6 = withBlock2.MoveRouteCount;
+                                    for (y = 0; y < (int)loopTo6; y++)
                                     {
                                         withBlock2.MoveRoute[y].Index = buffer.ReadInt32();
                                         withBlock2.MoveRoute[y].Data1 = buffer.ReadInt32();
@@ -1223,14 +1223,14 @@ namespace Server
                             {
                                 Core.Type.Map[mapNum].Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount];
                                 var loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount - 1;
-                                for (y = 0; y <= (int)loopTo7; y++)
+                                for (y = 0; y < (int)loopTo7; y++)
                                 {
                                     Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                     Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                     if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
                                         Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount];
-                                        for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount - 1; z <= (int)loopTo8; z++)
+                                        for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount - 1; z < (int)loopTo8; z++)
                                         {
                                             {
                                                 ref var withBlock3 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];
@@ -1257,7 +1257,7 @@ namespace Server
                                                 if (tmpcount > 0)
                                                 {
                                                     Array.Resize(ref withBlock3.MoveRoute, tmpcount);
-                                                    for (int w = 0, loopTo9 = tmpcount - 1; w <= (int)loopTo9; w++)
+                                                    for (int w = 0, loopTo9 = tmpcount - 1; w < (int)loopTo9; w++)
                                                     {
                                                         withBlock3.MoveRoute[w].Index = buffer.ReadInt32();
                                                         withBlock3.MoveRoute[w].Data1 = buffer.ReadInt32();
@@ -1284,8 +1284,8 @@ namespace Server
             NPC.SpawnMapNPCs(mapNum);
             EventLogic.SpawnGlobalEvents(mapNum);
 
-            var loopTo10 = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= (int)loopTo10; i++)
+            var loopTo10 = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo10; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -1297,8 +1297,8 @@ namespace Server
             }
 
             // Clear it all out
-            var loopTo11 = Core.Constant.MAX_MAP_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo11; i++)
+            var loopTo11 = Core.Constant.MAX_MAP_ITEMS;
+            for (i = 0; i < loopTo11; i++)
             {
                 Item.SpawnItemSlot(i, 0, 0, GetPlayerMap(index), MapItem[GetPlayerMap(index), i].X, MapItem[GetPlayerMap(index), i].Y);
                 Database.ClearMapItem(i, GetPlayerMap(index));
@@ -1309,8 +1309,8 @@ namespace Server
             Resource.CacheResources(mapNum);
 
             // Refresh map for everyone online
-            var loopTo12 = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= (int)loopTo12; i++)
+            var loopTo12 = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo12; i++)
             {
                 if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                 {
@@ -1366,8 +1366,8 @@ namespace Server
                 return;
 
             // Clear out it all
-            var loopTo = Core.Constant.MAX_MAP_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAP_ITEMS;
+            for (i = 0; i < loopTo; i++)
             {
                 Item.SpawnItemSlot(i, 0, 0, GetPlayerMap(index), MapItem[GetPlayerMap(index), i].X, MapItem[GetPlayerMap(index), i].Y);
                 Database.ClearMapItem(i, GetPlayerMap(index));
@@ -1377,8 +1377,8 @@ namespace Server
             Item.SpawnMapItems(GetPlayerMap(index));
 
             // Respawn NPCS
-            var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+            for (i = 0; i < loopTo1; i++)
                 NPC.SpawnNPC(i, GetPlayerMap(index));
 
             EventLogic.SpawnMapEventsFor(index, GetPlayerMap(index));
@@ -1587,7 +1587,7 @@ namespace Server
             Core.Type.Shop[ShopNum].BuyRate = buffer.ReadInt32();
             Core.Type.Shop[ShopNum].Name = buffer.ReadString();
 
-            for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
                 Core.Type.Shop[ShopNum].TradeItem[Conversions.ToInteger(i)].CostItem = buffer.ReadInt32();
                 Core.Type.Shop[ShopNum].TradeItem[Conversions.ToInteger(i)].CostValue = buffer.ReadInt32();
@@ -1777,8 +1777,8 @@ namespace Server
                 return;
 
             // Check for a player
-            var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo; i++)
             {
 
                 if (GetPlayerMap(index) == GetPlayerMap(i))
@@ -1841,8 +1841,8 @@ namespace Server
             }
 
             // Check for an item
-            var loopTo1 = Core.Constant.MAX_MAP_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            var loopTo1 = Core.Constant.MAX_MAP_ITEMS;
+            for (i = 0; i < loopTo1; i++)
             {
 
                 if (Core.Type.MapItem[GetPlayerMap(index), i].Num > 0)
@@ -1862,8 +1862,8 @@ namespace Server
             }
 
             // Check for an npc
-            var loopTo2 = Core.Constant.MAX_MAP_NPCS - 1;
-            for (i = 0; i <= (int)loopTo2; i++)
+            var loopTo2 = Core.Constant.MAX_MAP_NPCS;
+            for (i = 0; i < loopTo2; i++)
             {
                 if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num > 0)
                 {
@@ -2149,7 +2149,7 @@ namespace Server
                 }
 
                 // it's fine, let's go ahead
-                for (int i = 0, loopTo = withBlock.CostValue; i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = withBlock.CostValue; i < loopTo; i++)
                     Player.TakeInv(index, withBlock.CostItem, withBlock.CostValue);
                 Player.GiveInv(index, withBlock.Item, withBlock.ItemValue);
             }
@@ -2347,7 +2347,7 @@ namespace Server
                 Array.Resize(ref Core.Type.TempPlayer[index].TradeOffer, Core.Constant.MAX_INV);
                 Array.Resize(ref Core.Type.TempPlayer[tradetarget].TradeOffer, Core.Constant.MAX_INV);
 
-                for (int i = 0, loopTo = Core.Constant.MAX_INV - 1; i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = Core.Constant.MAX_INV; i < loopTo; i++)
                 {
                     Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
                     Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
@@ -2393,14 +2393,14 @@ namespace Server
             }
 
             // take their items
-            var loopTo = Core.Constant.MAX_INV - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_INV;
+            for (i = 0; i < loopTo; i++)
             {
                 // player
                 if (Core.Type.TempPlayer[index].TradeOffer[i].Num > 0)
                 {
                     itemNum = Core.Type.Player[index].Inv[Core.Type.TempPlayer[index].TradeOffer[i].Num].Num;
-                    if (itemNum > 0)
+                    if (itemNum >= 0)
                     {
                         // store temp
                         tmpTradeItem[i].Num = itemNum;
@@ -2413,7 +2413,7 @@ namespace Server
                 if (Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num > 0)
                 {
                     itemNum = GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num);
-                    if (itemNum > 0)
+                    if (itemNum >= 0)
                     {
                         // store temp
                         tmpTradeItem2[i].Num = itemNum;
@@ -2425,8 +2425,8 @@ namespace Server
             }
 
             // taken all items. now they can't not get items because of no inventory space.
-            var loopTo1 = Core.Constant.MAX_INV - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            var loopTo1 = Core.Constant.MAX_INV;
+            for (i = 0; i < loopTo1; i++)
             {
                 // player
                 if (tmpTradeItem2[i].Num > 0)
@@ -2446,8 +2446,8 @@ namespace Server
             NetworkSend.SendInventory(tradeTarget);
 
             // they now have all the items. Clear out values + let them out of the trade.
-            var loopTo2 = Core.Constant.MAX_INV - 1;
-            for (i = 0; i <= (int)loopTo2; i++)
+            var loopTo2 = Core.Constant.MAX_INV;
+            for (i = 0; i < loopTo2; i++)
             {
                 Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
                 Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
@@ -2471,7 +2471,7 @@ namespace Server
 
             tradeTarget = Core.Type.TempPlayer[index].InTrade;
 
-            for (int i = 0, loopTo = Core.Constant.MAX_INV - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_INV; i < loopTo; i++)
             {
                 Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
                 Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
@@ -2519,8 +2519,8 @@ namespace Server
             {
 
                 // check if already offering same currency item
-                var loopTo = Core.Constant.MAX_INV - 1;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = Core.Constant.MAX_INV;
+                for (i = 0; i < loopTo; i++)
                 {
 
                     if (Core.Type.TempPlayer[index].TradeOffer[i].Num == invslot)
@@ -2550,8 +2550,8 @@ namespace Server
             else
             {
                 // make sure they're not already offering it
-                var loopTo1 = Core.Constant.MAX_INV - 1;
-                for (i = 0; i <= (int)loopTo1; i++)
+                var loopTo1 = Core.Constant.MAX_INV;
+                for (i = 0; i < loopTo1; i++)
                 {
                     if (Core.Type.TempPlayer[index].TradeOffer[i].Num == invslot)
                     {
@@ -2562,8 +2562,8 @@ namespace Server
             }
 
             // not already offering - find earliest empty slot
-            var loopTo2 = Core.Constant.MAX_INV - 1;
-            for (i = 0; i <= (int)loopTo2; i++)
+            var loopTo2 = Core.Constant.MAX_INV;
+            for (i = 0; i < loopTo2; i++)
             {
                 if (Core.Type.TempPlayer[index].TradeOffer[i].Num == 0)
                 {
@@ -2788,7 +2788,7 @@ namespace Server
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
                 var loopTo = (byte)StatType.Count - 1;
-                for (x = 0; x < (int)loopTo; x++)
+                for (x = 0; x < loopTo; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
                 for (int q = 0; q <= 4; q++)

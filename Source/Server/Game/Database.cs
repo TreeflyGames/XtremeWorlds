@@ -205,7 +205,7 @@ namespace Server
             string dataTable = "id SERIAL PRIMARY KEY, data jsonb";
             string playerTable = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb";
 
-            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= (int)loopTo; i++)
+            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i < loopTo; i++)
                 playerTable += $", character{i} jsonb";
 
             string[] tableNames = new[] { "job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile", "moral" };
@@ -493,8 +493,8 @@ namespace Server
 
             Core.Type.Job = new Core.Type.JobStruct[Core.Constant.MAX_JOBS];
 
-            var loopTo = Core.Constant.MAX_JOBS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_JOBS;
+            for (i = 0; i < loopTo; i++)
                 ClearJob(i);
         }
 
@@ -531,8 +531,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_JOBS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_JOBS;
+            for (i = 0; i < loopTo; i++)
                 LoadJob(i);
         }
 
@@ -554,8 +554,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_JOBS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_JOBS;
+            for (i = 0; i < loopTo; i++)
                 SaveJob(i);
         }
 
@@ -564,7 +564,7 @@ namespace Server
             Core.Type.Map = new Core.Type.MapStruct[Core.Constant.MAX_MAPS];
             Core.Type.MapNPC = new Core.Type.MapDataStruct[Core.Constant.MAX_MAPS];
 
-            for (int i = 0; i <= Core.Constant.MAX_MAPS - 1; i++)
+            for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
                 Core.Type.Map[i].NPC = new int[Core.Constant.MAX_MAP_NPCS];
             }
@@ -573,7 +573,7 @@ namespace Server
             Event.Variables = new string[Core.Constant.NAX_VARIABLES];
             Event.TempEventMap = new GlobalEventsStruct[Core.Constant.MAX_MAPS]; // Assuming GlobalEventsStruct is defined somewhere
 
-            for (int i = 0; i <= Core.Constant.MAX_MAPS - 1; i++)
+            for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
                 ClearMap(i);
             }
@@ -592,10 +592,10 @@ namespace Server
             Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
             var loopTo = Core.Constant.MAX_MAPX - 1;
-            for (x = 0; x <= (int)loopTo; x++)
+            for (x = 0; x < (int)loopTo; x++)
             {
                 var loopTo1 = Core.Constant.MAX_MAPY - 1;
-                for (y = 0; y <= (int)loopTo1; y++)
+                for (y = 0; y < (int)loopTo1; y++)
                     Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count - 1];
             }
 
@@ -629,8 +629,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_MAPS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAPS;
+            for (i = 0; i < loopTo; i++)
                 LoadMap(i);
         }
 
@@ -749,11 +749,11 @@ namespace Server
                         withBlock1.Data4 = binaryReader.ReadInt32();
                         withBlock1.Data5 = binaryReader.ReadInt32();
 
-                        for (i = 1L; i <= (int)LayerType.Count - 1; i++)
+                        for (i = 1L; i <= (int)LayerType.Count; i++)
                             withBlock1.Autotile[i] = binaryReader.ReadByte();
                         withBlock1.DirBlock = binaryReader.ReadByte();
 
-                        for (i = 1L; i <= (int)LayerType.Count - 1; i++)
+                        for (i = 1L; i <= (int)LayerType.Count; i++)
                         {
                             withBlock1.Layer[i].TileSet = binaryReader.ReadInt32();
                             withBlock1.Layer[i].x = binaryReader.ReadInt32();
@@ -776,11 +776,11 @@ namespace Server
             int x;
             int y;
 
-            var loopTo = Core.Constant.MAX_MAPS - 1;
-            for (y = 0; y <= (int)loopTo; y++)
+            var loopTo = Core.Constant.MAX_MAPS;
+            for (y = 0; y < loopTo; y++)
             {
-                var loopTo1 = Core.Constant.MAX_MAP_ITEMS - 1;
-                for (x = 0; x <= (int)loopTo1; x++)
+                var loopTo1 = Core.Constant.MAX_MAP_ITEMS;
+                for (x = 0; x < loopTo1; x++)
                     ClearMapItem(x, y);
             }
 
@@ -883,7 +883,7 @@ namespace Server
             const int RowsPerTileset = 16;
 
             // Process each layer
-            for (int i = (int)LayerType.Ground; i <= (int)LayerType.Count - 1; i++)
+            for (int i = (int)LayerType.Ground; i <= (int)LayerType.Count; i++)
             {
                 int tileNumber = 0;
 
@@ -1070,7 +1070,7 @@ namespace Server
                     mwMap.Tile[x, y].Data3 = csMap.Tile[x, y].Data3;
                     mwMap.Tile[x, y].DirBlock = csMap.Tile[x, y].DirBlock;
 
-                    for (int i = (int)LayerType.Ground; i <= (int)LayerType.Count - 1; i++)
+                    for (int i = (int)LayerType.Ground; i <= (int)LayerType.Count; i++)
                     {
                         mwMap.Tile[x, y].Layer[i].X = csMap.Tile[x, y].Layer[i].x;
                         mwMap.Tile[x, y].Layer[i].Y = csMap.Tile[x, y].Layer[i].y;
@@ -1131,7 +1131,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_NPCS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 LoadNPC(i);
         }
 
@@ -1166,8 +1166,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_MAPS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAPS;
+            for (i = 0; i < loopTo; i++)
                 ClearMapNPCs(i);
 
         }
@@ -1176,8 +1176,8 @@ namespace Server
         {
             int x;
 
-            var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
-            for (x = 0; x <= (int)loopTo; x++)
+            var loopTo = Core.Constant.MAX_MAP_NPCS;
+            for (x = 0; x < (int)loopTo; x++)
                 ClearMapNPC(x, mapNum);
 
         }
@@ -1189,7 +1189,7 @@ namespace Server
 
             Core.Type.NPC[index].Stat = new byte[(int)StatType.Count - 1];
 
-            for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i < loopTo; i++)
             {
                 Core.Type.NPC[index].DropChance = new int[6];
                 Core.Type.NPC[index].DropItem = new int[6];
@@ -1200,7 +1200,7 @@ namespace Server
 
         public static void ClearNPCs()
         {
-            for (int i = 0, loopTo = Core.Constant.MAX_NPCS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_NPCS; i < loopTo; i++)
                 ClearNPC(Conversions.ToInteger(i));
 
         }
@@ -1228,7 +1228,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_SHOPS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 LoadShop(i);
 
         }
@@ -1254,13 +1254,13 @@ namespace Server
             Core.Type.Shop[index] = default;
             Core.Type.Shop[index].Name = "";
 
-            for (int i = 0, loopTo = Core.Constant.MAX_TRADES - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
                 Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Conversions.ToInteger(i + 1)];
         }
 
         public static void ClearShops()
         {
-            for (int i = 0, loopTo = Core.Constant.MAX_SHOPS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_SHOPS; i < loopTo; i++)
                 ClearShop(Conversions.ToInteger(i));
         }
 
@@ -1286,8 +1286,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_SKILLS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_SKILLS;
+            for (i = 0; i < loopTo; i++)
                 LoadSkill(i);
 
         }
@@ -1318,8 +1318,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_SKILLS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_SKILLS;
+            for (i = 0; i < loopTo; i++)
                 ClearSkill(i);
 
         }
@@ -1330,7 +1330,7 @@ namespace Server
 
         public static void SaveAllPlayersOnline()
         {
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= loopTo; i++)
             {
                 if (!NetworkConfig.IsPlaying(i))
                     continue;
@@ -1395,7 +1395,7 @@ namespace Server
 
             Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS + 1];
 
-            for (int i = 0; i <= Core.Constant.MAX_PLAYERS - 1; i++)
+            for (int i = 0; i < Core.Constant.MAX_PLAYERS; i++)
             {
                 Core.Type.TempPlayer[i].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS + 1];
                 Core.Type.TempPlayer[i].PetSkillCD = new int[5];
@@ -1447,7 +1447,7 @@ namespace Server
         public static void ClearBank(int index)
         {
             Bank[index].Item = new PlayerInvStruct[Core.Constant.MAX_BANK + 1];
-            for (int i = 0; i <= Core.Constant.MAX_BANK; i++)
+            for (int i = 0; i < Core.Constant.MAX_BANK; i++)
             {
                 Bank[index].Item[i].Num = 0;
                 Bank[index].Item[i].Value = 0;
@@ -1464,11 +1464,11 @@ namespace Server
             Core.Type.Player[index].Dir = 0;
 
             Core.Type.Player[index].Equipment = new int[(byte)EquipmentType.Count];
-            for (int i = 0, loopTo = (byte)EquipmentType.Count - 1; i < (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)EquipmentType.Count; i < loopTo; i++)
                 Core.Type.Player[index].Equipment[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[Core.Constant.MAX_INV];
-            for (int i = 0, loopTo1 = Core.Constant.MAX_INV - 1; i <= (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = Core.Constant.MAX_INV; i < loopTo1; i++)
             {
                 Core.Type.Player[index].Inv[Conversions.ToInteger(i)].Num = 0;
                 Core.Type.Player[index].Inv[Conversions.ToInteger(i)].Value = 0;
@@ -1483,7 +1483,7 @@ namespace Server
             Core.Type.Player[index].Sex = 0;
 
             Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[Core.Constant.MAX_PLAYER_SKILLS];
-            for (int i = 0, loopTo2 = Core.Constant.MAX_PLAYER_SKILLS - 1; i <= (int)loopTo2; i++)
+            for (int i = 0, loopTo2 = Core.Constant.MAX_PLAYER_SKILLS; i < loopTo2; i++)
             {
                 Core.Type.Player[index].Skill[Conversions.ToInteger(i)].Num = 0;
                 Core.Type.Player[index].Skill[Conversions.ToInteger(i)].CD = 0;
@@ -1492,39 +1492,39 @@ namespace Server
             Core.Type.Player[index].Sprite = 0;
 
             Core.Type.Player[index].Stat = new byte[(byte)StatType.Count];
-            for (int i = 0, loopTo3 = (byte)StatType.Count - 1; i < (int)loopTo3; i++)
+            for (int i = 0, loopTo3 = (byte)StatType.Count; i < loopTo3; i++)
                 Core.Type.Player[index].Stat[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].Vital = new int[(byte) VitalType.Count];
-            for (int i = 0, loopTo4 = (byte) VitalType.Count - 1; i < (int)loopTo4; i++)
+            for (int i = 0, loopTo4 = (byte) VitalType.Count; i < loopTo4; i++)
                 Core.Type.Player[index].Vital[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].X = 0;
             Core.Type.Player[index].Y = 0;
 
             Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[Core.Constant.MAX_HOTBAR];
-            for (int i = 0, loopTo5 = Core.Constant.MAX_HOTBAR - 1; i <= (int)loopTo5; i++)
+            for (int i = 0, loopTo5 = Core.Constant.MAX_HOTBAR; i < loopTo5; i++)
             {
                 Core.Type.Player[index].Hotbar[Conversions.ToInteger(i)].Slot = 0;
                 Core.Type.Player[index].Hotbar[Conversions.ToInteger(i)].SlotType = 0;
             }
 
             Core.Type.Player[index].Switches = new byte[Core.Constant.MAX_SWITCHES];
-            for (int i = 0, loopTo6 = Core.Constant.MAX_SWITCHES - 1; i <= (int)loopTo6; i++)
+            for (int i = 0, loopTo6 = Core.Constant.MAX_SWITCHES; i < loopTo6; i++)
                 Core.Type.Player[index].Switches[Conversions.ToInteger(i)] = 0;
             Core.Type.Player[index].Variables = new int[Core.Constant.NAX_VARIABLES];
-            for (int i = 0, loopTo7 = Core.Constant.NAX_VARIABLES - 1; i <= (int)loopTo7; i++)
+            for (int i = 0, loopTo7 = Core.Constant.NAX_VARIABLES; i < loopTo7; i++)
                 Core.Type.Player[index].Variables[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(byte)ResourceType.Count];
-            for (int i = 0, loopTo8 = (byte)ResourceType.Count - 1; i < (int)loopTo8; i++)
+            for (int i = 0, loopTo8 = (byte)ResourceType.Count; i < loopTo8; i++)
             {
                 Core.Type.Player[index].GatherSkills[Conversions.ToInteger(i)].SkillLevel = 0;
                 Core.Type.Player[index].GatherSkills[Conversions.ToInteger(i)].SkillCurExp = 0;
                 SetPlayerGatherSkillMaxExp(index, i, GetSkillNextLevel(index, i));
             }
 
-            for (int i = 0, loopTo9 = (byte)EquipmentType.Count - 1; i < (int)loopTo9; i++)
+            for (int i = 0, loopTo9 = (byte)EquipmentType.Count; i < loopTo9; i++)
                 Core.Type.Player[index].Equipment[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].Pet.Num = 0;
@@ -1534,7 +1534,7 @@ namespace Server
 
             Core.Type.Player[index].Pet.Stat = new byte[(byte)StatType.Count];
 
-            for (int i = 0, loopTo10 = (byte)StatType.Count - 1; i < (int)loopTo10; i++)
+            for (int i = 0, loopTo10 = (byte)StatType.Count; i < loopTo10; i++)
                 Core.Type.Player[index].Pet.Stat[Conversions.ToInteger(i)] = 0;
 
             Core.Type.Player[index].Pet.Skill = new int[5];
@@ -1604,7 +1604,7 @@ namespace Server
                 Core.Type.Player[index].Level = 1;
 
                 var loopTo = (byte)StatType.Count - 1;
-                for (n = 0; n < (int)loopTo; n++)
+                for (n = 0; n < loopTo; n++)
                     Core.Type.Player[index].Stat[n] = (byte)Core.Type.Job[jobNum].Stat[n];
 
                 Core.Type.Player[index].Dir = (byte) DirectionType.Down;
@@ -1770,7 +1770,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
             buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[Conversions.ToInteger(i)]);
 
             for (q = 0; q <= 4; q++)
@@ -1791,7 +1791,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            for (int i = 0, loopTo = Core.Constant.MAX_NPCS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_NPCS; i < loopTo; i++)
             {
                 if (!(Strings.Len(Core.Type.NPC[Conversions.ToInteger(i)].Name) > 0))
                     continue;
@@ -1809,7 +1809,7 @@ namespace Server
             buffer.WriteString(Core.Type.NPC[NPCNum].AttackSay);
             buffer.WriteByte(Core.Type.NPC[NPCNum].Behaviour);
 
-            for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i < loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropChance[Conversions.ToInteger(i)]);
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItem[Conversions.ToInteger(i)]);
@@ -1825,10 +1825,10 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].SpawnSecs);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i < (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[Conversions.ToInteger(i)]);
 
-            for (int i = 0, loopTo2 = Core.Constant.MAX_NPC_SKILLS; i <= (int)loopTo2; i++)
+            for (int i = 0, loopTo2 = Core.Constant.MAX_NPC_SKILLS; i < loopTo2; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[Conversions.ToInteger(i)]);
 
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Level);
@@ -1840,7 +1840,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            for (int i = 0, loopTo = Core.Constant.MAX_SHOPS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_SHOPS; i < loopTo; i++)
             {
                 if (!(Strings.Len(Core.Type.Shop[Conversions.ToInteger(i)].Name) > 0))
                     continue;
@@ -1857,7 +1857,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Shop[shopNum].BuyRate);
             buffer.WriteString(Core.Type.Shop[shopNum].Name);
 
-            for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].CostItem);
                 buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].CostValue);
@@ -1871,7 +1871,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            for (int i = 0, loopTo = Core.Constant.MAX_SKILLS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_SKILLS; i < loopTo; i++)
             {
                 if (!(Strings.Len(Core.Type.Skill[Conversions.ToInteger(i)].Name) > 0))
                     continue;

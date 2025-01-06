@@ -136,7 +136,7 @@ namespace Client
 
             General.CacheSound();
             var loopTo1 = Information.UBound(Sound.SoundCache);
-            for (i = 0; i <= loopTo1; i++)
+            for (i = 0; i < loopTo1; i++)
                 cmbPlaySound.Items.Add(Sound.SoundCache[i]);
             cmbPlaySound.SelectedIndex = 0;
             cmbOpenShop.Items.Clear();
@@ -162,7 +162,7 @@ namespace Client
 
             cmbSpawnNPC.SelectedIndex = 0;
             nudFogData0.Maximum = GameState.NumFogs;
-            nudWPMap.Maximum = Constant.MAX_MAPS - 1;
+            nudWPMap.Maximum = Constant.MAX_MAPS;
 
             Width = 946;
 
@@ -1816,7 +1816,7 @@ namespace Client
                 case 1:
                     {
                         // Variable
-                        if (Event.RenameIndex > 0 & Event.RenameIndex <= Constant.NAX_VARIABLES + 1)
+                        if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.NAX_VARIABLES + 1)
                         {
                             Event.Variables[Event.RenameIndex] = txtRename.Text;
                             FraRenaming.Visible = false;
@@ -1830,7 +1830,7 @@ namespace Client
                 case 2:
                     {
                         // Switch
-                        if (Event.RenameIndex > 0 & Event.RenameIndex <= Constant.MAX_SWITCHES + 1)
+                        if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.MAX_SWITCHES + 1)
                         {
                             Event.Switches[Event.RenameIndex] = txtRename.Text;
                             FraRenaming.Visible = false;

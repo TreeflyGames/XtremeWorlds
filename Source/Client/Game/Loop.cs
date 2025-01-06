@@ -62,9 +62,9 @@ namespace Client
                 {
                     if (animationtmr[layer] < tick)
                     {
-                        for (int x = 0, loopTo = Core.Type.MyMap.MaxX - 1; x <= loopTo; x++)
+                        for (int x = 0, loopTo = Core.Type.MyMap.MaxX; x < loopTo; x++)
                         {
-                            for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY - 1; y <= loopTo1; y++)
+                            for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY; y < loopTo1; y++)
                             {
                                 if (GameLogic.IsValidMapPoint(x, y))
                                 {
@@ -113,7 +113,7 @@ namespace Client
                     }
                 }
 
-                for (i = 0; i <= byte.MaxValue - 1; i++)
+                for (i = 0; i <= byte.MaxValue; i++)
                     Animation.CheckAnimInstance(i);
 
                 if (tick > Event.EventChatTimer)
@@ -158,7 +158,7 @@ namespace Client
                 // check if we need to end the CD icon
                 if (GameState.NumSkills > 0)
                 {
-                    for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
+                    for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
                     {
                         if (Core.Type.Player[GameState.MyIndex].Skill[i].Num > 0)
                         {

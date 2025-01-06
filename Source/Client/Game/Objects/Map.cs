@@ -26,7 +26,7 @@ namespace Client
                     var whitePixels = new Microsoft.Xna.Framework.Color[(GameState.ResolutionWidth * GameState.ResolutionHeight)];
 
                     // Fill the pixel array with semi-transparent white pixels
-                    for (int i = 0, loopTo = whitePixels.Length - 1; i <= loopTo; i++)
+                    for (int i = 0, loopTo = whitePixels.Length; i < loopTo; i++)
                         whitePixels[i] = new Microsoft.Xna.Framework.Color(255, 255, 255, 150); // White with 150 alpha
 
                     // Set the pixel data for the texture
@@ -315,7 +315,7 @@ namespace Client
             var tintColor = new Microsoft.Xna.Framework.Color(GameState.CurrentTintR, GameState.CurrentTintG, GameState.CurrentTintB, GameState.CurrentTintA);
 
             // Fill the texture's pixel array with the tint color
-            for (int i = 0, loopTo = tintPixels.Length - 1; i <= loopTo; i++)
+            for (int i = 0, loopTo = tintPixels.Length; i < loopTo; i++)
                 tintPixels[i] = tintColor;
 
             // Set the pixel data on the texture
@@ -343,7 +343,7 @@ namespace Client
             var blackPixels = new Microsoft.Xna.Framework.Color[(GameState.ResolutionWidth * GameState.ResolutionHeight)];
 
             // Fill the pixel array with black color and specified alpha for the fade effect
-            for (int i = 0, loopTo = blackPixels.Length - 1; i <= loopTo; i++)
+            for (int i = 0, loopTo = blackPixels.Length; i < loopTo; i++)
                 blackPixels[i] = new Microsoft.Xna.Framework.Color(0, 0, 0, GameState.FadeAmount);
 
             // Set the texture's pixel data
@@ -497,7 +497,7 @@ namespace Client
                 {
                     ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count - 1));
 
-                    for (int i = 0; i <= GameState.MaxTileHistory - 1; i++)
+                    for (int i = 0; i < GameState.MaxTileHistory; i++)
                     {
                         Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
                         ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count - 1));
@@ -539,7 +539,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_MAP_ITEMS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
                 ClearMapItem(i);
 
         }
@@ -722,7 +722,7 @@ namespace Client
                             Core.Type.MyMap.Tile[x, y].Layer[i].Y = buffer.ReadInt32();
                             Core.Type.MyMap.Tile[x, y].Layer[i].AutoTile = (byte)buffer.ReadInt32();
 
-                            for (j = 0; j <= GameState.MaxTileHistory - 1; j++)
+                            for (j = 0; j < GameState.MaxTileHistory; j++)
                             {
                                 Core.Type.TileHistory[j].Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
                                 Core.Type.TileHistory[j].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count - 1)];
@@ -744,7 +744,7 @@ namespace Client
                 {
                     Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
                     var loopTo2 = Core.Type.MyMap.EventCount - 1;
-                    for (i = 0; i <= loopTo2; i++)
+                    for (i = 0; i < loopTo2; i++)
                     {
                         {
                             ref var withBlock = ref Core.Type.MyMap.Event[i];
@@ -797,8 +797,8 @@ namespace Client
                                     if (withBlock1.MoveRouteCount > 0)
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock1.MoveRouteCount];
-                                        var loopTo4 = withBlock1.MoveRouteCount - 1;
-                                        for (y = 0; y <= loopTo4; y++)
+                                        var loopTo4 = withBlock1.MoveRouteCount;
+                                        for (y = 0; y < loopTo4; y++)
                                         {
                                             withBlock1.MoveRoute[y].Index = buffer.ReadInt32();
                                             withBlock1.MoveRoute[y].Data1 = buffer.ReadInt32();
@@ -823,14 +823,14 @@ namespace Client
                                 {
                                     Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
                                     var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
-                                    for (y = 0; y <= loopTo5; y++)
+                                    for (y = 0; y < loopTo5; y++)
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
                                             Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
-                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1; z <= loopTo6; z++)
+                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1; z < loopTo6; z++)
                                             {
                                                 {
                                                     ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
@@ -856,7 +856,7 @@ namespace Client
                                                     if (withBlock2.MoveRouteCount > 0)
                                                     {
                                                         Array.Resize(ref withBlock2.MoveRoute, withBlock2.MoveRouteCount);
-                                                        for (int w = 0, loopTo7 = withBlock2.MoveRouteCount - 1; w <= loopTo7; w++)
+                                                        for (int w = 0, loopTo7 = withBlock2.MoveRouteCount; w < loopTo7; w++)
                                                         {
                                                             withBlock2.MoveRoute[w].Index = buffer.ReadInt32();
                                                             withBlock2.MoveRoute[w].Data1 = buffer.ReadInt32();
@@ -878,7 +878,7 @@ namespace Client
                 }
             }
 
-            for (i = 0; i <= Constant.MAX_MAP_ITEMS - 1; i++)
+            for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
             {
                 Core.Type.MyMapItem[i].Num = buffer.ReadInt32();
                 Core.Type.MyMapItem[i].Value = buffer.ReadInt32();
@@ -905,7 +905,7 @@ namespace Client
                 if (GameState.ResourceIndex > 0)
                 {
                     var loopTo8 = GameState.ResourceIndex - 1;
-                    for (i = 0; i <= loopTo8; i++)
+                    for (i = 0; i < loopTo8; i++)
                     {
                         Core.Type.MyMapResource[i].State = buffer.ReadByte();
                         Core.Type.MyMapResource[i].X = buffer.ReadInt32();
@@ -924,7 +924,7 @@ namespace Client
 
             GameState.MapData = Conversions.ToBoolean(1);
 
-            for (i = 0; i <= byte.MaxValue - 1; i++)
+            for (i = 0; i < byte.MaxValue; i++)
                 GameLogic.ClearActionMsg((byte)i);
 
             GameState.CurrentWeather = Core.Type.MyMap.Weather;
@@ -984,7 +984,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= byte.MaxValue - 1; i++)
+            for (i = 0; i < byte.MaxValue; i++)
                 GameLogic.ClearActionMsg((byte)i);
 
             GameState.CurrentWeather = Core.Type.MyMap.Weather;
@@ -1098,7 +1098,7 @@ namespace Client
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data2_2);
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Data3_2);
                     buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].DirBlock);
-                    for (i = 0; i < (int)Core.Enum.LayerType.Count - 1; i++)
+                    for (i = 0; i < (int)Core.Enum.LayerType.Count; i++)
                     {
                         buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Layer[i].Tileset);
                         buffer.WriteInt32(Core.Type.MyMap.Tile[x, y].Layer[i].X);
@@ -1115,7 +1115,7 @@ namespace Client
             if (Core.Type.MyMap.EventCount > 0)
             {
                 var loopTo2 = Core.Type.MyMap.EventCount - 1;
-                for (i = 0; i <= loopTo2; i++)
+                for (i = 0; i < loopTo2; i++)
                 {
                     {
                         ref var withBlock = ref Core.Type.MyMap.Event[i];
@@ -1162,8 +1162,8 @@ namespace Client
 
                                 if (withBlock1.MoveRouteCount > 0)
                                 {
-                                    var loopTo4 = withBlock1.MoveRouteCount - 1;
-                                    for (y = 0; y <= loopTo4; y++)
+                                    var loopTo4 = withBlock1.MoveRouteCount;
+                                    for (y = 0; y < loopTo4; y++)
                                     {
                                         buffer.WriteInt32(withBlock1.MoveRoute[y].Index);
                                         buffer.WriteInt32(withBlock1.MoveRoute[y].Data1);
@@ -1187,13 +1187,13 @@ namespace Client
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
                                 var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
-                                for (y = 0; y <= loopTo5; y++)
+                                for (y = 0; y < loopTo5; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1; z <= loopTo6; z++)
+                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1; z < loopTo6; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
@@ -1218,7 +1218,7 @@ namespace Client
                                                 buffer.WriteInt32(withBlock2.MoveRouteCount);
                                                 if (withBlock2.MoveRouteCount > 0)
                                                 {
-                                                    for (int w = 0, loopTo7 = withBlock2.MoveRouteCount; w <= loopTo7; w++)
+                                                    for (int w = 0, loopTo7 = withBlock2.MoveRouteCount; w < loopTo7; w++)
                                                     {
                                                         buffer.WriteInt32(withBlock2.MoveRoute[w].Index);
                                                         buffer.WriteInt32(withBlock2.MoveRoute[w].Data1);
@@ -1263,7 +1263,7 @@ namespace Client
         {
             Core.Type.MapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount];
 
-            for (int i = 0, loopTo = Core.Type.MyMap.EventCount - 1; i <= loopTo; i++)
+            for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
                 Core.Type.MapEvents[i].Name = "";
 
             GameState.CurrentEvents = 0;

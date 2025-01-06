@@ -1159,7 +1159,7 @@ namespace Core
 
         public struct SkillAnimStruct
         {
-            public int Skillnum;
+            public int skillNum;
             public int Timer;
             public int FramePointer;
         }

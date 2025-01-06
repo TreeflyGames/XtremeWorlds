@@ -23,7 +23,7 @@ namespace Client
                 }
                 else
                 {
-                    for (int i = 0, loopTo = frmEditor_Animation.Instance.cmbSound.Items.Count; i <= loopTo; i++)
+                    for (int i = 0, loopTo = frmEditor_Animation.Instance.cmbSound.Items.Count; i < loopTo; i++)
                     {
                         if (Conversions.ToDouble(frmEditor_Animation.Instance.cmbSound.GetItemText(i)) == frmEditor_Animation.Instance.cmbSound.SelectedIndex)
                         {
@@ -208,7 +208,7 @@ namespace Client
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_RESOURCES - 1; i++)
+            for (i = 0; i < Constant.MAX_RESOURCES; i++)
             {
                 if (GameState.Resource_Changed[i])
                 {
@@ -359,7 +359,7 @@ namespace Client
 
             frmEditor_Shop.Instance.lstTradeItem.Items.Clear();
 
-            for (i = 0; i <= Constant.MAX_TRADES; i++)
+            for (i = 0; i < Constant.MAX_TRADES; i++)
             {
                 {
                     ref var withBlock = ref Core.Type.Shop[GameState.EditorIndex].TradeItem[i];
@@ -453,7 +453,7 @@ namespace Client
 
                 withBlock.cmbItems.SelectedIndex = 0;
 
-                for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
+                for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
                 {
                     if (Core.Type.Job[GameState.EditorIndex].Stat[i] == 0)
                         Core.Type.Job[GameState.EditorIndex].Stat[i] = 1;

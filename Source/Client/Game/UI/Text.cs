@@ -111,7 +111,7 @@ namespace Client
             tmpNum = Strings.Len(text);
 
             var loopTo = tmpNum;
-            for (i = 1L; i <= loopTo; i++)
+            for (i = 1L; i < loopTo; i++)
             {
                 // if it's a space, store it
                 switch (Strings.Mid(text, (int)i, 1) ?? "")
@@ -202,7 +202,7 @@ namespace Client
             tmpNum = TempSplit.Length - 1;
 
             var loopTo = tmpNum;
-            for (TSLoop = 1L; TSLoop <= loopTo; TSLoop++)
+            for (TSLoop = 1L; TSLoop < loopTo; TSLoop++)
             {
                 // Clear the values for the new line
                 size = 0L;
@@ -220,7 +220,7 @@ namespace Client
                     tmpNum = TempSplit[(int)TSLoop].Length;
 
                     var loopTo1 = tmpNum;
-                    for (i = 1L; i <= loopTo1; i++)
+                    for (i = 1L; i < loopTo1; i++)
                     {
                         // If it is a space, store it so we can easily break at it
                         if (TempSplit[(int)TSLoop][(int)i - 1] == ' ')
@@ -342,10 +342,10 @@ namespace Client
                 frmEditor_Map.Instance.tabpages.Invoke(() =>
     {
         var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
-        for (X = (int)Math.Round(GameState.TileView.Left - 1d); X <= loopTo; X++)
+        for (X = (int)Math.Round(GameState.TileView.Left - 1d); X < loopTo; X++)
         {
             var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-            for (y = (int)Math.Round(GameState.TileView.Top - 1d); y <= loopTo1; y++)
+            for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
             {
                 if (GameLogic.IsValidMapPoint(X, y))
                 {
@@ -593,7 +593,7 @@ namespace Client
                         time = 3000;
 
                         // This will kill any action screen messages that there in the system
-                        for (i = byte.MaxValue - 1; i >= 0; i -= 1)
+                        for (i = byte.MaxValue; i >= 0; i -= 1)
                         {
                             if (Core.Type.ActionMsg[i].Type == (int)Core.Enum.ActionMsgType.Screen)
                             {

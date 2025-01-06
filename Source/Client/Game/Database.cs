@@ -10,7 +10,7 @@ namespace Client
 
         public static void ClearBlood()
         {
-            for (int i = 0; i <= byte.MaxValue - 1; i++)
+            for (int i = 0; i < byte.MaxValue; i++)
                 Core.Type.Blood[i].Timer = 0;
         }
 

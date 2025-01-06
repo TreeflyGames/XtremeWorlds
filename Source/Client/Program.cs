@@ -190,7 +190,7 @@ namespace Client
 
         private static void LoadFonts()
         {
-            for (int i = 1; i <= (int)FontType.Count - 1; i++)
+            for (int i = 1; i < (int)FontType.Count; i++)
                 Text.Fonts[(FontType)i] = LoadFont(Core.Path.Fonts, (FontType)i);
         }
 
@@ -1558,9 +1558,9 @@ namespace Client
             SpriteBatch.Begin();
 
             // Iterate over the tiles in the visible range
-            for (double x = GameState.TileView.Left - 1d, loopTo = GameState.TileView.Right + 1d; x <= loopTo; x++)
+            for (double x = GameState.TileView.Left - 1d, loopTo = GameState.TileView.Right + 1d; x < loopTo; x++)
             {
-                for (double y = GameState.TileView.Top - 1d, loopTo1 = GameState.TileView.Bottom + 1d; y <= loopTo1; y++)
+                for (double y = GameState.TileView.Top - 1d, loopTo1 = GameState.TileView.Bottom + 1d; y < loopTo1; y++)
                 {
                     if (GameLogic.IsValidMapPoint((int)Math.Round(x), (int)Math.Round(y)))
                     {
@@ -1693,7 +1693,7 @@ namespace Client
                 tmpNum = Information.UBound(theArray);
 
                 var loopTo = tmpNum;
-                for (i = 0L; i <= loopTo; i++)
+                for (i = 0L; i < loopTo; i++)
                 {
                     if (Text.GetTextWidth(theArray[(int)i], FontType.Georgia) > MaxWidth)
                         MaxWidth = Text.GetTextWidth(theArray[(int)i], FontType.Georgia);
@@ -1751,7 +1751,7 @@ namespace Client
                 tmpNum = Information.UBound(theArray);
 
                 var loopTo1 = tmpNum;
-                for (i = 1L; i <= loopTo1; i++)
+                for (i = 1L; i < loopTo1; i++)
                 {
                     // Measure button text size and apply padding
                     var textSize = Text.Fonts[FontType.Georgia].MeasureString(theArray[(int)i]);
@@ -1963,7 +1963,7 @@ namespace Client
             DrawCharacterSprite(spriteNum, x, y, rect);
 
             // check for paperdolling
-            for (int i = 0; i <= (int)EquipmentType.Count - 1; i++)
+            for (int i = 0; i <= (int)EquipmentType.Count; i++)
             {
                 if (GetPlayerEquipment(index, (EquipmentType)i) > 0)
                 {
@@ -1996,7 +1996,7 @@ namespace Client
             if (Core.Type.MyMap.EventCount <= 0)
                 return; // Exit early if no events
 
-            for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i <= loopTo; i++)
+            for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
             {
                 int x = GameLogic.ConvertMapX(Core.Type.MyMap.Event[i].X * GameState.PicX);
                 int y = GameLogic.ConvertMapY(Core.Type.MyMap.Event[i].Y * GameState.PicY);
@@ -2279,10 +2279,10 @@ namespace Client
             if (GameState.NumTileSets > 0)
             {
                 var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
-                for (x = (int)Math.Round(GameState.TileView.Left - 1d); x <= loopTo; x++)
+                for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo; x++)
                 {
                     var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-                    for (y = (int)Math.Round(GameState.TileView.Top - 1d); y <= loopTo1; y++)
+                    for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
                     {
                         if (GameLogic.IsValidMapPoint(x, y))
                         {
@@ -2309,13 +2309,13 @@ namespace Client
             }
 
             // blood
-            for (i = 0; i <= byte.MaxValue - 1; i++)
+            for (i = 0; i < byte.MaxValue; i++)
                 DrawBlood(i);
 
             // Draw out the items
             if (GameState.NumItems > 0)
             {
-                for (i = 0; i <= Constant.MAX_MAP_ITEMS - 1; i++)
+                for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
                 {
                     if (Core.Type.MyMapItem[i].Num > 0)
                     {
@@ -2327,7 +2327,7 @@ namespace Client
             // draw animations
             if (GameState.NumAnimations > 0)
             {
-                for (i = 0; i <= byte.MaxValue - 1; i++)
+                for (i = 0; i < byte.MaxValue; i++)
                 {
                     if (Animation.AnimInstance[i].Used[0])
                     {
@@ -2436,7 +2436,7 @@ namespace Client
                         if (GameState.ResourceIndex > 0)
                         {
                             var loopTo5 = GameState.ResourceIndex;
-                            for (i = 0; i <= loopTo5; i++)
+                            for (i = 0; i < loopTo5; i++)
                             {
                                 if (Core.Type.MyMapResource[i].Y == y)
                                 {
@@ -2451,7 +2451,7 @@ namespace Client
             // animations
             if (GameState.NumAnimations > 0)
             {
-                for (i = 0; i <= byte.MaxValue - 1; i++)
+                for (i = 0; i < byte.MaxValue; i++)
                 {
                     if (Animation.AnimInstance[i].Used[1])
                     {
@@ -2486,10 +2486,10 @@ namespace Client
             if (GameState.NumTileSets > 0)
             {
                 var loopTo7 = (int)Math.Round(GameState.TileView.Right + 1d);
-                for (x = (int)Math.Round(GameState.TileView.Left - 1d); x <= loopTo7; x++)
+                for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo7; x++)
                 {
                     var loopTo8 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-                    for (y = (int)Math.Round(GameState.TileView.Top - 1d); y <= loopTo8; y++)
+                    for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo8; y++)
                     {
                         if (GameLogic.IsValidMapPoint(x, y))
                         {
@@ -2547,7 +2547,7 @@ namespace Client
             Map.DrawFog();
             Map.DrawPicture();
 
-            for (i = 0; i <= byte.MaxValue - 1; i++)
+            for (i = 0; i < byte.MaxValue; i++)
                 Text.DrawActionMsg(i);
 
             if (GameState.MyEditorType == (int)EditorType.Map)
@@ -2555,10 +2555,10 @@ namespace Client
                 if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpDirBlock))
                 {
                     var loopTo10 = (int)Math.Round(GameState.TileView.Right + 1d);
-                    for (x = (int)Math.Round(GameState.TileView.Left - 1d); x <= loopTo10; x++)
+                    for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo10; x++)
                     {
                         var loopTo11 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-                        for (y = (int)Math.Round(GameState.TileView.Top - 1d); y <= loopTo11; y++)
+                        for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo11; y++)
                         {
                             if (GameLogic.IsValidMapPoint(x, y))
                             {
@@ -2571,7 +2571,7 @@ namespace Client
                 Text.DrawMapAttributes();
             }
 
-            for (i = 0; i <= byte.MaxValue - 1; i++)
+            for (i = 0; i < byte.MaxValue; i++)
             {
                 if (Core.Type.ChatBubble[i].Active)
                 {

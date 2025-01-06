@@ -167,7 +167,7 @@ namespace Client
             nudIcon.Maximum = GameState.NumSkills;
             nudAoE.Maximum = byte.MaxValue;
             nudRange.Maximum = byte.MaxValue;
-            nudMap.Maximum = Constant.MAX_MAPS - 1;
+            nudMap.Maximum = Constant.MAX_MAPS;
             lstIndex.Items.Clear();
 
             // Add the names

@@ -14,7 +14,7 @@ namespace Client
         {
             Core.Type.Shop[index] = default;
             Core.Type.Shop[index].Name = "";
-            for (int x = 1; x <= Constant.MAX_TRADES; x++)
+            for (int x = 1; x < Constant.MAX_TRADES; x++)
                 Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[x + 1];
             GameState.Shop_Loaded[index] = 0;
         }
@@ -69,7 +69,7 @@ namespace Client
             Core.Type.Shop[shopnum].BuyRate = buffer.ReadInt32();
             Core.Type.Shop[shopnum].Name = buffer.ReadString();
 
-            for (int i = 0; i <= Constant.MAX_TRADES; i++)
+            for (int i = 0; i < Constant.MAX_TRADES; i++)
             {
                 Core.Type.Shop[shopnum].TradeItem[i].CostItem = buffer.ReadInt32();
                 Core.Type.Shop[shopnum].TradeItem[i].CostValue = buffer.ReadInt32();

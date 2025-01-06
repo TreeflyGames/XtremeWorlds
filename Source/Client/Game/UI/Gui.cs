@@ -2635,22 +2635,22 @@ namespace Client
         {
             long Xo;
             long Yo;
-            long ItemNum;
+            long itemNum;
 
             Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
             Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
-            ItemNum = General.IsTrade(Xo, Yo);
+            itemNum = General.IsTrade(Xo, Yo);
 
             // make sure it exists
-            if (ItemNum > 0L)
+            if (itemNum >= 0L)
             {
-                if (Core.Type.TradeYourOffer[(int)ItemNum].Num == 0)
+                if (Core.Type.TradeYourOffer[(int)itemNum].Num == 0)
                     return;
-                if (GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)ItemNum].Num) == 0)
+                if (GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)itemNum].Num) == 0)
                     return;
 
                 // unoffer the item
-                Trade.UntradeItem((int)ItemNum);
+                Trade.UntradeItem((int)itemNum);
             }
 
             TradeMouseMove_Your();
@@ -2660,25 +2660,25 @@ namespace Client
         {
             long Xo;
             long Yo;
-            long ItemNum;
+            long itemNum;
             long X;
             long Y;
 
             Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
             Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
 
-            ItemNum = General.IsTrade(Xo, Yo);
+            itemNum = General.IsTrade(Xo, Yo);
 
             // make sure it exists
-            if (ItemNum > 0L)
+            if (itemNum >= 0L)
             {
-                if (Core.Type.TradeYourOffer[(int)ItemNum].Num == 0)
+                if (Core.Type.TradeYourOffer[(int)itemNum].Num == 0)
                 {
                     Windows[GetWindowIndex("winDescription")].Visible = false;
                     return;
                 }
 
-                if (GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)ItemNum].Num) == 0)
+                if (GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)itemNum].Num) == 0)
                 {
                     Windows[GetWindowIndex("winDescription")].Visible = false;
                     return;
@@ -2695,7 +2695,7 @@ namespace Client
                 }
 
                 // go go go
-                GameLogic.ShowItemDesc(X, Y, GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)ItemNum].Num));
+                GameLogic.ShowItemDesc(X, Y, GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)itemNum].Num));
             }
             else
             {
@@ -2707,19 +2707,19 @@ namespace Client
         {
             long Xo;
             long Yo;
-            long ItemNum;
+            long itemNum;
             long X;
             long Y;
 
             Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Left;
             Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Top;
 
-            ItemNum = General.IsTrade(Xo, Yo);
+            itemNum = General.IsTrade(Xo, Yo);
 
             // make sure it exists
-            if (ItemNum > 0L)
+            if (itemNum >= 0L)
             {
-                if (Core.Type.TradeTheirOffer[(int)ItemNum].Num == 0)
+                if (Core.Type.TradeTheirOffer[(int)itemNum].Num == 0)
                 {
                     Windows[GetWindowIndex("winDescription")].Visible = false;
                     return;
@@ -2737,7 +2737,7 @@ namespace Client
                 }
 
                 // go go go
-                GameLogic.ShowItemDesc(X, Y, Core.Type.TradeTheirOffer[(int)ItemNum].Num);
+                GameLogic.ShowItemDesc(X, Y, Core.Type.TradeTheirOffer[(int)itemNum].Num);
             }
             else
             {
@@ -3593,7 +3593,7 @@ namespace Client
                 // exit out if we're offering that item
                 if (Trade.InTrade > 0)
                 {
-                    for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+                    for (i = 0L; i < Constant.MAX_INV; i++)
                     {
                         if (Core.Type.TradeYourOffer[(int)i].Num == invNum)
                         {
@@ -3643,12 +3643,12 @@ namespace Client
                 return;
 
             itemNum = General.IsInv(Windows[GetWindowIndex("winInventory")].Left, Windows[GetWindowIndex("winInventory")].Top);
-            if (itemNum > 0L)
+            if (itemNum >= 0L)
             {
                 // exit out if we're offering that item
                 if (Trade.InTrade > 0)
                 {
-                    for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+                    for (i = 0L; i < Constant.MAX_INV; i++)
                     {
                         if (Core.Type.TradeYourOffer[(int)i].Num == itemNum)
                         {
@@ -3706,7 +3706,7 @@ namespace Client
 
         public static void Bank_MouseMove()
         {
-            long ItemNum;
+            long itemNum;
             long X;
             long Y;
             long i;
@@ -3715,12 +3715,12 @@ namespace Client
             if (DragBox.Type != Core.Enum.PartType.None)
                 return;
 
-            ItemNum = General.IsBank(Windows[GetWindowIndex("winBank")].Left, Windows[GetWindowIndex("winBank")].Top);
+            itemNum = General.IsBank(Windows[GetWindowIndex("winBank")].Left, Windows[GetWindowIndex("winBank")].Top);
 
-            if (ItemNum > 0L)
+            if (itemNum >= 0L)
             {
                 // make sure we're not dragging the item
-                if (DragBox.Type == Core.Enum.PartType.Item & DragBox.Value == ItemNum)
+                if (DragBox.Type == Core.Enum.PartType.Item & DragBox.Value == itemNum)
                     return;
 
                 // calc position
@@ -3734,7 +3734,7 @@ namespace Client
                     X = Windows[GetWindowIndex("winBank")].Left + Windows[GetWindowIndex("winBank")].Width;
                 }
 
-                GameLogic.ShowItemDesc(X, Y, GetBank(GameState.MyIndex, (byte)ItemNum));
+                GameLogic.ShowItemDesc(X, Y, GetBank(GameState.MyIndex, (byte)itemNum));
             }
             else
             {
@@ -3953,7 +3953,7 @@ namespace Client
                                 if (DragBox.Type == Core.Enum.PartType.Item)
                                 {
                                     // find the slot to switch with
-                                    for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+                                    for (i = 0L; i < Constant.MAX_INV; i++)
                                     {
                                         tmpRec.Top = Windows[curWindow].Top + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 1L) / GameState.InvColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
@@ -4001,7 +4001,7 @@ namespace Client
                                 if (DragBox.Type == Core.Enum.PartType.Skill)
                                 {
                                     // find the slot to switch with
-                                    for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
+                                    for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
                                     {
                                         tmpRec.Top = Windows[curWindow].Top + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * ((i - 1L) / GameState.SkillColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
@@ -5030,7 +5030,7 @@ namespace Client
             long i;
             long sprite;
             long itemNum;
-            var ItemIcon = default(long);
+            var itemIcon = default(long);
 
             if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                 return;
@@ -5057,17 +5057,17 @@ namespace Client
             {
                 itemNum = GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i);
 
-                if (itemNum > 0L)
+                if (itemNum >= 0L)
                 {
                     // get the item sprite
-                    if (itemNum > 0L)
+                    if (itemNum >= 0L)
                     {
-                        ItemIcon = Core.Type.Item[(int)itemNum].Icon;
+                        itemIcon = Core.Type.Item[(int)itemNum].Icon;
                     }
 
                     yO = Windows[GetWindowIndex("winCharacter")].Top + GameState.EqTop;
                     xO = Windows[GetWindowIndex("winCharacter")].Left + GameState.EqLeft + (GameState.EqOffsetX + 32L) * ((i - 1L) % GameState.EqColumns);
-                    string argpath5 = System.IO.Path.Combine(Path.Items, ItemIcon.ToString());
+                    string argpath5 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
                     GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
                 }
             }
@@ -5079,7 +5079,7 @@ namespace Client
 
             itemNum = General.IsEq(Windows[GetWindowIndex("winCharacter")].Left, Windows[GetWindowIndex("winCharacter")].Top);
 
-            if (itemNum > 0L)
+            if (itemNum >= 0L)
             {
                 NetworkSend.SendUnequip((int)itemNum);
             }
@@ -5099,7 +5099,7 @@ namespace Client
 
             itemNum = General.IsEq(Windows[GetWindowIndex("winCharacter")].Left, Windows[GetWindowIndex("winCharacter")].Top);
 
-            if (itemNum > 0L)
+            if (itemNum >= 0L)
             {
                 // calc position
                 x = Windows[GetWindowIndex("winCharacter")].Left - Windows[GetWindowIndex("winDescription")].Width;
@@ -5127,7 +5127,7 @@ namespace Client
 
             itemNum = General.IsEq(Windows[GetWindowIndex("winCharacter")].Left, Windows[GetWindowIndex("winCharacter")].Top);
 
-            if (itemNum > 0L)
+            if (itemNum >= 0L)
             {
                 NetworkSend.SendUnequip((int)itemNum);
             }
@@ -5169,7 +5169,7 @@ namespace Client
             long i;
             long y;
             long itemNum;
-            long ItemIcon;
+            long itemIcon;
             long x;
             long Top;
             long Left;
@@ -5214,23 +5214,23 @@ namespace Client
             GameClient.RenderTexture(ref argpath4, (int)(xO + 4L), (int)(yO + 289L), 100, 100, 194, 26, 194, 26);
 
             // actually draw the icons
-            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+            for (i = 0L; i < Constant.MAX_INV; i++)
             {
                 itemNum = GetPlayerInv(GameState.MyIndex, (int)i);
                 Item.StreamItem((int)itemNum);
 
-                if (itemNum > 0L & itemNum <= Constant.MAX_ITEMS)
+                if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                 {
                     // not dragging?
                     if (!(DragBox.Origin == Core.Enum.PartOriginType.Inventory & DragBox.Slot == i))
                     {
-                        ItemIcon = Core.Type.Item[(int)itemNum].Icon;
+                        itemIcon = Core.Type.Item[(int)itemNum].Icon;
 
                         // exit out if we're offering item in a trade.
                         amountModifier = 0L;
                         if (Trade.InTrade > 0)
                         {
-                            for (x = 0L; x <= Constant.MAX_INV - 1; x++)
+                            for (x = 0L; x < Constant.MAX_INV; x++)
                             {
                                 tmpItem = GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)x].Num);
                                 if (Core.Type.TradeYourOffer[(int)x].Num == i)
@@ -5257,13 +5257,13 @@ namespace Client
 
                         if (!skipItem)
                         {
-                            if (ItemIcon > 0L & ItemIcon <= GameState.NumItems)
+                            if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                             {
                                 Top = yO + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 1L) / GameState.InvColumns);
                                 Left = xO + GameState.InvLeft + (GameState.InvOffsetX + 32L) * ((i - 1L) % GameState.InvColumns);
 
                                 // draw icon
-                                string argpath5 = System.IO.Path.Combine(Path.Items, ItemIcon.ToString());
+                                string argpath5 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
                                 GameClient.RenderTexture(ref argpath5, (int)Left, (int)Top, 0, 0, 32, 32, 32, 32);
 
                                 // If item is a stack - draw the amount you have
@@ -5754,7 +5754,7 @@ namespace Client
         public static void Shop_MouseMove()
         {
             long shopSlot;
-            long ItemNum;
+            long itemNum;
             long X;
             long Y;
 
@@ -5780,18 +5780,18 @@ namespace Client
                 if (!GameState.shopIsSelling)
                 {
                     // get the itemnum
-                    ItemNum = Core.Type.Shop[GameState.InShop].TradeItem[(int)shopSlot].Item;
-                    if (ItemNum == 0L)
+                    itemNum = Core.Type.Shop[GameState.InShop].TradeItem[(int)shopSlot].Item;
+                    if (itemNum == 0L)
                         return;
-                    GameLogic.ShowShopDesc(X, Y, ItemNum);
+                    GameLogic.ShowShopDesc(X, Y, itemNum);
                 }
                 else
                 {
                     // get the itemnum
-                    ItemNum = GetPlayerInv(GameState.MyIndex, (int)shopSlot);
-                    if (ItemNum == 0L)
+                    itemNum = GetPlayerInv(GameState.MyIndex, (int)shopSlot);
+                    if (itemNum == 0L)
                         return;
-                    GameLogic.ShowShopDesc(X, Y, ItemNum);
+                    GameLogic.ShowShopDesc(X, Y, itemNum);
                 }
             }
             else
@@ -5835,7 +5835,7 @@ namespace Client
             long Height;
             long i;
             long y;
-            var Skillnum = default(long);
+            var skillNum = default(long);
             long SkillPic;
             long x;
             long Top;
@@ -5873,16 +5873,16 @@ namespace Client
             }
 
             // actually draw the icons
-            for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
+            for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
-                Database.StreamSkill((int)Skillnum);
-                Skillnum = Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num;
-                if (Skillnum > 0L & Skillnum <= Constant.MAX_SKILLS)
+                Database.StreamSkill((int)skillNum);
+                skillNum = Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num;
+                if (skillNum >= 0L & skillNum <= Constant.MAX_SKILLS)
                 {
                     // not dragging?
                     if (!(DragBox.Origin == Core.Enum.PartOriginType.Skill & DragBox.Slot == i))
                     {
-                        SkillPic = Core.Type.Skill[(int)Skillnum].Icon;
+                        SkillPic = Core.Type.Skill[(int)skillNum].Icon;
 
                         if (SkillPic > 0L & SkillPic <= GameState.NumSkills)
                         {
@@ -6389,7 +6389,7 @@ namespace Client
                                 {
                                     string argpath5 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
                                     GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
-                                    for (t = 0L; t <= Constant.MAX_PLAYER_SKILLS - 1; t++)
+                                    for (t = 0L; t < Constant.MAX_PLAYER_SKILLS; t++)
                                     {
                                         if (GetPlayerSkill(GameState.MyIndex, (int)t) > 0)
                                         {
@@ -6419,8 +6419,8 @@ namespace Client
         {
             long Xo;
             long Yo;
-            long ItemIcon;
-            long ItemNum;
+            long itemIcon;
+            long itemNum;
             long Amount;
             long i;
             long Top;
@@ -6440,9 +6440,9 @@ namespace Client
             if (!GameState.shopIsSelling)
             {
                 // render the shop items
-                for (i = 0L; i <= Constant.MAX_TRADES; i++)
+                for (i = 0L; i < Constant.MAX_TRADES; i++)
                 {
-                    ItemNum = Core.Type.Shop[GameState.InShop].TradeItem[(int)i].Item;
+                    itemNum = Core.Type.Shop[GameState.InShop].TradeItem[(int)i].Item;
 
                     // draw early
                     Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * ((i - 1L) / GameState.ShopColumns);
@@ -6455,13 +6455,13 @@ namespace Client
                         GameClient.RenderTexture(ref argpath, (int)Left, (int)Top, 0, 0, 32, 32, 32, 32);
                     }
 
-                    if (ItemNum > 0L & ItemNum <= Constant.MAX_ITEMS)
+                    if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                     {
-                        ItemIcon = Core.Type.Item[(int)ItemNum].Icon;
-                        if (ItemIcon > 0L & ItemIcon <= GameState.NumItems)
+                        itemIcon = Core.Type.Item[(int)itemNum].Icon;
+                        if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                         {
                             // draw item
-                            string argpath1 = System.IO.Path.Combine(Path.Items, ItemIcon.ToString());
+                            string argpath1 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
                             GameClient.RenderTexture(ref argpath1, (int)Left, (int)Top, 0, 0, 32, 32, 32, 32);
                         }
                     }
@@ -6470,9 +6470,9 @@ namespace Client
             else
             {
                 // render the shop items
-                for (i = 0L; i <= Constant.MAX_TRADES; i++)
+                for (i = 0L; i < Constant.MAX_TRADES; i++)
                 {
-                    ItemNum = GetPlayerInv(GameState.MyIndex, (int)i);
+                    itemNum = GetPlayerInv(GameState.MyIndex, (int)i);
 
                     // draw early
                     Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * ((i - 1L) / GameState.ShopColumns);
@@ -6485,13 +6485,13 @@ namespace Client
                         GameClient.RenderTexture(ref argpath2, (int)Left, (int)Top, 0, 0, 32, 32, 32, 32);
                     }
 
-                    if (ItemNum > 0L & ItemNum <= Constant.MAX_ITEMS)
+                    if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                     {
-                        ItemIcon = Core.Type.Item[(int)ItemNum].Icon;
-                        if (ItemIcon > 0L & ItemIcon <= GameState.NumItems)
+                        itemIcon = Core.Type.Item[(int)itemNum].Icon;
+                        if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                         {
                             // draw item
-                            string argpath3 = System.IO.Path.Combine(Path.Items, ItemIcon.ToString());
+                            string argpath3 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
                             GameClient.RenderTexture(ref argpath3, (int)Left, (int)Top, 0, 0, 32, 32, 32, 32);
 
                             // If item is a stack - draw the amount you have
@@ -6620,11 +6620,11 @@ namespace Client
             }
 
             // actually draw the icons
-            for (i = 0L; i <= Constant.MAX_BANK - 1; i++)
+            for (i = 0L; i < Constant.MAX_BANK; i++)
             {
                 itemNum = GetBank(GameState.MyIndex, (byte)i);
 
-                if (itemNum > 0L & itemNum <= Constant.MAX_ITEMS)
+                if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                 {
                     Item.StreamItem((int)itemNum);
                     // not dragging?
@@ -6749,7 +6749,7 @@ namespace Client
         public static void DrawYourTrade()
         {
             long i;
-            long ItemNum;
+            long itemNum;
             long ItemPic;
             long Top;
             long Left;
@@ -6764,15 +6764,15 @@ namespace Client
             Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
 
             // your items
-            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+            for (i = 0L; i < Constant.MAX_INV; i++)
             {
                 if (Core.Type.TradeYourOffer[(int)i].Num > 0)
                 {
-                    ItemNum = GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)i].Num);
-                    if (ItemNum > 0L & ItemNum <= Constant.MAX_ITEMS)
+                    itemNum = GetPlayerInv(GameState.MyIndex, Core.Type.TradeYourOffer[(int)i].Num);
+                    if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                     {
-                        Item.StreamItem((int)ItemNum);
-                        ItemPic = Core.Type.Item[(int)ItemNum].Icon;
+                        Item.StreamItem((int)itemNum);
+                        ItemPic = Core.Type.Item[(int)itemNum].Icon;
 
                         if (ItemPic > 0L & ItemPic <= GameState.NumItems)
                         {
@@ -6815,7 +6815,7 @@ namespace Client
         public static void DrawTheirTrade()
         {
             long i;
-            long ItemNum;
+            long itemNum;
             long ItemPic;
             long Top;
             long Left;
@@ -6830,13 +6830,13 @@ namespace Client
             Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Top;
 
             // their items
-            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+            for (i = 0L; i < Constant.MAX_INV; i++)
             {
-                ItemNum = Core.Type.TradeTheirOffer[(int)i].Num;
-                if (ItemNum > 0L & ItemNum <= Constant.MAX_ITEMS)
+                itemNum = Core.Type.TradeTheirOffer[(int)i].Num;
+                if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                 {
-                    Item.StreamItem((int)ItemNum);
-                    ItemPic = Core.Type.Item[(int)ItemNum].Icon;
+                    Item.StreamItem((int)itemNum);
+                    ItemPic = Core.Type.Item[(int)itemNum].Icon;
 
                     if (ItemPic > 0L & ItemPic <= GameState.NumItems)
                     {

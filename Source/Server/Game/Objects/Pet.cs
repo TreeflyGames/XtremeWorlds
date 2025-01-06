@@ -38,7 +38,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_PETS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 SavePet(i);
 
         }
@@ -62,7 +62,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_PETS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 LoadPet(i);
         }
 
@@ -97,7 +97,7 @@ namespace Server
             Core.Type.Pet = new Core.Type.PetStruct[Core.Constant.MAX_PETS + 1];
 
             var loopTo = Core.Constant.MAX_PETS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 ClearPet(i);
 
         }
@@ -111,7 +111,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_PETS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.Pet[i].Name.Length > 0)
                 {
@@ -146,7 +146,7 @@ namespace Server
                 buffer.WriteInt32(withBlock.StatType);
                 buffer.WriteInt32(withBlock.LevelingType);
 
-                for (int i = 0, loopTo = (int)(StatType.Count - 1); i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = (int)(StatType.Count - 1); i < loopTo; i++)
                     buffer.WriteInt32(withBlock.Stat[Conversions.ToInteger(i)]);
 
                 for (int i = 0; i <= 4; i++)
@@ -183,7 +183,7 @@ namespace Server
                 buffer.WriteInt32(withBlock.StatType);
                 buffer.WriteInt32(withBlock.LevelingType);
 
-                for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
+                for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                     buffer.WriteInt32(withBlock.Stat[Conversions.ToInteger(i)]);
 
                 for (int i = 0; i <= 4; i++)
@@ -213,7 +213,7 @@ namespace Server
             buffer.WriteInt32(GetPetVital(index, VitalType.SP));
             buffer.WriteInt32(GetPetLevel(index));
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                 buffer.WriteInt32(GetPetStat(index, (StatType)i));
 
             for (int i = 0; i <= 4; i++)
@@ -392,7 +392,7 @@ namespace Server
                 withBlock.LevelingType = (byte)buffer.ReadInt32();
 
                 var loopTo = (byte)StatType.Count - 1;
-                for (i = 0; i <= (int)loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                     withBlock.Stat[i] = (byte)buffer.ReadInt32();
 
                 for (i = 0; i <= 4; i++)
@@ -441,8 +441,8 @@ namespace Server
                 return;
 
             // Check for a player
-            var loopTo = NetworkConfig.Socket.HighIndex;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+            for (i = 0; i < loopTo; i++)
             {
 
                 if (NetworkConfig.IsPlaying(i))
@@ -516,8 +516,8 @@ namespace Server
 
             // Search For Target First
             // Check for an npc
-            var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+            for (i = 0; i < loopTo1; i++)
             {
                 if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num > 0 & Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].X == x & Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Y == y)
                 {
@@ -710,11 +710,11 @@ namespace Server
             var targetY = default(int);
             bool targetVerify;
 
-            var loopTo = Core.Constant.MAX_MAPS - 1;
-            for (mapNum = 0; mapNum <= (int)loopTo; mapNum++)
+            var loopTo = Core.Constant.MAX_MAPS;
+            for (mapNum = 0; mapNum < (int)loopTo; mapNum++)
             {
-                var loopTo1 = NetworkConfig.Socket.HighIndex;
-                for (playerindex = 0; playerindex <= (int)loopTo1; playerindex++)
+                var loopTo1 = NetworkConfig.Socket.HighIndex + 1;
+                for (playerindex = 0; playerindex < (int)loopTo1; playerindex++)
                 {
                     tickCount = General.GetTimeMs();
 
@@ -730,8 +730,8 @@ namespace Server
                             if (!(Core.Type.TempPlayer[playerindex].PetStunDuration > 0))
                             {
 
-                                var loopTo2 = NetworkConfig.Socket.HighIndex;
-                                for (i = 0; i <= (int)loopTo2; i++)
+                                var loopTo2 = NetworkConfig.Socket.HighIndex + 1;
+                                for (i = 0; i < loopTo2; i++)
                                 {
                                     if (Core.Type.TempPlayer[playerindex].PetTargetType > 0)
                                     {
@@ -798,8 +798,8 @@ namespace Server
 
                                 if (Core.Type.TempPlayer[playerindex].PetTargetType == 0)
                                 {
-                                    var loopTo3 = Core.Constant.MAX_MAP_NPCS - 1;
-                                    for (i = 0; i <= (int)loopTo3; i++)
+                                    var loopTo3 = Core.Constant.MAX_MAP_NPCS;
+                                    for (i = 0; i < loopTo3; i++)
                                     {
 
                                         if (Core.Type.TempPlayer[playerindex].PetTargetType > 0)
@@ -1149,15 +1149,15 @@ namespace Server
                 Core.Type.Player[index].Pet.Skill[i] = 0;
 
             var loopTo = (byte)StatType.Count - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 Core.Type.Player[index].Pet.Stat[i] = 0;
 
             SendUpdatePlayerPet(index, false);
 
             NetworkSend.PlayerMsg(index, "You released your pet!", (int) ColorType.BrightGreen);
 
-            var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+            for (i = 0; i < loopTo1; i++)
             {
                 if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Vital[(byte) VitalType.HP] > 0)
                 {
@@ -1198,14 +1198,14 @@ namespace Server
                 Core.Type.Player[index].Pet.Mana = GetPlayerMaxVital(index, VitalType.SP);
                 Core.Type.Player[index].Pet.Level = GetPlayerLevel(index);
 
-                for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
+                for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                     Core.Type.Player[index].Pet.Stat[Conversions.ToInteger(i)] = Core.Type.Player[index].Stat[Conversions.ToInteger(i)];
 
                 Core.Type.Player[index].Pet.AdoptiveStats = 0;
             }
             else
             {
-                for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i < (int)loopTo1; i++)
+                for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
                     Core.Type.Player[index].Pet.Stat[Conversions.ToInteger(i)] = Core.Type.Pet[petNum].Stat[Conversions.ToInteger(i)];
 
                 Core.Type.Player[index].Pet.Level = Core.Type.Pet[petNum].Level;
@@ -1328,8 +1328,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo = NetworkConfig.Socket.HighIndex;
-                            for (i = 0; i <= (int)loopTo; i++)
+                            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                            for (i = 0; i < loopTo; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
@@ -1347,8 +1347,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not another npc in the way
-                            var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-                            for (i = 0; i <= (int)loopTo1; i++)
+                            var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+                            for (i = 0; i < loopTo1; i++)
                             {
                                 if (Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == GetPetX(index) & Core.Type.MapNPC[mapNum].NPC[i].Y == GetPetY(index) - 1)
                                 {
@@ -1387,8 +1387,8 @@ namespace Server
                                 return CanPetMoveRet;
                             }
 
-                            var loopTo2 = NetworkConfig.Socket.HighIndex;
-                            for (i = 0; i <= (int)loopTo2; i++)
+                            var loopTo2 = NetworkConfig.Socket.HighIndex + 1;
+                            for (i = 0; i < loopTo2; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
@@ -1406,8 +1406,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not another npc in the way
-                            var loopTo3 = Core.Constant.MAX_MAP_NPCS - 1;
-                            for (i = 0; i <= (int)loopTo3; i++)
+                            var loopTo3 = Core.Constant.MAX_MAP_NPCS;
+                            for (i = 0; i < loopTo3; i++)
                             {
                                 if (Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == GetPetX(index) & Core.Type.MapNPC[mapNum].NPC[i].Y == GetPetY(index) + 1)
                                 {
@@ -1447,8 +1447,8 @@ namespace Server
                                 return CanPetMoveRet;
                             }
 
-                            var loopTo4 = NetworkConfig.Socket.HighIndex;
-                            for (i = 0; i <= (int)loopTo4; i++)
+                            var loopTo4 = NetworkConfig.Socket.HighIndex + 1;
+                            for (i = 0; i < loopTo4; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
@@ -1466,8 +1466,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not another npc in the way
-                            var loopTo5 = Core.Constant.MAX_MAP_NPCS - 1;
-                            for (i = 0; i <= (int)loopTo5; i++)
+                            var loopTo5 = Core.Constant.MAX_MAP_NPCS;
+                            for (i = 0; i < loopTo5; i++)
                             {
                                 if (Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == GetPetX(index) - 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == GetPetY(index))
                                 {
@@ -1506,8 +1506,8 @@ namespace Server
                                 return CanPetMoveRet;
                             }
 
-                            var loopTo6 = NetworkConfig.Socket.HighIndex;
-                            for (i = 0; i <= (int)loopTo6; i++)
+                            var loopTo6 = NetworkConfig.Socket.HighIndex + 1;
+                            for (i = 0; i < loopTo6; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
@@ -1525,8 +1525,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not another npc in the way
-                            var loopTo7 = Core.Constant.MAX_MAP_NPCS - 1;
-                            for (i = 0; i <= (int)loopTo7; i++)
+                            var loopTo7 = Core.Constant.MAX_MAP_NPCS;
+                            for (i = 0; i < loopTo7; i++)
                             {
                                 if (Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == GetPetX(index) + 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == GetPetY(index))
                                 {
@@ -1979,10 +1979,10 @@ namespace Server
 
                 // we loop through all squares
                 var loopTo = (int)Core.Type.Map[mapNum].MaxY;
-                for (j = 0; j <= (int)loopTo; j++)
+                for (j = 0; j < (int)loopTo; j++)
                 {
                     var loopTo1 = (int)Core.Type.Map[mapNum].MaxX;
-                    for (i = 0; i <= (int)loopTo1; i++)
+                    for (i = 0; i < loopTo1; i++)
                     {
 
                         // If j = 10 And i = 0 Then MsgBox "hi!"
@@ -2060,10 +2060,10 @@ namespace Server
                     sum = 0;
 
                     var loopTo2 = (int)Core.Type.Map[mapNum].MaxY;
-                    for (j = 0; j <= (int)loopTo2; j++)
+                    for (j = 0; j < (int)loopTo2; j++)
                     {
                         var loopTo3 = (int)Core.Type.Map[mapNum].MaxX;
-                        for (i = 0; i <= (int)loopTo3; i++)
+                        for (i = 0; i < loopTo3; i++)
                             // we add up ALL the squares
                             sum += pos[i, j];
                     }
@@ -2329,7 +2329,7 @@ namespace Server
 
         }
 
-        internal static void PetFireProjectile(int index, int Skillnum)
+        internal static void PetFireProjectile(int index, int skillNum)
         {
             var projectileSlot = default(int);
             int projectileNum;
@@ -2341,8 +2341,8 @@ namespace Server
             mapNum = GetPlayerMap(index);
 
             // Find a free projectile
-            var loopTo = Core.Constant.MAX_PROJECTILES - 1; 
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_PROJECTILES;
+            for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.MapProjectile[mapNum, i].ProjectileNum == 0) // Free Projectile
                 {
@@ -2355,10 +2355,10 @@ namespace Server
             if (projectileSlot == 0)
                 projectileSlot = 0;
 
-            if (Skillnum < 0 | Skillnum > Core.Constant.MAX_SKILLS)
+            if (skillNum < 0 | skillNum > Core.Constant.MAX_SKILLS)
                 return;
 
-            projectileNum = Core.Type.Skill[Skillnum].Projectile;
+            projectileNum = Core.Type.Skill[skillNum].Projectile;
 
             {
                 var withBlock = MapProjectile[mapNum, projectileSlot];
@@ -2630,8 +2630,8 @@ namespace Server
                 NPC.SendNPCDead(mapNum, MapNPCNum);
 
                 // Loop through entire map and purge NPC from targets
-                var loopTo = NetworkConfig.Socket.HighIndex;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                for (i = 0; i < loopTo; i++)
                 {
 
                     if (NetworkConfig.IsPlaying(i))
@@ -2670,7 +2670,7 @@ namespace Server
                 NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
 
                 // send the sound
-                // If Skillnum > 0 Then SendMapSound attacker, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].y, SoundEntity.seSkill, Skillnum
+                // If skillNum > 0 Then SendMapSound attacker, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].y, SoundEntity.seSkill, skillNum
 
                 // Set the NPC target to the player
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = (byte)TargetType.Pet; // player's pet
@@ -2679,8 +2679,8 @@ namespace Server
                 // Now check for guard ai and if so have all onmap guards come after'm
                 if (Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Behaviour == (byte)  NPCBehavior.Guard)
                 {
-                    var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-                    for (i = 0; i <= (int)loopTo1; i++)
+                    var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+                    for (i = 0; i < loopTo1; i++)
                     {
                         if (Core.Type.MapNPC[mapNum].NPC[i].Num == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num)
                         {
@@ -2702,7 +2702,7 @@ namespace Server
                     // DoT
                     if (Core.Type.Skill[skillnum].Duration > 0)
                     {
-                        // AddDoT_NPC(mapNum, MapNPCNum, Skillnum, attacker, 3)
+                        // AddDoT_NPC(mapNum, MapNPCNum, skillNum, attacker, 3)
                     }
                 }
 
@@ -3073,8 +3073,8 @@ namespace Server
                 }
 
                 // purge target info of anyone who targetted dead guy
-                var loopTo = NetworkConfig.Socket.HighIndex;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                for (i = 0; i < loopTo; i++)
                 {
 
                     if (NetworkConfig.IsPlaying(i) & NetworkConfig.Socket.IsConnected(i))
@@ -3377,11 +3377,11 @@ namespace Server
                 NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, VitalType.HP), (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(victim) * 32, GetPetY(victim) * 32);
 
                 // send the sound
-                // If Skillnum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, Skillnum
+                // If skillNum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, skillNum
 
                 // purge target info of anyone who targetted dead guy
-                var loopTo = NetworkConfig.Socket.HighIndex;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                for (i = 0; i < loopTo; i++)
                 {
 
                     if (NetworkConfig.IsPlaying(i) & NetworkConfig.Socket.IsConnected(i))
@@ -3445,7 +3445,7 @@ namespace Server
                 }
 
                 // send the sound
-                // If Skillnum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, Skillnum
+                // If skillNum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, skillNum
 
                 NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + damage, (int) ColorType.BrightRed, 1, GetPetX(victim) * 32, GetPetY(victim) * 32);
                 NetworkSend.SendBlood(GetPlayerMap(victim), GetPetX(victim), GetPetY(victim));
@@ -3462,7 +3462,7 @@ namespace Server
                     // DoT
                     if (Core.Type.Skill[skillnum].Duration > 0)
                     {
-                        // AddDoT_Pet(victim, Skillnum, attacker, TargetType.Pet)
+                        // AddDoT_Pet(victim, skillNum, attacker, TargetType.Pet)
                     }
                 }
             }
@@ -3886,8 +3886,8 @@ namespace Server
                                 {
                                     didCast = Conversions.ToBoolean(1);
 
-                                    var loopTo = NetworkConfig.Socket.HighIndex;
-                                    for (i = 0; i <= (int)loopTo; i++)
+                                    var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                                    for (i = 0; i < loopTo; i++)
                                     {
                                         if (NetworkConfig.IsPlaying(i) & i != index)
                                         {
@@ -3918,8 +3918,8 @@ namespace Server
                                         }
                                     }
 
-                                    var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-                                    for (i = 0; i <= (int)loopTo1; i++)
+                                    var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+                                    for (i = 0; i < loopTo1; i++)
                                     {
                                         if (Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].Vital[(int)VitalType.HP] > 0)
                                         {
@@ -3960,8 +3960,8 @@ namespace Server
 
                                     didCast = Conversions.ToBoolean(1);
 
-                                    var loopTo2 = NetworkConfig.Socket.HighIndex;
-                                    for (i = 0; i <= (int)loopTo2; i++)
+                                    var loopTo2 = NetworkConfig.Socket.HighIndex + 1;
+                                    for (i = 0; i < loopTo2; i++)
                                     {
                                         if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(index))
                                         {
@@ -4191,7 +4191,7 @@ namespace Server
                 NetworkSend.SendActionMsg(GetPlayerMap(index), sSymbol + damage, Color, (byte) ActionMsgType.Scroll, GetPetX(index) * 32, GetPetY(index) * 32);
 
                 // send the sound
-                // SendMapSound(index, Player[index].Pet.x, Player[index].Pet.y, SoundEntity.seSkill, Skillnum)
+                // SendMapSound(index, Player[index].Pet.x, Player[index].Pet.y, SoundEntity.seSkill, skillNum)
 
                 if (increment)
                 {
@@ -4229,7 +4229,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_COTS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 {
                     var withBlock = Core.Type.TempPlayer[index].PetHoT[i];
@@ -4262,7 +4262,7 @@ namespace Server
                 return;
 
             var loopTo = Core.Constant.MAX_COTS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 {
                     var withBlock = Core.Type.TempPlayer[index].PetDoT[i];
@@ -4615,7 +4615,7 @@ namespace Server
                 NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, VitalType.HP), (int) ColorType.BrightRed, 1, GetPetX(victim) * 32, GetPetY(victim) * 32);
 
                 // send the sound
-                // If Skillnum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, Skillnum
+                // If skillNum > 0 Then SendMapSound victim, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.x, Player(victim).characters(Core.Type.TempPlayer[victim].CurChar).Pet.y, SoundEntity.seSkill, skillNum
 
                 // Calculate exp to give attacker
                 exp = GetPlayerExp(victim) / 10;
@@ -4649,8 +4649,8 @@ namespace Server
                 }
 
                 // purge target info of anyone who targetted dead guy
-                var loopTo = NetworkConfig.Socket.HighIndex;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                for (i = 0; i < loopTo; i++)
                 {
                     if (NetworkConfig.IsPlaying(i) & NetworkConfig.Socket.IsConnected(i) & GetPlayerMap(i) == GetPlayerMap(attacker))
                     {
@@ -4680,7 +4680,7 @@ namespace Server
                 }
 
                 // send the sound
-                // If Skillnum > 0 Then SendMapSound victim, GetPetX(victim), GetPety(victim), SoundEntity.seSkill, Skillnum
+                // If skillNum > 0 Then SendMapSound victim, GetPetX(victim), GetPety(victim), SoundEntity.seSkill, skillNum
 
                 NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + damage, (int) ColorType.BrightRed, 1, GetPetX(victim) * 32, GetPetY(victim) * 32);
                 NetworkSend.SendBlood(GetPlayerMap(victim), GetPetX(victim), GetPetY(victim));

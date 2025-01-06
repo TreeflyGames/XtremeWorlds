@@ -20,7 +20,7 @@ namespace Client
                 for (y = 0; y < loopTo1; y++)
                 {
                     Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
-                    for (i = 0; i < (int)Core.Enum.LayerType.Count - 1; i++)
+                    for (i = 0; i < (int)Core.Enum.LayerType.Count; i++)
                     {
                         Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
                         Core.Type.Autotile[x, y].Layer[i].SrcY = new int[5];
@@ -319,7 +319,7 @@ namespace Client
                 for (y = 0; y < loopTo1; y++)
                 {
                     Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
-                    for (int i = 0; i < (int)Core.Enum.LayerType.Count - 1; i++)
+                    for (int i = 0; i < (int)Core.Enum.LayerType.Count; i++)
                     {
                         Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
                         Core.Type.Autotile[x, y].Layer[i].SrcY = new int[5];

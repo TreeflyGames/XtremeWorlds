@@ -20,7 +20,7 @@ namespace Client
             {
                 Core.Type.Bank[x].Item = new Core.Type.PlayerInvStruct[(Constant.MAX_BANK + 1)];
 
-                for (i = 0; i <= Constant.MAX_BANK; i++)
+                for (i = 0; i < Constant.MAX_BANK; i++)
                 {
                     Core.Type.Bank[x].Item[i].Num = 0;
                     Core.Type.Bank[x].Item[i].Value = 0;
@@ -38,7 +38,7 @@ namespace Client
             int x;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_BANK; i++)
+            for (i = 0; i < Constant.MAX_BANK; i++)
             {
                 SetBank(GameState.MyIndex, (byte)i, buffer.ReadInt32());
                 SetBankValue(GameState.MyIndex, (byte)i, buffer.ReadInt32());

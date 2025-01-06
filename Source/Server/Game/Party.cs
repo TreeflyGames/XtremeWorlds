@@ -33,7 +33,7 @@ namespace Server
             int i;
 
             var loopTo = PartyField[partyNum].MemberCount;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (PartyField[partyNum].Member[i] > 0)
                 {
@@ -68,7 +68,7 @@ namespace Server
                 buffer.WriteInt32(1);
             }
             buffer.WriteInt32(PartyField[partyNum].Leader);
-            for (int i = 0, loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_PARTY_MEMBERS; i < loopTo; i++)
                 buffer.WriteInt32(PartyField[partyNum].Member[Conversions.ToInteger(i)]);
             buffer.WriteInt32(PartyField[partyNum].MemberCount);
 
@@ -92,8 +92,8 @@ namespace Server
                 // send party data
                 buffer.WriteInt32(1);
                 buffer.WriteInt32(PartyField[partyNum].Leader);
-                var loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
+                for (i = 0; i < loopTo; i++)
                     buffer.WriteInt32(PartyField[partyNum].Member[i]);
                 buffer.WriteInt32(PartyField[partyNum].MemberCount);
             }
@@ -117,7 +117,7 @@ namespace Server
             buffer.WriteInt32(index);
 
             var loopTo = (byte)VitalType.Count - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 buffer.WriteInt32(Core.Type.Player[index].Vital[i]);
 
             byte[] data = buffer.ToArray();
@@ -178,7 +178,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_PARTIES;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 ClearParty(i);
 
         }
@@ -195,8 +195,8 @@ namespace Server
             int i;
 
             // send message to all people
-            var loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
+            for (i = 0; i < loopTo; i++)
             {
                 // exist?
                 if (PartyField[partyNum].Member[i] > 0)
@@ -209,7 +209,7 @@ namespace Server
 
         private static void RemoveFromParty(int index, int partyNum)
         {
-            for (int i = 0, loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_PARTY_MEMBERS; i < loopTo; i++)
             {
                 if (PartyField[partyNum].Member[Conversions.ToInteger(i)] == index)
                 {
@@ -245,8 +245,8 @@ namespace Server
                     if (PartyField[partyNum].Leader == index)
                     {
                         // set next person down as leader
-                        var loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1;
-                        for (i = 0; i <= (int)loopTo; i++)
+                        var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
+                        for (i = 0; i < loopTo; i++)
                         {
                             if (PartyField[partyNum].Member[i] > 0 & PartyField[partyNum].Member[i] != index)
                             {
@@ -275,8 +275,8 @@ namespace Server
                     RemoveFromParty(PartyField[partyNum].Leader, partyNum);
 
                     // clear out everyone's party
-                    var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS - 1;
-                    for (i = 0; i <= (int)loopTo1; i++)
+                    var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS;
+                    for (i = 0; i < loopTo1; i++)
                     {
                         index = PartyField[partyNum].Member[i];
                         // player exist?
@@ -321,8 +321,8 @@ namespace Server
                 if (PartyField[partyNum].Leader == index)
                 {
                     // got a blank slot?
-                    var loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1;
-                    for (i = 0; i <= (int)loopTo; i++)
+                    var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
+                    for (i = 0; i < loopTo; i++)
                     {
                         if (PartyField[partyNum].Member[i] == 0)
                         {
@@ -373,8 +373,8 @@ namespace Server
                 // get the partynumber
                 partyNum = Core.Type.TempPlayer[index].InParty;
                 // got a blank slot?
-                var loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
+                for (i = 0; i < loopTo; i++)
                 {
                     if (PartyField[partyNum].Member[i] == 0)
                     {
@@ -401,7 +401,7 @@ namespace Server
             {
                 // not in a party. Create one with the new person.
                 var loopTo1 = Core.Constant.MAX_PARTIES;
-                for (i = 0; i <= (int)loopTo1; i++)
+                for (i = 0; i < loopTo1; i++)
                 {
                     // find blank party
                     if (!(PartyField[i].Leader > 0))
@@ -449,7 +449,7 @@ namespace Server
             int x;
 
             // find the high index
-            for (i = Core.Constant.MAX_PARTY_MEMBERS - 1; i >= 0; i -= 1)
+            for (i = Core.Constant.MAX_PARTY_MEMBERS; i >= 0; i -= 1)
             {
                 if (PartyField[partyNum].Member[i] > 0)
                 {
@@ -459,8 +459,8 @@ namespace Server
             }
 
             // count the members
-            var loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
+            for (i = 0; i < loopTo; i++)
             {
                 // we've got a blank member
                 if (PartyField[partyNum].Member[i] == 0)
@@ -469,8 +469,8 @@ namespace Server
                     if (i < highindex)
                     {
                         // move everyone down a slot
-                        var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS - 1;
-                        for (x = i; x <= (int)loopTo1; x++)
+                        var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS;
+                        for (x = i; x < (int)loopTo1; x++)
                         {
                             PartyField[partyNum].Member[x] = PartyField[partyNum].Member[x + 1];
                             PartyField[partyNum].Member[x + 1] = 0;
@@ -485,11 +485,11 @@ namespace Server
                 }
 
                 // check if we've reached the max party members
-                if (i == Core.Constant.MAX_PARTY_MEMBERS - 1)
+                if (i == Core.Constant.MAX_PARTY_MEMBERS)
                 {
                     if (highindex == i)
                     {
-                        PartyField[partyNum].MemberCount = Core.Constant.MAX_PARTY_MEMBERS - 1;
+                        PartyField[partyNum].MemberCount = Core.Constant.MAX_PARTY_MEMBERS;
                         return;
                     }
                 }
@@ -516,8 +516,8 @@ namespace Server
             }
 
             // check members in others maps
-            var loopTo = Core.Constant.MAX_PARTY_MEMBERS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
+            for (i = 0; i < loopTo; i++)
             {
                 tmpindex = PartyField[partyNum].Member[i];
                 if (tmpindex > 0)
@@ -537,8 +537,8 @@ namespace Server
             leftOver = exp % (PartyField[partyNum].MemberCount - loseMemberCount);
 
             // loop through and give everyone exp
-            var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS;
+            for (i = 0; i < loopTo1; i++)
             {
                 tmpindex = PartyField[partyNum].Member[i];
                 // existing member?
@@ -575,7 +575,7 @@ namespace Server
                 if (Conversions.ToBoolean(PartyField[Core.Type.TempPlayer[index].InParty].Leader))
                 {
                     var loopTo = PartyField[Core.Type.TempPlayer[index].InParty].MemberCount;
-                    for (i = 0; i <= (int)loopTo; i++)
+                    for (i = 0; i < loopTo; i++)
                         Player.PlayerWarp(PartyField[Core.Type.TempPlayer[index].InParty].Member[i], mapNum, x, y);
                 }
             }

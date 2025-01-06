@@ -1344,7 +1344,7 @@ namespace Client
             var z = default(int);
             X = 0;
             var loopTo1 = frmEditor_Event.Instance.lstCommands.Items.Count;
-            for (i = 0; i <= loopTo1; i++)
+            for (i = 0; i < loopTo1; i++)
             {
                 if (X > z)
                     z = X;
@@ -1394,7 +1394,7 @@ namespace Client
                 {
 
                     var loopTo1 = i;
-                    for (X = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount; X <= loopTo1; X++)
+                    for (X = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount; X < loopTo1; X++)
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[X + 1] = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[X];
 
                     curslot = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex].CommandNum;
@@ -1533,7 +1533,7 @@ namespace Client
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
                         string tmptxt = "";
                         var loopTo2 = Information.UBound(frmEditor_Event.Instance.txtShowText.Lines);
-                        for (i = 0; i <= loopTo2; i++)
+                        for (i = 0; i < loopTo2; i++)
                             tmptxt = tmptxt + frmEditor_Event.Instance.txtShowText.Lines[i];
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = tmptxt;
                         break;
@@ -2364,7 +2364,7 @@ namespace Client
                         TempMoveRouteCount = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].MoveRouteCount;
                         TempMoveRoute = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].MoveRoute;
                         var loopTo1 = TempMoveRouteCount;
-                        for (i = 0; i <= loopTo1; i++)
+                        for (i = 0; i < loopTo1; i++)
                         {
                             switch (TempMoveRoute[i].Index)
                             {
@@ -2601,7 +2601,7 @@ namespace Client
                         frmEditor_Event.Instance.cmbPlayAnim.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
                         frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Clear();
                         var loopTo2 = Core.Type.MyMap.EventCount;
-                        for (i = 0; i <= loopTo2; i++)
+                        for (i = 0; i < loopTo2; i++)
                             frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                         frmEditor_Event.Instance.cmbPlayAnimEvent.SelectedIndex = 0;
                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 == 0)
@@ -2639,7 +2639,7 @@ namespace Client
                     {
                         IsEdit = true;
                         var loopTo3 = Information.UBound(Sound.MusicCache);
-                        for (i = 0; i <= loopTo3; i++)
+                        for (i = 0; i < loopTo3; i++)
                         {
                             if ((Sound.MusicCache[i] ?? "") == (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 ?? ""))
                             {
@@ -2655,7 +2655,7 @@ namespace Client
                     {
                         IsEdit = true;
                         var loopTo4 = Information.UBound(Sound.SoundCache);
-                        for (i = 0; i <= loopTo4; i++)
+                        for (i = 0; i < loopTo4; i++)
                         {
                             if ((Sound.SoundCache[i] ?? "") == (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 ?? ""))
                             {
@@ -2802,7 +2802,7 @@ namespace Client
                         frmEditor_Event.Instance.cmbMoveWait.Items.Add("This Event");
                         frmEditor_Event.Instance.cmbMoveWait.SelectedIndex = 0;
                         var loopTo5 = Core.Type.MyMap.EventCount;
-                        for (i = 0; i <= loopTo5; i++)
+                        for (i = 0; i < loopTo5; i++)
                         {
                             if (i != EditorEvent)
                             {
@@ -2889,7 +2889,7 @@ namespace Client
                     TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList = oldCommandList.ParentList;
                     TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = p;
                     var loopTo1 = p + 1;
-                    for (i = 0; i <= loopTo1; i++)
+                    for (i = 0; i < loopTo1; i++)
                     {
                         if (i != curslot)
                         {
@@ -3490,8 +3490,8 @@ namespace Client
                                 if (withBlock1.MoveRouteCount > 0)
                                 {
                                     Core.Type.MyMap.Event[i].Pages[x].MoveRoute = new Core.Type.MoveRouteStruct[withBlock1.MoveRouteCount];
-                                    var loopTo2 = withBlock1.MoveRouteCount - 1;
-                                    for (y = 0; y <= loopTo2; y++)
+                                    var loopTo2 = withBlock1.MoveRouteCount;
+                                    for (y = 0; y < loopTo2; y++)
                                     {
                                         withBlock1.MoveRoute[y].Index = buffer.ReadInt32();
                                         withBlock1.MoveRoute[y].Data1 = buffer.ReadInt32();
@@ -3524,7 +3524,7 @@ namespace Client
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
                                         var loopTo4 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1;
-                                        for (z = 0; z <= loopTo4; z++)
+                                        for (z = 0; z < loopTo4; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
@@ -3551,8 +3551,8 @@ namespace Client
                                                 if (withBlock2.MoveRouteCount > 0)
                                                 {
                                                     withBlock2.MoveRoute = new Core.Type.MoveRouteStruct[withBlock2.MoveRouteCount];
-                                                    var loopTo5 = withBlock2.MoveRouteCount - 1;
-                                                    for (w = 0; w <= loopTo5; w++)
+                                                    var loopTo5 = withBlock2.MoveRouteCount;
+                                                    for (w = 0; w < loopTo5; w++)
                                                     {
                                                         withBlock2.MoveRoute[w].Index = buffer.ReadInt32();
                                                         withBlock2.MoveRoute[w].Data1 = buffer.ReadInt32();

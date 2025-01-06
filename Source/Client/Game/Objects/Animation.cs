@@ -298,7 +298,7 @@ namespace Client
 
             AnimInstance = new Core.Type.AnimInstanceStruct[(byte.MaxValue + 1)];
 
-            for (i = 0; i <= byte.MaxValue - 1; i++)
+            for (i = 0; i <= byte.MaxValue; i++)
             {
                 for (int X = 0; X <= 1; X++)
                     AnimInstance[i].Timer = new int[X + 1];
@@ -322,14 +322,14 @@ namespace Client
             AnimInstance[index].X = 0;
             AnimInstance[index].Y = 0;
 
-            for (int i = 0, loopTo = Information.UBound(AnimInstance[index].Used); i <= loopTo; i++)
+            for (int i = 0, loopTo = Information.UBound(AnimInstance[index].Used); i < loopTo; i++)
                 AnimInstance[index].Used[i] = Conversions.ToBoolean(0);
 
-            for (int i = 0, loopTo1 = Information.UBound(AnimInstance[index].Timer); i <= loopTo1; i++)
+            for (int i = 0, loopTo1 = Information.UBound(AnimInstance[index].Timer); i < loopTo1; i++)
 
                 AnimInstance[index].Timer[i] = 0;
 
-            for (int i = 0, loopTo2 = Information.UBound(AnimInstance[index].FrameIndex); i <= loopTo2; i++)
+            for (int i = 0, loopTo2 = Information.UBound(AnimInstance[index].FrameIndex); i < loopTo2; i++)
                 AnimInstance[index].FrameIndex[i] = 0;
 
             AnimInstance[index].LockType = 0;
@@ -362,18 +362,18 @@ namespace Client
                 Core.Type.Animation[n].Frames[i] = buffer.ReadInt32();
 
             var loopTo1 = Information.UBound(Core.Type.Animation[n].LoopCount);
-            for (i = 0; i <= loopTo1; i++)
+            for (i = 0; i < loopTo1; i++)
                 Core.Type.Animation[n].LoopCount[i] = buffer.ReadInt32();
 
             var loopTo2 = Information.UBound(Core.Type.Animation[n].LoopTime);
-            for (i = 0; i <= loopTo2; i++)
+            for (i = 0; i < loopTo2; i++)
                 Core.Type.Animation[n].LoopTime[i] = buffer.ReadInt32();
 
             Core.Type.Animation[n].Name = buffer.ReadString();
             Core.Type.Animation[n].Sound = buffer.ReadString();
 
             var loopTo3 = Information.UBound(Core.Type.Animation[n].Sprite);
-            for (i = 0; i <= loopTo3; i++)
+            for (i = 0; i < loopTo3; i++)
                 Core.Type.Animation[n].Sprite[i] = buffer.ReadInt32();
             buffer.Dispose();
         }

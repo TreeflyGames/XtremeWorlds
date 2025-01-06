@@ -170,7 +170,7 @@ namespace Client.My
                             {
                                 int lastIndex = inScopePrefixes.Length - 1;
 
-                                for (int i = 0, loopTo = lastIndex; i <= loopTo; i++)
+                                for (int i = 0, loopTo = lastIndex; i < loopTo; i++)
                                 {
                                     string currentInScopePrefix = inScopePrefixes[i];
                                     var currentInScopeNs = inScopeNs[i];
@@ -197,7 +197,7 @@ namespace Client.My
                                 if (attributes is not null)
                                 {
                                     int lastIndex = attributes.Count - 1;
-                                    for (int i = 0, loopTo1 = lastIndex; i <= loopTo1; i++)
+                                    for (int i = 0, loopTo1 = lastIndex; i < loopTo1; i++)
                                     {
                                         var currentA = attributes[i];
                                         string currentInScopePrefix = currentA.Name.LocalName;

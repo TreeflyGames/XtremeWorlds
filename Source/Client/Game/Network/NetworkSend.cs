@@ -642,7 +642,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.NPC[NPCNum].SpawnSecs);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
             for (i = 0; i < Constant.MAX_NPC_SKILLS; i++)
@@ -715,7 +715,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.Shop[shopNum].BuyRate);
             buffer.WriteString(Core.Type.Shop[shopNum].Name);
 
-            for (int i = 0; i <= Constant.MAX_TRADES; i++)
+            for (int i = 0; i < Constant.MAX_TRADES; i++)
             {
                 buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostItem);
                 buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostValue);
@@ -744,19 +744,19 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveAnimation);
             buffer.WriteInt32(animationNum);
 
-            for (int i = 0, loopTo = Information.UBound(Core.Type.Animation[animationNum].Frames); i <= loopTo; i++)
+            for (int i = 0, loopTo = Information.UBound(Core.Type.Animation[animationNum].Frames); i < loopTo; i++)
                 buffer.WriteInt32(Core.Type.Animation[animationNum].Frames[i]);
 
-            for (int i = 0, loopTo1 = Information.UBound(Core.Type.Animation[animationNum].LoopCount); i <= loopTo1; i++)
+            for (int i = 0, loopTo1 = Information.UBound(Core.Type.Animation[animationNum].LoopCount); i < loopTo1; i++)
                 buffer.WriteInt32(Core.Type.Animation[animationNum].LoopCount[i]);
 
-            for (int i = 0, loopTo2 = Information.UBound(Core.Type.Animation[animationNum].LoopTime); i <= loopTo2; i++)
+            for (int i = 0, loopTo2 = Information.UBound(Core.Type.Animation[animationNum].LoopTime); i < loopTo2; i++)
                 buffer.WriteInt32(Core.Type.Animation[animationNum].LoopTime[i]);
 
             buffer.WriteString(Core.Type.Animation[animationNum].Name);
             buffer.WriteString(Core.Type.Animation[animationNum].Sound);
 
-            for (int i = 0, loopTo3 = Information.UBound(Core.Type.Animation[animationNum].Sprite); i <= loopTo3; i++)
+            for (int i = 0, loopTo3 = Information.UBound(Core.Type.Animation[animationNum].Sprite); i < loopTo3; i++)
                 buffer.WriteInt32(Core.Type.Animation[animationNum].Sprite[i]);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
@@ -797,7 +797,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
             buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[i]);
 
             for (q = 0; q <= 4; q++)
@@ -824,7 +824,7 @@ namespace Client
             buffer.WriteInt32(itemNum);
             buffer.WriteInt32(Core.Type.Item[itemNum].AccessReq);
 
-            for (int i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.StatType.Count; i++)
                 buffer.WriteInt32(Core.Type.Item[itemNum].Add_Stat[i]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Animation);
@@ -846,7 +846,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.Item[itemNum].Stackable);
             buffer.WriteString(Core.Type.Item[itemNum].Description);
 
-            for (int i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.StatType.Count; i++)
                 buffer.WriteInt32(Core.Type.Item[itemNum].Stat_Req[i]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Type);

@@ -54,7 +54,7 @@ namespace Client
 
             // carry on otherwise
             Core.Type.Party.Leader = buffer.ReadInt32();
-            for (i = 0; i <= Constant.MAX_PARTY_MEMBERS; i++)
+            for (i = 0; i < Constant.MAX_PARTY_MEMBERS; i++)
                 Core.Type.Party.Member[i] = buffer.ReadInt32();
             Core.Type.Party.MemberCount = buffer.ReadInt32();
 
@@ -73,7 +73,7 @@ namespace Client
             playerNum = buffer.ReadInt32();
 
             // find the party number
-            for (int i = 0; i <= Constant.MAX_PARTY_MEMBERS; i++)
+            for (int i = 0; i < Constant.MAX_PARTY_MEMBERS; i++)
             {
                 if (Core.Type.Party.Member[i] == playerNum)
                 {
@@ -86,7 +86,7 @@ namespace Client
                 return;
 
             // set vitals
-            for (int i = 0; i < (int)Core.Enum.VitalType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.VitalType.Count; i++)
                 Core.Type.Player[playerNum].Vital[i] = buffer.ReadInt32();
 
             GameLogic.UpdatePartyBars();

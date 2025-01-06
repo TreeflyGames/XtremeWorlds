@@ -237,7 +237,7 @@ namespace Client
             Settings.Username = Gui.Windows[Gui.GetWindowIndex("winLogin")].Controls[(int)Gui.GetControlIndex("winLogin", "txtUsername")].Text;
             Settings.Save();
 
-            for (var i = 0L; i <= Constant.MAX_CHARS - 1; i++)
+            for (var i = 0L; i < Constant.MAX_CHARS; i++)
             {
                 GameState.CharName[(int)i] = buffer.ReadString();
                 GameState.CharSprite[(int)i] = buffer.ReadInt32();
@@ -256,7 +256,7 @@ namespace Client
 
             // set GUi window up
             winNum = Gui.GetWindowIndex("winChars");
-            for (var i = 0L; i <= Constant.MAX_CHARS - 1; i++)
+            for (var i = 0L; i < Constant.MAX_CHARS; i++)
             {
                 conNum = Gui.GetControlIndex("winChars", "lblCharName_" + (i + 1));
                 {
@@ -392,7 +392,7 @@ namespace Client
             int amount;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_INV - 1; i++)
+            for (i = 0; i < Constant.MAX_INV; i++)
             {
                 invNum = buffer.ReadInt32();
                 amount = buffer.ReadInt32();
@@ -427,7 +427,7 @@ namespace Client
             int n;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i < (int)Core.Enum.EquipmentType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
                 n = buffer.ReadInt32();
                 SetPlayerEquipment(GameState.MyIndex, n, (Core.Enum.EquipmentType)i);
@@ -619,7 +619,7 @@ namespace Client
                 withBlock.Y = (byte)buffer.ReadInt32();
                 withBlock.Dir = buffer.ReadInt32();
 
-                for (i = 0; i < (int)Core.Enum.VitalType.Count - 1; i++)
+                for (i = 0; i < (int)Core.Enum.VitalType.Count; i++)
                     withBlock.Vital[i] = buffer.ReadInt32();
                 // Client use only
                 withBlock.XOffset = 0;
@@ -654,7 +654,7 @@ namespace Client
             Core.Type.NPC[i].AttackSay = buffer.ReadString();
             Core.Type.NPC[i].Behaviour = buffer.ReadByte();
 
-            for (x = 1; x <= Constant.MAX_DROP_ITEMS; x++)
+            for (x = 1; x < Constant.MAX_DROP_ITEMS; x++)
             {
                 Core.Type.NPC[i].DropChance[x] = buffer.ReadInt32();
                 Core.Type.NPC[i].DropItem[x] = buffer.ReadInt32();
@@ -673,7 +673,7 @@ namespace Client
             for (x = 1; x < (int)Core.Enum.StatType.Count - 1; x++)
                 Core.Type.NPC[i].Stat[x] = buffer.ReadByte();
 
-            for (x = 1; x <= Constant.MAX_NPC_SKILLS; x++)
+            for (x = 1; x < Constant.MAX_NPC_SKILLS; x++)
                 Core.Type.NPC[i].Skill[x] = buffer.ReadByte();
 
             Core.Type.NPC[i].Level = buffer.ReadInt32();
@@ -726,7 +726,7 @@ namespace Client
             int i;
             var buffer = new ByteStream(data);
 
-            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
+            for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
                 Core.Type.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadInt32();
 
             buffer.Dispose();
@@ -800,7 +800,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             mapNPCNum = buffer.ReadInt32();
-            for (int i = 0; i < (int)Core.Enum.VitalType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.VitalType.Count; i++)
                 Core.Type.MyMapNPC[mapNPCNum].Vital[i] = buffer.ReadInt32();
 
             buffer.Dispose();
@@ -921,7 +921,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             playernum = buffer.ReadInt32();
-            for (int i = 0; i < (int)Core.Enum.EquipmentType.Count - 1; i++)
+            for (int i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
                 n = buffer.ReadInt32();
                 SetPlayerEquipment(playernum, n, (Core.Enum.EquipmentType)i);
@@ -1027,27 +1027,27 @@ namespace Client
             x = buffer.ReadInt32();
 
             var loopTo1 = x;
-            for (i = 0; i <= loopTo1; i++)
+            for (i = 0; i < loopTo1; i++)
             {
                 n = buffer.ReadInt32();
                 // Update the Animation
-                var loopTo2 = Information.UBound(Core.Type.Animation[n].Frames) - 1;
-                for (z = 0; z <= loopTo2; z++)
+                var loopTo2 = Information.UBound(Core.Type.Animation[n].Frames);
+                for (z = 0; z < loopTo2; z++)
                     Core.Type.Animation[n].Frames[z] = buffer.ReadInt32();
 
-                var loopTo3 = Information.UBound(Core.Type.Animation[n].LoopCount) - 1;
-                for (z = 0; z <= loopTo3; z++)
+                var loopTo3 = Information.UBound(Core.Type.Animation[n].LoopCount);
+                for (z = 0; z < loopTo3; z++)
                     Core.Type.Animation[n].LoopCount[z] = buffer.ReadInt32();
 
-                var loopTo4 = Information.UBound(Core.Type.Animation[n].LoopTime) - 1;
-                for (z = 0; z <= loopTo4; z++)
+                var loopTo4 = Information.UBound(Core.Type.Animation[n].LoopTime);
+                for (z = 0; z < loopTo4; z++)
                     Core.Type.Animation[n].LoopTime[z] = buffer.ReadInt32();
 
                 Core.Type.Animation[n].Name = buffer.ReadString();
                 Core.Type.Animation[n].Sound = buffer.ReadString();
 
-                var loopTo5 = Information.UBound(Core.Type.Animation[n].Sprite) - 1;
-                for (z = 0; z <= loopTo5; z++)
+                var loopTo5 = Information.UBound(Core.Type.Animation[n].Sprite);
+                for (z = 0; z < loopTo5; z++)
                     Core.Type.Animation[n].Sprite[z] = buffer.ReadInt32();
             }
 
@@ -1057,8 +1057,8 @@ namespace Client
             z = 0;
 
             x = buffer.ReadInt32();
-            var loopTo6 = x - 1;
-            for (i = 0; i <= loopTo6; i++)
+            var loopTo6 = x;
+            for (i = 0; i < loopTo6; i++)
             {
                 n = buffer.ReadInt32();
                 // Update the NPC
@@ -1086,7 +1086,7 @@ namespace Client
                     Core.Type.NPC[n].Stat[z] = buffer.ReadByte();
 
                 Core.Type.NPC[n].Skill = new byte[(Constant.MAX_NPC_SKILLS + 1)];
-                for (z = 1; z <= Constant.MAX_NPC_SKILLS; z++)
+                for (z = 1; z < Constant.MAX_NPC_SKILLS; z++)
                     Core.Type.NPC[n].Skill[z] = buffer.ReadByte();
 
                 Core.Type.NPC[i].Level = buffer.ReadInt32();
@@ -1101,14 +1101,14 @@ namespace Client
             x = buffer.ReadInt32();
 
             var loopTo7 = x - 1;
-            for (i = 0; i <= loopTo7; i++)
+            for (i = 0; i < loopTo7; i++)
             {
                 n = buffer.ReadInt32();
 
                 Core.Type.Shop[n].BuyRate = buffer.ReadInt32();
                 Core.Type.Shop[n].Name = buffer.ReadString();
 
-                for (z = 0; z <= Constant.MAX_TRADES - 1; z++)
+                for (z = 0; z < Constant.MAX_TRADES - 1; z++)
                 {
                     Core.Type.Shop[n].TradeItem[z].CostItem = buffer.ReadInt32();
                     Core.Type.Shop[n].TradeItem[z].CostValue = buffer.ReadInt32();
@@ -1126,7 +1126,7 @@ namespace Client
             x = buffer.ReadInt32();
 
             var loopTo8 = x - 1;
-            for (i = 0; i <= loopTo8; i++)
+            for (i = 0; i < loopTo8; i++)
             {
                 n = buffer.ReadInt32();
 
@@ -1169,7 +1169,7 @@ namespace Client
             x = buffer.ReadInt32();
 
             var loopTo9 = x - 1;
-            for (i = 0; i <= loopTo9; i++)
+            for (i = 0; i < loopTo9; i++)
             {
                 n = buffer.ReadInt32();
 

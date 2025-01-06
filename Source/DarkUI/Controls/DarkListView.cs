@@ -117,7 +117,7 @@ namespace DarkUI.Controls
                 // Find the starting index of the new item list and update anything past that
                 if (e.NewStartingIndex < (Items.Count - 1))
                 {
-                    for (var i = e.NewStartingIndex; i <= Items.Count - 1; i++)
+                    for (var i = e.NewStartingIndex; i <= Items.Count; i++)
                     {
                         UpdateItemPosition(Items[i], i);
                     }
@@ -132,7 +132,7 @@ namespace DarkUI.Controls
                 // Find the starting index of the old item list and update anything past that
                 if (e.OldStartingIndex < (Items.Count - 1))
                 {
-                    for (var i = e.OldStartingIndex; i <= Items.Count - 1; i++)
+                    for (var i = e.OldStartingIndex; i <= Items.Count; i++)
                     {
                         UpdateItemPosition(Items[i], i);
                     }
@@ -380,7 +380,7 @@ namespace DarkUI.Controls
         {
             using (var g = CreateGraphics())
             {
-                for (var i = 0; i <= Items.Count - 1; i++)
+                for (var i = 0; i <= Items.Count; i++)
                 {
                     var item = Items[i];
                     UpdateItemSize(item, g);

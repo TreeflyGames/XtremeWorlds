@@ -170,7 +170,7 @@ namespace Server.My
                             {
                                 int lastindex = inScopePrefixes.Length - 1;
 
-                                for (int i = 0, loopTo = lastindex; i <= (int)loopTo; i++)
+                                for (int i = 0, loopTo = lastindex; i < loopTo; i++)
                                 {
                                     string currentInScopePrefix = inScopePrefixes[i];
                                     var currentInScopeNs = inScopeNs[i];
@@ -197,7 +197,7 @@ namespace Server.My
                                 if (attributes is not null)
                                 {
                                     int lastindex = attributes.Count - 1;
-                                    for (int i = 0, loopTo1 = lastindex; i <= (int)loopTo1; i++)
+                                    for (int i = 0, loopTo1 = lastindex; i < loopTo1; i++)
                                     {
                                         var currentA = attributes[i];
                                         string currentInScopePrefix = currentA.Name.LocalName;

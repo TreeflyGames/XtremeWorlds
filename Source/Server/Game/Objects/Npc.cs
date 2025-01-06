@@ -22,8 +22,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_MAPS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAPS;
+            for (i = 0; i < loopTo; i++)
                 SpawnMapNPCs(i);
 
         }
@@ -32,8 +32,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAP_NPCS;
+            for (i = 0; i < loopTo; i++)
                 SpawnNPC(i, mapNum);
 
         }
@@ -66,17 +66,17 @@ namespace Server
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = 0; // clear
 
                 var loopTo = VitalType.Count - 1;
-                for (i = 0; i <= (int)loopTo; i++)
+                for (i = 0; i < (int)loopTo; i++)
                     Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[i] = GameLogic.GetNPCMaxVital(NPCNum, (Core.Enum.VitalType)i);
 
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Dir = (int)Conversion.Int(VBMath.Rnd() * 4f);
 
                 // Check if theres a spawn tile for the specific npc
                 var loopTo1 = (int)Core.Type.Map[mapNum].MaxX;
-                for (x = 0; x <= (int)loopTo1; x++)
+                for (x = 0; x < (int)loopTo1; x++)
                 {
                     var loopTo2 = (int)Core.Type.Map[mapNum].MaxY;
-                    for (y = 0; y <= (int)loopTo2; y++)
+                    for (y = 0; y < (int)loopTo2; y++)
                     {
                         if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.NPCSpawn)
                         {
@@ -121,10 +121,10 @@ namespace Server
                 if (!spawned)
                 {
                     var loopTo3 = (int)Core.Type.Map[mapNum].MaxX;
-                    for (x = 0; x <= (int)loopTo3; x++)
+                    for (x = 0; x < (int)loopTo3; x++)
                     {
                         var loopTo4 = (int)Core.Type.Map[mapNum].MaxY;
-                        for (y = 0; y <= (int)loopTo4; y++)
+                        for (y = 0; y < (int)loopTo4; y++)
                         {
                             if (NPCTileIsOpen(mapNum, x, y))
                             {
@@ -147,7 +147,7 @@ namespace Server
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Dir);
 
                     var loopTo5 = (int) VitalType.Count - 1;
-                    for (i = 0; i <= (int)loopTo5; i++)
+                    for (i = 0; i < loopTo5; i++)
                         buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[i]);
 
                     NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
@@ -171,8 +171,8 @@ namespace Server
 
             if (PlayersOnMap[mapNum])
             {
-                var loopTo = NetworkConfig.Socket.HighIndex;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                for (i = 0; i < loopTo; i++)
                 {
                     if (GetPlayerMap(i) == mapNum & GetPlayerX(i) == x & GetPlayerY(i) == y)
                     {
@@ -182,7 +182,7 @@ namespace Server
                 }
             }
 
-            for (int LoopI = 0, loopTo1 = Core.Constant.MAX_MAP_NPCS - 1; LoopI <= (int)loopTo1; LoopI++)
+            for (int LoopI = 0, loopTo1 = Core.Constant.MAX_MAP_NPCS; LoopI < loopTo1; LoopI++)
             {
                 if (Core.Type.MapNPC[mapNum].NPC[LoopI].Num > 0 & Core.Type.MapNPC[mapNum].NPC[LoopI].X == x & Core.Type.MapNPC[mapNum].NPC[LoopI].Y == y)
                 {
@@ -237,8 +237,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo = NetworkConfig.Socket.HighIndex;
-                            for (i = 0; i <= (int)loopTo; i++)
+                            var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                            for (i = 0; i < loopTo; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
@@ -251,8 +251,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not another npc in the way
-                            var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-                            for (i = 0; i <= (int)loopTo1; i++)
+                            var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+                            for (i = 0; i < loopTo1; i++)
                             {
                                 if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y - 1)
                                 {
@@ -285,8 +285,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo2 = NetworkConfig.Socket.HighIndex;
-                            for (i = 0; i <= (int)loopTo2; i++)
+                            var loopTo2 = NetworkConfig.Socket.HighIndex + 1;
+                            for (i = 0; i < loopTo2; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
@@ -299,8 +299,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not another npc in the way
-                            var loopTo3 = Core.Constant.MAX_MAP_NPCS - 1;
-                            for (i = 0; i <= (int)loopTo3; i++)
+                            var loopTo3 = Core.Constant.MAX_MAP_NPCS;
+                            for (i = 0; i < loopTo3; i++)
                             {
                                 if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y + 1)
                                 {
@@ -333,8 +333,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo4 = NetworkConfig.Socket.HighIndex;
-                            for (i = 0; i <= (int)loopTo4; i++)
+                            var loopTo4 = NetworkConfig.Socket.HighIndex + 1;
+                            for (i = 0; i < loopTo4; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
@@ -347,8 +347,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not another npc in the way
-                            var loopTo5 = Core.Constant.MAX_MAP_NPCS - 1;
-                            for (i = 0; i <= (int)loopTo5; i++)
+                            var loopTo5 = Core.Constant.MAX_MAP_NPCS;
+                            for (i = 0; i < loopTo5; i++)
                             {
                                 if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X - 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y)
                                 {
@@ -381,8 +381,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not a player in the way
-                            var loopTo6 = NetworkConfig.Socket.HighIndex;
-                            for (i = 0; i <= (int)loopTo6; i++)
+                            var loopTo6 = NetworkConfig.Socket.HighIndex + 1;
+                            for (i = 0; i < loopTo6; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i))
                                 {
@@ -395,8 +395,8 @@ namespace Server
                             }
 
                             // Check to make sure that there is not another npc in the way
-                            var loopTo7 = Core.Constant.MAX_MAP_NPCS - 1;
-                            for (i = 0; i <= (int)loopTo7; i++)
+                            var loopTo7 = Core.Constant.MAX_MAP_NPCS;
+                            for (i = 0; i < loopTo7; i++)
                             {
                                 if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X + 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y)
                                 {
@@ -561,7 +561,7 @@ namespace Server
                 {
 
                     var loopTo = EquipmentType.Count - 1;
-                    for (i = 2; i <= (int)loopTo; i++) // start at 2, so we skip weapon
+                    for (i = 2; i < (int)loopTo; i++) // start at 2, so we skip weapon
                     {
                         if (GetPlayerEquipment(index, (EquipmentType)i) > 0)
                         {
@@ -903,7 +903,7 @@ namespace Server
         {
             if (IsSkill > 0)
             {
-                for (int i = 0, loopTo = Core.Type.Skill[IsSkill].KnockBackTiles; i <= (int)loopTo; i++)
+                for (int i = 0, loopTo = Core.Type.Skill[IsSkill].KnockBackTiles; i < loopTo; i++)
                 {
                     if (CanNPCMove(GetPlayerMap(index), NPCNum, (byte)GetPlayerDir(index)))
                     {
@@ -915,7 +915,7 @@ namespace Server
             }
             else if (Core.Type.Item[GetPlayerEquipment(index, Core.Enum.EquipmentType.Weapon)].KnockBack == 1)
             {
-                for (int i = 0, loopTo1 = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].KnockBackTiles; i <= (int)loopTo1; i++)
+                for (int i = 0, loopTo1 = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].KnockBackTiles; i < loopTo1; i++)
                 {
                     if (CanNPCMove(GetPlayerMap(index), NPCNum, (byte)GetPlayerDir(index)))
                     {
@@ -939,7 +939,7 @@ namespace Server
                 return RandomNPCAttackRet;
 
             var loopTo = Core.Constant.MAX_NPC_SKILLS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if ((int)Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Skill[i] > 0)
                 {
@@ -1199,8 +1199,8 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SMapNPCData);
 
-            var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAP_NPCS;
+            for (i = 0; i < loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Num);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].X);
@@ -1269,7 +1269,7 @@ namespace Server
             Core.Type.NPC[NPCNum].Behaviour = buffer.ReadByte();
 
             var loopTo = Core.Constant.MAX_DROP_ITEMS;
-            for (i = 0; i < (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 Core.Type.NPC[NPCNum].DropChance[i] = buffer.ReadInt32();
                 Core.Type.NPC[NPCNum].DropItem[i] = buffer.ReadInt32();
@@ -1286,11 +1286,11 @@ namespace Server
             Core.Type.NPC[NPCNum].Sprite = buffer.ReadInt32();
 
             var loopTo1 = (byte)StatType.Count - 1;
-            for (i = 0; i < (int)loopTo1; i++)
+            for (i = 0; i < loopTo1; i++)
                 Core.Type.NPC[NPCNum].Stat[i] = buffer.ReadByte();
 
             var loopTo2 = Core.Constant.MAX_NPC_SKILLS;
-            for (i = 0; i < (int)loopTo2; i++)
+            for (i = 0; i < loopTo2; i++)
                 Core.Type.NPC[NPCNum].Skill[i] = buffer.ReadByte();
 
             Core.Type.NPC[NPCNum].Level = buffer.ReadInt32();
@@ -1309,7 +1309,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_NPCS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (Strings.Len(Core.Type.NPC[i].Name) > 0)
                 {
@@ -1333,7 +1333,7 @@ namespace Server
             buffer.WriteByte(Core.Type.NPC[NPCNum].Behaviour);
 
             var loopTo = Core.Constant.MAX_DROP_ITEMS;
-            for (i = 0; i < (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropChance[i]);
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItem[i]);
@@ -1350,11 +1350,11 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
             var loopTo1 = (byte)StatType.Count - 1;
-            for (i = 0; i < (int)loopTo1; i++)
+            for (i = 0; i < loopTo1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
             var loopTo2 = Core.Constant.MAX_NPC_SKILLS;
-            for (i = 0; i < (int)loopTo2; i++)
+            for (i = 0; i < loopTo2; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[i]);
 
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Level);
@@ -1378,7 +1378,7 @@ namespace Server
             buffer.WriteByte(Core.Type.NPC[NPCNum].Behaviour);
 
             var loopTo = Core.Constant.MAX_DROP_ITEMS;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropChance[i]);
                 buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItem[i]);
@@ -1395,11 +1395,11 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
             var loopTo1 = (byte)StatType.Count - 1;
-            for (i = 0; i < (int)loopTo1; i++)
+            for (i = 0; i < loopTo1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
             var loopTo2 = Core.Constant.MAX_NPC_SKILLS - 1;
-            for (i = 0; i <= (int)loopTo2; i++)
+            for (i = 0; i < loopTo2; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[i]);
 
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Level);
@@ -1417,8 +1417,8 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SMapNPCData);
 
-            var loopTo = Core.Constant.MAX_MAP_NPCS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAP_NPCS;
+            for (i = 0; i < loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Num);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].X);
@@ -1467,7 +1467,7 @@ namespace Server
             buffer.WriteInt32(MapNPCNum);
 
             var loopTo = VitalType.Count - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < (int)loopTo; i++)
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[i]);
 
             NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);

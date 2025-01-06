@@ -34,8 +34,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_PROJECTILES - 1; 
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_PROJECTILES;
+            for (i = 0; i < loopTo; i++)
                 LoadProjectile(i);
         }
 
@@ -61,13 +61,13 @@ namespace Server
             int y;
             ;
 
-            Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES + 1];
+            Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
 
-            var loopTo = Core.Constant.MAX_MAPS - 1;
-            for (x = 0; x <= (int)loopTo; x++)
+            var loopTo = Core.Constant.MAX_MAPS;
+            for (x = 0; x < (int)loopTo; x++)
             {
-                var loopTo1 = Core.Constant.MAX_PROJECTILES - 1; 
-                for (y = 0; y <= (int)loopTo1; y++)
+                var loopTo1 = Core.Constant.MAX_PROJECTILES;
+                for (y = 0; y < (int)loopTo1; y++)
                     ClearMapProjectile(x, y);
             }
 
@@ -101,10 +101,10 @@ namespace Server
         {
             int i;
 
-            Core.Type.Projectile = new Core.Type.ProjectileStruct[Core.Constant.MAX_PROJECTILES + 1];
+            Core.Type.Projectile = new Core.Type.ProjectileStruct[Core.Constant.MAX_PROJECTILES];
 
-            var loopTo = Core.Constant.MAX_PROJECTILES - 1; 
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_PROJECTILES;
+            for (i = 0; i < loopTo; i++)
                 ClearProjectile(i);
 
         }
@@ -310,8 +310,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_PROJECTILES - 1; 
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_PROJECTILES;
+            for (i = 0; i < loopTo; i++)
             {
                 if (Strings.Len(Core.Type.Projectile[i].Name) > 0)
                 {
@@ -358,8 +358,8 @@ namespace Server
             mapNum = GetPlayerMap(index);
 
             // Find a free projectile
-            var loopTo = Core.Constant.MAX_PROJECTILES - 1; 
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_PROJECTILES;
+            for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.MapProjectile[mapNum, i].ProjectileNum == 0) // Free Projectile
                 {

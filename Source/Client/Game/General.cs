@@ -407,7 +407,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i < (int)Core.Enum.EquipmentType.Count - 1; i++)
+            for (i = 0L; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
                 if (Conversions.ToBoolean(GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i)))
                 {
@@ -436,7 +436,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+            for (i = 0L; i < Constant.MAX_INV; i++)
             {
                 if (GetPlayerInv(GameState.MyIndex, (int)i) > 0)
                 {
@@ -465,7 +465,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
+            for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
                 if (Conversions.ToBoolean(Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num))
                 {
@@ -494,7 +494,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_BANK; i++)
+            for (i = 0L; i < Constant.MAX_BANK; i++)
             {
                 if (GetBank(GameState.MyIndex, (byte)i) > 0)
                 {
@@ -525,7 +525,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_TRADES; i++)
+            for (i = 0L; i < Constant.MAX_TRADES; i++)
             {
                 tempRec.Top = StartY + GameState.ShopTop + (GameState.ShopOffsetY + GameState.PicY) * ((i - 1L) / GameState.ShopColumns);
                 tempRec.Bottom = tempRec.Top + GameState.PicY;
@@ -551,7 +551,7 @@ namespace Client
             Core.Type.RectStruct tempRec;
             long i;
 
-            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+            for (i = 0L; i < Constant.MAX_INV; i++)
             {
                 tempRec.Top = StartY + GameState.TradeTop + (GameState.TradeOffsetY + GameState.PicY) * ((i - 1L) / GameState.TradeColumns);
                 tempRec.Bottom = tempRec.Top + GameState.PicY;

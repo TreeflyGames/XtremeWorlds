@@ -566,7 +566,7 @@ namespace Client
                             n = Conversions.ToInteger(command[1]);
 
                             // Check to make sure its a valid map #
-                            if (n > 0 & n <= Constant.MAX_MAPS)
+                            if (n > 0 & n < Constant.MAX_MAPS)
                             {
                                 NetworkSend.WarpTo(n);
                             }
@@ -929,7 +929,7 @@ namespace Client
             index = GameState.ChatBubbleindex;
 
             // Loop through and see if that player/NPC already has a chat bubble
-            for (i = 0; i <= byte.MaxValue - 1; i++)
+            for (i = 0; i < byte.MaxValue; i++)
             {
                 if (Core.Type.ChatBubble[i].TargetType == targetType)
                 {
@@ -1301,7 +1301,7 @@ namespace Client
                             for (x = 0; x < loopTo4; x++)
                             {
                                 var loopTo5 = (int)Core.Type.MyMap.MaxY;
-                                for (y = 0; y <= loopTo5; y++)
+                                for (y = 0; y < loopTo5; y++)
                                 {
                                     {
                                         ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
@@ -1323,7 +1323,7 @@ namespace Client
                             for (x = 0; x < loopTo6; x++)
                             {
                                 var loopTo7 = (int)Core.Type.MyMap.MaxY;
-                                for (y = 0; y <= loopTo7; y++)
+                                for (y = 0; y < loopTo7; y++)
                                 {
                                     Core.Type.MyMap.Tile[x, y].Type = 0;
                                     Core.Type.MyMap.Tile[x, y].Type2 = 0;
@@ -1785,7 +1785,7 @@ namespace Client
             }
         }
 
-        public static void ShowSkillDesc(long x, long y, long Skillnum, long SkillSlot)
+        public static void ShowSkillDesc(long x, long y, long skillNum, long SkillSlot)
         {
             long Color;
             string theName;
@@ -1796,7 +1796,7 @@ namespace Client
 
             // set globals
             GameState.descType = 2; // Skill
-            GameState.descItem = Skillnum;
+            GameState.descItem = skillNum;
 
             // set position
             Gui.Windows[Gui.GetWindowIndex("winDescription")].Left = x;
@@ -1820,7 +1820,7 @@ namespace Client
             {
                 var withBlock = Gui.Windows[Gui.GetWindowIndex("winDescription")];
                 // set name
-                withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Text = Core.Type.Skill[(int)Skillnum].Name;
+                withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Text = Core.Type.Skill[(int)skillNum].Name;
                 withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Color = Microsoft.Xna.Framework.Color.White;
 
                 // find ranks
@@ -1863,7 +1863,7 @@ namespace Client
                 }
             }
 
-            switch (Core.Type.Skill[(int)Skillnum].Type)
+            switch (Core.Type.Skill[(int)skillNum].Type)
             {
                 case (byte)Core.Enum.SkillType.DamageHp:
                     {
@@ -1893,7 +1893,7 @@ namespace Client
             }
 
             // more info
-            switch (Core.Type.Skill[(int)Skillnum].Type)
+            switch (Core.Type.Skill[(int)skillNum].Type)
             {
                 case (byte)Core.Enum.SkillType.DamageHp:
                 case (byte)Core.Enum.SkillType.DamageMp:
@@ -1901,33 +1901,33 @@ namespace Client
                 case (byte)Core.Enum.SkillType.HealMp:
                     {
                         // damage
-                        AddDescInfo("Vital: " + Core.Type.Skill[(int)Skillnum].Vital, Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Vital: " + Core.Type.Skill[(int)skillNum].Vital, Microsoft.Xna.Framework.Color.White);
 
                         // mp cost
-                        AddDescInfo("Cost: " + Core.Type.Skill[(int)Skillnum].MpCost + " SP", Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Cost: " + Core.Type.Skill[(int)skillNum].MpCost + " SP", Microsoft.Xna.Framework.Color.White);
 
                         // cast time
-                        AddDescInfo("Cast Time: " + Core.Type.Skill[(int)Skillnum].CastTime + "s", Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Cast Time: " + Core.Type.Skill[(int)skillNum].CastTime + "s", Microsoft.Xna.Framework.Color.White);
 
                         // cd time
-                        AddDescInfo("Cooldown: " + Core.Type.Skill[(int)Skillnum].CdTime + "s", Microsoft.Xna.Framework.Color.White);
+                        AddDescInfo("Cooldown: " + Core.Type.Skill[(int)skillNum].CdTime + "s", Microsoft.Xna.Framework.Color.White);
 
                         // aoe
-                        if (Core.Type.Skill[(int)Skillnum].AoE > 0)
+                        if (Core.Type.Skill[(int)skillNum].AoE > 0)
                         {
-                            AddDescInfo("AoE: " + Core.Type.Skill[(int)Skillnum].AoE, Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("AoE: " + Core.Type.Skill[(int)skillNum].AoE, Microsoft.Xna.Framework.Color.White);
                         }
 
                         // stun
-                        if (Core.Type.Skill[(int)Skillnum].StunDuration > 0)
+                        if (Core.Type.Skill[(int)skillNum].StunDuration > 0)
                         {
-                            AddDescInfo("Stun: " + Core.Type.Skill[(int)Skillnum].StunDuration + "s", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("Stun: " + Core.Type.Skill[(int)skillNum].StunDuration + "s", Microsoft.Xna.Framework.Color.White);
                         }
 
                         // dot
-                        if (Core.Type.Skill[(int)Skillnum].Duration > 0 & Core.Type.Skill[(int)Skillnum].Interval > 0)
+                        if (Core.Type.Skill[(int)skillNum].Duration > 0 & Core.Type.Skill[(int)skillNum].Interval > 0)
                         {
-                            AddDescInfo("DoT: " + Core.Type.Skill[(int)Skillnum].Duration / (double)Core.Type.Skill[(int)Skillnum].Interval + " tick", Microsoft.Xna.Framework.Color.White);
+                            AddDescInfo("DoT: " + Core.Type.Skill[(int)skillNum].Duration / (double)Core.Type.Skill[(int)skillNum].Interval + " tick", Microsoft.Xna.Framework.Color.White);
                         }
 
                         break;
@@ -1935,12 +1935,12 @@ namespace Client
             }
         }
 
-        public static void ShowShopDesc(long X, long Y, long ItemNum)
+        public static void ShowShopDesc(long X, long Y, long itemNum)
         {
-            if (ItemNum < 0L | ItemNum > Constant.MAX_ITEMS)
+            if (itemNum < 0L | itemNum > Constant.MAX_ITEMS)
                 return;
             // show
-            ShowItemDesc(X, Y, ItemNum);
+            ShowItemDesc(X, Y, itemNum);
         }
 
         public static void ShowEqDesc(long x, long y, long eqNum)
@@ -2216,7 +2216,7 @@ namespace Client
             long i;
             var Amount = default(long);
 
-            for (i = 0L; i <= Constant.MAX_INV - 1; i++)
+            for (i = 0L; i < Constant.MAX_INV; i++)
             {
                 if (GetPlayerInv(GameState.MyIndex, (int)i) == 1)
                 {
@@ -2268,9 +2268,9 @@ namespace Client
             int yMax = Math.Min(Core.Type.MyMap.MaxY, yCenter + distance);
 
             var cells = new List<Microsoft.Xna.Framework.Vector2>();
-            for (int y = yMin, loopTo = yMax; y <= loopTo; y++)
+            for (int y = yMin, loopTo = yMax; y < loopTo; y++)
             {
-                for (int x = xMin, loopTo1 = xMax; x <= loopTo1; x++)
+                for (int x = xMin, loopTo1 = xMax; x < loopTo1; x++)
                     cells.Add(new Microsoft.Xna.Framework.Vector2(x, y));
             }
             return cells;
@@ -2286,14 +2286,14 @@ namespace Client
             var borderCells = new List<Microsoft.Xna.Framework.Vector2>();
 
             // Top and bottom border
-            for (int x = xMin, loopTo = xMax; x <= loopTo; x++)
+            for (int x = xMin, loopTo = xMax; x < loopTo; x++)
             {
                 borderCells.Add(new Microsoft.Xna.Framework.Vector2(x, yMin));
                 borderCells.Add(new Microsoft.Xna.Framework.Vector2(x, yMax));
             }
 
             // Left and right border
-            for (int y = yMin + 1, loopTo1 = yMax - 1; y <= loopTo1; y++)
+            for (int y = yMin + 1, loopTo1 = yMax - 1; y < loopTo1; y++)
             {
                 borderCells.Add(new Microsoft.Xna.Framework.Vector2(xMin, y));
                 borderCells.Add(new Microsoft.Xna.Framework.Vector2(xMax, y));

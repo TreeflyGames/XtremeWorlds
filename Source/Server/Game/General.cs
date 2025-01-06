@@ -93,7 +93,7 @@ namespace Server
             foreach (var id in ids.Result)
             {
                 var loopTo = Core.Constant.MAX_CHARS;
-                for (i = 1; i <= (int)loopTo; i++)
+                for (i = 1; i < loopTo; i++)
                 {
                     data = Database.SelectRowByColumn("id", id, "account", "character" + i.ToString());
                     if (data is not null)
@@ -160,7 +160,7 @@ namespace Server
         public static int CountPlayersOnline()
         {
             int count = 0;
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= loopTo; i++)
             {
                 if (!NetworkConfig.IsPlaying(i))
                     continue;
@@ -190,7 +190,7 @@ namespace Server
             Database.SaveAllPlayersOnline();
 
             Console.WriteLine("Unloading players...");
-            for (int i = 0, loopTo = Core.Constant.MAX_PLAYERS - 1; i <= (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_PLAYERS; i < loopTo; i++)
             {
                 NetworkSend.SendLeftGame(i);
                 Player.LeftGame(i);
@@ -210,7 +210,7 @@ namespace Server
             Console.WriteLine("Clearing Players...");
 
             var loopTo = Core.Constant.MAX_PLAYERS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 Database.ClearAccount(i);
                 Database.ClearPlayer(i);

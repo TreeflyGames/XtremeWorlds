@@ -707,7 +707,7 @@ namespace Server
                 {
 
                     var loopTo = EquipmentType.Count - 1;
-                    for (i = 0; i <= (int)loopTo; i++)
+                    for (i = 0; i < (int)loopTo; i++)
                     {
                         if (GetPlayerEquipment(victim, (EquipmentType)i) > 0)
                         {
@@ -947,8 +947,8 @@ namespace Server
                     if (GetPlayerLevel(victim) >= 10)
                     {
 
-                        var loopTo = Core.Constant.MAX_INV - 1;
-                        for (z = 0; z <= (int)loopTo; z++)
+                        var loopTo = Core.Constant.MAX_INV;
+                        for (z = 0; z < (int)loopTo; z++)
                         {
                             if (GetPlayerInv(victim, z) > 0)
                             {
@@ -957,7 +957,7 @@ namespace Server
                         }
 
                         var loopTo1 = EquipmentType.Count - 1;
-                        for (z = 0; z <= (int)loopTo1; z++)
+                        for (z = 0; z < (int)loopTo1; z++)
                         {
                             if (GetPlayerEquipment(victim, (EquipmentType)z) > 0)
                             {
@@ -974,7 +974,7 @@ namespace Server
                         {
                             z -= invcount;
 
-                            for (int x = 0, loopTo2 = (int)(EquipmentType.Count - 1); x <= (int)loopTo2; x++)
+                            for (int x = 0, loopTo2 = (int)(EquipmentType.Count - 1); x < (int)loopTo2; x++)
                             {
                                 if (GetPlayerEquipment(victim, (EquipmentType)x) > 0)
                                 {
@@ -995,7 +995,7 @@ namespace Server
                         else
                         {
 
-                            for (int x = 1, loopTo3 = Core.Constant.MAX_INV - 1; x <= (int)loopTo3; x++)
+                            for (int x = 1, loopTo3 = Core.Constant.MAX_INV; x < (int)loopTo3; x++)
                             {
                                 if (GetPlayerInv(victim, x) > 0)
                                 {
@@ -1157,8 +1157,8 @@ namespace Server
             // send equipment of all people on new map
             if (GameLogic.GetTotalMapPlayers(mapNum) > 0)
             {
-                var loopTo = NetworkConfig.Socket.HighIndex;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = NetworkConfig.Socket.HighIndex + 1;
+                for (i = 0; i < loopTo; i++)
                 {
                     if (NetworkConfig.IsPlaying(i))
                     {
@@ -1176,8 +1176,8 @@ namespace Server
                 PlayersOnMap[OldMap] = false;
 
                 // Regenerate all NPCs' health
-                var loopTo1 = Core.Constant.MAX_MAP_NPCS - 1;
-                for (i = 0; i <= (int)loopTo1; i++)
+                var loopTo1 = Core.Constant.MAX_MAP_NPCS;
+                for (i = 0; i < loopTo1; i++)
                 {
 
                     if (Core.Type.MapNPC[OldMap].NPC[i].Num > 0)
@@ -1253,7 +1253,7 @@ namespace Server
                                         Moved = Conversions.ToBoolean(1);
 
                                         // Check for event
-                                        for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo; i++)
+                                        for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo; i++)
                                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                                     }
                                 }
@@ -1291,7 +1291,7 @@ namespace Server
                                         Moved = Conversions.ToBoolean(1);
 
                                         // Check for event
-                                        for (int i = 0, loopTo1 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo1; i++)
+                                        for (int i = 0, loopTo1 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo1; i++)
                                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                                     }
                                 }
@@ -1328,7 +1328,7 @@ namespace Server
                                         Moved = Conversions.ToBoolean(1);
 
                                         // Check for event
-                                        for (int i = 0, loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo2; i++)
+                                        for (int i = 0, loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
                                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                                     }
                                 }
@@ -1366,7 +1366,7 @@ namespace Server
                                         Moved = Conversions.ToBoolean(1);
 
                                         // Check for event
-                                        for (int i = 0, loopTo3 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo3; i++)
+                                        for (int i = 0, loopTo3 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo3; i++)
                                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                                     }
                                 }
@@ -1404,7 +1404,7 @@ namespace Server
                                         Moved = Conversions.ToBoolean(1);
 
                                         // Check for event
-                                        for (int i = 0, loopTo4 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo4; i++)
+                                        for (int i = 0, loopTo4 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo4; i++)
                                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                                     }
                                 }
@@ -1432,7 +1432,7 @@ namespace Server
                                         Moved = Conversions.ToBoolean(1);
 
                                         // Check for event
-                                        for (int i = 0, loopTo5 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo5; i++)
+                                        for (int i = 0, loopTo5 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo5; i++)
                                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                                     }
                                 }
@@ -1460,7 +1460,7 @@ namespace Server
                                         Moved = Conversions.ToBoolean(1);
 
                                         // Check for event
-                                        for (int i = 0, loopTo6 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo6; i++)
+                                        for (int i = 0, loopTo6 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo6; i++)
                                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                                     }
                                 }
@@ -1488,7 +1488,7 @@ namespace Server
                                         Moved = Conversions.ToBoolean(1);
 
                                         // Check for event
-                                        for (int i = 0, loopTo7 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo7; i++)
+                                        for (int i = 0, loopTo7 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo7; i++)
                                             EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                                     }
                                 }
@@ -1637,7 +1637,7 @@ namespace Server
             {
                 if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
                 {
-                    for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i <= (int)loopTo8; i++)
+                    for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
                         if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID > 0)
                         {
@@ -1683,24 +1683,24 @@ namespace Server
 
         #region Inventory
 
-        public static int HasItem(int index, int ItemNum)
+        public static int HasItem(int index, int itemNum)
         {
             int HasItemRet = default;
             int i;
 
             // Check for subscript out of range
-            if (ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
             {
                 return HasItemRet;
             }
 
-            var loopTo = Core.Constant.MAX_INV - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_INV;
+            for (i = 0; i < loopTo; i++)
             {
                 // Check to see if the player has the item
-                if (GetPlayerInv(index, i) == ItemNum)
+                if (GetPlayerInv(index, i) == itemNum)
                 {
-                    if (Core.Type.Item[ItemNum].Type == (byte)ItemType.Currency | Core.Type.Item[ItemNum].Stackable == 1)
+                    if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
                     {
                         HasItemRet += GetPlayerInvValue(index, i);
                     }
@@ -1715,7 +1715,7 @@ namespace Server
 
         }
 
-        public static int FindItemSlot(int index, int ItemNum)
+        public static int FindItemSlot(int index, int itemNum)
         {
             int FindItemSlotRet = default;
             int i;
@@ -1723,16 +1723,16 @@ namespace Server
             FindItemSlotRet = 0;
 
             // Check for subscript out of range
-            if (ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
             {
                 return FindItemSlotRet;
             }
 
-            var loopTo = Core.Constant.MAX_INV - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_INV;
+            for (i = 0; i < loopTo; i++)
             {
                 // Check to see if the player has the item
-                if (GetPlayerInv(index, i) == ItemNum)
+                if (GetPlayerInv(index, i) == itemNum)
                 {
                     FindItemSlotRet = i;
                     return FindItemSlotRet;
@@ -1753,12 +1753,12 @@ namespace Server
 
             mapNum = GetPlayerMap(index);
 
-            var loopTo = Core.Constant.MAX_MAP_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAP_ITEMS;
+            for (i = 0; i < loopTo; i++)
             {
 
                 // See if theres even an item here
-                if (Core.Type.MapItem[mapNum, i].Num > 0 & Core.Type.MapItem[mapNum, i].Num <= Core.Constant.MAX_ITEMS)
+                if (Core.Type.MapItem[mapNum, i].Num > 0 & Core.Type.MapItem[mapNum, i].Num < Core.Constant.MAX_ITEMS)
                 {
                     // our drop?
                     if (CanPlayerPickupItem(index, i))
@@ -1813,7 +1813,7 @@ namespace Server
             }
         }
 
-        public static bool CanPlayerPickupItem(int index, int mapItemNum)
+        public static bool CanPlayerPickupItem(int index, int mapitemNum)
         {
             bool CanPlayerPickupItemRet = default;
             int mapNum;
@@ -1825,7 +1825,7 @@ namespace Server
                 if (Core.Type.Moral[Core.Type.Map[mapNum].Moral].CanPickupItem)
                 {
                     // no lock or locked to player?
-                    if (string.IsNullOrEmpty(Core.Type.MapItem[mapNum, mapItemNum].PlayerName) | Core.Type.MapItem[mapNum, mapItemNum].PlayerName == GetPlayerName(index))
+                    if (string.IsNullOrEmpty(Core.Type.MapItem[mapNum, mapitemNum].PlayerName) | Core.Type.MapItem[mapNum, mapitemNum].PlayerName == GetPlayerName(index))
                     {
                         CanPlayerPickupItemRet = Conversions.ToBoolean(1);
                         return CanPlayerPickupItemRet;
@@ -1841,24 +1841,24 @@ namespace Server
             return CanPlayerPickupItemRet;
         }
 
-        public static int FindOpenInvSlot(int index, int ItemNum)
+        public static int FindOpenInvSlot(int index, int itemNum)
         {
             int FindOpenInvSlotRet = default;
             int i;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
             {
                 return FindOpenInvSlotRet;
             }
 
-            if (Core.Type.Item[ItemNum].Type == (byte)ItemType.Currency | Core.Type.Item[ItemNum].Stackable == 1)
+            if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
             {
                 // If currency then check to see if they already have an instance of the item and add it to that
-                var loopTo = Core.Constant.MAX_INV - 1;
-                for (i = 0; i <= (int)loopTo; i++)
+                var loopTo = Core.Constant.MAX_INV;
+                for (i = 0; i < loopTo; i++)
                 {
-                    if (GetPlayerInv(index, i) == ItemNum)
+                    if (GetPlayerInv(index, i) == itemNum)
                     {
                         FindOpenInvSlotRet = i;
                         return FindOpenInvSlotRet;
@@ -1866,8 +1866,8 @@ namespace Server
                 }
             }
 
-            var loopTo1 = Core.Constant.MAX_INV - 1;
-            for (i = 0; i <= (int)loopTo1; i++)
+            var loopTo1 = Core.Constant.MAX_INV;
+            for (i = 0; i < loopTo1; i++)
             {
                 // Try to find an open free slot
                 if (GetPlayerInv(index, i) == 0)
@@ -1881,7 +1881,7 @@ namespace Server
             return FindOpenInvSlotRet;
         }
 
-        public static bool TakeInv(int index, int ItemNum, int ItemVal)
+        public static bool TakeInv(int index, int itemNum, int ItemVal)
         {
             bool TakeInvRet = default;
             int i;
@@ -1889,19 +1889,19 @@ namespace Server
             TakeInvRet = Conversions.ToBoolean(0);
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
             {
                 return TakeInvRet;
             }
 
-            var loopTo = Core.Constant.MAX_INV - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_INV;
+            for (i = 0; i < loopTo; i++)
             {
 
                 // Check to see if the player has the item
-                if (GetPlayerInv(index, i) == ItemNum)
+                if (GetPlayerInv(index, i) == itemNum)
                 {
-                    if (Core.Type.Item[ItemNum].Type == (byte)ItemType.Currency | Core.Type.Item[ItemNum].Stackable == 1)
+                    if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
                     {
 
                         // Is what we are trying to take away more then what they have?  If so just set it to zero
@@ -1936,24 +1936,24 @@ namespace Server
 
         }
 
-        public static bool GiveInv(int index, int ItemNum, int ItemVal, bool SendUpdate = true)
+        public static bool GiveInv(int index, int itemNum, int ItemVal, bool SendUpdate = true)
         {
             bool GiveInvRet = default;
             int i;
 
             // Check for subscript out of range
-            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (Conversions.ToInteger(NetworkConfig.IsPlaying(index)) == 0 | itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
             {
                 GiveInvRet = Conversions.ToBoolean(0);
                 return GiveInvRet;
             }
 
-            i = FindOpenInvSlot(index, ItemNum);
+            i = FindOpenInvSlot(index, itemNum);
 
             // Check to see if inventory is full
             if (i != -1)
             {
-                SetPlayerInv(index, i, ItemNum);
+                SetPlayerInv(index, i, itemNum);
                 SetPlayerInvValue(index, i, GetPlayerInvValue(index, i) + ItemVal);
                 if (SendUpdate)
                     NetworkSend.SendInventoryUpdate(index, i);
@@ -1991,7 +1991,7 @@ namespace Server
 
             if (GetPlayerInv(index, invNum) > 0)
             {
-                if (GetPlayerInv(index, invNum) <= Core.Constant.MAX_ITEMS)
+                if (GetPlayerInv(index, invNum) < Core.Constant.MAX_ITEMS)
                 {
                     i = Item.FindOpenMapItemSlot(GetPlayerMap(index));
 
@@ -2108,7 +2108,7 @@ namespace Server
             }
 
             var loopTo = (byte)StatType.Count - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (GetPlayerStat(index, (StatType)i) < Core.Type.Item[itemNum].Stat_Req[i])
                 {
@@ -2638,11 +2638,11 @@ namespace Server
 
             // We want to check incase an admin takes away an object but they had it equipped
             var loopTo = EquipmentType.Count - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < (int)loopTo; i++)
             {
                 itemNum = GetPlayerEquipment(index, (EquipmentType)i);
 
-                if (itemNum > 0)
+                if (itemNum >= 0)
                 {
 
                     switch (i)
@@ -2779,8 +2779,8 @@ namespace Server
                     tradeTarget = Core.Type.TempPlayer[index].InTrade;
                     NetworkSend.PlayerMsg(tradeTarget, string.Format("{0} has declined the trade.", GetPlayerName(index)), (int) ColorType.BrightRed);
                     // clear out trade
-                    var loopTo = Core.Constant.MAX_INV - 1;
-                    for (i = 0; i <= (int)loopTo; i++)
+                    var loopTo = Core.Constant.MAX_INV;
+                    for (i = 0; i < loopTo; i++)
                     {
                         Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = 0;
                         Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
@@ -2854,7 +2854,7 @@ namespace Server
             NetworkSend.SendClearSkillBuffer(index);
 
             // Restore vitals
-            for (int i = 0, loopTo = (byte) VitalType.Count - 1; i < (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte) VitalType.Count; i < loopTo; i++)
                 SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
 
             NetworkSend.SendVitals(index);
@@ -3193,9 +3193,9 @@ namespace Server
             return GetPlayerBankRet;
         }
 
-        public static void SetPlayerBank(int index, byte BankSlot, int ItemNum)
+        public static void SetPlayerBank(int index, byte BankSlot, int itemNum)
         {
-            Bank[index].Item[BankSlot].Num = ItemNum;
+            Bank[index].Item[BankSlot].Num = itemNum;
         }
 
         public static int GetPlayerBankValue(int index, byte BankSlot)
@@ -3210,22 +3210,22 @@ namespace Server
             Bank[index].Item[BankSlot].Value = Value;
         }
 
-        public static byte FindOpenBankSlot(int index, int ItemNum)
+        public static byte FindOpenBankSlot(int index, int itemNum)
         {
             byte FindOpenBankSlotRet = default;
             int i;
 
             if (!NetworkConfig.IsPlaying(index))
                 return FindOpenBankSlotRet;
-            if (ItemNum < 0 | ItemNum > Core.Constant.MAX_ITEMS)
+            if (itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
                 return FindOpenBankSlotRet;
 
-            if (Core.Type.Item[ItemNum].Type == (byte)ItemType.Currency | Core.Type.Item[ItemNum].Stackable == 1)
+            if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
             {
                 var loopTo = Core.Constant.MAX_BANK;
-                for (i = 0; i <= (int)loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
-                    if (GetPlayerBank(index, (byte)i) == ItemNum)
+                    if (GetPlayerBank(index, (byte)i) == itemNum)
                     {
                         FindOpenBankSlotRet = (byte)i;
                         return FindOpenBankSlotRet;
@@ -3234,7 +3234,7 @@ namespace Server
             }
 
             var loopTo1 = Core.Constant.MAX_BANK;
-            for (i = 0; i <= (int)loopTo1; i++)
+            for (i = 0; i < loopTo1; i++)
             {
                 if (GetPlayerBank(index, (byte)i) == 0)
                 {

@@ -54,14 +54,14 @@ namespace Client
             Core.Type.Player[index].Sprite = 0;
 
             Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[(Constant.MAX_INV)];
-            for (int x = 1; x <= Constant.MAX_INV - 1; x++)
+            for (int x = 0; x < Constant.MAX_INV; x++)
             {
                 Core.Type.Player[index].Inv[x].Num = 0;
                 Core.Type.Player[index].Inv[x].Value = 0;
             }
 
             Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[(Constant.MAX_PLAYER_SKILLS)];
-            for (int x = 1; x <= Constant.MAX_PLAYER_SKILLS - 1; x++)
+            for (int x = 0; x < Constant.MAX_PLAYER_SKILLS; x++)
             {
                 Core.Type.Player[index].Skill[x].Num = 0;
                 Core.Type.Player[index].Skill[x].CD = 0;
@@ -1113,7 +1113,7 @@ namespace Client
                 return FindSkillRet;
             }
 
-            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
+            for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
                 // Check to see if the player has the skill
                 if (GetPlayerSkill(GameState.MyIndex, i) == skillNum)
@@ -1184,7 +1184,7 @@ namespace Client
 
             index = buffer.ReadInt32();
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count - 1; i++)
+            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
                 SetPlayerStat(index, (Core.Enum.StatType)i, buffer.ReadInt32());
 
             buffer.Dispose();
@@ -1209,7 +1209,7 @@ namespace Client
             for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
                 SetPlayerStat(i, (Core.Enum.StatType)x, buffer.ReadInt32());
 
-            for (x = 0; x <= (int)Core.Enum.ResourceType.Count - 1; x++)
+            for (x = 0; x < (int)Core.Enum.ResourceType.Count - 1; x++)
             {
                 Core.Type.Player[i].GatherSkills[x].SkillLevel = buffer.ReadInt32();
                 Core.Type.Player[i].GatherSkills[x].SkillCurExp = buffer.ReadInt32();
@@ -1345,7 +1345,7 @@ namespace Client
             GameState.NextlevelExp = tnl;
 
             // set max width
-            if (GetPlayerLevel(GameState.MyIndex) <= Constant.MAX_LEVEL)
+            if (GetPlayerLevel(GameState.MyIndex) < Constant.MAX_LEVEL)
             {
                 if (GetPlayerExp(GameState.MyIndex) > 0)
                 {

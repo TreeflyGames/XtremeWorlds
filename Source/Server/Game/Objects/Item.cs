@@ -22,7 +22,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 SaveItem(i);
 
         }
@@ -46,7 +46,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 LoadItem(i);
 
         }
@@ -72,7 +72,7 @@ namespace Server
             Core.Type.Item[index].Name = "";
             Core.Type.Item[index].Description = "";
 
-            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < loopTo; i++)
             {
                 Core.Type.Item[(i)].Add_Stat = new byte[(int)Core.Enum.StatType.Count];
                 Core.Type.Item[i].Stat_Req = new byte[(int)Core.Enum.StatType.Count];
@@ -81,7 +81,7 @@ namespace Server
 
         public static void ClearItems()
         {
-            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < (int)loopTo; i++)
+            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < loopTo; i++)
                 ClearItem(Conversions.ToInteger(i));
         }
 
@@ -92,7 +92,7 @@ namespace Server
             buffer.WriteInt32(itemNum);
             buffer.WriteInt32(Core.Type.Item[itemNum].AccessReq);
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < (int)loopTo; i++)
+            for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                 buffer.WriteInt32(Core.Type.Item[itemNum].Add_Stat[i]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Animation);
@@ -114,7 +114,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Item[itemNum].Stackable);
             buffer.WriteString(Core.Type.Item[itemNum].Description);
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i < (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
                 buffer.WriteInt32(Core.Type.Item[itemNum].Stat_Req[Conversions.ToInteger(i)]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Type);
@@ -140,8 +140,8 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SMapItemData);
 
-            var loopTo = Core.Constant.MAX_MAP_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAP_ITEMS;
+            for (i = 0; i < loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Num);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Value);
@@ -162,8 +162,8 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SMapItemData);
 
-            var loopTo = Core.Constant.MAX_MAP_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAP_ITEMS;
+            for (i = 0; i < loopTo; i++)
             {
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Num);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Value);
@@ -235,8 +235,8 @@ namespace Server
 
             FindOpenMapItemSlotRet = 0;
 
-            var loopTo = Core.Constant.MAX_MAP_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAP_ITEMS;
+            for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.MapItem[mapNum, i].Num == 0)
                 {
@@ -253,8 +253,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_MAPS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            var loopTo = Core.Constant.MAX_MAPS;
+            for (i = 0; i < loopTo; i++)
                 SpawnMapItems(i);
 
         }
@@ -273,10 +273,10 @@ namespace Server
 
             // Spawn what we have
             var loopTo = (int)Core.Type.Map[mapNum].MaxX - 1;
-            for (x = 0; x <= (int)loopTo; x++)
+            for (x = 0; x < (int)loopTo; x++)
             {
                 var loopTo1 = (int)Core.Type.Map[mapNum].MaxY - 1;
-                for (y = 0; y <= (int)loopTo1; y++)
+                for (y = 0; y < (int)loopTo1; y++)
                 {
                     // Check if the tile type is an item or a saved tile incase someone drops something
                     if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Item)
@@ -371,7 +371,7 @@ namespace Server
             // Update the item
             Core.Type.Item[n].AccessReq = buffer.ReadInt32();
 
-            for (int i = 0, loopTo = (byte)StatType.Count - 1; i < loopTo; i++)
+            for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                 Core.Type.Item[n].Add_Stat[i] = (byte)buffer.ReadInt32();
 
             Core.Type.Item[n].Animation = buffer.ReadInt32();
@@ -393,7 +393,7 @@ namespace Server
             Core.Type.Item[n].Stackable = (byte)buffer.ReadInt32();
             Core.Type.Item[n].Description = buffer.ReadString();
 
-            for (int i = 0, loopTo1 = (byte)StatType.Count - 1; i < (int)loopTo1; i++)
+            for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
                 Core.Type.Item[n].Stat_Req[Conversions.ToInteger(i)] = (byte)buffer.ReadInt32();
 
             Core.Type.Item[n].Type = (byte)buffer.ReadInt32();
@@ -456,7 +456,7 @@ namespace Server
             int i;
 
             var loopTo = Core.Constant.MAX_ITEMS - 1;
-            for (i = 0; i <= (int)loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (Strings.Len(Core.Type.Item[i].Name) > 0)
                 {

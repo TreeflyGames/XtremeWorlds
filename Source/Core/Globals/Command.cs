@@ -59,7 +59,7 @@ namespace Core.Global
 
             x = Type.Player[index].Stat[(int)Stat];
 
-            for (i = 0; i < (int)Enum.EquipmentType.Count - 1; i++)
+            for (i = 0; i < (int)Enum.EquipmentType.Count; i++)
             {
                 if (Type.Player[index].Equipment[i] > 0)
                 {
@@ -411,7 +411,7 @@ namespace Core.Global
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
+            for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
 
                 if (GetPlayerSkill(index, i) == 0)
@@ -444,7 +444,7 @@ namespace Core.Global
         {
             int i;
 
-            for (i = 0; i <= Constant.MAX_PLAYER_SKILLS - 1; i++)
+            for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
 
                 if (GetPlayerSkill(index, i) == skillNum)
@@ -458,9 +458,9 @@ namespace Core.Global
             return false;
         }
 
-        public static void SetPlayerSkill(int index, int Skillslot, int Skillnum)
+        public static void SetPlayerSkill(int index, int Skillslot, int skillNum)
         {
-            Type.Player[index].Skill[Skillslot].Num = Skillnum;
+            Type.Player[index].Skill[Skillslot].Num = skillNum;
         }
 
         public static int GetBank(int index, byte bankslot)
