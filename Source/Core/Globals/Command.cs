@@ -273,8 +273,6 @@ namespace Core.Global
 
         public static void SetPlayerStat(int index, Enum.StatType stat, int value)
         {
-            if (value > Constant.MAX_POINTS)
-                value = Constant.MAX_POINTS;
             Type.Player[index].Stat[(int)stat] = (byte)value;
         }
 
