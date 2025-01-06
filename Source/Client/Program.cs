@@ -525,8 +525,27 @@ namespace Client
                     Gui.HideWindow(Gui.GetWindowIndex("winEscMenu"));
                     return;
                 }
+
+                if (Gui.Windows[Gui.GetWindowIndex("winInventory")].Visible == true)
+                {
+                    Gui.HideWindow(Gui.GetWindowIndex("winInventory"));
+                    return;
+                }
+
+                if (Gui.Windows[Gui.GetWindowIndex("winCharacter")].Visible == true)
+                {
+                    Gui.HideWindow(Gui.GetWindowIndex("winCharacter"));
+                    return;
+                }
+
+                if (Gui.Windows[Gui.GetWindowIndex("winSkills")].Visible == true)
+                {
+                    Gui.HideWindow(Gui.GetWindowIndex("winSkills"));
+                    return;
+                }
+
                 // show them
-                else if (Gui.Windows[Gui.GetWindowIndex("winChat")].Visible == false)
+                if (Gui.Windows[Gui.GetWindowIndex("winChat")].Visible == false)
                 {
                     Gui.ShowWindow(Gui.GetWindowIndex("winEscMenu"), true);
                     return;
