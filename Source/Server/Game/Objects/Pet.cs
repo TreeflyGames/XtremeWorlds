@@ -146,7 +146,7 @@ namespace Server
                 buffer.WriteInt32(withBlock.StatType);
                 buffer.WriteInt32(withBlock.LevelingType);
 
-                for (int i = 0, loopTo = (int)(StatType.Count - 1); i < loopTo; i++)
+                for (int i = 0, loopTo = (int)(StatType.Count); i < loopTo; i++)
                     buffer.WriteInt32(withBlock.Stat[Conversions.ToInteger(i)]);
 
                 for (int i = 0; i <= 4; i++)
@@ -391,7 +391,7 @@ namespace Server
                 withBlock.StatType = (byte)buffer.ReadInt32();
                 withBlock.LevelingType = (byte)buffer.ReadInt32();
 
-                var loopTo = (byte)StatType.Count - 1;
+                var loopTo = (byte)StatType.Count;
                 for (i = 0; i < loopTo; i++)
                     withBlock.Stat[i] = (byte)buffer.ReadInt32();
 
@@ -1148,7 +1148,7 @@ namespace Server
             for (i = 0; i <= 4; i++)
                 Core.Type.Player[index].Pet.Skill[i] = 0;
 
-            var loopTo = (byte)StatType.Count - 1;
+            var loopTo = (byte)StatType.Count;
             for (i = 0; i < loopTo; i++)
                 Core.Type.Player[index].Pet.Stat[i] = 0;
 

@@ -230,7 +230,7 @@ namespace Client
 
                         if (skipCount > 0L)
                         {
-                            skipCount = skipCount - 1L;
+                            skipCount = skipCount - 1;
                         }
                         else if (TSLoop > 0L)
                         {

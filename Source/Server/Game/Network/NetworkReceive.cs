@@ -1119,8 +1119,8 @@ namespace Server
                         withBlock.Tile[x, y].Data2_2 = buffer.ReadInt32();
                         withBlock.Tile[x, y].Data3_2 = buffer.ReadInt32();
                         withBlock.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
-                        withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count - 1];
-                        var loopTo3 = LayerType.Count - 1;
+                        withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
+                        var loopTo3 = LayerType.Count;
                         for (i = 0; i < (int)loopTo3; i++)
                         {
                             withBlock.Tile[x, y].Layer[i].Tileset = buffer.ReadInt32();
@@ -1140,7 +1140,7 @@ namespace Server
             if (Core.Type.Map[mapNum].EventCount > 0)
             {
                 Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[Core.Type.Map[mapNum].EventCount];
-                var loopTo4 = Core.Type.Map[mapNum].EventCount - 1;
+                var loopTo4 = Core.Type.Map[mapNum].EventCount;
                 for (i = 0; i < loopTo4; i++)
                 {
                     {
@@ -1158,7 +1158,7 @@ namespace Server
                         ;
                         Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount);
 
-                        var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount - 1;
+                        var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount;
                         for (x = 0; x < (int)loopTo5; x++)
                         {
                             {
@@ -1222,7 +1222,7 @@ namespace Server
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
                             {
                                 Core.Type.Map[mapNum].Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount];
-                                var loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount - 1;
+                                var loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount;
                                 for (y = 0; y < (int)loopTo7; y++)
                                 {
                                     Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
@@ -1230,7 +1230,7 @@ namespace Server
                                     if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
                                         Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount];
-                                        for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount - 1; z < (int)loopTo8; z++)
+                                        for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount; z < (int)loopTo8; z++)
                                         {
                                             {
                                                 ref var withBlock3 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];
@@ -1253,11 +1253,11 @@ namespace Server
                                                 withBlock3.ConditionalBranch.Data3 = buffer.ReadInt32();
                                                 withBlock3.ConditionalBranch.ElseCommandList = buffer.ReadInt32();
                                                 withBlock3.MoveRouteCount = buffer.ReadInt32();
-                                                int tmpcount = withBlock3.MoveRouteCount;
-                                                if (tmpcount > 0)
+                                                int tmpCount = withBlock3.MoveRouteCount;
+                                                if (tmpCount > 0)
                                                 {
-                                                    Array.Resize(ref withBlock3.MoveRoute, tmpcount);
-                                                    for (int w = 0, loopTo9 = tmpcount - 1; w < (int)loopTo9; w++)
+                                                    Array.Resize(ref withBlock3.MoveRoute, tmpCount);
+                                                    for (int w = 0, loopTo9 = tmpCount; w < (int)loopTo9; w++)
                                                     {
                                                         withBlock3.MoveRoute[w].Index = buffer.ReadInt32();
                                                         withBlock3.MoveRoute[w].Data1 = buffer.ReadInt32();
@@ -2787,7 +2787,7 @@ namespace Server
                 withBlock.MaleSprite = buffer.ReadInt32();
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
-                var loopTo = (byte)StatType.Count - 1;
+                var loopTo = (byte)StatType.Count;
                 for (x = 0; x < loopTo; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 

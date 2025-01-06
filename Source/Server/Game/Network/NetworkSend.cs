@@ -92,7 +92,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Job[jobNum].MaleSprite);
             buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
 
-            for (int q = 0, loopTo = (int)(StatType.Count - 1); q < loopTo; q++)
+            for (int q = 0, loopTo = (int)(StatType.Count); q < loopTo; q++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[Conversions.ToInteger(q)]);
 
             for (int q = 0; q <= 4; q++)
@@ -250,7 +250,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SMapWornEq);
             buffer.WriteInt32(index);
-            for (int i = 0, loopTo = (int)(EquipmentType.Count - 1); i < loopTo; i++)
+            for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
                 buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
 
             NetworkConfig.SendDataToMap(GetPlayerMap(index), ref buffer.Data, buffer.Head);
@@ -264,7 +264,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SMapWornEq);
             buffer.WriteInt32(PlayerNum);
-            for (int i = 0, loopTo = (int)(EquipmentType.Count - 1); i < loopTo; i++)
+            for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
                 buffer.WriteInt32(GetPlayerEquipment(PlayerNum, (EquipmentType)i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
@@ -432,7 +432,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SPlayerStats);
             buffer.WriteInt32(index);
 
-            for (int i = 0, loopTo = (int)(StatType.Count - 1); i < loopTo; i++)
+            for (int i = 0, loopTo = (int)(StatType.Count); i < loopTo; i++)
                 buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
@@ -442,7 +442,7 @@ namespace Server
 
         public static void SendVitals(int index)
         {
-            for (int i = 0, loopTo = (int)(VitalType.Count - 1); i < loopTo; i++)
+            for (int i = 0, loopTo = (int)(VitalType.Count); i < loopTo; i++)
                 SendVital(index, (VitalType)i);
         }
 
@@ -526,7 +526,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SPlayerWornEq);
 
-            for (int i = 0, loopTo = (int)(EquipmentType.Count - 1); i < loopTo; i++)
+            for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
                 buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
@@ -588,7 +588,7 @@ namespace Server
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data2_2);
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data3_2);
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].DirBlock);
-                        for (int i = 0, loopTo3 = (int)(LayerType.Count - 1); i < loopTo3; i++)
+                        for (int i = 0, loopTo3 = (int)(LayerType.Count); i < loopTo3; i++)
                         {
                             buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Layer[Conversions.ToInteger(i)].Tileset);
                             buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Layer[Conversions.ToInteger(i)].X);
@@ -821,11 +821,11 @@ namespace Server
             buffer.WriteInt32(GetPlayerAccess(index));
             buffer.WriteInt32(GetPlayerPK(index));
 
-            var loopTo = (int)StatType.Count - 1;
+            var loopTo = (int)StatType.Count;
             for (i = 0; i < loopTo; i++)
                 buffer.WriteInt32(GetPlayerStat(index, (StatType)i));
 
-            var loopTo1 = (int)ResourceType.Count - 1;
+            var loopTo1 = (int)ResourceType.Count;
             for (i = 0; i < loopTo1; i++)
             {
                 buffer.WriteInt32(GetPlayerGatherSkillLvl(index, i));

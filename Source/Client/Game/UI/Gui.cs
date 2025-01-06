@@ -5053,7 +5053,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath4, (int)(xO + 4L), (int)(yO + 23L), 100, 100, 166, 291, 166, 291);
 
             // loop through equipment
-            for (i = 0L; i < (int)Core.Enum.EquipmentType.Count - 1; i++)
+            for (i = 0L; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
                 itemNum = GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i);
 

@@ -196,7 +196,7 @@ namespace Server.My
 
                                 if (attributes is not null)
                                 {
-                                    int lastindex = attributes.Count - 1;
+                                    int lastindex = attributes.Count;
                                     for (int i = 0, loopTo1 = lastindex; i < loopTo1; i++)
                                     {
                                         var currentA = attributes[i];

@@ -591,12 +591,12 @@ namespace Server
             Core.Type.Map[mapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS];
             Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
-            var loopTo = Core.Constant.MAX_MAPX - 1;
+            var loopTo = Core.Constant.MAX_MAPX ;
             for (x = 0; x < (int)loopTo; x++)
             {
-                var loopTo1 = Core.Constant.MAX_MAPY - 1;
+                var loopTo1 = Core.Constant.MAX_MAPY;
                 for (y = 0; y < (int)loopTo1; y++)
-                    Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count - 1];
+                    Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
             }
 
             Core.Type.Map[mapNum].EventCount = 0;
@@ -738,8 +738,8 @@ namespace Server
                 {
                     for (y = 0L; y <= MAX_Y; y++)
                     {
-                        csMap.Tile[x, y].Autotile = new byte[(int)LayerType.Count - 1];
-                        csMap.Tile[x, y].Layer = new CSTileDataStruct[(int)LayerType.Count - 1];
+                        csMap.Tile[x, y].Autotile = new byte[(int)LayerType.Count];
+                        csMap.Tile[x, y].Layer = new CSTileDataStruct[(int)LayerType.Count];
 
                         var withBlock1 = csMap.Tile[x, y];
                         withBlock1.Type = binaryReader.ReadByte();
@@ -1064,7 +1064,7 @@ namespace Server
             {
                 for (int x = 0; x <= mwMap.MaxY - 1; x++)
                 {
-                    mwMap.Tile[x, y].Layer = new TileDataStruct[(int)LayerType.Count - 1];
+                    mwMap.Tile[x, y].Layer = new TileDataStruct[(int)LayerType.Count];
                     mwMap.Tile[x, y].Data1 = csMap.Tile[x, y].Data1;
                     mwMap.Tile[x, y].Data2 = csMap.Tile[x, y].Data2;
                     mwMap.Tile[x, y].Data3 = csMap.Tile[x, y].Data3;
@@ -1187,7 +1187,7 @@ namespace Server
             Core.Type.NPC[index].Name = "";
             Core.Type.NPC[index].AttackSay = "";
 
-            Core.Type.NPC[index].Stat = new byte[(int)StatType.Count - 1];
+            Core.Type.NPC[index].Stat = new byte[(int)StatType.Count];
 
             for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i < loopTo; i++)
             {
@@ -1603,7 +1603,7 @@ namespace Server
                 Core.Type.Player[index].Sprite = sprite;
                 Core.Type.Player[index].Level = 1;
 
-                var loopTo = (byte)StatType.Count - 1;
+                var loopTo = (byte)StatType.Count;
                 for (n = 0; n < loopTo; n++)
                     Core.Type.Player[index].Stat[n] = (byte)Core.Type.Job[jobNum].Stat[n];
 
@@ -1617,7 +1617,7 @@ namespace Server
                 Core.Type.Player[index].Y = Core.Type.Job[jobNum].StartY;
                 Core.Type.Player[index].Dir = (byte) DirectionType.Down;
 
-                var loopTo1 = VitalType.Count - 1;
+                var loopTo1 = VitalType.Count;
                 for (i = 0; i < (int)loopTo1; i++)
                     SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
 
@@ -1632,7 +1632,7 @@ namespace Server
                 }
 
                 // set skills
-                var loopTo2 = ResourceType.Count - 1;
+                var loopTo2 = ResourceType.Count;
                 for (i = 0; i < (int)loopTo2; i++)
                 {
                     Core.Type.Player[index].GatherSkills[i].SkillLevel = 0;

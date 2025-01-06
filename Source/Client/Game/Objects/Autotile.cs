@@ -36,9 +36,9 @@ namespace Client
         internal static void PlaceAutotile(int layerNum, int x, int y, byte tileQuarter, string autoTileLetter)
         {
 
-            if (layerNum > (int)Core.Enum.LayerType.Count - 1)
+            if (layerNum > (int)Core.Enum.LayerType.Count)
             {
-                layerNum = layerNum - ((int)Core.Enum.LayerType.Count - 1);
+                layerNum = layerNum - ((int)Core.Enum.LayerType.Count);
                 {
                     ref var withBlock = ref Core.Type.Autotile[x, y].ExLayer[layerNum].QuarterTile[tileQuarter];
                     switch (autoTileLetter ?? "")
@@ -400,7 +400,7 @@ namespace Client
                 var loopTo3 = (int)Core.Type.MyMap.MaxY;
                 for (y = 0; y < loopTo3; y++)
                 {
-                    for (layerNum = 0; layerNum < (int)Core.Enum.LayerType.Count - 1; layerNum++)
+                    for (layerNum = 0; layerNum < (int)Core.Enum.LayerType.Count; layerNum++)
                     {
                         // calculate the subtile positions and place them
                         CalculateAutotile(x, y, layerNum);

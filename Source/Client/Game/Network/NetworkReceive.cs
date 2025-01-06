@@ -315,7 +315,7 @@ namespace Client
                 withBlock.MaleSprite = buffer.ReadInt32();
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
-                for (int q = 0; q < (int)Core.Enum.StatType.Count - 1; q++)
+                for (int q = 0; q < (int)Core.Enum.StatType.Count; q++)
                     withBlock.Stat[q] = buffer.ReadInt32();
 
                 for (int q = 0; q <= 4; q++)
@@ -348,7 +348,7 @@ namespace Client
                 withBlock.MaleSprite = buffer.ReadInt32();
                 withBlock.FemaleSprite = buffer.ReadInt32();
 
-                for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
+                for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
                 for (int q = 0; q <= 4; q++)
@@ -670,7 +670,7 @@ namespace Client
             Core.Type.NPC[i].SpawnSecs = buffer.ReadInt32();
             Core.Type.NPC[i].Sprite = buffer.ReadInt32();
 
-            for (x = 1; x < (int)Core.Enum.StatType.Count - 1; x++)
+            for (x = 1; x < (int)Core.Enum.StatType.Count; x++)
                 Core.Type.NPC[i].Stat[x] = buffer.ReadByte();
 
             for (x = 1; x < Constant.MAX_NPC_SKILLS; x++)
@@ -950,7 +950,7 @@ namespace Client
                     withBlock.MaleSprite = buffer.ReadInt32();
                     withBlock.FemaleSprite = buffer.ReadInt32();
 
-                    for (int q = 0; q < (int)Core.Enum.StatType.Count - 1; q++)
+                    for (int q = 0; q < (int)Core.Enum.StatType.Count; q++)
                         withBlock.Stat[q] = buffer.ReadInt32();
 
                     for (int q = 0; q < 5; q++)
@@ -983,7 +983,7 @@ namespace Client
                 // Update the item
                 Core.Type.Item[n].AccessReq = buffer.ReadInt32();
 
-                for (z = 0; z < (int)Core.Enum.StatType.Count - 1; z++)
+                for (z = 0; z < (int)Core.Enum.StatType.Count; z++)
                     Core.Type.Item[n].Add_Stat[z] = (byte)buffer.ReadInt32();
 
                 Core.Type.Item[n].Animation = buffer.ReadInt32();
@@ -1005,7 +1005,7 @@ namespace Client
                 Core.Type.Item[n].Stackable = (byte)buffer.ReadInt32();
                 Core.Type.Item[n].Description = buffer.ReadString();
 
-                for (z = 1; z < (int)Core.Enum.StatType.Count - 1; z++)
+                for (z = 1; z < (int)Core.Enum.StatType.Count; z++)
                     Core.Type.Item[n].Stat_Req[z] = (byte)buffer.ReadInt32();
 
                 Core.Type.Item[n].Type = (byte)buffer.ReadInt32();
@@ -1082,7 +1082,7 @@ namespace Client
                 Core.Type.NPC[n].SpawnSecs = buffer.ReadInt32();
                 Core.Type.NPC[n].Sprite = buffer.ReadInt32();
 
-                for (z = 0; z < (int)Core.Enum.StatType.Count - 1; z++)
+                for (z = 0; z < (int)Core.Enum.StatType.Count; z++)
                     Core.Type.NPC[n].Stat[z] = buffer.ReadByte();
 
                 Core.Type.NPC[n].Skill = new byte[(Constant.MAX_NPC_SKILLS + 1)];

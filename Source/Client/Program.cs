@@ -807,7 +807,7 @@ namespace Client
                 {
                     if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
                     {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count - 1)
+                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count)
                         {
                             frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex;
                         }

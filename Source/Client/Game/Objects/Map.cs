@@ -495,12 +495,12 @@ namespace Client
             {
                 for (int y = 0; y <= Core.Type.MyMap.MaxY - 1; y++)
                 {
-                    ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count - 1));
+                    ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count));
 
                     for (int i = 0; i < GameState.MaxTileHistory; i++)
                     {
                         Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
-                        ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count - 1));
+                        ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count));
                     }
                 }
             }
@@ -714,8 +714,8 @@ namespace Client
                             Core.Type.TileHistory[j].Tile[x, y].Type2 = Core.Type.MyMap.Tile[x, y].Type2;
                         }
 
-                        Core.Type.MyMap.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count - 1)];
-                        for (i = 0; i < (int)Core.Enum.LayerType.Count - 1; i++)
+                        Core.Type.MyMap.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count)];
+                        for (i = 0; i < (int)Core.Enum.LayerType.Count; i++)
                         {  
                             Core.Type.MyMap.Tile[x, y].Layer[i].Tileset = buffer.ReadInt32();
                             Core.Type.MyMap.Tile[x, y].Layer[i].X = buffer.ReadInt32();
@@ -725,7 +725,7 @@ namespace Client
                             for (j = 0; j < GameState.MaxTileHistory; j++)
                             {
                                 Core.Type.TileHistory[j].Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
-                                Core.Type.TileHistory[j].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count - 1)];
+                                Core.Type.TileHistory[j].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count)];
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].Tileset = Core.Type.MyMap.Tile[x, y].Layer[i].Tileset;
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].X = Core.Type.MyMap.Tile[x, y].Layer[i].X;
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].Y = Core.Type.MyMap.Tile[x, y].Layer[i].Y;
@@ -743,7 +743,7 @@ namespace Client
                 if (Core.Type.MyMap.EventCount > 0)
                 {
                     Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
-                    var loopTo2 = Core.Type.MyMap.EventCount - 1;
+                    var loopTo2 = Core.Type.MyMap.EventCount;
                     for (i = 0; i < loopTo2; i++)
                     {
                         {
@@ -758,7 +758,7 @@ namespace Client
                         if (Core.Type.MyMap.Event[i].PageCount > 0)
                         {
                             Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
-                            var loopTo3 = Core.Type.MyMap.Event[i].PageCount - 1;
+                            var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
                             for (x = 0; x < loopTo3; x++)
                             {
                                 {
@@ -822,7 +822,7 @@ namespace Client
                                 if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                                 {
                                     Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
-                                    var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
+                                    var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
                                     for (y = 0; y < loopTo5; y++)
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
@@ -830,7 +830,7 @@ namespace Client
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
                                             Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
-                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1; z < loopTo6; z++)
+                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                             {
                                                 {
                                                     ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
@@ -892,7 +892,7 @@ namespace Client
                 Core.Type.MyMapNPC[i].X = (byte)buffer.ReadInt32();
                 Core.Type.MyMapNPC[i].Y = (byte)buffer.ReadInt32();
                 Core.Type.MyMapNPC[i].Dir = buffer.ReadInt32();
-                for (int n = 1; n < (int)Core.Enum.VitalType.Count - 1; n++)
+                for (int n = 1; n < (int)Core.Enum.VitalType.Count; n++)
                     Core.Type.MyMapNPC[i].Vital[n] = buffer.ReadInt32();
             }
 
@@ -1114,7 +1114,7 @@ namespace Client
 
             if (Core.Type.MyMap.EventCount > 0)
             {
-                var loopTo2 = Core.Type.MyMap.EventCount - 1;
+                var loopTo2 = Core.Type.MyMap.EventCount;
                 for (i = 0; i < loopTo2; i++)
                 {
                     {
@@ -1129,7 +1129,7 @@ namespace Client
                     }
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
-                        var loopTo3 = Core.Type.MyMap.Event[i].PageCount - 1;
+                        var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
                         for (x = 0; x < loopTo3; x++)
                         {
                             {
@@ -1186,14 +1186,14 @@ namespace Client
 
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
-                                var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
+                                var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
                                 for (y = 0; y < loopTo5; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1; z < loopTo6; z++)
+                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];

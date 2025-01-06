@@ -1948,7 +1948,7 @@ namespace Client
             bool soulBound;
 
             // rte9
-            if (eqNum < 0L | eqNum > (int)Core.Enum.EquipmentType.Count - 1)
+            if (eqNum < 0L | eqNum > (int)Core.Enum.EquipmentType.Count)
                 return;
 
             // show

@@ -1545,7 +1545,7 @@ namespace Server
 
             if (Core.Type.TempPlayer[index].EventProcessingCount > 0)
             {
-                var loopTo = Core.Type.TempPlayer[index].EventProcessingCount - 1;
+                var loopTo = Core.Type.TempPlayer[index].EventProcessingCount;
                 for (i = 0; i < loopTo; i++)
                 {
                     if (Core.Type.TempPlayer[index].EventProcessing[i].EventID == EventID & Core.Type.TempPlayer[index].EventProcessing[i].PageID == PageID)
@@ -1746,7 +1746,7 @@ namespace Server
 
             if (Core.Type.Map[mapNum].EventCount > 0)
             {
-                var loopTo = Core.Type.Map[mapNum].EventCount - 1;
+                var loopTo = Core.Type.Map[mapNum].EventCount;
                 for (i = 0; i < loopTo; i++)
                 {
                     {
@@ -1759,7 +1759,7 @@ namespace Server
                     }
                     if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                     {
-                        var loopTo1 = Core.Type.Map[mapNum].Event[i].PageCount - 1;
+                        var loopTo1 = Core.Type.Map[mapNum].Event[i].PageCount;
                         for (x = 0; x < (int)loopTo1; x++)
                         {
                             {
@@ -1822,14 +1822,14 @@ namespace Server
 
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
                             {
-                                var loopTo3 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount - 1;
+                                var loopTo3 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount;
                                 for (y = 0; y < (int)loopTo3; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        var loopTo4 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount - 1;
+                                        var loopTo4 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount;
                                         for (z = 0; z < (int)loopTo4; z++)
                                         {
                                             {

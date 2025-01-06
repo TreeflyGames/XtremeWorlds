@@ -706,7 +706,7 @@ namespace Server
                 else
                 {
 
-                    var loopTo = EquipmentType.Count - 1;
+                    var loopTo = EquipmentType.Count;
                     for (i = 0; i < (int)loopTo; i++)
                     {
                         if (GetPlayerEquipment(victim, (EquipmentType)i) > 0)
@@ -956,7 +956,7 @@ namespace Server
                             }
                         }
 
-                        var loopTo1 = EquipmentType.Count - 1;
+                        var loopTo1 = EquipmentType.Count;
                         for (z = 0; z < (int)loopTo1; z++)
                         {
                             if (GetPlayerEquipment(victim, (EquipmentType)z) > 0)
@@ -974,7 +974,7 @@ namespace Server
                         {
                             z -= invcount;
 
-                            for (int x = 0, loopTo2 = (int)(EquipmentType.Count - 1); x < (int)loopTo2; x++)
+                            for (int x = 0, loopTo2 = (int)(EquipmentType.Count); x < (int)loopTo2; x++)
                             {
                                 if (GetPlayerEquipment(victim, (EquipmentType)x) > 0)
                                 {
@@ -2107,7 +2107,7 @@ namespace Server
                 }
             }
 
-            var loopTo = (byte)StatType.Count - 1;
+            var loopTo = (byte)StatType.Count;
             for (i = 0; i < loopTo; i++)
             {
                 if (GetPlayerStat(index, (StatType)i) < Core.Type.Item[itemNum].Stat_Req[i])
@@ -2637,7 +2637,7 @@ namespace Server
             int i;
 
             // We want to check incase an admin takes away an object but they had it equipped
-            var loopTo = EquipmentType.Count - 1;
+            var loopTo = EquipmentType.Count;
             for (i = 0; i < (int)loopTo; i++)
             {
                 itemNum = GetPlayerEquipment(index, (EquipmentType)i);
@@ -2692,7 +2692,7 @@ namespace Server
             int m;
             int itemnum;
 
-            if (EqSlot < 1 | EqSlot > (byte)EquipmentType.Count - 1)
+            if (EqSlot < 1 | EqSlot > (byte)EquipmentType.Count)
                 return; // exit out early if error'd
 
             if (FindOpenInvSlot(index, GetPlayerEquipment(index, (EquipmentType)EqSlot)) > 0)

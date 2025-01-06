@@ -116,7 +116,7 @@ namespace Server
             buffer.WriteInt32((byte)ServerPackets.SPartyVitals);
             buffer.WriteInt32(index);
 
-            var loopTo = (byte)VitalType.Count - 1;
+            var loopTo = (byte)VitalType.Count;
             for (i = 0; i < loopTo; i++)
                 buffer.WriteInt32(Core.Type.Player[index].Vital[i]);
 

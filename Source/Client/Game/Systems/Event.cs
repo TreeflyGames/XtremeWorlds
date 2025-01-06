@@ -1378,7 +1378,7 @@ namespace Client
 
             if (frmEditor_Event.Instance.lstCommands.SelectedIndex == frmEditor_Event.Instance.lstCommands.Items.Count)
             {
-                curslot = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount - 1;
+                curslot = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
             }
             else
             {
@@ -1430,9 +1430,9 @@ namespace Client
                 case (int)Core.Enum.EventType.Condition:
                     {
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
-                        TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount + 2;
-                        Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList, TmpEvent.Pages[CurPageNum].CommandListCount + 1);
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.CommandList = TmpEvent.Pages[CurPageNum].CommandListCount - 1;
+                        TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount + 1;
+                        Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList, TmpEvent.Pages[CurPageNum].CommandListCount);
+                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.CommandList = TmpEvent.Pages[CurPageNum].CommandListCount;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.ElseCommandList = TmpEvent.Pages[CurPageNum].CommandListCount;
                         TmpEvent.Pages[CurPageNum].CommandList[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.CommandList].ParentList = curlist;
                         TmpEvent.Pages[CurPageNum].CommandList[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.ElseCommandList].ParentList = curlist;
@@ -1547,7 +1547,7 @@ namespace Client
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text3 = frmEditor_Event.Instance.txtChoices2.Text;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text4 = frmEditor_Event.Instance.txtChoices3.Text;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text5 = frmEditor_Event.Instance.txtChoices4.Text;
-                        TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount + 4;
+                        TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount + 3;
                         Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList, TmpEvent.Pages[CurPageNum].CommandListCount + 1);
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = TmpEvent.Pages[CurPageNum].CommandListCount - 3;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 = TmpEvent.Pages[CurPageNum].CommandListCount - 2;
@@ -3440,7 +3440,7 @@ namespace Client
             if (Core.Type.MyMap.EventCount > 0)
             {
                 Core.Type.MyMap.Event = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
-                var loopTo = Core.Type.MyMap.EventCount - 1;
+                var loopTo = Core.Type.MyMap.EventCount;
                 for (i = 0; i < loopTo; i++)
                 {
                     {
@@ -3515,7 +3515,7 @@ namespace Client
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
                                 Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
-                                var loopTo3 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount - 1;
+                                var loopTo3 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
                                 for (y = 0; y < loopTo3; y++)
                                 {
                                     Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
@@ -3523,7 +3523,7 @@ namespace Client
                                     if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
-                                        var loopTo4 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount - 1;
+                                        var loopTo4 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount;
                                         for (z = 0; z < loopTo4; z++)
                                         {
                                             {

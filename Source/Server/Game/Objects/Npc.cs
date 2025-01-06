@@ -65,7 +65,7 @@ namespace Server
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target = 0;
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = 0; // clear
 
-                var loopTo = VitalType.Count - 1;
+                var loopTo = VitalType.Count;
                 for (i = 0; i < (int)loopTo; i++)
                     Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[i] = GameLogic.GetNPCMaxVital(NPCNum, (Core.Enum.VitalType)i);
 
@@ -146,7 +146,7 @@ namespace Server
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Dir);
 
-                    var loopTo5 = (int) VitalType.Count - 1;
+                    var loopTo5 = (int) VitalType.Count;
                     for (i = 0; i < loopTo5; i++)
                         buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[i]);
 
@@ -560,7 +560,7 @@ namespace Server
                 else
                 {
 
-                    var loopTo = EquipmentType.Count - 1;
+                    var loopTo = EquipmentType.Count;
                     for (i = 2; i < (int)loopTo; i++) // start at 2, so we skip weapon
                     {
                         if (GetPlayerEquipment(index, (EquipmentType)i) > 0)
@@ -1285,7 +1285,7 @@ namespace Server
             Core.Type.NPC[NPCNum].SpawnSecs = buffer.ReadInt32();
             Core.Type.NPC[NPCNum].Sprite = buffer.ReadInt32();
 
-            var loopTo1 = (byte)StatType.Count - 1;
+            var loopTo1 = (byte)StatType.Count;
             for (i = 0; i < loopTo1; i++)
                 Core.Type.NPC[NPCNum].Stat[i] = buffer.ReadByte();
 
@@ -1349,7 +1349,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].SpawnSecs);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
-            var loopTo1 = (byte)StatType.Count - 1;
+            var loopTo1 = (byte)StatType.Count;
             for (i = 0; i < loopTo1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
@@ -1394,11 +1394,11 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[NPCNum].SpawnSecs);
             buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
 
-            var loopTo1 = (byte)StatType.Count - 1;
+            var loopTo1 = (byte)StatType.Count;
             for (i = 0; i < loopTo1; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
 
-            var loopTo2 = Core.Constant.MAX_NPC_SKILLS - 1;
+            var loopTo2 = Core.Constant.MAX_NPC_SKILLS;
             for (i = 0; i < loopTo2; i++)
                 buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[i]);
 
@@ -1466,7 +1466,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SMapNPCVitals);
             buffer.WriteInt32(MapNPCNum);
 
-            var loopTo = VitalType.Count - 1;
+            var loopTo = VitalType.Count;
             for (i = 0; i < (int)loopTo; i++)
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[i]);
 

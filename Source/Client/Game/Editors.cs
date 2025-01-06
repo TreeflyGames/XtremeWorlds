@@ -502,7 +502,7 @@ namespace Client
                 if (withBlock.Icon > frmEditor_Item.Instance.nudIcon.Maximum)
                     withBlock.Icon = 0;
                 frmEditor_Item.Instance.nudIcon.Value = withBlock.Icon;
-                if (withBlock.Type > (int)Core.Enum.ItemType.Count - 1)
+                if (withBlock.Type > (int)Core.Enum.ItemType.Count)
                     withBlock.Type = 0;
                 frmEditor_Item.Instance.cmbType.SelectedIndex = withBlock.Type;
                 frmEditor_Item.Instance.cmbAnimation.SelectedIndex = withBlock.Animation;

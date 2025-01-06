@@ -41,7 +41,7 @@ namespace Client
             Core.Type.Player[index].Access = (byte)Core.Enum.AccessType.Player;
 
             Core.Type.Player[index].Equipment = new int[5];
-            for (int y = 0; y < (int)Core.Enum.EquipmentType.Count - 1; y++)
+            for (int y = 0; y < (int)Core.Enum.EquipmentType.Count; y++)
                 Core.Type.Player[index].Equipment[y] = -1;
 
             Core.Type.Player[index].Exp = 0;
@@ -68,13 +68,13 @@ namespace Client
             }
 
             Core.Type.Player[index].Stat = new byte[6];
-            for (int x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
+            for (int x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 Core.Type.Player[index].Stat[x] = 0;
 
             Core.Type.Player[index].Steps = 0;
 
             Core.Type.Player[index].Vital = new int[3];
-            for (int x = 0; x < (int)Core.Enum.VitalType.Count - 1; x++)
+            for (int x = 0; x < (int)Core.Enum.VitalType.Count; x++)
                 Core.Type.Player[index].Vital[x] = 0;
 
             Core.Type.Player[index].X = 0;
@@ -92,7 +92,7 @@ namespace Client
             Core.Type.Player[index].Pet.Level = 0;
 
             Core.Type.Player[index].Pet.Stat = new byte[6];
-            for (int x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
+            for (int x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 Core.Type.Player[index].Pet.Stat[x] = 0;
 
             Core.Type.Player[index].Pet.Skill = new int[5];
@@ -1206,10 +1206,10 @@ namespace Client
             SetPlayerAccess(i, buffer.ReadInt32());
             SetPlayerPk(i, buffer.ReadInt32());
 
-            for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
+            for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 SetPlayerStat(i, (Core.Enum.StatType)x, buffer.ReadInt32());
 
-            for (x = 0; x < (int)Core.Enum.ResourceType.Count - 1; x++)
+            for (x = 0; x < (int)Core.Enum.ResourceType.Count; x++)
             {
                 Core.Type.Player[i].GatherSkills[x].SkillLevel = buffer.ReadInt32();
                 Core.Type.Player[i].GatherSkills[x].SkillCurExp = buffer.ReadInt32();
@@ -1239,8 +1239,8 @@ namespace Client
                     Gui.UpdateStats_UI();
 
                     // stats
-                    for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
-                        withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblStat_" + x)].Text = GetPlayerStat(GameState.MyIndex, (Core.Enum.StatType)x).ToString();
+                    for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
+                        withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblStat_" + (x + 1))].Text = GetPlayerStat(GameState.MyIndex, (Core.Enum.StatType)x).ToString();
 
                     // points
                     withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "lblPoints")].Text = GetPlayerPoints(GameState.MyIndex).ToString();
@@ -1248,13 +1248,13 @@ namespace Client
                     // grey out buttons
                     if (GetPlayerPoints(GameState.MyIndex) == 0)
                     {
-                        for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
-                            withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + x)].Visible = true;
+                        for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
+                            withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + (x + 1))].Visible = true;
                     }
                     else
                     {
-                        for (x = 0; x < (int)Core.Enum.StatType.Count - 1; x++)
-                            withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + x)].Visible = false;
+                        for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
+                            withBlock.Controls[(int)Gui.GetControlIndex("winCharacter", "btnGreyStat_" + (x + 1))].Visible = false;
                     }
                 }
                 GameState.PlayerData = true;
