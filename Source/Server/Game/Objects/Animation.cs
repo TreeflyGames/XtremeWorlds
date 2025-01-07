@@ -81,13 +81,13 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32(AnimationNum);
-            for (int i = 0, loopTo = Core.Type.Animation[AnimationNum].Frames.Length; i < loopTo; i++)
+            for (int i = 0, loopTo = Information.UBound(Core.Type.Animation[AnimationNum].Frames); i < loopTo; i++)
                 buffer.WriteInt32(Core.Type.Animation[AnimationNum].Frames[i]);
 
-            for (int i = 0, loopTo1 = Core.Type.Animation[AnimationNum].LoopCount.Length; i < loopTo1; i++)
+            for (int i = 0, loopTo1 = Information.UBound(Core.Type.Animation[AnimationNum].LoopCount); i < loopTo1; i++)
                 buffer.WriteInt32(Core.Type.Animation[AnimationNum].LoopCount[i]);
 
-            for (int i = 0, loopTo2 = Core.Type.Animation[AnimationNum].LoopTime.Length; i < loopTo2; i++)
+            for (int i = 0, loopTo2 = Information.UBound(Core.Type.Animation[AnimationNum].LoopTime); i < loopTo2; i++)
                 buffer.WriteInt32(Core.Type.Animation[AnimationNum].LoopTime[i]);
 
             buffer.WriteString(Core.Type.Animation[AnimationNum].Name);
