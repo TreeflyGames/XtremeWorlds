@@ -794,7 +794,7 @@ namespace Client
                             break;
                         }
 
-                    case "/editNPC":
+                    case "/editnpc":
                         {
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
