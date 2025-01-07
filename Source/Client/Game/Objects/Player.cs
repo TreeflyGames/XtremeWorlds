@@ -19,7 +19,6 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_PLAYERS; i++)
             {
-                ClearAccount(i);
                 ClearPlayer(i);
             }
         }
@@ -36,17 +35,17 @@ namespace Client
             Core.Type.Player[index].Name = "";
             Core.Type.Player[index].Attacking = 0;
             Core.Type.Player[index].AttackTimer = 0;
-            Core.Type.Player[index].Job = 1;
+            Core.Type.Player[index].Job = 0;
             Core.Type.Player[index].Dir = 0;
             Core.Type.Player[index].Access = (byte)Core.Enum.AccessType.Player;
 
-            Core.Type.Player[index].Equipment = new int[5];
+            Core.Type.Player[index].Equipment = new int[(int)Core.Enum.EquipmentType.Count];
             for (int y = 0; y < (int)Core.Enum.EquipmentType.Count; y++)
                 Core.Type.Player[index].Equipment[y] = -1;
 
             Core.Type.Player[index].Exp = 0;
             Core.Type.Player[index].Level = 0;
-            Core.Type.Player[index].Map = 1;
+            Core.Type.Player[index].Map = 0;
             Core.Type.Player[index].MapGetTimer = 0;
             Core.Type.Player[index].Moving = 0;
             Core.Type.Player[index].Pk = 0;
@@ -56,24 +55,26 @@ namespace Client
             Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[(Constant.MAX_INV)];
             for (int x = 0; x < Constant.MAX_INV; x++)
             {
-                Core.Type.Player[index].Inv[x].Num = 0;
+                Core.Type.Player[index].Inv[x].Num = -1;
                 Core.Type.Player[index].Inv[x].Value = 0;
+                Core.Type.TradeTheirOffer[x].Num = -1;
+                Core.Type.TradeYourOffer[x].Num = -1;
             }
 
             Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[(Constant.MAX_PLAYER_SKILLS)];
             for (int x = 0; x < Constant.MAX_PLAYER_SKILLS; x++)
             {
-                Core.Type.Player[index].Skill[x].Num = 0;
+                Core.Type.Player[index].Skill[x].Num = -1;
                 Core.Type.Player[index].Skill[x].CD = 0;
             }
 
-            Core.Type.Player[index].Stat = new byte[6];
+            Core.Type.Player[index].Stat = new byte[(int)Core.Enum.StatType.Count];
             for (int x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 Core.Type.Player[index].Stat[x] = 0;
 
             Core.Type.Player[index].Steps = 0;
 
-            Core.Type.Player[index].Vital = new int[3];
+            Core.Type.Player[index].Vital = new int[(int)Core.Enum.VitalType.Count];
             for (int x = 0; x < (int)Core.Enum.VitalType.Count; x++)
                 Core.Type.Player[index].Vital[x] = 0;
 
@@ -83,21 +84,21 @@ namespace Client
             Core.Type.Player[index].YOffset = 0;
 
             Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[(Constant.MAX_HOTBAR)];
-            Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[5];
-            Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[5];
+            Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(int)Core.Enum.ResourceType.Count];
+            Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(int)Core.Enum.ResourceType.Count];
 
-            Core.Type.Player[index].Pet.Num = 0;
+            Core.Type.Player[index].Pet.Num = -1;
             Core.Type.Player[index].Pet.Health = 0;
             Core.Type.Player[index].Pet.Mana = 0;
             Core.Type.Player[index].Pet.Level = 0;
 
-            Core.Type.Player[index].Pet.Stat = new byte[6];
+            Core.Type.Player[index].Pet.Stat = new byte[(int)Core.Enum.StatType.Count];
             for (int x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 Core.Type.Player[index].Pet.Stat[x] = 0;
 
-            Core.Type.Player[index].Pet.Skill = new int[5];
-            for (int x = 0; x <= 4; x++)
-                Core.Type.Player[index].Pet.Skill[x] = 0;
+            Core.Type.Player[index].Pet.Skill = new int[Core.Constant.MAX_PET_SKILLS];
+            for (int x = 0; x < Core.Constant.MAX_PET_SKILLS; x++)
+                Core.Type.Player[index].Pet.Skill[x] = -1;
 
             Core.Type.Player[index].Pet.X = 0;
             Core.Type.Player[index].Pet.Y = 0;
@@ -251,7 +252,7 @@ namespace Client
             }
 
             // Make sure they haven't just casted a skill
-            if (GameState.SkillBuffer > 0)
+            if (GameState.SkillBuffer >= 0)
             {
                 CanMoveRet = Conversions.ToBoolean(0);
                 return CanMoveRet;
@@ -938,15 +939,15 @@ namespace Client
                     return;
                 if (Conversions.ToInteger(Event.InEvent) == 1)
                     return;
-                if (GameState.SkillBuffer > 0)
+                if (GameState.SkillBuffer >= 0)
                     return; // currently casting a skill, can't attack
                 if (GameState.StunDuration > 0)
                     return; // stunned, can't attack
 
                 // speed from weapon
-                if (GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon) > 0)
+                if (GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon) >= 0)
                 {
-                    attackspeed = Core.Type.Item[GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon)].Speed * 1000;
+                    attackspeed = Core.Type.Item[(int)GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon)].Speed * 1000;
                 }
                 else
                 {
@@ -957,7 +958,6 @@ namespace Client
                 {
                     if (Core.Type.Player[GameState.MyIndex].Attacking == 0)
                     {
-
                         {
                             ref var withBlock = ref Core.Type.Player[GameState.MyIndex];
                             withBlock.Attacking = 1;
@@ -1063,9 +1063,9 @@ namespace Client
             }
 
             // Check if player has enough MP
-            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) < Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].MpCost)
+            if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) < Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].MpCost)
             {
-                Text.AddText("Not enough MP to cast " + Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].Name + ".", (int)Core.Enum.ColorType.BrightRed);
+                Text.AddText("Not enough MP to cast " + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].Name + ".", (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 

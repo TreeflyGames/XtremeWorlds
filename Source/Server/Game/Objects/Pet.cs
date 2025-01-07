@@ -583,8 +583,7 @@ namespace Server
 
         public static void Packet_ReleasePet(int index, ref byte[] data)
         {
-            if (GetPetNum(index) > 0)
-                ReleasePet(index);
+            ReleasePet(index);
         }
 
         public static void Packet_PetSkill(int index, ref byte[] data)
@@ -1129,6 +1128,9 @@ namespace Server
         public static void ReleasePet(int index)
         {
             int i;
+
+            if (Core.Type.Player[index].Pet.Alive == 0)
+                return;
 
             Core.Type.Player[index].Pet.Alive = 0;
             Core.Type.Player[index].Pet.Num = 0;
@@ -3549,7 +3551,7 @@ namespace Server
 
             // Prevent subscript out of range
 
-            if (SkillSlot < 0 | SkillSlot > 4)
+            if (SkillSlot < 0 | SkillSlot > Core.Constant.MAX_PET_SKILLS)
                 return;
 
             skillNum = Core.Type.Player[index].Pet.Skill[SkillSlot];
@@ -4455,9 +4457,9 @@ namespace Server
             if (Conversions.ToInteger(isSkill) == 0)
             {
                 // Check attack timer
-                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) > 0)
+                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
                 {
-                    if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed)
+                    if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + Core.Type.Item[(int)GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed)
                         return CanPlayerAttackPetRet;
                 }
                 else if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + 1000)
@@ -4597,9 +4599,9 @@ namespace Server
             if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | Conversions.ToInteger(NetworkConfig.IsPlaying(victim)) == 0 | damage < 0 | !PetAlive(victim))
                 return;
 
-            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) > 0)
+            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
             {
-                n = GetPlayerEquipment(attacker, EquipmentType.Weapon);
+                n = (int)GetPlayerEquipment(attacker, EquipmentType.Weapon);
             }
 
             // set the regen timer

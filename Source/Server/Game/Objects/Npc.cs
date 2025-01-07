@@ -419,7 +419,7 @@ namespace Server
 
             }
 
-            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].SkillBuffer > 0)
+            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].SkillBuffer >= 0)
                 CanNPCMoveRet = Conversions.ToBoolean(0);
             return CanNPCMoveRet;
 
@@ -569,7 +569,7 @@ namespace Server
                     {
                         if (GetPlayerEquipment(index, (EquipmentType)i) > 0)
                         {
-                            armor = armor + Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)i)].Data2;
+                            armor = armor + Core.Type.Item[(int)GetPlayerEquipment(index, (EquipmentType)i)].Data2;
                         }
                     }
                     // take away armour
@@ -920,9 +920,9 @@ namespace Server
                 Core.Type.MapNPC[GetPlayerMap(index)].NPC[NPCNum].StunDuration = 0;
                 Core.Type.MapNPC[GetPlayerMap(index)].NPC[NPCNum].StunTimer = General.GetTimeMs();
             }
-            else if (Core.Type.Item[GetPlayerEquipment(index, Core.Enum.EquipmentType.Weapon)].KnockBack == 1)
+            else if (Core.Type.Item[(int)GetPlayerEquipment(index, Core.Enum.EquipmentType.Weapon)].KnockBack == 1)
             {
-                for (int i = 0, loopTo1 = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].KnockBackTiles; i < loopTo1; i++)
+                for (int i = 0, loopTo1 = Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].KnockBackTiles; i < loopTo1; i++)
                 {
                     if (CanNPCMove(GetPlayerMap(index), NPCNum, (byte)GetPlayerDir(index)))
                     {
@@ -942,7 +942,7 @@ namespace Server
 
             RandomNPCAttackRet = 0;
 
-            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].SkillBuffer > 0)
+            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].SkillBuffer >= 0)
                 return RandomNPCAttackRet;
 
             var loopTo = Core.Constant.MAX_NPC_SKILLS;

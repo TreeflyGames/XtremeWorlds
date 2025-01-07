@@ -174,6 +174,7 @@ namespace Client
         // Game editors
         public static int MyEditorType;
         public static int EditorIndex;
+        public static bool AdminPanel;
 
         // Spawn
         public static int SpawnNPCNum;
@@ -224,6 +225,7 @@ namespace Client
         public static object[] Shop_Loaded = new object[Core.Constant.MAX_SHOPS];
         public static object[] Pet_Loaded = new object[Core.Constant.MAX_PETS];
         public static object[] Moral_Loaded = new object[(Constant.MAX_MORALS)];
+        public static object[] Projectile_Loaded = new object[(Constant.MAX_PROJECTILES)];
 
         public static int[] AnimEditorFrame = new int[2];
         public static int[] AnimEditorTimer = new int[2];

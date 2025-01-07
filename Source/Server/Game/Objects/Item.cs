@@ -101,7 +101,6 @@ namespace Server
             buffer.WriteInt32(Core.Type.Item[itemNum].Data1);
             buffer.WriteInt32(Core.Type.Item[itemNum].Data2);
             buffer.WriteInt32(Core.Type.Item[itemNum].Data3);
-            buffer.WriteInt32(Core.Type.Item[itemNum].TwoHanded);
             buffer.WriteInt32(Core.Type.Item[itemNum].LevelReq);
             buffer.WriteInt32(Core.Type.Item[itemNum].Mastery);
             buffer.WriteString(Core.Type.Item[itemNum].Name);
@@ -380,7 +379,6 @@ namespace Server
             Core.Type.Item[n].Data1 = buffer.ReadInt32();
             Core.Type.Item[n].Data2 = buffer.ReadInt32();
             Core.Type.Item[n].Data3 = buffer.ReadInt32();
-            Core.Type.Item[n].TwoHanded = buffer.ReadInt32();
             Core.Type.Item[n].LevelReq = buffer.ReadInt32();
             Core.Type.Item[n].Mastery = (byte)buffer.ReadInt32();
             Core.Type.Item[n].Name = buffer.ReadString();

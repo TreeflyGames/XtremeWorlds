@@ -402,9 +402,9 @@ namespace Server
 
                 if (resourceNum >= 0)
                 {
-                    if (GetPlayerEquipment(index, EquipmentType.Weapon) > 0 | Core.Type.Resource[Resource_index].ToolRequired == 0)
+                    if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0 | Core.Type.Resource[Resource_index].ToolRequired == 0)
                     {
-                        if (Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Data3 == Core.Type.Resource[Resource_index].ToolRequired)
+                        if (Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Data3 == Core.Type.Resource[Resource_index].ToolRequired)
                         {
 
                             // inv space?
@@ -437,7 +437,7 @@ namespace Server
                                 }
                                 else
                                 {
-                                    Damage = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Data2;
+                                    Damage = Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Data2;
                                 }
 
                                 // check if damage is more than health

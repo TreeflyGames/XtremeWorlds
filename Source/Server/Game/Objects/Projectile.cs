@@ -175,9 +175,15 @@ namespace Server
 
         }
 
-        public static void HandleRequestProjectiles(int index, ref byte[] data)
+        public static void HandleRequestProjectile(int index, ref byte[] data)
         {
-            SendProjectiles(index);
+            int ProjectileNum;
+
+            var buffer = new ByteStream(data);
+            ProjectileNum = buffer.ReadInt32();
+            buffer.Dispose();
+
+            SendProjectile(index, ProjectileNum);
         }
 
         public static void HandleClearProjectile(int index, ref byte[] data)
@@ -309,6 +315,11 @@ namespace Server
 
         }
 
+        public static void SendProjectile(int index, int projectileNum)
+        {
+            SendUpdateProjectileTo(index, projectileNum);
+        }
+
         public static void SendProjectiles(int index)
         {
             var loopTo = Core.Constant.MAX_PROJECTILES;
@@ -369,10 +380,6 @@ namespace Server
                 }
             }
 
-            // Check for no projectile, if so just overwrite the first slot
-            if (ProjectileSlot == 0)
-                ProjectileSlot = 0;
-
             // Check for skill, if so then load data acordingly
             if (IsSkill > 0)
             {
@@ -380,7 +387,7 @@ namespace Server
             }
             else
             {
-                ProjectileNum = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile;
+                ProjectileNum = Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile;
             }
 
             if (ProjectileNum == -1)

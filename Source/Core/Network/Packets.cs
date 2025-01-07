@@ -83,7 +83,7 @@ namespace Core
             CSwitchesAndVariables,
             CRequestSwitchesAndVariables,
 
-            CRequestProjectiles,
+            CRequestProjectile,
             CClearProjectile,
             CEmote,
             CRequestParty,

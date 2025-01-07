@@ -42,11 +42,12 @@ namespace Client
 
         }
 
-        public static void SendRequestProjectiles()
+        public static void SendRequestProjectile(int projectileNum)
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((int)Packets.ClientPackets.CRequestProjectiles);
+            buffer.WriteInt32((int)Packets.ClientPackets.CRequestProjectile);
+            buffer.WriteInt32(projectileNum);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -147,6 +148,16 @@ namespace Client
 
         }
 
+        public static void StreamProjectile(int projectileNum)
+        {
+            return;
+            if (Conversions.ToBoolean(Operators.OrObject(projectileNum >= 0 & string.IsNullOrEmpty(Core.Type.Projectile[projectileNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Projectile_Loaded[projectileNum], 0, false))))
+            {
+                GameState.Projectile_Loaded[projectileNum] = 1;
+                SendRequestProjectile(projectileNum);
+            }
+        }
+
         #endregion
 
         #region Drawing
@@ -163,6 +174,8 @@ namespace Client
             int y;
             int i;
             int sprite;
+
+            StreamProjectile(projectileNum);
 
             // check to see if it's time to move the Projectile
             if (General.GetTickCount() > Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].TravelTime)

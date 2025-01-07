@@ -422,7 +422,7 @@ namespace Client
             NetworkSend.SendSpawnItem(GameState.EditorIndex, (int)Math.Round(nudSpanwAmount.Value));
         }
 
-        private void frmEditor_item_FormClosing(object sender, FormClosingEventArgs e)
+        private void frmEditor_Item_FormClosing(object sender, FormClosingEventArgs e)
         {
             Editors.ItemEditorCancel();
         }

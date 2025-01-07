@@ -2646,7 +2646,7 @@ namespace Client
             {
                 if (Core.Type.TradeYourOffer[(int)itemNum].Num == -1)
                     return;
-                if (GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)itemNum].Num) == 0)
+                if (GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)itemNum].Num) == -1)
                     return;
 
                 // unoffer the item
@@ -2678,7 +2678,7 @@ namespace Client
                     return;
                 }
 
-                if (GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)itemNum].Num) == 0)
+                if (GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)itemNum].Num) == -1)
                 {
                     Windows[GetWindowIndex("winDescription")].Visible = false;
                     return;
@@ -2800,7 +2800,7 @@ namespace Client
                     var loopTo = (long)(withBlock.List.Count - 1);
                     for (i = 0L; i < loopTo; i++)
                     {
-                        if (y >= 16L * (i - 1L) & y <= 16L * i)
+                        if (y >= 16L * i & y <= 16L * i)
                         {
                             withBlock.Group = i;
                         }
@@ -2824,7 +2824,7 @@ namespace Client
                     var loopTo = (long)withBlock.List.Count;
                     for (i = 0L; i < loopTo; i++)
                     {
-                        if (y >= 16L * (i - 1L) & y <= 16L * i)
+                        if (y >= 16L * i & y <= 16L * i)
                         {
                             Windows[withBlock.LinkedToWin].Controls[(int)withBlock.LinkedToCon].Value = i;
                             CloseComboMenu();
@@ -3866,7 +3866,7 @@ namespace Client
 
             // check for other windows
             var loopTo = Windows.Count - 1;
-            for (i = 0L; i < loopTo; i++)
+            for (i = 1L; i < loopTo; i++)
             {
                 {
                     var withBlock = Windows[i];
@@ -3904,9 +3904,9 @@ namespace Client
                                     // find the slot to switch with
                                     for (i = 0L; i <= Constant.MAX_BANK; i++)
                                     {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.BankTop + (GameState.BankOffsetY + 32L) * ((i - 1L) / GameState.BankColumns);
+                                        tmpRec.Top = Windows[curWindow].Top + GameState.BankTop + (GameState.BankOffsetY + 32L) * (i / GameState.BankColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.BankLeft + (GameState.BankOffsetX + 32L) * ((i - 1L) % GameState.BankColumns);
+                                        tmpRec.Left = Windows[curWindow].Left + GameState.BankLeft + (GameState.BankOffsetX + 32L) * (i % GameState.BankColumns);
                                         tmpRec.Right = tmpRec.Left + 32d;
 
                                         if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
@@ -3955,9 +3955,9 @@ namespace Client
                                     // find the slot to switch with
                                     for (i = 0L; i < Constant.MAX_INV; i++)
                                     {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 1L) / GameState.InvColumns);
+                                        tmpRec.Top = Windows[curWindow].Top + GameState.InvTop + (GameState.InvOffsetY + 32L) * (i / GameState.InvColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.InvLeft + (GameState.InvOffsetX + 32L) * ((i - 1L) % GameState.InvColumns);
+                                        tmpRec.Left = Windows[curWindow].Left + GameState.InvLeft + (GameState.InvOffsetX + 32L) * (i % GameState.InvColumns);
                                         tmpRec.Right = tmpRec.Left + 32d;
 
                                         if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
@@ -4003,9 +4003,9 @@ namespace Client
                                     // find the slot to switch with
                                     for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
                                     {
-                                        tmpRec.Top = Windows[curWindow].Top + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * ((i - 1L) / GameState.SkillColumns);
+                                        tmpRec.Top = Windows[curWindow].Top + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * (i / GameState.SkillColumns);
                                         tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * ((i - 1L) % GameState.SkillColumns);
+                                        tmpRec.Left = Windows[curWindow].Left + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * (i % GameState.SkillColumns);
                                         tmpRec.Right = tmpRec.Left + 32d;
 
                                         if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
@@ -4036,7 +4036,7 @@ namespace Client
                                     {
                                         tmpRec.Top = Windows[curWindow].Top + GameState.HotbarTop;
                                         tmpRec.Bottom = tmpRec.Top + 32d;
-                                        tmpRec.Left = Windows[curWindow].Left + GameState.HotbarLeft + (i - 1L) * GameState.HotbarOffsetX;
+                                        tmpRec.Left = Windows[curWindow].Left + GameState.HotbarLeft + i * GameState.HotbarOffsetX;
                                         tmpRec.Right = tmpRec.Left + 32d;
 
                                         if (GameState.CurMouseX >= tmpRec.Left & GameState.CurMouseX <= tmpRec.Right)
@@ -4129,7 +4129,7 @@ namespace Client
                 {
                     ref var withBlock = ref DragBox;
                     withBlock.Type = Core.Enum.PartType.Skill;
-                    withBlock.Value = Core.Type.Player[GameState.MyIndex].Skill[(int)slotNum].Num;
+                    withBlock.Value = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)slotNum].Num;
                     withBlock.Origin = Core.Enum.PartOriginType.Skill;
                     withBlock.Slot = slotNum;
                 }
@@ -4197,7 +4197,7 @@ namespace Client
                 }
 
                 // go go go
-                GameLogic.ShowSkillDesc(x, y, GetPlayerSkill(GameState.MyIndex, (int)slotNum), slotNum);
+                GameLogic.ShowSkillDesc(x, y, (long)GetPlayerSkill(GameState.MyIndex, (int)slotNum), slotNum);
             }
             else
             {
@@ -4653,7 +4653,7 @@ namespace Client
             Action argcallback_mousemove2 = null;
             Action argcallback_dblclick2 = null;
             bool enabled = false;
-            UpdateLabel(Windows.Count, "lblGold", 42L, 296L, 100L, 10L, "g", Core.Enum.FontType.Georgia, Color.Yellow, callback_norm: ref argcallback_norm1, callback_hover: ref argcallback_hover1, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, enabled: ref enabled);
+            //UpdateLabel(Windows.Count, "lblGold", 42L, 296L, 100L, 10L, "g", Core.Enum.FontType.Georgia, Color.Yellow, callback_norm: ref argcallback_norm1, callback_hover: ref argcallback_hover1, callback_mousedown: ref argcallback_mousedown2, callback_mousemove: ref argcallback_mousemove2, callback_dblclick: ref argcallback_dblclick2, enabled: ref enabled);
 
             // Drop
             //Gui.UpdateButton(Windows.Count, "btnDrop", 155L, 294L, 38L, 16L, "Drop", Core.Enum.FontType.Georgia, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown, ref argcallback_mousemove, ref argcallback_dblclick, 5L, 3L, "", false, true);
@@ -5055,20 +5055,19 @@ namespace Client
             // loop through equipment
             for (i = 0L; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
-                itemNum = GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i);
+                itemNum = (long)GetPlayerEquipment(GameState.MyIndex, (Core.Enum.EquipmentType)i);
 
                 if (itemNum >= 0L)
                 {
-                    // get the item sprite
-                    if (itemNum >= 0L)
-                    {
-                        itemIcon = Core.Type.Item[(int)itemNum].Icon;
-                    }
+                    itemIcon = Core.Type.Item[(int)itemNum].Icon;
 
-                    yO = Windows[GetWindowIndex("winCharacter")].Top + GameState.EqTop;
-                    xO = Windows[GetWindowIndex("winCharacter")].Left + GameState.EqLeft + (GameState.EqOffsetX + 32L) * ((i - 1L) % GameState.EqColumns);
-                    string argpath5 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
-                    GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
+                    if (itemIcon > 0 && itemIcon < GameState.NumItems)
+                    {
+                        yO = Windows[GetWindowIndex("winCharacter")].Top + GameState.EqTop;
+                        xO = Windows[GetWindowIndex("winCharacter")].Left + GameState.EqLeft + (GameState.EqOffsetX + 32L) * (i % GameState.EqColumns);
+                        string argpath5 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
+                        GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
+                    }
                 }
             }
         }
@@ -5228,28 +5227,31 @@ namespace Client
 
                         // exit out if we're offering item in a trade.
                         amountModifier = 0L;
-                        if (Trade.InTrade > 0)
+                        if (Trade.InTrade >= 0)
                         {
                             for (x = 0L; x < Constant.MAX_INV; x++)
                             {
-                                tmpItem = (long)GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)x].Num);
-                                if (Core.Type.TradeYourOffer[(int)x].Num == i)
-                                {
-                                    // check if currency
-                                    if (!(Core.Type.Item[(int)tmpItem].Type == (byte)Core.Enum.ItemType.Currency))
+                                if (Core.Type.TradeYourOffer[(int)x].Num >= 0)
+                                { 
+                                    tmpItem = (long)GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)x].Num);
+                                    if (Core.Type.TradeYourOffer[(int)x].Num == i)
                                     {
-                                        // normal item, exit out
-                                        skipItem = Conversions.ToBoolean(1);
-                                    }
-                                    // if amount = all currency, remove from inventory
-                                    else if (Core.Type.TradeYourOffer[(int)x].Value == GetPlayerInvValue(GameState.MyIndex, (int)i))
-                                    {
-                                        skipItem = Conversions.ToBoolean(1);
-                                    }
-                                    else
-                                    {
-                                        // not all, change modifier to show change in currency count
-                                        amountModifier = Core.Type.TradeYourOffer[(int)x].Value;
+                                        // check if currency
+                                        if (!(Core.Type.Item[(int)tmpItem].Type == (byte)Core.Enum.ItemType.Currency))
+                                        {
+                                            // normal item, exit out
+                                            skipItem = Conversions.ToBoolean(1);
+                                        }
+                                        // if amount = all currency, remove from inventory
+                                        else if (Core.Type.TradeYourOffer[(int)x].Value == GetPlayerInvValue(GameState.MyIndex, (int)i))
+                                        {
+                                            skipItem = Conversions.ToBoolean(1);
+                                        }
+                                        else
+                                        {
+                                            // not all, change modifier to show change in currency count
+                                            amountModifier = Core.Type.TradeYourOffer[(int)x].Value;
+                                        }
                                     }
                                 }
                             }
@@ -5259,8 +5261,8 @@ namespace Client
                         {
                             if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                             {
-                                Top = yO + GameState.InvTop + (GameState.InvOffsetY + 32L) * ((i - 1L) / GameState.InvColumns);
-                                Left = xO + GameState.InvLeft + (GameState.InvOffsetX + 32L) * ((i - 1L) % GameState.InvColumns);
+                                Top = yO + GameState.InvTop + (GameState.InvOffsetY + 32L) * (i / GameState.InvColumns);
+                                Left = xO + GameState.InvLeft + (GameState.InvOffsetX + 32L) * (i % GameState.InvColumns);
 
                                 // draw icon
                                 string argpath5 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
@@ -5876,8 +5878,8 @@ namespace Client
             for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
                 Database.StreamSkill((int)skillNum);
-                skillNum = Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num;
-                if (skillNum >= 0L & skillNum <= Constant.MAX_SKILLS)
+                skillNum = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num;
+                if (skillNum >= 0L & skillNum < Constant.MAX_SKILLS)
                 {
                     // not dragging?
                     if (!(DragBox.Origin == Core.Enum.PartOriginType.Skill & DragBox.Slot == i))
@@ -5886,8 +5888,8 @@ namespace Client
 
                         if (SkillPic > 0L & SkillPic <= GameState.NumSkills)
                         {
-                            Top = yO + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * ((i - 1L) / GameState.SkillColumns);
-                            Left = xO + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * ((i - 1L) % GameState.SkillColumns);
+                            Top = yO + GameState.SkillTop + (GameState.SkillOffsetY + 32L) * (i / GameState.SkillColumns);
+                            Left = xO + GameState.SkillLeft + (GameState.SkillOffsetX + 32L) * (i % GameState.SkillColumns);
 
                             string argpath4 = System.IO.Path.Combine(Path.Skills, SkillPic.ToString());
                             GameClient.RenderTexture(ref argpath4, (int)Left, (int)Top, 0, 0, 32, 32, 32, 32);
@@ -6348,7 +6350,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath1, (int)(xO + 407L), (int)(yO + 3L), 0, 0, 11, 26, 11, 26);
             for (i = 0L; i < Constant.MAX_HOTBAR; i++)
             {
-                xO = Windows[GetWindowIndex("winHotbar")].Left + GameState.HotbarLeft + (i - 1L) * GameState.HotbarOffsetX;
+                xO = Windows[GetWindowIndex("winHotbar")].Left + GameState.HotbarLeft + i * GameState.HotbarOffsetX;
                 yO = Windows[GetWindowIndex("winHotbar")].Top + GameState.HotbarTop;
                 Width = 36L;
                 Height = 36L;
@@ -6391,7 +6393,7 @@ namespace Client
                                     GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
                                     for (t = 0L; t < Constant.MAX_PLAYER_SKILLS; t++)
                                     {
-                                        if (GetPlayerSkill(GameState.MyIndex, (int)t) > 0)
+                                        if (GetPlayerSkill(GameState.MyIndex, (int)t) >= 0)
                                         {
                                             if (GetPlayerSkill(GameState.MyIndex, (int)t) == Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot & GetPlayerSkillCD(GameState.MyIndex, (int)t) > 0)
                                             {
@@ -6445,8 +6447,8 @@ namespace Client
                     itemNum = Core.Type.Shop[GameState.InShop].TradeItem[(int)i].Item;
 
                     // draw early
-                    Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * ((i - 1L) / GameState.ShopColumns);
-                    Left = Xo + GameState.ShopLeft + (GameState.ShopOffsetX + 32L) * ((i - 1L) % GameState.ShopColumns);
+                    Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * (i / GameState.ShopColumns);
+                    Left = Xo + GameState.ShopLeft + (GameState.ShopOffsetX + 32L) * (i % GameState.ShopColumns);
 
                     // draw selected square
                     if (GameState.shopSelectedSlot == i)
@@ -6475,8 +6477,8 @@ namespace Client
                     itemNum = (long)GetPlayerInv(GameState.MyIndex, (int)i);
 
                     // draw early
-                    Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * ((i - 1L) / GameState.ShopColumns);
-                    Left = Xo + GameState.ShopLeft + (GameState.ShopOffsetX + 32L) * ((i - 1L) % GameState.ShopColumns);
+                    Top = Yo + GameState.ShopTop + (GameState.ShopOffsetY + 32L) * (i / GameState.ShopColumns);
+                    Left = Xo + GameState.ShopLeft + (GameState.ShopOffsetX + 32L) * (i % GameState.ShopColumns);
 
                     // draw selected square
                     if (GameState.shopSelectedSlot == i)
@@ -6634,8 +6636,8 @@ namespace Client
 
                         if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                         {
-                            top = Yo + GameState.BankTop + (GameState.BankOffsetY + 32L) * ((i - 1L) / GameState.BankColumns);
-                            Left = Xo + GameState.BankLeft + (GameState.BankOffsetX + 32L) * ((i - 1L) % GameState.BankColumns);
+                            top = Yo + GameState.BankTop + (GameState.BankOffsetY + 32L) * (i / GameState.BankColumns);
+                            Left = Xo + GameState.BankLeft + (GameState.BankOffsetX + 32L) * (i % GameState.BankColumns);
 
                             // draw icon
                             string argpath6 = System.IO.Path.Combine(Path.Items, itemIcon.ToString());
@@ -6776,8 +6778,8 @@ namespace Client
 
                         if (ItemPic > 0L & ItemPic <= GameState.NumItems)
                         {
-                            Top = Yo + GameState.TradeTop + (GameState.TradeOffsetY + 32L) * ((i - 1L) / GameState.TradeColumns);
-                            Left = Xo + GameState.TradeLeft + (GameState.TradeOffsetX + 32L) * ((i - 1L) % GameState.TradeColumns);
+                            Top = Yo + GameState.TradeTop + (GameState.TradeOffsetY + 32L) * (i / GameState.TradeColumns);
+                            Left = Xo + GameState.TradeLeft + (GameState.TradeOffsetX + 32L) * (i % GameState.TradeColumns);
 
                             // draw icon
                             string argpath = System.IO.Path.Combine(Path.Items, ItemPic.ToString());
@@ -6840,8 +6842,8 @@ namespace Client
 
                     if (ItemPic > 0L & ItemPic <= GameState.NumItems)
                     {
-                        Top = Yo + GameState.TradeTop + (GameState.TradeOffsetY + 32L) * ((i - 1L) / GameState.TradeColumns);
-                        Left = Xo + GameState.TradeLeft + (GameState.TradeOffsetX + 32L) * ((i - 1L) % GameState.TradeColumns);
+                        Top = Yo + GameState.TradeTop + (GameState.TradeOffsetY + 32L) * (i / GameState.TradeColumns);
+                        Left = Xo + GameState.TradeLeft + (GameState.TradeOffsetX + 32L) * (i % GameState.TradeColumns);
 
                         // draw icon
                         string argpath = System.IO.Path.Combine(Path.Items, ItemPic.ToString());

@@ -164,7 +164,7 @@ namespace Client
                         {
                             if (Core.Type.Player[GameState.MyIndex].Skill[i].CD > 0)
                             {
-                                if (Core.Type.Player[GameState.MyIndex].Skill[i].CD + Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Skill[i].Num].CdTime * 1000 < tick)
+                                if (Core.Type.Player[GameState.MyIndex].Skill[i].CD + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[i].Num].CdTime * 1000 < tick)
                                 {
                                     Core.Type.Player[GameState.MyIndex].Skill[i].CD = 0;
                                 }
@@ -174,21 +174,21 @@ namespace Client
                 }
 
                 // check if we need to unlock the player's skill casting restriction
-                if (GameState.SkillBuffer > 0)
+                if (GameState.SkillBuffer >= 0)
                 {
-                    if (GameState.SkillBufferTimer + Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Skill[GameState.SkillBuffer].Num].CastTime * 1000 < tick)
+                    if (GameState.SkillBufferTimer + Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[GameState.SkillBuffer].Num].CastTime * 1000 < tick)
                     {
-                        GameState.SkillBuffer = 0;
+                        GameState.SkillBuffer = -1;
                         GameState.SkillBufferTimer = 0;
                     }
                 }
 
                 // check if we need to unlock the pets's Skill casting restriction
-                if (Pet.PetSkillBuffer > 0)
+                if (Pet.PetSkillBuffer >= 0)
                 {
-                    if (Pet.PetSkillBufferTimer + Core.Type.Skill[Core.Type.Pet[Core.Type.Player[GameState.MyIndex].Pet.Num].Skill[Pet.PetSkillBuffer]].CastTime * 1000 < tick)
+                    if (Pet.PetSkillBufferTimer + Core.Type.Skill[Core.Type.Pet[Core.Type.Player[GameState.MyIndex].Pet.Num].Skill[(int)Pet.PetSkillBuffer]].CastTime * 1000 < tick)
                     {
-                        Pet.PetSkillBuffer = 0;
+                        Pet.PetSkillBuffer = -1;
                         Pet.PetSkillBufferTimer = 0;
                     }
                 }

@@ -22,9 +22,9 @@ namespace Server
             if (!IsSkill)
             {
                 // Check attack timer
-                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) > 0)
+                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
                 {
-                    if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed)
+                    if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + Core.Type.Item[(int)GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed)
                         return CanPlayerAttackPlayerRet;
                 }
                 else if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + 1000)
@@ -133,12 +133,12 @@ namespace Server
             bool CanPlayerBlockHitRet = default;
             int i;
             int n;
-            int ShieldSlot;
+            double ShieldSlot;
             ShieldSlot = GetPlayerEquipment(index, EquipmentType.Shield);
 
             CanPlayerBlockHitRet = Conversions.ToBoolean(0);
 
-            if (ShieldSlot > 0)
+            if (ShieldSlot >= 0)
             {
                 n = (int)Math.Round(Conversion.Int(VBMath.Rnd() * 2f));
 
@@ -165,7 +165,7 @@ namespace Server
             int i;
             int n;
 
-            if (GetPlayerEquipment(index, EquipmentType.Weapon) > 0)
+            if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
                 n = (int)Math.Round(VBMath.Rnd() * 2f);
 
@@ -197,9 +197,9 @@ namespace Server
                 return GetPlayerDamageRet;
             }
 
-            if (GetPlayerEquipment(index, EquipmentType.Weapon) > 0)
+            if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
-                weaponNum = GetPlayerEquipment(index, EquipmentType.Weapon);
+                weaponNum = (int)GetPlayerEquipment(index, EquipmentType.Weapon);
                 GetPlayerDamageRet = (int)(GetPlayerStat(index, StatType.Strength) * 2 + Core.Type.Item[weaponNum].Data2 * 2 + GetPlayerLevel(index) * 3 + General.Random.NextDouble(0d, 20d));
             }
             else
@@ -214,9 +214,9 @@ namespace Server
         public static int GetPlayerProtection(int index)
         {
             int GetPlayerProtectionRet = default;
-            int Armor;
-            int Helm;
-            int Shield;
+            double Armor;
+            double Helm;
+            double Shield;
             GetPlayerProtectionRet = 0;
 
             // Check for subscript out of range
@@ -229,19 +229,19 @@ namespace Server
             Helm = GetPlayerEquipment(index, EquipmentType.Helmet);
             Shield = GetPlayerEquipment(index, EquipmentType.Shield);
 
-            if (Armor > 0)
+            if (Armor >= 0)
             {
-                GetPlayerProtectionRet += Core.Type.Item[Armor].Data2;
+                GetPlayerProtectionRet += Core.Type.Item[(int)Armor].Data2;
             }
 
-            if (Helm > 0)
+            if (Helm >= 0)
             {
-                GetPlayerProtectionRet += Core.Type.Item[Helm].Data2;
+                GetPlayerProtectionRet += Core.Type.Item[(int)Helm].Data2;
             }
 
-            if (Shield > 0)
+            if (Shield >= 0)
             {
-                GetPlayerProtectionRet += Core.Type.Item[Shield].Data2;
+                GetPlayerProtectionRet += Core.Type.Item[(int)Shield].Data2;
             }
 
             GetPlayerProtectionRet = (int)Math.Round(GetPlayerProtectionRet / 6d);
@@ -265,9 +265,9 @@ namespace Server
                 }
 
                 // Check for weapon
-                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) > 0)
+                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
                 {
-                    n = GetPlayerEquipment(attacker, EquipmentType.Weapon);
+                    n = (int)GetPlayerEquipment(attacker, EquipmentType.Weapon);
                 }
 
                 // Send this packet so they can see the person attacking
@@ -470,9 +470,9 @@ namespace Server
             // Make sure they are on the same map
 
             // attack speed from weapon
-            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) > 0)
+            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
             {
-                attackspeed = Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed;
+                attackspeed = Core.Type.Item[(int)GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed;
             }
             else
             {
@@ -563,9 +563,9 @@ namespace Server
 
             // Check for weapon
             int Weapon = 0;
-            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) > 0)
+            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
             {
-                Weapon = GetPlayerEquipment(attacker, EquipmentType.Weapon);
+                Weapon = (int)GetPlayerEquipment(attacker, EquipmentType.Weapon);
             }
 
             // Deal damage to our NPC.
@@ -593,9 +593,9 @@ namespace Server
             NetworkSend.SendActionMsg(mapNum, "-" + Damage, (int) ColorType.BrightRed, 1, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y * 32);
             NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
             NetworkSend.SendPlayerAttack(attacker);
-            if (Weapon > 0)
+            if (Weapon >= 0)
             {
-                Animation.SendAnimation(mapNum, Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, MapNPCNum);
+                Animation.SendAnimation(mapNum, Core.Type.Item[(int)GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, MapNPCNum);
             }
 
             // Reset our attack timer.
@@ -714,9 +714,9 @@ namespace Server
                     var loopTo = EquipmentType.Count;
                     for (i = 0; i < (int)loopTo; i++)
                     {
-                        if (GetPlayerEquipment(victim, (EquipmentType)i) > 0)
+                        if (GetPlayerEquipment(victim, (EquipmentType)i) >= 0)
                         {
-                            armor += Core.Type.Item[GetPlayerEquipment(victim, (EquipmentType)i)].Data2;
+                            armor += Core.Type.Item[(int)GetPlayerEquipment(victim, (EquipmentType)i)].Data2;
                         }
                     }
 
@@ -754,9 +754,9 @@ namespace Server
 
             // Check if our assailant has a weapon.
             int Weapon = 0;
-            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) > 0)
+            if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
             {
-                Weapon = GetPlayerEquipment(attacker, EquipmentType.Weapon);
+                Weapon = (int)GetPlayerEquipment(attacker, EquipmentType.Weapon);
             }
 
             // Stop our player's regeneration abilities.
@@ -981,15 +981,15 @@ namespace Server
 
                             for (int x = 0, loopTo2 = (int)(EquipmentType.Count); x < (int)loopTo2; x++)
                             {
-                                if (GetPlayerEquipment(victim, (EquipmentType)x) > 0)
+                                if (GetPlayerEquipment(victim, (EquipmentType)x) >= 0)
                                 {
                                     j += 0;
 
                                     if (j == z)
                                     {
                                         // Here it is, drop this piece of equipment!
-                                        NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[GetPlayerEquipment(victim, (EquipmentType)x)].Name, (int) ColorType.BrightRed);
-                                        Item.SpawnItem(GetPlayerEquipment(victim, (EquipmentType)x), 1, GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
+                                        NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[(int)GetPlayerEquipment(victim, (EquipmentType)x)].Name, (int) ColorType.BrightRed);
+                                        Item.SpawnItem((int)GetPlayerEquipment(victim, (EquipmentType)x), 1, GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
                                         SetPlayerEquipment(victim, 0, (EquipmentType)x);
                                         NetworkSend.SendWornEquipment(victim);
                                         NetworkSend.SendMapEquipment(victim);
@@ -1211,7 +1211,7 @@ namespace Server
 
         public static void PlayerMove(int index, int Dir, int Movement, bool ExpectingWarp)
         {
-            int mapNum;
+            double mapNum;
             int x;
             int y;
             bool begineventprocessing;
@@ -1281,7 +1281,7 @@ namespace Server
                 case (byte) DirectionType.Down:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY)
+                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.Down))
@@ -1356,7 +1356,7 @@ namespace Server
                 case (byte) DirectionType.Right:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerX(index) < Core.Type.Map[mapNum].MaxX)
+                        if (GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.Right))
@@ -1393,7 +1393,7 @@ namespace Server
                 case (byte) DirectionType.UpRight:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[mapNum].MaxX)
+                        if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.UpRight))
@@ -1449,7 +1449,7 @@ namespace Server
                 case (byte) DirectionType.DownRight:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY && GetPlayerX(index) < Core.Type.Map[mapNum].MaxX)
+                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.DownRight))
@@ -1477,7 +1477,7 @@ namespace Server
                 case (byte) DirectionType.DownLeft:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY && GetPlayerX(index) > 0)
+                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY && GetPlayerX(index) > 0)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.DownLeft))
@@ -1505,7 +1505,7 @@ namespace Server
 
             {
                 ref var withBlock = ref Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)];
-                mapNum = 0;
+                mapNum = -1;
                 x = 0;
                 y = 0;
 
@@ -1526,7 +1526,7 @@ namespace Server
 
                 if (mapNum >= 0)
                 {
-                    PlayerWarp(index, mapNum, x, y);
+                    PlayerWarp(index, (int)mapNum, x, y);
 
                     DidWarp = Conversions.ToBoolean(1);
                     Moved = Conversions.ToBoolean(1);
@@ -2187,18 +2187,9 @@ namespace Server
                             case (byte)EquipmentType.Weapon:
                                 {
 
-                                    if (Core.Type.Item[itemNum].TwoHanded > 0)
+                                    if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
                                     {
-                                        if (GetPlayerEquipment(index, EquipmentType.Shield) > 0)
-                                        {
-                                            NetworkSend.PlayerMsg(index, "This is a 2-Handed weapon! Please unequip your shield first.", (int) ColorType.BrightRed);
-                                            return;
-                                        }
-                                    }
-
-                                    if (GetPlayerEquipment(index, EquipmentType.Weapon) > 0)
-                                    {
-                                        tempitem = GetPlayerEquipment(index, EquipmentType.Weapon);
+                                        tempitem = (int)GetPlayerEquipment(index, EquipmentType.Weapon);
                                     }
 
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Weapon);
@@ -2228,9 +2219,9 @@ namespace Server
 
                             case (byte)EquipmentType.Armor:
                                 {
-                                    if (GetPlayerEquipment(index, EquipmentType.Armor) > 0)
+                                    if (GetPlayerEquipment(index, EquipmentType.Armor) >= 0)
                                     {
-                                        tempitem = GetPlayerEquipment(index, EquipmentType.Armor);
+                                        tempitem = (int)GetPlayerEquipment(index, EquipmentType.Armor);
                                     }
 
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Armor);
@@ -2258,9 +2249,9 @@ namespace Server
 
                             case (byte)EquipmentType.Helmet:
                                 {
-                                    if (GetPlayerEquipment(index, EquipmentType.Helmet) > 0)
+                                    if (GetPlayerEquipment(index, EquipmentType.Helmet) >= 0)
                                     {
-                                        tempitem = GetPlayerEquipment(index, EquipmentType.Helmet);
+                                        tempitem = (int)GetPlayerEquipment(index, EquipmentType.Helmet);
                                     }
 
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Helmet);
@@ -2287,15 +2278,9 @@ namespace Server
 
                             case (byte)EquipmentType.Shield:
                                 {
-                                    if (Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].TwoHanded > 0)
+                                    if (GetPlayerEquipment(index, EquipmentType.Shield) >= 0)
                                     {
-                                        NetworkSend.PlayerMsg(index, "Please unequip your 2-handed weapon first.", (int) ColorType.BrightRed);
-                                        return;
-                                    }
-
-                                    if (GetPlayerEquipment(index, EquipmentType.Shield) > 0)
-                                    {
-                                        tempitem = GetPlayerEquipment(index, EquipmentType.Shield);
+                                        tempitem = (int)GetPlayerEquipment(index, EquipmentType.Shield);
                                     }
 
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Shield);
@@ -2411,7 +2396,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
+                                NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
                                 return;
                             }
                         }
@@ -2593,14 +2578,14 @@ namespace Server
 
         public static void PlayerSwitchSkillSlots(int index, int OldSlot, int NewSlot)
         {
-            int OldNum;
+            double OldNum;
             int OldValue;
             int OldRarity;
             string OldPrefix;
             string OldSuffix;
             int OldSpeed;
             int OldDamage;
-            int NewNum;
+            double NewNum;
             int NewValue;
             int NewRarity;
             string NewPrefix;
@@ -2616,18 +2601,21 @@ namespace Server
             NewNum = GetPlayerSkill(index, NewSlot);
             NewValue = GetPlayerSkillCD(index, NewSlot);
 
-            if (OldNum == NewNum & Core.Type.Item[NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
+            if (OldNum < 0 || NewNum < 0)
+                return;
+
+            if (OldNum == NewNum & Core.Type.Item[(int)NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
             {
-                SetPlayerSkill(index, NewSlot, NewNum);
+                SetPlayerSkill(index, NewSlot, (int)NewNum);
                 SetPlayerSkillCD(index, NewSlot, NewValue);
                 SetPlayerSkill(index, OldSlot, 0);
                 SetPlayerSkillCD(index, OldSlot, 0);
             }
             else
             {
-                SetPlayerSkill(index, NewSlot, OldNum);
+                SetPlayerSkill(index, NewSlot, (int)OldNum);
                 SetPlayerSkillCD(index, NewSlot, OldValue);
-                SetPlayerSkill(index, OldSlot, NewNum);
+                SetPlayerSkill(index, OldSlot, (int)NewNum);
                 SetPlayerSkillCD(index, OldSlot, NewValue);
             }
 
@@ -2640,7 +2628,7 @@ namespace Server
 
         public static void CheckEquippedItems(int index)
         {
-            int itemNum;
+            double itemNum;
             int i;
 
             // We want to check incase an admin takes away an object but they had it equipped
@@ -2657,28 +2645,28 @@ namespace Server
                         case (byte)EquipmentType.Weapon:
                             {
 
-                                if (Core.Type.Item[itemNum].SubType != (byte)EquipmentType.Weapon)
+                                if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Weapon)
                                     SetPlayerEquipment(index, 0, (EquipmentType)i);
                                 break;
                             }
                         case (byte)EquipmentType.Armor:
                             {
 
-                                if (Core.Type.Item[itemNum].SubType != (byte)EquipmentType.Armor)
+                                if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Armor)
                                     SetPlayerEquipment(index, 0, (EquipmentType)i);
                                 break;
                             }
                         case (byte)EquipmentType.Helmet:
                             {
 
-                                if (Core.Type.Item[itemNum].SubType != (byte)EquipmentType.Helmet)
+                                if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Helmet)
                                     SetPlayerEquipment(index, 0, (EquipmentType)i);
                                 break;
                             }
                         case (byte)EquipmentType.Shield:
                             {
 
-                                if (Core.Type.Item[itemNum].SubType != (byte)EquipmentType.Shield)
+                                if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Shield)
                                     SetPlayerEquipment(index, 0, (EquipmentType)i);
                                 break;
                             }
@@ -2702,15 +2690,15 @@ namespace Server
             if (EqSlot < 1 | EqSlot > (byte)EquipmentType.Count)
                 return; // exit out early if error'd
 
-            if (FindOpenInvSlot(index, GetPlayerEquipment(index, (EquipmentType)EqSlot)) > 0)
+            if (FindOpenInvSlot(index, (int)GetPlayerEquipment(index, (EquipmentType)EqSlot)) > 0)
             {
-                itemnum = GetPlayerEquipment(index, (EquipmentType)EqSlot);
+                itemnum = (int)GetPlayerEquipment(index, (EquipmentType)EqSlot);
 
                 m = FindOpenInvSlot(index, Core.Type.Player[index].Equipment[EqSlot]);
                 SetPlayerInv(index, m, Core.Type.Player[index].Equipment[EqSlot]);
                 SetPlayerInvValue(index, m, 0);
 
-                NetworkSend.PlayerMsg(index, "You unequip " + GameLogic.CheckGrammar(Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)EqSlot)].Name), (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "You unequip " + GameLogic.CheckGrammar(Core.Type.Item[(int)GetPlayerEquipment(index, (EquipmentType)EqSlot)].Name), (int) ColorType.Yellow);
 
                 // remove equipment
                 SetPlayerEquipment(index, 0, (EquipmentType)EqSlot);
@@ -2801,7 +2789,7 @@ namespace Server
                 Database.SaveBank(index);
             }
 
-            Database.ClearAccount(index);
+            Database.ClearPlayer(index);
             General.UpdateCaption();
         }
 
@@ -2851,7 +2839,7 @@ namespace Server
             }
 
             // Clear skill casting
-            Core.Type.TempPlayer[index].SkillBuffer = 0;
+            Core.Type.TempPlayer[index].SkillBuffer = -1;
             Core.Type.TempPlayer[index].SkillBufferTimer = 0;
             NetworkSend.SendClearSkillBuffer(index);
 
@@ -2961,7 +2949,7 @@ namespace Server
         #region Skills
         internal static void bufferSkill(int index, int SkillSlot)
         {
-            int skillNum;
+            double skillNum;
             int MPCost;
             int LevelReq;
             int mapNum;
@@ -2985,7 +2973,7 @@ namespace Server
                 return;
 
             // Make sure player has the skill
-            if (!HasSkill(index, skillNum))
+            if (!HasSkill(index, (int)skillNum))
                 return;
 
             // see if cooldown has finished
@@ -2995,7 +2983,7 @@ namespace Server
                 return;
             }
 
-            MPCost = Core.Type.Skill[skillNum].MpCost;
+            MPCost = Core.Type.Skill[(int)skillNum].MpCost;
 
             // Check if they have enough MP
             if (GetPlayerVital(index, VitalType.SP) < MPCost)
@@ -3004,7 +2992,7 @@ namespace Server
                 return;
             }
 
-            LevelReq = Core.Type.Skill[skillNum].LevelReq;
+            LevelReq = Core.Type.Skill[(int)skillNum].LevelReq;
 
             // Make sure they are the right level
             if (LevelReq > GetPlayerLevel(index))
@@ -3013,7 +3001,7 @@ namespace Server
                 return;
             }
 
-            AccessReq = Core.Type.Skill[skillNum].AccessReq;
+            AccessReq = Core.Type.Skill[(int)skillNum].AccessReq;
 
             // make sure they have the right access
             if (AccessReq > GetPlayerAccess(index))
@@ -3022,7 +3010,7 @@ namespace Server
                 return;
             }
 
-            JobReq = Core.Type.Skill[skillNum].JobReq;
+            JobReq = Core.Type.Skill[(int)skillNum].JobReq;
 
             // make sure the JobReq > 0
             if (JobReq > 0) // 0 = no req
@@ -3035,10 +3023,10 @@ namespace Server
             }
 
             // find out what kind of skill it is! self cast, target or AOE
-            if (Core.Type.Skill[skillNum].Range > 0)
+            if (Core.Type.Skill[(int)skillNum].Range > 0)
             {
                 // ranged attack, single target or aoe?
-                if (!Core.Type.Skill[skillNum].IsAoE)
+                if (!Core.Type.Skill[(int)skillNum].IsAoE)
                 {
                     SkillCastType = 2; // targetted
                 }
@@ -3047,7 +3035,7 @@ namespace Server
                     SkillCastType = 3;
                 } // targetted aoe
             }
-            else if (!Core.Type.Skill[skillNum].IsAoE)
+            else if (!Core.Type.Skill[(int)skillNum].IsAoE)
             {
                 SkillCastType = 0; // self-cast
             }
@@ -3058,7 +3046,7 @@ namespace Server
 
             TargetType = (TargetType)Core.Type.TempPlayer[index].TargetType;
             Target = Core.Type.TempPlayer[index].Target;
-            range = Core.Type.Skill[skillNum].Range;
+            range = Core.Type.Skill[(int)skillNum].Range;
             HasBuffered = Conversions.ToBoolean(0);
 
             switch (SkillCastType)
@@ -3085,7 +3073,7 @@ namespace Server
                                 NetworkSend.PlayerMsg(index, "Target not in range.", (int) ColorType.BrightRed);
                             }
                             // go through skill Type
-                            else if (Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageMp)
+                            else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
                             {
                                 HasBuffered = Conversions.ToBoolean(1);
                             }
@@ -3103,7 +3091,7 @@ namespace Server
                                 HasBuffered = Conversions.ToBoolean(0);
                             }
                             // go through skill Type
-                            else if (Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageMp)
+                            else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
                             {
                                 HasBuffered = Conversions.ToBoolean(1);
                             }
@@ -3119,7 +3107,7 @@ namespace Server
 
             if (HasBuffered)
             {
-                Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].CastAnim, 0, 0, (byte)TargetType.Player, index);
+                Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].CastAnim, 0, 0, (byte)TargetType.Player, index);
                 Core.Type.TempPlayer[index].SkillBuffer = SkillSlot;
                 Core.Type.TempPlayer[index].SkillBufferTimer = General.GetTimeMs();
                 return;
@@ -3129,8 +3117,6 @@ namespace Server
                 NetworkSend.SendClearSkillBuffer(index);
             }
         }
-
-
 
         #endregion
 

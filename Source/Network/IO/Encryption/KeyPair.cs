@@ -98,7 +98,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
                         if (encryptedKey.Length != 256)
                         {
-                            Dispose();
+                            CheckDisposed();
                             return null;
                         }
 
@@ -202,11 +202,12 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         {
             try
             {
-                if (_rsa == null)
-                    throw new CryptographicException("Key not set.");
+                if (_rsa == null || _rsa.PublicOnly)
+                {
+                    CheckDisposed();
+                    return "";
 
-                if (_rsa.PublicOnly)
-                    return null;
+                }
 
                 byte[] numArray = Convert.FromBase64String(value);
 
@@ -214,7 +215,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
                 if (decryptedBytes == null)
                 {
-                    Dispose();
+                    CheckDisposed();
                     return "";
 
                 }
@@ -222,7 +223,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             }
             catch (CryptographicException ex)
             {
-                Dispose();
+                CheckDisposed();
                 return "";
             }
         }
@@ -275,7 +276,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
             }
             catch (CryptographicException ex)
             {
-                Dispose();
+                CheckDisposed();
                 return null;
             }
         }

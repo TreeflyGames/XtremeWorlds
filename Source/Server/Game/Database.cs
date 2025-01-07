@@ -1386,24 +1386,42 @@ namespace Server
         {
             SetPlayerLogin(index, "");
             SetPlayerPassword(index, "");
-            ClearPlayer(index);
         }
 
         public static void ClearPlayer(int index)
         {
+            ClearAccount(index);
+
             Core.Type.Player[index].Access = (byte)AccessType.Player;
+            Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS];
+            Core.Type.TempPlayer[index].SkillBuffer = -1;
+            Core.Type.Player[index].Inv = new PlayerInvStruct[Core.Constant.MAX_INV];
 
-            Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS + 1];
-
-            for (int i = 0; i < Core.Constant.MAX_PLAYERS; i++)
+            for (int i = 0; i < Core.Constant.MAX_INV; i++)
             {
-                Core.Type.TempPlayer[i].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS + 1];
-                Core.Type.TempPlayer[i].PetSkillCD = new int[5];
-                Core.Type.TempPlayer[i].TradeOffer = new PlayerInvStruct[Core.Constant.MAX_INV + 1];
+                Core.Type.Player[index].Inv[i].Num = -1;
             }
 
-            Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS + 1];
-            Core.Type.TempPlayer[index].PetSkillCD = new int[5];
+            Core.Type.Player[index].Skill = new PlayerSkillStruct[Core.Constant.MAX_SKILLS];
+
+            for (int i = 0; i < Core.Constant.MAX_SKILLS; i++)
+            {
+                Core.Type.Player[index].Skill[i].Num = -1;
+            }
+
+            Core.Type.Player[index].Equipment = new int[(int)Core.Enum.EquipmentType.Count];
+
+            for (int i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
+            {
+                Core.Type.Player[index].Equipment[i] = -1;
+            }
+
+            Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
+            Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
+            Core.Type.TempPlayer[index].TradeOffer = new PlayerInvStruct[Core.Constant.MAX_INV];
+            
+            Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
+            Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
             Core.Type.TempPlayer[index].Editor = -1;
 
             ClearBank(index);

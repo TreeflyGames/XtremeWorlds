@@ -110,7 +110,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestSwitchesAndVariables] = Event.Packet_RequestSwitchesAndVariables;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwitchesAndVariables] = Event.Packet_SwitchesAndVariables;
 
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestProjectiles] = Projectile.HandleRequestProjectiles;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestProjectile] = Projectile.HandleRequestProjectile;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CClearProjectile] = Projectile.HandleClearProjectile;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CEmote] = Packet_Emote;
@@ -621,7 +621,7 @@ namespace Server
             buffer.Dispose();
 
             // Prevent player from moving if they have casted a skill
-            if (Core.Type.TempPlayer[index].SkillBuffer > 0)
+            if (Core.Type.TempPlayer[index].SkillBuffer >= 0)
             {
                 NetworkSend.SendPlayerXY(index);
                 return;
@@ -713,7 +713,7 @@ namespace Server
             var buffer = new ByteStream(data);
 
             // can't attack whilst casting
-            if (Core.Type.TempPlayer[index].SkillBuffer > 0)
+            if (Core.Type.TempPlayer[index].SkillBuffer >= 0)
                 return;
 
             // can't attack whilst stunned
@@ -728,21 +728,21 @@ namespace Server
             buffer.Dispose();
 
             // Projectile check
-            if (GetPlayerEquipment(index, EquipmentType.Weapon) > 0)
+            if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
-                if (Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile > 0) // Item has a projectile
+                if (Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile > 0) // Item has a projectile
                 {
-                    if (Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo > 0)
+                    if (Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo > 0)
                     {
-                        if (Conversions.ToBoolean(Player.HasItem(index, Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo)))
+                        if (Conversions.ToBoolean(Player.HasItem(index, Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo)))
                         {
-                            Player.TakeInv(index, Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo, 1);
+                            Player.TakeInv(index, Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo, 1);
                             Projectile.PlayerFireProjectile(index);
                             return;
                         }
                         else
                         {
-                            NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
                             return;
                         }
                     }

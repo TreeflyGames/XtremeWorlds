@@ -375,7 +375,7 @@ namespace Core.Global
             return Type.Player[index].Level;
         }
 
-        public static int GetPlayerEquipment(int index, Enum.EquipmentType equipmentSlot)
+        public static double GetPlayerEquipment(int index, Enum.EquipmentType equipmentSlot)
         {
             return Type.Player[index].Equipment[(int)equipmentSlot];
         }
@@ -423,7 +423,7 @@ namespace Core.Global
             return 0;
         }
 
-        public static int GetPlayerSkill(int index, int skillSlot)
+        public static double GetPlayerSkill(int index, int skillSlot)
         {
             return Type.Player[index].Skill[skillSlot].Num;
         }

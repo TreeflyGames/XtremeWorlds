@@ -285,6 +285,11 @@ namespace Client
             NetworkSend.SendRequestEditSkill();
         }
 
+        private void FrmAdmin_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            GameState.AdminPanel = false;
+        }
+
         #endregion
 
         #region Map Report
@@ -367,6 +372,5 @@ namespace Client
         }
 
         #endregion
-
     }
 }

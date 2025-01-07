@@ -1530,9 +1530,9 @@ namespace Client
                         RenderTexture(ref argpath5, GameLogic.ConvertMapX((int)tmpX), GameLogic.ConvertMapY((int)tmpY), (int)Left, (int)Top, (int)GameState.BarWidth_PlayerSP[(int)i], (int)Height, (int)GameState.BarWidth_PlayerSP[(int)i], (int)Height);
                     }
 
-                    if (GameState.SkillBuffer > 0)
+                    if (GameState.SkillBuffer >= 0)
                     {
-                        if (Core.Type.Skill[Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num].CastTime > 0)
+                        if (Core.Type.Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num].CastTime > 0)
                         {
                             // lock to player
                             tmpX = (long)Math.Round(GetPlayerX((int)i) * GameState.PicX + Core.Type.Player[(int)i].XOffset + 16 - Width / 2d);
@@ -1540,7 +1540,7 @@ namespace Client
 
                             // calculate the width to fill
                             if (Width > 0L)
-                                barWidth = (long)Math.Round((General.GetTickCount() - GameState.SkillBufferTimer) / (double)(Core.Type.Skill[Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num].CastTime * 1000) * Width);
+                                barWidth = (long)Math.Round((General.GetTickCount() - GameState.SkillBufferTimer) / (double)(Core.Type.Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num].CastTime * 1000) * Width);
 
                             // draw bar background
                             Top = Height * 3L; // cooldown bar background
@@ -1815,9 +1815,9 @@ namespace Client
                 return;
 
             // speed from weapon
-            if (GetPlayerEquipment(index, EquipmentType.Weapon) > 0)
+            if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
-                attackspeed = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Speed;
+                attackspeed = Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Speed;
             }
             else
             {
@@ -1986,13 +1986,13 @@ namespace Client
             DrawCharacterSprite(spriteNum, x, y, rect);
 
             // check for paperdolling
-            for (int i = 0; i <= (int)EquipmentType.Count; i++)
+            for (int i = 0; i < (int)EquipmentType.Count; i++)
             {
-                if (GetPlayerEquipment(index, (EquipmentType)i) > 0)
+                if (GetPlayerEquipment(index, (EquipmentType)i) >= 0)
                 {
-                    if (Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll > 0)
+                    if (Core.Type.Item[(int)GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll > 0)
                     {
-                        DrawPaperdoll(x, y, Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll, anim, spriteleft);
+                        DrawPaperdoll(x, y, Core.Type.Item[(int)GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll, anim, spriteleft);
                     }
                 }
             }

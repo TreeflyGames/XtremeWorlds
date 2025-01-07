@@ -834,7 +834,6 @@ namespace Client
             buffer.WriteInt32(Core.Type.Item[itemNum].Data1);
             buffer.WriteInt32(Core.Type.Item[itemNum].Data2);
             buffer.WriteInt32(Core.Type.Item[itemNum].Data3);
-            buffer.WriteInt32(Core.Type.Item[itemNum].TwoHanded);
             buffer.WriteInt32(Core.Type.Item[itemNum].LevelReq);
             buffer.WriteInt32(Core.Type.Item[itemNum].Mastery);
             buffer.WriteString(Core.Type.Item[itemNum].Name);

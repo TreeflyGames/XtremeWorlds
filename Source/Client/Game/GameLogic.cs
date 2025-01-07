@@ -1418,7 +1418,7 @@ namespace Client
             for (i = 0L; i < Constant.MAX_HOTBAR; i++)
             {
                 tempRec.Top = (int)(StartY + GameState.HotbarTop);
-                tempRec.Left = (int)(StartX + (i - 1L) * GameState.HotbarOffsetX);
+                tempRec.Left = (int)(StartX + i * GameState.HotbarOffsetX);
                 tempRec.Right = tempRec.Left + GameState.PicX;
                 tempRec.Bottom = tempRec.Top + GameState.PicY;
 
@@ -1446,7 +1446,7 @@ namespace Client
                 return;
 
             // show
-            if (GetPlayerInv(GameState.MyIndex, (int)invNum) > 0)
+            if (GetPlayerInv(GameState.MyIndex, (int)invNum) >= 0)
             {
                 if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, (int)invNum)].BindType > 0 & Core.Type.Player[GameState.MyIndex].Inv[(int)invNum].Bound > 0)
                     soulBound = Conversions.ToBoolean(1);
@@ -2034,7 +2034,10 @@ namespace Client
                     }
             }
 
-            FrmAdmin.Instance.Dispose();
+            if (GameState.AdminPanel)
+            {
+                FrmAdmin.Instance.Dispose();
+            }
 
             NetworkConfig.DestroyNetwork();
             NetworkConfig.InitNetwork();

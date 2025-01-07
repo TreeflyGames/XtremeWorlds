@@ -53,34 +53,23 @@ namespace Client
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAdmin));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAdmin));
             btnRespawn = new Button();
-            btnRespawn.Click += new EventHandler(BtnRespawn_Click);
             btnMapReport = new Button();
-            btnMapReport.Click += new EventHandler(BtnMapReport_Click);
             btnALoc = new Button();
-            btnALoc.Click += new EventHandler(BtnALoc_Click);
             btnAdminSetSprite = new Button();
-            btnAdminSetSprite.Click += new EventHandler(BtnAdminSetSprite_Click);
             btnAdminWarpTo = new Button();
-            btnAdminWarpTo.Click += new EventHandler(BtnAdminWarpTo_Click);
             Label5 = new Label();
             Label4 = new Label();
             btnAdminSetAccess = new Button();
-            btnAdminSetAccess.Click += new EventHandler(BtnAdminSetAccess_Click);
             btnAdminWarpMe2 = new Button();
-            btnAdminWarpMe2.Click += new EventHandler(BtnAdminWarpMe2_Click);
             btnAdminWarp2Me = new Button();
-            btnAdminWarp2Me.Click += new EventHandler(BtnAdminWarp2Me_Click);
             btnAdminBan = new Button();
-            btnAdminBan.Click += new EventHandler(BtnAdminBan_Click);
             btnAdminKick = new Button();
-            btnAdminKick.Click += new EventHandler(BtnAdminKick_Click);
             txtAdminName = new TextBox();
             Label3 = new Label();
             Label2 = new Label();
             lstMaps = new ListView();
-            lstMaps.DoubleClick += new EventHandler(LstMaps_DoubleClick);
             ColumnHeader1 = new ColumnHeader();
             ColumnHeader2 = new ColumnHeader();
             TabControl1 = new TabControl();
@@ -88,33 +77,21 @@ namespace Client
             nudAdminSprite = new NumericUpDown();
             nudAdminMap = new NumericUpDown();
             btnLevelUp = new Button();
-            btnLevelUp.Click += new EventHandler(BtnLevelUp_Click);
             cmbAccess = new ComboBox();
             tabMapList = new TabPage();
             tabMapTools = new TabPage();
             tabEditors = new TabPage();
             btnMoralEditor = new Button();
-            btnMoralEditor.Click += new EventHandler(btnMoralEditor_Click);
             btnPetEditor = new Button();
-            btnPetEditor.Click += new EventHandler(btnPetEditor_Click);
             btnJobEditor = new Button();
-            btnJobEditor.Click += new EventHandler(btnJobEditor_Click);
             btnProjectiles = new Button();
-            btnProjectiles.Click += new EventHandler(btnProjectiles_Click);
             btnMapEditor = new Button();
-            btnMapEditor.Click += new EventHandler(BtnMapEditor_Click);
             btnItemEditor = new Button();
-            btnItemEditor.Click += new EventHandler(btnItemEditor_Click);
             btnResourceEditor = new Button();
-            btnResourceEditor.Click += new EventHandler(btnResourceEditor_Click);
             btnNPCEditor = new Button();
-            btnNPCEditor.Click += new EventHandler(btnNPCEditor_Click);
             btnSkillEditor = new Button();
-            btnSkillEditor.Click += new EventHandler(btnSkillEditor_Click);
             btnShopEditor = new Button();
-            btnShopEditor.Click += new EventHandler(btnShopEditor_Click);
             btnAnimationEditor = new Button();
-            btnAnimationEditor.Click += new EventHandler(btnAnimationEditor_Click);
             TabControl1.SuspendLayout();
             tabModeration.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudAdminSprite).BeginInit();
@@ -126,149 +103,159 @@ namespace Client
             // 
             // btnRespawn
             // 
-            btnRespawn.Location = new Point(227, 30);
-            btnRespawn.Margin = new Padding(5);
+            btnRespawn.Location = new Point(159, 18);
+            btnRespawn.Margin = new Padding(4, 3, 4, 3);
             btnRespawn.Name = "btnRespawn";
-            btnRespawn.Size = new Size(177, 41);
+            btnRespawn.Size = new Size(124, 25);
             btnRespawn.TabIndex = 34;
             btnRespawn.Text = "Respawn Map";
             btnRespawn.UseVisualStyleBackColor = true;
+            btnRespawn.Click += BtnRespawn_Click;
             // 
             // btnMapReport
             // 
-            btnMapReport.Location = new Point(10, 402);
-            btnMapReport.Margin = new Padding(5);
+            btnMapReport.Location = new Point(7, 241);
+            btnMapReport.Margin = new Padding(4, 3, 4, 3);
             btnMapReport.Name = "btnMapReport";
-            btnMapReport.Size = new Size(397, 41);
+            btnMapReport.Size = new Size(278, 25);
             btnMapReport.TabIndex = 33;
             btnMapReport.Text = "Refresh List";
             btnMapReport.UseVisualStyleBackColor = true;
+            btnMapReport.Click += BtnMapReport_Click;
             // 
             // btnALoc
             // 
-            btnALoc.Location = new Point(23, 30);
-            btnALoc.Margin = new Padding(5);
+            btnALoc.Location = new Point(16, 18);
+            btnALoc.Margin = new Padding(4, 3, 4, 3);
             btnALoc.Name = "btnALoc";
-            btnALoc.Size = new Size(177, 41);
+            btnALoc.Size = new Size(124, 25);
             btnALoc.TabIndex = 31;
             btnALoc.Text = "Location";
             btnALoc.UseVisualStyleBackColor = true;
+            btnALoc.Click += BtnALoc_Click;
             // 
             // btnAdminSetSprite
             // 
-            btnAdminSetSprite.Location = new Point(223, 391);
-            btnAdminSetSprite.Margin = new Padding(5);
+            btnAdminSetSprite.Location = new Point(156, 235);
+            btnAdminSetSprite.Margin = new Padding(4, 3, 4, 3);
             btnAdminSetSprite.Name = "btnAdminSetSprite";
-            btnAdminSetSprite.Size = new Size(180, 47);
+            btnAdminSetSprite.Size = new Size(126, 28);
             btnAdminSetSprite.TabIndex = 16;
             btnAdminSetSprite.Text = "Set Player Sprite";
             btnAdminSetSprite.UseVisualStyleBackColor = true;
+            btnAdminSetSprite.Click += BtnAdminSetSprite_Click;
             // 
             // btnAdminWarpTo
             // 
-            btnAdminWarpTo.Location = new Point(223, 338);
-            btnAdminWarpTo.Margin = new Padding(5);
+            btnAdminWarpTo.Location = new Point(156, 203);
+            btnAdminWarpTo.Margin = new Padding(4, 3, 4, 3);
             btnAdminWarpTo.Name = "btnAdminWarpTo";
-            btnAdminWarpTo.Size = new Size(180, 47);
+            btnAdminWarpTo.Size = new Size(126, 28);
             btnAdminWarpTo.TabIndex = 15;
             btnAdminWarpTo.Text = "Warp To Map";
             btnAdminWarpTo.UseVisualStyleBackColor = true;
+            btnAdminWarpTo.Click += BtnAdminWarpTo_Click;
             // 
             // Label5
             // 
             Label5.AutoSize = true;
-            Label5.Location = new Point(10, 403);
-            Label5.Margin = new Padding(5, 0, 5, 0);
+            Label5.Location = new Point(7, 242);
+            Label5.Margin = new Padding(4, 0, 4, 0);
             Label5.Name = "Label5";
-            Label5.Size = new Size(62, 25);
+            Label5.Size = new Size(40, 15);
             Label5.TabIndex = 13;
             Label5.Text = "Sprite:";
             // 
             // Label4
             // 
             Label4.AutoSize = true;
-            Label4.Location = new Point(10, 350);
-            Label4.Margin = new Padding(5, 0, 5, 0);
+            Label4.Location = new Point(7, 210);
+            Label4.Margin = new Padding(4, 0, 4, 0);
             Label4.Name = "Label4";
-            Label4.Size = new Size(122, 25);
+            Label4.Size = new Size(81, 15);
             Label4.TabIndex = 11;
             Label4.Text = "Map Number:";
             // 
             // btnAdminSetAccess
             // 
-            btnAdminSetAccess.Location = new Point(15, 285);
-            btnAdminSetAccess.Margin = new Padding(5);
+            btnAdminSetAccess.Location = new Point(10, 171);
+            btnAdminSetAccess.Margin = new Padding(4, 3, 4, 3);
             btnAdminSetAccess.Name = "btnAdminSetAccess";
-            btnAdminSetAccess.Size = new Size(388, 41);
+            btnAdminSetAccess.Size = new Size(272, 25);
             btnAdminSetAccess.TabIndex = 9;
             btnAdminSetAccess.Text = "Set Access";
             btnAdminSetAccess.UseVisualStyleBackColor = true;
+            btnAdminSetAccess.Click += BtnAdminSetAccess_Click;
             // 
             // btnAdminWarpMe2
             // 
-            btnAdminWarpMe2.Location = new Point(212, 120);
-            btnAdminWarpMe2.Margin = new Padding(5);
+            btnAdminWarpMe2.Location = new Point(148, 72);
+            btnAdminWarpMe2.Margin = new Padding(4, 3, 4, 3);
             btnAdminWarpMe2.Name = "btnAdminWarpMe2";
-            btnAdminWarpMe2.Size = new Size(192, 41);
+            btnAdminWarpMe2.Size = new Size(134, 25);
             btnAdminWarpMe2.TabIndex = 8;
             btnAdminWarpMe2.Text = "Warp Me To Player";
             btnAdminWarpMe2.UseVisualStyleBackColor = true;
+            btnAdminWarpMe2.Click += BtnAdminWarpMe2_Click;
             // 
             // btnAdminWarp2Me
             // 
-            btnAdminWarp2Me.Location = new Point(10, 120);
-            btnAdminWarp2Me.Margin = new Padding(5);
+            btnAdminWarp2Me.Location = new Point(7, 72);
+            btnAdminWarp2Me.Margin = new Padding(4, 3, 4, 3);
             btnAdminWarp2Me.Name = "btnAdminWarp2Me";
-            btnAdminWarp2Me.Size = new Size(192, 41);
+            btnAdminWarp2Me.Size = new Size(134, 25);
             btnAdminWarp2Me.TabIndex = 7;
             btnAdminWarp2Me.Text = "Warp Player To Me";
             btnAdminWarp2Me.UseVisualStyleBackColor = true;
+            btnAdminWarp2Me.Click += BtnAdminWarp2Me_Click;
             // 
             // btnAdminBan
             // 
-            btnAdminBan.Location = new Point(212, 65);
-            btnAdminBan.Margin = new Padding(5);
+            btnAdminBan.Location = new Point(148, 39);
+            btnAdminBan.Margin = new Padding(4, 3, 4, 3);
             btnAdminBan.Name = "btnAdminBan";
-            btnAdminBan.Size = new Size(192, 41);
+            btnAdminBan.Size = new Size(134, 25);
             btnAdminBan.TabIndex = 6;
             btnAdminBan.Text = "Ban Player";
             btnAdminBan.UseVisualStyleBackColor = true;
+            btnAdminBan.Click += BtnAdminBan_Click;
             // 
             // btnAdminKick
             // 
-            btnAdminKick.Location = new Point(10, 65);
-            btnAdminKick.Margin = new Padding(5);
+            btnAdminKick.Location = new Point(7, 39);
+            btnAdminKick.Margin = new Padding(4, 3, 4, 3);
             btnAdminKick.Name = "btnAdminKick";
-            btnAdminKick.Size = new Size(192, 41);
+            btnAdminKick.Size = new Size(134, 25);
             btnAdminKick.TabIndex = 5;
             btnAdminKick.Text = "Kick Player";
             btnAdminKick.UseVisualStyleBackColor = true;
+            btnAdminKick.Click += BtnAdminKick_Click;
             // 
             // txtAdminName
             // 
-            txtAdminName.Location = new Point(137, 15);
-            txtAdminName.Margin = new Padding(5);
+            txtAdminName.Location = new Point(96, 9);
+            txtAdminName.Margin = new Padding(4, 3, 4, 3);
             txtAdminName.Name = "txtAdminName";
-            txtAdminName.Size = new Size(264, 31);
+            txtAdminName.Size = new Size(186, 23);
             txtAdminName.TabIndex = 3;
             // 
             // Label3
             // 
             Label3.AutoSize = true;
-            Label3.Location = new Point(10, 238);
-            Label3.Margin = new Padding(5, 0, 5, 0);
+            Label3.Location = new Point(7, 143);
+            Label3.Margin = new Padding(4, 0, 4, 0);
             Label3.Name = "Label3";
-            Label3.Size = new Size(69, 25);
+            Label3.Size = new Size(46, 15);
             Label3.TabIndex = 2;
             Label3.Text = "Access:";
             // 
             // Label2
             // 
             Label2.AutoSize = true;
-            Label2.Location = new Point(10, 22);
-            Label2.Margin = new Padding(5, 0, 5, 0);
+            Label2.Location = new Point(7, 13);
+            Label2.Margin = new Padding(4, 0, 4, 0);
             Label2.Name = "Label2";
-            Label2.Size = new Size(115, 25);
+            Label2.Size = new Size(77, 15);
             Label2.TabIndex = 1;
             Label2.Text = "Player Name:";
             // 
@@ -278,14 +265,15 @@ namespace Client
             lstMaps.FullRowSelect = true;
             lstMaps.GridLines = true;
             lstMaps.HeaderStyle = ColumnHeaderStyle.Nonclickable;
-            lstMaps.Location = new Point(10, 12);
-            lstMaps.Margin = new Padding(5);
+            lstMaps.Location = new Point(7, 7);
+            lstMaps.Margin = new Padding(4, 3, 4, 3);
             lstMaps.MultiSelect = false;
             lstMaps.Name = "lstMaps";
-            lstMaps.Size = new Size(396, 376);
+            lstMaps.Size = new Size(278, 227);
             lstMaps.TabIndex = 4;
             lstMaps.UseCompatibleStateImageBehavior = false;
             lstMaps.View = View.Details;
+            lstMaps.DoubleClick += LstMaps_DoubleClick;
             // 
             // ColumnHeader1
             // 
@@ -303,11 +291,11 @@ namespace Client
             TabControl1.Controls.Add(tabMapList);
             TabControl1.Controls.Add(tabMapTools);
             TabControl1.Controls.Add(tabEditors);
-            TabControl1.Location = new Point(3, 3);
-            TabControl1.Margin = new Padding(5);
+            TabControl1.Location = new Point(2, 2);
+            TabControl1.Margin = new Padding(4, 3, 4, 3);
             TabControl1.Name = "TabControl1";
             TabControl1.SelectedIndex = 0;
-            TabControl1.Size = new Size(430, 498);
+            TabControl1.Size = new Size(301, 299);
             TabControl1.TabIndex = 38;
             // 
             // tabModeration
@@ -328,60 +316,61 @@ namespace Client
             tabModeration.Controls.Add(Label5);
             tabModeration.Controls.Add(btnAdminWarpTo);
             tabModeration.Controls.Add(btnAdminSetSprite);
-            tabModeration.Location = new Point(4, 34);
-            tabModeration.Margin = new Padding(5);
+            tabModeration.Location = new Point(4, 24);
+            tabModeration.Margin = new Padding(4, 3, 4, 3);
             tabModeration.Name = "tabModeration";
-            tabModeration.Padding = new Padding(5);
-            tabModeration.Size = new Size(422, 460);
+            tabModeration.Padding = new Padding(4, 3, 4, 3);
+            tabModeration.Size = new Size(293, 271);
             tabModeration.TabIndex = 0;
             tabModeration.Text = "Moderation";
             tabModeration.UseVisualStyleBackColor = true;
             // 
             // nudAdminSprite
             // 
-            nudAdminSprite.Location = new Point(133, 400);
-            nudAdminSprite.Margin = new Padding(5);
+            nudAdminSprite.Location = new Point(93, 240);
+            nudAdminSprite.Margin = new Padding(4, 3, 4, 3);
             nudAdminSprite.Name = "nudAdminSprite";
-            nudAdminSprite.Size = new Size(80, 31);
+            nudAdminSprite.Size = new Size(56, 23);
             nudAdminSprite.TabIndex = 33;
             // 
             // nudAdminMap
             // 
-            nudAdminMap.Location = new Point(133, 341);
-            nudAdminMap.Margin = new Padding(5);
+            nudAdminMap.Location = new Point(93, 205);
+            nudAdminMap.Margin = new Padding(4, 3, 4, 3);
             nudAdminMap.Name = "nudAdminMap";
-            nudAdminMap.Size = new Size(80, 31);
+            nudAdminMap.Size = new Size(56, 23);
             nudAdminMap.TabIndex = 32;
             // 
             // btnLevelUp
             // 
-            btnLevelUp.Location = new Point(53, 173);
-            btnLevelUp.Margin = new Padding(5);
+            btnLevelUp.Location = new Point(37, 104);
+            btnLevelUp.Margin = new Padding(4, 3, 4, 3);
             btnLevelUp.Name = "btnLevelUp";
-            btnLevelUp.Size = new Size(313, 41);
+            btnLevelUp.Size = new Size(219, 25);
             btnLevelUp.TabIndex = 31;
             btnLevelUp.Text = "Level Up";
             btnLevelUp.UseVisualStyleBackColor = true;
+            btnLevelUp.Click += BtnLevelUp_Click;
             // 
             // cmbAccess
             // 
             cmbAccess.FormattingEnabled = true;
             cmbAccess.Items.AddRange(new object[] { "Normal Player", "Moderator (GM)", "Mapper", "Developer", "Owner" });
-            cmbAccess.Location = new Point(95, 234);
-            cmbAccess.Margin = new Padding(5);
+            cmbAccess.Location = new Point(66, 140);
+            cmbAccess.Margin = new Padding(4, 3, 4, 3);
             cmbAccess.Name = "cmbAccess";
-            cmbAccess.Size = new Size(306, 33);
+            cmbAccess.Size = new Size(215, 23);
             cmbAccess.TabIndex = 17;
             // 
             // tabMapList
             // 
             tabMapList.Controls.Add(lstMaps);
             tabMapList.Controls.Add(btnMapReport);
-            tabMapList.Location = new Point(4, 34);
-            tabMapList.Margin = new Padding(5);
+            tabMapList.Location = new Point(4, 24);
+            tabMapList.Margin = new Padding(4, 3, 4, 3);
             tabMapList.Name = "tabMapList";
-            tabMapList.Padding = new Padding(5);
-            tabMapList.Size = new Size(422, 460);
+            tabMapList.Padding = new Padding(4, 3, 4, 3);
+            tabMapList.Size = new Size(293, 271);
             tabMapList.TabIndex = 2;
             tabMapList.Text = "Map List";
             tabMapList.UseVisualStyleBackColor = true;
@@ -390,11 +379,11 @@ namespace Client
             // 
             tabMapTools.Controls.Add(btnRespawn);
             tabMapTools.Controls.Add(btnALoc);
-            tabMapTools.Location = new Point(4, 34);
-            tabMapTools.Margin = new Padding(5);
+            tabMapTools.Location = new Point(4, 24);
+            tabMapTools.Margin = new Padding(4, 3, 4, 3);
             tabMapTools.Name = "tabMapTools";
-            tabMapTools.Padding = new Padding(5);
-            tabMapTools.Size = new Size(422, 460);
+            tabMapTools.Padding = new Padding(4, 3, 4, 3);
+            tabMapTools.Size = new Size(293, 271);
             tabMapTools.TabIndex = 3;
             tabMapTools.Text = "Map Tools";
             tabMapTools.UseVisualStyleBackColor = true;
@@ -412,139 +401,152 @@ namespace Client
             tabEditors.Controls.Add(btnSkillEditor);
             tabEditors.Controls.Add(btnShopEditor);
             tabEditors.Controls.Add(btnAnimationEditor);
-            tabEditors.Location = new Point(4, 34);
-            tabEditors.Margin = new Padding(5);
+            tabEditors.Location = new Point(4, 24);
+            tabEditors.Margin = new Padding(4, 3, 4, 3);
             tabEditors.Name = "tabEditors";
-            tabEditors.Padding = new Padding(5);
-            tabEditors.Size = new Size(422, 460);
+            tabEditors.Padding = new Padding(4, 3, 4, 3);
+            tabEditors.Size = new Size(293, 271);
             tabEditors.TabIndex = 4;
             tabEditors.Text = "Editors";
             tabEditors.UseVisualStyleBackColor = true;
             // 
             // btnMoralEditor
             // 
-            btnMoralEditor.Location = new Point(217, 185);
-            btnMoralEditor.Margin = new Padding(5);
+            btnMoralEditor.Location = new Point(152, 111);
+            btnMoralEditor.Margin = new Padding(4, 3, 4, 3);
             btnMoralEditor.Name = "btnMoralEditor";
-            btnMoralEditor.Size = new Size(187, 48);
+            btnMoralEditor.Size = new Size(131, 29);
             btnMoralEditor.TabIndex = 69;
             btnMoralEditor.Text = "Moral Editor";
             btnMoralEditor.UseVisualStyleBackColor = true;
+            btnMoralEditor.Click += btnMoralEditor_Click;
             // 
             // btnPetEditor
             // 
-            btnPetEditor.Location = new Point(217, 10);
-            btnPetEditor.Margin = new Padding(5);
+            btnPetEditor.Location = new Point(152, 6);
+            btnPetEditor.Margin = new Padding(4, 3, 4, 3);
             btnPetEditor.Name = "btnPetEditor";
-            btnPetEditor.Size = new Size(187, 48);
+            btnPetEditor.Size = new Size(131, 29);
             btnPetEditor.TabIndex = 68;
             btnPetEditor.Text = "Pet Editor";
             btnPetEditor.UseVisualStyleBackColor = true;
+            btnPetEditor.Click += btnPetEditor_Click;
             // 
             // btnJobEditor
             // 
-            btnJobEditor.Location = new Point(10, 68);
-            btnJobEditor.Margin = new Padding(5);
+            btnJobEditor.Location = new Point(7, 41);
+            btnJobEditor.Margin = new Padding(4, 3, 4, 3);
             btnJobEditor.Name = "btnJobEditor";
-            btnJobEditor.Size = new Size(187, 48);
+            btnJobEditor.Size = new Size(131, 29);
             btnJobEditor.TabIndex = 66;
             btnJobEditor.Text = "Job Editor";
             btnJobEditor.UseVisualStyleBackColor = true;
+            btnJobEditor.Click += btnJobEditor_Click;
             // 
             // btnProjectiles
             // 
-            btnProjectiles.Location = new Point(217, 68);
-            btnProjectiles.Margin = new Padding(5);
+            btnProjectiles.Location = new Point(152, 41);
+            btnProjectiles.Margin = new Padding(4, 3, 4, 3);
             btnProjectiles.Name = "btnProjectiles";
-            btnProjectiles.Size = new Size(187, 48);
+            btnProjectiles.Size = new Size(131, 29);
             btnProjectiles.TabIndex = 64;
             btnProjectiles.Text = "Projectile Editor";
             btnProjectiles.UseVisualStyleBackColor = true;
+            btnProjectiles.Click += btnProjectiles_Click;
             // 
             // btnMapEditor
             // 
-            btnMapEditor.Location = new Point(12, 302);
-            btnMapEditor.Margin = new Padding(5);
+            btnMapEditor.Location = new Point(8, 181);
+            btnMapEditor.Margin = new Padding(4, 3, 4, 3);
             btnMapEditor.Name = "btnMapEditor";
-            btnMapEditor.Size = new Size(187, 48);
+            btnMapEditor.Size = new Size(131, 29);
             btnMapEditor.TabIndex = 55;
             btnMapEditor.Text = "Map Editor";
             btnMapEditor.UseVisualStyleBackColor = true;
+            btnMapEditor.Click += BtnMapEditor_Click;
             // 
             // btnItemEditor
             // 
-            btnItemEditor.Location = new Point(12, 185);
-            btnItemEditor.Margin = new Padding(5);
+            btnItemEditor.Location = new Point(8, 111);
+            btnItemEditor.Margin = new Padding(4, 3, 4, 3);
             btnItemEditor.Name = "btnItemEditor";
-            btnItemEditor.Size = new Size(187, 48);
+            btnItemEditor.Size = new Size(131, 29);
             btnItemEditor.TabIndex = 56;
             btnItemEditor.Text = "Item Editor";
             btnItemEditor.UseVisualStyleBackColor = true;
+            btnItemEditor.Click += btnItemEditor_Click;
             // 
             // btnResourceEditor
             // 
-            btnResourceEditor.Location = new Point(217, 127);
-            btnResourceEditor.Margin = new Padding(5);
+            btnResourceEditor.Location = new Point(152, 76);
+            btnResourceEditor.Margin = new Padding(4, 3, 4, 3);
             btnResourceEditor.Name = "btnResourceEditor";
-            btnResourceEditor.Size = new Size(187, 48);
+            btnResourceEditor.Size = new Size(131, 29);
             btnResourceEditor.TabIndex = 57;
             btnResourceEditor.Text = "Resource Editor";
             btnResourceEditor.UseVisualStyleBackColor = true;
+            btnResourceEditor.Click += btnResourceEditor_Click;
             // 
             // btnNPCEditor
             // 
-            btnNPCEditor.Location = new Point(12, 127);
-            btnNPCEditor.Margin = new Padding(5);
+            btnNPCEditor.Location = new Point(8, 76);
+            btnNPCEditor.Margin = new Padding(4, 3, 4, 3);
             btnNPCEditor.Name = "btnNPCEditor";
-            btnNPCEditor.Size = new Size(187, 48);
+            btnNPCEditor.Size = new Size(131, 29);
             btnNPCEditor.TabIndex = 58;
             btnNPCEditor.Text = "NPC Editor";
             btnNPCEditor.UseVisualStyleBackColor = true;
+            btnNPCEditor.Click += btnNPCEditor_Click;
             // 
             // btnSkillEditor
             // 
-            btnSkillEditor.Location = new Point(12, 243);
-            btnSkillEditor.Margin = new Padding(5);
+            btnSkillEditor.Location = new Point(8, 146);
+            btnSkillEditor.Margin = new Padding(4, 3, 4, 3);
             btnSkillEditor.Name = "btnSkillEditor";
-            btnSkillEditor.Size = new Size(187, 48);
+            btnSkillEditor.Size = new Size(131, 29);
             btnSkillEditor.TabIndex = 59;
             btnSkillEditor.Text = "Skill Editor";
             btnSkillEditor.UseVisualStyleBackColor = true;
+            btnSkillEditor.Click += btnSkillEditor_Click;
             // 
             // btnShopEditor
             // 
-            btnShopEditor.Location = new Point(12, 360);
-            btnShopEditor.Margin = new Padding(5);
+            btnShopEditor.Location = new Point(8, 216);
+            btnShopEditor.Margin = new Padding(4, 3, 4, 3);
             btnShopEditor.Name = "btnShopEditor";
-            btnShopEditor.Size = new Size(187, 48);
+            btnShopEditor.Size = new Size(131, 29);
             btnShopEditor.TabIndex = 60;
             btnShopEditor.Text = "Shop Editor";
             btnShopEditor.UseVisualStyleBackColor = true;
+            btnShopEditor.Click += btnShopEditor_Click;
             // 
             // btnAnimationEditor
             // 
-            btnAnimationEditor.Location = new Point(12, 10);
-            btnAnimationEditor.Margin = new Padding(5);
+            btnAnimationEditor.Location = new Point(8, 6);
+            btnAnimationEditor.Margin = new Padding(4, 3, 4, 3);
             btnAnimationEditor.Name = "btnAnimationEditor";
-            btnAnimationEditor.Size = new Size(187, 48);
+            btnAnimationEditor.Size = new Size(131, 29);
             btnAnimationEditor.TabIndex = 61;
             btnAnimationEditor.Text = "Animation Editor";
             btnAnimationEditor.UseVisualStyleBackColor = true;
+            btnAnimationEditor.Click += btnAnimationEditor_Click;
             // 
             // FrmAdmin
             // 
-            AutoScaleDimensions = new SizeF(10.0f, 25.0f);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(435, 498);
+            ClientSize = new Size(304, 299);
             Controls.Add(TabControl1);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(5);
+            Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FrmAdmin";
             ShowIcon = false;
             Text = "Admin Panel";
+            FormClosing += FrmAdmin_FormClosing;
+            Load += FrmAdmin_Load;
             TabControl1.ResumeLayout(false);
             tabModeration.ResumeLayout(false);
             tabModeration.PerformLayout();
@@ -553,9 +555,7 @@ namespace Client
             tabMapList.ResumeLayout(false);
             tabMapTools.ResumeLayout(false);
             tabEditors.ResumeLayout(false);
-            Load += new EventHandler(FrmAdmin_Load);
             ResumeLayout(false);
-
         }
 
         internal Button btnRespawn;

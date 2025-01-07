@@ -43,7 +43,7 @@ namespace Server
                 {
                     // Check if any of our players has completed casting and get their skill going if they have.
                     var playerskills = (from p in onlinePlayers
-                                        where p.player.SkillBuffer > 0 && General.GetTimeMs() > p.player.SkillBufferTimer + Core.Type.Skill[p.player.SkillBuffer].CastTime * 1000
+                                        where p.player.SkillBuffer >= 0 && General.GetTimeMs() > p.player.SkillBufferTimer + Core.Type.Skill[(int)p.player.SkillBuffer].CastTime * 1000
                                         select new { p.Index, Success = HandleCastSkill((int)p.Index) }).ToArray();
 
                     // Check if we need to clear any of our players from being stunned.
@@ -296,12 +296,12 @@ namespace Server
                         NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[x].Num;
 
                         // check if they've completed casting, and if so set the actual skill going
-                        if (Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer > 0 & Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
+                        if (Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer >= 0 & Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
                         {
                             if (General.GetTimeMs() > Core.Type.MapNPC[mapNum].NPC[x].SkillBufferTimer + Core.Type.Skill[Core.Type.NPC[NPCNum].Skill[Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer]].CastTime * 1000)
                             {
                                 CastNPCSkill(x, mapNum, Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer);
-                                Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer = 0;
+                                Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer = -1;
                                 Core.Type.MapNPC[mapNum].NPC[x].SkillBufferTimer = 0;
                             }
                         }
@@ -791,8 +791,12 @@ namespace Server
         internal static bool HandleCastSkill(int index)
         {
             bool HandleCastSkillRet = default;
-            CastSkill(index, Core.Type.TempPlayer[index].SkillBuffer);
-            Core.Type.TempPlayer[index].SkillBuffer = 0;
+
+            if (Core.Type.TempPlayer[index].SkillBuffer < 0)
+                return false;
+
+            CastSkill(index, (int)Core.Type.TempPlayer[index].SkillBuffer);
+            Core.Type.TempPlayer[index].SkillBuffer = -1;
             Core.Type.TempPlayer[index].SkillBufferTimer = 0;
             HandleCastSkillRet = Conversions.ToBoolean(1);
             return HandleCastSkillRet;
@@ -800,39 +804,42 @@ namespace Server
 
         internal static void CastSkill(int index, int SkillSlot)
         {
+            if (GetPlayerSkill(index, SkillSlot) < 0)
+                return;
+
             // Set up some basic variables we'll be using.
-            var skillId = GetPlayerSkill(index, SkillSlot);
+            int skillID = (int)GetPlayerSkill(index, SkillSlot);
 
             // Preventative checks
-            if (!NetworkConfig.IsPlaying(index) | SkillSlot < 0 | SkillSlot > Core.Constant.MAX_PLAYER_SKILLS | !HasSkill(index, skillId))
+            if (!NetworkConfig.IsPlaying(index) | SkillSlot < 0 | SkillSlot > Core.Constant.MAX_PLAYER_SKILLS | !HasSkill(index, skillID))
                 return;
 
             // Check if the player is able to cast the Skill.
-            if (GetPlayerVital(index, VitalType.SP) < Core.Type.Skill[skillId].MpCost)
+            if (GetPlayerVital(index, VitalType.SP) < Core.Type.Skill[(int)skillID].MpCost)
             {
                 NetworkSend.PlayerMsg(index, "Not enough mana!", (int) ColorType.BrightRed);
                 return;
             }
-            else if (GetPlayerLevel(index) < Core.Type.Skill[skillId].LevelReq)
+            else if (GetPlayerLevel(index) < Core.Type.Skill[skillID].LevelReq)
             {
-                NetworkSend.PlayerMsg(index, string.Format("You must be level {0} to use this skill.", Core.Type.Skill[skillId].LevelReq), (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, string.Format("You must be level {0} to use this skill.", Core.Type.Skill[skillID].LevelReq), (int) ColorType.BrightRed);
                 return;
             }
-            else if (GetPlayerAccess(index) < Core.Type.Skill[skillId].AccessReq)
+            else if (GetPlayerAccess(index) < Core.Type.Skill[skillID].AccessReq)
             {
                 NetworkSend.PlayerMsg(index, "You must be an administrator to use this skill.", (int) ColorType.BrightRed);
                 return;
             }
-            else if (!(Core.Type.Skill[skillId].JobReq == 0) & Player.GetPlayerJob(index) != Core.Type.Skill[skillId].JobReq)
+            else if (!(Core.Type.Skill[skillID].JobReq == 0) & Player.GetPlayerJob(index) != Core.Type.Skill[skillID].JobReq)
             {
-                NetworkSend.PlayerMsg(index, string.Format("Only {0} can use this skill.", GameLogic.CheckGrammar(Core.Type.Job[Core.Type.Skill[skillId].JobReq].Name, 1)), (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, string.Format("Only {0} can use this skill.", GameLogic.CheckGrammar(Core.Type.Job[Core.Type.Skill[skillID].JobReq].Name, 1)), (int) ColorType.BrightRed);
                 return;
             }
-            else if (Core.Type.Skill[skillId].Range > 0 & !IsTargetOnMap(index))
+            else if (Core.Type.Skill[skillID].Range > 0 & !IsTargetOnMap(index))
             {
                 return;
             }
-            else if (Core.Type.Skill[skillId].Range > 0 & !IsInSkillRange(index, skillId) & Core.Type.Skill[skillId].IsProjectile == 0)
+            else if (Core.Type.Skill[skillID].Range > 0 & !IsInSkillRange(index, skillID) & Core.Type.Skill[skillID].IsProjectile == 0)
             {
                 NetworkSend.PlayerMsg(index, "Target not in range.", (int) ColorType.BrightRed);
                 NetworkSend.SendClearSkillBuffer(index);
@@ -840,27 +847,27 @@ namespace Server
             }
 
             // Determine what kind of Skill Type we're dealing with and move on to the appropriate methods.
-            if (Core.Type.Skill[skillId].IsProjectile == 1)
+            if (Core.Type.Skill[skillID].IsProjectile == 1)
             {
-                Projectile.PlayerFireProjectile(index, skillId);
+                Projectile.PlayerFireProjectile(index, skillID);
             }
             else
             {
-                if (Core.Type.Skill[skillId].Range == 0 & !Core.Type.Skill[skillId].IsAoE)
-                    HandleSelfCastSkill(index, skillId);
-                if (Core.Type.Skill[skillId].Range == 0 & Core.Type.Skill[skillId].IsAoE)
-                    HandleSelfCastAoESkill(index, skillId);
-                if (Core.Type.Skill[skillId].Range > 0 & Core.Type.Skill[skillId].IsAoE)
-                    HandleTargetedAoESkill(index, skillId);
-                if (Core.Type.Skill[skillId].Range > 0 & !Core.Type.Skill[skillId].IsAoE)
-                    HandleTargetedSkill(index, skillId);
+                if (Core.Type.Skill[skillID].Range == 0 & !Core.Type.Skill[skillID].IsAoE)
+                    HandleSelfCastSkill(index, skillID);
+                if (Core.Type.Skill[skillID].Range == 0 & Core.Type.Skill[skillID].IsAoE)
+                    HandleSelfCastAoESkill(index, skillID);
+                if (Core.Type.Skill[skillID].Range > 0 & Core.Type.Skill[skillID].IsAoE)
+                    HandleTargetedAoESkill(index, skillID);
+                if (Core.Type.Skill[skillID].Range > 0 & !Core.Type.Skill[skillID].IsAoE)
+                    HandleTargetedSkill(index, skillID);
             }
 
             // Do everything we need to do at the end of the cast.
-            FinalizeCast(index, GetPlayerSkill(index, skillId), Core.Type.Skill[skillId].MpCost);
+            FinalizeCast(index, (int)GetPlayerSkill(index, skillID), Core.Type.Skill[skillID].MpCost);
         }
 
-        private static void HandleSelfCastAoESkill(int index, int skillId)
+        private static void HandleSelfCastAoESkill(int index, int skillID)
         {
 
             // Set up some variables we'll definitely be using.
@@ -868,14 +875,14 @@ namespace Server
             var centerY = GetPlayerY(index);
 
             // Determine what kind of Skill we're dealing with and process it.
-            switch (Core.Type.Skill[skillId].Type)
+            switch (Core.Type.Skill[skillID].Type)
             {
                 case (byte)SkillType.DamageHp:
                 case (byte)SkillType.DamageMp:
                 case (byte)SkillType.HealHp:
                 case (byte)SkillType.HealMp:
                     {
-                        HandleAoE(index, skillId, centerX, centerY);
+                        HandleAoE(index, skillID, centerX, centerY);
                         break;
                     }
 
@@ -887,7 +894,7 @@ namespace Server
 
         }
 
-        private static void HandleTargetedAoESkill(int index, int skillId)
+        private static void HandleTargetedAoESkill(int index, int skillID)
         {
 
             // Set up some variables we'll definitely be using.
@@ -917,14 +924,14 @@ namespace Server
             }
 
             // Determine what kind of Skill we're dealing with and process it.
-            switch (Core.Type.Skill[skillId].Type)
+            switch (Core.Type.Skill[skillID].Type)
             {
                 case (byte)SkillType.HealMp:
                 case (byte)SkillType.DamageHp:
                 case (byte)SkillType.DamageMp:
                 case (byte)SkillType.HealHp:
                     {
-                        HandleAoE(index, skillId, centerX, centerY);
+                        HandleAoE(index, skillID, centerX, centerY);
                         break;
                     }
 
@@ -935,43 +942,43 @@ namespace Server
             }
         }
 
-        private static void HandleSelfCastSkill(int index, int skillId)
+        private static void HandleSelfCastSkill(int index, int skillID)
         {
             // Determine what kind of Skill we're dealing with and process it.
-            switch (Core.Type.Skill[skillId].Type)
+            switch (Core.Type.Skill[skillID].Type)
             {
                 case (byte)SkillType.HealHp:
                     {
-                        SkillPlayer_Effect((byte) VitalType.HP, true, index, Core.Type.Skill[skillId].Vital, skillId);
+                        SkillPlayer_Effect((byte) VitalType.HP, true, index, Core.Type.Skill[skillID].Vital, skillID);
                         break;
                     }
                 case (byte)SkillType.HealMp:
                     {
-                        SkillPlayer_Effect((byte) VitalType.SP, true, index, Core.Type.Skill[skillId].Vital, skillId);
+                        SkillPlayer_Effect((byte) VitalType.SP, true, index, Core.Type.Skill[skillID].Vital, skillID);
                         break;
                     }
                 case (byte)SkillType.Warp:
                     {
-                        Animation.SendAnimation(GetPlayerMap(index), Core.Type.Skill[skillId].SkillAnim, 0, 0, (byte)TargetType.Player, index);
-                        Player.PlayerWarp(index, Core.Type.Skill[skillId].Map, Core.Type.Skill[skillId].X, Core.Type.Skill[skillId].Y);
+                        Animation.SendAnimation(GetPlayerMap(index), Core.Type.Skill[skillID].SkillAnim, 0, 0, (byte)TargetType.Player, index);
+                        Player.PlayerWarp(index, Core.Type.Skill[skillID].Map, Core.Type.Skill[skillID].X, Core.Type.Skill[skillID].Y);
                         break;
                     }
             }
 
             // Play our animation.
-            Animation.SendAnimation(GetPlayerMap(index), Core.Type.Skill[skillId].SkillAnim, 0, 0, (byte)TargetType.Player, index);
+            Animation.SendAnimation(GetPlayerMap(index), Core.Type.Skill[skillID].SkillAnim, 0, 0, (byte)TargetType.Player, index);
         }
 
-        private static void HandleTargetedSkill(int index, int skillId)
+        private static void HandleTargetedSkill(int index, int skillID)
         {
             // Set up some variables we'll definitely be using.
             VitalType vital;
             bool dealsDamage;
-            int amount = Core.Type.Skill[skillId].Vital;
+            int amount = Core.Type.Skill[skillID].Vital;
             var target = Core.Type.TempPlayer[index].Target;
 
             // Determine what vital we need to adjust and how.
-            switch (Core.Type.Skill[skillId].Type)
+            switch (Core.Type.Skill[skillID].Type)
             {
                 case (byte)SkillType.DamageHp:
                     {
@@ -1013,11 +1020,11 @@ namespace Server
                     {
                         // Deal with damaging abilities.
                         if (dealsDamage & Player.CanPlayerAttackNPC(index, target, true))
-                            SkillNPC_Effect((byte)vital, false, target, amount, skillId, GetPlayerMap(index));
+                            SkillNPC_Effect((byte)vital, false, target, amount, skillID, GetPlayerMap(index));
 
                         // Deal with healing abilities
                         if (!dealsDamage)
-                            SkillNPC_Effect((byte)vital, true, target, amount, skillId, GetPlayerMap(index));
+                            SkillNPC_Effect((byte)vital, true, target, amount, skillID, GetPlayerMap(index));
 
                         // Handle our NPC death if it kills them
                         if (Conversions.ToBoolean(NPC.IsNPCDead(GetPlayerMap(index), Core.Type.TempPlayer[index].Target)))
@@ -1033,11 +1040,11 @@ namespace Server
 
                         // Deal with damaging abilities.
                         if (dealsDamage & Player.CanPlayerAttackPlayer(index, target, true))
-                            SkillPlayer_Effect((byte)vital, false, target, amount, skillId);
+                            SkillPlayer_Effect((byte)vital, false, target, amount, skillID);
 
                         // Deal with healing abilities
                         if (!dealsDamage)
-                            SkillPlayer_Effect((byte)vital, true, target, amount, skillId);
+                            SkillPlayer_Effect((byte)vital, true, target, amount, skillID);
 
                         if (Conversions.ToBoolean(Player.IsPlayerDead(target)))
                         {
@@ -1059,20 +1066,20 @@ namespace Server
             }
 
             // Play our animation.
-            Animation.SendAnimation(GetPlayerMap(index), Core.Type.Skill[skillId].SkillAnim, 0, 0, Core.Type.TempPlayer[index].TargetType, target);
+            Animation.SendAnimation(GetPlayerMap(index), Core.Type.Skill[skillID].SkillAnim, 0, 0, Core.Type.TempPlayer[index].TargetType, target);
         }
 
-        private static void HandleAoE(int index, int skillId, int x, int y)
+        private static void HandleAoE(int index, int skillID, int x, int y)
         {
             // Get some basic things set up.
             var map = GetPlayerMap(index);
-            int range = Core.Type.Skill[skillId].Range;
-            int amount = Core.Type.Skill[skillId].Vital;
+            int range = Core.Type.Skill[skillID].Range;
+            int amount = Core.Type.Skill[skillID].Vital;
             VitalType vital;
             bool dealsDamage;
 
             // Determine what vital we need to adjust and how.
-            switch (Core.Type.Skill[skillId].Type)
+            switch (Core.Type.Skill[skillID].Type)
             {
                 case (byte)SkillType.DamageHp:
                     {
@@ -1116,14 +1123,14 @@ namespace Server
 
                     // Deal with damaging abilities.
                     if (dealsDamage && Player.CanPlayerAttackPlayer(index, id, true))
-                        SkillPlayer_Effect((byte)vital, false, id, amount, skillId);
+                        SkillPlayer_Effect((byte)vital, false, id, amount, skillID);
 
                     // Deal with healing abilities
                     if (!dealsDamage)
-                        SkillPlayer_Effect((byte)vital, true, id, amount, skillId);
+                        SkillPlayer_Effect((byte)vital, true, id, amount, skillID);
 
                     // Send our animation to the MyMap.
-                    Animation.SendAnimation(map, Core.Type.Skill[skillId].SkillAnim, 0, 0, (byte)TargetType.Player, id);
+                    Animation.SendAnimation(map, Core.Type.Skill[skillID].SkillAnim, 0, 0, (byte)TargetType.Player, id);
 
                     if ((bool)Player.IsPlayerDead(id))
                     {
@@ -1144,14 +1151,14 @@ namespace Server
 
                     // Deal with damaging abilities.
                     if (dealsDamage && Player.CanPlayerAttackNPC(index, id, true))
-                        SkillNPC_Effect((byte)vital, false, id, amount, skillId, map);
+                        SkillNPC_Effect((byte)vital, false, id, amount, skillID, map);
 
                     // Deal with healing abilities
                     if (!dealsDamage)
-                        SkillNPC_Effect((byte)vital, true, id, amount, skillId, map);
+                        SkillNPC_Effect((byte)vital, true, id, amount, skillID, map);
 
                     // Send our animation to the MyMap.
-                    Animation.SendAnimation(map, Core.Type.Skill[skillId].SkillAnim, 0, 0, (byte)TargetType.NPC, id);
+                    Animation.SendAnimation(map, Core.Type.Skill[skillID].SkillAnim, 0, 0, (byte)TargetType.NPC, id);
 
                     // Handle our NPC death if it kills them
                     if ((bool)NPC.IsNPCDead(map, id))

@@ -1,4 +1,5 @@
-﻿using static Core.Enum;
+﻿using System.Reflection.Metadata;
+using static Core.Enum;
 using Timer = System.Windows.Forms.Timer;
 
 namespace Client
@@ -68,6 +69,7 @@ namespace Client
                     withBlock1.Owner = (Form)Control.FromHandle(General.Client.Window.Handle);
                     withBlock1.Show();
                     withBlock1.txtAdminName.Text = Core.Global.Command.GetPlayerName(GameState.MyIndex);
+                    GameState.AdminPanel = true;
                 }
                 GameState.InitAdminForm = false;
             }

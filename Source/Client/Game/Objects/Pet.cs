@@ -19,9 +19,9 @@ namespace Client
         internal const int PetHpBarWidth = 129;
         internal const int PetMpBarWidth = 129;
 
-        internal static int PetSkillBuffer;
+        internal static double PetSkillBuffer;
         internal static int PetSkillBufferTimer;
-        internal static int[] PetSkillCd;
+        internal static int[] PetSkillCD;
 
         internal const byte PetBehaviourFollow = 0; // The pet will attack all NPCs around
 
@@ -40,7 +40,13 @@ namespace Client
             Core.Type.Pet[index].Name = "";
 
             Core.Type.Pet[index].Stat = new byte[(int)Core.Enum.StatType.Count];
-            Core.Type.Pet[index].Skill = new int[5];
+            Core.Type.Pet[index].Skill = new int[Constant.MAX_PET_SKILLS];
+
+            for (int i = 0; i < Constant.MAX_PET_SKILLS; i++)
+                Core.Type.Pet[index].Skill[i] = -1;
+
+            PetSkillBuffer = -1;
+            PetSkillBufferTimer = 0;
             GameState.Pet_Loaded[index] = 0;
         }
 
@@ -48,8 +54,8 @@ namespace Client
         {
             int i;
 
-            Core.Type.Pet = new Core.Type.PetStruct[101];
-            PetSkillCd = new int[5];
+            Core.Type.Pet = new Core.Type.PetStruct[Constant.MAX_PETS];
+            PetSkillCD = new int[Constant.MAX_PET_SKILLS];
 
             for (i = 0; i < Constant.MAX_PETS; i++)
                 ClearPet(i);
@@ -365,7 +371,7 @@ namespace Client
 
         internal static void Packet_ClearPetSkillBuffer(ref byte[] data)
         {
-            PetSkillBuffer = 0;
+            PetSkillBuffer = -1;
             PetSkillBufferTimer = 0;
         }
 

@@ -130,7 +130,7 @@ namespace Core
 
         public struct PlayerSkillStruct
         {
-            public int Num;
+            public double Num;
             public int CD;
         }
 
@@ -185,7 +185,6 @@ namespace Core
             public byte[] Add_Stat;
             public byte Rarity;
             public int Speed;
-            public int TwoHanded;
             public byte BindType;
             public byte[] Stat_Req;
             public int Animation;
@@ -408,7 +407,7 @@ namespace Core
             public int Target;
             public byte PartyStarter;
             public bool GettingMap;
-            public int SkillBuffer;
+            public double SkillBuffer;
             public int SkillBufferTimer;
             public int[] SkillCD;
             public int InShop;

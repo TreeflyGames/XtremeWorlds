@@ -69,7 +69,6 @@ namespace Client
             Core.Type.Item[n].Data1 = buffer.ReadInt32();
             Core.Type.Item[n].Data2 = buffer.ReadInt32();
             Core.Type.Item[n].Data3 = buffer.ReadInt32();
-            Core.Type.Item[n].TwoHanded = buffer.ReadInt32();
             Core.Type.Item[n].LevelReq = buffer.ReadInt32();
             Core.Type.Item[n].Mastery = (byte)buffer.ReadInt32();
             Core.Type.Item[n].Name = buffer.ReadString();

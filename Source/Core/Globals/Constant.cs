@@ -16,6 +16,7 @@ namespace Core
         public const byte MAX_MAP_NPCS = 30;
         public const int MAX_NPCS = 500;
         public const byte MAX_NPC_SKILLS = 6;
+        public const byte MAX_PET_SKILLS = 4;
         public const int MAX_PARTIES = 35;
         public const int MAX_PARTY_MEMBERS = 4;
         public const int MAX_PETS = 100;

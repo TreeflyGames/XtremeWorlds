@@ -251,7 +251,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SMapWornEq);
             buffer.WriteInt32(index);
             for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
+                buffer.WriteInt32((int)GetPlayerEquipment(index, (EquipmentType)i));
 
             NetworkConfig.SendDataToMap(GetPlayerMap(index), ref buffer.Data, buffer.Head);
 
@@ -265,7 +265,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SMapWornEq);
             buffer.WriteInt32(PlayerNum);
             for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerEquipment(PlayerNum, (EquipmentType)i));
+                buffer.WriteInt32((int)GetPlayerEquipment(PlayerNum, (EquipmentType)i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
@@ -527,7 +527,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SPlayerWornEq);
 
             for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
+                buffer.WriteInt32((int)GetPlayerEquipment(index, (EquipmentType)i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
@@ -1205,7 +1205,7 @@ namespace Server
 
             var loopTo = Core.Constant.MAX_PLAYER_SKILLS;
             for (i = 0; i < loopTo; i++)
-                buffer.WriteInt32(GetPlayerSkill(index, i));
+                buffer.WriteInt32((int)GetPlayerSkill(index, i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
