@@ -16,7 +16,7 @@ namespace Client
             int i;
             int x;
 
-            for (x = 1; x < Constant.MAX_PLAYERS; x++)
+            for (x = 0; x < Constant.MAX_PLAYERS; x++)
             {
                 Core.Type.Bank[x].Item = new Core.Type.PlayerInvStruct[(Constant.MAX_BANK + 1)];
 

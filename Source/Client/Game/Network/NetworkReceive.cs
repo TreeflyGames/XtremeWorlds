@@ -654,7 +654,7 @@ namespace Client
             Core.Type.NPC[i].AttackSay = buffer.ReadString();
             Core.Type.NPC[i].Behaviour = buffer.ReadByte();
 
-            for (x = 1; x < Constant.MAX_DROP_ITEMS; x++)
+            for (x = 0; x < Constant.MAX_DROP_ITEMS; x++)
             {
                 Core.Type.NPC[i].DropChance[x] = buffer.ReadInt32();
                 Core.Type.NPC[i].DropItem[x] = buffer.ReadInt32();
@@ -670,10 +670,10 @@ namespace Client
             Core.Type.NPC[i].SpawnSecs = buffer.ReadInt32();
             Core.Type.NPC[i].Sprite = buffer.ReadInt32();
 
-            for (x = 1; x < (int)Core.Enum.StatType.Count; x++)
+            for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
                 Core.Type.NPC[i].Stat[x] = buffer.ReadByte();
 
-            for (x = 1; x < Constant.MAX_NPC_SKILLS; x++)
+            for (x = 0; x < Constant.MAX_NPC_SKILLS; x++)
                 Core.Type.NPC[i].Skill[x] = buffer.ReadByte();
 
             Core.Type.NPC[i].Level = buffer.ReadInt32();

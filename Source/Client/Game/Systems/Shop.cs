@@ -14,7 +14,7 @@ namespace Client
         {
             Core.Type.Shop[index] = default;
             Core.Type.Shop[index].Name = "";
-            for (int x = 1; x < Constant.MAX_TRADES; x++)
+            for (int x = 0; x < Constant.MAX_TRADES; x++)
                 Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[x + 1];
             GameState.Shop_Loaded[index] = 0;
         }

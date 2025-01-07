@@ -421,15 +421,15 @@ namespace Client
         public static bool InitEventEditorForm;
 
         // Editor edited items array
-        public static bool[] Item_Changed = new bool[501];
-        public static bool[] NPC_Changed = new bool[501];
-        public static bool[] Resource_Changed = new bool[101];
-        public static bool[] Animation_Changed = new bool[101];
-        public static bool[] Skill_Changed = new bool[256];
-        public static bool[] Shop_Changed = new bool[101];
-        public static bool[] Pet_Changed = new bool[101];
-        public static bool[] Job_Changed = new bool[(Constant.MAX_JOBS + 1)];
-        public static bool[] Moral_Changed = new bool[(Constant.MAX_MORALS + 1)];
+        public static bool[] Item_Changed = new bool[Constant.MAX_ITEMS];
+        public static bool[] NPC_Changed = new bool[Constant.MAX_NPCS];
+        public static bool[] Resource_Changed = new bool[Constant.MAX_RESOURCES];
+        public static bool[] Animation_Changed = new bool[Constant.MAX_ANIMATIONS];
+        public static bool[] Skill_Changed = new bool[Constant.MAX_SKILLS];
+        public static bool[] Shop_Changed = new bool[Constant.MAX_SHOPS];
+        public static bool[] Pet_Changed = new bool[Constant.MAX_PETS];
+        public static bool[] Job_Changed = new bool[(Constant.MAX_JOBS)];
+        public static bool[] Moral_Changed = new bool[(Constant.MAX_MORALS)];
 
     }
 }

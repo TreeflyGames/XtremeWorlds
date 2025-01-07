@@ -1183,14 +1183,13 @@ namespace Server
         {
             Core.Type.NPC[index].Name = "";
             Core.Type.NPC[index].AttackSay = "";
-
-            Core.Type.NPC[index].Stat = new byte[(int)StatType.Count];
+            Core.Type.NPC[index].Stat = new byte[(byte)StatType.Count];
 
             for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i < loopTo; i++)
             {
-                Core.Type.NPC[index].DropChance = new int[6];
-                Core.Type.NPC[index].DropItem = new int[6];
-                Core.Type.NPC[index].DropItemValue = new int[6];
+                Core.Type.NPC[index].DropChance = new int[Core.Constant.MAX_DROP_ITEMS];
+                Core.Type.NPC[index].DropItem = new int[Core.Constant.MAX_DROP_ITEMS];
+                Core.Type.NPC[index].DropItemValue = new int[Core.Constant.MAX_DROP_ITEMS];
                 Core.Type.NPC[index].Skill = new byte[Core.Constant.MAX_NPC_SKILLS];
             }
         }
@@ -1200,7 +1199,7 @@ namespace Server
             Core.Type.NPC = new NPCStruct[Core.Constant.MAX_NPCS];
 
             for (int i = 0, loopTo = Core.Constant.MAX_NPCS; i < loopTo; i++)
-                ClearNPC(Conversions.ToInteger(i));
+                ClearNPC(i);
 
         }
 
