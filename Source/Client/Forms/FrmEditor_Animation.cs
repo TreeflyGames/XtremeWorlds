@@ -65,7 +65,7 @@ namespace Client
             lstIndex.SelectedIndex = tmpindex;
         }
 
-        private void lstIndex_Click(object sender, MouseEventArgs e)
+        private void lstIndex_Click(object sender, EventArgs e)
         {
             Editors.AnimationEditorInit();
         }
@@ -128,6 +128,7 @@ namespace Client
             if (animationNum <= 0 | animationNum > GameState.NumAnimations)
             {
                 spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor));
+                backgroundColorControl = new PictureBox();
                 return;
             }
 
@@ -230,7 +231,7 @@ namespace Client
             }
         }
 
-        private void DrawAnimationSprite0()
+        public void DrawAnimationSprite0()
         {
             {
                 var withBlock = Instance;
@@ -243,7 +244,7 @@ namespace Client
             }
         }
 
-        private void DrawAnimationSprite1()
+        public void DrawAnimationSprite1()
         {
             {
                 var withBlock = Instance;
