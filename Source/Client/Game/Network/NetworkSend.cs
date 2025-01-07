@@ -438,7 +438,7 @@ namespace Client
                 return;
             if (Core.Type.Player[GameState.MyIndex].Inv[invNum].Num < 0 | Core.Type.Player[GameState.MyIndex].Inv[invNum].Num > Constant.MAX_ITEMS)
                 return;
-            if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, invNum)].Type == (byte)Core.Enum.ItemType.Currency | Core.Type.Item[GetPlayerInv(GameState.MyIndex, invNum)].Stackable == 1)
+            if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Type == (byte)Core.Enum.ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Stackable == 1)
             {
                 if (amount < 0 | amount > Core.Type.Player[GameState.MyIndex].Inv[invNum].Value)
                     return;
@@ -523,7 +523,7 @@ namespace Client
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num > 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num >= 0)
             {
                 buffer.WriteInt32((int)Packets.ClientPackets.CForgetSkill);
                 buffer.WriteInt32(skillSlot);
@@ -665,41 +665,41 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSaveSkill(int skillnum)
+        internal static void SendSaveSkill(int skillNum)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveSkill);
-            buffer.WriteInt32(skillnum);
+            buffer.WriteInt32(skillNum);
 
-            buffer.WriteInt32(Core.Type.Skill[skillnum].AccessReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].AoE);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CastAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CastTime);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CdTime);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].JobReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Dir);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Duration);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Icon);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Interval);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillnum].IsAoE));
-            buffer.WriteInt32(Core.Type.Skill[skillnum].LevelReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Map);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].MpCost);
-            buffer.WriteString(Core.Type.Skill[skillnum].Name);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Range);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].SkillAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].StunDuration);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Type);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Vital);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].X);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Y);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].AccessReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].AoE);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CastAnim);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CastTime);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CdTime);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].JobReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Dir);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Duration);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Icon);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Interval);
+            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillNum].IsAoE));
+            buffer.WriteInt32(Core.Type.Skill[skillNum].LevelReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Map);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].MpCost);
+            buffer.WriteString(Core.Type.Skill[skillNum].Name);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Range);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].SkillAnim);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].StunDuration);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Type);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Vital);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].X);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Y);
 
-            buffer.WriteInt32(Core.Type.Skill[skillnum].IsProjectile);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Projectile);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].IsProjectile);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Projectile);
 
-            buffer.WriteInt32(Core.Type.Skill[skillnum].KnockBack);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].KnockBackTiles);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBack);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBackTiles);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
 

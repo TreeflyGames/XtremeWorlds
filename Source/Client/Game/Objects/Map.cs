@@ -557,7 +557,7 @@ namespace Client
             withBlock.AttackTimer = 0;
             withBlock.Dir = 0;
             withBlock.Moving = 0;
-            withBlock.Num = 0;
+            withBlock.Num = -1;
             withBlock.Steps = 0;
             withBlock.Target = 0;
             withBlock.TargetType = 0;

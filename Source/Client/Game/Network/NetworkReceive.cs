@@ -684,38 +684,38 @@ namespace Client
 
         private static void Packet_UpdateSkill(ref byte[] data)
         {
-            int skillnum;
+            int skillNum;
             var buffer = new ByteStream(data);
-            skillnum = buffer.ReadInt32();
+            skillNum = buffer.ReadInt32();
 
-            Core.Type.Skill[skillnum].AccessReq = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].AoE = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].CastAnim = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].CastTime = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].CdTime = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].JobReq = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Dir = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Duration = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Icon = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Interval = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].IsAoE = Conversions.ToBoolean(buffer.ReadInt32());
-            Core.Type.Skill[skillnum].LevelReq = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Map = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].MpCost = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Name = buffer.ReadString();
-            Core.Type.Skill[skillnum].Range = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].SkillAnim = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].StunDuration = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Type = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Vital = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].X = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Y = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].AccessReq = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].AoE = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].CastAnim = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].CastTime = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].CdTime = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].JobReq = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Dir = (byte)buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Duration = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Icon = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Interval = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].IsAoE = Conversions.ToBoolean(buffer.ReadInt32());
+            Core.Type.Skill[skillNum].LevelReq = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Map = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].MpCost = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Name = buffer.ReadString();
+            Core.Type.Skill[skillNum].Range = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].SkillAnim = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].StunDuration = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Type = (byte)buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Vital = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].X = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Y = buffer.ReadInt32();
 
-            Core.Type.Skill[skillnum].IsProjectile = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Projectile = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].IsProjectile = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Projectile = buffer.ReadInt32();
 
-            Core.Type.Skill[skillnum].KnockBack = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillnum].KnockBackTiles = (byte)buffer.ReadInt32();
+            Core.Type.Skill[skillNum].KnockBack = (byte)buffer.ReadInt32();
+            Core.Type.Skill[skillNum].KnockBackTiles = (byte)buffer.ReadInt32();
 
             buffer.Dispose();
 

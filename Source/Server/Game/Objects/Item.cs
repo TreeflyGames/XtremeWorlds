@@ -143,7 +143,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Num);
+                buffer.WriteInt32((int)Core.Type.MapItem[mapNum, i].Num);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Value);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].X);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
@@ -165,7 +165,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Num);
+                buffer.WriteInt32((int)Core.Type.MapItem[mapNum, i].Num);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Value);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].X);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
@@ -187,7 +187,7 @@ namespace Server
             // Find open map item slot
             i = FindOpenMapItemSlot(mapNum);
 
-            if (i == 0)
+            if (i == -1)
                 return;
 
             SpawnItemSlot(i, itemNum, ItemVal, mapNum, x, y);
@@ -233,12 +233,12 @@ namespace Server
             if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return FindOpenMapItemSlotRet;
 
-            FindOpenMapItemSlotRet = 0;
+            FindOpenMapItemSlotRet = -1;
 
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-                if (Core.Type.MapItem[mapNum, i].Num == 0)
+                if (Core.Type.MapItem[mapNum, i].Num == -1)
                 {
                     FindOpenMapItemSlotRet = i;
                     return FindOpenMapItemSlotRet;
@@ -437,7 +437,7 @@ namespace Server
                 return;
             if (GetPlayerInv(index, invNum) < 0 | GetPlayerInv(index, invNum) > Core.Constant.MAX_ITEMS)
                 return;
-            if (Core.Type.Item[GetPlayerInv(index, invNum)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerInv(index, invNum)].Stackable == 1)
+            if (Core.Type.Item[(int)GetPlayerInv(index, invNum)].Type == (byte)ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(index, invNum)].Stackable == 1)
             {
                 if (amount < 0 | amount > GetPlayerInvValue(index, invNum))
                     return;

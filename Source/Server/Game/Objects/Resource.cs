@@ -269,7 +269,7 @@ namespace Server
 
         #region Outgoing Packets
 
-        public static void SendMapResourceTo(int index, long Resource_num)
+        public static void SendMapResourceTo(int index, long resourceNum)
         {
             int i;
             int mapnum;
@@ -297,7 +297,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendMapResourceToMap(int mapNum, int Resource_num)
+        public static void SendMapResourceToMap(int mapNum, int resourceNum)
         {
             int i;
             var buffer = new ByteStream(4);
@@ -369,7 +369,7 @@ namespace Server
 
         public static void CheckResource(int index, int x, int y)
         {
-            int Resource_num;
+            int resourceNum;
             byte ResourceType;
             int Resource_index;
             int rX;
@@ -384,7 +384,7 @@ namespace Server
 
             if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Resource)
             {
-                Resource_num = 0;
+                resourceNum = 0;
                 Resource_index = Core.Type.Map[mapNum].Tile[x, y].Data1;
                 ResourceType = (byte)Core.Type.Resource[Resource_index].ResourceType;
 
@@ -395,12 +395,12 @@ namespace Server
                     {
                         if (Core.Type.MapResource[mapNum].ResourceData[Conversions.ToInteger(i)].Y == y)
                         {
-                            Resource_num = Conversions.ToInteger(i);
+                            resourceNum = Conversions.ToInteger(i);
                         }
                     }
                 }
 
-                if (Resource_num > 0)
+                if (resourceNum >= 0)
                 {
                     if (GetPlayerEquipment(index, EquipmentType.Weapon) > 0 | Core.Type.Resource[Resource_index].ToolRequired == 0)
                     {
@@ -425,11 +425,11 @@ namespace Server
                             }
 
                             // check if already cut down
-                            if (Core.Type.MapResource[mapNum].ResourceData[Resource_num].State == 0)
+                            if (Core.Type.MapResource[mapNum].ResourceData[resourceNum].State == 0)
                             {
 
-                                rX = Core.Type.MapResource[mapNum].ResourceData[Resource_num].X;
-                                rY = Core.Type.MapResource[mapNum].ResourceData[Resource_num].Y;
+                                rX = Core.Type.MapResource[mapNum].ResourceData[resourceNum].X;
+                                rY = Core.Type.MapResource[mapNum].ResourceData[resourceNum].Y;
 
                                 if (Core.Type.Resource[Resource_index].ToolRequired == 0)
                                 {
@@ -444,11 +444,11 @@ namespace Server
                                 if (Damage > 0)
                                 {
                                     // cut it down!
-                                    if (Core.Type.MapResource[mapNum].ResourceData[Resource_num].Health - Damage < 0)
+                                    if (Core.Type.MapResource[mapNum].ResourceData[resourceNum].Health - Damage < 0)
                                     {
-                                        Core.Type.MapResource[mapNum].ResourceData[Resource_num].State = 0; // Cut
-                                        Core.Type.MapResource[mapNum].ResourceData[Resource_num].Timer = General.GetTimeMs();
-                                        SendMapResourceToMap(mapNum, Resource_num);
+                                        Core.Type.MapResource[mapNum].ResourceData[resourceNum].State = 0; // Cut
+                                        Core.Type.MapResource[mapNum].ResourceData[resourceNum].Timer = General.GetTimeMs();
+                                        SendMapResourceToMap(mapNum, resourceNum);
                                         NetworkSend.SendActionMsg(mapNum, Core.Type.Resource[Resource_index].SuccessMessage, (int) ColorType.BrightGreen, 1, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
                                         Player.GiveInv(index, Core.Type.Resource[Resource_index].ItemReward, 1);
                                         Animation.SendAnimation(mapNum, Core.Type.Resource[Resource_index].Animation, rX, rY);
@@ -462,7 +462,7 @@ namespace Server
                                     else
                                     {
                                         // just do the damage
-                                        Core.Type.MapResource[mapNum].ResourceData[Resource_num].Health = (byte)(Core.Type.MapResource[mapNum].ResourceData[Resource_num].Health - Damage);
+                                        Core.Type.MapResource[mapNum].ResourceData[resourceNum].Health = (byte)(Core.Type.MapResource[mapNum].ResourceData[resourceNum].Health - Damage);
                                         NetworkSend.SendActionMsg(mapNum, "-" + Damage, (int) ColorType.BrightRed, 1, rX * 32, rY * 32);
                                         Animation.SendAnimation(mapNum, Core.Type.Resource[Resource_index].Animation, rX, rY);
                                     }

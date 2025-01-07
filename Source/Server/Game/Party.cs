@@ -87,7 +87,7 @@ namespace Server
 
             // check if we're in a party
             partyNum = Core.Type.TempPlayer[index].InParty;
-            if (partyNum > 0)
+            if (partyNum >= 0)
             {
                 // send party data
                 buffer.WriteInt32(1);
@@ -232,7 +232,7 @@ namespace Server
 
             partyNum = Core.Type.TempPlayer[index].InParty;
 
-            if (partyNum > 0)
+            if (partyNum >= 0)
             {
                 // find out how many members we have
                 CountMembers(partyNum);
@@ -449,7 +449,7 @@ namespace Server
             int x;
 
             // find the high index
-            for (i = Core.Constant.MAX_PARTY_MEMBERS; i >= 0; i -= 1)
+            for (i = Core.Constant.MAX_PARTY_MEMBERS - 1; i >= 0; i -= 1)
             {
                 if (PartyField[partyNum].Member[i] > 0)
                 {

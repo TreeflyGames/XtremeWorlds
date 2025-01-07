@@ -58,7 +58,7 @@ namespace Client
 
         public static void StreamPet(int petNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(petNum > 0 & string.IsNullOrEmpty(Core.Type.Pet[petNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Pet_Loaded[petNum], 0, false))))
+            if (Conversions.ToBoolean(Operators.OrObject(petNum >= 0 & string.IsNullOrEmpty(Core.Type.Pet[petNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Pet_Loaded[petNum], 0, false))))
             {
                 GameState.Pet_Loaded[petNum] = 1;
                 SendRequestPet(petNum);

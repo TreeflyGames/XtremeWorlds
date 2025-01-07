@@ -42,7 +42,7 @@ namespace Client
 
         public static void Packet_CloseTrade(ref byte[] data)
         {
-            InTrade = 0;
+            InTrade = -1;
             Gui.HideWindow(Gui.GetWindowIndex("winTrade"));
         }
 

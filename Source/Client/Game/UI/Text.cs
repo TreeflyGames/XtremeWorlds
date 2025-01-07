@@ -448,7 +448,7 @@ namespace Client
             var backColor = default(Color);
             int NPCNum;
 
-            NPCNum = Core.Type.MyMapNPC[MapNPCNum].Num;
+            NPCNum = (int)Core.Type.MyMapNPC[MapNPCNum].Num;
 
             switch (Core.Type.NPC[NPCNum].Behaviour)
             {
@@ -475,7 +475,7 @@ namespace Client
                     }
             }
             textX = GameLogic.ConvertMapX(Core.Type.MyMapNPC[MapNPCNum].X * GameState.PicX) + Core.Type.MyMapNPC[MapNPCNum].XOffset + GameState.PicX / 2 - 6;
-            textX -= GetTextWidth((Conversions.ToDouble(Core.Type.NPC[NPCNum].Name) / 6d).ToString());
+            textX -= (int)(GetTextWidth(Core.Type.NPC[NPCNum].Name) / 6d);
 
             if (Core.Type.NPC[NPCNum].Sprite < 1 | Core.Type.NPC[NPCNum].Sprite > GameState.NumCharacters)
             {

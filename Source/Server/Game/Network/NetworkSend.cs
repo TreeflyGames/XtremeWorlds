@@ -214,7 +214,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_INV;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32(GetPlayerInv(index, i));
+                buffer.WriteInt32((int)GetPlayerInv(index, i));
                 buffer.WriteInt32(GetPlayerInvValue(index, i));
             }
 
@@ -346,80 +346,80 @@ namespace Server
             }
         }
 
-        public static void SendUpdateSkillTo(int index, int skillnum)
+        public static void SendUpdateSkillTo(int index, int skillNum)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SUpdateSkill);
-            buffer.WriteInt32(skillnum);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].AccessReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].AoE);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CastAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CastTime);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CdTime);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].JobReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Dir);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Duration);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Icon);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Interval);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillnum].IsAoE));
-            buffer.WriteInt32(Core.Type.Skill[skillnum].LevelReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Map);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].MpCost);
-            buffer.WriteString(Core.Type.Skill[skillnum].Name);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Range);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].SkillAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].StunDuration);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Type);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Vital);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].X);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Y);
+            buffer.WriteInt32(skillNum);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].AccessReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].AoE);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CastAnim);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CastTime);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CdTime);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].JobReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Dir);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Duration);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Icon);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Interval);
+            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillNum].IsAoE));
+            buffer.WriteInt32(Core.Type.Skill[skillNum].LevelReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Map);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].MpCost);
+            buffer.WriteString(Core.Type.Skill[skillNum].Name);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Range);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].SkillAnim);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].StunDuration);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Type);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Vital);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].X);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Y);
 
             // projectiles
-            buffer.WriteInt32(Core.Type.Skill[skillnum].IsProjectile);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Projectile);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].IsProjectile);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Projectile);
 
-            buffer.WriteInt32(Core.Type.Skill[skillnum].KnockBack);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].KnockBackTiles);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBack);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBackTiles);
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
         }
 
-        public static void SendUpdateSkillToAll(int skillnum)
+        public static void SendUpdateSkillToAll(int skillNum)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SUpdateSkill);
-            buffer.WriteInt32(skillnum);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].AccessReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].AoE);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CastAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CastTime);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].CdTime);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].JobReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Dir);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Duration);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Icon);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Interval);
-            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillnum].IsAoE));
-            buffer.WriteInt32(Core.Type.Skill[skillnum].LevelReq);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Map);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].MpCost);
-            buffer.WriteString(Core.Type.Skill[skillnum].Name);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Range);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].SkillAnim);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].StunDuration);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Type);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Vital);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].X);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Y);
+            buffer.WriteInt32(skillNum);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].AccessReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].AoE);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CastAnim);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CastTime);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].CdTime);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].JobReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Dir);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Duration);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Icon);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Interval);
+            buffer.WriteInt32(Conversions.ToInteger(Core.Type.Skill[skillNum].IsAoE));
+            buffer.WriteInt32(Core.Type.Skill[skillNum].LevelReq);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Map);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].MpCost);
+            buffer.WriteString(Core.Type.Skill[skillNum].Name);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Range);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].SkillAnim);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].StunDuration);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Type);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Vital);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].X);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Y);
 
-            buffer.WriteInt32(Core.Type.Skill[skillnum].IsProjectile);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].Projectile);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].IsProjectile);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].Projectile);
 
-            buffer.WriteInt32(Core.Type.Skill[skillnum].KnockBack);
-            buffer.WriteInt32(Core.Type.Skill[skillnum].KnockBackTiles);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBack);
+            buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBackTiles);
 
             NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -731,7 +731,7 @@ namespace Server
 
             for (int i = 0, loopTo10 = Core.Constant.MAX_MAP_ITEMS; i < loopTo10; i++)
             {
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].Num);
+                buffer.WriteInt32((int)Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].Num);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].Value);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].X);
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].Y);
@@ -739,7 +739,7 @@ namespace Server
 
             for (int i = 0, loopTo11 = Core.Constant.MAX_MAP_NPCS; i < loopTo11; i++)
             {
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Num);
+                buffer.WriteInt32((int)Core.Type.MapNPC[mapNum].NPC[i].Num);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].X);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Y);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Dir);
@@ -941,7 +941,7 @@ namespace Server
             buffer.WriteInt32(X);
             buffer.WriteInt32(Y);
 
-            if (PlayerOnlyNum > 0)
+            if (PlayerOnlyNum >= 0)
             {
                 NetworkConfig.Socket.SendDataTo(ref PlayerOnlyNum, ref buffer.Data, ref buffer.Head);
             }
@@ -1002,7 +1002,7 @@ namespace Server
 
             buffer.WriteInt32(InvSlot);
 
-            buffer.WriteInt32(GetPlayerInv(index, InvSlot));
+            buffer.WriteInt32((int)GetPlayerInv(index, InvSlot));
             buffer.WriteInt32(GetPlayerInvValue(index, InvSlot));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
@@ -1042,7 +1042,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_BANK;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32(Bank[index].Item[i].Num);
+                buffer.WriteInt32((int)Bank[index].Item[i].Num);
                 buffer.WriteInt32(Bank[index].Item[i].Value);
             }
 
@@ -1088,12 +1088,12 @@ namespace Server
         {
             var buffer = new ByteStream(4);
             int i;
-            int tradeTarget;
+            double tradeTarget;
             var totalWorth = default(int);
 
             tradeTarget = Core.Type.TempPlayer[index].InTrade;
 
-            if (tradeTarget == 0)
+            if (tradeTarget == -1)
                 return;
 
             buffer.WriteInt32((int) ServerPackets.STradeUpdate);
@@ -1105,22 +1105,22 @@ namespace Server
                 var loopTo = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo; i++)
                 {
-                    buffer.WriteInt32(Core.Type.TempPlayer[index].TradeOffer[i].Num);
+                    buffer.WriteInt32((int)Core.Type.TempPlayer[index].TradeOffer[i].Num);
                     buffer.WriteInt32(Core.Type.TempPlayer[index].TradeOffer[i].Value);
 
                     // add total worth
-                    if (Core.Type.TempPlayer[index].TradeOffer[i].Num > 0)
+                    if (Core.Type.TempPlayer[index].TradeOffer[i].Num >= 0)
                     {
                         // currency?
-                        if (Core.Type.Item[Core.Type.TempPlayer[index].TradeOffer[i].Num].Type == (int)ItemType.Currency || Core.Type.Item[Core.Type.TempPlayer[index].TradeOffer[i].Num].Stackable == 1)
+                        if (Core.Type.Item[(int)Core.Type.TempPlayer[index].TradeOffer[i].Num].Type == (int)ItemType.Currency || Core.Type.Item[(int)Core.Type.TempPlayer[index].TradeOffer[i].Num].Stackable == 1)
                         {
                             if (Core.Type.TempPlayer[index].TradeOffer[i].Value == 0)
                                 Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(index, Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[index].TradeOffer[i].Value;
+                            totalWorth = totalWorth + Core.Type.Item[(int)GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[index].TradeOffer[i].Value;
                         }
                         else
                         {
-                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(index, Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price;
+                            totalWorth = totalWorth + Core.Type.Item[(int)GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price;
                         }
                     }
                 }
@@ -1131,22 +1131,22 @@ namespace Server
                 var loopTo1 = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo1; i++)
                 {
-                    buffer.WriteInt32(GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num));
-                    buffer.WriteInt32(Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value);
+                    buffer.WriteInt32((int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num));
+                    buffer.WriteInt32(Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value);
 
                     // add total worth
-                    if (GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num) > 0)
+                    if (GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num) > 0)
                     {
                         // currency?
-                        if (Core.Type.Item[GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num)].Type == (int)ItemType.Currency || Core.Type.Item[GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num)].Stackable == 1)
+                        if (Core.Type.Item[(int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Type == (int)ItemType.Currency || Core.Type.Item[(int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Stackable == 1)
                         {
-                            if (Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value == 0)
-                                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
-                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value;
+                            if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value == 0)
+                                Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value = 0;
+                            totalWorth = totalWorth + Core.Type.Item[(int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value;
                         }
                         else
                         {
-                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num)].Price;
+                            totalWorth = totalWorth + Core.Type.Item[(int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price;
                         }
                     }
                 }

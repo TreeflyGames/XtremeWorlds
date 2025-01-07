@@ -28,7 +28,7 @@ namespace Client
 
         internal static void StreamMoral(int moralNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(moralNum > 0 & string.IsNullOrEmpty(Core.Type.Moral[moralNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Moral_Loaded[moralNum], 0, false))))
+            if (Conversions.ToBoolean(Operators.OrObject(moralNum >= 0 & string.IsNullOrEmpty(Core.Type.Moral[moralNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Moral_Loaded[moralNum], 0, false))))
             {
                 GameState.Moral_Loaded[moralNum] = 1;
                 NetworkSend.SendRequestMoral(moralNum);

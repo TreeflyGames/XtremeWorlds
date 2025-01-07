@@ -209,12 +209,21 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                     return null;
 
                 byte[] numArray = Convert.FromBase64String(value);
-                return numArray.Length >= 272 ? Encoding.UTF8.GetString(this.DecryptBytes(numArray)) : "";
+
+                byte[] decryptedBytes = this.DecryptBytes(numArray);
+
+                if (decryptedBytes == null)
+                {
+                    Dispose();
+                    return "";
+
+                }
+                return numArray.Length >= 272 ? Encoding.UTF8.GetString(decryptedBytes) : "";     
             }
             catch (CryptographicException ex)
             {
                 Dispose();
-                return null;
+                return "";
             }
         }
 

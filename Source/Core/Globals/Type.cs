@@ -123,7 +123,7 @@ namespace Core
 
         public struct PlayerInvStruct
         {
-            public int Num;
+            public double Num;
             public int Value;
             public byte Bound;
         }
@@ -418,7 +418,7 @@ namespace Core
 
             public int TradeRequest;
 
-            public int InTrade;
+            public double InTrade;
             public PlayerInvStruct[] TradeOffer;
             public bool AcceptTrade;
 
@@ -514,7 +514,7 @@ namespace Core
 
         public struct MapItemStruct
         {
-            public int Num;
+            public double Num;
             public int Value;
             public byte X;
             public byte Y;
@@ -529,7 +529,7 @@ namespace Core
 
         public struct MapNPCStruct
         {
-            public int Num;
+            public double Num;
             public int Target;
             public byte TargetType;
             public int[] Vital;

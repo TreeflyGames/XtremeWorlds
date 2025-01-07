@@ -770,7 +770,7 @@ namespace Client
                 {
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Core.Type.MyMapNPC[i].Num > 0 & Core.Type.MyMapNPC[i].X == x & Core.Type.MyMapNPC[i].Y == y)
+                        if (Core.Type.MyMapNPC[i].Num >= 0 & Core.Type.MyMapNPC[i].X == x & Core.Type.MyMapNPC[i].Y == y)
                         {
                             CheckDirectionRet = Conversions.ToBoolean(1);
                             return CheckDirectionRet;
@@ -1069,7 +1069,7 @@ namespace Client
                 return;
             }
 
-            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num > 0)
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num >= 0)
             {
                 if (General.GetTickCount() > Core.Type.Player[GameState.MyIndex].AttackTimer + 1000)
                 {

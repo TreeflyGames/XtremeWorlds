@@ -10,6 +10,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Newtonsoft.Json.Linq;
 using Npgsql.Replication.PgOutput.Messages;
+using Server;
 using static Core.Enum;
 using static Core.Global.Command;
 using static Core.Packets;
@@ -1637,49 +1638,49 @@ namespace Server
 
         public static void Packet_SaveSkill(int index, ref byte[] data)
         {
-            int skillnum;
+            int skillNum;
             var buffer = new ByteStream(data);
 
-            skillnum = buffer.ReadInt32();
+            skillNum = buffer.ReadInt32();
 
             // Prevent hacking
-            if (skillnum < 0 | skillnum > Core.Constant.MAX_SKILLS)
+            if (skillNum < 0 | skillNum > Core.Constant.MAX_SKILLS)
                 return;
 
-            Core.Type.Skill[skillnum].AccessReq = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].AoE = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].CastAnim = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].CastTime = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].CdTime = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].JobReq = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Dir = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Duration = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Icon = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Interval = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].IsAoE = Conversions.ToBoolean(buffer.ReadInt32());
-            Core.Type.Skill[skillnum].LevelReq = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Map = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].MpCost = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Name = buffer.ReadString();
-            Core.Type.Skill[skillnum].Range = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].SkillAnim = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].StunDuration = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Type = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Vital = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].X = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Y = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].AccessReq = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].AoE = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].CastAnim = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].CastTime = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].CdTime = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].JobReq = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Dir = (byte)buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Duration = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Icon = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Interval = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].IsAoE = Conversions.ToBoolean(buffer.ReadInt32());
+            Core.Type.Skill[skillNum].LevelReq = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Map = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].MpCost = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Name = buffer.ReadString();
+            Core.Type.Skill[skillNum].Range = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].SkillAnim = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].StunDuration = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Type = (byte)buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Vital = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].X = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Y = buffer.ReadInt32();
 
             // projectiles
-            Core.Type.Skill[skillnum].IsProjectile = buffer.ReadInt32();
-            Core.Type.Skill[skillnum].Projectile = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].IsProjectile = buffer.ReadInt32();
+            Core.Type.Skill[skillNum].Projectile = buffer.ReadInt32();
 
-            Core.Type.Skill[skillnum].KnockBack = (byte)buffer.ReadInt32();
-            Core.Type.Skill[skillnum].KnockBackTiles = (byte)buffer.ReadInt32();
+            Core.Type.Skill[skillNum].KnockBack = (byte)buffer.ReadInt32();
+            Core.Type.Skill[skillNum].KnockBackTiles = (byte)buffer.ReadInt32();
 
             // Save it
-            NetworkSend.SendUpdateSkillToAll(skillnum);
-            Database.SaveSkill(skillnum);
-            Log.Add(GetPlayerLogin(index) + " saved Skill #" + skillnum + ".", Constant.ADMIN_LOG);
+            NetworkSend.SendUpdateSkillToAll(skillNum);
+            Database.SaveSkill(skillNum);
+            Log.Add(GetPlayerLogin(index) + " saved Skill #" + skillNum + ".", Constant.ADMIN_LOG);
 
             buffer.Dispose();
         }
@@ -1818,7 +1819,7 @@ namespace Server
                             }
 
                             // Change target
-                            if (Core.Type.TempPlayer[index].Target == 0 | i != Core.Type.TempPlayer[index].Target)
+                            if (Core.Type.TempPlayer[index].TargetType == 0 | i != Core.Type.TempPlayer[index].Target)
                             {
                                 Core.Type.TempPlayer[index].Target = i;
                                 Core.Type.TempPlayer[index].TargetType = (byte)TargetType.Player;
@@ -1844,16 +1845,15 @@ namespace Server
             var loopTo1 = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo1; i++)
             {
-
-                if (Core.Type.MapItem[GetPlayerMap(index), i].Num > 0)
+                if (Core.Type.MapItem[GetPlayerMap(index), i].Num >= 0)
                 {
-                    if (!string.IsNullOrEmpty(Core.Type.Item[Core.Type.MapItem[GetPlayerMap(index), i].Num].Name))
+                    if (!string.IsNullOrEmpty(Core.Type.Item[(int)Core.Type.MapItem[GetPlayerMap(index), i].Num].Name))
                     {
                         if ((int)Core.Type.MapItem[GetPlayerMap(index), i].X == x)
                         {
                             if ((int)Core.Type.MapItem[GetPlayerMap(index), i].Y == y)
                             {
-                                NetworkSend.PlayerMsg(index, "You see " + GameLogic.CheckGrammar(Core.Type.Item[Core.Type.MapItem[GetPlayerMap(index), i].Num].Name) + ".", (int) ColorType.BrightGreen);
+                                NetworkSend.PlayerMsg(index, "You see " + GameLogic.CheckGrammar(Core.Type.Item[(int)Core.Type.MapItem[GetPlayerMap(index), i].Num].Name) + ".", (int) ColorType.BrightGreen);
                                 return;
                             }
                         }
@@ -1865,14 +1865,14 @@ namespace Server
             var loopTo2 = Core.Constant.MAX_MAP_NPCS;
             for (i = 0; i < loopTo2; i++)
             {
-                if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num > 0)
+                if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num >= 0)
                 {
                     if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].X == x)
                     {
                         if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Y == y)
                         {
                             // Change target
-                            if (Core.Type.TempPlayer[index].Target == 0)
+                            if (Core.Type.TempPlayer[index].TargetType == 0)
                             {
                                 Core.Type.TempPlayer[index].Target = i;
                                 Core.Type.TempPlayer[index].TargetType = (byte)TargetType.NPC;
@@ -1882,7 +1882,7 @@ namespace Server
                                 Core.Type.TempPlayer[index].Target = 0;
                                 Core.Type.TempPlayer[index].TargetType = 0;
                             }
-                            NetworkSend.PlayerMsg(index, "Your target is now " + GameLogic.CheckGrammar(Core.Type.NPC[Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num].Name) + ".", (int) ColorType.Yellow);
+                            NetworkSend.PlayerMsg(index, "Your target is now " + GameLogic.CheckGrammar(Core.Type.NPC[(int)Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num].Name) + ".", (int) ColorType.Yellow);
                             NetworkSend.SendTarget(index, Core.Type.TempPlayer[index].Target, Core.Type.TempPlayer[index].TargetType);
                             return;
                         }
@@ -2164,7 +2164,7 @@ namespace Server
         public static void Packet_SellItem(int index, ref byte[] data)
         {
             int invSlot;
-            int itemNum;
+            double itemNum;
             int price;
             double multiplier;
             var buffer = new ByteStream(data);
@@ -2180,11 +2180,11 @@ namespace Server
                 return;
 
             // seems to be valid
-            itemNum = GetPlayerInv(index, invSlot);
+            itemNum = (int)GetPlayerInv(index, invSlot);
 
             // work out price
             multiplier = (double)Core.Type.Shop[Core.Type.TempPlayer[index].InShop].BuyRate / 100d;
-            price = (int)Math.Round(Core.Type.Item[itemNum].Price * multiplier);
+            price = (int)Math.Round(Core.Type.Item[(int)itemNum].Price * multiplier);
 
             // item has cost?
             if (price < 0)
@@ -2195,11 +2195,11 @@ namespace Server
             }
 
             // take item and give gold
-            Player.TakeInv(index, itemNum, 1);
+            Player.TakeInv(index, (int)itemNum, 1);
             Player.GiveInv(index, 1, price);
 
             // send confirmation message & reset their shop action
-            NetworkSend.PlayerMsg(index, "Sold the " + Core.Type.Item[GetPlayerInv(index, invSlot)].Name + " for " + price + " " + Core.Type.Item[itemNum].Name + "!", (int) ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(index, "Sold the " + Core.Type.Item[(int)itemNum].Name + " for " + price + " " + Core.Type.Item[(int)itemNum].Name + "!", (int) ColorType.BrightGreen);
             NetworkSend.ResetShopAction(index);
 
             buffer.Dispose();
@@ -2242,7 +2242,7 @@ namespace Server
             bankSlot = buffer.ReadInt32();
             amount = buffer.ReadInt32();
 
-            Player.TakeBank(index, bankSlot, amount);
+            Player.TakeBank(index, (byte)bankSlot, amount);
 
             buffer.Dispose();
         }
@@ -2377,12 +2377,12 @@ namespace Server
             int itemNum;
             int tradeTarget;
             int i;
-            var tmpTradeItem = new PlayerInvStruct[Core.Constant.MAX_INV + 1];
-            var tmpTradeItem2 = new PlayerInvStruct[Core.Constant.MAX_INV + 1];
+            var tmpTradeItem = new PlayerInvStruct[Core.Constant.MAX_INV];
+            var tmpTradeItem2 = new PlayerInvStruct[Core.Constant.MAX_INV];
 
             Core.Type.TempPlayer[index].AcceptTrade = true;
 
-            tradeTarget = Core.Type.TempPlayer[index].InTrade;
+            tradeTarget = (int)Core.Type.TempPlayer[index].InTrade;
 
             // if not both of them accept, then exit
             if (!Core.Type.TempPlayer[tradeTarget].AcceptTrade)
@@ -2397,29 +2397,29 @@ namespace Server
             for (i = 0; i < loopTo; i++)
             {
                 // player
-                if (Core.Type.TempPlayer[index].TradeOffer[i].Num > 0)
+                if (Core.Type.TempPlayer[index].TradeOffer[i].Num >= 0)
                 {
-                    itemNum = Core.Type.Player[index].Inv[Core.Type.TempPlayer[index].TradeOffer[i].Num].Num;
+                    itemNum = (int)Core.Type.Player[index].Inv[(int)Core.Type.TempPlayer[index].TradeOffer[i].Num].Num;
                     if (itemNum >= 0)
                     {
                         // store temp
                         tmpTradeItem[i].Num = itemNum;
                         tmpTradeItem[i].Value = Core.Type.TempPlayer[index].TradeOffer[i].Value;
                         // take item
-                        Player.TakeInvSlot(index, Core.Type.TempPlayer[index].TradeOffer[i].Num, tmpTradeItem[i].Value);
+                        Player.TakeInvSlot(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num, tmpTradeItem[i].Value);
                     }
                 }
                 // target
-                if (Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num > 0)
+                if (Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num >= 0)
                 {
-                    itemNum = GetPlayerInv(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num);
+                    itemNum = (int)GetPlayerInv(tradeTarget, (int)Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num);
                     if (itemNum >= 0)
                     {
                         // store temp
                         tmpTradeItem2[i].Num = itemNum;
                         tmpTradeItem2[i].Value = Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value;
                         // take item
-                        Player.TakeInvSlot(tradeTarget, Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num, tmpTradeItem2[i].Value);
+                        Player.TakeInvSlot(tradeTarget, (int)Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num, tmpTradeItem2[i].Value);
                     }
                 }
             }
@@ -2429,16 +2429,16 @@ namespace Server
             for (i = 0; i < loopTo1; i++)
             {
                 // player
-                if (tmpTradeItem2[i].Num > 0)
+                if (tmpTradeItem2[i].Num >= 0)
                 {
                     // give away!
-                    Player.GiveInv(index, tmpTradeItem2[i].Num, tmpTradeItem2[i].Value, false);
+                    Player.GiveInv(index, (int)tmpTradeItem2[i].Num, tmpTradeItem2[i].Value, false);
                 }
                 // target
-                if (tmpTradeItem[i].Num > 0)
+                if (tmpTradeItem[i].Num >= 0)
                 {
                     // give away!
-                    Player.GiveInv(tradeTarget, tmpTradeItem[i].Num, tmpTradeItem[i].Value, false);
+                    Player.GiveInv(tradeTarget, (int)tmpTradeItem[i].Num, tmpTradeItem[i].Value, false);
                 }
             }
 
@@ -2455,8 +2455,8 @@ namespace Server
                 Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
             }
 
-            Core.Type.TempPlayer[index].InTrade = 0;
-            Core.Type.TempPlayer[tradeTarget].InTrade = 0;
+            Core.Type.TempPlayer[index].InTrade = -1;
+            Core.Type.TempPlayer[tradeTarget].InTrade = -1;
 
             NetworkSend.PlayerMsg(index, "Trade completed.", (int) ColorType.BrightGreen);
             NetworkSend.PlayerMsg(tradeTarget, "Trade completed.", (int) ColorType.BrightGreen);
@@ -2469,7 +2469,7 @@ namespace Server
         {
             int tradeTarget;
 
-            tradeTarget = Core.Type.TempPlayer[index].InTrade;
+            tradeTarget = (int)Core.Type.TempPlayer[index].InTrade;
 
             for (int i = 0, loopTo = Core.Constant.MAX_INV; i < loopTo; i++)
             {
@@ -2479,8 +2479,8 @@ namespace Server
                 Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
             }
 
-            Core.Type.TempPlayer[index].InTrade = 0;
-            Core.Type.TempPlayer[tradeTarget].InTrade = 0;
+            Core.Type.TempPlayer[index].InTrade = -1;
+            Core.Type.TempPlayer[tradeTarget].InTrade = -1;
 
             NetworkSend.PlayerMsg(index, "You declined the trade.", (int) ColorType.BrightRed);
             NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has declined the trade.", (int) ColorType.BrightRed);
@@ -2506,7 +2506,7 @@ namespace Server
             if (invslot < 0 | invslot > Core.Constant.MAX_INV)
                 return;
 
-            itemnum = GetPlayerInv(index, invslot);
+            itemnum = (int)GetPlayerInv(index, invslot);
 
             if (itemnum < 0 | itemnum > Core.Constant.MAX_ITEMS)
                 return;
@@ -2536,13 +2536,13 @@ namespace Server
 
                         // cancel any trade agreement
                         Core.Type.TempPlayer[index].AcceptTrade = false;
-                        Core.Type.TempPlayer[Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
+                        Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
 
                         NetworkSend.SendTradeStatus(index, 0);
-                        NetworkSend.SendTradeStatus(Core.Type.TempPlayer[index].InTrade, 0);
+                        NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 0);
 
                         NetworkSend.SendTradeUpdate(index, 0);
-                        NetworkSend.SendTradeUpdate(Core.Type.TempPlayer[index].InTrade, 1);
+                        NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 1);
                         return;
                     }
                 }
@@ -2565,7 +2565,7 @@ namespace Server
             var loopTo2 = Core.Constant.MAX_INV;
             for (i = 0; i < loopTo2; i++)
             {
-                if (Core.Type.TempPlayer[index].TradeOffer[i].Num == 0)
+                if (Core.Type.TempPlayer[index].TradeOffer[i].Num == -1)
                 {
                     emptyslot = i;
                     break;
@@ -2576,13 +2576,13 @@ namespace Server
 
             // cancel any trade agreement and send new data
             Core.Type.TempPlayer[index].AcceptTrade = false;
-            Core.Type.TempPlayer[Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
+            Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
 
             NetworkSend.SendTradeStatus(index, 0);
-            NetworkSend.SendTradeStatus(Core.Type.TempPlayer[index].InTrade, 0);
+            NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 0);
 
             NetworkSend.SendTradeUpdate(index, 0);
-            NetworkSend.SendTradeUpdate(Core.Type.TempPlayer[index].InTrade, 1);
+            NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 1);
         }
 
         public static void Packet_UntradeItem(int index, ref byte[] data)
@@ -2604,14 +2604,14 @@ namespace Server
 
             if (Core.Type.TempPlayer[index].AcceptTrade)
                 Core.Type.TempPlayer[index].AcceptTrade = false;
-            if (Core.Type.TempPlayer[Core.Type.TempPlayer[index].InTrade].AcceptTrade)
-                Core.Type.TempPlayer[Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
+            if (Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade)
+                Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
 
             NetworkSend.SendTradeStatus(index, 0);
-            NetworkSend.SendTradeStatus(Core.Type.TempPlayer[index].InTrade, 0);
+            NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 0);
 
             NetworkSend.SendTradeUpdate(index, 0);
-            NetworkSend.SendTradeUpdate(Core.Type.TempPlayer[index].InTrade, 1);
+            NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 1);
         }
 
         public static void HackingAttempt(int index, string Reason)

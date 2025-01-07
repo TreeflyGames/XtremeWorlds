@@ -160,7 +160,7 @@ namespace Client
                 {
                     for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
                     {
-                        if (Core.Type.Player[GameState.MyIndex].Skill[i].Num > 0)
+                        if (Core.Type.Player[GameState.MyIndex].Skill[i].Num >= 0)
                         {
                             if (Core.Type.Player[GameState.MyIndex].Skill[i].CD > 0)
                             {
@@ -328,7 +328,7 @@ namespace Client
                     GameLogic.SetBarWidth(ref GameState.BarWidth_GuiEXP_Max, ref GameState.BarWidth_GuiEXP);
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Core.Type.MyMapNPC[i].Num > 0)
+                        if (Core.Type.MyMapNPC[i].Num >= 0)
                         {
                             GameLogic.SetBarWidth(ref GameState.BarWidth_NPCHP_Max[i], ref GameState.BarWidth_NPCHP[i]);
                         }

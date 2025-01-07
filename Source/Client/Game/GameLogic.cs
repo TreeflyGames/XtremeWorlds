@@ -1448,9 +1448,9 @@ namespace Client
             // show
             if (GetPlayerInv(GameState.MyIndex, (int)invNum) > 0)
             {
-                if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)invNum)].BindType > 0 & Core.Type.Player[GameState.MyIndex].Inv[(int)invNum].Bound > 0)
+                if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, (int)invNum)].BindType > 0 & Core.Type.Player[GameState.MyIndex].Inv[(int)invNum].Bound > 0)
                     soulBound = Conversions.ToBoolean(1);
-                ShowItemDesc(x, y, GetPlayerInv(GameState.MyIndex, (int)invNum));
+                ShowItemDesc(x, y, (long)GetPlayerInv(GameState.MyIndex, (int)invNum));
             }
         }
 

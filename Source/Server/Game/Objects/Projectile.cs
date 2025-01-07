@@ -234,7 +234,7 @@ namespace Server
 
                                 case TargetType.NPC:
                                     {
-                                        NPCNum = Core.Type.MapNPC[mapNum].NPC[Targetindex].Num;
+                                        NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[Targetindex].Num;
                                         if (Conversions.ToInteger(Player.CanPlayerAttackNPC(index, Targetindex, true)) == 1)
                                         {
                                             // Get the damage we can do
@@ -361,7 +361,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_PROJECTILES;
             for (i = 0; i < loopTo; i++)
             {
-                if (Core.Type.MapProjectile[mapNum, i].ProjectileNum == 0) // Free Projectile
+                if (Core.Type.MapProjectile[mapNum, i].ProjectileNum == -1) // Free Projectile
                 {
                     ProjectileSlot = i;
                     break;
@@ -382,7 +382,7 @@ namespace Server
                 ProjectileNum = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile;
             }
 
-            if (ProjectileNum == 0)
+            if (ProjectileNum == -1)
                 return;
 
             {

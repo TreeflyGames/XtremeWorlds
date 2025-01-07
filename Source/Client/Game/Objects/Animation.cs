@@ -108,7 +108,7 @@ namespace Client
                     }
                 case (byte)Core.Enum.TargetType.NPC:
                     {
-                        if (Core.Type.MyMapNPC[lockindex].Num > 0 && Core.Type.MyMapNPC[lockindex].Vital[(int)Core.Enum.VitalType.HP] > 0)
+                        if (Core.Type.MyMapNPC[lockindex].Num >= 0 && Core.Type.MyMapNPC[lockindex].Vital[(int)Core.Enum.VitalType.HP] > 0)
                         {
                             x = (int)Math.Round(Core.Type.MyMapNPC[lockindex].X * GameState.PicX + 16 - width / 2d + Core.Type.MyMapNPC[lockindex].XOffset);
                             y = (int)Math.Round(Core.Type.MyMapNPC[lockindex].Y * GameState.PicY + 16 - height / 2d + Core.Type.MyMapNPC[lockindex].YOffset);
@@ -338,7 +338,7 @@ namespace Client
 
         public static void StreamAnimation(int animationNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(animationNum > 0 & string.IsNullOrEmpty(Core.Type.Animation[animationNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Animation_Loaded[animationNum], 0, false))))
+            if (Conversions.ToBoolean(Operators.OrObject(animationNum >= 0 & string.IsNullOrEmpty(Core.Type.Animation[animationNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Animation_Loaded[animationNum], 0, false))))
             {
                 GameState.Animation_Loaded[animationNum] = 1;
                 SendRequestAnimation(animationNum);

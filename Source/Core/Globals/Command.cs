@@ -251,7 +251,7 @@ namespace Core.Global
             Type.Player[index].Map = mapNum;
         }
 
-        public static int GetPlayerInv(int index, int invslot)
+        public static double GetPlayerInv(int index, int invslot)
         {
             return Type.Player[index].Inv[invslot].Num;
         }
@@ -461,9 +461,9 @@ namespace Core.Global
             Type.Player[index].Skill[Skillslot].Num = skillNum;
         }
 
-        public static int GetBank(int index, byte bankslot)
+        public static double GetBank(int index, byte bankslot)
         {
-            int GetBankRet = default;
+            double GetBankRet = default;
             GetBankRet = Type.Bank[index].Item[bankslot].Num;
             return GetBankRet;
         }

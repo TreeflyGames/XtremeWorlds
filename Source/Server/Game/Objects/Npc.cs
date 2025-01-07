@@ -9,6 +9,7 @@ using Mirage.Sharp.Asfw;
 using static Core.Enum;
 using static Core.Packets;
 using static Core.Type;
+using System.Reflection;
 
 namespace Server
 {
@@ -50,9 +51,12 @@ namespace Server
             if (Core.Type.Map[mapNum].NoRespawn)
                 return;
 
+            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num == -1)
+                return;
+
             NPCNum = Core.Type.Map[mapNum].NPC[MapNPCNum];
 
-            if (NPCNum > 0)
+            if (NPCNum >= 0)
             {
                 if (!(Core.Type.NPC[NPCNum].SpawnTime == (byte)TimeType.Instance.TimeOfDay) & Core.Type.NPC[NPCNum].SpawnTime != 0)
                 {
@@ -97,13 +101,13 @@ namespace Server
                     // Well try 100 times to randomly place the sprite
                     while (i < 1000)
                     {
-                        x = (int)Math.Round(General.Random.NextDouble(0d, Core.Type.Map[mapNum].MaxX));
-                        y = (int)Math.Round(General.Random.NextDouble(0d, Core.Type.Map[mapNum].MaxY));
+                        x = (int)Math.Round(General.Random.NextDouble(0d, Core.Type.Map[mapNum].MaxX - 1));
+                        y = (int)Math.Round(General.Random.NextDouble(0d, Core.Type.Map[mapNum].MaxY - 1));
 
                         if (x > Core.Type.Map[mapNum].MaxX)
-                            x = Core.Type.Map[mapNum].MaxX;
+                            x = Core.Type.Map[mapNum].MaxX - 1;
                         if (y > Core.Type.Map[mapNum].MaxY)
-                            y = Core.Type.Map[mapNum].MaxY;
+                            y = Core.Type.Map[mapNum].MaxY - 1;
 
                         // Check if the tile is walkable
                         if (NPCTileIsOpen(mapNum, x, y))
@@ -141,7 +145,7 @@ namespace Server
                 {
                     buffer.WriteInt32((int) ServerPackets.SSpawnNPC);
                     buffer.WriteInt32(MapNPCNum);
-                    buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num);
+                    buffer.WriteInt32((int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Dir);
@@ -184,7 +188,7 @@ namespace Server
 
             for (int LoopI = 0, loopTo1 = Core.Constant.MAX_MAP_NPCS; LoopI < loopTo1; LoopI++)
             {
-                if (Core.Type.MapNPC[mapNum].NPC[LoopI].Num > 0 & Core.Type.MapNPC[mapNum].NPC[LoopI].X == x & Core.Type.MapNPC[mapNum].NPC[LoopI].Y == y)
+                if (Core.Type.MapNPC[mapNum].NPC[LoopI].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[LoopI].X == x & Core.Type.MapNPC[mapNum].NPC[LoopI].Y == y)
                 {
                     NPCTileIsOpenRet = Conversions.ToBoolean(0);
                     return NPCTileIsOpenRet;
@@ -254,7 +258,7 @@ namespace Server
                             var loopTo1 = Core.Constant.MAX_MAP_NPCS;
                             for (i = 0; i < loopTo1; i++)
                             {
-                                if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y - 1)
+                                if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y - 1)
                                 {
                                     CanNPCMoveRet = Conversions.ToBoolean(0);
                                     return CanNPCMoveRet;
@@ -302,7 +306,7 @@ namespace Server
                             var loopTo3 = Core.Constant.MAX_MAP_NPCS;
                             for (i = 0; i < loopTo3; i++)
                             {
-                                if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y + 1)
+                                if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y + 1)
                                 {
                                     CanNPCMoveRet = Conversions.ToBoolean(0);
                                     return CanNPCMoveRet;
@@ -350,7 +354,7 @@ namespace Server
                             var loopTo5 = Core.Constant.MAX_MAP_NPCS;
                             for (i = 0; i < loopTo5; i++)
                             {
-                                if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X - 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y)
+                                if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X - 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y)
                                 {
                                     CanNPCMoveRet = Conversions.ToBoolean(0);
                                     return CanNPCMoveRet;
@@ -398,7 +402,7 @@ namespace Server
                             var loopTo7 = Core.Constant.MAX_MAP_NPCS;
                             for (i = 0; i < loopTo7; i++)
                             {
-                                if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num > 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X + 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y)
+                                if (i != MapNPCNum & Core.Type.MapNPC[mapNum].NPC[i].Num >= 0 & Core.Type.MapNPC[mapNum].NPC[i].X == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X + 1 & Core.Type.MapNPC[mapNum].NPC[i].Y == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y)
                                 {
                                     CanNPCMoveRet = Conversions.ToBoolean(0);
                                     return CanNPCMoveRet;
@@ -534,7 +538,7 @@ namespace Server
             if (CanNPCAttackPlayer(MapNPCNum, index))
             {
                 mapNum = GetPlayerMap(index);
-                NPCNum = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
+                NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
 
                 // check if PLAYER can avoid the attack
                 if (Player.CanPlayerDodge(index))
@@ -593,7 +597,7 @@ namespace Server
         {
             bool CanNPCAttackPlayerRet = default;
             int mapNum;
-            int NPCNum;
+            double NPCNum;
 
             // Check for subscript out of range
             if (MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | !NetworkConfig.IsPlaying(index))
@@ -609,6 +613,9 @@ namespace Server
 
             mapNum = GetPlayerMap(index);
             NPCNum = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
+
+            if (NPCNum < 0)
+                return CanNPCAttackPlayerRet;
 
             // Make sure the npc isn't already dead
             if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] < 0)
@@ -633,7 +640,7 @@ namespace Server
             // Make sure they are on the same map
             if (NetworkConfig.IsPlaying(index))
             {
-                if (NPCNum > 0)
+                if (NPCNum >= 0)
                 {
 
                     // Check if at same coordinates
@@ -698,8 +705,8 @@ namespace Server
                 return CanNPCAttackNPCRet;
             }
 
-            aNPCNum = Core.Type.MapNPC[mapNum].NPC[attacker].Num;
-            vNPCNum = Core.Type.MapNPC[mapNum].NPC[victim].Num;
+            aNPCNum = (int)Core.Type.MapNPC[mapNum].NPC[attacker].Num;
+            vNPCNum = (int)Core.Type.MapNPC[mapNum].NPC[victim].Num;
 
             if (aNPCNum < 0)
                 return CanNPCAttackNPCRet;
@@ -776,7 +783,7 @@ namespace Server
                 return;
 
             mapNum = GetPlayerMap(victim);
-            Name = Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Name;
+            Name = Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Name;
 
             // Send this packet so they can see the npc attacking
             buffer.WriteInt32((int) ServerPackets.SNPCAttack);
@@ -811,7 +818,7 @@ namespace Server
                 // Player not dead, just do the damage
                 SetPlayerVital(victim, VitalType.HP, GetPlayerVital(victim, VitalType.HP) - Damage);
                 NetworkSend.SendVital(victim, VitalType.HP);
-                Animation.SendAnimation(mapNum, Core.Type.NPC[Core.Type.MapNPC[GetPlayerMap(victim)].NPC[MapNPCNum].Num].Animation, 0, 0, (byte)TargetType.Player, victim);
+                Animation.SendAnimation(mapNum, Core.Type.NPC[(int)Core.Type.MapNPC[GetPlayerMap(victim)].NPC[MapNPCNum].Num].Animation, 0, 0, (byte)TargetType.Player, victim);
 
                 // send the sound
                 // SendMapSound victim, GetPlayerX(victim), GetPlayerY(victim), SoundEntity.seNPC, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num
@@ -843,8 +850,8 @@ namespace Server
             if (Damage < 0)
                 return;
 
-            aNPCNum = Core.Type.MapNPC[mapNum].NPC[attacker].Num;
-            vNPCNum = Core.Type.MapNPC[mapNum].NPC[victim].Num;
+            aNPCNum = (int)Core.Type.MapNPC[mapNum].NPC[attacker].Num;
+            vNPCNum = (int)Core.Type.MapNPC[mapNum].NPC[victim].Num;
 
             if (aNPCNum < 0)
                 return;
@@ -941,9 +948,9 @@ namespace Server
             var loopTo = Core.Constant.MAX_NPC_SKILLS;
             for (i = 0; i < loopTo; i++)
             {
-                if ((int)Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Skill[i] > 0)
+                if ((int)Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Skill[i] > 0)
                 {
-                    SkillList.Add(Core.Type.NPC[Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Skill[i]);
+                    SkillList.Add(Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Skill[i]);
                 }
             }
 
@@ -969,7 +976,7 @@ namespace Server
 
         internal static void BufferNPCSkill(int mapNum, int MapNPCNum, int SkillSlot)
         {
-            int skillnum;
+            int skillNum;
             int MPCost;
             int SkillCastType;
             int range;
@@ -982,9 +989,12 @@ namespace Server
             if (SkillSlot < 0 | SkillSlot > Core.Constant.MAX_NPC_SKILLS)
                 return;
 
-            skillnum = GetNPCSkill(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num, SkillSlot);
+            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num < 0)
+                return;
 
-            if (skillnum < 0 | skillnum > Core.Constant.MAX_SKILLS)
+            skillNum = GetNPCSkill((int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num, SkillSlot);
+
+            if (skillNum < 0 | skillNum > Core.Constant.MAX_SKILLS)
                 return;
 
             // see if cooldown has finished
@@ -994,17 +1004,17 @@ namespace Server
                 return;
             }
 
-            MPCost = Core.Type.Skill[skillnum].MpCost;
+            MPCost = Core.Type.Skill[skillNum].MpCost;
 
             // Check if they have enough MP
             if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.SP] < MPCost)
                 return;
 
             // find out what kind of skill it is! self cast, target or AOE
-            if (Core.Type.Skill[skillnum].Range > 0)
+            if (Core.Type.Skill[skillNum].Range > 0)
             {
                 // ranged attack, single target or aoe?
-                if (!Core.Type.Skill[skillnum].IsAoE)
+                if (!Core.Type.Skill[skillNum].IsAoE)
                 {
                     SkillCastType = 2; // targetted
                 }
@@ -1013,7 +1023,7 @@ namespace Server
                     SkillCastType = 3;
                 } // targetted aoe
             }
-            else if (!Core.Type.Skill[skillnum].IsAoE)
+            else if (!Core.Type.Skill[skillNum].IsAoE)
             {
                 SkillCastType = 0; // self-cast
             }
@@ -1024,7 +1034,7 @@ namespace Server
 
             TargetType = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType;
             Target = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target;
-            range = Core.Type.Skill[skillnum].Range;
+            range = Core.Type.Skill[skillNum].Range;
             HasBuffered = Conversions.ToBoolean(0);
 
             switch (SkillCastType)
@@ -1079,7 +1089,7 @@ namespace Server
 
             if (HasBuffered)
             {
-                Animation.SendAnimation(mapNum, Core.Type.Skill[skillnum].CastAnim, 0, 0, (byte)Core.Enum.TargetType.Player, Target);
+                Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].CastAnim, 0, 0, (byte)Core.Enum.TargetType.Player, Target);
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].SkillBuffer = SkillSlot;
                 Core.Type.MapNPC[mapNum].NPC[MapNPCNum].SkillBufferTimer = General.GetTimeMs();
                 return;
@@ -1180,11 +1190,11 @@ namespace Server
         {
             var NPCNum = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
             double tmpitem = General.Random.NextDouble(1d, 5d);
-            var n = VBMath.Rnd() * (float)Core.Type.NPC[NPCNum].DropChance[(int)Math.Round(tmpitem)] + 1;
+            var n = VBMath.Rnd() * (float)Core.Type.NPC[(int)NPCNum].DropChance[(int)Math.Round(tmpitem)] + 1;
 
             if (n == 1)
             {
-                Item.SpawnItem(Core.Type.NPC[NPCNum].DropItem[(int)Math.Round(tmpitem)], Core.Type.NPC[NPCNum].DropItemValue[(int)Math.Round(tmpitem)], mapNum, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
+                Item.SpawnItem(Core.Type.NPC[(int)NPCNum].DropItem[(int)Math.Round(tmpitem)], Core.Type.NPC[(int)NPCNum].DropItemValue[(int)Math.Round(tmpitem)], mapNum, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
             }
         }
 
@@ -1202,7 +1212,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_NPCS;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Num);
+                buffer.WriteInt32((int)Core.Type.MapNPC[mapNum].NPC[i].Num);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].X);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Y);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Dir);
@@ -1420,7 +1430,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_NPCS;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Num);
+                buffer.WriteInt32((int)Core.Type.MapNPC[mapNum].NPC[i].Num);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].X);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Y);
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Dir);
@@ -1444,7 +1454,7 @@ namespace Server
 
             {
                 var withBlock = Core.Type.MapNPC[mapNum].NPC[MapNPCNum];
-                buffer.WriteInt32(withBlock.Num);
+                buffer.WriteInt32((int)withBlock.Num);
                 buffer.WriteInt32(withBlock.X);
                 buffer.WriteInt32(withBlock.Y);
                 buffer.WriteInt32(withBlock.Dir);

@@ -32,7 +32,7 @@ namespace Client
 
         public static void StreamShop(int shopNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(shopNum > 0 & string.IsNullOrEmpty(Core.Type.Shop[shopNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Shop_Loaded[shopNum], 0, false))))
+            if (Conversions.ToBoolean(Operators.OrObject(shopNum >= 0 & string.IsNullOrEmpty(Core.Type.Shop[shopNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Shop_Loaded[shopNum], 0, false))))
             {
                 GameState.Shop_Loaded[shopNum] = 1;
                 SendRequestShop(shopNum);

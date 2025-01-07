@@ -1234,7 +1234,7 @@ namespace Client
             int attackSpeed = 1000;
 
             // Check if NPC exists
-            if (Core.Type.MyMapNPC[MapNPCNum].Num == 0)
+            if (Core.Type.MyMapNPC[MapNPCNum].Num == -1)
                 return;
 
             // Ensure NPC is within the tile view range
@@ -1244,10 +1244,10 @@ namespace Client
                 return;
 
             // Stream NPC if not yet loaded
-            Database.StreamNPC(Core.Type.MyMapNPC[MapNPCNum].Num);
+            Database.StreamNPC((int)Core.Type.MyMapNPC[MapNPCNum].Num);
 
             // Get the sprite of the NPC
-            sprite = Core.Type.NPC[Core.Type.MyMapNPC[MapNPCNum].Num].Sprite;
+            sprite = Core.Type.NPC[(int)Core.Type.MyMapNPC[MapNPCNum].Num].Sprite;
 
             // Validate sprite
             if (sprite < 1 | sprite > GameState.NumCharacters)
@@ -1357,9 +1357,13 @@ namespace Client
             int picNum;
             int x;
             int y;
-            Item.StreamItem(Core.Type.MyMapItem[itemNum].Num);
 
-            picNum = Core.Type.Item[Core.Type.MyMapItem[itemNum].Num].Icon;
+            if (Core.Type.MyMapItem[itemNum].Num == -1)
+                return;
+
+            Item.StreamItem((int)Core.Type.MyMapItem[itemNum].Num);
+
+            picNum = Core.Type.Item[(int)Core.Type.MyMapItem[itemNum].Num].Icon;
 
             if (picNum < 1 | picNum > GameState.NumItems)
                 return;
@@ -1446,9 +1450,9 @@ namespace Client
             // render NPC health bars
             for (i = 0L; i < Constant.MAX_MAP_NPCS; i++)
             {
-                NPCNum = Core.Type.MyMapNPC[(int)i].Num;
+                NPCNum = (long)Core.Type.MyMapNPC[(int)i].Num;
                 // exists?
-                if (NPCNum > 0L)
+                if (NPCNum >= 0L)
                 {
                     // alive?
                     if (Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] > 0 & Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] < Core.Type.NPC[(int)NPCNum].HP)
@@ -2336,7 +2340,7 @@ namespace Client
             {
                 for (i = 0; i < Constant.MAX_MAP_ITEMS; i++)
                 {
-                    if (Core.Type.MyMapItem[i].Num > 0)
+                    if (Core.Type.MyMapItem[i].Num >= 0)
                     {
                         DrawMapItem(i);
                     }
@@ -2483,7 +2487,7 @@ namespace Client
             {
                 for (i = 0; i < Constant.MAX_PROJECTILES;  i++)
                 {
-                    if (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, i].ProjectileNum > 0)
+                    if (Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, i].ProjectileNum >= 0)
                     {
                         Projectile.DrawProjectile(i);
                     }
@@ -2557,7 +2561,7 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
-                if (Core.Type.MyMapNPC[i].Num > 0)
+                if (Core.Type.MyMapNPC[i].Num >= 0)
                 {
                     Text.DrawNPCName(i);
                 }
