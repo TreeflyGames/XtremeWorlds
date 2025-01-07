@@ -120,7 +120,8 @@ namespace Server
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte)AccessType.Developer)
                 return;
-            if (Core.Type.TempPlayer[index].Editor > -1)
+
+            if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
             string user;
@@ -132,6 +133,8 @@ namespace Server
                 NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
                 return;
             }
+
+            SendProjectiles(index);
 
             Core.Type.TempPlayer[index].Editor = (byte)EditorType.Projectile;
 
@@ -172,7 +175,7 @@ namespace Server
 
         }
 
-        public static void HandleRequestProjectile(int index, ref byte[] data)
+        public static void HandleRequestProjectiles(int index, ref byte[] data)
         {
             SendProjectiles(index);
         }
@@ -308,10 +311,8 @@ namespace Server
 
         public static void SendProjectiles(int index)
         {
-            int i;
-
             var loopTo = Core.Constant.MAX_PROJECTILES;
-            for (i = 0; i < loopTo; i++)
+            for (int i = 0; i < loopTo; i++)
             {
                 if (Strings.Len(Core.Type.Projectile[i].Name) > 0)
                 {

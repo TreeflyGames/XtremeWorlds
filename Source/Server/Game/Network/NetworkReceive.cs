@@ -110,7 +110,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestSwitchesAndVariables] = Event.Packet_RequestSwitchesAndVariables;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSwitchesAndVariables] = Event.Packet_SwitchesAndVariables;
 
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestProjectiles] = Projectile.HandleRequestProjectile;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestProjectiles] = Projectile.HandleRequestProjectiles;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CClearProjectile] = Projectile.HandleClearProjectile;
 
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CEmote] = Packet_Emote;
@@ -142,7 +142,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveResource] = Resource.Packet_SaveResource;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditAnimation] = Animation.Packet_EditAnimation;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveAnimation] = Animation.Packet_SaveAnimation;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditProjectiles] = Projectile.HandleRequestEditProjectile;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditProjectile] = Projectile.HandleRequestEditProjectile;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveProjectile] = Projectile.HandleSaveProjectile;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CRequestEditJob] = Packet_RequestEditJob;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSaveJob] = Packet_SaveJob;

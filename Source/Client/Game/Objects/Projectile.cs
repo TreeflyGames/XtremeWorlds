@@ -11,12 +11,12 @@ namespace Client
     {
 
         #region Sending
-        public static void SendRequestEditProjectile()
+        public static void SendRequestEditProjectiles()
         {
             ByteStream buffer;
 
             buffer = new ByteStream(4);
-            buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditProjectiles);
+            buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditProjectile);
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
 
@@ -42,7 +42,7 @@ namespace Client
 
         }
 
-        public static void SendRequestProjectile()
+        public static void SendRequestProjectiles()
         {
             var buffer = new ByteStream(4);
 
@@ -307,7 +307,7 @@ namespace Client
             y = GameLogic.ConvertMapY(y * GameState.PicY);
 
             // Render texture
-            string argpath = System.IO.Path.Combine(Core.Path.Projectiles + sprite);
+            string argpath = System.IO.Path.Combine(Core.Path.Projectiles, sprite.ToString());
             GameClient.RenderTexture(ref argpath, x, y, (int)Math.Round(rec.Left), (int)Math.Round(rec.Top), 32, 32);
 
         }

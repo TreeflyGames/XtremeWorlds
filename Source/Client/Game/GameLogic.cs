@@ -790,7 +790,7 @@ namespace Client
                                 goto Continue1;
                             }
 
-                            Projectile.SendRequestEditProjectile();
+                            Projectile.SendRequestEditProjectiles();
                             break;
                         }
 

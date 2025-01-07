@@ -121,7 +121,7 @@ namespace Core
             CSaveNPC,
             CRequestEditPet,
             CSavePet,
-            CRequestEditProjectiles,
+            CRequestEditProjectile,
             CSaveProjectile,
             CRequestEditResource,
             CSaveResource,

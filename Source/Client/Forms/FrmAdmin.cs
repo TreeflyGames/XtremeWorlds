@@ -231,7 +231,7 @@ namespace Client
                 return;
             }
 
-            Projectile.SendRequestEditProjectile();
+            Projectile.SendRequestEditProjectiles();
         }
 
         private void btnResourceEditor_Click(object sender, EventArgs e)
