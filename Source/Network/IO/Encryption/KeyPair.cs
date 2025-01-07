@@ -94,10 +94,13 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                     try
                     {
                         // Encrypt AES key with RSA
-                        var encryptedKey = _rsa.Encrypt(rijndael.Key, true); // Use OAEP padding for security
+                        var encryptedKey = _rsa?.Encrypt(rijndael.Key, true); // Use OAEP padding for security
 
                         if (encryptedKey.Length != 256)
-                            throw new CryptographicException("Invalid RSA-encrypted key length.");
+                        {
+                            Dispose();
+                            return null;
+                        }
 
                         // Write encrypted key and IV to the output stream
                         memoryStream.Write(encryptedKey, 0, encryptedKey.Length);
