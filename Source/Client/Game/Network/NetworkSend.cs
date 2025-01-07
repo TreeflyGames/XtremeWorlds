@@ -594,6 +594,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.Resource[ResourceNum].ExpReward);
             buffer.WriteInt32(Core.Type.Resource[ResourceNum].ItemReward);
             buffer.WriteString(Core.Type.Resource[ResourceNum].Name);
+            buffer.WriteInt32(Core.Type.Resource[ResourceNum].ResourceImage);
             buffer.WriteInt32(Core.Type.Resource[ResourceNum].ResourceType);
             buffer.WriteInt32(Core.Type.Resource[ResourceNum].RespawnTime);
             buffer.WriteString(Core.Type.Resource[ResourceNum].SuccessMessage);
