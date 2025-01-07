@@ -38,9 +38,16 @@ namespace Client
         {
             var mainForm = Application.OpenForms.Count > 0 ? Application.OpenForms[0] : null;
 
-            if (mainForm != null && !mainForm.IsDisposed & !mainForm.Disposing && mainForm.InvokeRequired)
+            try
             {
-                mainForm.Invoke(new EventHandler(UpdateForms), sender, e);
+                if (mainForm != null && !mainForm.IsDisposed & !mainForm.Disposing && mainForm.InvokeRequired)
+                {
+                    mainForm.Invoke(new EventHandler(UpdateForms), sender, e);
+                    return;
+                }
+            }
+            catch (System.ObjectDisposedException)
+            {
                 return;
             }
 
