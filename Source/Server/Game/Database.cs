@@ -1679,7 +1679,7 @@ namespace Server
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
-            NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + Settings.GameName + " by " + "the Server" + "!");
+            NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + Settings.Instance.GameName + " by " + "the Server" + "!");
             Core.Log.Add("The Server" + " has banned " + GetPlayerName(BanPlayerindex) + ".", Constant.ADMIN_LOG);
             NetworkSend.AlertMsg(BanPlayerindex, (int)DialogueMsg.Banned);
         }
@@ -1748,7 +1748,7 @@ namespace Server
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
-            NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + Settings.GameName + " by " + GetPlayerName(BannedByindex) + "!");
+            NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + Settings.Instance.GameName + " by " + GetPlayerName(BannedByindex) + "!");
             Core.Log.Add(GetPlayerName(BannedByindex) + " has banned " + GetPlayerName(BanPlayerindex) + ".", Constant.ADMIN_LOG);
             NetworkSend.AlertMsg(BanPlayerindex, (int)DialogueMsg.Banned);
         }

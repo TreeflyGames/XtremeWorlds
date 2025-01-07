@@ -300,9 +300,9 @@ namespace Client
 
         internal static void CacheMusic()
         {
-            Sound.MusicCache = new string[Directory.GetFiles(Core.Path.Music, "*" + Settings.MusicExt).Count() + 1];
-            string[] files = Directory.GetFiles(Core.Path.Music, "*" + Settings.MusicExt);
-            string maxNum = Directory.GetFiles(Core.Path.Music, "*" + Settings.MusicExt).Count().ToString();
+            Sound.MusicCache = new string[Directory.GetFiles(Core.Path.Music, "*" + Settings.Instance.MusicExt).Count() + 1];
+            string[] files = Directory.GetFiles(Core.Path.Music, "*" + Settings.Instance.MusicExt);
+            string maxNum = Directory.GetFiles(Core.Path.Music, "*" + Settings.Instance.MusicExt).Count().ToString();
             int counter = 0;
 
             foreach (var FileName in files)
@@ -314,9 +314,9 @@ namespace Client
 
         internal static void CacheSound()
         {
-            Sound.SoundCache = new string[Directory.GetFiles(Core.Path.Sounds, "*" + Settings.SoundExt).Count() + 1];
-            string[] files = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.SoundExt);
-            string maxNum = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.SoundExt).Count().ToString();
+            Sound.SoundCache = new string[Directory.GetFiles(Core.Path.Sounds, "*" + Settings.Instance.SoundExt).Count() + 1];
+            string[] files = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.Instance.SoundExt);
+            string maxNum = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.Instance.SoundExt).Count().ToString();
             int counter = 0;
 
             foreach (var FileName in files)
@@ -329,7 +329,7 @@ namespace Client
         public static void GameInit()
         {
             // Send a request to the server to open the admin menu if the user wants it.
-            if (Settings.OpenAdminPanelOnLogin == true)
+            if (Settings.Instance.OpenAdminPanelOnLogin == true)
             {
                 if (GetPlayerAccess(GameState.MyIndex) > 0)
                 {

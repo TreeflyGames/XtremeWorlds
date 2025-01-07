@@ -36,7 +36,6 @@ namespace Core
         public static PartyStruct Party;
         public static MapResourceStruct[] MapResource;
         public static CharList Char;
-        public static Settings Setting;
         public static PetStruct[] Pet;
         public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[(byte.MaxValue)];
 

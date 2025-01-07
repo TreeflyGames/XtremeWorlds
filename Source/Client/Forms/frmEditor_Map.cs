@@ -183,14 +183,14 @@ namespace Client
 
             if (!Information.IsNumeric(txtMaxX.Text))
                 txtMaxX.Text = Core.Type.MyMap.MaxX.ToString();
-            if (Conversion.Val(txtMaxX.Text) < Settings.CameraWidth)
-                txtMaxX.Text = Settings.CameraWidth.ToString();
+            if (Conversion.Val(txtMaxX.Text) < Settings.Instance.CameraWidth)
+                txtMaxX.Text = Settings.Instance.CameraWidth.ToString();
             if (Conversion.Val(txtMaxX.Text) > byte.MaxValue)
                 txtMaxX.Text = byte.MaxValue.ToString();
             if (!Information.IsNumeric(txtMaxY.Text))
                 txtMaxY.Text = Core.Type.MyMap.MaxY.ToString();
-            if (Conversion.Val(txtMaxY.Text) < Settings.CameraHeight)
-                txtMaxY.Text = Settings.CameraHeight.ToString();
+            if (Conversion.Val(txtMaxY.Text) < Settings.Instance.CameraHeight)
+                txtMaxY.Text = Settings.Instance.CameraHeight.ToString();
             if (Conversion.Val(txtMaxY.Text) > byte.MaxValue)
                 txtMaxY.Text = byte.MaxValue.ToString();
 
@@ -608,7 +608,7 @@ namespace Client
                 string selectedFile = lstMusic.Items[lstMusic.SelectedIndex].ToString();
 
                 // If the selected music file is a MIDi file
-                if (Settings.MusicExt == ".mid")
+                if (Settings.Instance.MusicExt == ".mid")
                 {
                     Sound.PlayMidi(Core.Path.Music + selectedFile);
                 }

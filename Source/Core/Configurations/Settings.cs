@@ -4,106 +4,88 @@ using System.Xml.Serialization;
 
 namespace Core
 {
-
     public class Settings
     {
-        public static string Language = "English";
+        // Singleton instance
+        private static Settings _instance;
+        public static Settings Instance => _instance ??= new Settings();
 
-        public static string Username = "";
-        public static bool SaveUsername = true;
+        // Settings fields
+        public string Language { get; set; } = "English";
+        public string Username { get; set; } = "";
+        public bool SaveUsername { get; set; } = true;
 
-        public static string MenuMusic = "menu.mid";
-        public static bool Music = true;
-        public static bool Sound = true;
-        public static float MusicVolume = 100.0f;
-        public static float SoundVolume = 100.0f;
+        public string MenuMusic { get; set; } = "menu.mid";
+        public bool Music { get; set; } = true;
+        public bool Sound { get; set; } = true;
+        public float MusicVolume { get; set; } = 100.0f;
+        public float SoundVolume { get; set; } = 100.0f;
 
-        public static string MusicExt = ".mid";
-        public static string SoundExt = ".ogg";
+        public string MusicExt { get; set; } = ".mid";
+        public string SoundExt { get; set; } = ".ogg";
 
-        public static byte Resolution = 13;
-        public static bool Vsync = true;
-        public static bool ShowNPCBar = true;
-        public static bool Fullscreen = false;
-        public static byte CameraWidth = 32;
-        public static byte CameraHeight = 24;
-        public static bool OpenAdminPanelOnLogin = true;
-        public static bool DynamicLightRendering = true;
-        public static byte[] ChannelState = new byte[7];
+        public byte Resolution { get; set; } = 13;
+        public bool Vsync { get; set; } = true;
+        public bool ShowNPCBar { get; set; } = true;
+        public bool Fullscreen { get; set; } = false;
+        public byte CameraWidth { get; set; } = 32;
+        public byte CameraHeight { get; set; } = 24;
+        public bool OpenAdminPanelOnLogin { get; set; } = true;
+        public bool DynamicLightRendering { get; set; } = true;
+        public byte[] ChannelState { get; set; } = new byte[7];
 
-        public static string Ip = "127.0.0.1";
-        public static int Port = 7001;
+        public string IP { get; set; } = "127.0.0.1";
+        public int Port { get; set; } = 7001;
 
-        [XmlIgnore()]
-        public static string GameName = "XtremeWorlds";
-        [XmlIgnore()]
-        public static string Website = "https://xtremeworlds.com/";
+        public string GameName { get; set; } = "XtremeWorlds";
+        public string Website { get; set; } = "https://xtremeworlds.com/";
 
-        public static string Welcome = "Welcome to XtremeWorlds, enjoy your stay!";
+        public string Welcome { get; set; } = "Welcome to XtremeWorlds, enjoy your stay!";
+        public double TimeSpeed { get; set; }
+        public bool Autotile { get; set; } = true;
 
-        public static double TimeSpeed;
-
-        public static bool Autotile = true;
-
+        // Methods to load and save settings
         public static void Load()
         {
-            string configPath = Path.Config;
+            string configPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
             string configFile = System.IO.Path.Combine(configPath, "Settings.xml");
 
-            Directory.CreateDirectory(configPath);
-
-            if (!File.Exists(configFile))
+            if (File.Exists(configFile))
             {
                 try
                 {
-                    using (var writer = new StreamWriter(File.Create(configFile)))
-                    {
-                        var serializer = new XmlSerializer(typeof(Settings), new XmlRootAttribute("Settings"));
-                        serializer.Serialize(writer, new Settings()); // Serialize default settings
-                    }
+                    using var reader = new StreamReader(configFile);
+                    var serializer = new XmlSerializer(typeof(Settings));
+                    _instance = (Settings)serializer.Deserialize(reader);
                 }
-                catch (IOException ex)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Failed to load settings: " + ex.Message);
+                    _instance = new Settings();
                 }
             }
-
-            try
+            else
             {
-                using (var reader = new StreamReader(configFile))
-                {
-                    var serializer = new XmlSerializer(typeof(Settings), new XmlRootAttribute("Settings"));
-                    Type.Setting = (Settings)serializer.Deserialize(reader);
-                }
-            }
-            catch (Exception ex)
-            {
-                Type.Setting = new Settings(); // Default to new settings if reading fails
+                Save(); // Save default settings if no file exists
             }
         }
 
         public static void Save()
         {
-            string configPath = Path.Config;
+            string configPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
             string configFile = System.IO.Path.Combine(configPath, "Settings.xml");
 
             Directory.CreateDirectory(configPath);
 
             try
             {
-                using (var writer = new StreamWriter(configFile))
-                {
-                    var serializer = new XmlSerializer(typeof(Settings), new XmlRootAttribute("Settings"));
-                    serializer.Serialize(writer, Type.Setting);
-                }
+                using var writer = new StreamWriter(configFile);
+                var serializer = new XmlSerializer(typeof(Settings));
+                serializer.Serialize(writer, Instance);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("Failed to save settings: " + ex.Message);
             }
         }
     }

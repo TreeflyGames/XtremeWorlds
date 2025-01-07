@@ -1080,7 +1080,7 @@ namespace Server
             // Send an ok to client to start receiving in game data
             NetworkSend.SendLoginOK(index);
             JoinGame(index);
-            string text = string.Format("{0} | {1} has began playing {2}.", GetPlayerLogin(index), GetPlayerName(index), Settings.GameName);
+            string text = string.Format("{0} | {1} has began playing {2}.", GetPlayerLogin(index), GetPlayerName(index), Settings.Instance.GameName);
             Core.Log.Add(text, Constant.PLAYER_LOG);
             Console.WriteLine(text);
             
@@ -2731,7 +2731,7 @@ namespace Server
             int i;
 
             // Notify everyone that a player has joined the game.
-            NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), Settings.GameName));
+            NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), Settings.Instance.GameName));
 
             // Warp the player to his saved location
             PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index));
@@ -2790,9 +2790,9 @@ namespace Server
                 }
 
                 // Send a global message that he/she left
-                NetworkSend.GlobalMsg(string.Format("{0} has left {1}!", GetPlayerName(index), Settings.GameName));
+                NetworkSend.GlobalMsg(string.Format("{0} has left {1}!", GetPlayerName(index), Settings.Instance.GameName));
 
-                Console.WriteLine(string.Format("{0} has left {1}!", GetPlayerName(index), Settings.GameName));
+                Console.WriteLine(string.Format("{0} has left {1}!", GetPlayerName(index), Settings.Instance.GameName));
 
                 Pet.RecallPet(index);
                 Database.SaveCharacter(index, Core.Type.TempPlayer[index].Slot);

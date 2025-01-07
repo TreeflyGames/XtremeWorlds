@@ -68,7 +68,7 @@ namespace Server
 
             Settings.Load();
 
-            TimeType.Instance.GameSpeed = Settings.TimeSpeed;
+            TimeType.Instance.GameSpeed = Settings.Instance.TimeSpeed;
 
             Console.Title = "XtremeWorlds Server";
 
@@ -132,7 +132,7 @@ namespace Server
             UpdateCaption();
 
             // Start listener now that everything is loaded
-            NetworkConfig.Socket.StartListening(Settings.Port, 5);
+            NetworkConfig.Socket.StartListening(Settings.Instance.Port, 5);
 
             // Starts the server loop
             Loop.Server();
@@ -173,11 +173,11 @@ namespace Server
         {
             try
             {
-                Console.Title = $"{Settings.GameName} <IP {MyIPAddress}:{Settings.Port}> ({CountPlayersOnline()} Players Online) - Current Errors: {Global.ErrorCount} - Time: {TimeType.Instance.ToString()}";
+                Console.Title = $"{Settings.Instance.GameName} <IP {MyIPAddress}:{Settings.Instance.Port}> ({CountPlayersOnline()} Players Online) - Current Errors: {Global.ErrorCount} - Time: {TimeType.Instance.ToString()}";
             }
             catch (Exception)
             {
-                Console.Title = $"{Settings.GameName}";
+                Console.Title = $"{Settings.Instance.GameName}";
                 return;
             }
         }

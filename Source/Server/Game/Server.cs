@@ -246,7 +246,7 @@ namespace Server
                             double speed;
                             double.TryParse(parts[1], out speed);
                             TimeType.Instance.GameSpeed = speed;
-                            Settings.TimeSpeed = speed;
+                            Settings.Instance.TimeSpeed = speed;
                             Settings.Save();
                             Console.WriteLine("Set GameSpeed to " + TimeType.Instance.GameSpeed + " secs per seconds");
                             break;

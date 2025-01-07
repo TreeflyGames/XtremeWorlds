@@ -2060,11 +2060,11 @@ namespace Client
             // fill the options screen
             {
                 var withBlock = Gui.Windows[Gui.GetWindowIndex("winOptions")];
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkMusic")].Value = Conversions.ToLong(Settings.Music);
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkSound")].Value = Conversions.ToLong(Settings.Sound);
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkAutotile")].Value = Conversions.ToLong(Settings.Autotile);
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkFullscreen")].Value = Conversions.ToLong(Settings.Fullscreen);
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "cmbRes")].Value = Settings.Resolution;
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkMusic")].Value = Conversions.ToLong(Settings.Instance.Music);
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkSound")].Value = Conversions.ToLong(Settings.Instance.Sound);
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkAutotile")].Value = Conversions.ToLong(Settings.Instance.Autotile);
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkFullscreen")].Value = Conversions.ToLong(Settings.Instance.Fullscreen);
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "cmbRes")].Value = Settings.Instance.Resolution;
             }
         }
 
