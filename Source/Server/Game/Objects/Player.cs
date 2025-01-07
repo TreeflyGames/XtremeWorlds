@@ -2751,11 +2751,6 @@ namespace Server
             NetworkSend.SendHotbar(index);
             NetworkSend.SendPlayerSkills(index);
             NetworkSend.SendStats(index);
-            Pet.SendUpdatePlayerPet(index, true);
-            //Time.SendTimeTo(index);
-            //Time.SendGameClockTo(index);
-            Pet.SendPets(index);
-            Projectile.SendProjectiles(index);
 
             // Send welcome messages
             NetworkSend.SendWelcome(index);
