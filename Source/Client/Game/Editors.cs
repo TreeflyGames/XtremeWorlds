@@ -17,7 +17,7 @@ namespace Client
 
             {
                 ref var withBlock = ref Core.Type.Animation[GameState.EditorIndex];
-                if (string.IsNullOrEmpty(Core.Type.Animation[GameState.EditorIndex].Sound))
+                if (string.IsNullOrEmpty(withBlock.Sound))
                 {
                     frmEditor_Animation.Instance.cmbSound.SelectedIndex = 0;
                 }
@@ -32,7 +32,7 @@ namespace Client
                         }
                     }
                 }
-                frmEditor_Animation.Instance.txtName.Text = Strings.Trim(withBlock.Name);
+                frmEditor_Animation.Instance.txtName.Text = withBlock.Name;
 
                 frmEditor_Animation.Instance.nudSprite0.Value = withBlock.Sprite[0];
                 frmEditor_Animation.Instance.nudFrameCount0.Value = withBlock.Frames[0];
