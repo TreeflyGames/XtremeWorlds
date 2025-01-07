@@ -1957,6 +1957,9 @@ namespace Server
             // Check to see if inventory is full
             if (i != -1)
             {
+                if (ItemVal == 0)
+                    ItemVal = 1;
+
                 SetPlayerInv(index, i, itemNum);
                 SetPlayerInvValue(index, i, GetPlayerInvValue(index, i) + ItemVal);
                 if (SendUpdate)
