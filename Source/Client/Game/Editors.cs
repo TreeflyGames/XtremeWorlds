@@ -25,7 +25,7 @@ namespace Client
                 {
                     for (int i = 0, loopTo = frmEditor_Animation.Instance.cmbSound.Items.Count; i < loopTo; i++)
                     {
-                        if (Conversions.ToDouble(frmEditor_Animation.Instance.cmbSound.GetItemText(i)) == frmEditor_Animation.Instance.cmbSound.SelectedIndex)
+                        if (frmEditor_Animation.Instance.cmbSound.GetItemText(frmEditor_Animation.Instance.cmbSound.Items[i]) == withBlock.Sound)
                         {
                             frmEditor_Animation.Instance.cmbSound.SelectedIndex = i;
                             break;
