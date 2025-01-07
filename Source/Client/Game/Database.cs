@@ -29,6 +29,8 @@ namespace Client
 
         public static void ClearNPC(int index)
         {
+            Core.Type.NPC[index].AttackSay = "";
+            Core.Type.NPC[index].Name = "";
             Core.Type.NPC[index] = default;
             Core.Type.NPC[index].Stat = new byte[6];
             Core.Type.NPC[index].DropChance = new int[6];
