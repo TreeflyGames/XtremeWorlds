@@ -29,7 +29,6 @@ namespace Client
                 lstIndex.Items.Add(i + 1 + ": " + Core.Type.Pet[i].Name);
 
             cmbEvolve.Items.Clear();
-            cmbEvolve.Items.Add("None");
             // Add the names
             for (int i = 0; i < Constant.MAX_PETS; i++)
                 cmbEvolve.Items.Add(i + 1 + ": " + Core.Type.Pet[i].Name);

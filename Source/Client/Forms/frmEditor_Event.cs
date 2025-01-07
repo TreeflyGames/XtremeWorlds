@@ -86,19 +86,15 @@ namespace Client
             int i;
 
             cmbSwitch.Items.Clear();
-            cmbSwitch.Items.Add("None");
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
                 cmbSwitch.Items.Add(i  + 1 + ". " + Event.Switches[i]);
             cmbSwitch.SelectedIndex = 0;
             cmbVariable.Items.Clear();
-            cmbVariable.Items.Add("None");
 
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
                 cmbVariable.Items.Add(i  + 1 + ". " + Event.Variables[i]);
             cmbVariable.SelectedIndex = 0;
             cmbChangeItemIndex.Items.Clear();
-            cmbChangeItemIndex.Items.Add("None");
-
             for (i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbChangeItemIndex.Items.Add(Core.Type.Item[i].Name);
             cmbChangeItemIndex.SelectedIndex = 0;
@@ -106,20 +102,17 @@ namespace Client
             nudChangeLevel.Maximum = Constant.MAX_LEVEL;
             nudChangeLevel.Value = 1m;
             cmbChangeSkills.Items.Clear();
-            cmbChangeSkills.Items.Add("None");
 
             for (i = 0; i < Constant.MAX_SKILLS; i++)
                 cmbChangeSkills.Items.Add(Core.Type.Skill[i].Name);
             cmbChangeSkills.SelectedIndex = 0;
             cmbChangeJob.Items.Clear();
-            cmbChangeJob.Items.Add("None");
 
             for (i = 0; i < Constant.MAX_JOBS; i++)
                 cmbChangeJob.Items.Add(Strings.Trim(Core.Type.Job[i].Name));
             cmbChangeJob.SelectedIndex = 0;
             nudChangeSprite.Maximum = GameState.NumCharacters;
             cmbPlayAnim.Items.Clear();
-            cmbPlayAnim.Items.Add("None");
 
             for (i = 0; i < Constant.MAX_ANIMATIONS; i++)
                 cmbPlayAnim.Items.Add(i  + 1 + ". " + Core.Type.Animation[i].Name);
@@ -140,13 +133,11 @@ namespace Client
                 cmbPlaySound.Items.Add(Sound.SoundCache[i]);
             cmbPlaySound.SelectedIndex = 0;
             cmbOpenShop.Items.Clear();
-            cmbOpenShop.Items.Add("None");
 
             for (i = 0; i < Constant.MAX_SHOPS; i++)
                 cmbOpenShop.Items.Add(i  + 1 + ". " + Core.Type.Shop[i].Name);
             cmbOpenShop.SelectedIndex = 0;
             cmbSpawnNPC.Items.Clear();
-            cmbSpawnNPC.Items.Add("None");
 
             for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
             {
@@ -188,18 +179,15 @@ namespace Client
 
             // items
             cmbHasItem.Items.Clear();
-            cmbHasItem.Items.Add("None");
             for (i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbHasItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
 
             // variables
             cmbPlayerVar.Items.Clear();
-            cmbPlayerVar.Items.Add("None");
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
                 cmbPlayerVar.Items.Add(i  + 1 + ". " + Event.Variables[i]);
             // switches
             cmbPlayerSwitch.Items.Clear();
-            cmbPlayerSwitch.Items.Add("None");
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
                 cmbPlayerSwitch.Items.Add(i  + 1 + ". " + Event.Switches[i]);
             cmbSelfSwitch.SelectedIndex = 0;
@@ -1794,12 +1782,10 @@ namespace Client
             pnlVariableSwitches.Width = Width;
             pnlVariableSwitches.Height = Height;
             lstSwitches.Items.Clear();
-            lstSwitches.Items.Add("None");
 
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstVariables.Items.Clear();
-            lstVariables.Items.Add("None");
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
@@ -1843,12 +1829,10 @@ namespace Client
                     }
             }
             lstSwitches.Items.Clear();
-            lstSwitches.Items.Add("None");
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
-            lstVariables.Items.Add("None");
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
@@ -1863,13 +1847,11 @@ namespace Client
             Event.RenameType = 0;
             Event.RenameIndex = 0;
             lstSwitches.Items.Clear();
-            lstSwitches.Items.Add("None");
 
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
                 lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
-            lstVariables.Items.Add("None");
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
                 lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));

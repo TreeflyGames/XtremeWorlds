@@ -467,7 +467,7 @@ namespace Client
             // 
             cmbTool.DrawMode = DrawMode.OwnerDrawFixed;
             cmbTool.FormattingEnabled = true;
-            cmbTool.Items.AddRange(new object[] { "None", "Hatchet", "Rod", "Pickaxe", "Hoe" });
+            cmbTool.Items.AddRange(new object[] {"None", "Hatchet", "Rod", "Pickaxe", "Hoe" });
             cmbTool.Location = new Point(117, 37);
             cmbTool.Margin = new Padding(5);
             cmbTool.Name = "cmbTool";
@@ -1034,7 +1034,7 @@ namespace Client
             // 
             cmbType.DrawMode = DrawMode.OwnerDrawFixed;
             cmbType.FormattingEnabled = true;
-            cmbType.Items.AddRange(new object[] { "None", "Equipment", "Consumable", "Common Event", "Currency", "Skill", "Projectile", "Pet" });
+            cmbType.Items.AddRange(new object[] { "Equipment", "Consumable", "Common Event", "Currency", "Skill", "Projectile", "Pet" });
             cmbType.Location = new Point(122, 77);
             cmbType.Margin = new Padding(5);
             cmbType.Name = "cmbType";
@@ -1056,7 +1056,7 @@ namespace Client
             // 
             cmbSubType.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSubType.FormattingEnabled = true;
-            cmbSubType.Items.AddRange(new object[] { "None", "Weapon", "Armor", "Helmet", "Shield", "Add HP", "Add MP", "Add SP", "Sub HP", "Sub MP", "Sub SP", "Experience", "Common Event", "Currency", "Skill" });
+            cmbSubType.Items.AddRange(new object[] {"Weapon", "Armor", "Helmet", "Shield", "Add HP", "Add MP", "Add SP", "Sub HP", "Sub MP", "Sub SP", "Experience", "Common Event", "Currency", "Skill" });
             cmbSubType.Location = new Point(122, 128);
             cmbSubType.Margin = new Padding(5);
             cmbSubType.Name = "cmbSubType";

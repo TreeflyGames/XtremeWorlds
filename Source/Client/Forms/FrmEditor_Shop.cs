@@ -99,9 +99,6 @@ namespace Client
 
             cmbItem.Items.Clear();
             cmbCostItem.Items.Clear();
-            cmbItem.Items.Add("None");
-            cmbCostItem.Items.Add("None");
-
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
             {
                 cmbItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);

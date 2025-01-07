@@ -769,7 +769,6 @@ namespace Client
 
             // find the shop we have set
             lstShop.Items.Clear();
-            lstShop.Items.Add("None");
             lstShop.SelectedIndex = 0;
 
             for (i = 0; i < Constant.MAX_SHOPS; i++)
@@ -787,7 +786,6 @@ namespace Client
 
             // find the shop we have set
             lstMoral.Items.Clear();
-            lstMoral.Items.Add("None");
             lstMoral.SelectedIndex = 0;
 
             for (i = 0; i < Constant.MAX_MORALS; i++)
@@ -818,20 +816,17 @@ namespace Client
             txtBootY.Text = Core.Type.MyMap.BootY.ToString();
 
             lstMapNPC.Items.Clear();
-            lstMapNPC.Items.Add("None");
             lstMapNPC.SelectedIndex = 0;
 
             for (X = 0; X < Constant.MAX_MAP_NPCS; X++)
                 lstMapNPC.Items.Add(X + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[X]].Name));
 
-            cmbNPCList.Items.Add("None");
             cmbNPCList.SelectedIndex = 0;
 
             for (Y = 1; Y < Constant.MAX_NPCS; Y++)
                 cmbNPCList.Items.Add(Y + ": " + Strings.Trim(Core.Type.NPC[Y].Name));
 
             cmbAnimation.Items.Clear();
-            cmbAnimation.Items.Add("None");
             cmbAnimation.SelectedIndex = 0;
 
             for (Y = 1; Y < Constant.MAX_ANIMATIONS; Y++)
@@ -850,7 +845,6 @@ namespace Client
             scrlFogSpeed.Value = Core.Type.MyMap.FogSpeed;
 
             cmbPanorama.Items.Clear();
-            cmbPanorama.Items.Add("None");
 
             var loopTo4 = GameState.NumPanoramas;
             for (i = 0; i < loopTo4; i++)
@@ -859,7 +853,6 @@ namespace Client
             cmbPanorama.SelectedIndex = Core.Type.MyMap.Panorama;
 
             cmbParallax.Items.Clear();
-            cmbParallax.Items.Add("None");
 
             var loopTo5 = GameState.NumParallax;
             for (i = 0; i < loopTo5; i++)

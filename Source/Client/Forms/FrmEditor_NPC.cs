@@ -28,22 +28,15 @@ namespace Client
 
             // populate combo boxes
             cmbAnimation.Items.Clear();
-            cmbAnimation.Items.Add("None");
             for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
                 cmbAnimation.Items.Add(i + 1 + ": " + Core.Type.Animation[i].Name);
 
             cmbSkill1.Items.Clear();
-            cmbSkill1.Items.Add("None");
             cmbSkill2.Items.Clear();
-            cmbSkill2.Items.Add("None");
             cmbSkill3.Items.Clear();
-            cmbSkill3.Items.Add("None");
             cmbSkill4.Items.Clear();
-            cmbSkill4.Items.Add("None");
             cmbSkill5.Items.Clear();
-            cmbSkill5.Items.Add("None");
             cmbSkill6.Items.Clear();
-            cmbSkill6.Items.Add("None");
             for (int i = 0; i < Constant.MAX_SKILLS; i++)
             {
                 cmbSkill1.Items.Add(i + 1 + ": " + Core.Type.Skill[i].Name);
@@ -55,7 +48,6 @@ namespace Client
             }
 
             cmbItem.Items.Clear();
-            cmbItem.Items.Add("None");
             for (int i = 0; i < Constant.MAX_ITEMS; i++)
                 cmbItem.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
         }
