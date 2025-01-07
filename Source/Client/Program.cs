@@ -1671,7 +1671,7 @@ namespace Client
             {
                 ref var withBlock = ref Core.Type.ChatBubble[(int)Index];
                 // exit out early
-                if (withBlock.Target == 0)
+                if (withBlock.TargetType == 0)
                     return;
 
                 Color = withBlock.Color;
