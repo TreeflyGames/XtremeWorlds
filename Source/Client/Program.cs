@@ -1532,7 +1532,7 @@ namespace Client
 
                     if (GameState.SkillBuffer >= 0)
                     {
-                        if ((int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num > 0)
+                        if ((int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num >= 0)
                         {
                             if (Core.Type.Skill[(int)Core.Type.Player[(int)i].Skill[GameState.SkillBuffer].Num].CastTime > 0)
                             {
