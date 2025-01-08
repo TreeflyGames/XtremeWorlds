@@ -427,7 +427,7 @@ namespace Server
             amount = buffer.ReadInt32();
             buffer.Dispose();
 
-            if (Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop > 0)
+            if (Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
                 return;
 
             // Prevent hacking

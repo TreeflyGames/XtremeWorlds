@@ -12,12 +12,11 @@ namespace Client
         #region Database
         public static void ClearPlayers()
         {
-            int i;
-
             Core.Type.Account = new Core.Type.AccountStruct[Constant.MAX_PLAYERS];
             Core.Type.Player = new Core.Type.PlayerStruct[Constant.MAX_PLAYERS];
+            Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS];
 
-            for (i = 0; i < Constant.MAX_PLAYERS; i++)
+            for (int i = 0; i < Constant.MAX_PLAYERS; i++)
             {
                 ClearPlayer(i);
             }
@@ -283,7 +282,7 @@ namespace Client
                 return CanMoveRet;
             }
 
-            if (GameState.InShop > 0)
+            if (GameState.InShop >= 0)
             {
                 GameLogic.CloseShop();
             }

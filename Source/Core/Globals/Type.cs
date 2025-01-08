@@ -410,7 +410,7 @@ namespace Core
             public double SkillBuffer;
             public int SkillBufferTimer;
             public int[] SkillCD;
-            public int InShop;
+            public double InShop;
             public int StunTimer;
             public int StunDuration;
             public bool InBank;

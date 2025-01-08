@@ -1229,7 +1229,7 @@ namespace Server
                 return;
             }
 
-            if (Core.Type.TempPlayer[index].InShop > 0 | Core.Type.TempPlayer[index].InBank)
+            if (Core.Type.TempPlayer[index].InShop >= 0 | Core.Type.TempPlayer[index].InBank)
             {
                 return;
             }
@@ -1987,7 +1987,7 @@ namespace Server
             }
 
             // check the player isn't doing something
-            if (Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop > 0 | Core.Type.TempPlayer[index].InTrade > 0)
+            if (Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0 | Core.Type.TempPlayer[index].InTrade > 0)
                 return;
 
             if (Conversions.ToInteger(Core.Type.Moral[GetPlayerMap(index)].CanDropItem) == 0)
@@ -2145,7 +2145,7 @@ namespace Server
             }
 
             // check the player isn't doing something
-            if (Core.Type.TempPlayer[index].InBank == true | Core.Type.TempPlayer[index].InShop > 0 | Core.Type.TempPlayer[index].InTrade > 0)
+            if (Core.Type.TempPlayer[index].InBank == true | Core.Type.TempPlayer[index].InShop >= 0 | Core.Type.TempPlayer[index].InTrade > 0)
             {
                 NetworkSend.PlayerMsg(index, "You can't use items while in a bank, shop, or trade!", (int) ColorType.BrightRed);
                 return CanPlayerUseItemRet;

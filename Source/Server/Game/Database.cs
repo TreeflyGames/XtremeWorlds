@@ -1393,8 +1393,8 @@ namespace Server
             ClearAccount(index);
 
             Core.Type.Player[index].Access = (byte)AccessType.Player;
-            Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS];
             Core.Type.TempPlayer[index].SkillBuffer = -1;
+            Core.Type.TempPlayer[index].InShop = -1;
             Core.Type.Player[index].Inv = new PlayerInvStruct[Core.Constant.MAX_INV];
 
             for (int i = 0; i < Core.Constant.MAX_INV; i++)

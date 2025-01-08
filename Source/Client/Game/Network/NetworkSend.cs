@@ -430,7 +430,7 @@ namespace Client
         {
             var buffer = new ByteStream(4);
 
-            if (GameState.InBank | GameState.InShop > 0)
+            if (GameState.InBank | GameState.InShop >= 0)
                 return;
 
             // do basic checks

@@ -642,7 +642,7 @@ namespace Server
             }
 
             // Prevent player from moving if in shop
-            if (Core.Type.TempPlayer[index].InShop > 0)
+            if (Core.Type.TempPlayer[index].InShop >= 0)
             {
                 NetworkSend.SendPlayerXY(index);
                 return;
@@ -1930,7 +1930,7 @@ namespace Server
             int newSlot;
             var buffer = new ByteStream(data);
 
-            if (Core.Type.TempPlayer[index].InTrade > 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop > 0)
+            if (Core.Type.TempPlayer[index].InTrade > 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
                 return;
 
             // Old Slot
@@ -1949,7 +1949,7 @@ namespace Server
             int newSlot;
             var buffer = new ByteStream(data);
 
-            if (Core.Type.TempPlayer[index].InTrade > 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop > 0)
+            if (Core.Type.TempPlayer[index].InTrade > 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
                 return;
 
             // Old Slot
@@ -2122,7 +2122,7 @@ namespace Server
         public static void Packet_BuyItem(int index, ref byte[] data)
         {
             int shopslot;
-            int shopnum;
+            double shopnum;
             int itemamount;
             var buffer = new ByteStream(data);
 
@@ -2133,26 +2133,25 @@ namespace Server
             if (shopnum < 0 | shopnum > Core.Constant.MAX_SHOPS)
                 return;
 
+            ref var withBlock = ref Core.Type.Shop[(int)shopnum].TradeItem[shopslot];
+            // check trade exists
+            if (withBlock.Item < 0)
+                return;
+
+            // check has the cost item
+            itemamount = Player.HasItem(index, withBlock.CostItem);
+            if (itemamount == 0 | itemamount < withBlock.CostValue)
             {
-                ref var withBlock = ref Core.Type.Shop[shopnum].TradeItem[shopslot];
-                // check trade exists
-                if (withBlock.Item < 0)
-                    return;
-
-                // check has the cost item
-                itemamount = Player.HasItem(index, withBlock.CostItem);
-                if (itemamount == 0 | itemamount < withBlock.CostValue)
-                {
-                    NetworkSend.PlayerMsg(index, "You do not have enough to buy this item.", (int) ColorType.BrightRed);
-                    NetworkSend.ResetShopAction(index);
-                    return;
-                }
-
-                // it's fine, let's go ahead
-                for (int i = 0, loopTo = withBlock.CostValue; i < loopTo; i++)
-                    Player.TakeInv(index, withBlock.CostItem, withBlock.CostValue);
-                Player.GiveInv(index, withBlock.Item, withBlock.ItemValue);
+                NetworkSend.PlayerMsg(index, "You do not have enough to buy this item.", (int) ColorType.BrightRed);
+                NetworkSend.ResetShopAction(index);
+                return;
             }
+
+            // it's fine, let's go ahead
+            for (int i = 0, loopTo = withBlock.CostValue; i < loopTo; i++)
+                Player.TakeInv(index, withBlock.CostItem, withBlock.CostValue);
+            Player.GiveInv(index, withBlock.Item, withBlock.ItemValue);
+            
 
             // send confirmation message & reset their shop action
             NetworkSend.PlayerMsg(index, "Trade successful.", (int) ColorType.BrightGreen);
@@ -2167,6 +2166,7 @@ namespace Server
             double itemNum;
             int price;
             double multiplier;
+            double shopNum;
             var buffer = new ByteStream(data);
 
             invSlot = buffer.ReadInt32();
@@ -2180,10 +2180,16 @@ namespace Server
                 return;
 
             // seems to be valid
-            itemNum = (int)GetPlayerInv(index, invSlot);
+            itemNum = GetPlayerInv(index, invSlot);
+            shopNum = Core.Type.TempPlayer[index].InShop;
+
+            if (shopNum < 0 || shopNum > Core.Constant.MAX_SHOPS)
+            {
+                return;
+            }
 
             // work out price
-            multiplier = (double)Core.Type.Shop[Core.Type.TempPlayer[index].InShop].BuyRate / 100d;
+            multiplier = Core.Type.Shop[(int)shopNum].BuyRate / 100d;
             price = (int)Math.Round(Core.Type.Item[(int)itemNum].Price * multiplier);
 
             // item has cost?

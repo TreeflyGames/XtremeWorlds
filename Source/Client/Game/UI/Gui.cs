@@ -3584,7 +3584,7 @@ namespace Client
                     return;
                 }
 
-                if (GameState.InShop > 0)
+                if (GameState.InShop >= 0)
                 {
                     Shop.SellItem((int)invNum);
                     return;

@@ -375,6 +375,8 @@ namespace Client
             Gui.HideWindows();
             GameState.CanMoveNow = true;
             GameState.MyEditorType = -1;
+            GameState.SkillBuffer = -1;
+            GameState.InShop = -1;
 
             // show gui
             Gui.ShowWindow(Gui.GetWindowIndex("winHotbar"), resetPosition: false);
