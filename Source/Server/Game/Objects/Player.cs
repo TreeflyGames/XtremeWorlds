@@ -1281,7 +1281,7 @@ namespace Server
                 case (byte) DirectionType.Down:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY)
+                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.Down))
@@ -1356,7 +1356,7 @@ namespace Server
                 case (byte) DirectionType.Right:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX)
+                        if (GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.Right))
@@ -1393,7 +1393,7 @@ namespace Server
                 case (byte) DirectionType.UpRight:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX)
+                        if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.UpRight))
@@ -1449,7 +1449,7 @@ namespace Server
                 case (byte) DirectionType.DownRight:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX)
+                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1 && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.DownRight))
@@ -1477,7 +1477,7 @@ namespace Server
                 case (byte) DirectionType.DownLeft:
                     {
                         // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY && GetPlayerX(index) > 0)
+                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1 && GetPlayerX(index) > 0)
                         {
                             // Check to make sure that the tile is walkable
                             if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.DownLeft))

@@ -649,13 +649,15 @@ namespace Server
             }
 
             // Desynced
-            if (GetPlayerX(index) != tmpX)
+            int x = GetPlayerX(index);
+            if (x != tmpX)
             {
                 NetworkSend.SendPlayerXY(index);
                 return;
             }
 
-            if (GetPlayerY(index) != tmpY)
+            int y = GetPlayerY(index);
+            if (y != tmpY)
             {
                 NetworkSend.SendPlayerXY(index);
                 return;

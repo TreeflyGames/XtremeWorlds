@@ -308,25 +308,11 @@ namespace Core.Global
 
         public static void SetPlayerX(int index, int x)
         {
-            if (GetPlayerMap(index) < 0 | GetPlayerMap(index) > Constant.MAX_MAPS)
-                return;
-            if (x < 0)
-                x = 0;
-            if (x > Type.Map[GetPlayerMap(index)].MaxX)
-                x = Type.Map[GetPlayerMap(index)].MaxX;
-
             Type.Player[index].X = (byte)x;
         }
 
         public static void SetPlayerY(int index, int y)
         {
-            if (GetPlayerMap(index) < 0 | GetPlayerMap(index) > Constant.MAX_MAPS)
-                return;
-            if (y < 0)
-                y = 0;
-            if (y > Type.Map[GetPlayerMap(index)].MaxY)
-                y = Type.Map[GetPlayerMap(index)].MaxY;
-
             Type.Player[index].Y = (byte)y;
         }
 
