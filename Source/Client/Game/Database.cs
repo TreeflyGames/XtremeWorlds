@@ -42,9 +42,9 @@ namespace Client
 
         public static void StreamNPC(int NPCNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(NPCNum >= 0 & string.IsNullOrEmpty(Core.Type.NPC[NPCNum].Name), Operators.ConditionalCompareObjectEqual(GameState.NPC_Loaded[NPCNum], 0, false))))
+            if (Conversions.ToBoolean(Operators.OrObject(NPCNum >= 0 & string.IsNullOrEmpty(Core.Type.NPC[(int)NPCNum].Name), Operators.ConditionalCompareObjectEqual(GameState.NPC_Loaded[(int)NPCNum], 0, false))))
             {
-                GameState.NPC_Loaded[NPCNum] = 1;
+                GameState.NPC_Loaded[(int)NPCNum] = 1;
                 NetworkSend.SendRequestNPC(NPCNum);
             }
         }

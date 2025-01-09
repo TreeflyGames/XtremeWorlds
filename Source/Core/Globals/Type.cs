@@ -353,7 +353,7 @@ namespace Core
             public byte Points;
 
             // Worn equipment
-            public int[] Equipment;
+            public double[] Equipment;
 
             // Inventory
             public PlayerInvStruct[] Inv;
@@ -564,7 +564,7 @@ namespace Core
 
         public struct HotbarStruct
         {
-            public int Slot;
+            public double Slot;
             public byte SlotType;
         }
 

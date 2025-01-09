@@ -390,15 +390,15 @@ namespace Client
         private static void Packet_PlayerInv(ref byte[] data)
         {
             int i;
-            int invNum;
+            double itemNum;
             int amount;
             var buffer = new ByteStream(data);
 
             for (i = 0; i < Constant.MAX_INV; i++)
             {
-                invNum = buffer.ReadInt32();
+                itemNum = buffer.ReadDouble();
                 amount = buffer.ReadInt32();
-                SetPlayerInv(GameState.MyIndex, i, invNum);
+                SetPlayerInv(GameState.MyIndex, i, itemNum);
                 SetPlayerInvValue(GameState.MyIndex, i, amount);
             }
 
@@ -415,7 +415,7 @@ namespace Client
 
             n = buffer.ReadInt32();
 
-            SetPlayerInv(GameState.MyIndex, n, buffer.ReadInt32());
+            SetPlayerInv(GameState.MyIndex, n, buffer.ReadDouble());
             SetPlayerInvValue(GameState.MyIndex, n, buffer.ReadInt32());
 
             GameLogic.SetGoldLabel();
@@ -426,12 +426,12 @@ namespace Client
         private static void Packet_PlayerWornEquipment(ref byte[] data)
         {
             int i;
-            int n;
+            double n;
             var buffer = new ByteStream(data);
 
             for (i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
-                n = buffer.ReadInt32();
+                n = buffer.ReadDouble();
                 SetPlayerEquipment(GameState.MyIndex, n, (Core.Enum.EquipmentType)i);
             }
 
@@ -440,21 +440,21 @@ namespace Client
 
         private static void Packet_NPCMove(ref byte[] data)
         {
-            int mapNPCNum;
+            double MapNPCNum;
             int movement;
             int x;
             int y;
             int dir;
             var buffer = new ByteStream(data);
 
-            mapNPCNum = buffer.ReadInt32();
+            MapNPCNum = buffer.ReadInt32();
             x = buffer.ReadInt32();
             y = buffer.ReadInt32();
             dir = buffer.ReadInt32();
             movement = buffer.ReadInt32();
 
             {
-                ref var withBlock = ref Core.Type.MyMapNPC[mapNPCNum];
+                ref var withBlock = ref Core.Type.MyMapNPC[(int)MapNPCNum];
                 withBlock.X = (byte)x;
                 withBlock.Y = (byte)y;
                 withBlock.Dir = dir;
@@ -729,7 +729,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
-                Core.Type.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadInt32();
+                Core.Type.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadDouble();
 
             buffer.Dispose();
         }
@@ -798,12 +798,12 @@ namespace Client
         }
         private static void Packet_NPCVitals(ref byte[] data)
         {
-            int mapNPCNum;
+            double MapNPCNum;
             var buffer = new ByteStream(data);
 
-            mapNPCNum = buffer.ReadInt32();
+            MapNPCNum = buffer.ReadInt32();
             for (int i = 0; i < (int)Core.Enum.VitalType.Count; i++)
-                Core.Type.MyMapNPC[mapNPCNum].Vital[i] = buffer.ReadInt32();
+                Core.Type.MyMapNPC[(int)MapNPCNum].Vital[i] = buffer.ReadInt32();
 
             buffer.Dispose();
         }
@@ -919,13 +919,13 @@ namespace Client
         private static void Packet_MapWornEquipment(ref byte[] data)
         {
             int playernum;
-            int n;
+            double n;
             var buffer = new ByteStream(data);
 
             playernum = buffer.ReadInt32();
             for (int i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
-                n = buffer.ReadInt32();
+                n = buffer.ReadDouble();
                 SetPlayerEquipment(playernum, n, (Core.Enum.EquipmentType)i);
             }
 
@@ -941,33 +941,30 @@ namespace Client
             var buffer = new ByteStream(Compression.DecompressBytes(data));
 
             for (i = 0; i < Constant.MAX_JOBS; i++)
-            {
+            { 
+                ref var withBlock = ref Core.Type.Job[i];
+                withBlock.Stat = new int[6];
+
+                withBlock.Name = buffer.ReadString();
+                withBlock.Desc = buffer.ReadString();
+
+                withBlock.MaleSprite = buffer.ReadInt32();
+                withBlock.FemaleSprite = buffer.ReadInt32();
+
+                for (int q = 0; q < (int)Core.Enum.StatType.Count; q++)
+                    withBlock.Stat[q] = buffer.ReadInt32();
+
+                for (int q = 0; q < 5; q++)
                 {
-                    ref var withBlock = ref Core.Type.Job[i];
-                    withBlock.Stat = new int[6];
-
-                    withBlock.Name = buffer.ReadString();
-                    withBlock.Desc = buffer.ReadString();
-
-                    withBlock.MaleSprite = buffer.ReadInt32();
-                    withBlock.FemaleSprite = buffer.ReadInt32();
-
-                    for (int q = 0; q < (int)Core.Enum.StatType.Count; q++)
-                        withBlock.Stat[q] = buffer.ReadInt32();
-
-                    for (int q = 0; q < 5; q++)
-                    {
-                        withBlock.StartItem[q] = buffer.ReadInt32();
-                        withBlock.StartValue[q] = buffer.ReadInt32();
-                    }
-
-                    withBlock.StartMap = buffer.ReadInt32();
-                    withBlock.StartX = buffer.ReadByte();
-                    withBlock.StartY = buffer.ReadByte();
-
-                    withBlock.BaseExp = buffer.ReadInt32();
+                    withBlock.StartItem[q] = buffer.ReadInt32();
+                    withBlock.StartValue[q] = buffer.ReadInt32();
                 }
 
+                withBlock.StartMap = buffer.ReadInt32();
+                withBlock.StartX = buffer.ReadByte();
+                withBlock.StartY = buffer.ReadByte();
+
+                withBlock.BaseExp = buffer.ReadInt32();
             }
 
             i = 0;

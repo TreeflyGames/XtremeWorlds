@@ -212,6 +212,7 @@ namespace Client
             lstIndex.Size = new Size(228, 452);
             lstIndex.TabIndex = 1;
             lstIndex.Click += lstIndex_Click;
+            lstIndex.SelectedIndexChanged += lstIndex_SelectedIndexChanged;
             // 
             // DarkLabel1
             // 
@@ -584,7 +585,7 @@ namespace Client
             btnBasics.Location = new Point(253, 9);
             btnBasics.Margin = new Padding(4, 3, 4, 3);
             btnBasics.Name = "btnBasics";
-            btnBasics.Padding = new Padding(6, 6, 6, 6);
+            btnBasics.Padding = new Padding(6);
             btnBasics.Size = new Size(88, 27);
             btnBasics.TabIndex = 3;
             btnBasics.Text = "Properties";
@@ -595,7 +596,7 @@ namespace Client
             btnRequirements.Location = new Point(348, 9);
             btnRequirements.Margin = new Padding(4, 3, 4, 3);
             btnRequirements.Name = "btnRequirements";
-            btnRequirements.Padding = new Padding(6, 6, 6, 6);
+            btnRequirements.Padding = new Padding(6);
             btnRequirements.Size = new Size(107, 27);
             btnRequirements.TabIndex = 4;
             btnRequirements.Text = "Requirements";
@@ -822,7 +823,7 @@ namespace Client
             btnSave.Location = new Point(9, 473);
             btnSave.Margin = new Padding(4, 3, 4, 3);
             btnSave.Name = "btnSave";
-            btnSave.Padding = new Padding(6, 6, 6, 6);
+            btnSave.Padding = new Padding(6);
             btnSave.Size = new Size(229, 27);
             btnSave.TabIndex = 6;
             btnSave.Text = "Save";
@@ -833,7 +834,7 @@ namespace Client
             btnDelete.Location = new Point(9, 506);
             btnDelete.Margin = new Padding(4, 3, 4, 3);
             btnDelete.Name = "btnDelete";
-            btnDelete.Padding = new Padding(6, 6, 6, 6);
+            btnDelete.Padding = new Padding(6);
             btnDelete.Size = new Size(229, 27);
             btnDelete.TabIndex = 7;
             btnDelete.Text = "Delete";
@@ -844,7 +845,7 @@ namespace Client
             btnCancel.Location = new Point(9, 539);
             btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
-            btnCancel.Padding = new Padding(6, 6, 6, 6);
+            btnCancel.Padding = new Padding(6);
             btnCancel.Size = new Size(229, 27);
             btnCancel.TabIndex = 8;
             btnCancel.Text = "Cancel";
@@ -855,7 +856,7 @@ namespace Client
             btnSpawn.Location = new Point(463, 9);
             btnSpawn.Margin = new Padding(4, 3, 4, 3);
             btnSpawn.Name = "btnSpawn";
-            btnSpawn.Padding = new Padding(6, 6, 6, 6);
+            btnSpawn.Padding = new Padding(6);
             btnSpawn.Size = new Size(88, 27);
             btnSpawn.TabIndex = 10;
             btnSpawn.Text = "Spawn";

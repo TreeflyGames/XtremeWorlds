@@ -28,7 +28,7 @@ namespace Server
             return GetTotalMapPlayersRet;
         }
 
-        public static int GetNPCMaxVital(int NPCNum, Core.Enum.VitalType Vital)
+        public static int GetNPCMaxVital(double NPCNum, Core.Enum.VitalType Vital)
         {
             int GetNPCMaxVitalRet = default;
             // Prevent subscript out of range
@@ -39,12 +39,12 @@ namespace Server
             {
                 case VitalType.HP:
                     {
-                        GetNPCMaxVitalRet = Core.Type.NPC[NPCNum].HP;
+                        GetNPCMaxVitalRet = Core.Type.NPC[(int)NPCNum].HP;
                         break;
                     }
                 case VitalType.SP:
                     {
-                        GetNPCMaxVitalRet = (int)Core.Type.NPC[NPCNum].Stat[(byte)StatType.Intelligence] * 2;
+                        GetNPCMaxVitalRet = (int)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Intelligence] * 2;
                         break;
                     }
             }

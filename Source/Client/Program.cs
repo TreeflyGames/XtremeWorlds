@@ -1223,7 +1223,7 @@ namespace Client
             RenderTexture(ref argpath, x, y, rec.X, rec.Y, rec.Width, rec.Height);
         }
 
-        internal static void DrawNPC(int MapNPCNum)
+        internal static void DrawNPC(double MapNPCNum)
         {
             byte anim;
             int x;
@@ -1234,20 +1234,20 @@ namespace Client
             int attackSpeed = 1000;
 
             // Check if NPC exists
-            if (Core.Type.MyMapNPC[MapNPCNum].Num == -1)
+            if (Core.Type.MyMapNPC[(int)MapNPCNum].Num < 0 || Core.Type.MyMapNPC[(int)MapNPCNum].Num > Core.Constant.MAX_NPCS)
                 return;
 
             // Ensure NPC is within the tile view range
-            if (Core.Type.MyMapNPC[MapNPCNum].X < GameState.TileView.Left | Core.Type.MyMapNPC[MapNPCNum].X > GameState.TileView.Right)
+            if (Core.Type.MyMapNPC[(int)MapNPCNum].X < GameState.TileView.Left | Core.Type.MyMapNPC[(int)MapNPCNum].X > GameState.TileView.Right)
                 return;
-            if (Core.Type.MyMapNPC[MapNPCNum].Y < GameState.TileView.Top | Core.Type.MyMapNPC[MapNPCNum].Y > GameState.TileView.Bottom)
+            if (Core.Type.MyMapNPC[(int)MapNPCNum].Y < GameState.TileView.Top | Core.Type.MyMapNPC[(int)MapNPCNum].Y > GameState.TileView.Bottom)
                 return;
 
             // Stream NPC if not yet loaded
-            Database.StreamNPC((int)Core.Type.MyMapNPC[MapNPCNum].Num);
+            Database.StreamNPC((int)Core.Type.MyMapNPC[(int)MapNPCNum].Num);
 
             // Get the sprite of the NPC
-            sprite = Core.Type.NPC[(int)Core.Type.MyMapNPC[MapNPCNum].Num].Sprite;
+            sprite = Core.Type.NPC[(int)Core.Type.MyMapNPC[(int)MapNPCNum].Num].Sprite;
 
             // Validate sprite
             if (sprite < 1 | sprite > GameState.NumCharacters)
@@ -1257,37 +1257,37 @@ namespace Client
             anim = 0;
 
             // Check for attacking animation
-            if (Core.Type.MyMapNPC[MapNPCNum].AttackTimer + attackSpeed / 2d > General.GetTickCount() && Core.Type.MyMapNPC[MapNPCNum].Attacking == 1)
+            if (Core.Type.MyMapNPC[(int)MapNPCNum].AttackTimer + attackSpeed / 2d > General.GetTickCount() && Core.Type.MyMapNPC[(int)MapNPCNum].Attacking == 1)
             {
                 anim = 3;
             }
             else
             {
                 // Walking animation based on direction
-                switch (Core.Type.MyMapNPC[MapNPCNum].Dir)
+                switch (Core.Type.MyMapNPC[(int)MapNPCNum].Dir)
                 {
                     case (int)DirectionType.Up:
                         {
-                            if (Core.Type.MyMapNPC[MapNPCNum].YOffset > 8)
-                                anim = (byte)Core.Type.MyMapNPC[MapNPCNum].Steps;
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset > 8)
+                                anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
                             break;
                         }
                     case (int)DirectionType.Down:
                         {
-                            if (Core.Type.MyMapNPC[MapNPCNum].YOffset < -8)
-                                anim = (byte)Core.Type.MyMapNPC[MapNPCNum].Steps;
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset < -8)
+                                anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
                             break;
                         }
                     case (int)DirectionType.Left:
                         {
-                            if (Core.Type.MyMapNPC[MapNPCNum].XOffset > 8)
-                                anim = (byte)Core.Type.MyMapNPC[MapNPCNum].Steps;
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset > 8)
+                                anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
                             break;
                         }
                     case (int)DirectionType.Right:
                         {
-                            if (Core.Type.MyMapNPC[MapNPCNum].XOffset < -8)
-                                anim = (byte)Core.Type.MyMapNPC[MapNPCNum].Steps;
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset < -8)
+                                anim = (byte)Core.Type.MyMapNPC[(int)MapNPCNum].Steps;
                             break;
                         }
                 }
@@ -1295,7 +1295,7 @@ namespace Client
 
             // Reset attacking state if attack timer has passed
             {
-                ref var withBlock = ref Core.Type.MyMapNPC[MapNPCNum];
+                ref var withBlock = ref Core.Type.MyMapNPC[(int)MapNPCNum];
                 if (withBlock.AttackTimer + attackSpeed < General.GetTickCount())
                 {
                     withBlock.Attacking = 0;
@@ -1304,7 +1304,7 @@ namespace Client
             }
 
             // Set sprite sheet position based on direction
-            switch (Core.Type.MyMapNPC[MapNPCNum].Dir)
+            switch (Core.Type.MyMapNPC[(int)MapNPCNum].Dir)
             {
                 case (int)DirectionType.Up:
                     {
@@ -1332,17 +1332,17 @@ namespace Client
             rect = new Rectangle((int)Math.Round(anim * (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width / 4d)), (int)Math.Round(spriteLeft * (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d)), (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width / 4d), (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d));
 
             // Calculate X and Y coordinates for rendering
-            x = (int)Math.Round(Core.Type.MyMapNPC[MapNPCNum].X * GameState.PicX + Core.Type.MyMapNPC[MapNPCNum].XOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width / 4d - 32d) / 2d);
+            x = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].X * GameState.PicX + Core.Type.MyMapNPC[(int)MapNPCNum].XOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Width / 4d - 32d) / 2d);
 
             if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d > 32d)
             {
                 // Larger sprites need an offset for height adjustment
-                y = (int)Math.Round(Core.Type.MyMapNPC[MapNPCNum].Y * GameState.PicY + Core.Type.MyMapNPC[MapNPCNum].YOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d - 32d));
+                y = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].Y * GameState.PicY + Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, sprite.ToString())).Height / 4d - 32d));
             }
             else
             {
                 // Normal sprite height
-                y = Core.Type.MyMapNPC[MapNPCNum].Y * GameState.PicY + Core.Type.MyMapNPC[MapNPCNum].YOffset;
+                y = Core.Type.MyMapNPC[(int)MapNPCNum].Y * GameState.PicY + Core.Type.MyMapNPC[(int)MapNPCNum].YOffset;
             }
 
             // Draw shadow and NPC sprite

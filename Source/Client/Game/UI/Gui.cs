@@ -3591,7 +3591,7 @@ namespace Client
                 }
 
                 // exit out if we're offering that item
-                if (Trade.InTrade > 0)
+                if (Trade.InTrade >= 0)
                 {
                     for (i = 0L; i < Constant.MAX_INV; i++)
                     {
@@ -3646,7 +3646,7 @@ namespace Client
             if (itemNum >= 0L)
             {
                 // exit out if we're offering that item
-                if (Trade.InTrade > 0)
+                if (Trade.InTrade >= 0)
                 {
                     for (i = 0L; i < Constant.MAX_INV; i++)
                     {
@@ -3751,7 +3751,7 @@ namespace Client
             // is there an item?
             BankSlot = General.IsBank(Windows[GetWindowIndex("winBank")].Left, Windows[GetWindowIndex("winBank")].Top);
 
-            if (BankSlot > 0L)
+            if (BankSlot >= 0L)
             {
                 // exit out if we're offering that item
 
@@ -3793,7 +3793,7 @@ namespace Client
             // is there an item?
             BankSlot = General.IsBank(Windows[GetWindowIndex("winBank")].Left, Windows[GetWindowIndex("winBank")].Top);
 
-            if (BankSlot > 0L)
+            if (BankSlot >= 0L)
             {
                 Bank.WithdrawItem((int)BankSlot, GetBankValue(GameState.MyIndex, (byte)BankSlot));
                 return;
@@ -4218,21 +4218,19 @@ namespace Client
 
             if (slotNum >= 0L)
             {
+                ref var withBlock = ref DragBox;
+                if (Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].SlotType == 1) // inventory
                 {
-                    ref var withBlock = ref DragBox;
-                    if (Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].SlotType == 1) // inventory
-                    {
-                        withBlock.Type = (Core.Enum.PartType)Core.Enum.PartOriginsType.Inventory;
-                    }
-                    else if (Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].SlotType == 2) // Skill
-                    {
-                        withBlock.Type = (Core.Enum.PartType)Core.Enum.PartOriginsType.Skill;
-                    }
-                    withBlock.Value = Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot;
-                    withBlock.Origin = Core.Enum.PartOriginType.Hotbar;
-                    withBlock.Slot = slotNum;
+                    withBlock.Type = (Core.Enum.PartType)Core.Enum.PartOriginsType.Inventory;
                 }
-
+                else if (Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].SlotType == 2) // Skill
+                {
+                    withBlock.Type = (Core.Enum.PartType)Core.Enum.PartOriginsType.Skill;
+                }
+                withBlock.Value = (long)Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot;
+                withBlock.Origin = Core.Enum.PartOriginType.Hotbar;
+                withBlock.Slot = slotNum;
+                
                 winIndex = GetWindowIndex("winDragBox");
                 {
                     var withBlock1 = Windows[winIndex];
@@ -4299,12 +4297,12 @@ namespace Client
                 {
                     case 1: // inventory
                         {
-                            GameLogic.ShowItemDesc(x, y, Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot);
+                            GameLogic.ShowItemDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot);
                             break;
                         }
                     case 2: // skill
                         {
-                            GameLogic.ShowSkillDesc(x, y, Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot, 0L);
+                            GameLogic.ShowSkillDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Hotbar[(int)slotNum].Slot, 0L);
                             break;
                         }
                 }
@@ -4584,7 +4582,7 @@ namespace Client
         public static void UpdateWindow_Hotbar()
         {
             // Control window
-            UpdateWindow("winHotbar", "", Core.Enum.FontType.Georgia, zOrder_Win, 372L, 10L, 418L, 36L, 0L, false, callback_mousemove: new Action(Hotbar_MouseMove), callback_mousedown: new Action(Hotbar_MouseDown), callback_dblclick: new Action(Hotbar_DblClick), onDraw: new Action(DrawHotbar), canDrag: false, zChange: Conversions.ToByte(false));
+            UpdateWindow("winHotbar", "", Core.Enum.FontType.Georgia, zOrder_Win, 432L, 10L, 418L, 36L, 0L, false, callback_mousemove: new Action(Hotbar_MouseMove), callback_mousedown: new Action(Hotbar_MouseDown), callback_dblclick: new Action(Hotbar_DblClick), onDraw: new Action(DrawHotbar), canDrag: false, zChange: Conversions.ToByte(false));
         }
 
         public static void UpdateWindow_Menu()
@@ -5215,11 +5213,12 @@ namespace Client
             // actually draw the icons
             for (i = 0L; i < Constant.MAX_INV; i++)
             {
-                itemNum = (long)GetPlayerInv(GameState.MyIndex, (int)i);
-                Item.StreamItem((int)itemNum);
+                itemNum = (long)GetPlayerInv(GameState.MyIndex, (int)i); 
 
                 if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                 {
+                    Item.StreamItem((int)itemNum);
+
                     // not dragging?
                     if (!(DragBox.Origin == Core.Enum.PartOriginType.Inventory & DragBox.Slot == i))
                     {
@@ -5765,7 +5764,7 @@ namespace Client
 
             shopSlot = General.IsShop(Windows[GetWindowIndex("winShop")].Left, Windows[GetWindowIndex("winShop")].Top);
 
-            if (shopSlot > 0L)
+            if (shopSlot >= 0L)
             {
                 // calc position
                 X = Windows[GetWindowIndex("winShop")].Left - Windows[GetWindowIndex("winDescription")].Width;
@@ -5807,7 +5806,7 @@ namespace Client
             long Top;
 
             // move Hotbar
-            Windows[GetWindowIndex("winHotbar")].Left = GameState.ResolutionWidth - 382;
+            Windows[GetWindowIndex("winHotbar")].Left = GameState.ResolutionWidth - 432;
 
             // move chat
             Windows[GetWindowIndex("winChat")].Top = GameState.ResolutionHeight - 178;
@@ -5877,10 +5876,11 @@ namespace Client
             // actually draw the icons
             for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
-                Database.StreamSkill((int)skillNum);
                 skillNum = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num;
                 if (skillNum >= 0L & skillNum < Constant.MAX_SKILLS)
                 {
+                    Database.StreamSkill((int)skillNum);
+
                     // not dragging?
                     if (!(DragBox.Origin == Core.Enum.PartOriginType.Skill & DragBox.Slot == i))
                     {
@@ -6374,10 +6374,10 @@ namespace Client
                     {
                         case (byte)Core.Enum.PartOriginType.Inventory:
                             {
-                                Item.StreamItem(Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot);
-                                if (Strings.Len(Core.Type.Item[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Name) > 0 & Core.Type.Item[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon > 0)
+                                Item.StreamItem((int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot);
+                                if (Strings.Len(Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Name) > 0 & Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon > 0)
                                 {
-                                    string argpath4 = System.IO.Path.Combine(Path.Items, Core.Type.Item[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
+                                    string argpath4 = System.IO.Path.Combine(Path.Items, Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
                                     GameClient.RenderTexture(ref argpath4, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
                                 }
 
@@ -6386,10 +6386,10 @@ namespace Client
 
                         case (byte)Core.Enum.PartOriginType.Skill:
                             {
-                                Database.StreamSkill(Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot);
-                                if (Strings.Len(Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Name) > 0 & Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon > 0)
+                                Database.StreamSkill((int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot);
+                                if (Strings.Len(Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Name) > 0 & Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon > 0)
                                 {
-                                    string argpath5 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
+                                    string argpath5 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
                                     GameClient.RenderTexture(ref argpath5, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32);
                                     for (t = 0L; t < Constant.MAX_PLAYER_SKILLS; t++)
                                     {
@@ -6397,7 +6397,7 @@ namespace Client
                                         {
                                             if (GetPlayerSkill(GameState.MyIndex, (int)t) == Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot & GetPlayerSkillCD(GameState.MyIndex, (int)t) > 0)
                                             {
-                                                string argpath6 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
+                                                string argpath6 = System.IO.Path.Combine(Path.Skills, Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot].Icon.ToString());
                                                 GameClient.RenderTexture(ref argpath6, (int)xO, (int)yO, 0, 0, 32, 32, 32, 32, 255, 100, 100, 100);
                                             }
                                         }

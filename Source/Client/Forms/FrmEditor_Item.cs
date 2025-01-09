@@ -62,7 +62,7 @@ namespace Client
                 cmbAmmo.Items.Add(i + 1 + ": " + Core.Type.Item[i].Name);
 
             cmbProjectile.Items.Clear();
-            for (int i = 0; i < Constant.MAX_PROJECTILES;  i++)
+            for (int i = 0; i < Constant.MAX_PROJECTILES; i++)
                 cmbProjectile.Items.Add(i + 1 + ": " + Core.Type.Projectile[i].Name);
 
             cmbSkills.Items.Clear();
@@ -469,5 +469,9 @@ namespace Client
 
         #endregion
 
+        private void lstIndex_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

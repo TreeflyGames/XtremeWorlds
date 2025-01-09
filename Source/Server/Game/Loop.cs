@@ -53,7 +53,7 @@ namespace Server
 
                     // Check if any of our pets has completed casting and get their skill going if they have.
                     var petskills = (from p in onlinePlayers
-                                     where (int)Core.Type.Player[(int)p.Index].Pet.Alive == 1 && Core.Type.TempPlayer[(int)p.Index].PetSkillBuffer.Skill > 0 && General.GetTimeMs() > p.player.PetSkillBuffer.Timer + Core.Type.Skill[Core.Type.Player[(int)p.Index].Pet.Skill[p.player.PetSkillBuffer.Skill]].CastTime * 1000
+                                     where (int)Core.Type.Player[(int)p.Index].Pet.Num >= 0 && Core.Type.Player[(int)p.Index].Pet.Alive == 1 && Core.Type.TempPlayer[(int)p.Index].PetSkillBuffer.Skill >= 0 && General.GetTimeMs() > p.player.PetSkillBuffer.Timer + Core.Type.Skill[(int)Core.Type.Player[(int)p.Index].Pet.Skill[p.player.PetSkillBuffer.Skill]].CastTime * 1000
                                      select new { p.Index, Success = HandlePetSkill((int)p.Index) }).ToArray();
 
                     // Check if we need to clear any of our pets from being stunned.
@@ -209,7 +209,7 @@ namespace Server
             int damage;
             int distanceX;
             int distanceY;
-            int NPCNum;
+             int NPCNum;
             int target;
             byte targetType;
             var targetX = default(int);
@@ -298,7 +298,7 @@ namespace Server
                         // check if they've completed casting, and if so set the actual skill going
                         if (Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer >= 0 & Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
                         {
-                            if (General.GetTimeMs() > Core.Type.MapNPC[mapNum].NPC[x].SkillBufferTimer + Core.Type.Skill[Core.Type.NPC[NPCNum].Skill[Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer]].CastTime * 1000)
+                            if (General.GetTimeMs() > Core.Type.MapNPC[mapNum].NPC[x].SkillBufferTimer + Core.Type.Skill[Core.Type.NPC[(int)NPCNum].Skill[Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer]].CastTime * 1000)
                             {
                                 CastNPCSkill(x, mapNum, Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer);
                                 Core.Type.MapNPC[mapNum].NPC[x].SkillBuffer = -1;
@@ -315,7 +315,7 @@ namespace Server
                             {
 
                                 // If the npc is a attack on sight, search for a player on the map
-                                if (Core.Type.NPC[NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | Core.Type.NPC[NPCNum].Behaviour == (byte)NPCBehavior.Guard)
+                                if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.Guard)
                                 {
 
                                     // make sure it's not stunned
@@ -331,7 +331,7 @@ namespace Server
                                                 {
                                                     if (Pet.PetAlive(i))
                                                     {
-                                                        n = Core.Type.NPC[NPCNum].Range;
+                                                        n = Core.Type.NPC[(int)NPCNum].Range;
                                                         distanceX = Core.Type.MapNPC[mapNum].NPC[x].X - Core.Type.Player[i].Pet.X;
                                                         distanceY = Core.Type.MapNPC[mapNum].NPC[x].Y - Core.Type.Player[i].Pet.Y;
 
@@ -344,11 +344,11 @@ namespace Server
                                                         // Are they in range?  if so GET'M!
                                                         if (distanceX <= n & distanceY <= n)
                                                         {
-                                                            if (Core.Type.NPC[NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == i)
+                                                            if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == i)
                                                             {
-                                                                if (Strings.Len(Core.Type.NPC[NPCNum].AttackSay) > 0)
+                                                                if (Strings.Len(Core.Type.NPC[(int)NPCNum].AttackSay) > 0)
                                                                 {
-                                                                    NetworkSend.PlayerMsg(i, Core.Type.NPC[NPCNum].Name + " says: " + Core.Type.NPC[NPCNum].AttackSay, (int)ColorType.White);
+                                                                    NetworkSend.PlayerMsg(i, Core.Type.NPC[(int)NPCNum].Name + " says: " + Core.Type.NPC[(int)NPCNum].AttackSay, (int)ColorType.White);
                                                                 }
                                                                 Core.Type.MapNPC[mapNum].NPC[x].TargetType = (byte)Core.Enum.TargetType.Pet;
                                                                 Core.Type.MapNPC[mapNum].NPC[x].Target = i;
@@ -357,7 +357,7 @@ namespace Server
                                                     }
                                                     else
                                                     {
-                                                        n = Core.Type.NPC[NPCNum].Range;
+                                                        n = Core.Type.NPC[(int)NPCNum].Range;
                                                         distanceX = Core.Type.MapNPC[mapNum].NPC[x].X - GetPlayerX(i);
                                                         distanceY = Core.Type.MapNPC[mapNum].NPC[x].Y - GetPlayerY(i);
 
@@ -370,11 +370,11 @@ namespace Server
                                                         // Are they in range?  if so GET'M!
                                                         if (distanceX <= n & distanceY <= n)
                                                         {
-                                                            if (Core.Type.NPC[NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == 1)
+                                                            if (Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight | GetPlayerPK(i) == 1)
                                                             {
-                                                                if (Core.Type.NPC[NPCNum].AttackSay.Length > 0)
+                                                                if (Core.Type.NPC[(int)NPCNum].AttackSay.Length > 0)
                                                                 {
-                                                                    NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(Core.Type.NPC[NPCNum].Name, 1) + " says, '" + Core.Type.NPC[NPCNum].AttackSay + "' to you.", (int)ColorType.Yellow);
+                                                                    NetworkSend.PlayerMsg(i, GameLogic.CheckGrammar(Core.Type.NPC[(int)NPCNum].Name, 1) + " says, '" + Core.Type.NPC[(int)NPCNum].AttackSay + "' to you.", (int)ColorType.Yellow);
                                                                 }
                                                                 Core.Type.MapNPC[mapNum].NPC[x].TargetType = (byte)Core.Enum.TargetType.Player;
                                                                 Core.Type.MapNPC[mapNum].NPC[x].Target = i;
@@ -386,7 +386,7 @@ namespace Server
                                         }
 
                                         // Check if target was found for NPC targetting
-                                        if (Core.Type.MapNPC[mapNum].NPC[x].TargetType == 0 & Core.Type.NPC[NPCNum].Faction > 0)
+                                        if (Core.Type.MapNPC[mapNum].NPC[x].TargetType == 0 & Core.Type.NPC[(int)NPCNum].Faction > 0)
                                         {
                                             // search for npc of another faction to target
                                             var loopTo5 = Core.Constant.MAX_MAP_NPCS;
@@ -396,9 +396,9 @@ namespace Server
                                                 if (Core.Type.MapNPC[mapNum].NPC[i].Num >= 0)
                                                 {
                                                     // different faction?
-                                                    if ((int)Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[i].Num].Faction > 0 & Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[i].Num].Faction != Core.Type.NPC[NPCNum].Faction)
+                                                    if ((int)Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[i].Num].Faction > 0 & Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[i].Num].Faction != Core.Type.NPC[(int)NPCNum].Faction)
                                                     {
-                                                        n = Core.Type.NPC[NPCNum].Range;
+                                                        n = Core.Type.NPC[(int)NPCNum].Range;
                                                         distanceX = (int)(MapNPC[mapNum].NPC[x].X - (long)MapNPC[mapNum].NPC[i].X);
                                                         distanceY = (int)(MapNPC[mapNum].NPC[x].Y - (long)MapNPC[mapNum].NPC[i].Y);
 
@@ -409,7 +409,7 @@ namespace Server
                                                             distanceY *= -1;
 
                                                         // Are they in range?  if so GET'M!
-                                                        if (distanceX <= n & distanceY <= n & Core.Type.NPC[NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight)
+                                                        if (distanceX <= n & distanceY <= n & Core.Type.NPC[(int)NPCNum].Behaviour == (byte)NPCBehavior.AttackOnSight)
                                                         {
                                                             Core.Type.MapNPC[mapNum].NPC[x].TargetType = 2; // npc
                                                             Core.Type.MapNPC[mapNum].NPC[x].Target = i;
@@ -446,7 +446,7 @@ namespace Server
                                     targetType = Core.Type.MapNPC[mapNum].NPC[x].TargetType;
 
                                     // Check to see if its time for the npc to walk
-                                    if (Core.Type.NPC[NPCNum].Behaviour != (byte)NPCBehavior.ShopKeeper & Core.Type.NPC[NPCNum].Behaviour != (byte)NPCBehavior.Quest)
+                                    if (Core.Type.NPC[(int)NPCNum].Behaviour != (byte)NPCBehavior.ShopKeeper & Core.Type.NPC[(int)NPCNum].Behaviour != (byte)NPCBehavior.Quest)
                                     {
                                         if (targetType == (byte)Core.Enum.TargetType.Player) // player
                                         {
@@ -615,7 +615,7 @@ namespace Server
                                         // Can the npc attack the npc?
                                         if (NPC.CanNPCAttackNPC(mapNum, x, target))
                                         {
-                                            damage = (int)((long)Core.Type.NPC[NPCNum].Stat[(byte)StatType.Strength] - (long)Core.Type.NPC[target].Stat[(byte)StatType.Luck]);
+                                            damage = (int)((long)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Strength] - (long)Core.Type.NPC[target].Stat[(byte)StatType.Luck]);
                                             NPC.NPCAttackNPC(mapNum, x, target, damage);
                                         }
                                     }
@@ -726,7 +726,7 @@ namespace Server
             {
                 case var @case when @case == VitalType.HP:
                     {
-                        i = (int)Core.Type.NPC[NPCNum].Stat[(int)StatType.Vitality] / 3;
+                        i = (int)Core.Type.NPC[(int)NPCNum].Stat[(int)StatType.Vitality] / 3;
 
                         if (i < 0)
                             i = 0;
@@ -735,7 +735,7 @@ namespace Server
                     }
                 case var case1 when case1 == VitalType.SP:
                     {
-                        i = (int)Core.Type.NPC[NPCNum].Stat[(int)StatType.Intelligence] / 3;
+                        i = (int)Core.Type.NPC[(int)NPCNum].Stat[(int)StatType.Intelligence] / 3;
 
                         if (i < 0)
                             i = 0;
@@ -1194,7 +1194,7 @@ namespace Server
             return IsTargetOnMapRet;
         }
 
-        private static bool IsInSkillRange(int index, int SkillId)
+        private static bool IsInSkillRange(int index, int SkillID)
         {
             bool IsInSkillRangeRet = default;
             var targetX = default(int);
@@ -1211,7 +1211,7 @@ namespace Server
                 targetY = Core.Type.MapNPC[GetPlayerMap(index)].NPC[Core.Type.TempPlayer[index].Target].Y;
             }
 
-            IsInSkillRangeRet = Player.IsInRange(Core.Type.Skill[SkillId].Range, GetPlayerX(index), GetPlayerY(index), targetX, targetY);
+            IsInSkillRangeRet = Player.IsInRange(Core.Type.Skill[SkillID].Range, GetPlayerX(index), GetPlayerY(index), targetX, targetY);
             return IsInSkillRangeRet;
         }
 
@@ -1239,12 +1239,12 @@ namespace Server
             if (SkillSlot < 0 | SkillSlot > Core.Constant.MAX_NPC_SKILLS)
                 return;
 
-            skillNum = NPC.GetNPCSkill((int)Core.Type.MapNPC[mapNum].NPC[NPCNum].Num, SkillSlot);
+            skillNum = NPC.GetNPCSkill((int)Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Num, SkillSlot);
 
             mpCost = Core.Type.Skill[skillNum].MpCost;
 
             // Check if they have enough MP
-            if (Core.Type.MapNPC[mapNum].NPC[NPCNum].Vital[(int)VitalType.SP] < mpCost)
+            if (Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Vital[(int)VitalType.SP] < mpCost)
                 return;
 
             // find out what kind of skill it is! self cast, target or AOE
@@ -1303,13 +1303,13 @@ namespace Server
                     {
                         if (skillCastType == 1)
                         {
-                            x = Core.Type.MapNPC[mapNum].NPC[NPCNum].X;
-                            y = Core.Type.MapNPC[mapNum].NPC[NPCNum].Y;
+                            x = Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].X;
+                            y = Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Y;
                         }
                         else if (skillCastType == 3)
                         {
-                            targetType = Core.Type.MapNPC[mapNum].NPC[NPCNum].TargetType;
-                            target = Core.Type.MapNPC[mapNum].NPC[NPCNum].Target;
+                            targetType = Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].TargetType;
+                            target = Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Target;
 
                             if (targetType == 0)
                                 return;
@@ -1325,7 +1325,7 @@ namespace Server
                                 y = Core.Type.MapNPC[mapNum].NPC[target].Y;
                             }
 
-                            if (!Player.IsInRange(range, x, y, GetPlayerX(NPCNum), GetPlayerY(NPCNum)))
+                            if (!Player.IsInRange(range, x, y, GetPlayerX((int)NPCNum), GetPlayerY((int)NPCNum)))
                             {
                                 return;
                             }
@@ -1347,7 +1347,7 @@ namespace Server
                                                     if (NPC.CanNPCAttackPlayer(NPCNum, i))
                                                     {
                                                         Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Player, i);
-                                                        NetworkSend.PlayerMsg(i, Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[NPCNum].Num].Name + " uses " + Core.Type.Skill[skillNum].Name + "!", (int) ColorType.Yellow);
+                                                        NetworkSend.PlayerMsg(i, Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Num].Name + " uses " + Core.Type.Skill[skillNum].Name + "!", (int) ColorType.Yellow);
                                                         SkillPlayer_Effect((int)VitalType.HP, false, i, vital, skillNum);
                                                     }
                                                 }
@@ -1364,13 +1364,13 @@ namespace Server
                                             {
                                                 if (Player.IsInRange(aoe, x, y, Core.Type.MapNPC[mapNum].NPC[i].X, Core.Type.MapNPC[mapNum].NPC[i].Y))
                                                 {
-                                                    if (Player.CanPlayerAttackNPC(NPCNum, i, true))
+                                                    if (Player.CanPlayerAttackNPC((int)NPCNum, i, true))
                                                     {
                                                         Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.NPC, i);
                                                         SkillNPC_Effect((int)VitalType.HP, false, i, vital, skillNum, mapNum);
                                                         if (Core.Type.Skill[skillNum].KnockBack == 1)
                                                         {
-                                                            NPC.KnockBackNPC(NPCNum, target, skillNum);
+                                                            NPC.KnockBackNPC((int)NPCNum, target, skillNum);
                                                         }
                                                     }
                                                 }
@@ -1380,9 +1380,9 @@ namespace Server
 
                                     break;
                                 }
-                            case var case1 when case1 == (byte)SkillType.HealHp:
-                            case var case2 when case2 == (byte)SkillType.HealMp:
-                            case var case3 when case3 == (byte)SkillType.DamageMp:
+                            case (byte) SkillType.HealHp:
+                            case (byte) SkillType.HealMp:
+                            case (byte) SkillType.DamageMp:
                                 {
                                     if (Core.Type.Skill[skillNum].Type == (byte)SkillType.HealHp)
                                     {
@@ -1404,7 +1404,7 @@ namespace Server
                                     var loopTo2 = NetworkConfig.Socket.HighIndex + 1;
                                     for (i = 0; i < loopTo2; i++)
                                     {
-                                        if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(NPCNum))
+                                        if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                                         {
                                             if (Player.IsInRange(aoe, x, y, GetPlayerX(i), GetPlayerY(i)))
                                             {
@@ -1434,14 +1434,13 @@ namespace Server
 
                 case 2: // targetted
                     {
-
-                        targetType = Core.Type.MapNPC[mapNum].NPC[NPCNum].TargetType;
-                        target = Core.Type.MapNPC[mapNum].NPC[NPCNum].Target;
+                        targetType = Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].TargetType;
+                        target = Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Target;
 
                         if (targetType == 0)
                             return;
 
-                        if (Core.Type.MapNPC[mapNum].NPC[NPCNum].TargetType == (byte) Core.Enum.TargetType.Player)
+                        if (Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].TargetType == (byte) Core.Enum.TargetType.Player)
                         {
                             x = GetPlayerX(target);
                             y = GetPlayerY(target);
@@ -1452,31 +1451,31 @@ namespace Server
                             y = Core.Type.MapNPC[mapNum].NPC[target].Y;
                         }
 
-                        if (!Player.IsInRange(range, Core.Type.MapNPC[mapNum].NPC[NPCNum].X, Core.Type.MapNPC[mapNum].NPC[NPCNum].Y, x, y))
+                        if (!Player.IsInRange(range, Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].X, Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Y, x, y))
                             return;
 
                         switch (Core.Type.Skill[skillNum].Type)
                         {
                             case var case4 when case4 == (byte)SkillType.DamageHp:
                                 {
-                                    if (Core.Type.MapNPC[mapNum].NPC[NPCNum].TargetType == (byte) Core.Enum.TargetType.Player)
+                                    if (Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].TargetType == (byte) Core.Enum.TargetType.Player)
                                     {
                                         if (NPC.CanNPCAttackPlayer(NPCNum, target) & vital > 0)
                                         {
                                             Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Player, target);
-                                            NetworkSend.PlayerMsg(target, Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[NPCNum].Num].Name + " uses " + Core.Type.Skill[skillNum].Name + "!", (int) ColorType.Yellow);
+                                            NetworkSend.PlayerMsg(target, Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Num].Name + " uses " + Core.Type.Skill[skillNum].Name + "!", (int) ColorType.Yellow);
                                             SkillPlayer_Effect((int)VitalType.HP, false, target, vital, skillNum);
                                             didCast = Conversions.ToBoolean(1);
                                         }
                                     }
-                                    else if (Player.CanPlayerAttackNPC(NPCNum, target, true) & vital > 0)
+                                    else if (Player.CanPlayerAttackNPC((int)NPCNum, target, true) & vital > 0)
                                     {
                                         Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.NPC, target);
                                         SkillNPC_Effect((int)VitalType.HP, false, i, vital, skillNum, mapNum);
 
                                         if (Core.Type.Skill[skillNum].KnockBack == 1)
                                         {
-                                            NPC.KnockBackNPC(NPCNum, target, skillNum);
+                                            NPC.KnockBackNPC((int)NPCNum, target, skillNum);
                                         }
                                         didCast = Conversions.ToBoolean(1);
                                     }
@@ -1504,7 +1503,7 @@ namespace Server
                                         increment = Conversions.ToBoolean(1);
                                     }
 
-                                    if (Core.Type.TempPlayer[NPCNum].TargetType == (byte) Core.Enum.TargetType.Player)
+                                    if (Core.Type.TempPlayer[(int)NPCNum].TargetType == (byte) Core.Enum.TargetType.Player)
                                     {
                                         if (Core.Type.Skill[skillNum].Type == (byte)SkillType.DamageMp)
                                         {
@@ -1547,9 +1546,9 @@ namespace Server
 
             if (didCast)
             {
-                Core.Type.MapNPC[mapNum].NPC[NPCNum].Vital[(int)VitalType.SP] = Core.Type.MapNPC[mapNum].NPC[NPCNum].Vital[(int)VitalType.SP] - mpCost;
+                Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Vital[(int)VitalType.SP] = Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].Vital[(int)VitalType.SP] - mpCost;
                 NPC.SendMapNPCVitals(mapNum, (byte)NPCNum);
-                Core.Type.MapNPC[mapNum].NPC[NPCNum].SkillCD[SkillSlot] = General.GetTimeMs() + Core.Type.Skill[skillNum].CdTime * 1000;
+                Core.Type.MapNPC[mapNum].NPC[(int)NPCNum].SkillCD[SkillSlot] = General.GetTimeMs() + Core.Type.Skill[skillNum].CdTime * 1000;
             }
         }
 

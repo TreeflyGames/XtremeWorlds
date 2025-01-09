@@ -122,7 +122,6 @@ namespace Client
 
         public void ProcessAnimation(NumericUpDown animationControl, NumericUpDown frameCountControl, NumericUpDown loopCountControl, int animationTimerIndex, RenderTarget2D renderTarget, PictureBox backgroundColorControl, SpriteBatch spriteBatch)
         {
-
             // Retrieve the animation number and check its validity
             int animationNum = (int)Math.Round(animationControl.Value);
             if (animationNum <= 0 | animationNum > GameState.NumAnimations)

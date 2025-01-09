@@ -1928,35 +1928,35 @@ namespace Server
 
         public static void Packet_SwapInvSlots(int index, ref byte[] data)
         {
-            int oldSlot;
-            int newSlot;
+            double oldSlot;
+            double newSlot;
             var buffer = new ByteStream(data);
 
-            if (Core.Type.TempPlayer[index].InTrade > 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
+            if (Core.Type.TempPlayer[index].InTrade >= 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
                 return;
 
             // Old Slot
-            oldSlot = buffer.ReadInt32();
-            newSlot = buffer.ReadInt32();
+            oldSlot = buffer.ReadDouble();
+            newSlot = buffer.ReadDouble();
             buffer.Dispose();
 
-            Player.PlayerSwitchInvSlots(index, oldSlot, newSlot);
+            Player.PlayerSwitchInvSlots(index, (int)oldSlot, (int)newSlot);
 
             buffer.Dispose();
         }
 
         public static void Packet_SwapSkillSlots(int index, ref byte[] data)
         {
-            int oldSlot;
-            int newSlot;
+            double oldSlot;
+            double newSlot;
             var buffer = new ByteStream(data);
 
-            if (Core.Type.TempPlayer[index].InTrade > 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
+            if (Core.Type.TempPlayer[index].InTrade >= 0 | Core.Type.TempPlayer[index].InBank | Core.Type.TempPlayer[index].InShop >= 0)
                 return;
 
             // Old Slot
-            oldSlot = buffer.ReadInt32();
-            newSlot = buffer.ReadInt32();
+            oldSlot = buffer.ReadDouble();
+            newSlot = buffer.ReadDouble();
             buffer.Dispose();
 
             Player.PlayerSwitchSkillSlots(index, oldSlot, newSlot);
@@ -2719,11 +2719,11 @@ namespace Server
             if (slot < 1 | slot > Core.Constant.MAX_HOTBAR)
                 return;
 
-            if (Core.Type.Player[index].Hotbar[slot].Slot > 0)
+            if (Core.Type.Player[index].Hotbar[slot].Slot >= 0)
             {
                 if (Core.Type.Player[index].Hotbar[slot].SlotType == (byte)PartType.Item)
                 {
-                    Player.UseItem(index, Player.FindItemSlot(index, Core.Type.Player[index].Hotbar[slot].Slot));
+                    Player.UseItem(index, Player.FindItemSlot(index, (int)Core.Type.Player[index].Hotbar[slot].Slot));
                 }
             }
 

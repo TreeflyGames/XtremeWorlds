@@ -61,11 +61,11 @@ namespace Core.Global
 
             for (i = 0; i < (int)Enum.EquipmentType.Count; i++)
             {
-                if (Type.Player[index].Equipment[i] > 0)
+                if (Type.Player[index].Equipment[i] >= 0)
                 {
-                    if (Type.Item[Type.Player[index].Equipment[i]].Add_Stat[(int)Stat] > 0)
+                    if (Type.Item[(int)Type.Player[index].Equipment[i]].Add_Stat[(int)Stat] > 0)
                     {
-                        x += Type.Item[Type.Player[index].Equipment[i]].Add_Stat[(int)Stat];
+                        x += Type.Item[(int)Type.Player[index].Equipment[i]].Add_Stat[(int)Stat];
                     }
                 }
             }
@@ -276,7 +276,7 @@ namespace Core.Global
             Type.Player[index].Stat[(int)stat] = (byte)value;
         }
 
-        public static void SetPlayerInv(int index, int invSlot, int itemNum)
+        public static void SetPlayerInv(int index, int invSlot, double itemNum)
         {
             Type.Player[index].Inv[invSlot].Num = itemNum;
         }
@@ -366,9 +366,9 @@ namespace Core.Global
             return Type.Player[index].Equipment[(int)equipmentSlot];
         }
 
-        public static void SetPlayerEquipment(int index, int invNum, Enum.EquipmentType equipmentSlot)
+        public static void SetPlayerEquipment(int index, double itemNum, Enum.EquipmentType equipmentSlot)
         {
-            Type.Player[index].Equipment[(int)equipmentSlot] = invNum;
+            Type.Player[index].Equipment[(int)equipmentSlot] = itemNum;
         }
 
         public static string IsEditorLocked(int index, int id)
@@ -382,7 +382,6 @@ namespace Core.Global
                         if (Type.TempPlayer[i].Editor == id)
                         {
                             return GetPlayerName(i);
-                            return default;
                         }
                     }
                 }
@@ -398,10 +397,9 @@ namespace Core.Global
             for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
 
-                if (GetPlayerSkill(index, i) == 0)
+                if (GetPlayerSkill(index, i) == -1)
                 {
                     return i;
-                    return default;
                 }
 
             }
@@ -419,12 +417,12 @@ namespace Core.Global
             return Type.Player[index].Skill[skillSlot].CD;
         }
 
-        public static void SetPlayerSkillCD(int index, int skillSlot, int Value)
+        public static void SetPlayerSkillCD(int index, int skillSlot, int value)
         {
-            Type.Player[index].Skill[skillSlot].CD = Value;
+            Type.Player[index].Skill[skillSlot].CD = value;
         }
 
-        public static bool HasSkill(int index, int skillNum)
+        public static bool HasSkill(int index, double skillNum)
         {
             int i;
 
@@ -434,7 +432,6 @@ namespace Core.Global
                 if (GetPlayerSkill(index, i) == skillNum)
                 {
                     return true;
-                    return default;
                 }
 
             }
@@ -442,7 +439,7 @@ namespace Core.Global
             return false;
         }
 
-        public static void SetPlayerSkill(int index, int Skillslot, int skillNum)
+        public static void SetPlayerSkill(int index, int Skillslot, double skillNum)
         {
             Type.Player[index].Skill[Skillslot].Num = skillNum;
         }
@@ -454,7 +451,7 @@ namespace Core.Global
             return GetBankRet;
         }
 
-        public static void SetBank(int index, byte bankSlot, int itemNum)
+        public static void SetBank(int index, byte bankSlot, double itemNum)
         {
             Type.Bank[index].Item[bankSlot].Num = itemNum;
         }

@@ -1115,7 +1115,7 @@ namespace Server
 
         public static void SaveNPC(int NPCNum)
         {
-            string json = JsonConvert.SerializeObject(Core.Type.NPC[NPCNum]).ToString();
+            string json = JsonConvert.SerializeObject(Core.Type.NPC[(int)NPCNum]).ToString();
 
             if (RowExists(NPCNum, "npc"))
             {
@@ -1149,7 +1149,7 @@ namespace Server
             }
 
             var npcData = JObject.FromObject(data).ToObject<Core.Type.NPCStruct>();
-            Core.Type.NPC[NPCNum] = npcData;
+            Core.Type.NPC[(int)NPCNum] = npcData;
         }
 
         public static void ClearMapNPC(int index, int mapNum)
@@ -1391,40 +1391,18 @@ namespace Server
         public static void ClearPlayer(int index)
         {
             ClearAccount(index);
-
-            Core.Type.Player[index].Access = (byte)AccessType.Player;
-            Core.Type.TempPlayer[index].SkillBuffer = -1;
-            Core.Type.TempPlayer[index].InShop = -1;
-            Core.Type.Player[index].Inv = new PlayerInvStruct[Core.Constant.MAX_INV];
-
-            for (int i = 0; i < Core.Constant.MAX_INV; i++)
-            {
-                Core.Type.Player[index].Inv[i].Num = -1;
-            }
-
-            Core.Type.Player[index].Skill = new PlayerSkillStruct[Core.Constant.MAX_SKILLS];
-
-            for (int i = 0; i < Core.Constant.MAX_SKILLS; i++)
-            {
-                Core.Type.Player[index].Skill[i].Num = -1;
-            }
-
-            Core.Type.Player[index].Equipment = new int[(int)Core.Enum.EquipmentType.Count];
-
-            for (int i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
-            {
-                Core.Type.Player[index].Equipment[i] = -1;
-            }
+            ClearBank(index);
 
             Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
             Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
             Core.Type.TempPlayer[index].TradeOffer = new PlayerInvStruct[Core.Constant.MAX_INV];
-            
+
             Core.Type.TempPlayer[index].SkillCD = new int[Core.Constant.MAX_PLAYER_SKILLS];
             Core.Type.TempPlayer[index].PetSkillCD = new int[Core.Constant.MAX_PET_SKILLS];
             Core.Type.TempPlayer[index].Editor = -1;
+            Core.Type.TempPlayer[index].SkillBuffer = -1;
+            Core.Type.TempPlayer[index].InShop = -1;
 
-            ClearBank(index);
             ClearCharacter(index);
         }
 
@@ -1480,16 +1458,17 @@ namespace Server
             Core.Type.Player[index].Name = "";
             Core.Type.Player[index].Job = 0;
             Core.Type.Player[index].Dir = 0;
+            Core.Type.Player[index].Access = (byte)AccessType.Player;
 
-            Core.Type.Player[index].Equipment = new int[(byte)EquipmentType.Count];
+            Core.Type.Player[index].Equipment = new double[(byte)EquipmentType.Count];
             for (int i = 0, loopTo = (byte)EquipmentType.Count; i < loopTo; i++)
-                Core.Type.Player[index].Equipment[Conversions.ToInteger(i)] = 0;
+                Core.Type.Player[index].Equipment[i] = -1;
 
             Core.Type.Player[index].Inv = new Core.Type.PlayerInvStruct[Core.Constant.MAX_INV];
             for (int i = 0, loopTo1 = Core.Constant.MAX_INV; i < loopTo1; i++)
             {
-                Core.Type.Player[index].Inv[Conversions.ToInteger(i)].Num = 0;
-                Core.Type.Player[index].Inv[Conversions.ToInteger(i)].Value = 0;
+                Core.Type.Player[index].Inv[i].Num = -1;
+                Core.Type.Player[index].Inv[i].Value = 0;
             }
 
             Core.Type.Player[index].Exp = 0;
@@ -1503,19 +1482,19 @@ namespace Server
             Core.Type.Player[index].Skill = new Core.Type.PlayerSkillStruct[Core.Constant.MAX_PLAYER_SKILLS];
             for (int i = 0, loopTo2 = Core.Constant.MAX_PLAYER_SKILLS; i < loopTo2; i++)
             {
-                Core.Type.Player[index].Skill[Conversions.ToInteger(i)].Num = 0;
-                Core.Type.Player[index].Skill[Conversions.ToInteger(i)].CD = 0;
+                Core.Type.Player[index].Skill[i].Num = -1;
+                Core.Type.Player[index].Skill[i].CD = 0;
             }
 
             Core.Type.Player[index].Sprite = 0;
 
             Core.Type.Player[index].Stat = new byte[(byte)StatType.Count];
             for (int i = 0, loopTo3 = (byte)StatType.Count; i < loopTo3; i++)
-                Core.Type.Player[index].Stat[Conversions.ToInteger(i)] = 0;
+                Core.Type.Player[index].Stat[i] = 0;
 
             Core.Type.Player[index].Vital = new int[(byte) VitalType.Count];
             for (int i = 0, loopTo4 = (byte) VitalType.Count; i < loopTo4; i++)
-                Core.Type.Player[index].Vital[Conversions.ToInteger(i)] = 0;
+                Core.Type.Player[index].Vital[i] = 0;
 
             Core.Type.Player[index].X = 0;
             Core.Type.Player[index].Y = 0;
@@ -1523,27 +1502,27 @@ namespace Server
             Core.Type.Player[index].Hotbar = new Core.Type.HotbarStruct[Core.Constant.MAX_HOTBAR];
             for (int i = 0, loopTo5 = Core.Constant.MAX_HOTBAR; i < loopTo5; i++)
             {
-                Core.Type.Player[index].Hotbar[Conversions.ToInteger(i)].Slot = 0;
-                Core.Type.Player[index].Hotbar[Conversions.ToInteger(i)].SlotType = 0;
+                Core.Type.Player[index].Hotbar[i].Slot = -1;
+                Core.Type.Player[index].Hotbar[i].SlotType = 0;
             }
 
             Core.Type.Player[index].Switches = new byte[Core.Constant.MAX_SWITCHES];
             for (int i = 0, loopTo6 = Core.Constant.MAX_SWITCHES; i < loopTo6; i++)
-                Core.Type.Player[index].Switches[Conversions.ToInteger(i)] = 0;
+                Core.Type.Player[index].Switches[i] = 0;
             Core.Type.Player[index].Variables = new int[Core.Constant.NAX_VARIABLES];
             for (int i = 0, loopTo7 = Core.Constant.NAX_VARIABLES; i < loopTo7; i++)
-                Core.Type.Player[index].Variables[Conversions.ToInteger(i)] = 0;
+                Core.Type.Player[index].Variables[i] = 0;
 
             Core.Type.Player[index].GatherSkills = new Core.Type.ResourceTypetruct[(byte)ResourceType.Count];
             for (int i = 0, loopTo8 = (byte)ResourceType.Count; i < loopTo8; i++)
             {
-                Core.Type.Player[index].GatherSkills[Conversions.ToInteger(i)].SkillLevel = 0;
-                Core.Type.Player[index].GatherSkills[Conversions.ToInteger(i)].SkillCurExp = 0;
+                Core.Type.Player[index].GatherSkills[i].SkillLevel = 0;
+                Core.Type.Player[index].GatherSkills[i].SkillCurExp = 0;
                 SetPlayerGatherSkillMaxExp(index, i, GetSkillNextLevel(index, i));
             }
 
             for (int i = 0, loopTo9 = (byte)EquipmentType.Count; i < loopTo9; i++)
-                Core.Type.Player[index].Equipment[Conversions.ToInteger(i)] = 0;
+                Core.Type.Player[index].Equipment[i] = -1;
 
             Core.Type.Player[index].Pet.Num = 0;
             Core.Type.Player[index].Pet.Health = 0;
@@ -1553,12 +1532,13 @@ namespace Server
             Core.Type.Player[index].Pet.Stat = new byte[(byte)StatType.Count];
 
             for (int i = 0, loopTo10 = (byte)StatType.Count; i < loopTo10; i++)
-                Core.Type.Player[index].Pet.Stat[Conversions.ToInteger(i)] = 0;
+                Core.Type.Player[index].Pet.Stat[i] = 0;
 
-            Core.Type.Player[index].Pet.Skill = new int[5];
-            for (int i = 0; i <= 4; i++)
-                Core.Type.Player[index].Pet.Skill[i] = 0;
+            Core.Type.Player[index].Pet.Skill = new int[Core.Constant.MAX_PET_SKILLS];
+            for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
+                Core.Type.Player[index].Pet.Skill[i] = -1;
 
+            Core.Type.Player[index].Pet.Num = -1;
             Core.Type.Player[index].Pet.X = 0;
             Core.Type.Player[index].Pet.Y = 0;
             Core.Type.Player[index].Pet.Dir = 0;
@@ -1822,35 +1802,35 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32(NPCNum);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Animation);
-            buffer.WriteString(Core.Type.NPC[NPCNum].AttackSay);
-            buffer.WriteByte(Core.Type.NPC[NPCNum].Behaviour);
+            buffer.WriteDouble(NPCNum);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Animation);
+            buffer.WriteString(Core.Type.NPC[(int)NPCNum].AttackSay);
+            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Behaviour);
 
             for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.NPC[NPCNum].DropChance[Conversions.ToInteger(i)]);
-                buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItem[Conversions.ToInteger(i)]);
-                buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItemValue[Conversions.ToInteger(i)]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropChance[Conversions.ToInteger(i)]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItem[Conversions.ToInteger(i)]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItemValue[Conversions.ToInteger(i)]);
             }
 
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Exp);
-            buffer.WriteByte(Core.Type.NPC[NPCNum].Faction);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].HP);
-            buffer.WriteString(Core.Type.NPC[NPCNum].Name);
-            buffer.WriteByte(Core.Type.NPC[NPCNum].Range);
-            buffer.WriteByte(Core.Type.NPC[NPCNum].SpawnTime);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].SpawnSecs);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Exp);
+            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Faction);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].HP);
+            buffer.WriteString(Core.Type.NPC[(int)NPCNum].Name);
+            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Range);
+            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].SpawnTime);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].SpawnSecs);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Sprite);
 
             for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
-                buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[Conversions.ToInteger(i)]);
+                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Stat[Conversions.ToInteger(i)]);
 
             for (int i = 0, loopTo2 = Core.Constant.MAX_NPC_SKILLS; i < loopTo2; i++)
-                buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[Conversions.ToInteger(i)]);
+                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Skill[Conversions.ToInteger(i)]);
 
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Level);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Damage);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Level);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Damage);
             return buffer.ToArray();
         }
 

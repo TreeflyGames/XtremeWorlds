@@ -59,21 +59,21 @@ namespace Client
 
         internal void EditorPet_DrawPet()
         {
-            int petnum;
+            int petNum;
 
-            petnum = (int)Math.Round(nudSprite.Value);
+            petNum = (int)Math.Round(nudSprite.Value);
 
-            if (petnum <= 0 | petnum > GameState.NumCharacters)
+            if (petNum <= 0 | petNum > GameState.NumCharacters)
             {
                 picSprite.BackgroundImage = null;
                 return;
             }
 
-            if (File.Exists(System.IO.Path.Combine(Core.Path.Characters, petnum + GameState.GfxExt)))
+            if (File.Exists(System.IO.Path.Combine(Core.Path.Characters, petNum + GameState.GfxExt)))
             {
-                picSprite.Width = (int)Math.Round(System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, petnum + GameState.GfxExt)).Width / 4d);
-                picSprite.Height = (int)Math.Round(System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, petnum + GameState.GfxExt)).Height / 4d);
-                picSprite.BackgroundImage = System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, petnum + GameState.GfxExt));
+                picSprite.Width = (int)Math.Round(System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, petNum + GameState.GfxExt)).Width / 4d);
+                picSprite.Height = (int)Math.Round(System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, petNum + GameState.GfxExt)).Height / 4d);
+                picSprite.BackgroundImage = System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Characters, petNum + GameState.GfxExt));
             }
             else
             {
@@ -98,10 +98,6 @@ namespace Client
             Editors.PetEditorCancel();
             Dispose();
         }
-
-
-
-
 
         #endregion
         #region Stats

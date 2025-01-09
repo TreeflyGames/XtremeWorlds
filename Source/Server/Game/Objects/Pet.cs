@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
@@ -121,46 +122,43 @@ namespace Server
 
         }
 
-        public static void SendPet(int index, int petnum)
+        public static void SendPet(int index, int petNum)
         {
-            SendUpdatePetTo(index, petnum);
+            SendUpdatePetTo(index, petNum);
         }
 
         public static void SendUpdatePetToAll(int petNum)
         {
             var buffer = new ByteStream(4);
-            buffer.WriteInt32((int) ServerPackets.SUpdatePet);
+            buffer.WriteInt32((int)ServerPackets.SUpdatePet);
 
             buffer.WriteInt32(petNum);
 
-            {
-                ref var withBlock = ref Core.Type.Pet[petNum];
-                buffer.WriteInt32(withBlock.Num);
-                buffer.WriteString(withBlock.Name);
-                buffer.WriteInt32(withBlock.Sprite);
-                buffer.WriteInt32(withBlock.Range);
-                buffer.WriteInt32(withBlock.Level);
-                buffer.WriteInt32(withBlock.MaxLevel);
-                buffer.WriteInt32(withBlock.ExpGain);
-                buffer.WriteInt32(withBlock.LevelPnts);
-                buffer.WriteInt32(withBlock.StatType);
-                buffer.WriteInt32(withBlock.LevelingType);
+            ref var withBlock = ref Core.Type.Pet[petNum];
+            buffer.WriteInt32(withBlock.Num);
+            buffer.WriteString(withBlock.Name);
+            buffer.WriteInt32(withBlock.Sprite);
+            buffer.WriteInt32(withBlock.Range);
+            buffer.WriteInt32(withBlock.Level);
+            buffer.WriteInt32(withBlock.MaxLevel);
+            buffer.WriteInt32(withBlock.ExpGain);
+            buffer.WriteInt32(withBlock.LevelPnts);
+            buffer.WriteInt32(withBlock.StatType);
+            buffer.WriteInt32(withBlock.LevelingType);
 
-                for (int i = 0, loopTo = (int)(StatType.Count); i < loopTo; i++)
-                    buffer.WriteInt32(withBlock.Stat[Conversions.ToInteger(i)]);
+            for (int i = 0, loopTo = (int)(StatType.Count); i < loopTo; i++)
+                buffer.WriteInt32(withBlock.Stat[i]);
 
-                for (int i = 0; i <= 4; i++)
-                    buffer.WriteInt32(withBlock.Skill[i]);
+            for (int i = 0; i <= 4; i++)
+                buffer.WriteInt32(withBlock.Skill[i]);
 
-                buffer.WriteInt32(withBlock.Evolvable);
-                buffer.WriteInt32(withBlock.EvolveLevel);
-                buffer.WriteInt32(withBlock.EvolveNum);
-            }
+            buffer.WriteInt32(withBlock.Evolvable);
+            buffer.WriteInt32(withBlock.EvolveLevel);
+            buffer.WriteInt32(withBlock.EvolveNum);
 
             NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
 
             buffer.Dispose();
-
         }
 
         public static void SendUpdatePetTo(int index, int petNum)
@@ -208,7 +206,7 @@ namespace Server
 
             buffer.WriteInt32(index);
 
-            buffer.WriteInt32(GetPetNum(index));
+            buffer.WriteDouble(GetPetNum(index));
             buffer.WriteInt32(GetPetVital(index, VitalType.HP));
             buffer.WriteInt32(GetPetVital(index, VitalType.SP));
             buffer.WriteInt32(GetPetLevel(index));
@@ -216,8 +214,8 @@ namespace Server
             for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                 buffer.WriteInt32(GetPetStat(index, (StatType)i));
 
-            for (int i = 0; i <= 4; i++)
-                buffer.WriteInt32(Core.Type.Player[index].Pet.Skill[i]);
+            for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
+                buffer.WriteDouble(Core.Type.Player[index].Pet.Skill[i]);
 
             buffer.WriteInt32(GetPetX(index));
             buffer.WriteInt32(GetPetY(index));
@@ -2302,12 +2300,12 @@ namespace Server
                 expRollover = GetPetExp(index) - GetPetNextLevel(index);
 
                 // can level up?
-                if (GetPetLevel(index) < 99 & GetPetLevel(index) < Core.Type.Pet[Core.Type.Player[index].Pet.Num].MaxLevel)
+                if (GetPetLevel(index) < 99 & GetPetLevel(index) < Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].MaxLevel)
                 {
                     SetPetLevel(index, GetPetLevel(index) + 1);
                 }
 
-                SetPetPoints(index, GetPetPoints(index) + Core.Type.Pet[Core.Type.Player[index].Pet.Num].LevelPnts);
+                SetPetPoints(index, GetPetPoints(index) + Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].LevelPnts);
                 SetPetExp(index, expRollover);
                 levelCount += 0;
             }
@@ -2381,43 +2379,44 @@ namespace Server
 
         #region Pet > NPC
 
-        internal static void TryPetAttackNPC(int index, int MapNPCNum)
+        internal static void TryPetAttackNPC(int index, double MapNPCNum)
         {
             int blockAmount;
             int NPCNum;
             int mapNum;
             int damage;
 
-
             // Can we attack the npc?
             if (CanPetAttackNPC(index, MapNPCNum))
             {
-
                 mapNum = GetPlayerMap(index);
-                NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
+                NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
 
                 // check if NPC can avoid the attack
                 if (NPC.CanNPCDodge(NPCNum))
                 {
-                    NetworkSend.SendActionMsg(mapNum, "Dodge!", (int) ColorType.Pink, 1, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y * 32);
+                    NetworkSend.SendActionMsg(mapNum, "Dodge!", (int) ColorType.Pink, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
                     return;
                 }
 
                 if (NPC.CanNPCParry(NPCNum))
                 {
-                    NetworkSend.SendActionMsg(mapNum, "Parry!", (int) ColorType.Pink, 1, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y * 32);
+                    NetworkSend.SendActionMsg(mapNum, "Parry!", (int) ColorType.Pink, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
                     return;
                 }
 
                 // Get the damage we can do
                 damage = GetPetDamage(index);
 
-                // if the npc blocks, take away the block amount
-                blockAmount = Conversions.ToInteger(NPC.CanNPCBlock(MapNPCNum));
-                damage -= blockAmount;
+                if (NPC.CanNPCBlock(NPCNum))
+                {
+                    NetworkSend.SendActionMsg(mapNum, "Block!", (int)ColorType.Pink, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
+                    return;
+                }
 
                 // take away armour
-                damage = (int)Math.Round(damage - General.Random.NextDouble(1, (int)Core.Type.NPC[NPCNum].Stat[(byte)StatType.Luck] * 2));
+                damage = (int)Math.Round(damage - General.Random.NextDouble(1, (int)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Luck] * 2));
+
                 // randomise from 1 to Core.Constant.MAX hit
                 damage = (int)Math.Round(General.Random.NextDouble(1d, damage));
 
@@ -2441,7 +2440,7 @@ namespace Server
 
         }
 
-        internal static bool CanPetAttackNPC(int attacker, int MapNPCNum, bool isSkill = false)
+        internal static bool CanPetAttackNPC(int attacker, double MapNPCNum, bool isSkill = false)
         {
             bool CanPetAttackNPCRet = default;
             int mapNum;
@@ -2456,14 +2455,14 @@ namespace Server
             }
 
             // Check for subscript out of range
-            if (Core.Type.MapNPC[GetPlayerMap(attacker)].NPC[MapNPCNum].Num < 0)
+            if (Core.Type.MapNPC[GetPlayerMap(attacker)].NPC[(int)MapNPCNum].Num < 0)
                 return CanPetAttackNPCRet;
 
             mapNum = GetPlayerMap(attacker);
-            NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
+            NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
 
             // Make sure the npc isn't already dead
-            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] < 0)
+            if (Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP] < 0)
                 return CanPetAttackNPCRet;
 
             // Make sure they are on the same map
@@ -2476,7 +2475,7 @@ namespace Server
                 // exit out early
                 if (isSkill & NPCNum >= 0)
                 {
-                    if (Core.Type.NPC[NPCNum].Behaviour != (byte)  NPCBehavior.Friendly & Core.Type.NPC[NPCNum].Behaviour != (byte)  NPCBehavior.ShopKeeper)
+                    if (Core.Type.NPC[(int)NPCNum].Behaviour != (byte)  NPCBehavior.Friendly & Core.Type.NPC[(int)NPCNum].Behaviour != (byte)  NPCBehavior.ShopKeeper)
                     {
                         CanPetAttackNPCRet = Conversions.ToBoolean(1);
                         return CanPetAttackNPCRet;
@@ -2494,29 +2493,29 @@ namespace Server
 
                         case var @case when @case == (byte) DirectionType.Up:
                             {
-                                npcX = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X;
-                                npcY = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y + 1;
+                                npcX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X;
+                                npcY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y + 1;
                                 break;
                             }
 
                         case var case1 when case1 == (byte) DirectionType.Down:
                             {
-                                npcX = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X;
-                                npcY = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y - 1;
+                                npcX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X;
+                                npcY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y - 1;
                                 break;
                             }
 
                         case var case2 when case2 == (byte) DirectionType.Left:
                             {
-                                npcX = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X + 1;
-                                npcY = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y;
+                                npcX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X + 1;
+                                npcY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y;
                                 break;
                             }
 
                         case var case3 when case3 == (byte) DirectionType.Right:
                             {
-                                npcX = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X - 1;
-                                npcY = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y;
+                                npcX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X - 1;
+                                npcY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y;
                                 break;
                             }
 
@@ -2524,7 +2523,7 @@ namespace Server
 
                     if (npcX == GetPetX(attacker) & npcY == GetPetY(attacker))
                     {
-                        if (Core.Type.NPC[NPCNum].Behaviour != (byte)  NPCBehavior.Friendly & Core.Type.NPC[NPCNum].Behaviour != (byte)  NPCBehavior.ShopKeeper)
+                        if (Core.Type.NPC[(int)NPCNum].Behaviour != (byte)  NPCBehavior.Friendly & Core.Type.NPC[(int)NPCNum].Behaviour != (byte)  NPCBehavior.ShopKeeper)
                         {
                             CanPetAttackNPCRet = Conversions.ToBoolean(1);
                         }
@@ -2540,7 +2539,7 @@ namespace Server
 
         }
 
-        internal static void PetAttackNPC(int attacker, int MapNPCNum, int damage, int skillNum = 0) // , Optional overTime As Boolean = False)
+        internal static void PetAttackNPC(int attacker, double MapNPCNum, int damage, double skillNum = -1) // , Optional overTime As Boolean = False)
         {
             string name;
             int exp;
@@ -2555,8 +2554,8 @@ namespace Server
             }
 
             mapNum = GetPlayerMap(attacker);
-            NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
-            name = Core.Type.NPC[NPCNum].Name;
+            NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
+            name = Core.Type.NPC[(int)NPCNum].Name;
 
             if (skillNum == -1)
             {
@@ -2568,14 +2567,14 @@ namespace Server
             Core.Type.TempPlayer[attacker].PetStopRegen = true;
             Core.Type.TempPlayer[attacker].PetStopRegenTimer = General.GetTimeMs();
 
-            if (damage >= Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP])
+            if (damage >= Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP])
             {
 
-                NetworkSend.SendActionMsg(GetPlayerMap(attacker), "-" + Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP], (int) ColorType.BrightRed, 1, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y * 32);
-                NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
+                NetworkSend.SendActionMsg(GetPlayerMap(attacker), "-" + Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP], (int) ColorType.BrightRed, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
+                NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y);
 
                 // Calculate exp to give attacker
-                exp = Core.Type.NPC[NPCNum].Exp;
+                exp = Core.Type.NPC[(int)NPCNum].Exp;
 
                 // Make sure we dont get less then 0
                 if (exp < 0)
@@ -2596,30 +2595,30 @@ namespace Server
                 }
 
                 // For n = 0 To 20
-                // If Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num >= 0 Then
-                // 'SpawnItem(Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Inventory(n).Num, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Inventory(n).Value, mapNum, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].y)
-                // 'MapNPC[mapNum].NPC[MapNPCNum].Inventory(n).Value = 0
-                // 'MapNPC[mapNum].NPC[MapNPCNum].Inventory(n).Num = 0
+                // If Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num >= 0 Then
+                // 'SpawnItem(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Inventory(n).Num, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Inventory(n).Value, mapNum, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].y)
+                // 'MapNPC[mapNum].NPC[(int)MapNPCNum].Inventory(n).Value = 0
+                // 'MapNPC[mapNum].NPC[(int)MapNPCNum].Inventory(n).Num = 0
                 // End If
                 // Next
 
                 // Now set HP to 0 so we know to actually kill them in the server loop (this prevents subscript out of range)
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num = 0;
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].SpawnWait = General.GetTimeMs();
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] = 0;
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = 0;
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target = 0;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num = 0;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].SpawnWait = General.GetTimeMs();
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP] = 0;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].TargetType = 0;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Target = 0;
 
                 // clear DoTs and HoTs
                 // For i = 1 To Core.Constant.MAX_COTS
-                // With Core.Type.MapNPC[mapNum].NPC[MapNPCNum].DoT(i)
+                // With Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].DoT(i)
                 // .Skill = 0
                 // .Timer = 0
                 // .Caster = 0
                 // .StartTime = 0
                 // .Used = 0
                 // End With
-                // With Core.Type.MapNPC[mapNum].NPC[MapNPCNum].HoT(i)
+                // With Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].HoT(i)
                 // .Skill = 0
                 // .Timer = 0
                 // .Caster = 0
@@ -2629,7 +2628,7 @@ namespace Server
                 // Next
 
                 // send death to the map
-                NPC.SendNPCDead(mapNum, MapNPCNum);
+                NPC.SendNPCDead(mapNum, (int)MapNPCNum);
 
                 // Loop through entire map and purge NPC from targets
                 var loopTo = NetworkConfig.Socket.HighIndex + 1;
@@ -2665,26 +2664,26 @@ namespace Server
             else
             {
                 // NPC not dead, just do the damage
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] - damage;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP] = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP] - damage;
 
                 // Check for a weapon and say damage
-                NetworkSend.SendActionMsg(mapNum, "-" + damage, (int) ColorType.BrightRed, 1, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y * 32);
-                NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y);
+                NetworkSend.SendActionMsg(mapNum, "-" + damage, (int) ColorType.BrightRed, 1, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
+                NetworkSend.SendBlood(GetPlayerMap(attacker), Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y);
 
                 // send the sound
-                // If skillNum >= 0 Then SendMapSound attacker, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].y, SoundEntity.seSkill, skillNum
+                // If skillNum >= 0 Then SendMapSound attacker, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].x, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].y, SoundEntity.seSkill, skillNum
 
                 // Set the NPC target to the player
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = (byte)TargetType.Pet; // player's pet
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target = attacker;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].TargetType = (byte)TargetType.Pet; // player's pet
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Target = attacker;
 
                 // Now check for guard ai and if so have all onmap guards come after'm
-                if (Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Behaviour == (byte)  NPCBehavior.Guard)
+                if (Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num].Behaviour == (byte)  NPCBehavior.Guard)
                 {
                     var loopTo1 = Core.Constant.MAX_MAP_NPCS;
                     for (i = 0; i < loopTo1; i++)
                     {
-                        if (Core.Type.MapNPC[mapNum].NPC[i].Num == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num)
+                        if (Core.Type.MapNPC[mapNum].NPC[i].Num == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num)
                         {
                             Core.Type.MapNPC[mapNum].NPC[i].Target = attacker;
                             Core.Type.MapNPC[mapNum].NPC[i].TargetType = (byte)TargetType.Pet; // pet
@@ -2693,16 +2692,16 @@ namespace Server
                 }
 
                 // set the regen timer
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].StopRegen = 0;
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].StopRegenTimer = General.GetTimeMs();
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].StopRegen = 0;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].StopRegenTimer = General.GetTimeMs();
 
                 // if stunning Skill, stun the npc
                 if (skillNum >= 0)
                 {
-                    if (Core.Type.Skill[skillNum].StunDuration > 0)
-                        Player.StunNPC(MapNPCNum, mapNum, skillNum);
+                    if (Core.Type.Skill[(int)skillNum].StunDuration > 0)
+                        Player.StunNPC((int)MapNPCNum, mapNum, (int)skillNum);
                     // DoT
-                    if (Core.Type.Skill[skillNum].Duration > 0)
+                    if (Core.Type.Skill[(int)skillNum].Duration > 0)
                     {
                         // AddDoT_NPC(mapNum, MapNPCNum, skillNum, attacker, 3)
                     }
@@ -2723,7 +2722,7 @@ namespace Server
 
         #region NPC > Pet
 
-        internal static void TryNPCAttackPet(int MapNPCNum, int index)
+        internal static void TryNPCAttackPet(double MapNPCNum, int index)
         {
 
             int mapNum;
@@ -2735,7 +2734,7 @@ namespace Server
             if (CanNPCAttackPet(MapNPCNum, index))
             {
                 mapNum = GetPlayerMap(index);
-                NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
+                NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
 
                 // check if Pet can avoid the attack
                 if (CanPetDodge(index))
@@ -2754,7 +2753,7 @@ namespace Server
                 if (NPC.CanNPCrit(NPCNum))
                 {
                     damage = (int)Math.Round(damage * 1.5d);
-                    NetworkSend.SendActionMsg(mapNum, "Critical!", (int) ColorType.BrightCyan, (byte) ActionMsgType.Scroll, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y * 32);
+                    NetworkSend.SendActionMsg(mapNum, "Critical!", (int) ColorType.BrightCyan, (byte) ActionMsgType.Scroll, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X * 32, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y * 32);
                 }
             }
 
@@ -2765,7 +2764,7 @@ namespace Server
 
         }
 
-        public static bool CanNPCAttackPet(int MapNPCNum, int index)
+        public static bool CanNPCAttackPet(double MapNPCNum, int index)
         {
             bool CanNPCAttackPetRet = default;
             int mapNum;
@@ -2779,25 +2778,25 @@ namespace Server
             }
 
             // Check for subscript out of range
-            if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[MapNPCNum].Num < 0)
+            if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[(int)MapNPCNum].Num < 0)
                 return CanNPCAttackPetRet;
 
             mapNum = GetPlayerMap(index);
-            NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num;
+            NPCNum = (int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
 
             // Make sure the npc isn't already dead
-            if (Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Vital[(byte) VitalType.HP] < 0)
+            if (Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP] < 0)
                 return CanNPCAttackPetRet;
 
             // Make sure npcs dont attack more then once a second
-            if (General.GetTimeMs() < Core.Type.MapNPC[mapNum].NPC[MapNPCNum].AttackTimer + 1000)
+            if (General.GetTimeMs() < Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].AttackTimer + 1000)
                 return CanNPCAttackPetRet;
 
             // Make sure we dont attack the player if they are switching maps
             if (Core.Type.TempPlayer[index].GettingMap == true)
                 return CanNPCAttackPetRet;
 
-            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].AttackTimer = General.GetTimeMs();
+            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].AttackTimer = General.GetTimeMs();
 
             // Make sure they are on the same map
             if (NetworkConfig.IsPlaying(index) & PetAlive(index))
@@ -2806,22 +2805,22 @@ namespace Server
                 {
 
                     // Check if at same coordinates
-                    if (GetPetY(index) + 1 == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y & GetPetX(index) == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X)
+                    if (GetPetY(index) + 1 == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y & GetPetX(index) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X)
                     {
                         CanNPCAttackPetRet = Conversions.ToBoolean(1);
                     }
 
-                    else if (GetPetY(index) - 1 == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y & GetPetX(index) == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X)
+                    else if (GetPetY(index) - 1 == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y & GetPetX(index) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X)
                     {
                         CanNPCAttackPetRet = Conversions.ToBoolean(1);
                     }
 
-                    else if (GetPetY(index) == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y & GetPetX(index) + 1 == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X)
+                    else if (GetPetY(index) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y & GetPetX(index) + 1 == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X)
                     {
                         CanNPCAttackPetRet = Conversions.ToBoolean(1);
                     }
 
-                    else if (GetPetY(index) == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y & GetPetX(index) - 1 == Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X)
+                    else if (GetPetY(index) == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y & GetPetX(index) - 1 == Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X)
                     {
                         CanNPCAttackPetRet = Conversions.ToBoolean(1);
                     }
@@ -2832,7 +2831,7 @@ namespace Server
 
         }
 
-        public static void NPCAttackPet(int MapNPCNum, int victim, int damage)
+        public static void NPCAttackPet(double MapNPCNum, int victim, int damage)
         {
             string name;
             int mapNum;
@@ -2844,21 +2843,21 @@ namespace Server
             }
 
             // Check for subscript out of range
-            if (Core.Type.MapNPC[GetPlayerMap(victim)].NPC[MapNPCNum].Num < 0)
+            if (Core.Type.MapNPC[GetPlayerMap(victim)].NPC[(int)MapNPCNum].Num < 0)
                 return;
 
             mapNum = GetPlayerMap(victim);
-            name = Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Name;
+            name = Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num].Name;
 
             // Send this packet so they can see the npc attacking
-            NPC.SendNPCAttack(victim, MapNPCNum);
+            NPC.SendNPCAttack(victim, (int)MapNPCNum);
 
             if (damage < 0)
                 return;
 
             // set the regen timer
-            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].StopRegen = 0;
-            Core.Type.MapNPC[mapNum].NPC[MapNPCNum].StopRegenTimer = General.GetTimeMs();
+            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].StopRegen = 0;
+            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].StopRegenTimer = General.GetTimeMs();
 
             if (damage >= GetPetVital(victim, VitalType.HP))
             {
@@ -2866,19 +2865,19 @@ namespace Server
                 NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + GetPetVital(victim, VitalType.HP), (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(victim) * 32, GetPetY(victim) * 32);
 
                 // kill pet
-                NetworkSend.PlayerMsg(victim, "Your " + GetPetName(victim) + " was killed by a " + Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Num].Name + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(victim, "Your " + GetPetName(victim) + " was killed by a " + Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num].Name + ".", (int) ColorType.BrightRed);
                 RecallPet(victim);
 
                 // Now that pet is dead, go for owner
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Target = victim;
-                Core.Type.MapNPC[mapNum].NPC[MapNPCNum].TargetType = (byte)TargetType.Player;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Target = victim;
+                Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].TargetType = (byte)TargetType.Player;
             }
             else
             {
                 // Pet not dead, just do the damage
                 SetPetVital(victim, VitalType.HP, GetPetVital(victim, VitalType.HP) - damage);
                 SendPetVital(victim, VitalType.HP);
-                Animation.SendAnimation(mapNum, Core.Type.NPC[(int)Core.Type.MapNPC[GetPlayerMap(victim)].NPC[MapNPCNum].Num].Animation, 0, 0, (byte)TargetType.Pet, victim);
+                Animation.SendAnimation(mapNum, Core.Type.NPC[(int)Core.Type.MapNPC[GetPlayerMap(victim)].NPC[(int)MapNPCNum].Num].Animation, 0, 0, (byte)TargetType.Pet, victim);
 
                 // Say damage
                 NetworkSend.SendActionMsg(GetPlayerMap(victim), "-" + damage, (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(victim) * 32, GetPetY(victim) * 32);
@@ -2889,7 +2888,7 @@ namespace Server
                 Core.Type.TempPlayer[victim].PetStopRegenTimer = General.GetTimeMs();
 
                 // pet gets attacked, lets set this target
-                Core.Type.TempPlayer[victim].PetTarget = MapNPCNum;
+                Core.Type.TempPlayer[victim].PetTarget = (int)MapNPCNum;
                 Core.Type.TempPlayer[victim].PetTargetType = (byte)TargetType.NPC;
             }
 
@@ -3538,7 +3537,7 @@ namespace Server
 
         internal static void BufferPetSkill(int index, int SkillSlot)
         {
-            int skillNum;
+            double skillNum;
             int mpCost;
             int levelReq;
             int mapNum;
@@ -3567,7 +3566,7 @@ namespace Server
                 return;
             }
 
-            mpCost = Core.Type.Skill[skillNum].MpCost;
+            mpCost = Core.Type.Skill[(int)skillNum].MpCost;
 
             // Check if they have enough MP
             if (GetPetVital(index, VitalType.SP) < mpCost)
@@ -3576,7 +3575,7 @@ namespace Server
                 return;
             }
 
-            levelReq = Core.Type.Skill[skillNum].LevelReq;
+            levelReq = Core.Type.Skill[(int)skillNum].LevelReq;
 
             // Make sure they are the right level
             if (levelReq > GetPetLevel(index))
@@ -3585,7 +3584,7 @@ namespace Server
                 return;
             }
 
-            accessReq = Core.Type.Skill[skillNum].AccessReq;
+            accessReq = Core.Type.Skill[(int)skillNum].AccessReq;
 
             // make sure they have the right access
             if (accessReq > GetPlayerAccess(index))
@@ -3595,11 +3594,11 @@ namespace Server
             }
 
             // find out what kind of Skill it is! self cast, target or AOE
-            if (Core.Type.Skill[skillNum].Range > 0)
+            if (Core.Type.Skill[(int)skillNum].Range > 0)
             {
 
                 // ranged attack, single target or aoe?
-                if (!Core.Type.Skill[skillNum].IsAoE)
+                if (!Core.Type.Skill[(int)skillNum].IsAoE)
                 {
                     skillCastType = 2; // targetted
                 }
@@ -3608,7 +3607,7 @@ namespace Server
                     skillCastType = 3;
                 } // targetted aoe
             }
-            else if (!Core.Type.Skill[skillNum].IsAoE)
+            else if (!Core.Type.Skill[(int)skillNum].IsAoE)
             {
                 skillCastType = 0; // self-cast
             }
@@ -3619,7 +3618,7 @@ namespace Server
 
             targetType = (byte)Core.Type.TempPlayer[index].PetTargetType;
             target = Core.Type.TempPlayer[index].PetTarget;
-            range = Core.Type.Skill[skillNum].Range;
+            range = Core.Type.Skill[(int)skillNum].Range;
             hasBuffered = Conversions.ToBoolean(0);
 
             switch (skillCastType)
@@ -3661,7 +3660,7 @@ namespace Server
                                 NetworkSend.PlayerMsg(index, "Target not in range of " + GetPetName(index) + ".", (int) ColorType.Yellow);
                             }
                             // go through Skill Type
-                            else if (Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageMp)
+                            else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
                             {
                                 hasBuffered = Conversions.ToBoolean(1);
                             }
@@ -3681,7 +3680,7 @@ namespace Server
                                 hasBuffered = Conversions.ToBoolean(0);
                             }
                             // go through Skill Type
-                            else if (Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageMp)
+                            else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
                             {
                                 hasBuffered = Conversions.ToBoolean(1);
                             }
@@ -3702,11 +3701,11 @@ namespace Server
                                 hasBuffered = Conversions.ToBoolean(0);
                             }
                             // go through Skill Type
-                            else if (Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[skillNum].Type != (byte)SkillType.DamageMp)
+                            else if (Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageHp & Core.Type.Skill[(int)skillNum].Type != (byte)SkillType.DamageMp)
                             {
                                 hasBuffered = Conversions.ToBoolean(1);
                             }
-                            else if (CanPetAttackPet(index, target, skillNum))
+                            else if (CanPetAttackPet(index, target, (int)skillNum))
                             {
                                 hasBuffered = Conversions.ToBoolean(1);
                             }
@@ -3718,8 +3717,8 @@ namespace Server
 
             if (hasBuffered)
             {
-                Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].CastAnim, 0, 0, (byte) Core.Enum.TargetType.Pet, index);
-                NetworkSend.SendActionMsg(mapNum, "Casting " + Core.Type.Skill[skillNum].Name + "!", (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(index) * 32, GetPetY(index) * 32);
+                Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].CastAnim, 0, 0, (byte) Core.Enum.TargetType.Pet, index);
+                NetworkSend.SendActionMsg(mapNum, "Casting " + Core.Type.Skill[(int)skillNum].Name + "!", (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(index) * 32, GetPetY(index) * 32);
                 Core.Type.TempPlayer[index].PetSkillBuffer.Skill = SkillSlot;
                 Core.Type.TempPlayer[index].PetSkillBuffer.Timer = General.GetTimeMs();
                 Core.Type.TempPlayer[index].PetSkillBuffer.Target = target;
@@ -3735,7 +3734,7 @@ namespace Server
 
         internal static void PetCastSkill(int index, int SkillSlot, int target, byte targetType, bool takeMana = true)
         {
-            int skillNum;
+            double skillNum;
             int mpCost;
             int levelReq;
             int mapNum;
@@ -3758,9 +3757,13 @@ namespace Server
                 return;
 
             skillNum = Core.Type.Player[index].Pet.Skill[SkillSlot];
+
+            if (skillNum < 0 || skillNum > Core.Constant.MAX_SKILLS)
+                return;
+
             mapNum = GetPlayerMap(index);
 
-            mpCost = Core.Type.Skill[skillNum].MpCost;
+            mpCost = Core.Type.Skill[(int)skillNum].MpCost;
 
             // Check if they have enough MP
             if (Core.Type.Player[index].Pet.Mana < mpCost)
@@ -3769,7 +3772,7 @@ namespace Server
                 return;
             }
 
-            levelReq = Core.Type.Skill[skillNum].LevelReq;
+            levelReq = Core.Type.Skill[(int)skillNum].LevelReq;
 
             // Make sure they are the right level
             if (levelReq > Core.Type.Player[index].Pet.Level)
@@ -3778,7 +3781,7 @@ namespace Server
                 return;
             }
 
-            accessReq = Core.Type.Skill[skillNum].AccessReq;
+            accessReq = Core.Type.Skill[(int)skillNum].AccessReq;
 
             // make sure they have the right access
             if (accessReq > GetPlayerAccess(index))
@@ -3788,14 +3791,14 @@ namespace Server
             }
 
             // find out what kind of Skill it is! self cast, target or AOE
-            if (Core.Type.Skill[skillNum].IsProjectile == 1)
+            if (Core.Type.Skill[(int)skillNum].IsProjectile == 1)
             {
                 skillCastType = 4; // Projectile
             }
-            else if (Core.Type.Skill[skillNum].Range > 0)
+            else if (Core.Type.Skill[(int)skillNum].Range > 0)
             {
                 // ranged attack, single target or aoe?
-                if (!Core.Type.Skill[skillNum].IsAoE)
+                if (!Core.Type.Skill[(int)skillNum].IsAoE)
                 {
                     skillCastType = 2; // targetted
                 }
@@ -3804,7 +3807,7 @@ namespace Server
                     skillCastType = 3;
                 } // targetted aoe
             }
-            else if (!Core.Type.Skill[skillNum].IsAoE)
+            else if (!Core.Type.Skill[(int)skillNum].IsAoE)
             {
                 skillCastType = 0; // self-cast
             }
@@ -3814,25 +3817,25 @@ namespace Server
             } // self-cast AoE
 
             // set the vital
-            vital = Core.Type.Skill[skillNum].Vital;
-            aoE = Core.Type.Skill[skillNum].AoE;
-            range = Core.Type.Skill[skillNum].Range;
+            vital = Core.Type.Skill[(int)skillNum].Vital;
+            aoE = Core.Type.Skill[(int)skillNum].AoE;
+            range = Core.Type.Skill[(int)skillNum].Range;
 
             switch (skillCastType)
             {
                 case 0: // self-cast target
                     {
-                        switch (Core.Type.Skill[skillNum].Type)
+                        switch (Core.Type.Skill[(int)skillNum].Type)
                         {
                             case var @case when @case == (byte)SkillType.HealHp:
                                 {
-                                    SkillPet_Effect((int)VitalType.HP, true, index, vital, skillNum);
+                                    SkillPet_Effect((int)VitalType.HP, true, index, vital, (int)skillNum);
                                     didCast = Conversions.ToBoolean(1);
                                     break;
                                 }
                             case var case1 when case1 == (byte)SkillType.HealMp:
                                 {
-                                    SkillPet_Effect((int)VitalType.SP, true, index, vital, skillNum);
+                                    SkillPet_Effect((int)VitalType.SP, true, index, vital, (int)skillNum);
                                     didCast = Conversions.ToBoolean(1);
                                     break;
                                 }
@@ -3879,7 +3882,7 @@ namespace Server
                             }
                         }
 
-                        switch (Core.Type.Skill[skillNum].Type)
+                        switch (Core.Type.Skill[(int)skillNum].Type)
                         {
 
                             case var case2 when case2 == (byte)SkillType.DamageHp:
@@ -3897,8 +3900,8 @@ namespace Server
                                                 {
                                                     if (CanPetAttackPlayer(index, i, true) & index != target)
                                                     {
-                                                        Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Player, i);
-                                                        PetAttackPlayer(index, i, vital, skillNum);
+                                                        Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Player, i);
+                                                        PetAttackPlayer(index, i, vital, (int)skillNum);
                                                     }
                                                 }
 
@@ -3907,10 +3910,10 @@ namespace Server
                                                     if (Player.IsInRange(aoE, x, y, GetPetX(i), GetPetY(i)))
                                                     {
 
-                                                        if (CanPetAttackPet(index, i, skillNum))
+                                                        if (CanPetAttackPet(index, i, (int)skillNum))
                                                         {
-                                                            Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Pet, i);
-                                                            PetAttackPet(index, i, vital, skillNum);
+                                                            Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Pet, i);
+                                                            PetAttackPet(index, i, vital, (int)skillNum);
                                                         }
                                                     }
                                                 }
@@ -3927,8 +3930,8 @@ namespace Server
                                             {
                                                 if (CanPetAttackNPC(index, i, true))
                                                 {
-                                                    Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.NPC, i);
-                                                    PetAttackNPC(index, i, vital, skillNum);
+                                                    Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.NPC, i);
+                                                    PetAttackNPC(index, i, vital, (int)skillNum);
                                                 }
                                             }
                                         }
@@ -3942,17 +3945,17 @@ namespace Server
                             case var case5 when case5 == (byte)SkillType.DamageMp:
                                 {
 
-                                    if (Core.Type.Skill[skillNum].Type == (byte)SkillType.HealHp)
+                                    if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.HealHp)
                                     {
                                         vitalType = (int)VitalType.HP;
                                         increment = Conversions.ToBoolean(1);
                                     }
-                                    else if (Core.Type.Skill[skillNum].Type == (byte)SkillType.HealMp)
+                                    else if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.HealMp)
                                     {
                                         vitalType = (int)VitalType.SP;
                                         increment = Conversions.ToBoolean(1);
                                     }
-                                    else if (Core.Type.Skill[skillNum].Type == (byte)SkillType.DamageMp)
+                                    else if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.DamageMp)
                                     {
                                         vitalType = (int)VitalType.SP;
                                         increment = Conversions.ToBoolean(0);
@@ -3967,14 +3970,14 @@ namespace Server
                                         {
                                             if (Player.IsInRange(aoE, x, y, GetPlayerX(i), GetPlayerY(i)))
                                             {
-                                                Loop.SkillPlayer_Effect(vitalType, increment, i, vital, skillNum);
+                                                Loop.SkillPlayer_Effect(vitalType, increment, i, vital, (int)skillNum);
                                             }
 
                                             if (PetAlive(i))
                                             {
                                                 if (Player.IsInRange(aoE, x, y, GetPetX(i), GetPetY(i)))
                                                 {
-                                                    SkillPet_Effect(vitalType, increment, i, vital, skillNum);
+                                                    SkillPet_Effect(vitalType, increment, i, vital, (int)skillNum);
                                                 }
                                             }
                                         }
@@ -4016,7 +4019,7 @@ namespace Server
                             return;
                         }
 
-                        switch (Core.Type.Skill[skillNum].Type)
+                        switch (Core.Type.Skill[(int)skillNum].Type)
                         {
 
                             case var case6 when case6 == (byte)SkillType.DamageHp:
@@ -4028,8 +4031,8 @@ namespace Server
                                         {
                                             if (vital > 0)
                                             {
-                                                Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Player, target);
-                                                PetAttackPlayer(index, target, vital, skillNum);
+                                                Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Player, target);
+                                                PetAttackPlayer(index, target, vital, (int)skillNum);
                                                 didCast = Conversions.ToBoolean(1);
                                             }
                                         }
@@ -4040,7 +4043,7 @@ namespace Server
                                         {
                                             if (vital > 0)
                                             {
-                                                Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.NPC, target);
+                                                Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.NPC, target);
                                                 PetAttackNPC(index, target, vital, skillNum);
                                                 didCast = Conversions.ToBoolean(1);
                                             }
@@ -4048,12 +4051,12 @@ namespace Server
                                     }
                                     else if (targetType == (byte) Core.Enum.TargetType.Pet)
                                     {
-                                        if (CanPetAttackPet(index, target, skillNum))
+                                        if (CanPetAttackPet(index, target, (int)skillNum))
                                         {
                                             if (vital > 0)
                                             {
-                                                Animation.SendAnimation(mapNum, Core.Type.Skill[skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Pet, target);
-                                                PetAttackPet(index, target, vital, skillNum);
+                                                Animation.SendAnimation(mapNum, Core.Type.Skill[(int)skillNum].SkillAnim, 0, 0, (byte) Core.Enum.TargetType.Pet, target);
+                                                PetAttackPet(index, target, vital, (int)skillNum);
                                                 didCast = Conversions.ToBoolean(1);
                                             }
                                         }
@@ -4062,22 +4065,22 @@ namespace Server
                                     break;
                                 }
 
-                            case var case7 when case7 == (byte)SkillType.DamageMp:
-                            case var case8 when case8 == (byte)SkillType.HealMp:
-                            case var case9 when case9 == (byte)SkillType.HealHp:
+                            case (byte) SkillType.DamageMp:
+                            case (byte) SkillType.HealMp:
+                            case (byte) SkillType.HealHp:
                                 {
 
-                                    if (Core.Type.Skill[skillNum].Type == (byte)SkillType.DamageMp)
+                                    if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.DamageMp)
                                     {
                                         vitalType = (int)VitalType.SP;
                                         increment = Conversions.ToBoolean(0);
                                     }
-                                    else if (Core.Type.Skill[skillNum].Type == (byte)SkillType.HealMp)
+                                    else if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.HealMp)
                                     {
                                         vitalType = (int)VitalType.SP;
                                         increment = Conversions.ToBoolean(1);
                                     }
-                                    else if (Core.Type.Skill[skillNum].Type == (byte)SkillType.HealHp)
+                                    else if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.HealHp)
                                     {
                                         vitalType = (byte) VitalType.HP;
                                         increment = Conversions.ToBoolean(1);
@@ -4085,52 +4088,52 @@ namespace Server
 
                                     if (targetType == (byte) Core.Enum.TargetType.Player)
                                     {
-                                        if (Core.Type.Skill[skillNum].Type == (byte)SkillType.DamageMp)
+                                        if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.DamageMp)
                                         {
                                             if (CanPetAttackPlayer(index, target, true))
                                             {
-                                                Loop.SkillPlayer_Effect(vitalType, increment, target, vital, skillNum);
+                                                Loop.SkillPlayer_Effect(vitalType, increment, target, vital, (int)skillNum);
                                             }
                                         }
                                         else
                                         {
-                                            Loop.SkillPlayer_Effect(vitalType, increment, target, vital, skillNum);
+                                            Loop.SkillPlayer_Effect(vitalType, increment, target, vital, (int)skillNum);
                                         }
                                     }
 
                                     else if (targetType == (byte) Core.Enum.TargetType.NPC)
                                     {
 
-                                        if (Core.Type.Skill[skillNum].Type == (byte)SkillType.DamageMp)
+                                        if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.DamageMp)
                                         {
                                             if (CanPetAttackNPC(index, target, true))
                                             {
-                                                Loop.SkillNPC_Effect(vitalType, increment, target, vital, skillNum, mapNum);
+                                                Loop.SkillNPC_Effect(vitalType, increment, target, vital, (int)skillNum, mapNum);
                                             }
                                         }
-                                        else if (Core.Type.Skill[skillNum].Type == (byte)SkillType.HealHp | Core.Type.Skill[skillNum].Type == (byte)SkillType.HealMp)
+                                        else if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.HealHp | Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.HealMp)
                                         {
-                                            SkillPet_Effect(vitalType, increment, index, vital, skillNum);
+                                            SkillPet_Effect(vitalType, increment, index, vital, (int)skillNum);
                                         }
                                         else
                                         {
-                                            Loop.SkillNPC_Effect(vitalType, increment, target, vital, skillNum, mapNum);
+                                            Loop.SkillNPC_Effect(vitalType, increment, target, vital, (int)skillNum, mapNum);
                                         }
                                     }
 
                                     else if (targetType == (byte) Core.Enum.TargetType.Pet)
                                     {
 
-                                        if (Core.Type.Skill[skillNum].Type == (byte)SkillType.DamageMp)
+                                        if (Core.Type.Skill[(int)skillNum].Type == (byte)SkillType.DamageMp)
                                         {
-                                            if (CanPetAttackPet(index, target, skillNum))
+                                            if (CanPetAttackPet(index, target, (int)skillNum))
                                             {
-                                                SkillPet_Effect(vitalType, increment, target, vital, skillNum);
+                                                SkillPet_Effect(vitalType, increment, target, vital, (int)skillNum);
                                             }
                                         }
                                         else
                                         {
-                                            SkillPet_Effect(vitalType, increment, target, vital, skillNum);
+                                            SkillPet_Effect(vitalType, increment, target, vital, (int)skillNum);
                                             SendPetVital(target, (VitalType)vital);
                                         }
                                     }
@@ -4144,7 +4147,7 @@ namespace Server
 
                 case 4: // Projectile
                     {
-                        PetFireProjectile(index, skillNum);
+                        PetFireProjectile(index, (int)skillNum);
                         didCast = Conversions.ToBoolean(1);
                         break;
                     }
@@ -4157,9 +4160,9 @@ namespace Server
                 SendPetVital(index, (VitalType)VitalType.SP);
                 SendPetVital(index, VitalType.HP);
 
-                Core.Type.TempPlayer[index].PetSkillCD[SkillSlot] = General.GetTimeMs() + Core.Type.Skill[skillNum].CdTime * 1000;
+                Core.Type.TempPlayer[index].PetSkillCD[SkillSlot] = General.GetTimeMs() + Core.Type.Skill[(int)skillNum].CdTime * 1000;
 
-                NetworkSend.SendActionMsg(mapNum, Core.Type.Skill[skillNum].Name + "!", (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(index) * 32, GetPetY(index) * 32);
+                NetworkSend.SendActionMsg(mapNum, Core.Type.Skill[(int)skillNum].Name + "!", (int) ColorType.BrightRed, (byte) ActionMsgType.Scroll, GetPetX(index) * 32, GetPetY(index) * 32);
             }
 
         }
@@ -4776,9 +4779,12 @@ namespace Server
             bool PetAliveRet = default;
             PetAliveRet = Conversions.ToBoolean(0);
 
-            if (Core.Type.Player[index].Pet.Alive == 1)
+            if (Core.Type.Player[index].Pet.Num >= 0)
             {
-                PetAliveRet = Conversions.ToBoolean(1);
+                if (Core.Type.Player[index].Pet.Alive == 1)
+                {
+                    PetAliveRet = Conversions.ToBoolean(1);
+                }
             }
 
             return PetAliveRet;
@@ -4792,16 +4798,16 @@ namespace Server
 
             if (PetAlive(index))
             {
-                GetPetNameRet = Core.Type.Pet[Core.Type.Player[index].Pet.Num].Name;
+                GetPetNameRet = Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Name;
             }
 
             return GetPetNameRet;
 
         }
 
-        internal static int GetPetNum(int index)
+        internal static double GetPetNum(int index)
         {
-            int GetPetNumRet = default;
+            double GetPetNumRet = default;
             GetPetNumRet = Core.Type.Player[index].Pet.Num;
             return GetPetNumRet;
 
@@ -4814,7 +4820,7 @@ namespace Server
 
             if (PetAlive(index))
             {
-                GetPetRangeRet = Core.Type.Pet[Core.Type.Player[index].Pet.Num].Range;
+                GetPetRangeRet = Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Range;
             }
 
             return GetPetRangeRet;

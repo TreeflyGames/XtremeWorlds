@@ -268,7 +268,7 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestNPC);
-            buffer.WriteInt32(NPCNum);
+            buffer.WriteDouble(NPCNum);
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
         }
@@ -391,25 +391,25 @@ namespace Client
             buffer.Dispose();
         }
 
-        public static void SendChangeInvSlots(int oldSlot, int newSlot)
+        public static void SendChangeInvSlots(double oldSlot, double newSlot)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSwapInvSlots);
-            buffer.WriteInt32(oldSlot);
-            buffer.WriteInt32(newSlot);
+            buffer.WriteDouble(oldSlot);
+            buffer.WriteDouble(newSlot);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
-        public static void SendChangeSkillSlots(int oldSlot, int newSlot)
+        public static void SendChangeSkillSlots(double oldSlot, double newSlot)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSwapSkillSlots);
-            buffer.WriteInt32(oldSlot);
-            buffer.WriteInt32(newSlot);
+            buffer.WriteDouble(oldSlot);
+            buffer.WriteDouble(newSlot);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -621,36 +621,36 @@ namespace Client
             int i;
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveNPC);
-            buffer.WriteInt32(NPCNum);
+            buffer.WriteDouble(NPCNum);
 
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Animation);
-            buffer.WriteString(Core.Type.NPC[NPCNum].AttackSay);
-            buffer.WriteByte(Core.Type.NPC[NPCNum].Behaviour);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Animation);
+            buffer.WriteString(Core.Type.NPC[(int)NPCNum].AttackSay);
+            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Behaviour);
 
             for (i = 0; i < Constant.MAX_DROP_ITEMS; i++)
             {
-                buffer.WriteInt32(Core.Type.NPC[NPCNum].DropChance[i]);
-                buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItem[i]);
-                buffer.WriteInt32(Core.Type.NPC[NPCNum].DropItemValue[i]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropChance[i]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItem[i]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItemValue[i]);
             }
 
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Exp);
-            buffer.WriteByte(Core.Type.NPC[NPCNum].Faction);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].HP);
-            buffer.WriteString(Core.Type.NPC[NPCNum].Name);
-            buffer.WriteByte(Core.Type.NPC[NPCNum].Range);
-            buffer.WriteByte(Core.Type.NPC[NPCNum].SpawnTime);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].SpawnSecs);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Sprite);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Exp);
+            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Faction);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].HP);
+            buffer.WriteString(Core.Type.NPC[(int)NPCNum].Name);
+            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Range);
+            buffer.WriteByte(Core.Type.NPC[(int)NPCNum].SpawnTime);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].SpawnSecs);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Sprite);
 
             for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                buffer.WriteByte(Core.Type.NPC[NPCNum].Stat[i]);
+                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Stat[i]);
 
             for (i = 0; i < Constant.MAX_NPC_SKILLS; i++)
-                buffer.WriteByte(Core.Type.NPC[NPCNum].Skill[i]);
+                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Skill[i]);
 
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Level);
-            buffer.WriteInt32(Core.Type.NPC[NPCNum].Damage);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Level);
+            buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Damage);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -917,7 +917,7 @@ namespace Client
             {
                 case (byte)Core.Enum.PartType.Skill:
                     {
-                        Player.PlayerCastSkill(Player.FindSkill(Core.Type.Player[GameState.MyIndex].Hotbar[slot].Slot));
+                        Player.PlayerCastSkill(Player.FindSkill((int)Core.Type.Player[GameState.MyIndex].Hotbar[slot].Slot));
                         return;
                     }
             }

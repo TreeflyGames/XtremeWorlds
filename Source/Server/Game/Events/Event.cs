@@ -1890,7 +1890,7 @@ namespace Server
 
         public static void GivePlayerExp(int index, int exp)
         {
-            int petnum;
+            int petNum;
 
             // give the exp
             SetPlayerExp(index, GetPlayerExp(index) + exp);
@@ -1901,12 +1901,12 @@ namespace Server
 
             if (Pet.PetAlive(index))
             {
-                petnum = Pet.GetPetNum(index);
+                petNum = (int)Pet.GetPetNum(index);
 
-                if (Core.Type.Pet[petnum].LevelingType == 1)
+                if (Core.Type.Pet[(int)petNum].LevelingType == 1)
                 {
-                    Pet.SetPetExp(index, (int)Math.Round(Pet.GetPetExp(index) + exp * (Core.Type.Pet[petnum].ExpGain / 100d)));
-                    NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + exp * (Core.Type.Pet[petnum].ExpGain / 100d) + " Exp", (int) ColorType.BrightGreen, 1, Pet.GetPetX(index) * 32, Pet.GetPetY(index) * 32);
+                    Pet.SetPetExp(index, (int)Math.Round(Pet.GetPetExp(index) + exp * (Core.Type.Pet[(int)petNum].ExpGain / 100d)));
+                    NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + exp * (Core.Type.Pet[(int)petNum].ExpGain / 100d) + " Exp", (int) ColorType.BrightGreen, 1, Pet.GetPetX(index) * 32, Pet.GetPetY(index) * 32);
                     Pet.CheckPetLevelUp(index);
                     Pet.SendPetExp(index);
                 }

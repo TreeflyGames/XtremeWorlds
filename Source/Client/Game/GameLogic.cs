@@ -9,75 +9,75 @@ namespace Client
 
     static class GameLogic
     {
-        public static void ProcessNPCMovement(int MapNPCNum)
+        public static void ProcessNPCMovement(double MapNPCNum)
         {
             // Check if NPC is walking, and if so process moving them over
-            if (Core.Type.MyMapNPC[MapNPCNum].Moving == (byte)Core.Enum.MovementType.Walking)
+            if (Core.Type.MyMapNPC[(int)MapNPCNum].Moving == (byte)Core.Enum.MovementType.Walking)
             {
 
-                switch (Core.Type.MyMapNPC[MapNPCNum].Dir)
+                switch (Core.Type.MyMapNPC[(int)MapNPCNum].Dir)
                 {
                     case (int)Core.Enum.DirectionType.Up:
                         {
-                            Core.Type.MyMapNPC[MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[MapNPCNum].YOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
-                            if (Core.Type.MyMapNPC[MapNPCNum].YOffset < 0)
-                                Core.Type.MyMapNPC[MapNPCNum].YOffset = 0;
+                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset < 0)
+                                Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
                             break;
                         }
 
                     case (int)Core.Enum.DirectionType.Down:
                         {
-                            Core.Type.MyMapNPC[MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[MapNPCNum].YOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
-                            if (Core.Type.MyMapNPC[MapNPCNum].YOffset > 0)
-                                Core.Type.MyMapNPC[MapNPCNum].YOffset = 0;
+                            Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].YOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].YOffset > 0)
+                                Core.Type.MyMapNPC[(int)MapNPCNum].YOffset = 0;
                             break;
                         }
 
                     case (int)Core.Enum.DirectionType.Left:
                         {
-                            Core.Type.MyMapNPC[MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[MapNPCNum].XOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
-                            if (Core.Type.MyMapNPC[MapNPCNum].XOffset < 0)
-                                Core.Type.MyMapNPC[MapNPCNum].XOffset = 0;
+                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset < 0)
+                                Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
                             break;
                         }
 
                     case (int)Core.Enum.DirectionType.Right:
                         {
-                            Core.Type.MyMapNPC[MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[MapNPCNum].XOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
-                            if (Core.Type.MyMapNPC[MapNPCNum].XOffset > 0)
-                                Core.Type.MyMapNPC[MapNPCNum].XOffset = 0;
+                            Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = (int)Math.Round(Core.Type.MyMapNPC[(int)MapNPCNum].XOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset > 0)
+                                Core.Type.MyMapNPC[(int)MapNPCNum].XOffset = 0;
                             break;
                         }
                 }
 
                 // Check if completed walking over to the next tile
-                if (Core.Type.MyMapNPC[MapNPCNum].Moving > 0)
+                if (Core.Type.MyMapNPC[(int)MapNPCNum].Moving > 0)
                 {
-                    if (Core.Type.MyMapNPC[MapNPCNum].Dir == (int)Core.Enum.DirectionType.Right | Core.Type.MyMapNPC[MapNPCNum].Dir == (int)Core.Enum.DirectionType.Down)
+                    if (Core.Type.MyMapNPC[(int)MapNPCNum].Dir == (int)Core.Enum.DirectionType.Right | Core.Type.MyMapNPC[(int)MapNPCNum].Dir == (int)Core.Enum.DirectionType.Down)
                     {
-                        if (Core.Type.MyMapNPC[MapNPCNum].XOffset >= 0 & Core.Type.MyMapNPC[MapNPCNum].YOffset >= 0)
+                        if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset >= 0 & Core.Type.MyMapNPC[(int)MapNPCNum].YOffset >= 0)
                         {
-                            Core.Type.MyMapNPC[MapNPCNum].Moving = 0;
-                            if (Core.Type.MyMapNPC[MapNPCNum].Steps == 1)
+                            Core.Type.MyMapNPC[(int)MapNPCNum].Moving = 0;
+                            if (Core.Type.MyMapNPC[(int)MapNPCNum].Steps == 1)
                             {
-                                Core.Type.MyMapNPC[MapNPCNum].Steps = 3;
+                                Core.Type.MyMapNPC[(int)MapNPCNum].Steps = 3;
                             }
                             else
                             {
-                                Core.Type.MyMapNPC[MapNPCNum].Steps = 1;
+                                Core.Type.MyMapNPC[(int)MapNPCNum].Steps = 1;
                             }
                         }
                     }
-                    else if (Core.Type.MyMapNPC[MapNPCNum].XOffset <= 0 & Core.Type.MyMapNPC[MapNPCNum].YOffset <= 0)
+                    else if (Core.Type.MyMapNPC[(int)MapNPCNum].XOffset <= 0 & Core.Type.MyMapNPC[(int)MapNPCNum].YOffset <= 0)
                     {
-                        Core.Type.MyMapNPC[MapNPCNum].Moving = 0;
-                        if (Core.Type.MyMapNPC[MapNPCNum].Steps == 1)
+                        Core.Type.MyMapNPC[(int)MapNPCNum].Moving = 0;
+                        if (Core.Type.MyMapNPC[(int)MapNPCNum].Steps == 1)
                         {
-                            Core.Type.MyMapNPC[MapNPCNum].Steps = 3;
+                            Core.Type.MyMapNPC[(int)MapNPCNum].Steps = 3;
                         }
                         else
                         {
-                            Core.Type.MyMapNPC[MapNPCNum].Steps = 1;
+                            Core.Type.MyMapNPC[(int)MapNPCNum].Steps = 1;
                         }
                     }
                 }
@@ -1422,7 +1422,7 @@ namespace Client
                 tempRec.Right = tempRec.Left + GameState.PicX;
                 tempRec.Bottom = tempRec.Top + GameState.PicY;
 
-                if (Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot > 0)
+                if (Core.Type.Player[GameState.MyIndex].Hotbar[(int)i].Slot >= 0)
                 {
                     if (GameState.CurMouseX >= tempRec.Left & GameState.CurMouseX <= tempRec.Right)
                     {
@@ -1794,6 +1794,9 @@ namespace Client
             long barWidth;
             long tmpWidth;
 
+            if (skillNum < 0 || skillNum > Core.Constant.MAX_SKILLS)
+                return;
+
             // set globals
             GameState.descType = 2; // Skill
             GameState.descItem = skillNum;
@@ -1824,7 +1827,7 @@ namespace Client
                 withBlock.Controls[(int)Gui.GetControlIndex("winDescription", "lblName")].Color = Microsoft.Xna.Framework.Color.White;
 
                 // find ranks
-                if (SkillSlot > 0L)
+                if (SkillSlot >= 0L)
                 {
                     // draw the rank bar
                     barWidth = 66L;
@@ -1951,12 +1954,15 @@ namespace Client
             if (eqNum < 0L | eqNum > (int)Core.Enum.EquipmentType.Count)
                 return;
 
+            if (Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum] < 0 || Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum] > Constant.MAX_ITEMS)
+                return;
+
             // show
             if (Conversions.ToBoolean(Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]))
             {
-                if (Core.Type.Item[Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]].BindType > 0)
+                if (Core.Type.Item[(int)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]].BindType > 0)
                     soulBound = Conversions.ToBoolean(1);
-                ShowItemDesc(x, y, Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]);
+                ShowItemDesc(x, y, (long)Core.Type.Player[GameState.MyIndex].Equipment[(int)eqNum]);
             }
         }
 

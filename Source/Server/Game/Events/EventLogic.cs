@@ -3401,7 +3401,7 @@ namespace Server
 
         }
 
-        public static int FindNPCPath(int mapNum, int MapNPCNum, int targetx, int targety)
+        public static int FindNPCPath(int mapNum, double MapNPCNum, int targetx, int targety)
         {
             int FindNPCPathRet = default;
             int tim;
@@ -3424,8 +3424,8 @@ namespace Server
 
             tim = 0;
 
-            sX = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].X;
-            sY = Core.Type.MapNPC[mapNum].NPC[MapNPCNum].Y;
+            sX = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X;
+            sY = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y;
 
             FX = targetx;
             FY = targety;

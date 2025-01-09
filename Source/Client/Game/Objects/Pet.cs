@@ -64,7 +64,7 @@ namespace Client
 
         public static void StreamPet(int petNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(petNum >= 0 & string.IsNullOrEmpty(Core.Type.Pet[petNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Pet_Loaded[petNum], 0, false))))
+            if (Conversions.ToBoolean(Operators.OrObject(petNum >= 0 & string.IsNullOrEmpty(Core.Type.Pet[(int)petNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Pet_Loaded[(int)petNum], 0, false))))
             {
                 GameState.Pet_Loaded[petNum] = 1;
                 SendRequestPet(petNum);
@@ -178,32 +178,30 @@ namespace Client
 
             buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CSavePet);
-            buffer.WriteInt32(petNum);
+            buffer.WriteDouble(petNum);
 
-            {
-                ref var withBlock = ref Core.Type.Pet[petNum];
-                buffer.WriteInt32(withBlock.Num);
-                buffer.WriteString(withBlock.Name);
-                buffer.WriteInt32(withBlock.Sprite);
-                buffer.WriteInt32(withBlock.Range);
-                buffer.WriteInt32(withBlock.Level);
-                buffer.WriteInt32(withBlock.MaxLevel);
-                buffer.WriteInt32(withBlock.ExpGain);
-                buffer.WriteInt32(withBlock.LevelPnts);
-                buffer.WriteInt32(withBlock.StatType);
-                buffer.WriteInt32(withBlock.LevelingType);
+            ref var withBlock = ref Core.Type.Pet[petNum];
+            buffer.WriteInt32(withBlock.Num);
+            buffer.WriteString(withBlock.Name);
+            buffer.WriteInt32(withBlock.Sprite);
+            buffer.WriteInt32(withBlock.Range);
+            buffer.WriteInt32(withBlock.Level);
+            buffer.WriteInt32(withBlock.MaxLevel);
+            buffer.WriteInt32(withBlock.ExpGain);
+            buffer.WriteInt32(withBlock.LevelPnts);
+            buffer.WriteInt32(withBlock.StatType);
+            buffer.WriteInt32(withBlock.LevelingType);
 
-                for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                    buffer.WriteInt32(withBlock.Stat[i]);
+            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
+                buffer.WriteInt32(withBlock.Stat[i]);
 
-                for (i = 0; i <= 4; i++)
-                    buffer.WriteInt32(withBlock.Skill[i]);
+            for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
+                buffer.WriteInt32(withBlock.Skill[i]);
 
-                buffer.WriteInt32(withBlock.Evolvable);
-                buffer.WriteInt32(withBlock.EvolveLevel);
-                buffer.WriteInt32(withBlock.EvolveNum);
-            }
-
+            buffer.WriteInt32(withBlock.Evolvable);
+            buffer.WriteInt32(withBlock.EvolveLevel);
+            buffer.WriteInt32(withBlock.EvolveNum);
+            
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
 
             buffer.Dispose();
@@ -522,7 +520,7 @@ namespace Client
 
             StreamPet(Core.Type.Player[index].Pet.Num);
 
-            spriteNum = Core.Type.Pet[Core.Type.Player[index].Pet.Num].Sprite;
+            spriteNum = Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Sprite;
 
             if (spriteNum < 1 | spriteNum > GameState.NumCharacters)
                 return;
@@ -691,18 +689,18 @@ namespace Client
                 color = Microsoft.Xna.Framework.Color.Red;
             }
 
-            name = GetPlayerName(index) + "'s " + Core.Type.Pet[Core.Type.Player[index].Pet.Num].Name;
+            name = GetPlayerName(index) + "'s " + Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Name;
 
             // calc pos
             textX = (int)Math.Round(GameLogic.ConvertMapX(Core.Type.Player[index].Pet.X * GameState.PicX) + Core.Type.Player[index].Pet.XOffset + GameState.PicX / 2 - Text.GetTextWidth(name) / 2d);
-            if (Core.Type.Pet[Core.Type.Player[index].Pet.Num].Sprite < 1 | Core.Type.Pet[Core.Type.Player[index].Pet.Num].Sprite > GameState.NumCharacters)
+            if (Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Sprite < 1 | Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Sprite > GameState.NumCharacters)
             {
                 textY = GameLogic.ConvertMapY(Core.Type.Player[index].Pet.Y * GameState.PicY) + Core.Type.Player[index].Pet.YOffset - 16;
             }
             else
             {
                 // Determine location for text
-                textY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.Player[index].Pet.Y * GameState.PicY) + Core.Type.Player[index].Pet.YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.Pet[Core.Type.Player[index].Pet.Num].Sprite.ToString())).Height / 4d + 16d);
+                textY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.Player[index].Pet.Y * GameState.PicY) + Core.Type.Player[index].Pet.YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Sprite.ToString())).Height / 4d + 16d);
             }
 
             // Draw name
@@ -718,15 +716,16 @@ namespace Client
             bool PetAliveRet = default;
             PetAliveRet = Conversions.ToBoolean(0);
 
-            if (Core.Type.Player[index].Pet.Alive == 1)
+            if (Core.Type.Player[index].Pet.Num >= 0)
             {
-                PetAliveRet = Conversions.ToBoolean(1);
+                if (Core.Type.Player[index].Pet.Alive == 1)
+                {
+                    PetAliveRet = Conversions.ToBoolean(1);
+                }
             }
 
             return PetAliveRet;
-
         }
-
         #endregion
 
     }

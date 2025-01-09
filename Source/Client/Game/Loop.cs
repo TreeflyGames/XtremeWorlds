@@ -186,10 +186,13 @@ namespace Client
                 // check if we need to unlock the pets's Skill casting restriction
                 if (Pet.PetSkillBuffer >= 0)
                 {
-                    if (Pet.PetSkillBufferTimer + Core.Type.Skill[Core.Type.Pet[Core.Type.Player[GameState.MyIndex].Pet.Num].Skill[(int)Pet.PetSkillBuffer]].CastTime * 1000 < tick)
+                    if (Core.Type.Player[GameState.MyIndex].Pet.Num >= 0 || Core.Type.Player[GameState.MyIndex].Pet.Num <= Constant.MAX_PETS)
                     {
-                        Pet.PetSkillBuffer = -1;
-                        Pet.PetSkillBufferTimer = 0;
+                        if (Pet.PetSkillBufferTimer + Core.Type.Skill[Core.Type.Pet[(int)Core.Type.Player[GameState.MyIndex].Pet.Num].Skill[(int)Pet.PetSkillBuffer]].CastTime * 1000 < tick)
+                        {
+                            Pet.PetSkillBuffer = -1;
+                            Pet.PetSkillBufferTimer = 0;
+                        }
                     }
                 }
 

@@ -339,118 +339,116 @@ namespace Client
 
             if (frmEditor_Map.Instance.tabpages.InvokeRequired)
             {
-                frmEditor_Map.Instance.tabpages.Invoke(() =>
-    {
-        var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
-        for (X = (int)Math.Round(GameState.TileView.Left - 1d); X < loopTo; X++)
-        {
-            var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-            for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
-            {
-                if (GameLogic.IsValidMapPoint(X, y))
+
+                var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
+                for (X = (int)Math.Round(GameState.TileView.Left - 1d); X < loopTo; X++)
                 {
+                    var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
+                    for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
                     {
-                        ref var withBlock = ref Core.Type.MyMap.Tile[X, y];
-                        tX = (int)Math.Round(GameLogic.ConvertMapX(X * GameState.PicX) - 4 + GameState.PicX * 0.5d);
-                        tY = (int)Math.Round(GameLogic.ConvertMapY(y * GameState.PicY) - 7 + GameState.PicY * 0.5d);
+                        if (GameLogic.IsValidMapPoint(X, y))
+                        {
+                            {
+                                ref var withBlock = ref Core.Type.MyMap.Tile[X, y];
+                                tX = (int)Math.Round(GameLogic.ConvertMapX(X * GameState.PicX) - 4 + GameState.PicX * 0.5d);
+                                tY = (int)Math.Round(GameLogic.ConvertMapY(y * GameState.PicY) - 7 + GameState.PicY * 0.5d);
 
-                        if (GameState.EditorAttribute == 1)
-                        {
-                            tA = (int)withBlock.Type;
-                        }
-                        else
-                        {
-                            tA = (int)withBlock.Type2;
-                        }
+                                if (GameState.EditorAttribute == 1)
+                                {
+                                    tA = (int)withBlock.Type;
+                                }
+                                else
+                                {
+                                    tA = (int)withBlock.Type2;
+                                }
 
-                        switch (tA)
-                        {
-                            case (int)Core.Enum.TileType.Blocked:
+                                switch (tA)
                                 {
-                                    RenderText("B", tX, tY, Color.Red, Color.Black);
-                                    break;
+                                    case (int)Core.Enum.TileType.Blocked:
+                                        {
+                                            RenderText("B", tX, tY, Color.Red, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Warp:
+                                        {
+                                            RenderText("W", tX, tY, Color.Blue, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Item:
+                                        {
+                                            RenderText("I", tX, tY, Color.White, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.NPCAvoid:
+                                        {
+                                            RenderText("N", tX, tY, Color.White, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Resource:
+                                        {
+                                            RenderText("R", tX, tY, Color.Green, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.NPCSpawn:
+                                        {
+                                            RenderText("S", tX, tY, Color.Yellow, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Shop:
+                                        {
+                                            RenderText("S", tX, tY, Color.Blue, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Bank:
+                                        {
+                                            RenderText("B", tX, tY, Color.Blue, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Heal:
+                                        {
+                                            RenderText("H", tX, tY, Color.Green, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Trap:
+                                        {
+                                            RenderText("T", tX, tY, Color.Red, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Light:
+                                        {
+                                            RenderText("L", tX, tY, Color.Yellow, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.Animation:
+                                        {
+                                            RenderText("A", tX, tY, Color.Red, Color.Black);
+                                            break;
+                                        }
+                                    case (int)Core.Enum.TileType.NoXing:
+                                        {
+                                            RenderText("X", tX, tY, Color.Red, Color.Black);
+                                            break;
+                                        }
                                 }
-                            case (int)Core.Enum.TileType.Warp:
-                                {
-                                    RenderText("W", tX, tY, Color.Blue, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.Item:
-                                {
-                                    RenderText("I", tX, tY, Color.White, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.NPCAvoid:
-                                {
-                                    RenderText("N", tX, tY, Color.White, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.Resource:
-                                {
-                                    RenderText("R", tX, tY, Color.Green, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.NPCSpawn:
-                                {
-                                    RenderText("S", tX, tY, Color.Yellow, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.Shop:
-                                {
-                                    RenderText("S", tX, tY, Color.Blue, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.Bank:
-                                {
-                                    RenderText("B", tX, tY, Color.Blue, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.Heal:
-                                {
-                                    RenderText("H", tX, tY, Color.Green, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.Trap:
-                                {
-                                    RenderText("T", tX, tY, Color.Red, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.Light:
-                                {
-                                    RenderText("L", tX, tY, Color.Yellow, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.Animation:
-                                {
-                                    RenderText("A", tX, tY, Color.Red, Color.Black);
-                                    break;
-                                }
-                            case (int)Core.Enum.TileType.NoXing:
-                                {
-                                    RenderText("X", tX, tY, Color.Red, Color.Black);
-                                    break;
-                                }
+                            }
                         }
                     }
                 }
             }
-        }
-    });
-            }
 
         }
 
-        public static void DrawNPCName(int MapNPCNum)
+        public static void DrawNPCName(double MapNPCNum)
         {
             int textX;
             int textY;
             var color = default(Color);
             var backColor = default(Color);
-            int NPCNum;
+            double NPCNum;
 
-            NPCNum = (int)Core.Type.MyMapNPC[MapNPCNum].Num;
+            NPCNum = (int)Core.Type.MyMapNPC[(int)MapNPCNum].Num;
 
-            switch (Core.Type.NPC[NPCNum].Behaviour)
+            switch (Core.Type.NPC[(int)NPCNum].Behaviour)
             {
                 case 0: // attack on sight
                     {
@@ -474,20 +472,20 @@ namespace Client
                         break;
                     }
             }
-            textX = GameLogic.ConvertMapX(Core.Type.MyMapNPC[MapNPCNum].X * GameState.PicX) + Core.Type.MyMapNPC[MapNPCNum].XOffset + GameState.PicX / 2 - 6;
-            textX -= (int)(GetTextWidth(Core.Type.NPC[NPCNum].Name) / 6d);
+            textX = GameLogic.ConvertMapX(Core.Type.MyMapNPC[(int)MapNPCNum].X * GameState.PicX) + Core.Type.MyMapNPC[(int)MapNPCNum].XOffset + GameState.PicX / 2 - 6;
+            textX -= (int)(GetTextWidth(Core.Type.NPC[(int)NPCNum].Name) / 6d);
 
-            if (Core.Type.NPC[NPCNum].Sprite < 1 | Core.Type.NPC[NPCNum].Sprite > GameState.NumCharacters)
+            if (Core.Type.NPC[(int)NPCNum].Sprite < 1 | Core.Type.NPC[(int)NPCNum].Sprite > GameState.NumCharacters)
             {
-                textY = GameLogic.ConvertMapY(Core.Type.MyMapNPC[MapNPCNum].Y * GameState.PicY) + Core.Type.MyMapNPC[MapNPCNum].YOffset - 16;
+                textY = GameLogic.ConvertMapY(Core.Type.MyMapNPC[(int)MapNPCNum].Y * GameState.PicY) + Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - 16;
             }
             else
             {
-                textY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.MyMapNPC[MapNPCNum].Y * GameState.PicY) + Core.Type.MyMapNPC[MapNPCNum].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.NPC[NPCNum].Sprite.ToString())).Height / 4d + 16d);
+                textY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.MyMapNPC[(int)MapNPCNum].Y * GameState.PicY) + Core.Type.MyMapNPC[(int)MapNPCNum].YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.NPC[(int)NPCNum].Sprite.ToString())).Height / 4d + 16d);
             }
 
             // Draw name
-            RenderText(Core.Type.NPC[NPCNum].Name, textX, textY, color, backColor);
+            RenderText(Core.Type.NPC[(int)NPCNum].Name, textX, textY, color, backColor);
         }
 
         public static void DrawEventName(int index)
