@@ -39,7 +39,7 @@ namespace Server
 
         }
 
-        internal static void SpawnNPC(double MapNPCNum, int mapNum)
+        internal static void SpawnNPC(int MapNPCNum, int mapNum)
         {
             var buffer = new ByteStream(4);
             int NPCNum;
@@ -204,7 +204,7 @@ namespace Server
 
         }
 
-        public static bool CanNPCMove(int mapNum, double MapNPCNum, byte Dir)
+        public static bool CanNPCMove(int mapNum, int MapNPCNum, byte Dir)
         {
             bool CanNPCMoveRet = default;
             int i;
@@ -425,7 +425,7 @@ namespace Server
 
         }
 
-        public static void NPCMove(int mapNum, double MapNPCNum, int Dir, int Movement)
+        public static void NPCMove(int mapNum, int MapNPCNum, int Dir, int Movement)
         {
             var buffer = new ByteStream(4);
 
@@ -500,7 +500,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void NPCDir(int mapNum, double MapNPCNum, int Dir)
+        public static void NPCDir(int mapNum, int MapNPCNum, int Dir)
         {
             var buffer = new ByteStream(4);
 
@@ -525,7 +525,7 @@ namespace Server
 
         #region NPCombat
 
-        internal static void TryNPCAttackPlayer(double MapNPCNum, int index)
+        internal static void TryNPCAttackPlayer(int MapNPCNum, int index)
         {
 
             int mapNum;
@@ -593,7 +593,7 @@ namespace Server
 
         }
 
-        public static bool CanNPCAttackPlayer(double MapNPCNum, int index)
+        public static bool CanNPCAttackPlayer(int MapNPCNum, int index)
         {
             bool CanNPCAttackPlayerRet = default;
             int mapNum;
@@ -763,7 +763,7 @@ namespace Server
 
         }
 
-        internal static void NPCAttackPlayer(double MapNPCNum, int victim, int Damage)
+        internal static void NPCAttackPlayer(int MapNPCNum, int victim, int Damage)
         {
             string Name;
             int mapNum;
@@ -934,7 +934,7 @@ namespace Server
             }
         }
 
-        internal static int RandomNPCAttack(int mapNum, double MapNPCNum)
+        internal static int RandomNPCAttack(int mapNum, int MapNPCNum)
         {
             int RandomNPCAttackRet = default;
             int i;
@@ -974,7 +974,7 @@ namespace Server
             return GetNPCSkillRet;
         }
 
-        internal static void BufferNPCSkill(int mapNum, double MapNPCNum, int SkillSlot)
+        internal static void BufferNPCSkill(int mapNum, int MapNPCNum, int SkillSlot)
         {
             int skillNum;
             int MPCost;
@@ -1174,7 +1174,7 @@ namespace Server
 
         }
 
-        internal static bool IsNPCDead(int mapNum, double MapNPCNum)
+        internal static bool IsNPCDead(int mapNum, int MapNPCNum)
         {
             bool IsNPCDeadRet = false;
             IsNPCDeadRet = false;
@@ -1185,7 +1185,7 @@ namespace Server
             return IsNPCDeadRet;
         }
 
-        internal static void DropNPCItems(int mapNum, double MapNPCNum)
+        internal static void DropNPCItems(int mapNum, int MapNPCNum)
         {
             var NPCNum = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
             double tmpitem = General.Random.NextDouble(1d, 5d);
@@ -1442,7 +1442,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendMapNPCTo(int mapNum, double MapNPCNum)
+        public static void SendMapNPCTo(int mapNum, int MapNPCNum)
         {
             ByteStream buffer;
             buffer = new ByteStream(4);

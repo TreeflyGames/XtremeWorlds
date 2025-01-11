@@ -1959,7 +1959,7 @@ namespace Server
             newSlot = buffer.ReadDouble();
             buffer.Dispose();
 
-            Player.PlayerSwitchSkillSlots(index, oldSlot, newSlot);
+            Player.PlayerSwitchSkillSlots(index, (int)oldSlot, (int)newSlot);
 
             buffer.Dispose();
         }

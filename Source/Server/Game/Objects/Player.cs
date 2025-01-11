@@ -549,7 +549,7 @@ namespace Server
             }
         }
 
-        public static void PlayerAttackNPC(int attacker, double MapNPCNum, int Damage)
+        public static void PlayerAttackNPC(int attacker, int MapNPCNum, int Damage)
         {
             // Check for subscript out of range
             if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS | Damage < 0)
@@ -850,7 +850,7 @@ namespace Server
 
                 if (Damage > 0)
                 {
-                    PlayerAttackNPC(index, MapNPCNum, Damage);
+                    PlayerAttackNPC(index, (int)MapNPCNum, Damage);
                 }
                 else
                 {
@@ -895,7 +895,7 @@ namespace Server
             OnDeath(victim);
         }
 
-        internal static void HandlePlayerKillNPC(int mapNum, int index, double MapNPCNum)
+        internal static void HandlePlayerKillNPC(int mapNum, int index, int MapNPCNum)
         {
             // Set our attacker's target to nothing.
             NetworkSend.SendTarget(index, 0, 0);
@@ -2574,7 +2574,7 @@ namespace Server
             NetworkSend.SendInventory(index);
         }
 
-        public static void PlayerSwitchSkillSlots(int index, double OldSlot, double NewSlot)
+        public static void PlayerSwitchSkillSlots(int index, int OldSlot, int NewSlot)
         {
             double OldNum;
             int OldValue;
