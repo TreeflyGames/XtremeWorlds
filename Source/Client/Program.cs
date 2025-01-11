@@ -815,7 +815,7 @@ namespace Client
 
                     else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0)
                     {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex - 1;
+                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
                     }
 
                 }
@@ -833,9 +833,9 @@ namespace Client
                             frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1;
                         }
                     }
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex < GameState.NumTileSets)
+                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
                     {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex;
+                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
                     }
                 }
 

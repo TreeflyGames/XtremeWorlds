@@ -69,7 +69,7 @@ namespace Client
             }
 
             // Get the selected tileset index
-            tilesetIndex = cmbTileSets.SelectedIndex;
+            tilesetIndex = cmbTileSets.SelectedIndex + 1;
 
             if (tilesetIndex == 0)
             {
@@ -321,12 +321,12 @@ namespace Client
 
         private void CmbTileSets_Click(object sender, EventArgs e)
         {
-            if (cmbTileSets.SelectedIndex > GameState.NumTileSets)
+            if (cmbTileSets.SelectedIndex + 1 > GameState.NumTileSets)
             {
                 cmbTileSets.SelectedIndex = 0;
             }
 
-            Core.Type.MyMap.Tileset = cmbTileSets.SelectedIndex;
+            Core.Type.MyMap.Tileset = cmbTileSets.SelectedIndex + 1;
 
             GameState.EditorTileSelStart = new Point(0, 0);
             GameState.EditorTileSelEnd = new Point(1, 1);
@@ -904,7 +904,7 @@ namespace Client
 
             cmbTileSets.Items.Clear();
             for (int i = 0, loopTo = GameState.NumTileSets; i < loopTo; i++)
-                cmbTileSets.Items.Add(i);
+                cmbTileSets.Items.Add(i + 1);
 
             cmbTileSets.SelectedIndex = 0;
             cmbLayers.SelectedIndex = 0;
@@ -1471,7 +1471,7 @@ namespace Client
                     }
                     else
                     {
-                        withBlock.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex;
+                        withBlock.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
                     }
                     withBlock.Layer[CurLayer].AutoTile = theAutotile;
                     Autotile.CacheRenderState(X, Y, CurLayer);
@@ -1495,7 +1495,7 @@ namespace Client
                     }
                     else
                     {
-                        withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex;
+                        withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
                     }
                     withBlock1.Layer[CurLayer].AutoTile = 0;
                     Autotile.CacheRenderState(X, Y, CurLayer);
@@ -1525,7 +1525,7 @@ namespace Client
                                     }
                                     else
                                     {
-                                        withBlock2.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex;
+                                        withBlock2.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
                                     }
                                     withBlock2.Layer[CurLayer].AutoTile = 0;
                                     Autotile.CacheRenderState(X, Y, CurLayer);
@@ -1570,7 +1570,7 @@ namespace Client
 
         public void MapEditorFillLayer(LayerType layer, byte theAutotile = 0, byte tileX = 0, byte tileY = 0)
         {
-            GameLogic.Dialogue("Map Editor", "Fill Layer: " + layer.ToString(), "Are you sure you wish to fill this layer?", (byte)DialogueType.FillLayer, (byte)DialogueStyle.YesNo, cmbLayers.SelectedIndex, cmbAutoTile.SelectedIndex, tileX, tileY, cmbTileSets.SelectedIndex);
+            GameLogic.Dialogue("Map Editor", "Fill Layer: " + layer.ToString(), "Are you sure you wish to fill this layer?", (byte)DialogueType.FillLayer, (byte)DialogueStyle.YesNo, cmbLayers.SelectedIndex, cmbAutoTile.SelectedIndex, tileX, tileY, cmbTileSets.SelectedIndex + 1);
         }
 
         public static void MapEditorEyeDropper()
