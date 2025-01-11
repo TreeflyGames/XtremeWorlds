@@ -71,6 +71,11 @@ namespace Client
             // Get the selected tileset index
             tilesetIndex = cmbTileSets.SelectedIndex;
 
+            if (tilesetIndex == 0)
+            {
+                return;
+            }
+
             // Get the graphics information for the selected tileset
             string tilesetPath = System.IO.Path.Combine(Core.Path.Tilesets, tilesetIndex.ToString());
             var gfxInfo = GameClient.GetGfxInfo(tilesetPath);
@@ -769,10 +774,11 @@ namespace Client
 
             // find the shop we have set
             lstShop.Items.Clear();
-            lstShop.SelectedIndex = 0;
 
             for (i = 0; i < Constant.MAX_SHOPS; i++)
                 lstShop.Items.Add(Core.Type.Shop[i].Name);
+
+            lstShop.SelectedIndex = 0;
 
             var loopTo2 = lstShop.Items.Count;
             for (i = 0; i < loopTo2; i++)
@@ -786,10 +792,11 @@ namespace Client
 
             // find the shop we have set
             lstMoral.Items.Clear();
-            lstMoral.SelectedIndex = 0;
 
             for (i = 0; i < Constant.MAX_MORALS; i++)
                 lstMoral.Items.Add(Core.Type.Moral[i].Name);
+
+            lstMoral.SelectedIndex = 0;
 
             var loopTo3 = lstMoral.Items.Count;
             for (i = 0; i < loopTo3; i++)
@@ -816,21 +823,23 @@ namespace Client
             txtBootY.Text = Core.Type.MyMap.BootY.ToString();
 
             lstMapNPC.Items.Clear();
-            lstMapNPC.SelectedIndex = 0;
 
             for (X = 0; X < Constant.MAX_MAP_NPCS; X++)
-                lstMapNPC.Items.Add(X + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[X]].Name));
+                lstMapNPC.Items.Add(X + 1 + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[X]].Name));
+
+            lstMapNPC.SelectedIndex = 0;
+
+            for (Y = 0; Y < Constant.MAX_NPCS; Y++)
+                cmbNPCList.Items.Add(Y + 1 + ": " + Strings.Trim(Core.Type.NPC[Y].Name));
 
             cmbNPCList.SelectedIndex = 0;
 
-            for (Y = 1; Y < Constant.MAX_NPCS; Y++)
-                cmbNPCList.Items.Add(Y + ": " + Strings.Trim(Core.Type.NPC[Y].Name));
-
             cmbAnimation.Items.Clear();
-            cmbAnimation.SelectedIndex = 0;
 
-            for (Y = 1; Y < Constant.MAX_ANIMATIONS; Y++)
-                cmbAnimation.Items.Add(Y + ": " + Core.Type.Animation[Y].Name);
+            for (Y = 0; Y < Constant.MAX_ANIMATIONS; Y++)
+                cmbAnimation.Items.Add(Y + 1 + ": " + Core.Type.Animation[Y].Name);
+
+            cmbAnimation.SelectedIndex = 0;
 
             lblMap.Text = "Map: ";
             txtMaxX.Text = Core.Type.MyMap.MaxX.ToString();
