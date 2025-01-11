@@ -41,19 +41,19 @@ namespace Client
 
         private void DrawItem()
         {
-            int itemnum;
+            int itemNum;
 
-            itemnum = Core.Type.Item[scrlMapItem.Value].Icon;
+            itemNum = Core.Type.Item[scrlMapItem.Value].Icon;
 
-            if (itemnum < 0 | itemnum > GameState.NumItems)
+            if (itemNum  < 0 | itemNum > GameState.NumItems)
             {
                 picMapItem.BackgroundImage = null;
                 return;
             }
 
-            if (File.Exists(System.IO.Path.Combine(Core.Path.Items, itemnum + GameState.GfxExt)))
+            if (File.Exists(System.IO.Path.Combine(Core.Path.Items, itemNum + GameState.GfxExt)))
             {
-                picMapItem.BackgroundImage = System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Items, itemnum + GameState.GfxExt));
+                picMapItem.BackgroundImage = System.Drawing.Image.FromFile(System.IO.Path.Combine(Core.Path.Items, itemNum + GameState.GfxExt));
             }
 
         }
