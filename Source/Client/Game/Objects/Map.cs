@@ -483,13 +483,18 @@ namespace Client
 
             // Initialize NPC and Tile arrays
             Core.Type.MyMap.NPC = new int[Constant.MAX_MAP_NPCS];
-            Core.Type.MyMap.Tile = new Core.Type.TileStruct[Constant.MAX_MAPX, Constant.MAX_MAPY];
+            Core.Type.MyMap.Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
             Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory]; 
 
             // Reset tile history indices
             GameState.HistoryIndex = 0;
             GameState.TileHistoryHighIndex = 0;
 
+            for (int i = 0; i < GameState.MaxTileHistory; i++)
+            {
+                Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
+            }
+            
             // Reset tiles and tile history
             for (int x = 0; x < Core.Type.MyMap.MaxX; x++)
             {
@@ -499,7 +504,6 @@ namespace Client
 
                     for (int i = 0; i < GameState.MaxTileHistory; i++)
                     {
-                        Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
                         ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count));
                     }
                 }
@@ -680,7 +684,29 @@ namespace Client
                 Core.Type.MyMap.NoRespawn = Conversions.ToBoolean(buffer.ReadInt32());
                 Core.Type.MyMap.Indoors = Conversions.ToBoolean(buffer.ReadInt32());
                 Core.Type.MyMap.Shop = buffer.ReadInt32();
-                Core.Type.MyMap.Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
+
+                Core.Type.MyMap.Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
+                Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory];
+
+
+                for (i = 0; i < GameState.MaxTileHistory; i++)
+                {
+                    Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
+                }
+
+                // Reset tiles and tile history
+                for (x = 0; x < Core.Type.MyMap.MaxX; x++)
+                {
+                    for (y = 0; y < Core.Type.MyMap.MaxY; y++)
+                    {
+                        ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count));
+
+                        for (i = 0; i < GameState.MaxTileHistory; i++)
+                        {
+                            ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count));
+                        }
+                    }
+                }
 
                 for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
                     Core.Type.MyMap.NPC[x] = buffer.ReadInt32();
@@ -712,7 +738,6 @@ namespace Client
                             Core.Type.TileHistory[j].Tile[x, y].Type2 = Core.Type.MyMap.Tile[x, y].Type2;
                         }
 
-                        Core.Type.MyMap.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count)];
                         for (i = 0; i < (int)Core.Enum.LayerType.Count; i++)
                         {  
                             Core.Type.MyMap.Tile[x, y].Layer[i].Tileset = buffer.ReadInt32();
@@ -722,8 +747,6 @@ namespace Client
 
                             for (j = 0; j < GameState.MaxTileHistory; j++)
                             {
-                                Core.Type.TileHistory[j].Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
-                                Core.Type.TileHistory[j].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)(Core.Enum.LayerType.Count)];
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].Tileset = Core.Type.MyMap.Tile[x, y].Layer[i].Tileset;
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].X = Core.Type.MyMap.Tile[x, y].Layer[i].X;
                                 Core.Type.TileHistory[j].Tile[x, y].Layer[i].Y = Core.Type.MyMap.Tile[x, y].Layer[i].Y;

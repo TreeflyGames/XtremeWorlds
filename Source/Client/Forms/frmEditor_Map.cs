@@ -1045,7 +1045,7 @@ namespace Client
                 }
             }
 
-            if (GameLogic.IsInBounds())
+            if (!GameLogic.IsInBounds())
                 return;
 
             if (Instance.cmbAutoTile.SelectedIndex == -1)
@@ -1456,23 +1456,21 @@ namespace Client
 
             if (theAutotile > 0)
             {
+                ref var withBlock = ref Core.Type.MyMap.Tile[X, Y];
+                // set layer
+                withBlock.Layer[CurLayer].X = newTileX;
+                withBlock.Layer[CurLayer].Y = newTileY;
+                if (Conversions.ToBoolean(eraseTile))
                 {
-                    ref var withBlock = ref Core.Type.MyMap.Tile[X, Y];
-                    // set layer
-                    withBlock.Layer[CurLayer].X = newTileX;
-                    withBlock.Layer[CurLayer].Y = newTileY;
-                    if (Conversions.ToBoolean(eraseTile))
-                    {
-                        withBlock.Layer[CurLayer].Tileset = 0;
-                    }
-                    else
-                    {
-                        withBlock.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
-                    }
-                    withBlock.Layer[CurLayer].AutoTile = theAutotile;
-                    Autotile.CacheRenderState(X, Y, CurLayer);
+                    withBlock.Layer[CurLayer].Tileset = 0;
                 }
-
+                else
+                {
+                    withBlock.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                }
+                withBlock.Layer[CurLayer].AutoTile = theAutotile;
+                Autotile.CacheRenderState(X, Y, CurLayer);
+                
                 // do a re-init so we can see our changes
                 Autotile.InitAutotiles();
                 return;
@@ -1480,22 +1478,20 @@ namespace Client
 
             if (!multitile) // single
             {
+                ref var withBlock1 = ref Core.Type.MyMap.Tile[X, Y];
+                // set layer
+                withBlock1.Layer[CurLayer].X = newTileX;
+                withBlock1.Layer[CurLayer].Y = newTileY;
+                if (Conversions.ToBoolean(eraseTile))
                 {
-                    ref var withBlock1 = ref Core.Type.MyMap.Tile[X, Y];
-                    // set layer
-                    withBlock1.Layer[CurLayer].X = newTileX;
-                    withBlock1.Layer[CurLayer].Y = newTileY;
-                    if (Conversions.ToBoolean(eraseTile))
-                    {
-                        withBlock1.Layer[CurLayer].Tileset = 0;
-                    }
-                    else
-                    {
-                        withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
-                    }
-                    withBlock1.Layer[CurLayer].AutoTile = 0;
-                    Autotile.CacheRenderState(X, Y, CurLayer);
+                    withBlock1.Layer[CurLayer].Tileset = 0;
                 }
+                else
+                {
+                    withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                }
+                withBlock1.Layer[CurLayer].AutoTile = 0;
+                Autotile.CacheRenderState(X, Y, CurLayer);          
             }
             else // multitile
             {
