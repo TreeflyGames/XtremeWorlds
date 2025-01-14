@@ -53,152 +53,102 @@ namespace Client
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEditor_Map));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEditor_Map));
             btnClearAttribute = new Button();
-            btnClearAttribute.Click += new EventHandler(BtnClearAttribute_Click);
             optTrap = new RadioButton();
-            optTrap.CheckedChanged += new EventHandler(OptTrap_CheckedChanged);
             optHeal = new RadioButton();
-            optHeal.CheckedChanged += new EventHandler(OptHeal_CheckedChanged);
             optBank = new RadioButton();
             optShop = new RadioButton();
-            optShop.CheckedChanged += new EventHandler(OptShop_CheckedChanged);
             optNPCSpawn = new RadioButton();
-            optNPCSpawn.CheckedChanged += new EventHandler(OptNPCSpawn_CheckedChanged);
             optResource = new RadioButton();
-            optResource.CheckedChanged += new EventHandler(OptResource_CheckedChanged);
             optNPCAvoid = new RadioButton();
             optItem = new RadioButton();
-            optItem.CheckedChanged += new EventHandler(OptItem_CheckedChanged);
             optWarp = new RadioButton();
-            optWarp.CheckedChanged += new EventHandler(OptWarp_CheckedChanged);
             optBlocked = new RadioButton();
-            optBlocked.CheckedChanged += new EventHandler(OptBlocked_CheckedChanged);
             pnlBack = new Panel();
             picBackSelect = new PictureBox();
-            picBackSelect.MouseDown += new MouseEventHandler(PicBackSelect_MouseDown);
-            picBackSelect.MouseMove += new MouseEventHandler(PicBackSelect_MouseMove);
-            picBackSelect.Paint += new PaintEventHandler(picBackSelect_Paint);
             Label1 = new Label();
             pnlAttributes = new Panel();
             fraMapLight = new GroupBox();
             lblRadius = new Label();
             scrlLight = new HScrollBar();
-            scrlLight.ValueChanged += new EventHandler(scrlLight_ValueChanged);
             chkShadow = new CheckBox();
             chkFlicker = new CheckBox();
             btnLight = new Button();
-            btnLight.Click += new EventHandler(btnLight_Click);
             fraAnimation = new GroupBox();
             cmbAnimation = new ComboBox();
             brnAnimation = new Button();
-            brnAnimation.Click += new EventHandler(brnAnimation_Click);
             fraMapWarp = new GroupBox();
             btnMapWarp = new Button();
-            btnMapWarp.Click += new EventHandler(BtnMapWarp_Click);
             scrlMapWarpY = new HScrollBar();
-            scrlMapWarpY.ValueChanged += new EventHandler(ScrlMapWarpY_Scroll);
             scrlMapWarpX = new HScrollBar();
-            scrlMapWarpX.ValueChanged += new EventHandler(ScrlMapWarpX_Scroll);
             scrlMapWarpMap = new HScrollBar();
-            scrlMapWarpMap.ValueChanged += new EventHandler(ScrlMapWarpMap_Scroll);
             lblMapWarpY = new Label();
             lblMapWarpX = new Label();
             lblMapWarpMap = new Label();
             fraNPCSpawn = new GroupBox();
             lstNPC = new ComboBox();
             btnNPCSpawn = new Button();
-            btnNPCSpawn.Click += new EventHandler(BtnNPCSpawn_Click);
             scrlNPCDir = new HScrollBar();
-            scrlNPCDir.ValueChanged += new EventHandler(ScrlNPCDir_Scroll);
             lblNPCDir = new Label();
             fraHeal = new GroupBox();
             scrlHeal = new HScrollBar();
-            scrlHeal.ValueChanged += new EventHandler(ScrlHeal_Scroll);
             lblHeal = new Label();
             cmbHeal = new ComboBox();
             btnHeal = new Button();
-            btnHeal.Click += new EventHandler(BtnHeal_Click);
             fraShop = new GroupBox();
             cmbShop = new ComboBox();
             btnShop = new Button();
-            btnShop.Click += new EventHandler(BtnShop_Click);
             fraResource = new GroupBox();
             btnResourceOk = new Button();
-            btnResourceOk.Click += new EventHandler(BtnResourceOk_Click);
             scrlResource = new HScrollBar();
-            scrlResource.ValueChanged += new EventHandler(ScrlResource_ValueChanged);
             lblResource = new Label();
             fraMapItem = new GroupBox();
             picMapItem = new PictureBox();
             btnMapItem = new Button();
-            btnMapItem.Click += new EventHandler(BtnMapItem_Click);
             scrlMapItemValue = new HScrollBar();
-            scrlMapItemValue.ValueChanged += new EventHandler(ScrlMapItemValue_ValueChanged);
             scrlMapItem = new HScrollBar();
-            scrlMapItem.ValueChanged += new EventHandler(ScrlMapItem_ValueChanged);
             lblMapItem = new Label();
             fraTrap = new GroupBox();
             btnTrap = new Button();
-            btnTrap.Click += new EventHandler(BtnTrap_Click);
             scrlTrap = new HScrollBar();
-            scrlTrap.ValueChanged += new EventHandler(ScrlTrap_ValueChanged);
             lblTrap = new Label();
             ToolStrip = new ToolStrip();
             tsbSave = new ToolStripButton();
-            tsbSave.Click += new EventHandler(TsbSave_Click);
             tsbDiscard = new ToolStripButton();
-            tsbDiscard.Click += new EventHandler(TsbDiscard_Click);
             ToolStripSeparator1 = new ToolStripSeparator();
             tsbMapGrid = new ToolStripButton();
-            tsbMapGrid.Click += new EventHandler(TsbMapGrid_Click);
             tsbOpacity = new ToolStripButton();
-            tsbOpacity.Click += new EventHandler(tsbOpacity_Click);
             tsbLight = new ToolStripButton();
-            tsbLight.Click += new EventHandler(tsbLight_Click);
             ToolStripSeparator2 = new ToolStripSeparator();
             tsbFill = new ToolStripButton();
-            tsbFill.Click += new EventHandler(TsbFill_Click);
             tsbClear = new ToolStripButton();
-            tsbClear.Click += new EventHandler(TsbClear_Click);
             tsbEyeDropper = new ToolStripButton();
-            tsbEyeDropper.Click += new EventHandler(TsbEyeDropper_Click);
             tsbCopyMap = new ToolStripButton();
-            tsbCopyMap.Click += new EventHandler(tsbCopyMap_Click);
             tsbDeleteMap = new ToolStripButton();
-            tsbDeleteMap.Click += new EventHandler(tsbDeleteMap_Click);
             tsbUndo = new ToolStripButton();
-            tsbUndo.Click += new EventHandler(tsbUndo_Click);
             tsbRedo = new ToolStripButton();
-            tsbRedo.Click += new EventHandler(tsbRedo_Click);
             tsbScreenshot = new ToolStripButton();
-            tsbScreenshot.Click += new EventHandler(tsbScreenshot_Click);
             tabpages = new TabControl();
             tpTiles = new TabPage();
             cmbAutoTile = new ComboBox();
-            cmbAutoTile.SelectedIndexChanged += new EventHandler(CmbAutoTile_SelectedIndexChanged);
             Label11 = new Label();
             Label10 = new Label();
             cmbLayers = new ComboBox();
             Label9 = new Label();
             cmbTileSets = new ComboBox();
-            cmbTileSets.Click += new EventHandler(CmbTileSets_Click);
             tpAttributes = new TabPage();
             optNoXing = new RadioButton();
             optInfo = new RadioButton();
             Label23 = new Label();
             cmbAttribute = new ComboBox();
-            cmbAttribute.SelectedIndexChanged += new EventHandler(cmbAttribute_SelectedIndexChanged);
             optAnimation = new RadioButton();
-            optAnimation.CheckedChanged += new EventHandler(optAnimation_CheckedChanged);
             optLight = new RadioButton();
-            optLight.CheckedChanged += new EventHandler(optLight_CheckedChanged);
             tpNPCs = new TabPage();
             fraNPCs = new GroupBox();
             Label18 = new Label();
             Label17 = new Label();
             cmbNPCList = new ComboBox();
-            cmbNPCList.SelectedIndexChanged += new EventHandler(CmbNPCList_SelectedIndexChanged);
             lstMapNPC = new ListBox();
             ComboBox23 = new ComboBox();
             tpSettings = new TabPage();
@@ -215,9 +165,7 @@ namespace Client
             txtUp = new TextBox();
             fraBootSettings = new GroupBox();
             chkIndoors = new CheckBox();
-            chkIndoors.CheckedChanged += new EventHandler(chkIndoors_CheckedChanged);
             chkNoMapRespawn = new CheckBox();
-            chkNoMapRespawn.CheckedChanged += new EventHandler(chkRespawn_CheckedChanged);
             txtBootMap = new TextBox();
             Label5 = new Label();
             txtBootY = new TextBox();
@@ -231,10 +179,8 @@ namespace Client
             Label7 = new Label();
             GroupBox2 = new GroupBox();
             btnPreview = new Button();
-            btnPreview.Click += new EventHandler(BtnPreview_Click);
             lstMusic = new ListBox();
             txtName = new TextBox();
-            txtName.TextChanged += new EventHandler(txtName_TextChanged);
             Label6 = new Label();
             tpDirBlock = new TabPage();
             Label12 = new Label();
@@ -242,53 +188,38 @@ namespace Client
             lblPasteMode = new Label();
             lblCopyMode = new Label();
             btnPasteEvent = new Button();
-            btnPasteEvent.Click += new EventHandler(BtnPasteEvent_Click);
             Label16 = new Label();
             btnCopyEvent = new Button();
-            btnCopyEvent.Click += new EventHandler(BtnCopyEvent_Click);
             Label15 = new Label();
             Label13 = new Label();
             tpEffects = new TabPage();
             GroupBox6 = new GroupBox();
             scrlMapBrightness = new HScrollBar();
-            scrlMapBrightness.Scroll += new ScrollEventHandler(scrMapBrightness_Scroll);
             GroupBox5 = new GroupBox();
             cmbParallax = new ComboBox();
-            cmbParallax.SelectedIndexChanged += new EventHandler(CmbParallax_SelectedIndexChanged);
             GroupBox4 = new GroupBox();
             cmbPanorama = new ComboBox();
-            cmbPanorama.SelectedIndexChanged += new EventHandler(CmbPanorama_SelectedIndexChanged);
             GroupBox3 = new GroupBox();
             chkTint = new CheckBox();
-            chkTint.CheckedChanged += new EventHandler(ChkUseTint_CheckedChanged);
             lblMapAlpha = new Label();
             lblMapBlue = new Label();
             lblMapGreen = new Label();
             lblMapRed = new Label();
             scrlMapAlpha = new HScrollBar();
-            scrlMapAlpha.ValueChanged += new EventHandler(ScrlMapAlpha_Scroll);
             scrlMapBlue = new HScrollBar();
-            scrlMapBlue.ValueChanged += new EventHandler(ScrlMapBlue_Scroll);
             scrlMapGreen = new HScrollBar();
-            scrlMapGreen.ValueChanged += new EventHandler(ScrlMapGreen_Scroll);
             scrlMapRed = new HScrollBar();
-            scrlMapRed.ValueChanged += new EventHandler(ScrlMapRed_Scroll);
             GroupBox1 = new GroupBox();
             scrlFogOpacity = new HScrollBar();
-            scrlFogOpacity.ValueChanged += new EventHandler(ScrlFogOpacity_Scroll);
             lblFogOpacity = new Label();
             scrlFogSpeed = new HScrollBar();
-            scrlFogSpeed.ValueChanged += new EventHandler(ScrlFogSpeed_Scroll);
             lblFogSpeed = new Label();
             scrlIntensity = new HScrollBar();
-            scrlIntensity.ValueChanged += new EventHandler(ScrlIntensity_Scroll);
             lblIntensity = new Label();
             scrlFog = new HScrollBar();
-            scrlFog.ValueChanged += new EventHandler(ScrlFog_Scroll);
             lblFogIndex = new Label();
             Label14 = new Label();
             cmbWeather = new ComboBox();
-            cmbWeather.SelectedIndexChanged += new EventHandler(CmbWeather_SelectedIndexChanged);
             pnlBack.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picBackSelect).BeginInit();
             pnlAttributes.SuspendLayout();
@@ -333,6 +264,7 @@ namespace Client
             btnClearAttribute.TabIndex = 14;
             btnClearAttribute.Text = "Clear All Attributes";
             btnClearAttribute.UseVisualStyleBackColor = true;
+            btnClearAttribute.Click += BtnClearAttribute_Click;
             // 
             // optTrap
             // 
@@ -344,6 +276,7 @@ namespace Client
             optTrap.TabIndex = 12;
             optTrap.Text = "Trap";
             optTrap.UseVisualStyleBackColor = true;
+            optTrap.CheckedChanged += OptTrap_CheckedChanged;
             // 
             // optHeal
             // 
@@ -355,6 +288,7 @@ namespace Client
             optHeal.TabIndex = 11;
             optHeal.Text = "Heal";
             optHeal.UseVisualStyleBackColor = true;
+            optHeal.CheckedChanged += OptHeal_CheckedChanged;
             // 
             // optBank
             // 
@@ -377,6 +311,7 @@ namespace Client
             optShop.TabIndex = 9;
             optShop.Text = "Shop";
             optShop.UseVisualStyleBackColor = true;
+            optShop.CheckedChanged += OptShop_CheckedChanged;
             // 
             // optNPCSpawn
             // 
@@ -388,6 +323,7 @@ namespace Client
             optNPCSpawn.TabIndex = 8;
             optNPCSpawn.Text = "NPC Spawn";
             optNPCSpawn.UseVisualStyleBackColor = true;
+            optNPCSpawn.CheckedChanged += OptNPCSpawn_CheckedChanged;
             // 
             // optResource
             // 
@@ -399,6 +335,7 @@ namespace Client
             optResource.TabIndex = 6;
             optResource.Text = "Resource";
             optResource.UseVisualStyleBackColor = true;
+            optResource.CheckedChanged += OptResource_CheckedChanged;
             // 
             // optNPCAvoid
             // 
@@ -421,6 +358,7 @@ namespace Client
             optItem.TabIndex = 2;
             optItem.Text = "Item";
             optItem.UseVisualStyleBackColor = true;
+            optItem.CheckedChanged += OptItem_CheckedChanged;
             // 
             // optWarp
             // 
@@ -432,6 +370,7 @@ namespace Client
             optWarp.TabIndex = 1;
             optWarp.Text = "Warp";
             optWarp.UseVisualStyleBackColor = true;
+            optWarp.CheckedChanged += OptWarp_CheckedChanged;
             // 
             // optBlocked
             // 
@@ -445,6 +384,7 @@ namespace Client
             optBlocked.TabStop = true;
             optBlocked.Text = "Blocked";
             optBlocked.UseVisualStyleBackColor = true;
+            optBlocked.CheckedChanged += OptBlocked_CheckedChanged;
             // 
             // pnlBack
             // 
@@ -464,6 +404,9 @@ namespace Client
             picBackSelect.Size = new Size(512, 512);
             picBackSelect.TabIndex = 22;
             picBackSelect.TabStop = false;
+            picBackSelect.Paint += picBackSelect_Paint;
+            picBackSelect.MouseDown += PicBackSelect_MouseDown;
+            picBackSelect.MouseMove += PicBackSelect_MouseMove;
             // 
             // Label1
             // 
@@ -526,6 +469,7 @@ namespace Client
             scrlLight.Name = "scrlLight";
             scrlLight.Size = new Size(165, 17);
             scrlLight.TabIndex = 40;
+            scrlLight.ValueChanged += scrlLight_ValueChanged;
             // 
             // chkShadow
             // 
@@ -556,6 +500,7 @@ namespace Client
             btnLight.TabIndex = 6;
             btnLight.Text = "Accept";
             btnLight.UseVisualStyleBackColor = true;
+            btnLight.Click += btnLight_Click;
             // 
             // fraAnimation
             // 
@@ -591,6 +536,7 @@ namespace Client
             brnAnimation.TabIndex = 6;
             brnAnimation.Text = "Accept";
             brnAnimation.UseVisualStyleBackColor = true;
+            brnAnimation.Click += brnAnimation_Click;
             // 
             // fraMapWarp
             // 
@@ -619,6 +565,7 @@ namespace Client
             btnMapWarp.TabIndex = 6;
             btnMapWarp.Text = "Accept";
             btnMapWarp.UseVisualStyleBackColor = true;
+            btnMapWarp.Click += BtnMapWarp_Click;
             // 
             // scrlMapWarpY
             // 
@@ -626,6 +573,7 @@ namespace Client
             scrlMapWarpY.Name = "scrlMapWarpY";
             scrlMapWarpY.Size = new Size(188, 18);
             scrlMapWarpY.TabIndex = 5;
+            scrlMapWarpY.ValueChanged += ScrlMapWarpY_Scroll;
             // 
             // scrlMapWarpX
             // 
@@ -633,6 +581,7 @@ namespace Client
             scrlMapWarpX.Name = "scrlMapWarpX";
             scrlMapWarpX.Size = new Size(188, 18);
             scrlMapWarpX.TabIndex = 4;
+            scrlMapWarpX.ValueChanged += ScrlMapWarpX_Scroll;
             // 
             // scrlMapWarpMap
             // 
@@ -640,6 +589,7 @@ namespace Client
             scrlMapWarpMap.Name = "scrlMapWarpMap";
             scrlMapWarpMap.Size = new Size(188, 18);
             scrlMapWarpMap.TabIndex = 3;
+            scrlMapWarpMap.ValueChanged += ScrlMapWarpMap_Scroll;
             // 
             // lblMapWarpY
             // 
@@ -705,6 +655,7 @@ namespace Client
             btnNPCSpawn.TabIndex = 6;
             btnNPCSpawn.Text = "Accept";
             btnNPCSpawn.UseVisualStyleBackColor = true;
+            btnNPCSpawn.Click += BtnNPCSpawn_Click;
             // 
             // scrlNPCDir
             // 
@@ -714,6 +665,7 @@ namespace Client
             scrlNPCDir.Name = "scrlNPCDir";
             scrlNPCDir.Size = new Size(178, 18);
             scrlNPCDir.TabIndex = 3;
+            scrlNPCDir.ValueChanged += ScrlNPCDir_Scroll;
             // 
             // lblNPCDir
             // 
@@ -746,6 +698,7 @@ namespace Client
             scrlHeal.Name = "scrlHeal";
             scrlHeal.Size = new Size(181, 17);
             scrlHeal.TabIndex = 39;
+            scrlHeal.ValueChanged += ScrlHeal_Scroll;
             // 
             // lblHeal
             // 
@@ -777,6 +730,7 @@ namespace Client
             btnHeal.TabIndex = 6;
             btnHeal.Text = "Accept";
             btnHeal.UseVisualStyleBackColor = true;
+            btnHeal.Click += BtnHeal_Click;
             // 
             // fraShop
             // 
@@ -810,6 +764,7 @@ namespace Client
             btnShop.TabIndex = 6;
             btnShop.Text = "Accept";
             btnShop.UseVisualStyleBackColor = true;
+            btnShop.Click += BtnShop_Click;
             // 
             // fraResource
             // 
@@ -834,6 +789,7 @@ namespace Client
             btnResourceOk.TabIndex = 6;
             btnResourceOk.Text = "Accept";
             btnResourceOk.UseVisualStyleBackColor = true;
+            btnResourceOk.Click += BtnResourceOk_Click;
             // 
             // scrlResource
             // 
@@ -841,6 +797,7 @@ namespace Client
             scrlResource.Name = "scrlResource";
             scrlResource.Size = new Size(159, 18);
             scrlResource.TabIndex = 3;
+            scrlResource.ValueChanged += ScrlResource_ValueChanged;
             // 
             // lblResource
             // 
@@ -887,6 +844,7 @@ namespace Client
             btnMapItem.TabIndex = 6;
             btnMapItem.Text = "Accept";
             btnMapItem.UseVisualStyleBackColor = true;
+            btnMapItem.Click += BtnMapItem_Click;
             // 
             // scrlMapItemValue
             // 
@@ -894,6 +852,7 @@ namespace Client
             scrlMapItemValue.Name = "scrlMapItemValue";
             scrlMapItemValue.Size = new Size(140, 18);
             scrlMapItemValue.TabIndex = 4;
+            scrlMapItemValue.ValueChanged += ScrlMapItemValue_ValueChanged;
             // 
             // scrlMapItem
             // 
@@ -901,6 +860,7 @@ namespace Client
             scrlMapItem.Name = "scrlMapItem";
             scrlMapItem.Size = new Size(140, 18);
             scrlMapItem.TabIndex = 3;
+            scrlMapItem.ValueChanged += ScrlMapItem_ValueChanged;
             // 
             // lblMapItem
             // 
@@ -935,6 +895,7 @@ namespace Client
             btnTrap.TabIndex = 42;
             btnTrap.Text = "Accept";
             btnTrap.UseVisualStyleBackColor = true;
+            btnTrap.Click += BtnTrap_Click;
             // 
             // scrlTrap
             // 
@@ -942,6 +903,7 @@ namespace Client
             scrlTrap.Name = "scrlTrap";
             scrlTrap.Size = new Size(149, 17);
             scrlTrap.TabIndex = 41;
+            scrlTrap.ValueChanged += ScrlTrap_ValueChanged;
             // 
             // lblTrap
             // 
@@ -971,6 +933,7 @@ namespace Client
             tsbSave.Name = "tsbSave";
             tsbSave.Size = new Size(28, 28);
             tsbSave.ToolTipText = "Save";
+            tsbSave.Click += TsbSave_Click;
             // 
             // tsbDiscard
             // 
@@ -979,6 +942,7 @@ namespace Client
             tsbDiscard.Name = "tsbDiscard";
             tsbDiscard.Size = new Size(28, 28);
             tsbDiscard.ToolTipText = "Discard";
+            tsbDiscard.Click += TsbDiscard_Click;
             // 
             // ToolStripSeparator1
             // 
@@ -992,6 +956,7 @@ namespace Client
             tsbMapGrid.Name = "tsbMapGrid";
             tsbMapGrid.Size = new Size(28, 28);
             tsbMapGrid.Tag = "Map Grid";
+            tsbMapGrid.Click += TsbMapGrid_Click;
             // 
             // tsbOpacity
             // 
@@ -1002,6 +967,7 @@ namespace Client
             tsbOpacity.Size = new Size(28, 28);
             tsbOpacity.Text = "ToolStripButton1";
             tsbOpacity.ToolTipText = "Opacity";
+            tsbOpacity.Click += tsbOpacity_Click;
             // 
             // tsbLight
             // 
@@ -1011,6 +977,7 @@ namespace Client
             tsbLight.Name = "tsbLight";
             tsbLight.Size = new Size(28, 28);
             tsbLight.ToolTipText = "Light";
+            tsbLight.Click += tsbLight_Click;
             // 
             // ToolStripSeparator2
             // 
@@ -1025,6 +992,7 @@ namespace Client
             tsbFill.Size = new Size(28, 28);
             tsbFill.Tag = "Fill";
             tsbFill.ToolTipText = "Fill Layer";
+            tsbFill.Click += TsbFill_Click;
             // 
             // tsbClear
             // 
@@ -1033,6 +1001,7 @@ namespace Client
             tsbClear.Name = "tsbClear";
             tsbClear.Size = new Size(28, 28);
             tsbClear.ToolTipText = "Erase";
+            tsbClear.Click += TsbClear_Click;
             // 
             // tsbEyeDropper
             // 
@@ -1041,6 +1010,7 @@ namespace Client
             tsbEyeDropper.Name = "tsbEyeDropper";
             tsbEyeDropper.Size = new Size(28, 28);
             tsbEyeDropper.ToolTipText = "Eye Dropper";
+            tsbEyeDropper.Click += TsbEyeDropper_Click;
             // 
             // tsbCopyMap
             // 
@@ -1050,6 +1020,7 @@ namespace Client
             tsbCopyMap.Name = "tsbCopyMap";
             tsbCopyMap.Size = new Size(28, 28);
             tsbCopyMap.ToolTipText = "Copy";
+            tsbCopyMap.Click += tsbCopyMap_Click;
             // 
             // tsbDeleteMap
             // 
@@ -1059,6 +1030,7 @@ namespace Client
             tsbDeleteMap.Name = "tsbDeleteMap";
             tsbDeleteMap.Size = new Size(28, 28);
             tsbDeleteMap.ToolTipText = "Delete Map";
+            tsbDeleteMap.Click += tsbDeleteMap_Click;
             // 
             // tsbUndo
             // 
@@ -1068,6 +1040,7 @@ namespace Client
             tsbUndo.Name = "tsbUndo";
             tsbUndo.Size = new Size(28, 28);
             tsbUndo.ToolTipText = "Undo";
+            tsbUndo.Click += tsbUndo_Click;
             // 
             // tsbRedo
             // 
@@ -1077,6 +1050,7 @@ namespace Client
             tsbRedo.Name = "tsbRedo";
             tsbRedo.Size = new Size(28, 28);
             tsbRedo.ToolTipText = "Redo";
+            tsbRedo.Click += tsbRedo_Click;
             // 
             // tsbScreenshot
             // 
@@ -1086,6 +1060,7 @@ namespace Client
             tsbScreenshot.Name = "tsbScreenshot";
             tsbScreenshot.Size = new Size(28, 28);
             tsbScreenshot.ToolTipText = "Screenshot";
+            tsbScreenshot.Click += tsbScreenshot_Click;
             // 
             // tabpages
             // 
@@ -1132,6 +1107,7 @@ namespace Client
             cmbAutoTile.Name = "cmbAutoTile";
             cmbAutoTile.Size = new Size(110, 23);
             cmbAutoTile.TabIndex = 17;
+            cmbAutoTile.SelectedIndexChanged += CmbAutoTile_SelectedIndexChanged;
             // 
             // Label11
             // 
@@ -1183,6 +1159,7 @@ namespace Client
             cmbTileSets.Name = "cmbTileSets";
             cmbTileSets.Size = new Size(68, 23);
             cmbTileSets.TabIndex = 12;
+            cmbTileSets.Click += CmbTileSets_Click;
             // 
             // tpAttributes
             // 
@@ -1256,6 +1233,7 @@ namespace Client
             cmbAttribute.Name = "cmbAttribute";
             cmbAttribute.Size = new Size(68, 23);
             cmbAttribute.TabIndex = 20;
+            cmbAttribute.SelectedIndexChanged += cmbAttribute_SelectedIndexChanged;
             // 
             // optAnimation
             // 
@@ -1267,6 +1245,7 @@ namespace Client
             optAnimation.TabIndex = 19;
             optAnimation.Text = "Animation";
             optAnimation.UseVisualStyleBackColor = true;
+            optAnimation.CheckedChanged += optAnimation_CheckedChanged;
             // 
             // optLight
             // 
@@ -1278,6 +1257,7 @@ namespace Client
             optLight.TabIndex = 18;
             optLight.Text = "Light";
             optLight.UseVisualStyleBackColor = true;
+            optLight.CheckedChanged += optLight_CheckedChanged;
             // 
             // tpNPCs
             // 
@@ -1335,11 +1315,11 @@ namespace Client
             cmbNPCList.Name = "cmbNPCList";
             cmbNPCList.Size = new Size(299, 23);
             cmbNPCList.TabIndex = 70;
+            cmbNPCList.SelectedIndexChanged += CmbNPCList_SelectedIndexChanged;
             // 
             // lstMapNPC
             // 
             lstMapNPC.FormattingEnabled = true;
-            lstMapNPC.ItemHeight = 15;
             lstMapNPC.Location = new Point(10, 52);
             lstMapNPC.Margin = new Padding(4, 3, 4, 3);
             lstMapNPC.Name = "lstMapNPC";
@@ -1513,24 +1493,26 @@ namespace Client
             // chkIndoors
             // 
             chkIndoors.AutoSize = true;
-            chkIndoors.Location = new Point(8, 100);
+            chkIndoors.Location = new Point(8, 102);
             chkIndoors.Margin = new Padding(4, 3, 4, 3);
             chkIndoors.Name = "chkIndoors";
             chkIndoors.Size = new Size(66, 19);
             chkIndoors.TabIndex = 42;
             chkIndoors.Text = "Indoors";
             chkIndoors.UseVisualStyleBackColor = true;
+            chkIndoors.CheckedChanged += chkIndoors_CheckedChanged;
             // 
             // chkNoMapRespawn
             // 
             chkNoMapRespawn.AutoSize = true;
-            chkNoMapRespawn.Location = new Point(138, 98);
+            chkNoMapRespawn.Location = new Point(143, 102);
             chkNoMapRespawn.Margin = new Padding(4, 3, 4, 3);
             chkNoMapRespawn.Name = "chkNoMapRespawn";
             chkNoMapRespawn.Size = new Size(119, 19);
             chkNoMapRespawn.TabIndex = 19;
             chkNoMapRespawn.Text = "No Map Respawn";
             chkNoMapRespawn.UseVisualStyleBackColor = true;
+            chkNoMapRespawn.CheckedChanged += chkRespawn_CheckedChanged;
             // 
             // txtBootMap
             // 
@@ -1666,11 +1648,11 @@ namespace Client
             btnPreview.TabIndex = 4;
             btnPreview.Text = "Preview Music";
             btnPreview.UseVisualStyleBackColor = true;
+            btnPreview.Click += BtnPreview_Click;
             // 
             // lstMusic
             // 
             lstMusic.FormattingEnabled = true;
-            lstMusic.ItemHeight = 15;
             lstMusic.Location = new Point(7, 22);
             lstMusic.Margin = new Padding(4, 3, 4, 3);
             lstMusic.Name = "lstMusic";
@@ -1685,6 +1667,7 @@ namespace Client
             txtName.Name = "txtName";
             txtName.Size = new Size(215, 23);
             txtName.TabIndex = 10;
+            txtName.TextChanged += txtName_TextChanged;
             // 
             // Label6
             // 
@@ -1765,6 +1748,7 @@ namespace Client
             btnPasteEvent.TabIndex = 4;
             btnPasteEvent.Text = "Paste Event";
             btnPasteEvent.UseVisualStyleBackColor = true;
+            btnPasteEvent.Click += BtnPasteEvent_Click;
             // 
             // Label16
             // 
@@ -1785,6 +1769,7 @@ namespace Client
             btnCopyEvent.TabIndex = 2;
             btnCopyEvent.Text = "Copy Event";
             btnCopyEvent.UseVisualStyleBackColor = true;
+            btnCopyEvent.Click += BtnCopyEvent_Click;
             // 
             // Label15
             // 
@@ -1842,6 +1827,7 @@ namespace Client
             scrlMapBrightness.Name = "scrlMapBrightness";
             scrlMapBrightness.Size = new Size(262, 17);
             scrlMapBrightness.TabIndex = 10;
+            scrlMapBrightness.Scroll += scrMapBrightness_Scroll;
             // 
             // GroupBox5
             // 
@@ -1863,6 +1849,7 @@ namespace Client
             cmbParallax.Name = "cmbParallax";
             cmbParallax.Size = new Size(232, 23);
             cmbParallax.TabIndex = 0;
+            cmbParallax.SelectedIndexChanged += CmbParallax_SelectedIndexChanged;
             // 
             // GroupBox4
             // 
@@ -1884,6 +1871,7 @@ namespace Client
             cmbPanorama.Name = "cmbPanorama";
             cmbPanorama.Size = new Size(262, 23);
             cmbPanorama.TabIndex = 0;
+            cmbPanorama.SelectedIndexChanged += CmbPanorama_SelectedIndexChanged;
             // 
             // GroupBox3
             // 
@@ -1915,6 +1903,7 @@ namespace Client
             chkTint.TabIndex = 18;
             chkTint.Text = "Enable";
             chkTint.UseVisualStyleBackColor = true;
+            chkTint.CheckedChanged += ChkUseTint_CheckedChanged;
             // 
             // lblMapAlpha
             // 
@@ -1964,6 +1953,7 @@ namespace Client
             scrlMapAlpha.Name = "scrlMapAlpha";
             scrlMapAlpha.Size = new Size(169, 17);
             scrlMapAlpha.TabIndex = 13;
+            scrlMapAlpha.ValueChanged += ScrlMapAlpha_Scroll;
             // 
             // scrlMapBlue
             // 
@@ -1973,6 +1963,7 @@ namespace Client
             scrlMapBlue.Name = "scrlMapBlue";
             scrlMapBlue.Size = new Size(169, 17);
             scrlMapBlue.TabIndex = 12;
+            scrlMapBlue.ValueChanged += ScrlMapBlue_Scroll;
             // 
             // scrlMapGreen
             // 
@@ -1982,6 +1973,7 @@ namespace Client
             scrlMapGreen.Name = "scrlMapGreen";
             scrlMapGreen.Size = new Size(169, 17);
             scrlMapGreen.TabIndex = 11;
+            scrlMapGreen.ValueChanged += ScrlMapGreen_Scroll;
             // 
             // scrlMapRed
             // 
@@ -1991,6 +1983,7 @@ namespace Client
             scrlMapRed.Name = "scrlMapRed";
             scrlMapRed.Size = new Size(169, 17);
             scrlMapRed.TabIndex = 10;
+            scrlMapRed.ValueChanged += ScrlMapRed_Scroll;
             // 
             // GroupBox1
             // 
@@ -2021,6 +2014,7 @@ namespace Client
             scrlFogOpacity.Name = "scrlFogOpacity";
             scrlFogOpacity.Size = new Size(169, 17);
             scrlFogOpacity.TabIndex = 9;
+            scrlFogOpacity.ValueChanged += ScrlFogOpacity_Scroll;
             // 
             // lblFogOpacity
             // 
@@ -2039,6 +2033,7 @@ namespace Client
             scrlFogSpeed.Name = "scrlFogSpeed";
             scrlFogSpeed.Size = new Size(169, 17);
             scrlFogSpeed.TabIndex = 7;
+            scrlFogSpeed.ValueChanged += ScrlFogSpeed_Scroll;
             // 
             // lblFogSpeed
             // 
@@ -2057,6 +2052,7 @@ namespace Client
             scrlIntensity.Name = "scrlIntensity";
             scrlIntensity.Size = new Size(169, 17);
             scrlIntensity.TabIndex = 5;
+            scrlIntensity.ValueChanged += ScrlIntensity_Scroll;
             // 
             // lblIntensity
             // 
@@ -2075,6 +2071,7 @@ namespace Client
             scrlFog.Name = "scrlFog";
             scrlFog.Size = new Size(169, 17);
             scrlFog.TabIndex = 3;
+            scrlFog.ValueChanged += ScrlFog_Scroll;
             // 
             // lblFogIndex
             // 
@@ -2105,10 +2102,11 @@ namespace Client
             cmbWeather.Name = "cmbWeather";
             cmbWeather.Size = new Size(168, 23);
             cmbWeather.TabIndex = 0;
+            cmbWeather.SelectedIndexChanged += CmbWeather_SelectedIndexChanged;
             // 
             // frmEditor_Map
             // 
-            AutoScaleDimensions = new SizeF(7.0f, 15.0f);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = SystemColors.Control;
@@ -2121,6 +2119,8 @@ namespace Client
             MaximizeBox = false;
             Name = "frmEditor_Map";
             Text = "Map Editor";
+            FormClosing += frmEditor_Map_FormClosing;
+            Load += frmEditor_Map_Load;
             pnlBack.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picBackSelect).EndInit();
             pnlAttributes.ResumeLayout(false);
@@ -2174,12 +2174,10 @@ namespace Client
             GroupBox3.PerformLayout();
             GroupBox1.ResumeLayout(false);
             GroupBox1.PerformLayout();
-            Load += new EventHandler(frmEditor_Map_Load);
-            FormClosing += new FormClosingEventHandler(frmEditor_Map_FormClosing);
             ResumeLayout(false);
             PerformLayout();
-
         }
+
         internal Panel pnlBack;
         internal RadioButton optTrap;
         internal RadioButton optHeal;

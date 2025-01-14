@@ -602,20 +602,16 @@ namespace Client
             }
         }
 
-        #endregion
-
-        #region Settings
-
         private void BtnPreview_Click(object sender, EventArgs e)
         {
             if (lstMusic.SelectedIndex > 0)
             {
                 string selectedFile = lstMusic.Items[lstMusic.SelectedIndex].ToString();
 
-                // If the selected music file is a MIDi file
+                // If the selected music file is a MIDI file
                 if (Settings.Instance.MusicExt == ".mid")
                 {
-                    Sound.PlayMidi(Core.Path.Music + selectedFile);
+                    Sound.PlayMidi(System.IO.Path.Combine(Core.Path.Music, selectedFile));
                 }
                 else
                 {
