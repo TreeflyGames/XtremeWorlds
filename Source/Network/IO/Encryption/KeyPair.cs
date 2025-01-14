@@ -257,11 +257,11 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                     rijndaelManaged.KeySize = 256;
                     rijndaelManaged.BlockSize = 128;
                     rijndaelManaged.Mode = CipherMode.CBC;
-                    rijndaelManaged.Padding = PaddingMode.PKCS7;
 
                     // Decrypt AES key
                     byte[] aesKey;
-                    aesKey = _rsa?.Decrypt(encryptedKey, true); // Ensure padding matches
+
+                    aesKey = _rsa?.Decrypt(encryptedKey, RSAEncryptionPadding.OaepSHA1);
 
                     // Decrypt payload
                     using (ICryptoTransform decryptor = rijndaelManaged.CreateDecryptor(aesKey, iv))
