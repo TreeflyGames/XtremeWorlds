@@ -584,7 +584,7 @@ namespace Server
             int x;
             int y;
 
-            Core.Type.Map[mapNum].Tileset = 0;
+            Core.Type.Map[mapNum].Tileset = 1;
             Core.Type.Map[mapNum].Name = "";
             Core.Type.Map[mapNum].MaxX = Core.Constant.MAX_MAPX;
             Core.Type.Map[mapNum].MaxY = Core.Constant.MAX_MAPY;
@@ -604,7 +604,6 @@ namespace Server
 
             // Reset the values for if a player is on the map or not
             PlayersOnMap[mapNum] = false;
-            Core.Type.Map[mapNum].Tileset = 0;
             Core.Type.Map[mapNum].Name = "";
             Core.Type.Map[mapNum].Music = "";
             Core.Type.Map[mapNum].MaxX = Core.Constant.MAX_MAPX;
