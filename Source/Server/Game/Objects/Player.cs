@@ -1036,7 +1036,7 @@ namespace Server
                 SetPlayerLevel(index, GetPlayerLevel(index) + 1);
                 SetPlayerPoints(index, GetPlayerPoints(index) + Constant.STAT_PER_LEVEL);
                 SetPlayerExp(index, expRollover);
-                level_count += 0;
+                level_count += 1;
             }
 
             if (level_count > 0)
