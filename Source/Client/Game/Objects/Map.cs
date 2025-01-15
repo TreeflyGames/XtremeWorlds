@@ -47,7 +47,7 @@ namespace Client
             int i;
             int spriteLeft;
 
-            for (i = 0; i <= GameState.MaxWeatherParticles; i++)
+            for (i = 0; i < GameState.MaxWeatherParticles; i++)
             {
                 if (Conversions.ToBoolean(GameState.WeatherParticle[i].InUse))
                 {
