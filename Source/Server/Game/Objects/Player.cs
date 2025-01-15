@@ -907,7 +907,7 @@ namespace Server
             NPC.DropNPCItems(mapNum, MapNPCNum);
 
             // Set our NPC's data to default so we know it's dead.
-            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num = 0;
+            Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num = -1;
             Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].SpawnWait = General.GetTimeMs();
             Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[(byte) VitalType.HP] = 0;
 
@@ -1530,7 +1530,6 @@ namespace Server
                     Moved = Conversions.ToBoolean(1);
                 }
 
-                mapNum = 0;
                 x = 0;
                 y = 0;
 
@@ -1793,7 +1792,7 @@ namespace Server
                                     }
 
                                     // Erase item from the map
-                                    MapItem[mapNum, i].Num = 0;
+                                    MapItem[mapNum, i].Num = -1;
                                     MapItem[mapNum, i].Value = 0;
                                     MapItem[mapNum, i].X = 0;
                                     MapItem[mapNum, i].Y = 0;
@@ -2773,7 +2772,7 @@ namespace Server
                     var loopTo = Core.Constant.MAX_INV;
                     for (i = 0; i < loopTo; i++)
                     {
-                        Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = 0;
+                        Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
                         Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
                     }
                     Core.Type.TempPlayer[tradeTarget].InTrade = -1;

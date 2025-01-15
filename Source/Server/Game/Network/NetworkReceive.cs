@@ -2110,7 +2110,7 @@ namespace Server
                 return;
             }
 
-            Core.Type.Player[index].Skill[SkillSlot].Num = 0;
+            Core.Type.Player[index].Skill[SkillSlot].Num = -1;
             NetworkSend.SendPlayerSkills(index);
 
             buffer.Dispose();
@@ -2118,7 +2118,7 @@ namespace Server
 
         public static void Packet_CloseShop(int index, ref byte[] data)
         {
-            Core.Type.TempPlayer[index].InShop = 0;
+            Core.Type.TempPlayer[index].InShop = -1;
         }
 
         public static void Packet_BuyItem(int index, ref byte[] data)
@@ -2331,7 +2331,7 @@ namespace Server
             {
                 NetworkSend.PlayerMsg(tradetarget, GetPlayerName(index) + " has declined your trade request.", (int) ColorType.BrightRed);
                 NetworkSend.PlayerMsg(index, "You have declined the trade with " + GetPlayerName(tradetarget) + ".", (int) ColorType.BrightRed);
-                Core.Type.TempPlayer[index].TradeRequest = 0;
+                Core.Type.TempPlayer[index].TradeRequest = -1;
                 return;
             }
 
@@ -2343,8 +2343,8 @@ namespace Server
                 NetworkSend.PlayerMsg(tradetarget, GetPlayerName(index) + " has accepted your trade request.", (int) ColorType.BrightGreen);
 
                 // clear the tradeRequest server-side
-                Core.Type.TempPlayer[index].TradeRequest = 0;
-                Core.Type.TempPlayer[tradetarget].TradeRequest = 0;
+                Core.Type.TempPlayer[index].TradeRequest = -1;
+                Core.Type.TempPlayer[tradetarget].TradeRequest = -1;
 
                 // set that they're trading with each other
                 Core.Type.TempPlayer[index].InTrade = tradetarget;
@@ -2357,9 +2357,9 @@ namespace Server
 
                 for (int i = 0, loopTo = Core.Constant.MAX_INV; i < loopTo; i++)
                 {
-                    Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
+                    Core.Type.TempPlayer[index].TradeOffer[i].Num = -1;
                     Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                    Core.Type.TempPlayer[tradetarget].TradeOffer[i].Num = 0;
+                    Core.Type.TempPlayer[tradetarget].TradeOffer[i].Num = -1;
                     Core.Type.TempPlayer[tradetarget].TradeOffer[i].Value = 0;
                 }
 
@@ -2377,7 +2377,7 @@ namespace Server
 
         public static void Packet_TradeInviteDecline(int index, ref byte[] data)
         {
-            Core.Type.TempPlayer[index].TradeRequest = 0;
+            Core.Type.TempPlayer[index].TradeRequest = -1;
         }
 
         public static void Packet_AcceptTrade(int index, ref byte[] data)
@@ -2457,9 +2457,9 @@ namespace Server
             var loopTo2 = Core.Constant.MAX_INV;
             for (i = 0; i < loopTo2; i++)
             {
-                Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
+                Core.Type.TempPlayer[index].TradeOffer[i].Num = -1;
                 Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = 0;
+                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
                 Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
             }
 
@@ -2481,9 +2481,9 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_INV; i < loopTo; i++)
             {
-                Core.Type.TempPlayer[index].TradeOffer[i].Num = 0;
+                Core.Type.TempPlayer[index].TradeOffer[i].Num = -1;
                 Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = 0;
+                Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
                 Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
             }
 
@@ -2607,7 +2607,7 @@ namespace Server
             if (Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num < 0)
                 return;
 
-            Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num = 0;
+            Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num = -1;
             Core.Type.TempPlayer[index].TradeOffer[tradeslot].Value = 0;
 
             if (Core.Type.TempPlayer[index].AcceptTrade)
