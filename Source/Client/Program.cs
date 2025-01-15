@@ -262,14 +262,6 @@ namespace Client
             SpriteBatch.Draw(texture, dRect, sRect, color);
         }
 
-        private static int GenerateUniqueTextureID(string path, int index)
-        {
-            int pathHash = path.GetHashCode(); // Generate a hash from the path
-            int uniqueID = Math.Abs(pathHash + index); // Ensure the ID is non-negative
-
-            return uniqueID;
-        }
-
         public static Texture2D GetTexture(string path)
         {
             if (!TextureCache.ContainsKey(path))
