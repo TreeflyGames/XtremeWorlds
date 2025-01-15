@@ -592,9 +592,7 @@ namespace Client
 
         public static void ClearMapNPCs()
         {
-            int i;
-
-            for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
+            for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
                 ClearMapNPC(i);
 
         }
