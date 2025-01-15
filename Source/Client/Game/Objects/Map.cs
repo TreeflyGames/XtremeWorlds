@@ -561,7 +561,7 @@ namespace Client
 
         public static void ClearMapItem(int index)
         {
-            Core.Type.MyMapItem[index].Num = 0;
+            Core.Type.MyMapItem[index].Num = -1;
             Core.Type.MyMapItem[index].Value = 0;
             Core.Type.MyMapItem[index].X = 0;
             Core.Type.MyMapItem[index].Y = 0;
