@@ -390,13 +390,13 @@ namespace Client
         private static void Packet_PlayerInv(ref byte[] data)
         {
             int i;
-            double itemNum;
+            int itemNum;
             int amount;
             var buffer = new ByteStream(data);
 
             for (i = 0; i < Constant.MAX_INV; i++)
             {
-                itemNum = buffer.ReadDouble();
+                itemNum = buffer.ReadInt32();
                 amount = buffer.ReadInt32();
                 SetPlayerInv(GameState.MyIndex, i, itemNum);
                 SetPlayerInvValue(GameState.MyIndex, i, amount);
@@ -415,7 +415,7 @@ namespace Client
 
             n = buffer.ReadInt32();
 
-            SetPlayerInv(GameState.MyIndex, n, buffer.ReadDouble());
+            SetPlayerInv(GameState.MyIndex, n, buffer.ReadInt32());
             SetPlayerInvValue(GameState.MyIndex, n, buffer.ReadInt32());
 
             GameLogic.SetGoldLabel();
@@ -426,12 +426,12 @@ namespace Client
         private static void Packet_PlayerWornEquipment(ref byte[] data)
         {
             int i;
-            double n;
+            int n;
             var buffer = new ByteStream(data);
 
             for (i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
-                n = buffer.ReadDouble();
+                n = buffer.ReadInt32();
                 SetPlayerEquipment(GameState.MyIndex, n, (Core.Enum.EquipmentType)i);
             }
 
@@ -729,7 +729,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
-                Core.Type.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadDouble();
+                Core.Type.Player[GameState.MyIndex].Skill[i].Num = buffer.ReadInt32();
 
             buffer.Dispose();
         }
@@ -919,13 +919,13 @@ namespace Client
         private static void Packet_MapWornEquipment(ref byte[] data)
         {
             int playernum;
-            double n;
+            int n;
             var buffer = new ByteStream(data);
 
             playernum = buffer.ReadInt32();
             for (int i = 0; i < (int)Core.Enum.EquipmentType.Count; i++)
             {
-                n = buffer.ReadDouble();
+                n = buffer.ReadInt32();
                 SetPlayerEquipment(playernum, n, (Core.Enum.EquipmentType)i);
             }
 

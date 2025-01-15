@@ -38,7 +38,7 @@ namespace Client
             Core.Type.Player[index].Dir = 0;
             Core.Type.Player[index].Access = (byte)Core.Enum.AccessType.Player;
 
-            Core.Type.Player[index].Equipment = new double[(int)Core.Enum.EquipmentType.Count];
+            Core.Type.Player[index].Equipment = new int[(int)Core.Enum.EquipmentType.Count];
             for (int y = 0; y < (int)Core.Enum.EquipmentType.Count; y++)
                 Core.Type.Player[index].Equipment[y] = -1;
 
@@ -946,7 +946,7 @@ namespace Client
                 // speed from weapon
                 if (GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon) >= 0)
                 {
-                    attackspeed = Core.Type.Item[(int)GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon)].Speed * 1000;
+                    attackspeed = Core.Type.Item[GetPlayerEquipment(GameState.MyIndex, Core.Enum.EquipmentType.Weapon)].Speed * 1000;
                 }
                 else
                 {

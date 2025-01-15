@@ -214,7 +214,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_INV;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteDouble(GetPlayerInv(index, i));
+                buffer.WriteInt32(GetPlayerInv(index, i));
                 buffer.WriteInt32(GetPlayerInvValue(index, i));
             }
 
@@ -251,7 +251,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SMapWornEq);
             buffer.WriteInt32(index);
             for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteDouble(GetPlayerEquipment(index, (EquipmentType)i));
+                buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
 
             NetworkConfig.SendDataToMap(GetPlayerMap(index), ref buffer.Data, buffer.Head);
 
@@ -265,7 +265,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SMapWornEq);
             buffer.WriteInt32(PlayerNum);
             for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteDouble(GetPlayerEquipment(PlayerNum, (EquipmentType)i));
+                buffer.WriteInt32(GetPlayerEquipment(PlayerNum, (EquipmentType)i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
@@ -527,7 +527,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SPlayerWornEq);
 
             for (int i = 0, loopTo = (int)(EquipmentType.Count); i < loopTo; i++)
-                buffer.WriteDouble(GetPlayerEquipment(index, (EquipmentType)i));
+                buffer.WriteInt32(GetPlayerEquipment(index, (EquipmentType)i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
 
@@ -1002,7 +1002,7 @@ namespace Server
 
             buffer.WriteInt32(InvSlot);
 
-            buffer.WriteDouble(GetPlayerInv(index, InvSlot));
+            buffer.WriteInt32(GetPlayerInv(index, InvSlot));
             buffer.WriteInt32(GetPlayerInvValue(index, InvSlot));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
@@ -1116,11 +1116,11 @@ namespace Server
                         {
                             if (Core.Type.TempPlayer[index].TradeOffer[i].Value == 0)
                                 Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                            totalWorth = totalWorth + Core.Type.Item[(int)GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[index].TradeOffer[i].Value;
+                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[index].TradeOffer[i].Value;
                         }
                         else
                         {
-                            totalWorth = totalWorth + Core.Type.Item[(int)GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price;
+                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price;
                         }
                     }
                 }
@@ -1131,22 +1131,22 @@ namespace Server
                 var loopTo1 = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo1; i++)
                 {
-                    buffer.WriteDouble(GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num));
+                    buffer.WriteInt32(GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num));
                     buffer.WriteInt32(Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value);
 
                     // add total worth
                     if (GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num) > 0)
                     {
                         // currency?
-                        if (Core.Type.Item[(int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Type == (int)ItemType.Currency || Core.Type.Item[(int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Stackable == 1)
+                        if (Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Type == (int)ItemType.Currency || Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Stackable == 1)
                         {
                             if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value == 0)
                                 Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value = 0;
-                            totalWorth = totalWorth + Core.Type.Item[(int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value;
+                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value;
                         }
                         else
                         {
-                            totalWorth = totalWorth + Core.Type.Item[(int)GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price;
+                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price;
                         }
                     }
                 }
@@ -1205,7 +1205,7 @@ namespace Server
 
             var loopTo = Core.Constant.MAX_PLAYER_SKILLS;
             for (i = 0; i < loopTo; i++)
-                buffer.WriteDouble(GetPlayerSkill(index, i));
+                buffer.WriteInt32(GetPlayerSkill(index, i));
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
             buffer.Dispose();
@@ -1289,7 +1289,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_HOTBAR;
             for (i = 0; i < loopTo; i++)
             {
-                buffer.WriteDouble(Core.Type.Player[index].Hotbar[i].Slot);
+                buffer.WriteInt32(Core.Type.Player[index].Hotbar[i].Slot);
                 buffer.WriteInt32(Core.Type.Player[index].Hotbar[i].SlotType);
             }
 

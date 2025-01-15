@@ -84,7 +84,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CCloseShop] = Packet_CloseShop;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CBuyItem] = Packet_BuyItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSellItem] = Packet_SellItem;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CChangeBankSlots] = Packet_ChangeBankSlots;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CChangeBankSlots] = Packet_ChangebankSlots;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CDepositItem] = Packet_DepositItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CWithdrawItem] = Packet_WithdrawItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CCloseBank] = Packet_CloseBank;
@@ -732,19 +732,19 @@ namespace Server
             // Projectile check
             if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
-                if (Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile > 0) // Item has a projectile
+                if (Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Projectile > 0) // Item has a projectile
                 {
-                    if (Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo > 0)
+                    if (Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo > 0)
                     {
-                        if (Conversions.ToBoolean(Player.HasItem(index, Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo)))
+                        if (Conversions.ToBoolean(Player.HasItem(index, Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo)))
                         {
-                            Player.TakeInv(index, Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo, 1);
+                            Player.TakeInv(index, Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo, 1);
                             Projectile.PlayerFireProjectile(index);
                             return;
                         }
                         else
                         {
-                            NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
                             return;
                         }
                     }
@@ -1936,8 +1936,8 @@ namespace Server
                 return;
 
             // Old Slot
-            oldSlot = buffer.ReadDouble();
-            newSlot = buffer.ReadDouble();
+            oldSlot = buffer.ReadInt32();
+            newSlot = buffer.ReadInt32();
             buffer.Dispose();
 
             Player.PlayerSwitchInvSlots(index, (int)oldSlot, (int)newSlot);
@@ -1955,8 +1955,8 @@ namespace Server
                 return;
 
             // Old Slot
-            oldSlot = buffer.ReadDouble();
-            newSlot = buffer.ReadDouble();
+            oldSlot = buffer.ReadInt32();
+            newSlot = buffer.ReadInt32();
             buffer.Dispose();
 
             Player.PlayerSwitchSkillSlots(index, (int)oldSlot, (int)newSlot);
@@ -2213,7 +2213,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void Packet_ChangeBankSlots(int index, ref byte[] data)
+        public static void Packet_ChangebankSlots(int index, ref byte[] data)
         {
             int oldslot;
             int newslot;
@@ -2222,7 +2222,7 @@ namespace Server
             oldslot = buffer.ReadInt32();
             newslot = buffer.ReadInt32();
 
-            Player.PlayerSwitchBankSlots(index, oldslot, newslot);
+            Player.PlayerSwitchbankSlots(index, oldslot, newslot);
 
             buffer.Dispose();
         }
@@ -2243,14 +2243,14 @@ namespace Server
 
         public static void Packet_WithdrawItem(int index, ref byte[] data)
         {
-            int bankSlot;
+            byte bankSlot;
             int amount;
             var buffer = new ByteStream(data);
 
-            bankSlot = buffer.ReadInt32();
+            bankSlot = buffer.ReadByte();
             amount = buffer.ReadInt32();
 
-            Player.TakeBank(index, (byte)bankSlot, amount);
+            Player.TakeBank(index, bankSlot, amount);
 
             buffer.Dispose();
         }
@@ -2423,7 +2423,7 @@ namespace Server
                 // target
                 if (Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num >= 0)
                 {
-                    itemNum = (int)GetPlayerInv(tradeTarget, (int)Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num);
+                    itemNum = GetPlayerInv(tradeTarget, (int)Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num);
                     if (itemNum >= 0)
                     {
                         // store temp
@@ -2517,7 +2517,7 @@ namespace Server
             if (invslot < 0 | invslot > Core.Constant.MAX_INV)
                 return;
 
-            itemnum = (int)GetPlayerInv(index, invslot);
+            itemnum = GetPlayerInv(index, invslot);
 
             if (itemnum < 0 | itemnum > Core.Constant.MAX_ITEMS)
                 return;

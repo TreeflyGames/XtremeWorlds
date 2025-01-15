@@ -1459,7 +1459,7 @@ namespace Server
             Core.Type.Player[index].Dir = 0;
             Core.Type.Player[index].Access = (byte)AccessType.Player;
 
-            Core.Type.Player[index].Equipment = new double[(byte)EquipmentType.Count];
+            Core.Type.Player[index].Equipment = new int[(byte)EquipmentType.Count];
             for (int i = 0, loopTo = (byte)EquipmentType.Count; i < loopTo; i++)
                 Core.Type.Player[index].Equipment[i] = -1;
 
@@ -1801,7 +1801,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteDouble(NPCNum);
+            buffer.WriteInt32(NPCNum);
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Animation);
             buffer.WriteString(Core.Type.NPC[(int)NPCNum].AttackSay);
             buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Behaviour);

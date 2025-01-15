@@ -22,7 +22,7 @@ namespace Server
                 // Check attack timer
                 if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
                 {
-                    if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + Core.Type.Item[(int)GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed)
+                    if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed)
                         return CanPlayerAttackPlayerRet;
                 }
                 else if (General.GetTimeMs() < Core.Type.TempPlayer[attacker].AttackTimer + 1000)
@@ -95,14 +95,14 @@ namespace Server
                 return CanPlayerAttackPlayerRet;
 
             // Check to make sure that they dont have access
-            if ((int)GetPlayerAccess(attacker) > (int)AccessType.Moderator)
+            if (GetPlayerAccess(attacker) > (int)AccessType.Moderator)
             {
                 NetworkSend.PlayerMsg(attacker, "You cannot attack any player for thou art an admin!", (int)(int) ColorType.BrightRed);
                 return CanPlayerAttackPlayerRet;
             }
 
             // Check to make sure the victim isn't an admin
-            if ((int)GetPlayerAccess(victim) > (int)AccessType.Moderator)
+            if (GetPlayerAccess(victim) > (int)AccessType.Moderator)
             {
                 NetworkSend.PlayerMsg(attacker, "You cannot attack " + GetPlayerName(victim) + "!", (int)(int) ColorType.BrightRed);
                 return CanPlayerAttackPlayerRet;
@@ -197,7 +197,7 @@ namespace Server
 
             if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
-                weaponNum = (int)GetPlayerEquipment(index, EquipmentType.Weapon);
+                weaponNum = GetPlayerEquipment(index, EquipmentType.Weapon);
                 GetPlayerDamageRet = (int)(GetPlayerStat(index, StatType.Strength) * 2 + Core.Type.Item[weaponNum].Data2 * 2 + GetPlayerLevel(index) * 3 + General.Random.NextDouble(0d, 20d));
             }
             else
@@ -265,7 +265,7 @@ namespace Server
                 // Check for weapon
                 if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
                 {
-                    n = (int)GetPlayerEquipment(attacker, EquipmentType.Weapon);
+                    n = GetPlayerEquipment(attacker, EquipmentType.Weapon);
                 }
 
                 // Send this packet so they can see the person attacking
@@ -470,7 +470,7 @@ namespace Server
             // attack speed from weapon
             if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
             {
-                attackspeed = Core.Type.Item[(int)GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed;
+                attackspeed = Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed;
             }
             else
             {
@@ -563,7 +563,7 @@ namespace Server
             int Weapon = 0;
             if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
             {
-                Weapon = (int)GetPlayerEquipment(attacker, EquipmentType.Weapon);
+                Weapon = GetPlayerEquipment(attacker, EquipmentType.Weapon);
             }
 
             // Deal damage to our NPC.
@@ -593,7 +593,7 @@ namespace Server
             NetworkSend.SendPlayerAttack(attacker);
             if (Weapon >= 0)
             {
-                Animation.SendAnimation(mapNum, Core.Type.Item[(int)GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, (int)MapNPCNum);
+                Animation.SendAnimation(mapNum, Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, (int)MapNPCNum);
             }
 
             // Reset our attack timer.
@@ -714,7 +714,7 @@ namespace Server
                     {
                         if (GetPlayerEquipment(victim, (EquipmentType)i) >= 0)
                         {
-                            armor += Core.Type.Item[(int)GetPlayerEquipment(victim, (EquipmentType)i)].Data2;
+                            armor += Core.Type.Item[GetPlayerEquipment(victim, (EquipmentType)i)].Data2;
                         }
                     }
 
@@ -754,7 +754,7 @@ namespace Server
             int Weapon = 0;
             if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
             {
-                Weapon = (int)GetPlayerEquipment(attacker, EquipmentType.Weapon);
+                Weapon = GetPlayerEquipment(attacker, EquipmentType.Weapon);
             }
 
             // Stop our player's regeneration abilities.
@@ -986,8 +986,8 @@ namespace Server
                                     if (j == z)
                                     {
                                         // Here it is, drop this piece of equipment!
-                                        NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[(int)GetPlayerEquipment(victim, (EquipmentType)x)].Name, (int) ColorType.BrightRed);
-                                        Item.SpawnItem((int)GetPlayerEquipment(victim, (EquipmentType)x), 1, GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
+                                        NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[GetPlayerEquipment(victim, (EquipmentType)x)].Name, (int) ColorType.BrightRed);
+                                        Item.SpawnItem(GetPlayerEquipment(victim, (EquipmentType)x), 1, GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
                                         SetPlayerEquipment(victim, 0, (EquipmentType)x);
                                         NetworkSend.SendWornEquipment(victim);
                                         NetworkSend.SendMapEquipment(victim);
@@ -1007,8 +1007,8 @@ namespace Server
                                     if (j == z)
                                     {
                                         // Here it is, drop this item!
-                                        NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[(int)GetPlayerInv(victim, x)].Name, (int) ColorType.BrightRed);
-                                        Item.SpawnItem((int)GetPlayerInv(victim, x), GetPlayerInvValue(victim, x), GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
+                                        NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[GetPlayerInv(victim, x)].Name, (int) ColorType.BrightRed);
+                                        Item.SpawnItem(GetPlayerInv(victim, x), GetPlayerInvValue(victim, x), GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
                                         SetPlayerInv(victim, x, 0);
                                         SetPlayerInvValue(victim, x, 0);
                                         NetworkSend.SendInventory(victim);
@@ -1780,15 +1780,15 @@ namespace Server
 
                                     SetPlayerInv(index, n, (int)MapItem[mapNum, i].Num);
 
-                                    if (Core.Type.Item[(int)GetPlayerInv(index, n)].Type == (byte)ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(index, n)].Stackable == 1)
+                                    if (Core.Type.Item[GetPlayerInv(index, n)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerInv(index, n)].Stackable == 1)
                                     {
                                         SetPlayerInvValue(index, n, GetPlayerInvValue(index, n) + MapItem[mapNum, i].Value);
-                                        Msg = MapItem[mapNum, i].Value + " " + Core.Type.Item[(int)GetPlayerInv(index, n)].Name;
+                                        Msg = MapItem[mapNum, i].Value + " " + Core.Type.Item[GetPlayerInv(index, n)].Name;
                                     }
                                     else
                                     {
                                         SetPlayerInvValue(index, n, 1);
-                                        Msg = Core.Type.Item[(int)GetPlayerInv(index, n)].Name;
+                                        Msg = Core.Type.Item[GetPlayerInv(index, n)].Name;
                                     }
 
                                     // Erase item from the map
@@ -2012,7 +2012,7 @@ namespace Server
                             withBlock.CanDespawn = true;
                             withBlock.DespawnTimer = General.GetTimeMs() + Constant.ITEM_DESPAWN_TIME;
 
-                            if (Core.Type.Item[(int)GetPlayerInv(index, invNum)].Type == (byte)ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(index, invNum)].Stackable == 1)
+                            if (Core.Type.Item[GetPlayerInv(index, invNum)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerInv(index, invNum)].Stackable == 1)
                             {
                                 // Check if its more then they have and if so drop it all
                                 if (amount >= GetPlayerInvValue(index, invNum))
@@ -2027,7 +2027,7 @@ namespace Server
                                     withBlock.Value = amount;
                                     SetPlayerInvValue(index, invNum, GetPlayerInvValue(index, invNum) - amount);
                                 }
-                                NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1} ({2}x).", GetPlayerName(index), GameLogic.CheckGrammar(Core.Type.Item[(int)GetPlayerInv(index, invNum)].Name), amount), (int) ColorType.Yellow);
+                                NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1} ({2}x).", GetPlayerName(index), GameLogic.CheckGrammar(Core.Type.Item[GetPlayerInv(index, invNum)].Name), amount), (int) ColorType.Yellow);
                             }
                             else
                             {
@@ -2035,7 +2035,7 @@ namespace Server
                                 withBlock.Value = 0;
 
                                 // send message
-                                NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1}.", GetPlayerName(index), GameLogic.CheckGrammar(Core.Type.Item[(int)GetPlayerInv(index, invNum)].Name)), (int) ColorType.Yellow);
+                                NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1}.", GetPlayerName(index), GameLogic.CheckGrammar(Core.Type.Item[GetPlayerInv(index, invNum)].Name)), (int) ColorType.Yellow);
                                 SetPlayerInv(index, invNum, 0);
                                 SetPlayerInvValue(index, invNum, 0);
                             }
@@ -2166,7 +2166,7 @@ namespace Server
             if (InvNum < 0 | InvNum > Core.Constant.MAX_INV)
                 return;
 
-            itemNum = (int)GetPlayerInv(index, InvNum);
+            itemNum = GetPlayerInv(index, InvNum);
 
             if (itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
                 return;
@@ -2186,7 +2186,7 @@ namespace Server
 
                                     if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
                                     {
-                                        tempitem = (int)GetPlayerEquipment(index, EquipmentType.Weapon);
+                                        tempitem = GetPlayerEquipment(index, EquipmentType.Weapon);
                                     }
 
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Weapon);
@@ -2218,7 +2218,7 @@ namespace Server
                                 {
                                     if (GetPlayerEquipment(index, EquipmentType.Armor) >= 0)
                                     {
-                                        tempitem = (int)GetPlayerEquipment(index, EquipmentType.Armor);
+                                        tempitem = GetPlayerEquipment(index, EquipmentType.Armor);
                                     }
 
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Armor);
@@ -2248,7 +2248,7 @@ namespace Server
                                 {
                                     if (GetPlayerEquipment(index, EquipmentType.Helmet) >= 0)
                                     {
-                                        tempitem = (int)GetPlayerEquipment(index, EquipmentType.Helmet);
+                                        tempitem = GetPlayerEquipment(index, EquipmentType.Helmet);
                                     }
 
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Helmet);
@@ -2277,7 +2277,7 @@ namespace Server
                                 {
                                     if (GetPlayerEquipment(index, EquipmentType.Shield) >= 0)
                                     {
-                                        tempitem = (int)GetPlayerEquipment(index, EquipmentType.Shield);
+                                        tempitem = GetPlayerEquipment(index, EquipmentType.Shield);
                                     }
 
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Shield);
@@ -2393,7 +2393,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
+                                NetworkSend.PlayerMsg(index, "No More " + Core.Type.Item[Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Ammo].Name + " !", (int) ColorType.BrightRed);
                                 return;
                             }
                         }
@@ -2550,9 +2550,9 @@ namespace Server
             if (OldSlot == -1 | NewSlot == -1)
                 return;
 
-            OldNum = (int)GetPlayerInv(index, OldSlot);
+            OldNum = GetPlayerInv(index, OldSlot);
             OldValue = GetPlayerInvValue(index, OldSlot);
-            NewNum = (int)GetPlayerInv(index, NewSlot);
+            NewNum = GetPlayerInv(index, NewSlot);
             NewValue = GetPlayerInvValue(index, NewSlot);
 
             if (OldNum == NewNum & Core.Type.Item[NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
@@ -2582,7 +2582,7 @@ namespace Server
             string OldSuffix;
             int OldSpeed;
             int OldDamage;
-            double NewNum;
+            int NewNum;
             int NewValue;
             int NewRarity;
             string NewPrefix;
@@ -2690,15 +2690,15 @@ namespace Server
             if (GetPlayerEquipment(index, (EquipmentType)EqSlot) < 0 || GetPlayerEquipment(index, (EquipmentType)EqSlot) > Core.Constant.MAX_ITEMS)
                 return;
 
-            if (FindOpenInvSlot(index, (int)GetPlayerEquipment(index, (EquipmentType)EqSlot)) >= 0)
+            if (FindOpenInvSlot(index, GetPlayerEquipment(index, (EquipmentType)EqSlot)) >= 0)
             {
-                itemNum = (int)GetPlayerEquipment(index, (EquipmentType)EqSlot);
+                itemNum = GetPlayerEquipment(index, (EquipmentType)EqSlot);
 
                 m = FindOpenInvSlot(index, (int)Core.Type.Player[index].Equipment[EqSlot]);
                 SetPlayerInv(index, m, Core.Type.Player[index].Equipment[EqSlot]);
                 SetPlayerInvValue(index, m, 0);
 
-                NetworkSend.PlayerMsg(index, "You unequip " + GameLogic.CheckGrammar(Core.Type.Item[(int)GetPlayerEquipment(index, (EquipmentType)EqSlot)].Name), (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(index, "You unequip " + GameLogic.CheckGrammar(Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)EqSlot)].Name), (int) ColorType.Yellow);
 
                 // remove equipment
                 SetPlayerEquipment(index, 0, (EquipmentType)EqSlot);
@@ -3124,7 +3124,7 @@ namespace Server
 
         public static void GiveBank(int index, int InvSlot, int Amount)
         {
-            int BankSlot;
+            byte bankSlot;
             int itemnum;
 
             if (InvSlot < 0 | InvSlot > Core.Constant.MAX_INV)
@@ -3139,35 +3139,35 @@ namespace Server
             if (GetPlayerInvValue(index, InvSlot) < Amount & GetPlayerInv(index, InvSlot) == 0)
                 return;
 
-            BankSlot = FindOpenBankSlot(index, (int)GetPlayerInv(index, InvSlot));
-            itemnum = (int)GetPlayerInv(index, InvSlot);
+            bankSlot = FindOpenbankSlot(index, GetPlayerInv(index, InvSlot));
+            itemnum = GetPlayerInv(index, InvSlot);
 
-            if (BankSlot >= 0)
+            if (bankSlot >= 0)
             {
-                if (Core.Type.Item[(int)GetPlayerInv(index, InvSlot)].Type == (byte)ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(index, InvSlot)].Stackable == 1)
+                if (Core.Type.Item[GetPlayerInv(index, InvSlot)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerInv(index, InvSlot)].Stackable == 1)
                 {
-                    if (GetPlayerBank(index, (byte)BankSlot) == GetPlayerInv(index, InvSlot))
+                    if (GetPlayerBank(index, bankSlot) == GetPlayerInv(index, InvSlot))
                     {
-                        SetPlayerBankValue(index, (byte)BankSlot, GetPlayerBankValue(index, (byte)BankSlot) + Amount);
-                        TakeInv(index, (int)GetPlayerInv(index, InvSlot), Amount);
+                        SetPlayerBankValue(index, bankSlot, GetPlayerBankValue(index, bankSlot) + Amount);
+                        TakeInv(index, GetPlayerInv(index, InvSlot), Amount);
                     }
                     else
                     {
-                        SetPlayerBank(index, (byte)BankSlot, (int)GetPlayerInv(index, InvSlot));
-                        SetPlayerBankValue(index, (byte)BankSlot, Amount);
-                        TakeInv(index, (int)GetPlayerInv(index, InvSlot), Amount);
+                        SetPlayerBank(index, bankSlot, GetPlayerInv(index, InvSlot));
+                        SetPlayerBankValue(index, bankSlot, Amount);
+                        TakeInv(index, GetPlayerInv(index, InvSlot), Amount);
                     }
                 }
-                else if (GetPlayerBank(index, (byte)BankSlot) == GetPlayerInv(index, InvSlot))
+                else if (GetPlayerBank(index, bankSlot) == GetPlayerInv(index, InvSlot))
                 {
-                    SetPlayerBankValue(index, (byte)BankSlot, GetPlayerBankValue(index, (byte)BankSlot) + 1);
-                    TakeInv(index, (int)GetPlayerInv(index, InvSlot), 0);
+                    SetPlayerBankValue(index, bankSlot, GetPlayerBankValue(index, bankSlot) + 1);
+                    TakeInv(index, GetPlayerInv(index, InvSlot), 0);
                 }
                 else
                 {
-                    SetPlayerBank(index, (byte)BankSlot, itemnum);
-                    SetPlayerBankValue(index, (byte)BankSlot, 1);
-                    TakeInv(index, (int)GetPlayerInv(index, InvSlot), 0);
+                    SetPlayerBank(index, bankSlot, itemnum);
+                    SetPlayerBankValue(index, bankSlot, 1);
+                    TakeInv(index, GetPlayerInv(index, InvSlot), 0);
                 }
 
                 NetworkSend.SendBank(index);
@@ -3175,39 +3175,39 @@ namespace Server
 
         }
 
-        public static double GetPlayerBank(int index, byte BankSlot)
+        public static int GetPlayerBank(int index, byte bankSlot)
         {
-            double GetPlayerBankRet = default;
-            GetPlayerBankRet = Bank[index].Item[BankSlot].Num;
+            int GetPlayerBankRet = default;
+            GetPlayerBankRet = Bank[index].Item[bankSlot].Num;
             return GetPlayerBankRet;
         }
 
-        public static void SetPlayerBank(int index, byte BankSlot, int itemNum)
+        public static void SetPlayerBank(int index, byte bankSlot, int itemNum)
         {
-            Bank[index].Item[BankSlot].Num = itemNum;
+            Bank[index].Item[bankSlot].Num = itemNum;
         }
 
-        public static int GetPlayerBankValue(int index, byte BankSlot)
+        public static int GetPlayerBankValue(int index, byte bankSlot)
         {
             int GetPlayerBankValueRet = default;
-            GetPlayerBankValueRet = Bank[index].Item[BankSlot].Value;
+            GetPlayerBankValueRet = Bank[index].Item[bankSlot].Value;
             return GetPlayerBankValueRet;
         }
 
-        public static void SetPlayerBankValue(int index, byte BankSlot, int Value)
+        public static void SetPlayerBankValue(int index, byte bankSlot, int Value)
         {
-            Bank[index].Item[BankSlot].Value = Value;
+            Bank[index].Item[bankSlot].Value = Value;
         }
 
-        public static byte FindOpenBankSlot(int index, int itemNum)
+        public static byte FindOpenbankSlot(int index, int itemNum)
         {
-            byte FindOpenBankSlotRet = default;
+            byte FindOpenbankSlotRet = default;
             int i;
 
             if (!NetworkConfig.IsPlaying(index))
-                return FindOpenBankSlotRet;
+                return FindOpenbankSlotRet;
             if (itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS)
-                return FindOpenBankSlotRet;
+                return FindOpenbankSlotRet;
 
             if (Core.Type.Item[itemNum].Type == (byte)ItemType.Currency | Core.Type.Item[itemNum].Stackable == 1)
             {
@@ -3216,8 +3216,8 @@ namespace Server
                 {
                     if (GetPlayerBank(index, (byte)i) == itemNum)
                     {
-                        FindOpenBankSlotRet = (byte)i;
-                        return FindOpenBankSlotRet;
+                        FindOpenbankSlotRet = (byte)i;
+                        return FindOpenbankSlotRet;
                     }
                 }
             }
@@ -3227,58 +3227,58 @@ namespace Server
             {
                 if (GetPlayerBank(index, (byte)i) == -1)
                 {
-                    FindOpenBankSlotRet = (byte)i;
-                    return FindOpenBankSlotRet;
+                    FindOpenbankSlotRet = (byte)i;
+                    return FindOpenbankSlotRet;
                 }
             }
 
-            return FindOpenBankSlotRet;
+            return FindOpenbankSlotRet;
 
         }
 
-        public static void TakeBank(int index, byte BankSlot, int Amount)
+        public static void TakeBank(int index, byte bankSlot, int Amount)
         {
             object invSlot;
 
-            if (BankSlot < 0 | BankSlot > Core.Constant.MAX_BANK)
+            if (bankSlot < 0 | bankSlot > Core.Constant.MAX_BANK)
                 return;
 
             if (Amount < 0)
                 Amount = 1;
 
-            if (GetPlayerBank(index, BankSlot) < 0)
+            if (GetPlayerBank(index, bankSlot) < 0)
                 return;
 
-            if (GetPlayerBankValue(index, (byte)BankSlot) < Amount)
+            if (GetPlayerBankValue(index, bankSlot) < Amount)
                 return;
 
-            invSlot = FindOpenInvSlot(index, (int)GetPlayerBank(index, (byte)BankSlot));
+            invSlot = FindOpenInvSlot(index, GetPlayerBank(index, bankSlot));
 
             if (Conversions.ToBoolean(Operators.ConditionalCompareObjectGreater(invSlot, 0, false)))
             {
-                if (Core.Type.Item[(int)GetPlayerBank(index, (byte)BankSlot)].Type == (byte)ItemType.Currency | Core.Type.Item[(int)GetPlayerBank(index, (byte)BankSlot)].Stackable == 1)
+                if (Core.Type.Item[GetPlayerBank(index, bankSlot)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerBank(index, bankSlot)].Stackable == 1)
                 {
-                    GiveInv(index, (int)GetPlayerBank(index, (byte)BankSlot), Amount);
-                    SetPlayerBankValue(index, (byte)BankSlot, GetPlayerBankValue(index, (byte)BankSlot) - Amount);
-                    if (GetPlayerBankValue(index, (byte)BankSlot) < 0)
+                    GiveInv(index, GetPlayerBank(index, bankSlot), Amount);
+                    SetPlayerBankValue(index, bankSlot, GetPlayerBankValue(index, bankSlot) - Amount);
+                    if (GetPlayerBankValue(index, bankSlot) < 0)
                     {
-                        SetPlayerBank(index, (byte)BankSlot, 0);
-                        SetPlayerBankValue(index, (byte)BankSlot, 0);
+                        SetPlayerBank(index, bankSlot, 0);
+                        SetPlayerBankValue(index, bankSlot, 0);
                     }
                 }
-                else if (GetPlayerBank(index, (byte)BankSlot) == GetPlayerInv(index, (int)invSlot))
+                else if (GetPlayerBank(index, bankSlot) == GetPlayerInv(index, (int)invSlot))
                 {
-                    if (GetPlayerBankValue(index, (byte)BankSlot) > 1)
+                    if (GetPlayerBankValue(index, bankSlot) > 1)
                     {
-                        GiveInv(index, (int)GetPlayerBank(index, (byte)BankSlot), 0);
-                        SetPlayerBankValue(index, (byte)BankSlot, GetPlayerBankValue(index, (byte)BankSlot) - 1);
+                        GiveInv(index, GetPlayerBank(index, bankSlot), 0);
+                        SetPlayerBankValue(index, bankSlot, GetPlayerBankValue(index, bankSlot) - 1);
                     }
                 }
                 else
                 {
-                    GiveInv(index, (int)GetPlayerBank(index, BankSlot), 0);
-                    SetPlayerBank(index, (byte)BankSlot, 0);
-                    SetPlayerBankValue(index, (byte)BankSlot, 0);
+                    GiveInv(index, GetPlayerBank(index, bankSlot), 0);
+                    SetPlayerBank(index, bankSlot, 0);
+                    SetPlayerBankValue(index, bankSlot, 0);
                 }
 
             }
@@ -3286,7 +3286,7 @@ namespace Server
             NetworkSend.SendBank(index);
         }
 
-        public static void PlayerSwitchBankSlots(int index, int OldSlot, int NewSlot)
+        public static void PlayerSwitchbankSlots(int index, int OldSlot, int NewSlot)
         {
             int OldNum;
             int OldValue;
@@ -3297,9 +3297,9 @@ namespace Server
             if (OldSlot == -1 | NewSlot == -1)
                 return;
 
-            OldNum = (int)GetPlayerBank(index, (byte)OldSlot);
+            OldNum = GetPlayerBank(index, (byte)OldSlot);
             OldValue = GetPlayerBankValue(index, (byte)OldSlot);
-            NewNum = (int)GetPlayerBank(index, (byte)NewSlot);
+            NewNum = GetPlayerBank(index, (byte)NewSlot);
             NewValue = GetPlayerBankValue(index, (byte)NewSlot);
 
             SetPlayerBank(index, (byte)NewSlot, OldNum);

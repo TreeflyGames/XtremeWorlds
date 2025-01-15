@@ -1812,7 +1812,7 @@ namespace Client
             // speed from weapon
             if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
-                attackspeed = Core.Type.Item[(int)GetPlayerEquipment(index, EquipmentType.Weapon)].Speed;
+                attackspeed = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Speed;
             }
             else
             {
@@ -1985,9 +1985,9 @@ namespace Client
             {
                 if (GetPlayerEquipment(index, (EquipmentType)i) >= 0)
                 {
-                    if (Core.Type.Item[(int)GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll > 0)
+                    if (Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll > 0)
                     {
-                        DrawPaperdoll(x, y, Core.Type.Item[(int)GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll, anim, spriteleft);
+                        DrawPaperdoll(x, y, Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)i)].Paperdoll, anim, spriteleft);
                     }
                 }
             }

@@ -251,7 +251,7 @@ namespace Core.Global
             Type.Player[index].Map = mapNum;
         }
 
-        public static double GetPlayerInv(int index, int invslot)
+        public static int GetPlayerInv(int index, int invslot)
         {
             return Type.Player[index].Inv[invslot].Num;
         }
@@ -276,7 +276,7 @@ namespace Core.Global
             Type.Player[index].Stat[(int)stat] = (byte)value;
         }
 
-        public static void SetPlayerInv(int index, int invSlot, double itemNum)
+        public static void SetPlayerInv(int index, int invSlot, int itemNum)
         {
             Type.Player[index].Inv[invSlot].Num = itemNum;
         }
@@ -361,12 +361,12 @@ namespace Core.Global
             return Type.Player[index].Level;
         }
 
-        public static double GetPlayerEquipment(int index, Enum.EquipmentType equipmentSlot)
+        public static int GetPlayerEquipment(int index, Enum.EquipmentType equipmentSlot)
         {
             return Type.Player[index].Equipment[(int)equipmentSlot];
         }
 
-        public static void SetPlayerEquipment(int index, double itemNum, Enum.EquipmentType equipmentSlot)
+        public static void SetPlayerEquipment(int index, int itemNum, Enum.EquipmentType equipmentSlot)
         {
             Type.Player[index].Equipment[(int)equipmentSlot] = itemNum;
         }
@@ -407,7 +407,7 @@ namespace Core.Global
             return 0;
         }
 
-        public static double GetPlayerSkill(int index, int skillSlot)
+        public static int GetPlayerSkill(int index, int skillSlot)
         {
             return Type.Player[index].Skill[skillSlot].Num;
         }
@@ -424,9 +424,7 @@ namespace Core.Global
 
         public static bool HasSkill(int index, double skillNum)
         {
-            int i;
-
-            for (i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
+            for (int i = 0; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
 
                 if (GetPlayerSkill(index, i) == skillNum)
@@ -439,19 +437,19 @@ namespace Core.Global
             return false;
         }
 
-        public static void SetPlayerSkill(int index, int Skillslot, double skillNum)
+        public static void SetPlayerSkill(int index, int Skillslot, int skillNum)
         {
             Type.Player[index].Skill[Skillslot].Num = skillNum;
         }
 
-        public static double GetBank(int index, byte bankslot)
+        public static int GetBank(int index, byte bankslot)
         {
-            double GetBankRet = default;
+            int GetBankRet = default;
             GetBankRet = Type.Bank[index].Item[bankslot].Num;
             return GetBankRet;
         }
 
-        public static void SetBank(int index, byte bankSlot, double itemNum)
+        public static void SetBank(int index, byte bankSlot, int itemNum)
         {
             Type.Bank[index].Item[bankSlot].Num = itemNum;
         }

@@ -123,14 +123,14 @@ namespace Core
 
         public struct PlayerInvStruct
         {
-            public double Num;
+            public int Num;
             public int Value;
             public byte Bound;
         }
 
         public struct PlayerSkillStruct
         {
-            public double Num;
+            public int Num;
             public int CD;
         }
 
@@ -353,7 +353,7 @@ namespace Core
             public byte Points;
 
             // Worn equipment
-            public double[] Equipment;
+            public int[] Equipment;
 
             // Inventory
             public PlayerInvStruct[] Inv;
@@ -564,7 +564,7 @@ namespace Core
 
         public struct HotbarStruct
         {
-            public double Slot;
+            public int Slot;
             public byte SlotType;
         }
 

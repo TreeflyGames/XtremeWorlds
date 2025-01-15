@@ -445,13 +445,12 @@ namespace Client
             UpdateControl(winNum, zOrder_Con, name, Color.White, Core.Enum.ControlType.Combobox, theDesign, image, texture, callback, left, top, width, height);
         }
 
-        public static long GetWindowIndex(string winName)
+        public static int GetWindowIndex(string winName)
         {
-            long GetWindowIndexRet = default;
-            long i;
+            int GetWindowIndexRet = default;
 
             var loopTo = Windows.Count - 1;
-            for (i = 0L; i <= loopTo; i++)
+            for (int i = 0; i <= loopTo; i++)
             {
                 if ((Strings.LCase(Windows[i + 1].Name) ?? "") == (Strings.LCase(winName) ?? ""))
                 {
@@ -465,16 +464,15 @@ namespace Client
 
         }
 
-        public static long GetControlIndex(string winName, string controlName)
+        public static int GetControlIndex(string winName, string controlName)
         {
-            long GetControlIndexRet = default;
-            long i;
-            long winIndex;
+            int GetControlIndexRet = default;
+            int winIndex;
 
             winIndex = GetWindowIndex(winName);
 
-            var loopTo = (long)(Windows[winIndex].Controls.Count - 1);
-            for (i = 0L; i <= loopTo; i++)
+            var loopTo = (Windows[winIndex].Controls.Count - 1);
+            for (int i = 0; i <= loopTo; i++)
             {
 
                 if ((Strings.LCase(Windows[winIndex].Controls[(int)i].Name) ?? "") == (Strings.LCase(controlName) ?? ""))
@@ -740,7 +738,7 @@ namespace Client
             Gui.UpdateButton(Windows.Count, "btnRegister", 12L, Windows[Windows.Count].Height - 35L, 252L, 22L, "Register Account", Core.Enum.FontType.Arial, design_norm: (long)Core.Enum.DesignType.Green, design_hover: (long)Core.Enum.DesignType.Green_Hover, design_mousedown: (long)Core.Enum.DesignType.Green_Click, callback_norm: ref argcallback_norm12, callback_hover: ref argcallback_hover12, callback_mousedown: ref argcallback_mousedown12, callback_mousemove: ref argcallback_mousemove12, callback_dblclick: ref argcallback_dblclick12);
 
             // Set the active control
-            if (!(Strings.Len(Windows[GetWindowIndex("winLogin")].Controls[(int)GetControlIndex("winLogin", "txtUsername")].Text) > 0))
+            if (!(Strings.Len(Windows[GetWindowIndex("winLogin")].Controls[GetControlIndex("winLogin", "txtUsername")].Text) > 0))
             {
                 SetActiveControl(GetWindowIndex("winLogin"), GetControlIndex("winLogin", "txtUsername"));
             }
@@ -2637,8 +2635,8 @@ namespace Client
             long yo;
             long itemNum;
 
-            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
-            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
+            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picYour")].Left;
+            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picYour")].Top;
             itemNum = General.IsTrade(xo, yo);
 
             // make sure it exists
@@ -2664,8 +2662,8 @@ namespace Client
             long x;
             long y;
 
-            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
-            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
+            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picYour")].Left;
+            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picYour")].Top;
 
             itemNum = General.IsTrade(xo, yo);
 
@@ -2711,8 +2709,8 @@ namespace Client
             long x;
             long y;
 
-            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Left;
-            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Top;
+            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picTheir")].Left;
+            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picTheir")].Top;
 
             itemNum = General.IsTrade(xo, yo);
 
@@ -2838,7 +2836,7 @@ namespace Client
         public static void chkSaveUser_Click()
         {
             {
-                var withBlock = Windows[GetWindowIndex("winLogin")].Controls[(int)GetControlIndex("winLogin", "chkSaveUsername")];
+                var withBlock = Windows[GetWindowIndex("winLogin")].Controls[GetControlIndex("winLogin", "chkSaveUsername")];
                 if (withBlock.Value == 0L) // set as false
                 {
                     Settings.Instance.SaveUsername = Conversions.ToBoolean(0);
@@ -2873,8 +2871,8 @@ namespace Client
             {
                 var withBlock = Windows[GetWindowIndex("winRegister")];
                 // .Controls(GetControlIndex("winRegister", "txtUsername")).Text = ""
-                withBlock.Controls[(int)GetControlIndex("winRegister", "txtPassword")].Text = "";
-                withBlock.Controls[(int)GetControlIndex("winRegister", "txtRetypePassword")].Text = "";
+                withBlock.Controls[GetControlIndex("winRegister", "txtPassword")].Text = "";
+                withBlock.Controls[GetControlIndex("winRegister", "txtRetypePassword")].Text = "";
                 // .Controls(GetControlIndex("winRegister", "txtCode")).Text = ""
                 // .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text = ""
                 // For i = 0 To 6
@@ -2884,7 +2882,7 @@ namespace Client
 
             {
                 var withBlock1 = Windows[GetWindowIndex("winLogin")];
-                withBlock1.Controls[(int)GetControlIndex("winLogin", "txtPassword")].Text = "";
+                withBlock1.Controls[GetControlIndex("winLogin", "txtPassword")].Text = "";
             }
         }
 
@@ -2896,9 +2894,9 @@ namespace Client
 
             {
                 var withBlock = Windows[GetWindowIndex("winRegister")];
-                User = withBlock.Controls[(int)GetControlIndex("winRegister", "txtUsername")].Text;
-                Pass = withBlock.Controls[(int)GetControlIndex("winRegister", "txtPassword")].Text;
-                pass2 = withBlock.Controls[(int)GetControlIndex("winRegister", "txtRetypePassword")].Text;
+                User = withBlock.Controls[GetControlIndex("winRegister", "txtUsername")].Text;
+                Pass = withBlock.Controls[GetControlIndex("winRegister", "txtPassword")].Text;
+                pass2 = withBlock.Controls[GetControlIndex("winRegister", "txtRetypePassword")].Text;
                 // Code = .Controls(GetControlIndex("winRegister", "txtCode")).Text
                 // Captcha = .Controls(GetControlIndex("winRegister", "txtCaptcha")).Text
 
@@ -3252,7 +3250,7 @@ namespace Client
                 GameState.NewCharJob = 0L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJobs")].Controls[(int)GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob].Name;
         }
 
         public static void btnJobs_Right()
@@ -3265,7 +3263,7 @@ namespace Client
             GameState.NewCharJob += 1L;
 
             // Update class name display
-            Windows[GetWindowIndex("winJobs")].Controls[(int)GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob ].Name;
+            Windows[GetWindowIndex("winJobs")].Controls[GetControlIndex("winJobs", "lblClassName")].Text = Core.Type.Job[(int)GameState.NewCharJob ].Name;
         }
 
         public static void btnJobs_Accept()
@@ -3334,37 +3332,37 @@ namespace Client
 
         public static void chkChat_Game()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Game] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkGame")].Value;
+            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Game] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGame")].Value;
             Settings.Save();
         }
 
         public static void chkChat_Map()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Map] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkMap")].Value;
+            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Map] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkMap")].Value;
             Settings.Save();
         }
 
         public static void chkChat_Global()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Broadcast] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkGlobal")].Value;
+            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Broadcast] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGlobal")].Value;
             Settings.Save();
         }
 
         public static void chkChat_Party()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Party] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkParty")].Value;
+            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Party] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkParty")].Value;
             Settings.Save();
         }
 
         public static void chkChat_Guild()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Guild] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkGuild")].Value;
+            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Guild] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGuild")].Value;
             Settings.Save();
         }
 
         public static void chkChat_Player()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Player] = (byte)Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "chkPlayer")].Value;
+            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Player] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkPlayer")].Value;
             Settings.Save();
         }
 
@@ -3475,10 +3473,10 @@ namespace Client
         {
             GameState.NewCharSprite = 1L;
             GameState.NewCnarGender = (long)Core.Enum.SexType.Male;
-            if (Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value == 0L)
+            if (Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "chkMale")].Value == 0L)
             {
-                Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
-                Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value = 1L;
+                Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
+                Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "chkMale")].Value = 1L;
             }
         }
 
@@ -3486,18 +3484,18 @@ namespace Client
         {
             GameState.NewCharSprite = 1L;
             GameState.NewCnarGender = (long)Core.Enum.SexType.Female;
-            if (Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value == 0L)
+            if (Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "chkFemale")].Value == 0L)
             {
-                Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 1L;
-                Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value = 0L;
+                Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "chkFemale")].Value = 1L;
+                Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "chkMale")].Value = 0L;
             }
         }
 
         public static void btnNewChar_Cancel()
         {
-            Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Text = "";
-            Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkMale")].Value = 0L;
-            Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
+            Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "txtName")].Text = "";
+            Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "chkMale")].Value = 0L;
+            Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "chkFemale")].Value = 0L;
             GameState.NewCharSprite = 1L;
             GameState.NewCnarGender = (long)Core.Enum.SexType.Male;
             HideWindows();
@@ -3507,7 +3505,7 @@ namespace Client
         public static void btnNewChar_Accept()
         {
             string name;
-            name = FilterUnsupportedCharacters(Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Text, Windows[GetWindowIndex("winNewChar")].Controls[(int)GetControlIndex("winNewChar", "txtName")].Font);
+            name = FilterUnsupportedCharacters(Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "txtName")].Text, Windows[GetWindowIndex("winNewChar")].Controls[GetControlIndex("winNewChar", "txtName")].Font);
             HideWindows();
             GameLogic.AddChar(name, (int)GameState.NewCnarGender, (int)GameState.NewCharJob, (int)GameState.NewCharSprite);
         }
@@ -3598,7 +3596,7 @@ namespace Client
                         if (Core.Type.TradeYourOffer[(int)i].Num == invNum)
                         {
                             // is currency?
-                            if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)i].Num)].Type == (byte)Core.Enum.ItemType.Currency)
+                            if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)i].Num)].Type == (byte)Core.Enum.ItemType.Currency)
                             {
                                 // only exit out if we're offering all of it
                                 if (Core.Type.TradeYourOffer[(int)i].Value == GetPlayerInvValue(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)i].Num))
@@ -3614,7 +3612,7 @@ namespace Client
                     }
 
                     // currency handler
-                    if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, (int)invNum)].Type == (byte)Core.Enum.ItemType.Currency)
+                    if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)invNum)].Type == (byte)Core.Enum.ItemType.Currency)
                     {
                         GameLogic.Dialogue("Select Amount", "Please choose how many to offer.", "", (byte)Core.Enum.DialogueType.TradeAmount, (byte)Core.Enum.DialogueStyle.Input, invNum);
                         return;
@@ -3653,7 +3651,7 @@ namespace Client
                         if (Core.Type.TradeYourOffer[(int)i].Num == itemNum)
                         {
                             // is currency?
-                            if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)i].Num)].Type == (byte)Core.Enum.ItemType.Currency)
+                            if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)i].Num)].Type == (byte)Core.Enum.ItemType.Currency)
                             {
                                 // only exit out if we're offering all of it
                                 if (Core.Type.TradeYourOffer[(int)i].Value == GetPlayerInvValue(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)i].Num))
@@ -3744,14 +3742,14 @@ namespace Client
 
         public static void Bank_MouseDown()
         {
-            long BankSlot;
+            byte bankSlot;
             long winIndex;
             long i;
 
             // is there an item?
-            BankSlot = General.IsBank(Windows[GetWindowIndex("winBank")].Left, Windows[GetWindowIndex("winBank")].Top);
+            bankSlot = General.IsBank(Windows[GetWindowIndex("winBank")].Left, Windows[GetWindowIndex("winBank")].Top);
 
-            if (BankSlot >= 0L)
+            if (bankSlot >= 0L)
             {
                 // exit out if we're offering that item
 
@@ -3759,10 +3757,10 @@ namespace Client
                 {
                     ref var withBlock = ref DragBox;
                     withBlock.Type = Core.Enum.PartType.Item;
-                    withBlock.Value = (long)GetBank(GameState.MyIndex, (byte)BankSlot);
+                    withBlock.Value = (long)GetBank(GameState.MyIndex, bankSlot);
                     withBlock.Origin = Core.Enum.PartOriginType.Bank;
 
-                    withBlock.Slot = BankSlot;
+                    withBlock.Slot = bankSlot;
                 }
 
                 winIndex = GetWindowIndex("winDragBox");
@@ -3786,16 +3784,16 @@ namespace Client
 
         public static void Bank_DblClick()
         {
-            long BankSlot;
+            byte bankSlot;
             long winIndex;
             long i;
 
             // is there an item?
-            BankSlot = General.IsBank(Windows[GetWindowIndex("winBank")].Left, Windows[GetWindowIndex("winBank")].Top);
+            bankSlot = General.IsBank(Windows[GetWindowIndex("winBank")].Left, Windows[GetWindowIndex("winBank")].Top);
 
-            if (BankSlot >= 0L)
+            if (bankSlot >= 0L)
             {
-                Bank.WithdrawItem((int)BankSlot, GetBankValue(GameState.MyIndex, (byte)BankSlot));
+                Bank.WithdrawItem((int)bankSlot, GetBankValue(GameState.MyIndex, bankSlot));
                 return;
             }
 
@@ -3930,7 +3928,7 @@ namespace Client
                                 if (DragBox.Type == Core.Enum.PartType.Item)
                                 {
 
-                                    if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
+                                    if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
                                     {
                                         Bank.DepositItem((int)DragBox.Slot, 1);
                                     }
@@ -3979,7 +3977,7 @@ namespace Client
                                 if (DragBox.Type == Core.Enum.PartType.Item)
                                 {
 
-                                    if (Core.Type.Item[(int)GetBank(GameState.MyIndex, (byte)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
+                                    if (Core.Type.Item[GetBank(GameState.MyIndex, (byte)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
                                     {
                                         Bank.WithdrawItem((int)DragBox.Slot, 0);
                                     }
@@ -4075,9 +4073,9 @@ namespace Client
                 {
                     case Core.Enum.PartOriginType.Inventory:
                         {
-                            if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
+                            if (Core.Type.Item[GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
                             {
-                                NetworkSend.SendDropItem((int)DragBox.Slot, (int)GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot));
+                                NetworkSend.SendDropItem((int)DragBox.Slot, GetPlayerInv(GameState.MyIndex, (int)DragBox.Slot));
                             }
                             else
                             {
@@ -4333,20 +4331,20 @@ namespace Client
             // set the bar labels
             {
                 var withBlock = Windows[GetWindowIndex("winBars")];
-                withBlock.Controls[(int)GetControlIndex("winBars", "lblHP")].Text = GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.HP) + "/" + GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.HP);
-                withBlock.Controls[(int)GetControlIndex("winBars", "lblMP")].Text = GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) + "/" + GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.SP);
-                withBlock.Controls[(int)GetControlIndex("winBars", "lblEXP")].Text = GetPlayerExp(GameState.MyIndex) + "/" + GameState.NextlevelExp;
+                withBlock.Controls[GetControlIndex("winBars", "lblHP")].Text = GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.HP) + "/" + GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.HP);
+                withBlock.Controls[GetControlIndex("winBars", "lblMP")].Text = GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) + "/" + GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.SP);
+                withBlock.Controls[GetControlIndex("winBars", "lblEXP")].Text = GetPlayerExp(GameState.MyIndex) + "/" + GameState.NextlevelExp;
             }
 
             // update character screen
             {
                 var withBlock1 = Windows[GetWindowIndex("winCharacter")];
-                withBlock1.Controls[(int)GetControlIndex("winCharacter", "lblHealth")].Text = "Health";
-                withBlock1.Controls[(int)GetControlIndex("winCharacter", "lblSpirit")].Text = "Spirit";
-                withBlock1.Controls[(int)GetControlIndex("winCharacter", "lblExperience")].Text = "Exp";
-                withBlock1.Controls[(int)GetControlIndex("winCharacter", "lblHealth2")].Text = GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.HP) + "/" + GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.HP);
-                withBlock1.Controls[(int)GetControlIndex("winCharacter", "lblSpirit2")].Text = GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) + "/" + GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.SP);
-                withBlock1.Controls[(int)GetControlIndex("winCharacter", "lblExperience2")].Text = Core.Type.Player[GameState.MyIndex].Exp + "/" + GameState.NextlevelExp;
+                withBlock1.Controls[GetControlIndex("winCharacter", "lblHealth")].Text = "Health";
+                withBlock1.Controls[GetControlIndex("winCharacter", "lblSpirit")].Text = "Spirit";
+                withBlock1.Controls[GetControlIndex("winCharacter", "lblExperience")].Text = "Exp";
+                withBlock1.Controls[GetControlIndex("winCharacter", "lblHealth2")].Text = GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.HP) + "/" + GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.HP);
+                withBlock1.Controls[GetControlIndex("winCharacter", "lblSpirit2")].Text = GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) + "/" + GetPlayerMaxVital(GameState.MyIndex, Core.Enum.VitalType.SP);
+                withBlock1.Controls[GetControlIndex("winCharacter", "lblExperience2")].Text = Core.Type.Player[GameState.MyIndex].Exp + "/" + GameState.NextlevelExp;
 
             }
         }
@@ -4543,8 +4541,8 @@ namespace Client
             Gui.UpdateButton(Windows.Count, "btnDown", 327L, 122L, 10L, 13L, image_norm: 5L, image_hover: 53L, image_mousedown: 5L, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick);
 
             // Custom Handlers for mouse up
-            Windows[Windows.Count].Controls[(int)GetControlIndex("winChat", "btnUp")].CallBack[(int)Core.Enum.EntState.MouseUp] = new Action(btnChat_Up_MouseUp);
-            Windows[Windows.Count].Controls[(int)GetControlIndex("winChat", "btnDown")].CallBack[(int)Core.Enum.EntState.MouseUp] = new Action(btnChat_Down_MouseUp);
+            Windows[Windows.Count].Controls[GetControlIndex("winChat", "btnUp")].CallBack[(int)Core.Enum.EntState.MouseUp] = new Action(btnChat_Up_MouseUp);
+            Windows[Windows.Count].Controls[GetControlIndex("winChat", "btnDown")].CallBack[(int)Core.Enum.EntState.MouseUp] = new Action(btnChat_Down_MouseUp);
 
             // Set the active control
             SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"));
@@ -4552,12 +4550,12 @@ namespace Client
             // sort out the tabs
             {
                 var withBlock = Windows[GetWindowIndex("winChat")];
-                withBlock.Controls[(int)GetControlIndex("winChat", "chkGame")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Game];
-                withBlock.Controls[(int)GetControlIndex("winChat", "chkMap")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Map];
-                withBlock.Controls[(int)GetControlIndex("winChat", "chkGlobal")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Broadcast];
-                withBlock.Controls[(int)GetControlIndex("winChat", "chkParty")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Party];
-                withBlock.Controls[(int)GetControlIndex("winChat", "chkGuild")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Guild];
-                withBlock.Controls[(int)GetControlIndex("winChat", "chkPlayer")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Player];
+                withBlock.Controls[GetControlIndex("winChat", "chkGame")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Game];
+                withBlock.Controls[GetControlIndex("winChat", "chkMap")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Map];
+                withBlock.Controls[GetControlIndex("winChat", "chkGlobal")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Broadcast];
+                withBlock.Controls[GetControlIndex("winChat", "chkParty")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Party];
+                withBlock.Controls[GetControlIndex("winChat", "chkGuild")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Guild];
+                withBlock.Controls[GetControlIndex("winChat", "chkPlayer")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Player];
             }
         }
 
@@ -5396,7 +5394,7 @@ namespace Client
 
                         // render bar
                         {
-                            var withBlock = Windows[GetWindowIndex("winDescription")].Controls[(int)GetControlIndex("winDescription", "picBar")];
+                            var withBlock = Windows[GetWindowIndex("winDescription")].Controls[GetControlIndex("winDescription", "picBar")];
                             if (withBlock.Visible == true)
                             {
                                 string argpath1 = System.IO.Path.Combine(Path.Gui, 45.ToString());
@@ -5670,14 +5668,14 @@ namespace Client
         {
             {
                 var withBlock = Windows[GetWindowIndex("winShop")];
-                if (withBlock.Controls[(int)GetControlIndex("winShop", "chkBuying")].Value == 0L)
+                if (withBlock.Controls[GetControlIndex("winShop", "chkBuying")].Value == 0L)
                 {
-                    withBlock.Controls[(int)GetControlIndex("winShop", "chkSelling")].Value = 0L;
+                    withBlock.Controls[GetControlIndex("winShop", "chkSelling")].Value = 0L;
                 }
                 else
                 {
-                    withBlock.Controls[(int)GetControlIndex("winShop", "chkSelling")].Value = 0L;
-                    withBlock.Controls[(int)GetControlIndex("winShop", "chkBuying")].Value = 0L;
+                    withBlock.Controls[GetControlIndex("winShop", "chkSelling")].Value = 0L;
+                    withBlock.Controls[GetControlIndex("winShop", "chkBuying")].Value = 0L;
                     return;
                 }
             }
@@ -5685,8 +5683,8 @@ namespace Client
             // show buy button, hide sell
             {
                 var withBlock1 = Windows[GetWindowIndex("winShop")];
-                withBlock1.Controls[(int)GetControlIndex("winShop", "btnSell")].Visible = false;
-                withBlock1.Controls[(int)GetControlIndex("winShop", "btnBuy")].Visible = true;
+                withBlock1.Controls[GetControlIndex("winShop", "btnSell")].Visible = false;
+                withBlock1.Controls[GetControlIndex("winShop", "btnBuy")].Visible = true;
             }
 
             // update the shop
@@ -5699,14 +5697,14 @@ namespace Client
         {
             {
                 var withBlock = Windows[GetWindowIndex("winShop")];
-                if (withBlock.Controls[(int)GetControlIndex("winShop", "chkSelling")].Value == 0L)
+                if (withBlock.Controls[GetControlIndex("winShop", "chkSelling")].Value == 0L)
                 {
-                    withBlock.Controls[(int)GetControlIndex("winShop", "chkBuying")].Value = 0L;
+                    withBlock.Controls[GetControlIndex("winShop", "chkBuying")].Value = 0L;
                 }
                 else
                 {
-                    withBlock.Controls[(int)GetControlIndex("winShop", "chkBuying")].Value = 0L;
-                    withBlock.Controls[(int)GetControlIndex("winShop", "chkSelling")].Value = 0L;
+                    withBlock.Controls[GetControlIndex("winShop", "chkBuying")].Value = 0L;
+                    withBlock.Controls[GetControlIndex("winShop", "chkSelling")].Value = 0L;
                     return;
                 }
             }
@@ -5714,8 +5712,8 @@ namespace Client
             // show sell button, hide buy
             {
                 var withBlock1 = Windows[GetWindowIndex("winShop")];
-                withBlock1.Controls[(int)GetControlIndex("winShop", "btnBuy")].Visible = false;
-                withBlock1.Controls[(int)GetControlIndex("winShop", "btnSell")].Visible = true;
+                withBlock1.Controls[GetControlIndex("winShop", "btnBuy")].Visible = false;
+                withBlock1.Controls[GetControlIndex("winShop", "btnSell")].Visible = true;
             }
 
             // update the shop
@@ -5916,7 +5914,7 @@ namespace Client
             string musicFile;
 
             // music
-            Value = Windows[GetWindowIndex("winOptions")].Controls[(int)GetControlIndex("winOptions", "chkMusic")].Value;
+            Value = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "chkMusic")].Value;
             if (Conversions.ToLong(Settings.Instance.Music) != Value)
             {
                 Settings.Instance.Music = Conversions.ToBoolean(Value);
@@ -5947,7 +5945,7 @@ namespace Client
             }
 
             // sound
-            Value = Windows[GetWindowIndex("winOptions")].Controls[(int)GetControlIndex("winOptions", "chkSound")].Value;
+            Value = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "chkSound")].Value;
             if (Conversions.ToLong(Settings.Instance.Sound) != Value)
             {
                 Settings.Instance.Sound = Conversions.ToBoolean(Value);
@@ -5963,7 +5961,7 @@ namespace Client
             }
 
             // autotiles
-            Value = Windows[GetWindowIndex("winOptions")].Controls[(int)GetControlIndex("winOptions", "chkAutotile")].Value;
+            Value = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "chkAutotile")].Value;
             if (Conversions.ToLong(Settings.Instance.Autotile) != Value)
             {
                 Settings.Instance.Autotile = Conversions.ToBoolean(Value);
@@ -5984,7 +5982,7 @@ namespace Client
             }
 
             // fullscreen
-            Value = Windows[GetWindowIndex("winOptions")].Controls[(int)GetControlIndex("winOptions", "chkFullscreen")].Value;
+            Value = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "chkFullscreen")].Value;
             if (Conversions.ToLong(Settings.Instance.Fullscreen) != Value)
             {
                 Settings.Instance.Fullscreen = Conversions.ToBoolean(Value);
@@ -5993,7 +5991,7 @@ namespace Client
 
             // resolution
             {
-                var withBlock = Windows[GetWindowIndex("winOptions")].Controls[(int)GetControlIndex("winOptions", "cmbRes")];
+                var withBlock = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "cmbRes")];
                 if (withBlock.Value > 0L & withBlock.Value <= 13L)
                 {
                     message = Conversions.ToBoolean(1);
@@ -6123,40 +6121,40 @@ namespace Client
                     // labels
                     if (GameState.shopSelectedItem > 0L)
                     {
-                        withBlock.Controls[(int)GetControlIndex("winShop", "lblName")].Text = Core.Type.Item[(int)GameState.shopSelectedItem].Name;
+                        withBlock.Controls[GetControlIndex("winShop", "lblName")].Text = Core.Type.Item[(int)GameState.shopSelectedItem].Name;
                         // check if it's gold
                         if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem == 1)
                         {
                             // it's gold
-                            withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostValue + "g";
+                            withBlock.Controls[GetControlIndex("winShop", "lblCost")].Text = Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostValue + "g";
                         }
                         // if it's one then just print the name
                         else if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostValue == 1)
                         {
-                            withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = Core.Type.Item[Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem].Name;
+                            withBlock.Controls[GetControlIndex("winShop", "lblCost")].Text = Core.Type.Item[Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem].Name;
                         }
                         else
                         {
-                            withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostValue + " " + Core.Type.Item[Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem].Name;
+                            withBlock.Controls[GetControlIndex("winShop", "lblCost")].Text = Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostValue + " " + Core.Type.Item[Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem].Name;
                         }
 
                         // draw the item
                         for (i = 0L; i <= 4L; i++)
                         {
-                            withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Image[(int)i] = Core.Type.Item[(int)GameState.shopSelectedItem].Icon;
-                            withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Texture[(int)i] = Path.Items;
+                            withBlock.Controls[GetControlIndex("winShop", "picItem")].Image[(int)i] = Core.Type.Item[(int)GameState.shopSelectedItem].Icon;
+                            withBlock.Controls[GetControlIndex("winShop", "picItem")].Texture[(int)i] = Path.Items;
                         }
                     }
                     else
                     {
-                        withBlock.Controls[(int)GetControlIndex("winShop", "lblName")].Text = "Empty Slot";
-                        withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = "";
+                        withBlock.Controls[GetControlIndex("winShop", "lblName")].Text = "Empty Slot";
+                        withBlock.Controls[GetControlIndex("winShop", "lblCost")].Text = "";
 
                         // draw the item
                         for (i = 0L; i <= 4L; i++)
                         {
-                            withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Image[(int)i] = 0L;
-                            withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Texture[(int)i] = null;
+                            withBlock.Controls[GetControlIndex("winShop", "picItem")].Image[(int)i] = 0L;
+                            withBlock.Controls[GetControlIndex("winShop", "picItem")].Texture[(int)i] = null;
                         }
                     }
                 }
@@ -6166,28 +6164,28 @@ namespace Client
                     // labels
                     if (GameState.shopSelectedItem > 0L)
                     {
-                        withBlock.Controls[(int)GetControlIndex("winShop", "lblName")].Text = Core.Type.Item[(int)GameState.shopSelectedItem].Name;
+                        withBlock.Controls[GetControlIndex("winShop", "lblName")].Text = Core.Type.Item[(int)GameState.shopSelectedItem].Name;
                         // calc cost
                         CostValue = (long)Math.Round(Core.Type.Item[(int)GameState.shopSelectedItem].Price / 100d * Core.Type.Shop[GameState.InShop].BuyRate);
-                        withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = CostValue + "g";
+                        withBlock.Controls[GetControlIndex("winShop", "lblCost")].Text = CostValue + "g";
 
                         // draw the item
                         for (i = 0L; i <= 4L; i++)
                         {
-                            withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Image[(int)i] = Core.Type.Item[(int)GameState.shopSelectedItem].Icon;
-                            withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Texture[(int)i] = Path.Items;
+                            withBlock.Controls[GetControlIndex("winShop", "picItem")].Image[(int)i] = Core.Type.Item[(int)GameState.shopSelectedItem].Icon;
+                            withBlock.Controls[GetControlIndex("winShop", "picItem")].Texture[(int)i] = Path.Items;
                         }
                     }
                     else
                     {
-                        withBlock.Controls[(int)GetControlIndex("winShop", "lblName")].Text = "Empty Slot";
-                        withBlock.Controls[(int)GetControlIndex("winShop", "lblCost")].Text = "";
+                        withBlock.Controls[GetControlIndex("winShop", "lblName")].Text = "Empty Slot";
+                        withBlock.Controls[GetControlIndex("winShop", "lblCost")].Text = "";
 
                         // draw the item
                         for (i = 0L; i <= 4L; i++)
                         {
-                            withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Image[(int)i] = 0L;
-                            withBlock.Controls[(int)GetControlIndex("winShop", "picItem")].Texture[(int)i] = null;
+                            withBlock.Controls[GetControlIndex("winShop", "picItem")].Image[(int)i] = 0L;
+                            withBlock.Controls[GetControlIndex("winShop", "picItem")].Texture[(int)i] = null;
                         }
                     }
                 }
@@ -6219,14 +6217,14 @@ namespace Client
                 // clear controls first
                 for (i = 0L; i <= 3L; i++)
                 {
-                    withBlock.Controls[(int)GetControlIndex("winParty", "lblName" + i)].Text = "";
-                    withBlock.Controls[(int)GetControlIndex("winParty", "picEmptyBar_HP" + i)].Visible = false;
-                    withBlock.Controls[(int)GetControlIndex("winParty", "picEmptyBar_SP" + i)].Visible = false;
-                    withBlock.Controls[(int)GetControlIndex("winParty", "picBar_HP" + i)].Visible = false;
-                    withBlock.Controls[(int)GetControlIndex("winParty", "picBar_SP" + i)].Visible = false;
-                    withBlock.Controls[(int)GetControlIndex("winParty", "picShadow" + i)].Visible = false;
-                    withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + i)].Visible = false;
-                    withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + i)].Value = 0L;
+                    withBlock.Controls[GetControlIndex("winParty", "lblName" + i)].Text = "";
+                    withBlock.Controls[GetControlIndex("winParty", "picEmptyBar_HP" + i)].Visible = false;
+                    withBlock.Controls[GetControlIndex("winParty", "picEmptyBar_SP" + i)].Visible = false;
+                    withBlock.Controls[GetControlIndex("winParty", "picBar_HP" + i)].Visible = false;
+                    withBlock.Controls[GetControlIndex("winParty", "picBar_SP" + i)].Visible = false;
+                    withBlock.Controls[GetControlIndex("winParty", "picShadow" + i)].Visible = false;
+                    withBlock.Controls[GetControlIndex("winParty", "picChar" + i)].Visible = false;
+                    withBlock.Controls[GetControlIndex("winParty", "picChar" + i)].Value = 0L;
                 }
 
                 // labels
@@ -6244,23 +6242,23 @@ namespace Client
                             if (IsPlaying((int)pIndex))
                             {
                                 // name and level
-                                withBlock.Controls[(int)GetControlIndex("winParty", "lblName" + cIn)].Visible = true;
-                                withBlock.Controls[(int)GetControlIndex("winParty", "lblName" + cIn)].Text = GetPlayerName((int)pIndex);
+                                withBlock.Controls[GetControlIndex("winParty", "lblName" + cIn)].Visible = true;
+                                withBlock.Controls[GetControlIndex("winParty", "lblName" + cIn)].Text = GetPlayerName((int)pIndex);
                                 // picture
-                                withBlock.Controls[(int)GetControlIndex("winParty", "picShadow" + cIn)].Visible = true;
-                                withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + cIn)].Visible = true;
+                                withBlock.Controls[GetControlIndex("winParty", "picShadow" + cIn)].Visible = true;
+                                withBlock.Controls[GetControlIndex("winParty", "picChar" + cIn)].Visible = true;
                                 // store the player's index as a value for later use
-                                withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + cIn)].Value = pIndex;
+                                withBlock.Controls[GetControlIndex("winParty", "picChar" + cIn)].Value = pIndex;
                                 for (x = 0L; x <= 4L; x++)
                                 {
-                                    withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + cIn)].Image[(int)x] = GetPlayerSprite((int)pIndex);
-                                    withBlock.Controls[(int)GetControlIndex("winParty", "picChar" + cIn)].Texture[(int)x] = Path.Characters;
+                                    withBlock.Controls[GetControlIndex("winParty", "picChar" + cIn)].Image[(int)x] = GetPlayerSprite((int)pIndex);
+                                    withBlock.Controls[GetControlIndex("winParty", "picChar" + cIn)].Texture[(int)x] = Path.Characters;
                                 }
                                 // bars
-                                withBlock.Controls[(int)GetControlIndex("winParty", "picEmptyBar_HP" + cIn)].Visible = true;
-                                withBlock.Controls[(int)GetControlIndex("winParty", "picEmptyBar_SP" + cIn)].Visible = true;
-                                withBlock.Controls[(int)GetControlIndex("winParty", "picBar_HP" + cIn)].Visible = true;
-                                withBlock.Controls[(int)GetControlIndex("winParty", "picBar_SP" + cIn)].Visible = true;
+                                withBlock.Controls[GetControlIndex("winParty", "picEmptyBar_HP" + cIn)].Visible = true;
+                                withBlock.Controls[GetControlIndex("winParty", "picEmptyBar_SP" + cIn)].Visible = true;
+                                withBlock.Controls[GetControlIndex("winParty", "picBar_HP" + cIn)].Visible = true;
+                                withBlock.Controls[GetControlIndex("winParty", "picBar_SP" + cIn)].Visible = true;
                                 // increment control usage
                                 cIn = cIn + 1L;
                             }
@@ -6762,8 +6760,8 @@ namespace Client
             long Xo;
             long Yo;
 
-            Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
-            Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
+            Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picYour")].Left;
+            Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picYour")].Top;
 
             // your items
             for (i = 0L; i < Constant.MAX_INV; i++)
@@ -6828,8 +6826,8 @@ namespace Client
             long Xo;
             long Yo;
 
-            Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Left;
-            Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Top;
+            Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picTheir")].Left;
+            Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[GetControlIndex("winTrade", "picTheir")].Top;
 
             // their items
             for (i = 0L; i < Constant.MAX_INV; i++)
@@ -6907,7 +6905,7 @@ namespace Client
             // Set the active control
             ActiveWindow = GetWindowIndex("winChat");
             SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"));
-            Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "txtChat")].Visible = true;
+            Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "txtChat")].Visible = true;
             GameState.inSmallChat = Conversions.ToBoolean(0);
             GameState.ChatScroll = 0L;
         }
@@ -6920,7 +6918,7 @@ namespace Client
             // Set the active control
             ActiveWindow = GetWindowIndex("winChat");
             SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"));
-            Windows[GetWindowIndex("winChat")].Controls[(int)GetControlIndex("winChat", "txtChat")].Visible = false;
+            Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "txtChat")].Visible = false;
 
             GameState.inSmallChat = Conversions.ToBoolean(1);
             GameState.ChatScroll = 0L;

@@ -488,13 +488,12 @@ namespace Client
             return IsSkillRet;
         }
 
-        public static long IsBank(long StartX, long StartY)
+        public static byte IsBank(long StartX, long StartY)
         {
-            long IsBankRet = default;
+            byte IsBankRet = default;
             Core.Type.RectStruct tempRec;
-            long i;
 
-            for (i = 0L; i < Constant.MAX_BANK; i++)
+            for (byte i = 0; i < Constant.MAX_BANK; i++)
             {
                 if (GetBank(GameState.MyIndex, (byte)i) > 0)
                 {
