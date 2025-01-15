@@ -2285,7 +2285,7 @@ namespace Server
         public static void Packet_TradeInvite(int index, ref byte[] data)
         {
             string Name;
-            int tradetarget;
+            int tradeTarget;
             var buffer = new ByteStream(data);
 
             Name = buffer.ReadString();
@@ -2293,31 +2293,31 @@ namespace Server
             buffer.Dispose();
 
             // Check for a player
-            tradetarget = GameLogic.FindPlayer(Name);
+            tradeTarget = GameLogic.FindPlayer(Name);
 
-            if (tradetarget < 0 | tradetarget >= Core.Constant.MAX_PLAYERS)
+            if (tradeTarget < 0 | tradeTarget >= Core.Constant.MAX_PLAYERS)
                 return;
 
             // can't trade with yourself..
-            if (tradetarget == index)
+            if (tradeTarget == index)
             {
                 NetworkSend.PlayerMsg(index, "You can't trade with yourself!", (int) ColorType.BrightRed);
                 return;
             }
 
             // send the trade request
-            Core.Type.TempPlayer[index].TradeRequest = tradetarget;
-            Core.Type.TempPlayer[tradetarget].TradeRequest = index;
+            Core.Type.TempPlayer[index].TradeRequest = tradeTarget;
+            Core.Type.TempPlayer[tradeTarget].TradeRequest = index;
 
-            NetworkSend.PlayerMsg(tradetarget, GetPlayerName(index) + " has invited you to trade.", (int) ColorType.Yellow);
-            NetworkSend.PlayerMsg(index, "You have invited " + GetPlayerName(tradetarget) + " to trade.", (int) ColorType.BrightGreen);
+            NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has invited you to trade.", (int) ColorType.Yellow);
+            NetworkSend.PlayerMsg(index, "You have invited " + GetPlayerName(tradeTarget) + " to trade.", (int) ColorType.BrightGreen);
 
-            NetworkSend.SendTradeInvite(tradetarget, index);
+            NetworkSend.SendTradeInvite(tradeTarget, index);
         }
 
         public static void Packet_HandleTradeInvite(int index, ref byte[] data)
         {
-            int tradetarget;
+            int tradeTarget;
             byte status;
             var buffer = new ByteStream(data);
 
@@ -2325,53 +2325,56 @@ namespace Server
 
             buffer.Dispose();
 
-            tradetarget = Core.Type.TempPlayer[index].TradeRequest;
+            tradeTarget = Core.Type.TempPlayer[index].TradeRequest;
+
+            if (tradeTarget < 0 | tradeTarget >= Core.Constant.MAX_PLAYERS)
+                return;
 
             if (status == 0)
             {
-                NetworkSend.PlayerMsg(tradetarget, GetPlayerName(index) + " has declined your trade request.", (int) ColorType.BrightRed);
-                NetworkSend.PlayerMsg(index, "You have declined the trade with " + GetPlayerName(tradetarget) + ".", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has declined your trade request.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "You have declined the trade with " + GetPlayerName(tradeTarget) + ".", (int) ColorType.BrightRed);
                 Core.Type.TempPlayer[index].TradeRequest = -1;
                 return;
             }
 
-            // Let them trade!
-            if (Core.Type.TempPlayer[tradetarget].TradeRequest == index)
+            // Let them tradetradeTarget
+            if (Core.Type.TempPlayer[tradeTarget].TradeRequest == index)
             {
                 // let them know they're trading
-                NetworkSend.PlayerMsg(index, "You have accepted " + GetPlayerName(tradetarget) + "'s trade request.", (int) ColorType.Yellow);
-                NetworkSend.PlayerMsg(tradetarget, GetPlayerName(index) + " has accepted your trade request.", (int) ColorType.BrightGreen);
+                NetworkSend.PlayerMsg(index, "You have accepted " + GetPlayerName(tradeTarget) + "'s trade request.", (int) ColorType.Yellow);
+                NetworkSend.PlayerMsg(tradeTarget, GetPlayerName(index) + " has accepted your trade request.", (int) ColorType.BrightGreen);
 
                 // clear the tradeRequest server-side
                 Core.Type.TempPlayer[index].TradeRequest = -1;
-                Core.Type.TempPlayer[tradetarget].TradeRequest = -1;
+                Core.Type.TempPlayer[tradeTarget].TradeRequest = -1;
 
                 // set that they're trading with each other
-                Core.Type.TempPlayer[index].InTrade = tradetarget;
+                Core.Type.TempPlayer[index].InTrade = tradeTarget;
 
                 // clear out their trade offers
-                Core.Type.TempPlayer[tradetarget].InTrade = index;
+                Core.Type.TempPlayer[tradeTarget].InTrade = index;
                 ;
                 Array.Resize(ref Core.Type.TempPlayer[index].TradeOffer, Core.Constant.MAX_INV);
-                Array.Resize(ref Core.Type.TempPlayer[tradetarget].TradeOffer, Core.Constant.MAX_INV);
+                Array.Resize(ref Core.Type.TempPlayer[tradeTarget].TradeOffer, Core.Constant.MAX_INV);
 
                 for (int i = 0, loopTo = Core.Constant.MAX_INV; i < loopTo; i++)
                 {
                     Core.Type.TempPlayer[index].TradeOffer[i].Num = -1;
                     Core.Type.TempPlayer[index].TradeOffer[i].Value = 0;
-                    Core.Type.TempPlayer[tradetarget].TradeOffer[i].Num = -1;
-                    Core.Type.TempPlayer[tradetarget].TradeOffer[i].Value = 0;
+                    Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Num = -1;
+                    Core.Type.TempPlayer[tradeTarget].TradeOffer[i].Value = 0;
                 }
 
                 // Used to init the trade window clientside
-                NetworkSend.SendTrade(index, tradetarget);
-                NetworkSend.SendTrade(tradetarget, index);
+                NetworkSend.SendTrade(index, tradeTarget);
+                NetworkSend.SendTrade(tradeTarget, index);
 
                 // Send the offer data - Used to clear their client
                 NetworkSend.SendTradeUpdate(index, 0);
                 NetworkSend.SendTradeUpdate(index, 1);
-                NetworkSend.SendTradeUpdate(tradetarget, 0);
-                NetworkSend.SendTradeUpdate(tradetarget, 1);
+                NetworkSend.SendTradeUpdate(tradeTarget, 0);
+                NetworkSend.SendTradeUpdate(tradeTarget, 1);
             }
         }
 
