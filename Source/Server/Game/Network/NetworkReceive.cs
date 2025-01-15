@@ -84,7 +84,7 @@ namespace Server
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CCloseShop] = Packet_CloseShop;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CBuyItem] = Packet_BuyItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CSellItem] = Packet_SellItem;
-            NetworkConfig.Socket.PacketID[(int)ClientPackets.CChangeBankSlots] = Packet_ChangebankSlots;
+            NetworkConfig.Socket.PacketID[(int)ClientPackets.CChangeBankSlots] = Packet_ChangeBankSlots;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CDepositItem] = Packet_DepositItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CWithdrawItem] = Packet_WithdrawItem;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CCloseBank] = Packet_CloseBank;
@@ -2213,7 +2213,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void Packet_ChangebankSlots(int index, ref byte[] data)
+        public static void Packet_ChangeBankSlots(int index, ref byte[] data)
         {
             int oldslot;
             int newslot;
