@@ -382,7 +382,7 @@ namespace Client
             if (index < 1 | index > GameState.NumPanoramas)
                 return;
 
-            string argpath = System.IO.Path.Combine(Core.Path.Panoramas + index);
+            string argpath = System.IO.Path.Combine(Core.Path.Panoramas, index.ToString());
             GameClient.RenderTexture(ref argpath, 0, 0, 0, 0, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Panoramas, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Panoramas, index.ToString())).Height, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Panoramas, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Panoramas, index.ToString())).Height);
         }
 
