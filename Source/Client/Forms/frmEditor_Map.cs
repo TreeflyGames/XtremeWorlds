@@ -741,8 +741,8 @@ namespace Client
 
         public void MapPropertiesInit()
         {
-            int X;
-            int Y;
+            int x;
+            int y;
             int i;
 
             txtName.Text = Strings.Trim(Core.Type.MyMap.Name);
@@ -820,20 +820,20 @@ namespace Client
 
             lstMapNPC.Items.Clear();
 
-            for (X = 0; X < Constant.MAX_MAP_NPCS; X++)
-                lstMapNPC.Items.Add(X + 1 + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[X]].Name));
+            for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
+                lstMapNPC.Items.Add(x + 1 + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[x]].Name));
 
             lstMapNPC.SelectedIndex = 0;
 
-            for (Y = 0; Y < Constant.MAX_NPCS; Y++)
-                cmbNPCList.Items.Add(Y + 1 + ": " + Strings.Trim(Core.Type.NPC[Y].Name));
+            for (y = 0; y < Constant.MAX_NPCS; y++)
+                cmbNPCList.Items.Add(y + 1 + ": " + Strings.Trim(Core.Type.NPC[y].Name));
 
             cmbNPCList.SelectedIndex = 0;
 
             cmbAnimation.Items.Clear();
 
-            for (Y = 0; Y < Constant.MAX_ANIMATIONS; Y++)
-                cmbAnimation.Items.Add(Y + 1 + ": " + Core.Type.Animation[Y].Name);
+            for (y = 0; y < Constant.MAX_ANIMATIONS; y++)
+                cmbAnimation.Items.Add(y + 1 + ": " + Core.Type.Animation[y].Name);
 
             cmbAnimation.SelectedIndex = 0;
 
@@ -853,7 +853,7 @@ namespace Client
 
             var loopTo4 = GameState.NumPanoramas;
             for (i = 0; i < loopTo4; i++)
-                cmbPanorama.Items.Add(i);
+                cmbPanorama.Items.Add(i + 1);
 
             cmbPanorama.SelectedIndex = Core.Type.MyMap.Panorama;
 
@@ -861,7 +861,7 @@ namespace Client
 
             var loopTo5 = GameState.NumParallax;
             for (i = 0; i < loopTo5; i++)
-                cmbParallax.Items.Add(i);
+                cmbParallax.Items.Add(i + 1);
 
             cmbParallax.SelectedIndex = Core.Type.MyMap.Parallax;
 
@@ -1597,28 +1597,26 @@ namespace Client
                 {
                     for (int i = 0; i < (int)LayerType.Count; i++)
                     {
+                        ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+                        if (!(Core.Type.MyMap.Tile[x, y].Type == Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Type) | !(withBlock.Layer[i].X == Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].X) | !(withBlock.Layer[i].Y == Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].Y) | !(withBlock.Layer[i].Tileset == Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].Tileset))
                         {
-                            ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
-                            if (!(Core.Type.MyMap.Tile[x, y].Type == Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Type) | !(withBlock.Layer[i].X == Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].X) | !(withBlock.Layer[i].Y == Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].Y) | !(withBlock.Layer[i].Tileset == Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].Tileset))
-                            {
-                                tileChanged = true;
-                            }
-
-                            withBlock.Data1 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data1;
-                            withBlock.Data2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data2;
-                            withBlock.Data3 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data3;
-                            withBlock.Data1_2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data1_2;
-                            withBlock.Data2_2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data2_2;
-                            withBlock.Data3_2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data3_2;
-                            withBlock.Type = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Type;
-                            withBlock.Type2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Type2;
-                            withBlock.DirBlock = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].DirBlock;
-                            withBlock.Layer[i].X = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].X;
-                            withBlock.Layer[i].Y = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].Y;
-                            withBlock.Layer[i].Tileset = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].Tileset;
-                            withBlock.Layer[i].AutoTile = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].AutoTile;
-                            Autotile.CacheRenderState(x, y, i);
+                            tileChanged = true;
                         }
+
+                        withBlock.Data1 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data1;
+                        withBlock.Data2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data2;
+                        withBlock.Data3 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data3;
+                        withBlock.Data1_2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data1_2;
+                        withBlock.Data2_2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data2_2;
+                        withBlock.Data3_2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Data3_2;
+                        withBlock.Type = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Type;
+                        withBlock.Type2 = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Type2;
+                        withBlock.DirBlock = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].DirBlock;
+                        withBlock.Layer[i].X = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].X;
+                        withBlock.Layer[i].Y = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].Y;
+                        withBlock.Layer[i].Tileset = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].Tileset;
+                        withBlock.Layer[i].AutoTile = Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y].Layer[i].AutoTile;
+                        Autotile.CacheRenderState(x, y, i);
                     }
                 }
             }
