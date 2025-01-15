@@ -1535,11 +1535,11 @@ namespace Client
         {
             if (GameState.HistoryIndex == GameState.MaxTileHistory - 1)
             {
-                for (int i = (int)GameState.HistoryIndex; i > 0; i--)
+                for (int i = 0; i < GameState.MaxTileHistory - 1; i++)
                 {
-                    Core.Type.TileHistory[(int)i] = Core.Type.TileHistory[(int)(i - 1)];
+                    Core.Type.TileHistory[(int)i] = Core.Type.TileHistory[(int)(i + 1)];
+                    GameState.HistoryIndex = GameState.HistoryIndex - 1;
                 }
-                GameState.HistoryIndex = GameState.HistoryIndex - 1;
             }
             else
             {
