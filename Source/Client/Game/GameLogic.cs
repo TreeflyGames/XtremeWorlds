@@ -83,6 +83,7 @@ namespace Client
                 }
             }
         }
+
         internal static bool IsInBounds()
         {
             bool IsInBoundsRet = false;
