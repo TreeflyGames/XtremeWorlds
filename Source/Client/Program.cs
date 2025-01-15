@@ -2312,7 +2312,7 @@ namespace Client
                     {
                         if (GameLogic.IsValidMapPoint(x, y))
                         {
-                            Map.DrawMapLowerTile(x, y);
+                            Map.DrawMapGroundTile(x, y);
                         }
                     }
                 }
@@ -2519,7 +2519,7 @@ namespace Client
                     {
                         if (GameLogic.IsValidMapPoint(x, y))
                         {
-                            Map.DrawMapUpperTile(x, y);
+                            Map.DrawMapRoofTile(x, y);
                         }
                     }
                 }

@@ -6,8 +6,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
-using static Core.Type;
-using SharpDX.Direct2D1;
+using static Core.Enum;
 
 namespace Client
 {
@@ -15,7 +14,7 @@ namespace Client
     static class Map
     {
         #region Drawing
-        internal static void DrawThunderEffect()
+        public static void DrawThunderEffect()
         {
             if (GameState.DrawThunder > 0)
             {
@@ -43,7 +42,7 @@ namespace Client
             }
         }
 
-        internal static void DrawWeather()
+        public static void DrawWeather()
         {
             int i;
             int spriteLeft;
@@ -67,7 +66,7 @@ namespace Client
             }
         }
 
-        internal static void DrawFog()
+        public static void DrawFog()
         {
             int fogNum = GameState.CurrentFog;
 
@@ -89,28 +88,24 @@ namespace Client
             GameClient.RenderTexture(ref argpath, dX, dY, sX, sY, dW, dH, sW, sH, (byte)GameState.CurrentFogOpacity);
         }
 
-        internal static void DrawMapLowerTile(int x, int y)
+        public static void DrawMapGroundTile(int x, int y)
         {
             int i;
             byte alpha;
             var rect = new Rectangle(0, 0, 0, 0);
 
             // Check if the map or its tile data is not ready
-            if (GameState.GettingMap || Core.Type.MyMap.Tile is null || Conversions.ToInteger(GameState.MapData) == 0)
+            if (GameState.GettingMap || Conversions.ToInteger(GameState.MapData) == 0)
                 return;
 
             // Ensure x and y are within the bounds of the map
             if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
                 return;
+
             try
             {
-
-                for (i = (int)Core.Enum.LayerType.Ground; i < (int)Core.Enum.LayerType.CoverAnim; i++)
+                for (i = (int)Core.Enum.LayerType.Ground; i <= (int)Core.Enum.LayerType.CoverAnim; i++)
                 {
-                    // Check if the tile's layer array is initialized
-                    if (Core.Type.MyMap.Tile[x, y].Layer is null)
-                        return;
-
                     // Check if this layer has a valid tileset
                     if (Core.Type.MyMap.Tile[x, y].Layer[i].Tileset > 0 && Core.Type.MyMap.Tile[x, y].Layer[i].Tileset <= GameState.NumTileSets)
                     {
@@ -123,6 +118,17 @@ namespace Client
                             rect.Height = GameState.PicY;
 
                             alpha = 255;
+
+                            if (GameState.MyEditorType == (int)EditorType.Map)
+                            {
+                                if (GameState.HideLayers)
+                                {
+                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    {
+                                        alpha = 128;
+                                    }
+                                }
+                            }
 
                             // Render the tile
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
@@ -149,29 +155,25 @@ namespace Client
 
         }
 
-        internal static void DrawMapUpperTile(int x, int y)
+        public static void DrawMapRoofTile(int x, int y)
         {
             int i;
             int alpha;
             var rect = default(Rectangle);
 
             // Exit earlyIf Type.Map is still loading or tile data is not available
-            if (GameState.GettingMap || Core.Type.MyMap.Tile is null || Conversions.ToInteger(GameState.MapData) == 0)
+            if (GameState.GettingMap || Conversions.ToInteger(GameState.MapData) == 0)
                 return;
 
             // Ensure x and y are within valid map bounds
             if (x < 0 || y < 0 || x >= Core.Type.MyMap.MaxX || y >= Core.Type.MyMap.MaxY)
                 return;
+
             try
             {
-
                 // Loop through the layers from Fringe to RoofAnim
-                for (i = (int)Core.Enum.LayerType.Fringe; i < (int)Core.Enum.LayerType.RoofAnim; i++)
+                for (i = (int)Core.Enum.LayerType.Fringe; i <= (int)Core.Enum.LayerType.RoofAnim; i++)
                 {
-                    // Ensure that the layer array exists for the current tile
-                    if (Core.Type.MyMap.Tile[x, y].Layer is null)
-                        return;
-
                     // Handle animated layers
                     if (GameState.MapAnim == 1)
                     {
@@ -203,6 +205,17 @@ namespace Client
 
                             alpha = 255;
 
+                            if (GameState.MyEditorType == (int)EditorType.Map)
+                            {
+                                if (GameState.HideLayers)
+                                {
+                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    {
+                                        alpha = 128;
+                                    }
+                                }
+                            }
+
                             // Render the tile with the calculated rectangle and transparency
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
                             GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, (byte)alpha);
@@ -229,7 +242,7 @@ namespace Client
 
         }
 
-        internal static void DrawAutoTile(int layerNum, int dX, int dY, int quarterNum, int x, int y, int forceFrame = 0, bool strict = true)
+        public static void DrawAutoTile(int layerNum, int dX, int dY, int quarterNum, int x, int y, int forceFrame = 0, bool strict = true)
         {
             var yOffset = default(int);
             var xOffset = default(int);
@@ -302,7 +315,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath, dX, dY, Core.Type.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] + xOffset, Core.Type.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] + yOffset, 16, 16, 16, 16);
         }
 
-        internal static void DrawMapTint()
+        public static void DrawMapTint()
         {
             if (Conversions.ToInteger(Core.Type.MyMap.MapTint) == 0)
                 return; // Skip if no tint is applied
@@ -333,7 +346,7 @@ namespace Client
             tintTexture.Dispose();
         }
 
-        internal static void DrawMapFade()
+        public static void DrawMapFade()
         {
             if (!GameState.UseFade)
                 return; // Exit if fading is disabled
@@ -361,7 +374,7 @@ namespace Client
             fadeTexture.Dispose();
         }
 
-        internal static void DrawPanorama(int index)
+        public static void DrawPanorama(int index)
         {
             if (Core.Type.MyMap.Indoors)
                 return;
@@ -373,7 +386,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath, 0, 0, 0, 0, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Panoramas, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Panoramas, index.ToString())).Height, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Panoramas, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Panoramas, index.ToString())).Height);
         }
 
-        internal static void DrawParallax(int index)
+        public static void DrawParallax(int index)
         {
             float horz = 0f;
             float vert = 0f;
@@ -392,7 +405,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath, (int)Math.Round(horz), (int)Math.Round(vert), 0, 0, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Parallax, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Parallax, index.ToString())).Height, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Parallax, index.ToString())).Width, GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Parallax, index.ToString())).Height);
         }
 
-        internal static void DrawPicture(int index = 0, int @type = 0)
+        public static void DrawPicture(int index = 0, int @type = 0)
         {
             if (index == 0)
             {
@@ -588,7 +601,7 @@ namespace Client
 
         #region Incoming Packets
 
-        internal static void Packet_EditMap(ref byte[] data)
+        public static void Packet_EditMap(ref byte[] data)
         {
             var buffer = new ByteStream(data);
 
@@ -1029,7 +1042,7 @@ namespace Client
 
         #region Outgoing Packets
 
-        internal static void SendPlayerRequestNewMap()
+        public static void SendPlayerRequestNewMap()
         {
             if (GameState.GettingMap)
                 return;
@@ -1053,7 +1066,7 @@ namespace Client
 
         }
 
-        internal static void SendRequestEditMap()
+        public static void SendRequestEditMap()
         {
             var buffer = new ByteStream(4);
 
@@ -1063,7 +1076,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendMap()
+        public static void SendMap()
         {
             int x;
             int y;
@@ -1270,7 +1283,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendMapRespawn()
+        public static void SendMapRespawn()
         {
             var buffer = new ByteStream(4);
 
@@ -1280,7 +1293,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void ClearMapEvents()
+        public static void ClearMapEvents()
         {
             Core.Type.MapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount];
 

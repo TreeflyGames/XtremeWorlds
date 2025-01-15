@@ -256,11 +256,11 @@ namespace Client
                     var loopTo1 = (int)withBlock.MaxY;
                     for (int y = 0; y < loopTo1; y++)
                     {
-                        withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[10];
+                        withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
                         Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
 
                         for (int i = 0; i < GameState.MaxTileHistory; i++)
-                            Core.Type.TileHistory[i].Tile[x, y].Layer = new Core.Type.TileDataStruct[10];
+                            Core.Type.TileHistory[i].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
 
                         if (x < x2)
                         {
@@ -1020,27 +1020,25 @@ namespace Client
             {
                 for (int y2 = 0, loopTo1 = Core.Type.MyMap.MaxY; y2 < loopTo1; y2++)
                 {
+                    ref var withBlock = ref Core.Type.MyMap.Tile[x2, y2];
+                    if (withBlock.Layer[CurLayer].Tileset > 0)
                     {
-                        ref var withBlock = ref Core.Type.MyMap.Tile[x2, y2];
-                        if (withBlock.Layer[CurLayer].Tileset > 0)
+                        if (!tileChanged)
                         {
-                            if (!tileChanged)
-                            {
-                                MapEditorHistory();
-                                tileChanged = true;
-                            }
-
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Data1 = withBlock.Data1;
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Data2 = withBlock.Data2;
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Data3 = withBlock.Data3;
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Type = withBlock.Type;
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].DirBlock = withBlock.DirBlock;
-
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Layer[CurLayer].X = withBlock.Layer[CurLayer].X;
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Layer[CurLayer].Y = withBlock.Layer[CurLayer].Y;
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Layer[CurLayer].Tileset = withBlock.Layer[CurLayer].Tileset;
-                            Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Layer[CurLayer].AutoTile = withBlock.Layer[CurLayer].AutoTile;
+                            MapEditorHistory();
+                            tileChanged = true;
                         }
+
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Data1 = withBlock.Data1;
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Data2 = withBlock.Data2;
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Data3 = withBlock.Data3;
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Type = withBlock.Type;
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].DirBlock = withBlock.DirBlock;
+
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Layer[CurLayer].X = withBlock.Layer[CurLayer].X;
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Layer[CurLayer].Y = withBlock.Layer[CurLayer].Y;
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Layer[CurLayer].Tileset = withBlock.Layer[CurLayer].Tileset;
+                        Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2].Layer[CurLayer].AutoTile = withBlock.Layer[CurLayer].AutoTile;
                     }
                 }
             }
@@ -1731,7 +1729,7 @@ namespace Client
                     {
                         {
                             ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
-                            Core.Type.Tile[x, y].Layer = new Core.Type.TileDataStruct[10];
+                            Core.Type.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
 
                             Core.Type.Tile[x, y].Data1 = withBlock.Data1;
                             Core.Type.Tile[x, y].Data2 = withBlock.Data2;

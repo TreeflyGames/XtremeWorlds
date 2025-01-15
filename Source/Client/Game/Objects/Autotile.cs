@@ -419,33 +419,31 @@ namespace Client
             if (x < 0 | x > Core.Type.MyMap.MaxX | y < 0 | y > Core.Type.MyMap.MaxY)
                 return;
 
-            {
-                ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
-                // check if the tile can be rendered
-                if (withBlock.Layer[layerNum].Tileset <= 0 | withBlock.Layer[layerNum].Tileset > GameState.NumTileSets)
-                {
-                    Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateNone;
-                    return;
-                }
+            ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
 
-                // check if it needs to be rendered as an autotile
-                if (withBlock.Layer[layerNum].AutoTile == GameState.AutotileNone | withBlock.Layer[layerNum].AutoTile == GameState.AutotileFake)
-                {
-                    // default to... default
-                    Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateNormal;
-                }
-                else
-                {
-                    Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateAutotile;
-                    // cache tileset positioning
-                    for (quarterNum = 0; quarterNum <= 4; quarterNum++)
-                    {
-                        Core.Type.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].X * 32 + Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].X;
-                        Core.Type.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].Y * 32 + Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].Y;
-                    }
-                }
+            // check if the tile can be rendered
+            if (withBlock.Layer[layerNum].Tileset <= 0 | withBlock.Layer[layerNum].Tileset > GameState.NumTileSets)
+            {
+                Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateNone;
+                return;
             }
 
+            // check if it needs to be rendered as an autotile
+            if (withBlock.Layer[layerNum].AutoTile == GameState.AutotileNone | withBlock.Layer[layerNum].AutoTile == GameState.AutotileFake)
+            {
+                // default to... default
+                Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateNormal;
+            }
+            else
+            {
+                Core.Type.Autotile[x, y].Layer[layerNum].RenderState = GameState.RenderStateAutotile;
+                // cache tileset positioning
+                for (quarterNum = 0; quarterNum <= 4; quarterNum++)
+                {
+                    Core.Type.Autotile[x, y].Layer[layerNum].SrcX[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].X * 32 + Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].X;
+                    Core.Type.Autotile[x, y].Layer[layerNum].SrcY[quarterNum] = Core.Type.MyMap.Tile[x, y].Layer[layerNum].Y * 32 + Core.Type.Autotile[x, y].Layer[layerNum].QuarterTile[quarterNum].Y;
+                }
+            }
         }
 
         internal static void CalculateAutotile(int x, int y, int layerNum)
