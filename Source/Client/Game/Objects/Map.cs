@@ -149,8 +149,9 @@ namespace Client
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
             }
 
         }
@@ -236,8 +237,9 @@ namespace Client
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
             }
 
         }
