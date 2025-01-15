@@ -2633,13 +2633,13 @@ namespace Client
 
         public static void TradeDblClick_Your()
         {
-            long Xo;
-            long Yo;
+            long xo;
+            long yo;
             long itemNum;
 
-            Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
-            Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
-            itemNum = General.IsTrade(Xo, Yo);
+            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
+            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
+            itemNum = General.IsTrade(xo, yo);
 
             // make sure it exists
             if (itemNum >= 0L)
@@ -2658,16 +2658,16 @@ namespace Client
 
         public static void TradeMouseMove_Your()
         {
-            long Xo;
-            long Yo;
+            long xo;
+            long yo;
             long itemNum;
-            long X;
-            long Y;
+            long x;
+            long y;
 
-            Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
-            Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
+            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Left;
+            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picYour")].Top;
 
-            itemNum = General.IsTrade(Xo, Yo);
+            itemNum = General.IsTrade(xo, yo);
 
             // make sure it exists
             if (itemNum >= 0L)
@@ -2684,18 +2684,18 @@ namespace Client
                     return;
                 }
 
-                X = Windows[GetWindowIndex("winTrade")].Left - Windows[GetWindowIndex("winDescription")].Width;
-                Y = Windows[GetWindowIndex("winTrade")].Top - 6L;
+                x = Windows[GetWindowIndex("winTrade")].Left - Windows[GetWindowIndex("winDescription")].Width;
+                y = Windows[GetWindowIndex("winTrade")].Top - 6L;
 
                 // offscreen?
-                if (X < 0L)
+                if (x < 0L)
                 {
                     // switch to right
-                    X = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Width;
+                    x = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Width;
                 }
 
                 // go go go
-                GameLogic.ShowItemDesc(X, Y, (long)GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)itemNum].Num));
+                GameLogic.ShowItemDesc(x, y, (long)GetPlayerInv(GameState.MyIndex, (int)Core.Type.TradeYourOffer[(int)itemNum].Num));
             }
             else
             {
@@ -2705,16 +2705,16 @@ namespace Client
 
         public static void TradeMouseMove_Their()
         {
-            long Xo;
-            long Yo;
+            long xo;
+            long yo;
             long itemNum;
-            long X;
-            long Y;
+            long x;
+            long y;
 
-            Xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Left;
-            Yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Top;
+            xo = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Left;
+            yo = Windows[GetWindowIndex("winTrade")].Top + Windows[GetWindowIndex("winTrade")].Controls[(int)GetControlIndex("winTrade", "picTheir")].Top;
 
-            itemNum = General.IsTrade(Xo, Yo);
+            itemNum = General.IsTrade(xo, yo);
 
             // make sure it exists
             if (itemNum >= 0L)
@@ -2726,18 +2726,18 @@ namespace Client
                 }
 
                 // calc position
-                X = Windows[GetWindowIndex("winTrade")].Left - Windows[GetWindowIndex("winDescription")].Width;
-                Y = Windows[GetWindowIndex("winTrade")].Top - 6L;
+                x = Windows[GetWindowIndex("winTrade")].Left - Windows[GetWindowIndex("winDescription")].Width;
+                y = Windows[GetWindowIndex("winTrade")].Top - 6L;
 
                 // offscreen?
-                if (X < 0L)
+                if (x < 0L)
                 {
                     // switch to right
-                    X = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Width;
+                    x = Windows[GetWindowIndex("winTrade")].Left + Windows[GetWindowIndex("winTrade")].Width;
                 }
 
                 // go go go
-                GameLogic.ShowItemDesc(X, Y, (long)Core.Type.TradeTheirOffer[(int)itemNum].Num);
+                GameLogic.ShowItemDesc(x, y, (long)Core.Type.TradeTheirOffer[(int)itemNum].Num);
             }
             else
             {
@@ -3707,8 +3707,8 @@ namespace Client
         public static void Bank_MouseMove()
         {
             long itemNum;
-            long X;
-            long Y;
+            long x;
+            long y;
             long i;
 
             // exit out early if dragging
@@ -3724,17 +3724,17 @@ namespace Client
                     return;
 
                 // calc position
-                X = Windows[GetWindowIndex("winBank")].Left - Windows[GetWindowIndex("winDescription")].Width;
-                Y = Windows[GetWindowIndex("winBank")].Top - 6L;
+                x = Windows[GetWindowIndex("winBank")].Left - Windows[GetWindowIndex("winDescription")].Width;
+                y = Windows[GetWindowIndex("winBank")].Top - 6L;
 
                 // offscreen?
-                if (X < 0L)
+                if (x < 0L)
                 {
                     // switch to right
-                    X = Windows[GetWindowIndex("winBank")].Left + Windows[GetWindowIndex("winBank")].Width;
+                    x = Windows[GetWindowIndex("winBank")].Left + Windows[GetWindowIndex("winBank")].Width;
                 }
 
-                GameLogic.ShowItemDesc(X, Y, (long)GetBank(GameState.MyIndex, (byte)itemNum));
+                GameLogic.ShowItemDesc(x, y, (long)GetBank(GameState.MyIndex, (byte)itemNum));
             }
             else
             {
@@ -5756,8 +5756,8 @@ namespace Client
         {
             long shopSlot;
             long itemNum;
-            long X;
-            long Y;
+            long x;
+            long y;
 
             if (GameState.InShop < 1 | GameState.InShop > Constant.MAX_SHOPS)
                 return;
@@ -5767,14 +5767,14 @@ namespace Client
             if (shopSlot >= 0L)
             {
                 // calc position
-                X = Windows[GetWindowIndex("winShop")].Left - Windows[GetWindowIndex("winDescription")].Width;
-                Y = Windows[GetWindowIndex("winShop")].Top - 6L;
+                x = Windows[GetWindowIndex("winShop")].Left - Windows[GetWindowIndex("winDescription")].Width;
+                y = Windows[GetWindowIndex("winShop")].Top - 6L;
 
                 // offscreen?
-                if (X < 0L)
+                if (x < 0L)
                 {
                     // switch to right
-                    X = Windows[GetWindowIndex("winShop")].Left + Windows[GetWindowIndex("winShop")].Width;
+                    x = Windows[GetWindowIndex("winShop")].Left + Windows[GetWindowIndex("winShop")].Width;
                 }
 
                 // selling/buying
@@ -5784,7 +5784,7 @@ namespace Client
                     itemNum = Core.Type.Shop[GameState.InShop].TradeItem[(int)shopSlot].Item;
                     if (itemNum == -1L)
                         return;
-                    GameLogic.ShowShopDesc(X, Y, itemNum);
+                    GameLogic.ShowShopDesc(x, y, itemNum);
                 }
                 else
                 {
@@ -5792,7 +5792,7 @@ namespace Client
                     itemNum = (long)GetPlayerInv(GameState.MyIndex, (int)shopSlot);
                     if (itemNum == -1L)
                         return;
-                    GameLogic.ShowShopDesc(X, Y, itemNum);
+                    GameLogic.ShowShopDesc(x, y, itemNum);
                 }
             }
             else

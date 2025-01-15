@@ -268,7 +268,7 @@ namespace Client
         public static double CalculateSoundVolume(ref int x, ref int y)
         {
             double CalculateSoundVolumeRet = default;
-            int X1, X2, Y1, Y2;
+            int x1, x2, y1, y2;
             double Distance;
 
             if (!(GameState.InGame == true))
@@ -290,18 +290,18 @@ namespace Client
                     x = 0;
                 if (y == -1)
                     y = 0;
-                X1 = Core.Type.Player[GameState.MyIndex].X * 32 + Core.Type.Player[GameState.MyIndex].XOffset;
-                Y1 = Core.Type.Player[GameState.MyIndex].Y * 32 + Core.Type.Player[GameState.MyIndex].YOffset;
-                X2 = x * 32;
-                Y2 = y * 32;
+                x1 = Core.Type.Player[GameState.MyIndex].X * 32 + Core.Type.Player[GameState.MyIndex].XOffset;
+                y1 = Core.Type.Player[GameState.MyIndex].Y * 32 + Core.Type.Player[GameState.MyIndex].YOffset;
+                x2 = x * 32;
+                y2 = y * 32;
 
-                if ((int)Math.Round(Math.Pow(X2 - X1, 2d)) + (int)Math.Round(Math.Pow(Y2 - Y1, 2d)) < 0)
+                if ((int)Math.Round(Math.Pow(x2 - x1, 2d)) + (int)Math.Round(Math.Pow(y2 - y1, 2d)) < 0)
                 {
-                    Distance = Math.Sqrt((int)Math.Round(Math.Pow(X2 - X1, 2d)) + (int)Math.Round(Math.Pow(Y2 - Y1, 2d)) * -1);
+                    Distance = Math.Sqrt((int)Math.Round(Math.Pow(x2 - x1, 2d)) + (int)Math.Round(Math.Pow(y2 - y1, 2d)) * -1);
                 }
                 else
                 {
-                    Distance = Math.Sqrt((int)Math.Round(Math.Pow(X2 - X1, 2d)) + (int)Math.Round(Math.Pow(Y2 - Y1, 2d)));
+                    Distance = Math.Sqrt((int)Math.Round(Math.Pow(x2 - x1, 2d)) + (int)Math.Round(Math.Pow(y2 - y1, 2d)));
                 }
 
                 // If the range is greater than 32, do not send a sound

@@ -91,7 +91,7 @@ namespace Client
 
         }
 
-        public static void PasteEvent_Map(int X, int Y)
+        public static void PasteEvent_Map(int x, int y)
         {
             int count;
             int i;
@@ -104,7 +104,7 @@ namespace Client
                 var loopTo = count;
                 for (i = 0; i < loopTo; i++)
                 {
-                    if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
+                    if (Core.Type.MyMap.Event[i].X == x & Core.Type.MyMap.Event[i].Y == y)
                     {
                         EventNum = i;
                     }
@@ -114,7 +114,7 @@ namespace Client
             // couldn't find one - create one
             if (EventNum == 0)
             {
-                AddEvent(X, Y, true);
+                AddEvent(x, y, true);
                 EventNum = count;
             }
 
@@ -122,8 +122,8 @@ namespace Client
             Core.Type.MyMap.Event[EventNum] = CopyEvent;
 
             // set position
-            Core.Type.MyMap.Event[EventNum].X = X;
-            Core.Type.MyMap.Event[EventNum].Y = Y;
+            Core.Type.MyMap.Event[EventNum].X = x;
+            Core.Type.MyMap.Event[EventNum].Y = y;
         }
 
         public static void DeleteEvent(int X, int Y)

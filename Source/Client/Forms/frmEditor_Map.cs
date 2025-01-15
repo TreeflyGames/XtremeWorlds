@@ -251,22 +251,22 @@ namespace Client
                     y2 = withBlock.MaxY;
 
                 var loopTo = (int)withBlock.MaxX;
-                for (X = 0; X < loopTo; X++)
+                for (int x = 0; x < loopTo; x++)
                 {
                     var loopTo1 = (int)withBlock.MaxY;
-                    for (Y = 0; Y < loopTo1; Y++)
+                    for (int y = 0; y < loopTo1; y++)
                     {
-                        withBlock.Tile[X, Y].Layer = new Core.Type.TileDataStruct[10];
-                        Core.Type.Autotile[X, Y].Layer = new Core.Type.QuarterTileStruct[10];
+                        withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[10];
+                        Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
 
                         for (int i = 0; i < GameState.MaxTileHistory; i++)
-                            Core.Type.TileHistory[i].Tile[X, Y].Layer = new Core.Type.TileDataStruct[10];
+                            Core.Type.TileHistory[i].Tile[x, y].Layer = new Core.Type.TileDataStruct[10];
 
-                        if (X < x2)
+                        if (x < x2)
                         {
-                            if (Y < y2)
+                            if (y < y2)
                             {
-                                withBlock.Tile[X, Y] = tempArr[X, Y];
+                                withBlock.Tile[x, y] = tempArr[x, y];
                             }
                         }
                     }
@@ -1438,7 +1438,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        public static void MapEditorSetTile(int X, int Y, int CurLayer, bool multitile = false, byte theAutotile = 0, byte eraseTile = 0)
+        public static void MapEditorSetTile(int x, int y, int CurLayer, bool multitile = false, byte theAutotile = 0, byte eraseTile = 0)
         {
             int x2;
             int y2;
@@ -1456,7 +1456,7 @@ namespace Client
 
             if (theAutotile > 0)
             {
-                ref var withBlock = ref Core.Type.MyMap.Tile[X, Y];
+                ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
                 // set layer
                 withBlock.Layer[CurLayer].X = newTileX;
                 withBlock.Layer[CurLayer].Y = newTileY;
@@ -1469,7 +1469,7 @@ namespace Client
                     withBlock.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
                 }
                 withBlock.Layer[CurLayer].AutoTile = theAutotile;
-                Autotile.CacheRenderState(X, Y, CurLayer);
+                Autotile.CacheRenderState(x, y, CurLayer);
                 
                 // do a re-init so we can see our changes
                 Autotile.InitAutotiles();
@@ -1478,7 +1478,7 @@ namespace Client
 
             if (!multitile) // single
             {
-                ref var withBlock1 = ref Core.Type.MyMap.Tile[X, Y];
+                ref var withBlock1 = ref Core.Type.MyMap.Tile[x, y];
                 // set layer
                 withBlock1.Layer[CurLayer].X = newTileX;
                 withBlock1.Layer[CurLayer].Y = newTileY;
@@ -1491,24 +1491,24 @@ namespace Client
                     withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
                 }
                 withBlock1.Layer[CurLayer].AutoTile = 0;
-                Autotile.CacheRenderState(X, Y, CurLayer);          
+                Autotile.CacheRenderState(x, y, CurLayer);          
             }
             else // multitile
             {
                 y2 = 0; // starting tile for y axis
                 var loopTo = GameState.CurY + GameState.EditorTileHeight;
-                for (Y = GameState.CurY; Y < loopTo; Y++)
+                for (y = GameState.CurY; y < loopTo; y++)
                 {
                     x2 = 0; // re-set x count every y loop
                     var loopTo1 = GameState.CurX + GameState.EditorTileWidth;
-                    for (X = GameState.CurX; X < loopTo1; X++)
+                    for (x = GameState.CurX; x < loopTo1; x++)
                     {
-                        if (X >= 0 & X < Core.Type.MyMap.MaxX)
+                        if (x >= 0 & x < Core.Type.MyMap.MaxX)
                         {
-                            if (Y >= 0 & Y < Core.Type.MyMap.MaxY)
+                            if (y >= 0 & y < Core.Type.MyMap.MaxY)
                             {
                                 {
-                                    ref var withBlock2 = ref Core.Type.MyMap.Tile[X, Y];
+                                    ref var withBlock2 = ref Core.Type.MyMap.Tile[x, y];
                                     withBlock2.Layer[CurLayer].X = newTileX + x2;
                                     withBlock2.Layer[CurLayer].Y = newTileY + y2;
                                     if (Conversions.ToBoolean(eraseTile))
@@ -1520,7 +1520,7 @@ namespace Client
                                         withBlock2.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
                                     }
                                     withBlock2.Layer[CurLayer].AutoTile = 0;
-                                    Autotile.CacheRenderState(X, Y, CurLayer);
+                                    Autotile.CacheRenderState(x, y, CurLayer);
                                 }
                             }
                         }
@@ -1533,15 +1533,13 @@ namespace Client
 
         public static void MapEditorHistory()
         {
-            long i;
-
-            if (GameState.HistoryIndex == GameState.MaxTileHistory)
+            if (GameState.HistoryIndex == GameState.MaxTileHistory - 1)
             {
-                for (i = 0L; i <= GameState.MaxTileHistory; i++)
+                for (int i = (int)GameState.HistoryIndex; i > 0; i--)
                 {
-                    Core.Type.TileHistory[(int)i] = Core.Type.TileHistory[(int)(i + 1L)];
-                    GameState.TileHistoryHighIndex = GameState.TileHistoryHighIndex - 1;
+                    Core.Type.TileHistory[(int)i] = Core.Type.TileHistory[(int)(i - 1)];
                 }
+                GameState.HistoryIndex = GameState.HistoryIndex - 1;
             }
             else
             {
@@ -1642,7 +1640,7 @@ namespace Client
                 return;
             }
 
-            if (GameState.HistoryIndex == GameState.MaxTileHistory)
+            if (GameState.HistoryIndex == GameState.MaxTileHistory - 1)
                 return;
 
             GameState.HistoryIndex = GameState.HistoryIndex + 1;

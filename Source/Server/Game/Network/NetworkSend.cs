@@ -577,26 +577,26 @@ namespace Server
                 for (int i = 0, loopTo = Core.Constant.MAX_MAP_NPCS; i < loopTo; i++)
                     buffer.WriteInt32(Core.Type.Map[mapNum].NPC[Conversions.ToInteger(i)]);
 
-                for (int X = 0, loopTo1 = Core.Type.Map[mapNum].MaxX; X < (int)loopTo1; X++)
+                for (int x = 0, loopTo1 = Core.Type.Map[mapNum].MaxX; x < (int)loopTo1; x++)
                 {
-                    for (int Y = 0, loopTo2 = Core.Type.Map[mapNum].MaxY; Y < (int)loopTo2; Y++)
+                    for (int y = 0, loopTo2 = Core.Type.Map[mapNum].MaxY; y < (int)loopTo2; y++)
                     {
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data1);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data2);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data3);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data1_2);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data2_2);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Data3_2);
-                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].DirBlock);
+                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data1);
+                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data2);
+                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data3);
+                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data1_2);
+                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data2_2);
+                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Data3_2);
+                        buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].DirBlock);
                         for (int i = 0, loopTo3 = (int)(LayerType.Count); i < loopTo3; i++)
                         {
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Layer[Conversions.ToInteger(i)].Tileset);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Layer[Conversions.ToInteger(i)].X);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Layer[Conversions.ToInteger(i)].Y);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[X, Y].Layer[Conversions.ToInteger(i)].AutoTile);
+                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[Conversions.ToInteger(i)].Tileset);
+                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[Conversions.ToInteger(i)].X);
+                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[Conversions.ToInteger(i)].Y);
+                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[Conversions.ToInteger(i)].AutoTile);
                         }
-                        buffer.WriteInt32((int)Core.Type.Map[mapNum].Tile[X, Y].Type);
-                        buffer.WriteInt32((int)Core.Type.Map[mapNum].Tile[X, Y].Type2);
+                        buffer.WriteInt32((int)Core.Type.Map[mapNum].Tile[x, y].Type);
+                        buffer.WriteInt32((int)Core.Type.Map[mapNum].Tile[x, y].Type2);
                     }
                 }
 

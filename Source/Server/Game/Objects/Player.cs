@@ -1107,7 +1107,7 @@ namespace Server
         #endregion
 
         #region Movement
-        public static void PlayerWarp(int index, int mapNum, int X, int Y, bool NoInstance = false)
+        public static void PlayerWarp(int index, int mapNum, int x, int y, bool NoInstance = false)
         {
             int OldMap;
             int i;
@@ -1118,10 +1118,10 @@ namespace Server
                 return;
 
             // Check if you are out of bounds
-            if (X > Core.Type.Map[mapNum].MaxX)
-                X = Core.Type.Map[mapNum].MaxX;
-            if (Y > Core.Type.Map[mapNum].MaxY)
-                Y = Core.Type.Map[mapNum].MaxY;
+            if (x > Core.Type.Map[mapNum].MaxX)
+                x = Core.Type.Map[mapNum].MaxX;
+            if (y > Core.Type.Map[mapNum].MaxY)
+                y = Core.Type.Map[mapNum].MaxY;
 
             Core.Type.TempPlayer[index].EventProcessingCount = 0;
             Core.Type.TempPlayer[index].EventMap.CurrentEvents = 0;
@@ -1143,16 +1143,16 @@ namespace Server
             }
 
             SetPlayerMap(index, mapNum);
-            SetPlayerX(index, X);
-            SetPlayerY(index, Y);
+            SetPlayerX(index, x);
+            SetPlayerY(index, y);
 
             if (Pet.PetAlive(index))
             {
-                Pet.SetPetX(index, X);
-                Pet.SetPetY(index, Y);
+                Pet.SetPetX(index, x);
+                Pet.SetPetY(index, y);
                 Core.Type.TempPlayer[index].PetTarget = 0;
                 Core.Type.TempPlayer[index].PetTargetType = 0;
-                Pet.SendPetXy(index, X, Y);
+                Pet.SendPetXy(index, x, y);
             }
 
             NetworkSend.SendPlayerXY(index);

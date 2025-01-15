@@ -1938,12 +1938,12 @@ namespace Client
             }
         }
 
-        public static void ShowShopDesc(long X, long Y, long itemNum)
+        public static void ShowShopDesc(long x, long y, long itemNum)
         {
             if (itemNum < 0L | itemNum > Constant.MAX_ITEMS)
                 return;
             // show
-            ShowItemDesc(X, Y, itemNum);
+            ShowItemDesc(x, y, itemNum);
         }
 
         public static void ShowEqDesc(long x, long y, long eqNum)
@@ -2180,13 +2180,13 @@ namespace Client
             }
         }
 
-        public static void ShowPlayerMenu(long Index, long X, long Y)
+        public static void ShowPlayerMenu(long Index, long x, long y)
         {
             GameState.PlayerMenuIndex = Index;
             if (GameState.PlayerMenuIndex == 0L | GameState.PlayerMenuIndex == GameState.MyIndex)
                 return;
-            Gui.Windows[Gui.GetWindowIndex("winPlayerMenu")].Left = X - 5L;
-            Gui.Windows[Gui.GetWindowIndex("winPlayerMenu")].Top = Y - 5L;
+            Gui.Windows[Gui.GetWindowIndex("winPlayerMenu")].Left = x - 5L;
+            Gui.Windows[Gui.GetWindowIndex("winPlayerMenu")].Top = y - 5L;
             Gui.Windows[Gui.GetWindowIndex("winPlayerMenu")].Controls[(int)Gui.GetControlIndex("winPlayerMenu", "btnName")].Text = GetPlayerName((int)GameState.PlayerMenuIndex);
             Gui.ShowWindow(Gui.GetWindowIndex("winRightClickBG"));
             Gui.ShowWindow(Gui.GetWindowIndex("winPlayerMenu"));
