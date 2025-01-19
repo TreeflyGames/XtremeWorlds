@@ -898,7 +898,7 @@ namespace Client
                         // Admin warp if Shift is held and the player has moderator access
                         if (GetPlayerAccess(GameState.MyIndex) >= (int)AccessType.Moderator)
                         {
-                            NetworkSend.AdminWarp(CurrentMouseState.X, CurrentMouseState.Y);
+                            NetworkSend.AdminWarp(GameState.CurX, GameState.CurY);
                         }
                     }
                     else
@@ -1152,7 +1152,7 @@ namespace Client
             RenderTexture(ref argpath, x, y, rec.X, rec.Y, rec.Width, rec.Height);
         }
 
-        internal void DrawDirections(int x, int y)
+        public static void DrawDirections(int x, int y)
         {
             Rectangle rec;
             int i;
@@ -2009,7 +2009,7 @@ namespace Client
             }
         }
 
-        internal void DrawEvents()
+        public static void DrawEvents()
         {
             if (Core.Type.MyMap.EventCount <= 0)
                 return; // Exit early if no events
@@ -2272,7 +2272,7 @@ namespace Client
 
         }
 
-        internal void Render_Game()
+        public static void Render_Game()
         {
             int x;
             int y;
@@ -2632,7 +2632,7 @@ namespace Client
             RenderTexture(ref argpath, GameState.CurMouseX, GameState.CurMouseY, 0, 0, 16, 16, 32, 32);
         }
 
-        internal void Render_Menu()
+        public static void Render_Menu()
         {
             Gui.DrawMenuBG();
             Gui.Render();

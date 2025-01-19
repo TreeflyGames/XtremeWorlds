@@ -2269,6 +2269,9 @@ namespace Server
             x = buffer.ReadInt32();
             y = buffer.ReadInt32();
 
+            if (x < 0 || x > Core.Type.Map[GetPlayerMap(index)].MaxX || y < 0 || y > Core.Type.Map[GetPlayerMap(index)].MaxY)
+                return;
+
             if (GetPlayerAccess(index) >= (byte) AccessType.Mapper)
             {
                 // Set the information
