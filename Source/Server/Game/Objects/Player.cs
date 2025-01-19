@@ -988,7 +988,7 @@ namespace Server
                                         // Here it is, drop this piece of equipment!
                                         NetworkSend.PlayerMsg(victim, "In death you lost grip on your " + Core.Type.Item[GetPlayerEquipment(victim, (EquipmentType)x)].Name, (int) ColorType.BrightRed);
                                         Item.SpawnItem(GetPlayerEquipment(victim, (EquipmentType)x), 1, GetPlayerMap(victim), GetPlayerX(victim), GetPlayerY(victim));
-                                        SetPlayerEquipment(victim, 0, (EquipmentType)x);
+                                        SetPlayerEquipment(victim, -1, (EquipmentType)x);
                                         NetworkSend.SendWornEquipment(victim);
                                         NetworkSend.SendMapEquipment(victim);
                                     }
@@ -2643,35 +2643,35 @@ namespace Server
                             {
 
                                 if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Weapon)
-                                    SetPlayerEquipment(index, 0, (EquipmentType)i);
+                                    SetPlayerEquipment(index, -1, (EquipmentType)i);
                                 break;
                             }
                         case (byte)EquipmentType.Armor:
                             {
 
                                 if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Armor)
-                                    SetPlayerEquipment(index, 0, (EquipmentType)i);
+                                    SetPlayerEquipment(index, -1, (EquipmentType)i);
                                 break;
                             }
                         case (byte)EquipmentType.Helmet:
                             {
 
                                 if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Helmet)
-                                    SetPlayerEquipment(index, 0, (EquipmentType)i);
+                                    SetPlayerEquipment(index, -1, (EquipmentType)i);
                                 break;
                             }
                         case (byte)EquipmentType.Shield:
                             {
 
                                 if (Core.Type.Item[(int)itemNum].SubType != (byte)EquipmentType.Shield)
-                                    SetPlayerEquipment(index, 0, (EquipmentType)i);
+                                    SetPlayerEquipment(index, -1, (EquipmentType)i);
                                 break;
                             }
                     }
                 }
                 else
                 {
-                    SetPlayerEquipment(index, 0, (EquipmentType)i);
+                    SetPlayerEquipment(index, -1, (EquipmentType)i);
                 }
 
             }
@@ -2701,7 +2701,7 @@ namespace Server
                 NetworkSend.PlayerMsg(index, "You unequip " + GameLogic.CheckGrammar(Core.Type.Item[GetPlayerEquipment(index, (EquipmentType)EqSlot)].Name), (int) ColorType.Yellow);
 
                 // remove equipment
-                SetPlayerEquipment(index, 0, (EquipmentType)EqSlot);
+                SetPlayerEquipment(index, -1, (EquipmentType)EqSlot);
                 NetworkSend.SendWornEquipment(index);
                 NetworkSend.SendMapEquipment(index);
                 NetworkSend.SendStats(index);
