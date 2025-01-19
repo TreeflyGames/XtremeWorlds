@@ -1416,7 +1416,7 @@ namespace Server
                         break;
                     }
 
-                case var case5 when case5 == (byte) DirectionType.UpLeft:
+                case (byte) DirectionType.UpLeft:
                     {
                         // Check to make sure not outside of boundaries
                         if (GetPlayerY(index) > 0 && GetPlayerX(index) > 0)

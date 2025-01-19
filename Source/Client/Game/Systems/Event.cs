@@ -2602,7 +2602,7 @@ namespace Client
                         frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Clear();
                         var loopTo2 = Core.Type.MyMap.EventCount;
                         for (i = 0; i < loopTo2; i++)
-                            frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
+                            frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Add(i + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                         frmEditor_Event.Instance.cmbPlayAnimEvent.SelectedIndex = 0;
                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 == 0)
                         {

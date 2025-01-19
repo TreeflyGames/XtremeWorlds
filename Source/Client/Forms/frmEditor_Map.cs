@@ -1505,22 +1505,20 @@ namespace Client
                         {
                             if (y >= 0 & y < Core.Type.MyMap.MaxY)
                             {
+                                ref var withBlock2 = ref Core.Type.MyMap.Tile[x, y];
+                                withBlock2.Layer[CurLayer].X = newTileX + x2;
+                                withBlock2.Layer[CurLayer].Y = newTileY + y2;
+                                if (Conversions.ToBoolean(eraseTile))
                                 {
-                                    ref var withBlock2 = ref Core.Type.MyMap.Tile[x, y];
-                                    withBlock2.Layer[CurLayer].X = newTileX + x2;
-                                    withBlock2.Layer[CurLayer].Y = newTileY + y2;
-                                    if (Conversions.ToBoolean(eraseTile))
-                                    {
-                                        withBlock2.Layer[CurLayer].Tileset = 0;
-                                    }
-                                    else
-                                    {
-                                        withBlock2.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
-                                    }
-                                    withBlock2.Layer[CurLayer].AutoTile = 0;
-                                    Autotile.CacheRenderState(x, y, CurLayer);
+                                    withBlock2.Layer[CurLayer].Tileset = 0;
                                 }
-                            }
+                                else
+                                {
+                                    withBlock2.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
+                                }
+                                withBlock2.Layer[CurLayer].AutoTile = 0;
+                                Autotile.CacheRenderState(x, y, CurLayer);
+                            }                         
                         }
                         x2 += 1;
                     }

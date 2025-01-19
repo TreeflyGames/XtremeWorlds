@@ -24,7 +24,7 @@ namespace Client
             cmbCondition_PlayerVarIndex.Items.Clear();
 
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
-                cmbCondition_PlayerVarIndex.Items.Add(i  + 1 + ". " + Event.Variables[i]);
+                cmbCondition_PlayerVarIndex.Items.Add(i + 1 + ". " + Event.Variables[i]);
             cmbCondition_PlayerVarIndex.SelectedIndex = 0;
             cmbCondition_PlayerVarCompare.SelectedIndex = 0;
             cmbCondition_PlayerVarCompare.Enabled = false;
@@ -34,7 +34,7 @@ namespace Client
             cmbCondition_PlayerSwitch.Items.Clear();
 
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
-                cmbCondition_PlayerSwitch.Items.Add(i  + 1 + ". " + Event.Switches[i]);
+                cmbCondition_PlayerSwitch.Items.Add(i + 1 + ". " + Event.Switches[i]);
             cmbCondition_PlayerSwitch.SelectedIndex = 0;
             cmbCondtion_PlayerSwitchCondition.Enabled = false;
             cmbCondtion_PlayerSwitchCondition.SelectedIndex = 0;
@@ -42,7 +42,7 @@ namespace Client
             cmbCondition_HasItem.Items.Clear();
 
             for (i = 0; i < Constant.MAX_ITEMS; i++)
-                cmbCondition_HasItem.Items.Add(i  + 1 + ". " + Core.Type.Item[i].Name);
+                cmbCondition_HasItem.Items.Add(i + 1 + ". " + Core.Type.Item[i].Name);
             cmbCondition_HasItem.SelectedIndex = 0;
             nudCondition_HasItem.Enabled = false;
             nudCondition_HasItem.Value = 1m;
@@ -50,13 +50,13 @@ namespace Client
             cmbCondition_JobIs.Items.Clear();
 
             for (i = 0; i < Constant.MAX_JOBS; i++)
-                cmbCondition_JobIs.Items.Add(i  + 1 + ". " + Core.Type.Job[i].Name);
+                cmbCondition_JobIs.Items.Add(i + 1 + ". " + Core.Type.Job[i].Name);
             cmbCondition_JobIs.SelectedIndex = 0;
             cmbCondition_LearntSkill.Enabled = false;
             cmbCondition_LearntSkill.Items.Clear();
 
             for (i = 0; i < Constant.MAX_SKILLS; i++)
-                cmbCondition_LearntSkill.Items.Add(i  + 1 + ". " + Strings.Trim(Core.Type.Skill[i].Name));
+                cmbCondition_LearntSkill.Items.Add(i + 1 + ". " + Strings.Trim(Core.Type.Skill[i].Name));
             cmbCondition_LearntSkill.SelectedIndex = 0;
             cmbCondition_LevelCompare.Enabled = false;
             cmbCondition_LevelCompare.SelectedIndex = 0;
@@ -87,12 +87,12 @@ namespace Client
 
             cmbSwitch.Items.Clear();
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
-                cmbSwitch.Items.Add(i  + 1 + ". " + Event.Switches[i]);
+                cmbSwitch.Items.Add(i + 1 + ". " + Event.Switches[i]);
             cmbSwitch.SelectedIndex = 0;
             cmbVariable.Items.Clear();
 
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
-                cmbVariable.Items.Add(i  + 1 + ". " + Event.Variables[i]);
+                cmbVariable.Items.Add(i + 1 + ". " + Event.Variables[i]);
             cmbVariable.SelectedIndex = 0;
             cmbChangeItemIndex.Items.Clear();
             for (i = 0; i < Constant.MAX_ITEMS; i++)
@@ -115,7 +115,7 @@ namespace Client
             cmbPlayAnim.Items.Clear();
 
             for (i = 0; i < Constant.MAX_ANIMATIONS; i++)
-                cmbPlayAnim.Items.Add(i  + 1 + ". " + Core.Type.Animation[i].Name);
+                cmbPlayAnim.Items.Add(i + 1 + ". " + Core.Type.Animation[i].Name);
             cmbPlayAnim.SelectedIndex = 0;
 
             cmbPlayBGM.Items.Clear();
@@ -135,7 +135,7 @@ namespace Client
             cmbOpenShop.Items.Clear();
 
             for (i = 0; i < Constant.MAX_SHOPS; i++)
-                cmbOpenShop.Items.Add(i  + 1 + ". " + Core.Type.Shop[i].Name);
+                cmbOpenShop.Items.Add(i + 1 + ". " + Core.Type.Shop[i].Name);
             cmbOpenShop.SelectedIndex = 0;
             cmbSpawnNPC.Items.Clear();
 
@@ -143,7 +143,7 @@ namespace Client
             {
                 if (Core.Type.MyMap.NPC[i] > 0)
                 {
-                    cmbSpawnNPC.Items.Add(i  + 1 + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
+                    cmbSpawnNPC.Items.Add(i + 1 + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
                 }
                 else
                 {
@@ -185,11 +185,11 @@ namespace Client
             // variables
             cmbPlayerVar.Items.Clear();
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
-                cmbPlayerVar.Items.Add(i  + 1 + ". " + Event.Variables[i]);
+                cmbPlayerVar.Items.Add(i + 1 + ". " + Event.Variables[i]);
             // switches
             cmbPlayerSwitch.Items.Clear();
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
-                cmbPlayerSwitch.Items.Add(i  + 1 + ". " + Event.Switches[i]);
+                cmbPlayerSwitch.Items.Add(i + 1 + ". " + Event.Switches[i]);
             cmbSelfSwitch.SelectedIndex = 0;
 
             // enable delete button
@@ -825,7 +825,7 @@ namespace Client
                         cmbPlayAnimEvent.Items.Clear();
 
                         for (int i = 0, loopTo2 = Core.Type.MyMap.EventCount; i < loopTo2; i++)
-                            cmbPlayAnimEvent.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
+                            cmbPlayAnimEvent.Items.Add(i + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                         cmbPlayAnimEvent.SelectedIndex = 0;
                         cmbAnimTargetType.SelectedIndex = 0;
                         cmbPlayAnim.SelectedIndex = 0;
@@ -2452,7 +2452,7 @@ namespace Client
                     }
                     else
                     {
-                        cmbChatBubbleTarget.Items.Add(i  + 1 + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
+                        cmbChatBubbleTarget.Items.Add(i + 1 + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[i]].Name);
                     }
                 }
                 cmbChatBubbleTarget.SelectedIndex = 0;
@@ -2463,7 +2463,7 @@ namespace Client
                 cmbChatBubbleTarget.Items.Clear();
 
                 for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
-                    cmbChatBubbleTarget.Items.Add(i  + 1 + ". " + Core.Type.MyMap.Event[i].Name);
+                    cmbChatBubbleTarget.Items.Add(i + 1 + ". " + Core.Type.MyMap.Event[i].Name);
                 cmbChatBubbleTarget.SelectedIndex = 0;
             }
 
