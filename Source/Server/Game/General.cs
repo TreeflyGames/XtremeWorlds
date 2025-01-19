@@ -139,18 +139,6 @@ namespace Server
 
         }
 
-        private static bool ConsoleEventCallback(int eventType)
-        {
-            if (eventType == 2)
-            {
-                Console.WriteLine("Console window closing, death imminent");
-                // cleanup and close
-                DestroyServer();
-            }
-
-            return default;
-        }
-
         private static ConsoleEventDelegate handler;
 
         // Keeps it from getting garbage collected
