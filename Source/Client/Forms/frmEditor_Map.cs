@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using System.Windows.Forms;
+using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
@@ -35,6 +36,8 @@ namespace Client
             GameState.DirArrowY[(int)DirectionType.Left] = 12;
             GameState.DirArrowX[(int)DirectionType.Right] = 23;
             GameState.DirArrowY[(int)DirectionType.Right] = 12;
+
+            ToolStrip.BringToFront();
 
             scrlFog.Maximum = GameState.NumFogs;
         }
@@ -162,16 +165,6 @@ namespace Client
 
             // Right border
             spriteBatch.Draw(GameClient.PixelTexture, new Rectangle(selectionRect.X + selectionRect.Width - lineThickness, selectionRect.Y, lineThickness, selectionRect.Height), Color.Red);
-        }
-
-        private void DrawRectangleOutline(SpriteBatch spriteBatch, Rectangle rect, Color color)
-        {
-            // Draw lines to form a rectangle outline
-            int lineThickness = 1; // Change as needed
-            spriteBatch.Draw(GameClient.PixelTexture, new Rectangle(rect.X, rect.Y, rect.Width, lineThickness), color); // Top
-            spriteBatch.Draw(GameClient.PixelTexture, new Rectangle(rect.X, rect.Y, lineThickness, rect.Height), color); // Left
-            spriteBatch.Draw(GameClient.PixelTexture, new Rectangle(rect.X + rect.Width - lineThickness, rect.Y, lineThickness, rect.Height), color); // Right
-            spriteBatch.Draw(GameClient.PixelTexture, new Rectangle(rect.X, rect.Y + rect.Height - lineThickness, rect.Width, lineThickness), color); // Bottom
         }
 
         #endregion

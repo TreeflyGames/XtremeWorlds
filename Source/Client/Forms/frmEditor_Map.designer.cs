@@ -917,12 +917,13 @@ namespace Client
             // 
             // ToolStrip
             // 
+            ToolStrip.AutoSize = false;
             ToolStrip.ImageScalingSize = new Size(24, 24);
             ToolStrip.Items.AddRange(new ToolStripItem[] { tsbSave, tsbDiscard, ToolStripSeparator1, tsbMapGrid, tsbOpacity, tsbLight, ToolStripSeparator2, tsbFill, tsbClear, tsbEyeDropper, tsbCopyMap, tsbDeleteMap, tsbUndo, tsbRedo, tsbScreenshot });
             ToolStrip.Location = new Point(0, 0);
             ToolStrip.Name = "ToolStrip";
             ToolStrip.Padding = new Padding(0, 0, 2, 0);
-            ToolStrip.Size = new Size(552, 31);
+            ToolStrip.Size = new Size(552, 28);
             ToolStrip.TabIndex = 13;
             ToolStrip.Text = "ToolStrip1";
             // 
@@ -931,7 +932,7 @@ namespace Client
             tsbSave.Image = (Image)resources.GetObject("tsbSave.Image");
             tsbSave.ImageTransparentColor = Color.Magenta;
             tsbSave.Name = "tsbSave";
-            tsbSave.Size = new Size(28, 28);
+            tsbSave.Size = new Size(28, 25);
             tsbSave.ToolTipText = "Save";
             tsbSave.Click += TsbSave_Click;
             // 
@@ -940,21 +941,21 @@ namespace Client
             tsbDiscard.Image = (Image)resources.GetObject("tsbDiscard.Image");
             tsbDiscard.ImageTransparentColor = Color.Magenta;
             tsbDiscard.Name = "tsbDiscard";
-            tsbDiscard.Size = new Size(28, 28);
+            tsbDiscard.Size = new Size(28, 25);
             tsbDiscard.ToolTipText = "Discard";
             tsbDiscard.Click += TsbDiscard_Click;
             // 
             // ToolStripSeparator1
             // 
             ToolStripSeparator1.Name = "ToolStripSeparator1";
-            ToolStripSeparator1.Size = new Size(6, 31);
+            ToolStripSeparator1.Size = new Size(6, 28);
             // 
             // tsbMapGrid
             // 
             tsbMapGrid.Image = (Image)resources.GetObject("tsbMapGrid.Image");
             tsbMapGrid.ImageTransparentColor = Color.Magenta;
             tsbMapGrid.Name = "tsbMapGrid";
-            tsbMapGrid.Size = new Size(28, 28);
+            tsbMapGrid.Size = new Size(28, 25);
             tsbMapGrid.Tag = "Map Grid";
             tsbMapGrid.Click += TsbMapGrid_Click;
             // 
@@ -964,7 +965,7 @@ namespace Client
             tsbOpacity.Image = (Image)resources.GetObject("tsbOpacity.Image");
             tsbOpacity.ImageTransparentColor = Color.Magenta;
             tsbOpacity.Name = "tsbOpacity";
-            tsbOpacity.Size = new Size(28, 28);
+            tsbOpacity.Size = new Size(28, 25);
             tsbOpacity.Text = "ToolStripButton1";
             tsbOpacity.ToolTipText = "Opacity";
             tsbOpacity.Click += tsbOpacity_Click;
@@ -975,21 +976,21 @@ namespace Client
             tsbLight.Image = (Image)resources.GetObject("tsbLight.Image");
             tsbLight.ImageTransparentColor = Color.Magenta;
             tsbLight.Name = "tsbLight";
-            tsbLight.Size = new Size(28, 28);
+            tsbLight.Size = new Size(28, 25);
             tsbLight.ToolTipText = "Light";
             tsbLight.Click += tsbLight_Click;
             // 
             // ToolStripSeparator2
             // 
             ToolStripSeparator2.Name = "ToolStripSeparator2";
-            ToolStripSeparator2.Size = new Size(6, 31);
+            ToolStripSeparator2.Size = new Size(6, 28);
             // 
             // tsbFill
             // 
             tsbFill.Image = (Image)resources.GetObject("tsbFill.Image");
             tsbFill.ImageTransparentColor = Color.Magenta;
             tsbFill.Name = "tsbFill";
-            tsbFill.Size = new Size(28, 28);
+            tsbFill.Size = new Size(28, 25);
             tsbFill.Tag = "Fill";
             tsbFill.ToolTipText = "Fill Layer";
             tsbFill.Click += TsbFill_Click;
@@ -999,7 +1000,7 @@ namespace Client
             tsbClear.Image = (Image)resources.GetObject("tsbClear.Image");
             tsbClear.ImageTransparentColor = Color.Magenta;
             tsbClear.Name = "tsbClear";
-            tsbClear.Size = new Size(28, 28);
+            tsbClear.Size = new Size(28, 25);
             tsbClear.ToolTipText = "Erase";
             tsbClear.Click += TsbClear_Click;
             // 
@@ -1008,7 +1009,7 @@ namespace Client
             tsbEyeDropper.Image = (Image)resources.GetObject("tsbEyeDropper.Image");
             tsbEyeDropper.ImageTransparentColor = Color.Magenta;
             tsbEyeDropper.Name = "tsbEyeDropper";
-            tsbEyeDropper.Size = new Size(28, 28);
+            tsbEyeDropper.Size = new Size(28, 25);
             tsbEyeDropper.ToolTipText = "Eye Dropper";
             tsbEyeDropper.Click += TsbEyeDropper_Click;
             // 
@@ -1018,7 +1019,7 @@ namespace Client
             tsbCopyMap.Image = (Image)resources.GetObject("tsbCopyMap.Image");
             tsbCopyMap.ImageTransparentColor = Color.Magenta;
             tsbCopyMap.Name = "tsbCopyMap";
-            tsbCopyMap.Size = new Size(28, 28);
+            tsbCopyMap.Size = new Size(28, 25);
             tsbCopyMap.ToolTipText = "Copy";
             tsbCopyMap.Click += tsbCopyMap_Click;
             // 
@@ -1028,7 +1029,7 @@ namespace Client
             tsbDeleteMap.Image = (Image)resources.GetObject("tsbDeleteMap.Image");
             tsbDeleteMap.ImageTransparentColor = Color.Magenta;
             tsbDeleteMap.Name = "tsbDeleteMap";
-            tsbDeleteMap.Size = new Size(28, 28);
+            tsbDeleteMap.Size = new Size(28, 25);
             tsbDeleteMap.ToolTipText = "Delete Map";
             tsbDeleteMap.Click += tsbDeleteMap_Click;
             // 
@@ -1038,7 +1039,7 @@ namespace Client
             tsbUndo.Image = (Image)resources.GetObject("tsbUndo.Image");
             tsbUndo.ImageTransparentColor = Color.Magenta;
             tsbUndo.Name = "tsbUndo";
-            tsbUndo.Size = new Size(28, 28);
+            tsbUndo.Size = new Size(28, 25);
             tsbUndo.ToolTipText = "Undo";
             tsbUndo.Click += tsbUndo_Click;
             // 
@@ -1048,7 +1049,7 @@ namespace Client
             tsbRedo.Image = (Image)resources.GetObject("tsbRedo.Image");
             tsbRedo.ImageTransparentColor = Color.Magenta;
             tsbRedo.Name = "tsbRedo";
-            tsbRedo.Size = new Size(28, 28);
+            tsbRedo.Size = new Size(28, 25);
             tsbRedo.ToolTipText = "Redo";
             tsbRedo.Click += tsbRedo_Click;
             // 
@@ -1058,7 +1059,7 @@ namespace Client
             tsbScreenshot.Image = (Image)resources.GetObject("tsbScreenshot.Image");
             tsbScreenshot.ImageTransparentColor = Color.Magenta;
             tsbScreenshot.Name = "tsbScreenshot";
-            tsbScreenshot.Size = new Size(28, 28);
+            tsbScreenshot.Size = new Size(28, 25);
             tsbScreenshot.ToolTipText = "Screenshot";
             tsbScreenshot.Click += tsbScreenshot_Click;
             // 
@@ -2175,7 +2176,6 @@ namespace Client
             GroupBox1.ResumeLayout(false);
             GroupBox1.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         internal Panel pnlBack;
