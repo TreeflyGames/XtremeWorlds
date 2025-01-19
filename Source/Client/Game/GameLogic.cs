@@ -1985,65 +1985,65 @@ namespace Client
             {
                 case (int)Core.Enum.EditorType.Item:
                     {
-                        frmEditor_Item.Instance.Dispose();
+                        frmEditor_Item.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Job:
                     {
-                        frmEditor_Job.Instance.Dispose();
+                        frmEditor_Job.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Map:
                     {
-                        frmEditor_Map.Instance.Dispose();
-                        frmEditor_Event.Instance.Dispose();
+                        frmEditor_Map.Instance?.Dispose();
+                        frmEditor_Event.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.NPC:
                     {
-                        frmEditor_NPC.Instance.Dispose();
+                        frmEditor_NPC.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Pet:
                     {
-                        frmEditor_Pet.Instance.Dispose();
+                        frmEditor_Pet.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Projectile:
                     {
-                        frmEditor_Projectile.Instance.Dispose();
+                        frmEditor_Projectile.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Resource:
                     {
-                        frmEditor_Resource.Instance.Dispose();
+                        frmEditor_Resource.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Shop:
                     {
-                        frmEditor_Shop.Instance.Dispose();
+                        frmEditor_Shop.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Skill:
                     {
-                        frmEditor_Skill.Instance.Dispose();
+                        frmEditor_Skill.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Animation:
                     {
-                        frmEditor_Animation.Instance.Dispose();
+                        frmEditor_Animation.Instance?.Dispose();
                         break;
                     }
                 case (int)Core.Enum.EditorType.Moral:
                     {
-                        frmEditor_Moral.Instance.Dispose();
+                        frmEditor_Moral.Instance?.Dispose();
                         break;
                     }
             }
 
             if (GameState.AdminPanel)
             {
-                FrmAdmin.Instance.Dispose();
+                FrmAdmin.Instance?.Dispose();
             }
 
             NetworkConfig.DestroyNetwork();
