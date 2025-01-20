@@ -130,6 +130,11 @@ namespace Mirage.Sharp.Asfw.Network
     // Callback for handling the end of the disconnect
     private void DoDisconnect(IAsyncResult ar)
     {
+        if (_socket is null)
+        {
+            return;
+        }
+
         int index = (int)ar.AsyncState;
 
         try
