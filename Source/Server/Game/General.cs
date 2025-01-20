@@ -62,8 +62,8 @@ namespace Server
             IEngineServiceContainer serviceContainer = new EngineServiceContainer(loggerFactory, Configuration)
                 .FindServiceLoaders()
                 .AddServices()
-                .ConfigureServices()
-                .BuildServiceProvider();
+                .BuildServiceProvider()
+                .ConfigureServices();
             Services = serviceContainer;
 
             Settings.Load();
