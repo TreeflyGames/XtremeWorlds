@@ -39,16 +39,16 @@ namespace Client
             // Create a configuration builder and ojbect.
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.server.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.server.secret.json", optional: true, reloadOnChange: true);
+                .AddJsonFile("appsettings.client.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.client.secret.json", optional: true, reloadOnChange: true);
             Configuration = configurationBuilder.Build();
 
             // Create the service container.
             IEngineServiceContainer serviceContainer = new EngineServiceContainer(loggerFactory, Configuration)
                 .FindServiceLoaders()
                 .AddServices()
-                .ConfigureServices()
-                .BuildServiceProvider();
+                .BuildServiceProvider()
+                .ConfigureServices();
             Services = serviceContainer;
 
             GameState.InMenu = true;
