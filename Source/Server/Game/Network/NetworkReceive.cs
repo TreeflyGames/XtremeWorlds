@@ -1101,7 +1101,7 @@ namespace Server
             Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
             var loopTo = Core.Constant.MAX_MAP_NPCS;
-            for (x = 0; x < (int)loopTo; x++)
+            for (x = 0; x < loopTo; x++)
             {
                 Database.ClearMapNPC(x, mapNum);
                 Core.Type.Map[mapNum].NPC[x] = buffer.ReadInt32();
@@ -1110,10 +1110,10 @@ namespace Server
             {
                 ref var withBlock = ref Core.Type.Map[mapNum];
                 var loopTo1 = (int)withBlock.MaxX;
-                for (x = 0; x < (int)loopTo1; x++)
+                for (x = 0; x < loopTo1; x++)
                 {
                     var loopTo2 = (int)withBlock.MaxY;
-                    for (y = 0; y < (int)loopTo2; y++)
+                    for (y = 0; y < loopTo2; y++)
                     {
                         withBlock.Tile[x, y].Data1 = buffer.ReadInt32();
                         withBlock.Tile[x, y].Data2 = buffer.ReadInt32();

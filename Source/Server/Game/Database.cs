@@ -591,11 +591,11 @@ namespace Server
             Core.Type.Map[mapNum].NPC = new int[Core.Constant.MAX_MAP_NPCS];
             Core.Type.Map[mapNum].Tile = new Core.Type.TileStruct[(Core.Type.Map[mapNum].MaxX), (Core.Type.Map[mapNum].MaxY)];
 
-            var loopTo = Core.Constant.MAX_MAPX;
-            for (x = 0; x < (int)loopTo; x++)
+            var loopTo = Core.Type.Map[mapNum].MaxX;
+            for (x = 0; x < loopTo; x++)
             {
-                var loopTo1 = Core.Constant.MAX_MAPY;
-                for (y = 0; y < (int)loopTo1; y++)
+                var loopTo1 = Core.Type.Map[mapNum].MaxY;
+                for (y = 0; y < loopTo1; y++)
                     Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
             }
 
@@ -606,8 +606,6 @@ namespace Server
             PlayersOnMap[mapNum] = false;
             Core.Type.Map[mapNum].Name = "";
             Core.Type.Map[mapNum].Music = "";
-            Core.Type.Map[mapNum].MaxX = Core.Constant.MAX_MAPX;
-            Core.Type.Map[mapNum].MaxY = Core.Constant.MAX_MAPY;
         }
 
         public static void SaveMap(int mapNum)
