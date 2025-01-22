@@ -95,49 +95,48 @@ namespace Client
             int picHeight = Instance.picBackSelect.Height;
 
             // Create a render target for drawing
-            var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, picWidth, picHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
-            GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget);
-            GameClient.Graphics.GraphicsDevice.Clear(Color.Black);
-
-            // Create a SpriteBatch for rendering
-            var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice);
-
-            // Begin the SpriteBatch with appropriate settings
-            spriteBatch.Begin();
-
-            // Calculate the source rectangle
-            var sourceRect = new Rectangle(0, 0, gfxInfo.Width, gfxInfo.Height);
-
-            // Calculate the destination rectangle, preserving aspect ratio
-            float scaleX = (float)(picWidth / (double)gfxInfo.Width);
-            float scaleY = (float)(picHeight / (double)gfxInfo.Height);
-            float scale = Math.Min(scaleX, scaleY);
-
-            int destWidth = (int)Math.Round(gfxInfo.Width * scale);
-            int destHeight = (int)Math.Round(gfxInfo.Height * scale);
-            var destRect = new Rectangle(0, 0, destWidth, destHeight);
-
-            // Draw the tileset texture at the top-left
-            spriteBatch.Draw(texture, destRect, sourceRect, Color.White);
-            DrawSelectionRectangle(spriteBatch, scale);
-
-            // End the SpriteBatch
-            spriteBatch.End();
-
-            // Reset the render target to the back buffer
-            GameClient.Graphics.GraphicsDevice.SetRenderTarget(null);
-
-            // Convert the render target to a Texture2D and set it as the PictureBox background
-            using (var stream = new MemoryStream())
+            using (var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, picWidth, picHeight, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
             {
-                renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
-                stream.Position = 0L;
-                picBackSelect.Image = System.Drawing.Image.FromStream(stream);
-            }
+                GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget);
+                GameClient.Graphics.GraphicsDevice.Clear(Color.Black);
 
-            // Dispose of the render target and sprite batch
-            renderTarget.Dispose();
-            spriteBatch.Dispose();
+                // Create a SpriteBatch for rendering
+                using (var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice))
+                {
+                    // Begin the SpriteBatch with appropriate settings
+                    spriteBatch.Begin();
+
+                    // Calculate the source rectangle
+                    var sourceRect = new Rectangle(0, 0, gfxInfo.Width, gfxInfo.Height);
+
+                    // Calculate the destination rectangle, preserving aspect ratio
+                    float scaleX = (float)(picWidth / (double)gfxInfo.Width);
+                    float scaleY = (float)(picHeight / (double)gfxInfo.Height);
+                    float scale = Math.Min(scaleX, scaleY);
+
+                    int destWidth = (int)Math.Round(gfxInfo.Width * scale);
+                    int destHeight = (int)Math.Round(gfxInfo.Height * scale);
+                    var destRect = new Rectangle(0, 0, destWidth, destHeight);
+
+                    // Draw the tileset texture at the top-left
+                    spriteBatch.Draw(texture, destRect, sourceRect, Color.White);
+                    DrawSelectionRectangle(spriteBatch, scale);
+
+                    // End the SpriteBatch
+                    spriteBatch.End();
+                }
+
+                // Reset the render target to the back buffer
+                GameClient.Graphics.GraphicsDevice.SetRenderTarget(null);
+
+                // Convert the render target to a Texture2D and set it as the PictureBox background
+                using (var stream = new MemoryStream())
+                {
+                    renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
+                    stream.Position = 0L;
+                    picBackSelect.Image = System.Drawing.Image.FromStream(stream);
+                }
+            }
         }
 
         public void DrawSelectionRectangle(SpriteBatch spriteBatch, float scale)
@@ -274,6 +273,7 @@ namespace Client
         private void TsbFill_Click(object sender, EventArgs e)
         {
             LayerType layer = (LayerType)(cmbLayers.SelectedIndex);
+
             MapEditorFillLayer(layer, (byte)(cmbAutoTile.SelectedIndex), (byte)GameState.EditorTileX, (byte)GameState.EditorTileY);
         }
 

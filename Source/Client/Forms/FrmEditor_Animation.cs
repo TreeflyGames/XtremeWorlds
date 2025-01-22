@@ -180,36 +180,36 @@ namespace Client
                     GameState.AnimEditorFrame[animationTimerIndex] += 1;
                 }
                 GameState.AnimEditorTimer[animationTimerIndex] = Environment.TickCount;
+            }
 
-                // Render the frame if necessary
-                if (frameCountControl.Value > 0m)
+            // Render the frame if necessary
+            if (frameCountControl.Value > 0m)
+            {
+                int frameIndex = GameState.AnimEditorFrame[animationTimerIndex] - 1;
+                int column = frameIndex % columns;
+                int row = frameIndex / columns;
+
+                // Calculate the source rectangle for the texture or image
+                var sRECT = new Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight);
+
+                // Clear the background to the specified color
+                spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor));
+
+                GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget);
+
+                // Draw MonoGame texture
+                spriteBatch.Begin();
+                spriteBatch.Draw(texture, new Rectangle(0, 0, frameWidth, frameHeight), sRECT, Color.White);
+                spriteBatch.End();
+
+                GameClient.Graphics.GraphicsDevice.SetRenderTarget(null);
+
+                // Convert the render target to a Texture2D and set it as the PictureBox background
+                using (var stream = new MemoryStream())
                 {
-                    int frameIndex = GameState.AnimEditorFrame[animationTimerIndex] - 1;
-                    int column = frameIndex % columns;
-                    int row = frameIndex / columns;
-
-                    // Calculate the source rectangle for the texture or image
-                    var sRECT = new Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight);
-
-                    // Clear the background to the specified color
-                    spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor));
-
-                    GameClient.Graphics.GraphicsDevice.SetRenderTarget(renderTarget);
-
-                    // Draw MonoGame texture
-                    spriteBatch.Begin();
-                    spriteBatch.Draw(texture, new Rectangle(0, 0, frameWidth, frameHeight), sRECT, Color.White);
-                    spriteBatch.End();
-
-                    GameClient.Graphics.GraphicsDevice.SetRenderTarget(null);
-
-                    // Convert the render target to a Texture2D and set it as the PictureBox background
-                    using (var stream = new MemoryStream())
-                    {
-                        renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
-                        stream.Position = 0L;
-                        backgroundColorControl.Image = System.Drawing.Image.FromStream(stream);
-                    }
+                    renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
+                    stream.Position = 0L;
+                    backgroundColorControl.Image = System.Drawing.Image.FromStream(stream);
                 }
             }
         }
@@ -232,12 +232,11 @@ namespace Client
 
         public void DrawAnimationSprite0()
         {
+            var withBlock = Instance;
+            // Ensure spriteBatch is created and disposed properly
+            using (var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice))
+            using (var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
             {
-                var withBlock = Instance;
-                // Ensure spriteBatch is created and disposed properly
-                var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice);
-                var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents);
-
                 // Call ProcessAnimation for each animation panel
                 ProcessAnimation(withBlock.nudSprite0, withBlock.nudFrameCount0, withBlock.nudLoopTime0, 0, renderTarget, withBlock.picSprite0, spriteBatch);
             }
@@ -245,12 +244,11 @@ namespace Client
 
         public void DrawAnimationSprite1()
         {
+            var withBlock = Instance;
+            // Ensure spriteBatch is created and disposed properly
+            using (var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice))
+            using (var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite1.Width, withBlock.picSprite1.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
             {
-                var withBlock = Instance;
-                // Ensure spriteBatch is created and disposed properly
-                var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice);
-                var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite1.Width, withBlock.picSprite1.Height);
-
                 // Call ProcessAnimation for each animation panel
                 ProcessAnimation(withBlock.nudSprite1, withBlock.nudFrameCount1, withBlock.nudLoopTime1, 1, renderTarget, withBlock.picSprite1, spriteBatch);
             }
