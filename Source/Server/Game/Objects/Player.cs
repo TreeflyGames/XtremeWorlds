@@ -2739,6 +2739,7 @@ namespace Server
             NetworkSend.SendHotbar(index);
             NetworkSend.SendPlayerSkills(index);
             NetworkSend.SendStats(index);
+            NetworkSend.SendJoinMap(index);
 
             // Send welcome messages
             NetworkSend.SendWelcome(index);
