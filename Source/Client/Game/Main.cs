@@ -34,7 +34,6 @@ namespace Client
             General.Client.Run();
         }
 
-
         private static void UpdateForms(object sender, EventArgs e)
         {
             var mainForm = Application.OpenForms.Count > 0 ? Application.OpenForms[0] : null;

@@ -1418,7 +1418,7 @@ namespace Client
             GameState.GettingMap = true;
             NetworkSend.SendCloseEditor();
 
-            frmEditor_Event.Instance.Dispose();
+            frmEditor_Event.Instance?.Dispose();
         }
 
         public void MapEditorSend()

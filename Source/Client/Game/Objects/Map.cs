@@ -618,7 +618,7 @@ namespace Client
             byte needMap;
             var buffer = new ByteStream(data);
 
-            GameState.GettingMap = Conversions.ToBoolean(1);
+            GameState.GettingMap = true;
 
             // Erase all players except self
             for (i = 0; i < Constant.MAX_PLAYERS; i++)
@@ -662,7 +662,7 @@ namespace Client
             int mapNum;
             var buffer = new ByteStream(Compression.DecompressBytes(data));
 
-            GameState.MapData = Conversions.ToBoolean(0);
+            GameState.MapData = false;
 
             if (buffer.ReadInt32() == 1)
             {
