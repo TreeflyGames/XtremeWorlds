@@ -1081,7 +1081,7 @@ namespace Client
                     }
                 }
                 else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
-                {                 
+                {
                     ref var withBlock1 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
                     // blocked tile
                     if (Instance.optBlocked.Checked == true)
@@ -1324,81 +1324,81 @@ namespace Client
                         }
                     }
                 }
-            }
-            else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpDirBlock))
-            {
-                // find what tile it is
-                X -= X / GameState.PicX * GameState.PicX;
-                Y -= Y / GameState.PicY * GameState.PicY;
-
-                // see if it hits an arrow
-                for (i = 0; i <= 4; i++)
+                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpDirBlock))
                 {
-                    // flip the value.
-                    if (X >= GameState.DirArrowX[i] & X <= GameState.DirArrowX[i] + 8)
+                    // find what tile it is
+                    X -= X / GameState.PicX * GameState.PicX;
+                    Y -= Y / GameState.PicY * GameState.PicY;
+
+                    // see if it hits an arrow
+                    for (i = 0; i <= 4; i++)
                     {
-                        if (Y >= GameState.DirArrowY[i] & Y <= GameState.DirArrowY[i] + 8)
+                        // flip the value.
+                        if (X >= GameState.DirArrowX[i] & X <= GameState.DirArrowX[i] + 8)
                         {
-                            // flip the value.
-                            bool localIsDirBlocked() { byte argdir = (byte)i; var ret = GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir); return ret; }
+                            if (Y >= GameState.DirArrowY[i] & Y <= GameState.DirArrowY[i] + 8)
+                            {
+                                // flip the value.
+                                bool localIsDirBlocked() { byte argdir = (byte)i; var ret = GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir); return ret; }
 
-                            byte argdir = (byte)i;
-                            GameLogic.SetDirBlock(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir, !localIsDirBlocked());
-                            break;
+                                byte argdir = (byte)i;
+                                GameLogic.SetDirBlock(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir, !localIsDirBlocked());
+                                break;
+                            }
                         }
-                    }
-                }
-            }
-            else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
-            {
-                if (frmEditor_Event.Instance.Visible == false)
-                {
-                    if (Event.EventCopy)
-                    {
-                        Event.CopyEvent_Map(GameState.CurX, GameState.CurY);
-                    }
-                    else if (Event.EventPaste)
-                    {
-                        Event.PasteEvent_Map(GameState.CurX, GameState.CurY);
-                    }
-                    else
-                    {
-                        Event.AddEvent(GameState.CurX, GameState.CurY);
-                    }
-                }
-            }
-
-            if (GameClient.IsMouseButtonDown(MouseButton.Right))
-            {
-                if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpTiles))
-                {
-                    if (GameState.EditorTileWidth == 1 & GameState.EditorTileHeight == 1) // single tile
-                    {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, false, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
-                    }
-                    else if (Instance.cmbAutoTile.SelectedIndex == 0) // multi tile!
-                    {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, 0, 1);
-                    }
-                    else
-                    {
-                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
-                    }
-                }
-                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
-                {
-                    {
-                        ref var withBlock2 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
-                        // clear attribute
-                        withBlock2.Type = 0;
-                        withBlock2.Data1 = 0;
-                        withBlock2.Data2 = 0;
-                        withBlock2.Data3 = 0;
                     }
                 }
                 else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
                 {
-                    Event.DeleteEvent(GameState.CurX, GameState.CurY);
+                    if (frmEditor_Event.Instance.Visible == false)
+                    {
+                        if (Event.EventCopy)
+                        {
+                            Event.CopyEvent_Map(GameState.CurX, GameState.CurY);
+                        }
+                        else if (Event.EventPaste)
+                        {
+                            Event.PasteEvent_Map(GameState.CurX, GameState.CurY);
+                        }
+                        else
+                        {
+                            Event.AddEvent(GameState.CurX, GameState.CurY);
+                        }
+                    }
+                }
+
+                if (GameClient.IsMouseButtonDown(MouseButton.Right))
+                {
+                    if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpTiles))
+                    {
+                        if (GameState.EditorTileWidth == 1 & GameState.EditorTileHeight == 1) // single tile
+                        {
+                            MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, false, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
+                        }
+                        else if (Instance.cmbAutoTile.SelectedIndex == 0) // multi tile!
+                        {
+                            MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, 0, 1);
+                        }
+                        else
+                        {
+                            MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
+                        }
+                    }
+                    else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
+                    {
+                        {
+                            ref var withBlock2 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
+                            // clear attribute
+                            withBlock2.Type = 0;
+                            withBlock2.Data1 = 0;
+                            withBlock2.Data2 = 0;
+                            withBlock2.Data3 = 0;
+                        }
+                    }
+                    else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
+                    {
+                        Event.DeleteEvent(GameState.CurX, GameState.CurY);
+                    }
                 }
             }
         }
