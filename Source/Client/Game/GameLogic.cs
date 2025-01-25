@@ -2262,9 +2262,9 @@ namespace Client
                 return default;
             if (y < 0)
                 return default;
-            if (x > Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxX)
+            if (x > Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxX - 1)
                 return default;
-            if (y > Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxY)
+            if (y > Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxY - 1)
                 return default;
 
             return true;
