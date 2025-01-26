@@ -5,6 +5,7 @@ using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using Path = Core.Path;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Client
 {
@@ -62,11 +63,11 @@ namespace Client
 
         // elastic bars
         public static long[] BarWidth_NPCHP = new long[(Constant.MAX_MAP_NPCS)];
-        public static long[] BarWidth_PlayerHP = new long[501];
-        public static long[] BarWidth_PlayerSP = new long[501];
+        public static long[] BarWidth_PlayerHP = new long[Constant.MAX_PLAYERS];
+        public static long[] BarWidth_PlayerSP = new long[Constant.MAX_PLAYERS];
         public static long[] BarWidth_NPCHP_Max = new long[(Constant.MAX_MAP_NPCS)];
-        public static long[] BarWidth_PlayerHP_Max = new long[501];
-        public static long[] BarWidth_PlayerSP_Max = new long[501];
+        public static long[] BarWidth_PlayerHP_Max = new long[Constant.MAX_PLAYERS];
+        public static long[] BarWidth_PlayerSP_Max = new long[Constant.MAX_PLAYERS];
         public static long BarWidth_GuiHP;
         public static long BarWidth_GuiSP;
         public static long BarWidth_GuiEXP;
@@ -77,8 +78,8 @@ namespace Client
         public static int CurrentEvents;
 
         // Directional blocking
-        public static byte[] DirArrowX = new byte[5];
-        public static byte[] DirArrowY = new byte[5];
+        public static byte[] DirArrowX = new byte[4];
+        public static byte[] DirArrowY = new byte[4];
 
         public static bool UseFade;
         public static int FadeType;

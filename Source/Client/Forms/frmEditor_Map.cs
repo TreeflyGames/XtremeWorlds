@@ -18,6 +18,7 @@ namespace Client
         {
             InitializeComponent();
         }
+
         #region Frm
         private void frmEditor_Map_Load(object sender, EventArgs e)
         {
@@ -1331,12 +1332,12 @@ namespace Client
                     Y -= Y / GameState.PicY * GameState.PicY;
 
                     // see if it hits an arrow
-                    for (i = 0; i <= 4; i++)
+                    for (i = 0; i < 4; i++)
                     {
                         // flip the value.
-                        if (X >= GameState.DirArrowX[i] & X <= GameState.DirArrowX[i] + 8)
+                        if (X >= GameState.DirArrowX[i] & X <= GameState.DirArrowX[i] + 16)
                         {
-                            if (Y >= GameState.DirArrowY[i] & Y <= GameState.DirArrowY[i] + 8)
+                            if (Y >= GameState.DirArrowY[i] & Y <= GameState.DirArrowY[i] + 16)
                             {
                                 // flip the value.
                                 bool localIsDirBlocked() { byte argdir = (byte)i; var ret = GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].DirBlock, ref argdir); return ret; }

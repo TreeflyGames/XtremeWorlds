@@ -1167,9 +1167,9 @@ namespace Client
             RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height);
 
             // render dir blobs
-            for (i = 0; i <= 4; i++)
+            for (i = 0; i < 4; i++)
             {
-                rec.X = (i - 1) * 8;
+                rec.X = i * 8;
                 rec.Width = 8;
 
                 // find out whether render blocked or not

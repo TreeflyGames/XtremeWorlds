@@ -337,99 +337,95 @@ namespace Client
             int tY;
             int tA;
 
-            if (frmEditor_Map.Instance.tabpages.InvokeRequired)
+            var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
+            for (X = (int)Math.Round(GameState.TileView.Left - 1d); X < loopTo; X++)
             {
-
-                var loopTo = (int)Math.Round(GameState.TileView.Right + 1d);
-                for (X = (int)Math.Round(GameState.TileView.Left - 1d); X < loopTo; X++)
+                var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
+                for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
                 {
-                    var loopTo1 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-                    for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo1; y++)
+                    if (GameLogic.IsValidMapPoint(X, y))
                     {
-                        if (GameLogic.IsValidMapPoint(X, y))
                         {
+                            ref var withBlock = ref Core.Type.MyMap.Tile[X, y];
+                            tX = (int)Math.Round(GameLogic.ConvertMapX(X * GameState.PicX) - 4 + GameState.PicX * 0.5d);
+                            tY = (int)Math.Round(GameLogic.ConvertMapY(y * GameState.PicY) - 7 + GameState.PicY * 0.5d);
+
+                            if (GameState.EditorAttribute == 1)
                             {
-                                ref var withBlock = ref Core.Type.MyMap.Tile[X, y];
-                                tX = (int)Math.Round(GameLogic.ConvertMapX(X * GameState.PicX) - 4 + GameState.PicX * 0.5d);
-                                tY = (int)Math.Round(GameLogic.ConvertMapY(y * GameState.PicY) - 7 + GameState.PicY * 0.5d);
+                                tA = (int)withBlock.Type;
+                            }
+                            else
+                            {
+                                tA = (int)withBlock.Type2;
+                            }
 
-                                if (GameState.EditorAttribute == 1)
-                                {
-                                    tA = (int)withBlock.Type;
-                                }
-                                else
-                                {
-                                    tA = (int)withBlock.Type2;
-                                }
-
-                                switch (tA)
-                                {
-                                    case (int)Core.Enum.TileType.Blocked:
-                                        {
-                                            RenderText("B", tX, tY, Color.Red, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Warp:
-                                        {
-                                            RenderText("W", tX, tY, Color.Blue, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Item:
-                                        {
-                                            RenderText("I", tX, tY, Color.White, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.NPCAvoid:
-                                        {
-                                            RenderText("N", tX, tY, Color.White, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Resource:
-                                        {
-                                            RenderText("R", tX, tY, Color.Green, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.NPCSpawn:
-                                        {
-                                            RenderText("S", tX, tY, Color.Yellow, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Shop:
-                                        {
-                                            RenderText("S", tX, tY, Color.Blue, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Bank:
-                                        {
-                                            RenderText("B", tX, tY, Color.Blue, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Heal:
-                                        {
-                                            RenderText("H", tX, tY, Color.Green, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Trap:
-                                        {
-                                            RenderText("T", tX, tY, Color.Red, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Light:
-                                        {
-                                            RenderText("L", tX, tY, Color.Yellow, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.Animation:
-                                        {
-                                            RenderText("A", tX, tY, Color.Red, Color.Black);
-                                            break;
-                                        }
-                                    case (int)Core.Enum.TileType.NoXing:
-                                        {
-                                            RenderText("X", tX, tY, Color.Red, Color.Black);
-                                            break;
-                                        }
-                                }
+                            switch (tA)
+                            {
+                                case (int)Core.Enum.TileType.Blocked:
+                                    {
+                                        RenderText("B", tX, tY, Color.Red, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Warp:
+                                    {
+                                        RenderText("W", tX, tY, Color.Blue, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Item:
+                                    {
+                                        RenderText("I", tX, tY, Color.White, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.NPCAvoid:
+                                    {
+                                        RenderText("N", tX, tY, Color.White, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Resource:
+                                    {
+                                        RenderText("R", tX, tY, Color.Green, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.NPCSpawn:
+                                    {
+                                        RenderText("S", tX, tY, Color.Yellow, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Shop:
+                                    {
+                                        RenderText("S", tX, tY, Color.Blue, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Bank:
+                                    {
+                                        RenderText("B", tX, tY, Color.Blue, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Heal:
+                                    {
+                                        RenderText("H", tX, tY, Color.Green, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Trap:
+                                    {
+                                        RenderText("T", tX, tY, Color.Red, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Light:
+                                    {
+                                        RenderText("L", tX, tY, Color.Yellow, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.Animation:
+                                    {
+                                        RenderText("A", tX, tY, Color.Red, Color.Black);
+                                        break;
+                                    }
+                                case (int)Core.Enum.TileType.NoXing:
+                                    {
+                                        RenderText("X", tX, tY, Color.Red, Color.Black);
+                                        break;
+                                    }
                             }
                         }
                     }
