@@ -19,3 +19,5 @@
 [submodule "Source/Modules/Reoria.Engine"]
 	path = Source/Modules/Reoria.Engine
 	url = https://github.com/XerShade/Reoria.Engine.git
+[submodule "Source/Modules/Reoria.Engine"]
+	ignore = dirty
