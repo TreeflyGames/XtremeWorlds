@@ -1047,12 +1047,6 @@ namespace Client
             if (GameState.GettingMap)
                 return;
 
-            if (Core.Type.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type == Core.Enum.TileType.NoXing | Core.Type.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].Type2 == Core.Enum.TileType.NoXing)
-            {
-                Text.AddText("The pathway is blocked.", (int)Core.Enum.ColorType.BrightRed);
-                return;
-            }
-
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestNewMap);

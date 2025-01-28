@@ -11,7 +11,7 @@ namespace Client
 
     static class NetworkSend
     {
-        internal static void SendAddChar(string name, int sexNum, int jobNum)
+        public static void SendAddChar(string name, int sexNum, int jobNum)
         {
             var buffer = new ByteStream(4);
 
@@ -25,7 +25,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendUseChar(byte slot)
+        public static void SendUseChar(byte slot)
         {
             var buffer = new ByteStream(4);
 
@@ -36,7 +36,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendDelChar(byte slot)
+        public static void SendDelChar(byte slot)
         {
             var buffer = new ByteStream(4);
 
@@ -47,7 +47,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendLogin(string name, string pass)
+        public static void SendLogin(string name, string pass)
         {
             var buffer = new ByteStream(4);
 
@@ -66,7 +66,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRegister(string name, string pass)
+        public static void SendRegister(string name, string pass)
         {
             var buffer = new ByteStream(4);
 
@@ -117,7 +117,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendPlayerMove()
+        public static void SendPlayerMove()
         {
             var buffer = new ByteStream(4);
 
@@ -131,7 +131,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SayMsg(string text)
+        public static void SayMsg(string text)
         {
             var buffer = new ByteStream(4);
 
@@ -142,7 +142,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendKick(string name)
+        public static void SendKick(string name)
         {
             var buffer = new ByteStream(4);
 
@@ -153,7 +153,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendBan(string name)
+        public static void SendBan(string name)
         {
             var buffer = new ByteStream(4);
 
@@ -164,7 +164,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void WarpMeTo(string name)
+        public static void WarpMeTo(string name)
         {
             var buffer = new ByteStream(4);
 
@@ -175,7 +175,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void WarpToMe(string name)
+        public static void WarpToMe(string name)
         {
             var buffer = new ByteStream(4);
 
@@ -186,7 +186,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void WarpTo(int mapNum)
+        public static void WarpTo(int mapNum)
         {
             var buffer = new ByteStream(4);
 
@@ -197,7 +197,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestLevelUp()
+        public static void SendRequestLevelUp()
         {
             var buffer = new ByteStream(4);
 
@@ -219,7 +219,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSetSprite(int spriteNum)
+        public static void SendSetSprite(int spriteNum)
         {
             var buffer = new ByteStream(4);
 
@@ -230,7 +230,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSetAccess(string name, byte access)
+        public static void SendSetAccess(string name, byte access)
         {
             var buffer = new ByteStream(4);
 
@@ -252,7 +252,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendPlayerDir()
+        public static void SendPlayerDir()
         {
             var buffer = new ByteStream(4);
 
@@ -305,7 +305,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void BroadcastMsg(string text)
+        public static void BroadcastMsg(string text)
         {
             var buffer = new ByteStream(4);
 
@@ -316,7 +316,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void PlayerMsg(string text, string msgTo)
+        public static void PlayerMsg(string text, string msgTo)
         {
             var buffer = new ByteStream(4);
 
@@ -328,7 +328,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void AdminMsg(string text)
+        public static void AdminMsg(string text)
         {
             var buffer = new ByteStream(4);
 
@@ -339,7 +339,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendWhosOnline()
+        public static void SendWhosOnline()
         {
             var buffer = new ByteStream(4);
 
@@ -349,7 +349,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendPlayerInfo(string name)
+        public static void SendPlayerInfo(string name)
         {
             var buffer = new ByteStream(4);
 
@@ -360,7 +360,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendMotdChange(string welcome)
+        public static void SendMotdChange(string welcome)
         {
             var buffer = new ByteStream(4);
 
@@ -371,7 +371,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendBanList()
+        public static void SendBanList()
         {
             var buffer = new ByteStream(4);
 
@@ -381,7 +381,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendBanDestroy()
+        public static void SendBanDestroy()
         {
             var buffer = new ByteStream(4);
 
@@ -415,7 +415,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendUseItem(int invNum)
+        public static void SendUseItem(int invNum)
         {
             var buffer = new ByteStream(4);
 
@@ -426,7 +426,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendDropItem(int invNum, int amount)
+        public static void SendDropItem(int invNum, int amount)
         {
             var buffer = new ByteStream(4);
 
@@ -468,7 +468,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void AdminWarp(int x, int y)
+        public static void AdminWarp(int x, int y)
         {
             var buffer = new ByteStream(4);
 
@@ -480,7 +480,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendLeaveGame()
+        public static void SendLeaveGame()
         {
             var buffer = new ByteStream(4);
 
@@ -501,7 +501,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void ForgetSkill(int skillSlot)
+        public static void ForgetSkill(int skillSlot)
         {
             var buffer = new ByteStream(4);
 
@@ -537,7 +537,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestMapReport()
+        public static void SendRequestMapReport()
         {
             var buffer = new ByteStream(4);
 
@@ -547,7 +547,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestAdmin()
+        public static void SendRequestAdmin()
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                 return;
@@ -560,7 +560,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendUseEmote(int emote)
+        public static void SendUseEmote(int emote)
         {
             var buffer = new ByteStream(4);
 
@@ -571,7 +571,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestEditResource()
+        public static void SendRequestEditResource()
         {
             var buffer = new ByteStream(4);
 
@@ -580,7 +580,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSaveResource(int ResourceNum)
+        public static void SendSaveResource(int ResourceNum)
         {
             var buffer = new ByteStream(4);
 
@@ -606,7 +606,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestEditNPC()
+        public static void SendRequestEditNPC()
         {
             var buffer = new ByteStream(4);
 
@@ -615,7 +615,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSaveNPC(int NPCNum)
+        public static void SendSaveNPC(int NPCNum)
         {
             var buffer = new ByteStream(4);
             int i;
@@ -656,7 +656,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestEditSkill()
+        public static void SendRequestEditSkill()
         {
             var buffer = new ByteStream(4);
 
@@ -665,7 +665,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSaveSkill(int skillNum)
+        public static void SendSaveSkill(int skillNum)
         {
             var buffer = new ByteStream(4);
 
@@ -706,7 +706,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSaveShop(int shopNum)
+        public static void SendSaveShop(int shopNum)
         {
             var buffer = new ByteStream(4);
 
@@ -729,7 +729,7 @@ namespace Client
 
         }
 
-        internal static void SendRequestEditShop()
+        public static void SendRequestEditShop()
         {
             var buffer = new ByteStream(4);
 
@@ -738,7 +738,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSaveAnimation(int animationNum)
+        public static void SendSaveAnimation(int animationNum)
         {
             var buffer = new ByteStream(4);
 
@@ -764,7 +764,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestEditAnimation()
+        public static void SendRequestEditAnimation()
         {
             var buffer = new ByteStream(4);
 
@@ -773,7 +773,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestEditJob()
+        public static void SendRequestEditJob()
         {
             var buffer = new ByteStream(4);
 
@@ -782,7 +782,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSaveJob(int jobNum)
+        public static void SendSaveJob(int jobNum)
         {
             int i;
             int q;
@@ -864,7 +864,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestEditItem()
+        public static void SendRequestEditItem()
         {
             var buffer = new ByteStream(4);
 
@@ -873,7 +873,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendCloseEditor()
+        public static void SendCloseEditor()
         {
             if (Conversions.ToInteger(GameState.InGame) == 0)
                 return;
@@ -884,7 +884,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendSetHotbarSlot(int @type, int newSlot, int oldSlot, int num)
+        public static void SendSetHotbarSlot(int @type, int newSlot, int oldSlot, int num)
         {
             var buffer = new ByteStream(4);
 
@@ -899,7 +899,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendDeleteHotbar(int slot)
+        public static void SendDeleteHotbar(int slot)
         {
             var buffer = new ByteStream(4);
 
@@ -911,7 +911,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendUseHotbarSlot(int slot)
+        public static void SendUseHotbarSlot(int slot)
         {
             switch (Core.Type.Player[GameState.MyIndex].Hotbar[slot].SlotType)
             {
@@ -968,7 +968,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendRequestEditMoral()
+        public static void SendRequestEditMoral()
         {
             var buffer = new ByteStream(4);
 

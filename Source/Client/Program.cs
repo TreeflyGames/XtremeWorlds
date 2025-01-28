@@ -244,7 +244,6 @@ namespace Client
 
         public static void RenderTexture(ref string path, int dX, int dY, int sX, int sY, int dW, int dH, int sW = 1, int sH = 1, byte alpha = 255, byte red = 255, byte green = 255, byte blue = 255)
         {
-
             // Create destination and source rectangles
             var dRect = new Rectangle(dX, dY, dW, dH);
             var sRect = new Rectangle(sX, sY, sW, sH);
@@ -1798,12 +1797,12 @@ namespace Client
             int y;
             int spriteNum;
             var spriteleft = default(int);
-            int attackspeed;
+            int attackSpeed;
             Rectangle rect;
 
             spriteNum = GetPlayerSprite(index);
 
-            if (index < 0| index > Constant.MAX_PLAYERS)
+            if (index < 0 | index > Constant.MAX_PLAYERS)
                 return;
 
             if (spriteNum <= 0 | spriteNum > GameState.NumCharacters)
@@ -1812,18 +1811,18 @@ namespace Client
             // speed from weapon
             if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
-                attackspeed = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Speed;
+                attackSpeed = Core.Type.Item[GetPlayerEquipment(index, EquipmentType.Weapon)].Speed;
             }
             else
             {
-                attackspeed = 1000;
+                attackSpeed = 1000;
             }
 
             // Reset frame
             anim = 0;
 
             // Check for attacking animation
-            if (Core.Type.Player[index].AttackTimer + attackspeed / 2d > General.GetTickCount())
+            if (Core.Type.Player[index].AttackTimer + attackSpeed / 2d > General.GetTickCount())
             {
                 if (Core.Type.Player[index].Attacking == 1)
                 {
@@ -1906,7 +1905,7 @@ namespace Client
             // Check to see if we want to stop making him attack
             {
                 ref var withBlock = ref Core.Type.Player[index];
-                if (withBlock.AttackTimer + attackspeed < General.GetTickCount())
+                if (withBlock.AttackTimer + attackSpeed < General.GetTickCount())
                 {
                     withBlock.Attacking = 0;
                     withBlock.AttackTimer = 0;

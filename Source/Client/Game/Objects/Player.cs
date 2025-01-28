@@ -3,6 +3,7 @@ using Core;
 using static Core.Global.Command;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using System.Reflection;
 
 namespace Client
 {
@@ -108,6 +109,8 @@ namespace Client
             Core.Type.Player[index].Pet.AttackBehaviour = 0;
             Core.Type.Player[index].Pet.Exp = 0;
             Core.Type.Player[index].Pet.Tnl = 0;
+
+            Trade.InTrade = -1;
         }
         #endregion
 
@@ -270,7 +273,7 @@ namespace Client
                 return CanMoveRet;
             }
 
-            if (Conversions.ToBoolean(Trade.InTrade))
+            if (Trade.InTrade >= 0)
             {
                 CanMoveRet = Conversions.ToBoolean(0);
                 return CanMoveRet;
@@ -299,7 +302,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.Up:
                     {
 
-                        if (GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
@@ -312,7 +315,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.Down:
                     {
 
-                        if (GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY)
                         {
                             GameState.DirDown = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
@@ -325,7 +328,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.Left:
                     {
 
-                        if (GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
@@ -338,7 +341,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.Right:
                     {
 
-                        if (GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
                         {
                             GameState.DirRight = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Left);
@@ -351,7 +354,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.UpLeft:
                     {
 
-                        if (GetPlayerY(GameState.MyIndex) <= 0 & GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Left == 0 && GetPlayerY(GameState.MyIndex) <= 0 & GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = Conversions.ToBoolean(0);
                             GameState.DirDown = Conversions.ToBoolean(1);
@@ -362,14 +365,14 @@ namespace Client
                             return CanMoveRet;
                         }
 
-                        if (GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
                             return CanMoveRet;
                         }
 
-                        if (GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
@@ -382,7 +385,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.UpRight:
                     {
 
-                        if (GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
                         {
                             GameState.DirUp = Conversions.ToBoolean(0);
                             GameState.DirDown = Conversions.ToBoolean(1);
@@ -393,14 +396,14 @@ namespace Client
                             return CanMoveRet;
                         }
 
-                        if (GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirUp = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
                             return CanMoveRet;
                         }
 
-                        if (GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
@@ -413,7 +416,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.DownLeft:
                     {
 
-                        if (GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) < 0)
                         {
                             GameState.DirDown = Conversions.ToBoolean(0);
                             GameState.DirUp = Conversions.ToBoolean(1);
@@ -424,14 +427,14 @@ namespace Client
                             return CanMoveRet;
                         }
 
-                        if (GetPlayerY(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Up == 0 && GetPlayerY(GameState.MyIndex) <= 0)
                         {
                             GameState.DirDown = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
                             return CanMoveRet;
                         }
 
-                        if (GetPlayerX(GameState.MyIndex) <= 0)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) <= 0)
                         {
                             GameState.DirLeft = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Right);
@@ -444,7 +447,7 @@ namespace Client
                 case (int)Core.Enum.DirectionType.DownRight:
                     {
 
-                        if (GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY & GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
                         {
                             GameState.DirDown = Conversions.ToBoolean(0);
                             GameState.DirUp = Conversions.ToBoolean(1);
@@ -455,14 +458,14 @@ namespace Client
                             return CanMoveRet;
                         }
 
-                        if (GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Down == 0 && GetPlayerY(GameState.MyIndex) >= Core.Type.MyMap.MaxY)
                         {
                             GameState.DirDown = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Up);
                             return CanMoveRet;
                         }
 
-                        if (GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
+                        if (Core.Type.Map[GetPlayerMap(GameState.MyIndex)].Right == 0 && GetPlayerX(GameState.MyIndex) >= Core.Type.MyMap.MaxX)
                         {
                             GameState.DirRight = Conversions.ToBoolean(0);
                             SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Left);
@@ -501,7 +504,7 @@ namespace Client
             if (GameState.DirDown)
             {
                 SetPlayerDir(GameState.MyIndex, (int)Core.Enum.DirectionType.Down);
-                if (GetPlayerY(GameState.MyIndex) < Core.Type.MyMap.MaxY)
+                if (GetPlayerY(GameState.MyIndex) < Core.Type.MyMap.MaxY - 1)
                 {
                     if (CheckDirection((byte)Core.Enum.DirectionType.Down))
                     {
@@ -667,6 +670,12 @@ namespace Client
             var x = default(int);
             var y = default(int);
             int i;
+
+            if (GetPlayerX(GameState.MyIndex) >= Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxX || GetPlayerY(GameState.MyIndex) >= Core.Type.Map[GetPlayerMap(GameState.MyIndex)].MaxY)
+            {
+                CheckDirectionRet = Conversions.ToBoolean(1);
+                return CheckDirectionRet;
+            }
 
             // check directional blocking
             if (GameLogic.IsDirBlocked(ref Core.Type.MyMap.Tile[GetPlayerX(GameState.MyIndex), GetPlayerY(GameState.MyIndex)].DirBlock, ref direction))

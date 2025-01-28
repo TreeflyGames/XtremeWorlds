@@ -4,12 +4,12 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Trade
+    public static class Trade
     {
 
         #region Globals & Type
 
-        internal static int InTrade;
+        public static int InTrade;
         internal static int TradeX;
         internal static int TradeY;
         internal static string TheirWorth;

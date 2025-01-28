@@ -437,7 +437,7 @@ namespace Server
             double NPCNum;
             var atkX = default(int);
             var atkY = default(int);
-            int attackspeed;
+            int attackSpeed;
 
             // Check for subscript out of range
             if (Conversions.ToInteger(NetworkConfig.IsPlaying(attacker)) == 0 | MapNPCNum < 0 | MapNPCNum > Core.Constant.MAX_MAP_NPCS)
@@ -470,14 +470,14 @@ namespace Server
             // attack speed from weapon
             if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
             {
-                attackspeed = Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed;
+                attackSpeed = Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Speed;
             }
             else
             {
-                attackspeed = 1000;
+                attackSpeed = 1000;
             }
 
-            if (NPCNum >= 0 & General.GetTimeMs() > Core.Type.TempPlayer[attacker].AttackTimer + attackspeed)
+            if (NPCNum >= 0 & General.GetTimeMs() > Core.Type.TempPlayer[attacker].AttackTimer + attackSpeed)
             {
                 // exit out early
                 if (IsSkill)
@@ -1120,6 +1120,7 @@ namespace Server
             // Check if you are out of bounds
             if (x > Core.Type.Map[mapNum].MaxX)
                 x = Core.Type.Map[mapNum].MaxX;
+
             if (y > Core.Type.Map[mapNum].MaxY)
                 y = Core.Type.Map[mapNum].MaxY;
 
@@ -1244,7 +1245,7 @@ namespace Server
                         if (GetPlayerY(index) > 0)
                         {
                             // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.Up))
+                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].DirBlock, (byte) DirectionType.Up))
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type2 != TileType.Blocked)
                                 {
@@ -1282,7 +1283,7 @@ namespace Server
                         if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1)
                         {
                             // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.Down))
+                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) + 1].DirBlock, (byte) DirectionType.Down))
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) + 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) + 1].Type2 != TileType.Blocked)
                                 {
@@ -1299,7 +1300,7 @@ namespace Server
                                 }
                             }
                         }
-                        else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
+                        else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type != TileType.NoXing & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type2 != TileType.NoXing)
                         {
                             // Check to see if we can move them to another map
                             if (Core.Type.Map[GetPlayerMap(index)].Down > 0)
@@ -1319,7 +1320,7 @@ namespace Server
                         if (GetPlayerX(index) > 0)
                         {
                             // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.Left))
+                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index)].DirBlock, (byte) DirectionType.Left))
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index)].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index)].Type2 != TileType.Blocked)
                                 {
@@ -1357,7 +1358,7 @@ namespace Server
                         if (GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
                         {
                             // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.Right))
+                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index)].DirBlock, (byte) DirectionType.Right))
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index)].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index)].Type2 != TileType.Blocked)
                                 {
@@ -1394,7 +1395,7 @@ namespace Server
                         if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
                         {
                             // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.UpRight))
+                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) - 1].DirBlock, (byte) DirectionType.UpRight))
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) - 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) - 1].Type2 != TileType.Blocked)
                                 {
@@ -1422,7 +1423,7 @@ namespace Server
                         if (GetPlayerY(index) > 0 && GetPlayerX(index) > 0)
                         {
                             // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.UpLeft))
+                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) - 1].DirBlock, (byte) DirectionType.UpLeft))
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) - 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) - 1].Type2 != TileType.Blocked)
                                 {
@@ -1450,7 +1451,7 @@ namespace Server
                         if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1 && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
                         {
                             // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.DownRight))
+                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) + 1].DirBlock, (byte) DirectionType.DownRight))
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) + 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) + 1].Type2 != TileType.Blocked)
                                 {
@@ -1478,7 +1479,7 @@ namespace Server
                         if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1 && GetPlayerX(index) > 0)
                         {
                             // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].DirBlock, (byte) DirectionType.DownLeft))
+                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) + 1].DirBlock, (byte) DirectionType.DownLeft))
                             {
                                 if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) + 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) + 1].Type2 != TileType.Blocked)
                                 {
@@ -1501,6 +1502,7 @@ namespace Server
                     }
             }
 
+            if (GetPlayerX(index) > 0 && GetPlayerY(index) > 0 && GetPlayerX(index) < Map[GetPlayerMap(index)].MaxX && GetPlayerY(index) < Map[GetPlayerMap(index)].MaxY)
             {
                 ref var withBlock = ref Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)];
                 mapNum = -1;
