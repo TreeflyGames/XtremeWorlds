@@ -1985,65 +1985,143 @@ namespace Client
             {
                 case (int)Core.Enum.EditorType.Item:
                     {
-                        frmEditor_Item.Instance?.Dispose();
+                        if (frmEditor_Item.Instance != null)
+                        {
+                            frmEditor_Item.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Item.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Job:
                     {
-                        frmEditor_Job.Instance?.Dispose();
+                        if (frmEditor_Job.Instance != null)
+                        {
+                            frmEditor_Job.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Job.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Map:
                     {
-                        frmEditor_Map.Instance?.Dispose();
-                        frmEditor_Event.Instance?.Dispose();
+                        if (frmEditor_Map.Instance != null)
+                        {
+                            frmEditor_Map.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Map.Instance.Dispose();
+                            });
+                        }
+                        if (frmEditor_Event.Instance != null)
+                        {
+                            frmEditor_Event.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Event.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.NPC:
                     {
-                        frmEditor_NPC.Instance?.Dispose();
+                        if (frmEditor_NPC.Instance != null)
+                        {
+                            frmEditor_NPC.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_NPC.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Pet:
                     {
-                        frmEditor_Pet.Instance?.Dispose();
+                        if (frmEditor_Pet.Instance != null)
+                        {
+                            frmEditor_Pet.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Pet.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Projectile:
                     {
-                        frmEditor_Projectile.Instance?.Dispose();
+                        if (frmEditor_Projectile.Instance != null)
+                        {
+                            frmEditor_Projectile.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Projectile.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Resource:
                     {
-                        frmEditor_Resource.Instance?.Dispose();
+                        if (frmEditor_Resource.Instance != null)
+                        {
+                            frmEditor_Resource.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Resource.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Shop:
                     {
-                        frmEditor_Shop.Instance?.Dispose();
+                        if (frmEditor_Shop.Instance != null)
+                        {
+                            frmEditor_Shop.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Shop.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Skill:
                     {
-                        frmEditor_Skill.Instance?.Dispose();
+                        if (frmEditor_Skill.Instance != null)
+                        {
+                            frmEditor_Skill.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Skill.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Animation:
                     {
-                        frmEditor_Animation.Instance?.Dispose();
+                        if (frmEditor_Animation.Instance != null)
+                        {
+                            frmEditor_Animation.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Animation.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
                 case (int)Core.Enum.EditorType.Moral:
                     {
-                        frmEditor_Moral.Instance?.Dispose();
+                        if (frmEditor_Moral.Instance != null)
+                        {
+                            frmEditor_Moral.Instance.Invoke((MethodInvoker)delegate
+                            {
+                                frmEditor_Moral.Instance.Dispose();
+                            });
+                        }
                         break;
                     }
             }
 
             if (GameState.AdminPanel)
             {
-                FrmAdmin.Instance?.Dispose();
+                if (FrmAdmin.Instance != null)
+                    {
+                        FrmAdmin.Instance.Invoke((MethodInvoker)delegate
+                    {
+                        FrmAdmin.Instance.Dispose();
+                    });
+                }
             }
 
             NetworkConfig.DestroyNetwork();
@@ -2469,7 +2547,7 @@ namespace Client
             return true;
         }
 
-        internal static void UpdateCamera()
+        public static void UpdateCamera()
         {
             long offsetX;
             long offsetY;
@@ -2597,12 +2675,6 @@ namespace Client
             
             // Optional: Update the map name display
             UpdateDrawMapName();
-        }
-
-        // Linear interpolation function to smooth camera movements
-        public static double Lerp(double start, double end, double t)
-        {
-            return start + t * (end - start);
         }
 
     }
