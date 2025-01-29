@@ -1668,6 +1668,7 @@ namespace Client
 
             {
                 ref var withBlock = ref Core.Type.ChatBubble[(int)Index];
+
                 // exit out early
                 if (withBlock.TargetType == 0)
                     return;
@@ -1768,7 +1769,7 @@ namespace Client
                 tmpNum = Information.UBound(theArray);
 
                 var loopTo1 = tmpNum;
-                for (i = 1L; i < loopTo1; i++)
+                for (i = 0; i < loopTo1; i++)
                 {
                     // Measure button text size and apply padding
                     var textSize = Text.Fonts[FontType.Georgia].MeasureString(theArray[(int)i]);

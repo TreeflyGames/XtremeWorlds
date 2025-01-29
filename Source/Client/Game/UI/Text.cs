@@ -111,7 +111,7 @@ namespace Client
             tmpNum = Strings.Len(text);
 
             var loopTo = tmpNum;
-            for (i = 1L; i < loopTo; i++)
+            for (i = 1L; i <= loopTo; i++)
             {
                 // if it's a space, store it
                 switch (Strings.Mid(text, (int)i, 1) ?? "")
@@ -148,6 +148,7 @@ namespace Client
                         // Ensure b is within valid range
                         if (b < 0L)
                             b = 0L;
+
                         if (b > text.Length)
                             b = text.Length;
 
@@ -172,114 +173,10 @@ namespace Client
                     {
                         lineCount = lineCount + 1L;
                         Array.Resize(ref theArray, (int)(lineCount + 1));
-                        theArray[(int)lineCount] = theArray[(int)lineCount] + Strings.Mid(text, (int)b, (int)i);
+                        theArray[(int)lineCount - 1] = Strings.Mid(text, (int)b, (int)i);
                     }
                 }
             }
-        }
-
-        public static string WordWrap(string text, Core.Enum.FontType font, int MaxLineLen, [Optional, DefaultParameterValue(0L)] ref long lineCount)
-        {
-            string WordWrapRet = default;
-            string[] TempSplit;
-            long TSLoop;
-            long lastSpace;
-            long size;
-            long i;
-            long b;
-            long tmpNum;
-            var skipCount = default(long);
-
-            // Too small of text
-            if (text.Length < 2)
-            {
-                WordWrapRet = text;
-                return WordWrapRet;
-            }
-
-            // Check if there are any line breaks - if so, we will support them
-            TempSplit = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            tmpNum = TempSplit.Length - 1;
-
-            var loopTo = tmpNum;
-            for (TSLoop = 1L; TSLoop < loopTo; TSLoop++)
-            {
-                // Clear the values for the new line
-                size = 0L;
-                b = 1L;
-                lastSpace = 1L;
-
-                // Add back in the vbNewLines
-                if (TSLoop < tmpNum)
-                    TempSplit[(int)TSLoop] = TempSplit[(int)TSLoop] + Environment.NewLine;
-
-                // Only check lines with a space
-                if (TempSplit[(int)TSLoop].Contains(" "))
-                {
-                    // Loop through all the characters
-                    tmpNum = TempSplit[(int)TSLoop].Length;
-
-                    var loopTo1 = tmpNum;
-                    for (i = 1L; i < loopTo1; i++)
-                    {
-                        // If it is a space, store it so we can easily break at it
-                        if (TempSplit[(int)TSLoop][(int)i - 1] == ' ')
-                        {
-                            lastSpace = i;
-                        }
-
-                        if (skipCount > 0L)
-                        {
-                            skipCount = skipCount - 1;
-                        }
-                        else if (TSLoop > 0L)
-                        {
-                            // Add up the size
-                            size = size + GetTextWidth(TempSplit[(int)TSLoop], font);
-
-                            // Check for too large of a size
-                            if (size > MaxLineLen)
-                            {
-                                // Check if the last space was too far back
-                                if (i - lastSpace > 12L)
-                                {
-                                    // Too far away to the last space, so break at the last character
-                                    WordWrapRet = WordWrapRet + TempSplit[(int)TSLoop].Substring((int)b - 1, (int)(i - 1L - b)) + Environment.NewLine;
-                                    lineCount = lineCount + 1L;
-                                    b = i - 1L;
-                                    size = 0L;
-                                }
-                                else
-                                {
-                                    // Break at the last space to preserve the word
-                                    WordWrapRet = WordWrapRet + TempSplit[(int)TSLoop].Substring((int)b - 1, (int)(lastSpace - b)) + Environment.NewLine;
-                                    lineCount = lineCount + 1L;
-                                    b = lastSpace + 1L;
-
-                                    // Count all the words we ignored (the ones that weren't printed, but are before "i")
-                                    size = GetTextWidth(TempSplit[(int)TSLoop].Substring((int)lastSpace - 1, (int)(i - lastSpace)), font);
-                                }
-                            }
-
-                            // This handles the remainder
-                            if (i == TempSplit[(int)TSLoop].Length)
-                            {
-                                if (b != i)
-                                {
-                                    WordWrapRet = WordWrapRet + TempSplit[(int)TSLoop].Substring((int)b - 1, (int)i);
-                                    lineCount = lineCount + 1L;
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    WordWrapRet = WordWrapRet + TempSplit[(int)TSLoop];
-                }
-            }
-
-            return WordWrapRet;
         }
 
         public static string[] Explode(string str, char[] splitChars)
@@ -675,17 +572,18 @@ namespace Client
                     if (GetTextWidth(Core.Type.Chat[i].Text) > GameState.ChatWidth)
                     {
                         // word wrap
-                        long arglineCount = 0L;
-                        tmpText = WordWrap(Core.Type.Chat[(int)i].Text, Core.Enum.FontType.Georgia, (int)GameState.ChatWidth, lineCount: ref arglineCount);
+                        string[] wrappedLines = null;
+                        WordWrap(Core.Type.Chat[(int)i].Text, Core.Enum.FontType.Georgia, (int)GameState.ChatWidth, ref wrappedLines);
+                        tmpText = string.Join(Environment.NewLine, wrappedLines);
 
                         // can't have it going offscreen.
-                        if (rLines + lineCount > 9)
+                        if (rLines + wrappedLines.Length > 9)
                             break;
 
                         // continue on
-                        yOffset = yOffset - 14 * lineCount;
+                        yOffset = yOffset - 14 * wrappedLines.Length;
                         RenderText(tmpText, (int)xO, (int)(yO + yOffset), Color2, Color2);
-                        rLines += lineCount;
+                        rLines += wrappedLines.Length;
 
                         // set the top width
                         tmpArray = Strings.Split(tmpText, Environment.NewLine);
