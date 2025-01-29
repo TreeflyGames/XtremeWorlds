@@ -1419,6 +1419,12 @@ namespace Client
             GameState.GettingMap = true;
             NetworkSend.SendCloseEditor();
 
+            // show gui
+            Gui.ShowWindow(Gui.GetWindowIndex("winHotbar"), resetPosition: false);
+            Gui.ShowWindow(Gui.GetWindowIndex("winMenu"), resetPosition: false);
+            Gui.ShowWindow(Gui.GetWindowIndex("winBars"), resetPosition: false);
+            Gui.HideChat();
+
             frmEditor_Event.Instance?.Dispose();
         }
 
