@@ -2571,6 +2571,18 @@ namespace Client
             StartX = GetPlayerX(GameState.MyIndex) - (tileWidth + 1L) / 2L - 1L;
             StartY = GetPlayerY(GameState.MyIndex) - (tileHeight + 1L) / 2L - 1L;
 
+            // Ensure StartX and StartY do not go below 0
+            if (StartX < 0)
+            {
+                StartX = 0;
+                offsetX = 0; // Prevent shifting beyond the first tile
+            }
+            if (StartY < 0)
+            {
+                StartY = 0;
+                offsetY = 0; // Prevent shifting beyond the first tile
+            }
+
             if (tileWidth + 1L <= Core.Type.MyMap.MaxX)
             {
                 if (StartX < 0L)
