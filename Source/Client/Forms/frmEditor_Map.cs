@@ -1327,9 +1327,9 @@ namespace Client
                 }
                 else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpDirBlock))
                 {
-                    // find what tile it is
-                    X -= X / GameState.PicX * GameState.PicX;
-                    Y -= Y / GameState.PicY * GameState.PicY;
+                    // Convert adjusted coordinates to game world coordinates
+                    X = (int)Math.Round(GameState.TileView.Left + Math.Floor((GameState.CurMouseX + GameState.Camera.Left) % GameState.PicX));
+                    Y = (int)Math.Round(GameState.TileView.Top + Math.Floor((GameState.CurMouseY + GameState.Camera.Top) % GameState.PicY));
 
                     // see if it hits an arrow
                     for (i = 0; i < 4; i++)
