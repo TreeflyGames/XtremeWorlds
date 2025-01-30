@@ -1366,40 +1366,40 @@ namespace Client
                             Event.AddEvent(GameState.CurX, GameState.CurY);
                         }
                     }
-                }
+                }    
+            }
 
-                if (GameClient.IsMouseButtonDown(MouseButton.Right))
+            if (GameClient.IsMouseButtonDown(MouseButton.Right))
+            {
+                if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpTiles))
                 {
-                    if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpTiles))
+                    if (GameState.EditorTileWidth == 1 & GameState.EditorTileHeight == 1) // single tile
                     {
-                        if (GameState.EditorTileWidth == 1 & GameState.EditorTileHeight == 1) // single tile
-                        {
-                            MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, false, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
-                        }
-                        else if (Instance.cmbAutoTile.SelectedIndex == 0) // multi tile!
-                        {
-                            MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, 0, 1);
-                        }
-                        else
-                        {
-                            MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
-                        }
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, false, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
                     }
-                    else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
+                    else if (Instance.cmbAutoTile.SelectedIndex == 0) // multi tile!
                     {
-                        {
-                            ref var withBlock2 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
-                            // clear attribute
-                            withBlock2.Type = 0;
-                            withBlock2.Data1 = 0;
-                            withBlock2.Data2 = 0;
-                            withBlock2.Data3 = 0;
-                        }
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, 0, 1);
                     }
-                    else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
+                    else
                     {
-                        Event.DeleteEvent(GameState.CurX, GameState.CurY);
+                        MapEditorSetTile(GameState.CurX, GameState.CurY, CurLayer, true, (byte)Instance.cmbAutoTile.SelectedIndex, 1);
                     }
+                }
+                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
+                {
+                    {
+                        ref var withBlock2 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
+                        // clear attribute
+                        withBlock2.Type = 0;
+                        withBlock2.Data1 = 0;
+                        withBlock2.Data2 = 0;
+                        withBlock2.Data3 = 0;
+                    }
+                }
+                else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
+                {
+                    Event.DeleteEvent(GameState.CurX, GameState.CurY);
                 }
             }
         }

@@ -137,7 +137,7 @@ namespace Client
 
             // First pass: find all events to delete and shift others down
             var loopTo = Core.Type.MyMap.EventCount;
-            for (i = 0; i < loopTo; i++)
+            for (i = 0; i <= loopTo; i++)
             {
                 if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
                 {
@@ -145,6 +145,7 @@ namespace Client
                     ClearEvent(i);
                     lowIndex = i;
                     shifted = true;
+                    break;
                 }
                 else if (shifted)
                 {
@@ -200,15 +201,16 @@ namespace Client
                 count = count + 1;
             }
 
+            ClearEvent(count);
             Core.Type.MyMap.EventCount = count;
             Array.Resize(ref Core.Type.MyMap.Event, count + 1);
             // set the new event
             Core.Type.MyMap.Event[count].X = X;
             Core.Type.MyMap.Event[count].Y = Y;
             // give it a new page
-            pageCount = Core.Type.MyMap.Event[count].PageCount;
+            pageCount = Core.Type.MyMap.Event[count].PageCount + 1;
             Core.Type.MyMap.Event[count].PageCount = pageCount;
-            Array.Resize(ref Core.Type.MyMap.Event[count].Pages, pageCount);
+            Array.Resize(ref Core.Type.MyMap.Event[count].Pages, pageCount + 1);
             // load the editor
             if (!cancelLoad)
                 EventEditorInit(count);
@@ -216,18 +218,17 @@ namespace Client
 
         public static void ClearEvent(int EventNum)
         {
-            if (EventNum > Core.Type.MyMap.EventCount | EventNum > Information.UBound(Core.Type.MyMap.Event))
-                return;
-
-            {
-                ref var withBlock = ref Core.Type.MyMap.Event[EventNum];
-                withBlock.Name = "";
-                withBlock.PageCount = 0;
-                withBlock.Pages = new Core.Type.EventPageStruct[1];
-                withBlock.Globals = 0;
-                withBlock.X = 0;
-                withBlock.Y = 0;
-            }
+            Array.Resize(ref Core.Type.MyMap.Event, EventNum + 1);
+            ref var withBlock = ref Core.Type.MyMap.Event[EventNum];
+            withBlock.Name = "";
+            withBlock.PageCount = 0;
+            withBlock.Pages = new Core.Type.EventPageStruct[2];
+            Array.Resize(ref withBlock.Pages[1].CommandList, 2);
+            Array.Resize(ref withBlock.Pages[1].CommandList[1].Commands, 1);
+            withBlock.Pages[1].CommandList[1].Commands[0].Index = -1;
+            withBlock.Globals = 0;
+            withBlock.X = 0;
+            withBlock.Y = 0;
         }
 
         public static void EventEditorInit(int EventNum)
@@ -237,7 +238,7 @@ namespace Client
             GameState.InitEventEditorForm = true;
             if (TmpEvent.Pages[1].CommandListCount == 0)
             {
-                Array.Resize(ref TmpEvent.Pages[1].CommandList, 1);
+                Array.Resize(ref TmpEvent.Pages[1].CommandList, 2);
                 TmpEvent.Pages[1].CommandListCount = 1;
                 TmpEvent.Pages[1].CommandList[1].CommandCount = 1;
                 Array.Resize(ref TmpEvent.Pages[1].CommandList[1].Commands, TmpEvent.Pages[1].CommandList[1].CommandCount);
@@ -352,8 +353,8 @@ namespace Client
 
             if (TmpEvent.Pages[CurPageNum].CommandListCount > 0)
             {
-                listleftoff = new int[TmpEvent.Pages[CurPageNum].CommandListCount];
-                conditionalstage = new int[TmpEvent.Pages[CurPageNum].CommandListCount];
+                listleftoff = new int[TmpEvent.Pages[CurPageNum].CommandListCount + 1];
+                conditionalstage = new int[TmpEvent.Pages[CurPageNum].CommandListCount + 1];
                 curlist = 1;
                 X = 0;
                 Array.Resize(ref EventList, X + 1);

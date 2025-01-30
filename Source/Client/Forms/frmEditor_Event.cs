@@ -174,7 +174,7 @@ namespace Client
             tabPages.TabPages.Clear();
 
             var loopTo2 = Event.TmpEvent.PageCount;
-            for (i = 0; i < loopTo2; i++)
+            for (i = 0; i <= loopTo2; i++)
                 tabPages.TabPages.Add(Conversion.Str(i));
 
             // items
@@ -1051,7 +1051,7 @@ namespace Client
             tabPages.TabPages.Clear();
 
             var loopTo = Event.TmpEvent.PageCount;
-            for (i = 0; i < loopTo; i++)
+            for (i = 0; i <= loopTo; i++)
                 tabPages.TabPages.Add(Conversion.Str(i));
             btnDeletePage.Enabled = true;
         }
@@ -1073,9 +1073,9 @@ namespace Client
             Event.TmpEvent.Pages[Event.CurPageNum] = default;
 
             // move everything else down a notch
-            if (Event.CurPageNum < Event.TmpEvent.PageCount)
+            if (Event.CurPageNum <= Event.TmpEvent.PageCount)
             {
-                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
+                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
                     Event.TmpEvent.Pages[i] = Event.TmpEvent.Pages[i];
             }
             Event.TmpEvent.PageCount = Event.TmpEvent.PageCount - 1;
@@ -1085,8 +1085,9 @@ namespace Client
             // set the tabs
             tabPages.TabPages.Clear();
 
-            for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i < loopTo1; i++)
+            for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i <= loopTo1; i++)
                 tabPages.TabPages.Add("0", Conversion.Str(i), "");
+
             // set the tab back
             if (Event.CurPageNum <= Event.TmpEvent.PageCount)
             {
@@ -1670,7 +1671,7 @@ namespace Client
             Event.CurPageNum = 1;
             tabPages.TabPages.Clear();
 
-            for (int i = 0, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
+            for (int i = 0, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
                 tabPages.TabPages.Add("0", i.ToString(), "0");
             Event.EventEditorLoadPage(Event.CurPageNum);
         }

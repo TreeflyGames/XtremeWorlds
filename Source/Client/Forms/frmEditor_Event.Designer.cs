@@ -59,210 +59,174 @@ namespace Client
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var TreeNode1 = new TreeNode("Show Text");
-            var TreeNode2 = new TreeNode("Show Choices");
-            var TreeNode3 = new TreeNode("Add Chatbox Text");
-            var TreeNode4 = new TreeNode("Show ChatBubble");
-            var TreeNode5 = new TreeNode("Messages", new TreeNode[] { TreeNode1, TreeNode2, TreeNode3, TreeNode4 });
-            var TreeNode6 = new TreeNode("Set Player Variable");
-            var TreeNode7 = new TreeNode("Set Player Switch");
-            var TreeNode8 = new TreeNode("Set Self Switch");
-            var TreeNode9 = new TreeNode("Event Processing", new TreeNode[] { TreeNode6, TreeNode7, TreeNode8 });
-            var TreeNode10 = new TreeNode("Conditional Branch");
-            var TreeNode11 = new TreeNode("Stop Event Processing");
-            var TreeNode12 = new TreeNode("Label");
-            var TreeNode13 = new TreeNode("GoTo Label");
-            var TreeNode14 = new TreeNode("Flow Control", new TreeNode[] { TreeNode10, TreeNode11, TreeNode12, TreeNode13 });
-            var TreeNode15 = new TreeNode("Change Items");
-            var TreeNode16 = new TreeNode("Restore HP");
-            var TreeNode17 = new TreeNode("Restore MP");
-            var TreeNode18 = new TreeNode("Level Up");
-            var TreeNode19 = new TreeNode("Change Level");
-            var TreeNode20 = new TreeNode("Change Skills");
-            var TreeNode21 = new TreeNode("Change Job");
-            var TreeNode22 = new TreeNode("Change Sprite");
-            var TreeNode23 = new TreeNode("Change Gender");
-            var TreeNode24 = new TreeNode("Change PK");
-            var TreeNode25 = new TreeNode("Give Experience");
-            var TreeNode26 = new TreeNode("Player Options", new TreeNode[] { TreeNode15, TreeNode16, TreeNode17, TreeNode18, TreeNode19, TreeNode20, TreeNode21, TreeNode22, TreeNode23, TreeNode24, TreeNode25 });
-            var TreeNode27 = new TreeNode("Warp Player");
-            var TreeNode28 = new TreeNode("Set Move Route");
-            var TreeNode29 = new TreeNode("Wait for Route Completion");
-            var TreeNode30 = new TreeNode("Force Spawn NPC");
-            var TreeNode31 = new TreeNode("Hold Player");
-            var TreeNode32 = new TreeNode("Release Player");
-            var TreeNode33 = new TreeNode("Movement", new TreeNode[] { TreeNode27, TreeNode28, TreeNode29, TreeNode30, TreeNode31, TreeNode32 });
-            var TreeNode34 = new TreeNode("Animation");
-            var TreeNode35 = new TreeNode("Animation", new TreeNode[] { TreeNode34 });
-            var TreeNode36 = new TreeNode("Begin Quest");
-            var TreeNode37 = new TreeNode("Complete Task");
-            var TreeNode38 = new TreeNode("End Quest");
-            var TreeNode39 = new TreeNode("Questing", new TreeNode[] { TreeNode36, TreeNode37, TreeNode38 });
-            var TreeNode40 = new TreeNode("Set Fog");
-            var TreeNode41 = new TreeNode("Set Weather");
-            var TreeNode42 = new TreeNode("Set Map Tinting");
-            var TreeNode43 = new TreeNode("Map Functions", new TreeNode[] { TreeNode40, TreeNode41, TreeNode42 });
-            var TreeNode44 = new TreeNode("Play BGM");
-            var TreeNode45 = new TreeNode("Stop BGM");
-            var TreeNode46 = new TreeNode("Play Sound");
-            var TreeNode47 = new TreeNode("Stop Sounds");
-            var TreeNode48 = new TreeNode("Music and Sound", new TreeNode[] { TreeNode44, TreeNode45, TreeNode46, TreeNode47 });
-            var TreeNode49 = new TreeNode("Wait...");
-            var TreeNode50 = new TreeNode("Set Access");
-            var TreeNode51 = new TreeNode("Custom Script");
-            var TreeNode52 = new TreeNode("Etc...", new TreeNode[] { TreeNode49, TreeNode50, TreeNode51 });
-            var TreeNode53 = new TreeNode("Open Bank");
-            var TreeNode54 = new TreeNode("Open Shop");
-            var TreeNode55 = new TreeNode("Shop and Bank", new TreeNode[] { TreeNode53, TreeNode54 });
-            var TreeNode56 = new TreeNode("Fade In");
-            var TreeNode57 = new TreeNode("Fade Out");
-            var TreeNode58 = new TreeNode("Flash White");
-            var TreeNode59 = new TreeNode("Show Picture");
-            var TreeNode60 = new TreeNode("Hide Picture");
-            var TreeNode61 = new TreeNode("Cutscene Options", new TreeNode[] { TreeNode56, TreeNode57, TreeNode58, TreeNode59, TreeNode60 });
-            var ListViewGroup1 = new ListViewGroup("Movement", HorizontalAlignment.Left);
-            var ListViewGroup2 = new ListViewGroup("Wait", HorizontalAlignment.Left);
-            var ListViewGroup3 = new ListViewGroup("Turning", HorizontalAlignment.Left);
-            var ListViewGroup4 = new ListViewGroup("Speed", HorizontalAlignment.Left);
-            var ListViewGroup5 = new ListViewGroup("Walk Animation", HorizontalAlignment.Left);
-            var ListViewGroup6 = new ListViewGroup("Fixed Direction", HorizontalAlignment.Left);
-            var ListViewGroup7 = new ListViewGroup("WalkThrough", HorizontalAlignment.Left);
-            var ListViewGroup8 = new ListViewGroup("Set Position", HorizontalAlignment.Left);
-            var ListViewGroup9 = new ListViewGroup("Set Graphic", HorizontalAlignment.Left);
-            var ListViewItem1 = new ListViewItem("Move Up");
-            var ListViewItem2 = new ListViewItem("Move Down");
-            var ListViewItem3 = new ListViewItem("Move left");
-            var ListViewItem4 = new ListViewItem("Move Right");
-            var ListViewItem5 = new ListViewItem("Move Randomly");
-            var ListViewItem6 = new ListViewItem("Move To Player***");
-            var ListViewItem7 = new ListViewItem("Move from Player***");
-            var ListViewItem8 = new ListViewItem("Step Forwards");
-            var ListViewItem9 = new ListViewItem("Step Backwards");
-            var ListViewItem10 = new ListViewItem("Wait 100Ms");
-            var ListViewItem11 = new ListViewItem("Wait 500Ms");
-            var ListViewItem12 = new ListViewItem("Wait 1000Ms");
-            var ListViewItem13 = new ListViewItem("Turn Up");
-            var ListViewItem14 = new ListViewItem("Turn Down");
-            var ListViewItem15 = new ListViewItem("Turn Left");
-            var ListViewItem16 = new ListViewItem("Turn Right");
-            var ListViewItem17 = new ListViewItem("Turn 90DG Right");
-            var ListViewItem18 = new ListViewItem("Turn 90DG Left");
-            var ListViewItem19 = new ListViewItem("Turn 180DG");
-            var ListViewItem20 = new ListViewItem("Turn Randomly");
-            var ListViewItem21 = new ListViewItem("Turn To Player***");
-            var ListViewItem22 = new ListViewItem("Turn From Player***");
-            var ListViewItem23 = new ListViewItem("Set Speed 8x Slower");
-            var ListViewItem24 = new ListViewItem("Set Speed 4x Slower");
-            var ListViewItem25 = new ListViewItem("Set Speed 2x Slower");
-            var ListViewItem26 = new ListViewItem("Set Speed To Normal");
-            var ListViewItem27 = new ListViewItem("Set Speed 2x Faster");
-            var ListViewItem28 = new ListViewItem("Set Speed 4x Faster");
-            var ListViewItem29 = new ListViewItem("Set Freq. To Lowest");
-            var ListViewItem30 = new ListViewItem("Set Freq. To Lower");
-            var ListViewItem31 = new ListViewItem("Set Freq. To Normal");
-            var ListViewItem32 = new ListViewItem("Set Freq. To Higher");
-            var ListViewItem33 = new ListViewItem("Set Freq. To Highest");
-            var ListViewItem34 = new ListViewItem("Walking Animation ON");
-            var ListViewItem35 = new ListViewItem("Walking Animation OFF");
-            var ListViewItem36 = new ListViewItem("Fixed Direction ON");
-            var ListViewItem37 = new ListViewItem("Fixed Direction OFF");
-            var ListViewItem38 = new ListViewItem("Walkthrough ON");
-            var ListViewItem39 = new ListViewItem("Walkthrough ON");
-            var ListViewItem40 = new ListViewItem("Set Position Below Player");
-            var ListViewItem41 = new ListViewItem("Set PositionWith Player");
-            var ListViewItem42 = new ListViewItem("Set Position Above Player");
-            var ListViewItem43 = new ListViewItem("Set Graphic...");
+            TreeNode treeNode1 = new TreeNode("Show Text");
+            TreeNode treeNode2 = new TreeNode("Show Choices");
+            TreeNode treeNode3 = new TreeNode("Add Chatbox Text");
+            TreeNode treeNode4 = new TreeNode("Show ChatBubble");
+            TreeNode treeNode5 = new TreeNode("Messages", new TreeNode[] { treeNode1, treeNode2, treeNode3, treeNode4 });
+            TreeNode treeNode6 = new TreeNode("Set Player Variable");
+            TreeNode treeNode7 = new TreeNode("Set Player Switch");
+            TreeNode treeNode8 = new TreeNode("Set Self Switch");
+            TreeNode treeNode9 = new TreeNode("Event Processing", new TreeNode[] { treeNode6, treeNode7, treeNode8 });
+            TreeNode treeNode10 = new TreeNode("Conditional Branch");
+            TreeNode treeNode11 = new TreeNode("Stop Event Processing");
+            TreeNode treeNode12 = new TreeNode("Label");
+            TreeNode treeNode13 = new TreeNode("GoTo Label");
+            TreeNode treeNode14 = new TreeNode("Flow Control", new TreeNode[] { treeNode10, treeNode11, treeNode12, treeNode13 });
+            TreeNode treeNode15 = new TreeNode("Change Items");
+            TreeNode treeNode16 = new TreeNode("Restore HP");
+            TreeNode treeNode17 = new TreeNode("Restore MP");
+            TreeNode treeNode18 = new TreeNode("Level Up");
+            TreeNode treeNode19 = new TreeNode("Change Level");
+            TreeNode treeNode20 = new TreeNode("Change Skills");
+            TreeNode treeNode21 = new TreeNode("Change Job");
+            TreeNode treeNode22 = new TreeNode("Change Sprite");
+            TreeNode treeNode23 = new TreeNode("Change Gender");
+            TreeNode treeNode24 = new TreeNode("Change PK");
+            TreeNode treeNode25 = new TreeNode("Give Experience");
+            TreeNode treeNode26 = new TreeNode("Player Options", new TreeNode[] { treeNode15, treeNode16, treeNode17, treeNode18, treeNode19, treeNode20, treeNode21, treeNode22, treeNode23, treeNode24, treeNode25 });
+            TreeNode treeNode27 = new TreeNode("Warp Player");
+            TreeNode treeNode28 = new TreeNode("Set Move Route");
+            TreeNode treeNode29 = new TreeNode("Wait for Route Completion");
+            TreeNode treeNode30 = new TreeNode("Force Spawn NPC");
+            TreeNode treeNode31 = new TreeNode("Hold Player");
+            TreeNode treeNode32 = new TreeNode("Release Player");
+            TreeNode treeNode33 = new TreeNode("Movement", new TreeNode[] { treeNode27, treeNode28, treeNode29, treeNode30, treeNode31, treeNode32 });
+            TreeNode treeNode34 = new TreeNode("Animation");
+            TreeNode treeNode35 = new TreeNode("Animation", new TreeNode[] { treeNode34 });
+            TreeNode treeNode36 = new TreeNode("Begin Quest");
+            TreeNode treeNode37 = new TreeNode("Complete Task");
+            TreeNode treeNode38 = new TreeNode("End Quest");
+            TreeNode treeNode39 = new TreeNode("Questing", new TreeNode[] { treeNode36, treeNode37, treeNode38 });
+            TreeNode treeNode40 = new TreeNode("Set Fog");
+            TreeNode treeNode41 = new TreeNode("Set Weather");
+            TreeNode treeNode42 = new TreeNode("Set Map Tinting");
+            TreeNode treeNode43 = new TreeNode("Map Functions", new TreeNode[] { treeNode40, treeNode41, treeNode42 });
+            TreeNode treeNode44 = new TreeNode("Play BGM");
+            TreeNode treeNode45 = new TreeNode("Stop BGM");
+            TreeNode treeNode46 = new TreeNode("Play Sound");
+            TreeNode treeNode47 = new TreeNode("Stop Sounds");
+            TreeNode treeNode48 = new TreeNode("Music and Sound", new TreeNode[] { treeNode44, treeNode45, treeNode46, treeNode47 });
+            TreeNode treeNode49 = new TreeNode("Wait...");
+            TreeNode treeNode50 = new TreeNode("Set Access");
+            TreeNode treeNode51 = new TreeNode("Custom Script");
+            TreeNode treeNode52 = new TreeNode("Etc...", new TreeNode[] { treeNode49, treeNode50, treeNode51 });
+            TreeNode treeNode53 = new TreeNode("Open Bank");
+            TreeNode treeNode54 = new TreeNode("Open Shop");
+            TreeNode treeNode55 = new TreeNode("Shop and Bank", new TreeNode[] { treeNode53, treeNode54 });
+            TreeNode treeNode56 = new TreeNode("Fade In");
+            TreeNode treeNode57 = new TreeNode("Fade Out");
+            TreeNode treeNode58 = new TreeNode("Flash White");
+            TreeNode treeNode59 = new TreeNode("Show Picture");
+            TreeNode treeNode60 = new TreeNode("Hide Picture");
+            TreeNode treeNode61 = new TreeNode("Cutscene Options", new TreeNode[] { treeNode56, treeNode57, treeNode58, treeNode59, treeNode60 });
+            ListViewGroup listViewGroup1 = new ListViewGroup("Movement", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup2 = new ListViewGroup("Wait", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup3 = new ListViewGroup("Turning", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup4 = new ListViewGroup("Speed", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup5 = new ListViewGroup("Walk Animation", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup6 = new ListViewGroup("Fixed Direction", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup7 = new ListViewGroup("WalkThrough", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup8 = new ListViewGroup("Set Position", HorizontalAlignment.Left);
+            ListViewGroup listViewGroup9 = new ListViewGroup("Set Graphic", HorizontalAlignment.Left);
+            ListViewItem listViewItem1 = new ListViewItem("Move Up");
+            ListViewItem listViewItem2 = new ListViewItem("Move Down");
+            ListViewItem listViewItem3 = new ListViewItem("Move left");
+            ListViewItem listViewItem4 = new ListViewItem("Move Right");
+            ListViewItem listViewItem5 = new ListViewItem("Move Randomly");
+            ListViewItem listViewItem6 = new ListViewItem("Move To Player***");
+            ListViewItem listViewItem7 = new ListViewItem("Move from Player***");
+            ListViewItem listViewItem8 = new ListViewItem("Step Forwards");
+            ListViewItem listViewItem9 = new ListViewItem("Step Backwards");
+            ListViewItem listViewItem10 = new ListViewItem("Wait 100Ms");
+            ListViewItem listViewItem11 = new ListViewItem("Wait 500Ms");
+            ListViewItem listViewItem12 = new ListViewItem("Wait 1000Ms");
+            ListViewItem listViewItem13 = new ListViewItem("Turn Up");
+            ListViewItem listViewItem14 = new ListViewItem("Turn Down");
+            ListViewItem listViewItem15 = new ListViewItem("Turn Left");
+            ListViewItem listViewItem16 = new ListViewItem("Turn Right");
+            ListViewItem listViewItem17 = new ListViewItem("Turn 90DG Right");
+            ListViewItem listViewItem18 = new ListViewItem("Turn 90DG Left");
+            ListViewItem listViewItem19 = new ListViewItem("Turn 180DG");
+            ListViewItem listViewItem20 = new ListViewItem("Turn Randomly");
+            ListViewItem listViewItem21 = new ListViewItem("Turn To Player***");
+            ListViewItem listViewItem22 = new ListViewItem("Turn From Player***");
+            ListViewItem listViewItem23 = new ListViewItem("Set Speed 8x Slower");
+            ListViewItem listViewItem24 = new ListViewItem("Set Speed 4x Slower");
+            ListViewItem listViewItem25 = new ListViewItem("Set Speed 2x Slower");
+            ListViewItem listViewItem26 = new ListViewItem("Set Speed To Normal");
+            ListViewItem listViewItem27 = new ListViewItem("Set Speed 2x Faster");
+            ListViewItem listViewItem28 = new ListViewItem("Set Speed 4x Faster");
+            ListViewItem listViewItem29 = new ListViewItem("Set Freq. To Lowest");
+            ListViewItem listViewItem30 = new ListViewItem("Set Freq. To Lower");
+            ListViewItem listViewItem31 = new ListViewItem("Set Freq. To Normal");
+            ListViewItem listViewItem32 = new ListViewItem("Set Freq. To Higher");
+            ListViewItem listViewItem33 = new ListViewItem("Set Freq. To Highest");
+            ListViewItem listViewItem34 = new ListViewItem("Walking Animation ON");
+            ListViewItem listViewItem35 = new ListViewItem("Walking Animation OFF");
+            ListViewItem listViewItem36 = new ListViewItem("Fixed Direction ON");
+            ListViewItem listViewItem37 = new ListViewItem("Fixed Direction OFF");
+            ListViewItem listViewItem38 = new ListViewItem("Walkthrough ON");
+            ListViewItem listViewItem39 = new ListViewItem("Walkthrough ON");
+            ListViewItem listViewItem40 = new ListViewItem("Set Position Below Player");
+            ListViewItem listViewItem41 = new ListViewItem("Set PositionWith Player");
+            ListViewItem listViewItem42 = new ListViewItem("Set Position Above Player");
+            ListViewItem listViewItem43 = new ListViewItem("Set Graphic...");
             tvCommands = new TreeView();
-            tvCommands.AfterSelect += new TreeViewEventHandler(TvCommands_AfterSelect);
             fraPageSetUp = new DarkUI.Controls.DarkGroupBox();
             chkGlobal = new DarkUI.Controls.DarkCheckBox();
-            chkGlobal.CheckedChanged += new EventHandler(ChkGlobal_CheckedChanged);
             btnClearPage = new DarkUI.Controls.DarkButton();
-            btnClearPage.Click += new EventHandler(BtnClearPage_Click);
             btnDeletePage = new DarkUI.Controls.DarkButton();
-            btnDeletePage.Click += new EventHandler(BtnDeletePage_Click);
             btnPastePage = new DarkUI.Controls.DarkButton();
-            btnPastePage.Click += new EventHandler(BtnPastePage_Click);
             btnCopyPage = new DarkUI.Controls.DarkButton();
-            btnCopyPage.Click += new EventHandler(BtnCopyPage_Click);
             btnNewPage = new DarkUI.Controls.DarkButton();
-            btnNewPage.Click += new EventHandler(BtnNewPage_Click);
             txtName = new DarkUI.Controls.DarkTextBox();
-            txtName.TextChanged += new EventHandler(TxtName_TextChanged);
             DarkLabel1 = new DarkUI.Controls.DarkLabel();
             tabPages = new TabControl();
-            tabPages.Click += new EventHandler(TabPages_Click);
             TabPage1 = new TabPage();
             pnlTabPage = new Panel();
             DarkGroupBox2 = new DarkUI.Controls.DarkGroupBox();
             cmbPositioning = new DarkUI.Controls.DarkComboBox();
-            cmbPositioning.SelectedIndexChanged += new EventHandler(CmbPositioning_SelectedIndexChanged);
             fraGraphicPic = new DarkUI.Controls.DarkGroupBox();
             picGraphic = new PictureBox();
-            picGraphic.Click += new EventHandler(PicGraphic_Click);
             DarkGroupBox6 = new DarkUI.Controls.DarkGroupBox();
             chkShowName = new DarkUI.Controls.DarkCheckBox();
-            chkShowName.CheckedChanged += new EventHandler(ChkShowName_CheckedChanged);
             chkWalkThrough = new DarkUI.Controls.DarkCheckBox();
-            chkWalkThrough.CheckedChanged += new EventHandler(ChkWalkThrough_CheckedChanged);
             chkDirFix = new DarkUI.Controls.DarkCheckBox();
-            chkDirFix.CheckedChanged += new EventHandler(ChkDirFix_CheckedChanged);
             chkWalkAnim = new DarkUI.Controls.DarkCheckBox();
-            chkWalkAnim.CheckedChanged += new EventHandler(ChkWalkAnim_CheckedChanged);
             DarkGroupBox5 = new DarkUI.Controls.DarkGroupBox();
             cmbTrigger = new DarkUI.Controls.DarkComboBox();
-            cmbTrigger.SelectedIndexChanged += new EventHandler(CmbTrigger_SelectedIndexChanged);
             DarkGroupBox4 = new DarkUI.Controls.DarkGroupBox();
             picGraphicSel = new PictureBox();
             DarkGroupBox3 = new DarkUI.Controls.DarkGroupBox();
             DarkLabel7 = new DarkUI.Controls.DarkLabel();
             cmbMoveFreq = new DarkUI.Controls.DarkComboBox();
-            cmbMoveFreq.SelectedIndexChanged += new EventHandler(CmbMoveFreq_SelectedIndexChanged);
             DarkLabel6 = new DarkUI.Controls.DarkLabel();
             cmbMoveSpeed = new DarkUI.Controls.DarkComboBox();
-            cmbMoveSpeed.SelectedIndexChanged += new EventHandler(CmbMoveSpeed_SelectedIndexChanged);
             btnMoveRoute = new DarkUI.Controls.DarkButton();
-            btnMoveRoute.Click += new EventHandler(BtnMoveRoute_Click);
             cmbMoveType = new DarkUI.Controls.DarkComboBox();
-            cmbMoveType.SelectedIndexChanged += new EventHandler(CmbMoveType_SelectedIndexChanged);
             DarkLabel5 = new DarkUI.Controls.DarkLabel();
             DarkGroupBox1 = new DarkUI.Controls.DarkGroupBox();
             cmbSelfSwitchCompare = new DarkUI.Controls.DarkComboBox();
-            cmbSelfSwitchCompare.SelectedIndexChanged += new EventHandler(CmbSelfSwitchCompare_SelectedIndexChanged);
             DarkLabel4 = new DarkUI.Controls.DarkLabel();
             cmbSelfSwitch = new DarkUI.Controls.DarkComboBox();
-            cmbSelfSwitch.SelectedIndexChanged += new EventHandler(CmbSelfSwitch_SelectedIndexChanged);
             chkSelfSwitch = new DarkUI.Controls.DarkCheckBox();
-            chkSelfSwitch.CheckedChanged += new EventHandler(ChkSelfSwitch_CheckedChanged);
             cmbHasItem = new DarkUI.Controls.DarkComboBox();
-            cmbHasItem.SelectedIndexChanged += new EventHandler(CmbHasItem_SelectedIndexChanged);
             chkHasItem = new DarkUI.Controls.DarkCheckBox();
-            chkHasItem.CheckedChanged += new EventHandler(ChkHasItem_CheckedChanged);
             cmbPlayerSwitchCompare = new DarkUI.Controls.DarkComboBox();
-            cmbPlayerSwitchCompare.SelectedIndexChanged += new EventHandler(CmbPlayerSwitchCompare_SelectedIndexChanged);
             DarkLabel3 = new DarkUI.Controls.DarkLabel();
             cmbPlayerSwitch = new DarkUI.Controls.DarkComboBox();
-            cmbPlayerSwitch.SelectedIndexChanged += new EventHandler(CmbPlayerSwitch_SelectedIndexChanged);
             chkPlayerSwitch = new DarkUI.Controls.DarkCheckBox();
-            chkPlayerSwitch.CheckedChanged += new EventHandler(ChkPlayerSwitch_CheckedChanged);
             nudPlayerVariable = new DarkUI.Controls.DarkNumericUpDown();
-            nudPlayerVariable.ValueChanged += new EventHandler(NudPlayerVariable_ValueChanged);
             cmbPlayervarCompare = new DarkUI.Controls.DarkComboBox();
-            cmbPlayervarCompare.SelectedIndexChanged += new EventHandler(CmbPlayervarCompare_SelectedIndexChanged);
             DarkLabel2 = new DarkUI.Controls.DarkLabel();
             cmbPlayerVar = new DarkUI.Controls.DarkComboBox();
-            cmbPlayerVar.SelectedIndexChanged += new EventHandler(CmbPlayerVar_SelectedIndexChanged);
             chkPlayerVar = new DarkUI.Controls.DarkCheckBox();
-            chkPlayerVar.CheckedChanged += new EventHandler(ChkPlayerVar_CheckedChanged);
             DarkGroupBox8 = new DarkUI.Controls.DarkGroupBox();
             btnClearCommand = new DarkUI.Controls.DarkButton();
-            btnClearCommand.Click += new EventHandler(BtnClearCommand_Click);
             btnDeleteCommand = new DarkUI.Controls.DarkButton();
-            btnDeleteCommand.Click += new EventHandler(BtnDeleteComand_Click);
             btnEditCommand = new DarkUI.Controls.DarkButton();
-            btnEditCommand.Click += new EventHandler(BtnEditCommand_Click);
             btnAddCommand = new DarkUI.Controls.DarkButton();
-            btnAddCommand.Click += new EventHandler(BtnAddCommand_Click);
             fraGraphic = new DarkUI.Controls.DarkGroupBox();
             btnGraphicOk = new DarkUI.Controls.DarkButton();
             btnGraphicCancel = new DarkUI.Controls.DarkButton();
@@ -270,165 +234,117 @@ namespace Client
             nudGraphic = new DarkUI.Controls.DarkNumericUpDown();
             DarkLabel12 = new DarkUI.Controls.DarkLabel();
             cmbGraphic = new DarkUI.Controls.DarkComboBox();
-            cmbGraphic.SelectedIndexChanged += new EventHandler(CmbGraphic_SelectedIndexChanged);
             DarkLabel11 = new DarkUI.Controls.DarkLabel();
             fraCommands = new Panel();
-            btnCancelCommand = new DarkUI.Controls.DarkButton();
-            btnCancelCommand.Click += new EventHandler(BtnCancelCommand_Click);
             lstCommands = new ListBox();
-            lstCommands.SelectedIndexChanged += new EventHandler(LstCommands_SelectedIndexChanged);
             btnLabeling = new DarkUI.Controls.DarkButton();
-            btnLabeling.Click += new EventHandler(BtnLabeling_Click);
             btnCancel = new DarkUI.Controls.DarkButton();
-            btnCancel.Click += new EventHandler(BtnCancel_Click);
             btnOk = new DarkUI.Controls.DarkButton();
-            btnOk.Click += new EventHandler(BtnOK_Click);
             fraMoveRoute = new DarkUI.Controls.DarkGroupBox();
             btnMoveRouteOk = new DarkUI.Controls.DarkButton();
-            btnMoveRouteOk.Click += new EventHandler(BtnMoveRouteOk_Click);
             btnMoveRouteCancel = new DarkUI.Controls.DarkButton();
-            btnMoveRouteCancel.Click += new EventHandler(BtnMoveRouteCancel_Click);
             chkRepeatRoute = new DarkUI.Controls.DarkCheckBox();
-            chkRepeatRoute.CheckedChanged += new EventHandler(ChkRepeatRoute_CheckedChanged);
             chkIgnoreMove = new DarkUI.Controls.DarkCheckBox();
-            chkIgnoreMove.CheckedChanged += new EventHandler(ChkIgnoreMove_CheckedChanged);
             DarkGroupBox10 = new DarkUI.Controls.DarkGroupBox();
             lstvwMoveRoute = new ListView();
-            lstvwMoveRoute.Click += new EventHandler(LstvwMoveRoute_SelectedIndexChanged);
             ColumnHeader3 = new ColumnHeader();
             ColumnHeader4 = new ColumnHeader();
             lstMoveRoute = new ListBox();
-            lstMoveRoute.KeyDown += new KeyEventHandler(LstMoveRoute_KeyDown);
             cmbEvent = new DarkUI.Controls.DarkComboBox();
             pnlGraphicSel = new Panel();
             fraDialogue = new DarkUI.Controls.DarkGroupBox();
             fraShowChatBubble = new DarkUI.Controls.DarkGroupBox();
             btnShowChatBubbleOk = new DarkUI.Controls.DarkButton();
-            btnShowChatBubbleOk.Click += new EventHandler(BtnShowChatBubbleOK_Click);
             btnShowChatBubbleCancel = new DarkUI.Controls.DarkButton();
-            btnShowChatBubbleCancel.Click += new EventHandler(BtnShowChatBubbleCancel_Click);
             DarkLabel41 = new DarkUI.Controls.DarkLabel();
             cmbChatBubbleTarget = new DarkUI.Controls.DarkComboBox();
             cmbChatBubbleTargetType = new DarkUI.Controls.DarkComboBox();
-            cmbChatBubbleTargetType.SelectedIndexChanged += new EventHandler(CmbChatBubbleTargetType_SelectedIndexChanged);
             DarkLabel40 = new DarkUI.Controls.DarkLabel();
             txtChatbubbleText = new DarkUI.Controls.DarkTextBox();
             DarkLabel39 = new DarkUI.Controls.DarkLabel();
             fraOpenShop = new DarkUI.Controls.DarkGroupBox();
             btnOpenShopOk = new DarkUI.Controls.DarkButton();
-            btnOpenShopOk.Click += new EventHandler(BtnOpenShopOK_Click);
             btnOpenShopCancel = new DarkUI.Controls.DarkButton();
-            btnOpenShopCancel.Click += new EventHandler(BtnOpenShopCancel_Click);
             cmbOpenShop = new DarkUI.Controls.DarkComboBox();
             fraSetSelfSwitch = new DarkUI.Controls.DarkGroupBox();
             btnSelfswitchOk = new DarkUI.Controls.DarkButton();
-            btnSelfswitchOk.Click += new EventHandler(BtnSelfswitchOk_Click);
             btnSelfswitchCancel = new DarkUI.Controls.DarkButton();
-            btnSelfswitchCancel.Click += new EventHandler(BtnSelfswitchCancel_Click);
             DarkLabel47 = new DarkUI.Controls.DarkLabel();
             cmbSetSelfSwitchTo = new DarkUI.Controls.DarkComboBox();
             DarkLabel46 = new DarkUI.Controls.DarkLabel();
             cmbSetSelfSwitch = new DarkUI.Controls.DarkComboBox();
             fraPlaySound = new DarkUI.Controls.DarkGroupBox();
             btnPlaySoundOk = new DarkUI.Controls.DarkButton();
-            btnPlaySoundOk.Click += new EventHandler(BtnPlaySoundOK_Click);
             btnPlaySoundCancel = new DarkUI.Controls.DarkButton();
-            btnPlaySoundCancel.Click += new EventHandler(BtnPlaySoundCancel_Click);
             cmbPlaySound = new DarkUI.Controls.DarkComboBox();
             fraChangePK = new DarkUI.Controls.DarkGroupBox();
             btnChangePkOk = new DarkUI.Controls.DarkButton();
-            btnChangePkOk.Click += new EventHandler(BtnChangePkOK_Click);
             btnChangePkCancel = new DarkUI.Controls.DarkButton();
-            btnChangePkCancel.Click += new EventHandler(BtnChangePkCancel_Click);
             cmbSetPK = new DarkUI.Controls.DarkComboBox();
             fraCreateLabel = new DarkUI.Controls.DarkGroupBox();
             btnCreatelabelOk = new DarkUI.Controls.DarkButton();
-            btnCreatelabelOk.Click += new EventHandler(BtnCreatelabelOk_Click);
             btnCreatelabelCancel = new DarkUI.Controls.DarkButton();
-            btnCreatelabelCancel.Click += new EventHandler(BtnCreateLabelCancel_Click);
             txtLabelName = new DarkUI.Controls.DarkTextBox();
             lblLabelName = new DarkUI.Controls.DarkLabel();
             fraChangeJob = new DarkUI.Controls.DarkGroupBox();
             btnChangeJobOk = new DarkUI.Controls.DarkButton();
-            btnChangeJobOk.Click += new EventHandler(BtnChangeJobOK_Click);
             btnChangeJobCancel = new DarkUI.Controls.DarkButton();
-            btnChangeJobCancel.Click += new EventHandler(BtnChangeJobCancel_Click);
             cmbChangeJob = new DarkUI.Controls.DarkComboBox();
             DarkLabel38 = new DarkUI.Controls.DarkLabel();
             fraChangeSkills = new DarkUI.Controls.DarkGroupBox();
             btnChangeSkillsOk = new DarkUI.Controls.DarkButton();
-            btnChangeSkillsOk.Click += new EventHandler(BtnChangeSkillsOK_Click);
             btnChangeSkillsCancel = new DarkUI.Controls.DarkButton();
-            btnChangeSkillsCancel.Click += new EventHandler(BtnChangeSkillsCancel_Click);
             optChangeSkillsRemove = new DarkUI.Controls.DarkRadioButton();
             optChangeSkillsAdd = new DarkUI.Controls.DarkRadioButton();
             cmbChangeSkills = new DarkUI.Controls.DarkComboBox();
             DarkLabel37 = new DarkUI.Controls.DarkLabel();
             fraPlayerSwitch = new DarkUI.Controls.DarkGroupBox();
             btnSetPlayerSwitchOk = new DarkUI.Controls.DarkButton();
-            btnSetPlayerSwitchOk.Click += new EventHandler(BtnSetPlayerSwitchOk_Click);
             btnSetPlayerswitchCancel = new DarkUI.Controls.DarkButton();
-            btnSetPlayerswitchCancel.Click += new EventHandler(BtnSetPlayerswitchCancel_Click);
             cmbPlayerSwitchSet = new DarkUI.Controls.DarkComboBox();
             DarkLabel23 = new DarkUI.Controls.DarkLabel();
             cmbSwitch = new DarkUI.Controls.DarkComboBox();
             DarkLabel22 = new DarkUI.Controls.DarkLabel();
             fraSetWait = new DarkUI.Controls.DarkGroupBox();
             btnSetWaitOk = new DarkUI.Controls.DarkButton();
-            btnSetWaitOk.Click += new EventHandler(BtnSetWaitOK_Click);
             btnSetWaitCancel = new DarkUI.Controls.DarkButton();
-            btnSetWaitCancel.Click += new EventHandler(BtnSetWaitCancel_Click);
             DarkLabel74 = new DarkUI.Controls.DarkLabel();
             DarkLabel72 = new DarkUI.Controls.DarkLabel();
             DarkLabel73 = new DarkUI.Controls.DarkLabel();
             nudWaitAmount = new DarkUI.Controls.DarkNumericUpDown();
             fraMoveRouteWait = new DarkUI.Controls.DarkGroupBox();
             btnMoveWaitCancel = new DarkUI.Controls.DarkButton();
-            btnMoveWaitCancel.Click += new EventHandler(BtnMoveWaitCancel_Click);
             btnMoveWaitOk = new DarkUI.Controls.DarkButton();
-            btnMoveWaitOk.Click += new EventHandler(BtnMoveWaitOK_Click);
             DarkLabel79 = new DarkUI.Controls.DarkLabel();
             cmbMoveWait = new DarkUI.Controls.DarkComboBox();
             fraCustomScript = new DarkUI.Controls.DarkGroupBox();
             nudCustomScript = new DarkUI.Controls.DarkNumericUpDown();
             DarkLabel78 = new DarkUI.Controls.DarkLabel();
             btnCustomScriptCancel = new DarkUI.Controls.DarkButton();
-            btnCustomScriptCancel.Click += new EventHandler(BtnCustomScriptCancel_Click);
             btnCustomScriptOk = new DarkUI.Controls.DarkButton();
-            btnCustomScriptOk.Click += new EventHandler(BtnCustomScriptOK_Click);
             fraSpawnNPC = new DarkUI.Controls.DarkGroupBox();
             btnSpawnNPCOk = new DarkUI.Controls.DarkButton();
-            btnSpawnNPCOk.Click += new EventHandler(BtnSpawnNPCOK_Click);
             btnSpawnNPCancel = new DarkUI.Controls.DarkButton();
-            btnSpawnNPCancel.Click += new EventHandler(BtnSpawnNPCancel_Click);
             cmbSpawnNPC = new DarkUI.Controls.DarkComboBox();
             fraSetWeather = new DarkUI.Controls.DarkGroupBox();
             btnSetWeatherOk = new DarkUI.Controls.DarkButton();
-            btnSetWeatherOk.Click += new EventHandler(BtnSetWeatherOK_Click);
             btnSetWeatherCancel = new DarkUI.Controls.DarkButton();
-            btnSetWeatherCancel.Click += new EventHandler(BtnSetWeatherCancel_Click);
             DarkLabel76 = new DarkUI.Controls.DarkLabel();
             nudWeatherIntensity = new DarkUI.Controls.DarkNumericUpDown();
             DarkLabel75 = new DarkUI.Controls.DarkLabel();
             CmbWeather = new DarkUI.Controls.DarkComboBox();
             fraGiveExp = new DarkUI.Controls.DarkGroupBox();
             btnGiveExpOk = new DarkUI.Controls.DarkButton();
-            btnGiveExpOk.Click += new EventHandler(BtnGiveExpOK_Click);
             btnGiveExpCancel = new DarkUI.Controls.DarkButton();
-            btnGiveExpCancel.Click += new EventHandler(BtnGiveExpCancel_Click);
             nudGiveExp = new DarkUI.Controls.DarkNumericUpDown();
             DarkLabel77 = new DarkUI.Controls.DarkLabel();
             fraSetAccess = new DarkUI.Controls.DarkGroupBox();
             btnSetAccessOk = new DarkUI.Controls.DarkButton();
-            btnSetAccessOk.Click += new EventHandler(BtnSetAccessOK_Click);
             btnSetAccessCancel = new DarkUI.Controls.DarkButton();
-            btnSetAccessCancel.Click += new EventHandler(BtnSetAccessCancel_Click);
             cmbSetAccess = new DarkUI.Controls.DarkComboBox();
             fraChangeGender = new DarkUI.Controls.DarkGroupBox();
             btnChangeGenderOk = new DarkUI.Controls.DarkButton();
-            btnChangeGenderOk.Click += new EventHandler(BtnChangeGenderOK_Click);
             btnChangeGenderCancel = new DarkUI.Controls.DarkButton();
-            btnChangeGenderCancel.Click += new EventHandler(BtnChangeGenderCancel_Click);
             optChangeSexFemale = new DarkUI.Controls.DarkRadioButton();
             optChangeSexMale = new DarkUI.Controls.DarkRadioButton();
             fraShowChoices = new DarkUI.Controls.DarkGroupBox();
@@ -443,43 +359,31 @@ namespace Client
             DarkLabel52 = new DarkUI.Controls.DarkLabel();
             txtChoicePrompt = new DarkUI.Controls.DarkTextBox();
             btnShowChoicesOk = new DarkUI.Controls.DarkButton();
-            btnShowChoicesOk.Click += new EventHandler(BtnShowChoicesOk_Click);
             btnShowChoicesCancel = new DarkUI.Controls.DarkButton();
-            btnShowChoicesCancel.Click += new EventHandler(BtnShowChoicesCancel_Click);
             fraChangeLevel = new DarkUI.Controls.DarkGroupBox();
             btnChangeLevelOk = new DarkUI.Controls.DarkButton();
-            btnChangeLevelOk.Click += new EventHandler(BtnChangeLevelOK_Click);
             btnChangeLevelCancel = new DarkUI.Controls.DarkButton();
-            btnChangeLevelCancel.Click += new EventHandler(BtnChangeLevelCancel_Click);
             DarkLabel65 = new DarkUI.Controls.DarkLabel();
             nudChangeLevel = new DarkUI.Controls.DarkNumericUpDown();
             fraPlayerVariable = new DarkUI.Controls.DarkGroupBox();
             nudVariableData2 = new DarkUI.Controls.DarkNumericUpDown();
             optVariableAction2 = new DarkUI.Controls.DarkRadioButton();
-            optVariableAction2.CheckedChanged += new EventHandler(OptVariableAction2_CheckedChanged);
             btnPlayerVarOk = new DarkUI.Controls.DarkButton();
-            btnPlayerVarOk.Click += new EventHandler(BtnPlayerVarOk_Click);
             btnPlayerVarCancel = new DarkUI.Controls.DarkButton();
-            btnPlayerVarCancel.Click += new EventHandler(BtnPlayerVarCancel_Click);
             DarkLabel51 = new DarkUI.Controls.DarkLabel();
             DarkLabel50 = new DarkUI.Controls.DarkLabel();
             nudVariableData4 = new DarkUI.Controls.DarkNumericUpDown();
             nudVariableData3 = new DarkUI.Controls.DarkNumericUpDown();
             optVariableAction3 = new DarkUI.Controls.DarkRadioButton();
-            optVariableAction3.CheckedChanged += new EventHandler(OptVariableAction3_CheckedChanged);
             optVariableAction1 = new DarkUI.Controls.DarkRadioButton();
-            optVariableAction1.CheckedChanged += new EventHandler(OptVariableAction1_CheckedChanged);
             nudVariableData1 = new DarkUI.Controls.DarkNumericUpDown();
             nudVariableData0 = new DarkUI.Controls.DarkNumericUpDown();
             optVariableAction0 = new DarkUI.Controls.DarkRadioButton();
-            optVariableAction0.CheckedChanged += new EventHandler(OptVariableAction0_CheckedChanged);
             cmbVariable = new DarkUI.Controls.DarkComboBox();
             DarkLabel49 = new DarkUI.Controls.DarkLabel();
             fraPlayAnimation = new DarkUI.Controls.DarkGroupBox();
             btnPlayAnimationOk = new DarkUI.Controls.DarkButton();
-            btnPlayAnimationOk.Click += new EventHandler(BtnPlayAnimationOK_Click);
             btnPlayAnimationCancel = new DarkUI.Controls.DarkButton();
-            btnPlayAnimationCancel.Click += new EventHandler(BtnPlayAnimationCancel_Click);
             lblPlayAnimY = new DarkUI.Controls.DarkLabel();
             lblPlayAnimX = new DarkUI.Controls.DarkLabel();
             cmbPlayAnimEvent = new DarkUI.Controls.DarkComboBox();
@@ -491,24 +395,18 @@ namespace Client
             cmbPlayAnim = new DarkUI.Controls.DarkComboBox();
             fraChangeSprite = new DarkUI.Controls.DarkGroupBox();
             btnChangeSpriteOk = new DarkUI.Controls.DarkButton();
-            btnChangeSpriteOk.Click += new EventHandler(BtnChangeSpriteOK_Click);
             btnChangeSpriteCancel = new DarkUI.Controls.DarkButton();
-            btnChangeSpriteCancel.Click += new EventHandler(BtnChangeSpriteCancel_Click);
             DarkLabel48 = new DarkUI.Controls.DarkLabel();
             nudChangeSprite = new DarkUI.Controls.DarkNumericUpDown();
             picChangeSprite = new PictureBox();
             fraGoToLabel = new DarkUI.Controls.DarkGroupBox();
             btnGoToLabelOk = new DarkUI.Controls.DarkButton();
-            btnGoToLabelOk.Click += new EventHandler(BtnGoToLabelOk_Click);
             btnGoToLabelCancel = new DarkUI.Controls.DarkButton();
-            btnGoToLabelCancel.Click += new EventHandler(BtnGoToLabelCancel_Click);
             txtGoToLabel = new DarkUI.Controls.DarkTextBox();
             DarkLabel60 = new DarkUI.Controls.DarkLabel();
             fraMapTint = new DarkUI.Controls.DarkGroupBox();
             btnMapTintOk = new DarkUI.Controls.DarkButton();
-            btnMapTintOk.Click += new EventHandler(BtnMapTintOK_Click);
             btnMapTintCancel = new DarkUI.Controls.DarkButton();
-            btnMapTintCancel.Click += new EventHandler(BtnMapTintCancel_Click);
             DarkLabel42 = new DarkUI.Controls.DarkLabel();
             nudMapTintData3 = new DarkUI.Controls.DarkNumericUpDown();
             nudMapTintData2 = new DarkUI.Controls.DarkNumericUpDown();
@@ -519,9 +417,7 @@ namespace Client
             DarkLabel45 = new DarkUI.Controls.DarkLabel();
             fraShowPic = new DarkUI.Controls.DarkGroupBox();
             btnShowPicOk = new DarkUI.Controls.DarkButton();
-            btnShowPicOk.Click += new EventHandler(BtnShowPicOK_Click);
             btnShowPicCancel = new DarkUI.Controls.DarkButton();
-            btnShowPicCancel.Click += new EventHandler(BtnShowPicCancel_Click);
             DarkLabel71 = new DarkUI.Controls.DarkLabel();
             DarkLabel70 = new DarkUI.Controls.DarkLabel();
             DarkLabel67 = new DarkUI.Controls.DarkLabel();
@@ -531,41 +427,30 @@ namespace Client
             DarkLabel69 = new DarkUI.Controls.DarkLabel();
             cmbPicLoc = new DarkUI.Controls.DarkComboBox();
             nudShowPicture = new DarkUI.Controls.DarkNumericUpDown();
-            nudShowPicture.Click += new EventHandler(nudShowPicture_Click);
             picShowPic = new PictureBox();
             fraConditionalBranch = new DarkUI.Controls.DarkGroupBox();
             cmbCondition_Time = new DarkUI.Controls.DarkComboBox();
             optCondition9 = new DarkUI.Controls.DarkRadioButton();
-            optCondition9.CheckedChanged += new EventHandler(OptCondition9_CheckedChanged);
             btnConditionalBranchOk = new DarkUI.Controls.DarkButton();
-            btnConditionalBranchOk.Click += new EventHandler(BtnConditionalBranchOk_Click);
             btnConditionalBranchCancel = new DarkUI.Controls.DarkButton();
-            btnConditionalBranchCancel.Click += new EventHandler(BtnConditionalBranchCancel_Click);
             cmbCondition_Gender = new DarkUI.Controls.DarkComboBox();
             optCondition8 = new DarkUI.Controls.DarkRadioButton();
-            optCondition8.CheckedChanged += new EventHandler(OptCondition8_CheckedChanged);
             cmbCondition_SelfSwitchCondition = new DarkUI.Controls.DarkComboBox();
             DarkLabel17 = new DarkUI.Controls.DarkLabel();
             cmbCondition_SelfSwitch = new DarkUI.Controls.DarkComboBox();
             optCondition6 = new DarkUI.Controls.DarkRadioButton();
-            optCondition6.CheckedChanged += new EventHandler(OptCondition6_CheckedChanged);
             nudCondition_LevelAmount = new DarkUI.Controls.DarkNumericUpDown();
             optCondition5 = new DarkUI.Controls.DarkRadioButton();
-            optCondition5.CheckedChanged += new EventHandler(OptCondition5_CheckedChanged);
             cmbCondition_LevelCompare = new DarkUI.Controls.DarkComboBox();
             cmbCondition_LearntSkill = new DarkUI.Controls.DarkComboBox();
             optCondition4 = new DarkUI.Controls.DarkRadioButton();
-            optCondition4.CheckedChanged += new EventHandler(OptCondition4_CheckedChanged);
             cmbCondition_JobIs = new DarkUI.Controls.DarkComboBox();
             optCondition3 = new DarkUI.Controls.DarkRadioButton();
-            optCondition3.CheckedChanged += new EventHandler(OptCondition3_CheckedChanged);
             nudCondition_HasItem = new DarkUI.Controls.DarkNumericUpDown();
             DarkLabel16 = new DarkUI.Controls.DarkLabel();
             cmbCondition_HasItem = new DarkUI.Controls.DarkComboBox();
             optCondition2 = new DarkUI.Controls.DarkRadioButton();
-            optCondition2.CheckedChanged += new EventHandler(OptCondition2_CheckedChanged);
             optCondition1 = new DarkUI.Controls.DarkRadioButton();
-            optCondition1.CheckedChanged += new EventHandler(OptCondition1_CheckedChanged);
             DarkLabel15 = new DarkUI.Controls.DarkLabel();
             cmbCondtion_PlayerSwitchCondition = new DarkUI.Controls.DarkComboBox();
             cmbCondition_PlayerSwitch = new DarkUI.Controls.DarkComboBox();
@@ -574,18 +459,13 @@ namespace Client
             DarkLabel14 = new DarkUI.Controls.DarkLabel();
             cmbCondition_PlayerVarIndex = new DarkUI.Controls.DarkComboBox();
             optCondition0 = new DarkUI.Controls.DarkRadioButton();
-            optCondition0.CheckedChanged += new EventHandler(OptCondition_Index0_CheckedChanged);
             fraPlayBGM = new DarkUI.Controls.DarkGroupBox();
             btnPlayBgmOk = new DarkUI.Controls.DarkButton();
-            btnPlayBgmOk.Click += new EventHandler(BtnPlayBgmOK_Click);
             btnPlayBgmCancel = new DarkUI.Controls.DarkButton();
-            btnPlayBgmCancel.Click += new EventHandler(BtnPlayBgmCancel_Click);
             cmbPlayBGM = new DarkUI.Controls.DarkComboBox();
             fraPlayerWarp = new DarkUI.Controls.DarkGroupBox();
             btnPlayerWarpOk = new DarkUI.Controls.DarkButton();
-            btnPlayerWarpOk.Click += new EventHandler(BtnPlayerWarpOK_Click);
             btnPlayerWarpCancel = new DarkUI.Controls.DarkButton();
-            btnPlayerWarpCancel.Click += new EventHandler(BtnPlayerWarpCancel_Click);
             DarkLabel31 = new DarkUI.Controls.DarkLabel();
             cmbWarpPlayerDir = new DarkUI.Controls.DarkComboBox();
             nudWPY = new DarkUI.Controls.DarkNumericUpDown();
@@ -596,9 +476,7 @@ namespace Client
             DarkLabel34 = new DarkUI.Controls.DarkLabel();
             fraSetFog = new DarkUI.Controls.DarkGroupBox();
             btnSetFogOk = new DarkUI.Controls.DarkButton();
-            btnSetFogOk.Click += new EventHandler(BtnSetFogOK_Click);
             btnSetFogCancel = new DarkUI.Controls.DarkButton();
-            btnSetFogCancel.Click += new EventHandler(BtnSetFogCancel_Click);
             DarkLabel30 = new DarkUI.Controls.DarkLabel();
             DarkLabel29 = new DarkUI.Controls.DarkLabel();
             DarkLabel28 = new DarkUI.Controls.DarkLabel();
@@ -609,14 +487,10 @@ namespace Client
             DarkLabel27 = new DarkUI.Controls.DarkLabel();
             txtShowText = new DarkUI.Controls.DarkTextBox();
             btnShowTextCancel = new DarkUI.Controls.DarkButton();
-            btnShowTextCancel.Click += new EventHandler(BtnShowTextCancel_Click);
             btnShowTextOk = new DarkUI.Controls.DarkButton();
-            btnShowTextOk.Click += new EventHandler(BtnShowTextOk_Click);
             fraAddText = new DarkUI.Controls.DarkGroupBox();
             btnAddTextOk = new DarkUI.Controls.DarkButton();
-            btnAddTextOk.Click += new EventHandler(BtnAddTextOk_Click);
             btnAddTextCancel = new DarkUI.Controls.DarkButton();
-            btnAddTextCancel.Click += new EventHandler(BtnAddTextCancel_Click);
             optAddText_Global = new DarkUI.Controls.DarkRadioButton();
             optAddText_Map = new DarkUI.Controls.DarkRadioButton();
             optAddText_Player = new DarkUI.Controls.DarkRadioButton();
@@ -625,9 +499,7 @@ namespace Client
             DarkLabel24 = new DarkUI.Controls.DarkLabel();
             fraChangeItems = new DarkUI.Controls.DarkGroupBox();
             btnChangeItemsOk = new DarkUI.Controls.DarkButton();
-            btnChangeItemsOk.Click += new EventHandler(BtnChangeItemsOk_Click);
             btnChangeItemsCancel = new DarkUI.Controls.DarkButton();
-            btnChangeItemsCancel.Click += new EventHandler(BtnChangeItemsCancel_Click);
             nudChangeItemsAmount = new DarkUI.Controls.DarkNumericUpDown();
             optChangeItemRemove = new DarkUI.Controls.DarkRadioButton();
             optChangeItemAdd = new DarkUI.Controls.DarkRadioButton();
@@ -637,30 +509,19 @@ namespace Client
             pnlVariableSwitches = new Panel();
             FraRenaming = new GroupBox();
             btnRename_Cancel = new Button();
-            btnRename_Cancel.Click += new EventHandler(BtnRename_Cancel_Click);
             btnRename_Ok = new Button();
-            btnRename_Ok.Click += new EventHandler(BtnRename_Ok_Click);
             fraRandom10 = new GroupBox();
             txtRename = new TextBox();
-            txtRename.TextChanged += new EventHandler(TxtRename_TextChanged);
             lblEditing = new Label();
             fraLabeling = new DarkUI.Controls.DarkGroupBox();
             lstSwitches = new ListBox();
-            lstSwitches.Click += new EventHandler(lstSwitches_Click);
-            lstSwitches.DoubleClick += new EventHandler(LstSwitches_DoubleClick);
             lstVariables = new ListBox();
-            lstVariables.Click += new EventHandler(lstVariables_Click);
-            lstVariables.DoubleClick += new EventHandler(LstVariables_DoubleClick);
             btnLabel_Cancel = new DarkUI.Controls.DarkButton();
-            btnLabel_Cancel.Click += new EventHandler(BtnLabel_Cancel_Click);
             lblRandomLabel36 = new DarkUI.Controls.DarkLabel();
             btnRenameVariable = new DarkUI.Controls.DarkButton();
-            btnRenameVariable.Click += new EventHandler(BtnRenameVariable_Click);
             lblRandomLabel25 = new DarkUI.Controls.DarkLabel();
             btnRenameSwitch = new DarkUI.Controls.DarkButton();
-            btnRenameSwitch.Click += new EventHandler(BtnRenameSwitch_Click);
             btnLabel_Ok = new DarkUI.Controls.DarkButton();
-            btnLabel_Ok.Click += new EventHandler(BtnLabel_Ok_Click);
             fraPageSetUp.SuspendLayout();
             tabPages.SuspendLayout();
             pnlTabPage.SuspendLayout();
@@ -756,134 +617,135 @@ namespace Client
             tvCommands.BackColor = Color.FromArgb(45, 45, 48);
             tvCommands.BorderStyle = BorderStyle.FixedSingle;
             tvCommands.ForeColor = Color.Gainsboro;
-            tvCommands.Location = new Point(10, 5);
-            tvCommands.Margin = new Padding(5);
+            tvCommands.Location = new Point(7, 3);
+            tvCommands.Margin = new Padding(4, 3, 4, 3);
             tvCommands.Name = "tvCommands";
-            TreeNode1.Name = "Node1";
-            TreeNode1.Text = "Show Text";
-            TreeNode2.Name = "Node2";
-            TreeNode2.Text = "Show Choices";
-            TreeNode3.Name = "Node3";
-            TreeNode3.Text = "Add Chatbox Text";
-            TreeNode4.Name = "Node5";
-            TreeNode4.Text = "Show ChatBubble";
-            TreeNode5.Name = "NodeMessages";
-            TreeNode5.Text = "Messages";
-            TreeNode6.Name = "Node1";
-            TreeNode6.Text = "Set Player Variable";
-            TreeNode7.Name = "Node2";
-            TreeNode7.Text = "Set Player Switch";
-            TreeNode8.Name = "Node3";
-            TreeNode8.Text = "Set Self Switch";
-            TreeNode9.Name = "NodeProcessing";
-            TreeNode9.Text = "Event Processing";
-            TreeNode10.Name = "Node1";
-            TreeNode10.Text = "Conditional Branch";
-            TreeNode11.Name = "Node2";
-            TreeNode11.Text = "Stop Event Processing";
-            TreeNode12.Name = "Node3";
-            TreeNode12.Text = "Label";
-            TreeNode13.Name = "Node4";
-            TreeNode13.Text = "GoTo Label";
-            TreeNode14.Name = "NodeFlowControl";
-            TreeNode14.Text = "Flow Control";
-            TreeNode15.Name = "Node1";
-            TreeNode15.Text = "Change Items";
-            TreeNode16.Name = "Node2";
-            TreeNode16.Text = "Restore HP";
-            TreeNode17.Name = "Node3";
-            TreeNode17.Text = "Restore MP";
-            TreeNode18.Name = "Node4";
-            TreeNode18.Text = "Level Up";
-            TreeNode19.Name = "Node5";
-            TreeNode19.Text = "Change Level";
-            TreeNode20.Name = "Node6";
-            TreeNode20.Text = "Change Skills";
-            TreeNode21.Name = "Node7";
-            TreeNode21.Text = "Change Job";
-            TreeNode22.Name = "Node8";
-            TreeNode22.Text = "Change Sprite";
-            TreeNode23.Name = "Node9";
-            TreeNode23.Text = "Change Gender";
-            TreeNode24.Name = "Node10";
-            TreeNode24.Text = "Change PK";
-            TreeNode25.Name = "Node11";
-            TreeNode25.Text = "Give Experience";
-            TreeNode26.Name = "NodePlayerOptions";
-            TreeNode26.Text = "Player Options";
-            TreeNode27.Name = "Node1";
-            TreeNode27.Text = "Warp Player";
-            TreeNode28.Name = "Node2";
-            TreeNode28.Text = "Set Move Route";
-            TreeNode29.Name = "Node3";
-            TreeNode29.Text = "Wait for Route Completion";
-            TreeNode30.Name = "Node4";
-            TreeNode30.Text = "Force Spawn NPC";
-            TreeNode31.Name = "Node5";
-            TreeNode31.Text = "Hold Player";
-            TreeNode32.Name = "Node6";
-            TreeNode32.Text = "Release Player";
-            TreeNode33.Name = "NodeMovement";
-            TreeNode33.Text = "Movement";
-            TreeNode34.Name = "Node1";
-            TreeNode34.Text = "Animation";
-            TreeNode35.Name = "NodeAnimation";
-            TreeNode35.Text = "Animation";
-            TreeNode36.Name = "Node1";
-            TreeNode36.Text = "Begin Quest";
-            TreeNode37.Name = "Node2";
-            TreeNode37.Text = "Complete Task";
-            TreeNode38.Name = "Node3";
-            TreeNode38.Text = "End Quest";
-            TreeNode39.Name = "NodeQuesting";
-            TreeNode39.Text = "Questing";
-            TreeNode40.Name = "Node1";
-            TreeNode40.Text = "Set Fog";
-            TreeNode41.Name = "Node2";
-            TreeNode41.Text = "Set Weather";
-            TreeNode42.Name = "Node3";
-            TreeNode42.Text = "Set Map Tinting";
-            TreeNode43.Name = "NodeMapFunctions";
-            TreeNode43.Text = "Map Functions";
-            TreeNode44.Name = "Node1";
-            TreeNode44.Text = "Play BGM";
-            TreeNode45.Name = "Node2";
-            TreeNode45.Text = "Stop BGM";
-            TreeNode46.Name = "Node3";
-            TreeNode46.Text = "Play Sound";
-            TreeNode47.Name = "Node4";
-            TreeNode47.Text = "Stop Sounds";
-            TreeNode48.Name = "NodeSound";
-            TreeNode48.Text = "Music and Sound";
-            TreeNode49.Name = "Node1";
-            TreeNode49.Text = "Wait...";
-            TreeNode50.Name = "Node2";
-            TreeNode50.Text = "Set Access";
-            TreeNode51.Name = "Node3";
-            TreeNode51.Text = "Custom Script";
-            TreeNode52.Name = "NodeEtc";
-            TreeNode52.Text = "Etc...";
-            TreeNode53.Name = "Node1";
-            TreeNode53.Text = "Open Bank";
-            TreeNode54.Name = "Node2";
-            TreeNode54.Text = "Open Shop";
-            TreeNode55.Name = "NodeShopBank";
-            TreeNode55.Text = "Shop and Bank";
-            TreeNode56.Name = "Node1";
-            TreeNode56.Text = "Fade In";
-            TreeNode57.Name = "Node2";
-            TreeNode57.Text = "Fade Out";
-            TreeNode58.Name = "Node12";
-            TreeNode58.Text = "Flash White";
-            TreeNode59.Name = "Node13";
-            TreeNode59.Text = "Show Picture";
-            TreeNode60.Name = "Node14";
-            TreeNode60.Text = "Hide Picture";
-            TreeNode61.Name = "Node0";
-            TreeNode61.Text = "Cutscene Options";
-            tvCommands.Nodes.AddRange(new TreeNode[] { TreeNode5, TreeNode9, TreeNode14, TreeNode26, TreeNode33, TreeNode35, TreeNode39, TreeNode43, TreeNode48, TreeNode52, TreeNode55, TreeNode61 });
-            tvCommands.Size = new Size(634, 850);
+            treeNode1.Name = "Node1";
+            treeNode1.Text = "Show Text";
+            treeNode2.Name = "Node2";
+            treeNode2.Text = "Show Choices";
+            treeNode3.Name = "Node3";
+            treeNode3.Text = "Add Chatbox Text";
+            treeNode4.Name = "Node5";
+            treeNode4.Text = "Show ChatBubble";
+            treeNode5.Name = "NodeMessages";
+            treeNode5.Text = "Messages";
+            treeNode6.Name = "Node1";
+            treeNode6.Text = "Set Player Variable";
+            treeNode7.Name = "Node2";
+            treeNode7.Text = "Set Player Switch";
+            treeNode8.Name = "Node3";
+            treeNode8.Text = "Set Self Switch";
+            treeNode9.Name = "NodeProcessing";
+            treeNode9.Text = "Event Processing";
+            treeNode10.Name = "Node1";
+            treeNode10.Text = "Conditional Branch";
+            treeNode11.Name = "Node2";
+            treeNode11.Text = "Stop Event Processing";
+            treeNode12.Name = "Node3";
+            treeNode12.Text = "Label";
+            treeNode13.Name = "Node4";
+            treeNode13.Text = "GoTo Label";
+            treeNode14.Name = "NodeFlowControl";
+            treeNode14.Text = "Flow Control";
+            treeNode15.Name = "Node1";
+            treeNode15.Text = "Change Items";
+            treeNode16.Name = "Node2";
+            treeNode16.Text = "Restore HP";
+            treeNode17.Name = "Node3";
+            treeNode17.Text = "Restore MP";
+            treeNode18.Name = "Node4";
+            treeNode18.Text = "Level Up";
+            treeNode19.Name = "Node5";
+            treeNode19.Text = "Change Level";
+            treeNode20.Name = "Node6";
+            treeNode20.Text = "Change Skills";
+            treeNode21.Name = "Node7";
+            treeNode21.Text = "Change Job";
+            treeNode22.Name = "Node8";
+            treeNode22.Text = "Change Sprite";
+            treeNode23.Name = "Node9";
+            treeNode23.Text = "Change Gender";
+            treeNode24.Name = "Node10";
+            treeNode24.Text = "Change PK";
+            treeNode25.Name = "Node11";
+            treeNode25.Text = "Give Experience";
+            treeNode26.Name = "NodePlayerOptions";
+            treeNode26.Text = "Player Options";
+            treeNode27.Name = "Node1";
+            treeNode27.Text = "Warp Player";
+            treeNode28.Name = "Node2";
+            treeNode28.Text = "Set Move Route";
+            treeNode29.Name = "Node3";
+            treeNode29.Text = "Wait for Route Completion";
+            treeNode30.Name = "Node4";
+            treeNode30.Text = "Force Spawn NPC";
+            treeNode31.Name = "Node5";
+            treeNode31.Text = "Hold Player";
+            treeNode32.Name = "Node6";
+            treeNode32.Text = "Release Player";
+            treeNode33.Name = "NodeMovement";
+            treeNode33.Text = "Movement";
+            treeNode34.Name = "Node1";
+            treeNode34.Text = "Animation";
+            treeNode35.Name = "NodeAnimation";
+            treeNode35.Text = "Animation";
+            treeNode36.Name = "Node1";
+            treeNode36.Text = "Begin Quest";
+            treeNode37.Name = "Node2";
+            treeNode37.Text = "Complete Task";
+            treeNode38.Name = "Node3";
+            treeNode38.Text = "End Quest";
+            treeNode39.Name = "NodeQuesting";
+            treeNode39.Text = "Questing";
+            treeNode40.Name = "Node1";
+            treeNode40.Text = "Set Fog";
+            treeNode41.Name = "Node2";
+            treeNode41.Text = "Set Weather";
+            treeNode42.Name = "Node3";
+            treeNode42.Text = "Set Map Tinting";
+            treeNode43.Name = "NodeMapFunctions";
+            treeNode43.Text = "Map Functions";
+            treeNode44.Name = "Node1";
+            treeNode44.Text = "Play BGM";
+            treeNode45.Name = "Node2";
+            treeNode45.Text = "Stop BGM";
+            treeNode46.Name = "Node3";
+            treeNode46.Text = "Play Sound";
+            treeNode47.Name = "Node4";
+            treeNode47.Text = "Stop Sounds";
+            treeNode48.Name = "NodeSound";
+            treeNode48.Text = "Music and Sound";
+            treeNode49.Name = "Node1";
+            treeNode49.Text = "Wait...";
+            treeNode50.Name = "Node2";
+            treeNode50.Text = "Set Access";
+            treeNode51.Name = "Node3";
+            treeNode51.Text = "Custom Script";
+            treeNode52.Name = "NodeEtc";
+            treeNode52.Text = "Etc...";
+            treeNode53.Name = "Node1";
+            treeNode53.Text = "Open Bank";
+            treeNode54.Name = "Node2";
+            treeNode54.Text = "Open Shop";
+            treeNode55.Name = "NodeShopBank";
+            treeNode55.Text = "Shop and Bank";
+            treeNode56.Name = "Node1";
+            treeNode56.Text = "Fade In";
+            treeNode57.Name = "Node2";
+            treeNode57.Text = "Fade Out";
+            treeNode58.Name = "Node12";
+            treeNode58.Text = "Flash White";
+            treeNode59.Name = "Node13";
+            treeNode59.Text = "Show Picture";
+            treeNode60.Name = "Node14";
+            treeNode60.Text = "Hide Picture";
+            treeNode61.Name = "Node0";
+            treeNode61.Text = "Cutscene Options";
+            tvCommands.Nodes.AddRange(new TreeNode[] { treeNode5, treeNode9, treeNode14, treeNode26, treeNode33, treeNode35, treeNode39, treeNode43, treeNode48, treeNode52, treeNode55, treeNode61 });
+            tvCommands.Size = new Size(444, 511);
             tvCommands.TabIndex = 1;
+            tvCommands.AfterSelect += TvCommands_AfterSelect;
             // 
             // fraPageSetUp
             // 
@@ -898,11 +760,11 @@ namespace Client
             fraPageSetUp.Controls.Add(txtName);
             fraPageSetUp.Controls.Add(DarkLabel1);
             fraPageSetUp.ForeColor = Color.Gainsboro;
-            fraPageSetUp.Location = new Point(5, 5);
-            fraPageSetUp.Margin = new Padding(5);
+            fraPageSetUp.Location = new Point(4, 3);
+            fraPageSetUp.Margin = new Padding(4, 3, 4, 3);
             fraPageSetUp.Name = "fraPageSetUp";
-            fraPageSetUp.Padding = new Padding(5);
-            fraPageSetUp.Size = new Size(1318, 97);
+            fraPageSetUp.Padding = new Padding(4, 3, 4, 3);
+            fraPageSetUp.Size = new Size(923, 58);
             fraPageSetUp.TabIndex = 2;
             fraPageSetUp.TabStop = false;
             fraPageSetUp.Text = "General";
@@ -910,103 +772,111 @@ namespace Client
             // chkGlobal
             // 
             chkGlobal.AutoSize = true;
-            chkGlobal.Location = new Point(467, 38);
-            chkGlobal.Margin = new Padding(5);
+            chkGlobal.Location = new Point(327, 23);
+            chkGlobal.Margin = new Padding(4, 3, 4, 3);
             chkGlobal.Name = "chkGlobal";
-            chkGlobal.Size = new Size(137, 29);
+            chkGlobal.Size = new Size(92, 19);
             chkGlobal.TabIndex = 7;
             chkGlobal.Text = "Global Event";
+            chkGlobal.CheckedChanged += ChkGlobal_CheckedChanged;
             // 
             // btnClearPage
             // 
-            btnClearPage.Location = new Point(1178, 30);
-            btnClearPage.Margin = new Padding(5);
+            btnClearPage.Location = new Point(825, 18);
+            btnClearPage.Margin = new Padding(4, 3, 4, 3);
             btnClearPage.Name = "btnClearPage";
-            btnClearPage.Padding = new Padding(8, 10, 8, 10);
-            btnClearPage.Size = new Size(125, 45);
+            btnClearPage.Padding = new Padding(6, 6, 6, 6);
+            btnClearPage.Size = new Size(88, 27);
             btnClearPage.TabIndex = 6;
             btnClearPage.Text = "Clear Page";
+            btnClearPage.Click += BtnClearPage_Click;
             // 
             // btnDeletePage
             // 
-            btnDeletePage.Location = new Point(1037, 30);
-            btnDeletePage.Margin = new Padding(5);
+            btnDeletePage.Location = new Point(726, 18);
+            btnDeletePage.Margin = new Padding(4, 3, 4, 3);
             btnDeletePage.Name = "btnDeletePage";
-            btnDeletePage.Padding = new Padding(8, 10, 8, 10);
-            btnDeletePage.Size = new Size(132, 45);
+            btnDeletePage.Padding = new Padding(6, 6, 6, 6);
+            btnDeletePage.Size = new Size(92, 27);
             btnDeletePage.TabIndex = 5;
             btnDeletePage.Text = "Delete Page";
+            btnDeletePage.Click += BtnDeletePage_Click;
             // 
             // btnPastePage
             // 
-            btnPastePage.Location = new Point(902, 30);
-            btnPastePage.Margin = new Padding(5);
+            btnPastePage.Location = new Point(631, 18);
+            btnPastePage.Margin = new Padding(4, 3, 4, 3);
             btnPastePage.Name = "btnPastePage";
-            btnPastePage.Padding = new Padding(8, 10, 8, 10);
-            btnPastePage.Size = new Size(125, 45);
+            btnPastePage.Padding = new Padding(6, 6, 6, 6);
+            btnPastePage.Size = new Size(88, 27);
             btnPastePage.TabIndex = 4;
             btnPastePage.Text = "Paste Page";
+            btnPastePage.Click += BtnPastePage_Click;
             // 
             // btnCopyPage
             // 
-            btnCopyPage.Location = new Point(767, 30);
-            btnCopyPage.Margin = new Padding(5);
+            btnCopyPage.Location = new Point(537, 18);
+            btnCopyPage.Margin = new Padding(4, 3, 4, 3);
             btnCopyPage.Name = "btnCopyPage";
-            btnCopyPage.Padding = new Padding(8, 10, 8, 10);
-            btnCopyPage.Size = new Size(125, 45);
+            btnCopyPage.Padding = new Padding(6, 6, 6, 6);
+            btnCopyPage.Size = new Size(88, 27);
             btnCopyPage.TabIndex = 3;
             btnCopyPage.Text = "Copy Page";
+            btnCopyPage.Click += BtnCopyPage_Click;
             // 
             // btnNewPage
             // 
-            btnNewPage.Location = new Point(632, 30);
-            btnNewPage.Margin = new Padding(5);
+            btnNewPage.Location = new Point(442, 18);
+            btnNewPage.Margin = new Padding(4, 3, 4, 3);
             btnNewPage.Name = "btnNewPage";
-            btnNewPage.Padding = new Padding(8, 10, 8, 10);
-            btnNewPage.Size = new Size(125, 45);
+            btnNewPage.Padding = new Padding(6, 6, 6, 6);
+            btnNewPage.Size = new Size(88, 27);
             btnNewPage.TabIndex = 2;
             btnNewPage.Text = "New Page";
+            btnNewPage.Click += BtnNewPage_Click;
             // 
             // txtName
             // 
             txtName.BackColor = Color.FromArgb(69, 73, 74);
             txtName.BorderStyle = BorderStyle.FixedSingle;
             txtName.ForeColor = Color.FromArgb(220, 220, 220);
-            txtName.Location = new Point(140, 37);
-            txtName.Margin = new Padding(5);
+            txtName.Location = new Point(98, 22);
+            txtName.Margin = new Padding(4, 3, 4, 3);
             txtName.Name = "txtName";
-            txtName.Size = new Size(315, 31);
+            txtName.Size = new Size(221, 23);
             txtName.TabIndex = 1;
+            txtName.TextChanged += TxtName_TextChanged;
             // 
             // DarkLabel1
             // 
             DarkLabel1.AutoSize = true;
             DarkLabel1.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel1.Location = new Point(15, 40);
-            DarkLabel1.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel1.Location = new Point(10, 24);
+            DarkLabel1.Margin = new Padding(4, 0, 4, 0);
             DarkLabel1.Name = "DarkLabel1";
-            DarkLabel1.Size = new Size(111, 25);
+            DarkLabel1.Size = new Size(74, 15);
             DarkLabel1.TabIndex = 0;
             DarkLabel1.Text = "Event Name:";
             // 
             // tabPages
             // 
             tabPages.Controls.Add(TabPage1);
-            tabPages.Location = new Point(20, 113);
-            tabPages.Margin = new Padding(5);
+            tabPages.Location = new Point(14, 68);
+            tabPages.Margin = new Padding(4, 3, 4, 3);
             tabPages.Name = "tabPages";
             tabPages.SelectedIndex = 0;
-            tabPages.Size = new Size(1182, 37);
+            tabPages.Size = new Size(827, 22);
             tabPages.TabIndex = 3;
+            tabPages.Click += TabPages_Click;
             // 
             // TabPage1
             // 
             TabPage1.BackColor = Color.DimGray;
-            TabPage1.Location = new Point(4, 34);
-            TabPage1.Margin = new Padding(5);
+            TabPage1.Location = new Point(4, 24);
+            TabPage1.Margin = new Padding(4, 3, 4, 3);
             TabPage1.Name = "TabPage1";
-            TabPage1.Padding = new Padding(5);
-            TabPage1.Size = new Size(1174, 0);
+            TabPage1.Padding = new Padding(4, 3, 4, 3);
+            TabPage1.Size = new Size(819, 0);
             TabPage1.TabIndex = 0;
             TabPage1.Text = "1";
             TabPage1.UseVisualStyleBackColor = true;
@@ -1021,13 +891,13 @@ namespace Client
             pnlTabPage.Controls.Add(DarkGroupBox3);
             pnlTabPage.Controls.Add(DarkGroupBox1);
             pnlTabPage.Controls.Add(DarkGroupBox8);
-            pnlTabPage.Controls.Add(fraGraphic);
             pnlTabPage.Controls.Add(fraCommands);
             pnlTabPage.Controls.Add(lstCommands);
-            pnlTabPage.Location = new Point(5, 155);
-            pnlTabPage.Margin = new Padding(5);
+            pnlTabPage.Controls.Add(fraGraphic);
+            pnlTabPage.Location = new Point(4, 93);
+            pnlTabPage.Margin = new Padding(4, 3, 4, 3);
             pnlTabPage.Name = "pnlTabPage";
-            pnlTabPage.Size = new Size(1318, 955);
+            pnlTabPage.Size = new Size(923, 573);
             pnlTabPage.TabIndex = 4;
             // 
             // DarkGroupBox2
@@ -1036,11 +906,11 @@ namespace Client
             DarkGroupBox2.BorderColor = Color.FromArgb(90, 90, 90);
             DarkGroupBox2.Controls.Add(cmbPositioning);
             DarkGroupBox2.ForeColor = Color.Gainsboro;
-            DarkGroupBox2.Location = new Point(305, 734);
-            DarkGroupBox2.Margin = new Padding(5);
+            DarkGroupBox2.Location = new Point(214, 440);
+            DarkGroupBox2.Margin = new Padding(4, 3, 4, 3);
             DarkGroupBox2.Name = "DarkGroupBox2";
-            DarkGroupBox2.Padding = new Padding(5);
-            DarkGroupBox2.Size = new Size(333, 95);
+            DarkGroupBox2.Padding = new Padding(4, 3, 4, 3);
+            DarkGroupBox2.Size = new Size(233, 57);
             DarkGroupBox2.TabIndex = 15;
             DarkGroupBox2.TabStop = false;
             DarkGroupBox2.Text = "Poisition";
@@ -1050,11 +920,12 @@ namespace Client
             cmbPositioning.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPositioning.FormattingEnabled = true;
             cmbPositioning.Items.AddRange(new object[] { "Below Characters", "Same as Characters", "Above Characters" });
-            cmbPositioning.Location = new Point(12, 37);
-            cmbPositioning.Margin = new Padding(5);
+            cmbPositioning.Location = new Point(8, 22);
+            cmbPositioning.Margin = new Padding(4, 3, 4, 3);
             cmbPositioning.Name = "cmbPositioning";
-            cmbPositioning.Size = new Size(312, 32);
+            cmbPositioning.Size = new Size(220, 24);
             cmbPositioning.TabIndex = 1;
+            cmbPositioning.SelectedIndexChanged += CmbPositioning_SelectedIndexChanged;
             // 
             // fraGraphicPic
             // 
@@ -1062,11 +933,11 @@ namespace Client
             fraGraphicPic.BorderColor = Color.FromArgb(90, 90, 90);
             fraGraphicPic.Controls.Add(picGraphic);
             fraGraphicPic.ForeColor = Color.Gainsboro;
-            fraGraphicPic.Location = new Point(5, 260);
-            fraGraphicPic.Margin = new Padding(5);
+            fraGraphicPic.Location = new Point(4, 156);
+            fraGraphicPic.Margin = new Padding(4, 3, 4, 3);
             fraGraphicPic.Name = "fraGraphicPic";
-            fraGraphicPic.Padding = new Padding(5);
-            fraGraphicPic.Size = new Size(288, 447);
+            fraGraphicPic.Padding = new Padding(4, 3, 4, 3);
+            fraGraphicPic.Size = new Size(202, 268);
             fraGraphicPic.TabIndex = 12;
             fraGraphicPic.TabStop = false;
             fraGraphicPic.Text = "Graphic";
@@ -1074,12 +945,13 @@ namespace Client
             // picGraphic
             // 
             picGraphic.BackgroundImageLayout = ImageLayout.None;
-            picGraphic.Location = new Point(10, 37);
-            picGraphic.Margin = new Padding(5);
+            picGraphic.Location = new Point(7, 22);
+            picGraphic.Margin = new Padding(4, 3, 4, 3);
             picGraphic.Name = "picGraphic";
-            picGraphic.Size = new Size(268, 398);
+            picGraphic.Size = new Size(188, 239);
             picGraphic.TabIndex = 1;
             picGraphic.TabStop = false;
+            picGraphic.Click += PicGraphic_Click;
             // 
             // DarkGroupBox6
             // 
@@ -1090,11 +962,11 @@ namespace Client
             DarkGroupBox6.Controls.Add(chkDirFix);
             DarkGroupBox6.Controls.Add(chkWalkAnim);
             DarkGroupBox6.ForeColor = Color.Gainsboro;
-            DarkGroupBox6.Location = new Point(5, 716);
-            DarkGroupBox6.Margin = new Padding(5);
+            DarkGroupBox6.Location = new Point(4, 430);
+            DarkGroupBox6.Margin = new Padding(4, 3, 4, 3);
             DarkGroupBox6.Name = "DarkGroupBox6";
-            DarkGroupBox6.Padding = new Padding(5);
-            DarkGroupBox6.Size = new Size(293, 215);
+            DarkGroupBox6.Padding = new Padding(4, 3, 4, 3);
+            DarkGroupBox6.Size = new Size(205, 129);
             DarkGroupBox6.TabIndex = 10;
             DarkGroupBox6.TabStop = false;
             DarkGroupBox6.Text = "Options";
@@ -1102,42 +974,46 @@ namespace Client
             // chkShowName
             // 
             chkShowName.AutoSize = true;
-            chkShowName.Location = new Point(12, 170);
-            chkShowName.Margin = new Padding(5);
+            chkShowName.Location = new Point(8, 102);
+            chkShowName.Margin = new Padding(4, 3, 4, 3);
             chkShowName.Name = "chkShowName";
-            chkShowName.Size = new Size(134, 29);
+            chkShowName.Size = new Size(90, 19);
             chkShowName.TabIndex = 3;
             chkShowName.Text = "Show Name";
+            chkShowName.CheckedChanged += ChkShowName_CheckedChanged;
             // 
             // chkWalkThrough
             // 
             chkWalkThrough.AutoSize = true;
-            chkWalkThrough.Location = new Point(12, 125);
-            chkWalkThrough.Margin = new Padding(5);
+            chkWalkThrough.Location = new Point(8, 75);
+            chkWalkThrough.Margin = new Padding(4, 3, 4, 3);
             chkWalkThrough.Name = "chkWalkThrough";
-            chkWalkThrough.Size = new Size(148, 29);
+            chkWalkThrough.Size = new Size(101, 19);
             chkWalkThrough.TabIndex = 2;
             chkWalkThrough.Text = "Walk Through";
+            chkWalkThrough.CheckedChanged += ChkWalkThrough_CheckedChanged;
             // 
             // chkDirFix
             // 
             chkDirFix.AutoSize = true;
-            chkDirFix.Location = new Point(12, 80);
-            chkDirFix.Margin = new Padding(5);
+            chkDirFix.Location = new Point(8, 48);
+            chkDirFix.Margin = new Padding(4, 3, 4, 3);
             chkDirFix.Name = "chkDirFix";
-            chkDirFix.Size = new Size(155, 29);
+            chkDirFix.Size = new Size(104, 19);
             chkDirFix.TabIndex = 1;
             chkDirFix.Text = "Direction Fixed";
+            chkDirFix.CheckedChanged += ChkDirFix_CheckedChanged;
             // 
             // chkWalkAnim
             // 
             chkWalkAnim.AutoSize = true;
-            chkWalkAnim.Location = new Point(12, 37);
-            chkWalkAnim.Margin = new Padding(5);
+            chkWalkAnim.Location = new Point(8, 22);
+            chkWalkAnim.Margin = new Padding(4, 3, 4, 3);
             chkWalkAnim.Name = "chkWalkAnim";
-            chkWalkAnim.Size = new Size(192, 29);
+            chkWalkAnim.Size = new Size(130, 19);
             chkWalkAnim.TabIndex = 0;
             chkWalkAnim.Text = "No Walk Animation";
+            chkWalkAnim.CheckedChanged += ChkWalkAnim_CheckedChanged;
             // 
             // DarkGroupBox5
             // 
@@ -1145,11 +1021,11 @@ namespace Client
             DarkGroupBox5.BorderColor = Color.FromArgb(90, 90, 90);
             DarkGroupBox5.Controls.Add(cmbTrigger);
             DarkGroupBox5.ForeColor = Color.Gainsboro;
-            DarkGroupBox5.Location = new Point(310, 623);
-            DarkGroupBox5.Margin = new Padding(5);
+            DarkGroupBox5.Location = new Point(217, 374);
+            DarkGroupBox5.Margin = new Padding(4, 3, 4, 3);
             DarkGroupBox5.Name = "DarkGroupBox5";
-            DarkGroupBox5.Padding = new Padding(5);
-            DarkGroupBox5.Size = new Size(333, 95);
+            DarkGroupBox5.Padding = new Padding(4, 3, 4, 3);
+            DarkGroupBox5.Size = new Size(233, 57);
             DarkGroupBox5.TabIndex = 4;
             DarkGroupBox5.TabStop = false;
             DarkGroupBox5.Text = "Trigger";
@@ -1159,11 +1035,12 @@ namespace Client
             cmbTrigger.DrawMode = DrawMode.OwnerDrawFixed;
             cmbTrigger.FormattingEnabled = true;
             cmbTrigger.Items.AddRange(new object[] { "Action Button", "Player Touch", "Parallel Process" });
-            cmbTrigger.Location = new Point(10, 37);
-            cmbTrigger.Margin = new Padding(5);
+            cmbTrigger.Location = new Point(7, 22);
+            cmbTrigger.Margin = new Padding(4, 3, 4, 3);
             cmbTrigger.Name = "cmbTrigger";
-            cmbTrigger.Size = new Size(312, 32);
+            cmbTrigger.Size = new Size(220, 24);
             cmbTrigger.TabIndex = 0;
+            cmbTrigger.SelectedIndexChanged += CmbTrigger_SelectedIndexChanged;
             // 
             // DarkGroupBox4
             // 
@@ -1171,11 +1048,11 @@ namespace Client
             DarkGroupBox4.BorderColor = Color.FromArgb(90, 90, 90);
             DarkGroupBox4.Controls.Add(picGraphicSel);
             DarkGroupBox4.ForeColor = Color.Gainsboro;
-            DarkGroupBox4.Location = new Point(303, 513);
-            DarkGroupBox4.Margin = new Padding(5);
+            DarkGroupBox4.Location = new Point(212, 308);
+            DarkGroupBox4.Margin = new Padding(4, 3, 4, 3);
             DarkGroupBox4.Name = "DarkGroupBox4";
-            DarkGroupBox4.Padding = new Padding(5);
-            DarkGroupBox4.Size = new Size(333, 91);
+            DarkGroupBox4.Padding = new Padding(4, 3, 4, 3);
+            DarkGroupBox4.Size = new Size(233, 55);
             DarkGroupBox4.TabIndex = 3;
             DarkGroupBox4.TabStop = false;
             DarkGroupBox4.Text = "Positioning";
@@ -1183,10 +1060,10 @@ namespace Client
             // picGraphicSel
             // 
             picGraphicSel.BackgroundImageLayout = ImageLayout.None;
-            picGraphicSel.Location = new Point(-315, -563);
-            picGraphicSel.Margin = new Padding(5);
+            picGraphicSel.Location = new Point(-220, -338);
+            picGraphicSel.Margin = new Padding(4, 3, 4, 3);
             picGraphicSel.Name = "picGraphicSel";
-            picGraphicSel.Size = new Size(1337, 988);
+            picGraphicSel.Size = new Size(936, 593);
             picGraphicSel.TabIndex = 5;
             picGraphicSel.TabStop = false;
             // 
@@ -1202,11 +1079,11 @@ namespace Client
             DarkGroupBox3.Controls.Add(cmbMoveType);
             DarkGroupBox3.Controls.Add(DarkLabel5);
             DarkGroupBox3.ForeColor = Color.Gainsboro;
-            DarkGroupBox3.Location = new Point(305, 265);
-            DarkGroupBox3.Margin = new Padding(5);
+            DarkGroupBox3.Location = new Point(214, 159);
+            DarkGroupBox3.Margin = new Padding(4, 3, 4, 3);
             DarkGroupBox3.Name = "DarkGroupBox3";
-            DarkGroupBox3.Padding = new Padding(5);
-            DarkGroupBox3.Size = new Size(333, 237);
+            DarkGroupBox3.Padding = new Padding(4, 3, 4, 3);
+            DarkGroupBox3.Size = new Size(233, 142);
             DarkGroupBox3.TabIndex = 2;
             DarkGroupBox3.TabStop = false;
             DarkGroupBox3.Text = "Movement";
@@ -1215,10 +1092,10 @@ namespace Client
             // 
             DarkLabel7.AutoSize = true;
             DarkLabel7.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel7.Location = new Point(10, 191);
-            DarkLabel7.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel7.Location = new Point(7, 115);
+            DarkLabel7.Margin = new Padding(4, 0, 4, 0);
             DarkLabel7.Name = "DarkLabel7";
-            DarkLabel7.Size = new Size(93, 25);
+            DarkLabel7.Size = new Size(62, 15);
             DarkLabel7.TabIndex = 6;
             DarkLabel7.Text = "Frequency";
             // 
@@ -1227,20 +1104,21 @@ namespace Client
             cmbMoveFreq.DrawMode = DrawMode.OwnerDrawFixed;
             cmbMoveFreq.FormattingEnabled = true;
             cmbMoveFreq.Items.AddRange(new object[] { "Lowest", "Lower", "Normal", "Higher", "Highest" });
-            cmbMoveFreq.Location = new Point(115, 187);
-            cmbMoveFreq.Margin = new Padding(5);
+            cmbMoveFreq.Location = new Point(80, 112);
+            cmbMoveFreq.Margin = new Padding(4, 3, 4, 3);
             cmbMoveFreq.Name = "cmbMoveFreq";
-            cmbMoveFreq.Size = new Size(206, 32);
+            cmbMoveFreq.Size = new Size(145, 24);
             cmbMoveFreq.TabIndex = 5;
+            cmbMoveFreq.SelectedIndexChanged += CmbMoveFreq_SelectedIndexChanged;
             // 
             // DarkLabel6
             // 
             DarkLabel6.AutoSize = true;
             DarkLabel6.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel6.Location = new Point(10, 140);
-            DarkLabel6.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel6.Location = new Point(7, 84);
+            DarkLabel6.Margin = new Padding(4, 0, 4, 0);
             DarkLabel6.Name = "DarkLabel6";
-            DarkLabel6.Size = new Size(66, 25);
+            DarkLabel6.Size = new Size(42, 15);
             DarkLabel6.TabIndex = 4;
             DarkLabel6.Text = "Speed:";
             // 
@@ -1249,41 +1127,44 @@ namespace Client
             cmbMoveSpeed.DrawMode = DrawMode.OwnerDrawFixed;
             cmbMoveSpeed.FormattingEnabled = true;
             cmbMoveSpeed.Items.AddRange(new object[] { "8x Slower", "4x Slower", "2x Slower", "Normal", "2x Faster", "4x Faster" });
-            cmbMoveSpeed.Location = new Point(115, 135);
-            cmbMoveSpeed.Margin = new Padding(5);
+            cmbMoveSpeed.Location = new Point(80, 81);
+            cmbMoveSpeed.Margin = new Padding(4, 3, 4, 3);
             cmbMoveSpeed.Name = "cmbMoveSpeed";
-            cmbMoveSpeed.Size = new Size(206, 32);
+            cmbMoveSpeed.Size = new Size(145, 24);
             cmbMoveSpeed.TabIndex = 3;
+            cmbMoveSpeed.SelectedIndexChanged += CmbMoveSpeed_SelectedIndexChanged;
             // 
             // btnMoveRoute
             // 
-            btnMoveRoute.Location = new Point(198, 78);
-            btnMoveRoute.Margin = new Padding(5);
+            btnMoveRoute.Location = new Point(139, 47);
+            btnMoveRoute.Margin = new Padding(4, 3, 4, 3);
             btnMoveRoute.Name = "btnMoveRoute";
-            btnMoveRoute.Padding = new Padding(8, 10, 8, 10);
-            btnMoveRoute.Size = new Size(125, 45);
+            btnMoveRoute.Padding = new Padding(6, 6, 6, 6);
+            btnMoveRoute.Size = new Size(88, 27);
             btnMoveRoute.TabIndex = 2;
             btnMoveRoute.Text = "Move Route";
+            btnMoveRoute.Click += BtnMoveRoute_Click;
             // 
             // cmbMoveType
             // 
             cmbMoveType.DrawMode = DrawMode.OwnerDrawFixed;
             cmbMoveType.FormattingEnabled = true;
             cmbMoveType.Items.AddRange(new object[] { "Fixed Position", "Random", "Move Route" });
-            cmbMoveType.Location = new Point(115, 27);
-            cmbMoveType.Margin = new Padding(5);
+            cmbMoveType.Location = new Point(80, 16);
+            cmbMoveType.Margin = new Padding(4, 3, 4, 3);
             cmbMoveType.Name = "cmbMoveType";
-            cmbMoveType.Size = new Size(206, 32);
+            cmbMoveType.Size = new Size(145, 24);
             cmbMoveType.TabIndex = 1;
+            cmbMoveType.SelectedIndexChanged += CmbMoveType_SelectedIndexChanged;
             // 
             // DarkLabel5
             // 
             DarkLabel5.AutoSize = true;
             DarkLabel5.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel5.Location = new Point(10, 34);
-            DarkLabel5.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel5.Location = new Point(7, 20);
+            DarkLabel5.Margin = new Padding(4, 0, 4, 0);
             DarkLabel5.Name = "DarkLabel5";
-            DarkLabel5.Size = new Size(53, 25);
+            DarkLabel5.Size = new Size(35, 15);
             DarkLabel5.TabIndex = 0;
             DarkLabel5.Text = "Type:";
             // 
@@ -1307,11 +1188,11 @@ namespace Client
             DarkGroupBox1.Controls.Add(cmbPlayerVar);
             DarkGroupBox1.Controls.Add(chkPlayerVar);
             DarkGroupBox1.ForeColor = Color.Gainsboro;
-            DarkGroupBox1.Location = new Point(5, 12);
-            DarkGroupBox1.Margin = new Padding(5);
+            DarkGroupBox1.Location = new Point(4, 7);
+            DarkGroupBox1.Margin = new Padding(4, 3, 4, 3);
             DarkGroupBox1.Name = "DarkGroupBox1";
-            DarkGroupBox1.Padding = new Padding(5);
-            DarkGroupBox1.Size = new Size(633, 241);
+            DarkGroupBox1.Padding = new Padding(4, 3, 4, 3);
+            DarkGroupBox1.Size = new Size(443, 145);
             DarkGroupBox1.TabIndex = 0;
             DarkGroupBox1.TabStop = false;
             DarkGroupBox1.Text = "Conditions";
@@ -1321,20 +1202,21 @@ namespace Client
             cmbSelfSwitchCompare.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSelfSwitchCompare.FormattingEnabled = true;
             cmbSelfSwitchCompare.Items.AddRange(new object[] { "False = 0", "True = 1" });
-            cmbSelfSwitchCompare.Location = new Point(372, 188);
-            cmbSelfSwitchCompare.Margin = new Padding(5);
+            cmbSelfSwitchCompare.Location = new Point(260, 113);
+            cmbSelfSwitchCompare.Margin = new Padding(4, 3, 4, 3);
             cmbSelfSwitchCompare.Name = "cmbSelfSwitchCompare";
-            cmbSelfSwitchCompare.Size = new Size(146, 32);
+            cmbSelfSwitchCompare.Size = new Size(103, 24);
             cmbSelfSwitchCompare.TabIndex = 14;
+            cmbSelfSwitchCompare.SelectedIndexChanged += CmbSelfSwitchCompare_SelectedIndexChanged;
             // 
             // DarkLabel4
             // 
             DarkLabel4.AutoSize = true;
             DarkLabel4.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel4.Location = new Point(338, 195);
-            DarkLabel4.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel4.Location = new Point(237, 117);
+            DarkLabel4.Margin = new Padding(4, 0, 4, 0);
             DarkLabel4.Name = "DarkLabel4";
-            DarkLabel4.Size = new Size(24, 25);
+            DarkLabel4.Size = new Size(15, 15);
             DarkLabel4.TabIndex = 13;
             DarkLabel4.Text = "is";
             // 
@@ -1343,61 +1225,66 @@ namespace Client
             cmbSelfSwitch.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSelfSwitch.FormattingEnabled = true;
             cmbSelfSwitch.Items.AddRange(new object[] { "None", "1 - A", "2 - B", "3 - C", "4 - D" });
-            cmbSelfSwitch.Location = new Point(180, 188);
-            cmbSelfSwitch.Margin = new Padding(5);
+            cmbSelfSwitch.Location = new Point(126, 113);
+            cmbSelfSwitch.Margin = new Padding(4, 3, 4, 3);
             cmbSelfSwitch.Name = "cmbSelfSwitch";
-            cmbSelfSwitch.Size = new Size(146, 32);
+            cmbSelfSwitch.Size = new Size(103, 24);
             cmbSelfSwitch.TabIndex = 12;
+            cmbSelfSwitch.SelectedIndexChanged += CmbSelfSwitch_SelectedIndexChanged;
             // 
             // chkSelfSwitch
             // 
             chkSelfSwitch.AutoSize = true;
-            chkSelfSwitch.Location = new Point(10, 191);
-            chkSelfSwitch.Margin = new Padding(5);
+            chkSelfSwitch.Location = new Point(7, 115);
+            chkSelfSwitch.Margin = new Padding(4, 3, 4, 3);
             chkSelfSwitch.Name = "chkSelfSwitch";
-            chkSelfSwitch.Size = new Size(123, 29);
+            chkSelfSwitch.Size = new Size(83, 19);
             chkSelfSwitch.TabIndex = 11;
             chkSelfSwitch.Text = "Self Switch";
+            chkSelfSwitch.CheckedChanged += ChkSelfSwitch_CheckedChanged;
             // 
             // cmbHasItem
             // 
             cmbHasItem.DrawMode = DrawMode.OwnerDrawFixed;
             cmbHasItem.FormattingEnabled = true;
-            cmbHasItem.Location = new Point(180, 137);
-            cmbHasItem.Margin = new Padding(5);
+            cmbHasItem.Location = new Point(126, 82);
+            cmbHasItem.Margin = new Padding(4, 3, 4, 3);
             cmbHasItem.Name = "cmbHasItem";
-            cmbHasItem.Size = new Size(337, 32);
+            cmbHasItem.Size = new Size(237, 24);
             cmbHasItem.TabIndex = 10;
+            cmbHasItem.SelectedIndexChanged += CmbHasItem_SelectedIndexChanged;
             // 
             // chkHasItem
             // 
             chkHasItem.AutoSize = true;
-            chkHasItem.Location = new Point(10, 140);
-            chkHasItem.Margin = new Padding(5);
+            chkHasItem.Location = new Point(7, 84);
+            chkHasItem.Margin = new Padding(4, 3, 4, 3);
             chkHasItem.Name = "chkHasItem";
-            chkHasItem.Size = new Size(161, 29);
+            chkHasItem.Size = new Size(108, 19);
             chkHasItem.TabIndex = 9;
             chkHasItem.Text = "Player Has Item";
+            chkHasItem.CheckedChanged += ChkHasItem_CheckedChanged;
             // 
             // cmbPlayerSwitchCompare
             // 
             cmbPlayerSwitchCompare.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlayerSwitchCompare.FormattingEnabled = true;
             cmbPlayerSwitchCompare.Items.AddRange(new object[] { "False = 0", "True = 1" });
-            cmbPlayerSwitchCompare.Location = new Point(372, 85);
-            cmbPlayerSwitchCompare.Margin = new Padding(5);
+            cmbPlayerSwitchCompare.Location = new Point(260, 51);
+            cmbPlayerSwitchCompare.Margin = new Padding(4, 3, 4, 3);
             cmbPlayerSwitchCompare.Name = "cmbPlayerSwitchCompare";
-            cmbPlayerSwitchCompare.Size = new Size(146, 32);
+            cmbPlayerSwitchCompare.Size = new Size(103, 24);
             cmbPlayerSwitchCompare.TabIndex = 8;
+            cmbPlayerSwitchCompare.SelectedIndexChanged += CmbPlayerSwitchCompare_SelectedIndexChanged;
             // 
             // DarkLabel3
             // 
             DarkLabel3.AutoSize = true;
             DarkLabel3.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel3.Location = new Point(338, 90);
-            DarkLabel3.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel3.Location = new Point(237, 54);
+            DarkLabel3.Margin = new Padding(4, 0, 4, 0);
             DarkLabel3.Name = "DarkLabel3";
-            DarkLabel3.Size = new Size(24, 25);
+            DarkLabel3.Size = new Size(15, 15);
             DarkLabel3.TabIndex = 7;
             DarkLabel3.Text = "is";
             // 
@@ -1405,49 +1292,53 @@ namespace Client
             // 
             cmbPlayerSwitch.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlayerSwitch.FormattingEnabled = true;
-            cmbPlayerSwitch.Location = new Point(180, 85);
-            cmbPlayerSwitch.Margin = new Padding(5);
+            cmbPlayerSwitch.Location = new Point(126, 51);
+            cmbPlayerSwitch.Margin = new Padding(4, 3, 4, 3);
             cmbPlayerSwitch.Name = "cmbPlayerSwitch";
-            cmbPlayerSwitch.Size = new Size(146, 32);
+            cmbPlayerSwitch.Size = new Size(103, 24);
             cmbPlayerSwitch.TabIndex = 6;
+            cmbPlayerSwitch.SelectedIndexChanged += CmbPlayerSwitch_SelectedIndexChanged;
             // 
             // chkPlayerSwitch
             // 
             chkPlayerSwitch.AutoSize = true;
-            chkPlayerSwitch.Location = new Point(10, 88);
-            chkPlayerSwitch.Margin = new Padding(5);
+            chkPlayerSwitch.Location = new Point(7, 53);
+            chkPlayerSwitch.Margin = new Padding(4, 3, 4, 3);
             chkPlayerSwitch.Name = "chkPlayerSwitch";
-            chkPlayerSwitch.Size = new Size(141, 29);
+            chkPlayerSwitch.Size = new Size(96, 19);
             chkPlayerSwitch.TabIndex = 5;
             chkPlayerSwitch.Text = "Player Switch";
+            chkPlayerSwitch.CheckedChanged += ChkPlayerSwitch_CheckedChanged;
             // 
             // nudPlayerVariable
             // 
-            nudPlayerVariable.Location = new Point(530, 35);
-            nudPlayerVariable.Margin = new Padding(5);
+            nudPlayerVariable.Location = new Point(371, 21);
+            nudPlayerVariable.Margin = new Padding(4, 3, 4, 3);
             nudPlayerVariable.Name = "nudPlayerVariable";
-            nudPlayerVariable.Size = new Size(93, 31);
+            nudPlayerVariable.Size = new Size(65, 23);
             nudPlayerVariable.TabIndex = 4;
+            nudPlayerVariable.ValueChanged += NudPlayerVariable_ValueChanged;
             // 
             // cmbPlayervarCompare
             // 
             cmbPlayervarCompare.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlayervarCompare.FormattingEnabled = true;
             cmbPlayervarCompare.Items.AddRange(new object[] { "Equal To", "Great Than Or Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal" });
-            cmbPlayervarCompare.Location = new Point(372, 34);
-            cmbPlayervarCompare.Margin = new Padding(5);
+            cmbPlayervarCompare.Location = new Point(260, 20);
+            cmbPlayervarCompare.Margin = new Padding(4, 3, 4, 3);
             cmbPlayervarCompare.Name = "cmbPlayervarCompare";
-            cmbPlayervarCompare.Size = new Size(146, 32);
+            cmbPlayervarCompare.Size = new Size(103, 24);
             cmbPlayervarCompare.TabIndex = 3;
+            cmbPlayervarCompare.SelectedIndexChanged += CmbPlayervarCompare_SelectedIndexChanged;
             // 
             // DarkLabel2
             // 
             DarkLabel2.AutoSize = true;
             DarkLabel2.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel2.Location = new Point(338, 45);
-            DarkLabel2.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel2.Location = new Point(237, 27);
+            DarkLabel2.Margin = new Padding(4, 0, 4, 0);
             DarkLabel2.Name = "DarkLabel2";
-            DarkLabel2.Size = new Size(24, 25);
+            DarkLabel2.Size = new Size(15, 15);
             DarkLabel2.TabIndex = 2;
             DarkLabel2.Text = "is";
             // 
@@ -1455,21 +1346,23 @@ namespace Client
             // 
             cmbPlayerVar.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlayerVar.FormattingEnabled = true;
-            cmbPlayerVar.Location = new Point(180, 34);
-            cmbPlayerVar.Margin = new Padding(5);
+            cmbPlayerVar.Location = new Point(126, 20);
+            cmbPlayerVar.Margin = new Padding(4, 3, 4, 3);
             cmbPlayerVar.Name = "cmbPlayerVar";
-            cmbPlayerVar.Size = new Size(146, 32);
+            cmbPlayerVar.Size = new Size(103, 24);
             cmbPlayerVar.TabIndex = 1;
+            cmbPlayerVar.SelectedIndexChanged += CmbPlayerVar_SelectedIndexChanged;
             // 
             // chkPlayerVar
             // 
             chkPlayerVar.AutoSize = true;
-            chkPlayerVar.Location = new Point(10, 37);
-            chkPlayerVar.Margin = new Padding(5);
+            chkPlayerVar.Location = new Point(7, 22);
+            chkPlayerVar.Margin = new Padding(4, 3, 4, 3);
             chkPlayerVar.Name = "chkPlayerVar";
-            chkPlayerVar.Size = new Size(152, 29);
+            chkPlayerVar.Size = new Size(102, 19);
             chkPlayerVar.TabIndex = 0;
             chkPlayerVar.Text = "Player Variable";
+            chkPlayerVar.CheckedChanged += ChkPlayerVar_CheckedChanged;
             // 
             // DarkGroupBox8
             // 
@@ -1480,54 +1373,58 @@ namespace Client
             DarkGroupBox8.Controls.Add(btnEditCommand);
             DarkGroupBox8.Controls.Add(btnAddCommand);
             DarkGroupBox8.ForeColor = Color.Gainsboro;
-            DarkGroupBox8.Location = new Point(648, 845);
-            DarkGroupBox8.Margin = new Padding(5);
+            DarkGroupBox8.Location = new Point(454, 507);
+            DarkGroupBox8.Margin = new Padding(4, 3, 4, 3);
             DarkGroupBox8.Name = "DarkGroupBox8";
-            DarkGroupBox8.Padding = new Padding(5);
-            DarkGroupBox8.Size = new Size(655, 95);
+            DarkGroupBox8.Padding = new Padding(4, 3, 4, 3);
+            DarkGroupBox8.Size = new Size(458, 57);
             DarkGroupBox8.TabIndex = 9;
             DarkGroupBox8.TabStop = false;
             DarkGroupBox8.Text = "Commands";
             // 
             // btnClearCommand
             // 
-            btnClearCommand.Location = new Point(520, 37);
-            btnClearCommand.Margin = new Padding(5);
+            btnClearCommand.Location = new Point(364, 22);
+            btnClearCommand.Margin = new Padding(4, 3, 4, 3);
             btnClearCommand.Name = "btnClearCommand";
-            btnClearCommand.Padding = new Padding(8, 10, 8, 10);
-            btnClearCommand.Size = new Size(125, 45);
+            btnClearCommand.Padding = new Padding(6, 6, 6, 6);
+            btnClearCommand.Size = new Size(88, 27);
             btnClearCommand.TabIndex = 3;
             btnClearCommand.Text = "Clear";
+            btnClearCommand.Click += BtnClearCommand_Click;
             // 
             // btnDeleteCommand
             // 
-            btnDeleteCommand.Location = new Point(353, 37);
-            btnDeleteCommand.Margin = new Padding(5);
+            btnDeleteCommand.Location = new Point(247, 22);
+            btnDeleteCommand.Margin = new Padding(4, 3, 4, 3);
             btnDeleteCommand.Name = "btnDeleteCommand";
-            btnDeleteCommand.Padding = new Padding(8, 10, 8, 10);
-            btnDeleteCommand.Size = new Size(125, 45);
+            btnDeleteCommand.Padding = new Padding(6, 6, 6, 6);
+            btnDeleteCommand.Size = new Size(88, 27);
             btnDeleteCommand.TabIndex = 2;
             btnDeleteCommand.Text = "Delete";
+            btnDeleteCommand.Click += BtnDeleteComand_Click;
             // 
             // btnEditCommand
             // 
-            btnEditCommand.Location = new Point(180, 37);
-            btnEditCommand.Margin = new Padding(5);
+            btnEditCommand.Location = new Point(126, 22);
+            btnEditCommand.Margin = new Padding(4, 3, 4, 3);
             btnEditCommand.Name = "btnEditCommand";
-            btnEditCommand.Padding = new Padding(8, 10, 8, 10);
-            btnEditCommand.Size = new Size(125, 45);
+            btnEditCommand.Padding = new Padding(6, 6, 6, 6);
+            btnEditCommand.Size = new Size(88, 27);
             btnEditCommand.TabIndex = 1;
             btnEditCommand.Text = "Edit";
+            btnEditCommand.Click += BtnEditCommand_Click;
             // 
             // btnAddCommand
             // 
-            btnAddCommand.Location = new Point(10, 37);
-            btnAddCommand.Margin = new Padding(5);
+            btnAddCommand.Location = new Point(7, 22);
+            btnAddCommand.Margin = new Padding(4, 3, 4, 3);
             btnAddCommand.Name = "btnAddCommand";
-            btnAddCommand.Padding = new Padding(8, 10, 8, 10);
-            btnAddCommand.Size = new Size(125, 45);
+            btnAddCommand.Padding = new Padding(6, 6, 6, 6);
+            btnAddCommand.Size = new Size(88, 27);
             btnAddCommand.TabIndex = 0;
             btnAddCommand.Text = "Add";
+            btnAddCommand.Click += BtnAddCommand_Click;
             // 
             // fraGraphic
             // 
@@ -1541,11 +1438,11 @@ namespace Client
             fraGraphic.Controls.Add(cmbGraphic);
             fraGraphic.Controls.Add(DarkLabel11);
             fraGraphic.ForeColor = Color.Gainsboro;
-            fraGraphic.Location = new Point(648, 10);
-            fraGraphic.Margin = new Padding(5);
+            fraGraphic.Location = new Point(454, 6);
+            fraGraphic.Margin = new Padding(4, 3, 4, 3);
             fraGraphic.Name = "fraGraphic";
-            fraGraphic.Padding = new Padding(5);
-            fraGraphic.Size = new Size(655, 928);
+            fraGraphic.Padding = new Padding(4, 3, 4, 3);
+            fraGraphic.Size = new Size(458, 557);
             fraGraphic.TabIndex = 14;
             fraGraphic.TabStop = false;
             fraGraphic.Text = "Graphic Selection";
@@ -1553,21 +1450,21 @@ namespace Client
             // 
             // btnGraphicOk
             // 
-            btnGraphicOk.Location = new Point(1087, 1097);
-            btnGraphicOk.Margin = new Padding(5);
+            btnGraphicOk.Location = new Point(761, 658);
+            btnGraphicOk.Margin = new Padding(4, 3, 4, 3);
             btnGraphicOk.Name = "btnGraphicOk";
-            btnGraphicOk.Padding = new Padding(8, 10, 8, 10);
-            btnGraphicOk.Size = new Size(125, 45);
+            btnGraphicOk.Padding = new Padding(6, 6, 6, 6);
+            btnGraphicOk.Size = new Size(88, 27);
             btnGraphicOk.TabIndex = 8;
             btnGraphicOk.Text = "Ok";
             // 
             // btnGraphicCancel
             // 
-            btnGraphicCancel.Location = new Point(1222, 1097);
-            btnGraphicCancel.Margin = new Padding(5);
+            btnGraphicCancel.Location = new Point(855, 658);
+            btnGraphicCancel.Margin = new Padding(4, 3, 4, 3);
             btnGraphicCancel.Name = "btnGraphicCancel";
-            btnGraphicCancel.Padding = new Padding(8, 10, 8, 10);
-            btnGraphicCancel.Size = new Size(125, 45);
+            btnGraphicCancel.Padding = new Padding(6, 6, 6, 6);
+            btnGraphicCancel.Size = new Size(88, 27);
             btnGraphicCancel.TabIndex = 7;
             btnGraphicCancel.Text = "Cancel";
             // 
@@ -1575,29 +1472,29 @@ namespace Client
             // 
             DarkLabel13.AutoSize = true;
             DarkLabel13.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel13.Location = new Point(17, 1098);
-            DarkLabel13.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel13.Location = new Point(12, 659);
+            DarkLabel13.Margin = new Padding(4, 0, 4, 0);
             DarkLabel13.Name = "DarkLabel13";
-            DarkLabel13.Size = new Size(272, 25);
+            DarkLabel13.Size = new Size(181, 15);
             DarkLabel13.TabIndex = 6;
             DarkLabel13.Text = "Hold Shift to select multiple tiles.";
             // 
             // nudGraphic
             // 
-            nudGraphic.Location = new Point(173, 95);
-            nudGraphic.Margin = new Padding(5);
+            nudGraphic.Location = new Point(121, 57);
+            nudGraphic.Margin = new Padding(4, 3, 4, 3);
             nudGraphic.Name = "nudGraphic";
-            nudGraphic.Size = new Size(360, 31);
+            nudGraphic.Size = new Size(252, 23);
             nudGraphic.TabIndex = 3;
             // 
             // DarkLabel12
             // 
             DarkLabel12.AutoSize = true;
             DarkLabel12.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel12.Location = new Point(35, 98);
-            DarkLabel12.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel12.Location = new Point(24, 59);
+            DarkLabel12.Margin = new Padding(4, 0, 4, 0);
             DarkLabel12.Name = "DarkLabel12";
-            DarkLabel12.Size = new Size(81, 25);
+            DarkLabel12.Size = new Size(54, 15);
             DarkLabel12.TabIndex = 2;
             DarkLabel12.Text = "Number:";
             // 
@@ -1606,43 +1503,33 @@ namespace Client
             cmbGraphic.DrawMode = DrawMode.OwnerDrawFixed;
             cmbGraphic.FormattingEnabled = true;
             cmbGraphic.Items.AddRange(new object[] { "None", "Character", "Tileset" });
-            cmbGraphic.Location = new Point(173, 35);
-            cmbGraphic.Margin = new Padding(5);
+            cmbGraphic.Location = new Point(121, 21);
+            cmbGraphic.Margin = new Padding(4, 3, 4, 3);
             cmbGraphic.Name = "cmbGraphic";
-            cmbGraphic.Size = new Size(359, 32);
+            cmbGraphic.Size = new Size(252, 24);
             cmbGraphic.TabIndex = 1;
+            cmbGraphic.SelectedIndexChanged += CmbGraphic_SelectedIndexChanged;
             // 
             // DarkLabel11
             // 
             DarkLabel11.AutoSize = true;
             DarkLabel11.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel11.Location = new Point(35, 40);
-            DarkLabel11.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel11.Location = new Point(24, 24);
+            DarkLabel11.Margin = new Padding(4, 0, 4, 0);
             DarkLabel11.Name = "DarkLabel11";
-            DarkLabel11.Size = new Size(126, 25);
+            DarkLabel11.Size = new Size(84, 15);
             DarkLabel11.TabIndex = 0;
             DarkLabel11.Text = "Graphics Type:";
             // 
             // fraCommands
             // 
-            fraCommands.Controls.Add(btnCancelCommand);
             fraCommands.Controls.Add(tvCommands);
-            fraCommands.Location = new Point(648, 12);
-            fraCommands.Margin = new Padding(5);
+            fraCommands.Location = new Point(454, 7);
+            fraCommands.Margin = new Padding(4, 3, 4, 3);
             fraCommands.Name = "fraCommands";
-            fraCommands.Size = new Size(655, 927);
+            fraCommands.Size = new Size(458, 556);
             fraCommands.TabIndex = 6;
             fraCommands.Visible = false;
-            // 
-            // btnCancelCommand
-            // 
-            btnCancel.Location = new Point(520, 870);
-            btnCancel.Margin = new Padding(5);
-            btnCancel.Name = "btnCancelCommand";
-            btnCancel.Padding = new Padding(8, 10, 8, 10);
-            btnCancel.Size = new Size(125, 45);
-            btnCancel.TabIndex = 2;
-            btnCancel.Text = "Cancel";
             // 
             // lstCommands
             // 
@@ -1650,42 +1537,45 @@ namespace Client
             lstCommands.BorderStyle = BorderStyle.FixedSingle;
             lstCommands.ForeColor = Color.Gainsboro;
             lstCommands.FormattingEnabled = true;
-            lstCommands.ItemHeight = 25;
-            lstCommands.Location = new Point(648, 12);
-            lstCommands.Margin = new Padding(5);
+            lstCommands.Location = new Point(454, 7);
+            lstCommands.Margin = new Padding(4, 3, 4, 3);
             lstCommands.Name = "lstCommands";
-            lstCommands.Size = new Size(654, 827);
+            lstCommands.Size = new Size(458, 497);
             lstCommands.TabIndex = 8;
+            lstCommands.SelectedIndexChanged += LstCommands_SelectedIndexChanged;
             // 
             // btnLabeling
             // 
-            btnLabeling.Location = new Point(10, 1097);
-            btnLabeling.Margin = new Padding(5);
+            btnLabeling.Location = new Point(7, 658);
+            btnLabeling.Margin = new Padding(4, 3, 4, 3);
             btnLabeling.Name = "btnLabeling";
-            btnLabeling.Padding = new Padding(8, 10, 8, 10);
-            btnLabeling.Size = new Size(293, 45);
+            btnLabeling.Padding = new Padding(6, 6, 6, 6);
+            btnLabeling.Size = new Size(205, 27);
             btnLabeling.TabIndex = 6;
             btnLabeling.Text = "Edit Variables/Switches";
+            btnLabeling.Click += BtnLabeling_Click;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(1183, 1105);
-            btnCancel.Margin = new Padding(5);
+            btnCancel.Location = new Point(828, 663);
+            btnCancel.Margin = new Padding(4, 3, 4, 3);
             btnCancel.Name = "btnCancel";
-            btnCancel.Padding = new Padding(8, 10, 8, 10);
-            btnCancel.Size = new Size(125, 45);
+            btnCancel.Padding = new Padding(6, 6, 6, 6);
+            btnCancel.Size = new Size(88, 27);
             btnCancel.TabIndex = 7;
             btnCancel.Text = "Cancel";
+            btnCancel.Click += BtnCancel_Click;
             // 
             // btnOk
             // 
-            btnOk.Location = new Point(1048, 1105);
-            btnOk.Margin = new Padding(5);
+            btnOk.Location = new Point(734, 663);
+            btnOk.Margin = new Padding(4, 3, 4, 3);
             btnOk.Name = "btnOk";
-            btnOk.Padding = new Padding(8, 10, 8, 10);
-            btnOk.Size = new Size(125, 45);
+            btnOk.Padding = new Padding(6, 6, 6, 6);
+            btnOk.Size = new Size(88, 27);
             btnOk.TabIndex = 8;
             btnOk.Text = "Ok";
+            btnOk.Click += BtnOK_Click;
             // 
             // fraMoveRoute
             // 
@@ -1699,11 +1589,11 @@ namespace Client
             fraMoveRoute.Controls.Add(lstMoveRoute);
             fraMoveRoute.Controls.Add(cmbEvent);
             fraMoveRoute.ForeColor = Color.Gainsboro;
-            fraMoveRoute.Location = new Point(1333, 23);
-            fraMoveRoute.Margin = new Padding(5);
+            fraMoveRoute.Location = new Point(933, 14);
+            fraMoveRoute.Margin = new Padding(4, 3, 4, 3);
             fraMoveRoute.Name = "fraMoveRoute";
-            fraMoveRoute.Padding = new Padding(5);
-            fraMoveRoute.Size = new Size(155, 163);
+            fraMoveRoute.Padding = new Padding(4, 3, 4, 3);
+            fraMoveRoute.Size = new Size(108, 98);
             fraMoveRoute.TabIndex = 0;
             fraMoveRoute.TabStop = false;
             fraMoveRoute.Text = "Move Route";
@@ -1711,43 +1601,47 @@ namespace Client
             // 
             // btnMoveRouteOk
             // 
-            btnMoveRouteOk.Location = new Point(1070, 828);
-            btnMoveRouteOk.Margin = new Padding(5);
+            btnMoveRouteOk.Location = new Point(749, 497);
+            btnMoveRouteOk.Margin = new Padding(4, 3, 4, 3);
             btnMoveRouteOk.Name = "btnMoveRouteOk";
-            btnMoveRouteOk.Padding = new Padding(8, 10, 8, 10);
-            btnMoveRouteOk.Size = new Size(125, 45);
+            btnMoveRouteOk.Padding = new Padding(6, 6, 6, 6);
+            btnMoveRouteOk.Size = new Size(88, 27);
             btnMoveRouteOk.TabIndex = 7;
             btnMoveRouteOk.Text = "Ok";
+            btnMoveRouteOk.Click += BtnMoveRouteOk_Click;
             // 
             // btnMoveRouteCancel
             // 
-            btnMoveRouteCancel.Location = new Point(1205, 828);
-            btnMoveRouteCancel.Margin = new Padding(5);
+            btnMoveRouteCancel.Location = new Point(844, 497);
+            btnMoveRouteCancel.Margin = new Padding(4, 3, 4, 3);
             btnMoveRouteCancel.Name = "btnMoveRouteCancel";
-            btnMoveRouteCancel.Padding = new Padding(8, 10, 8, 10);
-            btnMoveRouteCancel.Size = new Size(125, 45);
+            btnMoveRouteCancel.Padding = new Padding(6, 6, 6, 6);
+            btnMoveRouteCancel.Size = new Size(88, 27);
             btnMoveRouteCancel.TabIndex = 6;
             btnMoveRouteCancel.Text = "Cancel";
+            btnMoveRouteCancel.Click += BtnMoveRouteCancel_Click;
             // 
             // chkRepeatRoute
             // 
             chkRepeatRoute.AutoSize = true;
-            chkRepeatRoute.Location = new Point(10, 873);
-            chkRepeatRoute.Margin = new Padding(5);
+            chkRepeatRoute.Location = new Point(7, 524);
+            chkRepeatRoute.Margin = new Padding(4, 3, 4, 3);
             chkRepeatRoute.Name = "chkRepeatRoute";
-            chkRepeatRoute.Size = new Size(143, 29);
+            chkRepeatRoute.Size = new Size(96, 19);
             chkRepeatRoute.TabIndex = 5;
             chkRepeatRoute.Text = "Repeat Route";
+            chkRepeatRoute.CheckedChanged += ChkRepeatRoute_CheckedChanged;
             // 
             // chkIgnoreMove
             // 
             chkIgnoreMove.AutoSize = true;
-            chkIgnoreMove.Location = new Point(10, 828);
-            chkIgnoreMove.Margin = new Padding(5);
+            chkIgnoreMove.Location = new Point(7, 497);
+            chkIgnoreMove.Margin = new Padding(4, 3, 4, 3);
             chkIgnoreMove.Name = "chkIgnoreMove";
-            chkIgnoreMove.Size = new Size(245, 29);
+            chkIgnoreMove.Size = new Size(164, 19);
             chkIgnoreMove.TabIndex = 4;
             chkIgnoreMove.Text = "Ignore if event can't move";
+            chkIgnoreMove.CheckedChanged += ChkIgnoreMove_CheckedChanged;
             // 
             // DarkGroupBox10
             // 
@@ -1755,11 +1649,11 @@ namespace Client
             DarkGroupBox10.BorderColor = Color.FromArgb(90, 90, 90);
             DarkGroupBox10.Controls.Add(lstvwMoveRoute);
             DarkGroupBox10.ForeColor = Color.Gainsboro;
-            DarkGroupBox10.Location = new Point(338, 20);
-            DarkGroupBox10.Margin = new Padding(5);
+            DarkGroupBox10.Location = new Point(237, 12);
+            DarkGroupBox10.Margin = new Padding(4, 3, 4, 3);
             DarkGroupBox10.Name = "DarkGroupBox10";
-            DarkGroupBox10.Padding = new Padding(5);
-            DarkGroupBox10.Size = new Size(992, 798);
+            DarkGroupBox10.Padding = new Padding(4, 3, 4, 3);
+            DarkGroupBox10.Size = new Size(694, 479);
             DarkGroupBox10.TabIndex = 3;
             DarkGroupBox10.TabStop = false;
             DarkGroupBox10.Text = "Commands";
@@ -1771,83 +1665,84 @@ namespace Client
             lstvwMoveRoute.BorderStyle = BorderStyle.None;
             lstvwMoveRoute.Columns.AddRange(new ColumnHeader[] { ColumnHeader3, ColumnHeader4 });
             lstvwMoveRoute.Dock = DockStyle.Top;
-            lstvwMoveRoute.Font = new Font("Microsoft Sans Serif", 8.25f);
+            lstvwMoveRoute.Font = new Font("Microsoft Sans Serif", 8.25F);
             lstvwMoveRoute.ForeColor = Color.Gainsboro;
-            ListViewGroup1.Header = "Movement";
-            ListViewGroup1.Name = "lstVgMovement";
-            ListViewGroup2.Header = "Wait";
-            ListViewGroup2.Name = "lstVgWait";
-            ListViewGroup3.Header = "Turning";
-            ListViewGroup3.Name = "lstVgTurn";
-            ListViewGroup4.Header = "Speed";
-            ListViewGroup4.Name = "lstVgSpeed";
-            ListViewGroup5.Header = "Walk Animation";
-            ListViewGroup5.Name = "lstVgWalk";
-            ListViewGroup6.Header = "Fixed Direction";
-            ListViewGroup6.Name = "lstVgDirection";
-            ListViewGroup7.Header = "WalkThrough";
-            ListViewGroup7.Name = "lstVgWalkThrough";
-            ListViewGroup8.Header = "Set Position";
-            ListViewGroup8.Name = "lstVgSetposition";
-            ListViewGroup9.Header = "Set Graphic";
-            ListViewGroup9.Name = "lstVgSetGraphic";
-            lstvwMoveRoute.Groups.AddRange(new ListViewGroup[] { ListViewGroup1, ListViewGroup2, ListViewGroup3, ListViewGroup4, ListViewGroup5, ListViewGroup6, ListViewGroup7, ListViewGroup8, ListViewGroup9 });
+            listViewGroup1.Header = "Movement";
+            listViewGroup1.Name = "lstVgMovement";
+            listViewGroup2.Header = "Wait";
+            listViewGroup2.Name = "lstVgWait";
+            listViewGroup3.Header = "Turning";
+            listViewGroup3.Name = "lstVgTurn";
+            listViewGroup4.Header = "Speed";
+            listViewGroup4.Name = "lstVgSpeed";
+            listViewGroup5.Header = "Walk Animation";
+            listViewGroup5.Name = "lstVgWalk";
+            listViewGroup6.Header = "Fixed Direction";
+            listViewGroup6.Name = "lstVgDirection";
+            listViewGroup7.Header = "WalkThrough";
+            listViewGroup7.Name = "lstVgWalkThrough";
+            listViewGroup8.Header = "Set Position";
+            listViewGroup8.Name = "lstVgSetposition";
+            listViewGroup9.Header = "Set Graphic";
+            listViewGroup9.Name = "lstVgSetGraphic";
+            lstvwMoveRoute.Groups.AddRange(new ListViewGroup[] { listViewGroup1, listViewGroup2, listViewGroup3, listViewGroup4, listViewGroup5, listViewGroup6, listViewGroup7, listViewGroup8, listViewGroup9 });
             lstvwMoveRoute.HeaderStyle = ColumnHeaderStyle.None;
-            ListViewItem1.Group = ListViewGroup1;
-            ListViewItem2.Group = ListViewGroup1;
-            ListViewItem2.IndentCount = 1;
-            ListViewItem3.Group = ListViewGroup1;
-            ListViewItem4.Group = ListViewGroup1;
-            ListViewItem4.IndentCount = 1;
-            ListViewItem5.Group = ListViewGroup1;
-            ListViewItem6.Group = ListViewGroup1;
-            ListViewItem7.Group = ListViewGroup1;
-            ListViewItem8.Group = ListViewGroup1;
-            ListViewItem9.Group = ListViewGroup1;
-            ListViewItem10.Group = ListViewGroup2;
-            ListViewItem11.Group = ListViewGroup2;
-            ListViewItem12.Group = ListViewGroup2;
-            ListViewItem13.Group = ListViewGroup3;
-            ListViewItem14.Group = ListViewGroup3;
-            ListViewItem15.Group = ListViewGroup3;
-            ListViewItem16.Group = ListViewGroup3;
-            ListViewItem17.Group = ListViewGroup3;
-            ListViewItem18.Group = ListViewGroup3;
-            ListViewItem19.Group = ListViewGroup3;
-            ListViewItem20.Group = ListViewGroup3;
-            ListViewItem21.Group = ListViewGroup3;
-            ListViewItem22.Group = ListViewGroup3;
-            ListViewItem23.Group = ListViewGroup4;
-            ListViewItem24.Group = ListViewGroup4;
-            ListViewItem25.Group = ListViewGroup4;
-            ListViewItem26.Group = ListViewGroup4;
-            ListViewItem27.Group = ListViewGroup4;
-            ListViewItem28.Group = ListViewGroup4;
-            ListViewItem29.Group = ListViewGroup4;
-            ListViewItem30.Group = ListViewGroup4;
-            ListViewItem31.Group = ListViewGroup4;
-            ListViewItem32.Group = ListViewGroup4;
-            ListViewItem33.Group = ListViewGroup4;
-            ListViewItem34.Group = ListViewGroup5;
-            ListViewItem35.Group = ListViewGroup5;
-            ListViewItem36.Group = ListViewGroup6;
-            ListViewItem37.Group = ListViewGroup6;
-            ListViewItem38.Group = ListViewGroup7;
-            ListViewItem39.Group = ListViewGroup7;
-            ListViewItem40.Group = ListViewGroup8;
-            ListViewItem41.Group = ListViewGroup8;
-            ListViewItem42.Group = ListViewGroup8;
-            ListViewItem43.Group = ListViewGroup9;
-            lstvwMoveRoute.Items.AddRange(new ListViewItem[] { ListViewItem1, ListViewItem2, ListViewItem3, ListViewItem4, ListViewItem5, ListViewItem6, ListViewItem7, ListViewItem8, ListViewItem9, ListViewItem10, ListViewItem11, ListViewItem12, ListViewItem13, ListViewItem14, ListViewItem15, ListViewItem16, ListViewItem17, ListViewItem18, ListViewItem19, ListViewItem20, ListViewItem21, ListViewItem22, ListViewItem23, ListViewItem24, ListViewItem25, ListViewItem26, ListViewItem27, ListViewItem28, ListViewItem29, ListViewItem30, ListViewItem31, ListViewItem32, ListViewItem33, ListViewItem34, ListViewItem35, ListViewItem36, ListViewItem37, ListViewItem38, ListViewItem39, ListViewItem40, ListViewItem41, ListViewItem42, ListViewItem43 });
+            listViewItem1.Group = listViewGroup1;
+            listViewItem2.Group = listViewGroup1;
+            listViewItem2.IndentCount = 1;
+            listViewItem3.Group = listViewGroup1;
+            listViewItem4.Group = listViewGroup1;
+            listViewItem4.IndentCount = 1;
+            listViewItem5.Group = listViewGroup1;
+            listViewItem6.Group = listViewGroup1;
+            listViewItem7.Group = listViewGroup1;
+            listViewItem8.Group = listViewGroup1;
+            listViewItem9.Group = listViewGroup1;
+            listViewItem10.Group = listViewGroup2;
+            listViewItem11.Group = listViewGroup2;
+            listViewItem12.Group = listViewGroup2;
+            listViewItem13.Group = listViewGroup3;
+            listViewItem14.Group = listViewGroup3;
+            listViewItem15.Group = listViewGroup3;
+            listViewItem16.Group = listViewGroup3;
+            listViewItem17.Group = listViewGroup3;
+            listViewItem18.Group = listViewGroup3;
+            listViewItem19.Group = listViewGroup3;
+            listViewItem20.Group = listViewGroup3;
+            listViewItem21.Group = listViewGroup3;
+            listViewItem22.Group = listViewGroup3;
+            listViewItem23.Group = listViewGroup4;
+            listViewItem24.Group = listViewGroup4;
+            listViewItem25.Group = listViewGroup4;
+            listViewItem26.Group = listViewGroup4;
+            listViewItem27.Group = listViewGroup4;
+            listViewItem28.Group = listViewGroup4;
+            listViewItem29.Group = listViewGroup4;
+            listViewItem30.Group = listViewGroup4;
+            listViewItem31.Group = listViewGroup4;
+            listViewItem32.Group = listViewGroup4;
+            listViewItem33.Group = listViewGroup4;
+            listViewItem34.Group = listViewGroup5;
+            listViewItem35.Group = listViewGroup5;
+            listViewItem36.Group = listViewGroup6;
+            listViewItem37.Group = listViewGroup6;
+            listViewItem38.Group = listViewGroup7;
+            listViewItem39.Group = listViewGroup7;
+            listViewItem40.Group = listViewGroup8;
+            listViewItem41.Group = listViewGroup8;
+            listViewItem42.Group = listViewGroup8;
+            listViewItem43.Group = listViewGroup9;
+            lstvwMoveRoute.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8, listViewItem9, listViewItem10, listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15, listViewItem16, listViewItem17, listViewItem18, listViewItem19, listViewItem20, listViewItem21, listViewItem22, listViewItem23, listViewItem24, listViewItem25, listViewItem26, listViewItem27, listViewItem28, listViewItem29, listViewItem30, listViewItem31, listViewItem32, listViewItem33, listViewItem34, listViewItem35, listViewItem36, listViewItem37, listViewItem38, listViewItem39, listViewItem40, listViewItem41, listViewItem42, listViewItem43 });
             lstvwMoveRoute.LabelWrap = false;
-            lstvwMoveRoute.Location = new Point(5, 29);
-            lstvwMoveRoute.Margin = new Padding(5);
+            lstvwMoveRoute.Location = new Point(4, 19);
+            lstvwMoveRoute.Margin = new Padding(4, 3, 4, 3);
             lstvwMoveRoute.MultiSelect = false;
             lstvwMoveRoute.Name = "lstvwMoveRoute";
-            lstvwMoveRoute.Size = new Size(982, 763);
+            lstvwMoveRoute.Size = new Size(686, 458);
             lstvwMoveRoute.TabIndex = 5;
             lstvwMoveRoute.UseCompatibleStateImageBehavior = false;
             lstvwMoveRoute.View = View.Tile;
+            lstvwMoveRoute.Click += LstvwMoveRoute_SelectedIndexChanged;
             // 
             // ColumnHeader3
             // 
@@ -1865,30 +1760,30 @@ namespace Client
             lstMoveRoute.BorderStyle = BorderStyle.FixedSingle;
             lstMoveRoute.ForeColor = Color.Gainsboro;
             lstMoveRoute.FormattingEnabled = true;
-            lstMoveRoute.ItemHeight = 25;
-            lstMoveRoute.Location = new Point(10, 88);
-            lstMoveRoute.Margin = new Padding(5);
+            lstMoveRoute.Location = new Point(7, 53);
+            lstMoveRoute.Margin = new Padding(4, 3, 4, 3);
             lstMoveRoute.Name = "lstMoveRoute";
-            lstMoveRoute.Size = new Size(317, 727);
+            lstMoveRoute.Size = new Size(222, 437);
             lstMoveRoute.TabIndex = 2;
+            lstMoveRoute.KeyDown += LstMoveRoute_KeyDown;
             // 
             // cmbEvent
             // 
             cmbEvent.DrawMode = DrawMode.OwnerDrawFixed;
             cmbEvent.FormattingEnabled = true;
-            cmbEvent.Location = new Point(10, 37);
-            cmbEvent.Margin = new Padding(5);
+            cmbEvent.Location = new Point(7, 22);
+            cmbEvent.Margin = new Padding(4, 3, 4, 3);
             cmbEvent.Name = "cmbEvent";
-            cmbEvent.Size = new Size(316, 32);
+            cmbEvent.Size = new Size(222, 24);
             cmbEvent.TabIndex = 0;
             // 
             // pnlGraphicSel
             // 
             pnlGraphicSel.AutoScroll = true;
-            pnlGraphicSel.Location = new Point(5, 153);
-            pnlGraphicSel.Margin = new Padding(5);
+            pnlGraphicSel.Location = new Point(4, 92);
+            pnlGraphicSel.Margin = new Padding(4, 3, 4, 3);
             pnlGraphicSel.Name = "pnlGraphicSel";
-            pnlGraphicSel.Size = new Size(1318, 955);
+            pnlGraphicSel.Size = new Size(923, 573);
             pnlGraphicSel.TabIndex = 9;
             // 
             // fraDialogue
@@ -1928,11 +1823,11 @@ namespace Client
             fraDialogue.Controls.Add(fraAddText);
             fraDialogue.Controls.Add(fraChangeItems);
             fraDialogue.ForeColor = Color.Gainsboro;
-            fraDialogue.Location = new Point(1508, 23);
-            fraDialogue.Margin = new Padding(5);
+            fraDialogue.Location = new Point(1056, 14);
+            fraDialogue.Margin = new Padding(4, 3, 4, 3);
             fraDialogue.Name = "fraDialogue";
-            fraDialogue.Padding = new Padding(5);
-            fraDialogue.Size = new Size(1108, 1145);
+            fraDialogue.Padding = new Padding(4, 3, 4, 3);
+            fraDialogue.Size = new Size(776, 687);
             fraDialogue.TabIndex = 10;
             fraDialogue.TabStop = false;
             fraDialogue.Visible = false;
@@ -1950,11 +1845,11 @@ namespace Client
             fraShowChatBubble.Controls.Add(txtChatbubbleText);
             fraShowChatBubble.Controls.Add(DarkLabel39);
             fraShowChatBubble.ForeColor = Color.Gainsboro;
-            fraShowChatBubble.Location = new Point(668, 348);
-            fraShowChatBubble.Margin = new Padding(5);
+            fraShowChatBubble.Location = new Point(468, 209);
+            fraShowChatBubble.Margin = new Padding(4, 3, 4, 3);
             fraShowChatBubble.Name = "fraShowChatBubble";
-            fraShowChatBubble.Padding = new Padding(5);
-            fraShowChatBubble.Size = new Size(410, 272);
+            fraShowChatBubble.Padding = new Padding(4, 3, 4, 3);
+            fraShowChatBubble.Size = new Size(287, 163);
             fraShowChatBubble.TabIndex = 27;
             fraShowChatBubble.TabStop = false;
             fraShowChatBubble.Text = "Show ChatBubble";
@@ -1962,32 +1857,34 @@ namespace Client
             // 
             // btnShowChatBubbleOk
             // 
-            btnShowChatBubbleOk.Location = new Point(140, 215);
-            btnShowChatBubbleOk.Margin = new Padding(5);
+            btnShowChatBubbleOk.Location = new Point(98, 129);
+            btnShowChatBubbleOk.Margin = new Padding(4, 3, 4, 3);
             btnShowChatBubbleOk.Name = "btnShowChatBubbleOk";
-            btnShowChatBubbleOk.Padding = new Padding(8, 10, 8, 10);
-            btnShowChatBubbleOk.Size = new Size(125, 45);
+            btnShowChatBubbleOk.Padding = new Padding(6, 6, 6, 6);
+            btnShowChatBubbleOk.Size = new Size(88, 27);
             btnShowChatBubbleOk.TabIndex = 31;
             btnShowChatBubbleOk.Text = "Ok";
+            btnShowChatBubbleOk.Click += BtnShowChatBubbleOK_Click;
             // 
             // btnShowChatBubbleCancel
             // 
-            btnShowChatBubbleCancel.Location = new Point(275, 215);
-            btnShowChatBubbleCancel.Margin = new Padding(5);
+            btnShowChatBubbleCancel.Location = new Point(192, 129);
+            btnShowChatBubbleCancel.Margin = new Padding(4, 3, 4, 3);
             btnShowChatBubbleCancel.Name = "btnShowChatBubbleCancel";
-            btnShowChatBubbleCancel.Padding = new Padding(8, 10, 8, 10);
-            btnShowChatBubbleCancel.Size = new Size(125, 45);
+            btnShowChatBubbleCancel.Padding = new Padding(6, 6, 6, 6);
+            btnShowChatBubbleCancel.Size = new Size(88, 27);
             btnShowChatBubbleCancel.TabIndex = 30;
             btnShowChatBubbleCancel.Text = "Cancel";
+            btnShowChatBubbleCancel.Click += BtnShowChatBubbleCancel_Click;
             // 
             // DarkLabel41
             // 
             DarkLabel41.AutoSize = true;
             DarkLabel41.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel41.Location = new Point(10, 170);
-            DarkLabel41.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel41.Location = new Point(7, 102);
+            DarkLabel41.Margin = new Padding(4, 0, 4, 0);
             DarkLabel41.Name = "DarkLabel41";
-            DarkLabel41.Size = new Size(59, 25);
+            DarkLabel41.Size = new Size(38, 15);
             DarkLabel41.TabIndex = 29;
             DarkLabel41.Text = "Index:";
             // 
@@ -1995,10 +1892,10 @@ namespace Client
             // 
             cmbChatBubbleTarget.DrawMode = DrawMode.OwnerDrawFixed;
             cmbChatBubbleTarget.FormattingEnabled = true;
-            cmbChatBubbleTarget.Location = new Point(135, 163);
-            cmbChatBubbleTarget.Margin = new Padding(5);
+            cmbChatBubbleTarget.Location = new Point(94, 98);
+            cmbChatBubbleTarget.Margin = new Padding(4, 3, 4, 3);
             cmbChatBubbleTarget.Name = "cmbChatBubbleTarget";
-            cmbChatBubbleTarget.Size = new Size(262, 32);
+            cmbChatBubbleTarget.Size = new Size(185, 24);
             cmbChatBubbleTarget.TabIndex = 28;
             // 
             // cmbChatBubbleTargetType
@@ -2006,20 +1903,21 @@ namespace Client
             cmbChatBubbleTargetType.DrawMode = DrawMode.OwnerDrawFixed;
             cmbChatBubbleTargetType.FormattingEnabled = true;
             cmbChatBubbleTargetType.Items.AddRange(new object[] { "Player", "NPC", "Event" });
-            cmbChatBubbleTargetType.Location = new Point(135, 112);
-            cmbChatBubbleTargetType.Margin = new Padding(5);
+            cmbChatBubbleTargetType.Location = new Point(94, 67);
+            cmbChatBubbleTargetType.Margin = new Padding(4, 3, 4, 3);
             cmbChatBubbleTargetType.Name = "cmbChatBubbleTargetType";
-            cmbChatBubbleTargetType.Size = new Size(262, 32);
+            cmbChatBubbleTargetType.Size = new Size(185, 24);
             cmbChatBubbleTargetType.TabIndex = 27;
+            cmbChatBubbleTargetType.SelectedIndexChanged += CmbChatBubbleTargetType_SelectedIndexChanged;
             // 
             // DarkLabel40
             // 
             DarkLabel40.AutoSize = true;
             DarkLabel40.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel40.Location = new Point(10, 116);
-            DarkLabel40.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel40.Location = new Point(7, 70);
+            DarkLabel40.Margin = new Padding(4, 0, 4, 0);
             DarkLabel40.Name = "DarkLabel40";
-            DarkLabel40.Size = new Size(106, 25);
+            DarkLabel40.Size = new Size(71, 15);
             DarkLabel40.TabIndex = 2;
             DarkLabel40.Text = "Target Type:";
             // 
@@ -2028,20 +1926,20 @@ namespace Client
             txtChatbubbleText.BackColor = Color.FromArgb(69, 73, 74);
             txtChatbubbleText.BorderStyle = BorderStyle.FixedSingle;
             txtChatbubbleText.ForeColor = Color.FromArgb(220, 220, 220);
-            txtChatbubbleText.Location = new Point(10, 62);
-            txtChatbubbleText.Margin = new Padding(5);
+            txtChatbubbleText.Location = new Point(7, 37);
+            txtChatbubbleText.Margin = new Padding(4, 3, 4, 3);
             txtChatbubbleText.Name = "txtChatbubbleText";
-            txtChatbubbleText.Size = new Size(389, 31);
+            txtChatbubbleText.Size = new Size(273, 23);
             txtChatbubbleText.TabIndex = 1;
             // 
             // DarkLabel39
             // 
             DarkLabel39.AutoSize = true;
             DarkLabel39.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel39.Location = new Point(10, 30);
-            DarkLabel39.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel39.Location = new Point(7, 18);
+            DarkLabel39.Margin = new Padding(4, 0, 4, 0);
             DarkLabel39.Name = "DarkLabel39";
-            DarkLabel39.Size = new Size(138, 25);
+            DarkLabel39.Size = new Size(93, 15);
             DarkLabel39.TabIndex = 0;
             DarkLabel39.Text = "ChatBubble Text";
             // 
@@ -2053,11 +1951,11 @@ namespace Client
             fraOpenShop.Controls.Add(btnOpenShopCancel);
             fraOpenShop.Controls.Add(cmbOpenShop);
             fraOpenShop.ForeColor = Color.Gainsboro;
-            fraOpenShop.Location = new Point(672, 416);
-            fraOpenShop.Margin = new Padding(5);
+            fraOpenShop.Location = new Point(470, 250);
+            fraOpenShop.Margin = new Padding(4, 3, 4, 3);
             fraOpenShop.Name = "fraOpenShop";
-            fraOpenShop.Padding = new Padding(5);
-            fraOpenShop.Size = new Size(410, 152);
+            fraOpenShop.Padding = new Padding(4, 3, 4, 3);
+            fraOpenShop.Size = new Size(287, 91);
             fraOpenShop.TabIndex = 39;
             fraOpenShop.TabStop = false;
             fraOpenShop.Text = "Open Shop";
@@ -2065,32 +1963,34 @@ namespace Client
             // 
             // btnOpenShopOk
             // 
-            btnOpenShopOk.Location = new Point(73, 90);
-            btnOpenShopOk.Margin = new Padding(5);
+            btnOpenShopOk.Location = new Point(51, 54);
+            btnOpenShopOk.Margin = new Padding(4, 3, 4, 3);
             btnOpenShopOk.Name = "btnOpenShopOk";
-            btnOpenShopOk.Padding = new Padding(8, 10, 8, 10);
-            btnOpenShopOk.Size = new Size(125, 45);
+            btnOpenShopOk.Padding = new Padding(6, 6, 6, 6);
+            btnOpenShopOk.Size = new Size(88, 27);
             btnOpenShopOk.TabIndex = 27;
             btnOpenShopOk.Text = "Ok";
+            btnOpenShopOk.Click += BtnOpenShopOK_Click;
             // 
             // btnOpenShopCancel
             // 
-            btnOpenShopCancel.Location = new Point(208, 90);
-            btnOpenShopCancel.Margin = new Padding(5);
+            btnOpenShopCancel.Location = new Point(146, 54);
+            btnOpenShopCancel.Margin = new Padding(4, 3, 4, 3);
             btnOpenShopCancel.Name = "btnOpenShopCancel";
-            btnOpenShopCancel.Padding = new Padding(8, 10, 8, 10);
-            btnOpenShopCancel.Size = new Size(125, 45);
+            btnOpenShopCancel.Padding = new Padding(6, 6, 6, 6);
+            btnOpenShopCancel.Size = new Size(88, 27);
             btnOpenShopCancel.TabIndex = 26;
             btnOpenShopCancel.Text = "Cancel";
+            btnOpenShopCancel.Click += BtnOpenShopCancel_Click;
             // 
             // cmbOpenShop
             // 
             cmbOpenShop.DrawMode = DrawMode.OwnerDrawFixed;
             cmbOpenShop.FormattingEnabled = true;
-            cmbOpenShop.Location = new Point(15, 38);
-            cmbOpenShop.Margin = new Padding(5);
+            cmbOpenShop.Location = new Point(10, 23);
+            cmbOpenShop.Margin = new Padding(4, 3, 4, 3);
             cmbOpenShop.Name = "cmbOpenShop";
-            cmbOpenShop.Size = new Size(374, 32);
+            cmbOpenShop.Size = new Size(263, 24);
             cmbOpenShop.TabIndex = 0;
             // 
             // fraSetSelfSwitch
@@ -2104,11 +2004,11 @@ namespace Client
             fraSetSelfSwitch.Controls.Add(DarkLabel46);
             fraSetSelfSwitch.Controls.Add(cmbSetSelfSwitch);
             fraSetSelfSwitch.ForeColor = Color.Gainsboro;
-            fraSetSelfSwitch.Location = new Point(668, 347);
-            fraSetSelfSwitch.Margin = new Padding(5);
+            fraSetSelfSwitch.Location = new Point(468, 208);
+            fraSetSelfSwitch.Margin = new Padding(4, 3, 4, 3);
             fraSetSelfSwitch.Name = "fraSetSelfSwitch";
-            fraSetSelfSwitch.Padding = new Padding(5);
-            fraSetSelfSwitch.Size = new Size(410, 191);
+            fraSetSelfSwitch.Padding = new Padding(4, 3, 4, 3);
+            fraSetSelfSwitch.Size = new Size(287, 115);
             fraSetSelfSwitch.TabIndex = 29;
             fraSetSelfSwitch.TabStop = false;
             fraSetSelfSwitch.Text = "Self Switches";
@@ -2116,32 +2016,34 @@ namespace Client
             // 
             // btnSelfswitchOk
             // 
-            btnSelfswitchOk.Location = new Point(140, 140);
-            btnSelfswitchOk.Margin = new Padding(5);
+            btnSelfswitchOk.Location = new Point(98, 84);
+            btnSelfswitchOk.Margin = new Padding(4, 3, 4, 3);
             btnSelfswitchOk.Name = "btnSelfswitchOk";
-            btnSelfswitchOk.Padding = new Padding(8, 10, 8, 10);
-            btnSelfswitchOk.Size = new Size(125, 45);
+            btnSelfswitchOk.Padding = new Padding(6, 6, 6, 6);
+            btnSelfswitchOk.Size = new Size(88, 27);
             btnSelfswitchOk.TabIndex = 27;
             btnSelfswitchOk.Text = "Ok";
+            btnSelfswitchOk.Click += BtnSelfswitchOk_Click;
             // 
             // btnSelfswitchCancel
             // 
-            btnSelfswitchCancel.Location = new Point(275, 140);
-            btnSelfswitchCancel.Margin = new Padding(5);
+            btnSelfswitchCancel.Location = new Point(192, 84);
+            btnSelfswitchCancel.Margin = new Padding(4, 3, 4, 3);
             btnSelfswitchCancel.Name = "btnSelfswitchCancel";
-            btnSelfswitchCancel.Padding = new Padding(8, 10, 8, 10);
-            btnSelfswitchCancel.Size = new Size(125, 45);
+            btnSelfswitchCancel.Padding = new Padding(6, 6, 6, 6);
+            btnSelfswitchCancel.Size = new Size(88, 27);
             btnSelfswitchCancel.TabIndex = 26;
             btnSelfswitchCancel.Text = "Cancel";
+            btnSelfswitchCancel.Click += BtnSelfswitchCancel_Click;
             // 
             // DarkLabel47
             // 
             DarkLabel47.AutoSize = true;
             DarkLabel47.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel47.Location = new Point(10, 95);
-            DarkLabel47.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel47.Location = new Point(7, 57);
+            DarkLabel47.Margin = new Padding(4, 0, 4, 0);
             DarkLabel47.Name = "DarkLabel47";
-            DarkLabel47.Size = new Size(60, 25);
+            DarkLabel47.Size = new Size(39, 15);
             DarkLabel47.TabIndex = 3;
             DarkLabel47.Text = "Set To";
             // 
@@ -2150,20 +2052,20 @@ namespace Client
             cmbSetSelfSwitchTo.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSetSelfSwitchTo.FormattingEnabled = true;
             cmbSetSelfSwitchTo.Items.AddRange(new object[] { "Off", "On" });
-            cmbSetSelfSwitchTo.Location = new Point(120, 88);
-            cmbSetSelfSwitchTo.Margin = new Padding(5);
+            cmbSetSelfSwitchTo.Location = new Point(84, 53);
+            cmbSetSelfSwitchTo.Margin = new Padding(4, 3, 4, 3);
             cmbSetSelfSwitchTo.Name = "cmbSetSelfSwitchTo";
-            cmbSetSelfSwitchTo.Size = new Size(277, 32);
+            cmbSetSelfSwitchTo.Size = new Size(195, 24);
             cmbSetSelfSwitchTo.TabIndex = 2;
             // 
             // DarkLabel46
             // 
             DarkLabel46.AutoSize = true;
             DarkLabel46.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel46.Location = new Point(10, 41);
-            DarkLabel46.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel46.Location = new Point(7, 25);
+            DarkLabel46.Margin = new Padding(4, 0, 4, 0);
             DarkLabel46.Name = "DarkLabel46";
-            DarkLabel46.Size = new Size(101, 25);
+            DarkLabel46.Size = new Size(67, 15);
             DarkLabel46.TabIndex = 1;
             DarkLabel46.Text = "Self Switch:";
             // 
@@ -2171,10 +2073,10 @@ namespace Client
             // 
             cmbSetSelfSwitch.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSetSelfSwitch.FormattingEnabled = true;
-            cmbSetSelfSwitch.Location = new Point(120, 37);
-            cmbSetSelfSwitch.Margin = new Padding(5);
+            cmbSetSelfSwitch.Location = new Point(84, 22);
+            cmbSetSelfSwitch.Margin = new Padding(4, 3, 4, 3);
             cmbSetSelfSwitch.Name = "cmbSetSelfSwitch";
-            cmbSetSelfSwitch.Size = new Size(277, 32);
+            cmbSetSelfSwitch.Size = new Size(195, 24);
             cmbSetSelfSwitch.TabIndex = 0;
             // 
             // fraPlaySound
@@ -2185,11 +2087,11 @@ namespace Client
             fraPlaySound.Controls.Add(btnPlaySoundCancel);
             fraPlaySound.Controls.Add(cmbPlaySound);
             fraPlaySound.ForeColor = Color.Gainsboro;
-            fraPlaySound.Location = new Point(668, 345);
-            fraPlaySound.Margin = new Padding(5);
+            fraPlaySound.Location = new Point(468, 207);
+            fraPlaySound.Margin = new Padding(4, 3, 4, 3);
             fraPlaySound.Name = "fraPlaySound";
-            fraPlaySound.Padding = new Padding(5);
-            fraPlaySound.Size = new Size(410, 147);
+            fraPlaySound.Padding = new Padding(4, 3, 4, 3);
+            fraPlaySound.Size = new Size(287, 88);
             fraPlaySound.TabIndex = 26;
             fraPlaySound.TabStop = false;
             fraPlaySound.Text = "Play Sound";
@@ -2197,32 +2099,34 @@ namespace Client
             // 
             // btnPlaySoundOk
             // 
-            btnPlaySoundOk.Location = new Point(140, 88);
-            btnPlaySoundOk.Margin = new Padding(5);
+            btnPlaySoundOk.Location = new Point(98, 53);
+            btnPlaySoundOk.Margin = new Padding(4, 3, 4, 3);
             btnPlaySoundOk.Name = "btnPlaySoundOk";
-            btnPlaySoundOk.Padding = new Padding(8, 10, 8, 10);
-            btnPlaySoundOk.Size = new Size(125, 45);
+            btnPlaySoundOk.Padding = new Padding(6, 6, 6, 6);
+            btnPlaySoundOk.Size = new Size(88, 27);
             btnPlaySoundOk.TabIndex = 27;
             btnPlaySoundOk.Text = "Ok";
+            btnPlaySoundOk.Click += BtnPlaySoundOK_Click;
             // 
             // btnPlaySoundCancel
             // 
-            btnPlaySoundCancel.Location = new Point(275, 88);
-            btnPlaySoundCancel.Margin = new Padding(5);
+            btnPlaySoundCancel.Location = new Point(192, 53);
+            btnPlaySoundCancel.Margin = new Padding(4, 3, 4, 3);
             btnPlaySoundCancel.Name = "btnPlaySoundCancel";
-            btnPlaySoundCancel.Padding = new Padding(8, 10, 8, 10);
-            btnPlaySoundCancel.Size = new Size(125, 45);
+            btnPlaySoundCancel.Padding = new Padding(6, 6, 6, 6);
+            btnPlaySoundCancel.Size = new Size(88, 27);
             btnPlaySoundCancel.TabIndex = 26;
             btnPlaySoundCancel.Text = "Cancel";
+            btnPlaySoundCancel.Click += BtnPlaySoundCancel_Click;
             // 
             // cmbPlaySound
             // 
             cmbPlaySound.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlaySound.FormattingEnabled = true;
-            cmbPlaySound.Location = new Point(10, 37);
-            cmbPlaySound.Margin = new Padding(5);
+            cmbPlaySound.Location = new Point(7, 22);
+            cmbPlaySound.Margin = new Padding(4, 3, 4, 3);
             cmbPlaySound.Name = "cmbPlaySound";
-            cmbPlaySound.Size = new Size(387, 32);
+            cmbPlaySound.Size = new Size(272, 24);
             cmbPlaySound.TabIndex = 0;
             // 
             // fraChangePK
@@ -2233,11 +2137,11 @@ namespace Client
             fraChangePK.Controls.Add(btnChangePkCancel);
             fraChangePK.Controls.Add(cmbSetPK);
             fraChangePK.ForeColor = Color.Gainsboro;
-            fraChangePK.Location = new Point(668, 200);
-            fraChangePK.Margin = new Padding(5);
+            fraChangePK.Location = new Point(468, 120);
+            fraChangePK.Margin = new Padding(4, 3, 4, 3);
             fraChangePK.Name = "fraChangePK";
-            fraChangePK.Padding = new Padding(5);
-            fraChangePK.Size = new Size(410, 145);
+            fraChangePK.Padding = new Padding(4, 3, 4, 3);
+            fraChangePK.Size = new Size(287, 87);
             fraChangePK.TabIndex = 25;
             fraChangePK.TabStop = false;
             fraChangePK.Text = "Set Player PK";
@@ -2245,33 +2149,35 @@ namespace Client
             // 
             // btnChangePkOk
             // 
-            btnChangePkOk.Location = new Point(133, 88);
-            btnChangePkOk.Margin = new Padding(5);
+            btnChangePkOk.Location = new Point(93, 53);
+            btnChangePkOk.Margin = new Padding(4, 3, 4, 3);
             btnChangePkOk.Name = "btnChangePkOk";
-            btnChangePkOk.Padding = new Padding(8, 10, 8, 10);
-            btnChangePkOk.Size = new Size(125, 45);
+            btnChangePkOk.Padding = new Padding(6, 6, 6, 6);
+            btnChangePkOk.Size = new Size(88, 27);
             btnChangePkOk.TabIndex = 27;
             btnChangePkOk.Text = "Ok";
+            btnChangePkOk.Click += BtnChangePkOK_Click;
             // 
             // btnChangePkCancel
             // 
-            btnChangePkCancel.Location = new Point(268, 88);
-            btnChangePkCancel.Margin = new Padding(5);
+            btnChangePkCancel.Location = new Point(188, 53);
+            btnChangePkCancel.Margin = new Padding(4, 3, 4, 3);
             btnChangePkCancel.Name = "btnChangePkCancel";
-            btnChangePkCancel.Padding = new Padding(8, 10, 8, 10);
-            btnChangePkCancel.Size = new Size(125, 45);
+            btnChangePkCancel.Padding = new Padding(6, 6, 6, 6);
+            btnChangePkCancel.Size = new Size(88, 27);
             btnChangePkCancel.TabIndex = 26;
             btnChangePkCancel.Text = "Cancel";
+            btnChangePkCancel.Click += BtnChangePkCancel_Click;
             // 
             // cmbSetPK
             // 
             cmbSetPK.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSetPK.FormattingEnabled = true;
             cmbSetPK.Items.AddRange(new object[] { "No", "Yes" });
-            cmbSetPK.Location = new Point(17, 37);
-            cmbSetPK.Margin = new Padding(5);
+            cmbSetPK.Location = new Point(12, 22);
+            cmbSetPK.Margin = new Padding(4, 3, 4, 3);
             cmbSetPK.Name = "cmbSetPK";
-            cmbSetPK.Size = new Size(374, 32);
+            cmbSetPK.Size = new Size(263, 24);
             cmbSetPK.TabIndex = 18;
             // 
             // fraCreateLabel
@@ -2283,11 +2189,11 @@ namespace Client
             fraCreateLabel.Controls.Add(txtLabelName);
             fraCreateLabel.Controls.Add(lblLabelName);
             fraCreateLabel.ForeColor = Color.Gainsboro;
-            fraCreateLabel.Location = new Point(668, 253);
-            fraCreateLabel.Margin = new Padding(5);
+            fraCreateLabel.Location = new Point(468, 152);
+            fraCreateLabel.Margin = new Padding(4, 3, 4, 3);
             fraCreateLabel.Name = "fraCreateLabel";
-            fraCreateLabel.Padding = new Padding(5);
-            fraCreateLabel.Size = new Size(410, 141);
+            fraCreateLabel.Padding = new Padding(4, 3, 4, 3);
+            fraCreateLabel.Size = new Size(287, 85);
             fraCreateLabel.TabIndex = 24;
             fraCreateLabel.TabStop = false;
             fraCreateLabel.Text = "Create Label";
@@ -2295,43 +2201,45 @@ namespace Client
             // 
             // btnCreatelabelOk
             // 
-            btnCreatelabelOk.Location = new Point(140, 87);
-            btnCreatelabelOk.Margin = new Padding(5);
+            btnCreatelabelOk.Location = new Point(98, 52);
+            btnCreatelabelOk.Margin = new Padding(4, 3, 4, 3);
             btnCreatelabelOk.Name = "btnCreatelabelOk";
-            btnCreatelabelOk.Padding = new Padding(8, 10, 8, 10);
-            btnCreatelabelOk.Size = new Size(125, 45);
+            btnCreatelabelOk.Padding = new Padding(6, 6, 6, 6);
+            btnCreatelabelOk.Size = new Size(88, 27);
             btnCreatelabelOk.TabIndex = 27;
             btnCreatelabelOk.Text = "Ok";
+            btnCreatelabelOk.Click += BtnCreatelabelOk_Click;
             // 
             // btnCreatelabelCancel
             // 
-            btnCreatelabelCancel.Location = new Point(275, 87);
-            btnCreatelabelCancel.Margin = new Padding(5);
+            btnCreatelabelCancel.Location = new Point(192, 52);
+            btnCreatelabelCancel.Margin = new Padding(4, 3, 4, 3);
             btnCreatelabelCancel.Name = "btnCreatelabelCancel";
-            btnCreatelabelCancel.Padding = new Padding(8, 10, 8, 10);
-            btnCreatelabelCancel.Size = new Size(125, 45);
+            btnCreatelabelCancel.Padding = new Padding(6, 6, 6, 6);
+            btnCreatelabelCancel.Size = new Size(88, 27);
             btnCreatelabelCancel.TabIndex = 26;
             btnCreatelabelCancel.Text = "Cancel";
+            btnCreatelabelCancel.Click += BtnCreateLabelCancel_Click;
             // 
             // txtLabelName
             // 
             txtLabelName.BackColor = Color.FromArgb(69, 73, 74);
             txtLabelName.BorderStyle = BorderStyle.FixedSingle;
             txtLabelName.ForeColor = Color.FromArgb(220, 220, 220);
-            txtLabelName.Location = new Point(133, 37);
-            txtLabelName.Margin = new Padding(5);
+            txtLabelName.Location = new Point(93, 22);
+            txtLabelName.Margin = new Padding(4, 3, 4, 3);
             txtLabelName.Name = "txtLabelName";
-            txtLabelName.Size = new Size(265, 31);
+            txtLabelName.Size = new Size(186, 23);
             txtLabelName.TabIndex = 1;
             // 
             // lblLabelName
             // 
             lblLabelName.AutoSize = true;
             lblLabelName.ForeColor = Color.FromArgb(220, 220, 220);
-            lblLabelName.Location = new Point(12, 40);
-            lblLabelName.Margin = new Padding(5, 0, 5, 0);
+            lblLabelName.Location = new Point(8, 24);
+            lblLabelName.Margin = new Padding(4, 0, 4, 0);
             lblLabelName.Name = "lblLabelName";
-            lblLabelName.Size = new Size(109, 25);
+            lblLabelName.Size = new Size(73, 15);
             lblLabelName.TabIndex = 0;
             lblLabelName.Text = "Label Name:";
             // 
@@ -2344,11 +2252,11 @@ namespace Client
             fraChangeJob.Controls.Add(cmbChangeJob);
             fraChangeJob.Controls.Add(DarkLabel38);
             fraChangeJob.ForeColor = Color.Gainsboro;
-            fraChangeJob.Location = new Point(668, 210);
-            fraChangeJob.Margin = new Padding(5);
+            fraChangeJob.Location = new Point(468, 126);
+            fraChangeJob.Margin = new Padding(4, 3, 4, 3);
             fraChangeJob.Name = "fraChangeJob";
-            fraChangeJob.Padding = new Padding(5);
-            fraChangeJob.Size = new Size(410, 147);
+            fraChangeJob.Padding = new Padding(4, 3, 4, 3);
+            fraChangeJob.Size = new Size(287, 88);
             fraChangeJob.TabIndex = 23;
             fraChangeJob.TabStop = false;
             fraChangeJob.Text = "Change Player Job";
@@ -2356,42 +2264,44 @@ namespace Client
             // 
             // btnChangeJobOk
             // 
-            btnChangeJobOk.Location = new Point(140, 88);
-            btnChangeJobOk.Margin = new Padding(5);
+            btnChangeJobOk.Location = new Point(98, 53);
+            btnChangeJobOk.Margin = new Padding(4, 3, 4, 3);
             btnChangeJobOk.Name = "btnChangeJobOk";
-            btnChangeJobOk.Padding = new Padding(8, 10, 8, 10);
-            btnChangeJobOk.Size = new Size(125, 45);
+            btnChangeJobOk.Padding = new Padding(6, 6, 6, 6);
+            btnChangeJobOk.Size = new Size(88, 27);
             btnChangeJobOk.TabIndex = 27;
             btnChangeJobOk.Text = "Ok";
+            btnChangeJobOk.Click += BtnChangeJobOK_Click;
             // 
             // btnChangeJobCancel
             // 
-            btnChangeJobCancel.Location = new Point(275, 88);
-            btnChangeJobCancel.Margin = new Padding(5);
+            btnChangeJobCancel.Location = new Point(192, 53);
+            btnChangeJobCancel.Margin = new Padding(4, 3, 4, 3);
             btnChangeJobCancel.Name = "btnChangeJobCancel";
-            btnChangeJobCancel.Padding = new Padding(8, 10, 8, 10);
-            btnChangeJobCancel.Size = new Size(125, 45);
+            btnChangeJobCancel.Padding = new Padding(6, 6, 6, 6);
+            btnChangeJobCancel.Size = new Size(88, 27);
             btnChangeJobCancel.TabIndex = 26;
             btnChangeJobCancel.Text = "Cancel";
+            btnChangeJobCancel.Click += BtnChangeJobCancel_Click;
             // 
             // cmbChangeJob
             // 
             cmbChangeJob.DrawMode = DrawMode.OwnerDrawFixed;
             cmbChangeJob.FormattingEnabled = true;
-            cmbChangeJob.Location = new Point(82, 37);
-            cmbChangeJob.Margin = new Padding(5);
+            cmbChangeJob.Location = new Point(57, 22);
+            cmbChangeJob.Margin = new Padding(4, 3, 4, 3);
             cmbChangeJob.Name = "cmbChangeJob";
-            cmbChangeJob.Size = new Size(316, 32);
+            cmbChangeJob.Size = new Size(222, 24);
             cmbChangeJob.TabIndex = 1;
             // 
             // DarkLabel38
             // 
             DarkLabel38.AutoSize = true;
             DarkLabel38.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel38.Location = new Point(13, 41);
-            DarkLabel38.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel38.Location = new Point(9, 25);
+            DarkLabel38.Margin = new Padding(4, 0, 4, 0);
             DarkLabel38.Name = "DarkLabel38";
-            DarkLabel38.Size = new Size(44, 25);
+            DarkLabel38.Size = new Size(28, 15);
             DarkLabel38.TabIndex = 0;
             DarkLabel38.Text = "Job:";
             // 
@@ -2406,11 +2316,11 @@ namespace Client
             fraChangeSkills.Controls.Add(cmbChangeSkills);
             fraChangeSkills.Controls.Add(DarkLabel37);
             fraChangeSkills.ForeColor = Color.Gainsboro;
-            fraChangeSkills.Location = new Point(668, 209);
-            fraChangeSkills.Margin = new Padding(5);
+            fraChangeSkills.Location = new Point(468, 125);
+            fraChangeSkills.Margin = new Padding(4, 3, 4, 3);
             fraChangeSkills.Name = "fraChangeSkills";
-            fraChangeSkills.Padding = new Padding(5);
-            fraChangeSkills.Size = new Size(410, 188);
+            fraChangeSkills.Padding = new Padding(4, 3, 4, 3);
+            fraChangeSkills.Size = new Size(287, 113);
             fraChangeSkills.TabIndex = 22;
             fraChangeSkills.TabStop = false;
             fraChangeSkills.Text = "Change Player Skills";
@@ -2418,31 +2328,33 @@ namespace Client
             // 
             // btnChangeSkillsOk
             // 
-            btnChangeSkillsOk.Location = new Point(140, 128);
-            btnChangeSkillsOk.Margin = new Padding(5);
+            btnChangeSkillsOk.Location = new Point(98, 77);
+            btnChangeSkillsOk.Margin = new Padding(4, 3, 4, 3);
             btnChangeSkillsOk.Name = "btnChangeSkillsOk";
-            btnChangeSkillsOk.Padding = new Padding(8, 10, 8, 10);
-            btnChangeSkillsOk.Size = new Size(125, 45);
+            btnChangeSkillsOk.Padding = new Padding(6, 6, 6, 6);
+            btnChangeSkillsOk.Size = new Size(88, 27);
             btnChangeSkillsOk.TabIndex = 27;
             btnChangeSkillsOk.Text = "Ok";
+            btnChangeSkillsOk.Click += BtnChangeSkillsOK_Click;
             // 
             // btnChangeSkillsCancel
             // 
-            btnChangeSkillsCancel.Location = new Point(275, 128);
-            btnChangeSkillsCancel.Margin = new Padding(5);
+            btnChangeSkillsCancel.Location = new Point(192, 77);
+            btnChangeSkillsCancel.Margin = new Padding(4, 3, 4, 3);
             btnChangeSkillsCancel.Name = "btnChangeSkillsCancel";
-            btnChangeSkillsCancel.Padding = new Padding(8, 10, 8, 10);
-            btnChangeSkillsCancel.Size = new Size(125, 45);
+            btnChangeSkillsCancel.Padding = new Padding(6, 6, 6, 6);
+            btnChangeSkillsCancel.Size = new Size(88, 27);
             btnChangeSkillsCancel.TabIndex = 26;
             btnChangeSkillsCancel.Text = "Cancel";
+            btnChangeSkillsCancel.Click += BtnChangeSkillsCancel_Click;
             // 
             // optChangeSkillsRemove
             // 
             optChangeSkillsRemove.AutoSize = true;
-            optChangeSkillsRemove.Location = new Point(245, 85);
-            optChangeSkillsRemove.Margin = new Padding(5);
+            optChangeSkillsRemove.Location = new Point(172, 51);
+            optChangeSkillsRemove.Margin = new Padding(4, 3, 4, 3);
             optChangeSkillsRemove.Name = "optChangeSkillsRemove";
-            optChangeSkillsRemove.Size = new Size(89, 29);
+            optChangeSkillsRemove.Size = new Size(59, 19);
             optChangeSkillsRemove.TabIndex = 3;
             optChangeSkillsRemove.TabStop = true;
             optChangeSkillsRemove.Text = "Forget";
@@ -2450,10 +2362,10 @@ namespace Client
             // optChangeSkillsAdd
             // 
             optChangeSkillsAdd.AutoSize = true;
-            optChangeSkillsAdd.Location = new Point(108, 85);
-            optChangeSkillsAdd.Margin = new Padding(5);
+            optChangeSkillsAdd.Location = new Point(76, 51);
+            optChangeSkillsAdd.Margin = new Padding(4, 3, 4, 3);
             optChangeSkillsAdd.Name = "optChangeSkillsAdd";
-            optChangeSkillsAdd.Size = new Size(80, 29);
+            optChangeSkillsAdd.Size = new Size(56, 19);
             optChangeSkillsAdd.TabIndex = 2;
             optChangeSkillsAdd.TabStop = true;
             optChangeSkillsAdd.Text = "Teach";
@@ -2462,20 +2374,20 @@ namespace Client
             // 
             cmbChangeSkills.DrawMode = DrawMode.OwnerDrawFixed;
             cmbChangeSkills.FormattingEnabled = true;
-            cmbChangeSkills.Location = new Point(68, 34);
-            cmbChangeSkills.Margin = new Padding(5);
+            cmbChangeSkills.Location = new Point(48, 20);
+            cmbChangeSkills.Margin = new Padding(4, 3, 4, 3);
             cmbChangeSkills.Name = "cmbChangeSkills";
-            cmbChangeSkills.Size = new Size(327, 32);
+            cmbChangeSkills.Size = new Size(230, 24);
             cmbChangeSkills.TabIndex = 1;
             // 
             // DarkLabel37
             // 
             DarkLabel37.AutoSize = true;
             DarkLabel37.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel37.Location = new Point(10, 38);
-            DarkLabel37.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel37.Location = new Point(7, 23);
+            DarkLabel37.Margin = new Padding(4, 0, 4, 0);
             DarkLabel37.Name = "DarkLabel37";
-            DarkLabel37.Size = new Size(47, 25);
+            DarkLabel37.Size = new Size(31, 15);
             DarkLabel37.TabIndex = 0;
             DarkLabel37.Text = "Skill:";
             // 
@@ -2490,11 +2402,11 @@ namespace Client
             fraPlayerSwitch.Controls.Add(cmbSwitch);
             fraPlayerSwitch.Controls.Add(DarkLabel22);
             fraPlayerSwitch.ForeColor = Color.Gainsboro;
-            fraPlayerSwitch.Location = new Point(355, 750);
-            fraPlayerSwitch.Margin = new Padding(5);
+            fraPlayerSwitch.Location = new Point(248, 450);
+            fraPlayerSwitch.Margin = new Padding(4, 3, 4, 3);
             fraPlayerSwitch.Name = "fraPlayerSwitch";
-            fraPlayerSwitch.Padding = new Padding(5);
-            fraPlayerSwitch.Size = new Size(303, 191);
+            fraPlayerSwitch.Padding = new Padding(4, 3, 4, 3);
+            fraPlayerSwitch.Size = new Size(212, 115);
             fraPlayerSwitch.TabIndex = 2;
             fraPlayerSwitch.TabStop = false;
             fraPlayerSwitch.Text = "Change Items";
@@ -2502,43 +2414,45 @@ namespace Client
             // 
             // btnSetPlayerSwitchOk
             // 
-            btnSetPlayerSwitchOk.Location = new Point(33, 138);
-            btnSetPlayerSwitchOk.Margin = new Padding(5);
+            btnSetPlayerSwitchOk.Location = new Point(23, 83);
+            btnSetPlayerSwitchOk.Margin = new Padding(4, 3, 4, 3);
             btnSetPlayerSwitchOk.Name = "btnSetPlayerSwitchOk";
-            btnSetPlayerSwitchOk.Padding = new Padding(8, 10, 8, 10);
-            btnSetPlayerSwitchOk.Size = new Size(125, 45);
+            btnSetPlayerSwitchOk.Padding = new Padding(6, 6, 6, 6);
+            btnSetPlayerSwitchOk.Size = new Size(88, 27);
             btnSetPlayerSwitchOk.TabIndex = 9;
             btnSetPlayerSwitchOk.Text = "Ok";
+            btnSetPlayerSwitchOk.Click += BtnSetPlayerSwitchOk_Click;
             // 
             // btnSetPlayerswitchCancel
             // 
-            btnSetPlayerswitchCancel.Location = new Point(168, 138);
-            btnSetPlayerswitchCancel.Margin = new Padding(5);
+            btnSetPlayerswitchCancel.Location = new Point(118, 83);
+            btnSetPlayerswitchCancel.Margin = new Padding(4, 3, 4, 3);
             btnSetPlayerswitchCancel.Name = "btnSetPlayerswitchCancel";
-            btnSetPlayerswitchCancel.Padding = new Padding(8, 10, 8, 10);
-            btnSetPlayerswitchCancel.Size = new Size(125, 45);
+            btnSetPlayerswitchCancel.Padding = new Padding(6, 6, 6, 6);
+            btnSetPlayerswitchCancel.Size = new Size(88, 27);
             btnSetPlayerswitchCancel.TabIndex = 8;
             btnSetPlayerswitchCancel.Text = "Cancel";
+            btnSetPlayerswitchCancel.Click += BtnSetPlayerswitchCancel_Click;
             // 
             // cmbPlayerSwitchSet
             // 
             cmbPlayerSwitchSet.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlayerSwitchSet.FormattingEnabled = true;
             cmbPlayerSwitchSet.Items.AddRange(new object[] { "False", "True" });
-            cmbPlayerSwitchSet.Location = new Point(85, 78);
-            cmbPlayerSwitchSet.Margin = new Padding(5);
+            cmbPlayerSwitchSet.Location = new Point(60, 47);
+            cmbPlayerSwitchSet.Margin = new Padding(4, 3, 4, 3);
             cmbPlayerSwitchSet.Name = "cmbPlayerSwitchSet";
-            cmbPlayerSwitchSet.Size = new Size(206, 32);
+            cmbPlayerSwitchSet.Size = new Size(145, 24);
             cmbPlayerSwitchSet.TabIndex = 3;
             // 
             // DarkLabel23
             // 
             DarkLabel23.AutoSize = true;
             DarkLabel23.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel23.Location = new Point(10, 88);
-            DarkLabel23.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel23.Location = new Point(7, 53);
+            DarkLabel23.Margin = new Padding(4, 0, 4, 0);
             DarkLabel23.Name = "DarkLabel23";
-            DarkLabel23.Size = new Size(59, 25);
+            DarkLabel23.Size = new Size(37, 15);
             DarkLabel23.TabIndex = 2;
             DarkLabel23.Text = "Set to";
             // 
@@ -2546,20 +2460,20 @@ namespace Client
             // 
             cmbSwitch.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSwitch.FormattingEnabled = true;
-            cmbSwitch.Location = new Point(85, 25);
-            cmbSwitch.Margin = new Padding(5);
+            cmbSwitch.Location = new Point(60, 15);
+            cmbSwitch.Margin = new Padding(4, 3, 4, 3);
             cmbSwitch.Name = "cmbSwitch";
-            cmbSwitch.Size = new Size(206, 32);
+            cmbSwitch.Size = new Size(145, 24);
             cmbSwitch.TabIndex = 1;
             // 
             // DarkLabel22
             // 
             DarkLabel22.AutoSize = true;
             DarkLabel22.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel22.Location = new Point(10, 30);
-            DarkLabel22.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel22.Location = new Point(7, 18);
+            DarkLabel22.Margin = new Padding(4, 0, 4, 0);
             DarkLabel22.Name = "DarkLabel22";
-            DarkLabel22.Size = new Size(63, 25);
+            DarkLabel22.Size = new Size(42, 15);
             DarkLabel22.TabIndex = 0;
             DarkLabel22.Text = "Switch";
             // 
@@ -2574,11 +2488,11 @@ namespace Client
             fraSetWait.Controls.Add(DarkLabel73);
             fraSetWait.Controls.Add(nudWaitAmount);
             fraSetWait.ForeColor = Color.Gainsboro;
-            fraSetWait.Location = new Point(668, 509);
-            fraSetWait.Margin = new Padding(5);
+            fraSetWait.Location = new Point(468, 305);
+            fraSetWait.Margin = new Padding(4, 3, 4, 3);
             fraSetWait.Name = "fraSetWait";
-            fraSetWait.Padding = new Padding(5);
-            fraSetWait.Size = new Size(413, 172);
+            fraSetWait.Padding = new Padding(4, 3, 4, 3);
+            fraSetWait.Size = new Size(289, 103);
             fraSetWait.TabIndex = 41;
             fraSetWait.TabStop = false;
             fraSetWait.Text = "Wait...";
@@ -2586,32 +2500,34 @@ namespace Client
             // 
             // btnSetWaitOk
             // 
-            btnSetWaitOk.Location = new Point(83, 112);
-            btnSetWaitOk.Margin = new Padding(5);
+            btnSetWaitOk.Location = new Point(58, 67);
+            btnSetWaitOk.Margin = new Padding(4, 3, 4, 3);
             btnSetWaitOk.Name = "btnSetWaitOk";
-            btnSetWaitOk.Padding = new Padding(8, 10, 8, 10);
-            btnSetWaitOk.Size = new Size(125, 45);
+            btnSetWaitOk.Padding = new Padding(6, 6, 6, 6);
+            btnSetWaitOk.Size = new Size(88, 27);
             btnSetWaitOk.TabIndex = 37;
             btnSetWaitOk.Text = "Ok";
+            btnSetWaitOk.Click += BtnSetWaitOK_Click;
             // 
             // btnSetWaitCancel
             // 
-            btnSetWaitCancel.Location = new Point(218, 112);
-            btnSetWaitCancel.Margin = new Padding(5);
+            btnSetWaitCancel.Location = new Point(153, 67);
+            btnSetWaitCancel.Margin = new Padding(4, 3, 4, 3);
             btnSetWaitCancel.Name = "btnSetWaitCancel";
-            btnSetWaitCancel.Padding = new Padding(8, 10, 8, 10);
-            btnSetWaitCancel.Size = new Size(125, 45);
+            btnSetWaitCancel.Padding = new Padding(6, 6, 6, 6);
+            btnSetWaitCancel.Size = new Size(88, 27);
             btnSetWaitCancel.TabIndex = 36;
             btnSetWaitCancel.Text = "Cancel";
+            btnSetWaitCancel.Click += BtnSetWaitCancel_Click;
             // 
             // DarkLabel74
             // 
             DarkLabel74.AutoSize = true;
             DarkLabel74.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel74.Location = new Point(117, 80);
-            DarkLabel74.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel74.Location = new Point(82, 48);
+            DarkLabel74.Margin = new Padding(4, 0, 4, 0);
             DarkLabel74.Name = "DarkLabel74";
-            DarkLabel74.Size = new Size(187, 25);
+            DarkLabel74.Size = new Size(120, 15);
             DarkLabel74.TabIndex = 35;
             DarkLabel74.Text = "Hint: 1000 Ms = 1 Sec";
             // 
@@ -2619,10 +2535,10 @@ namespace Client
             // 
             DarkLabel72.AutoSize = true;
             DarkLabel72.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel72.Location = new Point(363, 45);
-            DarkLabel72.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel72.Location = new Point(254, 27);
+            DarkLabel72.Margin = new Padding(4, 0, 4, 0);
             DarkLabel72.Name = "DarkLabel72";
-            DarkLabel72.Size = new Size(36, 25);
+            DarkLabel72.Size = new Size(23, 15);
             DarkLabel72.TabIndex = 34;
             DarkLabel72.Text = "Ms";
             // 
@@ -2630,20 +2546,20 @@ namespace Client
             // 
             DarkLabel73.AutoSize = true;
             DarkLabel73.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel73.Location = new Point(25, 45);
-            DarkLabel73.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel73.Location = new Point(18, 27);
+            DarkLabel73.Margin = new Padding(4, 0, 4, 0);
             DarkLabel73.Name = "DarkLabel73";
-            DarkLabel73.Size = new Size(47, 25);
+            DarkLabel73.Size = new Size(31, 15);
             DarkLabel73.TabIndex = 33;
             DarkLabel73.Text = "Wait";
             // 
             // nudWaitAmount
             // 
-            nudWaitAmount.Location = new Point(83, 37);
-            nudWaitAmount.Margin = new Padding(5);
+            nudWaitAmount.Location = new Point(58, 22);
+            nudWaitAmount.Margin = new Padding(4, 3, 4, 3);
             nudWaitAmount.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudWaitAmount.Name = "nudWaitAmount";
-            nudWaitAmount.Size = new Size(272, 31);
+            nudWaitAmount.Size = new Size(190, 23);
             nudWaitAmount.TabIndex = 32;
             // 
             // fraMoveRouteWait
@@ -2655,11 +2571,11 @@ namespace Client
             fraMoveRouteWait.Controls.Add(DarkLabel79);
             fraMoveRouteWait.Controls.Add(cmbMoveWait);
             fraMoveRouteWait.ForeColor = Color.Gainsboro;
-            fraMoveRouteWait.Location = new Point(668, 952);
-            fraMoveRouteWait.Margin = new Padding(5);
+            fraMoveRouteWait.Location = new Point(468, 571);
+            fraMoveRouteWait.Margin = new Padding(4, 3, 4, 3);
             fraMoveRouteWait.Name = "fraMoveRouteWait";
-            fraMoveRouteWait.Padding = new Padding(5);
-            fraMoveRouteWait.Size = new Size(413, 145);
+            fraMoveRouteWait.Padding = new Padding(4, 3, 4, 3);
+            fraMoveRouteWait.Size = new Size(289, 87);
             fraMoveRouteWait.TabIndex = 48;
             fraMoveRouteWait.TabStop = false;
             fraMoveRouteWait.Text = "Move Route Wait";
@@ -2667,32 +2583,34 @@ namespace Client
             // 
             // btnMoveWaitCancel
             // 
-            btnMoveWaitCancel.Location = new Point(278, 88);
-            btnMoveWaitCancel.Margin = new Padding(5);
+            btnMoveWaitCancel.Location = new Point(195, 53);
+            btnMoveWaitCancel.Margin = new Padding(4, 3, 4, 3);
             btnMoveWaitCancel.Name = "btnMoveWaitCancel";
-            btnMoveWaitCancel.Padding = new Padding(8, 10, 8, 10);
-            btnMoveWaitCancel.Size = new Size(125, 45);
+            btnMoveWaitCancel.Padding = new Padding(6, 6, 6, 6);
+            btnMoveWaitCancel.Size = new Size(88, 27);
             btnMoveWaitCancel.TabIndex = 26;
             btnMoveWaitCancel.Text = "Cancel";
+            btnMoveWaitCancel.Click += BtnMoveWaitCancel_Click;
             // 
             // btnMoveWaitOk
             // 
-            btnMoveWaitOk.Location = new Point(143, 88);
-            btnMoveWaitOk.Margin = new Padding(5);
+            btnMoveWaitOk.Location = new Point(100, 53);
+            btnMoveWaitOk.Margin = new Padding(4, 3, 4, 3);
             btnMoveWaitOk.Name = "btnMoveWaitOk";
-            btnMoveWaitOk.Padding = new Padding(8, 10, 8, 10);
-            btnMoveWaitOk.Size = new Size(125, 45);
+            btnMoveWaitOk.Padding = new Padding(6, 6, 6, 6);
+            btnMoveWaitOk.Size = new Size(88, 27);
             btnMoveWaitOk.TabIndex = 27;
             btnMoveWaitOk.Text = "Ok";
+            btnMoveWaitOk.Click += BtnMoveWaitOK_Click;
             // 
             // DarkLabel79
             // 
             DarkLabel79.AutoSize = true;
             DarkLabel79.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel79.Location = new Point(12, 41);
-            DarkLabel79.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel79.Location = new Point(8, 25);
+            DarkLabel79.Margin = new Padding(4, 0, 4, 0);
             DarkLabel79.Name = "DarkLabel79";
-            DarkLabel79.Size = new Size(59, 25);
+            DarkLabel79.Size = new Size(39, 15);
             DarkLabel79.TabIndex = 1;
             DarkLabel79.Text = "Event:";
             // 
@@ -2700,10 +2618,10 @@ namespace Client
             // 
             cmbMoveWait.DrawMode = DrawMode.OwnerDrawFixed;
             cmbMoveWait.FormattingEnabled = true;
-            cmbMoveWait.Location = new Point(85, 37);
-            cmbMoveWait.Margin = new Padding(5);
+            cmbMoveWait.Location = new Point(60, 22);
+            cmbMoveWait.Margin = new Padding(4, 3, 4, 3);
             cmbMoveWait.Name = "cmbMoveWait";
-            cmbMoveWait.Size = new Size(316, 32);
+            cmbMoveWait.Size = new Size(222, 24);
             cmbMoveWait.TabIndex = 0;
             // 
             // fraCustomScript
@@ -2715,11 +2633,11 @@ namespace Client
             fraCustomScript.Controls.Add(btnCustomScriptCancel);
             fraCustomScript.Controls.Add(btnCustomScriptOk);
             fraCustomScript.ForeColor = Color.Gainsboro;
-            fraCustomScript.Location = new Point(668, 762);
-            fraCustomScript.Margin = new Padding(5);
+            fraCustomScript.Location = new Point(468, 457);
+            fraCustomScript.Margin = new Padding(4, 3, 4, 3);
             fraCustomScript.Name = "fraCustomScript";
-            fraCustomScript.Padding = new Padding(5);
-            fraCustomScript.Size = new Size(413, 184);
+            fraCustomScript.Padding = new Padding(4, 3, 4, 3);
+            fraCustomScript.Size = new Size(289, 110);
             fraCustomScript.TabIndex = 47;
             fraCustomScript.TabStop = false;
             fraCustomScript.Text = "Execute Custom Script";
@@ -2727,42 +2645,44 @@ namespace Client
             // 
             // nudCustomScript
             // 
-            nudCustomScript.Location = new Point(112, 37);
-            nudCustomScript.Margin = new Padding(5);
+            nudCustomScript.Location = new Point(78, 22);
+            nudCustomScript.Margin = new Padding(4, 3, 4, 3);
             nudCustomScript.Name = "nudCustomScript";
-            nudCustomScript.Size = new Size(282, 31);
+            nudCustomScript.Size = new Size(197, 23);
             nudCustomScript.TabIndex = 1;
             // 
             // DarkLabel78
             // 
             DarkLabel78.AutoSize = true;
             DarkLabel78.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel78.Location = new Point(17, 40);
-            DarkLabel78.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel78.Location = new Point(12, 24);
+            DarkLabel78.Margin = new Padding(4, 0, 4, 0);
             DarkLabel78.Name = "DarkLabel78";
-            DarkLabel78.Size = new Size(53, 25);
+            DarkLabel78.Size = new Size(35, 15);
             DarkLabel78.TabIndex = 0;
             DarkLabel78.Text = "Case:";
             // 
             // btnCustomScriptCancel
             // 
-            btnCustomScriptCancel.Location = new Point(268, 87);
-            btnCustomScriptCancel.Margin = new Padding(5);
+            btnCustomScriptCancel.Location = new Point(188, 52);
+            btnCustomScriptCancel.Margin = new Padding(4, 3, 4, 3);
             btnCustomScriptCancel.Name = "btnCustomScriptCancel";
-            btnCustomScriptCancel.Padding = new Padding(8, 10, 8, 10);
-            btnCustomScriptCancel.Size = new Size(125, 45);
+            btnCustomScriptCancel.Padding = new Padding(6, 6, 6, 6);
+            btnCustomScriptCancel.Size = new Size(88, 27);
             btnCustomScriptCancel.TabIndex = 24;
             btnCustomScriptCancel.Text = "Cancel";
+            btnCustomScriptCancel.Click += BtnCustomScriptCancel_Click;
             // 
             // btnCustomScriptOk
             // 
-            btnCustomScriptOk.Location = new Point(133, 87);
-            btnCustomScriptOk.Margin = new Padding(5);
+            btnCustomScriptOk.Location = new Point(93, 52);
+            btnCustomScriptOk.Margin = new Padding(4, 3, 4, 3);
             btnCustomScriptOk.Name = "btnCustomScriptOk";
-            btnCustomScriptOk.Padding = new Padding(8, 10, 8, 10);
-            btnCustomScriptOk.Size = new Size(125, 45);
+            btnCustomScriptOk.Padding = new Padding(6, 6, 6, 6);
+            btnCustomScriptOk.Size = new Size(88, 27);
             btnCustomScriptOk.TabIndex = 25;
             btnCustomScriptOk.Text = "Ok";
+            btnCustomScriptOk.Click += BtnCustomScriptOK_Click;
             // 
             // fraSpawnNPC
             // 
@@ -2772,11 +2692,11 @@ namespace Client
             fraSpawnNPC.Controls.Add(btnSpawnNPCancel);
             fraSpawnNPC.Controls.Add(cmbSpawnNPC);
             fraSpawnNPC.ForeColor = Color.Gainsboro;
-            fraSpawnNPC.Location = new Point(668, 791);
-            fraSpawnNPC.Margin = new Padding(5);
+            fraSpawnNPC.Location = new Point(468, 475);
+            fraSpawnNPC.Margin = new Padding(4, 3, 4, 3);
             fraSpawnNPC.Name = "fraSpawnNPC";
-            fraSpawnNPC.Padding = new Padding(5);
-            fraSpawnNPC.Size = new Size(413, 148);
+            fraSpawnNPC.Padding = new Padding(4, 3, 4, 3);
+            fraSpawnNPC.Size = new Size(289, 89);
             fraSpawnNPC.TabIndex = 46;
             fraSpawnNPC.TabStop = false;
             fraSpawnNPC.Text = "Spawn NPC";
@@ -2784,32 +2704,34 @@ namespace Client
             // 
             // btnSpawnNPCOk
             // 
-            btnSpawnNPCOk.Location = new Point(77, 90);
-            btnSpawnNPCOk.Margin = new Padding(5);
+            btnSpawnNPCOk.Location = new Point(54, 54);
+            btnSpawnNPCOk.Margin = new Padding(4, 3, 4, 3);
             btnSpawnNPCOk.Name = "btnSpawnNPCOk";
-            btnSpawnNPCOk.Padding = new Padding(8, 10, 8, 10);
-            btnSpawnNPCOk.Size = new Size(125, 45);
+            btnSpawnNPCOk.Padding = new Padding(6, 6, 6, 6);
+            btnSpawnNPCOk.Size = new Size(88, 27);
             btnSpawnNPCOk.TabIndex = 27;
             btnSpawnNPCOk.Text = "Ok";
+            btnSpawnNPCOk.Click += BtnSpawnNPCOK_Click;
             // 
             // btnSpawnNPCancel
             // 
-            btnSpawnNPCancel.Location = new Point(212, 90);
-            btnSpawnNPCancel.Margin = new Padding(5);
+            btnSpawnNPCancel.Location = new Point(148, 54);
+            btnSpawnNPCancel.Margin = new Padding(4, 3, 4, 3);
             btnSpawnNPCancel.Name = "btnSpawnNPCancel";
-            btnSpawnNPCancel.Padding = new Padding(8, 10, 8, 10);
-            btnSpawnNPCancel.Size = new Size(125, 45);
+            btnSpawnNPCancel.Padding = new Padding(6, 6, 6, 6);
+            btnSpawnNPCancel.Size = new Size(88, 27);
             btnSpawnNPCancel.TabIndex = 26;
             btnSpawnNPCancel.Text = "Cancel";
+            btnSpawnNPCancel.Click += BtnSpawnNPCancel_Click;
             // 
             // cmbSpawnNPC
             // 
             cmbSpawnNPC.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSpawnNPC.FormattingEnabled = true;
-            cmbSpawnNPC.Location = new Point(10, 37);
-            cmbSpawnNPC.Margin = new Padding(5);
+            cmbSpawnNPC.Location = new Point(7, 22);
+            cmbSpawnNPC.Margin = new Padding(4, 3, 4, 3);
             cmbSpawnNPC.Name = "cmbSpawnNPC";
-            cmbSpawnNPC.Size = new Size(387, 32);
+            cmbSpawnNPC.Size = new Size(272, 24);
             cmbSpawnNPC.TabIndex = 0;
             // 
             // fraSetWeather
@@ -2823,11 +2745,11 @@ namespace Client
             fraSetWeather.Controls.Add(DarkLabel75);
             fraSetWeather.Controls.Add(CmbWeather);
             fraSetWeather.ForeColor = Color.Gainsboro;
-            fraSetWeather.Location = new Point(668, 677);
-            fraSetWeather.Margin = new Padding(5);
+            fraSetWeather.Location = new Point(468, 406);
+            fraSetWeather.Margin = new Padding(4, 3, 4, 3);
             fraSetWeather.Name = "fraSetWeather";
-            fraSetWeather.Padding = new Padding(5);
-            fraSetWeather.Size = new Size(413, 184);
+            fraSetWeather.Padding = new Padding(4, 3, 4, 3);
+            fraSetWeather.Size = new Size(289, 110);
             fraSetWeather.TabIndex = 44;
             fraSetWeather.TabStop = false;
             fraSetWeather.Text = "Set Weather";
@@ -2835,51 +2757,53 @@ namespace Client
             // 
             // btnSetWeatherOk
             // 
-            btnSetWeatherOk.Location = new Point(77, 127);
-            btnSetWeatherOk.Margin = new Padding(5);
+            btnSetWeatherOk.Location = new Point(54, 76);
+            btnSetWeatherOk.Margin = new Padding(4, 3, 4, 3);
             btnSetWeatherOk.Name = "btnSetWeatherOk";
-            btnSetWeatherOk.Padding = new Padding(8, 10, 8, 10);
-            btnSetWeatherOk.Size = new Size(125, 45);
+            btnSetWeatherOk.Padding = new Padding(6, 6, 6, 6);
+            btnSetWeatherOk.Size = new Size(88, 27);
             btnSetWeatherOk.TabIndex = 34;
             btnSetWeatherOk.Text = "Ok";
+            btnSetWeatherOk.Click += BtnSetWeatherOK_Click;
             // 
             // btnSetWeatherCancel
             // 
-            btnSetWeatherCancel.Location = new Point(212, 127);
-            btnSetWeatherCancel.Margin = new Padding(5);
+            btnSetWeatherCancel.Location = new Point(148, 76);
+            btnSetWeatherCancel.Margin = new Padding(4, 3, 4, 3);
             btnSetWeatherCancel.Name = "btnSetWeatherCancel";
-            btnSetWeatherCancel.Padding = new Padding(8, 10, 8, 10);
-            btnSetWeatherCancel.Size = new Size(125, 45);
+            btnSetWeatherCancel.Padding = new Padding(6, 6, 6, 6);
+            btnSetWeatherCancel.Size = new Size(88, 27);
             btnSetWeatherCancel.TabIndex = 33;
             btnSetWeatherCancel.Text = "Cancel";
+            btnSetWeatherCancel.Click += BtnSetWeatherCancel_Click;
             // 
             // DarkLabel76
             // 
             DarkLabel76.AutoSize = true;
             DarkLabel76.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel76.Location = new Point(13, 85);
-            DarkLabel76.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel76.Location = new Point(9, 51);
+            DarkLabel76.Margin = new Padding(4, 0, 4, 0);
             DarkLabel76.Name = "DarkLabel76";
-            DarkLabel76.Size = new Size(83, 25);
+            DarkLabel76.Size = new Size(55, 15);
             DarkLabel76.TabIndex = 32;
             DarkLabel76.Text = "Intensity:";
             // 
             // nudWeatherIntensity
             // 
-            nudWeatherIntensity.Location = new Point(145, 78);
-            nudWeatherIntensity.Margin = new Padding(5);
+            nudWeatherIntensity.Location = new Point(102, 47);
+            nudWeatherIntensity.Margin = new Padding(4, 3, 4, 3);
             nudWeatherIntensity.Name = "nudWeatherIntensity";
-            nudWeatherIntensity.Size = new Size(258, 31);
+            nudWeatherIntensity.Size = new Size(181, 23);
             nudWeatherIntensity.TabIndex = 31;
             // 
             // DarkLabel75
             // 
             DarkLabel75.AutoSize = true;
             DarkLabel75.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel75.Location = new Point(10, 35);
-            DarkLabel75.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel75.Location = new Point(7, 21);
+            DarkLabel75.Margin = new Padding(4, 0, 4, 0);
             DarkLabel75.Name = "DarkLabel75";
-            DarkLabel75.Size = new Size(119, 25);
+            DarkLabel75.Size = new Size(79, 15);
             DarkLabel75.TabIndex = 1;
             DarkLabel75.Text = "Weather Type";
             // 
@@ -2888,10 +2812,10 @@ namespace Client
             CmbWeather.DrawMode = DrawMode.OwnerDrawFixed;
             CmbWeather.FormattingEnabled = true;
             CmbWeather.Items.AddRange(new object[] { "None", "Rain", "Snow", "Hail", "Sand Storm", "Storm" });
-            CmbWeather.Location = new Point(143, 28);
-            CmbWeather.Margin = new Padding(5);
+            CmbWeather.Location = new Point(100, 17);
+            CmbWeather.Margin = new Padding(4, 3, 4, 3);
             CmbWeather.Name = "CmbWeather";
-            CmbWeather.Size = new Size(256, 32);
+            CmbWeather.Size = new Size(180, 24);
             CmbWeather.TabIndex = 0;
             // 
             // fraGiveExp
@@ -2903,11 +2827,11 @@ namespace Client
             fraGiveExp.Controls.Add(nudGiveExp);
             fraGiveExp.Controls.Add(DarkLabel77);
             fraGiveExp.ForeColor = Color.Gainsboro;
-            fraGiveExp.Location = new Point(668, 677);
-            fraGiveExp.Margin = new Padding(5);
+            fraGiveExp.Location = new Point(468, 406);
+            fraGiveExp.Margin = new Padding(4, 3, 4, 3);
             fraGiveExp.Name = "fraGiveExp";
-            fraGiveExp.Padding = new Padding(5);
-            fraGiveExp.Size = new Size(413, 140);
+            fraGiveExp.Padding = new Padding(4, 3, 4, 3);
+            fraGiveExp.Size = new Size(289, 84);
             fraGiveExp.TabIndex = 45;
             fraGiveExp.TabStop = false;
             fraGiveExp.Text = "Give Experience";
@@ -2915,41 +2839,43 @@ namespace Client
             // 
             // btnGiveExpOk
             // 
-            btnGiveExpOk.Location = new Point(83, 87);
-            btnGiveExpOk.Margin = new Padding(5);
+            btnGiveExpOk.Location = new Point(58, 52);
+            btnGiveExpOk.Margin = new Padding(4, 3, 4, 3);
             btnGiveExpOk.Name = "btnGiveExpOk";
-            btnGiveExpOk.Padding = new Padding(8, 10, 8, 10);
-            btnGiveExpOk.Size = new Size(125, 45);
+            btnGiveExpOk.Padding = new Padding(6, 6, 6, 6);
+            btnGiveExpOk.Size = new Size(88, 27);
             btnGiveExpOk.TabIndex = 27;
             btnGiveExpOk.Text = "Ok";
+            btnGiveExpOk.Click += BtnGiveExpOK_Click;
             // 
             // btnGiveExpCancel
             // 
-            btnGiveExpCancel.Location = new Point(218, 87);
-            btnGiveExpCancel.Margin = new Padding(5);
+            btnGiveExpCancel.Location = new Point(153, 52);
+            btnGiveExpCancel.Margin = new Padding(4, 3, 4, 3);
             btnGiveExpCancel.Name = "btnGiveExpCancel";
-            btnGiveExpCancel.Padding = new Padding(8, 10, 8, 10);
-            btnGiveExpCancel.Size = new Size(125, 45);
+            btnGiveExpCancel.Padding = new Padding(6, 6, 6, 6);
+            btnGiveExpCancel.Size = new Size(88, 27);
             btnGiveExpCancel.TabIndex = 26;
             btnGiveExpCancel.Text = "Cancel";
+            btnGiveExpCancel.Click += BtnGiveExpCancel_Click;
             // 
             // nudGiveExp
             // 
-            nudGiveExp.Location = new Point(128, 37);
-            nudGiveExp.Margin = new Padding(5);
+            nudGiveExp.Location = new Point(90, 22);
+            nudGiveExp.Margin = new Padding(4, 3, 4, 3);
             nudGiveExp.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             nudGiveExp.Name = "nudGiveExp";
-            nudGiveExp.Size = new Size(275, 31);
+            nudGiveExp.Size = new Size(192, 23);
             nudGiveExp.TabIndex = 20;
             // 
             // DarkLabel77
             // 
             DarkLabel77.AutoSize = true;
             DarkLabel77.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel77.Location = new Point(10, 40);
-            DarkLabel77.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel77.Location = new Point(7, 24);
+            DarkLabel77.Margin = new Padding(4, 0, 4, 0);
             DarkLabel77.Name = "DarkLabel77";
-            DarkLabel77.Size = new Size(83, 25);
+            DarkLabel77.Size = new Size(54, 15);
             DarkLabel77.TabIndex = 0;
             DarkLabel77.Text = "Give Exp:";
             // 
@@ -2961,11 +2887,11 @@ namespace Client
             fraSetAccess.Controls.Add(btnSetAccessCancel);
             fraSetAccess.Controls.Add(cmbSetAccess);
             fraSetAccess.ForeColor = Color.Gainsboro;
-            fraSetAccess.Location = new Point(668, 678);
-            fraSetAccess.Margin = new Padding(5);
+            fraSetAccess.Location = new Point(468, 407);
+            fraSetAccess.Margin = new Padding(4, 3, 4, 3);
             fraSetAccess.Name = "fraSetAccess";
-            fraSetAccess.Padding = new Padding(5);
-            fraSetAccess.Size = new Size(413, 153);
+            fraSetAccess.Padding = new Padding(4, 3, 4, 3);
+            fraSetAccess.Size = new Size(289, 92);
             fraSetAccess.TabIndex = 42;
             fraSetAccess.TabStop = false;
             fraSetAccess.Text = "Set Access";
@@ -2973,33 +2899,35 @@ namespace Client
             // 
             // btnSetAccessOk
             // 
-            btnSetAccessOk.Location = new Point(77, 91);
-            btnSetAccessOk.Margin = new Padding(5);
+            btnSetAccessOk.Location = new Point(54, 55);
+            btnSetAccessOk.Margin = new Padding(4, 3, 4, 3);
             btnSetAccessOk.Name = "btnSetAccessOk";
-            btnSetAccessOk.Padding = new Padding(8, 10, 8, 10);
-            btnSetAccessOk.Size = new Size(125, 45);
+            btnSetAccessOk.Padding = new Padding(6, 6, 6, 6);
+            btnSetAccessOk.Size = new Size(88, 27);
             btnSetAccessOk.TabIndex = 27;
             btnSetAccessOk.Text = "Ok";
+            btnSetAccessOk.Click += BtnSetAccessOK_Click;
             // 
             // btnSetAccessCancel
             // 
-            btnSetAccessCancel.Location = new Point(212, 91);
-            btnSetAccessCancel.Margin = new Padding(5);
+            btnSetAccessCancel.Location = new Point(148, 55);
+            btnSetAccessCancel.Margin = new Padding(4, 3, 4, 3);
             btnSetAccessCancel.Name = "btnSetAccessCancel";
-            btnSetAccessCancel.Padding = new Padding(8, 10, 8, 10);
-            btnSetAccessCancel.Size = new Size(125, 45);
+            btnSetAccessCancel.Padding = new Padding(6, 6, 6, 6);
+            btnSetAccessCancel.Size = new Size(88, 27);
             btnSetAccessCancel.TabIndex = 26;
             btnSetAccessCancel.Text = "Cancel";
+            btnSetAccessCancel.Click += BtnSetAccessCancel_Click;
             // 
             // cmbSetAccess
             // 
             cmbSetAccess.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSetAccess.FormattingEnabled = true;
             cmbSetAccess.Items.AddRange(new object[] { "0: Player", "1: Moderator", "2: Mapper", "3: Developer", "4: Owner" });
-            cmbSetAccess.Location = new Point(55, 37);
-            cmbSetAccess.Margin = new Padding(5);
+            cmbSetAccess.Location = new Point(38, 22);
+            cmbSetAccess.Margin = new Padding(4, 3, 4, 3);
             cmbSetAccess.Name = "cmbSetAccess";
-            cmbSetAccess.Size = new Size(311, 32);
+            cmbSetAccess.Size = new Size(219, 24);
             cmbSetAccess.TabIndex = 0;
             // 
             // fraChangeGender
@@ -3011,11 +2939,11 @@ namespace Client
             fraChangeGender.Controls.Add(optChangeSexFemale);
             fraChangeGender.Controls.Add(optChangeSexMale);
             fraChangeGender.ForeColor = Color.Gainsboro;
-            fraChangeGender.Location = new Point(668, 700);
-            fraChangeGender.Margin = new Padding(5);
+            fraChangeGender.Location = new Point(468, 420);
+            fraChangeGender.Margin = new Padding(4, 3, 4, 3);
             fraChangeGender.Name = "fraChangeGender";
-            fraChangeGender.Padding = new Padding(5);
-            fraChangeGender.Size = new Size(413, 138);
+            fraChangeGender.Padding = new Padding(4, 3, 4, 3);
+            fraChangeGender.Size = new Size(289, 83);
             fraChangeGender.TabIndex = 37;
             fraChangeGender.TabStop = false;
             fraChangeGender.Text = "Change Player Gender";
@@ -3023,31 +2951,33 @@ namespace Client
             // 
             // btnChangeGenderOk
             // 
-            btnChangeGenderOk.Location = new Point(65, 80);
-            btnChangeGenderOk.Margin = new Padding(5);
+            btnChangeGenderOk.Location = new Point(46, 48);
+            btnChangeGenderOk.Margin = new Padding(4, 3, 4, 3);
             btnChangeGenderOk.Name = "btnChangeGenderOk";
-            btnChangeGenderOk.Padding = new Padding(8, 10, 8, 10);
-            btnChangeGenderOk.Size = new Size(125, 45);
+            btnChangeGenderOk.Padding = new Padding(6, 6, 6, 6);
+            btnChangeGenderOk.Size = new Size(88, 27);
             btnChangeGenderOk.TabIndex = 27;
             btnChangeGenderOk.Text = "Ok";
+            btnChangeGenderOk.Click += BtnChangeGenderOK_Click;
             // 
             // btnChangeGenderCancel
             // 
-            btnChangeGenderCancel.Location = new Point(200, 80);
-            btnChangeGenderCancel.Margin = new Padding(5);
+            btnChangeGenderCancel.Location = new Point(140, 48);
+            btnChangeGenderCancel.Margin = new Padding(4, 3, 4, 3);
             btnChangeGenderCancel.Name = "btnChangeGenderCancel";
-            btnChangeGenderCancel.Padding = new Padding(8, 10, 8, 10);
-            btnChangeGenderCancel.Size = new Size(125, 45);
+            btnChangeGenderCancel.Padding = new Padding(6, 6, 6, 6);
+            btnChangeGenderCancel.Size = new Size(88, 27);
             btnChangeGenderCancel.TabIndex = 26;
             btnChangeGenderCancel.Text = "Cancel";
+            btnChangeGenderCancel.Click += BtnChangeGenderCancel_Click;
             // 
             // optChangeSexFemale
             // 
             optChangeSexFemale.AutoSize = true;
-            optChangeSexFemale.Location = new Point(235, 37);
-            optChangeSexFemale.Margin = new Padding(5);
+            optChangeSexFemale.Location = new Point(164, 22);
+            optChangeSexFemale.Margin = new Padding(4, 3, 4, 3);
             optChangeSexFemale.Name = "optChangeSexFemale";
-            optChangeSexFemale.Size = new Size(93, 29);
+            optChangeSexFemale.Size = new Size(63, 19);
             optChangeSexFemale.TabIndex = 1;
             optChangeSexFemale.TabStop = true;
             optChangeSexFemale.Text = "Female";
@@ -3055,10 +2985,10 @@ namespace Client
             // optChangeSexMale
             // 
             optChangeSexMale.AutoSize = true;
-            optChangeSexMale.Location = new Point(87, 37);
-            optChangeSexMale.Margin = new Padding(5);
+            optChangeSexMale.Location = new Point(61, 22);
+            optChangeSexMale.Margin = new Padding(4, 3, 4, 3);
             optChangeSexMale.Name = "optChangeSexMale";
-            optChangeSexMale.Size = new Size(75, 29);
+            optChangeSexMale.Size = new Size(51, 19);
             optChangeSexMale.TabIndex = 0;
             optChangeSexMale.TabStop = true;
             optChangeSexMale.Text = "Male";
@@ -3080,11 +3010,11 @@ namespace Client
             fraShowChoices.Controls.Add(btnShowChoicesOk);
             fraShowChoices.Controls.Add(btnShowChoicesCancel);
             fraShowChoices.ForeColor = Color.Gainsboro;
-            fraShowChoices.Location = new Point(668, 198);
-            fraShowChoices.Margin = new Padding(5);
+            fraShowChoices.Location = new Point(468, 119);
+            fraShowChoices.Margin = new Padding(4, 3, 4, 3);
             fraShowChoices.Name = "fraShowChoices";
-            fraShowChoices.Padding = new Padding(5);
-            fraShowChoices.Size = new Size(413, 640);
+            fraShowChoices.Padding = new Padding(4, 3, 4, 3);
+            fraShowChoices.Size = new Size(289, 384);
             fraShowChoices.TabIndex = 32;
             fraShowChoices.TabStop = false;
             fraShowChoices.Text = "Show Choices";
@@ -3095,10 +3025,10 @@ namespace Client
             txtChoices4.BackColor = Color.FromArgb(69, 73, 74);
             txtChoices4.BorderStyle = BorderStyle.FixedSingle;
             txtChoices4.ForeColor = Color.FromArgb(220, 220, 220);
-            txtChoices4.Location = new Point(235, 335);
-            txtChoices4.Margin = new Padding(5);
+            txtChoices4.Location = new Point(164, 201);
+            txtChoices4.Margin = new Padding(4, 3, 4, 3);
             txtChoices4.Name = "txtChoices4";
-            txtChoices4.Size = new Size(165, 31);
+            txtChoices4.Size = new Size(116, 23);
             txtChoices4.TabIndex = 34;
             // 
             // txtChoices3
@@ -3106,10 +3036,10 @@ namespace Client
             txtChoices3.BackColor = Color.FromArgb(69, 73, 74);
             txtChoices3.BorderStyle = BorderStyle.FixedSingle;
             txtChoices3.ForeColor = Color.FromArgb(220, 220, 220);
-            txtChoices3.Location = new Point(10, 334);
-            txtChoices3.Margin = new Padding(5);
+            txtChoices3.Location = new Point(7, 200);
+            txtChoices3.Margin = new Padding(4, 3, 4, 3);
             txtChoices3.Name = "txtChoices3";
-            txtChoices3.Size = new Size(165, 31);
+            txtChoices3.Size = new Size(116, 23);
             txtChoices3.TabIndex = 33;
             // 
             // txtChoices2
@@ -3117,10 +3047,10 @@ namespace Client
             txtChoices2.BackColor = Color.FromArgb(69, 73, 74);
             txtChoices2.BorderStyle = BorderStyle.FixedSingle;
             txtChoices2.ForeColor = Color.FromArgb(220, 220, 220);
-            txtChoices2.Location = new Point(235, 259);
-            txtChoices2.Margin = new Padding(5);
+            txtChoices2.Location = new Point(164, 155);
+            txtChoices2.Margin = new Padding(4, 3, 4, 3);
             txtChoices2.Name = "txtChoices2";
-            txtChoices2.Size = new Size(165, 31);
+            txtChoices2.Size = new Size(116, 23);
             txtChoices2.TabIndex = 32;
             // 
             // txtChoices1
@@ -3128,20 +3058,20 @@ namespace Client
             txtChoices1.BackColor = Color.FromArgb(69, 73, 74);
             txtChoices1.BorderStyle = BorderStyle.FixedSingle;
             txtChoices1.ForeColor = Color.FromArgb(220, 220, 220);
-            txtChoices1.Location = new Point(10, 259);
-            txtChoices1.Margin = new Padding(5);
+            txtChoices1.Location = new Point(7, 155);
+            txtChoices1.Margin = new Padding(4, 3, 4, 3);
             txtChoices1.Name = "txtChoices1";
-            txtChoices1.Size = new Size(165, 31);
+            txtChoices1.Size = new Size(116, 23);
             txtChoices1.TabIndex = 31;
             // 
             // DarkLabel56
             // 
             DarkLabel56.AutoSize = true;
             DarkLabel56.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel56.Location = new Point(230, 302);
-            DarkLabel56.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel56.Location = new Point(161, 181);
+            DarkLabel56.Margin = new Padding(4, 0, 4, 0);
             DarkLabel56.Name = "DarkLabel56";
-            DarkLabel56.Size = new Size(80, 25);
+            DarkLabel56.Size = new Size(53, 15);
             DarkLabel56.TabIndex = 30;
             DarkLabel56.Text = "Choice 4";
             // 
@@ -3149,10 +3079,10 @@ namespace Client
             // 
             DarkLabel57.AutoSize = true;
             DarkLabel57.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel57.Location = new Point(12, 302);
-            DarkLabel57.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel57.Location = new Point(8, 181);
+            DarkLabel57.Margin = new Padding(4, 0, 4, 0);
             DarkLabel57.Name = "DarkLabel57";
-            DarkLabel57.Size = new Size(80, 25);
+            DarkLabel57.Size = new Size(53, 15);
             DarkLabel57.TabIndex = 29;
             DarkLabel57.Text = "Choice 3";
             // 
@@ -3160,10 +3090,10 @@ namespace Client
             // 
             DarkLabel55.AutoSize = true;
             DarkLabel55.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel55.Location = new Point(230, 227);
-            DarkLabel55.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel55.Location = new Point(161, 136);
+            DarkLabel55.Margin = new Padding(4, 0, 4, 0);
             DarkLabel55.Name = "DarkLabel55";
-            DarkLabel55.Size = new Size(80, 25);
+            DarkLabel55.Size = new Size(53, 15);
             DarkLabel55.TabIndex = 28;
             DarkLabel55.Text = "Choice 2";
             // 
@@ -3171,10 +3101,10 @@ namespace Client
             // 
             DarkLabel54.AutoSize = true;
             DarkLabel54.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel54.Location = new Point(10, 227);
-            DarkLabel54.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel54.Location = new Point(7, 136);
+            DarkLabel54.Margin = new Padding(4, 0, 4, 0);
             DarkLabel54.Name = "DarkLabel54";
-            DarkLabel54.Size = new Size(80, 25);
+            DarkLabel54.Size = new Size(53, 15);
             DarkLabel54.TabIndex = 27;
             DarkLabel54.Text = "Choice 1";
             // 
@@ -3182,10 +3112,10 @@ namespace Client
             // 
             DarkLabel52.AutoSize = true;
             DarkLabel52.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel52.Location = new Point(12, 37);
-            DarkLabel52.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel52.Location = new Point(8, 22);
+            DarkLabel52.Margin = new Padding(4, 0, 4, 0);
             DarkLabel52.Name = "DarkLabel52";
-            DarkLabel52.Size = new Size(72, 25);
+            DarkLabel52.Size = new Size(47, 15);
             DarkLabel52.TabIndex = 26;
             DarkLabel52.Text = "Prompt";
             // 
@@ -3194,32 +3124,34 @@ namespace Client
             txtChoicePrompt.BackColor = Color.FromArgb(69, 73, 74);
             txtChoicePrompt.BorderStyle = BorderStyle.FixedSingle;
             txtChoicePrompt.ForeColor = Color.FromArgb(220, 220, 220);
-            txtChoicePrompt.Location = new Point(15, 73);
-            txtChoicePrompt.Margin = new Padding(5);
+            txtChoicePrompt.Location = new Point(10, 44);
+            txtChoicePrompt.Margin = new Padding(4, 3, 4, 3);
             txtChoicePrompt.Multiline = true;
             txtChoicePrompt.Name = "txtChoicePrompt";
-            txtChoicePrompt.Size = new Size(379, 147);
+            txtChoicePrompt.Size = new Size(266, 89);
             txtChoicePrompt.TabIndex = 21;
             // 
             // btnShowChoicesOk
             // 
-            btnShowChoicesOk.Location = new Point(140, 587);
-            btnShowChoicesOk.Margin = new Padding(5);
+            btnShowChoicesOk.Location = new Point(98, 352);
+            btnShowChoicesOk.Margin = new Padding(4, 3, 4, 3);
             btnShowChoicesOk.Name = "btnShowChoicesOk";
-            btnShowChoicesOk.Padding = new Padding(8, 10, 8, 10);
-            btnShowChoicesOk.Size = new Size(125, 45);
+            btnShowChoicesOk.Padding = new Padding(6, 6, 6, 6);
+            btnShowChoicesOk.Size = new Size(88, 27);
             btnShowChoicesOk.TabIndex = 25;
             btnShowChoicesOk.Text = "Ok";
+            btnShowChoicesOk.Click += BtnShowChoicesOk_Click;
             // 
             // btnShowChoicesCancel
             // 
-            btnShowChoicesCancel.Location = new Point(275, 587);
-            btnShowChoicesCancel.Margin = new Padding(5);
+            btnShowChoicesCancel.Location = new Point(192, 352);
+            btnShowChoicesCancel.Margin = new Padding(4, 3, 4, 3);
             btnShowChoicesCancel.Name = "btnShowChoicesCancel";
-            btnShowChoicesCancel.Padding = new Padding(8, 10, 8, 10);
-            btnShowChoicesCancel.Size = new Size(125, 45);
+            btnShowChoicesCancel.Padding = new Padding(6, 6, 6, 6);
+            btnShowChoicesCancel.Size = new Size(88, 27);
             btnShowChoicesCancel.TabIndex = 24;
             btnShowChoicesCancel.Text = "Cancel";
+            btnShowChoicesCancel.Click += BtnShowChoicesCancel_Click;
             // 
             // fraChangeLevel
             // 
@@ -3230,11 +3162,11 @@ namespace Client
             fraChangeLevel.Controls.Add(DarkLabel65);
             fraChangeLevel.Controls.Add(nudChangeLevel);
             fraChangeLevel.ForeColor = Color.Gainsboro;
-            fraChangeLevel.Location = new Point(668, 563);
-            fraChangeLevel.Margin = new Padding(5);
+            fraChangeLevel.Location = new Point(468, 338);
+            fraChangeLevel.Margin = new Padding(4, 3, 4, 3);
             fraChangeLevel.Name = "fraChangeLevel";
-            fraChangeLevel.Padding = new Padding(5);
-            fraChangeLevel.Size = new Size(413, 138);
+            fraChangeLevel.Padding = new Padding(4, 3, 4, 3);
+            fraChangeLevel.Size = new Size(289, 83);
             fraChangeLevel.TabIndex = 38;
             fraChangeLevel.TabStop = false;
             fraChangeLevel.Text = "Change Level";
@@ -3242,41 +3174,43 @@ namespace Client
             // 
             // btnChangeLevelOk
             // 
-            btnChangeLevelOk.Location = new Point(77, 87);
-            btnChangeLevelOk.Margin = new Padding(5);
+            btnChangeLevelOk.Location = new Point(54, 52);
+            btnChangeLevelOk.Margin = new Padding(4, 3, 4, 3);
             btnChangeLevelOk.Name = "btnChangeLevelOk";
-            btnChangeLevelOk.Padding = new Padding(8, 10, 8, 10);
-            btnChangeLevelOk.Size = new Size(125, 45);
+            btnChangeLevelOk.Padding = new Padding(6, 6, 6, 6);
+            btnChangeLevelOk.Size = new Size(88, 27);
             btnChangeLevelOk.TabIndex = 27;
             btnChangeLevelOk.Text = "Ok";
+            btnChangeLevelOk.Click += BtnChangeLevelOK_Click;
             // 
             // btnChangeLevelCancel
             // 
-            btnChangeLevelCancel.Location = new Point(212, 87);
-            btnChangeLevelCancel.Margin = new Padding(5);
+            btnChangeLevelCancel.Location = new Point(148, 52);
+            btnChangeLevelCancel.Margin = new Padding(4, 3, 4, 3);
             btnChangeLevelCancel.Name = "btnChangeLevelCancel";
-            btnChangeLevelCancel.Padding = new Padding(8, 10, 8, 10);
-            btnChangeLevelCancel.Size = new Size(125, 45);
+            btnChangeLevelCancel.Padding = new Padding(6, 6, 6, 6);
+            btnChangeLevelCancel.Size = new Size(88, 27);
             btnChangeLevelCancel.TabIndex = 26;
             btnChangeLevelCancel.Text = "Cancel";
+            btnChangeLevelCancel.Click += BtnChangeLevelCancel_Click;
             // 
             // DarkLabel65
             // 
             DarkLabel65.AutoSize = true;
             DarkLabel65.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel65.Location = new Point(12, 40);
-            DarkLabel65.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel65.Location = new Point(8, 24);
+            DarkLabel65.Margin = new Padding(4, 0, 4, 0);
             DarkLabel65.Name = "DarkLabel65";
-            DarkLabel65.Size = new Size(55, 25);
+            DarkLabel65.Size = new Size(37, 15);
             DarkLabel65.TabIndex = 24;
             DarkLabel65.Text = "Level:";
             // 
             // nudChangeLevel
             // 
-            nudChangeLevel.Location = new Point(100, 37);
-            nudChangeLevel.Margin = new Padding(5);
+            nudChangeLevel.Location = new Point(70, 22);
+            nudChangeLevel.Margin = new Padding(4, 3, 4, 3);
             nudChangeLevel.Name = "nudChangeLevel";
-            nudChangeLevel.Size = new Size(200, 31);
+            nudChangeLevel.Size = new Size(140, 23);
             nudChangeLevel.TabIndex = 23;
             // 
             // fraPlayerVariable
@@ -3299,11 +3233,11 @@ namespace Client
             fraPlayerVariable.Controls.Add(cmbVariable);
             fraPlayerVariable.Controls.Add(DarkLabel49);
             fraPlayerVariable.ForeColor = Color.Gainsboro;
-            fraPlayerVariable.Location = new Point(668, 541);
-            fraPlayerVariable.Margin = new Padding(5);
+            fraPlayerVariable.Location = new Point(468, 325);
+            fraPlayerVariable.Margin = new Padding(4, 3, 4, 3);
             fraPlayerVariable.Name = "fraPlayerVariable";
-            fraPlayerVariable.Padding = new Padding(5);
-            fraPlayerVariable.Size = new Size(410, 297);
+            fraPlayerVariable.Padding = new Padding(4, 3, 4, 3);
+            fraPlayerVariable.Size = new Size(287, 178);
             fraPlayerVariable.TabIndex = 31;
             fraPlayerVariable.TabStop = false;
             fraPlayerVariable.Text = "Player Variable";
@@ -3311,51 +3245,54 @@ namespace Client
             // 
             // nudVariableData2
             // 
-            nudVariableData2.Location = new Point(200, 138);
-            nudVariableData2.Margin = new Padding(5);
+            nudVariableData2.Location = new Point(140, 83);
+            nudVariableData2.Margin = new Padding(4, 3, 4, 3);
             nudVariableData2.Name = "nudVariableData2";
-            nudVariableData2.Size = new Size(200, 31);
+            nudVariableData2.Size = new Size(140, 23);
             nudVariableData2.TabIndex = 29;
             // 
             // optVariableAction2
             // 
             optVariableAction2.AutoSize = true;
-            optVariableAction2.Location = new Point(10, 138);
-            optVariableAction2.Margin = new Padding(5);
+            optVariableAction2.Location = new Point(7, 83);
+            optVariableAction2.Margin = new Padding(4, 3, 4, 3);
             optVariableAction2.Name = "optVariableAction2";
-            optVariableAction2.Size = new Size(103, 29);
+            optVariableAction2.Size = new Size(69, 19);
             optVariableAction2.TabIndex = 28;
             optVariableAction2.TabStop = true;
             optVariableAction2.Text = "Subtract";
+            optVariableAction2.CheckedChanged += OptVariableAction2_CheckedChanged;
             // 
             // btnPlayerVarOk
             // 
-            btnPlayerVarOk.Location = new Point(140, 238);
-            btnPlayerVarOk.Margin = new Padding(5);
+            btnPlayerVarOk.Location = new Point(98, 143);
+            btnPlayerVarOk.Margin = new Padding(4, 3, 4, 3);
             btnPlayerVarOk.Name = "btnPlayerVarOk";
-            btnPlayerVarOk.Padding = new Padding(8, 10, 8, 10);
-            btnPlayerVarOk.Size = new Size(125, 45);
+            btnPlayerVarOk.Padding = new Padding(6, 6, 6, 6);
+            btnPlayerVarOk.Size = new Size(88, 27);
             btnPlayerVarOk.TabIndex = 27;
             btnPlayerVarOk.Text = "Ok";
+            btnPlayerVarOk.Click += BtnPlayerVarOk_Click;
             // 
             // btnPlayerVarCancel
             // 
-            btnPlayerVarCancel.Location = new Point(275, 238);
-            btnPlayerVarCancel.Margin = new Padding(5);
+            btnPlayerVarCancel.Location = new Point(192, 143);
+            btnPlayerVarCancel.Margin = new Padding(4, 3, 4, 3);
             btnPlayerVarCancel.Name = "btnPlayerVarCancel";
-            btnPlayerVarCancel.Padding = new Padding(8, 10, 8, 10);
-            btnPlayerVarCancel.Size = new Size(125, 45);
+            btnPlayerVarCancel.Padding = new Padding(6, 6, 6, 6);
+            btnPlayerVarCancel.Size = new Size(88, 27);
             btnPlayerVarCancel.TabIndex = 26;
             btnPlayerVarCancel.Text = "Cancel";
+            btnPlayerVarCancel.Click += BtnPlayerVarCancel_Click;
             // 
             // DarkLabel51
             // 
             DarkLabel51.AutoSize = true;
             DarkLabel51.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel51.Location = new Point(125, 191);
-            DarkLabel51.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel51.Location = new Point(88, 115);
+            DarkLabel51.Margin = new Padding(4, 0, 4, 0);
             DarkLabel51.Name = "DarkLabel51";
-            DarkLabel51.Size = new Size(48, 25);
+            DarkLabel51.Size = new Size(32, 15);
             DarkLabel51.TabIndex = 16;
             DarkLabel51.Text = "Low:";
             // 
@@ -3363,96 +3300,99 @@ namespace Client
             // 
             DarkLabel50.AutoSize = true;
             DarkLabel50.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel50.Location = new Point(263, 191);
-            DarkLabel50.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel50.Location = new Point(184, 115);
+            DarkLabel50.Margin = new Padding(4, 0, 4, 0);
             DarkLabel50.Name = "DarkLabel50";
-            DarkLabel50.Size = new Size(54, 25);
+            DarkLabel50.Size = new Size(36, 15);
             DarkLabel50.TabIndex = 15;
             DarkLabel50.Text = "High:";
             // 
             // nudVariableData4
             // 
-            nudVariableData4.Location = new Point(327, 188);
-            nudVariableData4.Margin = new Padding(5);
+            nudVariableData4.Location = new Point(229, 113);
+            nudVariableData4.Margin = new Padding(4, 3, 4, 3);
             nudVariableData4.Name = "nudVariableData4";
-            nudVariableData4.Size = new Size(73, 31);
+            nudVariableData4.Size = new Size(51, 23);
             nudVariableData4.TabIndex = 14;
             // 
             // nudVariableData3
             // 
-            nudVariableData3.Location = new Point(185, 188);
-            nudVariableData3.Margin = new Padding(5);
+            nudVariableData3.Location = new Point(130, 113);
+            nudVariableData3.Margin = new Padding(4, 3, 4, 3);
             nudVariableData3.Name = "nudVariableData3";
-            nudVariableData3.Size = new Size(73, 31);
+            nudVariableData3.Size = new Size(51, 23);
             nudVariableData3.TabIndex = 13;
             // 
             // optVariableAction3
             // 
             optVariableAction3.AutoSize = true;
-            optVariableAction3.Location = new Point(10, 188);
-            optVariableAction3.Margin = new Padding(5);
+            optVariableAction3.Location = new Point(7, 113);
+            optVariableAction3.Margin = new Padding(4, 3, 4, 3);
             optVariableAction3.Name = "optVariableAction3";
-            optVariableAction3.Size = new Size(105, 29);
+            optVariableAction3.Size = new Size(70, 19);
             optVariableAction3.TabIndex = 12;
             optVariableAction3.TabStop = true;
             optVariableAction3.Text = "Random";
+            optVariableAction3.CheckedChanged += OptVariableAction3_CheckedChanged;
             // 
             // optVariableAction1
             // 
             optVariableAction1.AutoSize = true;
-            optVariableAction1.Location = new Point(243, 88);
-            optVariableAction1.Margin = new Padding(5);
+            optVariableAction1.Location = new Point(170, 53);
+            optVariableAction1.Margin = new Padding(4, 3, 4, 3);
             optVariableAction1.Name = "optVariableAction1";
-            optVariableAction1.Size = new Size(71, 29);
+            optVariableAction1.Size = new Size(47, 19);
             optVariableAction1.TabIndex = 11;
             optVariableAction1.TabStop = true;
             optVariableAction1.Text = "Add";
+            optVariableAction1.CheckedChanged += OptVariableAction1_CheckedChanged;
             // 
             // nudVariableData1
             // 
-            nudVariableData1.Location = new Point(327, 88);
-            nudVariableData1.Margin = new Padding(5);
+            nudVariableData1.Location = new Point(229, 53);
+            nudVariableData1.Margin = new Padding(4, 3, 4, 3);
             nudVariableData1.Name = "nudVariableData1";
-            nudVariableData1.Size = new Size(73, 31);
+            nudVariableData1.Size = new Size(51, 23);
             nudVariableData1.TabIndex = 10;
             // 
             // nudVariableData0
             // 
-            nudVariableData0.Location = new Point(103, 88);
-            nudVariableData0.Margin = new Padding(5);
+            nudVariableData0.Location = new Point(72, 53);
+            nudVariableData0.Margin = new Padding(4, 3, 4, 3);
             nudVariableData0.Name = "nudVariableData0";
-            nudVariableData0.Size = new Size(73, 31);
+            nudVariableData0.Size = new Size(51, 23);
             nudVariableData0.TabIndex = 9;
             // 
             // optVariableAction0
             // 
             optVariableAction0.AutoSize = true;
-            optVariableAction0.Location = new Point(10, 88);
-            optVariableAction0.Margin = new Padding(5);
+            optVariableAction0.Location = new Point(7, 53);
+            optVariableAction0.Margin = new Padding(4, 3, 4, 3);
             optVariableAction0.Name = "optVariableAction0";
-            optVariableAction0.Size = new Size(62, 29);
+            optVariableAction0.Size = new Size(41, 19);
             optVariableAction0.TabIndex = 2;
             optVariableAction0.TabStop = true;
             optVariableAction0.Text = "Set";
+            optVariableAction0.CheckedChanged += OptVariableAction0_CheckedChanged;
             // 
             // cmbVariable
             // 
             cmbVariable.DrawMode = DrawMode.OwnerDrawFixed;
             cmbVariable.FormattingEnabled = true;
-            cmbVariable.Location = new Point(100, 37);
-            cmbVariable.Margin = new Padding(5);
+            cmbVariable.Location = new Point(70, 22);
+            cmbVariable.Margin = new Padding(4, 3, 4, 3);
             cmbVariable.Name = "cmbVariable";
-            cmbVariable.Size = new Size(296, 32);
+            cmbVariable.Size = new Size(208, 24);
             cmbVariable.TabIndex = 1;
             // 
             // DarkLabel49
             // 
             DarkLabel49.AutoSize = true;
             DarkLabel49.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel49.Location = new Point(10, 41);
-            DarkLabel49.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel49.Location = new Point(7, 25);
+            DarkLabel49.Margin = new Padding(4, 0, 4, 0);
             DarkLabel49.Name = "DarkLabel49";
-            DarkLabel49.Size = new Size(78, 25);
+            DarkLabel49.Size = new Size(51, 15);
             DarkLabel49.TabIndex = 0;
             DarkLabel49.Text = "Variable:";
             // 
@@ -3472,11 +3412,11 @@ namespace Client
             fraPlayAnimation.Controls.Add(DarkLabel61);
             fraPlayAnimation.Controls.Add(cmbPlayAnim);
             fraPlayAnimation.ForeColor = Color.Gainsboro;
-            fraPlayAnimation.Location = new Point(668, 495);
-            fraPlayAnimation.Margin = new Padding(5);
+            fraPlayAnimation.Location = new Point(468, 297);
+            fraPlayAnimation.Margin = new Padding(4, 3, 4, 3);
             fraPlayAnimation.Name = "fraPlayAnimation";
-            fraPlayAnimation.Padding = new Padding(5);
-            fraPlayAnimation.Size = new Size(413, 312);
+            fraPlayAnimation.Padding = new Padding(4, 3, 4, 3);
+            fraPlayAnimation.Size = new Size(289, 187);
             fraPlayAnimation.TabIndex = 36;
             fraPlayAnimation.TabStop = false;
             fraPlayAnimation.Text = "Play Animation";
@@ -3484,32 +3424,34 @@ namespace Client
             // 
             // btnPlayAnimationOk
             // 
-            btnPlayAnimationOk.Location = new Point(143, 253);
-            btnPlayAnimationOk.Margin = new Padding(5);
+            btnPlayAnimationOk.Location = new Point(100, 152);
+            btnPlayAnimationOk.Margin = new Padding(4, 3, 4, 3);
             btnPlayAnimationOk.Name = "btnPlayAnimationOk";
-            btnPlayAnimationOk.Padding = new Padding(8, 10, 8, 10);
-            btnPlayAnimationOk.Size = new Size(125, 45);
+            btnPlayAnimationOk.Padding = new Padding(6, 6, 6, 6);
+            btnPlayAnimationOk.Size = new Size(88, 27);
             btnPlayAnimationOk.TabIndex = 36;
             btnPlayAnimationOk.Text = "Ok";
+            btnPlayAnimationOk.Click += BtnPlayAnimationOK_Click;
             // 
             // btnPlayAnimationCancel
             // 
-            btnPlayAnimationCancel.Location = new Point(278, 253);
-            btnPlayAnimationCancel.Margin = new Padding(5);
+            btnPlayAnimationCancel.Location = new Point(195, 152);
+            btnPlayAnimationCancel.Margin = new Padding(4, 3, 4, 3);
             btnPlayAnimationCancel.Name = "btnPlayAnimationCancel";
-            btnPlayAnimationCancel.Padding = new Padding(8, 10, 8, 10);
-            btnPlayAnimationCancel.Size = new Size(125, 45);
+            btnPlayAnimationCancel.Padding = new Padding(6, 6, 6, 6);
+            btnPlayAnimationCancel.Size = new Size(88, 27);
             btnPlayAnimationCancel.TabIndex = 35;
             btnPlayAnimationCancel.Text = "Cancel";
+            btnPlayAnimationCancel.Click += BtnPlayAnimationCancel_Click;
             // 
             // lblPlayAnimY
             // 
             lblPlayAnimY.AutoSize = true;
             lblPlayAnimY.ForeColor = Color.FromArgb(220, 220, 220);
-            lblPlayAnimY.Location = new Point(218, 203);
-            lblPlayAnimY.Margin = new Padding(5, 0, 5, 0);
+            lblPlayAnimY.Location = new Point(153, 122);
+            lblPlayAnimY.Margin = new Padding(4, 0, 4, 0);
             lblPlayAnimY.Name = "lblPlayAnimY";
-            lblPlayAnimY.Size = new Size(98, 25);
+            lblPlayAnimY.Size = new Size(66, 15);
             lblPlayAnimY.TabIndex = 34;
             lblPlayAnimY.Text = "Map Tile Y:";
             // 
@@ -3517,10 +3459,10 @@ namespace Client
             // 
             lblPlayAnimX.AutoSize = true;
             lblPlayAnimX.ForeColor = Color.FromArgb(220, 220, 220);
-            lblPlayAnimX.Location = new Point(10, 203);
-            lblPlayAnimX.Margin = new Padding(5, 0, 5, 0);
+            lblPlayAnimX.Location = new Point(7, 122);
+            lblPlayAnimX.Margin = new Padding(4, 0, 4, 0);
             lblPlayAnimX.Name = "lblPlayAnimX";
-            lblPlayAnimX.Size = new Size(99, 25);
+            lblPlayAnimX.Size = new Size(66, 15);
             lblPlayAnimX.TabIndex = 33;
             lblPlayAnimX.Text = "Map Tile X:";
             // 
@@ -3528,20 +3470,20 @@ namespace Client
             // 
             cmbPlayAnimEvent.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlayAnimEvent.FormattingEnabled = true;
-            cmbPlayAnimEvent.Location = new Point(138, 140);
-            cmbPlayAnimEvent.Margin = new Padding(5);
+            cmbPlayAnimEvent.Location = new Point(97, 84);
+            cmbPlayAnimEvent.Margin = new Padding(4, 3, 4, 3);
             cmbPlayAnimEvent.Name = "cmbPlayAnimEvent";
-            cmbPlayAnimEvent.Size = new Size(262, 32);
+            cmbPlayAnimEvent.Size = new Size(185, 24);
             cmbPlayAnimEvent.TabIndex = 32;
             // 
             // DarkLabel62
             // 
             DarkLabel62.AutoSize = true;
             DarkLabel62.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel62.Location = new Point(7, 95);
-            DarkLabel62.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel62.Location = new Point(5, 57);
+            DarkLabel62.Margin = new Padding(4, 0, 4, 0);
             DarkLabel62.Name = "DarkLabel62";
-            DarkLabel62.Size = new Size(102, 25);
+            DarkLabel62.Size = new Size(68, 15);
             DarkLabel62.TabIndex = 31;
             DarkLabel62.Text = "Target Type";
             // 
@@ -3550,36 +3492,36 @@ namespace Client
             cmbAnimTargetType.DrawMode = DrawMode.OwnerDrawFixed;
             cmbAnimTargetType.FormattingEnabled = true;
             cmbAnimTargetType.Items.AddRange(new object[] { "Player", "Event", "Tile" });
-            cmbAnimTargetType.Location = new Point(138, 88);
-            cmbAnimTargetType.Margin = new Padding(5);
+            cmbAnimTargetType.Location = new Point(97, 53);
+            cmbAnimTargetType.Margin = new Padding(4, 3, 4, 3);
             cmbAnimTargetType.Name = "cmbAnimTargetType";
-            cmbAnimTargetType.Size = new Size(262, 32);
+            cmbAnimTargetType.Size = new Size(185, 24);
             cmbAnimTargetType.TabIndex = 30;
             // 
             // nudPlayAnimTileY
             // 
-            nudPlayAnimTileY.Location = new Point(330, 200);
-            nudPlayAnimTileY.Margin = new Padding(5);
+            nudPlayAnimTileY.Location = new Point(231, 120);
+            nudPlayAnimTileY.Margin = new Padding(4, 3, 4, 3);
             nudPlayAnimTileY.Name = "nudPlayAnimTileY";
-            nudPlayAnimTileY.Size = new Size(73, 31);
+            nudPlayAnimTileY.Size = new Size(51, 23);
             nudPlayAnimTileY.TabIndex = 29;
             // 
             // nudPlayAnimTileX
             // 
-            nudPlayAnimTileX.Location = new Point(122, 200);
-            nudPlayAnimTileX.Margin = new Padding(5);
+            nudPlayAnimTileX.Location = new Point(85, 120);
+            nudPlayAnimTileX.Margin = new Padding(4, 3, 4, 3);
             nudPlayAnimTileX.Name = "nudPlayAnimTileX";
-            nudPlayAnimTileX.Size = new Size(73, 31);
+            nudPlayAnimTileX.Size = new Size(51, 23);
             nudPlayAnimTileX.TabIndex = 28;
             // 
             // DarkLabel61
             // 
             DarkLabel61.AutoSize = true;
             DarkLabel61.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel61.Location = new Point(10, 41);
-            DarkLabel61.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel61.Location = new Point(7, 25);
+            DarkLabel61.Margin = new Padding(4, 0, 4, 0);
             DarkLabel61.Name = "DarkLabel61";
-            DarkLabel61.Size = new Size(98, 25);
+            DarkLabel61.Size = new Size(66, 15);
             DarkLabel61.TabIndex = 1;
             DarkLabel61.Text = "Animation:";
             // 
@@ -3587,10 +3529,10 @@ namespace Client
             // 
             cmbPlayAnim.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlayAnim.FormattingEnabled = true;
-            cmbPlayAnim.Location = new Point(103, 37);
-            cmbPlayAnim.Margin = new Padding(5);
+            cmbPlayAnim.Location = new Point(72, 22);
+            cmbPlayAnim.Margin = new Padding(4, 3, 4, 3);
             cmbPlayAnim.Name = "cmbPlayAnim";
-            cmbPlayAnim.Size = new Size(297, 32);
+            cmbPlayAnim.Size = new Size(209, 24);
             cmbPlayAnim.TabIndex = 0;
             // 
             // fraChangeSprite
@@ -3603,11 +3545,11 @@ namespace Client
             fraChangeSprite.Controls.Add(nudChangeSprite);
             fraChangeSprite.Controls.Add(picChangeSprite);
             fraChangeSprite.ForeColor = Color.Gainsboro;
-            fraChangeSprite.Location = new Point(668, 538);
-            fraChangeSprite.Margin = new Padding(5);
+            fraChangeSprite.Location = new Point(468, 323);
+            fraChangeSprite.Margin = new Padding(4, 3, 4, 3);
             fraChangeSprite.Name = "fraChangeSprite";
-            fraChangeSprite.Padding = new Padding(5);
-            fraChangeSprite.Size = new Size(410, 225);
+            fraChangeSprite.Padding = new Padding(4, 3, 4, 3);
+            fraChangeSprite.Size = new Size(287, 135);
             fraChangeSprite.TabIndex = 30;
             fraChangeSprite.TabStop = false;
             fraChangeSprite.Text = "Change Sprite";
@@ -3615,51 +3557,53 @@ namespace Client
             // 
             // btnChangeSpriteOk
             // 
-            btnChangeSpriteOk.Location = new Point(140, 172);
-            btnChangeSpriteOk.Margin = new Padding(5);
+            btnChangeSpriteOk.Location = new Point(98, 103);
+            btnChangeSpriteOk.Margin = new Padding(4, 3, 4, 3);
             btnChangeSpriteOk.Name = "btnChangeSpriteOk";
-            btnChangeSpriteOk.Padding = new Padding(8, 10, 8, 10);
-            btnChangeSpriteOk.Size = new Size(125, 45);
+            btnChangeSpriteOk.Padding = new Padding(6, 6, 6, 6);
+            btnChangeSpriteOk.Size = new Size(88, 27);
             btnChangeSpriteOk.TabIndex = 30;
             btnChangeSpriteOk.Text = "Ok";
+            btnChangeSpriteOk.Click += BtnChangeSpriteOK_Click;
             // 
             // btnChangeSpriteCancel
             // 
-            btnChangeSpriteCancel.Location = new Point(275, 172);
-            btnChangeSpriteCancel.Margin = new Padding(5);
+            btnChangeSpriteCancel.Location = new Point(192, 103);
+            btnChangeSpriteCancel.Margin = new Padding(4, 3, 4, 3);
             btnChangeSpriteCancel.Name = "btnChangeSpriteCancel";
-            btnChangeSpriteCancel.Padding = new Padding(8, 10, 8, 10);
-            btnChangeSpriteCancel.Size = new Size(125, 45);
+            btnChangeSpriteCancel.Padding = new Padding(6, 6, 6, 6);
+            btnChangeSpriteCancel.Size = new Size(88, 27);
             btnChangeSpriteCancel.TabIndex = 29;
             btnChangeSpriteCancel.Text = "Cancel";
+            btnChangeSpriteCancel.Click += BtnChangeSpriteCancel_Click;
             // 
             // DarkLabel48
             // 
             DarkLabel48.AutoSize = true;
             DarkLabel48.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel48.Location = new Point(133, 128);
-            DarkLabel48.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel48.Location = new Point(93, 77);
+            DarkLabel48.Margin = new Padding(4, 0, 4, 0);
             DarkLabel48.Name = "DarkLabel48";
-            DarkLabel48.Size = new Size(58, 25);
+            DarkLabel48.Size = new Size(37, 15);
             DarkLabel48.TabIndex = 28;
             DarkLabel48.Text = "Sprite";
             // 
             // nudChangeSprite
             // 
-            nudChangeSprite.Location = new Point(200, 122);
-            nudChangeSprite.Margin = new Padding(5);
+            nudChangeSprite.Location = new Point(140, 73);
+            nudChangeSprite.Margin = new Padding(4, 3, 4, 3);
             nudChangeSprite.Name = "nudChangeSprite";
-            nudChangeSprite.Size = new Size(200, 31);
+            nudChangeSprite.Size = new Size(140, 23);
             nudChangeSprite.TabIndex = 27;
             // 
             // picChangeSprite
             // 
             picChangeSprite.BackColor = Color.Black;
             picChangeSprite.BackgroundImageLayout = ImageLayout.Zoom;
-            picChangeSprite.Location = new Point(10, 37);
-            picChangeSprite.Margin = new Padding(5);
+            picChangeSprite.Location = new Point(7, 22);
+            picChangeSprite.Margin = new Padding(4, 3, 4, 3);
             picChangeSprite.Name = "picChangeSprite";
-            picChangeSprite.Size = new Size(117, 178);
+            picChangeSprite.Size = new Size(82, 107);
             picChangeSprite.TabIndex = 3;
             picChangeSprite.TabStop = false;
             // 
@@ -3672,11 +3616,11 @@ namespace Client
             fraGoToLabel.Controls.Add(txtGoToLabel);
             fraGoToLabel.Controls.Add(DarkLabel60);
             fraGoToLabel.ForeColor = Color.Gainsboro;
-            fraGoToLabel.Location = new Point(668, 490);
-            fraGoToLabel.Margin = new Padding(5);
+            fraGoToLabel.Location = new Point(468, 294);
+            fraGoToLabel.Margin = new Padding(4, 3, 4, 3);
             fraGoToLabel.Name = "fraGoToLabel";
-            fraGoToLabel.Padding = new Padding(5);
-            fraGoToLabel.Size = new Size(413, 140);
+            fraGoToLabel.Padding = new Padding(4, 3, 4, 3);
+            fraGoToLabel.Size = new Size(289, 84);
             fraGoToLabel.TabIndex = 35;
             fraGoToLabel.TabStop = false;
             fraGoToLabel.Text = "GoTo Label";
@@ -3684,43 +3628,45 @@ namespace Client
             // 
             // btnGoToLabelOk
             // 
-            btnGoToLabelOk.Location = new Point(143, 85);
-            btnGoToLabelOk.Margin = new Padding(5);
+            btnGoToLabelOk.Location = new Point(100, 51);
+            btnGoToLabelOk.Margin = new Padding(4, 3, 4, 3);
             btnGoToLabelOk.Name = "btnGoToLabelOk";
-            btnGoToLabelOk.Padding = new Padding(8, 10, 8, 10);
-            btnGoToLabelOk.Size = new Size(125, 45);
+            btnGoToLabelOk.Padding = new Padding(6, 6, 6, 6);
+            btnGoToLabelOk.Size = new Size(88, 27);
             btnGoToLabelOk.TabIndex = 27;
             btnGoToLabelOk.Text = "Ok";
+            btnGoToLabelOk.Click += BtnGoToLabelOk_Click;
             // 
             // btnGoToLabelCancel
             // 
-            btnGoToLabelCancel.Location = new Point(278, 85);
-            btnGoToLabelCancel.Margin = new Padding(5);
+            btnGoToLabelCancel.Location = new Point(195, 51);
+            btnGoToLabelCancel.Margin = new Padding(4, 3, 4, 3);
             btnGoToLabelCancel.Name = "btnGoToLabelCancel";
-            btnGoToLabelCancel.Padding = new Padding(8, 10, 8, 10);
-            btnGoToLabelCancel.Size = new Size(125, 45);
+            btnGoToLabelCancel.Padding = new Padding(6, 6, 6, 6);
+            btnGoToLabelCancel.Size = new Size(88, 27);
             btnGoToLabelCancel.TabIndex = 26;
             btnGoToLabelCancel.Text = "Cancel";
+            btnGoToLabelCancel.Click += BtnGoToLabelCancel_Click;
             // 
             // txtGoToLabel
             // 
             txtGoToLabel.BackColor = Color.FromArgb(69, 73, 74);
             txtGoToLabel.BorderStyle = BorderStyle.FixedSingle;
             txtGoToLabel.ForeColor = Color.FromArgb(220, 220, 220);
-            txtGoToLabel.Location = new Point(130, 35);
-            txtGoToLabel.Margin = new Padding(5);
+            txtGoToLabel.Location = new Point(91, 21);
+            txtGoToLabel.Margin = new Padding(4, 3, 4, 3);
             txtGoToLabel.Name = "txtGoToLabel";
-            txtGoToLabel.Size = new Size(272, 31);
+            txtGoToLabel.Size = new Size(191, 23);
             txtGoToLabel.TabIndex = 1;
             // 
             // DarkLabel60
             // 
             DarkLabel60.AutoSize = true;
             DarkLabel60.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel60.Location = new Point(5, 38);
-            DarkLabel60.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel60.Location = new Point(4, 23);
+            DarkLabel60.Margin = new Padding(4, 0, 4, 0);
             DarkLabel60.Name = "DarkLabel60";
-            DarkLabel60.Size = new Size(109, 25);
+            DarkLabel60.Size = new Size(73, 15);
             DarkLabel60.TabIndex = 0;
             DarkLabel60.Text = "Label Name:";
             // 
@@ -3739,11 +3685,11 @@ namespace Client
             fraMapTint.Controls.Add(nudMapTintData0);
             fraMapTint.Controls.Add(DarkLabel45);
             fraMapTint.ForeColor = Color.Gainsboro;
-            fraMapTint.Location = new Point(668, 348);
-            fraMapTint.Margin = new Padding(5);
+            fraMapTint.Location = new Point(468, 209);
+            fraMapTint.Margin = new Padding(4, 3, 4, 3);
             fraMapTint.Name = "fraMapTint";
-            fraMapTint.Padding = new Padding(5);
-            fraMapTint.Size = new Size(410, 278);
+            fraMapTint.Padding = new Padding(4, 3, 4, 3);
+            fraMapTint.Size = new Size(287, 167);
             fraMapTint.TabIndex = 28;
             fraMapTint.TabStop = false;
             fraMapTint.Text = "Map Tinting";
@@ -3751,60 +3697,62 @@ namespace Client
             // 
             // btnMapTintOk
             // 
-            btnMapTintOk.Location = new Point(140, 222);
-            btnMapTintOk.Margin = new Padding(5);
+            btnMapTintOk.Location = new Point(98, 133);
+            btnMapTintOk.Margin = new Padding(4, 3, 4, 3);
             btnMapTintOk.Name = "btnMapTintOk";
-            btnMapTintOk.Padding = new Padding(8, 10, 8, 10);
-            btnMapTintOk.Size = new Size(125, 45);
+            btnMapTintOk.Padding = new Padding(6, 6, 6, 6);
+            btnMapTintOk.Size = new Size(88, 27);
             btnMapTintOk.TabIndex = 45;
             btnMapTintOk.Text = "Ok";
+            btnMapTintOk.Click += BtnMapTintOK_Click;
             // 
             // btnMapTintCancel
             // 
-            btnMapTintCancel.Location = new Point(275, 222);
-            btnMapTintCancel.Margin = new Padding(5);
+            btnMapTintCancel.Location = new Point(192, 133);
+            btnMapTintCancel.Margin = new Padding(4, 3, 4, 3);
             btnMapTintCancel.Name = "btnMapTintCancel";
-            btnMapTintCancel.Padding = new Padding(8, 10, 8, 10);
-            btnMapTintCancel.Size = new Size(125, 45);
+            btnMapTintCancel.Padding = new Padding(6, 6, 6, 6);
+            btnMapTintCancel.Size = new Size(88, 27);
             btnMapTintCancel.TabIndex = 44;
             btnMapTintCancel.Text = "Cancel";
+            btnMapTintCancel.Click += BtnMapTintCancel_Click;
             // 
             // DarkLabel42
             // 
             DarkLabel42.AutoSize = true;
             DarkLabel42.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel42.Location = new Point(8, 178);
-            DarkLabel42.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel42.Location = new Point(6, 107);
+            DarkLabel42.Margin = new Padding(4, 0, 4, 0);
             DarkLabel42.Name = "DarkLabel42";
-            DarkLabel42.Size = new Size(77, 25);
+            DarkLabel42.Size = new Size(51, 15);
             DarkLabel42.TabIndex = 43;
             DarkLabel42.Text = "Opacity:";
             // 
             // nudMapTintData3
             // 
-            nudMapTintData3.Location = new Point(158, 172);
-            nudMapTintData3.Margin = new Padding(5);
+            nudMapTintData3.Location = new Point(111, 103);
+            nudMapTintData3.Margin = new Padding(4, 3, 4, 3);
             nudMapTintData3.Name = "nudMapTintData3";
-            nudMapTintData3.Size = new Size(240, 31);
+            nudMapTintData3.Size = new Size(168, 23);
             nudMapTintData3.TabIndex = 42;
             // 
             // nudMapTintData2
             // 
-            nudMapTintData2.Location = new Point(158, 123);
-            nudMapTintData2.Margin = new Padding(5);
+            nudMapTintData2.Location = new Point(111, 74);
+            nudMapTintData2.Margin = new Padding(4, 3, 4, 3);
             nudMapTintData2.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             nudMapTintData2.Name = "nudMapTintData2";
-            nudMapTintData2.Size = new Size(240, 31);
+            nudMapTintData2.Size = new Size(168, 23);
             nudMapTintData2.TabIndex = 41;
             // 
             // DarkLabel43
             // 
             DarkLabel43.AutoSize = true;
             DarkLabel43.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel43.Location = new Point(8, 127);
-            DarkLabel43.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel43.Location = new Point(6, 76);
+            DarkLabel43.Margin = new Padding(4, 0, 4, 0);
             DarkLabel43.Name = "DarkLabel43";
-            DarkLabel43.Size = new Size(49, 25);
+            DarkLabel43.Size = new Size(33, 15);
             DarkLabel43.TabIndex = 40;
             DarkLabel43.Text = "Blue:";
             // 
@@ -3812,39 +3760,39 @@ namespace Client
             // 
             DarkLabel44.AutoSize = true;
             DarkLabel44.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel44.Location = new Point(7, 84);
-            DarkLabel44.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel44.Location = new Point(5, 50);
+            DarkLabel44.Margin = new Padding(4, 0, 4, 0);
             DarkLabel44.Name = "DarkLabel44";
-            DarkLabel44.Size = new Size(62, 25);
+            DarkLabel44.Size = new Size(41, 15);
             DarkLabel44.TabIndex = 39;
             DarkLabel44.Text = "Green:";
             // 
             // nudMapTintData1
             // 
-            nudMapTintData1.Location = new Point(158, 75);
-            nudMapTintData1.Margin = new Padding(5);
+            nudMapTintData1.Location = new Point(111, 45);
+            nudMapTintData1.Margin = new Padding(4, 3, 4, 3);
             nudMapTintData1.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             nudMapTintData1.Name = "nudMapTintData1";
-            nudMapTintData1.Size = new Size(240, 31);
+            nudMapTintData1.Size = new Size(168, 23);
             nudMapTintData1.TabIndex = 38;
             // 
             // nudMapTintData0
             // 
-            nudMapTintData0.Location = new Point(158, 27);
-            nudMapTintData0.Margin = new Padding(5);
+            nudMapTintData0.Location = new Point(111, 16);
+            nudMapTintData0.Margin = new Padding(4, 3, 4, 3);
             nudMapTintData0.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             nudMapTintData0.Name = "nudMapTintData0";
-            nudMapTintData0.Size = new Size(240, 31);
+            nudMapTintData0.Size = new Size(168, 23);
             nudMapTintData0.TabIndex = 37;
             // 
             // DarkLabel45
             // 
             DarkLabel45.AutoSize = true;
             DarkLabel45.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel45.Location = new Point(8, 30);
-            DarkLabel45.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel45.Location = new Point(6, 18);
+            DarkLabel45.Margin = new Padding(4, 0, 4, 0);
             DarkLabel45.Name = "DarkLabel45";
-            DarkLabel45.Size = new Size(46, 25);
+            DarkLabel45.Size = new Size(30, 15);
             DarkLabel45.TabIndex = 36;
             DarkLabel45.Text = "Red:";
             // 
@@ -3866,10 +3814,10 @@ namespace Client
             fraShowPic.Controls.Add(picShowPic);
             fraShowPic.ForeColor = Color.Gainsboro;
             fraShowPic.Location = new Point(1, 0);
-            fraShowPic.Margin = new Padding(5);
+            fraShowPic.Margin = new Padding(4, 3, 4, 3);
             fraShowPic.Name = "fraShowPic";
-            fraShowPic.Padding = new Padding(5);
-            fraShowPic.Size = new Size(1107, 1143);
+            fraShowPic.Padding = new Padding(4, 3, 4, 3);
+            fraShowPic.Size = new Size(775, 686);
             fraShowPic.TabIndex = 40;
             fraShowPic.TabStop = false;
             fraShowPic.Text = "Show Picture";
@@ -3877,32 +3825,34 @@ namespace Client
             // 
             // btnShowPicOk
             // 
-            btnShowPicOk.Location = new Point(833, 1085);
-            btnShowPicOk.Margin = new Padding(5);
+            btnShowPicOk.Location = new Point(583, 651);
+            btnShowPicOk.Margin = new Padding(4, 3, 4, 3);
             btnShowPicOk.Name = "btnShowPicOk";
-            btnShowPicOk.Padding = new Padding(8, 10, 8, 10);
-            btnShowPicOk.Size = new Size(125, 45);
+            btnShowPicOk.Padding = new Padding(6, 6, 6, 6);
+            btnShowPicOk.Size = new Size(88, 27);
             btnShowPicOk.TabIndex = 55;
             btnShowPicOk.Text = "Ok";
+            btnShowPicOk.Click += BtnShowPicOK_Click;
             // 
             // btnShowPicCancel
             // 
-            btnShowPicCancel.Location = new Point(970, 1085);
-            btnShowPicCancel.Margin = new Padding(5);
+            btnShowPicCancel.Location = new Point(679, 651);
+            btnShowPicCancel.Margin = new Padding(4, 3, 4, 3);
             btnShowPicCancel.Name = "btnShowPicCancel";
-            btnShowPicCancel.Padding = new Padding(8, 10, 8, 10);
-            btnShowPicCancel.Size = new Size(125, 45);
+            btnShowPicCancel.Padding = new Padding(6, 6, 6, 6);
+            btnShowPicCancel.Size = new Size(88, 27);
             btnShowPicCancel.TabIndex = 54;
             btnShowPicCancel.Text = "Cancel";
+            btnShowPicCancel.Click += BtnShowPicCancel_Click;
             // 
             // DarkLabel71
             // 
             DarkLabel71.AutoSize = true;
             DarkLabel71.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel71.Location = new Point(410, 45);
-            DarkLabel71.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel71.Location = new Point(287, 27);
+            DarkLabel71.Margin = new Padding(4, 0, 4, 0);
             DarkLabel71.Name = "DarkLabel71";
-            DarkLabel71.Size = new Size(181, 25);
+            DarkLabel71.Size = new Size(120, 15);
             DarkLabel71.TabIndex = 53;
             DarkLabel71.Text = "Offset from Location:";
             // 
@@ -3910,10 +3860,10 @@ namespace Client
             // 
             DarkLabel70.AutoSize = true;
             DarkLabel70.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel70.Location = new Point(185, 109);
-            DarkLabel70.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel70.Location = new Point(130, 65);
+            DarkLabel70.Margin = new Padding(4, 0, 4, 0);
             DarkLabel70.Name = "DarkLabel70";
-            DarkLabel70.Size = new Size(79, 25);
+            DarkLabel70.Size = new Size(53, 15);
             DarkLabel70.TabIndex = 52;
             DarkLabel70.Text = "Location";
             // 
@@ -3921,10 +3871,10 @@ namespace Client
             // 
             DarkLabel67.AutoSize = true;
             DarkLabel67.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel67.Location = new Point(622, 90);
-            DarkLabel67.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel67.Location = new Point(435, 54);
+            DarkLabel67.Margin = new Padding(4, 0, 4, 0);
             DarkLabel67.Name = "DarkLabel67";
-            DarkLabel67.Size = new Size(26, 25);
+            DarkLabel67.Size = new Size(17, 15);
             DarkLabel67.TabIndex = 51;
             DarkLabel67.Text = "Y:";
             // 
@@ -3932,39 +3882,39 @@ namespace Client
             // 
             DarkLabel68.AutoSize = true;
             DarkLabel68.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel68.Location = new Point(410, 93);
-            DarkLabel68.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel68.Location = new Point(287, 56);
+            DarkLabel68.Margin = new Padding(4, 0, 4, 0);
             DarkLabel68.Name = "DarkLabel68";
-            DarkLabel68.Size = new Size(27, 25);
+            DarkLabel68.Size = new Size(17, 15);
             DarkLabel68.TabIndex = 50;
             DarkLabel68.Text = "X:";
             // 
             // nudPicOffsetY
             // 
-            nudPicOffsetY.Location = new Point(695, 87);
-            nudPicOffsetY.Margin = new Padding(5);
+            nudPicOffsetY.Location = new Point(486, 52);
+            nudPicOffsetY.Margin = new Padding(4, 3, 4, 3);
             nudPicOffsetY.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             nudPicOffsetY.Name = "nudPicOffsetY";
-            nudPicOffsetY.Size = new Size(95, 31);
+            nudPicOffsetY.Size = new Size(66, 23);
             nudPicOffsetY.TabIndex = 49;
             // 
             // nudPicOffsetX
             // 
-            nudPicOffsetX.Location = new Point(480, 87);
-            nudPicOffsetX.Margin = new Padding(5);
+            nudPicOffsetX.Location = new Point(336, 52);
+            nudPicOffsetX.Margin = new Padding(4, 3, 4, 3);
             nudPicOffsetX.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
             nudPicOffsetX.Name = "nudPicOffsetX";
-            nudPicOffsetX.Size = new Size(95, 31);
+            nudPicOffsetX.Size = new Size(66, 23);
             nudPicOffsetX.TabIndex = 48;
             // 
             // DarkLabel69
             // 
             DarkLabel69.AutoSize = true;
             DarkLabel69.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel69.Location = new Point(185, 43);
-            DarkLabel69.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel69.Location = new Point(130, 26);
+            DarkLabel69.Margin = new Padding(4, 0, 4, 0);
             DarkLabel69.Name = "DarkLabel69";
-            DarkLabel69.Size = new Size(69, 25);
+            DarkLabel69.Size = new Size(47, 15);
             DarkLabel69.TabIndex = 47;
             DarkLabel69.Text = "Picture:";
             // 
@@ -3973,28 +3923,29 @@ namespace Client
             cmbPicLoc.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPicLoc.FormattingEnabled = true;
             cmbPicLoc.Items.AddRange(new object[] { "Top Left of Screen", "Center Screen", "Centered on Event", "Centered on Player" });
-            cmbPicLoc.Location = new Point(190, 143);
-            cmbPicLoc.Margin = new Padding(5);
+            cmbPicLoc.Location = new Point(133, 86);
+            cmbPicLoc.Margin = new Padding(4, 3, 4, 3);
             cmbPicLoc.Name = "cmbPicLoc";
-            cmbPicLoc.Size = new Size(204, 32);
+            cmbPicLoc.Size = new Size(144, 24);
             cmbPicLoc.TabIndex = 46;
             // 
             // nudShowPicture
             // 
-            nudShowPicture.Location = new Point(265, 40);
-            nudShowPicture.Margin = new Padding(5);
+            nudShowPicture.Location = new Point(186, 24);
+            nudShowPicture.Margin = new Padding(4, 3, 4, 3);
             nudShowPicture.Name = "nudShowPicture";
-            nudShowPicture.Size = new Size(125, 31);
+            nudShowPicture.Size = new Size(88, 23);
             nudShowPicture.TabIndex = 45;
+            nudShowPicture.Click += nudShowPicture_Click;
             // 
             // picShowPic
             // 
             picShowPic.BackColor = Color.Black;
             picShowPic.BackgroundImageLayout = ImageLayout.Stretch;
-            picShowPic.Location = new Point(13, 35);
-            picShowPic.Margin = new Padding(5);
+            picShowPic.Location = new Point(9, 21);
+            picShowPic.Margin = new Padding(4, 3, 4, 3);
             picShowPic.Name = "picShowPic";
-            picShowPic.Size = new Size(167, 178);
+            picShowPic.Size = new Size(117, 107);
             picShowPic.TabIndex = 42;
             picShowPic.TabStop = false;
             // 
@@ -4033,11 +3984,11 @@ namespace Client
             fraConditionalBranch.Controls.Add(cmbCondition_PlayerVarIndex);
             fraConditionalBranch.Controls.Add(optCondition0);
             fraConditionalBranch.ForeColor = Color.Gainsboro;
-            fraConditionalBranch.Location = new Point(10, 13);
-            fraConditionalBranch.Margin = new Padding(5);
+            fraConditionalBranch.Location = new Point(7, 8);
+            fraConditionalBranch.Margin = new Padding(4, 3, 4, 3);
             fraConditionalBranch.Name = "fraConditionalBranch";
-            fraConditionalBranch.Padding = new Padding(5);
-            fraConditionalBranch.Size = new Size(648, 860);
+            fraConditionalBranch.Padding = new Padding(4, 3, 4, 3);
+            fraConditionalBranch.Size = new Size(454, 516);
             fraConditionalBranch.TabIndex = 0;
             fraConditionalBranch.TabStop = false;
             fraConditionalBranch.Text = "Conditional Branch";
@@ -4048,84 +3999,88 @@ namespace Client
             cmbCondition_Time.DrawMode = DrawMode.OwnerDrawVariable;
             cmbCondition_Time.FormattingEnabled = true;
             cmbCondition_Time.Items.AddRange(new object[] { "Day", "Night", "Dawn", "Dusk" });
-            cmbCondition_Time.Location = new Point(398, 445);
-            cmbCondition_Time.Margin = new Padding(5);
+            cmbCondition_Time.Location = new Point(279, 267);
+            cmbCondition_Time.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_Time.Name = "cmbCondition_Time";
-            cmbCondition_Time.Size = new Size(237, 32);
+            cmbCondition_Time.Size = new Size(167, 24);
             cmbCondition_Time.TabIndex = 33;
             // 
             // optCondition9
             // 
             optCondition9.AutoSize = true;
-            optCondition9.Location = new Point(10, 447);
-            optCondition9.Margin = new Padding(5);
+            optCondition9.Location = new Point(7, 268);
+            optCondition9.Margin = new Padding(4, 3, 4, 3);
             optCondition9.Name = "optCondition9";
-            optCondition9.Size = new Size(154, 29);
+            optCondition9.Size = new Size(103, 19);
             optCondition9.TabIndex = 32;
             optCondition9.TabStop = true;
             optCondition9.Text = "Time of Day is:";
+            optCondition9.CheckedChanged += OptCondition9_CheckedChanged;
             // 
             // btnConditionalBranchOk
             // 
-            btnConditionalBranchOk.Location = new Point(377, 800);
-            btnConditionalBranchOk.Margin = new Padding(5);
+            btnConditionalBranchOk.Location = new Point(264, 480);
+            btnConditionalBranchOk.Margin = new Padding(4, 3, 4, 3);
             btnConditionalBranchOk.Name = "btnConditionalBranchOk";
-            btnConditionalBranchOk.Padding = new Padding(8, 10, 8, 10);
-            btnConditionalBranchOk.Size = new Size(125, 45);
+            btnConditionalBranchOk.Padding = new Padding(6, 6, 6, 6);
+            btnConditionalBranchOk.Size = new Size(88, 27);
             btnConditionalBranchOk.TabIndex = 31;
             btnConditionalBranchOk.Text = "Ok";
+            btnConditionalBranchOk.Click += BtnConditionalBranchOk_Click;
             // 
             // btnConditionalBranchCancel
             // 
-            btnConditionalBranchCancel.Location = new Point(512, 800);
-            btnConditionalBranchCancel.Margin = new Padding(5);
+            btnConditionalBranchCancel.Location = new Point(358, 480);
+            btnConditionalBranchCancel.Margin = new Padding(4, 3, 4, 3);
             btnConditionalBranchCancel.Name = "btnConditionalBranchCancel";
-            btnConditionalBranchCancel.Padding = new Padding(8, 10, 8, 10);
-            btnConditionalBranchCancel.Size = new Size(125, 45);
+            btnConditionalBranchCancel.Padding = new Padding(6, 6, 6, 6);
+            btnConditionalBranchCancel.Size = new Size(88, 27);
             btnConditionalBranchCancel.TabIndex = 30;
             btnConditionalBranchCancel.Text = "Cancel";
+            btnConditionalBranchCancel.Click += BtnConditionalBranchCancel_Click;
             // 
             // cmbCondition_Gender
             // 
             cmbCondition_Gender.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_Gender.FormattingEnabled = true;
             cmbCondition_Gender.Items.AddRange(new object[] { "Male", "Female" });
-            cmbCondition_Gender.Location = new Point(398, 393);
-            cmbCondition_Gender.Margin = new Padding(5);
+            cmbCondition_Gender.Location = new Point(279, 236);
+            cmbCondition_Gender.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_Gender.Name = "cmbCondition_Gender";
-            cmbCondition_Gender.Size = new Size(237, 32);
+            cmbCondition_Gender.Size = new Size(167, 24);
             cmbCondition_Gender.TabIndex = 29;
             // 
             // optCondition8
             // 
             optCondition8.AutoSize = true;
-            optCondition8.Location = new Point(10, 395);
-            optCondition8.Margin = new Padding(5);
+            optCondition8.Location = new Point(7, 237);
+            optCondition8.Margin = new Padding(4, 3, 4, 3);
             optCondition8.Name = "optCondition8";
-            optCondition8.Size = new Size(163, 29);
+            optCondition8.Size = new Size(109, 19);
             optCondition8.TabIndex = 28;
             optCondition8.TabStop = true;
             optCondition8.Text = "Player Gender is";
+            optCondition8.CheckedChanged += OptCondition8_CheckedChanged;
             // 
             // cmbCondition_SelfSwitchCondition
             // 
             cmbCondition_SelfSwitchCondition.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_SelfSwitchCondition.FormattingEnabled = true;
             cmbCondition_SelfSwitchCondition.Items.AddRange(new object[] { "False", "True" });
-            cmbCondition_SelfSwitchCondition.Location = new Point(437, 352);
-            cmbCondition_SelfSwitchCondition.Margin = new Padding(5);
+            cmbCondition_SelfSwitchCondition.Location = new Point(306, 211);
+            cmbCondition_SelfSwitchCondition.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_SelfSwitchCondition.Name = "cmbCondition_SelfSwitchCondition";
-            cmbCondition_SelfSwitchCondition.Size = new Size(199, 32);
+            cmbCondition_SelfSwitchCondition.Size = new Size(140, 24);
             cmbCondition_SelfSwitchCondition.TabIndex = 23;
             // 
             // DarkLabel17
             // 
             DarkLabel17.AutoSize = true;
             DarkLabel17.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel17.Location = new Point(390, 359);
-            DarkLabel17.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel17.Location = new Point(273, 215);
+            DarkLabel17.Margin = new Padding(4, 0, 4, 0);
             DarkLabel17.Name = "DarkLabel17";
-            DarkLabel17.Size = new Size(24, 25);
+            DarkLabel17.Size = new Size(15, 15);
             DarkLabel17.TabIndex = 22;
             DarkLabel17.Text = "is";
             // 
@@ -4133,111 +4088,115 @@ namespace Client
             // 
             cmbCondition_SelfSwitch.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_SelfSwitch.FormattingEnabled = true;
-            cmbCondition_SelfSwitch.Location = new Point(178, 352);
-            cmbCondition_SelfSwitch.Margin = new Padding(5);
+            cmbCondition_SelfSwitch.Location = new Point(125, 211);
+            cmbCondition_SelfSwitch.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_SelfSwitch.Name = "cmbCondition_SelfSwitch";
-            cmbCondition_SelfSwitch.Size = new Size(199, 32);
+            cmbCondition_SelfSwitch.Size = new Size(140, 24);
             cmbCondition_SelfSwitch.TabIndex = 21;
             // 
             // optCondition6
             // 
             optCondition6.AutoSize = true;
-            optCondition6.Location = new Point(10, 353);
-            optCondition6.Margin = new Padding(5);
+            optCondition6.Location = new Point(7, 212);
+            optCondition6.Margin = new Padding(4, 3, 4, 3);
             optCondition6.Name = "optCondition6";
-            optCondition6.Size = new Size(122, 29);
+            optCondition6.Size = new Size(82, 19);
             optCondition6.TabIndex = 20;
             optCondition6.TabStop = true;
             optCondition6.Text = "Self Switch";
+            optCondition6.CheckedChanged += OptCondition6_CheckedChanged;
             // 
             // nudCondition_LevelAmount
             // 
-            nudCondition_LevelAmount.Location = new Point(448, 302);
-            nudCondition_LevelAmount.Margin = new Padding(5);
+            nudCondition_LevelAmount.Location = new Point(314, 181);
+            nudCondition_LevelAmount.Margin = new Padding(4, 3, 4, 3);
             nudCondition_LevelAmount.Name = "nudCondition_LevelAmount";
-            nudCondition_LevelAmount.Size = new Size(188, 31);
+            nudCondition_LevelAmount.Size = new Size(132, 23);
             nudCondition_LevelAmount.TabIndex = 19;
             // 
             // optCondition5
             // 
             optCondition5.AutoSize = true;
-            optCondition5.Location = new Point(10, 302);
-            optCondition5.Margin = new Padding(5);
+            optCondition5.Location = new Point(7, 181);
+            optCondition5.Margin = new Padding(4, 3, 4, 3);
             optCondition5.Name = "optCondition5";
-            optCondition5.Size = new Size(93, 29);
+            optCondition5.Size = new Size(63, 19);
             optCondition5.TabIndex = 18;
             optCondition5.TabStop = true;
             optCondition5.Text = "Level is";
+            optCondition5.CheckedChanged += OptCondition5_CheckedChanged;
             // 
             // cmbCondition_LevelCompare
             // 
             cmbCondition_LevelCompare.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_LevelCompare.FormattingEnabled = true;
             cmbCondition_LevelCompare.Items.AddRange(new object[] { "Equal To", "Great Than Or Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal" });
-            cmbCondition_LevelCompare.Location = new Point(178, 300);
-            cmbCondition_LevelCompare.Margin = new Padding(5);
+            cmbCondition_LevelCompare.Location = new Point(125, 180);
+            cmbCondition_LevelCompare.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_LevelCompare.Name = "cmbCondition_LevelCompare";
-            cmbCondition_LevelCompare.Size = new Size(257, 32);
+            cmbCondition_LevelCompare.Size = new Size(181, 24);
             cmbCondition_LevelCompare.TabIndex = 17;
             // 
             // cmbCondition_LearntSkill
             // 
             cmbCondition_LearntSkill.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_LearntSkill.FormattingEnabled = true;
-            cmbCondition_LearntSkill.Location = new Point(178, 248);
-            cmbCondition_LearntSkill.Margin = new Padding(5);
+            cmbCondition_LearntSkill.Location = new Point(125, 149);
+            cmbCondition_LearntSkill.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_LearntSkill.Name = "cmbCondition_LearntSkill";
-            cmbCondition_LearntSkill.Size = new Size(457, 32);
+            cmbCondition_LearntSkill.Size = new Size(321, 24);
             cmbCondition_LearntSkill.TabIndex = 16;
             // 
             // optCondition4
             // 
             optCondition4.AutoSize = true;
-            optCondition4.Location = new Point(10, 250);
-            optCondition4.Margin = new Padding(5);
+            optCondition4.Location = new Point(7, 150);
+            optCondition4.Margin = new Padding(4, 3, 4, 3);
             optCondition4.Name = "optCondition4";
-            optCondition4.Size = new Size(125, 29);
+            optCondition4.Size = new Size(84, 19);
             optCondition4.TabIndex = 15;
             optCondition4.TabStop = true;
             optCondition4.Text = "Knows Skill";
+            optCondition4.CheckedChanged += OptCondition4_CheckedChanged;
             // 
             // cmbCondition_JobIs
             // 
             cmbCondition_JobIs.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_JobIs.FormattingEnabled = true;
-            cmbCondition_JobIs.Location = new Point(178, 197);
-            cmbCondition_JobIs.Margin = new Padding(5);
+            cmbCondition_JobIs.Location = new Point(125, 118);
+            cmbCondition_JobIs.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_JobIs.Name = "cmbCondition_JobIs";
-            cmbCondition_JobIs.Size = new Size(457, 32);
+            cmbCondition_JobIs.Size = new Size(321, 24);
             cmbCondition_JobIs.TabIndex = 14;
             // 
             // optCondition3
             // 
             optCondition3.AutoSize = true;
-            optCondition3.Location = new Point(10, 198);
-            optCondition3.Margin = new Padding(5);
+            optCondition3.Location = new Point(7, 119);
+            optCondition3.Margin = new Padding(4, 3, 4, 3);
             optCondition3.Name = "optCondition3";
-            optCondition3.Size = new Size(83, 29);
+            optCondition3.Size = new Size(54, 19);
             optCondition3.TabIndex = 13;
             optCondition3.TabStop = true;
             optCondition3.Text = "Job Is";
+            optCondition3.CheckedChanged += OptCondition3_CheckedChanged;
             // 
             // nudCondition_HasItem
             // 
-            nudCondition_HasItem.Location = new Point(437, 147);
-            nudCondition_HasItem.Margin = new Padding(5);
+            nudCondition_HasItem.Location = new Point(306, 88);
+            nudCondition_HasItem.Margin = new Padding(4, 3, 4, 3);
             nudCondition_HasItem.Name = "nudCondition_HasItem";
-            nudCondition_HasItem.Size = new Size(200, 31);
+            nudCondition_HasItem.Size = new Size(140, 23);
             nudCondition_HasItem.TabIndex = 12;
             // 
             // DarkLabel16
             // 
             DarkLabel16.AutoSize = true;
             DarkLabel16.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel16.Location = new Point(390, 150);
-            DarkLabel16.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel16.Location = new Point(273, 90);
+            DarkLabel16.Margin = new Padding(4, 0, 4, 0);
             DarkLabel16.Name = "DarkLabel16";
-            DarkLabel16.Size = new Size(23, 25);
+            DarkLabel16.Size = new Size(14, 15);
             DarkLabel16.TabIndex = 11;
             DarkLabel16.Text = "X";
             // 
@@ -4245,42 +4204,44 @@ namespace Client
             // 
             cmbCondition_HasItem.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_HasItem.FormattingEnabled = true;
-            cmbCondition_HasItem.Location = new Point(178, 145);
-            cmbCondition_HasItem.Margin = new Padding(5);
+            cmbCondition_HasItem.Location = new Point(125, 87);
+            cmbCondition_HasItem.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_HasItem.Name = "cmbCondition_HasItem";
-            cmbCondition_HasItem.Size = new Size(199, 32);
+            cmbCondition_HasItem.Size = new Size(140, 24);
             cmbCondition_HasItem.TabIndex = 10;
             // 
             // optCondition2
             // 
             optCondition2.AutoSize = true;
-            optCondition2.Location = new Point(10, 147);
-            optCondition2.Margin = new Padding(5);
+            optCondition2.Location = new Point(7, 88);
+            optCondition2.Margin = new Padding(4, 3, 4, 3);
             optCondition2.Name = "optCondition2";
-            optCondition2.Size = new Size(108, 29);
+            optCondition2.Size = new Size(72, 19);
             optCondition2.TabIndex = 9;
             optCondition2.TabStop = true;
             optCondition2.Text = "Has Item";
+            optCondition2.CheckedChanged += OptCondition2_CheckedChanged;
             // 
             // optCondition1
             // 
             optCondition1.AutoSize = true;
-            optCondition1.Location = new Point(10, 95);
-            optCondition1.Margin = new Padding(5);
+            optCondition1.Location = new Point(7, 57);
+            optCondition1.Margin = new Padding(4, 3, 4, 3);
             optCondition1.Name = "optCondition1";
-            optCondition1.Size = new Size(140, 29);
+            optCondition1.Size = new Size(95, 19);
             optCondition1.TabIndex = 8;
             optCondition1.TabStop = true;
             optCondition1.Text = "Player Switch";
+            optCondition1.CheckedChanged += OptCondition1_CheckedChanged;
             // 
             // DarkLabel15
             // 
             DarkLabel15.AutoSize = true;
             DarkLabel15.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel15.Location = new Point(390, 98);
-            DarkLabel15.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel15.Location = new Point(273, 59);
+            DarkLabel15.Margin = new Padding(4, 0, 4, 0);
             DarkLabel15.Name = "DarkLabel15";
-            DarkLabel15.Size = new Size(24, 25);
+            DarkLabel15.Size = new Size(15, 15);
             DarkLabel15.TabIndex = 7;
             DarkLabel15.Text = "is";
             // 
@@ -4289,28 +4250,28 @@ namespace Client
             cmbCondtion_PlayerSwitchCondition.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondtion_PlayerSwitchCondition.FormattingEnabled = true;
             cmbCondtion_PlayerSwitchCondition.Items.AddRange(new object[] { "False", "True" });
-            cmbCondtion_PlayerSwitchCondition.Location = new Point(437, 91);
-            cmbCondtion_PlayerSwitchCondition.Margin = new Padding(5);
+            cmbCondtion_PlayerSwitchCondition.Location = new Point(306, 55);
+            cmbCondtion_PlayerSwitchCondition.Margin = new Padding(4, 3, 4, 3);
             cmbCondtion_PlayerSwitchCondition.Name = "cmbCondtion_PlayerSwitchCondition";
-            cmbCondtion_PlayerSwitchCondition.Size = new Size(199, 32);
+            cmbCondtion_PlayerSwitchCondition.Size = new Size(140, 24);
             cmbCondtion_PlayerSwitchCondition.TabIndex = 6;
             // 
             // cmbCondition_PlayerSwitch
             // 
             cmbCondition_PlayerSwitch.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_PlayerSwitch.FormattingEnabled = true;
-            cmbCondition_PlayerSwitch.Location = new Point(178, 91);
-            cmbCondition_PlayerSwitch.Margin = new Padding(5);
+            cmbCondition_PlayerSwitch.Location = new Point(125, 55);
+            cmbCondition_PlayerSwitch.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_PlayerSwitch.Name = "cmbCondition_PlayerSwitch";
-            cmbCondition_PlayerSwitch.Size = new Size(199, 32);
+            cmbCondition_PlayerSwitch.Size = new Size(140, 24);
             cmbCondition_PlayerSwitch.TabIndex = 5;
             // 
             // nudCondition_PlayerVarCondition
             // 
-            nudCondition_PlayerVarCondition.Location = new Point(558, 41);
-            nudCondition_PlayerVarCondition.Margin = new Padding(5);
+            nudCondition_PlayerVarCondition.Location = new Point(391, 25);
+            nudCondition_PlayerVarCondition.Margin = new Padding(4, 3, 4, 3);
             nudCondition_PlayerVarCondition.Name = "nudCondition_PlayerVarCondition";
-            nudCondition_PlayerVarCondition.Size = new Size(78, 31);
+            nudCondition_PlayerVarCondition.Size = new Size(55, 23);
             nudCondition_PlayerVarCondition.TabIndex = 4;
             // 
             // cmbCondition_PlayerVarCompare
@@ -4318,20 +4279,20 @@ namespace Client
             cmbCondition_PlayerVarCompare.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_PlayerVarCompare.FormattingEnabled = true;
             cmbCondition_PlayerVarCompare.Items.AddRange(new object[] { "Equal To", "Great Than Or Equal To", "Less Than or Equal To", "Greater Than", "Less Than", "Does Not Equal" });
-            cmbCondition_PlayerVarCompare.Location = new Point(393, 40);
-            cmbCondition_PlayerVarCompare.Margin = new Padding(5);
+            cmbCondition_PlayerVarCompare.Location = new Point(275, 24);
+            cmbCondition_PlayerVarCompare.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_PlayerVarCompare.Name = "cmbCondition_PlayerVarCompare";
-            cmbCondition_PlayerVarCompare.Size = new Size(144, 32);
+            cmbCondition_PlayerVarCompare.Size = new Size(102, 24);
             cmbCondition_PlayerVarCompare.TabIndex = 3;
             // 
             // DarkLabel14
             // 
             DarkLabel14.AutoSize = true;
             DarkLabel14.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel14.Location = new Point(360, 47);
-            DarkLabel14.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel14.Location = new Point(252, 28);
+            DarkLabel14.Margin = new Padding(4, 0, 4, 0);
             DarkLabel14.Name = "DarkLabel14";
-            DarkLabel14.Size = new Size(24, 25);
+            DarkLabel14.Size = new Size(15, 15);
             DarkLabel14.TabIndex = 2;
             DarkLabel14.Text = "is";
             // 
@@ -4339,22 +4300,23 @@ namespace Client
             // 
             cmbCondition_PlayerVarIndex.DrawMode = DrawMode.OwnerDrawFixed;
             cmbCondition_PlayerVarIndex.FormattingEnabled = true;
-            cmbCondition_PlayerVarIndex.Location = new Point(178, 40);
-            cmbCondition_PlayerVarIndex.Margin = new Padding(5);
+            cmbCondition_PlayerVarIndex.Location = new Point(125, 24);
+            cmbCondition_PlayerVarIndex.Margin = new Padding(4, 3, 4, 3);
             cmbCondition_PlayerVarIndex.Name = "cmbCondition_PlayerVarIndex";
-            cmbCondition_PlayerVarIndex.Size = new Size(169, 32);
+            cmbCondition_PlayerVarIndex.Size = new Size(120, 24);
             cmbCondition_PlayerVarIndex.TabIndex = 1;
             // 
             // optCondition0
             // 
             optCondition0.AutoSize = true;
-            optCondition0.Location = new Point(10, 41);
-            optCondition0.Margin = new Padding(5);
+            optCondition0.Location = new Point(7, 25);
+            optCondition0.Margin = new Padding(4, 3, 4, 3);
             optCondition0.Name = "optCondition0";
-            optCondition0.Size = new Size(151, 29);
+            optCondition0.Size = new Size(101, 19);
             optCondition0.TabIndex = 0;
             optCondition0.TabStop = true;
             optCondition0.Text = "Player Variable";
+            optCondition0.CheckedChanged += OptCondition_Index0_CheckedChanged;
             // 
             // fraPlayBGM
             // 
@@ -4364,11 +4326,11 @@ namespace Client
             fraPlayBGM.Controls.Add(btnPlayBgmCancel);
             fraPlayBGM.Controls.Add(cmbPlayBGM);
             fraPlayBGM.ForeColor = Color.Gainsboro;
-            fraPlayBGM.Location = new Point(668, 2);
-            fraPlayBGM.Margin = new Padding(5);
+            fraPlayBGM.Location = new Point(468, 1);
+            fraPlayBGM.Margin = new Padding(4, 3, 4, 3);
             fraPlayBGM.Name = "fraPlayBGM";
-            fraPlayBGM.Padding = new Padding(5);
-            fraPlayBGM.Size = new Size(410, 145);
+            fraPlayBGM.Padding = new Padding(4, 3, 4, 3);
+            fraPlayBGM.Size = new Size(287, 87);
             fraPlayBGM.TabIndex = 21;
             fraPlayBGM.TabStop = false;
             fraPlayBGM.Text = "Play BGM";
@@ -4376,32 +4338,34 @@ namespace Client
             // 
             // btnPlayBgmOk
             // 
-            btnPlayBgmOk.Location = new Point(77, 88);
-            btnPlayBgmOk.Margin = new Padding(5);
+            btnPlayBgmOk.Location = new Point(54, 53);
+            btnPlayBgmOk.Margin = new Padding(4, 3, 4, 3);
             btnPlayBgmOk.Name = "btnPlayBgmOk";
-            btnPlayBgmOk.Padding = new Padding(8, 10, 8, 10);
-            btnPlayBgmOk.Size = new Size(125, 45);
+            btnPlayBgmOk.Padding = new Padding(6, 6, 6, 6);
+            btnPlayBgmOk.Size = new Size(88, 27);
             btnPlayBgmOk.TabIndex = 27;
             btnPlayBgmOk.Text = "Ok";
+            btnPlayBgmOk.Click += BtnPlayBgmOK_Click;
             // 
             // btnPlayBgmCancel
             // 
-            btnPlayBgmCancel.Location = new Point(212, 88);
-            btnPlayBgmCancel.Margin = new Padding(5);
+            btnPlayBgmCancel.Location = new Point(148, 53);
+            btnPlayBgmCancel.Margin = new Padding(4, 3, 4, 3);
             btnPlayBgmCancel.Name = "btnPlayBgmCancel";
-            btnPlayBgmCancel.Padding = new Padding(8, 10, 8, 10);
-            btnPlayBgmCancel.Size = new Size(125, 45);
+            btnPlayBgmCancel.Padding = new Padding(6, 6, 6, 6);
+            btnPlayBgmCancel.Size = new Size(88, 27);
             btnPlayBgmCancel.TabIndex = 26;
             btnPlayBgmCancel.Text = "Cancel";
+            btnPlayBgmCancel.Click += BtnPlayBgmCancel_Click;
             // 
             // cmbPlayBGM
             // 
             cmbPlayBGM.DrawMode = DrawMode.OwnerDrawFixed;
             cmbPlayBGM.FormattingEnabled = true;
-            cmbPlayBGM.Location = new Point(10, 37);
-            cmbPlayBGM.Margin = new Padding(5);
+            cmbPlayBGM.Location = new Point(7, 22);
+            cmbPlayBGM.Margin = new Padding(4, 3, 4, 3);
             cmbPlayBGM.Name = "cmbPlayBGM";
-            cmbPlayBGM.Size = new Size(386, 32);
+            cmbPlayBGM.Size = new Size(271, 24);
             cmbPlayBGM.TabIndex = 0;
             // 
             // fraPlayerWarp
@@ -4419,11 +4383,11 @@ namespace Client
             fraPlayerWarp.Controls.Add(nudWPMap);
             fraPlayerWarp.Controls.Add(DarkLabel34);
             fraPlayerWarp.ForeColor = Color.Gainsboro;
-            fraPlayerWarp.Location = new Point(668, 12);
-            fraPlayerWarp.Margin = new Padding(5);
+            fraPlayerWarp.Location = new Point(468, 7);
+            fraPlayerWarp.Margin = new Padding(4, 3, 4, 3);
             fraPlayerWarp.Name = "fraPlayerWarp";
-            fraPlayerWarp.Padding = new Padding(5);
-            fraPlayerWarp.Size = new Size(410, 187);
+            fraPlayerWarp.Padding = new Padding(4, 3, 4, 3);
+            fraPlayerWarp.Size = new Size(287, 112);
             fraPlayerWarp.TabIndex = 19;
             fraPlayerWarp.TabStop = false;
             fraPlayerWarp.Text = "Warp Player";
@@ -4431,32 +4395,34 @@ namespace Client
             // 
             // btnPlayerWarpOk
             // 
-            btnPlayerWarpOk.Location = new Point(138, 130);
-            btnPlayerWarpOk.Margin = new Padding(5);
+            btnPlayerWarpOk.Location = new Point(97, 78);
+            btnPlayerWarpOk.Margin = new Padding(4, 3, 4, 3);
             btnPlayerWarpOk.Name = "btnPlayerWarpOk";
-            btnPlayerWarpOk.Padding = new Padding(8, 10, 8, 10);
-            btnPlayerWarpOk.Size = new Size(125, 45);
+            btnPlayerWarpOk.Padding = new Padding(6, 6, 6, 6);
+            btnPlayerWarpOk.Size = new Size(88, 27);
             btnPlayerWarpOk.TabIndex = 46;
             btnPlayerWarpOk.Text = "Ok";
+            btnPlayerWarpOk.Click += BtnPlayerWarpOK_Click;
             // 
             // btnPlayerWarpCancel
             // 
-            btnPlayerWarpCancel.Location = new Point(273, 130);
-            btnPlayerWarpCancel.Margin = new Padding(5);
+            btnPlayerWarpCancel.Location = new Point(191, 78);
+            btnPlayerWarpCancel.Margin = new Padding(4, 3, 4, 3);
             btnPlayerWarpCancel.Name = "btnPlayerWarpCancel";
-            btnPlayerWarpCancel.Padding = new Padding(8, 10, 8, 10);
-            btnPlayerWarpCancel.Size = new Size(125, 45);
+            btnPlayerWarpCancel.Padding = new Padding(6, 6, 6, 6);
+            btnPlayerWarpCancel.Size = new Size(88, 27);
             btnPlayerWarpCancel.TabIndex = 45;
             btnPlayerWarpCancel.Text = "Cancel";
+            btnPlayerWarpCancel.Click += BtnPlayerWarpCancel_Click;
             // 
             // DarkLabel31
             // 
             DarkLabel31.AutoSize = true;
             DarkLabel31.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel31.Location = new Point(13, 85);
-            DarkLabel31.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel31.Location = new Point(9, 51);
+            DarkLabel31.Margin = new Padding(4, 0, 4, 0);
             DarkLabel31.Name = "DarkLabel31";
-            DarkLabel31.Size = new Size(87, 25);
+            DarkLabel31.Size = new Size(58, 15);
             DarkLabel31.TabIndex = 44;
             DarkLabel31.Text = "Direction:";
             // 
@@ -4465,66 +4431,66 @@ namespace Client
             cmbWarpPlayerDir.DrawMode = DrawMode.OwnerDrawFixed;
             cmbWarpPlayerDir.FormattingEnabled = true;
             cmbWarpPlayerDir.Items.AddRange(new object[] { "Retain Direction", "Up", "Down", "Left", "Right" });
-            cmbWarpPlayerDir.Location = new Point(160, 78);
-            cmbWarpPlayerDir.Margin = new Padding(5);
+            cmbWarpPlayerDir.Location = new Point(112, 47);
+            cmbWarpPlayerDir.Margin = new Padding(4, 3, 4, 3);
             cmbWarpPlayerDir.Name = "cmbWarpPlayerDir";
-            cmbWarpPlayerDir.Size = new Size(236, 32);
+            cmbWarpPlayerDir.Size = new Size(166, 24);
             cmbWarpPlayerDir.TabIndex = 43;
             // 
             // nudWPY
             // 
-            nudWPY.Location = new Point(333, 28);
-            nudWPY.Margin = new Padding(5);
+            nudWPY.Location = new Point(233, 17);
+            nudWPY.Margin = new Padding(4, 3, 4, 3);
             nudWPY.Name = "nudWPY";
-            nudWPY.Size = new Size(65, 31);
+            nudWPY.Size = new Size(46, 23);
             nudWPY.TabIndex = 42;
             // 
             // DarkLabel32
             // 
             DarkLabel32.AutoSize = true;
             DarkLabel32.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel32.Location = new Point(295, 34);
-            DarkLabel32.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel32.Location = new Point(206, 20);
+            DarkLabel32.Margin = new Padding(4, 0, 4, 0);
             DarkLabel32.Name = "DarkLabel32";
-            DarkLabel32.Size = new Size(26, 25);
+            DarkLabel32.Size = new Size(17, 15);
             DarkLabel32.TabIndex = 41;
             DarkLabel32.Text = "Y:";
             // 
             // nudWPX
             // 
-            nudWPX.Location = new Point(217, 28);
-            nudWPX.Margin = new Padding(5);
+            nudWPX.Location = new Point(152, 17);
+            nudWPX.Margin = new Padding(4, 3, 4, 3);
             nudWPX.Name = "nudWPX";
-            nudWPX.Size = new Size(65, 31);
+            nudWPX.Size = new Size(46, 23);
             nudWPX.TabIndex = 40;
             // 
             // DarkLabel33
             // 
             DarkLabel33.AutoSize = true;
             DarkLabel33.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel33.Location = new Point(178, 34);
-            DarkLabel33.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel33.Location = new Point(125, 20);
+            DarkLabel33.Margin = new Padding(4, 0, 4, 0);
             DarkLabel33.Name = "DarkLabel33";
-            DarkLabel33.Size = new Size(27, 25);
+            DarkLabel33.Size = new Size(17, 15);
             DarkLabel33.TabIndex = 39;
             DarkLabel33.Text = "X:";
             // 
             // nudWPMap
             // 
-            nudWPMap.Location = new Point(72, 28);
-            nudWPMap.Margin = new Padding(5);
+            nudWPMap.Location = new Point(50, 17);
+            nudWPMap.Margin = new Padding(4, 3, 4, 3);
             nudWPMap.Name = "nudWPMap";
-            nudWPMap.Size = new Size(97, 31);
+            nudWPMap.Size = new Size(68, 23);
             nudWPMap.TabIndex = 38;
             // 
             // DarkLabel34
             // 
             DarkLabel34.AutoSize = true;
             DarkLabel34.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel34.Location = new Point(10, 34);
-            DarkLabel34.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel34.Location = new Point(7, 20);
+            DarkLabel34.Margin = new Padding(4, 0, 4, 0);
             DarkLabel34.Name = "DarkLabel34";
-            DarkLabel34.Size = new Size(52, 25);
+            DarkLabel34.Size = new Size(34, 15);
             DarkLabel34.TabIndex = 37;
             DarkLabel34.Text = "Map:";
             // 
@@ -4541,11 +4507,11 @@ namespace Client
             fraSetFog.Controls.Add(nudFogData1);
             fraSetFog.Controls.Add(nudFogData0);
             fraSetFog.ForeColor = Color.Gainsboro;
-            fraSetFog.Location = new Point(668, 13);
-            fraSetFog.Margin = new Padding(5);
+            fraSetFog.Location = new Point(468, 8);
+            fraSetFog.Margin = new Padding(4, 3, 4, 3);
             fraSetFog.Name = "fraSetFog";
-            fraSetFog.Padding = new Padding(5);
-            fraSetFog.Size = new Size(410, 185);
+            fraSetFog.Padding = new Padding(4, 3, 4, 3);
+            fraSetFog.Size = new Size(287, 111);
             fraSetFog.TabIndex = 18;
             fraSetFog.TabStop = false;
             fraSetFog.Text = "Set Fog";
@@ -4553,32 +4519,34 @@ namespace Client
             // 
             // btnSetFogOk
             // 
-            btnSetFogOk.Location = new Point(140, 128);
-            btnSetFogOk.Margin = new Padding(5);
+            btnSetFogOk.Location = new Point(98, 77);
+            btnSetFogOk.Margin = new Padding(4, 3, 4, 3);
             btnSetFogOk.Name = "btnSetFogOk";
-            btnSetFogOk.Padding = new Padding(8, 10, 8, 10);
-            btnSetFogOk.Size = new Size(125, 45);
+            btnSetFogOk.Padding = new Padding(6, 6, 6, 6);
+            btnSetFogOk.Size = new Size(88, 27);
             btnSetFogOk.TabIndex = 41;
             btnSetFogOk.Text = "Ok";
+            btnSetFogOk.Click += BtnSetFogOK_Click;
             // 
             // btnSetFogCancel
             // 
-            btnSetFogCancel.Location = new Point(275, 128);
-            btnSetFogCancel.Margin = new Padding(5);
+            btnSetFogCancel.Location = new Point(192, 77);
+            btnSetFogCancel.Margin = new Padding(4, 3, 4, 3);
             btnSetFogCancel.Name = "btnSetFogCancel";
-            btnSetFogCancel.Padding = new Padding(8, 10, 8, 10);
-            btnSetFogCancel.Size = new Size(125, 45);
+            btnSetFogCancel.Padding = new Padding(6, 6, 6, 6);
+            btnSetFogCancel.Size = new Size(88, 27);
             btnSetFogCancel.TabIndex = 40;
             btnSetFogCancel.Text = "Cancel";
+            btnSetFogCancel.Click += BtnSetFogCancel_Click;
             // 
             // DarkLabel30
             // 
             DarkLabel30.AutoSize = true;
             DarkLabel30.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel30.Location = new Point(207, 80);
-            DarkLabel30.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel30.Location = new Point(145, 48);
+            DarkLabel30.Margin = new Padding(4, 0, 4, 0);
             DarkLabel30.Name = "DarkLabel30";
-            DarkLabel30.Size = new Size(113, 25);
+            DarkLabel30.Size = new Size(74, 15);
             DarkLabel30.TabIndex = 39;
             DarkLabel30.Text = "Fog Opacity:";
             // 
@@ -4586,10 +4554,10 @@ namespace Client
             // 
             DarkLabel29.AutoSize = true;
             DarkLabel29.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel29.Location = new Point(12, 80);
-            DarkLabel29.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel29.Location = new Point(8, 48);
+            DarkLabel29.Margin = new Padding(4, 0, 4, 0);
             DarkLabel29.Name = "DarkLabel29";
-            DarkLabel29.Size = new Size(102, 25);
+            DarkLabel29.Size = new Size(65, 15);
             DarkLabel29.TabIndex = 38;
             DarkLabel29.Text = "Fog Speed:";
             // 
@@ -4597,36 +4565,36 @@ namespace Client
             // 
             DarkLabel28.AutoSize = true;
             DarkLabel28.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel28.Location = new Point(12, 28);
-            DarkLabel28.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel28.Location = new Point(8, 17);
+            DarkLabel28.Margin = new Padding(4, 0, 4, 0);
             DarkLabel28.Name = "DarkLabel28";
-            DarkLabel28.Size = new Size(47, 25);
+            DarkLabel28.Size = new Size(30, 15);
             DarkLabel28.TabIndex = 37;
             DarkLabel28.Text = "Fog:";
             // 
             // nudFogData2
             // 
-            nudFogData2.Location = new Point(318, 75);
-            nudFogData2.Margin = new Padding(5);
+            nudFogData2.Location = new Point(223, 45);
+            nudFogData2.Margin = new Padding(4, 3, 4, 3);
             nudFogData2.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             nudFogData2.Name = "nudFogData2";
-            nudFogData2.Size = new Size(82, 31);
+            nudFogData2.Size = new Size(57, 23);
             nudFogData2.TabIndex = 36;
             // 
             // nudFogData1
             // 
-            nudFogData1.Location = new Point(120, 77);
-            nudFogData1.Margin = new Padding(5);
+            nudFogData1.Location = new Point(84, 46);
+            nudFogData1.Margin = new Padding(4, 3, 4, 3);
             nudFogData1.Name = "nudFogData1";
-            nudFogData1.Size = new Size(80, 31);
+            nudFogData1.Size = new Size(56, 23);
             nudFogData1.TabIndex = 35;
             // 
             // nudFogData0
             // 
-            nudFogData0.Location = new Point(162, 23);
-            nudFogData0.Margin = new Padding(5);
+            nudFogData0.Location = new Point(113, 14);
+            nudFogData0.Margin = new Padding(4, 3, 4, 3);
             nudFogData0.Name = "nudFogData0";
-            nudFogData0.Size = new Size(238, 31);
+            nudFogData0.Size = new Size(167, 23);
             nudFogData0.TabIndex = 34;
             // 
             // fraShowText
@@ -4638,11 +4606,11 @@ namespace Client
             fraShowText.Controls.Add(btnShowTextCancel);
             fraShowText.Controls.Add(btnShowTextOk);
             fraShowText.ForeColor = Color.Gainsboro;
-            fraShowText.Location = new Point(10, 585);
-            fraShowText.Margin = new Padding(5);
+            fraShowText.Location = new Point(7, 351);
+            fraShowText.Margin = new Padding(4, 3, 4, 3);
             fraShowText.Name = "fraShowText";
-            fraShowText.Padding = new Padding(5);
-            fraShowText.Size = new Size(413, 547);
+            fraShowText.Padding = new Padding(4, 3, 4, 3);
+            fraShowText.Size = new Size(289, 328);
             fraShowText.TabIndex = 17;
             fraShowText.TabStop = false;
             fraShowText.Text = "Show Text";
@@ -4652,10 +4620,10 @@ namespace Client
             // 
             DarkLabel27.AutoSize = true;
             DarkLabel27.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel27.Location = new Point(12, 37);
-            DarkLabel27.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel27.Location = new Point(8, 22);
+            DarkLabel27.Margin = new Padding(4, 0, 4, 0);
             DarkLabel27.Name = "DarkLabel27";
-            DarkLabel27.Size = new Size(42, 25);
+            DarkLabel27.Size = new Size(28, 15);
             DarkLabel27.TabIndex = 26;
             DarkLabel27.Text = "Text";
             // 
@@ -4664,32 +4632,34 @@ namespace Client
             txtShowText.BackColor = Color.FromArgb(69, 73, 74);
             txtShowText.BorderStyle = BorderStyle.FixedSingle;
             txtShowText.ForeColor = Color.FromArgb(220, 220, 220);
-            txtShowText.Location = new Point(15, 73);
-            txtShowText.Margin = new Padding(5);
+            txtShowText.Location = new Point(10, 44);
+            txtShowText.Margin = new Padding(4, 3, 4, 3);
             txtShowText.Multiline = true;
             txtShowText.Name = "txtShowText";
-            txtShowText.Size = new Size(379, 200);
+            txtShowText.Size = new Size(266, 121);
             txtShowText.TabIndex = 21;
             // 
             // btnShowTextCancel
             // 
-            btnShowTextCancel.Location = new Point(278, 485);
-            btnShowTextCancel.Margin = new Padding(5);
+            btnShowTextCancel.Location = new Point(195, 291);
+            btnShowTextCancel.Margin = new Padding(4, 3, 4, 3);
             btnShowTextCancel.Name = "btnShowTextCancel";
-            btnShowTextCancel.Padding = new Padding(8, 10, 8, 10);
-            btnShowTextCancel.Size = new Size(125, 45);
+            btnShowTextCancel.Padding = new Padding(6, 6, 6, 6);
+            btnShowTextCancel.Size = new Size(88, 27);
             btnShowTextCancel.TabIndex = 24;
             btnShowTextCancel.Text = "Cancel";
+            btnShowTextCancel.Click += BtnShowTextCancel_Click;
             // 
             // btnShowTextOk
             // 
-            btnShowTextOk.Location = new Point(143, 485);
-            btnShowTextOk.Margin = new Padding(5);
+            btnShowTextOk.Location = new Point(100, 291);
+            btnShowTextOk.Margin = new Padding(4, 3, 4, 3);
             btnShowTextOk.Name = "btnShowTextOk";
-            btnShowTextOk.Padding = new Padding(8, 10, 8, 10);
-            btnShowTextOk.Size = new Size(125, 45);
+            btnShowTextOk.Padding = new Padding(6, 6, 6, 6);
+            btnShowTextOk.Size = new Size(88, 27);
             btnShowTextOk.TabIndex = 25;
             btnShowTextOk.Text = "Ok";
+            btnShowTextOk.Click += BtnShowTextOk_Click;
             // 
             // fraAddText
             // 
@@ -4704,11 +4674,11 @@ namespace Client
             fraAddText.Controls.Add(txtAddText_Text);
             fraAddText.Controls.Add(DarkLabel24);
             fraAddText.ForeColor = Color.Gainsboro;
-            fraAddText.Location = new Point(10, 698);
-            fraAddText.Margin = new Padding(5);
+            fraAddText.Location = new Point(7, 419);
+            fraAddText.Margin = new Padding(4, 3, 4, 3);
             fraAddText.Name = "fraAddText";
-            fraAddText.Padding = new Padding(5);
-            fraAddText.Size = new Size(388, 360);
+            fraAddText.Padding = new Padding(4, 3, 4, 3);
+            fraAddText.Size = new Size(272, 216);
             fraAddText.TabIndex = 3;
             fraAddText.TabStop = false;
             fraAddText.Text = "Add Text";
@@ -4716,31 +4686,33 @@ namespace Client
             // 
             // btnAddTextOk
             // 
-            btnAddTextOk.Location = new Point(92, 300);
-            btnAddTextOk.Margin = new Padding(5);
+            btnAddTextOk.Location = new Point(64, 180);
+            btnAddTextOk.Margin = new Padding(4, 3, 4, 3);
             btnAddTextOk.Name = "btnAddTextOk";
-            btnAddTextOk.Padding = new Padding(8, 10, 8, 10);
-            btnAddTextOk.Size = new Size(125, 45);
+            btnAddTextOk.Padding = new Padding(6, 6, 6, 6);
+            btnAddTextOk.Size = new Size(88, 27);
             btnAddTextOk.TabIndex = 9;
             btnAddTextOk.Text = "Ok";
+            btnAddTextOk.Click += BtnAddTextOk_Click;
             // 
             // btnAddTextCancel
             // 
-            btnAddTextCancel.Location = new Point(227, 300);
-            btnAddTextCancel.Margin = new Padding(5);
+            btnAddTextCancel.Location = new Point(159, 180);
+            btnAddTextCancel.Margin = new Padding(4, 3, 4, 3);
             btnAddTextCancel.Name = "btnAddTextCancel";
-            btnAddTextCancel.Padding = new Padding(8, 10, 8, 10);
-            btnAddTextCancel.Size = new Size(125, 45);
+            btnAddTextCancel.Padding = new Padding(6, 6, 6, 6);
+            btnAddTextCancel.Size = new Size(88, 27);
             btnAddTextCancel.TabIndex = 8;
             btnAddTextCancel.Text = "Cancel";
+            btnAddTextCancel.Click += BtnAddTextCancel_Click;
             // 
             // optAddText_Global
             // 
             optAddText_Global.AutoSize = true;
-            optAddText_Global.Location = new Point(288, 255);
-            optAddText_Global.Margin = new Padding(5);
+            optAddText_Global.Location = new Point(202, 153);
+            optAddText_Global.Margin = new Padding(4, 3, 4, 3);
             optAddText_Global.Name = "optAddText_Global";
-            optAddText_Global.Size = new Size(88, 29);
+            optAddText_Global.Size = new Size(59, 19);
             optAddText_Global.TabIndex = 5;
             optAddText_Global.TabStop = true;
             optAddText_Global.Text = "Global";
@@ -4748,10 +4720,10 @@ namespace Client
             // optAddText_Map
             // 
             optAddText_Map.AutoSize = true;
-            optAddText_Map.Location = new Point(202, 255);
-            optAddText_Map.Margin = new Padding(5);
+            optAddText_Map.Location = new Point(141, 153);
+            optAddText_Map.Margin = new Padding(4, 3, 4, 3);
             optAddText_Map.Name = "optAddText_Map";
-            optAddText_Map.Size = new Size(73, 29);
+            optAddText_Map.Size = new Size(49, 19);
             optAddText_Map.TabIndex = 4;
             optAddText_Map.TabStop = true;
             optAddText_Map.Text = "Map";
@@ -4759,10 +4731,10 @@ namespace Client
             // optAddText_Player
             // 
             optAddText_Player.AutoSize = true;
-            optAddText_Player.Location = new Point(102, 255);
-            optAddText_Player.Margin = new Padding(5);
+            optAddText_Player.Location = new Point(71, 153);
+            optAddText_Player.Margin = new Padding(4, 3, 4, 3);
             optAddText_Player.Name = "optAddText_Player";
-            optAddText_Player.Size = new Size(84, 29);
+            optAddText_Player.Size = new Size(57, 19);
             optAddText_Player.TabIndex = 3;
             optAddText_Player.TabStop = true;
             optAddText_Player.Text = "Player";
@@ -4771,10 +4743,10 @@ namespace Client
             // 
             DarkLabel25.AutoSize = true;
             DarkLabel25.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel25.Location = new Point(10, 260);
-            DarkLabel25.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel25.Location = new Point(7, 156);
+            DarkLabel25.Margin = new Padding(4, 0, 4, 0);
             DarkLabel25.Name = "DarkLabel25";
-            DarkLabel25.Size = new Size(79, 25);
+            DarkLabel25.Size = new Size(54, 15);
             DarkLabel25.TabIndex = 2;
             DarkLabel25.Text = "Channel:";
             // 
@@ -4783,21 +4755,21 @@ namespace Client
             txtAddText_Text.BackColor = Color.FromArgb(69, 73, 74);
             txtAddText_Text.BorderStyle = BorderStyle.FixedSingle;
             txtAddText_Text.ForeColor = Color.FromArgb(220, 220, 220);
-            txtAddText_Text.Location = new Point(10, 60);
-            txtAddText_Text.Margin = new Padding(5);
+            txtAddText_Text.Location = new Point(7, 36);
+            txtAddText_Text.Margin = new Padding(4, 3, 4, 3);
             txtAddText_Text.Multiline = true;
             txtAddText_Text.Name = "txtAddText_Text";
-            txtAddText_Text.Size = new Size(369, 182);
+            txtAddText_Text.Size = new Size(259, 110);
             txtAddText_Text.TabIndex = 1;
             // 
             // DarkLabel24
             // 
             DarkLabel24.AutoSize = true;
             DarkLabel24.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel24.Location = new Point(10, 28);
-            DarkLabel24.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel24.Location = new Point(7, 17);
+            DarkLabel24.Margin = new Padding(4, 0, 4, 0);
             DarkLabel24.Name = "DarkLabel24";
-            DarkLabel24.Size = new Size(42, 25);
+            DarkLabel24.Size = new Size(28, 15);
             DarkLabel24.TabIndex = 0;
             DarkLabel24.Text = "Text";
             // 
@@ -4814,11 +4786,11 @@ namespace Client
             fraChangeItems.Controls.Add(cmbChangeItemIndex);
             fraChangeItems.Controls.Add(DarkLabel21);
             fraChangeItems.ForeColor = Color.Gainsboro;
-            fraChangeItems.Location = new Point(10, 750);
-            fraChangeItems.Margin = new Padding(5);
+            fraChangeItems.Location = new Point(7, 450);
+            fraChangeItems.Margin = new Padding(4, 3, 4, 3);
             fraChangeItems.Name = "fraChangeItems";
-            fraChangeItems.Padding = new Padding(5);
-            fraChangeItems.Size = new Size(312, 230);
+            fraChangeItems.Padding = new Padding(4, 3, 4, 3);
+            fraChangeItems.Size = new Size(218, 138);
             fraChangeItems.TabIndex = 1;
             fraChangeItems.TabStop = false;
             fraChangeItems.Text = "Change Items";
@@ -4826,39 +4798,41 @@ namespace Client
             // 
             // btnChangeItemsOk
             // 
-            btnChangeItemsOk.Location = new Point(42, 175);
-            btnChangeItemsOk.Margin = new Padding(5);
+            btnChangeItemsOk.Location = new Point(29, 105);
+            btnChangeItemsOk.Margin = new Padding(4, 3, 4, 3);
             btnChangeItemsOk.Name = "btnChangeItemsOk";
-            btnChangeItemsOk.Padding = new Padding(8, 10, 8, 10);
-            btnChangeItemsOk.Size = new Size(125, 45);
+            btnChangeItemsOk.Padding = new Padding(6, 6, 6, 6);
+            btnChangeItemsOk.Size = new Size(88, 27);
             btnChangeItemsOk.TabIndex = 7;
             btnChangeItemsOk.Text = "Ok";
+            btnChangeItemsOk.Click += BtnChangeItemsOk_Click;
             // 
             // btnChangeItemsCancel
             // 
-            btnChangeItemsCancel.Location = new Point(177, 175);
-            btnChangeItemsCancel.Margin = new Padding(5);
+            btnChangeItemsCancel.Location = new Point(124, 105);
+            btnChangeItemsCancel.Margin = new Padding(4, 3, 4, 3);
             btnChangeItemsCancel.Name = "btnChangeItemsCancel";
-            btnChangeItemsCancel.Padding = new Padding(8, 10, 8, 10);
-            btnChangeItemsCancel.Size = new Size(125, 45);
+            btnChangeItemsCancel.Padding = new Padding(6, 6, 6, 6);
+            btnChangeItemsCancel.Size = new Size(88, 27);
             btnChangeItemsCancel.TabIndex = 6;
             btnChangeItemsCancel.Text = "Cancel";
+            btnChangeItemsCancel.Click += BtnChangeItemsCancel_Click;
             // 
             // nudChangeItemsAmount
             // 
-            nudChangeItemsAmount.Location = new Point(15, 125);
-            nudChangeItemsAmount.Margin = new Padding(5);
+            nudChangeItemsAmount.Location = new Point(10, 75);
+            nudChangeItemsAmount.Margin = new Padding(4, 3, 4, 3);
             nudChangeItemsAmount.Name = "nudChangeItemsAmount";
-            nudChangeItemsAmount.Size = new Size(287, 31);
+            nudChangeItemsAmount.Size = new Size(201, 23);
             nudChangeItemsAmount.TabIndex = 5;
             // 
             // optChangeItemRemove
             // 
             optChangeItemRemove.AutoSize = true;
-            optChangeItemRemove.Location = new Point(202, 80);
-            optChangeItemRemove.Margin = new Padding(5);
+            optChangeItemRemove.Location = new Point(141, 48);
+            optChangeItemRemove.Margin = new Padding(4, 3, 4, 3);
             optChangeItemRemove.Name = "optChangeItemRemove";
-            optChangeItemRemove.Size = new Size(71, 29);
+            optChangeItemRemove.Size = new Size(49, 19);
             optChangeItemRemove.TabIndex = 4;
             optChangeItemRemove.TabStop = true;
             optChangeItemRemove.Text = "Take";
@@ -4866,10 +4840,10 @@ namespace Client
             // optChangeItemAdd
             // 
             optChangeItemAdd.AutoSize = true;
-            optChangeItemAdd.Location = new Point(113, 80);
-            optChangeItemAdd.Margin = new Padding(5);
+            optChangeItemAdd.Location = new Point(79, 48);
+            optChangeItemAdd.Margin = new Padding(4, 3, 4, 3);
             optChangeItemAdd.Name = "optChangeItemAdd";
-            optChangeItemAdd.Size = new Size(71, 29);
+            optChangeItemAdd.Size = new Size(48, 19);
             optChangeItemAdd.TabIndex = 3;
             optChangeItemAdd.TabStop = true;
             optChangeItemAdd.Text = "Give";
@@ -4877,10 +4851,10 @@ namespace Client
             // optChangeItemSet
             // 
             optChangeItemSet.AutoSize = true;
-            optChangeItemSet.Location = new Point(15, 80);
-            optChangeItemSet.Margin = new Padding(5);
+            optChangeItemSet.Location = new Point(10, 48);
+            optChangeItemSet.Margin = new Padding(4, 3, 4, 3);
             optChangeItemSet.Name = "optChangeItemSet";
-            optChangeItemSet.Size = new Size(84, 29);
+            optChangeItemSet.Size = new Size(55, 19);
             optChangeItemSet.TabIndex = 2;
             optChangeItemSet.TabStop = true;
             optChangeItemSet.Text = "Set to";
@@ -4889,20 +4863,20 @@ namespace Client
             // 
             cmbChangeItemIndex.DrawMode = DrawMode.OwnerDrawFixed;
             cmbChangeItemIndex.FormattingEnabled = true;
-            cmbChangeItemIndex.Location = new Point(70, 25);
-            cmbChangeItemIndex.Margin = new Padding(5);
+            cmbChangeItemIndex.Location = new Point(49, 15);
+            cmbChangeItemIndex.Margin = new Padding(4, 3, 4, 3);
             cmbChangeItemIndex.Name = "cmbChangeItemIndex";
-            cmbChangeItemIndex.Size = new Size(229, 32);
+            cmbChangeItemIndex.Size = new Size(162, 24);
             cmbChangeItemIndex.TabIndex = 1;
             // 
             // DarkLabel21
             // 
             DarkLabel21.AutoSize = true;
             DarkLabel21.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel21.Location = new Point(10, 30);
-            DarkLabel21.Margin = new Padding(5, 0, 5, 0);
+            DarkLabel21.Location = new Point(7, 18);
+            DarkLabel21.Margin = new Padding(4, 0, 4, 0);
             DarkLabel21.Name = "DarkLabel21";
-            DarkLabel21.Size = new Size(52, 25);
+            DarkLabel21.Size = new Size(34, 15);
             DarkLabel21.TabIndex = 0;
             DarkLabel21.Text = "Item:";
             // 
@@ -4910,10 +4884,10 @@ namespace Client
             // 
             pnlVariableSwitches.Controls.Add(FraRenaming);
             pnlVariableSwitches.Controls.Add(fraLabeling);
-            pnlVariableSwitches.Location = new Point(1333, 387);
-            pnlVariableSwitches.Margin = new Padding(5);
+            pnlVariableSwitches.Location = new Point(933, 232);
+            pnlVariableSwitches.Margin = new Padding(4, 3, 4, 3);
             pnlVariableSwitches.Name = "pnlVariableSwitches";
-            pnlVariableSwitches.Size = new Size(155, 175);
+            pnlVariableSwitches.Size = new Size(108, 105);
             pnlVariableSwitches.TabIndex = 11;
             // 
             // FraRenaming
@@ -4922,11 +4896,11 @@ namespace Client
             FraRenaming.Controls.Add(btnRename_Ok);
             FraRenaming.Controls.Add(fraRandom10);
             FraRenaming.ForeColor = Color.Gainsboro;
-            FraRenaming.Location = new Point(393, 825);
-            FraRenaming.Margin = new Padding(5);
+            FraRenaming.Location = new Point(275, 495);
+            FraRenaming.Margin = new Padding(4, 3, 4, 3);
             FraRenaming.Name = "FraRenaming";
-            FraRenaming.Padding = new Padding(5);
-            FraRenaming.Size = new Size(607, 275);
+            FraRenaming.Padding = new Padding(4, 3, 4, 3);
+            FraRenaming.Size = new Size(425, 165);
             FraRenaming.TabIndex = 8;
             FraRenaming.TabStop = false;
             FraRenaming.Text = "Renaming Variable/Switch";
@@ -4935,54 +4909,57 @@ namespace Client
             // btnRename_Cancel
             // 
             btnRename_Cancel.ForeColor = Color.Black;
-            btnRename_Cancel.Location = new Point(382, 197);
-            btnRename_Cancel.Margin = new Padding(5);
+            btnRename_Cancel.Location = new Point(267, 118);
+            btnRename_Cancel.Margin = new Padding(4, 3, 4, 3);
             btnRename_Cancel.Name = "btnRename_Cancel";
-            btnRename_Cancel.Size = new Size(125, 45);
+            btnRename_Cancel.Size = new Size(88, 27);
             btnRename_Cancel.TabIndex = 2;
             btnRename_Cancel.Text = "Cancel";
             btnRename_Cancel.UseVisualStyleBackColor = true;
+            btnRename_Cancel.Click += BtnRename_Cancel_Click;
             // 
             // btnRename_Ok
             // 
             btnRename_Ok.ForeColor = Color.Black;
-            btnRename_Ok.Location = new Point(90, 197);
-            btnRename_Ok.Margin = new Padding(5);
+            btnRename_Ok.Location = new Point(63, 118);
+            btnRename_Ok.Margin = new Padding(4, 3, 4, 3);
             btnRename_Ok.Name = "btnRename_Ok";
-            btnRename_Ok.Size = new Size(125, 45);
+            btnRename_Ok.Size = new Size(88, 27);
             btnRename_Ok.TabIndex = 1;
             btnRename_Ok.Text = "Ok";
             btnRename_Ok.UseVisualStyleBackColor = true;
+            btnRename_Ok.Click += BtnRename_Ok_Click;
             // 
             // fraRandom10
             // 
             fraRandom10.Controls.Add(txtRename);
             fraRandom10.Controls.Add(lblEditing);
             fraRandom10.ForeColor = Color.Gainsboro;
-            fraRandom10.Location = new Point(10, 37);
-            fraRandom10.Margin = new Padding(5);
+            fraRandom10.Location = new Point(7, 22);
+            fraRandom10.Margin = new Padding(4, 3, 4, 3);
             fraRandom10.Name = "fraRandom10";
-            fraRandom10.Padding = new Padding(5);
-            fraRandom10.Size = new Size(587, 148);
+            fraRandom10.Padding = new Padding(4, 3, 4, 3);
+            fraRandom10.Size = new Size(411, 89);
             fraRandom10.TabIndex = 0;
             fraRandom10.TabStop = false;
             fraRandom10.Text = "Editing Variable/Switch";
             // 
             // txtRename
             // 
-            txtRename.Location = new Point(10, 78);
-            txtRename.Margin = new Padding(5);
+            txtRename.Location = new Point(7, 47);
+            txtRename.Margin = new Padding(4, 3, 4, 3);
             txtRename.Name = "txtRename";
-            txtRename.Size = new Size(564, 31);
+            txtRename.Size = new Size(396, 23);
             txtRename.TabIndex = 1;
+            txtRename.TextChanged += TxtRename_TextChanged;
             // 
             // lblEditing
             // 
             lblEditing.AutoSize = true;
-            lblEditing.Location = new Point(5, 48);
-            lblEditing.Margin = new Padding(5, 0, 5, 0);
+            lblEditing.Location = new Point(4, 29);
+            lblEditing.Margin = new Padding(4, 0, 4, 0);
             lblEditing.Name = "lblEditing";
-            lblEditing.Size = new Size(168, 25);
+            lblEditing.Size = new Size(110, 15);
             lblEditing.TabIndex = 0;
             lblEditing.Text = "Naming Variable #1";
             // 
@@ -4999,11 +4976,11 @@ namespace Client
             fraLabeling.Controls.Add(btnRenameSwitch);
             fraLabeling.Controls.Add(btnLabel_Ok);
             fraLabeling.ForeColor = Color.Gainsboro;
-            fraLabeling.Location = new Point(325, 55);
-            fraLabeling.Margin = new Padding(5);
+            fraLabeling.Location = new Point(228, 33);
+            fraLabeling.Margin = new Padding(4, 3, 4, 3);
             fraLabeling.Name = "fraLabeling";
-            fraLabeling.Padding = new Padding(5);
-            fraLabeling.Size = new Size(760, 745);
+            fraLabeling.Padding = new Padding(4, 3, 4, 3);
+            fraLabeling.Size = new Size(532, 447);
             fraLabeling.TabIndex = 0;
             fraLabeling.TabStop = false;
             fraLabeling.Text = "Label Variables and  Switches   ";
@@ -5014,12 +4991,13 @@ namespace Client
             lstSwitches.BorderStyle = BorderStyle.FixedSingle;
             lstSwitches.ForeColor = Color.Gainsboro;
             lstSwitches.FormattingEnabled = true;
-            lstSwitches.ItemHeight = 25;
-            lstSwitches.Location = new Point(393, 75);
-            lstSwitches.Margin = new Padding(5);
+            lstSwitches.Location = new Point(275, 45);
+            lstSwitches.Margin = new Padding(4, 3, 4, 3);
             lstSwitches.Name = "lstSwitches";
-            lstSwitches.Size = new Size(340, 552);
+            lstSwitches.Size = new Size(239, 332);
             lstSwitches.TabIndex = 7;
+            lstSwitches.Click += lstSwitches_Click;
+            lstSwitches.DoubleClick += LstSwitches_DoubleClick;
             // 
             // lstVariables
             // 
@@ -5027,86 +5005,91 @@ namespace Client
             lstVariables.BorderStyle = BorderStyle.FixedSingle;
             lstVariables.ForeColor = Color.Gainsboro;
             lstVariables.FormattingEnabled = true;
-            lstVariables.ItemHeight = 25;
-            lstVariables.Location = new Point(23, 75);
-            lstVariables.Margin = new Padding(5);
+            lstVariables.Location = new Point(16, 45);
+            lstVariables.Margin = new Padding(4, 3, 4, 3);
             lstVariables.Name = "lstVariables";
-            lstVariables.Size = new Size(340, 552);
+            lstVariables.Size = new Size(239, 332);
             lstVariables.TabIndex = 6;
+            lstVariables.Click += lstVariables_Click;
+            lstVariables.DoubleClick += LstVariables_DoubleClick;
             // 
             // btnLabel_Cancel
             // 
             btnLabel_Cancel.ForeColor = Color.Black;
-            btnLabel_Cancel.Location = new Point(393, 655);
-            btnLabel_Cancel.Margin = new Padding(5);
+            btnLabel_Cancel.Location = new Point(275, 393);
+            btnLabel_Cancel.Margin = new Padding(4, 3, 4, 3);
             btnLabel_Cancel.Name = "btnLabel_Cancel";
-            btnLabel_Cancel.Padding = new Padding(5);
-            btnLabel_Cancel.Size = new Size(125, 45);
+            btnLabel_Cancel.Padding = new Padding(4, 3, 4, 3);
+            btnLabel_Cancel.Size = new Size(88, 27);
             btnLabel_Cancel.TabIndex = 12;
             btnLabel_Cancel.Text = "Cancel";
+            btnLabel_Cancel.Click += BtnLabel_Cancel_Click;
             // 
             // lblRandomLabel36
             // 
             lblRandomLabel36.AutoSize = true;
             lblRandomLabel36.ForeColor = Color.FromArgb(220, 220, 220);
-            lblRandomLabel36.Location = new Point(488, 45);
-            lblRandomLabel36.Margin = new Padding(5, 0, 5, 0);
+            lblRandomLabel36.Location = new Point(342, 27);
+            lblRandomLabel36.Margin = new Padding(4, 0, 4, 0);
             lblRandomLabel36.Name = "lblRandomLabel36";
-            lblRandomLabel36.Size = new Size(132, 25);
+            lblRandomLabel36.Size = new Size(88, 15);
             lblRandomLabel36.TabIndex = 5;
             lblRandomLabel36.Text = "Player Switches";
             // 
             // btnRenameVariable
             // 
             btnRenameVariable.ForeColor = Color.Black;
-            btnRenameVariable.Location = new Point(23, 655);
-            btnRenameVariable.Margin = new Padding(5);
+            btnRenameVariable.Location = new Point(16, 393);
+            btnRenameVariable.Margin = new Padding(4, 3, 4, 3);
             btnRenameVariable.Name = "btnRenameVariable";
-            btnRenameVariable.Padding = new Padding(5);
-            btnRenameVariable.Size = new Size(177, 45);
+            btnRenameVariable.Padding = new Padding(4, 3, 4, 3);
+            btnRenameVariable.Size = new Size(124, 27);
             btnRenameVariable.TabIndex = 9;
             btnRenameVariable.Text = "Rename Variable";
+            btnRenameVariable.Click += BtnRenameVariable_Click;
             // 
             // lblRandomLabel25
             // 
             lblRandomLabel25.AutoSize = true;
             lblRandomLabel25.ForeColor = Color.FromArgb(220, 220, 220);
-            lblRandomLabel25.Location = new Point(133, 40);
-            lblRandomLabel25.Margin = new Padding(5, 0, 5, 0);
+            lblRandomLabel25.Location = new Point(93, 24);
+            lblRandomLabel25.Margin = new Padding(4, 0, 4, 0);
             lblRandomLabel25.Name = "lblRandomLabel25";
-            lblRandomLabel25.Size = new Size(134, 25);
+            lblRandomLabel25.Size = new Size(88, 15);
             lblRandomLabel25.TabIndex = 4;
             lblRandomLabel25.Text = "Player Variables";
             // 
             // btnRenameSwitch
             // 
             btnRenameSwitch.ForeColor = Color.Black;
-            btnRenameSwitch.Location = new Point(553, 655);
-            btnRenameSwitch.Margin = new Padding(5);
+            btnRenameSwitch.Location = new Point(387, 393);
+            btnRenameSwitch.Margin = new Padding(4, 3, 4, 3);
             btnRenameSwitch.Name = "btnRenameSwitch";
-            btnRenameSwitch.Padding = new Padding(5);
-            btnRenameSwitch.Size = new Size(182, 45);
+            btnRenameSwitch.Padding = new Padding(4, 3, 4, 3);
+            btnRenameSwitch.Size = new Size(127, 27);
             btnRenameSwitch.TabIndex = 10;
             btnRenameSwitch.Text = "Rename Switch";
+            btnRenameSwitch.Click += BtnRenameSwitch_Click;
             // 
             // btnLabel_Ok
             // 
             btnLabel_Ok.ForeColor = Color.Black;
-            btnLabel_Ok.Location = new Point(240, 655);
-            btnLabel_Ok.Margin = new Padding(5);
+            btnLabel_Ok.Location = new Point(168, 393);
+            btnLabel_Ok.Margin = new Padding(4, 3, 4, 3);
             btnLabel_Ok.Name = "btnLabel_Ok";
-            btnLabel_Ok.Padding = new Padding(5);
-            btnLabel_Ok.Size = new Size(125, 45);
+            btnLabel_Ok.Padding = new Padding(4, 3, 4, 3);
+            btnLabel_Ok.Size = new Size(88, 27);
             btnLabel_Ok.TabIndex = 11;
             btnLabel_Ok.Text = "Ok";
+            btnLabel_Ok.Click += BtnLabel_Ok_Click;
             // 
-            // frmEditor_Events
+            // frmEditor_Event
             // 
-            AutoScaleDimensions = new SizeF(10.0f, 25.0f);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = Color.FromArgb(45, 45, 48);
-            ClientSize = new Size(2718, 1182);
+            ClientSize = new Size(1903, 709);
             Controls.Add(pnlVariableSwitches);
             Controls.Add(fraDialogue);
             Controls.Add(btnOk);
@@ -5119,9 +5102,11 @@ namespace Client
             Controls.Add(fraMoveRoute);
             ForeColor = Color.Gainsboro;
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            Margin = new Padding(5);
-            Name = "frmEditor_Events";
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "frmEditor_Event";
             Text = "Event Editor";
+            FormClosing += frmEditor_Events_FormClosing;
+            Load += frmEditor_Events_Load;
             fraPageSetUp.ResumeLayout(false);
             fraPageSetUp.PerformLayout();
             tabPages.ResumeLayout(false);
@@ -5244,10 +5229,7 @@ namespace Client
             fraRandom10.PerformLayout();
             fraLabeling.ResumeLayout(false);
             fraLabeling.PerformLayout();
-            Load += new EventHandler(frmEditor_Events_Load);
-            FormClosing += new FormClosingEventHandler(frmEditor_Events_FormClosing);
             ResumeLayout(false);
-
         }
 
         internal TreeView tvCommands;
@@ -5301,7 +5283,6 @@ namespace Client
         internal DarkUI.Controls.DarkButton btnLabeling;
         internal DarkUI.Controls.DarkButton btnCancel;
         internal DarkUI.Controls.DarkButton btnOk;
-        internal DarkUI.Controls.DarkButton btnCancelCommand;
         internal DarkUI.Controls.DarkGroupBox fraMoveRoute;
         internal DarkUI.Controls.DarkComboBox cmbEvent;
         internal ListBox lstMoveRoute;

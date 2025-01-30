@@ -1834,7 +1834,7 @@ namespace Server
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];
-                                                buffer.WriteByte(withBlock2.Index);
+                                                buffer.WriteInt32(withBlock2.Index);
                                                 buffer.WriteString(withBlock2.Text1);
                                                 buffer.WriteString(withBlock2.Text2);
                                                 buffer.WriteString(withBlock2.Text3);

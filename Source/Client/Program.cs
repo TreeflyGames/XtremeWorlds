@@ -892,6 +892,11 @@ namespace Client
                 // Right-click interactions
                 if (IsMouseButtonDown(MouseButton.Right))
                 {
+                    if (GameState.MyEditorType == (int)EditorType.Map)
+                    {
+                        frmEditor_Map.Instance.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                    }
+
                     if (GameState.VbKeyShift == true)
                     {
                         // Admin warp if Shift is held and the player has moderator access
