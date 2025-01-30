@@ -118,18 +118,7 @@ namespace Client
                             rect.Height = GameState.PicY;
 
                             alpha = 255;
-
-                            if (GameState.MyEditorType == (int)EditorType.Map)
-                            {
-                                if (GameState.HideLayers)
-                                {
-                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
-                                    {
-                                        alpha = 128;
-                                    }
-                                }
-                            }
-
+                            
                             // Render the tile
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
                             GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
@@ -205,17 +194,6 @@ namespace Client
                             rect.Height = GameState.PicY;
 
                             alpha = 255;
-
-                            if (GameState.MyEditorType == (int)EditorType.Map)
-                            {
-                                if (GameState.HideLayers)
-                                {
-                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
-                                    {
-                                        alpha = 128;
-                                    }
-                                }
-                            }
 
                             // Render the tile with the calculated rectangle and transparency
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());

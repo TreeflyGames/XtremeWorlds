@@ -793,42 +793,10 @@ namespace Client
             if (scrollValue > 0)
             {
                 GameLogic.ScrollChatBox(0); // Scroll up
-
-                if (GameState.MyEditorType == (int)EditorType.Map)
-                {
-                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
-                    {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count)
-                        {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex;
-                        }
-                    }
-
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0)
-                    {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
-                    }
-
-                }
             }
             else if (scrollValue < 0)
             {
                 GameLogic.ScrollChatBox(1); // Scroll down
-
-                if (GameState.MyEditorType == (int)EditorType.Map)
-                {
-                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
-                    {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0)
-                        {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1;
-                        }
-                    }
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
-                    {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
-                    }
-                }
 
                 if (scrollValue != 0)
                 {
@@ -877,10 +845,6 @@ namespace Client
             {
                 if (IsMouseButtonDown(MouseButton.Left))
                 {
-                    if (GameState.MyEditorType == (int)EditorType.Map)
-                    {
-                        frmEditor_Map.Instance.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
-                    }
                     if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
                     {
                         Pet.PetMove(GameState.CurX, GameState.CurY);
@@ -2568,27 +2532,6 @@ namespace Client
             for (i = 0; i < byte.MaxValue; i++)
                 Text.DrawActionMsg(i);
 
-            if (GameState.MyEditorType == (int)EditorType.Map)
-            {
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpDirBlock))
-                {
-                    var loopTo10 = (int)Math.Round(GameState.TileView.Right + 1d);
-                    for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo10; x++)
-                    {
-                        var loopTo11 = (int)Math.Round(GameState.TileView.Bottom + 1d);
-                        for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo11; y++)
-                        {
-                            if (GameLogic.IsValidMapPoint(x, y))
-                            {
-                                DrawDirections(x, y);
-                            }
-                        }
-                    }
-                }
-
-                Text.DrawMapAttributes();
-            }
-
             for (i = 0; i < byte.MaxValue; i++)
             {
                 if (Core.Type.ChatBubble[i].Active)
@@ -2616,14 +2559,6 @@ namespace Client
             }
 
             Text.DrawMapName();
-
-            if (GameState.MyEditorType == (int)EditorType.Map)
-            {
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpEvents))
-                {
-                    DrawEvents();
-                }
-            }
 
             DrawBars();
             Map.DrawMapFade();
