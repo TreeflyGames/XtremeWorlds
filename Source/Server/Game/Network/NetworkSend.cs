@@ -276,7 +276,7 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_SHOPS - 1;
+            var loopTo = Core.Constant.MAX_SHOPS;
             for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.Shop[i].Name.Length > 0)
