@@ -50,9 +50,9 @@ namespace Client
             index = lstTradeItem.SelectedIndex;
             {
                 ref var withBlock = ref Core.Type.Shop[GameState.EditorIndex].TradeItem[index];
-                withBlock.Item = 0;
+                withBlock.Item = -1;
                 withBlock.ItemValue = 0;
-                withBlock.CostItem = 0;
+                withBlock.CostItem = -1;
                 withBlock.CostValue = 0;
             }
             Editors.UpdateShopTrade();

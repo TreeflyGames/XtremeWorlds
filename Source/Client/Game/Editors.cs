@@ -358,7 +358,7 @@ namespace Client
                 {
                     ref var withBlock = ref Core.Type.Shop[GameState.EditorIndex].TradeItem[i];
                     // if none, show as none
-                    if (withBlock.Item == 0 & withBlock.CostItem == 0)
+                    if (withBlock.Item == -1 & withBlock.CostItem == -1)
                     {
                         frmEditor_Shop.Instance.lstTradeItem.Items.Add("Empty Trade Slot");
                     }
