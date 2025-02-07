@@ -1106,7 +1106,7 @@ namespace Client
                 Core.Type.Shop[n].BuyRate = buffer.ReadInt32();
                 Core.Type.Shop[n].Name = buffer.ReadString();
 
-                for (z = 0; z < Constant.MAX_TRADES - 1; z++)
+                for (z = 0; z < Constant.MAX_TRADES; z++)
                 {
                     Core.Type.Shop[n].TradeItem[z].CostItem = buffer.ReadInt32();
                     Core.Type.Shop[n].TradeItem[z].CostValue = buffer.ReadInt32();

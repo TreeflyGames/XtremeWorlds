@@ -1252,7 +1252,11 @@ namespace Server
             Core.Type.Shop[index].Name = "";
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
+            {
                 Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Conversions.ToInteger(i + 1)];
+                Core.Type.Shop[index].TradeItem[i].Item = -1;
+                Core.Type.Shop[index].TradeItem[i].CostItem = -1;
+            }
         }
 
         public static void ClearShops()
