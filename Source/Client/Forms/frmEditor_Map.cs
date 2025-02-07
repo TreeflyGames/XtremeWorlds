@@ -1434,6 +1434,12 @@ namespace Client
             GameState.MyEditorType = -1;
             GameState.GettingMap = true;
             NetworkSend.SendCloseEditor();
+
+            // show gui
+            Gui.ShowWindow(Gui.GetWindowIndex("winHotbar"), resetPosition: false);
+            Gui.ShowWindow(Gui.GetWindowIndex("winMenu"), resetPosition: false);
+            Gui.ShowWindow(Gui.GetWindowIndex("winBars"), resetPosition: false);
+            Gui.HideChat();
         }
 
         public static void MapEditorSetTile(int x, int y, int CurLayer, bool multitile = false, byte theAutotile = 0, byte eraseTile = 0)
