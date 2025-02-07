@@ -657,7 +657,7 @@ namespace Core
 
         public struct EventCommandStruct
         {
-            public byte Index;
+            public int Index;
             public string Text1;
             public string Text2;
             public string Text3;
