@@ -1251,9 +1251,9 @@ namespace Server
             Core.Type.Shop[index] = default;
             Core.Type.Shop[index].Name = "";
 
+            Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Core.Constant.MAX_TRADES];
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Conversions.ToInteger(i + 1)];
                 Core.Type.Shop[index].TradeItem[i].Item = -1;
                 Core.Type.Shop[index].TradeItem[i].CostItem = -1;
             }
@@ -1262,7 +1262,7 @@ namespace Server
         public static void ClearShops()
         {
             for (int i = 0, loopTo = Core.Constant.MAX_SHOPS; i < loopTo; i++)
-                ClearShop(Conversions.ToInteger(i));
+                ClearShop(i);
         }
 
         #endregion

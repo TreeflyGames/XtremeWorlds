@@ -6429,7 +6429,7 @@ namespace Client
             long X;
             var Color = default(long);
 
-            if (GameState.InShop < 1 | GameState.InShop > Constant.MAX_SHOPS)
+            if (GameState.InShop < 0 | GameState.InShop > Constant.MAX_SHOPS)
                 return;
 
             Shop.StreamShop(GameState.InShop);

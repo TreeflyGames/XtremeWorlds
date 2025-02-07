@@ -14,9 +14,9 @@ namespace Client
         {
             Core.Type.Shop[index] = default;
             Core.Type.Shop[index].Name = "";
+            Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Constant.MAX_TRADES];
             for (int x = 0; x < Constant.MAX_TRADES; x++)
-            {
-                Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[x + 1];
+            {            
                 Core.Type.Shop[index].TradeItem[x].Item = -1;
                 Core.Type.Shop[index].TradeItem[x].CostItem = - 1;
             }
