@@ -38,7 +38,7 @@ namespace Client
 
         public static void StreamItem(int itemNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(itemNum >= 0 & string.IsNullOrEmpty(Core.Type.Item[itemNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Item_Loaded[itemNum], 0, false))))
+            if (itemNum >= 0 && string.IsNullOrEmpty(Core.Type.Item[itemNum].Name) && GameState.Item_Loaded[itemNum] == 0)
             {
                 GameState.Item_Loaded[itemNum] = 1;
                 SendRequestItem(itemNum);
