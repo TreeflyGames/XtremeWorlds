@@ -212,7 +212,6 @@ namespace Core
             SCloseTrade,
             STradeUpdate,
             STradeStatus,
-            SGameData,
             SMapReport,
             STarget,
             SAdmin,

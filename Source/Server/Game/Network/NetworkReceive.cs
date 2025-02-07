@@ -1547,6 +1547,7 @@ namespace Server
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
                 return;
+
             if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
@@ -2132,10 +2133,12 @@ namespace Server
 
             // not in shop, exit out
             shopnum = Core.Type.TempPlayer[index].InShop;
+
             if (shopnum < 0 | shopnum > Core.Constant.MAX_SHOPS)
                 return;
 
             ref var withBlock = ref Core.Type.Shop[(int)shopnum].TradeItem[shopslot];
+
             // check trade exists
             if (withBlock.Item < 0)
                 return;
