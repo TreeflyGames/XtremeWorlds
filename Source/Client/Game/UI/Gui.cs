@@ -6457,6 +6457,7 @@ namespace Client
 
                     if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                     {
+                        Item.StreamItem((int)itemNum);
                         itemIcon = Core.Type.Item[(int)itemNum].Icon;
                         if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                         {
@@ -6487,6 +6488,7 @@ namespace Client
 
                     if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                     {
+                        Item.StreamItem((int)itemNum);
                         itemIcon = Core.Type.Item[(int)itemNum].Icon;
                         if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                         {
@@ -6627,6 +6629,7 @@ namespace Client
                 if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                 {
                     Item.StreamItem((int)itemNum);
+
                     // not dragging?
                     if (!(DragBox.Origin == Core.Enum.PartOriginType.Bank & DragBox.Slot == i))
                     {
