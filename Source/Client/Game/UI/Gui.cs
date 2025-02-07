@@ -2012,7 +2012,7 @@ namespace Client
                                                     var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(textArray[(int)i], withBlock.Font));
                                                     float actualWidth = actualSize.X;
                                                     float actualHeight = actualSize.Y;
-                                                    double padding = (double)actualWidth / 6.0d;
+                                                    double padding = (double)actualWidth / 8.0d;
                                                     left = (long)Math.Round(withBlock.Left + (double)(withBlock.Width - actualWidth) / 2.0d + xO + withBlock.xOffset + padding - 4d);
                                                     double top = withBlock.Top + yO + withBlock.yOffset + yOffset + (double)(withBlock.Height - actualHeight) / 2.0d;
 
@@ -2025,7 +2025,7 @@ namespace Client
                                                 var actualSize = Text.Fonts[withBlock.Font].MeasureString(FilterUnsupportedCharacters(withBlock.Text, withBlock.Font));
                                                 float actualWidth = actualSize.X;
                                                 float actualHeight = actualSize.Y;
-                                                double padding = (double)actualWidth / 6.0d;
+                                                double padding = (double)actualWidth / 8.0d;
                                                 left = (long)Math.Round(withBlock.Left + (double)(withBlock.Width - actualWidth) / 2.0d + xO + withBlock.xOffset + padding - 4d);
                                                 double top = withBlock.Top + yO + withBlock.yOffset + (double)(withBlock.Height - actualHeight) / 2.0d;
 
