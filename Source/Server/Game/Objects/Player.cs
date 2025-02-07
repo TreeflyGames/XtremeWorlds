@@ -1546,7 +1546,7 @@ namespace Server
                     x = withBlock.Data1_2;
                 }
 
-                if (x > 0) // shop exists?
+                if (x >= 0) // shop exists?
                 {
                     if (Strings.Len(Core.Type.Shop[x].Name) > 0) // name exists?
                     {
