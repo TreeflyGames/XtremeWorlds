@@ -255,7 +255,7 @@ namespace Client
             return default;
         }
 
-        internal static void ClearGameData()
+        public static void ClearGameData()
         {
             Map.ClearMap();
             Map.ClearMapNPCs();
