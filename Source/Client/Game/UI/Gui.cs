@@ -6105,12 +6105,8 @@ namespace Client
             long i;
             long CostValue;
 
-            if (GameState.InShop == 0)
+            if (GameState.InShop < 0)
                 return;
-
-            // make sure we have an item selected
-            if (GameState.shopSelectedSlot == 0L)
-                GameState.shopSelectedSlot = 1L;
 
             {
                 var withBlock = Windows[GetWindowIndex("winShop")];
@@ -6119,11 +6115,11 @@ namespace Client
                 {
                     GameState.shopSelectedItem = Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].Item;
                     // labels
-                    if (GameState.shopSelectedItem > 0L)
+                    if (GameState.shopSelectedItem >= 0L)
                     {
                         withBlock.Controls[GetControlIndex("winShop", "lblName")].Text = Core.Type.Item[(int)GameState.shopSelectedItem].Name;
                         // check if it's gold
-                        if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem == 1)
+                        if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem == 0)
                         {
                             // it's gold
                             withBlock.Controls[GetControlIndex("winShop", "lblCost")].Text = Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostValue + "g";
