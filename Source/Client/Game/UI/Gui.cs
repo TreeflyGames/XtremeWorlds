@@ -5655,7 +5655,7 @@ namespace Client
             Action argcallback_mousedown10 = null;
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            UpdateLabel(Windows.Count, "lblGold", 44L, 269L, 300L, 10L, "g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, enabled: ref enabled);
+            //UpdateLabel(Windows.Count, "lblGold", 44L, 269L, 300L, 10L, "g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, enabled: ref enabled);
         }
 
         // Shop
@@ -5740,7 +5740,7 @@ namespace Client
             shopNum = General.IsShop(Windows[GetWindowIndex("winShop")].Left, Windows[GetWindowIndex("winShop")].Top);
             if (shopNum >= 0L)
             {
-                if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].Item > 0)
+                if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].Item >= 0)
                 {
                     // set the active slot
                     GameState.shopSelectedSlot = shopNum;
@@ -6110,7 +6110,7 @@ namespace Client
 
             // make sure we have an item selected
             if (GameState.shopSelectedSlot == 0L)
-                GameState.shopSelectedSlot = 0L;
+                GameState.shopSelectedSlot = 1L;
 
             {
                 var withBlock = Windows[GetWindowIndex("winShop")];
@@ -6548,7 +6548,7 @@ namespace Client
 
             Y = Yo + 23L;
             // render grid - row
-            for (i = 0L; i <= 3L; i++)
+            for (i = 0L; i < 3L; i++)
             {
                 if (i == 3L)
                     Height = 42L;
