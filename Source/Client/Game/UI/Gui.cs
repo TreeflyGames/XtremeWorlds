@@ -5370,7 +5370,7 @@ namespace Client
             long count;
 
             // exit out if we don't have a num
-            if (GameState.descItem == 0L | GameState.descType == 0)
+            if (GameState.descItem == -1L | GameState.descType == 0)
                 return;
 
             xO = Windows[GetWindowIndex("winDescription")].Left;
