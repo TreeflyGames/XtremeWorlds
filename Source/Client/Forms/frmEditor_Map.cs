@@ -969,10 +969,12 @@ namespace Client
                 // check it's not out of bounds
                 if (X < 0f)
                     X = 0f;
+
                 if ((double)X > picBackSelect.Width / (double)GameState.PicX)
                     X = (float)(picBackSelect.Width / (double)GameState.PicX);
                 if (Y < 0f)
                     Y = 0f;
+
                 if ((double)Y > picBackSelect.Height / (double)GameState.PicY)
                     Y = (float)(picBackSelect.Height / (double)GameState.PicY);
 
@@ -1366,7 +1368,7 @@ namespace Client
                             Event.AddEvent(GameState.CurX, GameState.CurY);
                         }
                     }
-                }    
+                }
             }
 
             if (GameClient.IsMouseButtonDown(MouseButton.Right))
@@ -1388,14 +1390,16 @@ namespace Client
                 }
                 else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpAttributes))
                 {
-                    {
-                        ref var withBlock2 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
-                        // clear attribute
-                        withBlock2.Type = 0;
-                        withBlock2.Data1 = 0;
-                        withBlock2.Data2 = 0;
-                        withBlock2.Data3 = 0;
-                    }
+                    ref var withBlock2 = ref Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY];
+                    // clear attribute
+                    withBlock2.Type = 0;
+                    withBlock2.Data1 = 0;
+                    withBlock2.Data2 = 0;
+                    withBlock2.Data3 = 0;
+                    withBlock2.Type2 = 0;
+                    withBlock2.Data1_2 = 0;
+                    withBlock2.Data2_2 = 0;
+                    withBlock2.Data3_2 = 0;
                 }
                 else if (ReferenceEquals(Instance.tabpages.SelectedTab, Instance.tpEvents))
                 {
