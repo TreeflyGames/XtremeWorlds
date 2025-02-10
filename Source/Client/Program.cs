@@ -2412,7 +2412,7 @@ namespace Client
                     }
 
                     // Draw the target icon
-                    if (GameState.MyTarget > 0)
+                    if (GameState.MyTarget >= 0)
                     {
                         if (GameState.MyTargetType == (int)TargetType.Player)
                         {

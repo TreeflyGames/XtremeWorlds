@@ -456,7 +456,7 @@ namespace Client
         {
             var buffer = new ByteStream(4);
 
-            if (Conversions.ToBoolean(GameLogic.IsInBounds()))
+            if (GameLogic.IsInBounds())
             {
                 buffer.WriteInt32((int)Packets.ClientPackets.CSearch);
                 buffer.WriteInt32(GameState.CurX);
