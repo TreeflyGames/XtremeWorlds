@@ -5758,7 +5758,7 @@ namespace Client
             long x;
             long y;
 
-            if (GameState.InShop < 1 | GameState.InShop > Constant.MAX_SHOPS)
+            if (GameState.InShop < 0 | GameState.InShop > Constant.MAX_SHOPS)
                 return;
 
             shopSlot = General.IsShop(Windows[GetWindowIndex("winShop")].Left, Windows[GetWindowIndex("winShop")].Top);
