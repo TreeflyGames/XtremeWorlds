@@ -3864,7 +3864,7 @@ namespace Client
                 return;
 
             // check for other windows
-            var loopTo = Windows.Count - 1;
+            var loopTo = Windows.Count;
             for (i = 1L; i < loopTo; i++)
             {
                 {
@@ -3880,6 +3880,7 @@ namespace Client
                                 {
                                     if (curWindow == 0L)
                                         curWindow = i;
+
                                     if (withBlock.zOrder > Windows[curWindow].zOrder)
                                         curWindow = i;
                                 }
