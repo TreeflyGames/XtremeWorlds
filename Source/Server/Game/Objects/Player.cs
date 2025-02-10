@@ -1502,7 +1502,7 @@ namespace Server
                     }
             }
 
-            if (GetPlayerX(index) > 0 && GetPlayerY(index) > 0 && GetPlayerX(index) < Map[GetPlayerMap(index)].MaxX && GetPlayerY(index) < Map[GetPlayerMap(index)].MaxY)
+            if (GetPlayerX(index) >= 0 && GetPlayerY(index) >= 0 && GetPlayerX(index) < Map[GetPlayerMap(index)].MaxX && GetPlayerY(index) < Map[GetPlayerMap(index)].MaxY)
             {
                 ref var withBlock = ref Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)];
                 mapNum = -1;
@@ -1532,7 +1532,7 @@ namespace Server
                     Moved = Conversions.ToBoolean(1);
                 }
 
-                x = 0;
+                x = -1;
                 y = 0;
 
                 // Check for a shop, and if so open it
