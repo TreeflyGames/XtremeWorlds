@@ -2054,7 +2054,7 @@ namespace Client
                                         else
                                             sprite = 3L;
 
-                                        // ren'der box
+                                        // render box
                                         string argpath4 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
                                         GameClient.RenderTexture(ref argpath4, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 16, 16, 16, 16);
 
@@ -2106,7 +2106,7 @@ namespace Client
                                             sprite = 58L;
                                         else
                                             sprite = 56L;
-                                        string argpath6 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], sprite.ToString());
+                                        string argpath6 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
                                         GameClient.RenderTexture(ref argpath6, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 20, 49, 20);
                                         break;
                                     }
@@ -2117,7 +2117,7 @@ namespace Client
                                             sprite = 59L;
                                         else
                                             sprite = 57L;
-                                        string argpath7 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], sprite.ToString());
+                                        string argpath7 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
                                         GameClient.RenderTexture(ref argpath7, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 20, 49, 20);
                                         break;
                                     }
@@ -2145,7 +2145,7 @@ namespace Client
                                             }
                                         }
 
-                                        // draw the little arow
+                                        // draw the little arrow
                                         string argpath8 = System.IO.Path.Combine(withBlock.Texture[0], "66");
                                         GameClient.RenderTexture(ref argpath8, (int)(withBlock.Left + xO + withBlock.Width), (int)(withBlock.Top + yO), 0, 0, 5, 4, 5, 4);
                                         break;
