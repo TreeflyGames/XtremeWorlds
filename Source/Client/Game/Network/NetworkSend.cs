@@ -436,8 +436,10 @@ namespace Client
             // do basic checks
             if (invNum < 0 | invNum > Constant.MAX_INV)
                 return;
+
             if (Core.Type.Player[GameState.MyIndex].Inv[invNum].Num < 0 | Core.Type.Player[GameState.MyIndex].Inv[invNum].Num > Constant.MAX_ITEMS)
                 return;
+
             if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Type == (byte)Core.Enum.ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Stackable == 1)
             {
                 if (amount < 0 | amount > Core.Type.Player[GameState.MyIndex].Inv[invNum].Value)

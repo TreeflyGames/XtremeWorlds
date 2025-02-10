@@ -1784,7 +1784,6 @@ namespace Server
             var loopTo = NetworkConfig.Socket.HighIndex + 1;
             for (i = 0; i < loopTo; i++)
             {
-
                 if (GetPlayerMap(index) == GetPlayerMap(i))
                 {
                     if (GetPlayerX(i) == x)
