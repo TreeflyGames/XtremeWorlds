@@ -1556,8 +1556,8 @@ namespace Client
             lock (GameClient.InputLock)
             {
                 // Find the container
-                var loopTo = Windows.Count - 1;
-                for (i = 1L; i <= loopTo; i++)
+                var loopTo = Windows.Count;
+                for (i = 1L; i < loopTo; i++)
                 {
                     var withBlock = Windows[i];
                     if (withBlock.Enabled && withBlock.Visible)
@@ -4123,7 +4123,7 @@ namespace Client
             // is there an item?
             slotNum = General.IsSkill(Windows[GetWindowIndex("winSkills")].Left, Windows[GetWindowIndex("winSkills")].Top);
 
-            if (Conversions.ToBoolean(slotNum))
+            if (slotNum >= 0)
             {
                 {
                     ref var withBlock = ref DragBox;
