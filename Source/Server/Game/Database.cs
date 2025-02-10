@@ -1446,7 +1446,7 @@ namespace Server
             Bank[index].Item = new PlayerInvStruct[Core.Constant.MAX_BANK + 1];
             for (int i = 0; i < Core.Constant.MAX_BANK; i++)
             {
-                Bank[index].Item[i].Num = 0;
+                Bank[index].Item[i].Num = -1;
                 Bank[index].Item[i].Value = 0;
             }
         }
