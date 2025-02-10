@@ -99,6 +99,7 @@ namespace Client
             if (Gui.Windows[Gui.GetWindowIndex("winBank")].Visible == true)
             {
                 Gui.HideWindow(Gui.GetWindowIndex("winBank"));
+                Gui.HideWindow(Gui.GetWindowIndex("winDescription"));
             }
 
             var buffer = new ByteStream(4);

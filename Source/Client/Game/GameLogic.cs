@@ -2180,6 +2180,7 @@ namespace Client
         {
             NetworkSend.SendCloseShop();
             Gui.HideWindow(Gui.GetWindowIndex("winShop"));
+            Gui.HideWindow(Gui.GetWindowIndex("winDescription"));
             GameState.shopSelectedSlot = 0L;
             GameState.shopSelectedItem = 0L;
             GameState.shopIsSelling = Conversions.ToBoolean(0);
