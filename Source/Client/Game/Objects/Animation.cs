@@ -338,7 +338,7 @@ namespace Client
 
         public static void StreamAnimation(int animationNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(animationNum >= 0 & string.IsNullOrEmpty(Core.Type.Animation[animationNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Animation_Loaded[animationNum], 0, false))))
+            if (animationNum >= 0 && string.IsNullOrEmpty(Core.Type.Animation[animationNum].Name) && GameState.Animation_Loaded[animationNum] == 0)
             {
                 GameState.Animation_Loaded[animationNum] = 1;
                 SendRequestAnimation(animationNum);

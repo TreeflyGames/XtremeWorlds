@@ -217,15 +217,15 @@ namespace Client
         public static KeyPair EKeyPair = new KeyPair();
 
         // Stream Content
-        public static object[] Item_Loaded = new object[Core.Constant.MAX_ITEMS];
-        public static object[] NPC_Loaded = new object[Core.Constant.MAX_NPCS];
-        public static object[] Resource_Loaded = new object[Core.Constant.MAX_RESOURCES];
-        public static object[] Animation_Loaded = new object[Core.Constant.MAX_RESOURCES];
-        public static object[] Skill_Loaded = new object[Core.Constant.MAX_SKILLS];
-        public static object[] Shop_Loaded = new object[Core.Constant.MAX_SHOPS];
-        public static object[] Pet_Loaded = new object[Core.Constant.MAX_PETS];
-        public static object[] Moral_Loaded = new object[(Constant.MAX_MORALS)];
-        public static object[] Projectile_Loaded = new object[(Constant.MAX_PROJECTILES)];
+        public static int[] Item_Loaded = new int[Core.Constant.MAX_ITEMS];
+        public static int[] NPC_Loaded = new int[Core.Constant.MAX_NPCS];
+        public static int[] Resource_Loaded = new int[Core.Constant.MAX_RESOURCES];
+        public static int[] Animation_Loaded = new int[Core.Constant.MAX_RESOURCES];
+        public static int[] Skill_Loaded = new int[Core.Constant.MAX_SKILLS];
+        public static int[] Shop_Loaded = new int[Core.Constant.MAX_SHOPS];
+        public static int[] Pet_Loaded = new int[Core.Constant.MAX_PETS];
+        public static int[] Moral_Loaded = new int[(Constant.MAX_MORALS)];
+        public static int[] Projectile_Loaded = new int[(Constant.MAX_PROJECTILES)];
 
         public static int[] AnimEditorFrame = new int[2];
         public static int[] AnimEditorTimer = new int[2];

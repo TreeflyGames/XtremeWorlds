@@ -80,7 +80,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STradeUpdate] = Trade.Packet_TradeUpdate;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STradeStatus] = Trade.Packet_TradeStatus;
 
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SGameData] = Packet_GameData;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapReport] = Packet_MapReport;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STarget] = Packet_Target;
 

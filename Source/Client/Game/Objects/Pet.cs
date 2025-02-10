@@ -64,7 +64,7 @@ namespace Client
 
         public static void StreamPet(int petNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(petNum >= 0 & string.IsNullOrEmpty(Core.Type.Pet[(int)petNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Pet_Loaded[(int)petNum], 0, false))))
+            if (petNum >= 0 && string.IsNullOrEmpty(Core.Type.Pet[petNum].Name) && GameState.Pet_Loaded[petNum] == 0)
             {
                 GameState.Pet_Loaded[petNum] = 1;
                 SendRequestPet(petNum);
@@ -635,7 +635,6 @@ namespace Client
 
             // render the actual sprite
             GameClient.DrawCharacterSprite(spriteNum, x, y, rect);
-
         }
 
         internal static void DrawPlayerPetName(int index)

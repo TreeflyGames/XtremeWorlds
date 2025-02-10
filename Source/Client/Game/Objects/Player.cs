@@ -1070,6 +1070,9 @@ namespace Client
                 return;
             }
 
+            if (Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num < 0)
+                return;
+
             // Check if player has enough MP
             if (GetPlayerVital(GameState.MyIndex, Core.Enum.VitalType.SP) < Core.Type.Skill[(int)Core.Type.Player[GameState.MyIndex].Skill[skillSlot].Num].MpCost)
             {

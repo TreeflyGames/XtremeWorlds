@@ -150,8 +150,7 @@ namespace Client
 
         public static void StreamProjectile(int projectileNum)
         {
-            return;
-            if (Conversions.ToBoolean(Operators.OrObject(projectileNum >= 0 & string.IsNullOrEmpty(Core.Type.Projectile[projectileNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Projectile_Loaded[projectileNum], 0, false))))
+            if (projectileNum >= 0 & string.IsNullOrEmpty(Core.Type.Projectile[projectileNum].Name) && GameState.Projectile_Loaded[projectileNum] == 0)
             {
                 GameState.Projectile_Loaded[projectileNum] = 1;
                 SendRequestProjectile(projectileNum);

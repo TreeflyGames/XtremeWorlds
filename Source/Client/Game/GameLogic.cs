@@ -1983,6 +1983,7 @@ namespace Client
             
             NetworkConfig.DestroyNetwork();
             NetworkConfig.InitNetwork();
+            General.ClearGameData();
         }
 
         public static void SetOptionsScreen()

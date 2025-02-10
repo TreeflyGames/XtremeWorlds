@@ -14,9 +14,9 @@ namespace Client
         {
             Core.Type.Shop[index] = default;
             Core.Type.Shop[index].Name = "";
+            Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[Constant.MAX_TRADES];
             for (int x = 0; x < Constant.MAX_TRADES; x++)
-            {
-                Core.Type.Shop[index].TradeItem = new Core.Type.TradeItemStruct[x + 1];
+            {            
                 Core.Type.Shop[index].TradeItem[x].Item = -1;
                 Core.Type.Shop[index].TradeItem[x].CostItem = - 1;
             }
@@ -36,7 +36,7 @@ namespace Client
 
         public static void StreamShop(int shopNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(shopNum >= 0 & string.IsNullOrEmpty(Core.Type.Shop[shopNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Shop_Loaded[shopNum], 0, false))))
+            if (shopNum >= 0 && string.IsNullOrEmpty(Core.Type.Shop[shopNum].Name) && GameState.Shop_Loaded[shopNum] == 0)
             {
                 GameState.Shop_Loaded[shopNum] = 1;
                 SendRequestShop(shopNum);

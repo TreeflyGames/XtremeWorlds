@@ -30,7 +30,7 @@ namespace Client
 
         public static void StreamResource(int resourceNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(resourceNum >= 0 & string.IsNullOrEmpty(Core.Type.Resource[resourceNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Resource_Loaded[resourceNum], 0, false))))
+            if (resourceNum >= 0 && string.IsNullOrEmpty(Core.Type.Resource[resourceNum].Name) && GameState.Resource_Loaded[resourceNum] == 0)
             {
                 GameState.Resource_Loaded[resourceNum] = 1;
                 SendRequestResource(resourceNum);

@@ -42,7 +42,7 @@ namespace Client
 
         public static void StreamNPC(int NPCNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(NPCNum >= 0 & string.IsNullOrEmpty(Core.Type.NPC[(int)NPCNum].Name), Operators.ConditionalCompareObjectEqual(GameState.NPC_Loaded[(int)NPCNum], 0, false))))
+            if (NPCNum >= 0 && string.IsNullOrEmpty(Core.Type.NPC[NPCNum].Name) && GameState.NPC_Loaded[NPCNum] == 0)
             {
                 GameState.NPC_Loaded[(int)NPCNum] = 1;
                 NetworkSend.SendRequestNPC(NPCNum);
@@ -91,7 +91,7 @@ namespace Client
 
         public static void StreamSkill(int skillNum)
         {
-            if (Conversions.ToBoolean(Operators.OrObject(skillNum >= 0 & string.IsNullOrEmpty(Core.Type.Skill[skillNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Skill_Loaded[skillNum], 0, false))))
+            if (skillNum >= 0 && string.IsNullOrEmpty(Core.Type.Skill[skillNum].Name) && GameState.Skill_Loaded[skillNum] == 0)
             {
                 GameState.Skill_Loaded[skillNum] = 1;
                 NetworkSend.SendRequestSkill(skillNum);

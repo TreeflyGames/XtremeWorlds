@@ -1555,8 +1555,8 @@ namespace Client
             lock (GameClient.InputLock)
             {
                 // Find the container
-                var loopTo = Windows.Count - 1;
-                for (i = 1L; i <= loopTo; i++)
+                var loopTo = Windows.Count;
+                for (i = 1L; i < loopTo; i++)
                 {
                     var withBlock = Windows[i];
                     if (withBlock.Enabled && withBlock.Visible)
@@ -1589,6 +1589,7 @@ namespace Client
                         // Handle window dragging only if dragging is enabled
                         if (entState == Core.Enum.EntState.MouseMove && withBlock.CanDrag && canDrag && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
                         {
+                            withBlock = Windows[ActiveWindow];
                             withBlock.Left = GameLogic.Clamp((int)(withBlock.Left + (GameState.CurMouseX - withBlock.Left - withBlock.MovedX)), 0, (int)(GameState.ResolutionWidth - withBlock.Width));
                             withBlock.Top = GameLogic.Clamp((int)(withBlock.Top + (GameState.CurMouseY - withBlock.Top - withBlock.MovedY)), 0, (int)(GameState.ResolutionHeight - withBlock.Height));
                         }
@@ -2052,7 +2053,7 @@ namespace Client
                                         else
                                             sprite = 3L;
 
-                                        // ren'der box
+                                        // render box
                                         string argpath4 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
                                         GameClient.RenderTexture(ref argpath4, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 16, 16, 16, 16);
 
@@ -2104,7 +2105,7 @@ namespace Client
                                             sprite = 58L;
                                         else
                                             sprite = 56L;
-                                        string argpath6 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], sprite.ToString());
+                                        string argpath6 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
                                         GameClient.RenderTexture(ref argpath6, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 20, 49, 20);
                                         break;
                                     }
@@ -2115,7 +2116,7 @@ namespace Client
                                             sprite = 59L;
                                         else
                                             sprite = 57L;
-                                        string argpath7 = System.IO.Path.Combine(withBlock.Texture[(int)withBlock.State], sprite.ToString());
+                                        string argpath7 = System.IO.Path.Combine(withBlock.Texture[0], sprite.ToString());
                                         GameClient.RenderTexture(ref argpath7, (int)(withBlock.Left + xO), (int)(withBlock.Top + yO), 0, 0, 49, 20, 49, 20);
                                         break;
                                     }
@@ -2143,7 +2144,7 @@ namespace Client
                                             }
                                         }
 
-                                        // draw the little arow
+                                        // draw the little arrow
                                         string argpath8 = System.IO.Path.Combine(withBlock.Texture[0], "66");
                                         GameClient.RenderTexture(ref argpath8, (int)(withBlock.Left + xO + withBlock.Width), (int)(withBlock.Top + yO), 0, 0, 5, 4, 5, 4);
                                         break;
@@ -3741,7 +3742,7 @@ namespace Client
 
         public static void Bank_MouseDown()
         {
-            byte bankSlot;
+            long bankSlot;
             long winIndex;
             long i;
 
@@ -3756,7 +3757,7 @@ namespace Client
                 {
                     ref var withBlock = ref DragBox;
                     withBlock.Type = Core.Enum.PartType.Item;
-                    withBlock.Value = (long)GetBank(GameState.MyIndex, bankSlot);
+                    withBlock.Value = (long)GetBank(GameState.MyIndex, (int)bankSlot);
                     withBlock.Origin = Core.Enum.PartOriginType.Bank;
 
                     withBlock.Slot = bankSlot;
@@ -3783,7 +3784,7 @@ namespace Client
 
         public static void Bank_DblClick()
         {
-            byte bankSlot;
+            long bankSlot;
             long winIndex;
             long i;
 
@@ -3792,7 +3793,7 @@ namespace Client
 
             if (bankSlot >= 0L)
             {
-                Bank.WithdrawItem((int)bankSlot, GetBankValue(GameState.MyIndex, bankSlot));
+                Bank.WithdrawItem((int)bankSlot, GetBankValue(GameState.MyIndex, (int)bankSlot));
                 return;
             }
 
@@ -4121,7 +4122,7 @@ namespace Client
             // is there an item?
             slotNum = General.IsSkill(Windows[GetWindowIndex("winSkills")].Left, Windows[GetWindowIndex("winSkills")].Top);
 
-            if (Conversions.ToBoolean(slotNum))
+            if (slotNum >= 0)
             {
                 {
                     ref var withBlock = ref DragBox;
@@ -5369,7 +5370,7 @@ namespace Client
             long count;
 
             // exit out if we don't have a num
-            if (GameState.descItem == 0L | GameState.descType == 0)
+            if (GameState.descItem == -1L | GameState.descType == 0)
                 return;
 
             xO = Windows[GetWindowIndex("winDescription")].Left;
@@ -5654,7 +5655,7 @@ namespace Client
             Action argcallback_mousedown10 = null;
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            UpdateLabel(Windows.Count, "lblGold", 44L, 269L, 300L, 10L, "g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, enabled: ref enabled);
+            //UpdateLabel(Windows.Count, "lblGold", 44L, 269L, 300L, 10L, "g", Core.Enum.FontType.Georgia, Color.White, Core.Enum.AlignmentType.Left, callback_norm: ref argcallback_norm9, callback_hover: ref argcallback_hover9, callback_mousedown: ref argcallback_mousedown10, callback_mousemove: ref argcallback_mousemove10, callback_dblclick: ref argcallback_dblclick10, enabled: ref enabled);
         }
 
         // Shop
@@ -5739,7 +5740,7 @@ namespace Client
             shopNum = General.IsShop(Windows[GetWindowIndex("winShop")].Left, Windows[GetWindowIndex("winShop")].Top);
             if (shopNum >= 0L)
             {
-                if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].Item > 0)
+                if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].Item >= 0)
                 {
                     // set the active slot
                     GameState.shopSelectedSlot = shopNum;
@@ -6104,12 +6105,8 @@ namespace Client
             long i;
             long CostValue;
 
-            if (GameState.InShop == 0)
+            if (GameState.InShop < 0)
                 return;
-
-            // make sure we have an item selected
-            if (GameState.shopSelectedSlot == 0L)
-                GameState.shopSelectedSlot = 0L;
 
             {
                 var withBlock = Windows[GetWindowIndex("winShop")];
@@ -6118,11 +6115,11 @@ namespace Client
                 {
                     GameState.shopSelectedItem = Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].Item;
                     // labels
-                    if (GameState.shopSelectedItem > 0L)
+                    if (GameState.shopSelectedItem >= 0L)
                     {
                         withBlock.Controls[GetControlIndex("winShop", "lblName")].Text = Core.Type.Item[(int)GameState.shopSelectedItem].Name;
                         // check if it's gold
-                        if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem == 1)
+                        if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostItem == 0)
                         {
                             // it's gold
                             withBlock.Controls[GetControlIndex("winShop", "lblCost")].Text = Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].CostValue + "g";
@@ -6428,7 +6425,7 @@ namespace Client
             long X;
             var Color = default(long);
 
-            if (GameState.InShop < 1 | GameState.InShop > Constant.MAX_SHOPS)
+            if (GameState.InShop < 0 | GameState.InShop > Constant.MAX_SHOPS)
                 return;
 
             Shop.StreamShop(GameState.InShop);
@@ -6456,6 +6453,7 @@ namespace Client
 
                     if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                     {
+                        Item.StreamItem((int)itemNum);
                         itemIcon = Core.Type.Item[(int)itemNum].Icon;
                         if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                         {
@@ -6486,6 +6484,7 @@ namespace Client
 
                     if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                     {
+                        Item.StreamItem((int)itemNum);
                         itemIcon = Core.Type.Item[(int)itemNum].Icon;
                         if (itemIcon > 0L & itemIcon <= GameState.NumItems)
                         {
@@ -6545,7 +6544,7 @@ namespace Client
 
             Y = Yo + 23L;
             // render grid - row
-            for (i = 0L; i <= 3L; i++)
+            for (i = 0L; i < 3L; i++)
             {
                 if (i == 3L)
                     Height = 42L;
@@ -6626,6 +6625,7 @@ namespace Client
                 if (itemNum >= 0L & itemNum < Constant.MAX_ITEMS)
                 {
                     Item.StreamItem((int)itemNum);
+
                     // not dragging?
                     if (!(DragBox.Origin == Core.Enum.PartOriginType.Bank & DragBox.Slot == i))
                     {
