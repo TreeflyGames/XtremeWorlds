@@ -438,7 +438,7 @@ namespace Client
 
             for (i = 0L; i < Constant.MAX_INV; i++)
             {
-                if (GetPlayerInv(GameState.MyIndex, (int)i) > 0)
+                if (GetPlayerInv(GameState.MyIndex, (int)i) >= 0)
                 {
                     tempRec.Top = StartY + GameState.InvTop + (GameState.InvOffsetY + GameState.PicY) * (i / GameState.InvColumns);
                     tempRec.Bottom = tempRec.Top + GameState.PicY;
@@ -456,7 +456,7 @@ namespace Client
                 }
             }
 
-            return IsInvRet;
+            return -1;
         }
 
         public static long IsSkill(long StartX, long StartY)
@@ -467,7 +467,7 @@ namespace Client
 
             for (i = 0L; i < Constant.MAX_PLAYER_SKILLS; i++)
             {
-                if (Conversions.ToBoolean(Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num))
+                if (Core.Type.Player[GameState.MyIndex].Skill[(int)i].Num >= 0)
                 {
                     tempRec.Top = StartY + GameState.SkillTop + (GameState.SkillOffsetY + GameState.PicY) * (i / GameState.SkillColumns);
                     tempRec.Bottom = tempRec.Top + GameState.PicY;
@@ -485,17 +485,17 @@ namespace Client
                 }
             }
 
-            return IsSkillRet;
+            return -1;
         }
 
-        public static byte IsBank(long StartX, long StartY)
+        public static long IsBank(long StartX, long StartY)
         {
             byte IsBankRet = default;
             Core.Type.RectStruct tempRec;
 
             for (byte i = 0; i < Constant.MAX_BANK; i++)
             {
-                if (GetBank(GameState.MyIndex, (byte)i) > 0)
+                if (GetBank(GameState.MyIndex, (byte)i) >= 0)
                 {
                     tempRec.Top = StartY + GameState.BankTop + (GameState.BankOffsetY + GameState.PicY) * (i / GameState.BankColumns);
                     tempRec.Bottom = tempRec.Top + GameState.PicY;
@@ -514,7 +514,7 @@ namespace Client
 
             }
 
-            return IsBankRet;
+            return -1;
 
         }
 
@@ -541,7 +541,7 @@ namespace Client
                 }
             }
 
-            return IsShopRet;
+            return -1;
         }
 
         public static long IsTrade(long StartX, long StartY)
@@ -567,7 +567,7 @@ namespace Client
                 }
             }
 
-            return IsTradeRet;
+            return -1;
         }
 
     }

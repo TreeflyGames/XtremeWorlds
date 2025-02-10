@@ -442,7 +442,7 @@ namespace Core.Global
             Type.Player[index].Skill[Skillslot].Num = skillNum;
         }
 
-        public static int GetBank(int index, byte bankslot)
+        public static int GetBank(int index, int bankslot)
         {
             int GetBankRet = default;
             GetBankRet = Type.Bank[index].Item[bankslot].Num;
@@ -454,7 +454,7 @@ namespace Core.Global
             Type.Bank[index].Item[bankSlot].Num = itemNum;
         }
 
-        public static int GetBankValue(int index, byte bankSlot)
+        public static int GetBankValue(int index, int bankSlot)
         {
             int GetBankValueRet = default;
             GetBankValueRet = Type.Bank[index].Item[bankSlot].Value;

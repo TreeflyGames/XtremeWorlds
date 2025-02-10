@@ -3742,7 +3742,7 @@ namespace Client
 
         public static void Bank_MouseDown()
         {
-            byte bankSlot;
+            long bankSlot;
             long winIndex;
             long i;
 
@@ -3757,7 +3757,7 @@ namespace Client
                 {
                     ref var withBlock = ref DragBox;
                     withBlock.Type = Core.Enum.PartType.Item;
-                    withBlock.Value = (long)GetBank(GameState.MyIndex, bankSlot);
+                    withBlock.Value = (long)GetBank(GameState.MyIndex, (int)bankSlot);
                     withBlock.Origin = Core.Enum.PartOriginType.Bank;
 
                     withBlock.Slot = bankSlot;
@@ -3784,7 +3784,7 @@ namespace Client
 
         public static void Bank_DblClick()
         {
-            byte bankSlot;
+            long bankSlot;
             long winIndex;
             long i;
 
@@ -3793,7 +3793,7 @@ namespace Client
 
             if (bankSlot >= 0L)
             {
-                Bank.WithdrawItem((int)bankSlot, GetBankValue(GameState.MyIndex, bankSlot));
+                Bank.WithdrawItem((int)bankSlot, GetBankValue(GameState.MyIndex, (int)bankSlot));
                 return;
             }
 
