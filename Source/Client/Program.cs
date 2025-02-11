@@ -860,7 +860,7 @@ namespace Client
             }
 
             // Check for MouseUp event (button released)
-            if (!IsMouseButtonUp(MouseButton.Left))
+            if (IsMouseButtonUp(MouseButton.Left))
             {
                 Gui.HandleInterfaceEvents(EntState.MouseUp);
             }
