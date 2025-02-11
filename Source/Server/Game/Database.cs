@@ -77,7 +77,7 @@ namespace Server
 
             using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
-                connection.Open();
+                connection?.Open();
 
                 using (var checkCommand = new NpgsqlCommand(checkDbExistsSql, connection))
                 {
@@ -1403,6 +1403,7 @@ namespace Server
             Core.Type.TempPlayer[index].Editor = -1;
             Core.Type.TempPlayer[index].SkillBuffer = -1;
             Core.Type.TempPlayer[index].InShop = -1;
+            Core.Type.TempPlayer[index].InTrade = -1;
 
             ClearCharacter(index);
         }
