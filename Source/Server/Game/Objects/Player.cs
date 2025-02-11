@@ -2557,12 +2557,22 @@ namespace Server
             NewNum = GetPlayerInv(index, NewSlot);
             NewValue = GetPlayerInvValue(index, NewSlot);
 
-            if (OldNum == NewNum & Core.Type.Item[NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
+            if (NewNum >= 0)
             {
-                SetPlayerInv(index, NewSlot, NewNum);
-                SetPlayerInvValue(index, NewSlot, OldValue + NewValue);
-                SetPlayerInv(index, OldSlot, 0);
-                SetPlayerInvValue(index, OldSlot, 0);
+                if (OldNum == NewNum & Core.Type.Item[NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
+                {
+                    SetPlayerInv(index, NewSlot, NewNum);
+                    SetPlayerInvValue(index, NewSlot, OldValue + NewValue);
+                    SetPlayerInv(index, OldSlot, 0);
+                    SetPlayerInvValue(index, OldSlot, 0);
+                }
+                else
+                {
+                    SetPlayerInv(index, NewSlot, OldNum);
+                    SetPlayerInvValue(index, NewSlot, OldValue);
+                    SetPlayerInv(index, OldSlot, NewNum);
+                    SetPlayerInvValue(index, OldSlot, NewValue);
+                }
             }
             else
             {
@@ -2603,12 +2613,22 @@ namespace Server
             if (OldNum < 0 || NewNum < 0)
                 return;
 
-            if (OldNum == NewNum & Core.Type.Item[(int)NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
+            if (NewNum >= 0)
             {
-                SetPlayerSkill(index, (int)NewSlot, NewNum);
-                SetPlayerSkillCD(index, (int)NewSlot, NewValue);
-                SetPlayerSkill(index, (int)OldSlot, 0);
-                SetPlayerSkillCD(index, (int)OldSlot, 0);
+                if (OldNum == NewNum & Core.Type.Item[(int)NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
+                {
+                    SetPlayerSkill(index, (int)NewSlot, NewNum);
+                    SetPlayerSkillCD(index, (int)NewSlot, NewValue);
+                    SetPlayerSkill(index, (int)OldSlot, 0);
+                    SetPlayerSkillCD(index, (int)OldSlot, 0);
+                }
+                else
+                {
+                    SetPlayerSkill(index, (int)NewSlot, (int)OldNum);
+                    SetPlayerSkillCD(index, (int)NewSlot, OldValue);
+                    SetPlayerSkill(index, (int)OldSlot, (int)NewNum);
+                    SetPlayerSkillCD(index, (int)OldSlot, NewValue);
+                }
             }
             else
             {

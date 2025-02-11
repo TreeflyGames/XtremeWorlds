@@ -391,25 +391,25 @@ namespace Client
             buffer.Dispose();
         }
 
-        public static void SendChangeInvSlots(double oldSlot, double newSlot)
+        public static void SendChangeInvSlots(int oldSlot, int newSlot)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSwapInvSlots);
-            buffer.WriteDouble(oldSlot);
-            buffer.WriteDouble(newSlot);
+            buffer.WriteInt32(oldSlot);
+            buffer.WriteInt32(newSlot);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
-        public static void SendChangeSkillSlots(double oldSlot, double newSlot)
+        public static void SendChangeSkillSlots(int oldSlot, int newSlot)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSwapSkillSlots);
-            buffer.WriteDouble(oldSlot);
-            buffer.WriteDouble(newSlot);
+            buffer.WriteInt32(oldSlot);
+            buffer.WriteInt32(newSlot);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
