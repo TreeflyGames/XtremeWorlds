@@ -135,7 +135,7 @@ namespace Client
                         // Too far away to the last space, so break at the last character
                         lineCount = lineCount + 1L;
                         Array.Resize(ref theArray, (int)(lineCount + 1));
-                        theArray[(int)lineCount] = Strings.Mid(text, (int)b, (int)(i - 1L - b));
+                        theArray[(int)lineCount - 1] = Strings.Mid(text, (int)b, (int)(i - 1L - b));
                         b = i - 1L;
                         size = 0L;
                     }
@@ -158,7 +158,7 @@ namespace Client
                             substringLength = 0;
 
                         // Extract the substring and assign it to the array
-                        theArray[(int)lineCount] = Strings.Mid(text, (int)b, substringLength);
+                        theArray[(int)lineCount - 1] = Strings.Mid(text, (int)b, substringLength);
 
                         b = lastSpace + 1L;
                         // Count all the words we ignored (the ones that weren't printed, but are before "i")

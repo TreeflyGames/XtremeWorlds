@@ -3199,7 +3199,7 @@ namespace Client
             yO = Windows[GetWindowIndex("winJobs")].Top;
 
             // Get job description or use default
-            if (string.IsNullOrEmpty(Core.Type.Job[(int)GameState.NewCharJob ].Desc))
+            if (string.IsNullOrEmpty(Core.Type.Job[(int)GameState.NewCharJob].Desc))
             {
                 switch (GameState.NewCharJob)
                 {
@@ -3231,7 +3231,7 @@ namespace Client
             count = Information.UBound(textArray);
             y = yO + 60L;
             var loopTo = count;
-            for (i = 1L; i <= loopTo; i++)
+            for (i = 0L; i < loopTo; i++)
             {
                 x = xO + 118L + 200 / 2 - Text.GetTextWidth(textArray[(int)i], Windows[GetWindowIndex("winJobs")].Font) / 2;
                 // Render each line of the wrapped text
