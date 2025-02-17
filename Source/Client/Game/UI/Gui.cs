@@ -4398,7 +4398,7 @@ namespace Client
         public static void UpdateWindow_Bars()
         {
             // Control window
-            UpdateWindow("winBars", "", Core.Enum.FontType.Georgia, zOrder_Win, 10L, 10L, 239L, 77L, 0L, false, design_norm: (long)Core.Enum.DesignType.Win_NoBar, design_hover: (long)Core.Enum.DesignType.Win_NoBar, design_mousedown: (long)Core.Enum.DesignType.Win_NoBar, canDrag: false, clickThrough: false);
+            UpdateWindow("winBars", "", Core.Enum.FontType.Georgia, zOrder_Win, 10L, 10L, 239L, 77L, 0L, false, design_norm: (long)Core.Enum.DesignType.Win_NoBar, design_hover: (long)Core.Enum.DesignType.Win_NoBar, design_mousedown: (long)Core.Enum.DesignType.Win_NoBar, canDrag: false, clickThrough: true);
 
             // Set the index for spawning controls
             zOrder_Con = 0L;
