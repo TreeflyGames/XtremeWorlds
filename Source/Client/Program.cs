@@ -13,6 +13,7 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using SharpDX.Mathematics.Interop;
 
 namespace Client
 {
@@ -892,6 +893,13 @@ namespace Client
                 // Right-click interactions
                 if (IsMouseButtonDown(MouseButton.Right))
                 {
+                    int slotNum = (int)GameLogic.IsHotbar(Gui.Windows[Gui.GetWindowIndex("winHotbar")].Left, Gui.Windows[Gui.GetWindowIndex("winHotbar")].Top);
+
+                    if (slotNum >= 0L)
+                    {
+                        NetworkSend.SendDeleteHotbar(slotNum);
+                    }
+
                     if (GameState.MyEditorType == (int)EditorType.Map)
                     {
                         frmEditor_Map.Instance.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);

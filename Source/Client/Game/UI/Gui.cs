@@ -5297,7 +5297,7 @@ namespace Client
         public static void UpdateWindow_Description()
         {
             // Control window
-            UpdateWindow("winDescription", "", Core.Enum.FontType.Georgia, zOrder_Win, 0L, 0L, 193L, 142L, 0L, false, design_norm: (long)Core.Enum.DesignType.Win_Desc, design_hover: (long)Core.Enum.DesignType.Win_Desc, design_mousedown: (long)Core.Enum.DesignType.Win_Desc, canDrag: false);
+            UpdateWindow("winDescription", "", Core.Enum.FontType.Georgia, zOrder_Win, 0L, 0L, 193L, 142L, 0L, false, design_norm: (long)Core.Enum.DesignType.Win_Desc, design_hover: (long)Core.Enum.DesignType.Win_Desc, design_mousedown: (long)Core.Enum.DesignType.Win_Desc, canDrag: false, clickThrough: true);
 
             // Set the index for spawning controls
             zOrder_Con = 0L;

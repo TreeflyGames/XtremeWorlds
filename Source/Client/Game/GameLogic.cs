@@ -1436,7 +1436,7 @@ namespace Client
                 }
             }
 
-            return IsHotbarRet;
+            return -1;
         }
 
         public static void ShowInvDesc(long x, long y, long invNum)

@@ -945,10 +945,13 @@ namespace Client
             {
                 if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                     return;
+
                 if (Conversions.ToInteger(Event.InEvent) == 1)
                     return;
+
                 if (GameState.SkillBuffer >= 0)
                     return; // currently casting a skill, can't attack
+
                 if (GameState.StunDuration > 0)
                     return; // stunned, can't attack
 
