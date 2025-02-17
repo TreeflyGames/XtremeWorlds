@@ -1,6 +1,8 @@
 ﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using SharpDX.Direct3D11;
+using SharpDX.DirectWrite;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -194,11 +196,13 @@ namespace Client
                     if (withBlock.zChange == 0)
                         return;
                 }
+
                 if (withBlock.zOrder == Windows.Count - 1)
                     return;
+
                 oldZOrder = withBlock.zOrder;
 
-                var loopTo = Windows.Count - 1;
+                var loopTo = Windows.Count;
                 for (i = 1L; i <= loopTo; i++)
                 {
 
@@ -596,7 +600,6 @@ namespace Client
                     var withBlock = Windows[curWindow];
                     withBlock.Left = withBlock.OrigLeft;
                     withBlock.Top = withBlock.OrigTop;
-                    withBlock.Visible = true;
                 }
             }
         }
@@ -1598,6 +1601,12 @@ namespace Client
 
                 if (curWindow > 0L)
                 {
+                    // Handle the active window's callback
+                    callBack = Windows[curWindow].CallBack[(int)entState];
+
+                    // Execute the callback if it exists
+                    callBack?.Invoke();
+
                     if (Windows[curWindow].Controls is not null)
                     {
                         // Handle controls in the active window
@@ -1686,15 +1695,10 @@ namespace Client
                         }
 
                         callBack = withBlock2.CallBack[(int)entState];
-                    }
-                    else
-                    {
-                        // Handle the active window's callback
-                        callBack = Windows[curWindow].CallBack[(int)entState];
-                    }
 
-                    // Execute the callback if it exists
-                    callBack?.Invoke();
+                        // Execute the callback if it exists
+                        callBack?.Invoke();
+                    }
                 }
 
                 // Reset mouse state on MouseUp
@@ -1734,7 +1738,7 @@ namespace Client
 
             lock (GameClient.InputLock)
             {
-                var loopTo = Windows.Count - 1;
+                var loopTo = Windows.Count;
                 for (i = 1L; i < loopTo; i++)
                 {
                     {
@@ -1785,7 +1789,7 @@ namespace Client
             var loopTo = Windows.Count - 1;
             for (curZOrder = 0L; curZOrder <= loopTo; curZOrder++)
             {
-                for (int i = 1, loopTo1 = Windows.Count - 1; i <= loopTo1; i++)
+                for (int i = 1, loopTo1 = Windows.Count; i <= loopTo1; i++)
                 {
                     if (curZOrder == Windows[i].zOrder && Windows[i].Visible)
                     {
@@ -2175,6 +2179,7 @@ namespace Client
 
             {
                 var withBlock = Windows[winNum];
+
                 // Apply censoring if necessary
                 if (withBlock.Censor)
                 {
@@ -3540,20 +3545,17 @@ namespace Client
             if (invNum >= 0L)
             {
                 // drag it
-                {
-                    ref var withBlock = ref DragBox;
-                    withBlock.Type = Core.Enum.PartType.Item;
-                    withBlock.Value = (long)GetPlayerInv(GameState.MyIndex, (int)invNum);
-                    withBlock.Origin = Core.Enum.PartOriginType.Inventory;
-                    withBlock.Slot = invNum;
-                }
+                ref var withBlock = ref DragBox;
+                withBlock.Type = Core.Enum.PartType.Item;
+                withBlock.Value = (long)GetPlayerInv(GameState.MyIndex, (int)invNum);
+                withBlock.Origin = Core.Enum.PartOriginType.Inventory;
+                withBlock.Slot = invNum;
 
                 winIndex = GetWindowIndex("winDragBox");
                 {
                     var withBlock1 = Windows[winIndex];
-                    GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left);
-                    withBlock1.Left = GameState.CurMouseX - 16;
-                    withBlock1.Top = GameState.CurMouseY - 16;
+                    withBlock1.Left = GameState.CurMouseX;
+                    withBlock1.Top = GameState.CurMouseY;
                     withBlock1.MovedX = GameState.CurMouseX - withBlock1.Left;
                     withBlock1.MovedY = GameState.CurMouseY - withBlock1.Top;
                 }
@@ -3754,21 +3756,18 @@ namespace Client
                 // exit out if we're offering that item
 
                 // drag it
-                {
-                    ref var withBlock = ref DragBox;
-                    withBlock.Type = Core.Enum.PartType.Item;
-                    withBlock.Value = (long)GetBank(GameState.MyIndex, (int)bankSlot);
-                    withBlock.Origin = Core.Enum.PartOriginType.Bank;
+                ref var withBlock = ref DragBox;
+                withBlock.Type = Core.Enum.PartType.Item;
+                withBlock.Value = (long)GetBank(GameState.MyIndex, (int)bankSlot);
+                withBlock.Origin = Core.Enum.PartOriginType.Bank;
 
-                    withBlock.Slot = bankSlot;
-                }
+                withBlock.Slot = bankSlot;
 
                 winIndex = GetWindowIndex("winDragBox");
                 {
                     var withBlock1 = Windows[winIndex];
-                    GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left);
-                    withBlock1.Left = GameState.CurMouseX - 16;
-                    withBlock1.Top = GameState.CurMouseY - 16;
+                    withBlock1.Left = GameState.CurMouseX;
+                    withBlock1.Top = GameState.CurMouseY;
                     withBlock1.MovedX = GameState.CurMouseX - withBlock1.Left;
                     withBlock1.MovedY = GameState.CurMouseY - withBlock1.Top;
                 }
@@ -3824,7 +3823,7 @@ namespace Client
                 {
                     case Core.Enum.PartType.Item:
                         {
-                            if (Conversions.ToBoolean(withBlock.Value))
+                            if (withBlock.Value >= 0)
                             {
                                 texNum = Core.Type.Item[(int)withBlock.Value].Icon;
                                 string argpath = System.IO.Path.Combine(Path.Items, texNum.ToString());
@@ -3836,7 +3835,7 @@ namespace Client
 
                     case Core.Enum.PartType.Skill:
                         {
-                            if (Conversions.ToBoolean(withBlock.Value))
+                            if (withBlock.Value >= 0)
                             {
                                 texNum = Core.Type.Skill[(int)withBlock.Value].Icon;
                                 string argpath1 = System.IO.Path.Combine(Path.Skills, texNum.ToString());
@@ -3863,7 +3862,7 @@ namespace Client
                 return;
 
             // check for other windows
-            var loopTo = Windows.Count - 1;
+            var loopTo = Windows.Count;
             for (i = 1L; i < loopTo; i++)
             {
                 {
@@ -3879,6 +3878,7 @@ namespace Client
                                 {
                                     if (curWindow == 0L)
                                         curWindow = i;
+
                                     if (withBlock.zOrder > Windows[curWindow].zOrder)
                                         curWindow = i;
                                 }
@@ -3889,7 +3889,7 @@ namespace Client
             }
 
             // we have a window - check if we can drop
-            if (Conversions.ToBoolean(curWindow))
+            if (curWindow > 0)
             {
                 switch (Windows[curWindow].Name ?? "")
                 {
@@ -4124,20 +4124,17 @@ namespace Client
 
             if (slotNum >= 0)
             {
-                {
-                    ref var withBlock = ref DragBox;
-                    withBlock.Type = Core.Enum.PartType.Skill;
-                    withBlock.Value = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)slotNum].Num;
-                    withBlock.Origin = Core.Enum.PartOriginType.Skill;
-                    withBlock.Slot = slotNum;
-                }
-
+                ref var withBlock = ref DragBox;
+                withBlock.Type = Core.Enum.PartType.Skill;
+                withBlock.Value = (long)Core.Type.Player[GameState.MyIndex].Skill[(int)slotNum].Num;
+                withBlock.Origin = Core.Enum.PartOriginType.Skill;
+                withBlock.Slot = slotNum;
+                
                 winIndex = GetWindowIndex("winDragBox");
                 {
                     var withBlock1 = Windows[winIndex];
-                    GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left);
-                    withBlock1.Left = GameState.CurMouseX - 16;
-                    withBlock1.Top = GameState.CurMouseY - 16;
+                    withBlock1.Left = GameState.CurMouseX;
+                    withBlock1.Top = GameState.CurMouseY;
                     withBlock1.MovedX = GameState.CurMouseX - withBlock1.Left;
                     withBlock1.MovedY = GameState.CurMouseY - withBlock1.Top;
                 }
@@ -4232,9 +4229,8 @@ namespace Client
                 winIndex = GetWindowIndex("winDragBox");
                 {
                     var withBlock1 = Windows[winIndex];
-                    GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left);
-                    withBlock1.Left = GameState.CurMouseX - 16;
-                    withBlock1.Top = GameState.CurMouseY - 16;
+                    withBlock1.Left = GameState.CurMouseX;
+                    withBlock1.Top = GameState.CurMouseY;
                     withBlock1.MovedX = GameState.CurMouseX - withBlock1.Left;
                     withBlock1.MovedY = GameState.CurMouseY - withBlock1.Top;
                 }
@@ -4402,7 +4398,7 @@ namespace Client
         public static void UpdateWindow_Bars()
         {
             // Control window
-            UpdateWindow("winBars", "", Core.Enum.FontType.Georgia, zOrder_Win, 10L, 10L, 239L, 77L, 0L, false, design_norm: (long)Core.Enum.DesignType.Win_NoBar, design_hover: (long)Core.Enum.DesignType.Win_NoBar, design_mousedown: (long)Core.Enum.DesignType.Win_NoBar, canDrag: false, clickThrough: false);
+            UpdateWindow("winBars", "", Core.Enum.FontType.Georgia, zOrder_Win, 10L, 10L, 239L, 77L, 0L, false, design_norm: (long)Core.Enum.DesignType.Win_NoBar, design_hover: (long)Core.Enum.DesignType.Win_NoBar, design_mousedown: (long)Core.Enum.DesignType.Win_NoBar, canDrag: false, clickThrough: true);
 
             // Set the index for spawning controls
             zOrder_Con = 0L;
@@ -5423,7 +5419,7 @@ namespace Client
         public static void UpdateWindow_DragBox()
         {
             // Control window
-            UpdateWindow("winDragBox", "", Core.Enum.FontType.Georgia, zOrder_Win, 0L, 0L, 32L, 32L, 0L, false, callback_mousedown: new Action(DragBox_Check), onDraw: new Action(DragBox_OnDraw));
+            UpdateWindow("winDragBox", "", Core.Enum.FontType.Georgia, zOrder_Win, 0L, 0L, 32L, 32L, 0L, false, onDraw: new Action(DragBox_OnDraw));
 
             // Need to set up unique mouseup event
             Windows[Windows.Count].CallBack[(int)Core.Enum.EntState.MouseUp] = new Action(DragBox_Check);
@@ -5757,7 +5753,7 @@ namespace Client
             long x;
             long y;
 
-            if (GameState.InShop < 1 | GameState.InShop > Constant.MAX_SHOPS)
+            if (GameState.InShop < 0 | GameState.InShop > Constant.MAX_SHOPS)
                 return;
 
             shopSlot = General.IsShop(Windows[GetWindowIndex("winShop")].Left, Windows[GetWindowIndex("winShop")].Top);

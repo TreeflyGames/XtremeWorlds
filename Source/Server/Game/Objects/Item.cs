@@ -433,8 +433,10 @@ namespace Server
             // Prevent hacking
             if (invNum < 0 | invNum > Core.Constant.MAX_INV)
                 return;
+
             if (GetPlayerInv(index, invNum) < 0 | GetPlayerInv(index, invNum) > Core.Constant.MAX_ITEMS)
                 return;
+
             if (Core.Type.Item[(int)GetPlayerInv(index, invNum)].Type == (byte)ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(index, invNum)].Stackable == 1)
             {
                 if (amount < 0 | amount > GetPlayerInvValue(index, invNum))

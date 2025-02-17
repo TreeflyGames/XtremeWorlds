@@ -77,7 +77,7 @@ namespace Server
 
             using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
             {
-                connection.Open();
+                connection?.Open();
 
                 using (var checkCommand = new NpgsqlCommand(checkDbExistsSql, connection))
                 {
@@ -1403,6 +1403,7 @@ namespace Server
             Core.Type.TempPlayer[index].Editor = -1;
             Core.Type.TempPlayer[index].SkillBuffer = -1;
             Core.Type.TempPlayer[index].InShop = -1;
+            Core.Type.TempPlayer[index].InTrade = -1;
 
             ClearCharacter(index);
         }
@@ -1446,7 +1447,7 @@ namespace Server
             Bank[index].Item = new PlayerInvStruct[Core.Constant.MAX_BANK + 1];
             for (int i = 0; i < Core.Constant.MAX_BANK; i++)
             {
-                Bank[index].Item[i].Num = 0;
+                Bank[index].Item[i].Num = -1;
                 Bank[index].Item[i].Value = 0;
             }
         }

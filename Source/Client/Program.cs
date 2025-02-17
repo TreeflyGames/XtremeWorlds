@@ -828,7 +828,7 @@ namespace Client
             }
 
             // Check for MouseUp event (button released)
-            if (!IsMouseButtonUp(MouseButton.Left))
+            if (IsMouseButtonUp(MouseButton.Left))
             {
                 Gui.HandleInterfaceEvents(EntState.MouseUp);
             }
@@ -2376,7 +2376,7 @@ namespace Client
                     }
 
                     // Draw the target icon
-                    if (GameState.MyTarget > 0)
+                    if (GameState.MyTarget >= 0)
                     {
                         if (GameState.MyTargetType == (int)TargetType.Player)
                         {

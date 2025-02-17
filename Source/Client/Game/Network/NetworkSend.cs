@@ -391,25 +391,25 @@ namespace Client
             buffer.Dispose();
         }
 
-        public static void SendChangeInvSlots(double oldSlot, double newSlot)
+        public static void SendChangeInvSlots(int oldSlot, int newSlot)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSwapInvSlots);
-            buffer.WriteDouble(oldSlot);
-            buffer.WriteDouble(newSlot);
+            buffer.WriteInt32(oldSlot);
+            buffer.WriteInt32(newSlot);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
-        public static void SendChangeSkillSlots(double oldSlot, double newSlot)
+        public static void SendChangeSkillSlots(int oldSlot, int newSlot)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSwapSkillSlots);
-            buffer.WriteDouble(oldSlot);
-            buffer.WriteDouble(newSlot);
+            buffer.WriteInt32(oldSlot);
+            buffer.WriteInt32(newSlot);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
             buffer.Dispose();
@@ -436,8 +436,10 @@ namespace Client
             // do basic checks
             if (invNum < 0 | invNum > Constant.MAX_INV)
                 return;
+
             if (Core.Type.Player[GameState.MyIndex].Inv[invNum].Num < 0 | Core.Type.Player[GameState.MyIndex].Inv[invNum].Num > Constant.MAX_ITEMS)
                 return;
+
             if (Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Type == (byte)Core.Enum.ItemType.Currency | Core.Type.Item[(int)GetPlayerInv(GameState.MyIndex, invNum)].Stackable == 1)
             {
                 if (amount < 0 | amount > Core.Type.Player[GameState.MyIndex].Inv[invNum].Value)
@@ -456,7 +458,7 @@ namespace Client
         {
             var buffer = new ByteStream(4);
 
-            if (Conversions.ToBoolean(GameLogic.IsInBounds()))
+            if (GameLogic.IsInBounds())
             {
                 buffer.WriteInt32((int)Packets.ClientPackets.CSearch);
                 buffer.WriteInt32(GameState.CurX);

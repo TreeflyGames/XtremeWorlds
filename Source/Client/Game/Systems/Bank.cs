@@ -22,7 +22,7 @@ namespace Client
 
                 for (i = 0; i < Constant.MAX_BANK; i++)
                 {
-                    Core.Type.Bank[x].Item[i].Num = 0;
+                    Core.Type.Bank[x].Item[i].Num = -1;
                     Core.Type.Bank[x].Item[i].Value = 0;
                 }
             }
@@ -99,6 +99,7 @@ namespace Client
             if (Gui.Windows[Gui.GetWindowIndex("winBank")].Visible == true)
             {
                 Gui.HideWindow(Gui.GetWindowIndex("winBank"));
+                Gui.HideWindow(Gui.GetWindowIndex("winDescription"));
             }
 
             var buffer = new ByteStream(4);
