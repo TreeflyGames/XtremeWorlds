@@ -220,7 +220,7 @@ namespace Client
                     // Process NPC movements (actually move them)
                     for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
                     {
-                        if (Core.Type.MyMap.NPC[i] > 0)
+                        if (Core.Type.MyMap.NPC[i] >= 0)
                         {
                             GameLogic.ProcessNPCMovement(i);
                         }
