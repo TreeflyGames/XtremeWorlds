@@ -2555,9 +2555,11 @@ namespace Server
                         Core.Type.TempPlayer[(int)Core.Type.TempPlayer[index].InTrade].AcceptTrade = false;
 
                         NetworkSend.SendTradeStatus(index, 0);
-                        NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 0);
+                        NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 1);
 
                         NetworkSend.SendTradeUpdate(index, 0);
+                        NetworkSend.SendTradeUpdate(index, 1);
+                        NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 0);
                         NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 1);
                         return;
                     }
@@ -2598,6 +2600,8 @@ namespace Server
             NetworkSend.SendTradeStatus((int)Core.Type.TempPlayer[index].InTrade, 0);
 
             NetworkSend.SendTradeUpdate(index, 0);
+            NetworkSend.SendTradeUpdate(index, 1);
+            NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 0);
             NetworkSend.SendTradeUpdate((int)Core.Type.TempPlayer[index].InTrade, 1);
         }
 
@@ -2612,6 +2616,7 @@ namespace Server
 
             if (tradeslot < 0 | tradeslot > Core.Constant.MAX_INV)
                 return;
+
             if (Core.Type.TempPlayer[index].TradeOffer[tradeslot].Num < 0)
                 return;
 
