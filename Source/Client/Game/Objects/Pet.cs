@@ -227,7 +227,7 @@ namespace Client
             for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
                 Core.Type.Player[n].Pet.Stat[i] = (byte)buffer.ReadInt32();
 
-            for (i = 0; i <= 4; i++)
+            for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
                 Core.Type.Player[n].Pet.Skill[i] = buffer.ReadInt32();
 
             Core.Type.Player[n].Pet.X = buffer.ReadInt32();
