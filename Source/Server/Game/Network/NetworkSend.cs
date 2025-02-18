@@ -1104,7 +1104,7 @@ namespace Server
                 var loopTo = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo; i++)
                 {
-                    if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num >= 0)
+                    if (Core.Type.TempPlayer[index].TradeOffer[i].Num >= 0)
                     {
                         buffer.WriteInt32((int)Core.Type.TempPlayer[index].TradeOffer[i].Num);
                         buffer.WriteInt32(Core.Type.TempPlayer[index].TradeOffer[i].Value);
