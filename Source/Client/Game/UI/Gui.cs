@@ -1616,9 +1616,6 @@ namespace Client
                             var withBlock1 = Windows[curWindow].Controls[(int)i];
                             if (withBlock1.Enabled && withBlock1.Visible)
                             {
-                                if (withBlock1.State != Core.Enum.EntState.MouseDown)
-                                    withBlock1.State = Core.Enum.EntState.Normal;
-
                                 if (GameState.CurMouseX >= withBlock1.Left + Windows[curWindow].Left && GameState.CurMouseX <= withBlock1.Left + withBlock1.Width + Windows[curWindow].Left && GameState.CurMouseY >= withBlock1.Top + Windows[curWindow].Top && GameState.CurMouseY <= withBlock1.Top + withBlock1.Height + Windows[curWindow].Top)
                                 {
                                     if (curControl == 0L || withBlock1.zOrder > Windows[curWindow].Controls[(int)curControl].zOrder)
@@ -1915,6 +1912,8 @@ namespace Client
                             if (withBlock.Icon > 0L)
                             {
                                 var gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Items, withBlock.Icon.ToString()));
+                                if (gfxInfo == null)
+                                    break;
                                 int iconWidth = gfxInfo.Width;
                                 int iconHeight = gfxInfo.Height;
 
@@ -3538,6 +3537,9 @@ namespace Client
             long invNum;
             long winIndex;
             long I;
+
+            if (Trade.InTrade == 1)
+                return;
 
             // is there an item?
             invNum = General.IsInv(Windows[GetWindowIndex("winInventory")].Left, Windows[GetWindowIndex("winInventory")].Top);

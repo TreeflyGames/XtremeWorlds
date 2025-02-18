@@ -263,6 +263,7 @@ namespace Client
 
         public static int LastLeftClickTime;
         public const int DoubleClickTImer = 500; // Time in milliseconds for double-click detection
+        public static int ClickCount;
 
         public const int ChatBubbleWidth = 300;
 

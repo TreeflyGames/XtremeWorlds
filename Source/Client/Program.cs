@@ -856,22 +856,26 @@ namespace Client
                     Gui.HandleInterfaceEvents(EntState.MouseDown);
                     lastMouseClickTime = DateTime.Now; // Update last mouse click time
                     GameState.LastLeftClickTime = currentTime; // Track time for double-click detection
+                    GameState.ClickCount++;
                 }
-                
+
+                if (GameState.ClickCount >= 2)
+                {
+                    Gui.HandleInterfaceEvents(EntState.DblClick);
+                }
+
+                // Double-click detection for left button
+                if (currentTime - GameState.LastLeftClickTime > GameState.DoubleClickTImer)
+                {
+                    GameState.ClickCount = 0;  
+                }  
             }
 
             // Check for MouseUp event (button released)
             if (IsMouseButtonUp(MouseButton.Left))
             {
                 Gui.HandleInterfaceEvents(EntState.MouseUp);
-            }
-
-            // Double-click detection for left button
-            if (IsMouseButtonDown(MouseButton.Left) && currentTime - GameState.LastLeftClickTime <= GameState.DoubleClickTImer)
-            {
-                Gui.HandleInterfaceEvents(EntState.DblClick);
-                GameState.LastLeftClickTime = 0; // Reset double-click timer
-            }
+            } 
 
             // In-game interactions for left click
             if (GameState.InGame == true)
