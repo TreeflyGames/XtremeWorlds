@@ -206,7 +206,7 @@ namespace Server
 
             buffer.WriteInt32(index);
 
-            buffer.WriteDouble(GetPetNum(index));
+            buffer.WriteInt32(GetPetNum(index));
             buffer.WriteInt32(GetPetVital(index, VitalType.HP));
             buffer.WriteInt32(GetPetVital(index, VitalType.SP));
             buffer.WriteInt32(GetPetLevel(index));
@@ -4805,9 +4805,9 @@ namespace Server
 
         }
 
-        internal static double GetPetNum(int index)
+        internal static int GetPetNum(int index)
         {
-            double GetPetNumRet = default;
+            int GetPetNumRet = default;
             GetPetNumRet = Core.Type.Player[index].Pet.Num;
             return GetPetNumRet;
 
