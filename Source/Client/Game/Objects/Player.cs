@@ -858,12 +858,6 @@ namespace Client
                     }
                 case (int)Core.Enum.DirectionType.Right:
                     {
-                        if (GetPlayerX(index) >= Core.Type.MyMap.MaxX)
-                        {
-                            SetPlayerDir(index, (int)Core.Enum.DirectionType.Left);
-                            return;
-                        }
-
                         Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset + GameState.MovementSpeed);
                         if (Core.Type.Player[index].XOffset > 0)
                             Core.Type.Player[index].XOffset = 0;
