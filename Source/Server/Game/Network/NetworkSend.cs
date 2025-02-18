@@ -1101,16 +1101,15 @@ namespace Server
 
             if (DataType == 0) // own inventory
             {
-
                 var loopTo = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo; i++)
                 {
-                    buffer.WriteInt32((int)Core.Type.TempPlayer[index].TradeOffer[i].Num);
-                    buffer.WriteInt32(Core.Type.TempPlayer[index].TradeOffer[i].Value);
-
-                    // add total worth
-                    if (Core.Type.TempPlayer[index].TradeOffer[i].Num >= 0)
+                    if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num >= 0)
                     {
+                        buffer.WriteInt32((int)Core.Type.TempPlayer[index].TradeOffer[i].Num);
+                        buffer.WriteInt32(Core.Type.TempPlayer[index].TradeOffer[i].Value);
+
+                        // add total worth
                         // currency?
                         if (Core.Type.Item[(int)Core.Type.TempPlayer[index].TradeOffer[i].Num].Type == (int)ItemType.Currency || Core.Type.Item[(int)Core.Type.TempPlayer[index].TradeOffer[i].Num].Stackable == 1)
                         {
@@ -1123,31 +1122,43 @@ namespace Server
                             totalWorth = totalWorth + Core.Type.Item[GetPlayerInv(index, (int)Core.Type.TempPlayer[index].TradeOffer[i].Num)].Price;
                         }
                     }
+                    else
+                    {
+                        buffer.WriteInt32(-1);
+                        buffer.WriteInt32(0);
+                    }
                 }
             }
             else if (DataType == 1) // other inventory
             {
-
                 var loopTo1 = Core.Constant.MAX_INV;
                 for (i = 0; i < loopTo1; i++)
                 {
-                    buffer.WriteInt32(GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num));
-                    buffer.WriteInt32(Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value);
-
-                    // add total worth
-                    if (GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num) > 0)
+                    if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num >= 0)
                     {
-                        // currency?
-                        if (Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Type == (int)ItemType.Currency || Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Stackable == 1)
+                        buffer.WriteInt32(GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num));
+                        buffer.WriteInt32(Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value);
+
+                        // add total worth
+                        if (GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num) >= 0)
                         {
-                            if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value == 0)
-                                Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value = 0;
-                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value;
+                            // currency?
+                            if (Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Type == (int)ItemType.Currency || Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Stackable == 1)
+                            {
+                                if (Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value == 0)
+                                    Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value = 0;
+                                totalWorth = totalWorth + Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price * Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Value;
+                            }
+                            else
+                            {
+                                totalWorth = totalWorth + Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price;
+                            }
                         }
-                        else
-                        {
-                            totalWorth = totalWorth + Core.Type.Item[GetPlayerInv((int)tradeTarget, (int)Core.Type.TempPlayer[(int)tradeTarget].TradeOffer[i].Num)].Price;
-                        }
+                    }
+                    else
+                    {
+                        buffer.WriteInt32(-1);
+                        buffer.WriteInt32(0);
                     }
                 }
             }

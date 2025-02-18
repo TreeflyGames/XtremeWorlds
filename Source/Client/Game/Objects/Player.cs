@@ -858,12 +858,6 @@ namespace Client
                     }
                 case (int)Core.Enum.DirectionType.Right:
                     {
-                        if (GetPlayerX(index) >= Core.Type.MyMap.MaxX)
-                        {
-                            SetPlayerDir(index, (int)Core.Enum.DirectionType.Left);
-                            return;
-                        }
-
                         Core.Type.Player[index].XOffset = (int)Math.Round(Core.Type.Player[index].XOffset + GameState.MovementSpeed);
                         if (Core.Type.Player[index].XOffset > 0)
                             Core.Type.Player[index].XOffset = 0;
@@ -945,10 +939,13 @@ namespace Client
             {
                 if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
                     return;
+
                 if (Conversions.ToInteger(Event.InEvent) == 1)
                     return;
+
                 if (GameState.SkillBuffer >= 0)
                     return; // currently casting a skill, can't attack
+
                 if (GameState.StunDuration > 0)
                     return; // stunned, can't attack
 
@@ -1316,6 +1313,31 @@ namespace Client
                 case (int)Core.Enum.DirectionType.Right:
                     {
                         Core.Type.Player[i].XOffset = GameState.PicX * -1;
+                        break;
+                    }
+                case (int)Core.Enum.DirectionType.UpRight:
+                    {
+                        Core.Type.Player[i].YOffset = GameState.PicY;
+                        Core.Type.Player[i].XOffset = GameState.PicX * -1;
+                        break;
+
+                    }
+                case (int)Core.Enum.DirectionType.UpLeft:
+                    {
+                        Core.Type.Player[i].YOffset = GameState.PicY;
+                        Core.Type.Player[i].XOffset = GameState.PicX;
+                        break;
+                    }
+                case (int)Core.Enum.DirectionType.DownRight:
+                    {
+                        Core.Type.Player[i].YOffset = GameState.PicY * -1;
+                        Core.Type.Player[i].XOffset = GameState.PicX * -1;
+                        break;
+                    }
+                case (int)Core.Enum.DirectionType.DownLeft:
+                    {
+                        Core.Type.Player[i].YOffset = GameState.PicY * -1;
+                        Core.Type.Player[i].XOffset = GameState.PicX;
                         break;
                     }
             }

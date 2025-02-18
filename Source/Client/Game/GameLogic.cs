@@ -334,7 +334,7 @@ namespace Client
 
                     case "/info":
                         {
-                            if (GameState.MyTarget > 0)
+                            if (GameState.MyTarget >= 0)
                             {
                                 if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
                                 {
@@ -393,7 +393,7 @@ namespace Client
 
                     case "/party":
                         {
-                            if (GameState.MyTarget > 0)
+                            if (GameState.MyTarget >= 0)
                             {
                                 if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
                                 {
@@ -430,7 +430,7 @@ namespace Client
                     // Trade
                     case "/trade":
                         {
-                            if (GameState.MyTarget > 0)
+                            if (GameState.MyTarget >= 0)
                             {
                                 if (GameState.MyTargetType == (int)Core.Enum.TargetType.Player)
                                 {
@@ -1436,7 +1436,7 @@ namespace Client
                 }
             }
 
-            return IsHotbarRet;
+            return -1;
         }
 
         public static void ShowInvDesc(long x, long y, long invNum)

@@ -2673,7 +2673,7 @@ namespace Server
             oldSlot = buffer.ReadInt32();
             skill = buffer.ReadInt32();
 
-            if (newSlot < 1 | newSlot > Core.Constant.MAX_HOTBAR)
+            if (newSlot < 0 | newSlot > Core.Constant.MAX_HOTBAR)
                 return;
 
             if (type == (byte)PartOriginType.Hotbar)
@@ -2705,7 +2705,7 @@ namespace Server
 
             slot = buffer.ReadInt32();
 
-            if (slot < 1 | slot > Core.Constant.MAX_HOTBAR)
+            if (slot < 0 | slot > Core.Constant.MAX_HOTBAR)
                 return;
 
             Core.Type.Player[index].Hotbar[slot].Slot = 0;
@@ -2724,7 +2724,7 @@ namespace Server
             slot = buffer.ReadInt32();
             buffer.Dispose();
 
-            if (slot < 1 | slot > Core.Constant.MAX_HOTBAR)
+            if (slot < 0 | slot > Core.Constant.MAX_HOTBAR)
                 return;
 
             if (Core.Type.Player[index].Hotbar[slot].Slot >= 0)
