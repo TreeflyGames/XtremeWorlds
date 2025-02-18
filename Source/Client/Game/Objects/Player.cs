@@ -1321,6 +1321,31 @@ namespace Client
                         Core.Type.Player[i].XOffset = GameState.PicX * -1;
                         break;
                     }
+                case (int)Core.Enum.DirectionType.UpRight:
+                    {
+                        Core.Type.Player[i].YOffset = GameState.PicY;
+                        Core.Type.Player[i].XOffset = GameState.PicX * -1;
+                        break;
+
+                    }
+                case (int)Core.Enum.DirectionType.UpLeft:
+                    {
+                        Core.Type.Player[i].YOffset = GameState.PicY;
+                        Core.Type.Player[i].XOffset = GameState.PicX;
+                        break;
+                    }
+                case (int)Core.Enum.DirectionType.DownRight:
+                    {
+                        Core.Type.Player[i].YOffset = GameState.PicY * -1;
+                        Core.Type.Player[i].XOffset = GameState.PicX * -1;
+                        break;
+                    }
+                case (int)Core.Enum.DirectionType.DownLeft:
+                    {
+                        Core.Type.Player[i].YOffset = GameState.PicY * -1;
+                        Core.Type.Player[i].XOffset = GameState.PicX;
+                        break;
+                    }
             }
 
             buffer.Dispose();
