@@ -206,7 +206,7 @@ namespace Server
             string dataTable = "id SERIAL PRIMARY KEY, data jsonb";
             string playerTable = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb";
 
-            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i < loopTo; i++)
+            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= loopTo; i++)
                 playerTable += $", character{i} jsonb";
 
             string[] tableNames = new[] { "job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile", "moral" };
