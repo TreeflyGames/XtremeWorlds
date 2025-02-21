@@ -314,9 +314,9 @@ namespace Server
                     password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
 
                     var loopTo = Strings.Len(username);
-                    for (i = 1; i < loopTo; i++)
+                    for (i = 0; i < loopTo; i++)
                     {
-                        n = Strings.AscW(Strings.Mid(username, i, 1));
+                        n = Strings.AscW(Strings.Mid(username, i + 1, 1));
 
                         if (!General.IsNameLegal(n.ToString()))
                         {
@@ -447,9 +447,9 @@ namespace Server
                 }
 
                 var loopTo = Strings.Len(name);
-                for (i = 1; i < loopTo; i++)
+                for (i = 0; i < loopTo; i++)
                 {
-                    n = Strings.AscW(Strings.Mid(name, i, 1));
+                    n = Strings.AscW(Strings.Mid(name, i + 1, 1));
 
                     if (!General.IsNameLegal(n.ToString()))
                     {
@@ -1372,7 +1372,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-                Item.SpawnItemSlot(i, 0, 0, GetPlayerMap(index), MapItem[GetPlayerMap(index), i].X, MapItem[GetPlayerMap(index), i].Y);
+                Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), MapItem[GetPlayerMap(index), i].X, MapItem[GetPlayerMap(index), i].Y);
                 Database.ClearMapItem(i, GetPlayerMap(index));
             }
 
