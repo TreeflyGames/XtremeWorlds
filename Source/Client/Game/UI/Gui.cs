@@ -4584,7 +4584,7 @@ namespace Client
         public static void UpdateWindow_Menu()
         {
             // Control window
-            UpdateWindow("winMenu", "", Core.Enum.FontType.Georgia, zOrder_Win, GameState.ResolutionWidth - 229, GameState.ResolutionHeight - 31, 229L, 30L, 0L, false, isActive: false, clickThrough: false);
+            UpdateWindow("winMenu", "", Core.Enum.FontType.Georgia, zOrder_Win, GameState.ResolutionWidth - 229, GameState.ResolutionHeight - 31, 229L, 30L, 0L, false, isActive: false, canDrag: false, clickThrough: true);
 
             // Set the index for spawning controls
             zOrder_Con = 0L;
