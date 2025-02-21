@@ -1800,7 +1800,7 @@ namespace Server
                                     MapItem[mapNum, i].Y = 0;
 
                                     NetworkSend.SendInventoryUpdate(index, n);
-                                    Item.SpawnItemSlot(i, 0, 0, GetPlayerMap(index), 0, 0);
+                                    Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), 0, 0);
                                     NetworkSend.SendActionMsg(GetPlayerMap(index), Msg, (int) ColorType.White, (byte)ActionMsgType.Static, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
                                     break;
                                 }

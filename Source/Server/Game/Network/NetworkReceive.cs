@@ -1303,7 +1303,7 @@ namespace Server
             var loopTo11 = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo11; i++)
             {
-                Item.SpawnItemSlot(i, 0, 0, GetPlayerMap(index), MapItem[GetPlayerMap(index), i].X, MapItem[GetPlayerMap(index), i].Y);
+                Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), MapItem[GetPlayerMap(index), i].X, MapItem[GetPlayerMap(index), i].Y);
                 Database.ClearMapItem(i, GetPlayerMap(index));
             }
 
@@ -1345,7 +1345,7 @@ namespace Server
                 NetworkSend.SendMapData(index, GetPlayerMap(index), false);
             }
 
-            if (Core.Type.Map[GetPlayerMap(index)].Shop > 0)
+            if (Core.Type.Map[GetPlayerMap(index)].Shop >= 0)
             {
                 if (!string.IsNullOrEmpty(Core.Type.Shop[Core.Type.Map[GetPlayerMap(index)].Shop].Name))
                 {
