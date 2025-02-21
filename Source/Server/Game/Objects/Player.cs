@@ -2602,9 +2602,6 @@ namespace Server
             NewNum = GetPlayerSkill(index, (int)NewSlot);
             NewValue = GetPlayerSkillCD(index, (int)NewSlot);
 
-            if (OldNum < 0 || NewNum < 0)
-                return;
-
             if (NewNum >= 0)
             {
                 if (OldNum == NewNum & Core.Type.Item[(int)NewNum].Stackable == 1) // same item, if we can stack it, lets do that :P
