@@ -2477,58 +2477,50 @@ namespace Server
                 n = Core.Type.Item[itemNum].Data1;
             }
 
-            if (n < 1 | n > Core.Constant.MAX_SKILLS)
+            if (n < 0 | n > Core.Constant.MAX_SKILLS)
                 return;
 
-            if (n > 0)
+            // Make sure they are the right class
+            if (Core.Type.Skill[n].JobReq == GetPlayerJob(index) | Core.Type.Skill[n].JobReq == 0)
             {
-                // Make sure they are the right class
-                if (Core.Type.Skill[n].JobReq == GetPlayerJob(index) | Core.Type.Skill[n].JobReq == 0)
+                // Make sure they are the right level
+                i = Core.Type.Skill[n].LevelReq;
+
+                if (i <= GetPlayerLevel(index))
                 {
-                    // Make sure they are the right level
-                    i = Core.Type.Skill[n].LevelReq;
+                    i = FindOpenSkill(index);
 
-                    if (i <= GetPlayerLevel(index))
+                    // Make sure they have an open skill slot
+                    if (i >= 0)
                     {
-                        i = FindOpenSkill(index);
-
-                        // Make sure they have an open skill slot
-                        if (i > 0)
+                        // Make sure they dont already have the skill
+                        if (!HasSkill(index, n))
                         {
-
-                            // Make sure they dont already have the skill
-                            if (!HasSkill(index, n))
-                            {
-                                SetPlayerSkill(index, i, n);
-                                Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                                TakeInv(index, itemNum, 0);
-                                NetworkSend.PlayerMsg(index, "You study the skill carefully.", (int) ColorType.Yellow);
-                                NetworkSend.PlayerMsg(index, "You have learned a new skill!", (int) ColorType.BrightGreen);
-                                NetworkSend.SendPlayerSkills(index);
-                            }
-                            else
-                            {
-                                NetworkSend.PlayerMsg(index, "You have already learned this skill!", (int) ColorType.BrightRed);
-                            }
+                            SetPlayerSkill(index, i, n);
+                            Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
+                            TakeInv(index, itemNum, 0);
+                            NetworkSend.PlayerMsg(index, "You study the skill carefully.", (int) ColorType.Yellow);
+                            NetworkSend.PlayerMsg(index, "You have learned a new skill!", (int) ColorType.BrightGreen);
+                            NetworkSend.SendPlayerSkills(index);
                         }
                         else
                         {
-                            NetworkSend.PlayerMsg(index, "You have learned all that you can learn!", (int) ColorType.BrightRed);
+                            NetworkSend.PlayerMsg(index, "You have already learned this skill!", (int) ColorType.BrightRed);
                         }
                     }
                     else
                     {
-                        NetworkSend.PlayerMsg(index, "You must be level " + i + " to learn this skill.", (int) ColorType.Yellow);
+                        NetworkSend.PlayerMsg(index, "You have learned all that you can learn!", (int) ColorType.BrightRed);
                     }
                 }
                 else
                 {
-                    NetworkSend.PlayerMsg(index, string.Format("Only {0} can use this skill.", GameLogic.CheckGrammar(Core.Type.Job[Core.Type.Skill[n].JobReq].Name, 1)), (int) ColorType.BrightRed);
+                    NetworkSend.PlayerMsg(index, "You must be level " + i + " to learn this skill.", (int) ColorType.Yellow);
                 }
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "This scroll is not connected to a skill, please inform an admin!", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, string.Format("Only {0} can use this skill.", GameLogic.CheckGrammar(Core.Type.Job[Core.Type.Skill[n].JobReq].Name, 1)), (int) ColorType.BrightRed);
             }
         }
 

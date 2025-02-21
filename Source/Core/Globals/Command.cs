@@ -404,7 +404,7 @@ namespace Core.Global
 
             }
 
-            return 0;
+            return -1;
         }
 
         public static int GetPlayerSkill(int index, int skillSlot)

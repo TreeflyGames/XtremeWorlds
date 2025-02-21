@@ -2819,7 +2819,7 @@ namespace Server
                                                                     {
                                                                         if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
                                                                         {
-                                                                            if (FindOpenSkill(i) > 0)
+                                                                            if (FindOpenSkill(i) >= 0)
                                                                             {
                                                                                 if (HasSkill(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1) == false)
                                                                                 {
