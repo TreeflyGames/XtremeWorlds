@@ -5738,7 +5738,7 @@ namespace Client
             shopNum = General.IsShop(Windows[GetWindowIndex("winShop")].Left, Windows[GetWindowIndex("winShop")].Top);
             if (shopNum >= 0L)
             {
-                if (Core.Type.Shop[GameState.InShop].TradeItem[(int)GameState.shopSelectedSlot].Item >= 0)
+                if (Core.Type.Shop[GameState.InShop].TradeItem[shopNum].Item >= 0)
                 {
                     // set the active slot
                     GameState.shopSelectedSlot = shopNum;
@@ -6156,7 +6156,7 @@ namespace Client
                 {
                     GameState.shopSelectedItem = (long)GetPlayerInv(GameState.MyIndex, (int)GameState.shopSelectedSlot);
                     // labels
-                    if (GameState.shopSelectedItem > 0L)
+                    if (GameState.shopSelectedItem >= 0L)
                     {
                         withBlock.Controls[GetControlIndex("winShop", "lblName")].Text = Core.Type.Item[(int)GameState.shopSelectedItem].Name;
                         // calc cost
