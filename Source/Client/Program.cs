@@ -518,6 +518,24 @@ namespace Client
                     return;
                 }
 
+                if (Gui.Windows[Gui.GetWindowIndex("winShop")].Visible == true)
+                {
+                    Shop.CloseShop();
+                    return;
+                }
+
+                if (Gui.Windows[Gui.GetWindowIndex("winBank")].Visible == true)
+                {
+                    Bank.CloseBank();
+                    return;
+                }
+
+                if (Gui.Windows[Gui.GetWindowIndex("winTrade")].Visible == true)
+                {
+                    Trade.CloseTrade();
+                    return;
+                }
+
                 if (Gui.Windows[Gui.GetWindowIndex("winInventory")].Visible == true)
                 {
                     Gui.HideWindow(Gui.GetWindowIndex("winInventory"));

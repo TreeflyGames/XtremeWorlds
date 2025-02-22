@@ -287,7 +287,7 @@ namespace Client
 
             if (GameState.InShop >= 0)
             {
-                GameLogic.CloseShop();
+                Shop.CloseShop();
             }
 
             if (GameState.InBank)

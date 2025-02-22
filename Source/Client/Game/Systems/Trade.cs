@@ -6,6 +6,11 @@ namespace Client
 
     public static class Trade
     {
+        public static void CloseTrade()
+        {
+            InTrade = -1;
+            Gui.HideWindow(Gui.GetWindowIndex("winTrade"));
+        }
 
         #region Globals & Type
 
@@ -42,8 +47,7 @@ namespace Client
 
         public static void Packet_CloseTrade(ref byte[] data)
         {
-            InTrade = -1;
-            Gui.HideWindow(Gui.GetWindowIndex("winTrade"));
+            CloseTrade();
         }
 
         public static void Packet_TradeUpdate(ref byte[] data)

@@ -5659,7 +5659,7 @@ namespace Client
         // Shop
         public static void btnShop_Close()
         {
-            GameLogic.CloseShop();
+            Shop.CloseShop();
         }
 
         public static void chkShopBuying()
