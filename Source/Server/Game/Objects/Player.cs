@@ -2015,7 +2015,7 @@ namespace Server
                                 {
                                     amount = GetPlayerInvValue(index, invNum);
                                     withBlock.Value = amount;
-                                    SetPlayerInv(index, invNum, 0);
+                                    SetPlayerInv(index, invNum, -1);
                                     SetPlayerInvValue(index, invNum, 0);
                                 }
                                 else
@@ -2032,7 +2032,7 @@ namespace Server
 
                                 // send message
                                 NetworkSend.MapMsg(GetPlayerMap(index), string.Format("{0} has dropped {1}.", GetPlayerName(index), GameLogic.CheckGrammar(Core.Type.Item[GetPlayerInv(index, invNum)].Name)), (int) ColorType.Yellow);
-                                SetPlayerInv(index, invNum, 0);
+                                SetPlayerInv(index, invNum, -1);
                                 SetPlayerInvValue(index, invNum, 0);
                             }
 
@@ -2084,7 +2084,7 @@ namespace Server
 
             if (TakeInvSlotRet)
             {
-                SetPlayerInv(index, InvSlot, 0);
+                SetPlayerInv(index, InvSlot, -1);
                 SetPlayerInvValue(index, InvSlot, 0);
                 return TakeInvSlotRet;
             }
@@ -2188,11 +2188,9 @@ namespace Server
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Weapon);
 
                                     NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Type.Item[itemNum].Name), (int) ColorType.BrightGreen);
+                                    TakeInv(index, itemNum, 1);
 
-                                    SetPlayerInv(index, InvNum, 0);
-                                    SetPlayerInvValue(index, InvNum, 0);
-
-                                    if (tempitem > 0) // give back the stored item
+                                    if (tempitem >= 0) // give back the stored item
                                     {
                                         m = FindOpenInvSlot(index, tempitem);
                                         SetPlayerInv(index, m, tempitem);
@@ -2220,9 +2218,9 @@ namespace Server
                                     SetPlayerEquipment(index, itemNum, EquipmentType.Armor);
 
                                     NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Type.Item[itemNum].Name), (int) ColorType.BrightGreen);
-                                    TakeInv(index, itemNum, 0);
+                                    TakeInv(index, itemNum, 1);
 
-                                    if (tempitem > 0) // Return their old equipment to their inventory.
+                                    if (tempitem >= 0) // Return their old equipment to their inventory.
                                     {
                                         m = FindOpenInvSlot(index, tempitem);
                                         SetPlayerInv(index, m, tempitem);
@@ -2252,7 +2250,7 @@ namespace Server
                                     NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Type.Item[itemNum].Name), (int) ColorType.BrightGreen);
                                     TakeInv(index, itemNum, 1);
 
-                                    if (tempitem > 0) // give back the stored item
+                                    if (tempitem >= 0) // give back the stored item
                                     {
                                         m = FindOpenInvSlot(index, tempitem);
                                         SetPlayerInv(index, m, tempitem);
@@ -2281,7 +2279,7 @@ namespace Server
                                     NetworkSend.PlayerMsg(index, "You equip " + GameLogic.CheckGrammar(Core.Type.Item[itemNum].Name), (int) ColorType.BrightGreen);
                                     TakeInv(index, itemNum, 1);
 
-                                    if (tempitem > 0) // give back the stored item
+                                    if (tempitem >= 0) // give back the stored item
                                     {
                                         m = FindOpenInvSlot(index, tempitem);
                                         SetPlayerInv(index, m, tempitem);

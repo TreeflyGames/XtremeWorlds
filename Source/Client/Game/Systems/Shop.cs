@@ -15,7 +15,7 @@ namespace Client
             GameState.shopSelectedSlot = 0L;
             GameState.shopSelectedItem = 0L;
             GameState.shopIsSelling = Conversions.ToBoolean(0);
-            GameState.InShop = 0;
+            GameState.InShop = -1;
         }
 
         #region Database

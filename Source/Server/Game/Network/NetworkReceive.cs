@@ -2396,6 +2396,9 @@ namespace Server
             var loopTo = Core.Constant.MAX_INV;
             for (i = 0; i < loopTo; i++)
             {
+                tmpTradeItem[i].Num = -1;
+                tmpTradeItem2[i].Num = -1;
+
                 // player
                 if (Core.Type.TempPlayer[index].TradeOffer[i].Num >= 0)
                 {
