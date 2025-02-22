@@ -198,7 +198,7 @@ namespace Server
             var buffer = new ByteStream(4);
 
             // Check for subscript out of range
-            if (MapItemSlot < 0 | MapItemSlot > Core.Constant.MAX_MAP_ITEMS | itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS | mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
+            if (MapItemSlot < 0 | MapItemSlot > Core.Constant.MAX_MAP_ITEMS | itemNum > Core.Constant.MAX_ITEMS | mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
                 return;
 
             i = MapItemSlot;

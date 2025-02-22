@@ -1759,7 +1759,6 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAP_ITEMS;
             for (i = 0; i < loopTo; i++)
             {
-
                 // See if theres even an item here
                 if (Core.Type.MapItem[mapNum, i].Num >= 0 & Core.Type.MapItem[mapNum, i].Num < Core.Constant.MAX_ITEMS)
                 {
@@ -1794,13 +1793,8 @@ namespace Server
                                     }
 
                                     // Erase item from the map
-                                    MapItem[mapNum, i].Num = -1;
-                                    MapItem[mapNum, i].Value = 0;
-                                    MapItem[mapNum, i].X = 0;
-                                    MapItem[mapNum, i].Y = 0;
-
-                                    NetworkSend.SendInventoryUpdate(index, n);
-                                    Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), 0, 0);
+                                    Item.SpawnItemSlot(i, -1, 0, GetPlayerMap(index), MapItem[mapNum, i].X, MapItem[mapNum, i].Y);
+                                    NetworkSend.SendInventoryUpdate(index, n);                                 
                                     NetworkSend.SendActionMsg(GetPlayerMap(index), Msg, (int) ColorType.White, (byte)ActionMsgType.Static, GetPlayerX(index) * 32, GetPlayerY(index) * 32);
                                     break;
                                 }
