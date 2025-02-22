@@ -69,7 +69,7 @@ namespace Server
             }
             buffer.WriteInt32(PartyField[partyNum].Leader);
             for (int i = 0, loopTo = Core.Constant.MAX_PARTY_MEMBERS; i < loopTo; i++)
-                buffer.WriteInt32(PartyField[partyNum].Member[Conversions.ToInteger(i)]);
+                buffer.WriteInt32(PartyField[partyNum].Member[i]);
             buffer.WriteInt32(PartyField[partyNum].MemberCount);
 
             var argdata = buffer.ToArray();
@@ -211,9 +211,9 @@ namespace Server
         {
             for (int i = 0, loopTo = Core.Constant.MAX_PARTY_MEMBERS; i < loopTo; i++)
             {
-                if (PartyField[partyNum].Member[Conversions.ToInteger(i)] == index)
+                if (PartyField[partyNum].Member[i] == index)
                 {
-                    PartyField[partyNum].Member[Conversions.ToInteger(i)] = 0;
+                    PartyField[partyNum].Member[i] = 0;
                     Core.Type.TempPlayer[index].InParty = 0;
                     Core.Type.TempPlayer[index].PartyInvite = 0;
                     break;

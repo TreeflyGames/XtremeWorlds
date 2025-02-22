@@ -41,7 +41,7 @@ namespace Server
             Switches = new string[Core.Constant.MAX_SWITCHES];
 
             for (int i = 0, loopTo = Core.Constant.MAX_SWITCHES; i < loopTo; i++)
-                Switches[Conversions.ToInteger(i)] = string.Empty;
+                Switches[i] = string.Empty;
 
             SaveSwitches();
         }
@@ -51,7 +51,7 @@ namespace Server
             Variables = new string[Core.Constant.NAX_VARIABLES];
 
             for (int i = 0, loopTo = Core.Constant.NAX_VARIABLES; i < loopTo; i++)
-                Variables[Conversions.ToInteger(i)] = string.Empty;
+                Variables[i] = string.Empty;
 
             SaveVariables();
         }

@@ -82,7 +82,7 @@ namespace Server
         public static void ClearItems()
         {
             for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < loopTo; i++)
-                ClearItem(Conversions.ToInteger(i));
+                ClearItem(i);
         }
 
         public static byte[] ItemData(int itemNum)
@@ -114,7 +114,7 @@ namespace Server
             buffer.WriteString(Core.Type.Item[itemNum].Description);
 
             for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
-                buffer.WriteInt32(Core.Type.Item[itemNum].Stat_Req[Conversions.ToInteger(i)]);
+                buffer.WriteInt32(Core.Type.Item[itemNum].Stat_Req[i]);
 
             buffer.WriteInt32(Core.Type.Item[itemNum].Type);
             buffer.WriteInt32(Core.Type.Item[itemNum].SubType);
@@ -392,7 +392,7 @@ namespace Server
             Core.Type.Item[n].Description = buffer.ReadString();
 
             for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
-                Core.Type.Item[n].Stat_Req[Conversions.ToInteger(i)] = (byte)buffer.ReadInt32();
+                Core.Type.Item[n].Stat_Req[i] = (byte)buffer.ReadInt32();
 
             Core.Type.Item[n].Type = (byte)buffer.ReadInt32();
             Core.Type.Item[n].SubType = (byte)buffer.ReadInt32();

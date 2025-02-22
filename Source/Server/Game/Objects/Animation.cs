@@ -73,7 +73,7 @@ namespace Server
         public static void ClearAnimations()
         {
             for (int i = 0, loopTo = Core.Constant.MAX_ANIMATIONS; i < loopTo; i++)
-                ClearAnimation(Conversions.ToInteger(i));
+                ClearAnimation(i);
         }
 
         public static byte[] AnimationData(int AnimationNum)

@@ -300,10 +300,10 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].CostItem);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].CostValue);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].Item);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].ItemValue);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostItem);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostValue);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].Item);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].ItemValue);
             }
 
             NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
@@ -322,10 +322,10 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].CostItem);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].CostValue);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].Item);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].ItemValue);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostItem);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostValue);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].Item);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].ItemValue);
             }
 
             NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
@@ -575,7 +575,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.Map[mapNum].Shop);
 
                 for (int i = 0, loopTo = Core.Constant.MAX_MAP_NPCS; i < loopTo; i++)
-                    buffer.WriteInt32(Core.Type.Map[mapNum].NPC[Conversions.ToInteger(i)]);
+                    buffer.WriteInt32(Core.Type.Map[mapNum].NPC[i]);
 
                 for (int x = 0, loopTo1 = Core.Type.Map[mapNum].MaxX; x < (int)loopTo1; x++)
                 {
@@ -590,10 +590,10 @@ namespace Server
                         buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].DirBlock);
                         for (int i = 0, loopTo3 = (int)(LayerType.Count); i < loopTo3; i++)
                         {
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[Conversions.ToInteger(i)].Tileset);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[Conversions.ToInteger(i)].X);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[Conversions.ToInteger(i)].Y);
-                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[Conversions.ToInteger(i)].AutoTile);
+                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[i].Tileset);
+                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[i].X);
+                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[i].Y);
+                            buffer.WriteInt32(Core.Type.Map[mapNum].Tile[x, y].Layer[i].AutoTile);
                         }
                         buffer.WriteInt32((int)Core.Type.Map[mapNum].Tile[x, y].Type);
                         buffer.WriteInt32((int)Core.Type.Map[mapNum].Tile[x, y].Type2);
@@ -731,10 +731,10 @@ namespace Server
 
             for (int i = 0, loopTo10 = Core.Constant.MAX_MAP_ITEMS; i < loopTo10; i++)
             {
-                buffer.WriteInt32((int)Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].Num);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].Value);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].X);
-                buffer.WriteInt32(Core.Type.MapItem[mapNum, Conversions.ToInteger(i)].Y);
+                buffer.WriteInt32((int)Core.Type.MapItem[mapNum, i].Num);
+                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Value);
+                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].X);
+                buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
             }
 
             for (int i = 0, loopTo11 = Core.Constant.MAX_MAP_NPCS; i < loopTo11; i++)
@@ -754,9 +754,9 @@ namespace Server
 
                 for (int i = 0, loopTo12 = Core.Type.MapResource[GetPlayerMap(index)].ResourceCount; i < loopTo12; i++)
                 {
-                    buffer.WriteByte(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[Conversions.ToInteger(i)].State);
-                    buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[Conversions.ToInteger(i)].X);
-                    buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[Conversions.ToInteger(i)].Y);
+                    buffer.WriteByte(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[i].State);
+                    buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[i].X);
+                    buffer.WriteInt32(Core.Type.MapResource[GetPlayerMap(index)].ResourceData[i].Y);
                 }
             }
             else

@@ -73,7 +73,7 @@ namespace Server
             }
 
             for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES; i < loopTo; i++)
-                ClearResource(Conversions.ToInteger(i));
+                ClearResource(i);
         }
 
         internal static void CacheResources(int mapNum)
@@ -109,9 +109,9 @@ namespace Server
             var buffer = new ByteStream(4);
             for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES; i < loopTo; i++)
             {
-                if (!(Strings.Len(Core.Type.Resource[Conversions.ToInteger(i)].Name) > 0))
+                if (!(Strings.Len(Core.Type.Resource[i].Name) > 0))
                     continue;
-                buffer.WriteBlock(ResourceData(Conversions.ToInteger(i)));
+                buffer.WriteBlock(ResourceData(i));
             }
             return buffer.ToArray();
         }
@@ -391,11 +391,11 @@ namespace Server
                 // Get the cache number
                 for (int i = 0, loopTo = Core.Type.MapResource[mapNum].ResourceCount; i < loopTo; i++)
                 {
-                    if (Core.Type.MapResource[mapNum].ResourceData[Conversions.ToInteger(i)].X == x)
+                    if (Core.Type.MapResource[mapNum].ResourceData[i].X == x)
                     {
-                        if (Core.Type.MapResource[mapNum].ResourceData[Conversions.ToInteger(i)].Y == y)
+                        if (Core.Type.MapResource[mapNum].ResourceData[i].Y == y)
                         {
-                            resourceNum = Conversions.ToInteger(i);
+                            resourceNum = i;
                         }
                     }
                 }

@@ -220,14 +220,6 @@ namespace Server
                         return;
                     }
 
-                    if (NetworkConfig.IsMultiAccounts(index, username))
-                    {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Login);
-                        return;
-                    }
-
-                    NetworkConfig.CheckMultiAccounts(index, username);
-
                     if (!Database.LoadAccount(index, username))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Login, (byte)MenuType.Login);
@@ -344,14 +336,6 @@ namespace Server
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.Register);
                         return;
                     }
-
-                    if (NetworkConfig.IsMultiAccounts(index, username))
-                    {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
-                        return;
-                    }
-
-                    NetworkConfig.CheckMultiAccounts(index, username);
 
                     userData = Database.SelectRowByColumn("id", Database.GetStringHash(username), "account", "data");
 
@@ -1593,10 +1577,10 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                Core.Type.Shop[ShopNum].TradeItem[Conversions.ToInteger(i)].CostItem = buffer.ReadInt32();
-                Core.Type.Shop[ShopNum].TradeItem[Conversions.ToInteger(i)].CostValue = buffer.ReadInt32();
-                Core.Type.Shop[ShopNum].TradeItem[Conversions.ToInteger(i)].Item = buffer.ReadInt32();
-                Core.Type.Shop[ShopNum].TradeItem[Conversions.ToInteger(i)].ItemValue = buffer.ReadInt32();
+                Core.Type.Shop[ShopNum].TradeItem[i].CostItem = buffer.ReadInt32();
+                Core.Type.Shop[ShopNum].TradeItem[i].CostValue = buffer.ReadInt32();
+                Core.Type.Shop[ShopNum].TradeItem[i].Item = buffer.ReadInt32();
+                Core.Type.Shop[ShopNum].TradeItem[i].ItemValue = buffer.ReadInt32();
             }
 
             buffer.Dispose();

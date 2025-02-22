@@ -1771,7 +1771,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.Job[jobNum].FemaleSprite);
 
             for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
-                buffer.WriteInt32(Core.Type.Job[jobNum].Stat[Conversions.ToInteger(i)]);
+                buffer.WriteInt32(Core.Type.Job[jobNum].Stat[i]);
 
             for (q = 0; q <= 4; q++)
             {
@@ -1793,9 +1793,9 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_NPCS; i < loopTo; i++)
             {
-                if (!(Strings.Len(Core.Type.NPC[Conversions.ToInteger(i)].Name) > 0))
+                if (!(Strings.Len(Core.Type.NPC[i].Name) > 0))
                     continue;
-                buffer.WriteBlock(NPCData(Conversions.ToInteger(i)));
+                buffer.WriteBlock(NPCData(i));
             }
             return buffer.ToArray();
         }
@@ -1811,9 +1811,9 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_DROP_ITEMS; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropChance[Conversions.ToInteger(i)]);
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItem[Conversions.ToInteger(i)]);
-                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItemValue[Conversions.ToInteger(i)]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropChance[i]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItem[i]);
+                buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].DropItemValue[i]);
             }
 
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Exp);
@@ -1826,10 +1826,10 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Sprite);
 
             for (int i = 0, loopTo1 = (byte)StatType.Count; i < loopTo1; i++)
-                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Stat[Conversions.ToInteger(i)]);
+                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Stat[i]);
 
             for (int i = 0, loopTo2 = Core.Constant.MAX_NPC_SKILLS; i < loopTo2; i++)
-                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Skill[Conversions.ToInteger(i)]);
+                buffer.WriteByte(Core.Type.NPC[(int)NPCNum].Skill[i]);
 
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Level);
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Damage);
@@ -1842,9 +1842,9 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_SHOPS; i < loopTo; i++)
             {
-                if (!(Strings.Len(Core.Type.Shop[Conversions.ToInteger(i)].Name) > 0))
+                if (!(Strings.Len(Core.Type.Shop[i].Name) > 0))
                     continue;
-                buffer.WriteBlock(ShopData(Conversions.ToInteger(i)));
+                buffer.WriteBlock(ShopData(i));
             }
             return buffer.ToArray();
         }
@@ -1859,10 +1859,10 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_TRADES; i < loopTo; i++)
             {
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].CostItem);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].CostValue);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].Item);
-                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[Conversions.ToInteger(i)].ItemValue);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostItem);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].CostValue);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].Item);
+                buffer.WriteInt32(Core.Type.Shop[shopNum].TradeItem[i].ItemValue);
             }
             return buffer.ToArray();
         }
@@ -1873,9 +1873,9 @@ namespace Server
 
             for (int i = 0, loopTo = Core.Constant.MAX_SKILLS; i < loopTo; i++)
             {
-                if (!(Strings.Len(Core.Type.Skill[Conversions.ToInteger(i)].Name) > 0))
+                if (!(Strings.Len(Core.Type.Skill[i].Name) > 0))
                     continue;
-                buffer.WriteBlock(SkillData(Conversions.ToInteger(i)));
+                buffer.WriteBlock(SkillData(i));
             }
             return buffer.ToArray();
         }
