@@ -5,7 +5,6 @@ using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using Path = Core.Path;
-using System.DirectoryServices.ActiveDirectory;
 
 namespace Client
 {
