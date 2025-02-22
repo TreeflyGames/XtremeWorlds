@@ -532,7 +532,7 @@ namespace Client
 
                 if (Gui.Windows[Gui.GetWindowIndex("winTrade")].Visible == true)
                 {
-                    Trade.CloseTrade();
+                    Trade.SendDeclineTrade();
                     return;
                 }
 
