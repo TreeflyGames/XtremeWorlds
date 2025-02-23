@@ -1709,7 +1709,7 @@ namespace Server
                     }
                     else
                     {
-                        HasItemRet += 0;
+                        HasItemRet += 1;
                     }
                 }
             }
@@ -1961,7 +1961,7 @@ namespace Server
             }
             else
             {
-                NetworkSend.PlayerMsg(index, "Your inventory is full.", (int) ColorType.BrightRed);
+                NetworkSend.PlayerMsg(index, "Your inventory is full.", (int)ColorType.BrightRed);
                 GiveInvRet = Conversions.ToBoolean(0);
             }
 
@@ -1989,7 +1989,7 @@ namespace Server
                 return;
             }
 
-            if (GetPlayerInv(index, invNum) > 0)
+            if (GetPlayerInv(index, invNum) >= 0)
             {
                 if (GetPlayerInv(index, invNum) < Core.Constant.MAX_ITEMS)
                 {
@@ -2098,7 +2098,7 @@ namespace Server
             object CanPlayerUseItemRet = default;
             int i;
 
-            if ((int)Core.Type.Map[GetPlayerMap(index)].Moral > 0)
+            if ((int)Core.Type.Map[GetPlayerMap(index)].Moral >= 0)
             {
                 if (Conversions.ToInteger(Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanUseItem) == 0)
                 {

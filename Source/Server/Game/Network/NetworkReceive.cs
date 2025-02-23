@@ -2125,7 +2125,7 @@ namespace Server
         {
             int shopslot;
             double shopnum;
-            int itemamount;
+            int itemAmount;
             var buffer = new ByteStream(data);
 
             shopslot = buffer.ReadInt32();
@@ -2143,8 +2143,8 @@ namespace Server
                 return;
 
             // check has the cost item
-            itemamount = Player.HasItem(index, withBlock.CostItem);
-            if (itemamount == 0 | itemamount < withBlock.CostValue)
+            itemAmount = Player.HasItem(index, withBlock.CostItem);
+            if (itemAmount == 0 | itemAmount < withBlock.CostValue)
             {
                 NetworkSend.PlayerMsg(index, "You do not have enough to buy this item.", (int) ColorType.BrightRed);
                 NetworkSend.ResetShopAction(index);
@@ -2155,7 +2155,6 @@ namespace Server
             for (int i = 0, loopTo = withBlock.CostValue; i < loopTo; i++)
                 Player.TakeInv(index, withBlock.CostItem, withBlock.CostValue);
             Player.GiveInv(index, withBlock.Item, withBlock.ItemValue);
-            
 
             // send confirmation message & reset their shop action
             NetworkSend.PlayerMsg(index, "Trade successful.", (int) ColorType.BrightGreen);
@@ -2206,7 +2205,7 @@ namespace Server
 
             // take item and give gold
             Player.TakeInv(index, (int)itemNum, 1);
-            Player.GiveInv(index, 1, price);
+            Player.GiveInv(index, 0, price);
 
             // send confirmation message & reset their shop action
             NetworkSend.PlayerMsg(index, "Sold the " + Core.Type.Item[(int)itemNum].Name + " for " + price + " " + Core.Type.Item[(int)itemNum].Name + "!", (int) ColorType.BrightGreen);
