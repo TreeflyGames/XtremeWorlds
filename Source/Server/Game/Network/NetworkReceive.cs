@@ -220,6 +220,14 @@ namespace Server
                         return;
                     }
 
+                    if (NetworkConfig.IsMultiAccounts(index, username))
+                    {
+                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Login);
+                        return;
+                    }
+
+                    NetworkConfig.CheckMultiAccounts(index, username);
+
                     if (!Database.LoadAccount(index, username))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Login, (byte)MenuType.Login);
@@ -336,6 +344,14 @@ namespace Server
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.Register);
                         return;
                     }
+
+                    if (NetworkConfig.IsMultiAccounts(index, username))
+                    {
+                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.MultiAccount, (byte)MenuType.Register);
+                        return;
+                    }
+
+                    NetworkConfig.CheckMultiAccounts(index, username);
 
                     userData = Database.SelectRowByColumn("id", Database.GetStringHash(username), "account", "data");
 
