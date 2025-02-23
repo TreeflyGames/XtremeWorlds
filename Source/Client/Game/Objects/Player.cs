@@ -273,16 +273,15 @@ namespace Client
                 return CanMoveRet;
             }
 
-            if (Trade.InTrade >= 0)
+            if (!GameState.inSmallChat)
             {
                 CanMoveRet = Conversions.ToBoolean(0);
                 return CanMoveRet;
             }
 
-            if (!GameState.inSmallChat)
+            if (Trade.InTrade >= 0)
             {
-                CanMoveRet = Conversions.ToBoolean(0);
-                return CanMoveRet;
+                Trade.SendDeclineTrade();
             }
 
             if (GameState.InShop >= 0)
