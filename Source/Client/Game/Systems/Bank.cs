@@ -70,12 +70,12 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void WithdrawItem(int bankSlot, int amount)
+        internal static void WithdrawItem(byte bankSlot, int amount)
         {
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CWithdrawItem);
-            buffer.WriteInt32(bankSlot);
+            buffer.WriteByte(bankSlot);
             buffer.WriteInt32(amount);
 
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);

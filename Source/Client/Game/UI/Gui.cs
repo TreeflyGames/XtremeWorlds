@@ -3792,7 +3792,7 @@ namespace Client
 
             if (bankSlot >= 0L)
             {
-                Bank.WithdrawItem((int)bankSlot, GetBankValue(GameState.MyIndex, (int)bankSlot));
+                Bank.WithdrawItem((byte)bankSlot, GetBankValue(GameState.MyIndex, (int)bankSlot));
                 return;
             }
 
@@ -3979,7 +3979,7 @@ namespace Client
 
                                     if (Core.Type.Item[GetBank(GameState.MyIndex, (byte)DragBox.Slot)].Type != (byte)Core.Enum.ItemType.Currency)
                                     {
-                                        Bank.WithdrawItem((int)DragBox.Slot, 0);
+                                        Bank.WithdrawItem((byte)DragBox.Slot, 0);
                                     }
                                     else
                                     {

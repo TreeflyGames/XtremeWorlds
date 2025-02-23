@@ -1919,7 +1919,7 @@ namespace Server
 
                     if (TakeInvRet)
                     {
-                        SetPlayerInv(index, i, 0);
+                        SetPlayerInv(index, i, -1);
                         SetPlayerInvValue(index, i, 0);
                         // Send the inventory update
                         NetworkSend.SendInventoryUpdate(index, i);
@@ -3129,22 +3129,19 @@ namespace Server
         public static void GiveBank(int index, int InvSlot, int Amount)
         {
             byte bankSlot;
-            int itemnum;
+            int itemNum;
 
             if (InvSlot < 0 | InvSlot > Core.Constant.MAX_INV)
                 return;
 
             if (Amount < 0)
-                Amount = 1;
-
-            if (GetPlayerInvValue(index, InvSlot) < 0)
-                return;
+                Amount = 0;
 
             if (GetPlayerInvValue(index, InvSlot) < Amount & GetPlayerInv(index, InvSlot) == 0)
                 return;
 
             bankSlot = FindOpenbankSlot(index, GetPlayerInv(index, InvSlot));
-            itemnum = GetPlayerInv(index, InvSlot);
+            itemNum = GetPlayerInv(index, InvSlot);
 
             if (bankSlot >= 0)
             {
@@ -3169,7 +3166,7 @@ namespace Server
                 }
                 else
                 {
-                    SetPlayerBank(index, bankSlot, itemnum);
+                    SetPlayerBank(index, bankSlot, itemNum);
                     SetPlayerBankValue(index, bankSlot, 1);
                     TakeInv(index, GetPlayerInv(index, InvSlot), 0);
                 }
@@ -3242,23 +3239,20 @@ namespace Server
 
         public static void TakeBank(int index, byte bankSlot, int Amount)
         {
-            object invSlot;
+            int invSlot;
 
             if (bankSlot < 0 | bankSlot > Core.Constant.MAX_BANK)
                 return;
 
             if (Amount < 0)
-                Amount = 1;
-
-            if (GetPlayerBank(index, bankSlot) < 0)
-                return;
+                Amount = 0;
 
             if (GetPlayerBankValue(index, bankSlot) < Amount)
                 return;
 
             invSlot = FindOpenInvSlot(index, GetPlayerBank(index, bankSlot));
 
-            if (Conversions.ToBoolean(Operators.ConditionalCompareObjectGreater(invSlot, 0, false)))
+            if (invSlot >= 0)
             {
                 if (Core.Type.Item[GetPlayerBank(index, bankSlot)].Type == (byte)ItemType.Currency | Core.Type.Item[GetPlayerBank(index, bankSlot)].Stackable == 1)
                 {
@@ -3281,7 +3275,7 @@ namespace Server
                 else
                 {
                     GiveInv(index, GetPlayerBank(index, bankSlot), 0);
-                    SetPlayerBank(index, bankSlot, 0);
+                    SetPlayerBank(index, bankSlot, -1);
                     SetPlayerBankValue(index, bankSlot, 0);
                 }
 

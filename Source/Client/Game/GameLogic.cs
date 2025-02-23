@@ -1207,7 +1207,7 @@ namespace Client
                     case (long)Core.Enum.DialogueType.WithdrawItem:
                         {
                             value = (long)Math.Round(Conversion.Val(diaInput));
-                            Bank.WithdrawItem((int)GameState.diaData1, (int)value);
+                            Bank.WithdrawItem((byte)(int)GameState.diaData1, (int)value);
                             break;
                         }
 
