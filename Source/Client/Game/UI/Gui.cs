@@ -1,8 +1,6 @@
 ﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-using SharpDX.Direct3D11;
-using SharpDX.DirectWrite;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.InteropServices;

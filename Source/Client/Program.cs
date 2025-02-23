@@ -13,7 +13,6 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-using SharpDX.Mathematics.Interop;
 
 namespace Client
 {
