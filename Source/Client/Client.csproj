@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net9.0</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>Client</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -32,6 +32,10 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -63,6 +67,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
+    <ProjectReference Include="..\DarkUI\DarkUI.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ManagedBass" />
