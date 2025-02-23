@@ -5736,11 +5736,23 @@ namespace Client
             shopNum = General.IsShop(Windows[GetWindowIndex("winShop")].Left, Windows[GetWindowIndex("winShop")].Top);
             if (shopNum >= 0L)
             {
-                if (Core.Type.Shop[GameState.InShop].TradeItem[shopNum].Item >= 0)
+                if (GameState.shopIsSelling)
                 {
-                    // set the active slot
-                    GameState.shopSelectedSlot = shopNum;
-                    UpdateShop();
+                    if (GetPlayerInv(GameState.MyIndex, (int)shopNum) >= 0)
+                    {
+                        // set the active slot
+                        GameState.shopSelectedSlot = shopNum;
+                        UpdateShop();
+                    }
+                }
+                else
+                {
+                    if (Core.Type.Shop[GameState.InShop].TradeItem[shopNum].Item >= 0)
+                    {
+                        // set the active slot
+                        GameState.shopSelectedSlot = shopNum;
+                        UpdateShop();
+                    }
                 }
             }
             Shop_MouseMove();
