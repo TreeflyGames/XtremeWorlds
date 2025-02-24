@@ -2685,7 +2685,7 @@ namespace Server
 
             if (type == (byte)PartOriginType.Hotbar)
             {
-                if (oldSlot < 1 | oldSlot > Core.Constant.MAX_HOTBAR)
+                if (oldSlot < 0 | oldSlot > Core.Constant.MAX_HOTBAR)
                     return;
 
                 Core.Type.Player[index].Hotbar[newSlot].Slot = skill;
