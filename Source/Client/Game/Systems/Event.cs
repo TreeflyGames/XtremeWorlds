@@ -137,7 +137,7 @@ namespace Client
 
             // First pass: find all events to delete and shift others down
             var loopTo = Core.Type.MyMap.EventCount;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
             {
                 if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
                 {
@@ -145,7 +145,6 @@ namespace Client
                     ClearEvent(i);
                     lowIndex = i;
                     shifted = true;
-                    break;
                 }
                 else if (shifted)
                 {
@@ -159,9 +158,22 @@ namespace Client
             if (lowIndex != -1)
             {
                 // Set the new count
-                Core.Type.MyMap.EventCount = lowIndex - 1;
-                Array.Resize(ref Core.Type.MapEvents, Core.Type.MyMap.EventCount);
-                Array.Resize(ref Core.Type.MyMap.Event, Core.Type.MyMap.EventCount);
+                Core.Type.MyMap.EventCount = lowIndex;
+
+                var newEvents = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
+                for (i = 0; i < Core.Type.MyMap.EventCount; i++)
+                {
+                    newEvents[i] = Core.Type.MyMap.Event[i];
+                }
+                Core.Type.MyMap.Event = newEvents;
+
+                var newMapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount];
+                for (i = 0; i < Core.Type.MyMap.EventCount; i++)
+                {
+                    newMapEvents[i] = Core.Type.MapEvents[i];
+                }
+                Core.Type.MapEvents = newMapEvents;
+
                 TmpEvent = default;
             }
         }
@@ -203,22 +215,23 @@ namespace Client
 
             ClearEvent(count);
             Core.Type.MyMap.EventCount = count;
-            Array.Resize(ref Core.Type.MyMap.Event, count + 1);
+            Array.Resize(ref Core.Type.MyMap.Event, count);
             // set the new event
-            Core.Type.MyMap.Event[count].X = X;
-            Core.Type.MyMap.Event[count].Y = Y;
+            Core.Type.MyMap.Event[count - 1].X = X;
+            Core.Type.MyMap.Event[count - 1].Y = Y;
             // give it a new page
-            pageCount = Core.Type.MyMap.Event[count].PageCount + 1;
-            Core.Type.MyMap.Event[count].PageCount = pageCount;
-            Array.Resize(ref Core.Type.MyMap.Event[count].Pages, pageCount + 1);
+            pageCount = Core.Type.MyMap.Event[count - 1].PageCount + 1;
+            Core.Type.MyMap.Event[count - 1].PageCount = pageCount;
+            Array.Resize(ref Core.Type.MyMap.Event[count - 1].Pages, pageCount + 1);
             // load the editor
             if (!cancelLoad)
-                EventEditorInit(count);
+                EventEditorInit(count - 1);
         }
 
         public static void ClearEvent(int EventNum)
         {
             Array.Resize(ref Core.Type.MyMap.Event, EventNum + 1);
+            Array.Resize(ref Core.Type.MapEvents, EventNum + 1);
             ref var withBlock = ref Core.Type.MyMap.Event[EventNum];
             withBlock.Name = "";
             withBlock.PageCount = 0;
@@ -355,7 +368,7 @@ namespace Client
             {
                 listleftoff = new int[TmpEvent.Pages[CurPageNum].CommandListCount + 1];
                 conditionalstage = new int[TmpEvent.Pages[CurPageNum].CommandListCount + 1];
-                curlist = 1;
+                curlist = 0;
                 X = 0;
                 Array.Resize(ref EventList, X + 1);
             newlist:
@@ -1137,7 +1150,7 @@ namespace Client
                                     }
                                 case (byte)Core.Enum.EventType.ShowChatBubble:
                                     {
-                                        switch (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1)
+                                        switch (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1)
                                         {
                                             case (int)Core.Enum.TargetType.Player:
                                                 {
@@ -1371,9 +1384,9 @@ namespace Client
                 curlist = EventList[frmEditor_Event.Instance.lstCommands.SelectedIndex].CommandList;
             }
 
-            TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount;
+            TmpEvent.Pages[CurPageNum].CommandListCount = TmpEvent.Pages[CurPageNum].CommandListCount + 1;
             Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList, TmpEvent.Pages[CurPageNum].CommandListCount);
-            TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
+            TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount + 1;
             p = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
             Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands, p + 1);
 
@@ -2833,18 +2846,19 @@ namespace Client
             i = frmEditor_Event.Instance.lstCommands.SelectedIndex;
             if (i == -1)
                 return;
+
             if (i > Information.UBound(EventList))
                 return;
 
             curlist = EventList[i].CommandList;
             curslot = EventList[i].CommandNum;
 
-            if (curlist == 0)
-                return;
             if (curslot == 0)
                 return;
+
             if (curlist > TmpEvent.Pages[CurPageNum].CommandListCount)
                 return;
+
             if (curslot > TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)
                 return;
 
@@ -3420,6 +3434,7 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
                 Switches[i] = buffer.ReadString();
+
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
                 Variables[i] = buffer.ReadString();
 
@@ -3455,7 +3470,7 @@ namespace Client
 
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
-                        Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
+                        Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
                         var loopTo1 = Core.Type.MyMap.Event[i].PageCount;
                         for (x = 0; x < loopTo1; x++)
                         {
@@ -3818,8 +3833,10 @@ namespace Client
         {
             if (GameState.MyEditorType == (int)Core.Enum.EditorType.Map)
                 return;
+
             if (id > Core.Type.MyMap.EventCount)
                 return;
+
             if (id > Core.Type.MapEvents.Length)
                 return;
 

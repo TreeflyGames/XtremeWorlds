@@ -1157,12 +1157,12 @@ namespace Server
 
                     if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                     {
-                        Core.Type.Map[mapNum].Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.Map[mapNum].Event[i].PageCount];
+                        Core.Type.Map[mapNum].Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.Map[mapNum].Event[i].PageCount + 1];
                         ;
                         Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount);
 
                         var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount;
-                        for (x = 0; x < (int)loopTo5; x++)
+                        for (x = 0; x <= (int)loopTo5; x++)
                         {
                             {
                                 ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[x];

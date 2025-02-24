@@ -2109,6 +2109,9 @@ namespace Client
             int frameIndex = eventData.Pages[1].GraphicX; // Example frame index
             int columns = eventData.Pages[1].GraphicY; // Example column count
 
+            if (columns == 0)
+                return;
+
             // Calculate the frame size (assuming square frames for simplicity)
             int frameWidth = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, gfxIndex.ToString())).Width / columns;
             int frameHeight = frameWidth; // Adjust if non-square frames
@@ -2242,6 +2245,7 @@ namespace Client
 
                         if (Core.Type.MapEvents[id].WalkAnim == 1)
                             anim = 0;
+
                         if (Core.Type.MapEvents[id].Moving == 0)
                             anim = Core.Type.MapEvents[id].GraphicX;
 
@@ -2273,6 +2277,7 @@ namespace Client
                     {
                         if (Core.Type.MapEvents[id].Graphic < 1 | Core.Type.MapEvents[id].Graphic > GameState.NumTileSets)
                             return;
+
                         if (Core.Type.MapEvents[id].GraphicY2 > 0 | Core.Type.MapEvents[id].GraphicX2 > 0)
                         {
                             sRect.X = Core.Type.MapEvents[id].GraphicX * 32;

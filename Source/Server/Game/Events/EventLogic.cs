@@ -3787,8 +3787,9 @@ namespace Server
                 Core.Type.TempPlayer[index].EventProcessingCount = 0;
             }
 
-            if (Map[mapNum].EventCount < 0)
+            if (Map[mapNum].EventCount <= 0)
                 return;
+
             var loopTo = Map[mapNum].EventCount;
             for (i = 0; i < loopTo; i++)
             {

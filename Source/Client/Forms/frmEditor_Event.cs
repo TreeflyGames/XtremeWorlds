@@ -1256,6 +1256,7 @@ namespace Client
         {
             if (cmbGraphic.SelectedIndex == -1)
                 return;
+
             Event.TmpEvent.Pages[Event.CurPageNum].GraphicType = (byte)cmbGraphic.SelectedIndex;
             // set the max on the scrollbar
             switch (cmbGraphic.SelectedIndex)
@@ -1291,11 +1292,6 @@ namespace Client
                     return;
 
             }
-            DrawGraphic();
-        }
-
-        private void NudGraphic_ValueChanged(object sender, EventArgs e)
-        {
             DrawGraphic();
         }
 
@@ -1337,8 +1333,10 @@ namespace Client
                 Event.GraphicSelY = Y;
                 Event.GraphicSelX2 = 0;
                 Event.GraphicSelY2 = 0;
+
                 if (nudGraphic.Value <= 0m | nudGraphic.Value > GameState.NumCharacters)
                     return;
+
                 for (int i = 0; i <= 3; i++)
                 {
                     if (Event.GraphicSelX >= GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Width / 4d * i & Event.GraphicSelX < GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Width / 4d * (i + 1))
@@ -1354,6 +1352,11 @@ namespace Client
                     }
                 }
             }
+            DrawGraphic();
+        }
+
+        private void nudGraphic_ValueChanged(object sender, EventArgs e)
+        {
             DrawGraphic();
         }
 
@@ -3551,8 +3554,6 @@ namespace Client
         }
 
         #endregion
-
         #endregion
-
     }
 }

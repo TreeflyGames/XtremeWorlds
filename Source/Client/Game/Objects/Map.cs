@@ -792,7 +792,7 @@ namespace Client
 
                         if (Core.Type.MyMap.Event[i].PageCount > 0)
                         {
-                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
+                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
                             var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
                             for (x = 0; x < loopTo3; x++)
                             {

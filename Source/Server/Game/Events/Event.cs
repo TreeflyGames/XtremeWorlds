@@ -1760,7 +1760,7 @@ namespace Server
                     if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                     {
                         var loopTo1 = Core.Type.Map[mapNum].Event[i].PageCount;
-                        for (x = 0; x < (int)loopTo1; x++)
+                        for (x = 0; x <= (int)loopTo1; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.Map[mapNum].Event[i].Pages[x];
