@@ -91,7 +91,7 @@ namespace Client
         public static void DrawMapGroundTile(int x, int y)
         {
             int i;
-            byte alpha;
+            float alpha;
             var rect = new Rectangle(0, 0, 0, 0);
 
             // Check if the map or its tile data is not ready
@@ -117,15 +117,15 @@ namespace Client
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
-                            alpha = 255;
+                            alpha = 1.0f;
 
                             if (GameState.MyEditorType == (int)EditorType.Map)
                             {
                                 if (GameState.HideLayers)
                                 {
-                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    if (i == frmEditor_Map.Instance.cmbLayers.SelectedIndex)
                                     {
-                                        alpha = 128;
+                                        alpha = 0.5f;
                                     }
                                 }
                             }
@@ -159,7 +159,7 @@ namespace Client
         public static void DrawMapRoofTile(int x, int y)
         {
             int i;
-            int alpha;
+            float alpha;
             var rect = default(Rectangle);
 
             // Exit earlyIf Type.Map is still loading or tile data is not available
@@ -204,7 +204,7 @@ namespace Client
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
-                            alpha = 255;
+                            alpha = 1.0f;
 
                             if (GameState.MyEditorType == (int)EditorType.Map)
                             {
@@ -212,14 +212,14 @@ namespace Client
                                 {
                                     if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
                                     {
-                                        alpha = 128;
+                                        alpha = 0.5f;
                                     }
                                 }
                             }
 
                             // Render the tile with the calculated rectangle and transparency
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
-                            GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, (byte)alpha);
+                            GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
                         }
 
                         // Handle autotile rendering

@@ -46,7 +46,6 @@ namespace Core
             Bank,
             Heal,
             Trap,
-            Light,
             Animation,
             NoXing,
             Key,

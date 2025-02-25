@@ -1411,12 +1411,6 @@ namespace Client
                                         type = TileType.Trap;
                                     }
 
-                                    // light
-                                    if (frmEditor_Map.Instance.optLight.Checked)
-                                    {
-                                        type = TileType.Light;
-                                    }
-
                                     // Animation
                                     if (frmEditor_Map.Instance.optAnimation.Checked == true)
                                     {

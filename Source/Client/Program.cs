@@ -13,6 +13,7 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using SharpDX.Direct2D1;
 
 namespace Client
 {
@@ -21,7 +22,7 @@ namespace Client
     {
 
         public static GraphicsDeviceManager Graphics;
-        public static SpriteBatch SpriteBatch;
+        public static Microsoft.Xna.Framework.Graphics.SpriteBatch SpriteBatch;
         public static readonly ConcurrentDictionary<string, Texture2D> TextureCache = new ConcurrentDictionary<string, Texture2D>();
         public static readonly ConcurrentDictionary<string, GfxInfo> GfxInfoCache = new ConcurrentDictionary<string, GfxInfo>();
         public static int TextureCounter;
@@ -138,7 +139,7 @@ namespace Client
             // Add handler for PreparingDeviceSettings
             Graphics.PreparingDeviceSettings += (sender, args) =>
                 {
-                    args.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+                    args.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = Microsoft.Xna.Framework.Graphics.RenderTargetUsage.PreserveContents;
                     args.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = 8;
                 };
 
@@ -216,7 +217,7 @@ namespace Client
 
         protected override void LoadContent()
         {
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GraphicsDevice);
 
             TransparentTexture = new Texture2D(GraphicsDevice, 1, 1);
             TransparentTexture.SetData(new Color[] { Color.White });
@@ -242,12 +243,13 @@ namespace Client
             return System.Drawing.Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
         }
 
-        public static void RenderTexture(ref string path, int dX, int dY, int sX, int sY, int dW, int dH, int sW = 1, int sH = 1, byte alpha = 255, byte red = 255, byte green = 255, byte blue = 255)
+        public static void RenderTexture(ref string path, int dX, int dY, int sX, int sY, int dW, int dH, int sW = 1, int sH = 1, float alpha = 1.0f, byte red = 255, byte green = 255, byte blue = 255)
         {
             // Create destination and source rectangles
             var dRect = new Rectangle(dX, dY, dW, dH);
             var sRect = new Rectangle(sX, sY, sW, sH);
-            var color = new Color(red, green, blue, alpha);
+            var color = new Color(red, green, blue, (byte)255);
+            color = color * alpha;
 
             path = Core.Path.EnsureFileExtension(path);
 
@@ -310,7 +312,7 @@ namespace Client
         {
             Graphics.GraphicsDevice.Clear(Color.Black);
 
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             if (GameState.InGame == true)
             {
                 Render_Game();

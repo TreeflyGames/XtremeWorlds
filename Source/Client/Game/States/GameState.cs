@@ -113,9 +113,6 @@ namespace Client
         public static int EditorWarpY;
         public static int EditorShop;
         public static int EditorAnimation;
-        public static int EditorLight;
-        public static byte EditorShadow;
-        public static byte EditorFlicker;
         public static byte EditorAttribute;
         public static Point EditorTileSelStart;
         public static Point EditorTileSelEnd;
@@ -335,7 +332,6 @@ namespace Client
         public static bool EyeDropper;
         public static int HistoryIndex;
         public static bool HideLayers;
-        public static bool Night;
 
         // Speed moving vars
         public const byte WalkSpeed = 8;

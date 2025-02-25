@@ -1266,25 +1266,6 @@ namespace Client
                         }
                     }
 
-                    // light
-                    if (Instance.optLight.Checked)
-                    {
-                        if (GameState.EditorAttribute == 1)
-                        {
-                            withBlock1.Type = TileType.Light;
-                            withBlock1.Data1 = GameState.EditorLight;
-                            withBlock1.Data2 = GameState.EditorFlicker;
-                            withBlock1.Data3 = GameState.EditorShadow;
-                        }
-                        else
-                        {
-                            withBlock1.Type2 = TileType.Light;
-                            withBlock1.Data1_2 = GameState.EditorLight;
-                            withBlock1.Data2_2 = GameState.EditorFlicker;
-                            withBlock1.Data3_2 = GameState.EditorShadow;
-                        }
-                    }
-
                     // Animation
                     if (Instance.optAnimation.Checked == true)
                     {
@@ -1807,11 +1788,6 @@ namespace Client
             GameState.HideLayers = !GameState.HideLayers;
         }
 
-        private void tsbLight_Click(object sender, EventArgs e)
-        {
-            GameState.Night = !GameState.Night;
-        }
-
         private void tsbScreenshot_Click(object sender, EventArgs e)
         {
             GameClient.TakeScreenshot();
@@ -1832,41 +1808,6 @@ namespace Client
             GameState.EditorAnimation = cmbAnimation.SelectedIndex;
             pnlAttributes.Visible = false;
             fraAnimation.Visible = false;
-        }
-
-        private void btnLight_Click(object sender, EventArgs e)
-        {
-            GameState.EditorLight = scrlLight.Value;
-            if (chkFlicker.Checked)
-            {
-                GameState.EditorFlicker = 1;
-            }
-            else
-            {
-                GameState.EditorFlicker = 0;
-            }
-
-            if (chkShadow.Checked)
-            {
-                GameState.EditorShadow = 1;
-            }
-            else
-            {
-                GameState.EditorShadow = 0;
-            }
-
-            pnlAttributes.Visible = false;
-            fraMapLight.Visible = false;
-        }
-
-        private void optLight_CheckedChanged(object sender, EventArgs e)
-        {
-            if (optLight.Checked == false)
-                return;
-
-            ClearAttributeDialogue();
-            pnlAttributes.Visible = true;
-            fraMapLight.Visible = true;
         }
 
         private void scrlLight_ValueChanged(object sender, EventArgs e)
