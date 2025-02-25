@@ -139,6 +139,7 @@ namespace Client
             cmbTileSets = new ComboBox();
             tpAttributes = new TabPage();
             optNoXing = new RadioButton();
+            btnFillAttributes = new Button();
             optInfo = new RadioButton();
             Label23 = new Label();
             cmbAttribute = new ComboBox();
@@ -257,12 +258,12 @@ namespace Client
             // 
             // btnClearAttribute
             // 
-            btnClearAttribute.Location = new Point(344, 569);
+            btnClearAttribute.Location = new Point(400, 569);
             btnClearAttribute.Margin = new Padding(4, 3, 4, 3);
             btnClearAttribute.Name = "btnClearAttribute";
-            btnClearAttribute.Size = new Size(192, 29);
+            btnClearAttribute.Size = new Size(136, 29);
             btnClearAttribute.TabIndex = 14;
-            btnClearAttribute.Text = "Clear All Attributes";
+            btnClearAttribute.Text = "Clear Attributes";
             btnClearAttribute.UseVisualStyleBackColor = true;
             btnClearAttribute.Click += BtnClearAttribute_Click;
             // 
@@ -1165,6 +1166,7 @@ namespace Client
             // tpAttributes
             // 
             tpAttributes.Controls.Add(optNoXing);
+            tpAttributes.Controls.Add(btnFillAttributes);
             tpAttributes.Controls.Add(optInfo);
             tpAttributes.Controls.Add(Label23);
             tpAttributes.Controls.Add(cmbAttribute);
@@ -1193,15 +1195,24 @@ namespace Client
             // optNoXing
             // 
             optNoXing.AutoSize = true;
-            optNoXing.Checked = true;
-            optNoXing.Location = new Point(12, 99);
+            optNoXing.Location = new Point(12, 95);
             optNoXing.Margin = new Padding(4, 3, 4, 3);
             optNoXing.Name = "optNoXing";
             optNoXing.Size = new Size(68, 19);
-            optNoXing.TabIndex = 23;
-            optNoXing.TabStop = true;
+            optNoXing.TabIndex = 25;
             optNoXing.Text = "No Xing";
             optNoXing.UseVisualStyleBackColor = true;
+            // 
+            // btnFillAttributes
+            // 
+            btnFillAttributes.Location = new Point(256, 568);
+            btnFillAttributes.Margin = new Padding(4, 3, 4, 3);
+            btnFillAttributes.Name = "btnFillAttributes";
+            btnFillAttributes.Size = new Size(136, 29);
+            btnFillAttributes.TabIndex = 24;
+            btnFillAttributes.Text = "Fill Attributes";
+            btnFillAttributes.UseVisualStyleBackColor = true;
+            btnFillAttributes.Click += btnFillAttributes_Click;
             // 
             // optInfo
             // 
@@ -2347,6 +2358,7 @@ namespace Client
         internal ComboBox cmbAttribute;
         internal ToolStripButton tsbDeleteMap;
         internal RadioButton optInfo;
+        internal Button btnFillAttributes;
         internal RadioButton optNoXing;
     }
 }

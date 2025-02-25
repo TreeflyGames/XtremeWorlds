@@ -171,6 +171,7 @@ namespace Client
         public static int CurY;
         public static int CurMouseX;
         public static int CurMouseY;
+        public static bool Info;
 
         // Game editors
         public static int MyEditorType;

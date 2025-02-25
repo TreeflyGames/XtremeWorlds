@@ -880,19 +880,20 @@ namespace Client
                 {
                     Gui.HandleInterfaceEvents(EntState.DblClick);
                 }
+            }
 
-                // Double-click detection for left button
-                if (currentTime - GameState.LastLeftClickTime > GameState.DoubleClickTImer)
-                {
-                    GameState.ClickCount = 0;  
-                }  
+            // Double-click detection for left button
+            if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= GameState.DoubleClickTImer)
+            {
+                GameState.ClickCount = 0;
+                GameState.Info = false;
             }
 
             // Check for MouseUp event (button released)
             if (IsMouseButtonUp(MouseButton.Left))
             {
                 Gui.HandleInterfaceEvents(EntState.MouseUp);
-            } 
+            }
 
             // In-game interactions for left click
             if (GameState.InGame == true)

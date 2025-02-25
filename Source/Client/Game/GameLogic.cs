@@ -3,6 +3,7 @@ using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using static Core.Enum;
 using static Core.Global.Command;
 
 namespace Client
@@ -1218,6 +1219,12 @@ namespace Client
                             NetworkSend.SendDropItem((int)GameState.diaData1, (int)value);
                             break;
                         }
+
+                    case (long)Core.Enum.DialogueType.Info:
+                        {
+                            GameState.Info = true;
+                            break;
+                        }
                 }
             }
 
@@ -1329,6 +1336,107 @@ namespace Client
                                 {
                                     Core.Type.MyMap.Tile[x, y].Type = 0;
                                     Core.Type.MyMap.Tile[x, y].Type2 = 0;
+                                }
+                            }
+
+                            break;
+                        }
+
+                    case (long)Core.Enum.DialogueType.FillAttributes:
+                        {
+                            TileType type = TileType.None;
+                            var loopTo6 = (int)Core.Type.MyMap.MaxX;
+                            for (x = 0; x < loopTo6; x++)
+                            {
+                                var loopTo7 = (int)Core.Type.MyMap.MaxY;
+                                for (y = 0; y < loopTo7; y++)
+                                {
+                                    // blocked tile
+                                    if (frmEditor_Map.Instance.optBlocked.Checked == true)
+                                    {
+                                        type = TileType.Blocked;
+                                    }
+
+                                    // warp tile
+                                    if (frmEditor_Map.Instance.optWarp.Checked == true)
+                                    {
+                                        type = TileType.Warp;
+                                    }
+
+                                    // item spawn
+                                    if (frmEditor_Map.Instance.optItem.Checked == true)
+                                    {
+                                        type = TileType.Item;
+                                    }
+
+                                    // NPC avoid
+                                    if (frmEditor_Map.Instance.optNPCAvoid.Checked == true)
+                                    {
+                                        type = TileType.NPCAvoid;
+                                    }
+
+                                    // resource
+                                    if (frmEditor_Map.Instance.optResource.Checked == true)
+                                    {
+                                        type = TileType.Resource;
+                                    }
+
+                                    // NPC spawn
+                                    if (frmEditor_Map.Instance.optNPCSpawn.Checked == true)
+                                    {
+                                        type = TileType.NPCSpawn;
+                                    }
+
+                                    // shop
+                                    if (frmEditor_Map.Instance.optShop.Checked == true)
+                                    {
+                                        type = TileType.Shop;
+                                    }
+
+                                    // bank
+                                    if (frmEditor_Map.Instance.optBank.Checked == true)
+                                    {
+                                        type = TileType.Bank;
+                                    }
+
+                                    // heal
+                                    if (frmEditor_Map.Instance.optHeal.Checked == true)
+                                    {
+                                        type = TileType.Heal;
+                                    }
+
+                                    // trap
+                                    if (frmEditor_Map.Instance.optTrap.Checked == true)
+                                    {
+                                        type = TileType.Trap;
+                                    }
+
+                                    // light
+                                    if (frmEditor_Map.Instance.optLight.Checked)
+                                    {
+                                        type = TileType.Light;
+                                    }
+
+                                    // Animation
+                                    if (frmEditor_Map.Instance.optAnimation.Checked == true)
+                                    {
+                                        type = TileType.Animation;
+                                    }
+
+                                    // No Xing
+                                    if (frmEditor_Map.Instance.optNoXing.Checked == true)
+                                    {
+                                        type = TileType.NoXing;
+                                    }
+
+                                    if (frmEditor_Map.Instance.cmbAttribute.SelectedIndex == 1)
+                                    {
+                                        Core.Type.MyMap.Tile[x, y].Type = type;
+                                    }
+                                    else
+                                    {
+                                        Core.Type.MyMap.Tile[x, y].Type2 = type;
+                                    }
                                 }
                             }
 

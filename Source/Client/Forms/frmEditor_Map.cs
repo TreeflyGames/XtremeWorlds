@@ -49,7 +49,7 @@ namespace Client
 
             itemNum = Core.Type.Item[scrlMapItem.Value].Icon;
 
-            if (itemNum  < 0 | itemNum > GameState.NumItems)
+            if (itemNum < 0 | itemNum > GameState.NumItems)
             {
                 picMapItem.BackgroundImage = null;
                 return;
@@ -1049,22 +1049,18 @@ namespace Client
             {
                 if (Instance.optInfo.Checked)
                 {
-                    switch (Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type)
+                    if (GameState.Info == false)
                     {
-                        case TileType.Warp:
+                        {
+                            if (Instance.cmbAttribute.SelectedIndex == 1)
                             {
-                                Client.Text.AddText("Map: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1.ToString() + " X: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2.ToString() + " Y:" + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3.ToString(), (int)ColorType.Gray);
-                                break;
+                                GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
                             }
-                    }
-
-                    switch (Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type2)
-                    {
-                        case TileType.Warp:
+                            else
                             {
-                                Client.Text.AddText("Map: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1_2.ToString() + " X: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2_2.ToString() + " Y:" + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3_2.ToString(), (int)ColorType.Gray);
-                                break;
+                                GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type2), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1_2 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2_2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3_2, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
                             }
+                        }
                     }
                 }
 
@@ -1478,7 +1474,7 @@ namespace Client
                 }
                 withBlock.Layer[CurLayer].AutoTile = theAutotile;
                 Autotile.CacheRenderState(x, y, CurLayer);
-                
+
                 // do a re-init so we can see our changes
                 Autotile.InitAutotiles();
                 return;
@@ -1499,7 +1495,7 @@ namespace Client
                     withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
                 }
                 withBlock1.Layer[CurLayer].AutoTile = 0;
-                Autotile.CacheRenderState(x, y, CurLayer);          
+                Autotile.CacheRenderState(x, y, CurLayer);
             }
             else // multitile
             {
@@ -1528,7 +1524,7 @@ namespace Client
                                 }
                                 withBlock2.Layer[CurLayer].AutoTile = 0;
                                 Autotile.CacheRenderState(x, y, CurLayer);
-                            }                         
+                            }
                         }
                         x2 += 1;
                     }
@@ -1919,8 +1915,11 @@ namespace Client
                 DrawTileset();
             }
         }
+        private void btnFillAttributes_Click(object sender, EventArgs e)
+        {
+            GameLogic.Dialogue("Map Editor", "Fill Attributes: ", "Are you sure you wish to fill attributes?", (byte)DialogueType.FillAttributes, (byte)DialogueStyle.YesNo);
+        }
 
         #endregion
-
     }
 }
