@@ -135,7 +135,7 @@ namespace Server
                             }
 
                             // Check for player collision
-                            for (i = 0; i <= NetworkConfig.Socket.HighIndex + 1; i++)
+                            for (i = 0; i <= NetworkConfig.Socket.HighIndex; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i) &&
                                     GetPlayerMap(i) == mapNum &&
