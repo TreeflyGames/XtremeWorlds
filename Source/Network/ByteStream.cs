@@ -1,9 +1,7 @@
 using System;
 using System.Buffers.Binary;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,11 +15,35 @@ namespace Mirage.Sharp.Asfw
         private bool _isDisposed;
 
         // Constants for optimization
-        private const int DefaultInitialSize = 16; // Larger default for modern use
+        private const int DefaultInitialSize = 32; // Larger for socket packets
         private const int MinBufferSize = 4;
 
-        // Properties for better control and debugging
-        public readonly int Position => _head;
+        // Public accessors for socket compatibility
+        public byte[] Data
+        {
+            get => _data ?? Array.Empty<byte>();
+            set
+            {
+                CheckDisposed();
+                _data = value ?? throw new ArgumentNullException(nameof(value));
+                _capacity = _data.Length;
+                _head = Math.Min(_head, _capacity); // Clamp head to new capacity
+            }
+        }
+
+        public int Head
+        {
+            get => _head;
+            set
+            {
+                CheckDisposed();
+                if (value < 0 || value > _capacity)
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                _head = value;
+            }
+        }
+
+        // Properties for control and debugging
         public readonly int Capacity => _capacity;
         public readonly int Remaining => _capacity - _head;
         public readonly bool IsAtEnd => _head >= _capacity;
@@ -58,27 +80,24 @@ namespace Mirage.Sharp.Asfw
             }
         }
 
-        // Enhanced array output with bounds checking
-        public byte[] ToArray()
-        {
-            CheckDisposed();
-            if (_head == 0) return Array.Empty<byte>();
-            byte[] result = new byte[_head];
-            Buffer.BlockCopy(_data, 0, result, 0, _head);
-            return result;
-        }
-
-        // Packet with length prefix (optimized with Span)
+        // Optimized packet generation for sockets
         public byte[] ToPacket()
         {
             CheckDisposed();
             byte[] result = new byte[4 + _head];
             BinaryPrimitives.WriteInt32LittleEndian(result.AsSpan(0, 4), _head);
-            Buffer.BlockCopy(_data, 0, result, 4, _head);
+            _data.AsSpan(0, _head).CopyTo(result.AsSpan(4));
             return result;
         }
 
-        // Dynamic resizing with exponential growth
+        // Reset for reuse (socket-friendly)
+        public void Reset()
+        {
+            CheckDisposed();
+            _head = 0;
+        }
+
+        // Dynamic resizing with socket-aware growth
         private void EnsureCapacity(int additionalLength)
         {
             CheckDisposed();
@@ -87,12 +106,12 @@ namespace Mirage.Sharp.Asfw
 
             int newCapacity = Math.Max(_capacity * 2, required);
             byte[] newData = new byte[newCapacity];
-            Buffer.BlockCopy(_data, 0, newData, 0, _head);
+            _data.AsSpan(0, _head).CopyTo(newData);
             _data = newData;
             _capacity = newCapacity;
         }
 
-        // Read methods with Span for performance
+        // Read methods with Span
         public ReadOnlySpan<byte> ReadBlock(int size)
         {
             CheckDisposed();
@@ -114,13 +133,12 @@ namespace Mirage.Sharp.Asfw
         {
             encoding ??= Encoding.UTF8;
             int length = ReadInt32();
-            if (length <= 0) return string.Empty;
-            return encoding.GetString(ReadBlock(length));
+            return length <= 0 ? string.Empty : encoding.GetString(ReadBlock(length));
         }
 
-        public char ReadChar() => BinaryPrimitives.ReadInt16LittleEndian(ReadBlock(2));
         public byte ReadByte() => _head < _capacity ? _data[_head++] : (byte)0;
         public bool ReadBoolean() => ReadByte() != 0;
+        public char ReadChar() => BinaryPrimitives.ReadInt16LittleEndian(ReadBlock(2));
         public short ReadInt16() => BinaryPrimitives.ReadInt16LittleEndian(ReadBlock(2));
         public ushort ReadUInt16() => BinaryPrimitives.ReadUInt16LittleEndian(ReadBlock(2));
         public int ReadInt32() => BinaryPrimitives.ReadInt32LittleEndian(ReadBlock(4));
@@ -130,7 +148,7 @@ namespace Mirage.Sharp.Asfw
         public ulong ReadUInt64() => BinaryPrimitives.ReadUInt64LittleEndian(ReadBlock(8));
         public double ReadDouble() => BinaryPrimitives.ReadDoubleLittleEndian(ReadBlock(8));
 
-        // Write methods with Span optimizations
+        // Write methods with Span
         public void WriteBlock(ReadOnlySpan<byte> bytes)
         {
             EnsureCapacity(bytes.Length);
@@ -152,13 +170,12 @@ namespace Mirage.Sharp.Asfw
                 WriteInt32(0);
                 return;
             }
-            byte[] bytes = encoding.GetBytes(value);
-            WriteBytes(bytes);
+            WriteBytes(encoding.GetBytes(value));
         }
 
-        public void WriteChar(char value) => WriteBlock(BitConverter.GetBytes(value));
         public void WriteByte(byte value) { EnsureCapacity(1); _data[_head++] = value; }
         public void WriteBoolean(bool value) => WriteByte((byte)(value ? 1 : 0));
+        public void WriteChar(char value) => BinaryPrimitives.WriteInt16LittleEndian(WriteSpan(2), value);
         public void WriteInt16(short value) => BinaryPrimitives.WriteInt16LittleEndian(WriteSpan(2), value);
         public void WriteUInt16(ushort value) => BinaryPrimitives.WriteUInt16LittleEndian(WriteSpan(2), value);
         public void WriteInt32(int value) => BinaryPrimitives.WriteInt32LittleEndian(WriteSpan(4), value);
@@ -168,7 +185,6 @@ namespace Mirage.Sharp.Asfw
         public void WriteUInt64(ulong value) => BinaryPrimitives.WriteUInt64LittleEndian(WriteSpan(8), value);
         public void WriteDouble(double value) => BinaryPrimitives.WriteDoubleLittleEndian(WriteSpan(8), value);
 
-        // Helper for write operations
         private Span<byte> WriteSpan(int size)
         {
             EnsureCapacity(size);
@@ -177,56 +193,69 @@ namespace Mirage.Sharp.Asfw
             return span;
         }
 
-        // New Feature: Object Serialization
-        public void WriteObject<T>(T obj) where T : class
+        // Enhanced Feature: Socket Packet Parsing
+        public bool TryParsePacket(ReadOnlySpan<byte> packet, out ByteStream parsed)
+        {
+            parsed = default;
+            if (packet.Length < 4) return false;
+
+            int length = BinaryPrimitives.ReadInt32LittleEndian(packet);
+            if (length < 0 || length > packet.Length - 4) return false;
+
+            parsed = new ByteStream(packet.Slice(4, length).ToArray());
+            return true;
+        }
+
+        // New Feature: Batch Write for Socket Efficiency
+        public void WriteBatch<T>(ReadOnlySpan<T> values, Action<ByteStream, T> writer)
         {
             CheckDisposed();
-            if (obj == null)
+            WriteInt32(values.Length);
+            foreach (var value in values)
+                writer(this, value);
+        }
+
+        // New Feature: Async Socket Send/Receive
+        public async Task SendToSocketAsync(System.Net.Sockets.Socket socket)
+        {
+            CheckDisposed();
+            byte[] packet = ToPacket();
+            await socket.SendAsync(packet.AsMemory(), System.Net.Sockets.SocketFlags.None);
+        }
+
+        public static async Task<ByteStream> ReceiveFromSocketAsync(System.Net.Sockets.Socket socket, int bufferSize = 1024)
+        {
+            byte[] header = new byte[4];
+            int received = await socket.ReceiveAsync(header.AsMemory(), System.Net.Sockets.SocketFlags.None);
+            if (received < 4) return new ByteStream();
+
+            int length = BinaryPrimitives.ReadInt32LittleEndian(header);
+            if (length <= 0) return new ByteStream();
+
+            byte[] data = new byte[length];
+            int totalReceived = 0;
+            while (totalReceived < length)
             {
-                WriteInt32(0);
-                return;
+                int bytesRead = await socket.ReceiveAsync(data.AsMemory(totalReceived, length - totalReceived), System.Net.Sockets.SocketFlags.None);
+                if (bytesRead == 0) break; // Connection closed
+                totalReceived += bytesRead;
             }
-            using MemoryStream ms = new();
-            System.Text.Json.JsonSerializer.Serialize(ms, obj);
-            byte[] bytes = ms.ToArray();
-            WriteBytes(bytes);
+            return new ByteStream(data);
         }
 
-        public T ReadObject<T>() where T : class
+        // New Feature: Packet Validation
+        public bool ValidateIntegrity()
         {
             CheckDisposed();
-            byte[] bytes = ReadBytes();
-            if (bytes.Length == 0) return null;
-            return System.Text.Json.JsonSerializer.Deserialize<T>(bytes);
+            return _head <= _capacity && _data != null;
         }
 
-        // New Feature: Async Read/Write from Stream
-        public async Task ReadFromStreamAsync(Stream stream, int length)
-        {
-            CheckDisposed();
-            EnsureCapacity(length);
-            _head += await stream.ReadAsync(_data.AsMemory(_head, length));
-        }
-
-        public async Task WriteToStreamAsync(Stream stream)
-        {
-            CheckDisposed();
-            await stream.WriteAsync(_data.AsMemory(0, _head));
-        }
-
-        // New Feature: Peek without advancing
-        public int PeekInt32()
-        {
-            CheckDisposed();
-            if (_head + 4 > _capacity) return 0;
-            return BinaryPrimitives.ReadInt32LittleEndian(_data.AsSpan(_head));
-        }
-
-        // New Feature: Compression
-        public void Compress(System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Optimal)
+        // Enhanced Feature: Compression with Socket Prep
+        public void CompressForSocket(System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Fastest)
         {
             CheckDisposed();
             using var ms = new MemoryStream();
+            ms.Write(BitConverter.GetBytes(_head)); // Store original length
             using (var gzip = new System.IO.Compression.GZipStream(ms, level))
             {
                 gzip.Write(_data, 0, _head);
@@ -236,19 +265,18 @@ namespace Mirage.Sharp.Asfw
             _head = _capacity;
         }
 
-        public void Decompress()
+        public void DecompressFromSocket()
         {
             CheckDisposed();
-            using var ms = new MemoryStream(_data, 0, _head);
+            using var ms = new MemoryStream(_data);
+            int originalLength = BinaryPrimitives.ReadInt32LittleEndian(ms.ReadBytes(4));
             using var gzip = new System.IO.Compression.GZipStream(ms, System.IO.Compression.CompressionMode.Decompress);
-            using var result = new MemoryStream();
-            gzip.CopyTo(result);
-            _data = result.ToArray();
-            _capacity = _data.Length;
-            _head = 0; // Reset head for reading
+            _data = new byte[originalLength];
+            gzip.Read(_data, 0, originalLength);
+            _capacity = originalLength;
+            _head = 0;
         }
 
-        // Utility to check disposal state
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CheckDisposed()
         {
