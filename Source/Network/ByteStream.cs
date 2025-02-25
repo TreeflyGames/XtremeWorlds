@@ -15,7 +15,7 @@ namespace Mirage.Sharp.Asfw
         private bool _isDisposed;
 
         // Constants for optimization
-        private const int DefaultInitialSize = 32; // Larger for socket packets
+        private const int DefaultInitialSize = 32; // Socket-friendly default
         private const int MinBufferSize = 4;
 
         // Public accessors for socket compatibility
@@ -80,6 +80,16 @@ namespace Mirage.Sharp.Asfw
             }
         }
 
+        // Fixed and exposed ToArray for socket use
+        public byte[] ToArray()
+        {
+            CheckDisposed();
+            if (_head == 0) return Array.Empty<byte>();
+            byte[] result = new byte[_head];
+            _data.AsSpan(0, _head).CopyTo(result);
+            return result;
+        }
+
         // Optimized packet generation for sockets
         public byte[] ToPacket()
         {
@@ -90,7 +100,7 @@ namespace Mirage.Sharp.Asfw
             return result;
         }
 
-        // Reset for reuse (socket-friendly)
+        // Reset for reuse
         public void Reset()
         {
             CheckDisposed();
@@ -123,17 +133,24 @@ namespace Mirage.Sharp.Asfw
             return span;
         }
 
+        // Fixed ReadBytes to avoid MemoryStream issues
         public byte[] ReadBytes()
         {
+            CheckDisposed();
             int length = ReadInt32();
-            return length <= 0 ? Array.Empty<byte>() : ReadBlock(length).ToArray();
+            if (length <= 0 || _head + length > _capacity)
+                return Array.Empty<byte>();
+
+            byte[] result = new byte[length];
+            _data.AsSpan(_head, length).CopyTo(result);
+            _head += length;
+            return result;
         }
 
         public string ReadString(Encoding encoding = null)
         {
             encoding ??= Encoding.UTF8;
-            int length = ReadInt32();
-            return length <= 0 ? string.Empty : encoding.GetString(ReadBlock(length));
+            return encoding.GetString(ReadBytes());
         }
 
         public byte ReadByte() => _head < _capacity ? _data[_head++] : (byte)0;
@@ -193,7 +210,7 @@ namespace Mirage.Sharp.Asfw
             return span;
         }
 
-        // Enhanced Feature: Socket Packet Parsing
+        // Enhanced Socket Packet Parsing
         public bool TryParsePacket(ReadOnlySpan<byte> packet, out ByteStream parsed)
         {
             parsed = default;
@@ -206,21 +223,24 @@ namespace Mirage.Sharp.Asfw
             return true;
         }
 
-        // New Feature: Batch Write for Socket Efficiency
+        // Enhanced Batch Write with Socket Optimization
         public void WriteBatch<T>(ReadOnlySpan<T> values, Action<ByteStream, T> writer)
         {
             CheckDisposed();
+            int startPos = _head;
             WriteInt32(values.Length);
             foreach (var value in values)
                 writer(this, value);
+            // Optional: Validate batch consistency for sockets
+            if (!ValidateIntegrity()) throw new InvalidOperationException("Batch write corrupted stream.");
         }
 
-        // New Feature: Async Socket Send/Receive
+        // Fixed and Enhanced Async Socket Send/Receive
         public async Task SendToSocketAsync(System.Net.Sockets.Socket socket)
         {
             CheckDisposed();
-            byte[] packet = ToPacket();
-            await socket.SendAsync(packet.AsMemory(), System.Net.Sockets.SocketFlags.None);
+            byte[] array = ToArray(); // Use ToArray for raw socket send
+            await socket.SendAsync(array.AsMemory(), System.Net.Sockets.SocketFlags.None);
         }
 
         public static async Task<ByteStream> ReceiveFromSocketAsync(System.Net.Sockets.Socket socket, int bufferSize = 1024)
@@ -243,22 +263,54 @@ namespace Mirage.Sharp.Asfw
             return new ByteStream(data);
         }
 
-        // New Feature: Packet Validation
+        // Enhanced Packet Validation
         public bool ValidateIntegrity()
         {
             CheckDisposed();
-            return _head <= _capacity && _data != null;
+            return _head <= _capacity && _data != null && _head >= 0;
         }
 
-        // Enhanced Feature: Compression with Socket Prep
+        // New Feature: Packet Splitting for Large Sockets
+        public IEnumerable<ByteStream> SplitPacket(int maxSize)
+        {
+            CheckDisposed();
+            if (maxSize < 8) throw new ArgumentException("Max size must allow header + data.", nameof(maxSize));
+
+            int dataLength = _head;
+            int offset = 0;
+            while (offset < dataLength)
+            {
+                int chunkSize = Math.Min(maxSize - 4, dataLength - offset);
+                var stream = new ByteStream(chunkSize + 4);
+                stream.WriteInt32(chunkSize);
+                stream.WriteBlock(_data.AsSpan(offset, chunkSize));
+                yield return stream;
+                offset += chunkSize;
+            }
+        }
+
+        // New Feature: Packet Reassembly from Splits
+        public static ByteStream ReassemblePackets(IEnumerable<ByteStream> packets)
+        {
+            using var ms = new MemoryStream();
+            foreach (var packet in packets)
+            {
+                int length = packet.ReadInt32();
+                ms.Write(packet.ReadBlock(length).ToArray());
+            }
+            return new ByteStream(ms.ToArray());
+        }
+
+        // Enhanced Compression with Socket Prep
         public void CompressForSocket(System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Fastest)
         {
             CheckDisposed();
+            byte[] originalData = ToArray();
             using var ms = new MemoryStream();
-            ms.Write(BitConverter.GetBytes(_head)); // Store original length
+            ms.Write(BitConverter.GetBytes(originalData.Length)); // Store original length
             using (var gzip = new System.IO.Compression.GZipStream(ms, level))
             {
-                gzip.Write(_data, 0, _head);
+                gzip.Write(originalData, 0, originalData.Length);
             }
             _data = ms.ToArray();
             _capacity = _data.Length;
@@ -268,8 +320,9 @@ namespace Mirage.Sharp.Asfw
         public void DecompressFromSocket()
         {
             CheckDisposed();
-            using var ms = new MemoryStream(_data);
-            int originalLength = BinaryPrimitives.ReadInt32LittleEndian(ms.ReadBytes(4));
+            byte[] compressedData = ToArray();
+            using var ms = new MemoryStream(compressedData);
+            int originalLength = BinaryPrimitives.ReadInt32LittleEndian(ms.GetBuffer().AsSpan(0, 4));
             using var gzip = new System.IO.Compression.GZipStream(ms, System.IO.Compression.CompressionMode.Decompress);
             _data = new byte[originalLength];
             gzip.Read(_data, 0, originalLength);
