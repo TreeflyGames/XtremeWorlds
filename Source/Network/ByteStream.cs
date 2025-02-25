@@ -1,5 +1,6 @@
 using System;
 using System.Buffers.Binary;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -18,7 +19,28 @@ namespace Mirage.Sharp.Asfw
         private const int DefaultInitialSize = 32; // Socket-friendly default
         private const int MinBufferSize = 4;
 
-        // Public accessors for socket compatibility
+        // Public accessors with ref returns for socket compatibility
+        public ref byte[] DataRef
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                CheckDisposed();
+                return ref _data;
+            }
+        }
+
+        public ref int HeadRef
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                CheckDisposed();
+                return ref _head;
+            }
+        }
+
+        // Legacy properties for compatibility
         public byte[] Data
         {
             get => _data ?? Array.Empty<byte>();
@@ -27,7 +49,7 @@ namespace Mirage.Sharp.Asfw
                 CheckDisposed();
                 _data = value ?? throw new ArgumentNullException(nameof(value));
                 _capacity = _data.Length;
-                _head = Math.Min(_head, _capacity); // Clamp head to new capacity
+                _head = Math.Min(_head, _capacity);
             }
         }
 
@@ -80,7 +102,7 @@ namespace Mirage.Sharp.Asfw
             }
         }
 
-        // Fixed and exposed ToArray for socket use
+        // ToArray for socket use
         public byte[] ToArray()
         {
             CheckDisposed();
@@ -133,7 +155,6 @@ namespace Mirage.Sharp.Asfw
             return span;
         }
 
-        // Fixed ReadBytes to avoid MemoryStream issues
         public byte[] ReadBytes()
         {
             CheckDisposed();
@@ -192,7 +213,7 @@ namespace Mirage.Sharp.Asfw
 
         public void WriteByte(byte value) { EnsureCapacity(1); _data[_head++] = value; }
         public void WriteBoolean(bool value) => WriteByte((byte)(value ? 1 : 0));
-        public void WriteChar(char value) => BinaryPrimitives.WriteInt16LittleEndian(WriteSpan(2), value);
+        public void WriteChar(char value) => WriteInt16((short)value); // Fixed explicit cast
         public void WriteInt16(short value) => BinaryPrimitives.WriteInt16LittleEndian(WriteSpan(2), value);
         public void WriteUInt16(ushort value) => BinaryPrimitives.WriteUInt16LittleEndian(WriteSpan(2), value);
         public void WriteInt32(int value) => BinaryPrimitives.WriteInt32LittleEndian(WriteSpan(4), value);
@@ -223,23 +244,20 @@ namespace Mirage.Sharp.Asfw
             return true;
         }
 
-        // Enhanced Batch Write with Socket Optimization
-        public void WriteBatch<T>(ReadOnlySpan<T> values, Action<ByteStream, T> writer)
+        // Enhanced Batch Write with Ref Support
+        public void WriteBatch<T>(ReadOnlySpan<T> values, Action<ref ByteStream, T> writer)
         {
             CheckDisposed();
-            int startPos = _head;
             WriteInt32(values.Length);
             foreach (var value in values)
-                writer(this, value);
-            // Optional: Validate batch consistency for sockets
-            if (!ValidateIntegrity()) throw new InvalidOperationException("Batch write corrupted stream.");
+                writer(ref this, value);
         }
 
-        // Fixed and Enhanced Async Socket Send/Receive
+        // Enhanced Async Socket Send/Receive with Ref
         public async Task SendToSocketAsync(System.Net.Sockets.Socket socket)
         {
             CheckDisposed();
-            byte[] array = ToArray(); // Use ToArray for raw socket send
+            byte[] array = ToArray();
             await socket.SendAsync(array.AsMemory(), System.Net.Sockets.SocketFlags.None);
         }
 
@@ -270,7 +288,7 @@ namespace Mirage.Sharp.Asfw
             return _head <= _capacity && _data != null && _head >= 0;
         }
 
-        // New Feature: Packet Splitting for Large Sockets
+        // Enhanced Packet Splitting with Ref
         public IEnumerable<ByteStream> SplitPacket(int maxSize)
         {
             CheckDisposed();
@@ -289,25 +307,32 @@ namespace Mirage.Sharp.Asfw
             }
         }
 
-        // New Feature: Packet Reassembly from Splits
+        // Enhanced Packet Reassembly with Ref
         public static ByteStream ReassemblePackets(IEnumerable<ByteStream> packets)
         {
-            using var ms = new MemoryStream();
-            foreach (var packet in packets)
+            var ms = new MemoryStream();
+            try
             {
-                int length = packet.ReadInt32();
-                ms.Write(packet.ReadBlock(length).ToArray());
+                foreach (var packet in packets)
+                {
+                    int length = packet.ReadInt32();
+                    ms.Write(packet.ReadBlock(length).ToArray());
+                }
+                return new ByteStream(ms.ToArray());
             }
-            return new ByteStream(ms.ToArray());
+            finally
+            {
+                ms.Dispose();
+            }
         }
 
-        // Enhanced Compression with Socket Prep
+        // Enhanced Compression with Ref Support
         public void CompressForSocket(System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Fastest)
         {
             CheckDisposed();
             byte[] originalData = ToArray();
             using var ms = new MemoryStream();
-            ms.Write(BitConverter.GetBytes(originalData.Length)); // Store original length
+            ms.Write(BitConverter.GetBytes(originalData.Length));
             using (var gzip = new System.IO.Compression.GZipStream(ms, level))
             {
                 gzip.Write(originalData, 0, originalData.Length);
@@ -328,6 +353,22 @@ namespace Mirage.Sharp.Asfw
             gzip.Read(_data, 0, originalLength);
             _capacity = originalLength;
             _head = 0;
+        }
+
+        // New Feature: Direct Ref Socket Send
+        public async Task SendToSocketRefAsync(System.Net.Sockets.Socket socket)
+        {
+            CheckDisposed();
+            await socket.SendAsync(DataRef.AsMemory(0, HeadRef), System.Net.Sockets.SocketFlags.None);
+        }
+
+        // New Feature: Ref-Based Packet Manipulation
+        public ref byte GetDataRefAt(int index)
+        {
+            CheckDisposed();
+            if (index < 0 || index >= _capacity)
+                throw new ArgumentOutOfRangeException(nameof(index));
+            return ref _data[index];
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
