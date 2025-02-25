@@ -2629,7 +2629,8 @@ namespace Client
                     }
                 }
 
-                Text.DrawMapAttributes();
+                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpAttributes))
+                    Text.DrawMapAttributes();
             }
 
             for (i = 0; i < byte.MaxValue; i++)
