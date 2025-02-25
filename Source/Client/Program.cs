@@ -1265,6 +1265,7 @@ namespace Client
             // Ensure NPC is within the tile view range
             if (Core.Type.MyMapNPC[(int)MapNPCNum].X < GameState.TileView.Left | Core.Type.MyMapNPC[(int)MapNPCNum].X > GameState.TileView.Right)
                 return;
+
             if (Core.Type.MyMapNPC[(int)MapNPCNum].Y < GameState.TileView.Top | Core.Type.MyMapNPC[(int)MapNPCNum].Y > GameState.TileView.Bottom)
                 return;
 
