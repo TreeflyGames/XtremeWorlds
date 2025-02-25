@@ -341,6 +341,9 @@ namespace Client
 
             NPCNum = (int)Core.Type.MyMapNPC[(int)MapNPCNum].Num;
 
+            if (NPCNum < 0 | NPCNum > Core.Constant.MAX_NPCS)
+                return;
+
             switch (Core.Type.NPC[(int)NPCNum].Behaviour)
             {
                 case 0: // attack on sight

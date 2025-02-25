@@ -1383,7 +1383,7 @@ namespace Client
             int x;
             int y;
 
-            if (Core.Type.MyMapItem[itemNum].Num == -1)
+            if (Core.Type.MyMapItem[itemNum].Num < 0 | Core.Type.MyMapItem[itemNum].Num > Core.Constant.MAX_ITEMS)
                 return;
 
             Item.StreamItem((int)Core.Type.MyMapItem[itemNum].Num);
@@ -1477,7 +1477,7 @@ namespace Client
             {
                 NPCNum = (long)Core.Type.MyMapNPC[(int)i].Num;
                 // exists?
-                if (NPCNum >= 0L)
+                if (NPCNum >= 0L && NPCNum <= Core.Constant.MAX_NPCS)
                 {
                     // alive?
                     if (Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] > 0 & Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] < Core.Type.NPC[(int)NPCNum].HP)
