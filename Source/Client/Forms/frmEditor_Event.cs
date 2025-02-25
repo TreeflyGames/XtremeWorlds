@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using SharpDX.MediaFoundation;
 
 namespace Client
 {
@@ -453,6 +454,10 @@ namespace Client
                 {
                     Event.TmpEvent.Pages[Event.CurPageNum].GraphicType = (byte)cmbGraphic.SelectedIndex;
                     Event.TmpEvent.Pages[Event.CurPageNum].Graphic = (int)Math.Round(nudGraphic.Value);
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicX = Event.GraphicSelX;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicY = Event.GraphicSelY;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 = Event.GraphicSelX2;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 = Event.GraphicSelY2;
                 }
                 else
                 {
@@ -1280,6 +1285,12 @@ namespace Client
                     }
             }
 
+            if (cmbGraphic.SelectedIndex == 1)
+            {
+                Event.GraphicSelX = 1;
+                Event.GraphicSelY = 4;
+            }
+
             if (Event.TmpEvent.Pages[Event.CurPageNum].GraphicType == 1)
             {
                 if (nudGraphic.Value <= 0m | nudGraphic.Value > GameState.NumCharacters)
@@ -1295,7 +1306,7 @@ namespace Client
             DrawGraphic();
         }
 
-        private void PicGraphicSel_Click(object sender, MouseEventArgs e)
+        private void PicGraphicSel_MouseDown(object sender, MouseEventArgs e)
         {
             int X;
             int Y;
@@ -1327,36 +1338,13 @@ namespace Client
                     Event.GraphicSelY2 = 1;
                 }
             }
-            else if (cmbGraphic.SelectedIndex == 1)
-            {
-                Event.GraphicSelX = X;
-                Event.GraphicSelY = Y;
-                Event.GraphicSelX2 = 0;
-                Event.GraphicSelY2 = 0;
-
-                if (nudGraphic.Value <= 0m | nudGraphic.Value > GameState.NumCharacters)
-                    return;
-
-                for (int i = 0; i <= 3; i++)
-                {
-                    if (Event.GraphicSelX >= GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Width / 4d * i & Event.GraphicSelX < GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Width / 4d * (i + 1))
-                    {
-                        Event.GraphicSelX = i;
-                    }
-                }
-                for (int i = 0; i <= 3; i++)
-                {
-                    if (Event.GraphicSelY >= GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Height / 4d * i & Event.GraphicSelY < GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Height / 4d * (i + 1))
-                    {
-                        Event.GraphicSelY = i;
-                    }
-                }
-            }
-            DrawGraphic();
         }
 
         private void nudGraphic_ValueChanged(object sender, EventArgs e)
         {
+            if (nudGraphic.Value == 0)
+                return;
+
             DrawGraphic();
         }
 
