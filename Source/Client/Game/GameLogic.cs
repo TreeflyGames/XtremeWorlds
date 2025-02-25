@@ -1333,6 +1333,10 @@ namespace Client
 
                             break;
                         }
+
+                    case (long)Core.Enum.DialogueType.ClearMap:
+                        Map.ClearMap();
+                        break;
                 }
             }
 

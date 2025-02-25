@@ -102,7 +102,7 @@ namespace Client
                 GameClient.Graphics.GraphicsDevice.Clear(Color.Black);
 
                 // Create a SpriteBatch for rendering
-                using (var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice))
+                using (var spriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice))
                 {
                     // Begin the SpriteBatch with appropriate settings
                     spriteBatch.Begin();
@@ -140,7 +140,7 @@ namespace Client
             }
         }
 
-        public void DrawSelectionRectangle(SpriteBatch spriteBatch, float scale)
+        public void DrawSelectionRectangle(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, float scale)
         {
             // Scale the selection rectangle based on the scale factor
             int scaledX = (int)Math.Round(GameState.EditorTileSelStart.X * GameState.PicX * scale);
@@ -1909,7 +1909,7 @@ namespace Client
 
         private void tsbDeleteMap_Click(object sender, EventArgs e)
         {
-            Map.ClearMap();
+            GameLogic.Dialogue("Map Editor", "Clear Map: ", "Are you sure you want to clear this map?", (byte)DialogueType.ClearMap, (byte)DialogueStyle.YesNo);
         }
 
         private void picBackSelect_Paint(object sender, PaintEventArgs e)

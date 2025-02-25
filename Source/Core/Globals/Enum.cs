@@ -614,7 +614,8 @@ namespace Core
             UntradeAmount,
             ClearLayer,
             FillLayer,
-            ClearAttributes
+            ClearAttributes,
+            ClearMap
         }
 
         public enum DialogueStyle
