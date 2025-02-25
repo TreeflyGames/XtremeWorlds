@@ -126,7 +126,6 @@ namespace Client
 
         public static void ClearProjectile(int index)
         {
-
             Core.Type.Projectile[index].Name = "";
             Core.Type.Projectile[index].Sprite = 0;
             Core.Type.Projectile[index].Range = 0;
@@ -137,7 +136,6 @@ namespace Client
 
         public static void ClearMapProjectile(int projectileNum)
         {
-
             Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].ProjectileNum = 0;
             Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Owner = 0;
             Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].OwnerType = 0;

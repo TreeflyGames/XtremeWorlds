@@ -632,9 +632,9 @@ namespace Client
 
             // Erase all temporary tile values
             ClearMapNPCs();
-            ClearMapItems();
             Database.ClearBlood();
             ClearMap();
+            ClearMapItems();
             ClearMapEvents();
 
             // Get map num

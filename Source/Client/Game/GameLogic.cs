@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using System.Data.Common;
+using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
@@ -1336,6 +1337,8 @@ namespace Client
 
                     case (long)Core.Enum.DialogueType.ClearMap:
                         Map.ClearMap();
+                        Map.ClearMapNPCs();
+                        Map.ClearMapItems();
                         break;
                 }
             }
