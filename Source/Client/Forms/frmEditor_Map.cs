@@ -1421,6 +1421,8 @@ namespace Client
             Gui.ShowWindow(Gui.GetWindowIndex("winMenu"), resetPosition: false);
             Gui.ShowWindow(Gui.GetWindowIndex("winBars"), resetPosition: false);
             Gui.HideChat();
+
+            frmEditor_Event.Instance?.Dispose();
         }
 
         public static void MapEditorSetTile(int x, int y, int CurLayer, bool multitile = false, byte theAutotile = 0, byte eraseTile = 0)
