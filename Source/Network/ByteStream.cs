@@ -4,71 +4,33 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mirage.Sharp.Asfw
 {
-    public struct ByteStream : IDisposable
+    public class ByteStream : IDisposable
     {
         private byte[] _data;
         private int _head;
         private int _capacity;
         private bool _isDisposed;
 
-        // Constants for optimization
-        private const int DefaultInitialSize = 32; // Socket-friendly default
+        // Constants for optimization and chaos scaling
+        private const int DefaultInitialSize = 64; // Larger default for socket chaos
         private const int MinBufferSize = 4;
+        private const int MaxPacketSize = 65536; // Cap for sanity—#GlowCoup precision
 
         // Public accessors with ref returns for socket compatibility
-        public ref byte[] DataRef
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get
-            {
-                CheckDisposed();
-                return ref _data;
-            }
-        }
+        public ref byte[] DataRef => ref _data; // Direct ref for socket sends
+        public ref int HeadRef => ref _head;    // Direct ref for socket head
 
-        public ref int HeadRef
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get
-            {
-                CheckDisposed();
-                return ref _head;
-            }
-        }
-
-        // Legacy properties for compatibility
-        public byte[] Data
-        {
-            get => _data ?? Array.Empty<byte>();
-            set
-            {
-                CheckDisposed();
-                _data = value ?? throw new ArgumentNullException(nameof(value));
-                _capacity = _data.Length;
-                _head = Math.Min(_head, _capacity);
-            }
-        }
-
-        public int Head
-        {
-            get => _head;
-            set
-            {
-                CheckDisposed();
-                if (value < 0 || value > _capacity)
-                    throw new ArgumentOutOfRangeException(nameof(value));
-                _head = value;
-            }
-        }
-
-        // Properties for control and debugging
-        public readonly int Capacity => _capacity;
-        public readonly int Remaining => _capacity - _head;
-        public readonly bool IsAtEnd => _head >= _capacity;
+        // Properties for control, debugging, and chaos tracking
+        public int Capacity => _capacity;
+        public int Remaining => _capacity - _head;
+        public bool IsAtEnd => _head >= _capacity;
+        public int Position => _head;           // Alias for chaos navigation
+        public bool IsEmpty => _head == 0;
 
         // Constructors
         public ByteStream(int initialSize = DefaultInitialSize)
@@ -102,7 +64,7 @@ namespace Mirage.Sharp.Asfw
             }
         }
 
-        // ToArray for socket use
+        // ToArray for socket use—optimized with pooling
         public byte[] ToArray()
         {
             CheckDisposed();
@@ -112,7 +74,7 @@ namespace Mirage.Sharp.Asfw
             return result;
         }
 
-        // Optimized packet generation for sockets
+        // Optimized packet generation for sockets with header
         public byte[] ToPacket()
         {
             CheckDisposed();
@@ -122,14 +84,15 @@ namespace Mirage.Sharp.Asfw
             return result;
         }
 
-        // Reset for reuse
-        public void Reset()
+        // Reset for reuse—option to clear data
+        public void Reset(bool clearData = false)
         {
             CheckDisposed();
             _head = 0;
+            if (clearData) Array.Clear(_data, 0, _capacity);
         }
 
-        // Dynamic resizing with socket-aware growth
+        // Dynamic resizing with chaos-aware growth
         private void EnsureCapacity(int additionalLength)
         {
             CheckDisposed();
@@ -137,8 +100,9 @@ namespace Mirage.Sharp.Asfw
             if (required <= _capacity) return;
 
             int newCapacity = Math.Max(_capacity * 2, required);
+            if (newCapacity > MaxPacketSize) newCapacity = MaxPacketSize; // Cap chaos
             byte[] newData = new byte[newCapacity];
-            _data.AsSpan(0, _head).CopyTo(newData);
+            _data.CopyTo(newData, 0); // Full copy for class safety
             _data = newData;
             _capacity = newCapacity;
         }
@@ -213,7 +177,7 @@ namespace Mirage.Sharp.Asfw
 
         public void WriteByte(byte value) { EnsureCapacity(1); _data[_head++] = value; }
         public void WriteBoolean(bool value) => WriteByte((byte)(value ? 1 : 0));
-        public void WriteChar(char value) => WriteInt16((short)value); // Fixed explicit cast
+        public void WriteChar(char value) => WriteInt16((short)value); // Explicit cast
         public void WriteInt16(short value) => BinaryPrimitives.WriteInt16LittleEndian(WriteSpan(2), value);
         public void WriteUInt16(ushort value) => BinaryPrimitives.WriteUInt16LittleEndian(WriteSpan(2), value);
         public void WriteInt32(int value) => BinaryPrimitives.WriteInt32LittleEndian(WriteSpan(4), value);
@@ -231,65 +195,85 @@ namespace Mirage.Sharp.Asfw
             return span;
         }
 
-        // Enhanced Socket Packet Parsing
+        // Enhanced Socket Packet Parsing with Robustness
         public bool TryParsePacket(ReadOnlySpan<byte> packet, out ByteStream parsed)
         {
-            parsed = default;
+            parsed = null;
             if (packet.Length < 4) return false;
 
             int length = BinaryPrimitives.ReadInt32LittleEndian(packet);
-            if (length < 0 || length > packet.Length - 4) return false;
+            if (length < 0 || length > packet.Length - 4 || length > MaxPacketSize) return false;
 
             parsed = new ByteStream(packet.Slice(4, length).ToArray());
             return true;
         }
 
-        // Enhanced Batch Write with Ref Support
-        public void WriteBatch<T>(ReadOnlySpan<T> values, Action<ref ByteStream, T> writer)
+        // Enhanced Batch Write with Ref Support and Chaos
+        public void WriteBatch<T>(IEnumerable<T> values, Action<ByteStream, T> writer)
         {
             CheckDisposed();
-            WriteInt32(values.Length);
+            int startPos = _head;
+            WriteInt32(0); // Placeholder for count
+            int count = 0;
             foreach (var value in values)
-                writer(ref this, value);
+            {
+                writer(this, value);
+                count++;
+            }
+            int endPos = _head;
+            _head = startPos;
+            WriteInt32(count); // Update count
+            _head = endPos;
         }
 
-        // Enhanced Async Socket Send/Receive with Ref
-        public async Task SendToSocketAsync(System.Net.Sockets.Socket socket)
+        // Enhanced Async Socket Send/Receive with Cancellation
+        public async Task SendToSocketAsync(System.Net.Sockets.Socket socket, CancellationToken token = default)
         {
             CheckDisposed();
+            token.ThrowIfCancellationRequested();
             byte[] array = ToArray();
-            await socket.SendAsync(array.AsMemory(), System.Net.Sockets.SocketFlags.None);
+            await socket.SendAsync(array, System.Net.Sockets.SocketFlags.None, token).ConfigureAwait(false);
         }
 
-        public static async Task<ByteStream> ReceiveFromSocketAsync(System.Net.Sockets.Socket socket, int bufferSize = 1024)
+        public static async Task<ByteStream> ReceiveFromSocketAsync(System.Net.Sockets.Socket socket, int bufferSize = 1024, CancellationToken token = default)
         {
+            token.ThrowIfCancellationRequested();
             byte[] header = new byte[4];
-            int received = await socket.ReceiveAsync(header.AsMemory(), System.Net.Sockets.SocketFlags.None);
+            int received = await socket.ReceiveAsync(header, System.Net.Sockets.SocketFlags.None, token).ConfigureAwait(false);
             if (received < 4) return new ByteStream();
 
             int length = BinaryPrimitives.ReadInt32LittleEndian(header);
-            if (length <= 0) return new ByteStream();
+            if (length <= 0 || length > MaxPacketSize) return new ByteStream();
 
             byte[] data = new byte[length];
             int totalReceived = 0;
             while (totalReceived < length)
             {
-                int bytesRead = await socket.ReceiveAsync(data.AsMemory(totalReceived, length - totalReceived), System.Net.Sockets.SocketFlags.None);
+                token.ThrowIfCancellationRequested();
+                int bytesRead = await socket.ReceiveAsync(data.AsMemory(totalReceived, length - totalReceived), System.Net.Sockets.SocketFlags.None, token).ConfigureAwait(false);
                 if (bytesRead == 0) break; // Connection closed
                 totalReceived += bytesRead;
             }
             return new ByteStream(data);
         }
 
-        // Enhanced Packet Validation
+        // Direct Ref Socket Send with Cancellation
+        public async Task SendToSocketRefAsync(System.Net.Sockets.Socket socket, CancellationToken token = default)
+        {
+            CheckDisposed();
+            token.ThrowIfCancellationRequested();
+            await socket.SendAsync(_data.AsMemory(0, _head), System.Net.Sockets.SocketFlags.None, token).ConfigureAwait(false);
+        }
+
+        // Enhanced Packet Validation with Chaos Check
         public bool ValidateIntegrity()
         {
             CheckDisposed();
-            return _head <= _capacity && _data != null && _head >= 0;
+            return _head <= _capacity && _head >= 0 && _data != null && _capacity <= MaxPacketSize;
         }
 
-        // Enhanced Packet Splitting with Ref
-        public IEnumerable<ByteStream> SplitPacket(int maxSize)
+        // New Feature: Async Packet Splitting
+        public async IAsyncEnumerable<ByteStream> SplitPacketAsync(int maxSize, CancellationToken token = default)
         {
             CheckDisposed();
             if (maxSize < 8) throw new ArgumentException("Max size must allow header + data.", nameof(maxSize));
@@ -298,79 +282,89 @@ namespace Mirage.Sharp.Asfw
             int offset = 0;
             while (offset < dataLength)
             {
+                token.ThrowIfCancellationRequested();
                 int chunkSize = Math.Min(maxSize - 4, dataLength - offset);
                 var stream = new ByteStream(chunkSize + 4);
                 stream.WriteInt32(chunkSize);
                 stream.WriteBlock(_data.AsSpan(offset, chunkSize));
+                await Task.Yield(); // Ensure async yield
                 yield return stream;
                 offset += chunkSize;
             }
         }
 
-        // Enhanced Packet Reassembly with Ref
-        public static ByteStream ReassemblePackets(IEnumerable<ByteStream> packets)
+        // New Feature: Async Packet Reassembly
+        public static async Task<ByteStream> ReassemblePacketsAsync(IAsyncEnumerable<ByteStream> packets, CancellationToken token = default)
         {
-            var ms = new MemoryStream();
-            try
+            using var ms = new MemoryStream();
+            await foreach (var packet in packets.ConfigureAwait(false).WithCancellation(token))
             {
-                foreach (var packet in packets)
-                {
-                    int length = packet.ReadInt32();
-                    ms.Write(packet.ReadBlock(length).ToArray());
-                }
-                return new ByteStream(ms.ToArray());
+                int length = packet.ReadInt32();
+                ms.Write(packet.ReadBlock(length).ToArray());
             }
-            finally
-            {
-                ms.Dispose();
-            }
+            return new ByteStream(ms.ToArray());
         }
 
-        // Enhanced Compression with Ref Support
-        public void CompressForSocket(System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Fastest)
+        // New Feature: Packet Peek with Offset
+        public byte PeekByte(int offset = 0)
         {
             CheckDisposed();
+            int peekPos = _head + offset;
+            return peekPos < _capacity ? _data[peekPos] : (byte)0;
+        }
+
+        // New Feature: Resize with Chaos Preservation
+        public void Resize(int newSize, bool preserveData = true)
+        {
+            CheckDisposed();
+            if (newSize < MinBufferSize) newSize = MinBufferSize;
+            if (newSize == _capacity) return;
+
+            byte[] newData = new byte[newSize];
+            if (preserveData && _data != null)
+            {
+                int copyLength = Math.Min(_head, newSize);
+                _data.AsSpan(0, copyLength).CopyTo(newData);
+            }
+            _data = newData;
+            _capacity = newSize;
+            _head = Math.Min(_head, _capacity);
+        }
+
+        // Enhanced Compression with Async Option
+        public async Task CompressForSocketAsync(System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Fastest, CancellationToken token = default)
+        {
+            CheckDisposed();
+            token.ThrowIfCancellationRequested();
             byte[] originalData = ToArray();
             using var ms = new MemoryStream();
-            ms.Write(BitConverter.GetBytes(originalData.Length));
-            using (var gzip = new System.IO.Compression.GZipStream(ms, level))
+            await ms.WriteAsync(BitConverter.GetBytes(originalData.Length), token).ConfigureAwait(false);
+            using (var gzip = new System.IO.Compression.GZipStream(ms, level, leaveOpen: true))
             {
-                gzip.Write(originalData, 0, originalData.Length);
+                await gzip.WriteAsync(originalData, token).ConfigureAwait(false);
             }
             _data = ms.ToArray();
             _capacity = _data.Length;
             _head = _capacity;
         }
 
-        public void DecompressFromSocket()
+        public async Task DecompressFromSocketAsync(CancellationToken token = default)
         {
             CheckDisposed();
+            token.ThrowIfCancellationRequested();
             byte[] compressedData = ToArray();
             using var ms = new MemoryStream(compressedData);
-            int originalLength = BinaryPrimitives.ReadInt32LittleEndian(ms.GetBuffer().AsSpan(0, 4));
+            byte[] lengthBytes = new byte[4];
+            await ms.ReadAsync(lengthBytes, token).ConfigureAwait(false);
+            int originalLength = BinaryPrimitives.ReadInt32LittleEndian(lengthBytes);
             using var gzip = new System.IO.Compression.GZipStream(ms, System.IO.Compression.CompressionMode.Decompress);
             _data = new byte[originalLength];
-            gzip.Read(_data, 0, originalLength);
+            await gzip.ReadAsync(_data, token).ConfigureAwait(false);
             _capacity = originalLength;
             _head = 0;
         }
 
-        // New Feature: Direct Ref Socket Send
-        public async Task SendToSocketRefAsync(System.Net.Sockets.Socket socket)
-        {
-            CheckDisposed();
-            await socket.SendAsync(DataRef.AsMemory(0, HeadRef), System.Net.Sockets.SocketFlags.None);
-        }
-
-        // New Feature: Ref-Based Packet Manipulation
-        public ref byte GetDataRefAt(int index)
-        {
-            CheckDisposed();
-            if (index < 0 || index >= _capacity)
-                throw new ArgumentOutOfRangeException(nameof(index));
-            return ref _data[index];
-        }
-
+        // Chaos Check
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void CheckDisposed()
         {
