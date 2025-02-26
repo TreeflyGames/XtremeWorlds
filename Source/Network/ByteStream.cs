@@ -1,7 +1,9 @@
 using System;
+using System.Buffers;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Mirage.Sharp.Asfw
 {
-    public class ByteStream : IDisposable
+    public class ByteStream : IDisposable, IAsyncDisposable
     {
         private byte[] _data;
         private int _head;
@@ -17,30 +19,38 @@ namespace Mirage.Sharp.Asfw
         private bool _isDisposed;
 
         // Constants for optimization and chaos scaling
-        private const int DefaultInitialSize = 64; // Larger default for socket chaos
+        private const int DefaultInitialSize = 128; // Larger for game map chaos
         private const int MinBufferSize = 4;
-        private const int MaxPacketSize = 65536; // Cap for sanity—#GlowCoup precision
+        private const int MaxPacketSize = 1048576; // 1MB cap—expanded for maps
+
+        // Enhanced tracking for chaos diagnostics
+        private int _peakHead; // Tracks max head for debugging
+        private long _totalBytesWritten; // Chaos byte counter
 
         // Public accessors with ref returns for socket compatibility
         public ref byte[] Data => ref _data; // Direct ref for socket sends
-        public ref int Head => ref _head;    // Direct ref for socket head
+        public ref int Head => ref _head;   // Direct ref for socket head
 
         // Properties for control, debugging, and chaos tracking
         public int Capacity => _capacity;
         public int Remaining => _capacity - _head;
         public bool IsAtEnd => _head >= _capacity;
-        public int Position => _head;           // Alias for chaos navigation
+        public int Position => _head;
         public bool IsEmpty => _head == 0;
+        public int PeakHead => _peakHead;
+        public long TotalBytesWritten => _totalBytesWritten;
 
         // Constructors
         public ByteStream(int initialSize = DefaultInitialSize)
         {
-            if (initialSize < MinBufferSize)
-                initialSize = MinBufferSize;
+            if (initialSize < MinBufferSize || initialSize > MaxPacketSize)
+                throw new ArgumentOutOfRangeException(nameof(initialSize), $"Size must be between {MinBufferSize} and {MaxPacketSize}");
 
-            _data = new byte[initialSize];
+            _data = ArrayPool<byte>.Shared.Rent(initialSize); // Pool chaos
             _capacity = initialSize;
             _head = 0;
+            _peakHead = 0;
+            _totalBytesWritten = 0;
             _isDisposed = false;
         }
 
@@ -49,22 +59,33 @@ namespace Mirage.Sharp.Asfw
             _data = bytes ?? throw new ArgumentNullException(nameof(bytes));
             _capacity = bytes.Length;
             _head = 0;
+            _peakHead = 0;
+            _totalBytesWritten = 0;
             _isDisposed = false;
         }
 
-        // Dispose pattern
+        // Dispose patterns
         public void Dispose()
         {
             if (!_isDisposed)
             {
+                if (_data != null)
+                    ArrayPool<byte>.Shared.Return(_data, clearArray: true); // Chaos cleanup
                 _data = null;
                 _capacity = 0;
                 _head = 0;
+                _peakHead = 0;
                 _isDisposed = true;
             }
         }
 
-        // ToArray for socket use—optimized with pooling
+        public async ValueTask DisposeAsync()
+        {
+            Dispose();
+            await Task.CompletedTask; // Async chaos cleanup
+        }
+
+        // ToArray with pooling
         public byte[] ToArray()
         {
             CheckDisposed();
@@ -74,7 +95,7 @@ namespace Mirage.Sharp.Asfw
             return result;
         }
 
-        // Optimized packet generation for sockets with header
+        // Optimized packet generation with header
         public byte[] ToPacket()
         {
             CheckDisposed();
@@ -84,25 +105,39 @@ namespace Mirage.Sharp.Asfw
             return result;
         }
 
-        // Reset for reuse—option to clear data
+        // Reset with chaos options
         public void Reset(bool clearData = false)
         {
             CheckDisposed();
             _head = 0;
+            _peakHead = 0;
             if (clearData) Array.Clear(_data, 0, _capacity);
         }
 
-        // Dynamic resizing with chaos-aware growth
+        // Fixed and enhanced EnsureCapacity
         private void EnsureCapacity(int additionalLength)
         {
             CheckDisposed();
+            if (additionalLength < 0)
+                throw new ArgumentOutOfRangeException(nameof(additionalLength), "Additional length cannot be negative");
+
             int required = _head + additionalLength;
             if (required <= _capacity) return;
 
             int newCapacity = Math.Max(_capacity * 2, required);
-            if (newCapacity > MaxPacketSize) newCapacity = MaxPacketSize; // Cap chaos
-            byte[] newData = new byte[newCapacity];
-            _data.CopyTo(newData, 0); // Full copy for class safety
+            if (newCapacity > MaxPacketSize)
+            {
+                if (required > MaxPacketSize)
+                    throw new InvalidOperationException($"Required capacity {required} exceeds MaxPacketSize {MaxPacketSize}");
+                newCapacity = MaxPacketSize;
+            }
+
+            byte[] newData = ArrayPool<byte>.Shared.Rent(newCapacity);
+            if (_data != null)
+            {
+                _data.AsSpan(0, Math.Min(_head, _capacity)).CopyTo(newData);
+                ArrayPool<byte>.Shared.Return(_data, clearArray: true);
+            }
             _data = newData;
             _capacity = newCapacity;
         }
@@ -116,6 +151,7 @@ namespace Mirage.Sharp.Asfw
 
             var span = _data.AsSpan(_head, size);
             _head += size;
+            _peakHead = Math.Max(_peakHead, _head);
             return span;
         }
 
@@ -129,6 +165,7 @@ namespace Mirage.Sharp.Asfw
             byte[] result = new byte[length];
             _data.AsSpan(_head, length).CopyTo(result);
             _head += length;
+            _peakHead = Math.Max(_peakHead, _head);
             return result;
         }
 
@@ -156,6 +193,8 @@ namespace Mirage.Sharp.Asfw
             EnsureCapacity(bytes.Length);
             bytes.CopyTo(_data.AsSpan(_head));
             _head += bytes.Length;
+            _peakHead = Math.Max(_peakHead, _head);
+            _totalBytesWritten += bytes.Length;
         }
 
         public void WriteBytes(ReadOnlySpan<byte> value)
@@ -175,9 +214,17 @@ namespace Mirage.Sharp.Asfw
             WriteBytes(encoding.GetBytes(value));
         }
 
-        public void WriteByte(byte value) { EnsureCapacity(1); _data[_head++] = value; }
+        public void WriteByte(byte value)
+        {
+            EnsureCapacity(1);
+            _data[_head++] = value;
+            _peakHead = Math.Max(_peakHead, _head);
+            _totalBytesWritten++;
+        }
+
         public void WriteBoolean(bool value) => WriteByte((byte)(value ? 1 : 0));
-        public void WriteChar(char value) => WriteInt16((short)value); // Explicit cast
+        public void WriteChar(char value) => WriteInt16((short)value);
+
         public void WriteInt16(short value) => BinaryPrimitives.WriteInt16LittleEndian(WriteSpan(2), value);
         public void WriteUInt16(ushort value) => BinaryPrimitives.WriteUInt16LittleEndian(WriteSpan(2), value);
         public void WriteInt32(int value) => BinaryPrimitives.WriteInt32LittleEndian(WriteSpan(4), value);
@@ -187,15 +234,30 @@ namespace Mirage.Sharp.Asfw
         public void WriteUInt64(ulong value) => BinaryPrimitives.WriteUInt64LittleEndian(WriteSpan(8), value);
         public void WriteDouble(double value) => BinaryPrimitives.WriteDoubleLittleEndian(WriteSpan(8), value);
 
+        // Fixed WriteSpan with bounds checking
         private Span<byte> WriteSpan(int size)
         {
-            EnsureCapacity(size);
+            CheckDisposed();
+            if (size < 0 || size > MaxPacketSize)
+                throw new ArgumentOutOfRangeException(nameof(size), $"Size must be between 0 and {MaxPacketSize}");
+
+            int required = _head + size;
+            if (required > _capacity)
+            {
+                EnsureCapacity(size); // Ensure capacity before span access
+            }
+
+            if (required > _data.Length)
+                throw new InvalidOperationException($"WriteSpan failed: Required {_head + size} exceeds buffer length {_data.Length}");
+
             var span = _data.AsSpan(_head, size);
             _head += size;
+            _peakHead = Math.Max(_peakHead, _head);
+            _totalBytesWritten += size;
             return span;
         }
 
-        // Enhanced Socket Packet Parsing with Robustness
+        // Enhanced Socket Packet Parsing
         public bool TryParsePacket(ReadOnlySpan<byte> packet, out ByteStream parsed)
         {
             parsed = null;
@@ -208,7 +270,7 @@ namespace Mirage.Sharp.Asfw
             return true;
         }
 
-        // Enhanced Batch Write with Ref Support and Chaos
+        // Enhanced Batch Write with Chaos
         public void WriteBatch<T>(IEnumerable<T> values, Action<ByteStream, T> writer)
         {
             CheckDisposed();
@@ -222,39 +284,46 @@ namespace Mirage.Sharp.Asfw
             }
             int endPos = _head;
             _head = startPos;
-            WriteInt32(count); // Update count
+            WriteInt32(count);
             _head = endPos;
         }
 
-        // Enhanced Async Socket Send/Receive with Cancellation
+        // Async Socket Send/Receive with Cancellation
         public async Task SendToSocketAsync(System.Net.Sockets.Socket socket, CancellationToken token = default)
         {
             CheckDisposed();
             token.ThrowIfCancellationRequested();
             byte[] array = ToArray();
-            await socket.SendAsync(array, System.Net.Sockets.SocketFlags.None, token).ConfigureAwait(false);
+            await socket.SendAsync(array, SocketFlags.None, token).ConfigureAwait(false);
         }
 
         public static async Task<ByteStream> ReceiveFromSocketAsync(System.Net.Sockets.Socket socket, int bufferSize = 1024, CancellationToken token = default)
         {
             token.ThrowIfCancellationRequested();
             byte[] header = new byte[4];
-            int received = await socket.ReceiveAsync(header, System.Net.Sockets.SocketFlags.None, token).ConfigureAwait(false);
+            int received = await socket.ReceiveAsync(header, SocketFlags.None, token).ConfigureAwait(false);
             if (received < 4) return new ByteStream();
 
             int length = BinaryPrimitives.ReadInt32LittleEndian(header);
             if (length <= 0 || length > MaxPacketSize) return new ByteStream();
 
-            byte[] data = new byte[length];
-            int totalReceived = 0;
-            while (totalReceived < length)
+            byte[] data = ArrayPool<byte>.Shared.Rent(length);
+            try
             {
-                token.ThrowIfCancellationRequested();
-                int bytesRead = await socket.ReceiveAsync(data.AsMemory(totalReceived, length - totalReceived), System.Net.Sockets.SocketFlags.None, token).ConfigureAwait(false);
-                if (bytesRead == 0) break; // Connection closed
-                totalReceived += bytesRead;
+                int totalReceived = 0;
+                while (totalReceived < length)
+                {
+                    token.ThrowIfCancellationRequested();
+                    int bytesRead = await socket.ReceiveAsync(data.AsMemory(totalReceived, length - totalReceived), SocketFlags.None, token).ConfigureAwait(false);
+                    if (bytesRead == 0) break;
+                    totalReceived += bytesRead;
+                }
+                return new ByteStream(data.AsSpan(0, totalReceived).ToArray());
             }
-            return new ByteStream(data);
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(data);
+            }
         }
 
         // Direct Ref Socket Send with Cancellation
@@ -262,10 +331,10 @@ namespace Mirage.Sharp.Asfw
         {
             CheckDisposed();
             token.ThrowIfCancellationRequested();
-            await socket.SendAsync(_data.AsMemory(0, _head), System.Net.Sockets.SocketFlags.None, token).ConfigureAwait(false);
+            await socket.SendAsync(_data.AsMemory(0, _head), SocketFlags.None, token).ConfigureAwait(false);
         }
 
-        // Enhanced Packet Validation with Chaos Check
+        // Enhanced Packet Validation
         public bool ValidateIntegrity()
         {
             CheckDisposed();
@@ -287,7 +356,7 @@ namespace Mirage.Sharp.Asfw
                 var stream = new ByteStream(chunkSize + 4);
                 stream.WriteInt32(chunkSize);
                 stream.WriteBlock(_data.AsSpan(offset, chunkSize));
-                await Task.Yield(); // Ensure async yield
+                await Task.Yield();
                 yield return stream;
                 offset += chunkSize;
             }
@@ -310,36 +379,56 @@ namespace Mirage.Sharp.Asfw
         {
             CheckDisposed();
             int peekPos = _head + offset;
-            return peekPos < _capacity ? _data[peekPos] : (byte)0;
+            return peekPos >= 0 && peekPos < _capacity ? _data[peekPos] : (byte)0;
         }
 
         // New Feature: Resize with Chaos Preservation
         public void Resize(int newSize, bool preserveData = true)
         {
             CheckDisposed();
-            if (newSize < MinBufferSize) newSize = MinBufferSize;
+            if (newSize < MinBufferSize || newSize > MaxPacketSize)
+                throw new ArgumentOutOfRangeException(nameof(newSize), $"Size must be between {MinBufferSize} and {MaxPacketSize}");
+
             if (newSize == _capacity) return;
 
-            byte[] newData = new byte[newSize];
+            byte[] newData = ArrayPool<byte>.Shared.Rent(newSize);
             if (preserveData && _data != null)
             {
                 int copyLength = Math.Min(_head, newSize);
                 _data.AsSpan(0, copyLength).CopyTo(newData);
+                ArrayPool<byte>.Shared.Return(_data, clearArray: true);
             }
             _data = newData;
             _capacity = newSize;
             _head = Math.Min(_head, _capacity);
         }
 
+        // New Feature: Buffered Write for Large Data
+        public void WriteBuffered(byte[] largeData, int chunkSize = 4096)
+        {
+            CheckDisposed();
+            if (largeData == null) throw new ArgumentNullException(nameof(largeData));
+            if (chunkSize <= 0) throw new ArgumentOutOfRangeException(nameof(chunkSize));
+
+            int offset = 0;
+            while (offset < largeData.Length)
+            {
+                int remaining = largeData.Length - offset;
+                int size = Math.Min(chunkSize, remaining);
+                WriteBlock(largeData.AsSpan(offset, size));
+                offset += size;
+            }
+        }
+
         // Enhanced Compression with Async Option
-        public async Task CompressForSocketAsync(System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Fastest, CancellationToken token = default)
+        public async Task CompressForSocketAsync(CompressionLevel level = CompressionLevel.Fastest, CancellationToken token = default)
         {
             CheckDisposed();
             token.ThrowIfCancellationRequested();
             byte[] originalData = ToArray();
             using var ms = new MemoryStream();
             await ms.WriteAsync(BitConverter.GetBytes(originalData.Length), token).ConfigureAwait(false);
-            using (var gzip = new System.IO.Compression.GZipStream(ms, level, leaveOpen: true))
+            using (var gzip = new GZipStream(ms, level, leaveOpen: true))
             {
                 await gzip.WriteAsync(originalData, token).ConfigureAwait(false);
             }
@@ -357,11 +446,31 @@ namespace Mirage.Sharp.Asfw
             byte[] lengthBytes = new byte[4];
             await ms.ReadAsync(lengthBytes, token).ConfigureAwait(false);
             int originalLength = BinaryPrimitives.ReadInt32LittleEndian(lengthBytes);
-            using var gzip = new System.IO.Compression.GZipStream(ms, System.IO.Compression.CompressionMode.Decompress);
-            _data = new byte[originalLength];
-            await gzip.ReadAsync(_data, token).ConfigureAwait(false);
-            _capacity = originalLength;
-            _head = 0;
+            if (originalLength > MaxPacketSize)
+                throw new InvalidOperationException($"Decompressed size {originalLength} exceeds MaxPacketSize {MaxPacketSize}");
+
+            byte[] newData = ArrayPool<byte>.Shared.Rent(originalLength);
+            try
+            {
+                using var gzip = new GZipStream(ms, CompressionMode.Decompress);
+                int totalRead = 0;
+                while (totalRead < originalLength)
+                {
+                    int read = await gzip.ReadAsync(newData.AsMemory(totalRead, originalLength - totalRead), token).ConfigureAwait(false);
+                    if (read == 0) break;
+                    totalRead += read;
+                }
+                if (_data != null)
+                    ArrayPool<byte>.Shared.Return(_data, clearArray: true);
+                _data = newData;
+                _capacity = originalLength;
+                _head = 0;
+            }
+            catch
+            {
+                ArrayPool<byte>.Shared.Return(newData, clearArray: true);
+                throw;
+            }
         }
 
         // Chaos Check
