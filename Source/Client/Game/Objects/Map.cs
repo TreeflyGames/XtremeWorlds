@@ -739,7 +739,7 @@ namespace Client
                         Core.Type.MyMap.Tile[x, y].Data3_2 = buffer.ReadInt32();
                         Core.Type.MyMap.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
 
-                        for (j = 0; j <= GameState.MaxTileHistory - 1; j++)
+                        for (j = 0; j < GameState.MaxTileHistory; j++)
                         {
                             Core.Type.TileHistory[j].Tile[x, y].Data1 = Core.Type.MyMap.Tile[x, y].Data1;
                             Core.Type.TileHistory[j].Tile[x, y].Data2 = Core.Type.MyMap.Tile[x, y].Data2;
@@ -794,7 +794,7 @@ namespace Client
                         {
                             Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
                             var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
-                            for (x = 0; x < loopTo3; x++)
+                            for (x = 0; x <= loopTo3; x++)
                             {
                                 {
                                     ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
@@ -1159,7 +1159,7 @@ namespace Client
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
                         var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
-                        for (x = 0; x < loopTo3; x++)
+                        for (x = 0; x <= loopTo3; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];

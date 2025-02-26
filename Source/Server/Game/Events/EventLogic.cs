@@ -159,7 +159,7 @@ namespace Server
                                 if (Map[mapNum].Event[id].Globals == 1 & Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == false)
                                     Event.TempEventMap[mapNum].Event[id].Active = 0;
 
-                                if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == false & id > 0)
+                                if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == false & id >= 0)
                                 {
                                     var buffer = new ByteStream(4);
                                     buffer.WriteInt32((int)Packets.ServerPackets.SSpawnEvent);
@@ -220,7 +220,7 @@ namespace Server
                     for (x = 0; x < (int)loopTo1; x++)
                     {
                         id = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID;
-                        if (id > 0 & id <= Core.Type.TempPlayer[i].EventMap.CurrentEvents)
+                        if (id >= 0 & id <= Core.Type.TempPlayer[i].EventMap.CurrentEvents)
                         {
                             PageID = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID;
 
@@ -1877,7 +1877,7 @@ namespace Server
                                                                     }
                                                             }
 
-                                                            if (sendupdate & Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID > 0)
+                                                            if (sendupdate & Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID >= 0)
                                                             {
                                                                 buffer = new ByteStream(4);
                                                                 buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
@@ -3769,7 +3769,7 @@ namespace Server
             Core.Type.TempPlayer[index].EventMap.CurrentEvents = 0;
             ;
 
-            Array.Resize(ref Core.Type.TempPlayer[index].EventMap.EventPages, 1);
+            Array.Resize(ref Core.Type.TempPlayer[index].EventMap.EventPages, 2);
 
 
             if (Map[mapNum].EventCount > 0)
@@ -3909,7 +3909,7 @@ namespace Server
                                 }
                             }
 
-                            if (Conversions.ToInteger(spawncurrentevent) == 1 | Conversions.ToInteger(spawncurrentevent) == 0 & z == 1)
+                            if (spawncurrentevent | !spawncurrentevent & z == 1)
                             {
                                 // spawn the event... send data to player
                                 Core.Type.TempPlayer[index].EventMap.CurrentEvents = Core.Type.TempPlayer[index].EventMap.CurrentEvents + 1;
@@ -4001,7 +4001,7 @@ namespace Server
                                     withBlock1.Position = Map[mapNum].Event[i].Pages[z].Position;
                                     withBlock1.EventID = i;
                                     withBlock1.PageID = z;
-                                    if (Conversions.ToInteger(spawncurrentevent) == 1)
+                                    if (spawncurrentevent)
                                     {
                                         withBlock1.Visible = true;
                                     }
@@ -4066,7 +4066,7 @@ namespace Server
                 var loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents;
                 for (i = 0; i < loopTo2; i++)
                 {
-                    if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID > 0)
+                    if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID >= 0)
                     {
                         buffer = new ByteStream(4);
                         buffer.WriteInt32((int)(int) ServerPackets.SSpawnEvent);

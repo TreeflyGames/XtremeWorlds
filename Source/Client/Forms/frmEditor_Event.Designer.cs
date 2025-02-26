@@ -883,7 +883,6 @@ namespace Client
             // 
             // pnlTabPage
             // 
-            pnlTabPage.Controls.Add(fraGraphic);
             pnlTabPage.Controls.Add(DarkGroupBox2);
             pnlTabPage.Controls.Add(fraGraphicPic);
             pnlTabPage.Controls.Add(DarkGroupBox6);
@@ -894,6 +893,7 @@ namespace Client
             pnlTabPage.Controls.Add(DarkGroupBox8);
             pnlTabPage.Controls.Add(fraCommands);
             pnlTabPage.Controls.Add(lstCommands);
+            pnlTabPage.Controls.Add(fraGraphic);
             pnlTabPage.Location = new Point(4, 93);
             pnlTabPage.Margin = new Padding(4, 3, 4, 3);
             pnlTabPage.Name = "pnlTabPage";

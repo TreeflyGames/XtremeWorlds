@@ -1401,6 +1401,7 @@ namespace Client
                 ref var withBlock = ref Core.Type.MyMapItem[itemNum];
                 if (withBlock.X < GameState.TileView.Left | withBlock.X > GameState.TileView.Right)
                     return;
+
                 if (withBlock.Y < GameState.TileView.Top | withBlock.Y > GameState.TileView.Bottom)
                     return;
             }
@@ -2111,10 +2112,7 @@ namespace Client
 
             // Get animation details (frame index and columns) from the event
             int frameIndex = eventData.Pages[1].GraphicX; // Example frame index
-            int columns = eventData.Pages[1].GraphicY; // Example column count
-
-            if (columns == 0)
-                return;
+            int columns = 4;
 
             // Calculate the frame size (assuming square frames for simplicity)
             int frameWidth = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, gfxIndex.ToString())).Width / columns;

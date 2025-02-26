@@ -1642,7 +1642,7 @@ namespace Server
                 {
                     for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
-                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID > 0)
+                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID >= 0)
                         {
                             if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Globals == 1)
                             {

@@ -1159,7 +1159,7 @@ namespace Server
                     {
                         Core.Type.Map[mapNum].Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.Map[mapNum].Event[i].PageCount + 1];
                         ;
-                        Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount);
+                        Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount + 1);
 
                         var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount;
                         for (x = 0; x <= (int)loopTo5; x++)
@@ -1508,12 +1508,6 @@ namespace Server
 
             if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
-
-            if (GetPlayerMap(index) > Core.Constant.MAX_MAPS)
-            {
-                NetworkSend.PlayerMsg(index, "Cant edit instanced maps!", (int) ColorType.BrightRed);
-                return;
-            }
 
             string user;
 

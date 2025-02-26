@@ -1285,12 +1285,6 @@ namespace Client
                     }
             }
 
-            if (cmbGraphic.SelectedIndex == 1)
-            {
-                Event.GraphicSelX = 1;
-                Event.GraphicSelY = 4;
-            }
-
             if (Event.TmpEvent.Pages[Event.CurPageNum].GraphicType == 1)
             {
                 if (nudGraphic.Value <= 0m | nudGraphic.Value > GameState.NumCharacters)
@@ -1338,6 +1332,32 @@ namespace Client
                     Event.GraphicSelY2 = 1;
                 }
             }
+            else if (cmbGraphic.SelectedIndex == 1)
+            {
+                Event.GraphicSelX = X;
+                Event.GraphicSelY = Y;
+                Event.GraphicSelX2 = 0;
+                Event.GraphicSelY2 = 0;
+
+                if (nudGraphic.Value <= 0m | nudGraphic.Value > GameState.NumCharacters)
+                    return;
+
+                for (int i = 0; i <= 3; i++)
+                {
+                    if (Event.GraphicSelX >= GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Width / 4d * i & Event.GraphicSelX < GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Width / 4d * (i + 1))
+                    {
+                        Event.GraphicSelX = i;
+                    }
+                }
+                for (int i = 0; i <= 3; i++)
+                {
+                    if (Event.GraphicSelY >= GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Height / 4d * i & Event.GraphicSelY < GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, nudGraphic.Value.ToString())).Height / 4d * (i + 1))
+                    {
+                        Event.GraphicSelY = i;
+                    }
+                }
+            }
+            DrawGraphic();
         }
 
         private void nudGraphic_ValueChanged(object sender, EventArgs e)

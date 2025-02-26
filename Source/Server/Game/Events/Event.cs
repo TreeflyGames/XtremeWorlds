@@ -365,10 +365,10 @@ namespace Server
             {
                 if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
                 {
-                    var loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents - 1;
+                    var loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents;
                     for (i = 0; i < loopTo; i++)
                     {
-                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID > 0)
+                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID >= 0)
                         {
                             if (EventID == i)
                             {

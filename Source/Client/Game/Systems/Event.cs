@@ -1981,6 +1981,7 @@ namespace Client
             i = frmEditor_Event.Instance.lstCommands.SelectedIndex;
             if (i == -1)
                 return;
+
             if (i > Information.UBound(EventList))
                 return;
 
@@ -1989,12 +1990,10 @@ namespace Client
 
             curlist = EventList[i].CommandList;
             curslot = EventList[i].CommandNum;
-            if (curlist == 0)
-                return;
-            if (curslot == 0)
-                return;
+
             if (curlist > TmpEvent.Pages[CurPageNum].CommandListCount)
                 return;
+
             if (curslot > TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)
                 return;
 
@@ -2853,9 +2852,6 @@ namespace Client
             curlist = EventList[i].CommandList;
             curslot = EventList[i].CommandNum;
 
-            if (curslot == 0)
-                return;
-
             if (curlist > TmpEvent.Pages[CurPageNum].CommandListCount)
                 return;
 
@@ -3310,11 +3306,8 @@ namespace Client
 
             id = buffer.ReadInt32();
 
-            if (id > GameState.CurrentEvents)
-            {
-                GameState.CurrentEvents = id;
-                Array.Resize(ref Core.Type.MapEvents, GameState.CurrentEvents + 1);
-            }
+            GameState.CurrentEvents = id;
+            Array.Resize(ref Core.Type.MapEvents, GameState.CurrentEvents + 1);
 
             {
                 ref var withBlock = ref Core.Type.MapEvents[id];
@@ -3472,7 +3465,7 @@ namespace Client
                     {
                         Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
                         var loopTo1 = Core.Type.MyMap.Event[i].PageCount;
-                        for (x = 0; x < loopTo1; x++)
+                        for (x = 0; x <= loopTo1; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
