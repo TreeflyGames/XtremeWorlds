@@ -856,16 +856,16 @@ namespace Client
 
                                 if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
+                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount + 1];
                                     var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
-                                    for (y = 0; y < loopTo5; y++)
+                                    for (y = 0; y <= loopTo5; y++)
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
-                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
-                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
+                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount + 1];
+                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z <= loopTo6; z++)
                                             {
                                                 {
                                                     ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
@@ -1216,13 +1216,13 @@ namespace Client
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
                                 var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
-                                for (y = 0; y < loopTo5; y++)
+                                for (y = 0; y <= loopTo5; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
+                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z <= loopTo6; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
