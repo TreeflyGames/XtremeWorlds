@@ -22,8 +22,8 @@ namespace Mirage.Sharp.Asfw
         private const int MaxPacketSize = 65536; // Cap for sanity—#GlowCoup precision
 
         // Public accessors with ref returns for socket compatibility
-        public ref byte[] DataRef => ref _data; // Direct ref for socket sends
-        public ref int HeadRef => ref _head;    // Direct ref for socket head
+        public ref byte[] Data => ref _data; // Direct ref for socket sends
+        public ref int Head => ref _head;    // Direct ref for socket head
 
         // Properties for control, debugging, and chaos tracking
         public int Capacity => _capacity;
@@ -140,7 +140,7 @@ namespace Mirage.Sharp.Asfw
 
         public byte ReadByte() => _head < _capacity ? _data[_head++] : (byte)0;
         public bool ReadBoolean() => ReadByte() != 0;
-        public char ReadChar() => BinaryPrimitives.ReadInt16LittleEndian(ReadBlock(2));
+        public char ReadChar() => (char)BinaryPrimitives.ReadInt16LittleEndian(ReadBlock(2));
         public short ReadInt16() => BinaryPrimitives.ReadInt16LittleEndian(ReadBlock(2));
         public ushort ReadUInt16() => BinaryPrimitives.ReadUInt16LittleEndian(ReadBlock(2));
         public int ReadInt32() => BinaryPrimitives.ReadInt32LittleEndian(ReadBlock(4));
