@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using SharpDX.MediaFoundation;
 
 namespace Client
 {
@@ -453,6 +454,10 @@ namespace Client
                 {
                     Event.TmpEvent.Pages[Event.CurPageNum].GraphicType = (byte)cmbGraphic.SelectedIndex;
                     Event.TmpEvent.Pages[Event.CurPageNum].Graphic = (int)Math.Round(nudGraphic.Value);
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicX = Event.GraphicSelX;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicY = Event.GraphicSelY;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 = Event.GraphicSelX2;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 = Event.GraphicSelY2;
                 }
                 else
                 {
@@ -1295,7 +1300,7 @@ namespace Client
             DrawGraphic();
         }
 
-        private void PicGraphicSel_Click(object sender, MouseEventArgs e)
+        private void PicGraphicSel_MouseDown(object sender, MouseEventArgs e)
         {
             int X;
             int Y;
@@ -1357,6 +1362,9 @@ namespace Client
 
         private void nudGraphic_ValueChanged(object sender, EventArgs e)
         {
+            if (nudGraphic.Value == 0)
+                return;
+
             DrawGraphic();
         }
 

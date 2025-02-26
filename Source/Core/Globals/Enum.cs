@@ -46,7 +46,6 @@ namespace Core
             Bank,
             Heal,
             Trap,
-            Light,
             Animation,
             NoXing,
             Key,
@@ -614,7 +613,10 @@ namespace Core
             UntradeAmount,
             ClearLayer,
             FillLayer,
-            ClearAttributes
+            ClearAttributes,
+            FillAttributes,
+            ClearMap,
+            Info
         }
 
         public enum DialogueStyle

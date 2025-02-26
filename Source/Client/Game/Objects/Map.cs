@@ -91,7 +91,7 @@ namespace Client
         public static void DrawMapGroundTile(int x, int y)
         {
             int i;
-            byte alpha;
+            float alpha;
             var rect = new Rectangle(0, 0, 0, 0);
 
             // Check if the map or its tile data is not ready
@@ -117,15 +117,15 @@ namespace Client
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
-                            alpha = 255;
+                            alpha = 1.0f;
 
                             if (GameState.MyEditorType == (int)EditorType.Map)
                             {
                                 if (GameState.HideLayers)
                                 {
-                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    if (i == frmEditor_Map.Instance.cmbLayers.SelectedIndex)
                                     {
-                                        alpha = 128;
+                                        alpha = 0.5f;
                                     }
                                 }
                             }
@@ -159,7 +159,7 @@ namespace Client
         public static void DrawMapRoofTile(int x, int y)
         {
             int i;
-            int alpha;
+            float alpha;
             var rect = default(Rectangle);
 
             // Exit earlyIf Type.Map is still loading or tile data is not available
@@ -204,7 +204,7 @@ namespace Client
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
-                            alpha = 255;
+                            alpha = 1.0f;
 
                             if (GameState.MyEditorType == (int)EditorType.Map)
                             {
@@ -212,14 +212,14 @@ namespace Client
                                 {
                                     if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
                                     {
-                                        alpha = 128;
+                                        alpha = 0.5f;
                                     }
                                 }
                             }
 
                             // Render the tile with the calculated rectangle and transparency
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
-                            GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, (byte)alpha);
+                            GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
                         }
 
                         // Handle autotile rendering
@@ -632,9 +632,9 @@ namespace Client
 
             // Erase all temporary tile values
             ClearMapNPCs();
-            ClearMapItems();
             Database.ClearBlood();
             ClearMap();
+            ClearMapItems();
             ClearMapEvents();
 
             // Get map num
@@ -739,7 +739,7 @@ namespace Client
                         Core.Type.MyMap.Tile[x, y].Data3_2 = buffer.ReadInt32();
                         Core.Type.MyMap.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
 
-                        for (j = 0; j <= GameState.MaxTileHistory - 1; j++)
+                        for (j = 0; j < GameState.MaxTileHistory; j++)
                         {
                             Core.Type.TileHistory[j].Tile[x, y].Data1 = Core.Type.MyMap.Tile[x, y].Data1;
                             Core.Type.TileHistory[j].Tile[x, y].Data2 = Core.Type.MyMap.Tile[x, y].Data2;
@@ -794,7 +794,7 @@ namespace Client
                         {
                             Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
                             var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
-                            for (x = 0; x < loopTo3; x++)
+                            for (x = 0; x <= loopTo3; x++)
                             {
                                 {
                                     ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
@@ -856,16 +856,16 @@ namespace Client
 
                                 if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
+                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount + 1];
                                     var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
-                                    for (y = 0; y < loopTo5; y++)
+                                    for (y = 0; y <= loopTo5; y++)
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
-                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
-                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
+                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount + 1];
+                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z <= loopTo6; z++)
                                             {
                                                 {
                                                     ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
@@ -1159,7 +1159,7 @@ namespace Client
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
                         var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
-                        for (x = 0; x < loopTo3; x++)
+                        for (x = 0; x <= loopTo3; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
@@ -1216,13 +1216,13 @@ namespace Client
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
                                 var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
-                                for (y = 0; y < loopTo5; y++)
+                                for (y = 0; y <= loopTo5; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
+                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z <= loopTo6; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
