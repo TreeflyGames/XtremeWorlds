@@ -233,6 +233,9 @@ namespace Server
                             {
                                 spawnevent = Conversions.ToBoolean(1);
 
+                                if (Map[mapNum].Event[id].Pages == null)
+                                    continue;
+
                                 if (Map[mapNum].Event[id].Pages[z].ChkHasItem == 1)
                                 {
                                     if (Player.HasItem(i, Map[mapNum].Event[id].Pages[z].HasItemIndex) == 0)
