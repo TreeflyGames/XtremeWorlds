@@ -2096,7 +2096,7 @@ namespace Client
                                     frmEditor_Event.Instance.cmbCondition_PlayerVarIndex.Enabled = true;
                                     frmEditor_Event.Instance.cmbCondition_PlayerVarCompare.Enabled = true;
                                     frmEditor_Event.Instance.nudCondition_PlayerVarCondition.Enabled = true;
-                                    frmEditor_Event.Instance.cmbCondition_PlayerVarIndex.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1 - 1;
+                                    frmEditor_Event.Instance.cmbCondition_PlayerVarIndex.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1;
                                     frmEditor_Event.Instance.cmbCondition_PlayerVarCompare.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data2;
                                     frmEditor_Event.Instance.nudCondition_PlayerVarCondition.Value = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data3;
                                     break;
@@ -2105,7 +2105,7 @@ namespace Client
                                 {
                                     frmEditor_Event.Instance.cmbCondition_PlayerSwitch.Enabled = true;
                                     frmEditor_Event.Instance.cmbCondtion_PlayerSwitchCondition.Enabled = true;
-                                    frmEditor_Event.Instance.cmbCondition_PlayerSwitch.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1 - 1;
+                                    frmEditor_Event.Instance.cmbCondition_PlayerSwitch.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1;
                                     frmEditor_Event.Instance.cmbCondtion_PlayerSwitchCondition.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data2;
                                     break;
                                 }
@@ -2113,20 +2113,20 @@ namespace Client
                                 {
                                     frmEditor_Event.Instance.cmbCondition_HasItem.Enabled = true;
                                     frmEditor_Event.Instance.nudCondition_HasItem.Enabled = true;
-                                    frmEditor_Event.Instance.cmbCondition_HasItem.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1 - 1;
+                                    frmEditor_Event.Instance.cmbCondition_HasItem.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1;
                                     frmEditor_Event.Instance.nudCondition_HasItem.Value = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data2;
                                     break;
                                 }
                             case 3:
                                 {
                                     frmEditor_Event.Instance.cmbCondition_JobIs.Enabled = true;
-                                    frmEditor_Event.Instance.cmbCondition_JobIs.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1 - 1;
+                                    frmEditor_Event.Instance.cmbCondition_JobIs.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1;
                                     break;
                                 }
                             case 4:
                                 {
                                     frmEditor_Event.Instance.cmbCondition_LearntSkill.Enabled = true;
-                                    frmEditor_Event.Instance.cmbCondition_LearntSkill.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1 - 1;
+                                    frmEditor_Event.Instance.cmbCondition_LearntSkill.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.Data1;
                                     break;
                                 }
                             case 5:
@@ -2191,7 +2191,7 @@ namespace Client
                 case (byte)Core.Enum.EventType.PlayerVar:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.cmbVariable.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
+                        frmEditor_Event.Instance.cmbVariable.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
                         switch (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2)
                         {
                             case 0:
@@ -2228,7 +2228,7 @@ namespace Client
                 case (byte)Core.Enum.EventType.PlayerSwitch:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.cmbSwitch.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
+                        frmEditor_Event.Instance.cmbSwitch.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
                         frmEditor_Event.Instance.cmbPlayerSwitchSet.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2;
                         frmEditor_Event.Instance.fraDialogue.Visible = true;
                         frmEditor_Event.Instance.fraPlayerSwitch.Visible = true;
@@ -2248,7 +2248,7 @@ namespace Client
                 case (byte)Core.Enum.EventType.ChangeItems:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.cmbChangeItemIndex.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
+                        frmEditor_Event.Instance.cmbChangeItemIndex.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 == 0)
                         {
                             frmEditor_Event.Instance.optChangeItemSet.Checked = true;
@@ -2279,7 +2279,7 @@ namespace Client
                 case (byte)Core.Enum.EventType.ChangeSkills:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.cmbChangeSkills.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
+                        frmEditor_Event.Instance.cmbChangeSkills.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 == 0)
                         {
                             frmEditor_Event.Instance.optChangeSkillsAdd.Checked = true;
@@ -2296,7 +2296,7 @@ namespace Client
                 case (byte)Core.Enum.EventType.ChangeJob:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.cmbChangeJob.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
+                        frmEditor_Event.Instance.cmbChangeJob.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
                         frmEditor_Event.Instance.fraDialogue.Visible = true;
                         frmEditor_Event.Instance.fraChangeJob.Visible = true;
                         frmEditor_Event.Instance.fraCommands.Visible = false;
@@ -2611,7 +2611,7 @@ namespace Client
                         frmEditor_Event.Instance.nudPlayAnimTileX.Visible = false;
                         frmEditor_Event.Instance.nudPlayAnimTileY.Visible = false;
                         frmEditor_Event.Instance.cmbPlayAnimEvent.Visible = false;
-                        frmEditor_Event.Instance.cmbPlayAnim.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
+                        frmEditor_Event.Instance.cmbPlayAnim.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
                         frmEditor_Event.Instance.cmbPlayAnimEvent.Items.Clear();
                         var loopTo2 = Core.Type.MyMap.EventCount;
                         for (i = 0; i < loopTo2; i++)
@@ -2624,7 +2624,7 @@ namespace Client
                         else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 == 1)
                         {
                             frmEditor_Event.Instance.cmbAnimTargetType.SelectedIndex = 1;
-                            frmEditor_Event.Instance.cmbPlayAnimEvent.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data3 - 1;
+                            frmEditor_Event.Instance.cmbPlayAnimEvent.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data3;
                         }
                         else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 == 2)
                         {
@@ -2683,7 +2683,7 @@ namespace Client
                 case (byte)Core.Enum.EventType.OpenShop:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.cmbOpenShop.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
+                        frmEditor_Event.Instance.cmbOpenShop.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
                         frmEditor_Event.Instance.fraDialogue.Visible = true;
                         frmEditor_Event.Instance.fraOpenShop.Visible = true;
                         frmEditor_Event.Instance.fraCommands.Visible = false;
@@ -2711,8 +2711,9 @@ namespace Client
                     {
                         IsEdit = true;
                         frmEditor_Event.Instance.txtChatbubbleText.Text = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1;
-                        frmEditor_Event.Instance.cmbChatBubbleTargetType.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
-                        frmEditor_Event.Instance.cmbChatBubbleTarget.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 - 1;
+                        frmEditor_Event.Instance.cmbChatBubbleTargetType.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
+                        if (frmEditor_Event.Instance.cmbChatBubbleTarget.Items.Count > 0)
+                            frmEditor_Event.Instance.cmbChatBubbleTarget.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2;
 
                         frmEditor_Event.Instance.fraDialogue.Visible = true;
                         frmEditor_Event.Instance.fraShowChatBubble.Visible = true;
@@ -2740,7 +2741,7 @@ namespace Client
                 case (byte)Core.Enum.EventType.SpawnNPC:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.cmbSpawnNPC.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
+                        frmEditor_Event.Instance.cmbSpawnNPC.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
                         frmEditor_Event.Instance.fraDialogue.Visible = true;
                         frmEditor_Event.Instance.fraSpawnNPC.Visible = true;
                         frmEditor_Event.Instance.fraCommands.Visible = false;
@@ -2916,7 +2917,7 @@ namespace Client
 
         public static void ClearEventCommands()
         {
-            TmpEvent.Pages[CurPageNum].CommandList = new Core.Type.CommandListStruct[1];
+            TmpEvent.Pages[CurPageNum].CommandList = new Core.Type.CommandListStruct[2];
             TmpEvent.Pages[CurPageNum].CommandListCount = 0;
             EventListCommands();
         }
