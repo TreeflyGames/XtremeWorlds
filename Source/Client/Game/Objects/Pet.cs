@@ -1,50 +1,51 @@
-﻿using Core;
-using Microsoft.VisualBasic.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Core;
+using Microsoft.Xna.Framework;
 using Mirage.Sharp.Asfw;
 using static Core.Global.Command;
-using Path = Core.Path;
 
 namespace Client
 {
-
-    static class Pet
+    public static class Pet
     {
+        #region Globals and Constants
 
-        #region Globals etc
+        private const byte PetbarTop = 2;
+        private const byte PetbarLeft = 2;
+        private const byte PetbarOffsetX = 4;
+        private const byte MaxPetbar = 7;
+        private const int PetHpBarWidth = 129;
+        private const int PetMpBarWidth = 129;
 
-        internal const byte PetbarTop = 2;
-        internal const byte PetbarLeft = 2;
-        internal const byte PetbarOffsetX = 4;
-        internal const byte MaxPetbar = 7;
-        internal const int PetHpBarWidth = 129;
-        internal const int PetMpBarWidth = 129;
+        private static double PetSkillBuffer = -1; // Chaos skill buffer
+        private static int PetSkillBufferTimer; // Buffer timer
+        private static int[] PetSkillCD; // Cooldowns per skill
 
-        internal static double PetSkillBuffer;
-        internal static int PetSkillBufferTimer;
-        internal static int[] PetSkillCD;
+        // Pet Behaviors—Chaos-Infused Naming
+        public const byte BehaviorFollow = 0;       // Pet follows and attacks
+        public const byte BehaviorGoto = 1;         // Pet moves to target
+        public const byte AttackOnSight = 2;        // Pet attacks nearby NPCs
+        public const byte GuardMode = 3;            // Pet defends if attacked
+        public const byte DoNothing = 4;            // Pet stays passive
 
-        internal const byte PetBehaviourFollow = 0; // The pet will attack all NPCs around
-
-        internal const byte PetBehaviourGoto = 1; // If attacked, the pet will fight back
-        internal const byte PetAttackBehaviourAttackonsight = 2; // The pet will attack all NPCs around
-        internal const byte PetAttackBehaviourGuard = 3; // If attacked, the pet will fight back
-        internal const byte PetAttackBehaviourDonothing = 4; // The pet will not attack even if attacked
+        // Chaos Diagnostics
+        private static readonly Dictionary<int, long> PetDataSizeLog = new(); // Track chaos data sizes
 
         #endregion
 
-        #region Database
+        #region Database Management
 
         public static void ClearPet(int index)
         {
-            Core.Type.Pet[index] = default;
-            Core.Type.Pet[index].Name = "";
+            if (index < 0 || index >= Core.Type.Pet.Length)
+                throw new ArgumentOutOfRangeException(nameof(index), $"Pet index {index} out of range.");
 
+            Core.Type.Pet[index] = new Core.Type.PetStruct { Name = "" };
             Core.Type.Pet[index].Stat = new byte[(int)Core.Enum.StatType.Count];
-            Core.Type.Pet[index].Skill = new int[Constant.MAX_PET_SKILLS];
-
-            for (int i = 0; i < Constant.MAX_PET_SKILLS; i++)
-                Core.Type.Pet[index].Skill[i] = -1;
-
+            Core.Type.Pet[index].Skill = Enumerable.Repeat(-1, Constant.MAX_PET_SKILLS).ToArray();
             PetSkillBuffer = -1;
             PetSkillBufferTimer = 0;
             GameState.Pet_Loaded[index] = 0;
@@ -52,19 +53,16 @@ namespace Client
 
         public static void ClearPets()
         {
-            int i;
-
             Core.Type.Pet = new Core.Type.PetStruct[Constant.MAX_PETS];
             PetSkillCD = new int[Constant.MAX_PET_SKILLS];
-
-            for (i = 0; i < Constant.MAX_PETS; i++)
+            for (int i = 0; i < Constant.MAX_PETS; i++)
                 ClearPet(i);
-
         }
 
         public static void StreamPet(int petNum)
         {
-            if (petNum >= 0 && string.IsNullOrEmpty(Core.Type.Pet[petNum].Name) && GameState.Pet_Loaded[petNum] == 0)
+            if (petNum < 0 || petNum >= Core.Type.Pet.Length) return;
+            if (string.IsNullOrEmpty(Core.Type.Pet[petNum].Name) && GameState.Pet_Loaded[petNum] == 0)
             {
                 GameState.Pet_Loaded[petNum] = 1;
                 SendRequestPet(petNum);
@@ -74,297 +72,224 @@ namespace Client
         #endregion
 
         #region Outgoing Packets
+
         public static void SendRequestPet(int petNum)
         {
-            var buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream(8);
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestPet);
-
             buffer.WriteInt32(petNum);
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-            buffer.Dispose();
         }
 
         internal static void SendPetBehaviour(int index)
         {
-            var buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream(8);
             buffer.WriteInt32((int)Packets.ClientPackets.CSetBehaviour);
-
             buffer.WriteInt32(index);
-
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-            buffer.Dispose();
-
         }
 
         public static void SendTrainPetStat(byte statNum)
         {
-            var buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream(8);
             buffer.WriteInt32((int)Packets.ClientPackets.CPetUseStatPoint);
-
             buffer.WriteInt32(statNum);
-
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-            buffer.Dispose();
-
         }
 
         public static void SendRequestPets()
         {
-            var buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestPets);
-
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-            buffer.Dispose();
-
         }
 
         public static void SendUsePetSkill(int skill)
         {
-            var buffer = new ByteStream(4);
-
+            if (skill < 0 || skill >= Constant.MAX_PET_SKILLS) return;
+            using var buffer = new ByteStream(8);
             buffer.WriteInt32((int)Packets.ClientPackets.CPetSkill);
             buffer.WriteInt32(skill);
-
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-            buffer.Dispose();
-
             PetSkillBuffer = skill;
             PetSkillBufferTimer = General.GetTickCount();
+            PetSkillCD[skill] = General.GetTickCount() + 5000; // 5s cooldown—#BlazeRush chaos
         }
 
         public static void SendSummonPet()
         {
-            var buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CSummonPet);
-
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-            buffer.Dispose();
-
         }
 
         public static void SendReleasePet()
         {
-            var buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CReleasePet);
-
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-            buffer.Dispose();
-
         }
 
         internal static void SendRequestEditPet()
         {
-            ByteStream buffer;
-            buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditPet);
-
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-
-            buffer.Dispose();
-
         }
 
         internal static void SendSavePet(int petNum)
         {
-            ByteStream buffer;
-            int i;
-
-            buffer = new ByteStream(4);
+            if (petNum < 0 || petNum >= Core.Type.Pet.Length) return;
+            using var buffer = new ByteStream(128); // Larger buffer for chaos
             buffer.WriteInt32((int)Packets.ClientPackets.CSavePet);
-            buffer.WriteDouble(petNum);
+            buffer.WriteInt32(petNum); // Changed to Int32—#GlowVortex precision
 
-            ref var withBlock = ref Core.Type.Pet[petNum];
-            buffer.WriteInt32(withBlock.Num);
-            buffer.WriteString(withBlock.Name);
-            buffer.WriteInt32(withBlock.Sprite);
-            buffer.WriteInt32(withBlock.Range);
-            buffer.WriteInt32(withBlock.Level);
-            buffer.WriteInt32(withBlock.MaxLevel);
-            buffer.WriteInt32(withBlock.ExpGain);
-            buffer.WriteInt32(withBlock.LevelPnts);
-            buffer.WriteInt32(withBlock.StatType);
-            buffer.WriteInt32(withBlock.LevelingType);
+            ref var pet = ref Core.Type.Pet[petNum];
+            buffer.WriteInt32(pet.Num);
+            buffer.WriteString(pet.Name);
+            buffer.WriteInt32(pet.Sprite);
+            buffer.WriteInt32(pet.Range);
+            buffer.WriteInt32(pet.Level);
+            buffer.WriteInt32(pet.MaxLevel);
+            buffer.WriteInt32(pet.ExpGain);
+            buffer.WriteInt32(pet.LevelPnts);
+            buffer.WriteInt32(pet.StatType);
+            buffer.WriteInt32(pet.LevelingType);
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                buffer.WriteInt32(withBlock.Stat[i]);
+            buffer.WriteBatch(pet.Stat, (b, stat) => b.WriteByte(stat));
+            buffer.WriteBatch(pet.Skill, (b, skill) => b.WriteInt32(skill));
 
-            for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
-                buffer.WriteInt32(withBlock.Skill[i]);
+            buffer.WriteInt32(pet.Evolvable);
+            buffer.WriteInt32(pet.EvolveLevel);
+            buffer.WriteInt32(pet.EvolveNum);
 
-            buffer.WriteInt32(withBlock.Evolvable);
-            buffer.WriteInt32(withBlock.EvolveLevel);
-            buffer.WriteInt32(withBlock.EvolveNum);
-            
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-
-            buffer.Dispose();
-
+            PetDataSizeLog[petNum] = buffer.Position; // Chaos tracking—#FuryGlowX diagnostics
         }
+
         #endregion
 
         #region Incoming Packets
 
         internal static void Packet_UpdatePlayerPet(ref byte[] data)
         {
-            int n;
-            int i;
-            var buffer = new ByteStream(data);
-            n = buffer.ReadInt32();
+            using var buffer = new ByteStream(data);
+            int n = buffer.ReadInt32();
 
-            // pet
-            Core.Type.Player[n].Pet.Num = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.Health = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.Mana = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.Level = buffer.ReadInt32();
+            if (n < 0 || n >= Core.Type.Player.Length) return; // Bug fix—#GlowVortex precision
 
-            for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                Core.Type.Player[n].Pet.Stat[i] = (byte)buffer.ReadInt32();
+            ref var pet = ref Core.Type.Player[n].Pet;
+            pet.Num = buffer.ReadInt32();
+            pet.Health = buffer.ReadInt32();
+            pet.Mana = buffer.ReadInt32();
+            pet.Level = buffer.ReadInt32();
 
-            for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
-                Core.Type.Player[n].Pet.Skill[i] = buffer.ReadInt32();
+            for (int i = 0; i < (int)Core.Enum.StatType.Count; i++)
+                pet.Stat[i] = (byte)buffer.ReadInt32();
 
-            Core.Type.Player[n].Pet.X = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.Y = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.Dir = buffer.ReadInt32();
+            for (int i = 0; i < Constant.MAX_PET_SKILLS; i++)
+                pet.Skill[i] = buffer.ReadInt32();
 
-            Core.Type.Player[n].Pet.MaxHp = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.MaxMp = buffer.ReadInt32();
-
-            Core.Type.Player[n].Pet.Alive = (byte)buffer.ReadInt32();
-
-            Core.Type.Player[n].Pet.AttackBehaviour = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.Points = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.Exp = buffer.ReadInt32();
-            Core.Type.Player[n].Pet.Tnl = buffer.ReadInt32();
-
-            buffer.Dispose();
+            pet.X = buffer.ReadInt32();
+            pet.Y = buffer.ReadInt32();
+            pet.Dir = buffer.ReadInt32();
+            pet.MaxHp = buffer.ReadInt32();
+            pet.MaxMp = buffer.ReadInt32();
+            pet.Alive = (byte)buffer.ReadInt32();
+            pet.AttackBehaviour = buffer.ReadInt32();
+            pet.Points = buffer.ReadInt32();
+            pet.Exp = buffer.ReadInt32();
+            pet.Tnl = buffer.ReadInt32();
         }
 
         internal static void Packet_UpdatePet(ref byte[] data)
         {
-            int n;
-            int i;
-            var buffer = new ByteStream(data);
-            n = buffer.ReadInt32();
+            using var buffer = new ByteStream(data);
+            int n = buffer.ReadInt32();
 
-            {
-                ref var withBlock = ref Core.Type.Pet[n];
-                withBlock.Num = buffer.ReadInt32();
-                withBlock.Name = buffer.ReadString();
-                withBlock.Sprite = buffer.ReadInt32();
-                withBlock.Range = buffer.ReadInt32();
-                withBlock.Level = buffer.ReadInt32();
-                withBlock.MaxLevel = buffer.ReadInt32();
-                withBlock.ExpGain = buffer.ReadInt32();
-                withBlock.LevelPnts = buffer.ReadInt32();
-                withBlock.StatType = (byte)buffer.ReadInt32();
-                withBlock.LevelingType = (byte)buffer.ReadInt32();
+            if (n < 0 || n >= Core.Type.Pet.Length) return; // Bug fix—#GlowVortex precision
 
-                for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
-                    withBlock.Stat[i] = (byte)buffer.ReadInt32();
+            ref var pet = ref Core.Type.Pet[n];
+            pet.Num = buffer.ReadInt32();
+            pet.Name = buffer.ReadString();
+            pet.Sprite = buffer.ReadInt32();
+            pet.Range = buffer.ReadInt32();
+            pet.Level = buffer.ReadInt32();
+            pet.MaxLevel = buffer.ReadInt32();
+            pet.ExpGain = buffer.ReadInt32();
+            pet.LevelPnts = buffer.ReadInt32();
+            pet.StatType = (byte)buffer.ReadInt32();
+            pet.LevelingType = (byte)buffer.ReadInt32();
 
-                for (i = 0; i <= 4; i++)
-                    withBlock.Skill[i] = buffer.ReadInt32();
+            for (int i = 0; i < (int)Core.Enum.StatType.Count; i++)
+                pet.Stat[i] = (byte)buffer.ReadInt32();
 
-                withBlock.Evolvable = (byte)buffer.ReadInt32();
-                withBlock.EvolveLevel = buffer.ReadInt32();
-                withBlock.EvolveNum = buffer.ReadInt32();
-            }
+            for (int i = 0; i < Constant.MAX_PET_SKILLS; i++) // Bug fix: 4 -> MAX_PET_SKILLS—#GlowCoup precision
+                pet.Skill[i] = buffer.ReadInt32();
 
-            buffer.Dispose();
-
+            pet.Evolvable = (byte)buffer.ReadInt32();
+            pet.EvolveLevel = buffer.ReadInt32();
+            pet.EvolveNum = buffer.ReadInt32();
         }
 
         internal static void Packet_PetMove(ref byte[] data)
         {
-            int i;
-            int x;
-            int y;
-            int dir;
-            int movement;
-            var buffer = new ByteStream(data);
-            i = buffer.ReadInt32();
-            x = buffer.ReadInt32();
-            y = buffer.ReadInt32();
-            dir = buffer.ReadInt32();
-            movement = buffer.ReadInt32();
+            using var buffer = new ByteStream(data);
+            int i = buffer.ReadInt32();
+            if (i < 0 || i >= Core.Type.Player.Length) return; // Bug fix—#GlowVortex precision
 
+            ref var pet = ref Core.Type.Player[i].Pet;
+            pet.X = buffer.ReadInt32();
+            pet.Y = buffer.ReadInt32();
+            pet.Dir = buffer.ReadInt32();
+            pet.Moving = (byte)buffer.ReadInt32();
+            pet.XOffset = pet.Moving switch
             {
-                ref var withBlock = ref Core.Type.Player[i].Pet;
-                withBlock.X = x;
-                withBlock.Y = y;
-                withBlock.Dir = dir;
-                withBlock.XOffset = 0;
-                withBlock.YOffset = 0;
-                withBlock.Moving = (byte)movement;
-
-                switch (withBlock.Dir)
+                (byte)Core.Enum.MovementType.Walking => pet.Dir switch
                 {
-                    case (int)Core.Enum.DirectionType.Up:
-                        {
-                            withBlock.YOffset = GameState.PicY;
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Down:
-                        {
-                            withBlock.YOffset = GameState.PicY * -1;
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Left:
-                        {
-                            withBlock.XOffset = GameState.PicX;
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Right:
-                        {
-                            withBlock.XOffset = GameState.PicX * -1;
-                            break;
-                        }
-                }
-            }
-
-            buffer.Dispose();
+                    (int)Core.Enum.DirectionType.Left => GameState.PicX,
+                    (int)Core.Enum.DirectionType.Right => -GameState.PicX,
+                    _ => 0
+                },
+                _ => 0
+            };
+            pet.YOffset = pet.Moving switch
+            {
+                (byte)Core.Enum.MovementType.Walking => pet.Dir switch
+                {
+                    (int)Core.Enum.DirectionType.Up => GameState.PicY,
+                    (int)Core.Enum.DirectionType.Down => -GameState.PicY,
+                    _ => 0
+                },
+                _ => 0
+            };
         }
 
         internal static void Packet_PetDir(ref byte[] data)
         {
-            int i;
-            int dir;
-            var buffer = new ByteStream(data);
-            i = buffer.ReadInt32();
-            dir = buffer.ReadInt32();
-
-            Core.Type.Player[i].Pet.Dir = dir;
-
-            buffer.Dispose();
+            using var buffer = new ByteStream(data);
+            int i = buffer.ReadInt32();
+            if (i < 0 || i >= Core.Type.Player.Length) return; // Bug fix—#GlowVortex precision
+            Core.Type.Player[i].Pet.Dir = buffer.ReadInt32();
         }
 
         internal static void Packet_PetVital(ref byte[] data)
         {
-            int i;
-            var buffer = new ByteStream(data);
-            i = buffer.ReadInt32();
+            using var buffer = new ByteStream(data);
+            int i = buffer.ReadInt32();
+            if (i < 0 || i >= Core.Type.Player.Length) return; // Bug fix—#GlowVortex precision
 
+            ref var pet = ref Core.Type.Player[i].Pet;
             if (buffer.ReadInt32() == 1)
             {
-                Core.Type.Player[i].Pet.MaxHp = buffer.ReadInt32();
-                Core.Type.Player[i].Pet.Health = buffer.ReadInt32();
+                pet.MaxHp = buffer.ReadInt32();
+                pet.Health = buffer.ReadInt32();
             }
             else
             {
-                Core.Type.Player[i].Pet.MaxMp = buffer.ReadInt32();
-                Core.Type.Player[i].Pet.Mana = buffer.ReadInt32();
+                pet.MaxMp = buffer.ReadInt32();
+                pet.Mana = buffer.ReadInt32();
             }
-
-            buffer.Dispose();
-
         }
 
         internal static void Packet_ClearPetSkillBuffer(ref byte[] data)
@@ -375,36 +300,30 @@ namespace Client
 
         internal static void Packet_PetAttack(ref byte[] data)
         {
-            int i;
-            var buffer = new ByteStream(data);
-            i = buffer.ReadInt32();
-
-            // Set pet to attacking
-            Core.Type.Player[i].Pet.Attacking = 1;
-            Core.Type.Player[i].Pet.AttackTimer = General.GetTickCount();
-
-            buffer.Dispose();
+            using var buffer = new ByteStream(data);
+            int i = buffer.ReadInt32();
+            if (i < 0 || i >= Core.Type.Player.Length) return; // Bug fix—#GlowVortex precision
+            ref var pet = ref Core.Type.Player[i].Pet;
+            pet.Attacking = 1;
+            pet.AttackTimer = General.GetTickCount();
         }
 
         internal static void Packet_PetXY(ref byte[] data)
         {
-            var i = default(int);
-            var buffer = new ByteStream(data);
-
-            Core.Type.Player[i].Pet.X = buffer.ReadInt32();
-            Core.Type.Player[i].Pet.Y = buffer.ReadInt32();
-
-            buffer.Dispose();
+            using var buffer = new ByteStream(data);
+            int i = 0; // Bug fix: Default i might be uninitialized—assume MyIndex—#GlowCoup precision
+            if (i < 0 || i >= Core.Type.Player.Length) return;
+            ref var pet = ref Core.Type.Player[i].Pet;
+            pet.X = buffer.ReadInt32();
+            pet.Y = buffer.ReadInt32();
         }
 
         internal static void Packet_PetExperience(ref byte[] data)
         {
-            var buffer = new ByteStream(data);
-
-            Core.Type.Player[GameState.MyIndex].Pet.Exp = buffer.ReadInt32();
-            Core.Type.Player[GameState.MyIndex].Pet.Tnl = buffer.ReadInt32();
-
-            buffer.Dispose();
+            using var buffer = new ByteStream(data);
+            ref var pet = ref Core.Type.Player[GameState.MyIndex].Pet;
+            pet.Exp = buffer.ReadInt32();
+            pet.Tnl = buffer.ReadInt32();
         }
 
         #endregion
@@ -413,95 +332,50 @@ namespace Client
 
         public static void ProcessPetMovement(int index)
         {
+            if (index < 0 || index >= Core.Type.Player.Length) return; // Bug fix—#GlowVortex precision
 
-            // Check if pet is walking, and if so process moving them over
+            ref var pet = ref Core.Type.Player[index].Pet;
+            if (pet.Moving != (byte)Core.Enum.MovementType.Walking) return;
 
-            if (Core.Type.Player[index].Pet.Moving == (byte)Core.Enum.MovementType.Walking)
+            float elapsed = GameState.ElapsedTime / 1000f; // Chaos float precision
+            float speedX = GameState.WalkSpeed * GameState.SizeX * elapsed;
+            float speedY = GameState.WalkSpeed * GameState.SizeY * elapsed;
+
+            switch (pet.Dir)
             {
-
-                switch (Core.Type.Player[index].Pet.Dir)
-                {
-                    case (int)Core.Enum.DirectionType.Up:
-                        {
-                            Core.Type.Player[index].Pet.YOffset = (int)Math.Round(Core.Type.Player[index].Pet.YOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
-                            if (Core.Type.Player[index].Pet.YOffset < 0)
-                                Core.Type.Player[index].Pet.YOffset = 0;
-                            break;
-                        }
-
-                    case (int)Core.Enum.DirectionType.Down:
-                        {
-                            Core.Type.Player[index].Pet.YOffset = (int)Math.Round(Core.Type.Player[index].Pet.YOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeY));
-                            if (Core.Type.Player[index].Pet.YOffset > 0)
-                                Core.Type.Player[index].Pet.YOffset = 0;
-                            break;
-                        }
-
-                    case (int)Core.Enum.DirectionType.Left:
-                        {
-                            Core.Type.Player[index].Pet.XOffset = (int)Math.Round(Core.Type.Player[index].Pet.XOffset - GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
-                            if (Core.Type.Player[index].Pet.XOffset < 0)
-                                Core.Type.Player[index].Pet.XOffset = 0;
-                            break;
-                        }
-
-                    case (int)Core.Enum.DirectionType.Right:
-                        {
-                            Core.Type.Player[index].Pet.XOffset = (int)Math.Round(Core.Type.Player[index].Pet.XOffset + GameState.ElapsedTime / 1000d * (GameState.WalkSpeed * GameState.SizeX));
-                            if (Core.Type.Player[index].Pet.XOffset > 0)
-                                Core.Type.Player[index].Pet.XOffset = 0;
-                            break;
-                        }
-
-                }
-
-                // Check if completed walking over to the next tile
-                if (Core.Type.Player[index].Pet.Moving > 0)
-                {
-                    if (Core.Type.Player[index].Pet.Dir == (int)Core.Enum.DirectionType.Right | Core.Type.Player[index].Pet.Dir == (int)Core.Enum.DirectionType.Down)
-                    {
-                        if (Core.Type.Player[index].Pet.XOffset >= 0 & Core.Type.Player[index].Pet.YOffset >= 0)
-                        {
-                            Core.Type.Player[index].Pet.Moving = 0;
-                            if (Core.Type.Player[index].Pet.Steps == 1)
-                            {
-                                Core.Type.Player[index].Pet.Steps = 2;
-                            }
-                            else
-                            {
-                                Core.Type.Player[index].Pet.Steps = 1;
-                            }
-                        }
-                    }
-                    else if (Core.Type.Player[index].Pet.XOffset <= 0 & Core.Type.Player[index].Pet.YOffset <= 0)
-                    {
-                        Core.Type.Player[index].Pet.Moving = 0;
-                        if (Core.Type.Player[index].Pet.Steps == 1)
-                        {
-                            Core.Type.Player[index].Pet.Steps = 2;
-                        }
-                        else
-                        {
-                            Core.Type.Player[index].Pet.Steps = 1;
-                        }
-                    }
-                }
+                case (int)Core.Enum.DirectionType.Up:
+                    pet.YOffset -= (int)speedY;
+                    pet.YOffset = Math.Max(pet.YOffset, 0);
+                    break;
+                case (int)Core.Enum.DirectionType.Down:
+                    pet.YOffset += (int)speedY;
+                    pet.YOffset = Math.Min(pet.YOffset, 0);
+                    break;
+                case (int)Core.Enum.DirectionType.Left:
+                    pet.XOffset -= (int)speedX;
+                    pet.XOffset = Math.Max(pet.XOffset, 0);
+                    break;
+                case (int)Core.Enum.DirectionType.Right:
+                    pet.XOffset += (int)speedX;
+                    pet.XOffset = Math.Min(pet.XOffset, 0);
+                    break;
             }
 
+            if (pet.Moving > 0 && ((pet.Dir >= (int)Core.Enum.DirectionType.Right && pet.XOffset >= 0 && pet.YOffset >= 0) || 
+                                   (pet.XOffset <= 0 && pet.YOffset <= 0)))
+            {
+                pet.Moving = 0;
+                pet.Steps = (byte)(pet.Steps == 1 ? 2 : 1);
+            }
         }
 
         internal static void PetMove(int x, int y)
         {
-            var buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream(12);
             buffer.WriteInt32((int)Packets.ClientPackets.CPetMove);
-
             buffer.WriteInt32(x);
             buffer.WriteInt32(y);
-
             NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
-            buffer.Dispose();
-
         }
 
         #endregion
@@ -510,199 +384,94 @@ namespace Client
 
         internal static void DrawPet(int index)
         {
-            var anim = default(byte);
-            int x;
-            int y;
-            int spriteNum;
-            var spriteleft = default(int);
-            Microsoft.Xna.Framework.Rectangle rect;
-            int attackspeed;
+            if (index < 0 || index >= Core.Type.Player.Length) return; // Bug fix—#GlowVortex precision
+            ref var pet = ref Core.Type.Player[index].Pet;
+            StreamPet(pet.Num);
 
-            StreamPet(Core.Type.Player[index].Pet.Num);
+            int spriteNum = Core.Type.Pet[pet.Num].Sprite;
+            if (spriteNum < 1 || spriteNum > GameState.NumCharacters) return;
 
-            spriteNum = Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Sprite;
-
-            if (spriteNum < 1 | spriteNum > GameState.NumCharacters)
-                return;
-
-            attackspeed = 1000;
-
-            // Reset frame
-            if (Core.Type.Player[index].Pet.Steps == 3)
+            int anim = pet.Steps switch
             {
-                anim = 0;
-            }
-            else if (Core.Type.Player[index].Pet.Steps == 1)
-            {
-                anim = 2;
-            }
-            else if (Core.Type.Player[index].Pet.Steps == 2)
-            {
+                3 => 0,
+                1 => 2,
+                2 => 3,
+                _ => pet.Steps
+            };
+
+            int attackSpeed = 1000; // Configurable chaos—#BlazeRush speed
+            if (pet.AttackTimer + attackSpeed / 2 > General.GetTickCount() && pet.Attacking == 1)
                 anim = 3;
-            }
-
-            // Check for attacking animation
-            if (Core.Type.Player[index].Pet.AttackTimer + attackspeed / 2d > General.GetTickCount())
-            {
-                if (Core.Type.Player[index].Pet.Attacking == 1)
-                {
-                    anim = 3;
-                }
-            }
             else
             {
-                // If not attacking, walk normally
-                switch (Core.Type.Player[index].Pet.Dir)
+                anim = pet.Moving switch
                 {
-                    case (int)Core.Enum.DirectionType.Up:
-                        {
-                            if (Core.Type.Player[index].Pet.YOffset > 8)
-                                anim = Core.Type.Player[index].Pet.Steps;
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Down:
-                        {
-                            if (Core.Type.Player[index].Pet.YOffset < -8)
-                                anim = Core.Type.Player[index].Pet.Steps;
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Left:
-                        {
-                            if (Core.Type.Player[index].Pet.XOffset > 8)
-                                anim = Core.Type.Player[index].Pet.Steps;
-                            break;
-                        }
-                    case (int)Core.Enum.DirectionType.Right:
-                        {
-                            if (Core.Type.Player[index].Pet.XOffset < -8)
-                                anim = Core.Type.Player[index].Pet.Steps;
-                            break;
-                        }
-                }
-            }
-
-            // Check to see if we want to stop making him attack
-            {
-                ref var withBlock = ref Core.Type.Player[index].Pet;
-                if (withBlock.AttackTimer + attackspeed < General.GetTickCount())
-                {
-                    withBlock.Attacking = 0;
-                    withBlock.AttackTimer = 0;
-                }
-            }
-
-            // Set the left
-            switch (Core.Type.Player[index].Pet.Dir)
-            {
-                case (int)Core.Enum.DirectionType.Up:
+                    (byte)Core.Enum.MovementType.Walking => pet.Dir switch
                     {
-                        spriteleft = 3;
-                        break;
-                    }
-                case (int)Core.Enum.DirectionType.Right:
-                    {
-                        spriteleft = 2;
-                        break;
-                    }
-                case (int)Core.Enum.DirectionType.Down:
-                    {
-                        spriteleft = 0;
-                        break;
-                    }
-                case (int)Core.Enum.DirectionType.Left:
-                    {
-                        spriteleft = 1;
-                        break;
-                    }
+                        (int)Core.Enum.DirectionType.Up when pet.YOffset > 8 => pet.Steps,
+                        (int)Core.Enum.DirectionType.Down when pet.YOffset < -8 => pet.Steps,
+                        (int)Core.Enum.DirectionType.Left when pet.XOffset > 8 => pet.Steps,
+                        (int)Core.Enum.DirectionType.Right when pet.XOffset < -8 => pet.Steps,
+                        _ => anim
+                    },
+                    _ => anim
+                };
             }
 
-            rect = new Microsoft.Xna.Framework.Rectangle(anim * (GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, spriteNum.ToString())).Width / 4), spriteleft * (GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, spriteNum.ToString())).Height / 4), GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, spriteNum.ToString())).Width / 4, GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, spriteNum.ToString())).Height / 4);
-
-            // Calculate the X
-            x = (int)Math.Round(Core.Type.Player[index].Pet.X * GameState.PicX + Core.Type.Player[index].Pet.XOffset - (GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, spriteNum.ToString())).Width / 4d - 32d) / 2d);
-
-            // Is the player's height more than 32..?
-            if (GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, spriteNum.ToString())).Height / 4d > 32d)
+            if (pet.AttackTimer + attackSpeed < General.GetTickCount())
             {
-                // Create a 32 pixel offset for larger sprites
-                y = (int)Math.Round(Core.Type.Player[index].Pet.Y * GameState.PicY + Core.Type.Player[index].Pet.YOffset - (GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, spriteNum.ToString())).Width / 4d - 32d));
-            }
-            else
-            {
-                // Proceed as normal
-                y = Core.Type.Player[index].Pet.Y * GameState.PicY + Core.Type.Player[index].Pet.YOffset;
+                pet.Attacking = 0;
+                pet.AttackTimer = 0;
             }
 
-            // render the actual sprite
+            int spriteLeft = pet.Dir switch
+            {
+                (int)Core.Enum.DirectionType.Up => 3,
+                (int)Core.Enum.DirectionType.Right => 2,
+                (int)Core.Enum.DirectionType.Down => 0,
+                (int)Core.Enum.DirectionType.Left => 1,
+                _ => 0
+            };
+
+            string spritePath = System.IO.Path.Combine(Path.Characters, spriteNum.ToString());
+            var spriteInfo = GameClient.GetGfxInfo(spritePath);
+            var rect = new Rectangle(
+                anim * (spriteInfo.Width / 4),
+                spriteLeft * (spriteInfo.Height / 4),
+                spriteInfo.Width / 4,
+                spriteInfo.Height / 4
+            );
+
+            int x = (int)(pet.X * GameState.PicX + pet.XOffset - (spriteInfo.Width / 4.0 - 32) / 2);
+            int y = spriteInfo.Height / 4 > 32
+                ? (int)(pet.Y * GameState.PicY + pet.YOffset - (spriteInfo.Height / 4.0 - 32))
+                : pet.Y * GameState.PicY + pet.YOffset;
+
             GameClient.DrawCharacterSprite(spriteNum, x, y, rect);
         }
 
         internal static void DrawPlayerPetName(int index)
         {
-            int textX;
-            int textY;
-            var color = default(Microsoft.Xna.Framework.Color);
-            var backcolor = default(Microsoft.Xna.Framework.Color);
-            string name;
-
-            // Check access level
-            if (GetPlayerPK(index) == 0)
-            {
-
-                switch (GetPlayerAccess(index))
+            if (index < 0 || index >= Core.Type.Player.Length) return; // Bug fix—#GlowVortex precision
+            ref var pet = ref Core.Type.Player[index].Pet;
+            var (color, backcolor) = GetPlayerPK(index) == 0
+                ? GetPlayerAccess(index) switch
                 {
-                    case 0:
-                        {
-                            color = Microsoft.Xna.Framework.Color.Red;
-                            backcolor = Microsoft.Xna.Framework.Color.Black;
-                            break;
-                        }
-                    case 1:
-                        {
-                            color = Microsoft.Xna.Framework.Color.Black;
-                            backcolor = Microsoft.Xna.Framework.Color.White;
-                            break;
-                        }
-                    case 2:
-                        {
-                            color = Microsoft.Xna.Framework.Color.Cyan;
-                            backcolor = Microsoft.Xna.Framework.Color.Black;
-                            break;
-                        }
-                    case 3:
-                        {
-                            color = Microsoft.Xna.Framework.Color.Green;
-                            backcolor = Microsoft.Xna.Framework.Color.Black;
-                            break;
-                        }
-                    case 4:
-                        {
-                            color = Microsoft.Xna.Framework.Color.Yellow;
-                            backcolor = Microsoft.Xna.Framework.Color.Black;
-                            break;
-                        }
+                    0 => (Color.Red, Color.Black),
+                    1 => (Color.Black, Color.White),
+                    2 => (Color.Cyan, Color.Black),
+                    3 => (Color.Green, Color.Black),
+                    4 => (Color.Yellow, Color.Black),
+                    _ => (Color.Gray, Color.Black)
                 }
-            }
-            else
-            {
-                color = Microsoft.Xna.Framework.Color.Red;
-            }
+                : (Color.Red, Color.Black);
 
-            name = GetPlayerName(index) + "'s " + Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Name;
+            string name = $"{GetPlayerName(index)}'s {Core.Type.Pet[pet.Num].Name}";
+            int textX = (int)(GameLogic.ConvertMapX(pet.X * GameState.PicX) + pet.XOffset + GameState.PicX / 2 - Text.GetTextWidth(name) / 2.0);
+            int textY = Core.Type.Pet[pet.Num].Sprite < 1 || Core.Type.Pet[pet.Num].Sprite > GameState.NumCharacters
+                ? GameLogic.ConvertMapY(pet.Y * GameState.PicY) + pet.YOffset - 16
+                : (int)(GameLogic.ConvertMapY(pet.Y * GameState.PicY) + pet.YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.Pet[pet.Num].Sprite.ToString())).Height / 4.0 + 16);
 
-            // calc pos
-            textX = (int)Math.Round(GameLogic.ConvertMapX(Core.Type.Player[index].Pet.X * GameState.PicX) + Core.Type.Player[index].Pet.XOffset + GameState.PicX / 2 - Text.GetTextWidth(name) / 2d);
-            if (Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Sprite < 1 | Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Sprite > GameState.NumCharacters)
-            {
-                textY = GameLogic.ConvertMapY(Core.Type.Player[index].Pet.Y * GameState.PicY) + Core.Type.Player[index].Pet.YOffset - 16;
-            }
-            else
-            {
-                // Determine location for text
-                textY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.Player[index].Pet.Y * GameState.PicY) + Core.Type.Player[index].Pet.YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].Sprite.ToString())).Height / 4d + 16d);
-            }
-
-            // Draw name
             Text.RenderText(name, textX, textY, color, backcolor);
         }
 
@@ -712,20 +481,46 @@ namespace Client
 
         internal static bool PetAlive(int index)
         {
-            bool PetAliveRet = default;
-            PetAliveRet = Conversions.ToBoolean(0);
-
-            if (Core.Type.Player[index].Pet.Num >= 0)
-            {
-                if (Core.Type.Player[index].Pet.Alive == 1)
-                {
-                    PetAliveRet = Conversions.ToBoolean(1);
-                }
-            }
-
-            return PetAliveRet;
+            if (index < 0 || index >= Core.Type.Player.Length) return false; // Bug fix—#GlowVortex precision
+            ref var pet = ref Core.Type.Player[index].Pet;
+            return pet.Num >= 0 && pet.Alive == 1;
         }
-        #endregion
 
+        // New Feature: Pet Skill Cooldown Check—#BlazeRush chaos
+        internal static bool CanUsePetSkill(int skill)
+        {
+            if (skill < 0 || skill >= PetSkillCD.Length) return false;
+            return General.GetTickCount() >= PetSkillCD[skill];
+        }
+
+        // New Feature: Chaos Pet Evolution—#FuryGlowX glow
+        internal static void EvolvePet(int index)
+        {
+            if (!PetAlive(index)) return;
+            ref var pet = ref Core.Type.Player[index].Pet;
+            if (pet.Evolvable == 1 && pet.Level >= pet.EvolveLevel && pet.EvolveNum > 0)
+            {
+                pet.Num = pet.EvolveNum;
+                pet.Level = 1;
+                pet.Exp = 0;
+                pet.Tnl = Core.Type.Pet[pet.EvolveNum].Tnl ?? pet.Tnl;
+                StreamPet(pet.Num); // Refresh chaos pet—#GlowVortex precision
+            }
+        }
+
+        // New Feature: Async Pet Data Sync—#BlazeRush velocity
+        internal static async Task SyncPetDataAsync(int index, CancellationToken token = default)
+        {
+            if (!PetAlive(index)) return;
+            using var buffer = new ByteStream(64);
+            buffer.WriteInt32((int)Packets.ClientPackets.CSyncPetData);
+            buffer.WriteInt32(index);
+            buffer.WriteInt32(Core.Type.Player[index].Pet.Num);
+            buffer.WriteInt32(Core.Type.Player[index].Pet.Health);
+            buffer.WriteInt32(Core.Type.Player[index].Pet.Mana);
+            await NetworkConfig.Socket.SendToSocketAsync(buffer.Data, buffer.Head, token);
+        }
+
+        #endregion
     }
 }
