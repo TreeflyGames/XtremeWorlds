@@ -75,9 +75,9 @@ namespace Server
             string checkDbExistsSql = $"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'";
             string createDbSql = $"CREATE DATABASE {databaseName}";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value.Replace("Database=mirage", "Database=postgres")))
             {
-                connection?.Open();
+                connection.Open();
 
                 using (var checkCommand = new NpgsqlCommand(checkDbExistsSql, connection))
                 {
