@@ -20,9 +20,9 @@ namespace Client
         private const int PetHpBarWidth = 129;
         private const int PetMpBarWidth = 129;
 
-        private static double PetSkillBuffer = -1; // Chaos skill buffer
-        private static int PetSkillBufferTimer; // Buffer timer
-        private static int[] PetSkillCD; // Cooldowns per skill
+        public static double PetSkillBuffer = -1; // Chaos skill buffer
+        public static int PetSkillBufferTimer; // Buffer timer
+        public static int[] PetSkillCD; // Cooldowns per skill
 
         // Pet Behaviors—Chaos-Infused Naming
         public const byte BehaviorFollow = 0;       // Pet follows and attacks
@@ -433,9 +433,9 @@ namespace Client
                 _ => 0
             };
 
-            string spritePath = System.IO.Path.Combine(Path.Characters, spriteNum.ToString());
+            string spritePath = System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString());
             var spriteInfo = GameClient.GetGfxInfo(spritePath);
-            var rect = new Rectangle(
+            var rect = new Microsoft.Xna.Framework.Rectangle(
                 anim * (spriteInfo.Width / 4),
                 spriteLeft * (spriteInfo.Height / 4),
                 spriteInfo.Width / 4,
@@ -457,20 +457,20 @@ namespace Client
             var (color, backcolor) = GetPlayerPK(index) == 0
                 ? GetPlayerAccess(index) switch
                 {
-                    0 => (Color.Red, Color.Black),
-                    1 => (Color.Black, Color.White),
-                    2 => (Color.Cyan, Color.Black),
-                    3 => (Color.Green, Color.Black),
-                    4 => (Color.Yellow, Color.Black),
-                    _ => (Color.Gray, Color.Black)
+                    0 => (Microsoft.Xna.Framework.Color.Red, Microsoft.Xna.Framework.Color.Black),
+                    1 => (Microsoft.Xna.Framework.Color.Black, Microsoft.Xna.Framework.Color.White),
+                    2 => (Microsoft.Xna.Framework.Color.Cyan, Microsoft.Xna.Framework.Color.Black),
+                    3 => (Microsoft.Xna.Framework.Color.Green, Microsoft.Xna.Framework.Color.Black),
+                    4 => (Microsoft.Xna.Framework.Color.Yellow, Microsoft.Xna.Framework.Color.Black),
+                    _ => (Microsoft.Xna.Framework.Color.Gray, Microsoft.Xna.Framework.Color.Black)
                 }
-                : (Color.Red, Color.Black);
+                : (Microsoft.Xna.Framework.Color.Red, Microsoft.Xna.Framework.Color.Black);
 
             string name = $"{GetPlayerName(index)}'s {Core.Type.Pet[pet.Num].Name}";
             int textX = (int)(GameLogic.ConvertMapX(pet.X * GameState.PicX) + pet.XOffset + GameState.PicX / 2 - Text.GetTextWidth(name) / 2.0);
             int textY = Core.Type.Pet[pet.Num].Sprite < 1 || Core.Type.Pet[pet.Num].Sprite > GameState.NumCharacters
                 ? GameLogic.ConvertMapY(pet.Y * GameState.PicY) + pet.YOffset - 16
-                : (int)(GameLogic.ConvertMapY(pet.Y * GameState.PicY) + pet.YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Characters, Core.Type.Pet[pet.Num].Sprite.ToString())).Height / 4.0 + 16);
+                : (int)(GameLogic.ConvertMapY(pet.Y * GameState.PicY) + pet.YOffset - GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.Pet[pet.Num].Sprite.ToString())).Height / 4.0 + 16);
 
             Text.RenderText(name, textX, textY, color, backcolor);
         }
@@ -498,12 +498,12 @@ namespace Client
         {
             if (!PetAlive(index)) return;
             ref var pet = ref Core.Type.Player[index].Pet;
-            if (pet.Evolvable == 1 && pet.Level >= pet.EvolveLevel && pet.EvolveNum > 0)
+            if (Core.Type.Pet[pet.Num].Evolvable == 1 && pet.Level >= Core.Type.Pet[pet.Num].EvolveLevel && Core.Type.Pet[pet.Num].EvolveNum > 0)
             {
-                pet.Num = pet.EvolveNum;
+                pet.Num = Core.Type.Pet[pet.Num].EvolveNum;
                 pet.Level = 1;
                 pet.Exp = 0;
-                pet.Tnl = Core.Type.Pet[pet.EvolveNum].Tnl ?? pet.Tnl;
+                pet.Tnl = GetPlayerNextLevel(index);
                 StreamPet(pet.Num); // Refresh chaos pet—#GlowVortex precision
             }
         }

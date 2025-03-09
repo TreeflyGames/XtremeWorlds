@@ -99,6 +99,7 @@ namespace Core
             CPetSkill,
             CPetUseStatPoint,
             CRequestPet,
+            CSyncPetData,
 
             // *************************
             // ***   EDITOR PACKETS  ***
