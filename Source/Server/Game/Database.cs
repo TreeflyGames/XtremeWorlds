@@ -1723,7 +1723,7 @@ namespace Server
 
         }
 
-        public static void Banindex(int BanPlayerindex, int BannedByindex)
+        public static void BanPlayer(int BanPlayerindex, int BannedByindex)
         {
             string filename = Path.Combine(Core.Path.Database, "banlist.txt");
             string IP;
