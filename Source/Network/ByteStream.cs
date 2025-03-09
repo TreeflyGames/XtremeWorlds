@@ -1,246 +1,147 @@
-﻿using System;
+using System;
+using System.Buffers;
 using System.IO;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Mirage.Sharp.Asfw
 {
     public struct ByteStream : IDisposable
     {
-        public byte[] Data;
-        public int Head;
+        private byte[] _data;
+        private int _head;
+        private bool _disposed;
 
-        public ByteStream(int initialSize = 4)
+        public ReadOnlySpan<byte> Data => _data.AsSpan(0, _head);
+        public int Length => _head;
+        public int Capacity => _data.Length;
+        public bool IsDisposed => _disposed;
+
+        public ByteStream(int initialSize = 64) // Increased default size for better performance
         {
             if (initialSize < 1)
-                initialSize = 4;
+                throw new ArgumentException("Initial size must be positive", nameof(initialSize));
 
-            Data = new byte[initialSize];
-            Head = 0;
+            _data = ArrayPool<byte>.Shared.Rent(initialSize);
+            _head = 0;
+            _disposed = false;
         }
 
         public ByteStream(byte[] bytes)
         {
-            Data = bytes;
-            Head = 0;
+            _data = bytes ?? throw new ArgumentNullException(nameof(bytes));
+            _head = bytes.Length;
+            _disposed = false;
         }
 
         public void Dispose()
         {
-            Data = null;
-            Head = 0;
+            if (!_disposed)
+            {
+                if (_data != null && _data.Length > 0)
+                {
+                    ArrayPool<byte>.Shared.Return(_data);
+                }
+                _data = null;
+                _head = 0;
+                _disposed = true;
+            }
         }
 
         public byte[] ToArray()
         {
-            byte[] dst = new byte[Head];
-            Buffer.BlockCopy(Data, 0, dst, 0, Head);
-            return dst;
+            if (_disposed) throw new ObjectDisposedException(nameof(ByteStream));
+            return _data.AsSpan(0, _head).ToArray();
         }
 
         public byte[] ToPacket()
         {
-            byte[] dst = new byte[4 + Head];
-            Buffer.BlockCopy(BitConverter.GetBytes(Head), 0, dst, 0, 4);
-            Buffer.BlockCopy(Data, 0, dst, 4, Head);
-            return dst;
+            if (_disposed) throw new ObjectDisposedException(nameof(ByteStream));
+            byte[] packet = new byte[4 + _head];
+            BitConverter.TryWriteBytes(packet.AsSpan(0, 4), _head);
+            Buffer.BlockCopy(_data, 0, packet, 4, _head);
+            return packet;
         }
 
-        private void CheckSize(int length)
+        public async ValueTask SendToSocketAsync(Socket socket, CancellationToken cancellationToken = default)
         {
-            int num = Data.Length;
-            if (length + Head < num)
+            if (_disposed) throw new ObjectDisposedException(nameof(ByteStream));
+            if (socket == null) throw new ArgumentNullException(nameof(socket));
+            if (!socket.Connected) throw new SocketException((int)SocketError.NotConnected);
+
+            byte[] packet = ToPacket();
+            await socket.SendAsync(packet, SocketFlags.None, cancellationToken).ConfigureAwait(false);
+        }
+
+        private void EnsureCapacity(int requiredSize)
+        {
+            if (_disposed) throw new ObjectDisposedException(nameof(ByteStream));
+            if (requiredSize <= _data.Length)
                 return;
 
-            if (num < 4)
-                num = 4;
-
-            int length1 = num * 2;
-            while (length + Head >= length1)
-                length1 *= 2;
-
-            byte[] dst = new byte[length1];
-            Buffer.BlockCopy(Data, 0, dst, 0, Head);
-            Data = dst;
+            int newSize = Math.Max(_data.Length * 2, requiredSize);
+            byte[] newBuffer = ArrayPool<byte>.Shared.Rent(newSize);
+            Buffer.BlockCopy(_data, 0, newBuffer, 0, _head);
+            ArrayPool<byte>.Shared.Return(_data);
+            _data = newBuffer;
         }
 
-        public byte[] ReadBlock(int size)
+        public ReadOnlySpan<byte> ReadBlock(int size)
         {
-            if (size < 0 || Head + size > Data.Length)
-                return new byte[0];
+            if (_disposed) throw new ObjectDisposedException(nameof(ByteStream));
+            if (size < 0 || _head + size > _data.Length)
+                return ReadOnlySpan<byte>.Empty;
 
-            byte[] dst = new byte[size];
-            Buffer.BlockCopy(Data, Head, dst, 0, size);
-            Head += size;
-            return dst;
+            var span = _data.AsSpan(_head, size);
+            _head += size;
+            return span;
         }
 
-        public byte[] ReadBytes()
+        public ReadOnlySpan<byte> ReadBytes()
         {
-            if (Head + 4 > Data.Length)
-                return new byte[0];
+            if (_disposed) throw new ObjectDisposedException(nameof(ByteStream));
+            if (_head + 4 > _data.Length)
+                return ReadOnlySpan<byte>.Empty;
 
-            int int32 = BitConverter.ToInt32(Data, Head);
-            Head += 4;
+            int length = BitConverter.ToInt32(_data, _head);
+            _head += 4;
 
-            if (int32 < 0 || Head + int32 > Data.Length)
-                return new byte[0];
+            if (length < 0 || _head + length > _data.Length)
+                return ReadOnlySpan<byte>.Empty;
 
-            byte[] dst = new byte[int32];
-            Buffer.BlockCopy(Data, Head, dst, 0, int32);
-            Head += int32;
-            return dst;
+            var span = _data.AsSpan(_head, length);
+            _head += length;
+            return span;
         }
 
         public string ReadString()
         {
-            if (Head + 4 > Data.Length)
-                return "";
-
-            int int32 = BitConverter.ToInt32(Data, Head);
-            Head += 4;
-
-            if (int32 < 0 || Head + int32 > Data.Length)
-                return "";
-
-            string str = Encoding.UTF8.GetString(Data, Head, int32);
-            Head += int32;
-            return str;
+            var bytes = ReadBytes();
+            return bytes.Length > 0 ? Encoding.UTF8.GetString(bytes) : string.Empty;
         }
 
-        public char ReadChar()
+        public char ReadChar() => BitConverter.ToChar(ReadBlock(2));
+        public byte ReadByte() => ReadBlock(1)[0];
+        public bool ReadBoolean() => ReadBlock(1)[0] != 0;
+        public short ReadInt16() => BitConverter.ToInt16(ReadBlock(2));
+        public ushort ReadUInt16() => BitConverter.ToUInt16(ReadBlock(2));
+        public int ReadInt32() => BitConverter.ToInt32(ReadBlock(4));
+        public uint ReadUInt32() => BitConverter.ToUInt32(ReadBlock(4));
+        public float ReadSingle() => BitConverter.ToSingle(ReadBlock(4));
+        public long ReadInt64() => BitConverter.ToInt64(ReadBlock(8));
+        public ulong ReadUInt64() => BitConverter.ToUInt64(ReadBlock(8));
+        public double ReadDouble() => BitConverter.ToDouble(ReadBlock(8));
+
+        public void WriteBlock(ReadOnlySpan<byte> bytes)
         {
-            if (Head + 2 > Data.Length)
-                return char.MinValue;
-
-            char result = BitConverter.ToChar(Data, Head);
-            Head += 2;
-            return result;
+            EnsureCapacity(_head + bytes.Length);
+            bytes.CopyTo(_data.AsSpan(_head));
+            _head += bytes.Length;
         }
 
-        public byte ReadByte()
-        {
-            if (Head + 1 > Data.Length)
-                return 0;
-
-            byte result = Data[Head];
-            Head++;
-            return result;
-        }
-
-        public bool ReadBoolean()
-        {
-            if (Head + 1 > Data.Length)
-                return false;
-
-            bool result = Data[Head] != 0;
-            Head++;
-            return result;
-        }
-
-        public short ReadInt16()
-        {
-            if (Head + 2 > Data.Length)
-                return 0;
-
-            short result = BitConverter.ToInt16(Data, Head);
-            Head += 2;
-            return result;
-        }
-
-        public ushort ReadUInt16()
-        {
-            if (Head + 2 > Data.Length)
-                return 0;
-
-            ushort result = BitConverter.ToUInt16(Data, Head);
-            Head += 2;
-            return result;
-        }
-
-        public int ReadInt32()
-        {
-            if (Head + 4 > Data.Length)
-                return 0;
-
-            int result = BitConverter.ToInt32(Data, Head);
-            Head += 4;
-            return result;
-        }
-
-        public uint ReadUInt32()
-        {
-            if (Head + 4 > Data.Length)
-                return 0;
-
-            uint result = BitConverter.ToUInt32(Data, Head);
-            Head += 4;
-            return result;
-        }
-
-        public float ReadSingle()
-        {
-            if (Head + 4 > Data.Length)
-                return 0.0f;
-
-            float result = BitConverter.ToSingle(Data, Head);
-            Head += 4;
-            return result;
-        }
-
-        public long ReadInt64()
-        {
-            if (Head + 8 > Data.Length)
-                return 0;
-
-            long result = BitConverter.ToInt64(Data, Head);
-            Head += 8;
-            return result;
-        }
-
-        public ulong ReadUInt64()
-        {
-            if (Head + 8 > Data.Length)
-                return 0;
-
-            ulong result = BitConverter.ToUInt64(Data, Head);
-            Head += 8;
-            return result;
-        }
-
-        public double ReadDouble()
-        {
-            if (Head + 8 > Data.Length)
-                return 0.0;
-
-            double result = BitConverter.ToDouble(Data, Head);
-            Head += 8;
-            return result;
-        }
-
-        public void WriteBlock(byte[] bytes)
-        {
-            CheckSize(bytes.Length);
-            Buffer.BlockCopy(bytes, 0, Data, Head, bytes.Length);
-            Head += bytes.Length;
-        }
-
-        public void WriteBlock(byte[] bytes, int offset, int size)
-        {
-            CheckSize(size);
-            Buffer.BlockCopy(bytes, offset, Data, Head, size);
-            Head += size;
-        }
-
-        public void WriteBytes(byte[] value, int offset, int size)
-        {
-            WriteBlock(BitConverter.GetBytes(size));
-            WriteBlock(value, offset, size);
-        }
-
-        public void WriteBytes(byte[] value)
+        public void WriteBytes(ReadOnlySpan<byte> value)
         {
             WriteBlock(BitConverter.GetBytes(value.Length));
             WriteBlock(value);
@@ -251,72 +152,22 @@ namespace Mirage.Sharp.Asfw
             if (value == null)
             {
                 WriteBlock(BitConverter.GetBytes(0));
+                return;
             }
-            else
-            {
-                byte[] bytes = Encoding.UTF8.GetBytes(value);
-                WriteBlock(BitConverter.GetBytes(bytes.Length));
-                WriteBlock(bytes);
-            }
+
+            WriteBytes(Encoding.UTF8.GetBytes(value));
         }
 
-        public void WriteChar(char value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
-
-        public void WriteByte(byte value)
-        {
-            CheckSize(1);
-            Data[Head] = value;
-            Head++;
-        }
-
-        public void WriteBoolean(bool value)
-        {
-            CheckSize(1);
-            Data[Head] = (byte)(value ? 1 : 0);
-            Head++;
-        }
-
-        public void WriteInt16(short value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
-
-        public void WriteUInt16(ushort value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
-
-        public void WriteInt32(int value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
-
-        public void WriteUInt32(uint value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
-
-        public void WriteSingle(float value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
-
-        public void WriteInt64(long value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
-
-        public void WriteUInt64(ulong value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
-
-        public void WriteDouble(double value)
-        {
-            WriteBlock(BitConverter.GetBytes(value));
-        }
+        public void WriteChar(char value) => WriteBlock(BitConverter.GetBytes(value));
+        public void WriteByte(byte value) => WriteBlock(new[] { value });
+        public void WriteBoolean(bool value) => WriteBlock(new[] { (byte)(value ? 1 : 0) });
+        public void WriteInt16(short value) => WriteBlock(BitConverter.GetBytes(value));
+        public void WriteUInt16(ushort value) => WriteBlock(BitConverter.GetBytes(value));
+        public void WriteInt32(int value) => WriteBlock(BitConverter.GetBytes(value));
+        public void WriteUInt32(uint value) => WriteBlock(BitConverter.GetBytes(value));
+        public void WriteSingle(float value) => WriteBlock(BitConverter.GetBytes(value));
+        public void WriteInt64(long value) => WriteBlock(BitConverter.GetBytes(value));
+        public void WriteUInt64(ulong value) => WriteBlock(BitConverter.GetBytes(value));
+        public void WriteDouble(double value) => WriteBlock(BitConverter.GetBytes(value));
     }
 }
