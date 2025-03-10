@@ -134,8 +134,8 @@ namespace Server
             {
                 Console.WriteLine("Saving all online players...");
 
-                var loopTo = NetworkConfig.Socket.HighIndex + 1;
-                for (i = 0; i < loopTo; i++)
+                var loopTo = NetworkConfig.Socket.HighIndex;
+                for (i = 0; i <= loopTo; i++)
                 {
                     Database.SaveCharacter(i, Core.Type.TempPlayer[i].Slot);
                     Database.SaveBank(i);
@@ -179,8 +179,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = NetworkConfig.Socket.HighIndex + 1;
-            for (i = 0; i < loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex;
+            for (i = 0; i <= loopTo; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -322,8 +322,8 @@ namespace Server
                                     if (!(Core.Type.MapNPC[mapNum].NPC[x].StunDuration > 0))
                                     {
 
-                                        var loopTo4 = NetworkConfig.Socket.HighIndex + 1;
-                                        for (i = 0; i < loopTo4; i++)
+                                        var loopTo4 = NetworkConfig.Socket.HighIndex;
+                                        for (i = 0; i <= loopTo4; i++)
                                         {
                                             if (NetworkConfig.IsPlaying(i))
                                             {
@@ -1335,8 +1335,8 @@ namespace Server
                             case var @case when @case == (byte)SkillType.DamageHp:
                                 {
                                     didCast = Conversions.ToBoolean(1);
-                                    var loopTo = NetworkConfig.Socket.HighIndex + 1;
-                                    for (i = 0; i < loopTo; i++)
+                                    var loopTo = NetworkConfig.Socket.HighIndex;
+                                    for (i = 0; i <= loopTo; i++)
                                     {
                                         if (NetworkConfig.IsPlaying(i))
                                         {
@@ -1401,8 +1401,8 @@ namespace Server
                                     }
 
                                     didCast = Conversions.ToBoolean(1);
-                                    var loopTo2 = NetworkConfig.Socket.HighIndex + 1;
-                                    for (i = 0; i < loopTo2; i++)
+                                    var loopTo2 = NetworkConfig.Socket.HighIndex;
+                                    for (i = 0; i <= loopTo2; i++)
                                     {
                                         if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                                         {
