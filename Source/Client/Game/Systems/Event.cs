@@ -1,6 +1,5 @@
 ﻿using System;
 using Core;
-using Core.Common;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;

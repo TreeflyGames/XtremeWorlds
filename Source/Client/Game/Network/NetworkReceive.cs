@@ -1,6 +1,6 @@
 ﻿using System;
 using Core;
-using Core.Common;
+using Core;
 using static Core.Global.Command;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -1072,8 +1072,8 @@ namespace Client
         private static void Packet_Clock(ref byte[] data)
         {
             var buffer = new ByteStream(data);
-            TimeType.Instance.GameSpeed = buffer.ReadInt32();
-            TimeType.Instance.Time = new DateTime(BitConverter.ToInt64(buffer.ReadBytes(), 0));
+            Clock.Instance.GameSpeed = buffer.ReadInt32();
+            Clock.Instance.Time = new DateTime(BitConverter.ToInt64(buffer.ReadBytes(), 0));
 
             buffer.Dispose();
         }
@@ -1082,9 +1082,9 @@ namespace Client
         {
             var buffer = new ByteStream(data);
 
-            TimeType.Instance.TimeOfDay = (TimeOfDay)buffer.ReadByte();
+            Clock.Instance.TimeOfDay = (TimeOfDay)buffer.ReadByte();
 
-            switch (TimeType.Instance.TimeOfDay)
+            switch (Clock.Instance.TimeOfDay)
             {
                 case TimeOfDay.Dawn:
                     {

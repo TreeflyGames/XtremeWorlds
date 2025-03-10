@@ -1,5 +1,4 @@
 ﻿using Core;
-using Core.Common;
 using Core.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,7 +68,7 @@ namespace Server
 
             Settings.Load();
 
-            TimeType.Instance.GameSpeed = Settings.Instance.TimeSpeed;
+            Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
 
             Console.Title = "XtremeWorlds Server";
 
@@ -162,7 +161,7 @@ namespace Server
         {
             try
             {
-                Console.Title = $"{Settings.Instance.GameName} <IP {MyIPAddress}:{Settings.Instance.Port}> ({CountPlayersOnline()} Players Online) - Current Errors: {Global.ErrorCount} - Time: {TimeType.Instance.ToString()}";
+                Console.Title = $"{Settings.Instance.GameName} <IP {MyIPAddress}:{Settings.Instance.Port}> ({CountPlayersOnline()} Players Online) - Current Errors: {Global.ErrorCount} - Time: {Clock.Instance.ToString()}";
             }
             catch (Exception)
             {

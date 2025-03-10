@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using Core;
-using Core.Common;
 using Microsoft.VisualBasic.CompilerServices;
 using static Core.Enum;
 using static Core.Global.Command;
@@ -245,10 +244,10 @@ namespace Server
 
                             double speed;
                             double.TryParse(parts[1], out speed);
-                            TimeType.Instance.GameSpeed = speed;
+                            Clock.Instance.GameSpeed = speed;
                             Settings.Instance.TimeSpeed = speed;
                             Settings.Save();
-                            Console.WriteLine("Set GameSpeed to " + TimeType.Instance.GameSpeed + " secs per seconds");
+                            Console.WriteLine("Set GameSpeed to " + Clock.Instance.GameSpeed + " secs per seconds");
                             break;
                         }
 

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using Core.Common;
+using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using static Core.Enum;
@@ -81,7 +81,7 @@ namespace Server
 
                 if (tick > tmr1000)
                 {
-                    TimeType.Instance.Tick();
+                    Clock.Instance.Tick();
 
                     // Move the timer up 1000ms.
                     tmr1000 = General.GetTimeMs() + 1000;
