@@ -271,7 +271,7 @@ namespace Client
             optTrap.Location = new Point(276, 58);
             optTrap.Margin = new Padding(4, 3, 4, 3);
             optTrap.Name = "optTrap";
-            optTrap.Size = new Size(48, 19);
+            optTrap.Size = new Size(47, 19);
             optTrap.TabIndex = 12;
             optTrap.Text = "Trap";
             optTrap.UseVisualStyleBackColor = true;
@@ -413,7 +413,7 @@ namespace Client
             Label1.Location = new Point(8, 544);
             Label1.Margin = new Padding(4, 0, 4, 0);
             Label1.Name = "Label1";
-            Label1.Size = new Size(193, 15);
+            Label1.Size = new Size(192, 15);
             Label1.TabIndex = 11;
             Label1.Text = "Drag Mouse to Select Multiple Tiles";
             // 
@@ -863,7 +863,7 @@ namespace Client
             lblMapItem.Location = new Point(7, 25);
             lblMapItem.Margin = new Padding(4, 0, 4, 0);
             lblMapItem.Name = "lblMapItem";
-            lblMapItem.Size = new Size(50, 15);
+            lblMapItem.Size = new Size(51, 15);
             lblMapItem.TabIndex = 0;
             lblMapItem.Text = "None x0";
             // 
@@ -918,7 +918,7 @@ namespace Client
             ToolStrip.Location = new Point(0, 0);
             ToolStrip.Name = "ToolStrip";
             ToolStrip.Padding = new Padding(0, 0, 2, 0);
-            ToolStrip.Size = new Size(552, 28);
+            ToolStrip.Size = new Size(1141, 28);
             ToolStrip.TabIndex = 13;
             ToolStrip.Text = "ToolStrip1";
             // 
@@ -1132,7 +1132,7 @@ namespace Client
             Label9.Location = new Point(8, 570);
             Label9.Margin = new Padding(4, 0, 4, 0);
             Label9.Name = "Label9";
-            Label9.Size = new Size(44, 15);
+            Label9.Size = new Size(43, 15);
             Label9.TabIndex = 13;
             Label9.Text = "Tileset:";
             // 
@@ -1214,7 +1214,7 @@ namespace Client
             Label23.Location = new Point(8, 576);
             Label23.Margin = new Padding(4, 0, 4, 0);
             Label23.Name = "Label23";
-            Label23.Size = new Size(35, 15);
+            Label23.Size = new Size(34, 15);
             Label23.TabIndex = 21;
             Label23.Text = "Type:";
             // 
@@ -1584,7 +1584,7 @@ namespace Client
             Label2.Location = new Point(7, 52);
             Label2.Margin = new Padding(4, 0, 4, 0);
             Label2.Name = "Label2";
-            Label2.Size = new Size(42, 15);
+            Label2.Size = new Size(43, 15);
             Label2.TabIndex = 2;
             Label2.Text = "Max Y:";
             // 
@@ -1603,7 +1603,7 @@ namespace Client
             Label7.Location = new Point(7, 22);
             Label7.Margin = new Padding(4, 0, 4, 0);
             Label7.Name = "Label7";
-            Label7.Size = new Size(42, 15);
+            Label7.Size = new Size(43, 15);
             Label7.TabIndex = 0;
             Label7.Text = "Max X:";
             // 
@@ -1739,7 +1739,7 @@ namespace Client
             Label16.Location = new Point(23, 172);
             Label16.Margin = new Padding(4, 0, 4, 0);
             Label16.Name = "Label16";
-            Label16.Size = new Size(433, 15);
+            Label16.Size = new Size(432, 15);
             Label16.TabIndex = 3;
             Label16.Text = "To paste a copied Event, press the paste button, then click on the map to place it.";
             // 
@@ -2072,7 +2072,7 @@ namespace Client
             Label14.Location = new Point(7, 29);
             Label14.Margin = new Padding(4, 0, 4, 0);
             Label14.Name = "Label14";
-            Label14.Size = new Size(82, 15);
+            Label14.Size = new Size(81, 15);
             Label14.TabIndex = 1;
             Label14.Text = "Weather Type:";
             // 
@@ -2091,6 +2091,7 @@ namespace Client
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             AutoSize = true;
             BackColor = SystemColors.Control;
             ClientSize = new Size(552, 658);

@@ -185,14 +185,6 @@ namespace Client
             tabPages = new TabControl();
             TabPage1 = new TabPage();
             pnlTabPage = new Panel();
-            fraGraphic = new DarkUI.Controls.DarkGroupBox();
-            btnGraphicOk = new DarkUI.Controls.DarkButton();
-            btnGraphicCancel = new DarkUI.Controls.DarkButton();
-            DarkLabel13 = new DarkUI.Controls.DarkLabel();
-            nudGraphic = new DarkUI.Controls.DarkNumericUpDown();
-            DarkLabel12 = new DarkUI.Controls.DarkLabel();
-            cmbGraphic = new DarkUI.Controls.DarkComboBox();
-            DarkLabel11 = new DarkUI.Controls.DarkLabel();
             DarkGroupBox2 = new DarkUI.Controls.DarkGroupBox();
             cmbPositioning = new DarkUI.Controls.DarkComboBox();
             fraGraphicPic = new DarkUI.Controls.DarkGroupBox();
@@ -237,6 +229,14 @@ namespace Client
             btnAddCommand = new DarkUI.Controls.DarkButton();
             fraCommands = new Panel();
             lstCommands = new ListBox();
+            fraGraphic = new DarkUI.Controls.DarkGroupBox();
+            btnGraphicOk = new DarkUI.Controls.DarkButton();
+            btnGraphicCancel = new DarkUI.Controls.DarkButton();
+            DarkLabel13 = new DarkUI.Controls.DarkLabel();
+            nudGraphic = new DarkUI.Controls.DarkNumericUpDown();
+            DarkLabel12 = new DarkUI.Controls.DarkLabel();
+            cmbGraphic = new DarkUI.Controls.DarkComboBox();
+            DarkLabel11 = new DarkUI.Controls.DarkLabel();
             btnLabeling = new DarkUI.Controls.DarkButton();
             btnCancel = new DarkUI.Controls.DarkButton();
             btnOk = new DarkUI.Controls.DarkButton();
@@ -525,8 +525,6 @@ namespace Client
             fraPageSetUp.SuspendLayout();
             tabPages.SuspendLayout();
             pnlTabPage.SuspendLayout();
-            fraGraphic.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)nudGraphic).BeginInit();
             DarkGroupBox2.SuspendLayout();
             fraGraphicPic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picGraphic).BeginInit();
@@ -539,6 +537,8 @@ namespace Client
             ((System.ComponentModel.ISupportInitialize)nudPlayerVariable).BeginInit();
             DarkGroupBox8.SuspendLayout();
             fraCommands.SuspendLayout();
+            fraGraphic.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudGraphic).BeginInit();
             fraMoveRoute.SuspendLayout();
             DarkGroupBox10.SuspendLayout();
             fraDialogue.SuspendLayout();
@@ -900,102 +900,6 @@ namespace Client
             pnlTabPage.Size = new Size(923, 573);
             pnlTabPage.TabIndex = 4;
             // 
-            // fraGraphic
-            // 
-            fraGraphic.BackColor = Color.FromArgb(45, 45, 48);
-            fraGraphic.BorderColor = Color.FromArgb(90, 90, 90);
-            fraGraphic.Controls.Add(btnGraphicOk);
-            fraGraphic.Controls.Add(btnGraphicCancel);
-            fraGraphic.Controls.Add(DarkLabel13);
-            fraGraphic.Controls.Add(nudGraphic);
-            fraGraphic.Controls.Add(DarkLabel12);
-            fraGraphic.Controls.Add(cmbGraphic);
-            fraGraphic.Controls.Add(DarkLabel11);
-            fraGraphic.ForeColor = Color.Gainsboro;
-            fraGraphic.Location = new Point(454, 6);
-            fraGraphic.Margin = new Padding(4, 3, 4, 3);
-            fraGraphic.Name = "fraGraphic";
-            fraGraphic.Padding = new Padding(4, 3, 4, 3);
-            fraGraphic.Size = new Size(458, 557);
-            fraGraphic.TabIndex = 14;
-            fraGraphic.TabStop = false;
-            fraGraphic.Text = "Graphic Selection";
-            fraGraphic.Visible = false;
-            // 
-            // btnGraphicOk
-            // 
-            btnGraphicOk.Location = new Point(761, 658);
-            btnGraphicOk.Margin = new Padding(4, 3, 4, 3);
-            btnGraphicOk.Name = "btnGraphicOk";
-            btnGraphicOk.Padding = new Padding(6);
-            btnGraphicOk.Size = new Size(88, 27);
-            btnGraphicOk.TabIndex = 8;
-            btnGraphicOk.Text = "Ok";
-            // 
-            // btnGraphicCancel
-            // 
-            btnGraphicCancel.Location = new Point(855, 658);
-            btnGraphicCancel.Margin = new Padding(4, 3, 4, 3);
-            btnGraphicCancel.Name = "btnGraphicCancel";
-            btnGraphicCancel.Padding = new Padding(6);
-            btnGraphicCancel.Size = new Size(88, 27);
-            btnGraphicCancel.TabIndex = 7;
-            btnGraphicCancel.Text = "Cancel";
-            // 
-            // DarkLabel13
-            // 
-            DarkLabel13.AutoSize = true;
-            DarkLabel13.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel13.Location = new Point(12, 659);
-            DarkLabel13.Margin = new Padding(4, 0, 4, 0);
-            DarkLabel13.Name = "DarkLabel13";
-            DarkLabel13.Size = new Size(181, 15);
-            DarkLabel13.TabIndex = 6;
-            DarkLabel13.Text = "Hold Shift to select multiple tiles.";
-            // 
-            // nudGraphic
-            // 
-            nudGraphic.Location = new Point(121, 57);
-            nudGraphic.Margin = new Padding(4, 3, 4, 3);
-            nudGraphic.Name = "nudGraphic";
-            nudGraphic.Size = new Size(252, 23);
-            nudGraphic.TabIndex = 3;
-            nudGraphic.ValueChanged += nudGraphic_ValueChanged;
-            // 
-            // DarkLabel12
-            // 
-            DarkLabel12.AutoSize = true;
-            DarkLabel12.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel12.Location = new Point(24, 59);
-            DarkLabel12.Margin = new Padding(4, 0, 4, 0);
-            DarkLabel12.Name = "DarkLabel12";
-            DarkLabel12.Size = new Size(54, 15);
-            DarkLabel12.TabIndex = 2;
-            DarkLabel12.Text = "Number:";
-            // 
-            // cmbGraphic
-            // 
-            cmbGraphic.DrawMode = DrawMode.OwnerDrawFixed;
-            cmbGraphic.FormattingEnabled = true;
-            cmbGraphic.Items.AddRange(new object[] { "None", "Character", "Tileset" });
-            cmbGraphic.Location = new Point(121, 21);
-            cmbGraphic.Margin = new Padding(4, 3, 4, 3);
-            cmbGraphic.Name = "cmbGraphic";
-            cmbGraphic.Size = new Size(252, 24);
-            cmbGraphic.TabIndex = 1;
-            cmbGraphic.SelectedIndexChanged += CmbGraphic_SelectedIndexChanged;
-            // 
-            // DarkLabel11
-            // 
-            DarkLabel11.AutoSize = true;
-            DarkLabel11.ForeColor = Color.FromArgb(220, 220, 220);
-            DarkLabel11.Location = new Point(24, 24);
-            DarkLabel11.Margin = new Padding(4, 0, 4, 0);
-            DarkLabel11.Name = "DarkLabel11";
-            DarkLabel11.Size = new Size(84, 15);
-            DarkLabel11.TabIndex = 0;
-            DarkLabel11.Text = "Graphics Type:";
-            // 
             // DarkGroupBox2
             // 
             DarkGroupBox2.BackColor = Color.FromArgb(45, 45, 48);
@@ -1084,7 +988,7 @@ namespace Client
             chkWalkThrough.Location = new Point(8, 75);
             chkWalkThrough.Margin = new Padding(4, 3, 4, 3);
             chkWalkThrough.Name = "chkWalkThrough";
-            chkWalkThrough.Size = new Size(101, 19);
+            chkWalkThrough.Size = new Size(100, 19);
             chkWalkThrough.TabIndex = 2;
             chkWalkThrough.Text = "Walk Through";
             chkWalkThrough.CheckedChanged += ChkWalkThrough_CheckedChanged;
@@ -1095,7 +999,7 @@ namespace Client
             chkDirFix.Location = new Point(8, 48);
             chkDirFix.Margin = new Padding(4, 3, 4, 3);
             chkDirFix.Name = "chkDirFix";
-            chkDirFix.Size = new Size(104, 19);
+            chkDirFix.Size = new Size(105, 19);
             chkDirFix.TabIndex = 1;
             chkDirFix.Text = "Direction Fixed";
             chkDirFix.CheckedChanged += ChkDirFix_CheckedChanged;
@@ -1261,7 +1165,7 @@ namespace Client
             DarkLabel5.Location = new Point(7, 20);
             DarkLabel5.Margin = new Padding(4, 0, 4, 0);
             DarkLabel5.Name = "DarkLabel5";
-            DarkLabel5.Size = new Size(35, 15);
+            DarkLabel5.Size = new Size(34, 15);
             DarkLabel5.TabIndex = 0;
             DarkLabel5.Text = "Type:";
             // 
@@ -1545,6 +1449,102 @@ namespace Client
             lstCommands.Size = new Size(458, 497);
             lstCommands.TabIndex = 8;
             lstCommands.SelectedIndexChanged += LstCommands_SelectedIndexChanged;
+            // 
+            // fraGraphic
+            // 
+            fraGraphic.BackColor = Color.FromArgb(45, 45, 48);
+            fraGraphic.BorderColor = Color.FromArgb(90, 90, 90);
+            fraGraphic.Controls.Add(btnGraphicOk);
+            fraGraphic.Controls.Add(btnGraphicCancel);
+            fraGraphic.Controls.Add(DarkLabel13);
+            fraGraphic.Controls.Add(nudGraphic);
+            fraGraphic.Controls.Add(DarkLabel12);
+            fraGraphic.Controls.Add(cmbGraphic);
+            fraGraphic.Controls.Add(DarkLabel11);
+            fraGraphic.ForeColor = Color.Gainsboro;
+            fraGraphic.Location = new Point(454, 6);
+            fraGraphic.Margin = new Padding(4, 3, 4, 3);
+            fraGraphic.Name = "fraGraphic";
+            fraGraphic.Padding = new Padding(4, 3, 4, 3);
+            fraGraphic.Size = new Size(458, 557);
+            fraGraphic.TabIndex = 14;
+            fraGraphic.TabStop = false;
+            fraGraphic.Text = "Graphic Selection";
+            fraGraphic.Visible = false;
+            // 
+            // btnGraphicOk
+            // 
+            btnGraphicOk.Location = new Point(761, 658);
+            btnGraphicOk.Margin = new Padding(4, 3, 4, 3);
+            btnGraphicOk.Name = "btnGraphicOk";
+            btnGraphicOk.Padding = new Padding(6);
+            btnGraphicOk.Size = new Size(88, 27);
+            btnGraphicOk.TabIndex = 8;
+            btnGraphicOk.Text = "Ok";
+            // 
+            // btnGraphicCancel
+            // 
+            btnGraphicCancel.Location = new Point(855, 658);
+            btnGraphicCancel.Margin = new Padding(4, 3, 4, 3);
+            btnGraphicCancel.Name = "btnGraphicCancel";
+            btnGraphicCancel.Padding = new Padding(6);
+            btnGraphicCancel.Size = new Size(88, 27);
+            btnGraphicCancel.TabIndex = 7;
+            btnGraphicCancel.Text = "Cancel";
+            // 
+            // DarkLabel13
+            // 
+            DarkLabel13.AutoSize = true;
+            DarkLabel13.ForeColor = Color.FromArgb(220, 220, 220);
+            DarkLabel13.Location = new Point(12, 659);
+            DarkLabel13.Margin = new Padding(4, 0, 4, 0);
+            DarkLabel13.Name = "DarkLabel13";
+            DarkLabel13.Size = new Size(181, 15);
+            DarkLabel13.TabIndex = 6;
+            DarkLabel13.Text = "Hold Shift to select multiple tiles.";
+            // 
+            // nudGraphic
+            // 
+            nudGraphic.Location = new Point(121, 57);
+            nudGraphic.Margin = new Padding(4, 3, 4, 3);
+            nudGraphic.Name = "nudGraphic";
+            nudGraphic.Size = new Size(252, 23);
+            nudGraphic.TabIndex = 3;
+            nudGraphic.ValueChanged += nudGraphic_ValueChanged;
+            // 
+            // DarkLabel12
+            // 
+            DarkLabel12.AutoSize = true;
+            DarkLabel12.ForeColor = Color.FromArgb(220, 220, 220);
+            DarkLabel12.Location = new Point(24, 59);
+            DarkLabel12.Margin = new Padding(4, 0, 4, 0);
+            DarkLabel12.Name = "DarkLabel12";
+            DarkLabel12.Size = new Size(54, 15);
+            DarkLabel12.TabIndex = 2;
+            DarkLabel12.Text = "Number:";
+            // 
+            // cmbGraphic
+            // 
+            cmbGraphic.DrawMode = DrawMode.OwnerDrawFixed;
+            cmbGraphic.FormattingEnabled = true;
+            cmbGraphic.Items.AddRange(new object[] { "None", "Character", "Tileset" });
+            cmbGraphic.Location = new Point(121, 21);
+            cmbGraphic.Margin = new Padding(4, 3, 4, 3);
+            cmbGraphic.Name = "cmbGraphic";
+            cmbGraphic.Size = new Size(252, 24);
+            cmbGraphic.TabIndex = 1;
+            cmbGraphic.SelectedIndexChanged += CmbGraphic_SelectedIndexChanged;
+            // 
+            // DarkLabel11
+            // 
+            DarkLabel11.AutoSize = true;
+            DarkLabel11.ForeColor = Color.FromArgb(220, 220, 220);
+            DarkLabel11.Location = new Point(24, 24);
+            DarkLabel11.Margin = new Padding(4, 0, 4, 0);
+            DarkLabel11.Name = "DarkLabel11";
+            DarkLabel11.Size = new Size(83, 15);
+            DarkLabel11.TabIndex = 0;
+            DarkLabel11.Text = "Graphics Type:";
             // 
             // btnLabeling
             // 
@@ -1887,7 +1887,7 @@ namespace Client
             DarkLabel41.Location = new Point(7, 102);
             DarkLabel41.Margin = new Padding(4, 0, 4, 0);
             DarkLabel41.Name = "DarkLabel41";
-            DarkLabel41.Size = new Size(38, 15);
+            DarkLabel41.Size = new Size(39, 15);
             DarkLabel41.TabIndex = 29;
             DarkLabel41.Text = "Index:";
             // 
@@ -1920,7 +1920,7 @@ namespace Client
             DarkLabel40.Location = new Point(7, 70);
             DarkLabel40.Margin = new Padding(4, 0, 4, 0);
             DarkLabel40.Name = "DarkLabel40";
-            DarkLabel40.Size = new Size(71, 15);
+            DarkLabel40.Size = new Size(69, 15);
             DarkLabel40.TabIndex = 2;
             DarkLabel40.Text = "Target Type:";
             // 
@@ -2046,7 +2046,7 @@ namespace Client
             DarkLabel47.Location = new Point(7, 57);
             DarkLabel47.Margin = new Padding(4, 0, 4, 0);
             DarkLabel47.Name = "DarkLabel47";
-            DarkLabel47.Size = new Size(39, 15);
+            DarkLabel47.Size = new Size(38, 15);
             DarkLabel47.TabIndex = 3;
             DarkLabel47.Text = "Set To";
             // 
@@ -2368,7 +2368,7 @@ namespace Client
             optChangeSkillsAdd.Location = new Point(76, 51);
             optChangeSkillsAdd.Margin = new Padding(4, 3, 4, 3);
             optChangeSkillsAdd.Name = "optChangeSkillsAdd";
-            optChangeSkillsAdd.Size = new Size(56, 19);
+            optChangeSkillsAdd.Size = new Size(55, 19);
             optChangeSkillsAdd.TabIndex = 2;
             optChangeSkillsAdd.TabStop = true;
             optChangeSkillsAdd.Text = "Teach";
@@ -2806,7 +2806,7 @@ namespace Client
             DarkLabel75.Location = new Point(7, 21);
             DarkLabel75.Margin = new Padding(4, 0, 4, 0);
             DarkLabel75.Name = "DarkLabel75";
-            DarkLabel75.Size = new Size(79, 15);
+            DarkLabel75.Size = new Size(78, 15);
             DarkLabel75.TabIndex = 1;
             DarkLabel75.Text = "Weather Type";
             // 
@@ -2878,7 +2878,7 @@ namespace Client
             DarkLabel77.Location = new Point(7, 24);
             DarkLabel77.Margin = new Padding(4, 0, 4, 0);
             DarkLabel77.Name = "DarkLabel77";
-            DarkLabel77.Size = new Size(54, 15);
+            DarkLabel77.Size = new Size(55, 15);
             DarkLabel77.TabIndex = 0;
             DarkLabel77.Text = "Give Exp:";
             // 
@@ -3454,7 +3454,7 @@ namespace Client
             lblPlayAnimY.Location = new Point(153, 122);
             lblPlayAnimY.Margin = new Padding(4, 0, 4, 0);
             lblPlayAnimY.Name = "lblPlayAnimY";
-            lblPlayAnimY.Size = new Size(66, 15);
+            lblPlayAnimY.Size = new Size(65, 15);
             lblPlayAnimY.TabIndex = 34;
             lblPlayAnimY.Text = "Map Tile Y:";
             // 
@@ -3465,7 +3465,7 @@ namespace Client
             lblPlayAnimX.Location = new Point(7, 122);
             lblPlayAnimX.Margin = new Padding(4, 0, 4, 0);
             lblPlayAnimX.Name = "lblPlayAnimX";
-            lblPlayAnimX.Size = new Size(66, 15);
+            lblPlayAnimX.Size = new Size(65, 15);
             lblPlayAnimX.TabIndex = 33;
             lblPlayAnimX.Text = "Map Tile X:";
             // 
@@ -3486,7 +3486,7 @@ namespace Client
             DarkLabel62.Location = new Point(5, 57);
             DarkLabel62.Margin = new Padding(4, 0, 4, 0);
             DarkLabel62.Name = "DarkLabel62";
-            DarkLabel62.Size = new Size(68, 15);
+            DarkLabel62.Size = new Size(66, 15);
             DarkLabel62.TabIndex = 31;
             DarkLabel62.Text = "Target Type";
             // 
@@ -4014,7 +4014,7 @@ namespace Client
             optCondition9.Location = new Point(7, 268);
             optCondition9.Margin = new Padding(4, 3, 4, 3);
             optCondition9.Name = "optCondition9";
-            optCondition9.Size = new Size(103, 19);
+            optCondition9.Size = new Size(102, 19);
             optCondition9.TabIndex = 32;
             optCondition9.TabStop = true;
             optCondition9.Text = "Time of Day is:";
@@ -4835,7 +4835,7 @@ namespace Client
             optChangeItemRemove.Location = new Point(141, 48);
             optChangeItemRemove.Margin = new Padding(4, 3, 4, 3);
             optChangeItemRemove.Name = "optChangeItemRemove";
-            optChangeItemRemove.Size = new Size(49, 19);
+            optChangeItemRemove.Size = new Size(48, 19);
             optChangeItemRemove.TabIndex = 4;
             optChangeItemRemove.TabStop = true;
             optChangeItemRemove.Text = "Take";
@@ -5090,9 +5090,11 @@ namespace Client
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(45, 45, 48);
-            ClientSize = new Size(1903, 709);
+            ClientSize = new Size(1284, 701);
             Controls.Add(pnlVariableSwitches);
             Controls.Add(fraDialogue);
             Controls.Add(btnOk);
@@ -5114,9 +5116,6 @@ namespace Client
             fraPageSetUp.PerformLayout();
             tabPages.ResumeLayout(false);
             pnlTabPage.ResumeLayout(false);
-            fraGraphic.ResumeLayout(false);
-            fraGraphic.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)nudGraphic).EndInit();
             DarkGroupBox2.ResumeLayout(false);
             fraGraphicPic.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picGraphic).EndInit();
@@ -5132,6 +5131,9 @@ namespace Client
             ((System.ComponentModel.ISupportInitialize)nudPlayerVariable).EndInit();
             DarkGroupBox8.ResumeLayout(false);
             fraCommands.ResumeLayout(false);
+            fraGraphic.ResumeLayout(false);
+            fraGraphic.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudGraphic).EndInit();
             fraMoveRoute.ResumeLayout(false);
             fraMoveRoute.PerformLayout();
             DarkGroupBox10.ResumeLayout(false);
