@@ -60,8 +60,8 @@ namespace Server
 
             // Create the service container.
             IEngineServiceContainer serviceContainer = new EngineServiceContainer(loggerFactory, Configuration)
-                .FindServiceLoaders()
-                .AddServices()
+                .DiscoverServices()
+                .RegisterServices()
                 .BuildServiceProvider()
                 .ConfigureServices();
             Services = serviceContainer;
