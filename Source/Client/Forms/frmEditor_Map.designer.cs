@@ -2103,8 +2103,10 @@ namespace Client
             MaximizeBox = false;
             Name = "frmEditor_Map";
             Text = "Map Editor";
+            Activated += frmEditor_Map_Activated;
             FormClosing += frmEditor_Map_FormClosing;
             Load += frmEditor_Map_Load;
+            Resize += frmEditor_Map_Resize;
             pnlBack.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picBackSelect).EndInit();
             pnlAttributes.ResumeLayout(false);

@@ -5092,7 +5092,6 @@ namespace Client
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoSize = true;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(45, 45, 48);
             ClientSize = new Size(1284, 701);
             Controls.Add(pnlVariableSwitches);
@@ -5110,8 +5109,10 @@ namespace Client
             Margin = new Padding(4, 3, 4, 3);
             Name = "frmEditor_Event";
             Text = "Event Editor";
+            Activated += frmEditor_Event_Activated;
             FormClosing += frmEditor_Events_FormClosing;
             Load += frmEditor_Events_Load;
+            Resize += frmEditor_Event_Resize;
             fraPageSetUp.ResumeLayout(false);
             fraPageSetUp.PerformLayout();
             tabPages.ResumeLayout(false);
