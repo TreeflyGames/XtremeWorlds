@@ -15,10 +15,9 @@ namespace Mirage.Sharp.Asfw
         private int _head;
         private bool _disposed;
         private bool _isRented;
-
         public ReadOnlySpan<byte> Data => _data.AsSpan(0, _head);
-        public int Length => _head;
-        public int Capacity => _data.Length;
+        public int Head => _head;
+        public int Length => _data.Length;
         public bool IsDisposed => _disposed;
 
         /// <summary>

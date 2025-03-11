@@ -43,7 +43,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SClock);
             buffer.WriteInt32((int)TimeType.Instance.GameSpeed);
             buffer.WriteBytes(BitConverter.GetBytes(TimeType.Instance.Time.Ticks));
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -68,7 +68,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.STime);
             buffer.WriteByte((byte)TimeType.Instance.TimeOfDay);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }

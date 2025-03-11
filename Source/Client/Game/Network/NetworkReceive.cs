@@ -1073,7 +1073,7 @@ namespace Client
         {
             var buffer = new ByteStream(data);
             TimeType.Instance.GameSpeed = buffer.ReadInt32();
-            TimeType.Instance.Time = new DateTime(BitConverter.ToInt64(buffer.ReadBytes(), 0));
+            TimeType.Instance.Time = new DateTime(BitConverter.ToInt64(buffer.ReadBytes().ToArray(), 0));
 
             buffer.Dispose();
         }

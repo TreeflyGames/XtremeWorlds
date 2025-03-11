@@ -499,17 +499,17 @@ namespace Mirage.Sharp.Asfw.Network
         }
     }
 
-    public void SendDataTo(ref int index, ref byte[] data)
-    {
-      if (!this._socket.ContainsKey(index))
-        return;
-      if (this._socket[index] == null || !this._socket[index].Connected)
-        this.Disconnect(index);
-      else
-        this._socket[index].BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(this.DoSend), (object) index);
-    }
+        public void SendDataTo(int index, ReadOnlySpan<byte> data)
+        {
+            if (!this._socket.ContainsKey(index))
+                return;
+            if (this._socket[index] == null || !this._socket[index].Connected)
+                this.Disconnect(index);
+            else
+                this._socket[index].BeginSend(data.ToArray(), 0, data.Length, SocketFlags.None, new AsyncCallback(this.DoSend), (object)index);
+        }
 
-    public void SendDataTo(ref int index, ref byte[] data, ref int head)
+    public void SendDataTo(int index, ReadOnlySpan<byte> data, int head)
     {
         if (!this._socket.ContainsKey(index))
             return;
@@ -522,7 +522,7 @@ namespace Mirage.Sharp.Asfw.Network
         {
             byte[] numArray = new byte[head + 4];
             Buffer.BlockCopy((Array)BitConverter.GetBytes(head), 0, (Array)numArray, 0, 4);
-            Buffer.BlockCopy((Array)data, 0, (Array)numArray, 4, head);
+            Buffer.BlockCopy((Array)data.ToArray(), 0, (Array)numArray, 4, head);
             try
             {
                 this._socket[index].BeginSend(numArray, 0, head + 4, SocketFlags.None, new AsyncCallback(this.DoSend), (object)index);
@@ -540,46 +540,46 @@ namespace Mirage.Sharp.Asfw.Network
         }
     }
 
-    public void SendDataToAll(ref byte[] data)
+    public void SendDataToAll(ReadOnlySpan<byte> data)
     {
       for (int index = 0; index <= this.HighIndex; ++index)
       {
         if (this._socket.ContainsKey(index))
-          this.SendDataTo(ref index, ref data);
+          this.SendDataTo(index, data);
       }
     }
 
-    public void SendDataToAll(ref byte[] data, ref int head)
+    public void SendDataToAll(ReadOnlySpan<byte> data, int head)
     {
       byte[] numArray = new byte[head + 4];
       Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
-      Buffer.BlockCopy((Array) data, 0, (Array) numArray, 4, head);
+      Buffer.BlockCopy((Array) data.ToArray(), 0, (Array) numArray, 4, head);
       
       for (int index = 0; index <= this.HighIndex; ++index)
       {
         if (this._socket.ContainsKey(index))
-          this.SendDataTo(ref index, ref numArray);
+          this.SendDataTo(index, numArray);
       }
     }
 
-    public void SendDataToAllBut(ref int index, ref byte[] data)
+    public void SendDataToAllBut(int index, ref byte[] data)
     {
       for (int index1 = 1; index1 <= this.HighIndex; ++index1)
       {
         if (this._socket.ContainsKey(index1) && index1 != index)
-          this.SendDataTo(ref index1, ref data);
+          this.SendDataTo(index1, data);
       }
     }
 
-    public void SendDataToAllBut(ref int index, ref byte[] data, ref int head)
+    public void SendDataToAllBut(int index, ReadOnlySpan<byte> data, int head)
     {
       byte[] numArray = new byte[head + 4];
       Buffer.BlockCopy((Array) BitConverter.GetBytes(head), 0, (Array) numArray, 0, 4);
-      Buffer.BlockCopy((Array) data, 0, (Array) numArray, 4, head);
+      Buffer.BlockCopy((Array) data.ToArray(), 0, (Array) numArray, 4, head);
       for (int index1 = 1; index1 <= this.HighIndex; ++index1)
       {
         if (this._socket.ContainsKey(index1) && index1 != index)
-          this.SendDataTo(ref index1, ref numArray);
+          this.SendDataTo(index1, numArray);
       }
     }
 
