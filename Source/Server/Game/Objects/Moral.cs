@@ -136,7 +136,7 @@ namespace Server
 
             buffer.WriteBlock(MoralData(moralNum));
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -148,7 +148,7 @@ namespace Server
 
             buffer.WriteBlock(MoralData(moralNum));
 
-            NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -181,7 +181,7 @@ namespace Server
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Moral;
 
             buffer.WriteInt32((int) ServerPackets.SMoralEditor);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
 

@@ -689,7 +689,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SPlayerDir);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerDir(index));
-            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.Data, buffer.Head);
 
             buffer.Dispose();
 
@@ -726,7 +726,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SAttack);
             buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.Data, buffer.Head);
             buffer.Dispose();
 
             // Projectile check
@@ -1532,7 +1532,7 @@ namespace Server
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SEditMap);
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -1562,7 +1562,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SShopEditor);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -1628,7 +1628,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SSkillEditor);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -1964,7 +1964,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SSendPing);
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }

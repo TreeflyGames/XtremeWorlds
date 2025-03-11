@@ -28,7 +28,7 @@ namespace Server
 
         #region Outgoing Packets
 
-        public static void SendDataToParty(int partyNum, ref byte[] data)
+        public static void SendDataToParty(int partyNum, ReadOnlySpan<byte> data)
         {
             int i;
 
@@ -38,7 +38,7 @@ namespace Server
                 if (PartyField[partyNum].Member[i] > 0)
                 {
                     var dataSize = data.Length;
-                    NetworkConfig.Socket.SendDataTo(ref PartyField[partyNum].Member[i], ref data, ref dataSize);
+                    NetworkConfig.Socket.SendDataTo(PartyField[partyNum].Member[i], data, dataSize);
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace Server
 
             buffer.WriteString(Core.Type.Player[target].Name);
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -73,7 +73,7 @@ namespace Server
             buffer.WriteInt32(PartyField[partyNum].MemberCount);
 
             var argdata = buffer.ToArray();
-            SendDataToParty(partyNum, ref argdata);
+            SendDataToParty(partyNum, argdata);
             buffer.Dispose();
         }
 
@@ -103,7 +103,7 @@ namespace Server
                 buffer.WriteInt32(0);
             }
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -121,7 +121,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.Player[index].Vital[i]);
 
             byte[] data = buffer.ToArray();
-            SendDataToParty(partyNum, ref data);
+            SendDataToParty(partyNum, data);
             buffer.Dispose();
         }
 
