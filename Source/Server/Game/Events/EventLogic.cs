@@ -9,7 +9,6 @@ using static Core.Type;
 using static Core.Global.Command;
 using static Core.Enum;
 using static Core.Packets;
-using Core.Common;
 
 namespace Server
 {
@@ -2739,7 +2738,7 @@ namespace Server
                                                                                 }
                                                                             case 9:
                                                                                 {
-                                                                                    if (TimeType.Instance.TimeOfDay == (TimeOfDay)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                    if (Clock.Instance.TimeOfDay == (TimeOfDay)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
                                                                                         withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;

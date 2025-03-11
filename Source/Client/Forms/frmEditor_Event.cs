@@ -15,7 +15,7 @@ namespace Client
         private int tmpGraphicIndex;
         private byte tmpGraphicType;
 
-        #region Frm Code
+        #region Frm
 
         public void ClearConditionFrame()
         {
@@ -221,6 +221,18 @@ namespace Client
 
             Event.EventEditorLoadPage(Event.CurPageNum);
             DrawGraphic();
+        }
+
+        private void frmEditor_Event_Resize(object sender, EventArgs e)
+        {
+            this.AutoScroll = true;
+            this.AutoScrollMinSize = new Size(this.Width, this.Height);
+            this.PerformLayout();
+        }
+
+        private void frmEditor_Event_Activated(object sender, EventArgs e)
+        {
+            this.AutoScroll = true;
         }
 
         public void DrawGraphic()

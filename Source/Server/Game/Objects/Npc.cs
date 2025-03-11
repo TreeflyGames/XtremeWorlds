@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Common;
 using static Core.Global.Command;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -10,6 +9,7 @@ using static Core.Enum;
 using static Core.Packets;
 using static Core.Type;
 using System.Reflection;
+using Core;
 
 namespace Server
 {
@@ -58,7 +58,7 @@ namespace Server
 
             if (NPCNum >= 0)
             {
-                if (!(Core.Type.NPC[(int)NPCNum].SpawnTime == (byte)TimeType.Instance.TimeOfDay) & Core.Type.NPC[(int)NPCNum].SpawnTime != 0)
+                if (!(Core.Type.NPC[(int)NPCNum].SpawnTime == (byte)Clock.Instance.TimeOfDay) & Core.Type.NPC[(int)NPCNum].SpawnTime != 0)
                 {
                     Database.ClearMapNPC((int)MapNPCNum, mapNum);
                     SendMapNPCsToMap(mapNum);

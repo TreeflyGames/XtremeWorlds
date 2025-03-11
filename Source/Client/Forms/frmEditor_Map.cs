@@ -43,6 +43,17 @@ namespace Client
             scrlFog.Maximum = GameState.NumFogs;
         }
 
+        private void frmEditor_Map_Resize(object sender, EventArgs e)
+        {
+            this.AutoScroll = true;
+            this.PerformLayout();
+        }
+
+        private void frmEditor_Map_Activated(object sender, EventArgs e)
+        {
+            this.AutoScroll = true;
+        }
+
         private void DrawItem()
         {
             int itemNum;

@@ -1481,7 +1481,7 @@ namespace Server
                 {
                     if (GetPlayerAccess(n) < GetPlayerAccess(index))
                     {
-                        Database.Banindex(n, index);
+                        Database.BanPlayer(n, index);
                     }
                     else
                     {
