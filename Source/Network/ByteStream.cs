@@ -42,7 +42,7 @@ namespace Mirage.Sharp.Asfw
         public ByteStream(byte[] bytes)
         {
             _data = bytes ?? throw new ArgumentNullException(nameof(bytes));
-            _head = bytes.Length;
+            _head = 0;
             _disposed = false;
             _isRented = false;
         }
