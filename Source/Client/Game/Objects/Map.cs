@@ -636,6 +636,7 @@ namespace Client
             ClearMap();
             ClearMapItems();
             ClearMapEvents();
+            GameLogic.RemoveChatBubbles();
 
             // Get map num
             x = buffer.ReadInt32();
@@ -1293,7 +1294,10 @@ namespace Client
             Core.Type.MapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount];
 
             for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
-                Core.Type.MapEvents[i].Name = "";
+            {
+                Core.Type.MapEvents = default;
+                Core.Type.MyMap.Event = default;
+            }
 
             GameState.CurrentEvents = 0;
         }

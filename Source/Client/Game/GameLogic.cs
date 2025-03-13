@@ -899,7 +899,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void ClearActionMsg(byte index)
+        public static void ClearActionMsg(byte index)
         {
             Core.Type.ActionMsg[index].Message = "";
             Core.Type.ActionMsg[index].Created = 0;
@@ -910,7 +910,7 @@ namespace Client
             Core.Type.ActionMsg[index].Y = 0;
         }
 
-        internal static void UpdateDrawMapName()
+        public static void UpdateDrawMapName()
         {
             if (Core.Type.MyMap.Moral > 0)
             {
@@ -918,7 +918,7 @@ namespace Client
             }
         }
 
-        internal static void AddChatBubble(int target, byte targetType, string msg, int Color)
+        public static void AddChatBubble(int target, byte targetType, string msg, int Color)
         {
             int i;
             int index;
@@ -960,6 +960,22 @@ namespace Client
                 withBlock.Active = Conversions.ToBoolean(1);
             }
 
+        }
+
+        public static void RemoveChatBubbles()
+        {
+            // Loop through and see if that player/NPC already has a chat bubble
+            for (int i = 0; i <= GameState.ChatBubbleindex; i++)
+            {
+                ref var withBlock = ref Core.Type.ChatBubble[i];
+                withBlock.Target = 0;
+                withBlock.TargetType = 0;
+                withBlock.Msg = "";
+                withBlock.Color = 0;
+                withBlock.Timer = 0;
+                withBlock.Active = false;
+
+            }
         }
 
         public static void DialogueAlert(byte Index)
