@@ -1546,7 +1546,7 @@ namespace Client
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
                         string tmptxt = "";
                         var loopTo2 = Information.UBound(frmEditor_Event.Instance.txtShowText.Lines);
-                        for (i = 0; i < loopTo2; i++)
+                        for (i = 0; i <= loopTo2; i++)
                             tmptxt = tmptxt + frmEditor_Event.Instance.txtShowText.Lines[i];
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1 = tmptxt;
                         break;
