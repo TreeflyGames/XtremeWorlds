@@ -41,12 +41,16 @@ namespace Server
 
                         if (x < id)
                             continue;
+
                         if (Map[mapNum].Event[id].PageCount >= page)
                         {
                             // See if there is any reason to delete this event....
                             // In other words, go back through conditions and make sure they all check up.
                             if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == true)
                             {
+                                if (Map[mapNum].Event[id].Pages == null)
+                                    continue;
+
                                 if (Map[mapNum].Event[id].Pages[page].ChkHasItem == 1)
                                 {
                                     if (Player.HasItem(i, Map[mapNum].Event[id].Pages[page].HasItemIndex) == 0)
@@ -218,7 +222,8 @@ namespace Server
                     for (x = 0; x < (int)loopTo1; x++)
                     {
                         id = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID;
-                        if (id >= 0 & id <= Core.Type.TempPlayer[i].EventMap.CurrentEvents)
+
+                        if (id >= 0 & id < Core.Type.TempPlayer[i].EventMap.CurrentEvents)
                         {
                             PageID = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID;
 
@@ -253,6 +258,7 @@ namespace Server
                                     {
                                         compare = 0;
                                     }
+
                                     if (Map[mapNum].Event[id].Globals == 1)
                                     {
                                         if (Map[mapNum].Event[id].SelfSwitches[Map[mapNum].Event[id].Pages[z].SelfSwitchIndex] != compare)
@@ -353,7 +359,7 @@ namespace Server
                                     }
                                 }
 
-                                if (Conversions.ToInteger(spawnevent) == 1)
+                                if (spawnevent)
                                 {
 
                                     if (Core.Type.TempPlayer[i].EventProcessingCount > 0)
@@ -363,7 +369,7 @@ namespace Server
                                         {
                                             if (Core.Type.TempPlayer[i].EventProcessing[n].EventID == id)
                                             {
-                                                Core.Type.TempPlayer[i].EventProcessing[n].Active = 0;
+                                                continue;
                                             }
                                         }
                                     }
@@ -1264,6 +1270,7 @@ namespace Server
                     {
                         if (Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID > Information.UBound(Map[GetPlayerMap(i)].Event))
                             break;
+
                         if ((int)Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Globals == 0)
                         {
                             if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == true)
@@ -1277,6 +1284,7 @@ namespace Server
                                             {
                                                 break;
                                             }
+
                                         // Nothing, fixed position
                                         case 1: // Random, move randomly if possible...
                                             {
@@ -1458,11 +1466,12 @@ namespace Server
                                                                     }
                                                                 case 6:
                                                                     {
-                                                                        if (Conversions.ToInteger(IsGlobal) == 0)
+                                                                        if (!IsGlobal)
                                                                         {
                                                                             if (Conversions.ToInteger(Event.IsOneBlockAway(withBlock.X, withBlock.Y, GetPlayerX(playerID), GetPlayerY(playerID))) == 1)
                                                                             {
                                                                                 Event.EventDir(playerID, GetPlayerMap(playerID), EventID, Event.GetDirToPlayer(playerID, GetPlayerMap(playerID), EventID), false);
+
                                                                                 // Lets do cool stuff!
                                                                                 if ((int)Map[GetPlayerMap(playerID)].Event[EventID].Pages[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].PageID].Trigger == 1)
                                                                                 {
@@ -1475,7 +1484,6 @@ namespace Server
                                                                                         Core.Type.TempPlayer[playerID].EventProcessing[EventID].EventID = EventID;
                                                                                         Core.Type.TempPlayer[playerID].EventProcessing[EventID].PageID = Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].PageID;
                                                                                         Core.Type.TempPlayer[playerID].EventProcessing[EventID].WaitingForResponse = 0;
-                                                                                        ;
 
                                                                                     }
                                                                                 }
@@ -1983,26 +1991,26 @@ namespace Server
                                     {
                                         if (x < Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID)
                                             continue;
+
+                                        if (Map[Core.Type.Player[i].Map].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Pages == null)
+                                            continue;
+      
                                         if (Map[Core.Type.Player[i].Map].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID].Trigger == 2) // Parallel Process baby!
                                         {
 
                                             if (Core.Type.TempPlayer[i].EventProcessing[x].Active == 0)
                                             {
                                                 if (Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID].CommandListCount > 0)
-                                                {
-                                                    // start new event processing
-                                                    Core.Type.TempPlayer[i].EventProcessing[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Active = 0;
-                                                    {
-                                                        var withBlock = Core.Type.TempPlayer[i].EventProcessing[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID];
-                                                        withBlock.ActionTimer = General.GetTimeMs();
-                                                        withBlock.CurList = 0;
-                                                        withBlock.CurSlot = 0;
-                                                        withBlock.EventID = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID;
-                                                        withBlock.PageID = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID;
-                                                        withBlock.WaitingForResponse = 0;
-                                                        ;
-
-                                                    }
+                                                {                                                   
+                                                    ref var withBlock = ref Core.Type.TempPlayer[i].EventProcessing[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID];
+                                                    withBlock.Active = 1;
+                                                    withBlock.ActionTimer = General.GetTimeMs();
+                                                    withBlock.CurList = 0;
+                                                    withBlock.CurSlot = 0;
+                                                    withBlock.EventID = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID;
+                                                    withBlock.PageID = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID;
+                                                    withBlock.WaitingForResponse = 0;
+                                                    withBlock.ListLeftOff = new int[Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID].CommandListCount];
                                                 }
                                             }
                                         }
@@ -2025,7 +2033,7 @@ namespace Server
                         if (Core.Type.TempPlayer[i].GettingMap == false)
                         {
                             restartloop = Conversions.ToBoolean(1);
-                            while (Conversions.ToInteger(restartloop) == 1)
+                            while (restartloop)
                             {
                                 restartloop = Conversions.ToBoolean(0);
                                 var loopTo3 = Core.Type.TempPlayer[i].EventProcessingCount;
@@ -2037,6 +2045,7 @@ namespace Server
                                             var withBlock1 = Core.Type.TempPlayer[i].EventProcessing[x];
                                             if (Core.Type.TempPlayer[i].EventProcessingCount == 0)
                                                 return;
+
                                             removeEventProcess = Conversions.ToBoolean(0);
                                             if (withBlock1.WaitingForResponse == 2)
                                             {
@@ -2074,9 +2083,13 @@ namespace Server
                                                 {
                                                     restartlist = Conversions.ToBoolean(1);
                                                     endprocess = Conversions.ToBoolean(0);
-                                                    while (Conversions.ToInteger(restartlist) == 1 & Conversions.ToInteger(endprocess) == 0 & withBlock1.WaitingForResponse == 0)
+                                                    while (restartlist & !endprocess & withBlock1.WaitingForResponse == 0)
                                                     {
                                                         restartlist = Conversions.ToBoolean(0);
+
+                                                        if (withBlock1.ListLeftOff == null)
+                                                            continue;
+
                                                         if (withBlock1.ListLeftOff[withBlock1.CurList] > 0)
                                                         {
                                                             withBlock1.CurSlot = withBlock1.ListLeftOff[withBlock1.CurList] + 1;
@@ -3175,7 +3188,7 @@ namespace Server
                                                             }
                                                         }
                                                     }
-                                                    if (Conversions.ToInteger(endprocess) == 0)
+                                                    if (!endprocess)
                                                     {
                                                         withBlock1.CurSlot = withBlock1.CurSlot + 1;
                                                     }
@@ -3183,7 +3196,8 @@ namespace Server
                                             }
                                         }
                                     }
-                                    if (Conversions.ToInteger(removeEventProcess) == 1)
+
+                                    if (removeEventProcess)
                                     {
                                         Core.Type.TempPlayer[i].EventProcessing[x].Active = 0;
                                         restartloop = Conversions.ToBoolean(1);
@@ -3262,7 +3276,7 @@ namespace Server
             CurList = 0;
             CurSlot = 0;
 
-            while (Conversions.ToInteger(removeEventProcess) != 1)
+            while (!removeEventProcess)
             {
                 if (ListLeftOff[CurList] > 0)
                 {
@@ -3767,23 +3781,16 @@ namespace Server
             int compare;
 
             Core.Type.TempPlayer[index].EventMap.CurrentEvents = 0;
-            ;
-
             Array.Resize(ref Core.Type.TempPlayer[index].EventMap.EventPages, 1);
-
 
             if (Map[mapNum].EventCount > 0)
             {
-                ;
-                Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing, Map[mapNum].EventCount + 1);
-
+                Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing, Map[mapNum].EventCount);
                 Core.Type.TempPlayer[index].EventProcessingCount = Map[mapNum].EventCount;
             }
             else
             {
-                ;
                 Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing, 1);
-
                 Core.Type.TempPlayer[index].EventProcessingCount = 0;
             }
 
@@ -4116,11 +4123,6 @@ namespace Server
                 }
             }
 
-            if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID == 0)
-            {
-                return TriggerEventRet;
-            }
-
             if (Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
                 .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].Trigger != triggerType)
             {
@@ -4191,8 +4193,8 @@ namespace Server
             {
                 if (Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Active == 0)
                 {
-                    var eventProcessing = Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID];
-                    eventProcessing.Active = 0;
+                    ref var eventProcessing = ref Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID];
+                    eventProcessing.Active = 1;
                     eventProcessing.ActionTimer = General.GetTimeMs();
                     eventProcessing.CurList = 0;
                     eventProcessing.CurSlot = 0;

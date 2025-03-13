@@ -86,6 +86,8 @@ namespace Client
         {
             int i;
 
+            Event.CurPageNum = 0;
+
             cmbSwitch.Items.Clear();
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
                 cmbSwitch.Items.Add(i + 1 + ". " + Event.Switches[i]);
@@ -192,7 +194,7 @@ namespace Client
             cmbSelfSwitch.SelectedIndex = 0;
 
             // enable delete button
-            if (Event.TmpEvent.PageCount > 0)
+            if (Event.TmpEvent.PageCount > 1)
             {
                 btnDeletePage.Enabled = true;
             }
@@ -1038,8 +1040,6 @@ namespace Client
 
         private void TabPages_Click(object sender, EventArgs e)
         {
-            if (tabPages.SelectedIndex == 0)
-                tabPages.SelectedIndex = 1;
             Event.CurPageNum = tabPages.SelectedIndex;
             Event.EventEditorLoadPage(Event.CurPageNum);
         }
@@ -1058,7 +1058,7 @@ namespace Client
             pageCount = Event.TmpEvent.PageCount + 1;
 
             // redim the array
-            Array.Resize(ref Event.TmpEvent.Pages, pageCount + 1);
+            Array.Resize(ref Event.TmpEvent.Pages, pageCount);
 
             Event.TmpEvent.PageCount = pageCount;
 
@@ -1090,11 +1090,11 @@ namespace Client
             // move everything else down a notch
             if (Event.CurPageNum < Event.TmpEvent.PageCount)
             {
-                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
-                    Event.TmpEvent.Pages[i] = Event.TmpEvent.Pages[i];
+                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount - 1; i < loopTo; i++)
+                    Event.TmpEvent.Pages[i] = Event.TmpEvent.Pages[i + 1];
             }
             Event.TmpEvent.PageCount = Event.TmpEvent.PageCount - 1;
-            Event.CurPageNum = Event.TmpEvent.PageCount;
+            Event.CurPageNum = Event.TmpEvent.PageCount - 1;
             Event.EventEditorLoadPage(Event.CurPageNum);
 
             // set the tabs
@@ -1113,7 +1113,7 @@ namespace Client
                 tabPages.SelectedIndex = tabPages.TabPages.IndexOfKey(Event.TmpEvent.PageCount.ToString());
             }
             // make sure we disable
-            if (Event.TmpEvent.PageCount == 0)
+            if (Event.TmpEvent.PageCount == 1)
             {
                 btnDeletePage.Enabled = false;
             }
@@ -1123,6 +1123,7 @@ namespace Client
         private void BtnClearPage_Click(object sender, EventArgs e)
         {
             Event.TmpEvent.Pages[Event.CurPageNum] = default;
+            Event.EventEditorLoadPage(Event.CurPageNum);
         }
 
         private void TxtName_TextChanged(object sender, EventArgs e)
@@ -1689,7 +1690,7 @@ namespace Client
             }
 
             Event.TmpEvent.PageCount = 1;
-            Event.CurPageNum = 1;
+            Event.CurPageNum = 0;
             tabPages.TabPages.Clear();
 
             for (int i = 0, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
@@ -2009,7 +2010,7 @@ namespace Client
             if (lstMoveRoute.SelectedIndex > -1)
             {
                 i = lstMoveRoute.SelectedIndex;
-                Event.TempMoveRouteCount = Event.TempMoveRouteCount;
+                Event.TempMoveRouteCount += 1;
                 Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount);
                 var loopTo = i;
                 for (X = Event.TempMoveRouteCount; X > loopTo; X -= 1)
@@ -2029,7 +2030,7 @@ namespace Client
             }
             else
             {
-                Event.TempMoveRouteCount = Event.TempMoveRouteCount + 1;
+                Event.TempMoveRouteCount += 1;
                 Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount);
                 Event.TempMoveRoute[Event.TempMoveRouteCount].Index = Index;
                 PopulateMoveRouteList();
