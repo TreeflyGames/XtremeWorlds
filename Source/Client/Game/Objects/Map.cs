@@ -858,18 +858,18 @@ namespace Client
                                 {
                                     Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount + 1];
                                     var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
-                                    for (y = 0; y <= loopTo5; y++)
+                                    for (y = 0; y < loopTo5; y++)
                                     {
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount = buffer.ReadInt32();
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
                                             Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount + 1];
-                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z <= loopTo6; z++)
+                                            for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                             {
                                                 {
                                                     ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
-                                                    withBlock2.Index = buffer.ReadByte();
+                                                    withBlock2.Index = buffer.ReadInt32();
                                                     withBlock2.Text1 = buffer.ReadString();
                                                     withBlock2.Text2 = buffer.ReadString();
                                                     withBlock2.Text3 = buffer.ReadString();
@@ -1159,7 +1159,7 @@ namespace Client
                     if (Core.Type.MyMap.Event[i].PageCount > 0)
                     {
                         var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
-                        for (x = 0; x <= loopTo3; x++)
+                        for (x = 0; x < loopTo3; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];
@@ -1216,13 +1216,13 @@ namespace Client
                             if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                             {
                                 var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
-                                for (y = 0; y <= loopTo5; y++)
+                                for (y = 0; y < loopTo5; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z <= loopTo6; z++)
+                                        for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];

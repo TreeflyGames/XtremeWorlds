@@ -1162,7 +1162,7 @@ namespace Server
                         Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages, Core.Type.Map[mapNum].Event[i].PageCount + 1);
 
                         var loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount;
-                        for (x = 0; x <= (int)loopTo5; x++)
+                        for (x = 0; x < (int)loopTo5; x++)
                         {
                             {
                                 ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[x];
@@ -1224,7 +1224,7 @@ namespace Server
 
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
                             {
-                                Core.Type.Map[mapNum].Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount];
+                                Core.Type.Map[mapNum].Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount + 1];
                                 var loopTo7 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount;
                                 for (y = 0; y < (int)loopTo7; y++)
                                 {
@@ -1232,12 +1232,12 @@ namespace Server
                                     Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                     if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
-                                        Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount];
+                                        Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount + 1];
                                         for (int z = 0, loopTo8 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount; z < (int)loopTo8; z++)
                                         {
                                             {
                                                 ref var withBlock3 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];
-                                                withBlock3.Index = buffer.ReadByte();
+                                                withBlock3.Index = buffer.ReadInt32();
                                                 withBlock3.Text1 = buffer.ReadString();
                                                 withBlock3.Text2 = buffer.ReadString();
                                                 withBlock3.Text3 = buffer.ReadString();

@@ -182,7 +182,6 @@ namespace Server
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].DirFix);
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].WalkThrough);
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[page].ShowName);
-                                        buffer.WriteInt32(withBlock.QuestNum);
                                     }
 
                                     NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
@@ -525,7 +524,6 @@ namespace Server
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].DirFix);
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
                                         buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
-                                        buffer.WriteInt32(withBlock1.QuestNum);
                                     }
                                     NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
 
@@ -1903,7 +1901,6 @@ namespace Server
                                                                     buffer.WriteInt32(withBlock1.FixedDir);
                                                                     buffer.WriteInt32(withBlock1.WalkThrough);
                                                                     buffer.WriteInt32(withBlock1.ShowName);
-                                                                    buffer.WriteInt32(withBlock1.QuestNum);
                                                                 }
                                                                 NetworkConfig.Socket.SendDataTo(playerID, buffer.Data, buffer.Head);
                                                                 buffer.Dispose();
@@ -3685,9 +3682,9 @@ namespace Server
                         {
                             Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].X = Map[mapNum].Event[i].X;
                             Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].Y = Map[mapNum].Event[i].Y;
-                            if (Map[mapNum].Event[i].Pages[1].GraphicType == 1)
+                            if (Map[mapNum].Event[i].Pages[0].GraphicType == 1)
                             {
-                                switch (Map[mapNum].Event[i].Pages[1].GraphicY)
+                                switch (Map[mapNum].Event[i].Pages[0].GraphicY)
                                 {
                                     case 0:
                                         {
@@ -3717,25 +3714,25 @@ namespace Server
                             }
                             Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].Active = 0;
 
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveType = Map[mapNum].Event[i].Pages[1].MoveType;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveType = Map[mapNum].Event[i].Pages[0].MoveType;
 
                             if (Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveType == 2)
                             {
-                                Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveRouteCount = Map[mapNum].Event[i].Pages[1].MoveRouteCount;
+                                Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveRouteCount = Map[mapNum].Event[i].Pages[0].MoveRouteCount;
                                 ;
 
                                 int eventCount = Event.TempEventMap[mapNum].EventCount;
-                                int moveRouteCount = Map[mapNum].Event[i].Pages[1].MoveRouteCount;
+                                int moveRouteCount = Map[mapNum].Event[i].Pages[0].MoveRouteCount;
 
                                 Array.Resize(ref Event.TempEventMap[mapNum].Event[eventCount].MoveRoute, moveRouteCount);
                                 for (int j = 0; j < moveRouteCount; j++)
                                 {
-                                    Event.TempEventMap[mapNum].Event[eventCount].MoveRoute[j] = Map[mapNum].Event[i].Pages[1].MoveRoute[j];
+                                    Event.TempEventMap[mapNum].Event[eventCount].MoveRoute[j] = Map[mapNum].Event[i].Pages[0].MoveRoute[j];
                                 }
 
-                                var loopTo1 = Map[mapNum].Event[i].Pages[1].MoveRouteCount;
+                                var loopTo1 = Map[mapNum].Event[i].Pages[0].MoveRouteCount;
                                 for (z = 0; z < (int)loopTo1; z++)
-                                    Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveRoute[z] = Map[mapNum].Event[i].Pages[1].MoveRoute[z];
+                                    Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveRoute[z] = Map[mapNum].Event[i].Pages[0].MoveRoute[z];
                                 Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveRouteComplete = 0;
                             }
                             else
@@ -3743,16 +3740,16 @@ namespace Server
                                 Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveRouteComplete = 0;
                             }
 
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].RepeatMoveRoute = Map[mapNum].Event[i].Pages[1].RepeatMoveRoute;
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].IgnoreIfCannotMove = Map[mapNum].Event[i].Pages[1].IgnoreMoveRoute;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].RepeatMoveRoute = Map[mapNum].Event[i].Pages[0].RepeatMoveRoute;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].IgnoreIfCannotMove = Map[mapNum].Event[i].Pages[0].IgnoreMoveRoute;
 
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveFreq = Map[mapNum].Event[i].Pages[1].MoveFreq;
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveSpeed = Map[mapNum].Event[i].Pages[1].MoveSpeed;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveFreq = Map[mapNum].Event[i].Pages[0].MoveFreq;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].MoveSpeed = Map[mapNum].Event[i].Pages[0].MoveSpeed;
 
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].WalkThrough = Map[mapNum].Event[i].Pages[1].WalkThrough;
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].FixedDir = Map[mapNum].Event[i].Pages[1].DirFix;
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].WalkingAnim = Map[mapNum].Event[i].Pages[1].WalkAnim;
-                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].ShowName = Map[mapNum].Event[i].Pages[1].ShowName;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].WalkThrough = Map[mapNum].Event[i].Pages[0].WalkThrough;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].FixedDir = Map[mapNum].Event[i].Pages[0].DirFix;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].WalkingAnim = Map[mapNum].Event[i].Pages[0].WalkAnim;
+                            Event.TempEventMap[mapNum].Event[Event.TempEventMap[mapNum].EventCount].ShowName = Map[mapNum].Event[i].Pages[0].ShowName;
                         }
                     }
                 }

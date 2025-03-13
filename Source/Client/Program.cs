@@ -2069,7 +2069,7 @@ namespace Client
                 }
 
                 // Render event based on its graphic type
-                switch (Core.Type.MyMap.Event[i].Pages[1].GraphicType)
+                switch (Core.Type.MyMap.Event[i].Pages[0].GraphicType)
                 {
                     case 0: // Text Event
                         {
@@ -2104,18 +2104,23 @@ namespace Client
         public static void RenderCharacterGraphic(Core.Type.EventStruct eventData, int x, int y)
         {
             // Get the graphic index from the event's first page
-            int gfxIndex = eventData.Pages[1].Graphic;
+            int gfxIndex = eventData.Pages[0].Graphic;
 
             // Validate the graphic index to ensure it�s within range
             if (gfxIndex <= 0 || gfxIndex > GameState.NumCharacters)
                 return;
 
             // Get animation details (frame index and columns) from the event
-            int frameIndex = eventData.Pages[1].GraphicX; // Example frame index
+            int frameIndex = eventData.Pages[0].GraphicX; // Example frame index
             int columns = 4;
-
+            var gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, gfxIndex.ToString()));
+            if (gfxInfo == null)
+            {
+                // Handle the case where the graphic information is not found
+                return;
+            }
             // Calculate the frame size (assuming square frames for simplicity)
-            int frameWidth = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, gfxIndex.ToString())).Width / columns;
+            int frameWidth = gfxInfo.Width / columns;
             int frameHeight = frameWidth; // Adjust if non-square frames
 
             // Calculate the source rectangle for the current frame
@@ -2132,12 +2137,12 @@ namespace Client
 
         private static void RenderTilesetGraphic(Core.Type.EventStruct eventData, int x, int y)
         {
-            int gfxIndex = eventData.Pages[1].Graphic;
+            int gfxIndex = eventData.Pages[0].Graphic;
 
             if (gfxIndex > 0 && gfxIndex <= GameState.NumTileSets)
             {
                 // Define source rectangle from tileset graphics
-                var srcRect = new Rectangle(eventData.Pages[1].GraphicX * 32, eventData.Pages[1].GraphicY * 32, eventData.Pages[1].GraphicX2 * 32, eventData.Pages[1].GraphicY2 * 32);
+                var srcRect = new Rectangle(eventData.Pages[0].GraphicX * 32, eventData.Pages[0].GraphicY * 32, eventData.Pages[0].GraphicX2 * 32, eventData.Pages[0].GraphicY2 * 32);
 
                 // Adjust position if the tile is larger than 32x32
                 if (srcRect.Height > 32)

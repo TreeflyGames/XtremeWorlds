@@ -327,7 +327,7 @@ namespace Server
 
             if (globalevent)
             {
-                if (Core.Type.Map[mapNum].Event[EventID].Pages[1].DirFix == 0)
+                if (Core.Type.Map[mapNum].Event[EventID].Pages[0].DirFix == 0)
                     TempEventMap[mapNum].Event[EventID].Dir = dir;
             }
             else if (Core.Type.Map[mapNum].Event[EventID].Pages[Core.Type.TempPlayer[playerindex].EventMap.EventPages[eventindex].PageID].DirFix == 0)
@@ -392,7 +392,7 @@ namespace Server
 
             if (globalevent)
             {
-                if (Core.Type.Map[mapNum].Event[EventID].Pages[1].DirFix == 0)
+                if (Core.Type.Map[mapNum].Event[EventID].Pages[0].DirFix == 0)
                     TempEventMap[mapNum].Event[EventID].Dir = dir;
             }
             else if (Core.Type.Map[mapNum].Event[EventID].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].PageID].DirFix == 0)
@@ -1760,7 +1760,7 @@ namespace Server
                     if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                     {
                         var loopTo1 = Core.Type.Map[mapNum].Event[i].PageCount;
-                        for (x = 0; x <= (int)loopTo1; x++)
+                        for (x = 0; x < (int)loopTo1; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.Map[mapNum].Event[i].Pages[x];
@@ -1823,14 +1823,14 @@ namespace Server
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
                             {
                                 var loopTo3 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount;
-                                for (y = 0; y < (int)loopTo3; y++)
+                                for (y = 0; y <= (int)loopTo3; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
                                         var loopTo4 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount;
-                                        for (z = 0; z < (int)loopTo4; z++)
+                                        for (z = 0; z <= (int)loopTo4; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];

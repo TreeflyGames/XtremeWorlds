@@ -801,7 +801,6 @@ namespace Core
 
             public int RepeatMoveRoute;
             public int IgnoreIfCannotMove;
-            public int QuestNum;
 
             public int MoveTimer;
             public int[] SelfSwitches; // 0 to 4

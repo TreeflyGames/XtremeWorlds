@@ -173,7 +173,7 @@ namespace Client
             tabPages.TabPages.Clear();
 
             var loopTo2 = Event.TmpEvent.PageCount;
-            for (i = 0; i <= loopTo2; i++)
+            for (i = 0; i < loopTo2; i++)
                 tabPages.TabPages.Add(Conversion.Str(i + 1));
 
             // items
@@ -192,7 +192,7 @@ namespace Client
             cmbSelfSwitch.SelectedIndex = 0;
 
             // enable delete button
-            if (Event.TmpEvent.PageCount > 1)
+            if (Event.TmpEvent.PageCount > 0)
             {
                 btnDeletePage.Enabled = true;
             }
@@ -212,7 +212,7 @@ namespace Client
                 tabPages.SelectedIndex = 1;
 
             // Load page 1 to start off with
-            Event.CurPageNum = 1;
+            Event.CurPageNum = 0;
             if (string.IsNullOrEmpty(Event.TmpEvent.Name))
                 Event.TmpEvent.Name = "";
             txtName.Text = Event.TmpEvent.Name;
@@ -1066,7 +1066,7 @@ namespace Client
             tabPages.TabPages.Clear();
 
             var loopTo = Event.TmpEvent.PageCount;
-            for (i = 0; i <= loopTo; i++)
+            for (i = 0; i < loopTo; i++)
                 tabPages.TabPages.Add(Conversion.Str(i + 1));
             btnDeletePage.Enabled = true;
         }
@@ -1088,9 +1088,9 @@ namespace Client
             Event.TmpEvent.Pages[Event.CurPageNum] = default;
 
             // move everything else down a notch
-            if (Event.CurPageNum <= Event.TmpEvent.PageCount)
+            if (Event.CurPageNum < Event.TmpEvent.PageCount)
             {
-                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
+                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
                     Event.TmpEvent.Pages[i] = Event.TmpEvent.Pages[i];
             }
             Event.TmpEvent.PageCount = Event.TmpEvent.PageCount - 1;
@@ -1100,11 +1100,11 @@ namespace Client
             // set the tabs
             tabPages.TabPages.Clear();
 
-            for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i <= loopTo1; i++)
+            for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i < loopTo1; i++)
                 tabPages.TabPages.Add("0", Conversion.Str(i + 1), "");
 
             // set the tab back
-            if (Event.CurPageNum <= Event.TmpEvent.PageCount)
+            if (Event.CurPageNum < Event.TmpEvent.PageCount)
             {
                 tabPages.SelectedIndex = tabPages.TabPages.IndexOfKey(Event.CurPageNum.ToString());
             }
@@ -1113,7 +1113,7 @@ namespace Client
                 tabPages.SelectedIndex = tabPages.TabPages.IndexOfKey(Event.TmpEvent.PageCount.ToString());
             }
             // make sure we disable
-            if (Event.TmpEvent.PageCount <= 1)
+            if (Event.TmpEvent.PageCount == 0)
             {
                 btnDeletePage.Enabled = false;
             }
@@ -1672,7 +1672,7 @@ namespace Client
 
         private void ChkGlobal_CheckedChanged(object sender, EventArgs e)
         {
-            if (Event.TmpEvent.PageCount > 1)
+            if (Event.TmpEvent.PageCount > 0)
             {
                 if (MessageBox.Show("If you set the event to global you will lose all pages except for your first one. Do you want to continue?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
@@ -1692,7 +1692,7 @@ namespace Client
             Event.CurPageNum = 1;
             tabPages.TabPages.Clear();
 
-            for (int i = 0, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
+            for (int i = 0, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
                 tabPages.TabPages.Add("0", i.ToString() + 1, "0");
             Event.EventEditorLoadPage(Event.CurPageNum);
         }
