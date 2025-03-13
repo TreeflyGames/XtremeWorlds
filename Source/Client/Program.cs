@@ -2184,7 +2184,6 @@ namespace Client
                     }
                 case 1:
                     {
-                        if (Core.Type.MapEvents[id].Graphic < 0 | Core.Type.MapEvents[id].Graphic > GameState.NumCharacters)
                             return;
 
                         // Reset frame

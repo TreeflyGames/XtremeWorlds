@@ -3306,7 +3306,7 @@ namespace Client
 
             id = buffer.ReadInt32();
 
-            GameState.CurrentEvents = id;
+            GameState.CurrentEvents = id + 1;
             Array.Resize(ref Core.Type.MapEvents, GameState.CurrentEvents + 1);
 
             {
