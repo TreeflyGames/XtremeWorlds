@@ -1735,6 +1735,21 @@ namespace Client
                             break;
                         }
 
+                    case (byte)TargetType.NPC
+                        :
+                        {
+                            x = GameLogic.ConvertMapX(Core.Type.MyMapNPC[withBlock.Target].X * 32) + 16;
+                            y = GameLogic.ConvertMapY(Core.Type.MyMapNPC[withBlock.Target].Y * 32) - 32;
+                            break;
+                        }
+
+                    case (byte)TargetType.Pet:
+                        {
+                            x = GameLogic.ConvertMapX(Core.Type.Player[GameState.MyIndex].Pet.X * 32) + 16;
+                            y = GameLogic.ConvertMapY(Core.Type.Player[GameState.MyIndex].Pet.Y * 32) - 32;
+                            break;
+                        }
+
                     default:
                         {
                             return;
