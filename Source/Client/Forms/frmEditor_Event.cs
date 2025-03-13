@@ -156,8 +156,6 @@ namespace Client
             nudFogData0.Maximum = GameState.NumFogs;
             nudWPMap.Maximum = Constant.MAX_MAPS;
 
-            Width = 946;
-
             fraDialogue.Width = Width;
             fraDialogue.Height = Height;
             fraDialogue.Top = 0;

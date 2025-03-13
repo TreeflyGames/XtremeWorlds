@@ -5093,7 +5093,7 @@ namespace Client
             AutoScroll = true;
             AutoSize = true;
             BackColor = Color.FromArgb(45, 45, 48);
-            ClientSize = new Size(1284, 701);
+            ClientSize = new Size(1284, 712);
             Controls.Add(pnlVariableSwitches);
             Controls.Add(fraDialogue);
             Controls.Add(btnOk);
@@ -5107,6 +5107,8 @@ namespace Client
             ForeColor = Color.Gainsboro;
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Margin = new Padding(4, 3, 4, 3);
+            MaximumSize = new Size(1300, 751);
+            MinimumSize = new Size(1300, 751);
             Name = "frmEditor_Event";
             Text = "Event Editor";
             Activated += frmEditor_Event_Activated;
