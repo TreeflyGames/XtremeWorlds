@@ -176,7 +176,7 @@ namespace Client
 
             var loopTo2 = Event.TmpEvent.PageCount;
             for (i = 0; i <= loopTo2; i++)
-                tabPages.TabPages.Add(Conversion.Str(i));
+                tabPages.TabPages.Add(Conversion.Str(i + 1));
 
             // items
             cmbHasItem.Items.Clear();
@@ -1069,7 +1069,7 @@ namespace Client
 
             var loopTo = Event.TmpEvent.PageCount;
             for (i = 0; i <= loopTo; i++)
-                tabPages.TabPages.Add(Conversion.Str(i));
+                tabPages.TabPages.Add(Conversion.Str(i + 1));
             btnDeletePage.Enabled = true;
         }
 
@@ -1103,7 +1103,7 @@ namespace Client
             tabPages.TabPages.Clear();
 
             for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i <= loopTo1; i++)
-                tabPages.TabPages.Add("0", Conversion.Str(i), "");
+                tabPages.TabPages.Add("0", Conversion.Str(i + 1), "");
 
             // set the tab back
             if (Event.CurPageNum <= Event.TmpEvent.PageCount)
@@ -1695,7 +1695,7 @@ namespace Client
             tabPages.TabPages.Clear();
 
             for (int i = 0, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
-                tabPages.TabPages.Add("0", i.ToString(), "0");
+                tabPages.TabPages.Add("0", i.ToString() + 1, "0");
             Event.EventEditorLoadPage(Event.CurPageNum);
         }
 
