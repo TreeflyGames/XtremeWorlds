@@ -80,7 +80,7 @@ namespace Client
         {
             int tmpindex;
 
-            Resource.ClearResource(GameState.EditorIndex);
+            MapResource.ClearResource(GameState.EditorIndex);
 
             tmpindex = lstIndex.SelectedIndex;
             lstIndex.Items.RemoveAt(GameState.EditorIndex);

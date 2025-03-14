@@ -223,7 +223,7 @@ namespace Client
         {
             GameState.MyEditorType = -1;
             ClearChanged_Resource();
-            Resource.ClearResources();
+            MapResource.ClearResources();
             NetworkSend.SendCloseEditor();
         }
 
