@@ -1627,11 +1627,11 @@ namespace Server
             int i;
             var buffer = new ByteStream(data);
 
-            var loopTo = Core.Constant.MAX_SWITCHES - 1;
+            var loopTo = Core.Constant.MAX_SWITCHES;
             for (i = 0; i < loopTo; i++)
                 Switches[i] = buffer.ReadString();
 
-            var loopTo1 = Core.Constant.NAX_VARIABLES - 1;
+            var loopTo1 = Core.Constant.NAX_VARIABLES;
             for (i = 0; i < loopTo1; i++)
                 Variables[i] = buffer.ReadString();
 
@@ -1709,11 +1709,11 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SSwitchesAndVariables);
 
-            var loopTo = Core.Constant.MAX_SWITCHES - 1;
+            var loopTo = Core.Constant.MAX_SWITCHES;
             for (i = 0; i < loopTo; i++)
                 buffer.WriteString(Switches[i]);
 
-            var loopTo1 = Core.Constant.NAX_VARIABLES - 1;
+            var loopTo1 = Core.Constant.NAX_VARIABLES;
             for (i = 0; i < loopTo1; i++)
                 buffer.WriteString(Variables[i]);
 

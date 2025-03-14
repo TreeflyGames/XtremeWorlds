@@ -3815,6 +3815,7 @@ namespace Client
 
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
                 buffer.WriteString(Switches[i]);
+
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
                 buffer.WriteString(Variables[i]);
 
