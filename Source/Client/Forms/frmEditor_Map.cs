@@ -534,6 +534,7 @@ namespace Client
             ClearAttributeDialogue();
             pnlAttributes.Visible = true;
             fraHeal.Visible = true;
+            cmbHeal.SelectedIndex = 0;
         }
 
         private void ScrlTrap_ValueChanged(object sender, EventArgs e)
