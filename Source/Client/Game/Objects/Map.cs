@@ -540,7 +540,6 @@ namespace Client
 
             // Reset tile history indices
             GameState.HistoryIndex = 0;
-            GameState.TileHistoryHighIndex = 0;
 
             for (int i = 0; i < GameState.MaxTileHistory; i++)
             {
