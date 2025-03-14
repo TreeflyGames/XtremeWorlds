@@ -399,7 +399,8 @@ namespace Client
             if (index < 1 | index > GameState.NumParallax)
                 return;
 
-            // Calculate horizontal and vertical offsets based on player position
+            // Calculate horizontal and vertical offsets based
+            // yer position
             horz = GameLogic.ConvertMapX(GetPlayerX(GameState.MyIndex)) * 2.5f - 50f;
             vert = GameLogic.ConvertMapY(GetPlayerY(GameState.MyIndex)) * 2.5f - 50f;
 
@@ -795,7 +796,7 @@ namespace Client
                         {
                             Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
                             var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
-                            for (x = 0; x <= loopTo3; x++)
+                            for (x = 0; x < loopTo3; x++)
                             {
                                 {
                                     ref var withBlock1 = ref Core.Type.MyMap.Event[i].Pages[x];

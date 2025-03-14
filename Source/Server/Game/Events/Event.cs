@@ -1823,14 +1823,14 @@ namespace Server
                             if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount > 0)
                             {
                                 var loopTo3 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandListCount;
-                                for (y = 0; y <= (int)loopTo3; y++)
+                                for (y = 0; y < (int)loopTo3; y++)
                                 {
                                     buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount);
                                     buffer.WriteInt32(Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].ParentList);
                                     if (Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                     {
                                         var loopTo4 = Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].CommandCount;
-                                        for (z = 0; z <= (int)loopTo4; z++)
+                                        for (z = 0; z < (int)loopTo4; z++)
                                         {
                                             {
                                                 ref var withBlock2 = ref Core.Type.Map[mapNum].Event[i].Pages[x].CommandList[y].Commands[z];

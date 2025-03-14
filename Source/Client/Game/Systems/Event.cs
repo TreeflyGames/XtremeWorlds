@@ -46,14 +46,14 @@ namespace Client
         internal static bool EventChat;
         internal static string EventText;
         internal static bool ShowEventLbl;
-        internal static string[] EventChoices = new string[5];
-        internal static bool[] EventChoiceVisible = new bool[5];
+        internal static string[] EventChoices = new string[4];
+        internal static bool[] EventChoiceVisible = new bool[4];
         internal static int EventChatType;
         internal static int AnotherChat;
 
         // constants
-        internal static string[] Switches = new string[101];
-        internal static string[] Variables = new string[101];
+        internal static string[] Switches = new string[Constant.MAX_SWITCHES];
+        internal static string[] Variables = new string[Constant.NAX_VARIABLES];
 
         internal static bool EventCopy;
         internal static bool EventPaste;
@@ -405,32 +405,32 @@ namespace Client
                                                     {
                                                         case 0:
                                                             {
-                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + "] == " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
+                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + 1 + "] == " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
                                                                 break;
                                                             }
                                                         case 1:
                                                             {
-                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + "] >= " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
+                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + 1 + "] >= " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
                                                                 break;
                                                             }
                                                         case 2:
                                                             {
-                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + "] <= " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
+                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + 1 + "] <= " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
                                                                 break;
                                                             }
                                                         case 3:
                                                             {
-                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + "] > " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
+                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + 1 + "] > " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
                                                                 break;
                                                             }
                                                         case 4:
                                                             {
-                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + "] < " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
+                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + 1 + "] < " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
                                                                 break;
                                                             }
                                                         case 5:
                                                             {
-                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + "] != " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
+                                                                frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + 1 + "] != " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data3);
                                                                 break;
                                                             }
                                                     }
@@ -441,11 +441,11 @@ namespace Client
                                                 {
                                                     if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data2 == 0)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Switch [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Switches[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + "] == " + "True");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Switch [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Switches[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + 1] + "] == " + "True");
                                                     }
                                                     else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data2 == 1)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Switch [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Switches[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1] + "] == " + "False");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Conditional Branch: Player Switch [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + ". " + Switches[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].ConditionalBranch.Data1 + 1] + "] == " + "False");
                                                     }
 
                                                     break;
@@ -845,43 +845,51 @@ namespace Client
                                     }
                                 case (byte)Core.Enum.EventType.PlayerVar:
                                     {
+                                        string variableValue = Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1];
+                                        if (variableValue == "")
+                                            variableValue = ": None";
+
                                         switch (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2)
                                         {
                                             case 0:
                                                 {
-                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1] + "] == " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3);
+                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Variable [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + variableValue + "] == " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3);
                                                     break;
                                                 }
                                             case 1:
                                                 {
-                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1] + "] + " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3);
+                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Variable [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + variableValue + "] + " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3);
                                                     break;
                                                 }
                                             case 2:
                                                 {
-                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1] + "] - " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3);
+                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Variable [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + variableValue + "] - " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3);
                                                     break;
                                                 }
                                             case 3:
                                                 {
-                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Variable [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1] + "] Random Between " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + " and " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data4);
+                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Variable [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + variableValue + "] Random Between " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + " and " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data4);
                                                     break;
                                                 }
                                         }
-
+   
                                         break;
                                     }
                                 case (byte)Core.Enum.EventType.PlayerSwitch:
                                     {
+                                        string switchValue = Variables[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1];
+                                        if (switchValue == "")
+                                            switchValue = ": None";
+
                                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 0)
                                         {
-                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Switch [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + ". " + Switches[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1] + "] == True");
+                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Switch [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + switchValue + "] == False");
                                         }
                                         else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 1)
                                         {
-                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Switch [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + ". " + Switches[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1] + "] == False");
+                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Switch [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + switchValue + "] == True");
                                         }
-
+                                        
                                         break;
                                     }
                                 case (byte)Core.Enum.EventType.SelfSwitch:
@@ -892,11 +900,11 @@ namespace Client
                                                 {
                                                     if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 0)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [A] to ON");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [A] to Off");
                                                     }
                                                     else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 1)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [A] to OFF");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [A] to On");
                                                     }
 
                                                     break;
@@ -905,11 +913,11 @@ namespace Client
                                                 {
                                                     if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 0)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [B] to ON");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [B] to Off");
                                                     }
                                                     else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 1)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [B] to OFF");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [B] to On");
                                                     }
 
                                                     break;
@@ -918,11 +926,11 @@ namespace Client
                                                 {
                                                     if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 0)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [C] to ON");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [C] to Off");
                                                     }
                                                     else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 1)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [C] to OFF");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [C] to On");
                                                     }
 
                                                     break;
@@ -931,11 +939,11 @@ namespace Client
                                                 {
                                                     if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 0)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [D] to ON");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [D] to Off");
                                                     }
                                                     else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 1)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [D] to OFF");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Self Switch [D] to On");
                                                     }
 
                                                     break;
@@ -1087,15 +1095,15 @@ namespace Client
                                     {
                                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 0)
                                         {
-                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " on Player");
+                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Player");
                                         }
                                         else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 1)
                                         {
-                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " on Event #" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + " [" + Strings.Trim(Core.Type.MyMap.Event[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3].Name) + "]");
+                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Event " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + " [" + Strings.Trim(Core.Type.MyMap.Event[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3].Name) + "]");
                                         }
                                         else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 2)
                                         {
-                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " on Tile(" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + "," + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data4 + ")");
+                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Tile (" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + "," + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data4 + ")");
                                         }
 
                                         break;
@@ -1158,18 +1166,18 @@ namespace Client
                                                 {
                                                     if (Core.Type.MyMap.NPC[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2] <= 0)
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Show Chat Bubble - " + Strings.Mid(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1, 1, 20) + "... - On NPC [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2.ToString() + ". ]");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Show Chat Bubble - " + Strings.Mid(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1, 1, 20) + "... - On NPC [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 + 1).ToString() + ". ]");
                                                     }
                                                     else
                                                     {
-                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Show Chat Bubble - " + Strings.Mid(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1, 1, 20) + "... - On NPC [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2.ToString() + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2]].Name + "]");
+                                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Show Chat Bubble - " + Strings.Mid(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1, 1, 20) + "... - On NPC [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 + 1).ToString() + ". " + Core.Type.NPC[Core.Type.MyMap.NPC[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2]].Name + "]");
                                                     }
 
                                                     break;
                                                 }
                                             case (int)Core.Enum.TargetType.Event:
                                                 {
-                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Show Chat Bubble - " + Strings.Mid(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1, 1, 20) + "... - On Event [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2.ToString() + ". " + Core.Type.MyMap.Event[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2].Name + "]");
+                                                    frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Show Chat Bubble - " + Strings.Mid(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1, 1, 20) + "... - On Event [" + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 + 1).ToString() + ". " + Core.Type.MyMap.Event[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2].Name + "]");
                                                     break;
                                                 }
                                         }
@@ -1441,7 +1449,7 @@ namespace Client
                 case (int)Core.Enum.EventType.Condition:
                     {
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
-                        TmpEvent.Pages[CurPageNum].CommandListCount =+ 1;
+                        TmpEvent.Pages[CurPageNum].CommandListCount += 1;
                         Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList, TmpEvent.Pages[CurPageNum].CommandListCount);
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.CommandList = TmpEvent.Pages[CurPageNum].CommandListCount;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].ConditionalBranch.ElseCommandList = TmpEvent.Pages[CurPageNum].CommandListCount;
@@ -1558,7 +1566,7 @@ namespace Client
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text3 = frmEditor_Event.Instance.txtChoices2.Text;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text4 = frmEditor_Event.Instance.txtChoices3.Text;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text5 = frmEditor_Event.Instance.txtChoices4.Text;
-                        TmpEvent.Pages[CurPageNum].CommandListCount =+ 3;
+                        TmpEvent.Pages[CurPageNum].CommandListCount += 3;
                         Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList, TmpEvent.Pages[CurPageNum].CommandListCount + 1);
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = TmpEvent.Pages[CurPageNum].CommandListCount - 3;
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2 = TmpEvent.Pages[CurPageNum].CommandListCount - 2;
@@ -1975,7 +1983,7 @@ namespace Client
             int curlist;
             int curslot;
 
-            i = frmEditor_Event.Instance.lstCommands.SelectedIndex;
+            i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1;
             if (i == -1)
                 return;
 
@@ -2925,7 +2933,7 @@ namespace Client
             int curlist;
             int curslot;
 
-            i = frmEditor_Event.Instance.lstCommands.SelectedIndex;
+            i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1;
             if (i == -1)
                 return;
 

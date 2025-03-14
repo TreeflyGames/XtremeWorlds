@@ -1405,6 +1405,9 @@ namespace Server
             Core.Type.TempPlayer[index].InShop = -1;
             Core.Type.TempPlayer[index].InTrade = -1;
 
+            for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventProcessingCount; i < loopTo; i++)
+                Core.Type.TempPlayer[index].EventProcessing[i].EventID = -1;
+
             ClearCharacter(index);
         }
 

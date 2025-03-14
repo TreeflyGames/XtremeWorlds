@@ -274,7 +274,7 @@ namespace Client
         public const int EffectTypeWeather = 5;
         public const int EffectTypeTint = 6;
 
-        public static string[] MapNames = new string[1001];
+        public static string[] MapNames = new string[Constant.MAX_MAPS];
 
         // Chat variables
         public const long ChatWidth = 316L;

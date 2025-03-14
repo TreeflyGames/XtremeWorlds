@@ -617,7 +617,7 @@ namespace Server
 
                         if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                         {
-                            for (int X = 0, loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount; X <= loopTo5; X++)
+                            for (int X = 0, loopTo5 = Core.Type.Map[mapNum].Event[i].PageCount; X < loopTo5; X++)
                             {
                                 {
                                     ref var withBlock1 = ref Core.Type.Map[mapNum].Event[i].Pages[X];

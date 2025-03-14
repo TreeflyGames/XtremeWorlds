@@ -4999,7 +4999,6 @@ namespace Client
             lstSwitches.Name = "lstSwitches";
             lstSwitches.Size = new Size(239, 332);
             lstSwitches.TabIndex = 7;
-            lstSwitches.Click += lstSwitches_Click;
             lstSwitches.DoubleClick += LstSwitches_DoubleClick;
             // 
             // lstVariables
@@ -5013,7 +5012,6 @@ namespace Client
             lstVariables.Name = "lstVariables";
             lstVariables.Size = new Size(239, 332);
             lstVariables.TabIndex = 6;
-            lstVariables.Click += lstVariables_Click;
             lstVariables.DoubleClick += LstVariables_DoubleClick;
             // 
             // btnLabel_Cancel

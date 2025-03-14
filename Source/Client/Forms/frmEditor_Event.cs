@@ -1807,11 +1807,11 @@ namespace Client
             lstSwitches.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
-                lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
+                lstSwitches.Items.Add((i + 1).ToString()  + ". " + Event.Switches[i]);
             lstVariables.Items.Clear();
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
-                lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
+                lstVariables.Items.Add((i + 1).ToString() + ". " + Event.Variables[i]);
 
         }
 
@@ -1886,12 +1886,6 @@ namespace Client
             Event.TmpEvent.Name = Strings.Trim(txtName.Text);
         }
 
-        private void lstVariables_Click(object sender, EventArgs e)
-        {
-            if (lstVariables.SelectedIndex == 0)
-                lstVariables.SelectedIndex = 1;
-        }
-
         private void LstVariables_DoubleClick(object sender, EventArgs e)
         {
             if (lstVariables.SelectedIndex > -1 & lstVariables.SelectedIndex < Constant.NAX_VARIABLES)
@@ -1903,12 +1897,6 @@ namespace Client
                 Event.RenameType = 1;
                 Event.RenameIndex = lstVariables.SelectedIndex;
             }
-        }
-
-        private void lstSwitches_Click(object sender, EventArgs e)
-        {
-            if (lstSwitches.SelectedIndex == 0)
-                lstSwitches.SelectedIndex = 1;
         }
 
         private void LstSwitches_DoubleClick(object sender, EventArgs e)
@@ -2532,7 +2520,6 @@ namespace Client
                 nudVariableData1.Value = 0m;
                 nudVariableData2.Enabled = false;
                 nudVariableData2.Value = 0m;
-                nudVariableData3.Enabled = false;
                 nudVariableData3.Value = 0m;
                 nudVariableData4.Enabled = false;
                 nudVariableData4.Value = 0m;
