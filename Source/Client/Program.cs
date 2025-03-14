@@ -2521,7 +2521,7 @@ namespace Client
                             {
                                 if (Core.Type.MyMapResource[i].Y == y)
                                 {
-                                    Resource.DrawMapResource(i);
+                                    MapResource.DrawMapResource(i);
                                 }
                             }
                         }

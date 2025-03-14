@@ -248,7 +248,7 @@ namespace Client
             Map.ClearMapNPCs();
             Map.ClearMapItems();
             Database.ClearNPCs();
-            Resource.ClearResources();
+            MapResource.ClearResources();
             Item.ClearItems();
             Shop.ClearShops();
             Database.ClearSkills();

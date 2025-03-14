@@ -7,7 +7,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Resource
+    public static class MapResource
     {
 
         #region Database
