@@ -130,7 +130,7 @@ namespace Server
         {
             int i;
 
-            if (NetworkConfig.Socket.HighIndex > 0)
+            if (NetworkConfig.Socket?.HighIndex > 0)
             {
                 Console.WriteLine("Saving all online players...");
 
