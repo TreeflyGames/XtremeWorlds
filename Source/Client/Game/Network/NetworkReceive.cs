@@ -55,8 +55,8 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateSkill] = Packet_UpdateSkill;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSkills] = Packet_Skills;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SLeftMap] = Packet_LeftMap;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapResource] = Resource.Packet_MapResource;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateResource] = Resource.Packet_UpdateResource;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapResource] = MapResource.Packet_MapResource;
+            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SUpdateResource] = MapResource.Packet_UpdateResource;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SSendPing] = Packet_Ping;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SActionMsg] = Packet_ActionMessage;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerEXP] = Player.Packet_PlayerExp;
