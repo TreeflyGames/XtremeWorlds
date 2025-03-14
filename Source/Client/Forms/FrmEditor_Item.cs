@@ -447,6 +447,8 @@ namespace Client
             {
                 picItem.BackgroundImage = null;
             }
+
+            picItem.Size = new Size(32, 32);
         }
 
         private void DrawPaperdoll()
@@ -468,10 +470,5 @@ namespace Client
         }
 
         #endregion
-
-        private void lstIndex_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

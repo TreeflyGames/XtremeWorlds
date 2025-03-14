@@ -212,7 +212,6 @@ namespace Client
             lstIndex.Size = new Size(228, 452);
             lstIndex.TabIndex = 1;
             lstIndex.Click += lstIndex_Click;
-            lstIndex.SelectedIndexChanged += lstIndex_SelectedIndexChanged;
             // 
             // DarkLabel1
             // 
@@ -447,7 +446,7 @@ namespace Client
             DarkLabel14.Location = new Point(7, 25);
             DarkLabel14.Margin = new Padding(4, 0, 4, 0);
             DarkLabel14.Name = "DarkLabel14";
-            DarkLabel14.Size = new Size(61, 15);
+            DarkLabel14.Size = new Size(59, 15);
             DarkLabel14.TabIndex = 0;
             DarkLabel14.Text = "Tool Type:";
             // 
@@ -1016,7 +1015,7 @@ namespace Client
             DarkLabel4.Location = new Point(7, 50);
             DarkLabel4.Margin = new Padding(4, 0, 4, 0);
             DarkLabel4.Name = "DarkLabel4";
-            DarkLabel4.Size = new Size(35, 15);
+            DarkLabel4.Size = new Size(34, 15);
             DarkLabel4.TabIndex = 8;
             DarkLabel4.Text = "Type:";
             // 
@@ -1039,7 +1038,7 @@ namespace Client
             DarkLabel5.Location = new Point(7, 81);
             DarkLabel5.Margin = new Padding(4, 0, 4, 0);
             DarkLabel5.Name = "DarkLabel5";
-            DarkLabel5.Size = new Size(60, 15);
+            DarkLabel5.Size = new Size(59, 15);
             DarkLabel5.TabIndex = 10;
             DarkLabel5.Text = "Sub-Type:";
             // 
@@ -1073,7 +1072,7 @@ namespace Client
             DarkLabel6.Location = new Point(261, 81);
             DarkLabel6.Margin = new Padding(4, 0, 4, 0);
             DarkLabel6.Name = "DarkLabel6";
-            DarkLabel6.Size = new Size(62, 15);
+            DarkLabel6.Size = new Size(61, 15);
             DarkLabel6.TabIndex = 13;
             DarkLabel6.Text = "Bind Type:";
             // 

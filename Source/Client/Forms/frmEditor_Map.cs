@@ -41,6 +41,7 @@ namespace Client
             ToolStrip.BringToFront();
 
             scrlFog.Maximum = GameState.NumFogs;
+            scrlMapItem.Maximum = Constant.MAX_ITEMS;
         }
 
         private void frmEditor_Map_Resize(object sender, EventArgs e)
@@ -405,7 +406,7 @@ namespace Client
             }
 
             DrawItem();
-            lblMapItem.Text = scrlMapItem.Value + ". " + Core.Type.Item[scrlMapItem.Value].Name + " x" + scrlMapItemValue.Value;
+            lblMapItem.Text = (scrlMapItem.Value + 1) + ". " + Core.Type.Item[scrlMapItem.Value].Name + " x" + scrlMapItemValue.Value;
         }
 
         private void ScrlMapItemValue_ValueChanged(object sender, EventArgs e)
@@ -429,10 +430,9 @@ namespace Client
             ClearAttributeDialogue();
             pnlAttributes.Visible = true;
             fraMapItem.Visible = true;
-
-            scrlMapItem.Maximum = Constant.MAX_ITEMS - 1;
-            scrlMapItem.Value = 1;
+            
             lblMapItem.Text = Core.Type.Item[scrlMapItem.Value].Name + " x" + scrlMapItemValue.Value;
+            ScrlMapItem_ValueChanged(sender, e);
             DrawItem();
         }
 
