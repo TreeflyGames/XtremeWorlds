@@ -760,7 +760,7 @@ namespace Core
 
         public struct GlobalMapEventsStruct
         {
-            public int EventId;
+            public int EventID;
             public int PageId;
             public int X;
             public int Y;
@@ -911,7 +911,7 @@ namespace Core
             public byte SpriteType;
             public byte xOffset;
             public byte yOffset;
-            public int EventId;
+            public int EventID;
         }
 
         public struct ControlPartStruct

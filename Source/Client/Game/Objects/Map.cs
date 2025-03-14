@@ -448,18 +448,18 @@ namespace Client
 
                 case (int)Core.Enum.PictureType.CenterEvent:
                     {
-                        if (GameState.CurrentEvents < Event.Picture.EventId)
+                        if (GameState.CurrentEvents < Event.Picture.EventID)
                         {
                             // Reset picture details and exit if event is invalid
-                            Event.Picture.EventId = 0;
+                            Event.Picture.EventID = 0;
                             Event.Picture.Index = 0;
                             Event.Picture.SpriteType = 0;
                             Event.Picture.xOffset = 0;
                             Event.Picture.yOffset = 0;
                             return;
                         }
-                        posX = (int)Math.Round(GameLogic.ConvertMapX(Core.Type.MapEvents[Event.Picture.EventId].X * 32) / 2d - Event.Picture.xOffset);
-                        posY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.MapEvents[Event.Picture.EventId].Y * 32) / 2d - Event.Picture.yOffset);
+                        posX = (int)Math.Round(GameLogic.ConvertMapX(Core.Type.MapEvents[Event.Picture.EventID].X * 32) / 2d - Event.Picture.xOffset);
+                        posY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.MapEvents[Event.Picture.EventID].Y * 32) / 2d - Event.Picture.yOffset);
                         break;
                     }
 
