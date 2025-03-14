@@ -2110,7 +2110,7 @@ namespace Client
             {
                 case (int)Core.Enum.EditorType.Item:
                     {
-                        if (frmEditor_Item.Instance != null)
+                        if (frmEditor_Item.Instance.IsHandleCreated)
                         {
                             frmEditor_Item.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2121,7 +2121,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Job:
                     {
-                        if (frmEditor_Job.Instance != null)
+                        if (frmEditor_Job.Instance.IsHandleCreated)
                         {
                             frmEditor_Job.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2132,14 +2132,14 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Map:
                     {
-                        if (frmEditor_Map.Instance != null)
+                        if (frmEditor_Map.Instance.IsHandleCreated)
                         {
                             frmEditor_Map.Instance.Invoke((MethodInvoker)delegate
                             {
                                 frmEditor_Map.Instance.Dispose();
                             });
                         }
-                        if (frmEditor_Event.Instance != null)
+                        if (frmEditor_Event.Instance.IsHandleCreated)
                         {
                             frmEditor_Event.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2150,7 +2150,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.NPC:
                     {
-                        if (frmEditor_NPC.Instance != null)
+                        if (frmEditor_NPC.Instance.IsHandleCreated)
                         {
                             frmEditor_NPC.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2161,7 +2161,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Pet:
                     {
-                        if (frmEditor_Pet.Instance != null)
+                        if (frmEditor_Pet.Instance.IsHandleCreated)
                         {
                             frmEditor_Pet.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2172,7 +2172,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Projectile:
                     {
-                        if (frmEditor_Projectile.Instance != null)
+                        if (frmEditor_Projectile.Instance.IsHandleCreated)
                         {
                             frmEditor_Projectile.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2183,7 +2183,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Resource:
                     {
-                        if (frmEditor_Resource.Instance != null)
+                        if (frmEditor_Resource.Instance.IsHandleCreated)
                         {
                             frmEditor_Resource.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2194,7 +2194,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Shop:
                     {
-                        if (frmEditor_Shop.Instance != null)
+                        if (frmEditor_Shop.Instance.IsHandleCreated)
                         {
                             frmEditor_Shop.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2205,7 +2205,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Skill:
                     {
-                        if (frmEditor_Skill.Instance != null)
+                        if (frmEditor_Skill.Instance.IsHandleCreated)
                         {
                             frmEditor_Skill.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2216,7 +2216,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Animation:
                     {
-                        if (frmEditor_Animation.Instance != null)
+                        if (frmEditor_Animation.Instance.IsHandleCreated)
                         {
                             frmEditor_Animation.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2227,7 +2227,7 @@ namespace Client
                     }
                 case (int)Core.Enum.EditorType.Moral:
                     {
-                        if (frmEditor_Moral.Instance != null)
+                        if (frmEditor_Moral.Instance.IsHandleCreated)
                         {
                             frmEditor_Moral.Instance.Invoke((MethodInvoker)delegate
                             {
@@ -2240,7 +2240,7 @@ namespace Client
 
             if (GameState.AdminPanel)
             {
-                if (FrmAdmin.Instance != null)
+                if (FrmAdmin.Instance.IsHandleCreated)
                     {
                         FrmAdmin.Instance.Invoke((MethodInvoker)delegate
                     {
