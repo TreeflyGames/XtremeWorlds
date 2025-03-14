@@ -40,10 +40,14 @@ namespace Server
                         id = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID;
                         if (id > Core.Type.TempPlayer[i].EventMap.CurrentEvents)
                             break;
+
                         page = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID;
 
                         if (x < id)
                             continue;
+
+                        if (id > Information.UBound(Map[mapNum].Event))
+                            break;
 
                         if (Map[mapNum].Event[id].PageCount >= page)
                         {
@@ -212,7 +216,7 @@ namespace Server
             int n;
             int x;
             int z;
-            bool spawnevent;
+            bool spawnevent = false;
             int p;
 
             var loopTo = NetworkConfig.Socket.HighIndex;
@@ -224,6 +228,8 @@ namespace Server
                     var loopTo1 = Core.Type.TempPlayer[i].EventMap.CurrentEvents;
                     for (x = 0; x < (int)loopTo1; x++)
                     {
+                        p = -1;
+
                         if (x >= TempPlayer[i].EventMap.EventPages.Length)
                             break;
 
@@ -239,7 +245,7 @@ namespace Server
                             if (x < id)
                                 continue;
 
-                            for (z = Map[mapNum].Event[id].PageCount - 1; z >= 0; z -= 1)
+                            for (z = 0; z < Map[mapNum].Event[id].PageCount; z += 1)
                             {
                                 spawnevent = Conversions.ToBoolean(1);
 
@@ -356,195 +362,198 @@ namespace Server
 
                                 if (spawnevent)
                                 {
-                                    if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == true)
-                                    {
-                                        if (z <= PageID)
-                                        {
-                                            spawnevent = Conversions.ToBoolean(0);
-                                        }
-                                    }
-                                }
-
-                                if (spawnevent)
-                                {
-
-                                    if (Core.Type.TempPlayer[i].EventProcessingCount > 0)
-                                    {
-                                        var loopTo2 = Information.UBound(Core.Type.TempPlayer[i].EventProcessing);
-                                        for (n = 0; n < (int)loopTo2; n++)
-                                        {
-                                            if (Core.Type.TempPlayer[i].EventProcessing[n].EventID == id)
-                                            {
-                                                Core.Type.TempPlayer[i].EventProcessing[n].EventID = -1; 
-                                                Core.Type.TempPlayer[i].EventProcessing[n].Active = 0;
-                                            }
-                                        }
-                                    }
-
-                                    {
-                                        var withBlock = Core.Type.TempPlayer[i].EventMap.EventPages[id];
-                                        if (Map[mapNum].Event[id].Pages[z].GraphicType == 1)
-                                        {
-                                            switch (Map[mapNum].Event[id].Pages[z].GraphicY)
-                                            {
-                                                case 0:
-                                                    {
-                                                        withBlock.Dir = (int)DirectionType.Down;
-                                                        break;
-                                                    }
-                                                case 1:
-                                                    {
-                                                        withBlock.Dir = (int)DirectionType.Left;
-                                                        break;
-                                                    }
-                                                case 2:
-                                                    {
-                                                        withBlock.Dir = (int)DirectionType.Right;
-                                                        break;
-                                                    }
-                                                case 3:
-                                                    {
-                                                        withBlock.Dir = (int)DirectionType.Up;
-                                                        break;
-                                                    }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            withBlock.Dir = 0;
-                                        }
-                                        withBlock.Graphic = Map[mapNum].Event[id].Pages[z].Graphic;
-                                        withBlock.GraphicType = Map[mapNum].Event[id].Pages[z].GraphicType;
-                                        withBlock.GraphicX = Map[mapNum].Event[id].Pages[z].GraphicX;
-                                        withBlock.GraphicY = Map[mapNum].Event[id].Pages[z].GraphicY;
-                                        withBlock.GraphicX2 = Map[mapNum].Event[id].Pages[z].GraphicX2;
-                                        withBlock.GraphicY2 = Map[mapNum].Event[id].Pages[z].GraphicY2;
-                                        switch (Map[mapNum].Event[id].Pages[z].MoveSpeed)
-                                        {
-                                            case 0:
-                                                {
-                                                    withBlock.MovementSpeed = 2;
-                                                    break;
-                                                }
-                                            case 1:
-                                                {
-                                                    withBlock.MovementSpeed = 3;
-                                                    break;
-                                                }
-                                            case 2:
-                                                {
-                                                    withBlock.MovementSpeed = 4;
-                                                    break;
-                                                }
-                                            case 3:
-                                                {
-                                                    withBlock.MovementSpeed = 6;
-                                                    break;
-                                                }
-                                            case 4:
-                                                {
-                                                    withBlock.MovementSpeed = 12;
-                                                    break;
-                                                }
-                                            case 5:
-                                                {
-                                                    withBlock.MovementSpeed = 24;
-                                                    break;
-                                                }
-                                        }
-                                        withBlock.Position = Map[mapNum].Event[id].Pages[z].Position;
-                                        withBlock.EventID = id;
-                                        withBlock.PageID = z;
-                                        withBlock.Visible = true;
-
-                                        withBlock.MoveType = Map[mapNum].Event[id].Pages[z].MoveType;
-                                        if (withBlock.MoveType == 2)
-                                        {
-                                            withBlock.MoveRouteCount = Map[mapNum].Event[id].Pages[z].MoveRouteCount;
-                                            if (withBlock.MoveRouteCount > 0)
-                                            {
-                                                ;
-
-                                                if (Map[mapNum].Event[id].Pages[z].MoveRouteCount > 0)
-                                                {
-                                                    Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages[i].MoveRoute, Map[mapNum].Event[id].Pages[z].MoveRouteCount);
-                                                    for (p = 0; p < Map[mapNum].Event[id].Pages[z].MoveRouteCount; p++)
-                                                    {
-                                                        Core.Type.TempPlayer[i].EventMap.EventPages[i].MoveRoute[p] = Map[mapNum].Event[id].Pages[z].MoveRoute[p];
-                                                    }
-                                                    Core.Type.TempPlayer[i].EventMap.EventPages[i].MoveRouteComplete = 0;
-                                                }
-                                                else
-                                                {
-                                                    Core.Type.TempPlayer[i].EventMap.EventPages[i].MoveRouteComplete = 0;
-                                                }
-
-                                                var loopTo3 = Map[mapNum].Event[id].Pages[z].MoveRouteCount;
-                                                for (p = 0; p < (int)loopTo3; p++)
-                                                    withBlock.MoveRoute[p] = Map[mapNum].Event[id].Pages[z].MoveRoute[p];
-                                                withBlock.MoveRouteComplete = 0;
-                                            }
-                                            else
-                                            {
-                                                withBlock.MoveRouteComplete = 0;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            withBlock.MoveRouteComplete = 0;
-                                        }
-
-                                        withBlock.RepeatMoveRoute = Map[mapNum].Event[id].Pages[z].RepeatMoveRoute;
-                                        withBlock.IgnoreIfCannotMove = Map[mapNum].Event[id].Pages[z].IgnoreMoveRoute;
-
-                                        withBlock.MoveFreq = Map[mapNum].Event[id].Pages[z].MoveFreq;
-                                        withBlock.MoveSpeed = Map[mapNum].Event[id].Pages[z].MoveSpeed;
-
-                                        withBlock.WalkThrough = Map[mapNum].Event[id].Pages[z].WalkThrough;
-                                        withBlock.ShowName = Map[mapNum].Event[id].Pages[z].ShowName;
-                                        withBlock.WalkingAnim = Map[mapNum].Event[id].Pages[z].WalkAnim;
-                                        withBlock.FixedDir = Map[mapNum].Event[id].Pages[z].DirFix;
-
-                                    }
-
-                                    if (Map[mapNum].Event[id].Globals == 1)
-                                    {
-                                        if (spawnevent)
-                                        {
-                                            Event.TempEventMap[mapNum].Event[id].Active = z;
-                                            Event.TempEventMap[mapNum].Event[id].Position = Map[mapNum].Event[id].Pages[z].Position;
-                                        }
-                                    }
-
-                                    var buffer = new ByteStream(4);
-                                    buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
-                                    buffer.WriteInt32(id);
-                                    {
-                                        ref var withBlock1 = ref Core.Type.TempPlayer[i].EventMap.EventPages[x];
-                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Name);
-                                        buffer.WriteInt32(withBlock1.Dir);
-                                        buffer.WriteByte(withBlock1.GraphicType);
-                                        buffer.WriteInt32(withBlock1.Graphic);
-                                        buffer.WriteInt32(withBlock1.GraphicX);
-                                        buffer.WriteInt32(withBlock1.GraphicX2);
-                                        buffer.WriteInt32(withBlock1.GraphicY);
-                                        buffer.WriteInt32(withBlock1.GraphicY2);
-                                        buffer.WriteInt32(withBlock1.MovementSpeed);
-                                        buffer.WriteInt32(withBlock1.X);
-                                        buffer.WriteInt32(withBlock1.Y);
-                                        buffer.WriteByte(withBlock1.Position);
-                                        buffer.WriteBoolean(withBlock1.Visible);
-                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkAnim);
-                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].DirFix);
-                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
-                                        buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
-                                    }
-                                    NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
-
-                                    buffer.Dispose();
-                                    z = 0;
+                                    p = z;
                                 }
                             }
+
+                            if (spawnevent)
+                            {
+                                if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == true)
+                                {
+                                    if (z <= PageID)
+                                    {
+                                        spawnevent = Conversions.ToBoolean(0);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (p >= 0)
+                        {
+                            z = p;
+
+                            if (Core.Type.TempPlayer[i].EventProcessingCount > 0)
+                            {
+                                var loopTo2 = Information.UBound(Core.Type.TempPlayer[i].EventProcessing);
+                                for (n = 0; n < (int)loopTo2; n++)
+                                {
+                                    if (Core.Type.TempPlayer[i].EventProcessing[n].EventID == id)
+                                    {
+                                        Core.Type.TempPlayer[i].EventProcessing[n].EventID = -1; 
+                                        Core.Type.TempPlayer[i].EventProcessing[n].Active = 0;
+                                    }
+                                }
+                            }
+
+                            {
+                                ref var withBlock = ref Core.Type.TempPlayer[i].EventMap.EventPages[id];
+                                if (Map[mapNum].Event[id].Pages[z].GraphicType == 1)
+                                {
+                                    switch (Map[mapNum].Event[id].Pages[z].GraphicY)
+                                    {
+                                        case 0:
+                                            {
+                                                withBlock.Dir = (int)DirectionType.Down;
+                                                break;
+                                            }
+                                        case 1:
+                                            {
+                                                withBlock.Dir = (int)DirectionType.Left;
+                                                break;
+                                            }
+                                        case 2:
+                                            {
+                                                withBlock.Dir = (int)DirectionType.Right;
+                                                break;
+                                            }
+                                        case 3:
+                                            {
+                                                withBlock.Dir = (int)DirectionType.Up;
+                                                break;
+                                            }
+                                    }
+                                }
+                                else
+                                {
+                                    withBlock.Dir = 0;
+                                }
+                                withBlock.Graphic = Map[mapNum].Event[id].Pages[z].Graphic;
+                                withBlock.GraphicType = Map[mapNum].Event[id].Pages[z].GraphicType;
+                                withBlock.GraphicX = Map[mapNum].Event[id].Pages[z].GraphicX;
+                                withBlock.GraphicY = Map[mapNum].Event[id].Pages[z].GraphicY;
+                                withBlock.GraphicX2 = Map[mapNum].Event[id].Pages[z].GraphicX2;
+                                withBlock.GraphicY2 = Map[mapNum].Event[id].Pages[z].GraphicY2;
+                                switch (Map[mapNum].Event[id].Pages[z].MoveSpeed)
+                                {
+                                    case 0:
+                                        {
+                                            withBlock.MovementSpeed = 2;
+                                            break;
+                                        }
+                                    case 1:
+                                        {
+                                            withBlock.MovementSpeed = 3;
+                                            break;
+                                        }
+                                    case 2:
+                                        {
+                                            withBlock.MovementSpeed = 4;
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+                                            withBlock.MovementSpeed = 6;
+                                            break;
+                                        }
+                                    case 4:
+                                        {
+                                            withBlock.MovementSpeed = 12;
+                                            break;
+                                        }
+                                    case 5:
+                                        {
+                                            withBlock.MovementSpeed = 24;
+                                            break;
+                                        }
+                                }
+                                withBlock.Position = Map[mapNum].Event[id].Pages[z].Position;
+                                withBlock.EventID = x;
+                                withBlock.PageID = z;
+                                withBlock.Visible = true;
+
+                                withBlock.MoveType = Map[mapNum].Event[id].Pages[z].MoveType;
+                                if (withBlock.MoveType == 2)
+                                {
+                                    withBlock.MoveRouteCount = Map[mapNum].Event[id].Pages[z].MoveRouteCount;
+                                    if (withBlock.MoveRouteCount > 0)
+                                    {
+                                        if (Map[mapNum].Event[id].Pages[z].MoveRouteCount > 0)
+                                        {
+                                            Array.Resize(ref Core.Type.TempPlayer[i].EventMap.EventPages[i].MoveRoute, Map[mapNum].Event[id].Pages[z].MoveRouteCount);
+                                            for (p = 0; p < Map[mapNum].Event[id].Pages[z].MoveRouteCount; p++)
+                                            {
+                                                Core.Type.TempPlayer[i].EventMap.EventPages[i].MoveRoute[p] = Map[mapNum].Event[id].Pages[z].MoveRoute[p];
+                                            }
+                                            Core.Type.TempPlayer[i].EventMap.EventPages[i].MoveRouteComplete = 0;
+                                        }
+                                        else
+                                        {
+                                            Core.Type.TempPlayer[i].EventMap.EventPages[i].MoveRouteComplete = 0;
+                                        }
+
+                                        var loopTo3 = Map[mapNum].Event[id].Pages[z].MoveRouteCount;
+                                        for (p = 0; p < (int)loopTo3; p++)
+                                            withBlock.MoveRoute[p] = Map[mapNum].Event[id].Pages[z].MoveRoute[p];
+                                        withBlock.MoveRouteComplete = 0;
+                                    }
+                                    else
+                                    {
+                                        withBlock.MoveRouteComplete = 0;
+                                    }
+                                }
+                                else
+                                {
+                                    withBlock.MoveRouteComplete = 0;
+                                }
+
+                                withBlock.RepeatMoveRoute = Map[mapNum].Event[id].Pages[z].RepeatMoveRoute;
+                                withBlock.IgnoreIfCannotMove = Map[mapNum].Event[id].Pages[z].IgnoreMoveRoute;
+
+                                withBlock.MoveFreq = Map[mapNum].Event[id].Pages[z].MoveFreq;
+                                withBlock.MoveSpeed = Map[mapNum].Event[id].Pages[z].MoveSpeed;
+
+                                withBlock.WalkThrough = Map[mapNum].Event[id].Pages[z].WalkThrough;
+                                withBlock.ShowName = Map[mapNum].Event[id].Pages[z].ShowName;
+                                withBlock.WalkingAnim = Map[mapNum].Event[id].Pages[z].WalkAnim;
+                                withBlock.FixedDir = Map[mapNum].Event[id].Pages[z].DirFix;
+
+                            }
+
+                            if (Map[mapNum].Event[id].Globals == 1)
+                            {
+                                if (spawnevent)
+                                {
+                                    Event.TempEventMap[mapNum].Event[id].Active = z;
+                                    Event.TempEventMap[mapNum].Event[id].Position = Map[mapNum].Event[id].Pages[z].Position;
+                                }
+                            }
+
+                            var buffer = new ByteStream(4);
+                            buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                            buffer.WriteInt32(id);
+                            {
+                                ref var withBlock1 = ref Core.Type.TempPlayer[i].EventMap.EventPages[x];
+                                buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Name);
+                                buffer.WriteInt32(withBlock1.Dir);
+                                buffer.WriteByte(withBlock1.GraphicType);
+                                buffer.WriteInt32(withBlock1.Graphic);
+                                buffer.WriteInt32(withBlock1.GraphicX);
+                                buffer.WriteInt32(withBlock1.GraphicX2);
+                                buffer.WriteInt32(withBlock1.GraphicY);
+                                buffer.WriteInt32(withBlock1.GraphicY2);
+                                buffer.WriteInt32(withBlock1.MovementSpeed);
+                                buffer.WriteInt32(withBlock1.X);
+                                buffer.WriteInt32(withBlock1.Y);
+                                buffer.WriteByte(withBlock1.Position);
+                                buffer.WriteBoolean(withBlock1.Visible);
+                                buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkAnim);
+                                buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].DirFix);
+                                buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
+                                buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
+                            }
+                            NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
+
+                            buffer.Dispose();
                         }
                     }
                 }

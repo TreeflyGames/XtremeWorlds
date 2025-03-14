@@ -2270,10 +2270,15 @@ namespace Client
                         if (Core.Type.MapEvents[id].Moving == 0)
                             anim = Core.Type.MapEvents[id].GraphicX;
 
-                        width = (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Width / 4d);
-                        height = (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Height / 4d);
-
                         var gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString()));
+                        if (gfxInfo == null)
+                        {
+                            // Handle the case where gfxInfo is null
+                            return;
+                        }
+                        height = (int)Math.Round(gfxInfo.Height / 4d);
+                        width = (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Width / 4d);
+                        height = (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Height / 4d);       
                         sRect = new Rectangle((int)Math.Round(anim * (gfxInfo.Width / 4d)), (int)Math.Round(spritetop * (gfxInfo.Height / 4d)), (int)Math.Round(gfxInfo.Width / 4d), (int)Math.Round(gfxInfo.Height / 4d));
 
                         // Calculate the X
