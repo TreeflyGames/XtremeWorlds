@@ -2,7 +2,9 @@
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using SharpDX.Direct2D1;
 using static Core.Global.Command;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 using Path = Core.Path;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
@@ -16,14 +18,14 @@ namespace Client
         #region Drawing
         internal static void DrawAnimation(int index, int layer)
         {
-            if (AnimInstance[index].Animation == 0)
-                return;
-
             int sprite = Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer];
             if (sprite < 1 | sprite > GameState.NumAnimations)
                 return;
 
             var gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, sprite.ToString()));
+
+            if (gfxInfo == null)
+                return;
 
             // Get dimensions and column count from controls and graphic info
             int totalWidth = gfxInfo.Width;
@@ -219,10 +221,46 @@ namespace Client
             }
         }
 
+        public static int PlayAnimation(int sprite, int layer, int data, byte x, byte y)
+        {
+            Animation.StreamAnimation(data);
+
+            if (sprite == 0)
+                return 0;
+
+            var gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, sprite.ToString()));
+
+            if (gfxInfo == null)
+                return 0;        
+
+            // Get dimensions and column count from controls and graphic info
+            int totalWidth = gfxInfo.Width;
+            int totalHeight = gfxInfo.Height;
+            int columns = Core.Type.Animation[data].Frames[layer];
+            int frameWidth = 0;
+            int rows = 0;
+
+            // Calculate frame dimensions
+            if (columns > 0)
+            {
+                frameWidth = (int)Math.Round(totalWidth / (double)columns);
+            }
+
+            int frameHeight = frameWidth;
+
+            if (frameHeight > 0)
+            {
+                rows = (int)Math.Round(totalHeight / (double)frameHeight);
+            }
+            int frameCount = rows * columns;
+
+            Animation.CreateAnimation(data, x, y);
+            return Core.Type.Animation[data].LoopTime[layer] * frameCount * Core.Type.Animation[data].LoopCount[layer];
+        }
+
         public static void CreateAnimation(int animationNum, byte x, byte y)
         {
             string sound;
-
             AnimationIndex = (byte)(AnimationIndex + 1);
             if (AnimationIndex >= byte.MaxValue)
                 AnimationIndex = 1;

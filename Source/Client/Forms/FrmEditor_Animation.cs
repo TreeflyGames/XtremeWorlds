@@ -1,4 +1,5 @@
 ﻿using Core;
+using DarkUI.Controls;
 using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework.Graphics;
 using Color = Microsoft.Xna.Framework.Color;
@@ -120,14 +121,14 @@ namespace Client
             Editors.AnimationEditorCancel();
         }
 
-        public void ProcessAnimation(NumericUpDown animationControl, NumericUpDown frameCountControl, NumericUpDown loopCountControl, int animationTimerIndex, RenderTarget2D renderTarget, PictureBox backgroundColorControl, SpriteBatch spriteBatch)
+        public void ProcessAnimation(ref DarkNumericUpDown animationControl, ref DarkNumericUpDown frameCountControl, ref DarkNumericUpDown loopCountControl, int animationTimerIndex, RenderTarget2D renderTarget, ref PictureBox backgroundColorControl,  SpriteBatch spriteBatch)
         {
             // Retrieve the animation number and check its validity
             int animationNum = (int)Math.Round(animationControl.Value);
             if (animationNum <= 0 | animationNum > GameState.NumAnimations)
             {
                 spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor));
-                backgroundColorControl = new PictureBox();
+                backgroundColorControl.Image = null;
                 return;
             }
 
@@ -238,7 +239,7 @@ namespace Client
             using (var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
             {
                 // Call ProcessAnimation for each animation panel
-                ProcessAnimation(withBlock.nudSprite0, withBlock.nudFrameCount0, withBlock.nudLoopTime0, 0, renderTarget, withBlock.picSprite0, spriteBatch);
+                ProcessAnimation(ref withBlock.nudSprite0, ref withBlock.nudFrameCount0, ref withBlock.nudLoopTime0, 0, renderTarget, ref withBlock.picSprite0, spriteBatch);
             }
         }
 
@@ -250,7 +251,7 @@ namespace Client
             using (var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite1.Width, withBlock.picSprite1.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
             {
                 // Call ProcessAnimation for each animation panel
-                ProcessAnimation(withBlock.nudSprite1, withBlock.nudFrameCount1, withBlock.nudLoopTime1, 1, renderTarget, withBlock.picSprite1, spriteBatch);
+                ProcessAnimation(ref withBlock.nudSprite1, ref withBlock.nudFrameCount1, ref withBlock.nudLoopTime1, 1, renderTarget, ref withBlock.picSprite1, spriteBatch);
             }
         }
     }
