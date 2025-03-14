@@ -393,7 +393,7 @@ namespace Client
             name = Core.Type.MapEvents[index].Name;
 
             // calc pos
-            textX = GameLogic.ConvertMapX(GetPlayerX(index) * GameState.PicX) + Core.Type.MapEvents[index].XOffset + GameState.PicX / 2 - 6;
+            textX = GameLogic.ConvertMapX(Core.Type.MapEvents[index].X * GameState.PicX) + Core.Type.MapEvents[index].XOffset + GameState.PicX / 2 - 6;
             textX -= GetTextWidth(name) / 6;
 
             if (Core.Type.MapEvents[index].GraphicType == 0)
