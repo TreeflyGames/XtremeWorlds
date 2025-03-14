@@ -155,10 +155,10 @@ namespace Client
             if (mapResourceNum == 0)
                 mapResourceNum = Core.Type.MyMap.Tile[Core.Type.MyMapResource[resourceNum].X, Core.Type.MyMapResource[resourceNum].Y].Data1_2;
 
+            StreamResource(mapResourceNum);
+
             if (Core.Type.Resource[mapResourceNum].ResourceImage == 0)
                 return;
-
-            StreamResource(mapResourceNum);
 
             // Get the Resource state
             resourceState = Core.Type.MyMapResource[resourceNum].State;
