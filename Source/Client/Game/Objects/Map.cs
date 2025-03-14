@@ -96,7 +96,7 @@ namespace Client
             var rect = new Rectangle(0, 0, 0, 0);
 
             // Check if the map or its tile data is not ready
-            if (GameState.GettingMap || Conversions.ToInteger(GameState.MapData) == 0)
+            if (GameState.GettingMap || !GameState.MapData)
                 return;
 
             // Ensure x and y are within the bounds of the map
@@ -107,6 +107,33 @@ namespace Client
             {
                 for (i = (int)Core.Enum.LayerType.Ground; i <= (int)Core.Enum.LayerType.CoverAnim; i++)
                 {
+                    // Handle animated layers
+                    if (GameState.MapAnim)
+                    {
+                        switch (i)
+                        {
+                            case (int)Core.Enum.LayerType.Mask:
+                                {
+                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.MaskAnim].Tileset > 0)
+                                        i = (int)Core.Enum.LayerType.MaskAnim;
+                                    break;
+                                }
+                            case (int)Core.Enum.LayerType.Cover:
+                                {
+                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.CoverAnim].Tileset > 0)
+                                        i = (int)Core.Enum.LayerType.CoverAnim;
+                                    break;
+                                }
+                        }
+                    }
+                    else
+                    {
+                        // Skip non-animated layers
+                        if (i == (int)Core.Enum.LayerType.MaskAnim || i == (int)Core.Enum.LayerType.CoverAnim)
+                            continue;
+                    }
+
+
                     // Check if this layer has a valid tileset
                     if (Core.Type.MyMap.Tile[x, y].Layer[i].Tileset > 0 && Core.Type.MyMap.Tile[x, y].Layer[i].Tileset <= GameState.NumTileSets)
                     {
@@ -164,7 +191,7 @@ namespace Client
             var rect = default(Rectangle);
 
             // Exit earlyIf Type.Map is still loading or tile data is not available
-            if (GameState.GettingMap || Conversions.ToInteger(GameState.MapData) == 0)
+            if (GameState.GettingMap || !GameState.MapData)
                 return;
 
             // Ensure x and y are within valid map bounds
@@ -177,21 +204,29 @@ namespace Client
                 for (i = (int)Core.Enum.LayerType.Fringe; i <= (int)Core.Enum.LayerType.RoofAnim; i++)
                 {
                     // Handle animated layers
-                    if (GameState.MapAnim == 1)
+                    if (GameState.MapAnim)
                     {
                         switch (i)
                         {
                             case (int)Core.Enum.LayerType.Fringe:
                                 {
-                                    i = (int)Core.Enum.LayerType.Fringe;
+                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.FringeAnim].Tileset > 0)
+                                        i = (int)Core.Enum.LayerType.FringeAnim;                                  
                                     break;
                                 }
                             case (int)Core.Enum.LayerType.Roof:
                                 {
-                                    i = (int)Core.Enum.LayerType.Roof;
+                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.RoofAnim].Tileset > 0)
+                                        i = (int)Core.Enum.LayerType.RoofAnim;
                                     break;
                                 }
                         }
+                    }
+                    else
+                    {
+                        // Skip non-animated layers
+                        if (i == (int)Core.Enum.LayerType.FringeAnim || i == (int)Core.Enum.LayerType.RoofAnim)
+                            continue;
                     }
 
                     // Ensure the tileset is valid before proceeding

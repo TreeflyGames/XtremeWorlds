@@ -19,7 +19,7 @@ namespace Client
         public static int ResolutionHeight;
         public static int ResolutionWidth;
 
-        public static byte MapAnim;
+        public static bool MapAnim;
 
         // Global dialogue index
         public static string diaHeader;

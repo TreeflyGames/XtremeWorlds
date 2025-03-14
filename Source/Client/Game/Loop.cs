@@ -325,14 +325,7 @@ namespace Client
                 // Change map animation
                 if (tmr250 < tick)
                 {
-                    if (GameState.MapAnim == 0)
-                    {
-                        GameState.MapAnim = 1;
-                    }
-                    else
-                    {
-                        GameState.MapAnim = 0;
-                    }
+                    GameState.MapAnim = !GameState.MapAnim;
                     tmr250 = tick + 250;
                 }
 

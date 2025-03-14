@@ -1119,7 +1119,7 @@ namespace Client
             // 
             cmbLayers.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbLayers.FormattingEnabled = true;
-            cmbLayers.Items.AddRange(new object[] { "Ground", "Mask", "Mask 2 Anim", "Cover", "Cover 2 Anim", "Fringe", "Fringe Anim", "Roof", "Roof Anim" });
+            cmbLayers.Items.AddRange(new object[] { "Ground", "Mask", "Mask Anim", "Cover", "Cover Anim", "Fringe", "Fringe Anim", "Roof", "Roof Anim" });
             cmbLayers.Location = new Point(216, 566);
             cmbLayers.Margin = new Padding(4, 3, 4, 3);
             cmbLayers.Name = "cmbLayers";
