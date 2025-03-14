@@ -1617,6 +1617,7 @@ namespace Server
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
                 return;
+
             if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
