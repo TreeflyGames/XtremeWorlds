@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
 using static Core.Enum;
+using Microsoft.VisualBasic;
 
 namespace Client
 {
@@ -638,6 +639,10 @@ namespace Client
             ClearMapItems();
             ClearMapEvents();
             GameLogic.RemoveChatBubbles();
+
+            GameState.ResourceIndex = 0;
+            Core.Type.MyMapResource = default;
+            Core.Type.MapResource = default;
 
             // Get map num
             x = buffer.ReadInt32();
