@@ -13,6 +13,9 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using System;
+using System.Reflection;
+using static Client.GameClient;
 
 namespace Client
 {
@@ -2015,14 +2018,21 @@ namespace Client
                     }
             }
 
+            var gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString()));
+            if (gfxInfo == null)
+            {
+                // Handle the case where the graphic information is not found
+                return;
+            }
+
             // Calculate the X
-            x = (int)Math.Round(Core.Type.Player[index].X * GameState.PicX + Core.Type.Player[index].XOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Width / 4d - 32d) / 2d);
+            x = (int)Math.Round(Core.Type.Player[index].X * GameState.PicX + Core.Type.Player[index].XOffset - (gfxInfo.Width / 4d - 32d) / 2d);
 
             // Is the player's height more than 32..?
-            if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Height > 32)
+            if (gfxInfo.Height > 32)
             {
                 // Create a 32 pixel offset for larger sprites
-                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY + Core.Type.Player[index].YOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Height / 4d - 32d));
+                y = (int)Math.Round(GetPlayerY(index) * GameState.PicY + Core.Type.Player[index].YOffset - (gfxInfo.Height / 4d - 32d));
             }
             else
             {
@@ -2030,7 +2040,7 @@ namespace Client
                 y = GetPlayerY(index) * GameState.PicY + Core.Type.Player[index].YOffset;
             }
 
-            rect = new Rectangle((int)Math.Round(anim * (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Width / 4d)), (int)Math.Round(spriteleft * (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Height / 4d)), (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Width / 4d), (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, spriteNum.ToString())).Height / 4d));
+            rect = new Rectangle((int)Math.Round(anim * (gfxInfo.Width / 4d)), (int)Math.Round(spriteleft * (gfxInfo.Height / 4d)), (int)Math.Round(gfxInfo.Width / 4d), (int)Math.Round(gfxInfo.Height / 4d));
 
             // render the actual sprite
             // DrawShadow(x, y + 16)
@@ -2276,19 +2286,18 @@ namespace Client
                             // Handle the case where gfxInfo is null
                             return;
                         }
-                        height = (int)Math.Round(gfxInfo.Height / 4d);
-                        width = (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Width / 4d);
-                        height = (int)Math.Round(GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Height / 4d);       
-                        sRect = new Rectangle((int)Math.Round(anim * (gfxInfo.Width / 4d)), (int)Math.Round(spritetop * (gfxInfo.Height / 4d)), (int)Math.Round(gfxInfo.Width / 4d), (int)Math.Round(gfxInfo.Height / 4d));
+                        height = (int)Math.Round((double)gfxInfo.Height / 4d);
+                        width = (int)Math.Round((double)gfxInfo.Width / 4d);
+                        sRect = new Rectangle((int)Math.Round((double)anim * width), (int)Math.Round((double)spritetop * height), width, height);
 
                         // Calculate the X
-                        x = (int)Math.Round(Core.Type.MapEvents[id].X * GameState.PicX + Core.Type.MapEvents[id].XOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Width / 4d - 32d) / 2d);
+                        x = (int)Math.Round(Core.Type.MapEvents[id].X * GameState.PicX + Core.Type.MapEvents[id].XOffset - (width - 32d) / 2d);
 
                         // Is the player's height more than 32..?
-                        if (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Height * 4 > 32)
+                        if (gfxInfo.Height * 4 > 32)
                         {
                             // Create a 32 pixel offset for larger sprites
-                            y = (int)Math.Round(Core.Type.MapEvents[id].Y * GameState.PicY + Core.Type.MapEvents[id].YOffset - (GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, Core.Type.MapEvents[id].Graphic.ToString())).Height / 4d - 32d));
+                            y = (int)Math.Round(Core.Type.MapEvents[id].Y * GameState.PicY + Core.Type.MapEvents[id].YOffset - (width - 32d));
                         }
                         else
                         {
@@ -2386,9 +2395,12 @@ namespace Client
                     var loopTo2 = GameState.CurrentEvents;
                     for (i = 0; i < loopTo2; i++)
                     {
-                        if (Core.Type.MapEvents[i].Position == 0)
+                        if (i < Core.Type.MapEvents.Length)
                         {
-                            DrawEvent(i);
+                            if (Core.Type.MapEvents[i].Position == 0)
+                            {
+                                DrawEvent(i);
+                            }
                         }
                     }
                 }
@@ -2463,13 +2475,16 @@ namespace Client
                             var loopTo4 = GameState.CurrentEvents;
                             for (i = 0; i < loopTo4; i++)
                             {
-                                if (Core.Type.MapEvents[i].Position == 1)
-                                {
-                                    if (y == Core.Type.MapEvents[i].Y)
+                                if (i < Core.Type.MapEvents.Length)
+                                { 
+                                    if (Core.Type.MapEvents[i].Position == 1)
                                     {
-                                        DrawEvent(i);
+                                        if (y == Core.Type.MapEvents[i].Y)
+                                        {
+                                            DrawEvent(i);
+                                        }
                                     }
-                                }
+                                }   
                             }
                         }
                     }
@@ -2562,9 +2577,12 @@ namespace Client
                 var loopTo6 = GameState.CurrentEvents;
                 for (i = 0; i < loopTo6; i++)
                 {
-                    if (Core.Type.MapEvents[i].Position == 2)
+                    if (i < Core.Type.MapEvents.Length)
                     {
-                        DrawEvent(i);
+                        if (Core.Type.MapEvents[i].Position == 2)
+                        {
+                            DrawEvent(i);
+                        }
                     }
                 }
             }
@@ -2612,11 +2630,14 @@ namespace Client
                 var loopTo9 = GameState.CurrentEvents;
                 for (i = 0; i < loopTo9; i++)
                 {
-                    if (Core.Type.MapEvents[i].Visible == true)
+                    if (i < Core.Type.MapEvents.Length)
                     {
-                        if (Core.Type.MapEvents[i].ShowName == 1)
+                        if (Core.Type.MapEvents[i].Visible == true)
                         {
-                            Text.DrawEventName(i);
+                            if (Core.Type.MapEvents[i].ShowName == 1)
+                            {
+                                Text.DrawEventName(i);
+                            }
                         }
                     }
                 }

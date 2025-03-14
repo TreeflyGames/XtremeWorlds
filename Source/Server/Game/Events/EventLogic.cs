@@ -245,6 +245,9 @@ namespace Server
                             if (x < id)
                                 continue;
 
+                            if (id > Information.UBound(Map[mapNum].Event))
+                                break;
+
                             for (z = 0; z < Map[mapNum].Event[id].PageCount; z += 1)
                             {
                                 spawnevent = Conversions.ToBoolean(1);
