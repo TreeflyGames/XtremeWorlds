@@ -1,16 +1,13 @@
 ﻿using Core;
 using Core.Database;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
-using Reoria.Engine.Logging;
-using Reoria.Engine.Logging.Interfaces;
-using Reoria.Engine.Security.Cryptography.Factories;
-using Reoria.Engine.Services;
-using Reoria.Engine.Services.Interfaces;
+using Reoria.Engine.Base.Container;
+using Reoria.Engine.Base.Container.Interfaces;
+using Reoria.Engine.Base.Container.Logging;
 using System.Diagnostics;
 using static Core.Type;
 
@@ -21,9 +18,9 @@ namespace Server
     {
         public static Core.Random Random = new Core.Random();
 
-        public static IConfiguration Configuration;
-        public static IEngineServiceContainer Services;
-        public static ILogger<T> GetLogger<T>() where T : class => Services.Provider.GetRequiredService<Logger<T>>();
+        public static IEngineContainer? Container;
+        public static IConfiguration? Configuration;
+        public static ILogger<T> GetLogger<T>() where T : class => Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException();
 
         internal static bool ServerDestroyed;
         internal static string MyIPAddress = string.Empty;
@@ -45,26 +42,15 @@ namespace Server
 
             myStopWatch.Start();
 
-            // Create the logging initalizer.
-            IEngineLoggingInitalizer loggingInitalizer = new SerilogLoggingInitalizer();
-
-            // Create an early logging factory and logger.
-            ILoggerFactory loggerFactory = loggingInitalizer.Initialize();
-
-            // Create a configuration builder and ojbect.
-            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.server.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.server.secret.json", optional: true, reloadOnChange: true);
-            Configuration = configurationBuilder.Build();
-
-            // Create the service container.
-            IEngineServiceContainer serviceContainer = new EngineServiceContainer(loggerFactory, Configuration)
-                .DiscoverServices()
-                .RegisterServices()
-                .BuildServiceProvider()
-                .ConfigureServices();
-            Services = serviceContainer;
+            Container = new EngineContainer<SerilogLoggingInitializer>()
+                .DiscoverContainerServiceClasses()
+                .DiscoverConfigurationSources()
+                .BuildContainerConfiguration()
+                .BuildContainerLogger()
+                .DiscoverContainerServices()
+                .BuildContainerServices()
+                .BuildContainerServiceProvider();
+            Configuration = Container?.RetrieveService<IConfiguration>() ?? throw new NullReferenceException();
 
             Settings.Load();
 

@@ -1,12 +1,10 @@
 ﻿using Core;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.CompilerServices;
-using Reoria.Engine.Logging;
-using Reoria.Engine.Logging.Interfaces;
-using Reoria.Engine.Services;
-using Reoria.Engine.Services.Interfaces;
+using Reoria.Engine.Base.Container;
+using Reoria.Engine.Base.Container.Interfaces;
+using Reoria.Engine.Base.Container.Logging;
 using static Core.Global.Command;
 
 namespace Client
@@ -19,9 +17,9 @@ namespace Client
         public static Core.Random Random = new Core.Random();
         public static Gui Gui = new Gui();
 
-        public static IConfiguration Configuration;
-        public static IEngineServiceContainer Services;
-        public static ILogger<T> GetLogger<T>() where T : class => Services.Provider.GetRequiredService<Logger<T>>();
+        public static IEngineContainer? Container;
+        public static IConfiguration? Configuration;
+        public static ILogger<T> GetLogger<T>() where T : class => Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException();
 
         internal static int GetTickCount()
         {
@@ -30,26 +28,15 @@ namespace Client
 
         public static void Startup()
         {
-            // Create the logging initalizer.
-            IEngineLoggingInitalizer loggingInitalizer = new SerilogLoggingInitalizer();
-
-            // Create an early logging factory and logger.
-            ILoggerFactory loggerFactory = loggingInitalizer.Initialize();
-
-            // Create a configuration builder and ojbect.
-            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.client.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.client.secret.json", optional: true, reloadOnChange: true);
-            Configuration = configurationBuilder.Build();
-
-            // Create the service container.
-            IEngineServiceContainer serviceContainer = new EngineServiceContainer(loggerFactory, Configuration)
-                .DiscoverServices()
-                .RegisterServices()
-                .BuildServiceProvider()
-                .ConfigureServices();
-            Services = serviceContainer;
+            Container = new EngineContainer<SerilogLoggingInitializer>()
+                .DiscoverContainerServiceClasses()
+                .DiscoverConfigurationSources()
+                .BuildContainerConfiguration()
+                .BuildContainerLogger()
+                .DiscoverContainerServices()
+                .BuildContainerServices()
+                .BuildContainerServiceProvider();
+            Configuration = Container?.RetrieveService<IConfiguration>() ?? throw new NullReferenceException();
 
             GameState.InMenu = true;
             ClearGameData();
