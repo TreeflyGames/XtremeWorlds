@@ -1016,7 +1016,7 @@ namespace Client
 
             CurLayer = Instance.cmbLayers.SelectedIndex;
 
-            if (GameState.CurX < 0 || GameState.CurY < 0 || GameState.CurX > Core.Type.MyMap.MaxX || GameState.CurY > Core.Type.MyMap.MaxY)
+            if (GameState.CurX < 0 || GameState.CurY < 0 || GameState.CurX >= Core.Type.MyMap.MaxX || GameState.CurY >= Core.Type.MyMap.MaxY)
                 return;
 
             if (GameState.EyeDropper)
