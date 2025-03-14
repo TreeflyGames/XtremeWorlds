@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
-using SharpDX.MediaFoundation;
 
 namespace Client
 {
