@@ -1,5 +1,5 @@
 ﻿using System;
-using Core.Common;
+using Core;
 using Mirage.Sharp.Asfw;
 using static Core.Packets;
 
@@ -12,26 +12,26 @@ namespace Server
         public static void InitTime()
         {
             // Add handlers to time events
-            TimeType.Instance.OnTimeChanged += (ref Core.Common.TimeType source) => HandleTimeChanged(ref source);
-            TimeType.Instance.OnTimeOfDayChanged += (ref Core.Common.TimeType source) => HandleTimeOfDayChanged(ref source);
-            TimeType.Instance.OnTimeSync += (ref Core.Common.TimeType source) => HandleTimeSync(ref source);
+            Core.Clock.Instance.OnTimeChanged += (ref Core.Clock source) => HandleTimeChanged(ref source);
+            Core.Clock.Instance.OnTimeOfDayChanged += (ref Core.Clock source) => HandleTimeOfDayChanged(ref source);
+            Core.Clock.Instance.OnTimeSync += (ref Core.Clock source) => HandleTimeSync(ref source);
 
             // Prepare the time instance
-            TimeType.Instance.Time = DateTime.Now;
-            TimeType.Instance.GameSpeed = 0;
+            Core.Clock.Instance.Time = DateTime.Now;
+            Core.Clock.Instance.GameSpeed = 0;
         }
 
-        public static void HandleTimeChanged(ref TimeType source)
+        public static void HandleTimeChanged(ref Core.Clock source)
         {
             General.UpdateCaption();
         }
 
-        public static void HandleTimeOfDayChanged(ref TimeType source)
+        public static void HandleTimeOfDayChanged(ref Clock source)
         {
             SendTimeToAll();
         }
 
-        public static void HandleTimeSync(ref TimeType source)
+        public static void HandleTimeSync(ref Clock source)
         {
             SendGameClockToAll();
         }
@@ -41,9 +41,9 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SClock);
-            buffer.WriteInt32((int)TimeType.Instance.GameSpeed);
-            buffer.WriteBytes(BitConverter.GetBytes(TimeType.Instance.Time.Ticks));
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            buffer.WriteInt32((int)Clock.Instance.GameSpeed);
+            buffer.WriteBytes(BitConverter.GetBytes(Clock.Instance.Time.Ticks));
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -52,8 +52,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = NetworkConfig.Socket.HighIndex + 1;
-            for (i = 0; i < loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex;
+            for (i = 0; i <= loopTo; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {
@@ -67,8 +67,8 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.STime);
-            buffer.WriteByte((byte)TimeType.Instance.TimeOfDay);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            buffer.WriteByte((byte)Clock.Instance.TimeOfDay);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -77,8 +77,8 @@ namespace Server
         {
             int i;
 
-            var loopTo = NetworkConfig.Socket.HighIndex + 1;
-            for (i = 0; i < loopTo; i++)
+            var loopTo = NetworkConfig.Socket.HighIndex;
+            for (i = 0; i <= loopTo; i++)
             {
                 if (NetworkConfig.IsPlaying(i))
                 {

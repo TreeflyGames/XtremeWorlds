@@ -13,6 +13,7 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using SharpDX.Direct2D1;
 
 namespace Client
 {
@@ -21,7 +22,7 @@ namespace Client
     {
 
         public static GraphicsDeviceManager Graphics;
-        public static SpriteBatch SpriteBatch;
+        public static Microsoft.Xna.Framework.Graphics.SpriteBatch SpriteBatch;
         public static readonly ConcurrentDictionary<string, Texture2D> TextureCache = new ConcurrentDictionary<string, Texture2D>();
         public static readonly ConcurrentDictionary<string, GfxInfo> GfxInfoCache = new ConcurrentDictionary<string, GfxInfo>();
         public static int TextureCounter;
@@ -138,7 +139,7 @@ namespace Client
             // Add handler for PreparingDeviceSettings
             Graphics.PreparingDeviceSettings += (sender, args) =>
                 {
-                    args.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
+                    args.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = Microsoft.Xna.Framework.Graphics.RenderTargetUsage.PreserveContents;
                     args.GraphicsDeviceInformation.PresentationParameters.MultiSampleCount = 8;
                 };
 
@@ -216,7 +217,7 @@ namespace Client
 
         protected override void LoadContent()
         {
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GraphicsDevice);
 
             TransparentTexture = new Texture2D(GraphicsDevice, 1, 1);
             TransparentTexture.SetData(new Color[] { Color.White });
@@ -242,12 +243,13 @@ namespace Client
             return System.Drawing.Color.FromArgb(xnaColor.A, xnaColor.R, xnaColor.G, xnaColor.B);
         }
 
-        public static void RenderTexture(ref string path, int dX, int dY, int sX, int sY, int dW, int dH, int sW = 1, int sH = 1, byte alpha = 255, byte red = 255, byte green = 255, byte blue = 255)
+        public static void RenderTexture(ref string path, int dX, int dY, int sX, int sY, int dW, int dH, int sW = 1, int sH = 1, float alpha = 1.0f, byte red = 255, byte green = 255, byte blue = 255)
         {
             // Create destination and source rectangles
             var dRect = new Rectangle(dX, dY, dW, dH);
             var sRect = new Rectangle(sX, sY, sW, sH);
-            var color = new Color(red, green, blue, alpha);
+            var color = new Color(red, green, blue, (byte)255);
+            color = color * alpha;
 
             path = Core.Path.EnsureFileExtension(path);
 
@@ -310,7 +312,7 @@ namespace Client
         {
             Graphics.GraphicsDevice.Clear(Color.Black);
 
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             if (GameState.InGame == true)
             {
                 Render_Game();
@@ -880,19 +882,20 @@ namespace Client
                 {
                     Gui.HandleInterfaceEvents(EntState.DblClick);
                 }
+            }
 
-                // Double-click detection for left button
-                if (currentTime - GameState.LastLeftClickTime > GameState.DoubleClickTImer)
-                {
-                    GameState.ClickCount = 0;  
-                }  
+            // Double-click detection for left button
+            if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= GameState.DoubleClickTImer)
+            {
+                GameState.ClickCount = 0;
+                GameState.Info = false;
             }
 
             // Check for MouseUp event (button released)
             if (IsMouseButtonUp(MouseButton.Left))
             {
                 Gui.HandleInterfaceEvents(EntState.MouseUp);
-            } 
+            }
 
             // In-game interactions for left click
             if (GameState.InGame == true)
@@ -1265,6 +1268,7 @@ namespace Client
             // Ensure NPC is within the tile view range
             if (Core.Type.MyMapNPC[(int)MapNPCNum].X < GameState.TileView.Left | Core.Type.MyMapNPC[(int)MapNPCNum].X > GameState.TileView.Right)
                 return;
+
             if (Core.Type.MyMapNPC[(int)MapNPCNum].Y < GameState.TileView.Top | Core.Type.MyMapNPC[(int)MapNPCNum].Y > GameState.TileView.Bottom)
                 return;
 
@@ -1383,7 +1387,7 @@ namespace Client
             int x;
             int y;
 
-            if (Core.Type.MyMapItem[itemNum].Num == -1)
+            if (Core.Type.MyMapItem[itemNum].Num < 0 | Core.Type.MyMapItem[itemNum].Num > Core.Constant.MAX_ITEMS)
                 return;
 
             Item.StreamItem((int)Core.Type.MyMapItem[itemNum].Num);
@@ -1397,6 +1401,7 @@ namespace Client
                 ref var withBlock = ref Core.Type.MyMapItem[itemNum];
                 if (withBlock.X < GameState.TileView.Left | withBlock.X > GameState.TileView.Right)
                     return;
+
                 if (withBlock.Y < GameState.TileView.Top | withBlock.Y > GameState.TileView.Bottom)
                     return;
             }
@@ -1477,7 +1482,7 @@ namespace Client
             {
                 NPCNum = (long)Core.Type.MyMapNPC[(int)i].Num;
                 // exists?
-                if (NPCNum >= 0L)
+                if (NPCNum >= 0L && NPCNum <= Core.Constant.MAX_NPCS)
                 {
                     // alive?
                     if (Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] > 0 & Core.Type.MyMapNPC[(int)i].Vital[(int)VitalType.HP] < Core.Type.NPC[(int)NPCNum].HP)
@@ -1727,6 +1732,21 @@ namespace Client
                         {
                             x = GameLogic.ConvertMapX(Core.Type.MyMap.Event[withBlock.Target].X * 32) + 16;
                             y = GameLogic.ConvertMapY(Core.Type.MyMap.Event[withBlock.Target].Y * 32) - 16;
+                            break;
+                        }
+
+                    case (byte)TargetType.NPC
+                        :
+                        {
+                            x = GameLogic.ConvertMapX(Core.Type.MyMapNPC[withBlock.Target].X * 32) + 16;
+                            y = GameLogic.ConvertMapY(Core.Type.MyMapNPC[withBlock.Target].Y * 32) - 32;
+                            break;
+                        }
+
+                    case (byte)TargetType.Pet:
+                        {
+                            x = GameLogic.ConvertMapX(Core.Type.Player[GameState.MyIndex].Pet.X * 32) + 16;
+                            y = GameLogic.ConvertMapY(Core.Type.Player[GameState.MyIndex].Pet.Y * 32) - 32;
                             break;
                         }
 
@@ -2064,7 +2084,7 @@ namespace Client
                 }
 
                 // Render event based on its graphic type
-                switch (Core.Type.MyMap.Event[i].Pages[1].GraphicType)
+                switch (Core.Type.MyMap.Event[i].Pages[0].GraphicType)
                 {
                     case 0: // Text Event
                         {
@@ -2099,21 +2119,23 @@ namespace Client
         public static void RenderCharacterGraphic(Core.Type.EventStruct eventData, int x, int y)
         {
             // Get the graphic index from the event's first page
-            int gfxIndex = eventData.Pages[1].Graphic;
+            int gfxIndex = eventData.Pages[0].Graphic;
 
             // Validate the graphic index to ensure it�s within range
             if (gfxIndex <= 0 || gfxIndex > GameState.NumCharacters)
                 return;
 
             // Get animation details (frame index and columns) from the event
-            int frameIndex = eventData.Pages[1].GraphicX; // Example frame index
-            int columns = eventData.Pages[1].GraphicY; // Example column count
-
-            if (columns == 0)
+            int frameIndex = eventData.Pages[0].GraphicX; // Example frame index
+            int columns = 4;
+            var gfxInfo = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, gfxIndex.ToString()));
+            if (gfxInfo == null)
+            {
+                // Handle the case where the graphic information is not found
                 return;
-
+            }
             // Calculate the frame size (assuming square frames for simplicity)
-            int frameWidth = GetGfxInfo(System.IO.Path.Combine(Core.Path.Characters, gfxIndex.ToString())).Width / columns;
+            int frameWidth = gfxInfo.Width / columns;
             int frameHeight = frameWidth; // Adjust if non-square frames
 
             // Calculate the source rectangle for the current frame
@@ -2130,12 +2152,12 @@ namespace Client
 
         private static void RenderTilesetGraphic(Core.Type.EventStruct eventData, int x, int y)
         {
-            int gfxIndex = eventData.Pages[1].Graphic;
+            int gfxIndex = eventData.Pages[0].Graphic;
 
             if (gfxIndex > 0 && gfxIndex <= GameState.NumTileSets)
             {
                 // Define source rectangle from tileset graphics
-                var srcRect = new Rectangle(eventData.Pages[1].GraphicX * 32, eventData.Pages[1].GraphicY * 32, eventData.Pages[1].GraphicX2 * 32, eventData.Pages[1].GraphicY2 * 32);
+                var srcRect = new Rectangle(eventData.Pages[0].GraphicX * 32, eventData.Pages[0].GraphicY * 32, eventData.Pages[0].GraphicX2 * 32, eventData.Pages[0].GraphicY2 * 32);
 
                 // Adjust position if the tile is larger than 32x32
                 if (srcRect.Height > 32)
@@ -2177,7 +2199,7 @@ namespace Client
                     }
                 case 1:
                     {
-                        if (Core.Type.MapEvents[id].Graphic < 0 | Core.Type.MapEvents[id].Graphic > GameState.NumCharacters)
+                        if (Core.Type.MapEvents[id].Graphic <= 0 | Core.Type.MapEvents[id].Graphic > GameState.NumCharacters)
                             return;
 
                         // Reset frame
@@ -2628,7 +2650,8 @@ namespace Client
                     }
                 }
 
-                Text.DrawMapAttributes();
+                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpAttributes))
+                    Text.DrawMapAttributes();
             }
 
             for (i = 0; i < byte.MaxValue; i++)

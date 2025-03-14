@@ -422,12 +422,12 @@ namespace Mirage.Sharp.Asfw.Network
       }
     }
 
-    public void SendData(byte[] data)
+    public void SendData(ReadOnlySpan<byte> data)
     {
-      this._socket?.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(this.DoSend), (object) null);
+      this._socket?.BeginSend(data.ToArray(), 0, data.Length, SocketFlags.None, new AsyncCallback(this.DoSend), (object) null);
     }
 
-    public void SendData(byte[] data, int head)
+    public void SendData(ReadOnlySpan<byte> data, int head)
     {
         if (this._socket == null || !this._socket.Connected)
         {
@@ -445,7 +445,7 @@ namespace Mirage.Sharp.Asfw.Network
         {
             byte[] numArray = new byte[head + 4];
             Buffer.BlockCopy(BitConverter.GetBytes(head), 0, numArray, 0, 4);
-            Buffer.BlockCopy(data, 0, numArray, 4, head);
+            Buffer.BlockCopy(data.ToArray(), 0, numArray, 4, head);
             this._socket.BeginSend(numArray, 0, head + 4, SocketFlags.None, new AsyncCallback(this.DoSend), null);
         }
         catch (Exception ex)

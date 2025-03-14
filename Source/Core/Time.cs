@@ -22,7 +22,7 @@
 // SOFTWARE.
 using System.Timers;
 
-namespace Core.Common
+namespace Core
 {
 
     public enum TimeOfDay : byte
@@ -34,19 +34,19 @@ namespace Core.Common
         Dusk
     }
 
-    public delegate void HandleTimeEvent(ref TimeType source);
+    public delegate void HandleTimeEvent(ref Clock source);
 
-    public class TimeType
+    public class Clock
     {
-        private static TimeType _mInstance = null;
+        private static Clock _mInstance = null;
 
-        public static TimeType Instance
+        public static Clock Instance
         {
             get
             {
                 if (_mInstance is null)
                 {
-                    _mInstance = new TimeType();
+                    _mInstance = new Clock();
                 }
 
                 return _mInstance;
@@ -133,7 +133,7 @@ namespace Core.Common
             }
         }
 
-        public TimeType()
+        public Clock()
         {
             mSyncInterval = (int)Math.Round(6000.0);
 

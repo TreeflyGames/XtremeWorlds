@@ -308,11 +308,6 @@ namespace Client
                                         RenderText("T", tX, tY, Color.Red, Color.Black);
                                         break;
                                     }
-                                case (int)Core.Enum.TileType.Light:
-                                    {
-                                        RenderText("L", tX, tY, Color.Yellow, Color.Black);
-                                        break;
-                                    }
                                 case (int)Core.Enum.TileType.Animation:
                                     {
                                         RenderText("A", tX, tY, Color.Red, Color.Black);
@@ -340,6 +335,9 @@ namespace Client
             double NPCNum;
 
             NPCNum = (int)Core.Type.MyMapNPC[(int)MapNPCNum].Num;
+
+            if (NPCNum < 0 | NPCNum > Core.Constant.MAX_NPCS)
+                return;
 
             switch (Core.Type.NPC[(int)NPCNum].Behaviour)
             {

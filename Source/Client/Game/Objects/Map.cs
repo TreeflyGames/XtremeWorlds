@@ -91,7 +91,7 @@ namespace Client
         public static void DrawMapGroundTile(int x, int y)
         {
             int i;
-            byte alpha;
+            float alpha;
             var rect = new Rectangle(0, 0, 0, 0);
 
             // Check if the map or its tile data is not ready
@@ -117,15 +117,15 @@ namespace Client
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
-                            alpha = 255;
+                            alpha = 1.0f;
 
                             if (GameState.MyEditorType == (int)EditorType.Map)
                             {
                                 if (GameState.HideLayers)
                                 {
-                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    if (i == frmEditor_Map.Instance.cmbLayers.SelectedIndex)
                                     {
-                                        alpha = 128;
+                                        alpha = 0.5f;
                                     }
                                 }
                             }
@@ -159,7 +159,7 @@ namespace Client
         public static void DrawMapRoofTile(int x, int y)
         {
             int i;
-            int alpha;
+            float alpha;
             var rect = default(Rectangle);
 
             // Exit earlyIf Type.Map is still loading or tile data is not available
@@ -204,7 +204,7 @@ namespace Client
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
-                            alpha = 255;
+                            alpha = 1.0f;
 
                             if (GameState.MyEditorType == (int)EditorType.Map)
                             {
@@ -212,14 +212,14 @@ namespace Client
                                 {
                                     if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
                                     {
-                                        alpha = 128;
+                                        alpha = 0.5f;
                                     }
                                 }
                             }
 
                             // Render the tile with the calculated rectangle and transparency
                             string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
-                            GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, (byte)alpha);
+                            GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
                         }
 
                         // Handle autotile rendering
@@ -399,7 +399,8 @@ namespace Client
             if (index < 1 | index > GameState.NumParallax)
                 return;
 
-            // Calculate horizontal and vertical offsets based on player position
+            // Calculate horizontal and vertical offsets based
+            // yer position
             horz = GameLogic.ConvertMapX(GetPlayerX(GameState.MyIndex)) * 2.5f - 50f;
             vert = GameLogic.ConvertMapY(GetPlayerY(GameState.MyIndex)) * 2.5f - 50f;
 
@@ -632,10 +633,11 @@ namespace Client
 
             // Erase all temporary tile values
             ClearMapNPCs();
-            ClearMapItems();
             Database.ClearBlood();
             ClearMap();
+            ClearMapItems();
             ClearMapEvents();
+            GameLogic.RemoveChatBubbles();
 
             // Get map num
             x = buffer.ReadInt32();
@@ -739,7 +741,7 @@ namespace Client
                         Core.Type.MyMap.Tile[x, y].Data3_2 = buffer.ReadInt32();
                         Core.Type.MyMap.Tile[x, y].DirBlock = (byte)buffer.ReadInt32();
 
-                        for (j = 0; j <= GameState.MaxTileHistory - 1; j++)
+                        for (j = 0; j < GameState.MaxTileHistory; j++)
                         {
                             Core.Type.TileHistory[j].Tile[x, y].Data1 = Core.Type.MyMap.Tile[x, y].Data1;
                             Core.Type.TileHistory[j].Tile[x, y].Data2 = Core.Type.MyMap.Tile[x, y].Data2;
@@ -856,7 +858,7 @@ namespace Client
 
                                 if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
+                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount + 1];
                                     var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
                                     for (y = 0; y < loopTo5; y++)
                                     {
@@ -864,12 +866,12 @@ namespace Client
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
-                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
+                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount + 1];
                                             for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                             {
                                                 {
                                                     ref var withBlock2 = ref Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands[z];
-                                                    withBlock2.Index = buffer.ReadByte();
+                                                    withBlock2.Index = buffer.ReadInt32();
                                                     withBlock2.Text1 = buffer.ReadString();
                                                     withBlock2.Text2 = buffer.ReadString();
                                                     withBlock2.Text3 = buffer.ReadString();
@@ -1293,7 +1295,10 @@ namespace Client
             Core.Type.MapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount];
 
             for (int i = 0, loopTo = Core.Type.MyMap.EventCount; i < loopTo; i++)
-                Core.Type.MapEvents[i].Name = "";
+            {
+                Core.Type.MapEvents = default;
+                Core.Type.MyMap.Event = default;
+            }
 
             GameState.CurrentEvents = 0;
         }

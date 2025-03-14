@@ -127,7 +127,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SAnimationEditor);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -190,7 +190,7 @@ namespace Server
             buffer.WriteInt32(LockType);
             buffer.WriteInt32(Lockindex);
 
-            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -220,7 +220,7 @@ namespace Server
 
             buffer.WriteBlock(AnimationData(AnimationNum));
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 
@@ -232,7 +232,7 @@ namespace Server
 
             buffer.WriteBlock(AnimationData(AnimationNum));
 
-            NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
             buffer.Dispose();
         }
 

@@ -135,7 +135,7 @@ namespace Server
                             }
 
                             // Check for player collision
-                            for (i = 0; i <= NetworkConfig.Socket.HighIndex + 1; i++)
+                            for (i = 0; i <= NetworkConfig.Socket.HighIndex; i++)
                             {
                                 if (NetworkConfig.IsPlaying(i) &&
                                     GetPlayerMap(i) == mapNum &&
@@ -327,7 +327,7 @@ namespace Server
 
             if (globalevent)
             {
-                if (Core.Type.Map[mapNum].Event[EventID].Pages[1].DirFix == 0)
+                if (Core.Type.Map[mapNum].Event[EventID].Pages[0].DirFix == 0)
                     TempEventMap[mapNum].Event[EventID].Dir = dir;
             }
             else if (Core.Type.Map[mapNum].Event[EventID].Pages[Core.Type.TempPlayer[playerindex].EventMap.EventPages[eventindex].PageID].DirFix == 0)
@@ -345,7 +345,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.TempPlayer[playerindex].EventMap.EventPages[eventindex].Dir);
             }
 
-            NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
 
             buffer.Dispose();
 
@@ -365,10 +365,10 @@ namespace Server
             {
                 if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
                 {
-                    var loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents - 1;
+                    var loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents;
                     for (i = 0; i < loopTo; i++)
                     {
-                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID > 0)
+                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID >= 0)
                         {
                             if (EventID == i)
                             {
@@ -392,7 +392,7 @@ namespace Server
 
             if (globalevent)
             {
-                if (Core.Type.Map[mapNum].Event[EventID].Pages[1].DirFix == 0)
+                if (Core.Type.Map[mapNum].Event[EventID].Pages[0].DirFix == 0)
                     TempEventMap[mapNum].Event[EventID].Dir = dir;
             }
             else if (Core.Type.Map[mapNum].Event[EventID].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventindex].PageID].DirFix == 0)
@@ -415,11 +415,11 @@ namespace Server
 
                             if (globalevent)
                             {
-                                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -436,11 +436,11 @@ namespace Server
 
                             if (globalevent)
                             {
-                                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -463,11 +463,11 @@ namespace Server
 
                             if (globalevent)
                             {
-                                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -484,11 +484,11 @@ namespace Server
 
                             if (globalevent)
                             {
-                                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -510,11 +510,11 @@ namespace Server
 
                             if (globalevent)
                             {
-                                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -531,11 +531,11 @@ namespace Server
 
                             if (globalevent)
                             {
-                                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -557,11 +557,11 @@ namespace Server
 
                             if (globalevent)
                             {
-                                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -578,11 +578,11 @@ namespace Server
 
                             if (globalevent)
                             {
-                                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                             }
                             else
                             {
-                                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
                             }
                             buffer.Dispose();
                         }
@@ -1627,11 +1627,11 @@ namespace Server
             int i;
             var buffer = new ByteStream(data);
 
-            var loopTo = Core.Constant.MAX_SWITCHES - 1;
+            var loopTo = Core.Constant.MAX_SWITCHES;
             for (i = 0; i < loopTo; i++)
                 Switches[i] = buffer.ReadString();
 
-            var loopTo1 = Core.Constant.NAX_VARIABLES - 1;
+            var loopTo1 = Core.Constant.NAX_VARIABLES;
             for (i = 0; i < loopTo1; i++)
                 Variables[i] = buffer.ReadString();
 
@@ -1697,7 +1697,7 @@ namespace Server
                     }
             }
 
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
 
         }
@@ -1709,21 +1709,21 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SSwitchesAndVariables);
 
-            var loopTo = Core.Constant.MAX_SWITCHES - 1;
+            var loopTo = Core.Constant.MAX_SWITCHES;
             for (i = 0; i < loopTo; i++)
                 buffer.WriteString(Switches[i]);
 
-            var loopTo1 = Core.Constant.NAX_VARIABLES - 1;
+            var loopTo1 = Core.Constant.NAX_VARIABLES;
             for (i = 0; i < loopTo1; i++)
                 buffer.WriteString(Variables[i]);
 
             if (everyone)
             {
-                NetworkConfig.SendDataToAll(ref buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
             }
             else
             {
-                NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             }
 
             buffer.Dispose();
@@ -1760,7 +1760,7 @@ namespace Server
                     if (Core.Type.Map[mapNum].Event[i].PageCount > 0)
                     {
                         var loopTo1 = Core.Type.Map[mapNum].Event[i].PageCount;
-                        for (x = 0; x <= (int)loopTo1; x++)
+                        for (x = 0; x < (int)loopTo1; x++)
                         {
                             {
                                 ref var withBlock1 = ref Core.Type.Map[mapNum].Event[i].Pages[x];
@@ -1878,7 +1878,7 @@ namespace Server
             }
 
             // End Event Data
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             buffer.Dispose();
             SendSwitchesAndVariables(index);
 

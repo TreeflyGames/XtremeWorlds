@@ -272,7 +272,7 @@ namespace Server
                 buffer = new ByteStream(4);
                 buffer.WriteInt32((byte)ServerPackets.SAttack);
                 buffer.WriteInt32(attacker);
-                NetworkConfig.SendDataToMapBut(attacker, GetPlayerMap(attacker), ref buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMapBut(attacker, GetPlayerMap(attacker), buffer.Data, buffer.Head);
                 buffer.Dispose();
 
                 if (damage >= GetPlayerVital(victim, (VitalType)VitalType.HP))
@@ -371,7 +371,7 @@ namespace Server
                 buffer = new ByteStream(4);
                 buffer.WriteInt32((byte)ServerPackets.SNPCAttack);
                 buffer.WriteInt32(attacker);
-                NetworkConfig.SendDataToMap(mapNum, ref buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
                 buffer.Dispose();
 
                 if (damage >= GetPlayerVital(victim, (VitalType)VitalType.HP))
@@ -1099,7 +1099,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SLeftMap);
             buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMapBut(index, mapNum, ref buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMapBut(index, mapNum, buffer.Data, buffer.Head);
 
             buffer.Dispose();
         }
@@ -1202,7 +1202,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SCheckForMap);
             buffer.WriteInt32(mapNum);
             buffer.WriteInt32(Core.Type.Map[mapNum].Revision);
-            NetworkConfig.Socket.SendDataTo(ref index, ref buffer.Data, ref buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
             buffer.Dispose();
 
@@ -1642,7 +1642,7 @@ namespace Server
                 {
                     for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
-                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID > 0)
+                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID >= 0)
                         {
                             if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Globals == 1)
                             {

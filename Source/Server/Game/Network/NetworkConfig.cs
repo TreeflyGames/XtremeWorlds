@@ -117,24 +117,24 @@ namespace Server
             }
         }
 
-        internal static void SendDataToAll(ref byte[] data, int head)
+        internal static void SendDataToAll(ReadOnlySpan<byte> data, int head)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
-                Socket.SendDataTo(ref i, ref data, ref head);
+                Socket.SendDataTo(i, data, head);
         }
 
-        public static void SendDataToAllBut(int index, ref byte[] data, int head)
+        public static void SendDataToAllBut(int index, ReadOnlySpan<byte> data, int head)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
             {
                 if (i != index)
                 {
-                    Socket.SendDataTo(ref i, ref data, ref head);
+                    Socket.SendDataTo(i, data, head);
                 }
             }
         }
 
-        public static void SendDataToMapBut(int index, int mapNum, ref byte[] data, int head)
+        public static void SendDataToMapBut(int index, int mapNum, ReadOnlySpan<byte> data, int head)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
             {
@@ -144,14 +144,14 @@ namespace Server
                     {
                         if (GetPlayerMap(i) == mapNum)
                         {
-                            Socket.SendDataTo(ref i, ref data, ref head);
+                            Socket.SendDataTo(i, data, head);
                         }
                     }
                 }
             }
         }
 
-        public static void SendDataToMap(int mapNum, ref byte[] data, int head)
+        public static void SendDataToMap(int mapNum, ReadOnlySpan<byte> data, int head)
         {
             int i;
 
@@ -162,16 +162,16 @@ namespace Server
                 {
                     if (GetPlayerMap(i) == mapNum)
                     {
-                        Socket.SendDataTo(ref i, ref data, ref head);
+                        Socket.SendDataTo(i, data, head);
                     }
                 }
             }
 
         }
 
-        public static void SendDataTo(int index, ref byte[] data, ref int head)
+        public static void SendDataTo(int index, ReadOnlySpan<byte> data, int head)
         {
-            Socket.SendDataTo(ref index, ref data, ref head);
+            Socket.SendDataTo(index, data, head);
         }
 
         #region Events

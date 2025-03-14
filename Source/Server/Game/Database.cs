@@ -75,9 +75,9 @@ namespace Server
             string checkDbExistsSql = $"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'";
             string createDbSql = $"CREATE DATABASE {databaseName}";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value.Replace("Database=mirage", "Database=postgres")))
             {
-                connection?.Open();
+                connection.Open();
 
                 using (var checkCommand = new NpgsqlCommand(checkDbExistsSql, connection))
                 {
@@ -1405,6 +1405,9 @@ namespace Server
             Core.Type.TempPlayer[index].InShop = -1;
             Core.Type.TempPlayer[index].InTrade = -1;
 
+            for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventProcessingCount; i < loopTo; i++)
+                Core.Type.TempPlayer[index].EventProcessing[i].EventID = -1;
+
             ClearCharacter(index);
         }
 
@@ -1723,7 +1726,7 @@ namespace Server
 
         }
 
-        public static void Banindex(int BanPlayerindex, int BannedByindex)
+        public static void BanPlayer(int BanPlayerindex, int BannedByindex)
         {
             string filename = Path.Combine(Core.Path.Database, "banlist.txt");
             string IP;

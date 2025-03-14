@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using SharpDX.MediaFoundation;
 
 namespace Client
 {
@@ -14,7 +15,7 @@ namespace Client
         private int tmpGraphicIndex;
         private byte tmpGraphicType;
 
-        #region Frm Code
+        #region Frm
 
         public void ClearConditionFrame()
         {
@@ -84,6 +85,8 @@ namespace Client
         private void frmEditor_Events_Load(object sender, EventArgs e)
         {
             int i;
+
+            Event.CurPageNum = 0;
 
             cmbSwitch.Items.Clear();
             for (i = 0; i < Constant.MAX_SWITCHES; i++)
@@ -155,8 +158,6 @@ namespace Client
             nudFogData0.Maximum = GameState.NumFogs;
             nudWPMap.Maximum = Constant.MAX_MAPS;
 
-            Width = 946;
-
             fraDialogue.Width = Width;
             fraDialogue.Height = Height;
             fraDialogue.Top = 0;
@@ -174,8 +175,8 @@ namespace Client
             tabPages.TabPages.Clear();
 
             var loopTo2 = Event.TmpEvent.PageCount;
-            for (i = 0; i <= loopTo2; i++)
-                tabPages.TabPages.Add(Conversion.Str(i));
+            for (i = 0; i < loopTo2; i++)
+                tabPages.TabPages.Add(Conversion.Str(i + 1));
 
             // items
             cmbHasItem.Items.Clear();
@@ -213,13 +214,25 @@ namespace Client
                 tabPages.SelectedIndex = 1;
 
             // Load page 1 to start off with
-            Event.CurPageNum = 1;
+            Event.CurPageNum = 0;
             if (string.IsNullOrEmpty(Event.TmpEvent.Name))
                 Event.TmpEvent.Name = "";
             txtName.Text = Event.TmpEvent.Name;
 
             Event.EventEditorLoadPage(Event.CurPageNum);
             DrawGraphic();
+        }
+
+        private void frmEditor_Event_Resize(object sender, EventArgs e)
+        {
+            this.AutoScroll = true;
+            this.AutoScrollMinSize = new Size(this.Width, this.Height);
+            this.PerformLayout();
+        }
+
+        private void frmEditor_Event_Activated(object sender, EventArgs e)
+        {
+            this.AutoScroll = true;
         }
 
         public void DrawGraphic()
@@ -453,6 +466,10 @@ namespace Client
                 {
                     Event.TmpEvent.Pages[Event.CurPageNum].GraphicType = (byte)cmbGraphic.SelectedIndex;
                     Event.TmpEvent.Pages[Event.CurPageNum].Graphic = (int)Math.Round(nudGraphic.Value);
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicX = Event.GraphicSelX;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicY = Event.GraphicSelY;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicX2 = Event.GraphicSelX2;
+                    Event.TmpEvent.Pages[Event.CurPageNum].GraphicY2 = Event.GraphicSelY2;
                 }
                 else
                 {
@@ -1023,8 +1040,6 @@ namespace Client
 
         private void TabPages_Click(object sender, EventArgs e)
         {
-            if (tabPages.SelectedIndex == 0)
-                tabPages.SelectedIndex = 1;
             Event.CurPageNum = tabPages.SelectedIndex;
             Event.EventEditorLoadPage(Event.CurPageNum);
         }
@@ -1043,7 +1058,7 @@ namespace Client
             pageCount = Event.TmpEvent.PageCount + 1;
 
             // redim the array
-            Array.Resize(ref Event.TmpEvent.Pages, pageCount + 1);
+            Array.Resize(ref Event.TmpEvent.Pages, pageCount);
 
             Event.TmpEvent.PageCount = pageCount;
 
@@ -1051,8 +1066,8 @@ namespace Client
             tabPages.TabPages.Clear();
 
             var loopTo = Event.TmpEvent.PageCount;
-            for (i = 0; i <= loopTo; i++)
-                tabPages.TabPages.Add(Conversion.Str(i));
+            for (i = 0; i < loopTo; i++)
+                tabPages.TabPages.Add(Conversion.Str(i + 1));
             btnDeletePage.Enabled = true;
         }
 
@@ -1073,23 +1088,23 @@ namespace Client
             Event.TmpEvent.Pages[Event.CurPageNum] = default;
 
             // move everything else down a notch
-            if (Event.CurPageNum <= Event.TmpEvent.PageCount)
+            if (Event.CurPageNum < Event.TmpEvent.PageCount)
             {
-                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
-                    Event.TmpEvent.Pages[i] = Event.TmpEvent.Pages[i];
+                for (int i = Event.CurPageNum, loopTo = Event.TmpEvent.PageCount - 1; i < loopTo; i++)
+                    Event.TmpEvent.Pages[i] = Event.TmpEvent.Pages[i + 1];
             }
             Event.TmpEvent.PageCount = Event.TmpEvent.PageCount - 1;
-            Event.CurPageNum = Event.TmpEvent.PageCount;
+            Event.CurPageNum = Event.TmpEvent.PageCount - 1;
             Event.EventEditorLoadPage(Event.CurPageNum);
 
             // set the tabs
             tabPages.TabPages.Clear();
 
-            for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i <= loopTo1; i++)
-                tabPages.TabPages.Add("0", Conversion.Str(i), "");
+            for (int i = 0, loopTo1 = Event.TmpEvent.PageCount; i < loopTo1; i++)
+                tabPages.TabPages.Add("0", Conversion.Str(i + 1), "");
 
             // set the tab back
-            if (Event.CurPageNum <= Event.TmpEvent.PageCount)
+            if (Event.CurPageNum < Event.TmpEvent.PageCount)
             {
                 tabPages.SelectedIndex = tabPages.TabPages.IndexOfKey(Event.CurPageNum.ToString());
             }
@@ -1098,7 +1113,7 @@ namespace Client
                 tabPages.SelectedIndex = tabPages.TabPages.IndexOfKey(Event.TmpEvent.PageCount.ToString());
             }
             // make sure we disable
-            if (Event.TmpEvent.PageCount <= 1)
+            if (Event.TmpEvent.PageCount == 1)
             {
                 btnDeletePage.Enabled = false;
             }
@@ -1108,6 +1123,7 @@ namespace Client
         private void BtnClearPage_Click(object sender, EventArgs e)
         {
             Event.TmpEvent.Pages[Event.CurPageNum] = default;
+            Event.EventEditorLoadPage(Event.CurPageNum);
         }
 
         private void TxtName_TextChanged(object sender, EventArgs e)
@@ -1295,7 +1311,7 @@ namespace Client
             DrawGraphic();
         }
 
-        private void PicGraphicSel_Click(object sender, MouseEventArgs e)
+        private void PicGraphicSel_MouseDown(object sender, MouseEventArgs e)
         {
             int X;
             int Y;
@@ -1357,6 +1373,9 @@ namespace Client
 
         private void nudGraphic_ValueChanged(object sender, EventArgs e)
         {
+            if (nudGraphic.Value == 0)
+                return;
+
             DrawGraphic();
         }
 
@@ -1654,7 +1673,7 @@ namespace Client
 
         private void ChkGlobal_CheckedChanged(object sender, EventArgs e)
         {
-            if (Event.TmpEvent.PageCount > 1)
+            if (Event.TmpEvent.PageCount > 0)
             {
                 if (MessageBox.Show("If you set the event to global you will lose all pages except for your first one. Do you want to continue?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
@@ -1671,11 +1690,11 @@ namespace Client
             }
 
             Event.TmpEvent.PageCount = 1;
-            Event.CurPageNum = 1;
+            Event.CurPageNum = 0;
             tabPages.TabPages.Clear();
 
-            for (int i = 0, loopTo = Event.TmpEvent.PageCount; i <= loopTo; i++)
-                tabPages.TabPages.Add("0", i.ToString(), "0");
+            for (int i = 0, loopTo = Event.TmpEvent.PageCount; i < loopTo; i++)
+                tabPages.TabPages.Add("0", i.ToString() + 1, "0");
             Event.EventEditorLoadPage(Event.CurPageNum);
         }
 
@@ -1788,11 +1807,11 @@ namespace Client
             lstSwitches.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
-                lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
+                lstSwitches.Items.Add((i + 1).ToString()  + ". " + Event.Switches[i]);
             lstVariables.Items.Clear();
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
-                lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
+                lstVariables.Items.Add((i + 1).ToString() + ". " + Event.Variables[i]);
 
         }
 
@@ -1806,7 +1825,7 @@ namespace Client
                 case 1:
                     {
                         // Variable
-                        if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.NAX_VARIABLES + 1)
+                        if (Event.RenameIndex >= 0 & Event.RenameIndex < Constant.NAX_VARIABLES)
                         {
                             Event.Variables[Event.RenameIndex] = txtRename.Text;
                             FraRenaming.Visible = false;
@@ -1820,7 +1839,7 @@ namespace Client
                 case 2:
                     {
                         // Switch
-                        if (Event.RenameIndex > 0 & Event.RenameIndex < Constant.MAX_SWITCHES + 1)
+                        if (Event.RenameIndex >= 0 & Event.RenameIndex < Constant.MAX_SWITCHES)
                         {
                             Event.Switches[Event.RenameIndex] = txtRename.Text;
                             FraRenaming.Visible = false;
@@ -1834,12 +1853,12 @@ namespace Client
             }
             lstSwitches.Items.Clear();
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
-                lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
+                lstSwitches.Items.Add((i + 1).ToString() + ". " + Strings.Trim(Event.Switches[i]));
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
-                lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
+                lstVariables.Items.Add((i + 1).ToString() + ". " + Strings.Trim(Event.Variables[i]));
             lstVariables.SelectedIndex = 0;
         }
 
@@ -1853,12 +1872,12 @@ namespace Client
             lstSwitches.Items.Clear();
 
             for (int i = 0; i < Constant.MAX_SWITCHES; i++)
-                lstSwitches.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Switches[i]));
+                lstSwitches.Items.Add((i + 1).ToString() + ". " + Event.Switches[i]);
             lstSwitches.SelectedIndex = 0;
             lstVariables.Items.Clear();
 
             for (int i = 0; i < Constant.NAX_VARIABLES; i++)
-                lstVariables.Items.Add(i.ToString() + ". " + Strings.Trim(Event.Variables[i]));
+                lstVariables.Items.Add((i + 1).ToString() + ". " + Event.Variables[i]);
             lstVariables.SelectedIndex = 0;
         }
 
@@ -1867,29 +1886,17 @@ namespace Client
             Event.TmpEvent.Name = Strings.Trim(txtName.Text);
         }
 
-        private void lstVariables_Click(object sender, EventArgs e)
-        {
-            if (lstVariables.SelectedIndex == 0)
-                lstVariables.SelectedIndex = 1;
-        }
-
         private void LstVariables_DoubleClick(object sender, EventArgs e)
         {
             if (lstVariables.SelectedIndex > -1 & lstVariables.SelectedIndex < Constant.NAX_VARIABLES)
             {
                 FraRenaming.Visible = true;
                 fraLabeling.Visible = false;
-                lblEditing.Text = "Editing Variable #" + lstVariables.SelectedIndex.ToString();
+                lblEditing.Text = "Editing Variable: " + lstVariables.SelectedIndex.ToString();
                 txtRename.Text = Event.Variables[lstVariables.SelectedIndex];
                 Event.RenameType = 1;
                 Event.RenameIndex = lstVariables.SelectedIndex;
             }
-        }
-
-        private void lstSwitches_Click(object sender, EventArgs e)
-        {
-            if (lstSwitches.SelectedIndex == 0)
-                lstSwitches.SelectedIndex = 1;
         }
 
         private void LstSwitches_DoubleClick(object sender, EventArgs e)
@@ -1898,7 +1905,7 @@ namespace Client
             {
                 FraRenaming.Visible = true;
                 fraLabeling.Visible = false;
-                lblEditing.Text = "Editing Switch #" + lstSwitches.SelectedIndex.ToString();
+                lblEditing.Text = "Editing Switch: " + lstSwitches.SelectedIndex.ToString();
                 txtRename.Text = Event.Switches[lstSwitches.SelectedIndex];
                 Event.RenameType = 2;
                 Event.RenameIndex = lstSwitches.SelectedIndex;
@@ -1911,7 +1918,7 @@ namespace Client
             {
                 FraRenaming.Visible = true;
                 fraLabeling.Visible = false;
-                lblEditing.Text = "Editing Variable #" + lstVariables.SelectedIndex.ToString();
+                lblEditing.Text = "Editing Variable: " + lstVariables.SelectedIndex.ToString();
                 txtRename.Text = Event.Variables[lstVariables.SelectedIndex];
                 Event.RenameType = 1;
                 Event.RenameIndex = lstVariables.SelectedIndex;
@@ -1923,7 +1930,7 @@ namespace Client
             if (lstSwitches.SelectedIndex > -1 & lstSwitches.SelectedIndex < Constant.MAX_SWITCHES)
             {
                 FraRenaming.Visible = true;
-                lblEditing.Text = "Editing Switch #" + lstSwitches.SelectedIndex.ToString();
+                lblEditing.Text = "Editing Switch: " + lstSwitches.SelectedIndex.ToString();
                 txtRename.Text = Event.Switches[lstSwitches.SelectedIndex];
                 Event.RenameType = 2;
                 Event.RenameIndex = lstSwitches.SelectedIndex;
@@ -1991,7 +1998,7 @@ namespace Client
             if (lstMoveRoute.SelectedIndex > -1)
             {
                 i = lstMoveRoute.SelectedIndex;
-                Event.TempMoveRouteCount = Event.TempMoveRouteCount;
+                Event.TempMoveRouteCount += 1;
                 Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount);
                 var loopTo = i;
                 for (X = Event.TempMoveRouteCount; X > loopTo; X -= 1)
@@ -2011,7 +2018,7 @@ namespace Client
             }
             else
             {
-                Event.TempMoveRouteCount = Event.TempMoveRouteCount + 1;
+                Event.TempMoveRouteCount += 1;
                 Array.Resize(ref Event.TempMoveRoute, Event.TempMoveRouteCount);
                 Event.TempMoveRoute[Event.TempMoveRouteCount].Index = Index;
                 PopulateMoveRouteList();
@@ -2513,7 +2520,6 @@ namespace Client
                 nudVariableData1.Value = 0m;
                 nudVariableData2.Enabled = false;
                 nudVariableData2.Value = 0m;
-                nudVariableData3.Enabled = false;
                 nudVariableData3.Value = 0m;
                 nudVariableData4.Enabled = false;
                 nudVariableData4.Value = 0m;

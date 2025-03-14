@@ -113,9 +113,6 @@ namespace Client
         public static int EditorWarpY;
         public static int EditorShop;
         public static int EditorAnimation;
-        public static int EditorLight;
-        public static byte EditorShadow;
-        public static byte EditorFlicker;
         public static byte EditorAttribute;
         public static Point EditorTileSelStart;
         public static Point EditorTileSelEnd;
@@ -171,6 +168,7 @@ namespace Client
         public static int CurY;
         public static int CurMouseX;
         public static int CurMouseY;
+        public static bool Info;
 
         // Game editors
         public static int MyEditorType;
@@ -276,7 +274,7 @@ namespace Client
         public const int EffectTypeWeather = 5;
         public const int EffectTypeTint = 6;
 
-        public static string[] MapNames = new string[1001];
+        public static string[] MapNames = new string[Constant.MAX_MAPS];
 
         // Chat variables
         public const long ChatWidth = 316L;
@@ -334,7 +332,6 @@ namespace Client
         public static bool EyeDropper;
         public static int HistoryIndex;
         public static bool HideLayers;
-        public static bool Night;
 
         // Speed moving vars
         public const byte WalkSpeed = 8;

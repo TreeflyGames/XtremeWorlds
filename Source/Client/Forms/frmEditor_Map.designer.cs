@@ -119,7 +119,6 @@ namespace Client
             ToolStripSeparator1 = new ToolStripSeparator();
             tsbMapGrid = new ToolStripButton();
             tsbOpacity = new ToolStripButton();
-            tsbLight = new ToolStripButton();
             ToolStripSeparator2 = new ToolStripSeparator();
             tsbFill = new ToolStripButton();
             tsbClear = new ToolStripButton();
@@ -139,11 +138,11 @@ namespace Client
             cmbTileSets = new ComboBox();
             tpAttributes = new TabPage();
             optNoXing = new RadioButton();
+            btnFillAttributes = new Button();
             optInfo = new RadioButton();
             Label23 = new Label();
             cmbAttribute = new ComboBox();
             optAnimation = new RadioButton();
-            optLight = new RadioButton();
             tpNPCs = new TabPage();
             fraNPCs = new GroupBox();
             Label18 = new Label();
@@ -257,22 +256,22 @@ namespace Client
             // 
             // btnClearAttribute
             // 
-            btnClearAttribute.Location = new Point(344, 569);
+            btnClearAttribute.Location = new Point(400, 569);
             btnClearAttribute.Margin = new Padding(4, 3, 4, 3);
             btnClearAttribute.Name = "btnClearAttribute";
-            btnClearAttribute.Size = new Size(192, 29);
+            btnClearAttribute.Size = new Size(136, 29);
             btnClearAttribute.TabIndex = 14;
-            btnClearAttribute.Text = "Clear All Attributes";
+            btnClearAttribute.Text = "Clear Attributes";
             btnClearAttribute.UseVisualStyleBackColor = true;
             btnClearAttribute.Click += BtnClearAttribute_Click;
             // 
             // optTrap
             // 
             optTrap.AutoSize = true;
-            optTrap.Location = new Point(373, 58);
+            optTrap.Location = new Point(276, 58);
             optTrap.Margin = new Padding(4, 3, 4, 3);
             optTrap.Name = "optTrap";
-            optTrap.Size = new Size(48, 19);
+            optTrap.Size = new Size(47, 19);
             optTrap.TabIndex = 12;
             optTrap.Text = "Trap";
             optTrap.UseVisualStyleBackColor = true;
@@ -281,7 +280,7 @@ namespace Client
             // optHeal
             // 
             optHeal.AutoSize = true;
-            optHeal.Location = new Point(276, 58);
+            optHeal.Location = new Point(202, 58);
             optHeal.Margin = new Padding(4, 3, 4, 3);
             optHeal.Name = "optHeal";
             optHeal.Size = new Size(49, 19);
@@ -414,7 +413,7 @@ namespace Client
             Label1.Location = new Point(8, 544);
             Label1.Margin = new Padding(4, 0, 4, 0);
             Label1.Name = "Label1";
-            Label1.Size = new Size(193, 15);
+            Label1.Size = new Size(192, 15);
             Label1.TabIndex = 11;
             Label1.Text = "Drag Mouse to Select Multiple Tiles";
             // 
@@ -493,14 +492,10 @@ namespace Client
             // 
             // btnLight
             // 
-            btnLight.Location = new Point(34, 98);
-            btnLight.Margin = new Padding(4, 3, 4, 3);
+            btnLight.Location = new Point(0, 0);
             btnLight.Name = "btnLight";
-            btnLight.Size = new Size(105, 32);
-            btnLight.TabIndex = 6;
-            btnLight.Text = "Accept";
-            btnLight.UseVisualStyleBackColor = true;
-            btnLight.Click += btnLight_Click;
+            btnLight.Size = new Size(75, 23);
+            btnLight.TabIndex = 42;
             // 
             // fraAnimation
             // 
@@ -868,7 +863,7 @@ namespace Client
             lblMapItem.Location = new Point(7, 25);
             lblMapItem.Margin = new Padding(4, 0, 4, 0);
             lblMapItem.Name = "lblMapItem";
-            lblMapItem.Size = new Size(50, 15);
+            lblMapItem.Size = new Size(51, 15);
             lblMapItem.TabIndex = 0;
             lblMapItem.Text = "None x0";
             // 
@@ -919,11 +914,11 @@ namespace Client
             // 
             ToolStrip.AutoSize = false;
             ToolStrip.ImageScalingSize = new Size(24, 24);
-            ToolStrip.Items.AddRange(new ToolStripItem[] { tsbSave, tsbDiscard, ToolStripSeparator1, tsbMapGrid, tsbOpacity, tsbLight, ToolStripSeparator2, tsbFill, tsbClear, tsbEyeDropper, tsbCopyMap, tsbDeleteMap, tsbUndo, tsbRedo, tsbScreenshot });
+            ToolStrip.Items.AddRange(new ToolStripItem[] { tsbSave, tsbDiscard, ToolStripSeparator1, tsbMapGrid, tsbOpacity, ToolStripSeparator2, tsbFill, tsbClear, tsbEyeDropper, tsbCopyMap, tsbDeleteMap, tsbUndo, tsbRedo, tsbScreenshot });
             ToolStrip.Location = new Point(0, 0);
             ToolStrip.Name = "ToolStrip";
             ToolStrip.Padding = new Padding(0, 0, 2, 0);
-            ToolStrip.Size = new Size(552, 28);
+            ToolStrip.Size = new Size(1141, 28);
             ToolStrip.TabIndex = 13;
             ToolStrip.Text = "ToolStrip1";
             // 
@@ -969,16 +964,6 @@ namespace Client
             tsbOpacity.Text = "ToolStripButton1";
             tsbOpacity.ToolTipText = "Opacity";
             tsbOpacity.Click += tsbOpacity_Click;
-            // 
-            // tsbLight
-            // 
-            tsbLight.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            tsbLight.Image = (Image)resources.GetObject("tsbLight.Image");
-            tsbLight.ImageTransparentColor = Color.Magenta;
-            tsbLight.Name = "tsbLight";
-            tsbLight.Size = new Size(28, 25);
-            tsbLight.ToolTipText = "Light";
-            tsbLight.Click += tsbLight_Click;
             // 
             // ToolStripSeparator2
             // 
@@ -1147,7 +1132,7 @@ namespace Client
             Label9.Location = new Point(8, 570);
             Label9.Margin = new Padding(4, 0, 4, 0);
             Label9.Name = "Label9";
-            Label9.Size = new Size(44, 15);
+            Label9.Size = new Size(43, 15);
             Label9.TabIndex = 13;
             Label9.Text = "Tileset:";
             // 
@@ -1165,11 +1150,11 @@ namespace Client
             // tpAttributes
             // 
             tpAttributes.Controls.Add(optNoXing);
+            tpAttributes.Controls.Add(btnFillAttributes);
             tpAttributes.Controls.Add(optInfo);
             tpAttributes.Controls.Add(Label23);
             tpAttributes.Controls.Add(cmbAttribute);
             tpAttributes.Controls.Add(optAnimation);
-            tpAttributes.Controls.Add(optLight);
             tpAttributes.Controls.Add(btnClearAttribute);
             tpAttributes.Controls.Add(optTrap);
             tpAttributes.Controls.Add(optBlocked);
@@ -1193,15 +1178,24 @@ namespace Client
             // optNoXing
             // 
             optNoXing.AutoSize = true;
-            optNoXing.Checked = true;
-            optNoXing.Location = new Point(12, 99);
+            optNoXing.Location = new Point(12, 95);
             optNoXing.Margin = new Padding(4, 3, 4, 3);
             optNoXing.Name = "optNoXing";
             optNoXing.Size = new Size(68, 19);
-            optNoXing.TabIndex = 23;
-            optNoXing.TabStop = true;
+            optNoXing.TabIndex = 25;
             optNoXing.Text = "No Xing";
             optNoXing.UseVisualStyleBackColor = true;
+            // 
+            // btnFillAttributes
+            // 
+            btnFillAttributes.Location = new Point(256, 568);
+            btnFillAttributes.Margin = new Padding(4, 3, 4, 3);
+            btnFillAttributes.Name = "btnFillAttributes";
+            btnFillAttributes.Size = new Size(136, 29);
+            btnFillAttributes.TabIndex = 24;
+            btnFillAttributes.Text = "Fill Attributes";
+            btnFillAttributes.UseVisualStyleBackColor = true;
+            btnFillAttributes.Click += btnFillAttributes_Click;
             // 
             // optInfo
             // 
@@ -1220,7 +1214,7 @@ namespace Client
             Label23.Location = new Point(8, 576);
             Label23.Margin = new Padding(4, 0, 4, 0);
             Label23.Name = "Label23";
-            Label23.Size = new Size(35, 15);
+            Label23.Size = new Size(34, 15);
             Label23.TabIndex = 21;
             Label23.Text = "Type:";
             // 
@@ -1239,7 +1233,7 @@ namespace Client
             // optAnimation
             // 
             optAnimation.AutoSize = true;
-            optAnimation.Location = new Point(448, 58);
+            optAnimation.Location = new Point(373, 58);
             optAnimation.Margin = new Padding(4, 3, 4, 3);
             optAnimation.Name = "optAnimation";
             optAnimation.Size = new Size(81, 19);
@@ -1247,18 +1241,6 @@ namespace Client
             optAnimation.Text = "Animation";
             optAnimation.UseVisualStyleBackColor = true;
             optAnimation.CheckedChanged += optAnimation_CheckedChanged;
-            // 
-            // optLight
-            // 
-            optLight.AutoSize = true;
-            optLight.Location = new Point(202, 58);
-            optLight.Margin = new Padding(4, 3, 4, 3);
-            optLight.Name = "optLight";
-            optLight.Size = new Size(52, 19);
-            optLight.TabIndex = 18;
-            optLight.Text = "Light";
-            optLight.UseVisualStyleBackColor = true;
-            optLight.CheckedChanged += optLight_CheckedChanged;
             // 
             // tpNPCs
             // 
@@ -1602,7 +1584,7 @@ namespace Client
             Label2.Location = new Point(7, 52);
             Label2.Margin = new Padding(4, 0, 4, 0);
             Label2.Name = "Label2";
-            Label2.Size = new Size(42, 15);
+            Label2.Size = new Size(43, 15);
             Label2.TabIndex = 2;
             Label2.Text = "Max Y:";
             // 
@@ -1621,7 +1603,7 @@ namespace Client
             Label7.Location = new Point(7, 22);
             Label7.Margin = new Padding(4, 0, 4, 0);
             Label7.Name = "Label7";
-            Label7.Size = new Size(42, 15);
+            Label7.Size = new Size(43, 15);
             Label7.TabIndex = 0;
             Label7.Text = "Max X:";
             // 
@@ -1757,7 +1739,7 @@ namespace Client
             Label16.Location = new Point(23, 172);
             Label16.Margin = new Padding(4, 0, 4, 0);
             Label16.Name = "Label16";
-            Label16.Size = new Size(433, 15);
+            Label16.Size = new Size(432, 15);
             Label16.TabIndex = 3;
             Label16.Text = "To paste a copied Event, press the paste button, then click on the map to place it.";
             // 
@@ -2090,7 +2072,7 @@ namespace Client
             Label14.Location = new Point(7, 29);
             Label14.Margin = new Padding(4, 0, 4, 0);
             Label14.Name = "Label14";
-            Label14.Size = new Size(82, 15);
+            Label14.Size = new Size(81, 15);
             Label14.TabIndex = 1;
             Label14.Text = "Weather Type:";
             // 
@@ -2109,6 +2091,7 @@ namespace Client
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             AutoSize = true;
             BackColor = SystemColors.Control;
             ClientSize = new Size(552, 658);
@@ -2120,8 +2103,10 @@ namespace Client
             MaximizeBox = false;
             Name = "frmEditor_Map";
             Text = "Map Editor";
+            Activated += frmEditor_Map_Activated;
             FormClosing += frmEditor_Map_FormClosing;
             Load += frmEditor_Map_Load;
+            Resize += frmEditor_Map_Resize;
             pnlBack.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)picBackSelect).EndInit();
             pnlAttributes.ResumeLayout(false);
@@ -2280,7 +2265,6 @@ namespace Client
         internal ToolStripButton tsbFill;
         internal ToolStripButton tsbEyeDropper;
         internal ToolStripSeparator ToolStripSeparator2;
-        internal RadioButton optLight;
         internal Button btnPasteEvent;
         internal Label Label16;
         internal Button btnCopyEvent;
@@ -2326,7 +2310,6 @@ namespace Client
         internal ToolStripButton tsbUndo;
         internal ToolStripButton tsbRedo;
         internal ToolStripButton tsbOpacity;
-        internal ToolStripButton tsbLight;
         internal ToolStripButton tsbScreenshot;
         internal RadioButton optAnimation;
         internal GroupBox fraAnimation;
@@ -2347,6 +2330,7 @@ namespace Client
         internal ComboBox cmbAttribute;
         internal ToolStripButton tsbDeleteMap;
         internal RadioButton optInfo;
+        internal Button btnFillAttributes;
         internal RadioButton optNoXing;
     }
 }

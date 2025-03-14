@@ -43,13 +43,24 @@ namespace Client
             scrlFog.Maximum = GameState.NumFogs;
         }
 
+        private void frmEditor_Map_Resize(object sender, EventArgs e)
+        {
+            this.AutoScroll = true;
+            this.PerformLayout();
+        }
+
+        private void frmEditor_Map_Activated(object sender, EventArgs e)
+        {
+            this.AutoScroll = true;
+        }
+
         private void DrawItem()
         {
             int itemNum;
 
             itemNum = Core.Type.Item[scrlMapItem.Value].Icon;
 
-            if (itemNum  < 0 | itemNum > GameState.NumItems)
+            if (itemNum < 0 | itemNum > GameState.NumItems)
             {
                 picMapItem.BackgroundImage = null;
                 return;
@@ -102,7 +113,7 @@ namespace Client
                 GameClient.Graphics.GraphicsDevice.Clear(Color.Black);
 
                 // Create a SpriteBatch for rendering
-                using (var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice))
+                using (var spriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice))
                 {
                     // Begin the SpriteBatch with appropriate settings
                     spriteBatch.Begin();
@@ -140,7 +151,7 @@ namespace Client
             }
         }
 
-        public void DrawSelectionRectangle(SpriteBatch spriteBatch, float scale)
+        public void DrawSelectionRectangle(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, float scale)
         {
             // Scale the selection rectangle based on the scale factor
             int scaledX = (int)Math.Round(GameState.EditorTileSelStart.X * GameState.PicX * scale);
@@ -1049,22 +1060,18 @@ namespace Client
             {
                 if (Instance.optInfo.Checked)
                 {
-                    switch (Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type)
+                    if (GameState.Info == false)
                     {
-                        case TileType.Warp:
+                        {
+                            if (Instance.cmbAttribute.SelectedIndex == 1)
                             {
-                                Client.Text.AddText("Map: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1.ToString() + " X: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2.ToString() + " Y:" + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3.ToString(), (int)ColorType.Gray);
-                                break;
+                                GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
                             }
-                    }
-
-                    switch (Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type2)
-                    {
-                        case TileType.Warp:
+                            else
                             {
-                                Client.Text.AddText("Map: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1_2.ToString() + " X: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2_2.ToString() + " Y:" + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3_2.ToString(), (int)ColorType.Gray);
-                                break;
+                                GameLogic.Dialogue("Map Editor", "Info: " + System.Enum.GetName(Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Type2), " Data 1: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data1_2 + " Data 2: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data2_2 + " Data 3: " + Core.Type.MyMap.Tile[GameState.CurX, GameState.CurY].Data3_2, (byte)DialogueType.Info, (byte)DialogueStyle.Okay);
                             }
+                        }
                     }
                 }
 
@@ -1270,25 +1277,6 @@ namespace Client
                         }
                     }
 
-                    // light
-                    if (Instance.optLight.Checked)
-                    {
-                        if (GameState.EditorAttribute == 1)
-                        {
-                            withBlock1.Type = TileType.Light;
-                            withBlock1.Data1 = GameState.EditorLight;
-                            withBlock1.Data2 = GameState.EditorFlicker;
-                            withBlock1.Data3 = GameState.EditorShadow;
-                        }
-                        else
-                        {
-                            withBlock1.Type2 = TileType.Light;
-                            withBlock1.Data1_2 = GameState.EditorLight;
-                            withBlock1.Data2_2 = GameState.EditorFlicker;
-                            withBlock1.Data3_2 = GameState.EditorShadow;
-                        }
-                    }
-
                     // Animation
                     if (Instance.optAnimation.Checked == true)
                     {
@@ -1444,6 +1432,8 @@ namespace Client
             Gui.ShowWindow(Gui.GetWindowIndex("winMenu"), resetPosition: false);
             Gui.ShowWindow(Gui.GetWindowIndex("winBars"), resetPosition: false);
             Gui.HideChat();
+
+            frmEditor_Event.Instance?.Dispose();
         }
 
         public static void MapEditorSetTile(int x, int y, int CurLayer, bool multitile = false, byte theAutotile = 0, byte eraseTile = 0)
@@ -1478,7 +1468,7 @@ namespace Client
                 }
                 withBlock.Layer[CurLayer].AutoTile = theAutotile;
                 Autotile.CacheRenderState(x, y, CurLayer);
-                
+
                 // do a re-init so we can see our changes
                 Autotile.InitAutotiles();
                 return;
@@ -1499,7 +1489,7 @@ namespace Client
                     withBlock1.Layer[CurLayer].Tileset = Instance.cmbTileSets.SelectedIndex + 1;
                 }
                 withBlock1.Layer[CurLayer].AutoTile = 0;
-                Autotile.CacheRenderState(x, y, CurLayer);          
+                Autotile.CacheRenderState(x, y, CurLayer);
             }
             else // multitile
             {
@@ -1528,7 +1518,7 @@ namespace Client
                                 }
                                 withBlock2.Layer[CurLayer].AutoTile = 0;
                                 Autotile.CacheRenderState(x, y, CurLayer);
-                            }                         
+                            }
                         }
                         x2 += 1;
                     }
@@ -1811,11 +1801,6 @@ namespace Client
             GameState.HideLayers = !GameState.HideLayers;
         }
 
-        private void tsbLight_Click(object sender, EventArgs e)
-        {
-            GameState.Night = !GameState.Night;
-        }
-
         private void tsbScreenshot_Click(object sender, EventArgs e)
         {
             GameClient.TakeScreenshot();
@@ -1836,41 +1821,6 @@ namespace Client
             GameState.EditorAnimation = cmbAnimation.SelectedIndex;
             pnlAttributes.Visible = false;
             fraAnimation.Visible = false;
-        }
-
-        private void btnLight_Click(object sender, EventArgs e)
-        {
-            GameState.EditorLight = scrlLight.Value;
-            if (chkFlicker.Checked)
-            {
-                GameState.EditorFlicker = 1;
-            }
-            else
-            {
-                GameState.EditorFlicker = 0;
-            }
-
-            if (chkShadow.Checked)
-            {
-                GameState.EditorShadow = 1;
-            }
-            else
-            {
-                GameState.EditorShadow = 0;
-            }
-
-            pnlAttributes.Visible = false;
-            fraMapLight.Visible = false;
-        }
-
-        private void optLight_CheckedChanged(object sender, EventArgs e)
-        {
-            if (optLight.Checked == false)
-                return;
-
-            ClearAttributeDialogue();
-            pnlAttributes.Visible = true;
-            fraMapLight.Visible = true;
         }
 
         private void scrlLight_ValueChanged(object sender, EventArgs e)
@@ -1909,7 +1859,7 @@ namespace Client
 
         private void tsbDeleteMap_Click(object sender, EventArgs e)
         {
-            Map.ClearMap();
+            GameLogic.Dialogue("Map Editor", "Clear Map: ", "Are you sure you want to clear this map?", (byte)DialogueType.ClearMap, (byte)DialogueStyle.YesNo);
         }
 
         private void picBackSelect_Paint(object sender, PaintEventArgs e)
@@ -1919,8 +1869,11 @@ namespace Client
                 DrawTileset();
             }
         }
+        private void btnFillAttributes_Click(object sender, EventArgs e)
+        {
+            GameLogic.Dialogue("Map Editor", "Fill Attributes: ", "Are you sure you wish to fill attributes?", (byte)DialogueType.FillAttributes, (byte)DialogueStyle.YesNo);
+        }
 
         #endregion
-
     }
 }

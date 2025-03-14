@@ -218,7 +218,7 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
             End Function
 
             <Global.System.Diagnostics.DebuggerHidden()> _
-            Private Sub Dispose__Instance__(Of T As Global.System.Windows.Forms.Form)(ByRef instance As T)
+            Private Sub Dispose__Instance__(Of T As Global.System.Windows.Forms.Form)(Byinstance As T)
                 instance.Dispose()
                 instance = Nothing
             End Sub
@@ -291,7 +291,7 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
             End Function
 
             <Global.System.Diagnostics.DebuggerHidden()> _
-            Private Sub Dispose__Instance__(Of T)(ByRef instance As T)
+            Private Sub Dispose__Instance__(Of T)(Byinstance As T)
                 instance = Nothing
             End Sub
 

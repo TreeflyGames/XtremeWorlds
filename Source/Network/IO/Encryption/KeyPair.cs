@@ -19,7 +19,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
         private void CheckDisposed()
         {
-            if (_rsa == null)
+            if (_rsa == null || _rsa.CspKeyContainerInfo == null)
                 GenerateKeys();
         }
 
@@ -75,10 +75,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                 throw new ArgumentNullException(nameof(value), "Input data cannot be null.");
 
             CheckDisposed();
-
-            if (_rsa == null)
-                throw new CryptographicException("Key not set.");
-
+            
             using (var rijndael = Aes.Create())
             {
                 rijndael.KeySize = 256;
@@ -86,21 +83,20 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                 rijndael.Mode = CipherMode.CBC;
                 rijndael.Padding = PaddingMode.PKCS7;
 
+                CheckDisposed();
+
                 if (rijndael.Key == null || rijndael.IV == null)
                     throw new CryptographicException("Failed to generate AES key or IV.");
 
                 using (var memoryStream = new MemoryStream())
                 {
                     try
-                    {
+                    {                    
                         // Encrypt AES key with RSA
-                        var encryptedKey = _rsa?.Encrypt(rijndael.Key, RSAEncryptionPadding.OaepSHA1);
+                        var encryptedKey = _rsa.Encrypt(rijndael.Key, RSAEncryptionPadding.OaepSHA1);
 
                         if (encryptedKey.Length != 256)
-                        {
-                            CheckDisposed();
-                            return null;
-                        }
+                            throw new CryptographicException("Invalid RSA-encrypted key length.");
 
                         // Write encrypted key and IV to the output stream
                         memoryStream.Write(encryptedKey, 0, encryptedKey.Length);
@@ -119,7 +115,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                     catch (CryptographicException ex)
                     {
                         Console.WriteLine($"Encryption failed: {ex.Message}");
-                        throw;
+                        return null;
                     }
                 }
             }
@@ -178,7 +174,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                     catch (CryptographicException ex)
                     {
                         Console.WriteLine($"Encryption failed: {ex.Message}");
-                        throw;
+                        return new byte[0];
                     }
                 }
             }
