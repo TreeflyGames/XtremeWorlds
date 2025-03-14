@@ -261,7 +261,6 @@ namespace Server
                     var loopTo2 = Core.Type.MapResource[mapNum].ResourceCount;
                     for (i = 0; i < loopTo2; i++)
                     {
-
                         resourceindex = Core.Type.Map[mapNum].Tile[Core.Type.MapResource[mapNum].ResourceData[i].X, Core.Type.MapResource[mapNum].ResourceData[i].Y].Data1;
 
                         if (resourceindex > 0)

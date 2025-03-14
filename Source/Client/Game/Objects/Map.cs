@@ -794,7 +794,7 @@ namespace Client
 
                         if (Core.Type.MyMap.Event[i].PageCount > 0)
                         {
-                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
+                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
                             var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
                             for (x = 0; x < loopTo3; x++)
                             {
@@ -858,7 +858,7 @@ namespace Client
 
                                 if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount + 1];
+                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
                                     var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
                                     for (y = 0; y < loopTo5; y++)
                                     {
@@ -866,7 +866,7 @@ namespace Client
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
-                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount + 1];
+                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
                                             for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                             {
                                                 {
@@ -938,10 +938,11 @@ namespace Client
                 GameState.ResourceIndex = buffer.ReadInt32();
                 GameState.ResourcesInit = Conversions.ToBoolean(0);
                 Core.Type.MapResource = new Core.Type.MapResourceStruct[GameState.ResourceIndex];
+                Core.Type.MyMapResource = new Core.Type.MapResourceCacheStruct[Constant.MAX_RESOURCES];
 
                 if (GameState.ResourceIndex > 0)
                 {
-                    var loopTo8 = GameState.ResourceIndex - 1;
+                    var loopTo8 = GameState.ResourceIndex;
                     for (i = 0; i < loopTo8; i++)
                     {
                         Core.Type.MyMapResource[i].State = buffer.ReadByte();

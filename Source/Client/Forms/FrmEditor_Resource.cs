@@ -15,8 +15,8 @@ namespace Client
 
         private void ScrlNormalPic_Scroll(object sender, EventArgs e)
         {
-            DrawSprite();
             Core.Type.Resource[GameState.EditorIndex].ResourceImage = (int)Math.Round(nudNormalPic.Value);
+            DrawSprite();
         }
 
         private void CmbType_SelectedIndexChanged(object sender, EventArgs e)
@@ -25,9 +25,9 @@ namespace Client
         }
 
         private void ScrlExhaustedPic_Scroll(object sender, EventArgs e)
-        {
-            DrawSprite();
+        {          
             Core.Type.Resource[GameState.EditorIndex].ExhaustedImage = (int)Math.Round(nudExhaustedPic.Value);
+            DrawSprite();
         }
 
         private void ScrlRewardItem_Scroll(object sender, EventArgs e)

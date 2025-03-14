@@ -21,9 +21,9 @@ namespace Client
 
         public static void ClearResources()
         {
-            int i;
+            Array.Resize(ref Core.Type.Resource, Constant.MAX_RESOURCES);
 
-            for (i = 0; i < Constant.MAX_RESOURCES; i++)
+            for (int i = 0; i < Constant.MAX_RESOURCES; i++)
                 ClearResource(i);
 
         }
@@ -50,7 +50,8 @@ namespace Client
 
             if (GameState.ResourceIndex > 0)
             {
-                Array.Resize(ref Core.Type.MapResource, GameState.ResourceIndex + 1);
+                Array.Resize(ref Core.Type.MapResource, GameState.ResourceIndex);
+                Array.Resize(ref Core.Type.MyMapResource, GameState.ResourceIndex);
 
                 var loopTo = GameState.ResourceIndex;
                 for (i = 0; i < loopTo; i++)
@@ -133,8 +134,7 @@ namespace Client
 
         internal static void DrawMapResource(int resourceNum)
         {
-            int resourceMaster;
-
+            int mapResourceNum;
             int resourceState;
             var resourceSprite = default(int);
             var rec = default(Rectangle);
@@ -143,33 +143,33 @@ namespace Client
 
             if (GameState.GettingMap)
                 return;
-            if (Conversions.ToInteger(GameState.MapData) == 0)
+
+            if (!GameState.MapData)
                 return;
 
             if (Core.Type.MyMapResource[resourceNum].X > Core.Type.MyMap.MaxX | Core.Type.MyMapResource[resourceNum].Y > Core.Type.MyMap.MaxY)
                 return;
 
-            // Get the Resource type
-            resourceMaster = Core.Type.MyMap.Tile[Core.Type.MyMapResource[resourceNum].X, Core.Type.MyMapResource[resourceNum].Y].Data1;
+            mapResourceNum = Core.Type.MyMap.Tile[Core.Type.MyMapResource[resourceNum].X, Core.Type.MyMapResource[resourceNum].Y].Data1;
 
-            if (resourceMaster == 0)
+            if (mapResourceNum == 0)
+                mapResourceNum = Core.Type.MyMap.Tile[Core.Type.MyMapResource[resourceNum].X, Core.Type.MyMapResource[resourceNum].Y].Data1_2;
+
+            if (Core.Type.Resource[mapResourceNum].ResourceImage == 0)
                 return;
 
-            if (Core.Type.Resource[resourceMaster].ResourceImage == 0)
-                return;
-
-            StreamResource(resourceMaster);
+            StreamResource(mapResourceNum);
 
             // Get the Resource state
             resourceState = Core.Type.MyMapResource[resourceNum].State;
 
             if (resourceState == 0) // normal
             {
-                resourceSprite = Core.Type.Resource[resourceMaster].ResourceImage;
+                resourceSprite = Core.Type.Resource[mapResourceNum].ResourceImage;
             }
             else if (resourceState == 1) // used
             {
-                resourceSprite = Core.Type.Resource[resourceMaster].ExhaustedImage;
+                resourceSprite = Core.Type.Resource[mapResourceNum].ExhaustedImage;
             }
 
             // src rect

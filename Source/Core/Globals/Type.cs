@@ -14,7 +14,7 @@ namespace Core
         public static NPCStruct[] NPC = new NPCStruct[Constant.MAX_NPCS];
         public static ShopStruct[] Shop = new ShopStruct[Constant.MAX_SHOPS];
         public static SkillStruct[] Skill = new SkillStruct[Constant.MAX_SKILLS];
-        public static ResourceStruct[] Resource = new ResourceStruct[Constant.MAX_RESOURCES];
+        public static MapResourceStruct[] MapResource = new MapResourceStruct[Constant.MAX_RESOURCES];
         public static MapResourceCacheStruct[] MyMapResource;
         public static AnimationStruct[] Animation = new AnimationStruct[Constant.MAX_ANIMATIONS];
         public static MapStruct[] Map = new MapStruct[Constant.MAX_MAPS];
@@ -34,7 +34,7 @@ namespace Core
         public static PlayerInvStruct[] TradeYourOffer = new PlayerInvStruct[Constant.MAX_INV];
         public static PlayerInvStruct[] TradeTheirOffer = new PlayerInvStruct[Constant.MAX_INV];
         public static PartyStruct Party;
-        public static MapResourceStruct[] MapResource;
+        public static ResourceStruct[] Resource;
         public static CharList Char;
         public static PetStruct[] Pet;
         public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[(byte.MaxValue)];

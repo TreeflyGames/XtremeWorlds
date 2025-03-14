@@ -456,6 +456,7 @@ namespace Client
             ClearAttributeDialogue();
             pnlAttributes.Visible = true;
             fraResource.Visible = true;
+            ScrlResource_ValueChanged(sender, e);
         }
 
         private void BtnNPCSpawn_Click(object sender, EventArgs e)

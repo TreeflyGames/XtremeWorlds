@@ -638,9 +638,7 @@ namespace Server
 
             // Construct the path to the "maps" directory
             string mapsDir = Path.Combine(baseDir, "maps");
-            Directory.CreateDirectory(mapsDir);
-
-            Resource.CacheResources(mapNum);
+            Directory.CreateDirectory(mapsDir);        
 
             if (File.Exists(mapsDir + @"\cs\map" + mapNum + ".ini"))
             {
@@ -675,6 +673,8 @@ namespace Server
 
             var mapData = JObject.FromObject(data).ToObject<MapStruct>();
             Core.Type.Map[mapNum] = mapData;
+
+            Resource.CacheResources(mapNum);
         }
 
         public static CSMapStruct LoadCSMap(long mapNum)
