@@ -962,7 +962,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerAccess(index));
             buffer.WriteInt32(GetPlayerPK(index));
             buffer.WriteString(Message);
-            buffer.WriteString("[Map]");
+            buffer.WriteString("[Map]:");
             buffer.WriteInt32(SayColor);
 
             NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
@@ -979,7 +979,7 @@ namespace Server
             buffer.WriteInt32(GetPlayerAccess(index));
             buffer.WriteInt32(GetPlayerPK(index));
             buffer.WriteString(Message);
-            buffer.WriteString("[Global]");
+            buffer.WriteString("[Global]:");
             buffer.WriteInt32(SayColor);
 
             NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);

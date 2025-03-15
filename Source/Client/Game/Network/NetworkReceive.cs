@@ -888,12 +888,12 @@ namespace Client
             channelType = 0;
             switch (header ?? "")
             {
-                case "[Map]":
+                case "[Map]:":
                     {
                         channelType = (byte)Core.Enum.ChatChannel.Map;
                         break;
                     }
-                case "[Global]":
+                case "[Global]:":
                     {
                         channelType = (byte)Core.Enum.ChatChannel.Broadcast;
                         break;

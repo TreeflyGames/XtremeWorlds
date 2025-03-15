@@ -66,7 +66,7 @@ namespace Client
             return (int)Math.Round(textDimensions.Y * textSize);
         }
 
-        public static void AddText(string text, int Color, long alpha = 255L, byte channel = 0)
+        public static void AddText(string text, int color, long alpha = 255L, byte channel = 0)
         {
             GameState.Chat_HighIndex += 1;
 
@@ -81,7 +81,7 @@ namespace Client
 
             // Add the new text
             Core.Type.Chat[0].Text = text;
-            Core.Type.Chat[0].Color = Color;
+            Core.Type.Chat[0].Color = color;
             Core.Type.Chat[0].Visible = true;
             Core.Type.Chat[0].Timer = General.GetTickCount();
             Core.Type.Chat[0].Channel = (byte)(channel);
