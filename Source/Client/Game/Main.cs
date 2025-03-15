@@ -96,6 +96,7 @@ namespace Client
                         withBlock2.Owner = (Form)Control.FromHandle(General.Client.Window?.Handle ?? IntPtr.Zero);
                         withBlock2.Show();
                         frmEditor_Map.MapEditorInit();
+                        General.SetWindowFocus(General.Client.Window.Handle);
                     }
                     GameState.InitMapEditor = false;
                 }
