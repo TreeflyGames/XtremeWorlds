@@ -149,7 +149,8 @@ namespace Client
             if (animationNum <= 0 | animationNum > GameState.NumAnimations)
             {
                 spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor));
-                backgroundColorControl.Image = null;
+                if (backgroundColorControl.Image != null)
+                    backgroundColorControl.Image = null;
                 return;
             }
 
