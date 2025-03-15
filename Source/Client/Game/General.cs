@@ -30,9 +30,25 @@ namespace Client
 		[DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-		internal static int GetTickCount()
+		public static int GetTickCount()
         {
             return Environment.TickCount;
+        }
+
+        public static void SetWindowFocus(IntPtr hWnd)
+        {
+            try
+            {
+                // Restore window if minimized
+                General.ShowWindow(hWnd, General.SW_RESTORE);
+
+                // Bring the window to front
+                General.SetForegroundWindow(hWnd);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public static void Startup()
@@ -52,7 +68,7 @@ namespace Client
             LoadGame();
         }
 
-        internal static void LoadGame()
+        public static void LoadGame()
         {
             Settings.Load();
             Languages.Load();
@@ -78,82 +94,82 @@ namespace Client
             GameState.Ping = -1;
         }
 
-        internal static void CheckAnimations()
+        public static void CheckAnimations()
         {
             GameState.NumAnimations = GetFileCount(Core.Path.Animations);
         }
 
-        internal static void CheckCharacters()
+        public static void CheckCharacters()
         {
             GameState.NumCharacters = GetFileCount(Core.Path.Characters);
         }
 
-        internal static void CheckEmotes()
+        public static void CheckEmotes()
         {
             GameState.NumEmotes = GetFileCount(Core.Path.Emotes);
         }
 
-        internal static void CheckTilesets()
+        public static void CheckTilesets()
         {
             GameState.NumTileSets = GetFileCount(Core.Path.Tilesets);
         }
 
-        internal static void CheckFogs()
+        public static void CheckFogs()
         {
             GameState.NumFogs = GetFileCount(Core.Path.Fogs);
         }
 
-        internal static void CheckItems()
+        public static void CheckItems()
         {
             GameState.NumItems = GetFileCount(Core.Path.Items);
         }
 
-        internal static void CheckPanoramas()
+        public static void CheckPanoramas()
         {
             GameState.NumPanoramas = GetFileCount(Core.Path.Panoramas);
         }
 
-        internal static void CheckPaperdolls()
+        public static void CheckPaperdolls()
         {
             GameState.NumPaperdolls = GetFileCount(Core.Path.Paperdolls);
         }
 
-        internal static void CheckParallax()
+        public static void CheckParallax()
         {
             GameState.NumParallax = GetFileCount(Core.Path.Parallax);
         }
 
-        internal static void CheckPictures()
+        public static void CheckPictures()
         {
             GameState.NumPictures = GetFileCount(Core.Path.Pictures);
         }
 
-        internal static void CheckProjectile()
+        public static void CheckProjectile()
         {
             GameState.NumProjectiles = GetFileCount(Core.Path.Projectiles);
         }
 
-        internal static void CheckResources()
+        public static void CheckResources()
         {
             GameState.NumResources = GetFileCount(Core.Path.Resources);
         }
 
-        internal static void CheckSkills()
+        public static void CheckSkills()
         {
             GameState.NumSkills = GetFileCount(Core.Path.Skills);
         }
 
-        internal static void CheckInterface()
+        public static void CheckInterface()
         {
             GameState.NumInterface = GetFileCount(Core.Path.Gui);
         }
 
-        internal static void CheckGradients()
+        public static void CheckGradients()
         {
             GameState.NumGradients = GetFileCount(Core.Path.Gradients);
         }
 
-        internal static void CheckDesigns()
+        public static void CheckDesigns()
         {
             GameState.NumDesigns = GetFileCount(Core.Path.Designs);
         }
@@ -280,7 +296,7 @@ namespace Client
                 Core.Type.Chat[i].Text = "";
         }
 
-        internal static int GetFileCount(string folderName)
+        public static int GetFileCount(string folderName)
         {
             string folderPath = System.IO.Path.Combine(Core.Path.Graphics, folderName);
             if (Directory.Exists(folderPath))
@@ -294,7 +310,7 @@ namespace Client
             }
         }
 
-        internal static void CacheMusic()
+        public static void CacheMusic()
         {
             Sound.MusicCache = new string[Directory.GetFiles(Core.Path.Music, "*" + Settings.Instance.MusicExt).Count() + 1];
             string[] files = Directory.GetFiles(Core.Path.Music, "*" + Settings.Instance.MusicExt);
@@ -308,7 +324,7 @@ namespace Client
             }
         }
 
-        internal static void CacheSound()
+        public static void CacheSound()
         {
             Sound.SoundCache = new string[Directory.GetFiles(Core.Path.Sounds, "*" + Settings.Instance.SoundExt).Count() + 1];
             string[] files = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.Instance.SoundExt);
@@ -334,7 +350,7 @@ namespace Client
             }
         }
 
-        internal static void DestroyGame()
+        public static void DestroyGame()
         {
             // break out of GameLoop
             GameState.InGame = false;

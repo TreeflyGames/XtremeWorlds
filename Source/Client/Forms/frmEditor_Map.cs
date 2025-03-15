@@ -464,7 +464,7 @@ namespace Client
             ClearAttributeDialogue();
             pnlAttributes.Visible = true;
             fraMapItem.Visible = true;
-            
+
             lblMapItem.Text = Core.Type.Item[scrlMapItem.Value].Name + " x" + scrlMapItemValue.Value;
             ScrlMapItem_ValueChanged(sender, e);
             DrawItem();
@@ -1045,13 +1045,7 @@ namespace Client
             bool isModified = false;
             int x = 0;
 
-            var hWnd = General.Client.Window.Handle;
-
-            // Restore window if minimized
-            General.ShowWindow(hWnd, General.SW_RESTORE);
-
-            // Bring the window to front
-            General.SetForegroundWindow(hWnd);
+            General.SetWindowFocus(General.Client.Window.Handle);
 
             CurLayer = Instance.cmbLayers.SelectedIndex;
 
@@ -1452,7 +1446,7 @@ namespace Client
                 }
 
             }
-            
+
             if (x == 1)
                 MapEditorHistory();
 
@@ -1643,7 +1637,10 @@ namespace Client
             var CurLayer = Instance.cmbLayers.SelectedIndex;
 
             if (GameState.HistoryIndex == 0)
+            {
+                General.SetWindowFocus(General.Client.Window.Handle);
                 return;
+            }
 
             for (int x = 0, loopTo = Core.Type.MyMap.MaxX; x < loopTo; x++)
             {
@@ -1696,6 +1693,8 @@ namespace Client
             {
                 // do a re-init so we can see our changes
                 Autotile.InitAutotiles();
+
+                General.SetWindowFocus(General.Client.Window.Handle);
             }
             else
             {
@@ -1710,7 +1709,10 @@ namespace Client
             var CurLayer = Instance.cmbLayers.SelectedIndex;
 
             if (GameState.HistoryIndex == GameState.MaxTileHistory - 1)
+            {
+                General.SetWindowFocus(General.Client.Window.Handle);
                 return;
+            }
 
             for (int x = 0, loopTo = Core.Type.MyMap.MaxX; x < loopTo; x++)
             {
@@ -1763,6 +1765,8 @@ namespace Client
             {
                 // do a re-init so we can see our changes
                 Autotile.InitAutotiles();
+
+                General.SetWindowFocus(General.Client.Window.Handle);
             }
             else
             {
@@ -1977,6 +1981,11 @@ namespace Client
         private void btnFillAttributes_Click(object sender, EventArgs e)
         {
             GameLogic.Dialogue("Map Editor", "Fill Attributes: ", "Are you sure you wish to fill attributes?", (byte)DialogueType.FillAttributes, (byte)DialogueStyle.YesNo);
+        }
+
+        private void ToolStrip_MouseHover(object sender, EventArgs e)
+        {
+            Activate();
         }
 
         #endregion

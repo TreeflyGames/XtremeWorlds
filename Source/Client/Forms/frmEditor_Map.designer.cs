@@ -921,6 +921,7 @@ namespace Client
             ToolStrip.Size = new Size(1141, 28);
             ToolStrip.TabIndex = 13;
             ToolStrip.Text = "ToolStrip1";
+            ToolStrip.MouseHover += ToolStrip_MouseHover;
             // 
             // tsbSave
             // 
