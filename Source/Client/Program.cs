@@ -2303,7 +2303,7 @@ namespace Client
                             if (gfxInfo.Height * 4 > 32)
                             {
                                 // Create a 32 pixel offset for larger sprites
-                                y = (int)Math.Round(Core.Type.MapEvents[id].Y * GameState.PicY + Core.Type.MapEvents[id].YOffset - (width - 32d));
+                                y = (int)Math.Round(Core.Type.MapEvents[id].Y * GameState.PicY + Core.Type.MapEvents[id].YOffset - (height - 32d));
                             }
                             else
                             {
