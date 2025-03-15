@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using Core;
+﻿using Core;
 using Microsoft.VisualBasic;
 
 namespace Client
@@ -46,7 +43,7 @@ namespace Client
         }
 
         private void ScrlExhaustedPic_Scroll(object sender, EventArgs e)
-        {          
+        {
             Core.Type.Resource[GameState.EditorIndex].ExhaustedImage = (int)Math.Round(nudExhaustedPic.Value);
             DrawSprite();
         }

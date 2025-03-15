@@ -1,9 +1,7 @@
-﻿using System;
-using Core;
-using static Core.Global.Command;
+﻿using Core;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
-using System.Reflection;
+using static Core.Global.Command;
 
 namespace Client
 {
@@ -936,7 +934,7 @@ namespace Client
 
             if (GameState.VbKeyControl | mouse)
             {
-                if (GameState.MyIndex < 0| GameState.MyIndex > Constant.MAX_PLAYERS)
+                if (GameState.MyIndex < 0 | GameState.MyIndex > Constant.MAX_PLAYERS)
                     return;
 
                 if (Conversions.ToInteger(Event.InEvent) == 1)

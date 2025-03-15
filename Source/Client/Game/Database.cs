@@ -1,5 +1,4 @@
 ﻿using Core;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Client
 {
@@ -19,7 +18,7 @@ namespace Client
         #region NPC
 
         public static void ClearNPCs()
-        { 
+        {
             Core.Type.NPC = new Core.Type.NPCStruct[Core.Constant.MAX_NPCS];
 
             for (int i = 0; i < Constant.MAX_NPCS; i++)
