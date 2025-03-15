@@ -37,18 +37,11 @@ namespace Client
 
         public static void SetWindowFocus(IntPtr hWnd)
         {
-            try
-            {
-                // Restore window if minimized
-                General.ShowWindow(hWnd, General.SW_RESTORE);
+            // Restore window if minimized
+            General.ShowWindow(hWnd, General.SW_RESTORE);
 
-                // Bring the window to front
-                General.SetForegroundWindow(hWnd);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            // Bring the window to front
+            General.SetForegroundWindow(hWnd);
         }
 
         public static void Startup()
