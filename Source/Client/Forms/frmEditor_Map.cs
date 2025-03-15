@@ -1015,6 +1015,14 @@ namespace Client
             bool isModified = false;
             int x = 0;
 
+            var hWnd = General.Client.Window.Handle;
+
+            // Restore window if minimized
+            General.ShowWindow(hWnd, General.SW_RESTORE);
+
+            // Bring the window to front
+            General.SetForegroundWindow(hWnd);
+
             CurLayer = Instance.cmbLayers.SelectedIndex;
 
             if (GameState.CurX < 0 || GameState.CurY < 0 || GameState.CurX >= Core.Type.MyMap.MaxX || GameState.CurY >= Core.Type.MyMap.MaxY)
