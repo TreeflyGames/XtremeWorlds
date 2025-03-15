@@ -95,7 +95,7 @@ namespace Client
                         GameState.EditorIndex = 1;
                         withBlock2.Owner = (Form)Control.FromHandle(General.Client.Window?.Handle ?? IntPtr.Zero);
                         withBlock2.Show();
-                        withBlock2.MapEditorInit();
+                        frmEditor_Map.MapEditorInit();
                     }
                     GameState.InitMapEditor = false;
                 }

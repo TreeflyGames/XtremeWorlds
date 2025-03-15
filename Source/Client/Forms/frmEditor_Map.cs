@@ -29,6 +29,16 @@ namespace Client
             optBlocked.Checked = true;
             tabpages.SelectedIndex = 0;
 
+            UpdateDirBlock();
+
+            ToolStrip.BringToFront();
+
+            scrlFog.Maximum = GameState.NumFogs;
+            scrlMapItem.Maximum = Constant.MAX_ITEMS;
+        }
+
+        private static void UpdateDirBlock()
+        {
             GameState.DirArrowX[(int)DirectionType.Up] = 12;
             GameState.DirArrowY[(int)DirectionType.Up] = 0;
             GameState.DirArrowX[(int)DirectionType.Down] = 12;
@@ -37,11 +47,6 @@ namespace Client
             GameState.DirArrowY[(int)DirectionType.Left] = 12;
             GameState.DirArrowX[(int)DirectionType.Right] = 23;
             GameState.DirArrowY[(int)DirectionType.Right] = 12;
-
-            ToolStrip.BringToFront();
-
-            scrlFog.Maximum = GameState.NumFogs;
-            scrlMapItem.Maximum = Constant.MAX_ITEMS;
         }
 
         protected override void WndProc(ref Message m)
@@ -95,18 +100,18 @@ namespace Client
 
         }
 
-        public void DrawTileset()
+        public static void DrawTileset()
         {
             int tilesetIndex;
 
             // Ensure a tileset is selected
-            if (cmbTileSets.SelectedIndex == -1)
+            if (Instance.cmbTileSets.SelectedIndex == -1)
             {
                 return;
             }
 
             // Get the selected tileset index
-            tilesetIndex = cmbTileSets.SelectedIndex + 1;
+            tilesetIndex = Instance.cmbTileSets.SelectedIndex + 1;
 
             if (tilesetIndex == 0)
             {
@@ -168,12 +173,12 @@ namespace Client
                 {
                     renderTarget.SaveAsPng(stream, renderTarget.Width, renderTarget.Height);
                     stream.Position = 0L;
-                    picBackSelect.Image = System.Drawing.Image.FromStream(stream);
+                    Instance.picBackSelect.Image = System.Drawing.Image.FromStream(stream);
                 }
             }
         }
 
-        public void DrawSelectionRectangle(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, float scale)
+        public static void DrawSelectionRectangle(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, float scale)
         {
             // Scale the selection rectangle based on the scale factor
             int scaledX = (int)Math.Round(GameState.EditorTileSelStart.X * GameState.PicX * scale);
@@ -206,64 +211,68 @@ namespace Client
 
         private void TsbSave_Click(object sender, EventArgs e)
         {
-            int X;
+            UpdateMap();
+            Dispose();
+        }
+
+        private static void UpdateMap()
+        {
             int x2;
-            int Y;
             int y2;
             Core.Type.TileStruct[,] tempArr;
 
-            if (!Information.IsNumeric(txtMaxX.Text))
-                txtMaxX.Text = Core.Type.MyMap.MaxX.ToString();
-            if (Conversion.Val(txtMaxX.Text) < Settings.Instance.CameraWidth)
-                txtMaxX.Text = Settings.Instance.CameraWidth.ToString();
-            if (Conversion.Val(txtMaxX.Text) > byte.MaxValue)
-                txtMaxX.Text = byte.MaxValue.ToString();
-            if (!Information.IsNumeric(txtMaxY.Text))
-                txtMaxY.Text = Core.Type.MyMap.MaxY.ToString();
-            if (Conversion.Val(txtMaxY.Text) < Settings.Instance.CameraHeight)
-                txtMaxY.Text = Settings.Instance.CameraHeight.ToString();
-            if (Conversion.Val(txtMaxY.Text) > byte.MaxValue)
-                txtMaxY.Text = byte.MaxValue.ToString();
+            if (!Information.IsNumeric(Instance.txtMaxX.Text))
+                Instance.txtMaxX.Text = Core.Type.MyMap.MaxX.ToString();
+            if (Conversion.Val(Instance.txtMaxX.Text) < Settings.Instance.CameraWidth)
+                Instance.txtMaxX.Text = Settings.Instance.CameraWidth.ToString();
+            if (Conversion.Val(Instance.txtMaxX.Text) > byte.MaxValue)
+                Instance.txtMaxX.Text = byte.MaxValue.ToString();
+            if (!Information.IsNumeric(Instance.txtMaxY.Text))
+                Instance.txtMaxY.Text = Core.Type.MyMap.MaxY.ToString();
+            if (Conversion.Val(Instance.txtMaxY.Text) < Settings.Instance.CameraHeight)
+                Instance.txtMaxY.Text = Settings.Instance.CameraHeight.ToString();
+            if (Conversion.Val(Instance.txtMaxY.Text) > byte.MaxValue)
+                Instance.txtMaxY.Text = byte.MaxValue.ToString();
 
             {
                 ref var withBlock = ref Core.Type.MyMap;
-                withBlock.Name = Strings.Trim(txtName.Text);
-                if (lstMusic.SelectedIndex >= 0)
+                withBlock.Name = Strings.Trim(Instance.txtName.Text);
+                if (Instance.lstMusic.SelectedIndex >= 0)
                 {
-                    withBlock.Music = lstMusic.Items[lstMusic.SelectedIndex].ToString();
+                    withBlock.Music = Instance.lstMusic.Items[Instance.lstMusic.SelectedIndex].ToString();
                 }
                 else
                 {
                     withBlock.Music = "";
                 }
 
-                if (lstShop.SelectedIndex >= 0)
+                if (Instance.lstShop.SelectedIndex >= 0)
                 {
-                    withBlock.Shop = lstShop.SelectedIndex;
+                    withBlock.Shop = Instance.lstShop.SelectedIndex;
                 }
                 else
                 {
                     withBlock.Shop = 0;
                 }
 
-                withBlock.Up = (int)Math.Round(Conversion.Val(txtUp.Text));
-                withBlock.Down = (int)Math.Round(Conversion.Val(txtDown.Text));
-                withBlock.Left = (int)Math.Round(Conversion.Val(txtLeft.Text));
-                withBlock.Right = (int)Math.Round(Conversion.Val(txtRight.Text));
-                withBlock.Moral = (byte)lstMoral.SelectedIndex;
-                withBlock.BootMap = (int)Math.Round(Conversion.Val(txtBootMap.Text));
-                withBlock.BootX = (byte)Math.Round(Conversion.Val(txtBootX.Text));
-                withBlock.BootY = (byte)Math.Round(Conversion.Val(txtBootY.Text));
+                withBlock.Up = (int)Math.Round(Conversion.Val(Instance.txtUp.Text));
+                withBlock.Down = (int)Math.Round(Conversion.Val(Instance.txtDown.Text));
+                withBlock.Left = (int)Math.Round(Conversion.Val(Instance.txtLeft.Text));
+                withBlock.Right = (int)Math.Round(Conversion.Val(Instance.txtRight.Text));
+                withBlock.Moral = (byte)Instance.lstMoral.SelectedIndex;
+                withBlock.BootMap = (int)Math.Round(Conversion.Val(Instance.txtBootMap.Text));
+                withBlock.BootX = (byte)Math.Round(Conversion.Val(Instance.txtBootX.Text));
+                withBlock.BootY = (byte)Math.Round(Conversion.Val(Instance.txtBootY.Text));
 
-                // set the data before changing it
+                // set the data before changing it  
                 tempArr = (Core.Type.TileStruct[,])withBlock.Tile.Clone();
 
                 x2 = withBlock.MaxX;
                 y2 = withBlock.MaxY;
 
-                // change the data
-                withBlock.MaxX = (byte)Math.Round(Conversion.Val(txtMaxX.Text));
-                withBlock.MaxY = (byte)Math.Round(Conversion.Val(txtMaxY.Text));
+                // change the data  
+                withBlock.MaxX = (byte)Math.Round(Conversion.Val(Instance.txtMaxX.Text));
+                withBlock.MaxY = (byte)Math.Round(Conversion.Val(Instance.txtMaxY.Text));
 
                 withBlock.Tile = new Core.Type.TileStruct[(withBlock.MaxX), (withBlock.MaxY)];
                 Core.Type.Autotile = new Core.Type.AutotileStruct[(withBlock.MaxX), (withBlock.MaxY)];
@@ -301,7 +310,6 @@ namespace Client
 
             MapEditorSend();
             GameState.GettingMap = true;
-            Dispose();
         }
 
         private void TsbFill_Click(object sender, EventArgs e)
@@ -318,6 +326,11 @@ namespace Client
         }
 
         private void TsbEyeDropper_Click(object sender, EventArgs e)
+        {
+            UpdateEyeDropper();
+        }
+
+        private static void UpdateEyeDropper()
         {
             GameState.EyeDropper = !GameState.EyeDropper;
         }
@@ -763,149 +776,145 @@ namespace Client
             Core.Type.MyMap.Parallax = (byte)cmbParallax.SelectedIndex;
         }
 
-        #endregion
-
-        #region Map Editor
-
-        public void MapPropertiesInit()
+        public static void MapPropertiesInit()
         {
             int x;
             int y;
             int i;
 
-            txtName.Text = Strings.Trim(Core.Type.MyMap.Name);
+            Instance.txtName.Text = Strings.Trim(Core.Type.MyMap.Name);
 
             // find the music we have set
-            lstMusic.Items.Clear();
-            lstMusic.Items.Add("None");
-            lstMusic.SelectedIndex = 0;
+            Instance.lstMusic.Items.Clear();
+            Instance.lstMusic.Items.Add("None");
+            Instance.lstMusic.SelectedIndex = 0;
 
             General.CacheMusic();
 
             var loopTo = Information.UBound(Sound.MusicCache);
             for (i = 0; i < loopTo; i++)
-                lstMusic.Items.Add(Sound.MusicCache[i]);
+                Instance.lstMusic.Items.Add(Sound.MusicCache[i]);
 
-            var loopTo1 = lstMusic.Items.Count;
+            var loopTo1 = Instance.lstMusic.Items.Count;
             for (i = 0; i < loopTo1; i++)
             {
-                if ((lstMusic.Items[i].ToString() ?? "") == (Core.Type.MyMap.Music ?? ""))
+                if ((Instance.lstMusic.Items[i].ToString() ?? "") == (Core.Type.MyMap.Music ?? ""))
                 {
-                    lstMusic.SelectedIndex = i;
+                    Instance.lstMusic.SelectedIndex = i;
                     break;
                 }
             }
 
             // find the shop we have set
-            lstShop.Items.Clear();
+            Instance.lstShop.Items.Clear();
 
             for (i = 0; i < Constant.MAX_SHOPS; i++)
-                lstShop.Items.Add(Core.Type.Shop[i].Name);
+                Instance.lstShop.Items.Add(Core.Type.Shop[i].Name);
 
-            lstShop.SelectedIndex = 0;
+            Instance.lstShop.SelectedIndex = 0;
 
-            var loopTo2 = lstShop.Items.Count;
+            var loopTo2 = Instance.lstShop.Items.Count;
             for (i = 0; i < loopTo2; i++)
             {
-                if ((lstShop.Items[i].ToString() ?? "") == (Core.Type.Shop[Core.Type.MyMap.Shop].Name ?? ""))
+                if ((Instance.lstShop.Items[i].ToString() ?? "") == (Core.Type.Shop[Core.Type.MyMap.Shop].Name ?? ""))
                 {
-                    lstShop.SelectedIndex = i;
+                    Instance.lstShop.SelectedIndex = i;
                     break;
                 }
             }
 
             // find the shop we have set
-            lstMoral.Items.Clear();
+            Instance.lstMoral.Items.Clear();
 
             for (i = 0; i < Constant.MAX_MORALS; i++)
-                lstMoral.Items.Add(Core.Type.Moral[i].Name);
+                Instance.lstMoral.Items.Add(Core.Type.Moral[i].Name);
 
-            lstMoral.SelectedIndex = 0;
+            Instance.lstMoral.SelectedIndex = 0;
 
-            var loopTo3 = lstMoral.Items.Count;
+            var loopTo3 = Instance.lstMoral.Items.Count;
             for (i = 0; i < loopTo3; i++)
             {
-                if ((lstMoral.Items[i].ToString() ?? "") == (Core.Type.Moral[Core.Type.MyMap.Moral].Name ?? ""))
+                if ((Instance.lstMoral.Items[i].ToString() ?? "") == (Core.Type.Moral[Core.Type.MyMap.Moral].Name ?? ""))
                 {
-                    lstMoral.SelectedIndex = i;
+                    Instance.lstMoral.SelectedIndex = i;
                     break;
                 }
             }
 
-            chkTint.Checked = Core.Type.MyMap.MapTint;
-            chkNoMapRespawn.Checked = Core.Type.MyMap.NoRespawn;
-            chkIndoors.Checked = Core.Type.MyMap.Indoors;
+            Instance.chkTint.Checked = Core.Type.MyMap.MapTint;
+            Instance.chkNoMapRespawn.Checked = Core.Type.MyMap.NoRespawn;
+            Instance.chkIndoors.Checked = Core.Type.MyMap.Indoors;
 
             // rest of it
-            txtUp.Text = Core.Type.MyMap.Up.ToString();
-            txtDown.Text = Core.Type.MyMap.Down.ToString();
-            txtLeft.Text = Core.Type.MyMap.Left.ToString();
-            txtRight.Text = Core.Type.MyMap.Right.ToString();
+            Instance.txtUp.Text = Core.Type.MyMap.Up.ToString();
+            Instance.txtDown.Text = Core.Type.MyMap.Down.ToString();
+            Instance.txtLeft.Text = Core.Type.MyMap.Left.ToString();
+            Instance.txtRight.Text = Core.Type.MyMap.Right.ToString();
 
-            txtBootMap.Text = Core.Type.MyMap.BootMap.ToString();
-            txtBootX.Text = Core.Type.MyMap.BootX.ToString();
-            txtBootY.Text = Core.Type.MyMap.BootY.ToString();
+            Instance.txtBootMap.Text = Core.Type.MyMap.BootMap.ToString();
+            Instance.txtBootX.Text = Core.Type.MyMap.BootX.ToString();
+            Instance.txtBootY.Text = Core.Type.MyMap.BootY.ToString();
 
-            lstMapNPC.Items.Clear();
+            Instance.lstMapNPC.Items.Clear();
 
             for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
-                lstMapNPC.Items.Add(x + 1 + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[x]].Name));
+                Instance.lstMapNPC.Items.Add(x + 1 + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[x]].Name));
 
-            lstMapNPC.SelectedIndex = 0;
+            Instance.lstMapNPC.SelectedIndex = 0;
 
             for (y = 0; y < Constant.MAX_NPCS; y++)
-                cmbNPCList.Items.Add(y + 1 + ": " + Strings.Trim(Core.Type.NPC[y].Name));
+                Instance.cmbNPCList.Items.Add(y + 1 + ": " + Strings.Trim(Core.Type.NPC[y].Name));
 
-            cmbNPCList.SelectedIndex = 0;
+            Instance.cmbNPCList.SelectedIndex = 0;
 
-            cmbAnimation.Items.Clear();
+            Instance.cmbAnimation.Items.Clear();
 
             for (y = 0; y < Constant.MAX_ANIMATIONS; y++)
-                cmbAnimation.Items.Add(y + 1 + ": " + Core.Type.Animation[y].Name);
+                Instance.cmbAnimation.Items.Add(y + 1 + ": " + Core.Type.Animation[y].Name);
 
-            cmbAnimation.SelectedIndex = 0;
+            Instance.cmbAnimation.SelectedIndex = 0;
 
-            lblMap.Text = "Map: ";
-            txtMaxX.Text = Core.Type.MyMap.MaxX.ToString();
-            txtMaxY.Text = Core.Type.MyMap.MaxY.ToString();
+            Instance.lblMap.Text = "Map: ";
+            Instance.txtMaxX.Text = Core.Type.MyMap.MaxX.ToString();
+            Instance.txtMaxY.Text = Core.Type.MyMap.MaxY.ToString();
 
-            cmbWeather.SelectedIndex = Core.Type.MyMap.Weather;
-            scrlFog.Value = Core.Type.MyMap.Fog;
-            lblFogIndex.Text = "Fog: " + scrlFog.Value;
-            scrlIntensity.Value = Core.Type.MyMap.WeatherIntensity;
-            lblIntensity.Text = "Intensity: " + scrlIntensity.Value;
-            scrlFogOpacity.Value = Core.Type.MyMap.FogOpacity;
-            scrlFogSpeed.Value = Core.Type.MyMap.FogSpeed;
+            Instance.cmbWeather.SelectedIndex = Core.Type.MyMap.Weather;
+            Instance.scrlFog.Value = Core.Type.MyMap.Fog;
+            Instance.lblFogIndex.Text = "Fog: " + Instance.scrlFog.Value;
+            Instance.scrlIntensity.Value = Core.Type.MyMap.WeatherIntensity;
+            Instance.lblIntensity.Text = "Intensity: " + Instance.scrlIntensity.Value;
+            Instance.scrlFogOpacity.Value = Core.Type.MyMap.FogOpacity;
+            Instance.scrlFogSpeed.Value = Core.Type.MyMap.FogSpeed;
 
-            cmbPanorama.Items.Clear();
+            Instance.cmbPanorama.Items.Clear();
 
             var loopTo4 = GameState.NumPanoramas;
             for (i = 0; i < loopTo4; i++)
-                cmbPanorama.Items.Add(i + 1);
+                Instance.cmbPanorama.Items.Add(i + 1);
 
-            cmbPanorama.SelectedIndex = Core.Type.MyMap.Panorama;
+            Instance.cmbPanorama.SelectedIndex = Core.Type.MyMap.Panorama;
 
-            cmbParallax.Items.Clear();
+            Instance.cmbParallax.Items.Clear();
 
             var loopTo5 = GameState.NumParallax;
             for (i = 0; i < loopTo5; i++)
-                cmbParallax.Items.Add(i + 1);
+                Instance.cmbParallax.Items.Add(i + 1);
 
-            cmbParallax.SelectedIndex = Core.Type.MyMap.Parallax;
+            Instance.cmbParallax.SelectedIndex = Core.Type.MyMap.Parallax;
 
-            tabpages.SelectedIndex = 0;
-            scrlMapBrightness.Value = Core.Type.MyMap.Brightness;
-            chkTint.Checked = Core.Type.MyMap.MapTint;
-            scrlMapRed.Value = Core.Type.MyMap.MapTintR;
-            scrlMapGreen.Value = Core.Type.MyMap.MapTintG;
-            scrlMapBlue.Value = Core.Type.MyMap.MapTintB;
-            scrlMapAlpha.Value = Core.Type.MyMap.MapTintA;
+            Instance.tabpages.SelectedIndex = 0;
+            Instance.scrlMapBrightness.Value = Core.Type.MyMap.Brightness;
+            Instance.chkTint.Checked = Core.Type.MyMap.MapTint;
+            Instance.scrlMapRed.Value = Core.Type.MyMap.MapTintR;
+            Instance.scrlMapGreen.Value = Core.Type.MyMap.MapTintG;
+            Instance.scrlMapBlue.Value = Core.Type.MyMap.MapTintB;
+            Instance.scrlMapAlpha.Value = Core.Type.MyMap.MapTintA;
 
             // show the form
-            Visible = true;
+            Instance.Visible = true;
         }
 
-        public void MapEditorInit()
+        public static void MapEditorInit()
         {
             // set the scrolly bars
             if (Core.Type.MyMap.Tileset == 0)
@@ -918,21 +927,21 @@ namespace Client
 
             // set shops for the shop attribute
             for (int i = 0; i < Constant.MAX_SHOPS; i++)
-                cmbShop.Items.Add(i + 1 + ": " + Core.Type.Shop[i].Name);
+                Instance.cmbShop.Items.Add(i + 1 + ": " + Core.Type.Shop[i].Name);
 
             // we're not in a shop
-            cmbShop.SelectedIndex = 0;
-            cmbAttribute.SelectedIndex = 0;
+            Instance.cmbShop.SelectedIndex = 0;
+            Instance.cmbAttribute.SelectedIndex = 0;
 
-            optBlocked.Checked = true;
+            Instance.optBlocked.Checked = true;
 
-            cmbTileSets.Items.Clear();
+            Instance.cmbTileSets.Items.Clear();
             for (int i = 0, loopTo = GameState.NumTileSets; i < loopTo; i++)
-                cmbTileSets.Items.Add(i + 1);
+                Instance.cmbTileSets.Items.Add(i + 1);
 
-            cmbTileSets.SelectedIndex = 0;
-            cmbLayers.SelectedIndex = 0;
-            cmbAutoTile.SelectedIndex = 0;
+            Instance.cmbTileSets.SelectedIndex = 0;
+            Instance.cmbLayers.SelectedIndex = 0;
+            Instance.cmbAutoTile.SelectedIndex = 0;
 
             MapPropertiesInit();
 
@@ -992,7 +1001,7 @@ namespace Client
             }
         }
 
-        public void MapEditorDrag(int Button, float X, float Y)
+        public static void MapEditorDrag(int Button, float X, float Y)
         {
             if (Button == (int)MouseButtons.Left) // Left Mouse Button
             {
@@ -1004,13 +1013,13 @@ namespace Client
                 if (X < 0f)
                     X = 0f;
 
-                if ((double)X > picBackSelect.Width / (double)GameState.PicX)
-                    X = (float)(picBackSelect.Width / (double)GameState.PicX);
+                if ((double)X > Instance.picBackSelect.Width / (double)GameState.PicX)
+                    X = (float)(Instance.picBackSelect.Width / (double)GameState.PicX);
                 if (Y < 0f)
                     Y = 0f;
 
-                if ((double)Y > picBackSelect.Height / (double)GameState.PicY)
-                    Y = (float)(picBackSelect.Height / (double)GameState.PicY);
+                if ((double)Y > Instance.picBackSelect.Height / (double)GameState.PicY)
+                    Y = (float)(Instance.picBackSelect.Height / (double)GameState.PicY);
 
                 // find out what to set the width + height of map editor to
                 if (X > GameState.EditorTileX) // drag right
@@ -1029,7 +1038,7 @@ namespace Client
 
         }
 
-        public void MapEditorMouseDown(int X, int Y, bool movedMouse = true)
+        public static void MapEditorMouseDown(int X, int Y, bool movedMouse = true)
         {
             int i;
             int CurLayer;
@@ -1449,7 +1458,7 @@ namespace Client
 
         }
 
-        public void MapEditorCancel()
+        public static void MapEditorCancel()
         {
             ByteStream buffer;
 
@@ -1473,7 +1482,7 @@ namespace Client
             frmEditor_Event.Instance?.Dispose();
         }
 
-        public void MapEditorSend()
+        public static void MapEditorSend()
         {
             Map.SendMap();
             GameState.MyEditorType = -1;
@@ -1596,14 +1605,14 @@ namespace Client
 
         }
 
-        public void MapEditorClearLayer(LayerType layer)
+        public static void MapEditorClearLayer(LayerType layer)
         {
-            GameLogic.Dialogue("Map Editor", "Clear Layer: " + layer.ToString(), "Are you sure you wish to clear this layer?", (byte)DialogueType.ClearLayer, (byte)DialogueStyle.YesNo, cmbLayers.SelectedIndex, cmbAutoTile.SelectedIndex);
+            GameLogic.Dialogue("Map Editor", "Clear Layer: " + layer.ToString(), "Are you sure you wish to clear this layer?", (byte)DialogueType.ClearLayer, (byte)DialogueStyle.YesNo, Instance.cmbLayers.SelectedIndex, Instance.cmbAutoTile.SelectedIndex);
         }
 
-        public void MapEditorFillLayer(LayerType layer, byte theAutotile = 0, byte tileX = 0, byte tileY = 0)
+        public static void MapEditorFillLayer(LayerType layer, byte theAutotile = 0, byte tileX = 0, byte tileY = 0)
         {
-            GameLogic.Dialogue("Map Editor", "Fill Layer: " + layer.ToString(), "Are you sure you wish to fill this layer?", (byte)DialogueType.FillLayer, (byte)DialogueStyle.YesNo, cmbLayers.SelectedIndex, cmbAutoTile.SelectedIndex, tileX, tileY, cmbTileSets.SelectedIndex + 1);
+            GameLogic.Dialogue("Map Editor", "Fill Layer: " + layer.ToString(), "Are you sure you wish to fill this layer?", (byte)DialogueType.FillLayer, (byte)DialogueStyle.YesNo, Instance.cmbLayers.SelectedIndex, Instance.cmbAutoTile.SelectedIndex, tileX, tileY, Instance.cmbTileSets.SelectedIndex + 1);
         }
 
         public static void MapEditorEyeDropper()
@@ -1627,7 +1636,7 @@ namespace Client
             }
         }
 
-        public void MapEditorUndo()
+        public static void MapEditorUndo()
         {
             bool isModified = false;
 
@@ -1694,7 +1703,7 @@ namespace Client
             }
         }
 
-        public void MapEditorRedo()
+        public static void MapEditorRedo()
         {
             bool isModified = false;
 
@@ -1788,11 +1797,7 @@ namespace Client
             lblMapBrightness.Text = "Brightness: " + scrlMapBrightness.Value;
         }
 
-        #endregion
-
-        #region Drawing
-
-        private void tsbCopyMap_Click(object sender, EventArgs e)
+        public static void MapEditorCopyMap()
         {
             int i;
             int x;
@@ -1810,27 +1815,25 @@ namespace Client
                     var loopTo1 = (int)Core.Type.MyMap.MaxY;
                     for (y = 0; y < loopTo1; y++)
                     {
+                        ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
+                        Core.Type.TmpTile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
+
+                        Core.Type.TmpTile[x, y].Data1 = withBlock.Data1;
+                        Core.Type.TmpTile[x, y].Data2 = withBlock.Data2;
+                        Core.Type.TmpTile[x, y].Data3 = withBlock.Data3;
+                        Core.Type.TmpTile[x, y].Type = withBlock.Type;
+                        Core.Type.TmpTile[x, y].Data1_2 = withBlock.Data1_2;
+                        Core.Type.TmpTile[x, y].Data2_2 = withBlock.Data2_2;
+                        Core.Type.TmpTile[x, y].Data3_2 = withBlock.Data3_2;
+                        Core.Type.TmpTile[x, y].Type2 = withBlock.Type2;
+                        Core.Type.TmpTile[x, y].DirBlock = withBlock.DirBlock;
+
+                        for (i = 0; i < (int)LayerType.Count; i++)
                         {
-                            ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
-                            Core.Type.TmpTile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
-
-                            Core.Type.TmpTile[x, y].Data1 = withBlock.Data1;
-                            Core.Type.TmpTile[x, y].Data2 = withBlock.Data2;
-                            Core.Type.TmpTile[x, y].Data3 = withBlock.Data3;
-                            Core.Type.TmpTile[x, y].Type = withBlock.Type;
-                            Core.Type.TmpTile[x, y].Data1_2 = withBlock.Data1_2;
-                            Core.Type.TmpTile[x, y].Data2_2 = withBlock.Data2_2;
-                            Core.Type.TmpTile[x, y].Data3_2 = withBlock.Data3_2;
-                            Core.Type.TmpTile[x, y].Type2 = withBlock.Type2;
-                            Core.Type.TmpTile[x, y].DirBlock = withBlock.DirBlock;
-
-                            for (i = 0; i < (int)LayerType.Count; i++)
-                            {
-                                Core.Type.TmpTile[x, y].Layer[i].X = withBlock.Layer[i].X;
-                                Core.Type.TmpTile[x, y].Layer[i].Y = withBlock.Layer[i].Y;
-                                Core.Type.TmpTile[x, y].Layer[i].Tileset = withBlock.Layer[i].Tileset;
-                                Core.Type.TmpTile[x, y].Layer[i].AutoTile = withBlock.Layer[i].AutoTile;
-                            }
+                            Core.Type.TmpTile[x, y].Layer[i].X = withBlock.Layer[i].X;
+                            Core.Type.TmpTile[x, y].Layer[i].Y = withBlock.Layer[i].Y;
+                            Core.Type.TmpTile[x, y].Layer[i].Tileset = withBlock.Layer[i].Tileset;
+                            Core.Type.TmpTile[x, y].Layer[i].AutoTile = withBlock.Layer[i].AutoTile;
                         }
                     }
                 }
@@ -1840,8 +1843,6 @@ namespace Client
             }
             else
             {
-                Core.Type.MyMap.Tile = new Core.Type.TileStruct[(GameState.TmpMaxX), (GameState.TmpMaxY)];
-                Core.Type.Autotile = new Core.Type.AutotileStruct[(GameState.TmpMaxX), (GameState.TmpMaxY)];
                 Core.Type.MyMap.MaxX = GameState.TmpMaxX;
                 Core.Type.MyMap.MaxY = GameState.TmpMaxY;
 
@@ -1851,29 +1852,27 @@ namespace Client
                     var loopTo3 = (int)Core.Type.MyMap.MaxY;
                     for (y = 0; y < loopTo3; y++)
                     {
+                        ref var withBlock1 = ref Core.Type.MyMap.Tile[x, y];
+                        Array.Resize(ref Core.Type.MyMap.Tile[x, y].Layer, (int)Core.Enum.LayerType.Count);
+                        Array.Resize(ref Core.Type.Autotile[x, y].Layer, (int)Core.Enum.LayerType.Count);
+
+                        withBlock1.Data1 = Core.Type.TmpTile[x, y].Data1;
+                        withBlock1.Data2 = Core.Type.TmpTile[x, y].Data2;
+                        withBlock1.Data3 = Core.Type.TmpTile[x, y].Data3;
+                        withBlock1.Type = Core.Type.TmpTile[x, y].Type;
+                        withBlock1.Data1_2 = Core.Type.TmpTile[x, y].Data1_2;
+                        withBlock1.Data2_2 = Core.Type.TmpTile[x, y].Data2_2;
+                        withBlock1.Data3_2 = Core.Type.TmpTile[x, y].Data3_2;
+                        withBlock1.Type2 = Core.Type.TmpTile[x, y].Type2;
+                        withBlock1.DirBlock = Core.Type.TmpTile[x, y].DirBlock;
+
+                        for (i = 0; i < (int)LayerType.Count; i++)
                         {
-                            ref var withBlock1 = ref Core.Type.MyMap.Tile[x, y];
-                            Array.Resize(ref Core.Type.MyMap.Tile[x, y].Layer, (int)Core.Enum.LayerType.Count);
-                            Array.Resize(ref Core.Type.Autotile[x, y].Layer, (int)Core.Enum.LayerType.Count);
-
-                            withBlock1.Data1 = Core.Type.TmpTile[x, y].Data1;
-                            withBlock1.Data2 = Core.Type.TmpTile[x, y].Data2;
-                            withBlock1.Data3 = Core.Type.TmpTile[x, y].Data3;
-                            withBlock1.Type = Core.Type.TmpTile[x, y].Type;
-                            withBlock1.Data1_2 = Core.Type.TmpTile[x, y].Data1_2;
-                            withBlock1.Data2_2 = Core.Type.TmpTile[x, y].Data2_2;
-                            withBlock1.Data3_2 = Core.Type.TmpTile[x, y].Data3_2;
-                            withBlock1.Type2 = Core.Type.TmpTile[x, y].Type2;
-                            withBlock1.DirBlock = Core.Type.TmpTile[x, y].DirBlock;
-
-                            for (i = 0; i < (int)LayerType.Count; i++)
-                            {
-                                withBlock1.Layer[i].X = Core.Type.TmpTile[x, y].Layer[i].X;
-                                withBlock1.Layer[i].Y = Core.Type.TmpTile[x, y].Layer[i].Y;
-                                withBlock1.Layer[i].Tileset = Core.Type.TmpTile[x, y].Layer[i].Tileset;
-                                withBlock1.Layer[i].AutoTile = Core.Type.TmpTile[x, y].Layer[i].AutoTile;
-                                Autotile.CacheRenderState(x, y, i);
-                            }
+                            withBlock1.Layer[i].X = Core.Type.TmpTile[x, y].Layer[i].X;
+                            withBlock1.Layer[i].Y = Core.Type.TmpTile[x, y].Layer[i].Y;
+                            withBlock1.Layer[i].Tileset = Core.Type.TmpTile[x, y].Layer[i].Tileset;
+                            withBlock1.Layer[i].AutoTile = Core.Type.TmpTile[x, y].Layer[i].AutoTile;
+                            Autotile.CacheRenderState(x, y, i);
                         }
                     }
                 }
@@ -1885,6 +1884,11 @@ namespace Client
 
                 GameState.CopyMap = false;
             }
+        }
+
+        private void tsbCopyMap_Click(object sender, EventArgs e)
+        {
+            MapEditorCopyMap();
         }
 
         private void tsbUndo_Click(object sender, EventArgs e)

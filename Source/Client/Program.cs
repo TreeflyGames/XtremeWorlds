@@ -906,7 +906,7 @@ namespace Client
                 {
                     if (GameState.MyEditorType == (int)EditorType.Map)
                     {
-                        frmEditor_Map.Instance.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                        frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
                     }
                     if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
                     {
@@ -928,7 +928,7 @@ namespace Client
 
                     if (GameState.MyEditorType == (int)EditorType.Map)
                     {
-                        frmEditor_Map.Instance.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                        frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
                     }
 
                     if (GameState.VbKeyShift == true)
