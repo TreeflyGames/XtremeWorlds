@@ -1494,6 +1494,9 @@ namespace Client
             Gui.HideChat();
 
             frmEditor_Event.Instance?.Dispose();
+
+            GameState.TileHistoryHighIndex = 0;
+            GameState.TileHistoryIndex = 0;
         }
 
         public static void MapEditorSend()
@@ -1510,6 +1513,9 @@ namespace Client
             Gui.HideChat();
 
             frmEditor_Event.Instance?.Dispose();
+
+            GameState.TileHistoryHighIndex = 0;
+            GameState.TileHistoryIndex = 0;
         }
 
         public static void MapEditorSetTile(int x, int y, int CurLayer, bool multitile = false, byte theAutotile = 0, byte eraseTile = 0)
@@ -1731,7 +1737,7 @@ namespace Client
         {
             bool isModified = false;
 
-            if (GameState.TileHistoryIndex == GameState.TileHistoryHighIndex + 1)
+            if (GameState.TileHistoryIndex > GameState.TileHistoryHighIndex)
             {
                 GameState.TileHistoryIndex--;
                 General.SetWindowFocus(General.Client.Window.Handle);
