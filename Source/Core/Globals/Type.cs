@@ -19,7 +19,7 @@ namespace Core
         public static AnimationStruct[] Animation = new AnimationStruct[Constant.MAX_ANIMATIONS];
         public static MapStruct[] Map = new MapStruct[Constant.MAX_MAPS];
         public static MapStruct MyMap;
-        public static TileStruct[,] Tile;
+        public static TileStruct[,] TmpTile;
         public static bool[] PlayersOnMap = new bool[Constant.MAX_MAPS];
         public static MapItemStruct[,] MapItem = new MapItemStruct[Constant.MAX_MAPS, Constant.MAX_MAP_ITEMS];
         public static MapItemStruct[] MyMapItem = new MapItemStruct[Constant.MAX_MAP_ITEMS];

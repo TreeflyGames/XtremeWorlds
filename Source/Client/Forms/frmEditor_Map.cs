@@ -262,7 +262,7 @@ namespace Client
                     for (int y = 0; y < loopTo1; y++)
                     {
                         withBlock.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
-                        Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
+                        Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[(int)Core.Enum.LayerType.Count];
 
                         for (int i = 0; i < GameState.MaxTileHistory; i++)
                             Core.Type.TileHistory[i].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
@@ -1771,7 +1771,7 @@ namespace Client
 
             if (GameState.CopyMap == false)
             {
-                Core.Type.Tile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
+                Core.Type.TmpTile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
                 GameState.TmpMaxX = Core.Type.MyMap.MaxX;
                 GameState.TmpMaxY = Core.Type.MyMap.MaxY;
 
@@ -1783,31 +1783,31 @@ namespace Client
                     {
                         {
                             ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
-                            Core.Type.Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
+                            Core.Type.TmpTile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
 
-                            Core.Type.Tile[x, y].Data1 = withBlock.Data1;
-                            Core.Type.Tile[x, y].Data2 = withBlock.Data2;
-                            Core.Type.Tile[x, y].Data3 = withBlock.Data3;
-                            Core.Type.Tile[x, y].Type = withBlock.Type;
-                            Core.Type.Tile[x, y].Data1_2 = withBlock.Data1_2;
-                            Core.Type.Tile[x, y].Data2_2 = withBlock.Data2_2;
-                            Core.Type.Tile[x, y].Data3_2 = withBlock.Data3_2;
-                            Core.Type.Tile[x, y].Type2 = withBlock.Type2;
-                            Core.Type.Tile[x, y].DirBlock = withBlock.DirBlock;
+                            Core.Type.TmpTile[x, y].Data1 = withBlock.Data1;
+                            Core.Type.TmpTile[x, y].Data2 = withBlock.Data2;
+                            Core.Type.TmpTile[x, y].Data3 = withBlock.Data3;
+                            Core.Type.TmpTile[x, y].Type = withBlock.Type;
+                            Core.Type.TmpTile[x, y].Data1_2 = withBlock.Data1_2;
+                            Core.Type.TmpTile[x, y].Data2_2 = withBlock.Data2_2;
+                            Core.Type.TmpTile[x, y].Data3_2 = withBlock.Data3_2;
+                            Core.Type.TmpTile[x, y].Type2 = withBlock.Type2;
+                            Core.Type.TmpTile[x, y].DirBlock = withBlock.DirBlock;
 
                             for (i = 0; i < (int)LayerType.Count; i++)
                             {
-                                Core.Type.Tile[x, y].Layer[i].X = withBlock.Layer[i].X;
-                                Core.Type.Tile[x, y].Layer[i].Y = withBlock.Layer[i].Y;
-                                Core.Type.Tile[x, y].Layer[i].Tileset = withBlock.Layer[i].Tileset;
-                                Core.Type.Tile[x, y].Layer[i].AutoTile = withBlock.Layer[i].AutoTile;
+                                Core.Type.TmpTile[x, y].Layer[i].X = withBlock.Layer[i].X;
+                                Core.Type.TmpTile[x, y].Layer[i].Y = withBlock.Layer[i].Y;
+                                Core.Type.TmpTile[x, y].Layer[i].Tileset = withBlock.Layer[i].Tileset;
+                                Core.Type.TmpTile[x, y].Layer[i].AutoTile = withBlock.Layer[i].AutoTile;
                             }
                         }
                     }
                 }
 
                 GameState.CopyMap = true;
-                Interaction.MsgBox("Map copied. Go to another map to paste it.");
+                GameLogic.Dialogue("Map Editor", "Map Copy: ", "Press the button again to paste.", (byte)DialogueType.CopyMap, (byte)DialogueStyle.Okay);
             }
             else
             {
@@ -1827,27 +1827,33 @@ namespace Client
                             Array.Resize(ref Core.Type.MyMap.Tile[x, y].Layer, (int)Core.Enum.LayerType.Count);
                             Array.Resize(ref Core.Type.Autotile[x, y].Layer, (int)Core.Enum.LayerType.Count);
 
-                            withBlock1.Data1 = Core.Type.Tile[x, y].Data1;
-                            withBlock1.Data2 = Core.Type.Tile[x, y].Data2;
-                            withBlock1.Data3 = Core.Type.Tile[x, y].Data3;
-                            withBlock1.Type = Core.Type.Tile[x, y].Type;
-                            withBlock1.Data1_2 = Core.Type.Tile[x, y].Data1_2;
-                            withBlock1.Data2_2 = Core.Type.Tile[x, y].Data2_2;
-                            withBlock1.Data3_2 = Core.Type.Tile[x, y].Data3_2;
-                            withBlock1.Type2 = Core.Type.Tile[x, y].Type2;
-                            withBlock1.DirBlock = Core.Type.Tile[x, y].DirBlock;
+                            withBlock1.Data1 = Core.Type.TmpTile[x, y].Data1;
+                            withBlock1.Data2 = Core.Type.TmpTile[x, y].Data2;
+                            withBlock1.Data3 = Core.Type.TmpTile[x, y].Data3;
+                            withBlock1.Type = Core.Type.TmpTile[x, y].Type;
+                            withBlock1.Data1_2 = Core.Type.TmpTile[x, y].Data1_2;
+                            withBlock1.Data2_2 = Core.Type.TmpTile[x, y].Data2_2;
+                            withBlock1.Data3_2 = Core.Type.TmpTile[x, y].Data3_2;
+                            withBlock1.Type2 = Core.Type.TmpTile[x, y].Type2;
+                            withBlock1.DirBlock = Core.Type.TmpTile[x, y].DirBlock;
 
                             for (i = 0; i < (int)LayerType.Count; i++)
                             {
-                                withBlock1.Layer[i].X = Core.Type.Tile[x, y].Layer[i].X;
-                                withBlock1.Layer[i].Y = Core.Type.Tile[x, y].Layer[i].Y;
-                                withBlock1.Layer[i].Tileset = Core.Type.Tile[x, y].Layer[i].Tileset;
-                                withBlock1.Layer[i].AutoTile = Core.Type.Tile[x, y].Layer[i].AutoTile;
+                                withBlock1.Layer[i].X = Core.Type.TmpTile[x, y].Layer[i].X;
+                                withBlock1.Layer[i].Y = Core.Type.TmpTile[x, y].Layer[i].Y;
+                                withBlock1.Layer[i].Tileset = Core.Type.TmpTile[x, y].Layer[i].Tileset;
+                                withBlock1.Layer[i].AutoTile = Core.Type.TmpTile[x, y].Layer[i].AutoTile;
                                 Autotile.CacheRenderState(x, y, i);
                             }
                         }
                     }
                 }
+
+                GameLogic.Dialogue("Map Editor", "Map Paste: ", "Map has been updated.", (byte)DialogueType.PasteMap, (byte)DialogueStyle.Okay);
+
+                // do a re-init so we can see our changes
+                Autotile.InitAutotiles();
+
                 GameState.CopyMap = false;
             }
         }
