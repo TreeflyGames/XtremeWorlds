@@ -1789,6 +1789,10 @@ namespace Client
                             Core.Type.Tile[x, y].Data2 = withBlock.Data2;
                             Core.Type.Tile[x, y].Data3 = withBlock.Data3;
                             Core.Type.Tile[x, y].Type = withBlock.Type;
+                            Core.Type.Tile[x, y].Data1_2 = withBlock.Data1_2;
+                            Core.Type.Tile[x, y].Data2_2 = withBlock.Data2_2;
+                            Core.Type.Tile[x, y].Data3_2 = withBlock.Data3_2;
+                            Core.Type.Tile[x, y].Type2 = withBlock.Type2;
                             Core.Type.Tile[x, y].DirBlock = withBlock.DirBlock;
 
                             for (i = 0; i < (int)LayerType.Count; i++)
@@ -1827,6 +1831,10 @@ namespace Client
                             withBlock1.Data2 = Core.Type.Tile[x, y].Data2;
                             withBlock1.Data3 = Core.Type.Tile[x, y].Data3;
                             withBlock1.Type = Core.Type.Tile[x, y].Type;
+                            withBlock1.Data1_2 = Core.Type.Tile[x, y].Data1_2;
+                            withBlock1.Data2_2 = Core.Type.Tile[x, y].Data2_2;
+                            withBlock1.Data3_2 = Core.Type.Tile[x, y].Data3_2;
+                            withBlock1.Type2 = Core.Type.Tile[x, y].Type2;
                             withBlock1.DirBlock = Core.Type.Tile[x, y].DirBlock;
 
                             for (i = 0; i < (int)LayerType.Count; i++)
