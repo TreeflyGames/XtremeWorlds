@@ -24,6 +24,27 @@ namespace Client
             nudPic.Maximum = GameState.NumProjectiles;
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_MOUSEACTIVATE = 0x0021;
+            const int WM_NCHITTEST = 0x0084;
+
+            if (m.Msg == WM_MOUSEACTIVATE)
+            {
+                // Immediately activate and process the click.
+                m.Result = new IntPtr(1); // MA_ACTIVATE
+                return;
+            }
+            else if (m.Msg == WM_NCHITTEST)
+            {
+                // Let the window know the mouse is in client area.
+                m.Result = new IntPtr(1); // HTCLIENT
+                return;
+            }
+
+            base.WndProc(ref m);
+        }
+
         private void lstIndex_Click(object sender, EventArgs e)
         {
             Editors.ProjectileEditorInit();

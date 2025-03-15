@@ -44,6 +44,27 @@ namespace Client
             scrlMapItem.Maximum = Constant.MAX_ITEMS;
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_MOUSEACTIVATE = 0x0021;
+            const int WM_NCHITTEST = 0x0084;
+
+            if (m.Msg == WM_MOUSEACTIVATE)
+            {
+                // Immediately activate and process the click.
+                m.Result = new IntPtr(1); // MA_ACTIVATE
+                return;
+            }
+            else if (m.Msg == WM_NCHITTEST)
+            {
+                // Let the window know the mouse is in client area.
+                m.Result = new IntPtr(1); // HTCLIENT
+                return;
+            }
+
+            base.WndProc(ref m);
+        }
+
         private void frmEditor_Map_Resize(object sender, EventArgs e)
         {
             this.AutoScroll = true;
