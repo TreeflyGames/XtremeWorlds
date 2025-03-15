@@ -5,12 +5,13 @@ using Microsoft.VisualBasic.CompilerServices;
 using Reoria.Engine.Base.Container;
 using Reoria.Engine.Base.Container.Interfaces;
 using Reoria.Engine.Base.Container.Logging;
+using System.Runtime.InteropServices;
 using static Core.Global.Command;
 
 namespace Client
 {
 
-    static class General
+    public static class General
     {
         public static GameClient Client = new GameClient();
         public static GameState State = new GameState();
@@ -21,7 +22,15 @@ namespace Client
         public static IConfiguration? Configuration;
         public static ILogger<T> GetLogger<T>() where T : class => Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException();
 
-        internal static int GetTickCount()
+		[DllImport("user32.dll")]
+		public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+		public const int SW_RESTORE = 9;
+
+		[DllImport("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+		internal static int GetTickCount()
         {
             return Environment.TickCount;
         }

@@ -1189,6 +1189,14 @@ namespace Client
             GameState.diaData5 = Data5;
             GameState.diaStyle = style;
 
+            var hWnd = General.Client.Window.Handle;
+
+            // Restore window if minimized
+            General.ShowWindow(hWnd, General.SW_RESTORE);
+
+            // Bring the window to front
+            General.SetForegroundWindow(hWnd);
+
             // make the Gui.Windows visible
             Gui.ShowWindow(Gui.GetWindowIndex("winDialogue"), true);
         }
