@@ -1117,14 +1117,19 @@ namespace Server
 
         public static void RecallPet(int index)
         {
-            NetworkSend.PlayerMsg(index, "You recalled your " + GetPetName(index) + "!", (int) ColorType.BrightGreen);
-            Core.Type.Player[index].Pet.Alive = 0;
-            SendUpdatePlayerPet(index, false);
+            if (PetAlive(index))
+            {
+                NetworkSend.PlayerMsg(index, "You recalled your " + GetPetName(index) + "!", (int)ColorType.BrightGreen);
+                Core.Type.Player[index].Pet.Alive = 0;
+                SendUpdatePlayerPet(index, false);
+            }
         }
 
         public static void ReleasePet(int index)
         {
             int i;
+
+            int mapNum = GetPlayerMap(index);
 
             if (Core.Type.Player[index].Pet.Alive == 0)
                 return;
@@ -1158,14 +1163,14 @@ namespace Server
             var loopTo1 = Core.Constant.MAX_MAP_NPCS;
             for (i = 0; i < loopTo1; i++)
             {
-                if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Vital[(byte) VitalType.HP] > 0)
+                if (Core.Type.MapNPC[mapNum].NPC[i].Vital[(byte) VitalType.HP] > 0)
                 {
-                    if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].TargetType == (byte)TargetType.Pet)
+                    if (Core.Type.MapNPC[mapNum].NPC[i].TargetType == (byte)TargetType.Pet)
                     {
-                        if (Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Target == index)
+                        if (Core.Type.MapNPC[mapNum].NPC[i].Target == index)
                         {
-                            Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].TargetType = (byte)TargetType.Player;
-                            Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Target = index;
+                            Core.Type.MapNPC[mapNum].NPC[i].TargetType = (byte)TargetType.Player;
+                            Core.Type.MapNPC[mapNum].NPC[i].Target = index;
                         }
                     }
                 }
@@ -1559,6 +1564,8 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
+            int mapNum = GetPlayerMap(index);
+
             if (index < 0 | index >= Core.Constant.MAX_PLAYERS | dir < (byte)DirectionType.Up | dir > (byte) DirectionType.Left)
                 return;
 
@@ -1570,7 +1577,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SPetDir);
             buffer.WriteInt32(index);
             buffer.WriteInt32(dir);
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
 
             buffer.Dispose();
 

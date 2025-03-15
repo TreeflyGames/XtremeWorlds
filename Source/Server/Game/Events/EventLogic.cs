@@ -4131,7 +4131,7 @@ namespace Server
                         buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID);
                         {
                             ref var withBlock2 = ref Core.Type.TempPlayer[index].EventMap.EventPages[i];
-                            buffer.WriteString(Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Name);
+                            buffer.WriteString(Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Name);
                             buffer.WriteInt32(withBlock2.Dir);
                             buffer.WriteByte(withBlock2.GraphicType);
                             buffer.WriteInt32(withBlock2.Graphic);
@@ -4161,6 +4161,9 @@ namespace Server
         public static bool TriggerEvent(int index, int i, byte triggerType, int x, int y)
         {
             bool TriggerEventRet = false;
+            int mapNum;
+
+            mapNum = GetPlayerMap(index);
 
             // Check if there are any current events
             if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
@@ -4175,7 +4178,7 @@ namespace Server
                 }
             }
 
-            if (Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
+            if (Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
                 .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].Trigger != triggerType)
             {
                 return TriggerEventRet;
@@ -4191,7 +4194,7 @@ namespace Server
                     break;
 
                 case (byte)DirectionType.Down:
-                    if (GetPlayerY(index) == Map[GetPlayerMap(index)].MaxY) return TriggerEventRet;
+                    if (GetPlayerY(index) == Map[mapNum].MaxY) return TriggerEventRet;
                     x = GetPlayerX(index);
                     y = GetPlayerY(index) + 1;
                     break;
@@ -4203,13 +4206,13 @@ namespace Server
                     break;
 
                 case (byte)DirectionType.Right:
-                    if (GetPlayerX(index) == Map[GetPlayerMap(index)].MaxX) return TriggerEventRet;
+                    if (GetPlayerX(index) == Map[mapNum].MaxX) return TriggerEventRet;
                     x = GetPlayerX(index) + 1;
                     y = GetPlayerY(index);
                     break;
 
                 case (byte)DirectionType.UpRight:
-                    if (GetPlayerX(index) == Map[GetPlayerMap(index)].MaxX || GetPlayerY(index) == 0) return TriggerEventRet;
+                    if (GetPlayerX(index) == Map[mapNum].MaxX || GetPlayerY(index) == 0) return TriggerEventRet;
                     x = GetPlayerX(index) + 1;
                     y = GetPlayerY(index) - 1;
                     break;
@@ -4221,13 +4224,13 @@ namespace Server
                     break;
 
                 case (byte)DirectionType.DownLeft:
-                    if (GetPlayerX(index) == 0 || GetPlayerY(index) == Map[GetPlayerMap(index)].MaxY) return TriggerEventRet;
+                    if (GetPlayerX(index) == 0 || GetPlayerY(index) == Map[mapNum].MaxY) return TriggerEventRet;
                     x = GetPlayerX(index) - 1;
                     y = GetPlayerY(index) + 1;
                     break;
 
                 case (byte)DirectionType.DownRight:
-                    if (GetPlayerX(index) == Map[GetPlayerMap(index)].MaxX || GetPlayerY(index) == Map[GetPlayerMap(index)].MaxY) return TriggerEventRet;
+                    if (GetPlayerX(index) == Map[mapNum].MaxX || GetPlayerY(index) == Map[mapNum].MaxY) return TriggerEventRet;
                     x = GetPlayerX(index) + 1;
                     y = GetPlayerY(index) + 1;
                     break;
@@ -4240,7 +4243,7 @@ namespace Server
             }
 
             // Check if there are any commands to process
-            if (Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
+            if (Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
                 .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].CommandListCount > 0)
             {
                 if (Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Active == 0)
@@ -4255,7 +4258,7 @@ namespace Server
                     eventProcessing.WaitingForResponse = 0;
 
                     // Handle ReDim (resize array)
-                    int commandListCount = Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
+                    int commandListCount = Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
                         .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].CommandListCount;
 
                     eventProcessing.ListLeftOff = new int[commandListCount];
