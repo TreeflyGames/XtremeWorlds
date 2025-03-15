@@ -3,7 +3,7 @@
 namespace Client
 {
 
-    internal static class Autotile
+    public static class Autotile
     {
         public static void ClearAutotiles()
         {
@@ -19,7 +19,7 @@ namespace Client
                 var loopTo1 = (int)Core.Type.MyMap.MaxY;
                 for (y = 0; y < loopTo1; y++)
                 {
-                    Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
+                    Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[(int)Core.Enum.LayerType.Count];
                     for (i = 0; i < (int)Core.Enum.LayerType.Count; i++)
                     {
                         Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
@@ -33,7 +33,7 @@ namespace Client
         // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         // All of this code is for auto tiles and the math behind generating them.
         // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        internal static void PlaceAutotile(int layerNum, int x, int y, byte tileQuarter, string autoTileLetter)
+        private static void PlaceAutotile(int layerNum, int x, int y, byte tileQuarter, string autoTileLetter)
         {
 
             if (layerNum > (int)Core.Enum.LayerType.Count)
@@ -298,7 +298,7 @@ namespace Client
 
         }
 
-        internal static void InitAutotiles()
+        public static void InitAutotiles()
         {
             int x;
             int y;
@@ -318,7 +318,7 @@ namespace Client
                 var loopTo1 = (int)Core.Type.MyMap.MaxY;
                 for (y = 0; y < loopTo1; y++)
                 {
-                    Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[10];
+                    Core.Type.Autotile[x, y].Layer = new Core.Type.QuarterTileStruct[(int)Core.Enum.LayerType.Count];
                     for (int i = 0; i < (int)Core.Enum.LayerType.Count; i++)
                     {
                         Core.Type.Autotile[x, y].Layer[i].SrcX = new int[5];
@@ -412,11 +412,11 @@ namespace Client
 
         }
 
-        internal static void CacheRenderState(int x, int y, int layerNum)
+        public static void CacheRenderState(int x, int y, int layerNum)
         {
             int quarterNum;
 
-            if (x < 0 | x > Core.Type.MyMap.MaxX | y < 0 | y > Core.Type.MyMap.MaxY)
+            if (x < 0 | x >= Core.Type.MyMap.MaxX | y < 0 | y >= Core.Type.MyMap.MaxY)
                 return;
 
             ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
@@ -446,7 +446,7 @@ namespace Client
             }
         }
 
-        internal static void CalculateAutotile(int x, int y, int layerNum)
+        private static void CalculateAutotile(int x, int y, int layerNum)
         {
             // Right, so we've split the tile block in to an easy to remember
             // collection of letters. We now need to do the calculations to find
@@ -459,6 +459,7 @@ namespace Client
 
             if (Core.Type.MyMap.Tile[x, y].Layer[layerNum].AutoTile == 0)
                 return;
+
             // Okay, we have autotiling but which one?
             switch (Core.Type.MyMap.Tile[x, y].Layer[layerNum].AutoTile)
             {
@@ -508,7 +509,7 @@ namespace Client
         }
 
         // Normal autotiling
-        internal static void CalculateNW_Normal(int layerNum, int x, int y)
+        private static void CalculateNW_Normal(int layerNum, int x, int y)
         {
             var tmpTile = new bool[4];
             var situation = default(byte);
@@ -577,7 +578,7 @@ namespace Client
 
         }
 
-        internal static void CalculateNE_Normal(int layerNum, int x, int y)
+        private static void CalculateNE_Normal(int layerNum, int x, int y)
         {
             var tmpTile = new bool[4];
             var situation = default(byte);
@@ -611,6 +612,7 @@ namespace Client
             // Fill
             if (tmpTile[1] & tmpTile[2] & tmpTile[3])
                 situation = GameState.AutoFill;
+
             // Actually place the subtile
             switch (situation)
             {
@@ -643,7 +645,7 @@ namespace Client
 
         }
 
-        internal static void CalculateSW_Normal(int layerNum, int x, int y)
+        private static void CalculateSW_Normal(int layerNum, int x, int y)
         {
             var tmpTile = new bool[4];
             var situation = default(byte);
@@ -712,7 +714,7 @@ namespace Client
 
         }
 
-        internal static void CalculateSE_Normal(int layerNum, int x, int y)
+        private static void CalculateSE_Normal(int layerNum, int x, int y)
         {
             var tmpTile = new bool[4];
             var situation = default(byte);
@@ -782,13 +784,14 @@ namespace Client
         }
 
         // Waterfall autotiling
-        internal static void CalculateNW_Waterfall(int layerNum, int x, int y)
+        private static void CalculateNW_Waterfall(int layerNum, int x, int y)
         {
             var tmpTile = default(bool);
 
             // West
             if (CheckTileMatch(layerNum, x, y, x - 1, y))
                 tmpTile = Conversions.ToBoolean(1);
+
             // Actually place the subtile
             if (tmpTile)
             {
@@ -803,7 +806,7 @@ namespace Client
 
         }
 
-        internal static void CalculateNE_Waterfall(int layerNum, int x, int y)
+        private static void CalculateNE_Waterfall(int layerNum, int x, int y)
         {
             var tmpTile = default(bool);
 
@@ -824,7 +827,7 @@ namespace Client
 
         }
 
-        internal static void CalculateSW_Waterfall(int layerNum, int x, int y)
+        private static void CalculateSW_Waterfall(int layerNum, int x, int y)
         {
             var tmpTile = default(bool);
 
@@ -845,7 +848,7 @@ namespace Client
 
         }
 
-        internal static void CalculateSE_Waterfall(int layerNum, int x, int y)
+        private static void CalculateSE_Waterfall(int layerNum, int x, int y)
         {
             var tmpTile = default(bool);
 
@@ -867,7 +870,7 @@ namespace Client
         }
 
         // Cliff autotiling
-        internal static void CalculateNW_Cliff(int layerNum, int x, int y)
+        private static void CalculateNW_Cliff(int layerNum, int x, int y)
         {
             var tmpTile = new bool[4];
             byte situation;
@@ -928,7 +931,7 @@ namespace Client
 
         }
 
-        internal static void CalculateNE_Cliff(int layerNum, int x, int y)
+        private static void CalculateNE_Cliff(int layerNum, int x, int y)
         {
             var tmpTile = new bool[4];
             byte situation;
@@ -989,7 +992,7 @@ namespace Client
 
         }
 
-        internal static void CalculateSW_Cliff(int layerNum, int x, int y)
+        private static void CalculateSW_Cliff(int layerNum, int x, int y)
         {
             var tmpTile = new bool[4];
             byte situation;
@@ -1049,7 +1052,7 @@ namespace Client
 
         }
 
-        internal static void CalculateSE_Cliff(int layerNum, int x, int y)
+        private static void CalculateSE_Cliff(int layerNum, int x, int y)
         {
             var tmpTile = new bool[4];
             byte situation;
@@ -1110,7 +1113,7 @@ namespace Client
 
         }
 
-        internal static bool CheckTileMatch(int layerNum, int x1, int y1, int x2, int y2)
+        private static bool CheckTileMatch(int layerNum, int x1, int y1, int x2, int y2)
         {
             bool CheckTileMatchRet = default;
             CheckTileMatchRet = Conversions.ToBoolean(1);
