@@ -673,6 +673,7 @@ namespace Client
             ClearMapItems();
             ClearMapEvents();
             GameLogic.RemoveChatBubbles();
+            Animation.ClearAnimInstances();
 
             GameState.ResourceIndex = 0;
             Core.Type.MyMapResource = default;
