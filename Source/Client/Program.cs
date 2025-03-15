@@ -2636,18 +2636,21 @@ namespace Client
                 }
             }
 
-            if (GameState.CurrentEvents > 0 && Core.Type.MyMap.EventCount >= GameState.CurrentEvents)
+            if (GameState.MyEditorType != (int)EditorType.Map)
             {
-                var loopTo9 = GameState.CurrentEvents;
-                for (i = 0; i < loopTo9; i++)
+                if (GameState.CurrentEvents > 0 && Core.Type.MyMap.EventCount >= GameState.CurrentEvents)
                 {
-                    if (i < Core.Type.MapEvents.Length)
+                    var loopTo9 = GameState.CurrentEvents;
+                    for (i = 0; i < loopTo9; i++)
                     {
-                        if (Core.Type.MapEvents[i].Visible == true)
+                        if (i < Core.Type.MapEvents.Length)
                         {
-                            if (Core.Type.MapEvents[i].ShowName == 1)
+                            if (Core.Type.MapEvents[i].Visible == true)
                             {
-                                Text.DrawEventName(i);
+                                if (Core.Type.MapEvents[i].ShowName == 1)
+                                {
+                                    Text.DrawEventName(i);
+                                }
                             }
                         }
                     }
