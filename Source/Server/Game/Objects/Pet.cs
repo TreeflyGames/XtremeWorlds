@@ -2306,7 +2306,7 @@ namespace Server
                 expRollover = GetPetExp(index) - GetPetNextLevel(index);
 
                 // can level up?
-                if (GetPetLevel(index) < 99 & GetPetLevel(index) < Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].MaxLevel)
+                if (GetPetLevel(index) < Core.Constant.MAX_LEVEL & GetPetLevel(index) < Core.Type.Pet[(int)Core.Type.Player[index].Pet.Num].MaxLevel)
                 {
                     SetPetLevel(index, GetPetLevel(index) + 1);
                 }
