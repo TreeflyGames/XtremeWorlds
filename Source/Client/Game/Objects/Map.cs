@@ -539,7 +539,7 @@ namespace Client
             Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory]; 
 
             // Reset tile history indices
-            GameState.HistoryIndex = 0;
+            GameState.TileHistoryIndex = 0;
 
             for (int i = 0; i < GameState.MaxTileHistory; i++)
             {

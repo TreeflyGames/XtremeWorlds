@@ -223,20 +223,25 @@ namespace Client
 
             if (!Information.IsNumeric(Instance.txtMaxX.Text))
                 Instance.txtMaxX.Text = Core.Type.MyMap.MaxX.ToString();
+
             if (Conversion.Val(Instance.txtMaxX.Text) < Settings.Instance.CameraWidth)
+
                 Instance.txtMaxX.Text = Settings.Instance.CameraWidth.ToString();
             if (Conversion.Val(Instance.txtMaxX.Text) > byte.MaxValue)
+
                 Instance.txtMaxX.Text = byte.MaxValue.ToString();
             if (!Information.IsNumeric(Instance.txtMaxY.Text))
                 Instance.txtMaxY.Text = Core.Type.MyMap.MaxY.ToString();
+
             if (Conversion.Val(Instance.txtMaxY.Text) < Settings.Instance.CameraHeight)
                 Instance.txtMaxY.Text = Settings.Instance.CameraHeight.ToString();
+
             if (Conversion.Val(Instance.txtMaxY.Text) > byte.MaxValue)
                 Instance.txtMaxY.Text = byte.MaxValue.ToString();
 
             {
                 ref var withBlock = ref Core.Type.MyMap;
-                withBlock.Name = Strings.Trim(Instance.txtName.Text);
+                withBlock.Name = Instance.txtName.Text;
                 if (Instance.lstMusic.SelectedIndex >= 0)
                 {
                     withBlock.Music = Instance.lstMusic.Items[Instance.lstMusic.SelectedIndex].ToString();
@@ -275,13 +280,15 @@ namespace Client
                 withBlock.MaxY = (byte)Math.Round(Conversion.Val(Instance.txtMaxY.Text));
 
                 withBlock.Tile = new Core.Type.TileStruct[(withBlock.MaxX), (withBlock.MaxY)];
-                Core.Type.Autotile = new Core.Type.AutotileStruct[(withBlock.MaxX), (withBlock.MaxY)];
 
                 for (int i = 0; i < GameState.MaxTileHistory; i++)
                     Core.Type.TileHistory[i].Tile = new Core.Type.TileStruct[(withBlock.MaxX), (withBlock.MaxY)];
 
+                Core.Type.Autotile = new Core.Type.AutotileStruct[(withBlock.MaxX), (withBlock.MaxY)];
+
                 if (x2 > withBlock.MaxX)
                     x2 = withBlock.MaxX;
+
                 if (y2 > withBlock.MaxY)
                     y2 = withBlock.MaxY;
 
@@ -1403,53 +1410,66 @@ namespace Client
                 }
             }
 
+            MapEditorHistory();
+
+            x = 0;
+
             for (int x2 = 0, loopTo = Core.Type.MyMap.MaxX; x2 < loopTo; x2++)
             {
                 for (int y2 = 0, loopTo1 = Core.Type.MyMap.MaxY; y2 < loopTo1; y2++)
                 {
-                    ref var currentTile = ref Core.Type.MyMap.Tile[x2, y2];
-                    ref var historyTile = ref Core.Type.TileHistory[GameState.HistoryIndex].Tile[x2, y2];
-
-                    // Check if the tile is modified
-                    isModified = currentTile.Data1 != historyTile.Data1 ||
-                                        currentTile.Data2 != historyTile.Data2 ||
-                                        currentTile.Data3 != historyTile.Data3 ||
-                                        currentTile.Data1_2 != historyTile.Data1_2 ||
-                                        currentTile.Data2_2 != historyTile.Data2_2 ||
-                                        currentTile.Data3_2 != historyTile.Data3_2 ||
-                                        currentTile.Type != historyTile.Type ||
-                                        currentTile.Type2 != historyTile.Type2 ||
-                                        currentTile.DirBlock != historyTile.DirBlock ||
-                                        currentTile.Layer[CurLayer].X != historyTile.Layer[CurLayer].X ||
-                                        currentTile.Layer[CurLayer].Y != historyTile.Layer[CurLayer].Y ||
-                                        currentTile.Layer[CurLayer].Tileset != historyTile.Layer[CurLayer].Tileset ||
-                                        currentTile.Layer[CurLayer].AutoTile != historyTile.Layer[CurLayer].AutoTile;
-
-                    if (isModified)
+                    for (int i2 = 0, loopTo2 = (int)Core.Enum.LayerType.Count; i2 < loopTo2; i2++)
                     {
-                        historyTile.Data1 = currentTile.Data1;
-                        historyTile.Data2 = currentTile.Data2;
-                        historyTile.Data3 = currentTile.Data3;
-                        historyTile.Data1_2 = currentTile.Data1_2;
-                        historyTile.Data2_2 = currentTile.Data2_2;
-                        historyTile.Data3_2 = currentTile.Data3_2;
-                        historyTile.Type = currentTile.Type;
-                        historyTile.Type2 = currentTile.Type2;
-                        historyTile.DirBlock = currentTile.DirBlock;
-                        historyTile.Layer[CurLayer].X = currentTile.Layer[CurLayer].X;
-                        historyTile.Layer[CurLayer].Y = currentTile.Layer[CurLayer].Y;
-                        historyTile.Layer[CurLayer].Tileset = currentTile.Layer[CurLayer].Tileset;
-                        historyTile.Layer[CurLayer].AutoTile = currentTile.Layer[CurLayer].AutoTile;
-                        Autotile.CacheRenderState(x2, y2, CurLayer);
-                        x = 1;
+                        ref var currentTile = ref Core.Type.MyMap.Tile[x2, y2];
+                        ref var historyTile = ref Core.Type.TileHistory[GameState.TileHistoryIndex].Tile[x2, y2];
+
+                        // Check if the tile is modified
+                        isModified = currentTile.Data1 != historyTile.Data1 ||
+                                            currentTile.Data2 != historyTile.Data2 ||
+                                            currentTile.Data3 != historyTile.Data3 ||
+                                            currentTile.Data1_2 != historyTile.Data1_2 ||
+                                            currentTile.Data2_2 != historyTile.Data2_2 ||
+                                            currentTile.Data3_2 != historyTile.Data3_2 ||
+                                            currentTile.Type != historyTile.Type ||
+                                            currentTile.Type2 != historyTile.Type2 ||
+                                            currentTile.DirBlock != historyTile.DirBlock ||
+                                            currentTile.Layer[i2].X != historyTile.Layer[i2].X ||
+                                            currentTile.Layer[i2].Y != historyTile.Layer[i2].Y ||
+                                            currentTile.Layer[i2].Tileset != historyTile.Layer[i2].Tileset ||
+                                            currentTile.Layer[i2].AutoTile != historyTile.Layer[i2].AutoTile;
+
+                        if (isModified)
+                        {
+                            historyTile.Data1 = currentTile.Data1;
+                            historyTile.Data2 = currentTile.Data2;
+                            historyTile.Data3 = currentTile.Data3;
+                            historyTile.Data1_2 = currentTile.Data1_2;
+                            historyTile.Data2_2 = currentTile.Data2_2;
+                            historyTile.Data3_2 = currentTile.Data3_2;
+                            historyTile.Type = currentTile.Type;
+                            historyTile.Type2 = currentTile.Type2;
+                            historyTile.DirBlock = currentTile.DirBlock;
+                            historyTile.Layer[i2].X = currentTile.Layer[i2].X;
+                            historyTile.Layer[i2].Y = currentTile.Layer[i2].Y;
+                            historyTile.Layer[i2].Tileset = currentTile.Layer[i2].Tileset;
+                            historyTile.Layer[i2].AutoTile = currentTile.Layer[i2].AutoTile;
+
+                            if (historyTile.Layer[i2].AutoTile > 0)
+                            {
+                                x = 1;
+                            }
+
+                            Autotile.CacheRenderState(x2, y2, i2);
+                        }
                     }
                 }
-
             }
 
             if (x == 1)
-                MapEditorHistory();
-
+            {
+                // do a re-init so we can see our changes
+                Autotile.InitAutotiles();
+            }
         }
 
         public static void MapEditorCancel()
@@ -1585,16 +1605,24 @@ namespace Client
 
         public static void MapEditorHistory()
         {
-            if (GameState.HistoryIndex >= GameState.MaxTileHistory - 1)
+            if (GameState.TileHistoryIndex <= 0)
+                GameState.TileHistoryIndex = 0;
+
+            if (GameState.TileHistoryIndex >= GameState.MaxTileHistory - 1)
             {
-                for (int i = 0; i < GameState.MaxTileHistory - 1; i++)
+                for (int i = 0; i < GameState.TileHistoryIndex; i++)
                 {
                     Core.Type.TileHistory[(int)i] = Core.Type.TileHistory[(int)(i + 1)];
                 }
             }
             else
             {
-                GameState.HistoryIndex += 1;
+                GameState.TileHistoryIndex++;
+                GameState.TileHistoryHighIndex++;
+
+                if (GameState.TileHistoryHighIndex > GameState.MaxTileHistory)
+                    GameState.TileHistoryHighIndex = GameState.MaxTileHistory;
+
             }
 
         }
@@ -1634,9 +1662,7 @@ namespace Client
         {
             bool isModified = false;
 
-            var CurLayer = Instance.cmbLayers.SelectedIndex;
-
-            if (GameState.HistoryIndex == 0)
+            if (GameState.TileHistoryIndex <= 0)
             {
                 General.SetWindowFocus(General.Client.Window.Handle);
                 return;
@@ -1649,67 +1675,65 @@ namespace Client
                     for (int i = 0; i < (int)LayerType.Count; i++)
                     {
                         ref var currentTile = ref Core.Type.MyMap.Tile[x, y];
-                        ref var historyTile = ref Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y];
+                        ref var historyTile = ref Core.Type.TileHistory[GameState.TileHistoryIndex].Tile[x, y];
 
-                        // Check if the tile is modified
-                        isModified = currentTile.Data1 != historyTile.Data1 ||
-                                          currentTile.Data2 != historyTile.Data2 ||
-                                          currentTile.Data3 != historyTile.Data3 ||
-                                          currentTile.Data1_2 != historyTile.Data1_2 ||
-                                          currentTile.Data2_2 != historyTile.Data2_2 ||
-                                          currentTile.Data3_2 != historyTile.Data3_2 ||
-                                          currentTile.Type != historyTile.Type ||
-                                          currentTile.Type2 != historyTile.Type2 ||
-                                          currentTile.DirBlock != historyTile.DirBlock ||
-                                          currentTile.Layer[CurLayer].X != historyTile.Layer[CurLayer].X ||
-                                          currentTile.Layer[CurLayer].Y != historyTile.Layer[CurLayer].Y ||
-                                          currentTile.Layer[CurLayer].Tileset != historyTile.Layer[CurLayer].Tileset ||
-                                          currentTile.Layer[CurLayer].AutoTile != historyTile.Layer[CurLayer].AutoTile;
-
-                        if (isModified)
+                        if (!isModified)
                         {
-                            currentTile.Data1 = historyTile.Data1;
-                            currentTile.Data2 = historyTile.Data2;
-                            currentTile.Data3 = historyTile.Data3;
-                            currentTile.Data1_2 = historyTile.Data1_2;
-                            currentTile.Data2_2 = historyTile.Data2_2;
-                            currentTile.Data3_2 = historyTile.Data3_2;
-                            currentTile.Type = historyTile.Type;
-                            currentTile.Type2 = historyTile.Type2;
-                            currentTile.DirBlock = historyTile.DirBlock;
-                            currentTile.Layer[CurLayer].X = historyTile.Layer[CurLayer].X;
-                            currentTile.Layer[CurLayer].Y = historyTile.Layer[CurLayer].Y;
-                            currentTile.Layer[CurLayer].Tileset = historyTile.Layer[CurLayer].Tileset;
-                            currentTile.Layer[CurLayer].AutoTile = historyTile.Layer[CurLayer].AutoTile;
-                            Autotile.CacheRenderState(x, y, i);
+                            // Check if the tile is modified
+                            isModified = currentTile.Data1 != historyTile.Data1 ||
+                                                currentTile.Data2 != historyTile.Data2 ||
+                                                currentTile.Data3 != historyTile.Data3 ||
+                                                currentTile.Data1_2 != historyTile.Data1_2 ||
+                                                currentTile.Data2_2 != historyTile.Data2_2 ||
+                                                currentTile.Data3_2 != historyTile.Data3_2 ||
+                                                currentTile.Type != historyTile.Type ||
+                                                currentTile.Type2 != historyTile.Type2 ||
+                                                currentTile.DirBlock != historyTile.DirBlock ||
+                                                currentTile.Layer[i].X != historyTile.Layer[i].X ||
+                                                currentTile.Layer[i].Y != historyTile.Layer[i].Y ||
+                                                currentTile.Layer[i].Tileset != historyTile.Layer[i].Tileset ||
+                                                currentTile.Layer[i].AutoTile != historyTile.Layer[i].AutoTile;
+                        }
+
+                        currentTile.Data1 = historyTile.Data1;
+                        currentTile.Data2 = historyTile.Data2;
+                        currentTile.Data3 = historyTile.Data3;
+                        currentTile.Data1_2 = historyTile.Data1_2;
+                        currentTile.Data2_2 = historyTile.Data2_2;
+                        currentTile.Data3_2 = historyTile.Data3_2;
+                        currentTile.Type = historyTile.Type;
+                        currentTile.Type2 = historyTile.Type2;
+                        currentTile.DirBlock = historyTile.DirBlock;
+                        currentTile.Layer[i].X = historyTile.Layer[i].X;
+                        currentTile.Layer[i].Y = historyTile.Layer[i].Y;
+                        currentTile.Layer[i].Tileset = historyTile.Layer[i].Tileset;
+                        currentTile.Layer[i].AutoTile = historyTile.Layer[i].AutoTile;
+                        Autotile.CacheRenderState(x, y, i);
+
+                        if (currentTile.Layer[i].AutoTile > 0)
+                        {
+                            // do a re-init so we can see our changes
+                            Autotile.InitAutotiles();
                         }
                     }
                 }
             }
 
-            GameState.HistoryIndex = GameState.HistoryIndex - 1;
+            GameState.TileHistoryIndex -= 1;
 
             if (isModified)
-            {
-                // do a re-init so we can see our changes
-                Autotile.InitAutotiles();
-
                 General.SetWindowFocus(General.Client.Window.Handle);
-            }
             else
-            {
                 MapEditorUndo();
-            }
         }
 
         public static void MapEditorRedo()
         {
             bool isModified = false;
 
-            var CurLayer = Instance.cmbLayers.SelectedIndex;
-
-            if (GameState.HistoryIndex == GameState.MaxTileHistory - 1)
+            if (GameState.TileHistoryIndex == GameState.TileHistoryHighIndex + 1)
             {
+                GameState.TileHistoryIndex--;
                 General.SetWindowFocus(General.Client.Window.Handle);
                 return;
             }
@@ -1721,57 +1745,56 @@ namespace Client
                     for (int i = 0; i < (int)LayerType.Count; i++)
                     {
                         ref var currentTile = ref Core.Type.MyMap.Tile[x, y];
-                        ref var historyTile = ref Core.Type.TileHistory[GameState.HistoryIndex].Tile[x, y];
+                        ref var historyTile = ref Core.Type.TileHistory[GameState.TileHistoryIndex].Tile[x, y];
 
-                        // Check if the tile is modified
-                        isModified = currentTile.Data1 != historyTile.Data1 ||
-                                          currentTile.Data2 != historyTile.Data2 ||
-                                          currentTile.Data3 != historyTile.Data3 ||
-                                          currentTile.Data1_2 != historyTile.Data1_2 ||
-                                          currentTile.Data2_2 != historyTile.Data2_2 ||
-                                          currentTile.Data3_2 != historyTile.Data3_2 ||
-                                          currentTile.Type != historyTile.Type ||
-                                          currentTile.Type2 != historyTile.Type2 ||
-                                          currentTile.DirBlock != historyTile.DirBlock ||
-                                          currentTile.Layer[CurLayer].X != historyTile.Layer[CurLayer].X ||
-                                          currentTile.Layer[CurLayer].Y != historyTile.Layer[CurLayer].Y ||
-                                          currentTile.Layer[CurLayer].Tileset != historyTile.Layer[CurLayer].Tileset ||
-                                          currentTile.Layer[CurLayer].AutoTile != historyTile.Layer[CurLayer].AutoTile;
-
-                        if (isModified)
+                        if (!isModified)
                         {
-                            currentTile.Data1 = historyTile.Data1;
-                            currentTile.Data2 = historyTile.Data2;
-                            currentTile.Data3 = historyTile.Data3;
-                            currentTile.Data1_2 = historyTile.Data1_2;
-                            currentTile.Data2_2 = historyTile.Data2_2;
-                            currentTile.Data3_2 = historyTile.Data3_2;
-                            currentTile.Type = historyTile.Type;
-                            currentTile.Type2 = historyTile.Type2;
-                            currentTile.DirBlock = historyTile.DirBlock;
-                            currentTile.Layer[CurLayer].X = historyTile.Layer[CurLayer].X;
-                            currentTile.Layer[CurLayer].Y = historyTile.Layer[CurLayer].Y;
-                            currentTile.Layer[CurLayer].Tileset = historyTile.Layer[CurLayer].Tileset;
-                            currentTile.Layer[CurLayer].AutoTile = historyTile.Layer[CurLayer].AutoTile;
-                            Autotile.CacheRenderState(x, y, i);
+                            // Check if the tile is modified
+                            isModified = currentTile.Data1 != historyTile.Data1 ||
+                                                currentTile.Data2 != historyTile.Data2 ||
+                                                currentTile.Data3 != historyTile.Data3 ||
+                                                currentTile.Data1_2 != historyTile.Data1_2 ||
+                                                currentTile.Data2_2 != historyTile.Data2_2 ||
+                                                currentTile.Data3_2 != historyTile.Data3_2 ||
+                                                currentTile.Type != historyTile.Type ||
+                                                currentTile.Type2 != historyTile.Type2 ||
+                                                currentTile.DirBlock != historyTile.DirBlock ||
+                                                currentTile.Layer[i].X != historyTile.Layer[i].X ||
+                                                currentTile.Layer[i].Y != historyTile.Layer[i].Y ||
+                                                currentTile.Layer[i].Tileset != historyTile.Layer[i].Tileset ||
+                                                currentTile.Layer[i].AutoTile != historyTile.Layer[i].AutoTile;
+                        }
+
+                        currentTile.Data1 = historyTile.Data1;
+                        currentTile.Data2 = historyTile.Data2;
+                        currentTile.Data3 = historyTile.Data3;
+                        currentTile.Data1_2 = historyTile.Data1_2;
+                        currentTile.Data2_2 = historyTile.Data2_2;
+                        currentTile.Data3_2 = historyTile.Data3_2;
+                        currentTile.Type = historyTile.Type;
+                        currentTile.Type2 = historyTile.Type2;
+                        currentTile.DirBlock = historyTile.DirBlock;
+                        currentTile.Layer[i].X = historyTile.Layer[i].X;
+                        currentTile.Layer[i].Y = historyTile.Layer[i].Y;
+                        currentTile.Layer[i].Tileset = historyTile.Layer[i].Tileset;
+                        currentTile.Layer[i].AutoTile = historyTile.Layer[i].AutoTile;
+                        Autotile.CacheRenderState(x, y, i);
+
+                        if (currentTile.Layer[i].AutoTile > 0)
+                        {
+                            // do a re-init so we can see our changes
+                            Autotile.InitAutotiles();
                         }
                     }
                 }
             }
 
-            GameState.HistoryIndex = GameState.HistoryIndex + 1;
+            GameState.TileHistoryIndex++;
 
-            if (isModified)
-            {
-                // do a re-init so we can see our changes
-                Autotile.InitAutotiles();
-
+            if  (isModified)
                 General.SetWindowFocus(General.Client.Window.Handle);
-            }
             else
-            {
                 MapEditorRedo();
-            }
         }
 
         public void ClearAttributeDialogue()
@@ -1809,7 +1832,7 @@ namespace Client
 
             if (GameState.CopyMap == false)
             {
-                Core.Type.TmpTile = new Core.Type.TileStruct[(Core.Type.MyMap.MaxX), (Core.Type.MyMap.MaxY)];
+                Core.Type.TmpTile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
                 GameState.TmpMaxX = Core.Type.MyMap.MaxX;
                 GameState.TmpMaxY = Core.Type.MyMap.MaxY;
 

@@ -329,7 +329,8 @@ namespace Client
 
         public static bool MapGrid;
         public static bool EyeDropper;
-        public static int HistoryIndex;
+        public static int TileHistoryIndex;
+        public static int TileHistoryHighIndex;
         public static bool HideLayers;
 
         // Speed moving vars

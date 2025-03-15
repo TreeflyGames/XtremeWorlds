@@ -76,6 +76,7 @@ namespace Client
 
         // Minimum interval (in milliseconds) between repeated key inputs
         private const byte KeyRepeatInterval = 150;
+        private const byte MouseRepeatInterval = 75;
 
         // Lock object to ensure thread safety
         public static readonly object InputLock = new object();
@@ -90,6 +91,14 @@ namespace Client
         public static Texture2D PixelTexture;
 
         public static bool IsLoaded;
+
+        // Add a timer to prevent spam
+        private static DateTime lastInputTime = DateTime.MinValue;
+        private const int inputCooldown = 250;
+
+        // Handle Escape key to toggle menus
+        private static DateTime lastMouseClickTime = DateTime.MinValue;
+        private const int mouseClickCooldown = 250;
 
         // Ensure this class exists to store graphic info
         public class GfxInfo
@@ -465,14 +474,6 @@ namespace Client
                     }
             }
         }
-
-        // Add a timer to prevent spam
-        private static DateTime lastInputTime = DateTime.MinValue;
-        private const int inputCooldown = 250;
-
-        // Handle Escape key to toggle menus
-        private static DateTime lastMouseClickTime = DateTime.MinValue;
-        private const int mouseClickCooldown = 250;
 
         public static void ProcessInputs()
         {
@@ -928,7 +929,10 @@ namespace Client
 
                     if (GameState.MyEditorType == (int)EditorType.Map)
                     {
-                        frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                        if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= GameClient.MouseRepeatInterval)
+                        {
+                            frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                        }
                     }
 
                     if (GameState.VbKeyShift == true)
