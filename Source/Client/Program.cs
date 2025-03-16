@@ -206,26 +206,6 @@ namespace Client
                 Text.Fonts[(FontType)i] = LoadFont(Core.Path.Fonts, (FontType)i);
         }
 
-        // Method to center the window using GraphicsAdapter
-        private static void CenterWindow()
-        {
-            // Get the primary display's resolution
-            var displayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
-
-            int screenWidth = displayMode.Width;
-            int screenHeight = displayMode.Height;
-
-            int windowWidth = Graphics.PreferredBackBufferWidth;
-            int windowHeight = Graphics.PreferredBackBufferHeight;
-
-            // Calculate centered position
-            int posX = (int)Math.Round((screenWidth - windowWidth) / 2d);
-            int posY = (int)Math.Round((screenHeight - windowHeight) / 2d);
-
-            // Set the new window position
-            General.Client.Window.Position = new Point(posX, posY);
-        }
-
         protected override void LoadContent()
         {
             SpriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GraphicsDevice);
