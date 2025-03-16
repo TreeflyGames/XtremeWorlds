@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net9.0</TargetFramework>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Client</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -36,6 +35,9 @@
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
+    <IsBrowserWasmProject>false</IsBrowserWasmProject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
@@ -43,6 +45,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="appsettings.android.json" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
@@ -69,6 +74,8 @@
   <ItemGroup>
     <PackageReference Include="ManagedBass" />
     <PackageReference Include="ManagedBass.Midi" />
+    <PackageReference Include="Microsoft.NET.Runtime.MonoAOTCompiler.Task" />
+    <PackageReference Include="MonoGame.Framework.Android" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Enrichers.Environment" />
     <PackageReference Include="Serilog.Enrichers.Thread" />
@@ -108,6 +115,12 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <AndroidNativeLibrary Include="libs/arm64-v8a/libbass.so" />
+    <AndroidNativeLibrary Include="libs/arm64-v8a/libbassmidi.so" />
+    <AndroidNativeLibrary Include="libs/armeabi-v7a/libbass.so" />
+    <AndroidNativeLibrary Include="libs/armeabi-v7a/libbassmidi.so" />
+  </ItemGroup>
   <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
     <MakeDir Directories="$(OutputPath)Content" />
   </Target>

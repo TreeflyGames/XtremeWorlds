@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0-android</TargetFramework>
     <OutputType>Library</OutputType>
     <ApplicationVersion>0.10.0.0</ApplicationVersion>
     <RootNamespace>$(AssemblyFileVersion)</RootNamespace>
@@ -24,6 +24,7 @@
     <FileVersion>$(AssemblyFileVersion)</FileVersion>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="icon.ico" />

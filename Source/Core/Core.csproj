@@ -1,14 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Target Name="_RemoveLinuxFrameworkReferences"
+          AfterTargets="ProcessFrameworkReferences">
+    <ItemGroup>
+      <_ProblematicRIDs Include="linux-bionic-arm;linux-bionic-arm64;linux-bionic-x86;linux-bionic-arm64" />
+      <PackageDownload Remove="Microsoft.NETCore.App.Runtime.%(_ProblematicRIDs.Identity)" />
+    </ItemGroup>
+  </Target>
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <RootNamespace>Core</RootNamespace>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0-android</TargetFramework>
     <Configurations>Release;Debug</Configurations>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
+    <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DefineConstants>CORE</DefineConstants>
@@ -20,7 +28,7 @@
 	<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Console" />
-	<PackageReference Include="MonoGame.Framework.DesktopGL" />
+	<PackageReference Include="MonoGame.Framework.Android" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="NLua" />
     <PackageReference Include="Npgsql" />
