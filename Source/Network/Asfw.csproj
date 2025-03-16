@@ -25,6 +25,7 @@
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
