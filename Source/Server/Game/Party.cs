@@ -59,7 +59,7 @@ namespace Server
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SPartyUpdate);
 
-            if (PartyField[partyNum].Leader == 0)
+            if (PartyField[partyNum].Leader == -1)
             {
                 buffer.WriteInt32(0);
             }
@@ -185,7 +185,7 @@ namespace Server
 
         public static void ClearParty(int partyNum)
         {
-            PartyField[partyNum].Leader = 0;
+            PartyField[partyNum].Leader = -1;
             PartyField[partyNum].MemberCount = 0;
             PartyField[partyNum].Member = new int[Core.Constant.MAX_PARTY_MEMBERS];
         }
@@ -404,7 +404,7 @@ namespace Server
                 for (i = 0; i < loopTo1; i++)
                 {
                     // find blank party
-                    if (!(PartyField[i].Leader > 0))
+                    if (!(PartyField[i].Leader > -1))
                     {
                         partyNum = i;
                         break;
@@ -449,7 +449,7 @@ namespace Server
             int x;
 
             // find the high index
-            for (i = Core.Constant.MAX_PARTY_MEMBERS; i >= 0; i -= 1)
+            for (i = Core.Constant.MAX_PARTY_MEMBERS - 1; i >= 0; i -= 1)
             {
                 if (PartyField[partyNum].Member[i] >= 0)
                 {
@@ -485,7 +485,7 @@ namespace Server
                 }
 
                 // check if we've reached the max party members
-                if (i == Core.Constant.MAX_PARTY_MEMBERS)
+                if (i == Core.Constant.MAX_PARTY_MEMBERS - 1)
                 {
                     if (highindex == i)
                     {
@@ -520,7 +520,7 @@ namespace Server
             for (i = 0; i < loopTo; i++)
             {
                 tmpindex = PartyField[partyNum].Member[i];
-                if (tmpindex > 0)
+                if (tmpindex > -1)
                 {
                     if (NetworkConfig.Socket.IsConnected(tmpindex) & NetworkConfig.IsPlaying(tmpindex))
                     {
@@ -542,7 +542,7 @@ namespace Server
             {
                 tmpindex = PartyField[partyNum].Member[i];
                 // existing member?
-                if (tmpindex > 0)
+                if (tmpindex > -1)
                 {
                     // playing?
                     if (NetworkConfig.Socket.IsConnected(tmpindex) & NetworkConfig.IsPlaying(tmpindex))

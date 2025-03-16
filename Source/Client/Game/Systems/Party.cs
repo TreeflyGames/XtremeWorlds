@@ -66,7 +66,7 @@ namespace Client
         public static void Packet_PartyVitals(ref byte[] data)
         {
             int playerNum;
-            var partyindex = default(int);
+            var partyindex = -1;
             var buffer = new ByteStream(data);
 
             // which player?
@@ -82,7 +82,7 @@ namespace Client
             }
 
             // exit out if wrong data
-            if (partyindex < 0 | partyindex > Constant.MAX_PARTY_MEMBERS)
+            if (partyindex < 0 | partyindex >= Constant.MAX_PARTY_MEMBERS)
                 return;
 
             // set vitals
