@@ -24,6 +24,7 @@
     <FileVersion>$(AssemblyFileVersion)</FileVersion>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
