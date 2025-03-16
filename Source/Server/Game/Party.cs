@@ -199,7 +199,7 @@ namespace Server
             for (i = 0; i < loopTo; i++)
             {
                 // exist?
-                if (PartyField[partyNum].Member[i] > 0)
+                if (PartyField[partyNum].Member[i] >= 0)
                 {
                     // make sure they're logged on
                     NetworkSend.PlayerMsg(PartyField[partyNum].Member[i], msg, (int) ColorType.BrightBlue);
@@ -451,7 +451,7 @@ namespace Server
             // find the high index
             for (i = Core.Constant.MAX_PARTY_MEMBERS - 1; i >= 0; i -= 1)
             {
-                if (PartyField[partyNum].Member[i] > 0)
+                if (PartyField[partyNum].Member[i] >= 0)
                 {
                     highindex = i;
                     break;
