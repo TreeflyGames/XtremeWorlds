@@ -413,8 +413,8 @@ namespace Server
                 // create the party
                 PartyField[partyNum].MemberCount = 2;
                 PartyField[partyNum].Leader = index;
-                PartyField[partyNum].Member[1] = index;
-                PartyField[partyNum].Member[2] = target;
+                PartyField[partyNum].Member[0] = index;
+                PartyField[partyNum].Member[1] = target;
                 SendPartyUpdate(partyNum);
                 SendPartyVitals(partyNum, index);
                 SendPartyVitals(partyNum, target);
@@ -479,7 +479,7 @@ namespace Server
                     else
                     {
                         // not lower - highindex is count
-                        PartyField[partyNum].MemberCount = highindex;
+                        PartyField[partyNum].MemberCount = highindex + 1;
                         return;
                     }
                 }
