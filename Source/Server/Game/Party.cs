@@ -469,7 +469,7 @@ namespace Server
                     if (i < highindex)
                     {
                         // move everyone down a slot
-                        var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS;
+                        var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS - 1;
                         for (x = i; x < (int)loopTo1; x++)
                         {
                             PartyField[partyNum].Member[x] = PartyField[partyNum].Member[x + 1];
