@@ -37,7 +37,6 @@
     <LangVersion>latest</LangVersion>
     <TargetFramework>net8.0-android</TargetFramework>
     <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
-    <IsBrowserWasmProject>false</IsBrowserWasmProject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
@@ -124,5 +123,4 @@
   <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
     <MakeDir Directories="$(OutputPath)Content" />
   </Target>
-  <Import Project="..\Modules\Reoria.Engine\Reoria.Engine.projitems" Label="Shared" />
 </Project>
