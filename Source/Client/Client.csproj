@@ -44,9 +44,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="appsettings.android.json" />
-  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
@@ -54,18 +51,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="bass.dll" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="bassmidi.dll" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="libbass.dylib" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="libbassmidi.dylib" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
-    <EmbeddedResource Include="Icon.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
@@ -83,12 +68,6 @@
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="System.Resources.Extensions" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\**\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE">
@@ -120,7 +99,4 @@
     <AndroidNativeLibrary Include="libs/armeabi-v7a/libbass.so" />
     <AndroidNativeLibrary Include="libs/armeabi-v7a/libbassmidi.so" />
   </ItemGroup>
-  <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
-    <MakeDir Directories="$(OutputPath)Content" />
-  </Target>
 </Project>
