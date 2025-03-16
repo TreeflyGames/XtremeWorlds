@@ -149,7 +149,7 @@ namespace Client
                 return;
 
             // Get dimensions and column count from controls and graphic info
-            int totalWidth = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer].ToString())).Width;
+            int totalWidth = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer] .ToString())).Width;
             int totalHeight = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer].ToString())).Height;
             int columns = Core.Type.Animation[AnimInstance[index].Animation].Frames[layer];
 

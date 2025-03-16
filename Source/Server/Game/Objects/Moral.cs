@@ -19,7 +19,7 @@ namespace Server
         {
             int i;
 
-            Core.Type.Moral = new Core.Type.MoralStruct[Core.Constant.MAX_MORALS + 1];
+            Core.Type.Moral = new Core.Type.MoralStruct[Core.Constant.MAX_MORALS];
 
             var loopTo = Core.Constant.MAX_MORALS;
             for (i = 0; i < loopTo; i++)

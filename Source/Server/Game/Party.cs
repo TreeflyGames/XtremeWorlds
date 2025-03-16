@@ -213,9 +213,9 @@ namespace Server
             {
                 if (PartyField[partyNum].Member[i] == index)
                 {
-                    PartyField[partyNum].Member[i] = 0;
-                    Core.Type.TempPlayer[index].InParty = 0;
-                    Core.Type.TempPlayer[index].PartyInvite = 0;
+                    PartyField[partyNum].Member[i] = -1;
+                    Core.Type.TempPlayer[index].InParty = -1;
+                    Core.Type.TempPlayer[index].PartyInvite = -1;
                     break;
                 }
             }
@@ -298,7 +298,7 @@ namespace Server
             int i;
 
             // make sure they're not busy
-            if (Core.Type.TempPlayer[target].PartyInvite > 0 | Core.Type.TempPlayer[target].TradeRequest > 0)
+            if (Core.Type.TempPlayer[target].PartyInvite >= 0 | Core.Type.TempPlayer[target].TradeRequest >= 0)
             {
                 // they've already got a request for trade/party
                 NetworkSend.PlayerMsg(index, "This player is busy.", (int) ColorType.BrightRed);
@@ -306,7 +306,7 @@ namespace Server
             }
 
             // make syure they're not in a party
-            if (Core.Type.TempPlayer[target].InParty > 0)
+            if (Core.Type.TempPlayer[target].InParty >= 0)
             {
                 // they're already in a party
                 NetworkSend.PlayerMsg(index, "This player is already in a party.", (int) ColorType.BrightRed);
@@ -314,7 +314,7 @@ namespace Server
             }
 
             // check if we're in a party
-            if (Core.Type.TempPlayer[index].InParty > 0)
+            if (Core.Type.TempPlayer[index].InParty >= 0)
             {
                 partyNum = Core.Type.TempPlayer[index].InParty;
                 // make sure we're the leader
@@ -324,7 +324,7 @@ namespace Server
                     var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
                     for (i = 0; i < loopTo; i++)
                     {
-                        if (PartyField[partyNum].Member[i] == 0)
+                        if (PartyField[partyNum].Member[i] == -1)
                         {
                             // send the invitation
                             SendPartyInvite(target, index);
@@ -368,7 +368,7 @@ namespace Server
             int i;
 
             // check if already in a party
-            if (Core.Type.TempPlayer[index].InParty > 0)
+            if (Core.Type.TempPlayer[index].InParty >= 0)
             {
                 // get the partynumber
                 partyNum = Core.Type.TempPlayer[index].InParty;
@@ -424,7 +424,7 @@ namespace Server
                 PartyMsg(partyNum, string.Format("{0} has joined the party.", GetPlayerName(index)));
 
                 // clear the invitation
-                Core.Type.TempPlayer[target].PartyInvite = 0;
+                Core.Type.TempPlayer[target].PartyInvite = -1;
 
                 // add them to the party
                 Core.Type.TempPlayer[index].InParty = (byte)partyNum;
@@ -439,7 +439,7 @@ namespace Server
             NetworkSend.PlayerMsg(target, "You declined to join the party.", (int) ColorType.Yellow);
 
             // clear the invitation
-            Core.Type.TempPlayer[target].PartyInvite = 0;
+            Core.Type.TempPlayer[target].PartyInvite = -1;
         }
 
         internal static void CountMembers(int partyNum)
@@ -570,7 +570,7 @@ namespace Server
         {
             int i;
 
-            if (Core.Type.TempPlayer[index].InParty > 0)
+            if (Core.Type.TempPlayer[index].InParty >= 0)
             {
                 if (Conversions.ToBoolean(PartyField[Core.Type.TempPlayer[index].InParty].Leader))
                 {
@@ -582,12 +582,13 @@ namespace Server
 
         }
 
-        internal static bool IsPlayerInParty(int index)
+        public static bool IsPlayerInParty(int index)
         {
             bool IsPlayerInPartyRet = default;
             if (index < 0 | index >= Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)
                 return IsPlayerInPartyRet;
-            if (Core.Type.TempPlayer[index].InParty > 0)
+
+            if (Core.Type.TempPlayer[index].InParty >= 0)
                 IsPlayerInPartyRet = Conversions.ToBoolean(1);
             return IsPlayerInPartyRet;
         }

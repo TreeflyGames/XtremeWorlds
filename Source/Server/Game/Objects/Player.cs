@@ -78,7 +78,7 @@ namespace Server
             }
 
             // CheckIf Type.Map is attackable
-            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral > 0)
+            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral >= 0)
             {
                 if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
                 {
@@ -282,7 +282,7 @@ namespace Server
                     // Player is dead
                     NetworkSend.GlobalMsg(GetPlayerName(victim) + " has been killed by " + GetPlayerName(attacker));
 
-                    if ((int)Core.Type.Map[GetPlayerMap(victim)].Moral > 0)
+                    if ((int)Core.Type.Map[GetPlayerMap(victim)].Moral >= 0)
                     {
                         if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(victim)].Moral].LoseExp)
                         {
@@ -943,7 +943,7 @@ namespace Server
                 NetworkSend.GlobalMsg(GetPlayerName(victim) + " has paid the price for being a Player Killer!!!");
             }
 
-            if ((int)Core.Type.Map[GetPlayerMap(victim)].Moral > 0)
+            if ((int)Core.Type.Map[GetPlayerMap(victim)].Moral >= 0)
             {
                 if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(victim)].Moral].DropItems)
                 {
