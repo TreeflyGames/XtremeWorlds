@@ -379,13 +379,17 @@ namespace Server
                     {
                         // add to the party
                         PartyField[partyNum].Member[i] = target;
+
                         // recount party
                         CountMembers(partyNum);
+
                         // send update to all - including new player
                         SendPartyUpdate(partyNum);
                         SendPartyVitals(partyNum, target);
+
                         // let everyone know they've joined
                         PartyMsg(partyNum, string.Format("{0} has joined the party.", GetPlayerName(target)));
+
                         // add them in
                         Core.Type.TempPlayer[target].InParty = (byte)partyNum;
                         return;
