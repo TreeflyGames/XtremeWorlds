@@ -2,20 +2,17 @@
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <TargetFramework>net8.0-android</TargetFramework>
-    <OutputType>Library</OutputType>
     <ApplicationVersion>0.10.0.0</ApplicationVersion>
     <RootNamespace>$(AssemblyFileVersion)</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Title>Asfw</Title>
     <Description>ArchaicSoft FrameWork is currently an incomplete, yet useful mini-library useful toward online game development containing a premade Client/Server objects which handle all the nitty gritty in the background for you while delivering high performance, as well as containing some powerful serialization, xml/json and flatfile handlers.</Description>
     <Copyright>Copyright ©2025 ArchaicSoft</Copyright>
-    <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/aeirex/Asfw-Networking</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>C# ArchaicSoft</PackageTags>
     <PackageReleaseNotes>TCP No Delay</PackageReleaseNotes>
     <PackageProjectUrl>https://treeflygames.com</PackageProjectUrl>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Version>$(VersionPrefix)</Version>
@@ -26,20 +23,10 @@
     <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
     <LangVersion>default</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Update="LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
+  </PropertyGroup>
 </Project>
