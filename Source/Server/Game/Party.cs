@@ -449,7 +449,7 @@ namespace Server
             int x;
 
             // find the high index
-            for (i = Core.Constant.MAX_PARTY_MEMBERS - 1; i >= 0; i -= 1)
+            for (i = Core.Constant.MAX_PARTY_MEMBERS; i >= 0; i -= 1)
             {
                 if (PartyField[partyNum].Member[i] >= 0)
                 {
