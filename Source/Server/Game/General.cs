@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
+using Reoria.Engine.Base.Container;
+using Reoria.Engine.Base.Container.Interfaces;
+using Reoria.Engine.Base.Container.Logging;
 using System.Diagnostics;
 using static Core.Type;
 
@@ -14,8 +17,10 @@ namespace Server
     static class General
     {
         public static Core.Random Random = new Core.Random();
-        
+
+        public static IEngineContainer? Container;
         public static IConfiguration? Configuration;
+        public static ILogger<T> GetLogger<T>() where T : class => Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException();
 
         internal static bool ServerDestroyed;
         internal static string MyIPAddress = string.Empty;
@@ -36,7 +41,17 @@ namespace Server
             int time2;
 
             myStopWatch.Start();
-            
+
+            Container = new EngineContainer<SerilogLoggingInitializer>()
+                .DiscoverContainerServiceClasses()
+                .DiscoverConfigurationSources()
+                .BuildContainerConfiguration()
+                .BuildContainerLogger()
+                .DiscoverContainerServices()
+                .BuildContainerServices()
+                .BuildContainerServiceProvider();
+            Configuration = Container?.RetrieveService<IConfiguration>() ?? throw new NullReferenceException();
+
             Settings.Load();
 
             Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
