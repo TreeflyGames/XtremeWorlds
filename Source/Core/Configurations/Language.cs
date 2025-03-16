@@ -110,7 +110,6 @@ namespace Core
             public string Party = "Usage : /party [player]";
             public string Trade = "Usage : /trade [player]";
             public string PlayerMsg = "Usage : ![player] [message]";
-            public string HouseInvite = "Usage : /houseinvite [player]";
             public string InvalidCmd = "Not a valid command!";
             public string Help1 = "Social Commands : ";
             public string Help2 = "'[message] = Global Message";

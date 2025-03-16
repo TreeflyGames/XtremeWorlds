@@ -376,7 +376,7 @@ namespace Server
                 var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
                 for (i = 0; i < loopTo; i++)
                 {
-                    if (PartyField[partyNum].Member[i] == 0)
+                    if (PartyField[partyNum].Member[i] == -1)
                     {
                         // add to the party
                         PartyField[partyNum].Member[i] = target;
@@ -463,7 +463,7 @@ namespace Server
             for (i = 0; i < loopTo; i++)
             {
                 // we've got a blank member
-                if (PartyField[partyNum].Member[i] == 0)
+                if (PartyField[partyNum].Member[i] == -1)
                 {
                     // is it lower than the high index?
                     if (i < highindex)
