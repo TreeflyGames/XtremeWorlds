@@ -2,9 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.CompilerServices;
-using Reoria.Engine.Base.Container;
-using Reoria.Engine.Base.Container.Interfaces;
-using Reoria.Engine.Base.Container.Logging;
 using System.Runtime.InteropServices;
 using static Core.Global.Command;
 
@@ -17,11 +14,9 @@ namespace Client
         public static GameState State = new GameState();
         public static Core.Random Random = new Core.Random();
         public static Gui Gui = new Gui();
-
-        public static IEngineContainer? Container;
+        
         public static IConfiguration? Configuration;
-        public static ILogger<T> GetLogger<T>() where T : class => Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException();
-
+        
 		[DllImport("user32.dll")]
 		public static extern bool SetForegroundWindow(IntPtr hWnd);
 
@@ -37,16 +32,6 @@ namespace Client
 
         public static void Startup()
         {
-            Container = new EngineContainer<SerilogLoggingInitializer>()
-                .DiscoverContainerServiceClasses()
-                .DiscoverConfigurationSources()
-                .BuildContainerConfiguration()
-                .BuildContainerLogger()
-                .DiscoverContainerServices()
-                .BuildContainerServices()
-                .BuildContainerServiceProvider();
-            Configuration = Container?.RetrieveService<IConfiguration>() ?? throw new NullReferenceException();
-
             GameState.InMenu = true;
             ClearGameData();
             LoadGame();
