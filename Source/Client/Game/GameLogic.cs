@@ -1189,15 +1189,6 @@ namespace Client
             GameState.diaData5 = Data5;
             GameState.diaStyle = style;
 
-            try
-            {
-                General.SetWindowFocus(General.Client.Window.Handle);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
             // make the Gui.Windows visible
             Gui.ShowWindow(Gui.GetWindowIndex("winDialogue"), true);
         }
