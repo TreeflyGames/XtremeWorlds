@@ -877,8 +877,6 @@ namespace Client
 
         public static void SendCloseEditor()
         {
-            if (Conversions.ToInteger(GameState.InGame) == 0)
-                return;
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CCloseEditor);

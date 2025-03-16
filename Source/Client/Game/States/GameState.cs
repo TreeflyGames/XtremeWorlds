@@ -1,10 +1,7 @@
 ﻿using Core;
-using Microsoft.Xna.Framework;
 using Mirage.Sharp.Asfw.IO.Encryption;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
-using Path = Core.Path;
 
 namespace Client
 {
@@ -328,7 +325,8 @@ namespace Client
 
         public static bool MapGrid;
         public static bool EyeDropper;
-        public static int HistoryIndex;
+        public static int TileHistoryIndex;
+        public static int TileHistoryHighIndex;
         public static bool HideLayers;
 
         // Speed moving vars

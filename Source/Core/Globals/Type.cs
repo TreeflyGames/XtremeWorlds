@@ -402,7 +402,7 @@ namespace Core
             public int DataBytes;
             public int DataPackets;
             public int PartyInvite;
-            public byte InParty;
+            public int InParty;
             public byte TargetType;
             public int Target;
             public byte PartyStarter;

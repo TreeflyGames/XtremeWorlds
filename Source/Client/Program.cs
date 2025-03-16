@@ -73,6 +73,7 @@ namespace Client
 
         // Minimum interval (in milliseconds) between repeated key inputs
         private const byte KeyRepeatInterval = 150;
+        private const byte MouseRepeatInterval = 75;
 
         // Lock object to ensure thread safety
         public static readonly object InputLock = new object();
@@ -87,6 +88,14 @@ namespace Client
         public static Texture2D PixelTexture;
 
         public static bool IsLoaded;
+
+        // Add a timer to prevent spam
+        private static DateTime lastInputTime = DateTime.MinValue;
+        private const int inputCooldown = 250;
+
+        // Handle Escape key to toggle menus
+        private static DateTime lastMouseClickTime = DateTime.MinValue;
+        private const int mouseClickCooldown = 250;
 
         // Ensure this class exists to store graphic info
         public class GfxInfo
@@ -462,14 +471,6 @@ namespace Client
                     }
             }
         }
-
-        // Add a timer to prevent spam
-        private static DateTime lastInputTime = DateTime.MinValue;
-        private const int inputCooldown = 250;
-
-        // Handle Escape key to toggle menus
-        private static DateTime lastMouseClickTime = DateTime.MinValue;
-        private const int mouseClickCooldown = 250;
 
         public static void ProcessInputs()
         {
@@ -2251,7 +2252,7 @@ namespace Client
                             if (gfxInfo.Height * 4 > 32)
                             {
                                 // Create a 32 pixel offset for larger sprites
-                                y = (int)Math.Round(Core.Type.MapEvents[id].Y * GameState.PicY + Core.Type.MapEvents[id].YOffset - (width - 32d));
+                                y = (int)Math.Round(Core.Type.MapEvents[id].Y * GameState.PicY + Core.Type.MapEvents[id].YOffset - (height - 32d));
                             }
                             else
                             {
@@ -2584,18 +2585,21 @@ namespace Client
                 }
             }
 
-            if (GameState.CurrentEvents > 0 && Core.Type.MyMap.EventCount >= GameState.CurrentEvents)
+            if (GameState.MyEditorType != (int)EditorType.Map)
             {
-                var loopTo9 = GameState.CurrentEvents;
-                for (i = 0; i < loopTo9; i++)
+                if (GameState.CurrentEvents > 0 && Core.Type.MyMap.EventCount >= GameState.CurrentEvents)
                 {
-                    if (i < Core.Type.MapEvents.Length)
+                    var loopTo9 = GameState.CurrentEvents;
+                    for (i = 0; i < loopTo9; i++)
                     {
-                        if (Core.Type.MapEvents[i].Visible == true)
+                        if (i < Core.Type.MapEvents.Length)
                         {
-                            if (Core.Type.MapEvents[i].ShowName == 1)
+                            if (Core.Type.MapEvents[i].Visible == true)
                             {
-                                Text.DrawEventName(i);
+                                if (Core.Type.MapEvents[i].ShowName == 1)
+                                {
+                                    Text.DrawEventName(i);
+                                }
                             }
                         }
                     }

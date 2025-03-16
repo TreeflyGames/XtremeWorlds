@@ -2589,7 +2589,7 @@ namespace Server
                 }
 
                 // in party?
-                if (Core.Type.TempPlayer[attacker].InParty > 0)
+                if (Core.Type.TempPlayer[attacker].InParty >= 0)
                 {
                     // pass through party sharing function
                     Party.ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, mapNum);
@@ -2970,7 +2970,7 @@ namespace Server
             }
 
             // CheckIf Type.Map is attackable
-            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral > 0)
+            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral >= 0)
             {
                 if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
                 {
@@ -3000,7 +3000,7 @@ namespace Server
             }
 
             // Don't attack a party member
-            if (Core.Type.TempPlayer[attacker].InParty > 0 & Core.Type.TempPlayer[victim].InParty > 0)
+            if (Core.Type.TempPlayer[attacker].InParty >= 0 & Core.Type.TempPlayer[victim].InParty >= 0)
             {
                 if (Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
                 {
@@ -3067,7 +3067,7 @@ namespace Server
                     NetworkSend.PlayerMsg(victim, "You lost " + exp + " experience.", (int) ColorType.BrightRed);
 
                     // check if we're in a party
-                    if (Core.Type.TempPlayer[attacker].InParty > 0)
+                    if (Core.Type.TempPlayer[attacker].InParty >= 0)
                     {
                         // pass through party exp share function
                         Party.ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, GetPlayerMap(attacker));
@@ -3294,7 +3294,7 @@ namespace Server
             }
 
             // CheckIf Type.Map is attackable
-            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral > 0)
+            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral >= 0)
             {
                 if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
                 {
@@ -3324,7 +3324,7 @@ namespace Server
             }
 
             // Don't attack a party member
-            if (Core.Type.TempPlayer[attacker].InParty > 0 & Core.Type.TempPlayer[victim].InParty > 0)
+            if (Core.Type.TempPlayer[attacker].InParty >= 0 & Core.Type.TempPlayer[victim].InParty >= 0)
             {
                 if (Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
                 {
@@ -3333,7 +3333,7 @@ namespace Server
                 }
             }
 
-            if (Core.Type.TempPlayer[attacker].InParty > 0 & Core.Type.TempPlayer[victim].InParty > 0 & Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
+            if (Core.Type.TempPlayer[attacker].InParty >= 0 & Core.Type.TempPlayer[victim].InParty >= 0 & Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
             {
                 if (isSkill > 0)
                 {
@@ -4533,7 +4533,7 @@ namespace Server
             }
 
             // CheckIf Type.Map is attackable
-            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral > 0)
+            if ((int)Core.Type.Map[GetPlayerMap(attacker)].Moral >= 0)
             {
                 if (!Core.Type.Moral[Core.Type.Map[GetPlayerMap(attacker)].Moral].CanPK)
                 {
@@ -4564,7 +4564,7 @@ namespace Server
             }
 
             // Don't attack a party member
-            if (Core.Type.TempPlayer[attacker].InParty > 0 & Core.Type.TempPlayer[victim].InParty > 0)
+            if (Core.Type.TempPlayer[attacker].InParty >= 0 & Core.Type.TempPlayer[victim].InParty >= 0)
             {
                 if (Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
                 {
@@ -4573,7 +4573,7 @@ namespace Server
                 }
             }
 
-            if (Core.Type.TempPlayer[attacker].InParty > 0 & Core.Type.TempPlayer[victim].InParty > 0 & Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
+            if (Core.Type.TempPlayer[attacker].InParty >= 0 & Core.Type.TempPlayer[victim].InParty >= 0 & Core.Type.TempPlayer[attacker].InParty == Core.Type.TempPlayer[victim].InParty)
             {
                 if (Conversions.ToInteger(isSkill) > 0)
                 {
@@ -4643,7 +4643,7 @@ namespace Server
                     NetworkSend.PlayerMsg(victim, "You lost " + exp + " exp.", (int) ColorType.BrightRed);
 
                     // check if we're in a party
-                    if (Core.Type.TempPlayer[attacker].InParty > 0)
+                    if (Core.Type.TempPlayer[attacker].InParty >= 0)
                     {
                         // pass through party exp share function
                         Party.ShareExp(Core.Type.TempPlayer[attacker].InParty, exp, attacker, GetPlayerMap(attacker));

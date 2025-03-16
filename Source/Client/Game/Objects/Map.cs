@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
 using static Core.Enum;
-using Microsoft.VisualBasic;
 
 namespace Client
 {
@@ -517,7 +516,7 @@ namespace Client
             Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory]; 
 
             // Reset tile history indices
-            GameState.HistoryIndex = 0;
+            GameState.TileHistoryIndex = 0;
 
             for (int i = 0; i < GameState.MaxTileHistory; i++)
             {
@@ -651,6 +650,7 @@ namespace Client
             ClearMapItems();
             ClearMapEvents();
             GameLogic.RemoveChatBubbles();
+            Animation.ClearAnimInstances();
 
             GameState.ResourceIndex = 0;
             Core.Type.MyMapResource = default;

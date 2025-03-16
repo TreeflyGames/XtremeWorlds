@@ -9,12 +9,11 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Client
 {
-
-    static class Animation
+    public static class Animation
     {
 
         #region Drawing
-        internal static void DrawAnimation(int index, int layer)
+        public static void DrawAnimation(int index, int layer)
         {
             int sprite = Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer];
             if (sprite < 1 | sprite > GameState.NumAnimations)
@@ -62,6 +61,7 @@ namespace Client
                 row = frameIndex / columns;
             }
 
+            // Calculate the source rectangle for the texture or image
             var sRect = new Rectangle(column * frameWidth, row * frameHeight, frameWidth, frameHeight);
 
             // Determine the position based on lock type and instance status
@@ -138,17 +138,17 @@ namespace Client
             string sound;
 
             // if doesn't exist then exit sub
-            if (AnimInstance[index].Animation <= 0)
-                return;
-
-            if (AnimInstance[index].Animation > Constant.MAX_ANIMATIONS)
+            if (AnimInstance[index].Animation < 0 || AnimInstance[index].Animation > Constant.MAX_ANIMATIONS)
                 return;
 
             StreamAnimation(AnimInstance[index].Animation);
 
+            if (Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer] < 1 || Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer] > GameState.NumAnimations)
+                return;
+
             // Get dimensions and column count from controls and graphic info
-            int totalWidth = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, AnimInstance[index].Animation.ToString())).Width;
-            int totalHeight = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, AnimInstance[index].Animation.ToString())).Height;
+            int totalWidth = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer] .ToString())).Width;
+            int totalHeight = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, Core.Type.Animation[AnimInstance[index].Animation].Sprite[layer].ToString())).Height;
             int columns = Core.Type.Animation[AnimInstance[index].Animation].Frames[layer];
 
             // Calculate frame dimensions
@@ -181,6 +181,7 @@ namespace Client
                     // if zero'd then set so we don't have extra loop and/or frame
                     if (AnimInstance[index].FrameIndex[layer] == 0)
                         AnimInstance[index].FrameIndex[layer] = 1;
+
                     if (AnimInstance[index].LoopIndex[layer] == 0)
                         AnimInstance[index].LoopIndex[layer] = 1;
 

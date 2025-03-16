@@ -74,7 +74,7 @@ namespace Client
                 GameState.Chat_HighIndex = Constant.CHAT_LINES;
 
             // Move the rest of the chat lines up
-            for (int i = (int)GameState.Chat_HighIndex; i > 0; i--)
+            for (int i = (int)GameState.Chat_HighIndex - 1; i > 0; i--)
             {
                 Core.Type.Chat[i] = Core.Type.Chat[i - 1];
             }
@@ -532,6 +532,7 @@ namespace Client
 
             // set the position
             xO = 19L;
+            xO += Gui.Windows[Gui.GetWindowIndex("winChat")].Left;
             yO = GameState.ResolutionHeight - 40;
 
             // loop through chat

@@ -1916,7 +1916,7 @@ namespace Server
             n = buffer.ReadInt32();
             buffer.Dispose();
 
-            if ((int)Core.Type.Map[GetPlayerMap(index)].Moral > 0)
+            if ((int)Core.Type.Map[GetPlayerMap(index)].Moral >= 0)
             {
                 if (Core.Type.Moral[Core.Type.Map[GetPlayerMap(index)].Moral].CanCast)
                 {

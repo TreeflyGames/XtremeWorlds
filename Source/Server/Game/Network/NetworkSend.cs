@@ -472,7 +472,7 @@ namespace Server
             buffer.Dispose();
 
             // send vitals to party if in one
-            if (Core.Type.TempPlayer[index].InParty > 0)
+            if (Core.Type.TempPlayer[index].InParty >= 0)
                 Party.SendPartyVitals(Core.Type.TempPlayer[index].InParty, index);
         }
 
