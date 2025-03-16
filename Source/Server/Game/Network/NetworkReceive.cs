@@ -1281,6 +1281,17 @@ namespace Server
                 }
             }
 
+            var loopTo13 = Core.Type.Map[mapNum].EventCount;
+            for (i = 0; i < loopTo13 - 1; i++)
+            {
+                if (Map[mapNum].Event[i].PageCount == 0)
+                {
+                    Map[mapNum].Event[i] = Map[mapNum].Event[i + 1];
+                    Map[mapNum].Event[i + 1] = default;
+                    Map[mapNum].EventCount = Map[mapNum].EventCount - 1;
+                }
+            }
+
             // Save the map
             Database.SaveMap(mapNum);
             NPC.SendMapNPCsToMap(mapNum);
@@ -1606,6 +1617,7 @@ namespace Server
             // Prevent hacking
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
                 return;
+
             if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 

@@ -65,37 +65,37 @@ namespace Server
 
         public static void ClearResources()
         {
+            Core.Type.Resource = new Core.Type.ResourceStruct[Core.Constant.MAX_RESOURCES];
             Core.Type.MapResource = new Core.Type.MapResourceStruct[Core.Constant.MAX_MAPS];
 
             for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
-                Core.Type.MapResource[i].ResourceData = new Core.Type.MapResourceCacheStruct[Core.Constant.MAX_RESOURCES + 1];
+                Core.Type.MapResource[i].ResourceData = new Core.Type.MapResourceCacheStruct[Core.Constant.MAX_RESOURCES];
             }
 
             for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES; i < loopTo; i++)
                 ClearResource(i);
         }
 
-        internal static void CacheResources(int mapNum)
+        public static void CacheResources(int mapNum)
         {
             int x;
             int y;
             var Resource_Count = default(int);
 
-            var loopTo = (int)Core.Type.Map[mapNum].MaxX - 1;
+            var loopTo = (int)Core.Type.Map[mapNum].MaxX;
             for (x = 0; x < (int)loopTo; x++)
             {
-                var loopTo1 = (int)Core.Type.Map[mapNum].MaxY - 1;
+                var loopTo1 = (int)Core.Type.Map[mapNum].MaxY;
                 for (y = 0; y < (int)loopTo1; y++)
                 {
-
-                    if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Resource | Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Resource)
+                    if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Resource || Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Resource)
                     {
-                        Resource_Count += 0;
+                        Resource_Count += 1;
                         Array.Resize(ref Core.Type.MapResource[mapNum].ResourceData, Resource_Count);
-                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count].X = x;
-                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count].Y = y;
-                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count].Health = (byte)Core.Type.Resource[Core.Type.Map[mapNum].Tile[x, y].Data1].Health;
+                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count - 1].X = x;
+                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count - 1].Y = y;
+                        Core.Type.MapResource[mapNum].ResourceData[Resource_Count - 1].Health = (byte)Core.Type.Resource[Core.Type.Map[mapNum].Tile[x, y].Data1].Health;
                     }
 
                 }
@@ -281,8 +281,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.MapResource[mapnum].ResourceCount);
 
             if (Core.Type.MapResource[mapnum].ResourceCount > 0)
-            {
-
+            {           
                 var loopTo = Core.Type.MapResource[mapnum].ResourceCount;
                 for (i = 0; i < loopTo; i++)
                 {
@@ -324,19 +323,15 @@ namespace Server
 
         public static void SendResources(int index)
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_RESOURCES - 1;
-            for (i = 0; i < loopTo; i++)
+            var loopTo = Core.Constant.MAX_RESOURCES;
+            for (int i = 0; i < loopTo; i++)
             {
-
                 if (Strings.Len(Core.Type.Resource[i].Name) > 0)
                 {
                     SendUpdateResourceTo(index, i);
                 }
 
             }
-
         }
 
         public static void SendUpdateResourceTo(int index, int ResourceNum)

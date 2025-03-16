@@ -1,6 +1,7 @@
 ﻿using Core;
 using Microsoft.VisualBasic.CompilerServices;
 using static Core.Global.Command;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using Path = Core.Path;
 
 namespace Client
@@ -56,53 +57,24 @@ namespace Client
                     GameState.ShowAnimTimer = tick + 500;
                 }
 
-                var frameWidth = default(int);
-                var rows = default(int);
                 for (int layer = 0; layer <= 1; layer++)
                 {
                     if (animationtmr[layer] < tick)
                     {
-                        for (int x = 0, loopTo = Core.Type.MyMap.MaxX; x < loopTo; x++)
+                        for (byte x = 0, loopTo = Core.Type.MyMap.MaxX; x < loopTo; x++)
                         {
-                            for (int y = 0, loopTo1 = Core.Type.MyMap.MaxY; y < loopTo1; y++)
+                            for (byte y = 0, loopTo1 = Core.Type.MyMap.MaxY; y < loopTo1; y++)
                             {
                                 if (GameLogic.IsValidMapPoint(x, y))
                                 {
-                                    if (Core.Type.MyMap.Tile[x, y].Data1 > 0 & (Core.Type.MyMap.Tile[x, y].Type == Core.Enum.TileType.Animation | Core.Type.MyMap.Tile[x, y].Type2 == Core.Enum.TileType.Animation))
+                                    if (Core.Type.MyMap.Tile[x, y].Type == Core.Enum.TileType.Animation)
+                                    {                                      
+                                        animationtmr[layer] = tick + Animation.PlayAnimation(Core.Type.Animation[Core.Type.MyMap.Tile[x, y].Data1].Sprite[layer], layer, Core.Type.MyMap.Tile[x, y].Data1, x, y);
+                                    }
+
+                                    if (Core.Type.MyMap.Tile[x, y].Type2 == Core.Enum.TileType.Animation)
                                     {
-                                        int sprite = Core.Type.Animation[Core.Type.MyMap.Tile[x, y].Data1].Sprite[layer];
-
-                                        if (sprite > 0)
-                                        {
-                                            var GfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Path.Animations, sprite.ToString()));
-
-                                            // Get dimensions and column count from controls and graphic info
-                                            int totalWidth = GfxInfo.Width;
-                                            int totalHeight = GfxInfo.Height;
-                                            int columns = Core.Type.Animation[Core.Type.MyMap.Tile[x, y].Data1].Frames[layer];
-
-                                            // Calculate frame dimensions
-                                            if (columns > 0)
-                                            {
-                                                frameWidth = (int)Math.Round(totalWidth / (double)columns);
-                                            }
-
-                                            int frameHeight = frameWidth;
-
-                                            if (frameHeight > 0)
-                                            {
-                                                rows = (int)Math.Round(totalHeight / (double)frameHeight);
-                                            }
-
-                                            int frameCount = rows * columns;
-
-                                            animationtmr[layer] = tick + Core.Type.Animation[Core.Type.MyMap.Tile[x, y].Data1].LoopTime[layer] * frameCount * Core.Type.Animation[Core.Type.MyMap.Tile[x, y].Data1].LoopCount[layer];
-                                            Animation.CreateAnimation(Core.Type.MyMap.Tile[x, y].Data1, (byte)x, (byte)y);
-                                        }
-                                        else
-                                        {
-                                            Animation.StreamAnimation(Core.Type.MyMap.Tile[x, y].Data1);
-                                        }
+                                        animationtmr[layer] = tick + Animation.PlayAnimation(Core.Type.Animation[Core.Type.MyMap.Tile[x, y].Data1_2].Sprite[layer], layer, Core.Type.MyMap.Tile[x, y].Data1_2, x, y);
                                     }
                                 }
                             }
@@ -353,14 +325,7 @@ namespace Client
                 // Change map animation
                 if (tmr250 < tick)
                 {
-                    if (GameState.MapAnim == 0)
-                    {
-                        GameState.MapAnim = 1;
-                    }
-                    else
-                    {
-                        GameState.MapAnim = 0;
-                    }
+                    GameState.MapAnim = !GameState.MapAnim;
                     tmr250 = tick + 250;
                 }
 

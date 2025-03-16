@@ -616,7 +616,9 @@ namespace Core
             ClearAttributes,
             FillAttributes,
             ClearMap,
-            Info
+            Info,
+            CopyMap,
+            PasteMap,
         }
 
         public enum DialogueStyle

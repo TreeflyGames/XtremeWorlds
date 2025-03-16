@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
 using static Core.Enum;
+using Microsoft.VisualBasic;
 
 namespace Client
 {
@@ -95,7 +96,7 @@ namespace Client
             var rect = new Rectangle(0, 0, 0, 0);
 
             // Check if the map or its tile data is not ready
-            if (GameState.GettingMap || Conversions.ToInteger(GameState.MapData) == 0)
+            if (GameState.GettingMap || !GameState.MapData)
                 return;
 
             // Ensure x and y are within the bounds of the map
@@ -106,6 +107,33 @@ namespace Client
             {
                 for (i = (int)Core.Enum.LayerType.Ground; i <= (int)Core.Enum.LayerType.CoverAnim; i++)
                 {
+                    // Handle animated layers
+                    if (GameState.MapAnim)
+                    {
+                        switch (i)
+                        {
+                            case (int)Core.Enum.LayerType.Mask:
+                                {
+                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.MaskAnim].Tileset > 0)
+                                        i = (int)Core.Enum.LayerType.MaskAnim;
+                                    break;
+                                }
+                            case (int)Core.Enum.LayerType.Cover:
+                                {
+                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.CoverAnim].Tileset > 0)
+                                        i = (int)Core.Enum.LayerType.CoverAnim;
+                                    break;
+                                }
+                        }
+                    }
+                    else
+                    {
+                        // Skip non-animated layers
+                        if (i == (int)Core.Enum.LayerType.MaskAnim || i == (int)Core.Enum.LayerType.CoverAnim)
+                            continue;
+                    }
+
+
                     // Check if this layer has a valid tileset
                     if (Core.Type.MyMap.Tile[x, y].Layer[i].Tileset > 0 && Core.Type.MyMap.Tile[x, y].Layer[i].Tileset <= GameState.NumTileSets)
                     {
@@ -152,7 +180,7 @@ namespace Client
             var rect = default(Rectangle);
 
             // Exit earlyIf Type.Map is still loading or tile data is not available
-            if (GameState.GettingMap || Conversions.ToInteger(GameState.MapData) == 0)
+            if (GameState.GettingMap || !GameState.MapData)
                 return;
 
             // Ensure x and y are within valid map bounds
@@ -165,21 +193,29 @@ namespace Client
                 for (i = (int)Core.Enum.LayerType.Fringe; i <= (int)Core.Enum.LayerType.RoofAnim; i++)
                 {
                     // Handle animated layers
-                    if (GameState.MapAnim == 1)
+                    if (GameState.MapAnim)
                     {
                         switch (i)
                         {
                             case (int)Core.Enum.LayerType.Fringe:
                                 {
-                                    i = (int)Core.Enum.LayerType.Fringe;
+                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.FringeAnim].Tileset > 0)
+                                        i = (int)Core.Enum.LayerType.FringeAnim;                                  
                                     break;
                                 }
                             case (int)Core.Enum.LayerType.Roof:
                                 {
-                                    i = (int)Core.Enum.LayerType.Roof;
+                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.RoofAnim].Tileset > 0)
+                                        i = (int)Core.Enum.LayerType.RoofAnim;
                                     break;
                                 }
                         }
+                    }
+                    else
+                    {
+                        // Skip non-animated layers
+                        if (i == (int)Core.Enum.LayerType.FringeAnim || i == (int)Core.Enum.LayerType.RoofAnim)
+                            continue;
                     }
 
                     // Ensure the tileset is valid before proceeding
@@ -426,18 +462,18 @@ namespace Client
 
                 case (int)Core.Enum.PictureType.CenterEvent:
                     {
-                        if (GameState.CurrentEvents < Event.Picture.EventId)
+                        if (GameState.CurrentEvents < Event.Picture.EventID)
                         {
                             // Reset picture details and exit if event is invalid
-                            Event.Picture.EventId = 0;
+                            Event.Picture.EventID = 0;
                             Event.Picture.Index = 0;
                             Event.Picture.SpriteType = 0;
                             Event.Picture.xOffset = 0;
                             Event.Picture.yOffset = 0;
                             return;
                         }
-                        posX = (int)Math.Round(GameLogic.ConvertMapX(Core.Type.MapEvents[Event.Picture.EventId].X * 32) / 2d - Event.Picture.xOffset);
-                        posY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.MapEvents[Event.Picture.EventId].Y * 32) / 2d - Event.Picture.yOffset);
+                        posX = (int)Math.Round(GameLogic.ConvertMapX(Core.Type.MapEvents[Event.Picture.EventID].X * 32) / 2d - Event.Picture.xOffset);
+                        posY = (int)Math.Round(GameLogic.ConvertMapY(Core.Type.MapEvents[Event.Picture.EventID].Y * 32) / 2d - Event.Picture.yOffset);
                         break;
                     }
 
@@ -482,7 +518,6 @@ namespace Client
 
             // Reset tile history indices
             GameState.HistoryIndex = 0;
-            GameState.TileHistoryHighIndex = 0;
 
             for (int i = 0; i < GameState.MaxTileHistory; i++)
             {
@@ -616,6 +651,10 @@ namespace Client
             ClearMapItems();
             ClearMapEvents();
             GameLogic.RemoveChatBubbles();
+
+            GameState.ResourceIndex = 0;
+            Core.Type.MyMapResource = default;
+            Core.Type.MapResource = default;
 
             // Get map num
             x = buffer.ReadInt32();
@@ -772,7 +811,7 @@ namespace Client
 
                         if (Core.Type.MyMap.Event[i].PageCount > 0)
                         {
-                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount + 1];
+                            Core.Type.MyMap.Event[i].Pages = new Core.Type.EventPageStruct[Core.Type.MyMap.Event[i].PageCount];
                             var loopTo3 = Core.Type.MyMap.Event[i].PageCount;
                             for (x = 0; x < loopTo3; x++)
                             {
@@ -836,7 +875,7 @@ namespace Client
 
                                 if (Core.Type.MyMap.Event[i].Pages[x].CommandListCount > 0)
                                 {
-                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount + 1];
+                                    Core.Type.MyMap.Event[i].Pages[x].CommandList = new Core.Type.CommandListStruct[Core.Type.MyMap.Event[i].Pages[x].CommandListCount];
                                     var loopTo5 = Core.Type.MyMap.Event[i].Pages[x].CommandListCount;
                                     for (y = 0; y < loopTo5; y++)
                                     {
@@ -844,7 +883,7 @@ namespace Client
                                         Core.Type.MyMap.Event[i].Pages[x].CommandList[y].ParentList = buffer.ReadInt32();
                                         if (Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount > 0)
                                         {
-                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount + 1];
+                                            Core.Type.MyMap.Event[i].Pages[x].CommandList[y].Commands = new Core.Type.EventCommandStruct[Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount];
                                             for (int z = 0, loopTo6 = Core.Type.MyMap.Event[i].Pages[x].CommandList[y].CommandCount; z < loopTo6; z++)
                                             {
                                                 {
@@ -916,10 +955,11 @@ namespace Client
                 GameState.ResourceIndex = buffer.ReadInt32();
                 GameState.ResourcesInit = Conversions.ToBoolean(0);
                 Core.Type.MapResource = new Core.Type.MapResourceStruct[GameState.ResourceIndex];
+                Core.Type.MyMapResource = new Core.Type.MapResourceCacheStruct[Constant.MAX_RESOURCES];
 
                 if (GameState.ResourceIndex > 0)
                 {
-                    var loopTo8 = GameState.ResourceIndex - 1;
+                    var loopTo8 = GameState.ResourceIndex;
                     for (i = 0; i < loopTo8; i++)
                     {
                         Core.Type.MyMapResource[i].State = buffer.ReadByte();

@@ -324,8 +324,18 @@ namespace Mirage.Sharp.Asfw.Network
                                 {
                                     int length2 = int32_1 - 4;
                                     byte[] data = new byte[length2];
-                                    if (length2 > 0)
-                                        Buffer.BlockCopy((Array)this._packetRing, startIndex + 4, (Array)data, 0, length2);
+                                    if (startIndex + 4 + length2 <= this._packetRing.Length)
+                                    {
+                                        Buffer.BlockCopy(this._packetRing, startIndex + 4, data, 0, length2);
+                                    }
+                                    else
+                                    {
+                                        // Handle the error, e.g., log it or throw an exception
+                                        NetworkClient.CrashReportArgs crashReport = this.CrashReport;
+                                        if (crashReport != null)
+                                            crashReport("BufferOverflowException");
+                                        this.Disconnect();
+                                    }
                                     NetworkClient.PacketInfoArgs packetReceived = this.PacketReceived;
                                     if (packetReceived != null)
                                         packetReceived(length2, int32_2, ref data);

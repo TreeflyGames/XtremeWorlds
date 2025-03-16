@@ -18,7 +18,7 @@ namespace Client
         public static int ResolutionHeight;
         public static int ResolutionWidth;
 
-        public static byte MapAnim;
+        public static bool MapAnim;
 
         // Global dialogue index
         public static string diaHeader;
@@ -118,7 +118,6 @@ namespace Client
         public static bool CopyMap;
         public static byte TmpMaxX;
         public static byte TmpMaxY;
-        public static int TileHistoryHighIndex;
 
         // Player variables
         public static int MyIndex; // Index of actual player
@@ -345,7 +344,7 @@ namespace Client
         public const int SizeY = 32;
 
         // Map
-        public const byte MaxTileHistory = 50;
+        public const int MaxTileHistory = 500;
         public const byte TileSize = 32; // Tile size is 32x32 pixels
 
         // Autotiles
