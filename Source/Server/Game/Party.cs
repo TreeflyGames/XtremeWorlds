@@ -240,7 +240,6 @@ namespace Server
                 // make sure there's more than 2 people
                 if (PartyField[partyNum].MemberCount > 2)
                 {
-
                     // check if leader
                     if (PartyField[partyNum].Leader == index)
                     {
@@ -248,7 +247,7 @@ namespace Server
                         var loopTo = Core.Constant.MAX_PARTY_MEMBERS;
                         for (i = 0; i < loopTo; i++)
                         {
-                            if (PartyField[partyNum].Member[i] > 0 & PartyField[partyNum].Member[i] != index)
+                            if (PartyField[partyNum].Member[i] >= 0 & PartyField[partyNum].Member[i] != index)
                             {
                                 PartyField[partyNum].Leader = PartyField[partyNum].Member[i];
                                 PartyMsg(partyNum, string.Format("{0} is now the party leader.", GetPlayerName(i)));
@@ -572,7 +571,7 @@ namespace Server
 
             if (Core.Type.TempPlayer[index].InParty >= 0)
             {
-                if (Conversions.ToBoolean(PartyField[Core.Type.TempPlayer[index].InParty].Leader))
+                if (PartyField[Core.Type.TempPlayer[index].InParty].Leader >= 0)
                 {
                     var loopTo = PartyField[Core.Type.TempPlayer[index].InParty].MemberCount;
                     for (i = 0; i < loopTo; i++)
