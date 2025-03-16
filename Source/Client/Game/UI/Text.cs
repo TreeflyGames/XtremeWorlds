@@ -532,6 +532,7 @@ namespace Client
 
             // set the position
             xO = 19L;
+            xO += Gui.Windows[Gui.GetWindowIndex("winChat")].Left;
             yO = GameState.ResolutionHeight - 40;
 
             // loop through chat
