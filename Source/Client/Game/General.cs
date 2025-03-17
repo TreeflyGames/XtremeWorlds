@@ -15,7 +15,7 @@ namespace Client
     {
         public static GameClient Client = new GameClient();
         public static GameState State = new GameState();
-        public static Core.Random Random = new Core.Random();
+        public static RandomUtility Random = new RandomUtility();
         public static Gui Gui = new Gui();
 
         public static IEngineContainer? Container;

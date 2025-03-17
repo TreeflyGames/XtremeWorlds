@@ -16,7 +16,7 @@ namespace Server
 
     static class General
     {
-        public static Core.Random Random = new Core.Random();
+        public static RandomUtility Random = new RandomUtility();
 
         public static IEngineContainer? Container;
         public static IConfiguration? Configuration;
@@ -85,7 +85,10 @@ namespace Server
                     if (data is not null)
                     {
                         player = JObject.FromObject(data).ToObject<PlayerStruct>();
-                        Core.Type.Char.Add(player.Name);
+                        if(!string.IsNullOrWhiteSpace(player.Name))
+                        {
+                            _ = Core.Type.Char.Add(player.Name);
+                        }
                     }
                 }
             }
