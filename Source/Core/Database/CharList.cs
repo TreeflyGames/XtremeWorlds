@@ -39,7 +39,7 @@ namespace Core.Database
         /// <summary>
         /// Gets all names as a read-only collection
         /// </summary>
-        public IReadOnlyCollection<string> Names => _names.AsReadOnly();
+        public IReadOnlyCollection<string> Names => _names.ToArray();
 
         /// <summary>
         /// Checks if a name exists in the collection

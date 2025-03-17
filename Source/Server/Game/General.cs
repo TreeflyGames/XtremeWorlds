@@ -16,7 +16,7 @@ namespace Server
 
     static class General
     {
-        public static Core.Random Random = new Core.Random();
+        public static RandomUtility Random = new RandomUtility();
 
         public static IEngineContainer? Container;
         public static IConfiguration? Configuration;
