@@ -85,7 +85,10 @@ namespace Server
                     if (data is not null)
                     {
                         player = JObject.FromObject(data).ToObject<PlayerStruct>();
-                        Core.Type.Char.Add(player.Name);
+                        if(!string.IsNullOrWhiteSpace(player.Name))
+                        {
+                            _ = Core.Type.Char.Add(player.Name);
+                        }
                     }
                 }
             }
