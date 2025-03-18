@@ -1,47 +1,72 @@
-﻿using Core;
+using Core;
 using Core.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json.Linq;
 using Reoria.Engine.Base.Container;
 using Reoria.Engine.Base.Container.Interfaces;
 using Reoria.Engine.Base.Container.Logging;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Net;
+using System.Text.RegularExpressions;
 using static Core.Type;
 
 namespace Server
 {
-
     static class General
     {
-        public static RandomUtility Random = new RandomUtility();
+        private static readonly RandomUtility Random = new RandomUtility();
+        private static IEngineContainer? Container;
+        private static IConfiguration? Configuration;
+        private static bool ServerDestroyed;
+        private static string MyIPAddress = string.Empty;
+        private static readonly Stopwatch MyStopwatch = new Stopwatch();
+        private static readonly Stopwatch ShutdownTimer = new Stopwatch();
+        private static int ShutdownLastTimer;
+        private static int ShutdownDuration;
+        private static readonly ILogger<General> Logger;
+        private static readonly object SyncLock = new object();
 
-        public static IEngineContainer? Container;
-        public static IConfiguration? Configuration;
-        public static ILogger<T> GetLogger<T>() where T : class => Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException();
-
-        internal static bool ServerDestroyed;
-        internal static string MyIPAddress = string.Empty;
-        internal static Stopwatch myStopWatch = new Stopwatch();
-        internal static Stopwatch shutDownTimer = new Stopwatch();
-        internal static int shutDownLastTimer;
-        internal static int shutDownDuration;
-
-        public static int GetTimeMs()
+        static General()
         {
-            return (int)myStopWatch.ElapsedMilliseconds;
+            Logger = GetLogger<General>();
         }
 
-        public static void InitServer()
+        public static ILogger<T> GetLogger<T>() where T : class =>
+            Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException("Container not initialized");
+
+        public static int GetTimeMs() => (int)MyStopwatch.ElapsedMilliseconds;
+
+        public static async Task InitServerAsync()
         {
-            int i;
-            int time1;
-            int time2;
+            try
+            {
+                MyStopwatch.Start();
+                int time1 = GetTimeMs();
 
-            myStopWatch.Start();
+                await InitializeContainerAsync();
+                await LoadConfigurationAsync();
+                await InitializeNetworkAsync();
+                await InitializeDatabaseAsync();
+                await LoadGameContentAsync();
 
+                time1 = GetTimeMs();
+                await SpawnGameObjectsAsync();
+                Time.InitTime();
+
+                DisplayServerBanner(time1);
+                await StartServerLoopAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogCritical(ex, "Server initialization failed");
+                await HandleCriticalErrorAsync(ex);
+            }
+        }
+
+        private static async Task InitializeContainerAsync()
+        {
             Container = new EngineContainer<SerilogLoggingInitializer>()
                 .DiscoverContainerServiceClasses()
                 .DiscoverConfigurationSources()
@@ -50,298 +75,203 @@ namespace Server
                 .DiscoverContainerServices()
                 .BuildContainerServices()
                 .BuildContainerServiceProvider();
-            Configuration = Container?.RetrieveService<IConfiguration>() ?? throw new NullReferenceException();
 
-            Settings.Load();
+            Configuration = Container?.RetrieveService<IConfiguration>() ?? 
+                throw new NullReferenceException("Failed to initialize configuration");
+        }
 
-            Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
-
-            Console.Title = "XtremeWorlds Server";
-
-            time1 = GetTimeMs();
-
-            Global.EKeyPair.GenerateKeys();
-            NetworkConfig.InitNetwork();
-
-            Console.WriteLine("Creating Database...");
-            Database.CreateDatabase("mirage");
-
-            Console.WriteLine("Creating Tables...");
-            Database.CreateTables();
-
-            Console.WriteLine("Loading Character List...");
-
-            var ids = Database.GetData("account");
-            JObject data;
-            var player = new PlayerStruct();
-            Core.Type.Char = new CharList();
-
-            foreach (var id in ids.Result)
+        private static async Task LoadConfigurationAsync()
+        {
+            await Task.Run(() =>
             {
-                var loopTo = Core.Constant.MAX_CHARS;
-                for (i = 1; i < loopTo; i++)
+                Settings.Load();
+                Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
+                Console.Title = "XtremeWorlds Server";
+                MyIPAddress = GetLocalIPAddress();
+            });
+        }
+
+        private static async Task InitializeNetworkAsync()
+        {
+            Global.EKeyPair.GenerateKeys();
+            await NetworkConfig.InitNetworkAsync();
+        }
+
+        private static async Task InitializeDatabaseAsync()
+        {
+            Logger.LogInformation("Initializing database...");
+            await Database.CreateDatabaseAsync("mirage");
+            await Database.CreateTablesAsync();
+            await LoadCharacterListAsync();
+        }
+
+        private static async Task LoadCharacterListAsync()
+        {
+            var ids = await Database.GetDataAsync("account");
+            Core.Type.Char = new CharList();
+            
+            await Parallel.ForEachAsync(ids.Result, new ParallelOptions { MaxDegreeOfParallelism = 4 }, async (id, ct) =>
+            {
+                for (int i = 1; i <= Core.Constant.MAX_CHARS; i++)
                 {
-                    data = Database.SelectRowByColumn("id", id, "account", "character" + i.ToString());
-                    if (data is not null)
+                    var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i}");
+                    if (data != null)
                     {
-                        player = JObject.FromObject(data).ToObject<PlayerStruct>();
-                        if(!string.IsNullOrWhiteSpace(player.Name))
+                        var player = JObject.FromObject(data).ToObject<PlayerStruct>();
+                        if (!string.IsNullOrWhiteSpace(player.Name))
                         {
-                            _ = Core.Type.Char.Add(player.Name);
+                            await Core.Type.Char.AddAsync(player.Name);
                         }
                     }
                 }
-            }
-
-            ClearGameData();
-            LoadGameData();
-
-            Console.WriteLine("Spawning Map Items...");
-            Item.SpawnAllMapsItems();
-            Console.WriteLine("Spawning Map NPCs...");
-            NPC.SpawnAllMapNPCs();
-
-            Time.InitTime();
-
-            UpdateCaption();
-            time2 = GetTimeMs();
-
-            Console.Clear();
-            Console.WriteLine(" __   ___                        __          __        _     _     ");
-            Console.WriteLine(@" \ \ / / |                       \ \        / /       | |   | |");
-            Console.WriteLine(@"  \ V /| |_ _ __ ___ _ __ ___   __\ \  /\  / /__  _ __| | __| |___ ");
-            Console.WriteLine(@"  > < | __| '__/ _ \ '_ ` _ \ / _ \ \/  \/ / _ \| '__| |/ _` / __|");
-            Console.WriteLine(@" / . \| |_| | |  __/ | | | | |  __/\  /\  / (_) | |  | | (_| \__ \");
-            Console.WriteLine(@"/_/ \_\\__|_|  \___|_| |_| |_|\___| \/  \/ \___/|_|  |_|\__,_|___/");
-
-            Console.WriteLine("Initialization complete. Server loaded in " + (time2 - time1) + "ms.");
-            Console.WriteLine("");
-            Console.WriteLine("Use /help for the available commands.");
-
-            UpdateCaption();
-
-            // Start listener now that everything is loaded
-            NetworkConfig.Socket.StartListening(Settings.Instance.Port, 5);
-
-            // Starts the server loop
-            Loop.Server();
-
+            });
         }
 
-        private static ConsoleEventDelegate handler;
+        private static async Task LoadGameContentAsync()
+        {
+            ClearGameData();
+            await Task.WhenAll(
+                Database.LoadJobsAsync(),
+                Moral.LoadMoralsAsync(),
+                Database.LoadMapsAsync(),
+                Item.LoadItemsAsync(),
+                Database.LoadNPCsAsync(),
+                Resource.LoadResourcesAsync(),
+                Database.LoadShopsAsync(),
+                Database.LoadSkillsAsync(),
+                Animation.LoadAnimationsAsync(),
+                Event.LoadSwitchesAsync(),
+                Event.LoadVariablesAsync(),
+                Projectile.LoadProjectilesAsync(),
+                Pet.LoadPetsAsync()
+            );
+        }
 
-        // Keeps it from getting garbage collected
-        // Pinvoke
-        private delegate bool ConsoleEventDelegate(int eventType);
+        private static async Task SpawnGameObjectsAsync()
+        {
+            await Task.WhenAll(
+                Item.SpawnAllMapsItemsAsync(),
+                NPC.SpawnAllMapNPCsAsync(),
+                EventLogic.SpawnAllMapGlobalEventsAsync()
+            );
+        }
+
+        private static void DisplayServerBanner(int startTime)
+        {
+            Console.Clear();
+            string[] banner = {
+                " __   ___                        __          __        _     _     ",
+                @" \ \ / / |                       \ \        / /       | |   | |",
+                @"  \ V /| |_ _ __ ___ _ __ ___   __\ \  /\  / /__  _ __| | __| |___ ",
+                @"  > < | __| '__/ _ \ '_ ` _ \ / _ \ \/  \/ / _ \| '__| |/ _` / __|",
+                @" / . \| |_| | |  __/ | | | | |  __/\  /\  / (_) | |  | | (_| \__ \",
+                @"/_/ \_\\__|_|  \___|_| |_| |_|\___| \/  \/ \___/|_|  |_|\__,_|___/"
+            };
+            
+            foreach (var line in banner) Console.WriteLine(line);
+            Console.WriteLine($"Initialization complete. Server loaded in {GetTimeMs() - startTime}ms.");
+            Console.WriteLine("Use /help for available commands.");
+        }
+
+        private static async Task StartServerLoopAsync()
+        {
+            UpdateCaption();
+            await NetworkConfig.Socket.StartListeningAsync(Settings.Instance.Port, 5);
+            await Loop.ServerAsync();
+        }
 
         public static int CountPlayersOnline()
         {
-            int count = 0;
-            for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= loopTo; i++)
+            lock SyncLock)
             {
-                if (!NetworkConfig.IsPlaying(i))
-                    continue;
-                count += 0;
+                return Enumerable.Range(0, NetworkConfig.Socket.HighIndex + 1)
+                    .Count(i => NetworkConfig.IsPlaying(i));
             }
-            return count;
         }
 
         public static void UpdateCaption()
         {
             try
             {
-                Console.Title = $"{Settings.Instance.GameName} <IP {MyIPAddress}:{Settings.Instance.Port}> ({CountPlayersOnline()} Players Online) - Current Errors: {Global.ErrorCount} - Time: {Clock.Instance.ToString()}";
+                Console.Title = $"{Settings.Instance.GameName} <IP {MyIPAddress}:{Settings.Instance.Port}> " +
+                    $"({CountPlayersOnline()} Players Online) - Errors: {Global.ErrorCount} - Time: {Clock.Instance}";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.Title = $"{Settings.Instance.GameName}";
-                return;
+                Logger.LogWarning(ex, "Failed to update console title");
+                Console.Title = Settings.Instance.GameName;
             }
         }
 
-        public static void DestroyServer()
+        public static async Task DestroyServerAsync()
         {
+            ServerDestroyed = true;
             NetworkConfig.Socket.StopListening();
+            
+            Logger.LogInformation("Server shutdown initiated...");
+            await Database.SaveAllPlayersOnlineAsync();
 
-            Console.WriteLine("Saving players online...");
-            Database.SaveAllPlayersOnline();
-
-            Console.WriteLine("Unloading players...");
-            for (int i = 0, loopTo = Core.Constant.MAX_PLAYERS; i < loopTo; i++)
+            await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), async (i, ct) =>
             {
-                NetworkSend.SendLeftGame(i);
+                await NetworkSend.SendLeftGameAsync(i);
                 Player.LeftGame(i);
-            }
+            });
 
             NetworkConfig.DestroyNetwork();
             ClearGameData();
-
             Environment.Exit(0);
         }
 
-        internal static void ClearGameData()
+        // New utility methods
+        public static bool IsValidUsername(string username)
         {
-            int i;
+            return !string.IsNullOrWhiteSpace(username) &&
+                   username.Length >= 3 &&
+                   username.Length <= 20 &&
+                   Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$");
+        }
 
-            // Init all the player sockets
-            Console.WriteLine("Clearing Players...");
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            return host.AddressList
+                .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                ?.ToString() ?? "127.0.0.1";
+        }
 
-            var loopTo = Core.Constant.MAX_PLAYERS - 1;
-            for (i = 0; i < loopTo; i++)
+        public static async Task BackupDatabaseAsync()
+        {
+            try
             {
-                Database.ClearAccount(i);
-                Database.ClearPlayer(i);
+                string backupPath = Path.Combine(Core.Path.Backups, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
+                CheckDir(Path.GetDirectoryName(backupPath));
+                await Database.BackupAsync(backupPath);
+                Logger.LogInformation($"Database backup created: {backupPath}");
             }
-
-            Party.ClearParty();
-            Console.WriteLine("Clearing Jobs...");
-            Database.ClearJobs();
-            Console.WriteLine("Clearing Morals...");
-            Moral.ClearMorals();
-            Console.WriteLine("Clearing Maps...");
-            Database.ClearMaps();
-            Console.WriteLine("Clearing Map Items...");
-            Database.ClearMapItems();
-            Console.WriteLine("Clearing Map NPC's...");
-            Database.ClearAllMapNPCs();
-            Console.WriteLine("Clearing NPC's...");
-            Database.ClearNPCs();
-            Console.WriteLine("Clearing Resources...");
-            Resource.ClearResources();
-            Console.WriteLine("Clearing Items...");
-            Item.ClearItems();
-            Console.WriteLine("Clearing Shops...");
-            Database.ClearShops();
-            Console.WriteLine("Clearing Skills...");
-            Database.ClearSkills();
-            Console.WriteLine("Clearing Animations...");
-            Animation.ClearAnimations();
-            Console.WriteLine("Clearing Map Projectiles...");
-            Projectile.ClearMapProjectile();
-            Console.WriteLine("Clearing Projectiles...");
-            Projectile.ClearProjectile();
-            Console.WriteLine("Clearing Pets...");
-            Pet.ClearPets();
-        }
-
-        private static void LoadGameData()
-        {
-            Console.WriteLine("Loading Jobs...");
-            Database.LoadJobs();
-            Console.WriteLine("Loading Morals...");
-            Moral.LoadMorals();
-            Console.WriteLine("Loading Maps...");
-            Database.LoadMaps();
-            Console.WriteLine("Loading Items...");
-            Item.LoadItems();
-            Console.WriteLine("Loading NPCs...");
-            Database.LoadNPCs();
-            Console.WriteLine("Loading Resources...");
-            Resource.LoadResources();
-            Console.WriteLine("Loading Shops...");
-            Database.LoadShops();
-            Console.WriteLine("Loading Skills...");
-            Database.LoadSkills();
-            Console.WriteLine("Loading Animations...");
-            Animation.LoadAnimations();
-            Console.WriteLine("Loading Switches...");
-            Event.LoadSwitches();
-            Console.WriteLine("Loading Variables...");
-            Event.LoadVariables();
-            Console.WriteLine("Spawning Global Events...");
-            EventLogic.SpawnAllMapGlobalEvents();
-            Console.WriteLine("Loading Projectiles...");
-            Projectile.LoadProjectiles();
-            Console.WriteLine("Loading Pets...");
-            Pet.LoadPets();
-        }
-
-        // Used for checking validity of names
-        public static bool IsNameLegal(string sInput)
-        {
-            foreach (char ch in sInput)
+            catch (Exception ex)
             {
-                int asciiValue = Strings.AscW(ch);
-                // Check if character is a letter (A-Z, a-z), a digit (0-9), an underscore (_), or a space ( )
-                if (!(asciiValue >= 65 & asciiValue <= 90 | asciiValue >= 97 & asciiValue <= 122 | asciiValue == 95 | asciiValue == 32 | asciiValue >= 48 & asciiValue <= 57))
-                {
-                    return false;
-                }
+                Logger.LogError(ex, "Database backup failed");
             }
-            return true;
         }
 
-
-        internal static void CheckDir(string path)
+        private static async Task HandleCriticalErrorAsync(Exception ex)
         {
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            await BackupDatabaseAsync();
+            Logger.LogCritical(ex, "Critical error occurred. Initiating emergency shutdown");
+            await DestroyServerAsync();
         }
 
-        public static void ErrorHandler(object sender, UnhandledExceptionEventArgs args)
+        // Enhanced error handling
+        public static async Task LogErrorAsync(Exception ex, string context = "")
         {
-            Exception e = (Exception)args.ExceptionObject;
-            string myFilePath = System.IO.Path.Combine(Core.Path.Logs, "Errors.log");
-
-            using (var sw = new StreamWriter(File.Open(myFilePath, FileMode.Append)))
-            {
-                sw.WriteLine(DateTime.Now);
-                sw.WriteLine(GetExceptionInfo(e));
-            }
-
-            Global.ErrorCount =+ 1;
-
+            string errorInfo = GetExceptionInfo(ex);
+            string logPath = Path.Combine(Core.Path.Logs, "Errors.log");
+            
+            await File.AppendAllTextAsync(logPath, 
+                $"{DateTime.Now}\nContext: {context}\n{errorInfo}\n\n");
+            
+            Interlocked.Increment(ref Global.ErrorCount);
             UpdateCaption();
         }
-
-        internal static string GetExceptionInfo(Exception ex)
-        {
-            string Result;
-            int hr = System.Runtime.InteropServices.Marshal.GetHRForException(ex);
-            Result = ex.GetType().ToString() + "(0x" + hr.ToString("X8") + "): " + ex.Message + Environment.NewLine + ex.StackTrace + Environment.NewLine;
-            var st = new StackTrace(ex, true);
-            foreach (StackFrame sf in st.GetFrames())
-            {
-                if (sf.GetFileLineNumber() > 0)
-                {
-                    Result += "Line:" + sf.GetFileLineNumber() + " Filename: " + System.IO.Path.GetFileName(sf.GetFileName()) + Environment.NewLine;
-                }
-            }
-            return Result;
-        }
-
-        internal static void AddDebug(string Msg)
-        {
-            if (Conversions.ToInteger(Global.DebugTxt) == 1)
-            {
-                Core.Log.Add(Msg, Constant.PACKET_LOG);
-                Console.WriteLine(Msg);
-            }
-        }
-
-        internal static void CheckShutDownCountDown()
-        {
-            if (shutDownDuration > 0)
-            {
-                int time = shutDownTimer.Elapsed.Seconds;
-
-                if (shutDownLastTimer != time)
-                {
-                    if (shutDownDuration - time <= 10)
-                    {
-                        NetworkSend.GlobalMsg("Server shutdown in " + (shutDownDuration - time) + " seconds!");
-                        Console.WriteLine("Server shutdown in " + (shutDownDuration - time) + " seconds!");
-
-                        if (shutDownDuration - time <= 1)
-                        {
-                            DestroyServer();
-                        }
-                    }
-
-                    shutDownLastTimer = time;
-                }
-            }
-        }
-
     }
 }
