@@ -6,11 +6,14 @@ using Newtonsoft.Json.Linq;
 using Reoria.Engine.Base.Container;
 using Reoria.Engine.Base.Container.Interfaces;
 using Reoria.Engine.Base.Container.Logging;
+using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using static Core.Type;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Server
 {
@@ -27,6 +30,7 @@ namespace Server
         private static int ShutdownDuration;
         private static readonly ILogger<General> Logger;
         private static readonly object SyncLock = new object();
+        private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
 
         static General()
         {
@@ -76,7 +80,7 @@ namespace Server
                 .BuildContainerServices()
                 .BuildContainerServiceProvider();
 
-            Configuration = Container?.RetrieveService<IConfiguration>() ?? 
+            Configuration = Container?.RetrieveService<IConfiguration>() ??
                 throw new NullReferenceException("Failed to initialize configuration");
         }
 
@@ -88,6 +92,7 @@ namespace Server
                 Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
                 Console.Title = "XtremeWorlds Server";
                 MyIPAddress = GetLocalIPAddress();
+                Database.ConnectionString = Configuration.GetConnectionString("Database");
             });
         }
 
@@ -100,51 +105,92 @@ namespace Server
         private static async Task InitializeDatabaseAsync()
         {
             Logger.LogInformation("Initializing database...");
-            await Database.CreateDatabaseAsync("mirage");
-            await Database.CreateTablesAsync();
+            try
+            {
+                await Database.CheckConnectionAsync(Cts.Token);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogCritical(ex, "Failed to connect to database");
+                throw;
+            }
+            await Database.CreateDatabaseAsync("mirage", Cts.Token);
+            await Database.CreateTablesAsync(Cts.Token);
             await LoadCharacterListAsync();
         }
 
         private static async Task LoadCharacterListAsync()
         {
-            var ids = await Database.GetDataAsync("account");
+            var ids = await Database.GetDataAsync("account", Cts.Token);
             Core.Type.Char = new CharList();
-            
-            await Parallel.ForEachAsync(ids.Result, new ParallelOptions { MaxDegreeOfParallelism = 4 }, async (id, ct) =>
+
+            int maxConcurrency = 4; // Adjust based on database capabilities
+            using var semaphore = new SemaphoreSlim(maxConcurrency);
+
+            var tasks = ids.Result.Select(async id =>
             {
-                for (int i = 1; i <= Core.Constant.MAX_CHARS; i++)
+                await semaphore.WaitAsync(Cts.Token);
+                try
                 {
-                    var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i}");
-                    if (data != null)
+                    for (int i = 1; i <= Core.Constant.MAX_CHARS; i++)
                     {
-                        var player = JObject.FromObject(data).ToObject<PlayerStruct>();
-                        if (!string.IsNullOrWhiteSpace(player.Name))
+                        var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i}", Cts.Token);
+                        if (data != null)
                         {
-                            await Core.Type.Char.AddAsync(player.Name);
+                            var player = JObject.FromObject(data).ToObject<PlayerStruct>();
+                            if (!string.IsNullOrWhiteSpace(player.Name))
+                            {
+                                await Core.Type.Char.AddAsync(player.Name);
+                            }
                         }
                     }
                 }
+                finally
+                {
+                    semaphore.Release();
+                }
             });
+
+            await Task.WhenAll(tasks);
         }
 
         private static async Task LoadGameContentAsync()
         {
             ClearGameData();
-            await Task.WhenAll(
-                Database.LoadJobsAsync(),
-                Moral.LoadMoralsAsync(),
-                Database.LoadMapsAsync(),
-                Item.LoadItemsAsync(),
-                Database.LoadNPCsAsync(),
-                Resource.LoadResourcesAsync(),
-                Database.LoadShopsAsync(),
-                Database.LoadSkillsAsync(),
-                Animation.LoadAnimationsAsync(),
-                Event.LoadSwitchesAsync(),
-                Event.LoadVariablesAsync(),
-                Projectile.LoadProjectilesAsync(),
-                Pet.LoadPetsAsync()
-            );
+            int maxConcurrency = 4;
+            using var semaphore = new SemaphoreSlim(maxConcurrency);
+
+            var tasks = new[]
+            {
+                LoadWithSemaphoreAsync(semaphore, () => Database.LoadJobsAsync(Cts.Token)),
+                LoadWithSemaphoreAsync(semaphore, () => Moral.LoadMoralsAsync()),
+                LoadWithSemaphoreAsync(semaphore, () => Database.LoadMapsAsync(Cts.Token)),
+                LoadWithSemaphoreAsync(semaphore, () => Item.LoadItemsAsync()),
+                LoadWithSemaphoreAsync(semaphore, () => Database.LoadNPCsAsync(Cts.Token)),
+                LoadWithSemaphoreAsync(semaphore, () => Resource.LoadResourcesAsync()),
+                LoadWithSemaphoreAsync(semaphore, () => Database.LoadShopsAsync(Cts.Token)),
+                LoadWithSemaphoreAsync(semaphore, () => Database.LoadSkillsAsync(Cts.Token)),
+                LoadWithSemaphoreAsync(semaphore, () => Animation.LoadAnimationsAsync()),
+                LoadWithSemaphoreAsync(semaphore, () => Event.LoadSwitchesAsync()),
+                LoadWithSemaphoreAsync(semaphore, () => Event.LoadVariablesAsync()),
+                LoadWithSemaphoreAsync(semaphore, () => Projectile.LoadProjectilesAsync()),
+                LoadWithSemaphoreAsync(semaphore, () => Pet.LoadPetsAsync())
+            };
+
+            await Task.WhenAll(tasks);
+        }
+
+        private static async Task LoadWithSemaphoreAsync(SemaphoreSlim semaphore, Func<Task> loadFunc)
+        {
+            await semaphore.WaitAsync(Cts.Token);
+            try
+            {
+                await loadFunc();
+            }
+            finally
+            {
+                semaphore.Release();
+            }
         }
 
         private static async Task SpawnGameObjectsAsync()
@@ -167,7 +213,7 @@ namespace Server
                 @" / . \| |_| | |  __/ | | | | |  __/\  /\  / (_) | |  | | (_| \__ \",
                 @"/_/ \_\\__|_|  \___|_| |_| |_|\___| \/  \/ \___/|_|  |_|\__,_|___/"
             };
-            
+
             foreach (var line in banner) Console.WriteLine(line);
             Console.WriteLine($"Initialization complete. Server loaded in {GetTimeMs() - startTime}ms.");
             Console.WriteLine("Use /help for available commands.");
@@ -177,12 +223,20 @@ namespace Server
         {
             UpdateCaption();
             await NetworkConfig.Socket.StartListeningAsync(Settings.Instance.Port, 5);
-            await Loop.ServerAsync();
+            try
+            {
+                await Loop.ServerAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogCritical(ex, "Server loop crashed");
+                await HandleCriticalErrorAsync(ex);
+            }
         }
 
         public static int CountPlayersOnline()
         {
-            lock SyncLock)
+            lock (SyncLock)
             {
                 return Enumerable.Range(0, NetworkConfig.Socket.HighIndex + 1)
                     .Count(i => NetworkConfig.IsPlaying(i));
@@ -206,10 +260,11 @@ namespace Server
         public static async Task DestroyServerAsync()
         {
             ServerDestroyed = true;
+            Cts.Cancel();
             NetworkConfig.Socket.StopListening();
-            
+
             Logger.LogInformation("Server shutdown initiated...");
-            await Database.SaveAllPlayersOnlineAsync();
+            await Database.SaveAllPlayersOnlineAsync(Cts.Token);
 
             await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), async (i, ct) =>
             {
@@ -222,7 +277,6 @@ namespace Server
             Environment.Exit(0);
         }
 
-        // New utility methods
         public static bool IsValidUsername(string username)
         {
             return !string.IsNullOrWhiteSpace(username) &&
@@ -243,10 +297,21 @@ namespace Server
         {
             try
             {
-                string backupPath = Path.Combine(Core.Path.Backups, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
-                CheckDir(Path.GetDirectoryName(backupPath));
-                await Database.BackupAsync(backupPath);
+                string backupDir = Core.Path.Backups;
+                CheckDir(backupDir);
+                string backupPath = Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
+                await Database.BackupAsync(backupPath, Cts.Token);
                 Logger.LogInformation($"Database backup created: {backupPath}");
+
+                var backups = Directory.GetFiles(backupDir, "backup_*.bak")
+                    .OrderByDescending(f => f)
+                    .Skip(Settings.Instance.MaxBackups)
+                    .ToList();
+                foreach (var oldBackup in backups)
+                {
+                    File.Delete(oldBackup);
+                    Logger.LogInformation($"Deleted old backup: {oldBackup}");
+                }
             }
             catch (Exception ex)
             {
@@ -261,15 +326,14 @@ namespace Server
             await DestroyServerAsync();
         }
 
-        // Enhanced error handling
         public static async Task LogErrorAsync(Exception ex, string context = "")
         {
             string errorInfo = GetExceptionInfo(ex);
             string logPath = Path.Combine(Core.Path.Logs, "Errors.log");
-            
-            await File.AppendAllTextAsync(logPath, 
+
+            await File.AppendAllTextAsync(logPath,
                 $"{DateTime.Now}\nContext: {context}\n{errorInfo}\n\n");
-            
+
             Interlocked.Increment(ref Global.ErrorCount);
             UpdateCaption();
         }
