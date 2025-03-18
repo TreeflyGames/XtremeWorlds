@@ -459,7 +459,7 @@ namespace Server
                 }
 
                 // Check if name is already in use
-                if (Core.Type.Char.Find(name))
+                if (Core.Type.Char.Contains(name))
                 {
                     NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameTaken, (byte)MenuType.NewChar);
                     return;

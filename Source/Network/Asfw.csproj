@@ -28,5 +28,6 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 </Project>
