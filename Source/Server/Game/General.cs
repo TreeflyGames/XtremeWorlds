@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Server
 {
-    static class General
+    public static class General
     {
         private static readonly RandomUtility Random = new RandomUtility();
         private static IEngineContainer? Container;
@@ -31,36 +31,50 @@ namespace Server
         private static readonly ILogger<General> Logger;
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
+        private static readonly Timer SaveTimer = new Timer(async _ => await SavePlayersPeriodicallyAsync(), null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
 
         static General()
         {
             Logger = GetLogger<General>();
         }
 
+        #region Utility Methods
+
         public static ILogger<T> GetLogger<T>() where T : class =>
             Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException("Container not initialized");
 
         public static int GetTimeMs() => (int)MyStopwatch.ElapsedMilliseconds;
+
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            return host.AddressList
+                .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                ?.ToString() ?? "127.0.0.1";
+        }
+
+        public static bool IsValidUsername(string username)
+        {
+            return !string.IsNullOrWhiteSpace(username) &&
+                   username.Length >= 3 &&
+                   username.Length <= 20 &&
+                   Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$");
+        }
+
+        #endregion
+
+        #region Server Lifecycle
 
         public static async Task InitServerAsync()
         {
             try
             {
                 MyStopwatch.Start();
-                int time1 = GetTimeMs();
+                int startTime = GetTimeMs();
 
-                await InitializeContainerAsync();
-                await LoadConfigurationAsync();
-                await InitializeNetworkAsync();
-                await InitializeDatabaseAsync();
-                await LoadGameContentAsync();
-
-                time1 = GetTimeMs();
-                await SpawnGameObjectsAsync();
-                Time.InitTime();
-
-                DisplayServerBanner(time1);
-                await StartServerLoopAsync();
+                await InitializeCoreComponentsAsync();
+                await LoadGameDataAsync();
+                await StartGameLoopAsync(startTime);
             }
             catch (Exception ex)
             {
@@ -68,6 +82,64 @@ namespace Server
                 await HandleCriticalErrorAsync(ex);
             }
         }
+
+        private static async Task InitializeCoreComponentsAsync()
+        {
+            await InitializeContainerAsync();
+            var configTask = LoadConfigurationAsync();
+            var networkTask = InitializeNetworkAsync();
+            await Task.WhenAll(configTask, networkTask); // Parallelize independent tasks
+            await InitializeDatabaseWithRetryAsync();
+        }
+
+        private static async Task LoadGameDataAsync()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            await LoadGameContentAsync();
+            await SpawnGameObjectsAsync();
+            Time.InitTime();
+            Logger.LogInformation($"Game data loaded in {stopwatch.ElapsedMilliseconds}ms");
+        }
+
+        private static async Task StartGameLoopAsync(int startTime)
+        {
+            DisplayServerBanner(startTime);
+            UpdateCaption();
+            await NetworkConfig.Socket.StartListeningAsync(Settings.Instance.Port, 5);
+            try
+            {
+                await Loop.ServerAsync();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogCritical(ex, "Server loop crashed");
+                await HandleCriticalErrorAsync(ex);
+            }
+        }
+
+        public static async Task DestroyServerAsync()
+        {
+            ServerDestroyed = true;
+            Cts.Cancel();
+            NetworkConfig.Socket.StopListening();
+
+            Logger.LogInformation("Server shutdown initiated...");
+            await Database.SaveAllPlayersOnlineAsync(Cts.Token);
+
+            await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), async (i, ct) =>
+            {
+                await NetworkSend.SendLeftGameAsync(i);
+                Player.LeftGame(i);
+            });
+
+            NetworkConfig.DestroyNetwork();
+            ClearGameData();
+            Environment.Exit(0);
+        }
+
+        #endregion
+
+        #region Initialization Methods
 
         private static async Task InitializeContainerAsync()
         {
@@ -89,11 +161,20 @@ namespace Server
             await Task.Run(() =>
             {
                 Settings.Load();
+                ValidateConfiguration();
                 Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
                 Console.Title = "XtremeWorlds Server";
                 MyIPAddress = GetLocalIPAddress();
                 Database.ConnectionString = Configuration.GetConnectionString("Database");
             });
+        }
+
+        private static void ValidateConfiguration()
+        {
+            if (string.IsNullOrWhiteSpace(Settings.Instance.GameName))
+                throw new InvalidOperationException("GameName is not set in configuration");
+            if (Settings.Instance.Port <= 0 || Settings.Instance.Port > 65535)
+                throw new InvalidOperationException("Invalid Port number in configuration");
         }
 
         private static async Task InitializeNetworkAsync()
@@ -102,29 +183,38 @@ namespace Server
             await NetworkConfig.InitNetworkAsync();
         }
 
-        private static async Task InitializeDatabaseAsync()
+        private static async Task InitializeDatabaseWithRetryAsync()
         {
+            const int maxRetries = 3;
             Logger.LogInformation("Initializing database...");
-            try
+            for (int attempt = 1; attempt <= maxRetries; attempt++)
             {
-                await Database.CheckConnectionAsync(Cts.Token);
+                try
+                {
+                    await Database.CheckConnectionAsync(Cts.Token);
+                    await Database.CreateDatabaseAsync("mirage", Cts.Token);
+                    await Database.CreateTablesAsync(Cts.Token);
+                    await LoadCharacterListAsync();
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    if (attempt == maxRetries)
+                    {
+                        Logger.LogCritical(ex, "Failed to initialize database after multiple attempts");
+                        throw;
+                    }
+                    Logger.LogWarning(ex, $"Database initialization failed, attempt {attempt} of {maxRetries}");
+                    await Task.Delay(1000 * attempt, Cts.Token); // Exponential backoff
+                }
             }
-            catch (Exception ex)
-            {
-                Logger.LogCritical(ex, "Failed to connect to database");
-                throw;
-            }
-            await Database.CreateDatabaseAsync("mirage", Cts.Token);
-            await Database.CreateTablesAsync(Cts.Token);
-            await LoadCharacterListAsync();
         }
 
         private static async Task LoadCharacterListAsync()
         {
             var ids = await Database.GetDataAsync("account", Cts.Token);
             Core.Type.Char = new CharList();
-
-            int maxConcurrency = 4; // Adjust based on database capabilities
+            int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
 
             var tasks = ids.Result.Select(async id =>
@@ -152,6 +242,7 @@ namespace Server
             });
 
             await Task.WhenAll(tasks);
+            Logger.LogInformation($"Loaded {Core.Type.Char.Count} characters");
         }
 
         private static async Task LoadGameContentAsync()
@@ -202,6 +293,10 @@ namespace Server
             );
         }
 
+        #endregion
+
+        #region Display and Monitoring
+
         private static void DisplayServerBanner(int startTime)
         {
             Console.Clear();
@@ -217,21 +312,6 @@ namespace Server
             foreach (var line in banner) Console.WriteLine(line);
             Console.WriteLine($"Initialization complete. Server loaded in {GetTimeMs() - startTime}ms.");
             Console.WriteLine("Use /help for available commands.");
-        }
-
-        private static async Task StartServerLoopAsync()
-        {
-            UpdateCaption();
-            await NetworkConfig.Socket.StartListeningAsync(Settings.Instance.Port, 5);
-            try
-            {
-                await Loop.ServerAsync();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogCritical(ex, "Server loop crashed");
-                await HandleCriticalErrorAsync(ex);
-            }
         }
 
         public static int CountPlayersOnline()
@@ -257,40 +337,56 @@ namespace Server
             }
         }
 
-        public static async Task DestroyServerAsync()
+        #endregion
+
+        #region New Functionality
+
+        private static async Task SavePlayersPeriodicallyAsync()
         {
-            ServerDestroyed = true;
-            Cts.Cancel();
-            NetworkConfig.Socket.StopListening();
-
-            Logger.LogInformation("Server shutdown initiated...");
-            await Database.SaveAllPlayersOnlineAsync(Cts.Token);
-
-            await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), async (i, ct) =>
+            try
             {
-                await NetworkSend.SendLeftGameAsync(i);
-                Player.LeftGame(i);
-            });
-
-            NetworkConfig.DestroyNetwork();
-            ClearGameData();
-            Environment.Exit(0);
+                await Database.SaveAllPlayersOnlineAsync(Cts.Token);
+                Logger.LogInformation("Periodic player save completed.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Periodic player save failed");
+            }
         }
 
-        public static bool IsValidUsername(string username)
+        public static async Task HandlePlayerCommandAsync(int playerIndex, string command)
         {
-            return !string.IsNullOrWhiteSpace(username) &&
-                   username.Length >= 3 &&
-                   username.Length <= 20 &&
-                   Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$");
+            if (string.IsNullOrWhiteSpace(command)) return;
+
+            if (command.StartsWith("/teleport"))
+            {
+                var parts = command.Split(' ');
+                if (parts.Length == 3 && int.TryParse(parts[1], out int x) && int.TryParse(parts[2], out int y))
+                {
+                    await TeleportPlayerAsync(playerIndex, x, y);
+                }
+            }
+            // Add more commands as needed
         }
 
-        public static string GetLocalIPAddress()
+        private static async Task TeleportPlayerAsync(int playerIndex, int x, int y)
         {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            return host.AddressList
-                .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                ?.ToString() ?? "127.0.0.1";
+            try
+            {
+                var player = await Database.GetPlayerAsync(playerIndex, Cts.Token); // Hypothetical method
+                if (player != null)
+                {
+                    player.X = x;
+                    player.Y = y;
+                    await Database.UpdatePlayerPositionAsync(playerIndex, x, y, Cts.Token);
+                    await NetworkSend.SendPlayerPositionAsync(playerIndex);
+                    Logger.LogInformation($"Player {playerIndex} teleported to ({x}, {y})");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Failed to teleport player {playerIndex}");
+            }
         }
 
         public static async Task BackupDatabaseAsync()
@@ -298,7 +394,7 @@ namespace Server
             try
             {
                 string backupDir = Core.Path.Backups;
-                CheckDir(backupDir);
+                Directory.CreateDirectory(backupDir); // Replaces CheckDir
                 string backupPath = Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
                 await Database.BackupAsync(backupPath, Cts.Token);
                 Logger.LogInformation($"Database backup created: {backupPath}");
@@ -309,7 +405,7 @@ namespace Server
                     .ToList();
                 foreach (var oldBackup in backups)
                 {
-                    File.Delete(oldBackup);
+                    await Task.Run(() => File.Delete(oldBackup));
                     Logger.LogInformation($"Deleted old backup: {oldBackup}");
                 }
             }
@@ -318,6 +414,10 @@ namespace Server
                 Logger.LogError(ex, "Database backup failed");
             }
         }
+
+        #endregion
+
+        #region Error Handling
 
         private static async Task HandleCriticalErrorAsync(Exception ex)
         {
@@ -328,14 +428,17 @@ namespace Server
 
         public static async Task LogErrorAsync(Exception ex, string context = "")
         {
-            string errorInfo = GetExceptionInfo(ex);
+            string errorInfo = GetExceptionInfo(ex); // Assuming this method exists elsewhere
             string logPath = Path.Combine(Core.Path.Logs, "Errors.log");
+            Directory.CreateDirectory(Core.Path.Logs);
 
             await File.AppendAllTextAsync(logPath,
-                $"{DateTime.Now}\nContext: {context}\n{errorInfo}\n\n");
+                $"{DateTime.Now}\nContext: {context}\n{errorInfo}\n\n", Cts.Token);
 
             Interlocked.Increment(ref Global.ErrorCount);
             UpdateCaption();
         }
+
+        #endregion
     }
 }
