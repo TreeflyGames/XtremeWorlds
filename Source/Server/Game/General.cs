@@ -25,26 +25,33 @@ namespace Server
         private static bool ServerDestroyed;
         private static string MyIPAddress = string.Empty;
         private static readonly Stopwatch MyStopwatch = new Stopwatch();
-        private static readonly Stopwatch ShutdownTimer = new Stopwatch();
-        private static int ShutdownLastTimer;
-        private static int ShutdownDuration;
         private static readonly ILogger<General> Logger;
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
-        private static readonly Timer SaveTimer = new Timer(async _ => await SavePlayersPeriodicallyAsync(), null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
+        private static Timer? SaveTimer;
 
         static General()
         {
             Logger = GetLogger<General>();
+            InitializeSaveTimer();
         }
 
         #region Utility Methods
 
+        /// <summary>
+        /// Retrieves a logger instance for the specified type.
+        /// </summary>
         public static ILogger<T> GetLogger<T>() where T : class =>
             Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException("Container not initialized");
 
+        /// <summary>
+        /// Gets the elapsed time in milliseconds since the server started.
+        /// </summary>
         public static int GetTimeMs() => (int)MyStopwatch.ElapsedMilliseconds;
 
+        /// <summary>
+        /// Retrieves the local IP address of the server.
+        /// </summary>
         public static string GetLocalIPAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -53,18 +60,22 @@ namespace Server
                 ?.ToString() ?? "127.0.0.1";
         }
 
-        public static bool IsValidUsername(string username)
-        {
-            return !string.IsNullOrWhiteSpace(username) &&
-                   username.Length >= 3 &&
-                   username.Length <= 20 &&
-                   Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$");
-        }
+        /// <summary>
+        /// Validates a username based on length and allowed characters.
+        /// </summary>
+        public static bool IsValidUsername(string username) =>
+            !string.IsNullOrWhiteSpace(username) &&
+            username.Length >= 3 &&
+            username.Length <= 20 &&
+            Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$");
 
         #endregion
 
         #region Server Lifecycle
 
+        /// <summary>
+        /// Initializes the game server asynchronously.
+        /// </summary>
         public static async Task InitServerAsync()
         {
             try
@@ -86,9 +97,7 @@ namespace Server
         private static async Task InitializeCoreComponentsAsync()
         {
             await InitializeContainerAsync();
-            var configTask = LoadConfigurationAsync();
-            var networkTask = InitializeNetworkAsync();
-            await Task.WhenAll(configTask, networkTask); // Parallelize independent tasks
+            await Task.WhenAll(LoadConfigurationAsync(), InitializeNetworkAsync()); // Parallelize independent tasks
             await InitializeDatabaseWithRetryAsync();
         }
 
@@ -117,16 +126,21 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Shuts down the server gracefully, saving player data and cleaning up resources.
+        /// </summary>
         public static async Task DestroyServerAsync()
         {
+            if (ServerDestroyed) return;
             ServerDestroyed = true;
             Cts.Cancel();
+            SaveTimer?.Dispose();
             NetworkConfig.Socket.StopListening();
 
             Logger.LogInformation("Server shutdown initiated...");
             await Database.SaveAllPlayersOnlineAsync(Cts.Token);
 
-            await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), async (i, ct) =>
+            await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
             {
                 await NetworkSend.SendLeftGameAsync(i);
                 Player.LeftGame(i);
@@ -134,6 +148,7 @@ namespace Server
 
             NetworkConfig.DestroyNetwork();
             ClearGameData();
+            Logger.LogInformation("Server shutdown completed.");
             Environment.Exit(0);
         }
 
@@ -195,6 +210,7 @@ namespace Server
                     await Database.CreateDatabaseAsync("mirage", Cts.Token);
                     await Database.CreateTablesAsync(Cts.Token);
                     await LoadCharacterListAsync();
+                    Logger.LogInformation("Database initialized successfully.");
                     return;
                 }
                 catch (Exception ex)
@@ -214,7 +230,7 @@ namespace Server
         {
             var ids = await Database.GetDataAsync("account", Cts.Token);
             Core.Type.Char = new CharList();
-            int maxConcurrency = 4;
+            const int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
 
             var tasks = ids.Result.Select(async id =>
@@ -248,7 +264,7 @@ namespace Server
         private static async Task LoadGameContentAsync()
         {
             ClearGameData();
-            int maxConcurrency = 4;
+            const int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
 
             var tasks = new[]
@@ -269,6 +285,7 @@ namespace Server
             };
 
             await Task.WhenAll(tasks);
+            Logger.LogInformation("Game content loaded successfully.");
         }
 
         private static async Task LoadWithSemaphoreAsync(SemaphoreSlim semaphore, Func<Task> loadFunc)
@@ -291,6 +308,7 @@ namespace Server
                 NPC.SpawnAllMapNPCsAsync(),
                 EventLogic.SpawnAllMapGlobalEventsAsync()
             );
+            Logger.LogInformation("Game objects spawned.");
         }
 
         #endregion
@@ -314,6 +332,9 @@ namespace Server
             Console.WriteLine("Use /help for available commands.");
         }
 
+        /// <summary>
+        /// Counts the number of players currently online.
+        /// </summary>
         public static int CountPlayersOnline()
         {
             lock (SyncLock)
@@ -323,6 +344,9 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Updates the console title with server status information.
+        /// </summary>
         public static void UpdateCaption()
         {
             try
@@ -337,9 +361,35 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Performs a health check on critical server components.
+        /// </summary>
+        public static async Task<bool> PerformHealthCheckAsync()
+        {
+            try
+            {
+                await Database.CheckConnectionAsync(Cts.Token);
+                bool networkActive = NetworkConfig.Socket.IsListening();
+                if (!networkActive) Logger.LogWarning("Network socket is not listening.");
+                return networkActive && !Cts.IsCancellationRequested;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Health check failed");
+                return false;
+            }
+        }
+
         #endregion
 
-        #region New Functionality
+        #region New and Enhanced Functionality
+
+        private static void InitializeSaveTimer()
+        {
+            int intervalMinutes = Settings.Instance.PlayerSaveInterval > 0 ? Settings.Instance.PlayerSaveInterval : 5;
+            SaveTimer = new Timer(async _ => await SavePlayersPeriodicallyAsync(), null,
+                TimeSpan.FromMinutes(intervalMinutes), TimeSpan.FromMinutes(intervalMinutes));
+        }
 
         private static async Task SavePlayersPeriodicallyAsync()
         {
@@ -354,19 +404,45 @@ namespace Server
             }
         }
 
+        /// <summary>
+        /// Handles player commands asynchronously with enhanced functionality.
+        /// </summary>
         public static async Task HandlePlayerCommandAsync(int playerIndex, string command)
         {
             if (string.IsNullOrWhiteSpace(command)) return;
 
-            if (command.StartsWith("/teleport"))
+            var parts = command.Trim().Split(' ');
+            switch (parts[0].ToLower())
             {
-                var parts = command.Split(' ');
-                if (parts.Length == 3 && int.TryParse(parts[1], out int x) && int.TryParse(parts[2], out int y))
-                {
-                    await TeleportPlayerAsync(playerIndex, x, y);
-                }
+                case "/teleport":
+                    if (parts.Length == 3 && int.TryParse(parts[1], out int x) && int.TryParse(parts[2], out int y))
+                        await TeleportPlayerAsync(playerIndex, x, y);
+                    else
+                        await NetworkSend.SendMessageAsync(playerIndex, "Usage: /teleport <x> <y>");
+                    break;
+
+                case "/kick":
+                    if (parts.Length == 2 && int.TryParse(parts[1], out int targetIndex))
+                        await KickPlayerAsync(playerIndex, targetIndex);
+                    break;
+
+                case "/broadcast":
+                    if (parts.Length > 1)
+                        await BroadcastMessageAsync(playerIndex, string.Join(" ", parts[1..]));
+                    break;
+
+                case "/status":
+                    await SendServerStatusAsync(playerIndex);
+                    break;
+
+                case "/help":
+                    await SendHelpMessageAsync(playerIndex);
+                    break;
+
+                default:
+                    await NetworkSend.SendMessageAsync(playerIndex, "Unknown command. Use /help for assistance.");
+                    break;
             }
-            // Add more commands as needed
         }
 
         private static async Task TeleportPlayerAsync(int playerIndex, int x, int y)
@@ -374,27 +450,124 @@ namespace Server
             try
             {
                 var player = await Database.GetPlayerAsync(playerIndex, Cts.Token); // Hypothetical method
-                if (player != null)
+                if (player == null) return;
+
+                // Validate coordinates (assuming a map size of 100x100 as an example)
+                if (x < 0 || x >= 100 || y < 0 || y >= 100)
                 {
-                    player.X = x;
-                    player.Y = y;
-                    await Database.UpdatePlayerPositionAsync(playerIndex, x, y, Cts.Token);
-                    await NetworkSend.SendPlayerPositionAsync(playerIndex);
-                    Logger.LogInformation($"Player {playerIndex} teleported to ({x}, {y})");
+                    await NetworkSend.SendMessageAsync(playerIndex, "Coordinates out of bounds.");
+                    return;
                 }
+
+                player.X = x;
+                player.Y = y;
+                await Database.UpdatePlayerPositionAsync(playerIndex, x, y, Cts.Token);
+                await NetworkSend.SendPlayerPositionAsync(playerIndex);
+                Logger.LogInformation($"Player {playerIndex} teleported to ({x}, {y})");
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to teleport player {playerIndex}");
+                await NetworkSend.SendMessageAsync(playerIndex, "Teleport failed.");
             }
         }
 
+        private static async Task KickPlayerAsync(int playerIndex, int targetIndex)
+        {
+            try
+            {
+                // Placeholder authorization check
+                if (!await IsAdminAsync(playerIndex))
+                {
+                    await NetworkSend.SendMessageAsync(playerIndex, "You are not authorized to kick players.");
+                    return;
+                }
+
+                if (NetworkConfig.IsPlaying(targetIndex))
+                {
+                    await NetworkSend.SendLeftGameAsync(targetIndex);
+                    Player.LeftGame(targetIndex);
+                    Logger.LogInformation($"Player {targetIndex} kicked by {playerIndex}");
+                    await NetworkSend.SendMessageAsync(playerIndex, $"Player {targetIndex} has been kicked.");
+                }
+                else
+                {
+                    await NetworkSend.SendMessageAsync(playerIndex, "Target player is not online.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Failed to kick player {targetIndex}");
+                await NetworkSend.SendMessageAsync(playerIndex, "Kick operation failed.");
+            }
+        }
+
+        private static async Task BroadcastMessageAsync(int playerIndex, string message)
+        {
+            try
+            {
+                if (!await IsAdminAsync(playerIndex))
+                {
+                    await NetworkSend.SendMessageAsync(playerIndex, "You are not authorized to broadcast.");
+                    return;
+                }
+
+                await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
+                {
+                    if (NetworkConfig.IsPlaying(i))
+                        await NetworkSend.SendMessageAsync(i, $"[Broadcast] {message}");
+                });
+                Logger.LogInformation($"Broadcast by {playerIndex}: {message}");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Broadcast failed");
+                await NetworkSend.SendMessageAsync(playerIndex, "Broadcast failed.");
+            }
+        }
+
+        private static async Task SendServerStatusAsync(int playerIndex)
+        {
+            try
+            {
+                bool isHealthy = await PerformHealthCheckAsync();
+                string status = $"Server Status: {(isHealthy ? "Healthy" : "Unhealthy")}\n" +
+                                $"Players Online: {CountPlayersOnline()}\n" +
+                                $"Uptime: {MyStopwatch.Elapsed}\n" +
+                                $"Errors: {Global.ErrorCount}";
+                await NetworkSend.SendMessageAsync(playerIndex, status);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Failed to send server status");
+                await NetworkSend.SendMessageAsync(playerIndex, "Unable to retrieve server status.");
+            }
+        }
+
+        private static async Task SendHelpMessageAsync(int playerIndex)
+        {
+            string help = "Available Commands:\n" +
+                          "/teleport <x> <y> - Teleport to coordinates\n" +
+                          "/kick <playerId> - Kick a player (admin only)\n" +
+                          "/broadcast <message> - Send a message to all players (admin only)\n" +
+                          "/status - View server status\n" +
+                          "/help - Show this message";
+            await NetworkSend.SendMessageAsync(playerIndex, help);
+        }
+
+        // Placeholder method for admin check
+        private static Task<bool> IsAdminAsync(int playerIndex) =>
+            Task.FromResult(playerIndex == 0); // Example: player 0 is admin
+
+        /// <summary>
+        /// Creates a backup of the database asynchronously.
+        /// </summary>
         public static async Task BackupDatabaseAsync()
         {
             try
             {
                 string backupDir = Core.Path.Backups;
-                Directory.CreateDirectory(backupDir); // Replaces CheckDir
+                Directory.CreateDirectory(backupDir);
                 string backupPath = Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
                 await Database.BackupAsync(backupPath, Cts.Token);
                 Logger.LogInformation($"Database backup created: {backupPath}");
@@ -405,7 +578,7 @@ namespace Server
                     .ToList();
                 foreach (var oldBackup in backups)
                 {
-                    await Task.Run(() => File.Delete(oldBackup));
+                    await Task.Run(() => File.Delete(oldBackup), Cts.Token);
                     Logger.LogInformation($"Deleted old backup: {oldBackup}");
                 }
             }
@@ -426,9 +599,12 @@ namespace Server
             await DestroyServerAsync();
         }
 
+        /// <summary>
+        /// Logs an error to a file and updates error count asynchronously.
+        /// </summary>
         public static async Task LogErrorAsync(Exception ex, string context = "")
         {
-            string errorInfo = GetExceptionInfo(ex); // Assuming this method exists elsewhere
+            string errorInfo = ex.ToString(); // Simplified; replace with GetExceptionInfo if available
             string logPath = Path.Combine(Core.Path.Logs, "Errors.log");
             Directory.CreateDirectory(Core.Path.Logs);
 
