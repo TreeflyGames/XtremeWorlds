@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -141,10 +142,15 @@ namespace Server
             Core.Type.MapItem = new Core.Type.MapItemStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_MAP_ITEMS];
             Core.Type.NPC = new NPCStruct[Core.Constant.MAX_NPCS];
             Core.Type.MapNPC = new MapDataStruct[Core.Constant.MAX_MAPS];
-            
+
             for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
             {
                 Core.Type.MapNPC[i].NPC = new MapNPCStruct[Core.Constant.MAX_MAP_NPCS];
+                for (int x = 0; x < Core.Constant.MAX_MAP_NPCS; x++)
+                {
+                    Core.Type.MapNPC[i].NPC[x].Vital = new int[(int)Core.Enum.VitalType.Count];
+                    Core.Type.MapNPC[i].NPC[x].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
+                }
             }
 
             Core.Type.Shop = new ShopStruct[Core.Constant.MAX_SHOPS];
@@ -152,6 +158,13 @@ namespace Server
             Core.Type.MapResource = new Core.Type.MapResourceStruct[Core.Constant.MAX_MAPS];
             Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS];
             Core.Type.Account = new Core.Type.AccountStruct[Core.Constant.MAX_PLAYERS];
+
+
+            for (int i = 0; i < Core.Constant.MAX_PLAYERS; i++)
+            {
+                Database.ClearPlayer(i);
+            }
+
             Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
         }
 
