@@ -7,64 +7,64 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Event
+    public class Event
     {
 
         #region Globals
 
         // Temp event storage
-        internal static Core.Type.EventStruct TmpEvent;
+        public static Core.Type.EventStruct TmpEvent;
 
-        internal static bool IsEdit;
+        public static bool IsEdit;
 
-        internal static int CurPageNum;
-        internal static int CurCommand;
-        internal static int GraphicSelX;
-        internal static int GraphicSelY;
-        internal static int GraphicSelX2;
-        internal static int GraphicSelY2;
+        public static int CurPageNum;
+        public static int CurCommand;
+        public static int GraphicSelX;
+        public static int GraphicSelY;
+        public static int GraphicSelX2;
+        public static int GraphicSelY2;
 
-        internal static int EventTileX;
-        internal static int EventTileY;
+        public static int EventTileX;
+        public static int EventTileY;
 
-        internal static int EditorEvent;
+        public static int EditorEvent;
 
-        internal static int GraphicSelType;
-        internal static int TempMoveRouteCount;
-        internal static Core.Type.MoveRouteStruct[] TempMoveRoute;
-        internal static bool IsMoveRouteCommand;
-        internal static int[] ListOfEvents;
+        public static int GraphicSelType;
+        public static int TempMoveRouteCount;
+        public static Core.Type.MoveRouteStruct[] TempMoveRoute;
+        public static bool IsMoveRouteCommand;
+        public static int[] ListOfEvents;
 
-        internal static int EventReplyId;
-        internal static int EventReplyPage;
-        internal static int EventChatFace;
+        public static int EventReplyId;
+        public static int EventReplyPage;
+        public static int EventChatFace;
 
-        internal static int RenameType;
-        internal static int RenameIndex;
-        internal static int EventChatTimer;
+        public static int RenameType;
+        public static int RenameIndex;
+        public static int EventChatTimer;
 
-        internal static bool EventChat;
-        internal static string EventText;
-        internal static bool ShowEventLbl;
-        internal static string[] EventChoices = new string[4];
-        internal static bool[] EventChoiceVisible = new bool[4];
-        internal static int EventChatType;
-        internal static int AnotherChat;
+        public static bool EventChat;
+        public static string EventText;
+        public static bool ShowEventLbl;
+        public static string[] EventChoices = new string[4];
+        public static bool[] EventChoiceVisible = new bool[4];
+        public static int EventChatType;
+        public static int AnotherChat;
 
         // constants
-        internal static string[] Switches = new string[Constant.MAX_SWITCHES];
-        internal static string[] Variables = new string[Constant.NAX_VARIABLES];
+        public static string[] Switches = new string[Constant.MAX_SWITCHES];
+        public static string[] Variables = new string[Constant.NAX_VARIABLES];
 
-        internal static bool EventCopy;
-        internal static bool EventPaste;
-        internal static Core.Type.EventListStruct[] EventList;
-        internal static Core.Type.EventStruct CopyEvent;
-        internal static Core.Type.EventPageStruct CopyEventPage;
+        public static bool EventCopy;
+        public static bool EventPaste;
+        public static Core.Type.EventListStruct[] EventList;
+        public static Core.Type.EventStruct CopyEvent;
+        public static Core.Type.EventPageStruct CopyEventPage;
 
-        internal static bool InEvent;
-        internal static bool HoldPlayer;
+        public static bool InEvent;
+        public static bool HoldPlayer;
 
-        internal static Core.Type.PictureStruct Picture;
+        public static Core.Type.PictureStruct Picture;
 
         #endregion
         
@@ -673,7 +673,7 @@ namespace Client
 
         }
 
-        internal static object GetColorString(int color)
+        public static object GetColorString(int color)
         {
             object GetColorStringRet = default;
 

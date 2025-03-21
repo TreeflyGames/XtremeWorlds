@@ -4,7 +4,7 @@ using static Core.Enum;
 namespace Client
 {
 
-    static class Program
+    public class Program
     {
         public static void Main()
         {

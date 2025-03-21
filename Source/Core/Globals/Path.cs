@@ -4,7 +4,7 @@ using System.Reflection;
 namespace Core
 {
 
-    public static class Path
+    public class Path
     {
         /// <summary> Returns the application directory </summary>
         public static string Local

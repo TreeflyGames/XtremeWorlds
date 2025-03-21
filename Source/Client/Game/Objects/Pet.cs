@@ -7,7 +7,7 @@ using Path = Core.Path;
 namespace Client
 {
 
-    static class Pet
+    public class Pet
     {
 
         #region Globals etc
@@ -19,9 +19,9 @@ namespace Client
         internal const int PetHpBarWidth = 129;
         internal const int PetMpBarWidth = 129;
 
-        internal static double PetSkillBuffer;
-        internal static int PetSkillBufferTimer;
-        internal static int[] PetSkillCD;
+        public static double PetSkillBuffer;
+        public static int PetSkillBufferTimer;
+        public static int[] PetSkillCD;
 
         internal const byte PetBehaviourFollow = 0; // The pet will attack all NPCs around
 
@@ -85,7 +85,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendPetBehaviour(int index)
+        public static void SendPetBehaviour(int index)
         {
             var buffer = new ByteStream(4);
 
@@ -158,7 +158,7 @@ namespace Client
 
         }
 
-        internal static void SendRequestEditPet()
+        public static void SendRequestEditPet()
         {
             ByteStream buffer;
             buffer = new ByteStream(4);
@@ -171,7 +171,7 @@ namespace Client
 
         }
 
-        internal static void SendSavePet(int petNum)
+        public static void SendSavePet(int petNum)
         {
             ByteStream buffer;
             int i;
@@ -211,7 +211,7 @@ namespace Client
 
         #region Incoming Packets
 
-        internal static void Packet_UpdatePlayerPet(ref byte[] data)
+        public static void Packet_UpdatePlayerPet(ref byte[] data)
         {
             int n;
             int i;
@@ -247,7 +247,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void Packet_UpdatePet(ref byte[] data)
+        public static void Packet_UpdatePet(ref byte[] data)
         {
             int n;
             int i;
@@ -282,7 +282,7 @@ namespace Client
 
         }
 
-        internal static void Packet_PetMove(ref byte[] data)
+        public static void Packet_PetMove(ref byte[] data)
         {
             int i;
             int x;
@@ -333,7 +333,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void Packet_PetDir(ref byte[] data)
+        public static void Packet_PetDir(ref byte[] data)
         {
             int i;
             int dir;
@@ -346,7 +346,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void Packet_PetVital(ref byte[] data)
+        public static void Packet_PetVital(ref byte[] data)
         {
             int i;
             var buffer = new ByteStream(data);
@@ -367,13 +367,13 @@ namespace Client
 
         }
 
-        internal static void Packet_ClearPetSkillBuffer(ref byte[] data)
+        public static void Packet_ClearPetSkillBuffer(ref byte[] data)
         {
             PetSkillBuffer = -1;
             PetSkillBufferTimer = 0;
         }
 
-        internal static void Packet_PetAttack(ref byte[] data)
+        public static void Packet_PetAttack(ref byte[] data)
         {
             int i;
             var buffer = new ByteStream(data);
@@ -386,7 +386,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void Packet_PetXY(ref byte[] data)
+        public static void Packet_PetXY(ref byte[] data)
         {
             var i = default(int);
             var buffer = new ByteStream(data);
@@ -397,7 +397,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void Packet_PetExperience(ref byte[] data)
+        public static void Packet_PetExperience(ref byte[] data)
         {
             var buffer = new ByteStream(data);
 
@@ -490,7 +490,7 @@ namespace Client
 
         }
 
-        internal static void PetMove(int x, int y)
+        public static void PetMove(int x, int y)
         {
             var buffer = new ByteStream(4);
 
@@ -508,7 +508,7 @@ namespace Client
 
         #region Drawing
 
-        internal static void DrawPet(int index)
+        public static void DrawPet(int index)
         {
             var anim = default(byte);
             int x;
@@ -637,7 +637,7 @@ namespace Client
             GameClient.DrawCharacterSprite(spriteNum, x, y, rect);
         }
 
-        internal static void DrawPlayerPetName(int index)
+        public static void DrawPlayerPetName(int index)
         {
             int textX;
             int textY;
@@ -710,7 +710,7 @@ namespace Client
 
         #region Misc
 
-        internal static bool PetAlive(int index)
+        public static bool PetAlive(int index)
         {
             bool PetAliveRet = default;
             PetAliveRet = Conversions.ToBoolean(0);

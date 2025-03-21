@@ -5,7 +5,7 @@ using Core.Database;
 namespace Core
 {
 
-    public static class Type
+    public class Type
     {
         // Common data structure arrays
         public static JobStruct[] Job = new JobStruct[(Constant.MAX_JOBS)];

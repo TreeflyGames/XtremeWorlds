@@ -10,7 +10,7 @@ using static Core.Type;
 namespace Server
 {
 
-    static class Player
+    public class Player
     {
 
         public static bool CanPlayerAttackPlayer(int attacker, int victim, bool IsSkill = false)
@@ -415,7 +415,7 @@ namespace Server
 
         }
 
-        internal static void StunPlayer(int index, int skillNum)
+        public static void StunPlayer(int index, int skillNum)
         {
             // check if it's a stunning skill
             if (Core.Type.Skill[skillNum].StunDuration > 0)
@@ -538,7 +538,7 @@ namespace Server
 
         }
 
-        internal static void StunNPC(int index, int mapNum, int skillNum)
+        public static void StunNPC(int index, int mapNum, int skillNum)
         {
             // check if it's a stunning skill
             if (Core.Type.Skill[skillNum].StunDuration > 0)
@@ -629,7 +629,7 @@ namespace Server
             return IsInRangeRet;
         }
 
-        internal static bool CanPlayerDodge(int index)
+        public static bool CanPlayerDodge(int index)
         {
             bool CanPlayerDodgeRet = default;
             int rate;
@@ -649,7 +649,7 @@ namespace Server
 
         }
 
-        internal static bool CanPlayerParry(int index)
+        public static bool CanPlayerParry(int index)
         {
             bool CanPlayerParryRet = default;
             int rate;
@@ -669,7 +669,7 @@ namespace Server
 
         }
 
-        internal static void TryPlayerAttackPlayer(int attacker, int victim)
+        public static void TryPlayerAttackPlayer(int attacker, int victim)
         {
             int mapNum;
             int Damage;
@@ -791,7 +791,7 @@ namespace Server
             }
         }
 
-        internal static void TryPlayerAttackNPC(int index, double MapNPCNum)
+        public static void TryPlayerAttackNPC(int index, double MapNPCNum)
         {
 
             int NPCNum;
@@ -861,7 +861,7 @@ namespace Server
 
         }
 
-        internal static bool IsPlayerDead(int index)
+        public static bool IsPlayerDead(int index)
         {
             bool IsPlayerDeadRet = false;
             IsPlayerDeadRet = false;
@@ -872,7 +872,7 @@ namespace Server
             return IsPlayerDeadRet;
         }
 
-        internal static void HandlePlayerKillPlayer(int attacker, int victim)
+        public static void HandlePlayerKillPlayer(int attacker, int victim)
         {
             // Notify everyone that our player has bit the dust.
             NetworkSend.GlobalMsg(string.Format("{0} has been killed by {1}!", GetPlayerName(victim), GetPlayerName(attacker)));
@@ -895,7 +895,7 @@ namespace Server
             OnDeath(victim);
         }
 
-        internal static void HandlePlayerKillNPC(int mapNum, int index, int MapNPCNum)
+        public static void HandlePlayerKillNPC(int mapNum, int index, int MapNPCNum)
         {
             // Set our attacker's target to nothing.
             NetworkSend.SendTarget(index, 0, 0);
@@ -923,7 +923,7 @@ namespace Server
             }
         }
 
-        internal static void HandlePlayerKilledPK(int attacker, int victim)
+        public static void HandlePlayerKilledPK(int attacker, int victim)
         {
             // TODO: Redo this method, it is horrendous.
             int z;
@@ -1075,7 +1075,7 @@ namespace Server
 
         #region Incoming Packets
 
-        internal static void HandleUseChar(int index)
+        public static void HandleUseChar(int index)
         {
             // Set the flag so we know the person is in the game
             Core.Type.TempPlayer[index].InGame = true;
@@ -2148,7 +2148,7 @@ namespace Server
             return CanPlayerUseItemRet;
         }
 
-        internal static void UseItem(int index, int InvNum)
+        public static void UseItem(int index, int InvNum)
         {
             int itemNum;
             int i;
@@ -2797,7 +2797,7 @@ namespace Server
             General.UpdateCaption();
         }
 
-        internal static void KillPlayer(int index)
+        public static void KillPlayer(int index)
         {
             int exp;
 
@@ -2894,7 +2894,7 @@ namespace Server
             return GetPlayerVitalRegenRet;
         }
 
-        internal static void HandleNPCKillExperience(int index, int NPCNum)
+        public static void HandleNPCKillExperience(int index, int NPCNum)
         {
             // Get the experience we'll have to hand out. If it's negative, just ignore this method.
             int Experience = Core.Type.NPC[(int)NPCNum].Exp;
@@ -2912,7 +2912,7 @@ namespace Server
             }
         }
 
-        internal static void HandlePlayerKillExperience(int attacker, int victim)
+        public static void HandlePlayerKillExperience(int attacker, int victim)
         {
             // Calculate exp to give attacker
             var exp = GetPlayerExp(victim) / 10;
@@ -2951,7 +2951,7 @@ namespace Server
         #endregion
 
         #region Skills
-        internal static void bufferSkill(int index, int SkillSlot)
+        public static void bufferSkill(int index, int SkillSlot)
         {
             double skillNum;
             int MPCost;

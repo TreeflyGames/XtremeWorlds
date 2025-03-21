@@ -12,7 +12,7 @@ using Path = Core.Path;
 namespace Client
 {
 
-    static class Text
+    public class Text
     {
         public static Dictionary<Core.Enum.FontType, SpriteFont> Fonts = new Dictionary<Core.Enum.FontType, SpriteFont>();
 
@@ -23,9 +23,9 @@ namespace Client
         internal const int AllChatLineWidth = 40;
         internal const int ChatboxPadding = 45 + 16 + 2; // 10 = left and right border padding +2 each (3+2+3+2), 16 = scrollbar width, +2 for padding between scrollbar and text
         internal const int ChatEntryPadding = 10; // 5 on left and right
-        internal static int FirstLineindex = 0;
-        internal static int LastLineindex = 0;
-        internal static int ScrollMod = 0;
+        public static int FirstLineindex = 0;
+        public static int LastLineindex = 0;
+        public static int ScrollMod = 0;
 
         public static string CensorText(string input)
         {

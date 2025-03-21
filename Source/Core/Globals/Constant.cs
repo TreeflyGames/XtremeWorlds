@@ -1,7 +1,7 @@
 ﻿
 namespace Core
 {
-    public static class Constant
+    public class Constant
     {
         public const int MAX_ANIMATIONS = 100;
         public const byte MAX_BANK = 90;

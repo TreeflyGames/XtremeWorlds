@@ -1093,7 +1093,7 @@ namespace Client
             }
         }
 
-        internal static void DrawEmote(int x2, int y2, int sprite)
+        public static void DrawEmote(int x2, int y2, int sprite)
         {
             Rectangle rec;
             int x;
@@ -1161,7 +1161,7 @@ namespace Client
             }
         }
 
-        internal static void DrawPaperdoll(int x2, int y2, int sprite, int anim, int spritetop)
+        public static void DrawPaperdoll(int x2, int y2, int sprite, int anim, int spritetop)
         {
             Rectangle rec;
             int x;
@@ -1186,7 +1186,7 @@ namespace Client
             RenderTexture(ref argpath, x, y, rec.X, rec.Y, rec.Width, rec.Height);
         }
 
-        internal static void DrawNPC(double MapNPCNum)
+        public static void DrawNPC(double MapNPCNum)
         {
             byte anim;
             int x;
@@ -1314,7 +1314,7 @@ namespace Client
             DrawCharacterSprite(sprite, x, y, rect);
         }
 
-        internal static void DrawMapItem(int itemNum)
+        public static void DrawMapItem(int itemNum)
         {
             Rectangle srcrec;
             Rectangle destrec;
@@ -1351,7 +1351,7 @@ namespace Client
             RenderTexture(ref argpath, x, y, srcrec.X, srcrec.Y, srcrec.Width, srcrec.Height, srcrec.Width, srcrec.Height);
         }
 
-        internal static void DrawCharacterSprite(int sprite, int x2, int y2, Rectangle sRECT)
+        public static void DrawCharacterSprite(int sprite, int x2, int y2, Rectangle sRECT)
         {
             int x;
             int y;
@@ -1366,7 +1366,7 @@ namespace Client
             RenderTexture(ref argpath, x, y, sRECT.X, sRECT.Y, sRECT.Width, sRECT.Height, sRECT.Width, sRECT.Height);
         }
 
-        internal static void DrawBlood(int index)
+        public static void DrawBlood(int index)
         {
             Rectangle srcrec;
             Rectangle destrec;
@@ -1543,7 +1543,7 @@ namespace Client
             SpriteBatch.End();
         }
 
-        internal static void DrawGrid()
+        public static void DrawGrid()
         {
             // Use a single Begin/End pair to improve performance
             SpriteBatch.Begin();
@@ -1580,7 +1580,7 @@ namespace Client
             SpriteBatch.End();
         }
 
-        internal static void DrawTarget(int x2, int y2)
+        public static void DrawTarget(int x2, int y2)
         {
             Rectangle rec;
             int x;
@@ -1606,7 +1606,7 @@ namespace Client
             return new Color(drawingColor.R, drawingColor.G, drawingColor.B, drawingColor.A);
         }
 
-        internal static void DrawHover(int x2, int y2)
+        public static void DrawHover(int x2, int y2)
         {
             Rectangle rec;
             int x;
@@ -1783,7 +1783,7 @@ namespace Client
             }
         }
 
-        internal static void DrawPlayer(int index)
+        public static void DrawPlayer(int index)
         {
             byte anim;
             int x;
@@ -2118,7 +2118,7 @@ namespace Client
             }
         }
 
-        internal static void DrawEvent(int id) // draw on map, outside the editor
+        public static void DrawEvent(int id) // draw on map, outside the editor
         {
             int x;
             int y;

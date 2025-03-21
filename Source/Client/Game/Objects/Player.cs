@@ -6,7 +6,7 @@ using static Core.Global.Command;
 namespace Client
 {
 
-    static class Player
+    public class Player
     {
         #region Database
         public static void ClearPlayers()
@@ -1050,7 +1050,7 @@ namespace Client
 
         }
 
-        internal static void PlayerCastSkill(int skillSlot)
+        public static void PlayerCastSkill(int skillSlot)
         {
             var buffer = new ByteStream(4);
 

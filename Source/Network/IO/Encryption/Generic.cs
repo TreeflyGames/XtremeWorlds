@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mirage.Sharp.Asfw.IO.Encryption
 {
-  public static class Generic
+  public class Generic
   {
     public static byte[] EncryptBytes(byte[] value, string password, int iterations)
     {

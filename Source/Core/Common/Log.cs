@@ -5,7 +5,7 @@ using Microsoft.VisualBasic.CompilerServices;
 namespace Core
 {
 
-    public static class Log
+    public class Log
     {
         public static string GetFileContents(string fullPath)
         {

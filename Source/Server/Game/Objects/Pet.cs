@@ -15,7 +15,7 @@ namespace Server
 {
 
 
-    static class Pet
+    public class Pet
     {
 
         #region Declarations
@@ -27,7 +27,7 @@ namespace Server
         internal const byte PetAttackBehaviourGuard = 3; // If attacked, the pet will fight back
         internal const byte PetAttackBehaviourDonothing = 4; // The pet will not attack even if attacked
 
-        internal static int givePetHpTimer;
+        public static int givePetHpTimer;
 
         #endregion
 
@@ -197,7 +197,7 @@ namespace Server
 
         }
 
-        internal static void SendUpdatePlayerPet(int index, bool ownerOnly)
+        public static void SendUpdatePlayerPet(int index, bool ownerOnly)
         {
             var buffer = new ByteStream(4);
 
@@ -689,7 +689,7 @@ namespace Server
 
         #region Pet Functions
 
-        internal static void UpdatePetAi()
+        public static void UpdatePetAi()
         {
             bool didWalk;
             int playerindex;
@@ -2206,7 +2206,7 @@ namespace Server
 
         }
 
-        internal static bool CanPetCrit(int index)
+        public static bool CanPetCrit(int index)
         {
             bool CanPetCritRet = default;
             int rate;
@@ -2335,7 +2335,7 @@ namespace Server
 
         }
 
-        internal static void PetFireProjectile(int index, int skillNum)
+        public static void PetFireProjectile(int index, int skillNum)
         {
             var projectileSlot = default(int);
             int projectileNum;
@@ -2385,7 +2385,7 @@ namespace Server
 
         #region Pet > NPC
 
-        internal static void TryPetAttackNPC(int index, double MapNPCNum)
+        public static void TryPetAttackNPC(int index, double MapNPCNum)
         {
             int blockAmount;
             int NPCNum;
@@ -2446,7 +2446,7 @@ namespace Server
 
         }
 
-        internal static bool CanPetAttackNPC(int attacker, double MapNPCNum, bool isSkill = false)
+        public static bool CanPetAttackNPC(int attacker, double MapNPCNum, bool isSkill = false)
         {
             bool CanPetAttackNPCRet = default;
             int mapNum;
@@ -2545,7 +2545,7 @@ namespace Server
 
         }
 
-        internal static void PetAttackNPC(int attacker, double MapNPCNum, int damage, double skillNum = -1) // , Optional overTime As Boolean = False)
+        public static void PetAttackNPC(int attacker, double MapNPCNum, int damage, double skillNum = -1) // , Optional overTime As Boolean = False)
         {
             string name;
             int exp;
@@ -2728,7 +2728,7 @@ namespace Server
 
         #region NPC > Pet
 
-        internal static void TryNPCAttackPet(double MapNPCNum, int index)
+        public static void TryNPCAttackPet(double MapNPCNum, int index)
         {
 
             int mapNum;
@@ -3164,7 +3164,7 @@ namespace Server
 
         }
 
-        internal static void TryPetAttackPlayer(int index, int victim)
+        public static void TryPetAttackPlayer(int index, int victim)
         {
             int mapNum;
             int blockAmount;
@@ -3479,7 +3479,7 @@ namespace Server
 
         }
 
-        internal static void TryPetAttackPet(int index, int victim)
+        public static void TryPetAttackPet(int index, int victim)
         {
             int mapNum;
             var blockAmount = default(int);
@@ -3541,7 +3541,7 @@ namespace Server
 
         #region Skills
 
-        internal static void BufferPetSkill(int index, int SkillSlot)
+        public static void BufferPetSkill(int index, int SkillSlot)
         {
             double skillNum;
             int mpCost;
@@ -3738,7 +3738,7 @@ namespace Server
 
         }
 
-        internal static void PetCastSkill(int index, int SkillSlot, int target, byte targetType, bool takeMana = true)
+        public static void PetCastSkill(int index, int SkillSlot, int target, byte targetType, bool takeMana = true)
         {
             double skillNum;
             int mpCost;
@@ -4173,7 +4173,7 @@ namespace Server
 
         }
 
-        internal static void SkillPet_Effect(byte vital, bool increment, int index, int damage, int skillNum)
+        public static void SkillPet_Effect(byte vital, bool increment, int index, int damage, int skillNum)
         {
             string sSymbol;
             var Color = default(int);
@@ -4231,7 +4231,7 @@ namespace Server
 
         }
 
-        internal static void AddHoT_Pet(int index, int skillNum)
+        public static void AddHoT_Pet(int index, int skillNum)
         {
             int i;
 
@@ -4261,7 +4261,7 @@ namespace Server
 
         }
 
-        internal static void AddDoT_Pet(int index, int skillNum, int caster, int attackerType)
+        public static void AddDoT_Pet(int index, int skillNum, int caster, int attackerType)
         {
             int i;
 
@@ -4297,7 +4297,7 @@ namespace Server
 
         }
 
-        internal static void StunPet(int index, int skillNum)
+        public static void StunPet(int index, int skillNum)
         {
             // check if it's a stunning Skill
 
@@ -4315,7 +4315,7 @@ namespace Server
 
         }
 
-        internal static void HandleDoT_Pet(int index, int dotNum)
+        public static void HandleDoT_Pet(int index, int dotNum)
         {
 
             {
@@ -4366,7 +4366,7 @@ namespace Server
 
         }
 
-        internal static void HandleHoT_Pet(int index, int hotNum)
+        public static void HandleHoT_Pet(int index, int hotNum)
         {
 
             {
@@ -4409,7 +4409,7 @@ namespace Server
 
         }
 
-        internal static bool CanPetDodge(int index)
+        public static bool CanPetDodge(int index)
         {
             bool CanPetDodgeRet = default;
             int rate;
@@ -4432,7 +4432,7 @@ namespace Server
 
         }
 
-        internal static bool CanPetParry(int index)
+        public static bool CanPetParry(int index)
         {
             bool CanPetParryRet = default;
             int rate;
@@ -4715,7 +4715,7 @@ namespace Server
 
         }
 
-        internal static void TryPlayerAttackPet(int attacker, int victim)
+        public static void TryPlayerAttackPet(int attacker, int victim)
         {
             int blockAmount;
             int mapNum;
@@ -4780,7 +4780,7 @@ namespace Server
 
         #region Data Functions
 
-        internal static bool PetAlive(int index)
+        public static bool PetAlive(int index)
         {
             bool PetAliveRet = default;
             PetAliveRet = Conversions.ToBoolean(0);
@@ -4797,7 +4797,7 @@ namespace Server
 
         }
 
-        internal static string GetPetName(int index)
+        public static string GetPetName(int index)
         {
             string GetPetNameRet = default;
             GetPetNameRet = "";
@@ -4811,7 +4811,7 @@ namespace Server
 
         }
 
-        internal static int GetPetNum(int index)
+        public static int GetPetNum(int index)
         {
             int GetPetNumRet = default;
             GetPetNumRet = Core.Type.Player[index].Pet.Num;
@@ -4819,7 +4819,7 @@ namespace Server
 
         }
 
-        internal static int GetPetRange(int index)
+        public static int GetPetRange(int index)
         {
             int GetPetRangeRet = default;
             GetPetRangeRet = 0;
@@ -4833,7 +4833,7 @@ namespace Server
 
         }
 
-        internal static int GetPetLevel(int index)
+        public static int GetPetLevel(int index)
         {
             int GetPetLevelRet = default;
             GetPetLevelRet = 0;
@@ -4847,7 +4847,7 @@ namespace Server
 
         }
 
-        internal static void SetPetLevel(int index, int newlvl)
+        public static void SetPetLevel(int index, int newlvl)
         {
             if (PetAlive(index))
             {
@@ -4855,7 +4855,7 @@ namespace Server
             }
         }
 
-        internal static int GetPetX(int index)
+        public static int GetPetX(int index)
         {
             int GetPetXRet = default;
             GetPetXRet = 0;
@@ -4869,7 +4869,7 @@ namespace Server
 
         }
 
-        internal static void SetPetX(int index, int x)
+        public static void SetPetX(int index, int x)
         {
             if (PetAlive(index))
             {
@@ -4877,7 +4877,7 @@ namespace Server
             }
         }
 
-        internal static int GetPetY(int index)
+        public static int GetPetY(int index)
         {
             int GetPetYRet = default;
             GetPetYRet = 0;
@@ -4891,7 +4891,7 @@ namespace Server
 
         }
 
-        internal static void SetPetY(int index, int y)
+        public static void SetPetY(int index, int y)
         {
             if (PetAlive(index))
             {
@@ -4899,7 +4899,7 @@ namespace Server
             }
         }
 
-        internal static int GetPetDir(int index)
+        public static int GetPetDir(int index)
         {
             int GetPetDirRet = default;
             GetPetDirRet = 0;
@@ -4913,7 +4913,7 @@ namespace Server
 
         }
 
-        internal static int GetPetBehaviour(int index)
+        public static int GetPetBehaviour(int index)
         {
             int GetPetBehaviourRet = default;
             GetPetBehaviourRet = 0;
@@ -4927,7 +4927,7 @@ namespace Server
 
         }
 
-        internal static void SetPetBehaviour(int index, byte behaviour)
+        public static void SetPetBehaviour(int index, byte behaviour)
         {
             if (PetAlive(index))
             {
@@ -4935,7 +4935,7 @@ namespace Server
             }
         }
 
-        internal static int GetPetStat(int index, StatType stat)
+        public static int GetPetStat(int index, StatType stat)
         {
             int GetPetStatRet = default;
             GetPetStatRet = 0;
@@ -4949,7 +4949,7 @@ namespace Server
 
         }
 
-        internal static void SetPetStat(int index, StatType stat, byte amount)
+        public static void SetPetStat(int index, StatType stat, byte amount)
         {
 
             if (PetAlive(index))
@@ -4959,7 +4959,7 @@ namespace Server
 
         }
 
-        internal static int GetPetPoints(int index)
+        public static int GetPetPoints(int index)
         {
             int GetPetPointsRet = default;
             GetPetPointsRet = 0;
@@ -4973,7 +4973,7 @@ namespace Server
 
         }
 
-        internal static void SetPetPoints(int index, int amount)
+        public static void SetPetPoints(int index, int amount)
         {
 
             if (PetAlive(index))
@@ -4983,7 +4983,7 @@ namespace Server
 
         }
 
-        internal static int GetPetExp(int index)
+        public static int GetPetExp(int index)
         {
             int GetPetExpRet = default;
             GetPetExpRet = 0;
@@ -4997,7 +4997,7 @@ namespace Server
 
         }
 
-        internal static void SetPetExp(int index, int amount)
+        public static void SetPetExp(int index, int amount)
         {
             if (PetAlive(index))
             {
