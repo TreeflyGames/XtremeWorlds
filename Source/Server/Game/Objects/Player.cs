@@ -1107,7 +1107,7 @@ namespace Server
         #endregion
 
         #region Movement
-        public static void PlayerWarp(int index, int mapNum, int x, int y, bool NoInstance = false)
+        public static void PlayerWarp(int index, int mapNum, int x, int y, int dir)
         {
             int OldMap;
             int i;
@@ -1146,6 +1146,7 @@ namespace Server
             SetPlayerMap(index, mapNum);
             SetPlayerX(index, x);
             SetPlayerY(index, y);
+            SetPlayerDir(index, dir);
 
             if (Pet.PetAlive(index))
             {
@@ -1268,7 +1269,7 @@ namespace Server
                             if (Core.Type.Map[GetPlayerMap(index)].Up > 0)
                             {
                                 NewMapY = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Up].MaxY;
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Up, GetPlayerX(index), NewMapY);
+                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Up, GetPlayerX(index), NewMapY, (int)DirectionType.Up);
                                 DidWarp = Conversions.ToBoolean(1);
                                 Moved = Conversions.ToBoolean(1);
                             }
@@ -1305,7 +1306,7 @@ namespace Server
                             // Check to see if we can move them to another map
                             if (Core.Type.Map[GetPlayerMap(index)].Down > 0)
                             {
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Down, GetPlayerX(index), 0);
+                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Down, GetPlayerX(index), 0, (byte)DirectionType.Down);
                                 DidWarp = Conversions.ToBoolean(1);
                                 Moved = Conversions.ToBoolean(1);
                             }
@@ -1343,7 +1344,7 @@ namespace Server
                             if (Core.Type.Map[GetPlayerMap(index)].Left > 0)
                             {
                                 NewMapX = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Left].MaxX;
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Left, NewMapX, GetPlayerY(index));
+                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Left, NewMapX, GetPlayerY(index), (byte)DirectionType.Left);
                                 DidWarp = Conversions.ToBoolean(1);
                                 Moved = Conversions.ToBoolean(1);
                             }
@@ -1380,7 +1381,7 @@ namespace Server
                             // Check to see if we can move them to another map
                             if (Core.Type.Map[GetPlayerMap(index)].Right > 0)
                             {
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Right, 0, GetPlayerY(index));
+                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Right, 0, GetPlayerY(index), (byte)DirectionType.Right);
                                 DidWarp = Conversions.ToBoolean(1);
                                 Moved = Conversions.ToBoolean(1);
                             }
@@ -1526,7 +1527,7 @@ namespace Server
 
                 if (mapNum >= 0)
                 {
-                    PlayerWarp(index, (int)mapNum, x, y);
+                    PlayerWarp(index, (int)mapNum, x, y, (int)DirectionType.Down);
 
                     DidWarp = Conversions.ToBoolean(1);
                     Moved = Conversions.ToBoolean(1);
@@ -1630,7 +1631,7 @@ namespace Server
             // They tried to hack
             if (Conversions.ToInteger(Moved) == 0 | ExpectingWarp & !DidWarp)
             {
-                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index));
+                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
             }
 
             x = GetPlayerX(index);
@@ -2732,7 +2733,7 @@ namespace Server
             NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), Settings.Instance.GameName));
 
             // Warp the player to his saved location
-            PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index));
+            PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
 
             // Send all the required game data to the user.
             CheckEquippedItems(index);
@@ -2834,11 +2835,11 @@ namespace Server
                 // to the bootmap if it is set
                 if (withBlock.BootMap > 0)
                 {
-                    PlayerWarp(index, withBlock.BootMap, withBlock.BootX, withBlock.BootY);
+                    PlayerWarp(index, withBlock.BootMap, withBlock.BootX, withBlock.BootY, (int)DirectionType.Down);
                 }
                 else
                 {
-                    PlayerWarp(index, Core.Type.Job[GetPlayerJob(index)].StartMap, Core.Type.Job[GetPlayerJob(index)].StartX, Core.Type.Job[GetPlayerJob(index)].StartY);
+                    PlayerWarp(index, Core.Type.Job[GetPlayerJob(index)].StartMap, Core.Type.Job[GetPlayerJob(index)].StartX, Core.Type.Job[GetPlayerJob(index)].StartY, (int)DirectionType.Down);
                 }
             }
 
