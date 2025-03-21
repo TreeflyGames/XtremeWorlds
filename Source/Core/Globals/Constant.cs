@@ -41,5 +41,8 @@ namespace Core
         public const byte MAX_CHARS = 3;
         public const int CHAT_LINES = 200;
         public const byte MAX_STATS = 255;
+        public const byte MAX_QUESTS = 100;
+        public const int MAX_EVENTS = 500;
+        public const byte MAX_GUILDS = 100;
     }
 }

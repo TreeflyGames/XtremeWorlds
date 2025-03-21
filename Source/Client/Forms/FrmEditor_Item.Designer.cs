@@ -1270,7 +1270,7 @@ namespace Client
             DarkLabel38.Name = "DarkLabel38";
             DarkLabel38.Size = new Size(21, 15);
             DarkLabel38.TabIndex = 0;
-            DarkLabel38.Text = "ID:";
+            DarkLabel38.Text = "Id:";
             // 
             // DarkLabel36
             // 

@@ -926,7 +926,7 @@ namespace Server
             {
                 if (n >= 0)
                 {
-                    Player.PlayerWarp(index, GetPlayerMap(n), GetPlayerX(n), GetPlayerY(n));
+                    Player.PlayerWarp(index, GetPlayerMap(n), GetPlayerX(n), GetPlayerY(n), (byte)Core.Enum.DirectionType.Down);
                     NetworkSend.PlayerMsg(n, GetPlayerName(index) + " has warped to you.", (int) ColorType.Yellow);
                     NetworkSend.PlayerMsg(index, "You have been warped to " + GetPlayerName(n) + ".", (int) ColorType.Yellow);
                     Log.Add(GetPlayerName(index) + " has warped to " + GetPlayerName(n) + ", map #" + GetPlayerMap(n) + ".", Constant.ADMIN_LOG);
@@ -960,7 +960,7 @@ namespace Server
             {
                 if (n >= 0)
                 {
-                    Player.PlayerWarp(n, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index));
+                    Player.PlayerWarp(n, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
                     NetworkSend.PlayerMsg(n, "You have been summoned by " + GetPlayerName(index) + ".", (int) ColorType.Yellow);
                     NetworkSend.PlayerMsg(index, GetPlayerName(n) + " has been summoned.", (int) ColorType.Yellow);
                     Log.Add(GetPlayerName(index) + " has warped " + GetPlayerName(n) + " to self, map #" + GetPlayerMap(index) + ".", Constant.ADMIN_LOG);
@@ -994,7 +994,7 @@ namespace Server
             if (n < 0 | n > Core.Constant.MAX_MAPS)
                 return;
 
-            Player.PlayerWarp(index, n, GetPlayerX(index), GetPlayerY(index));
+            Player.PlayerWarp(index, n, GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
             NetworkSend.PlayerMsg(index, "You have been warped to map #" + n, (int) ColorType.Yellow);
             Log.Add(GetPlayerName(index) + " warped to map #" + n + ".", Constant.ADMIN_LOG);
         }
@@ -1328,7 +1328,7 @@ namespace Server
             {
                 if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                 {
-                    Player.PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i));
+                    Player.PlayerWarp(i, mapNum, GetPlayerX(i), GetPlayerY(i), (byte)Core.Enum.DirectionType.Down);
                     // Send map
                     NetworkSend.SendMapData(i, mapNum, true);
                 }

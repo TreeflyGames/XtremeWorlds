@@ -14,6 +14,8 @@ namespace DarkUI.Collections
         private readonly ReaderWriterLockSlim _lock;
         private bool _disposed;
         private bool _isReadOnly;
+        private int _updateCount = 0;
+        private bool _hasChanges = false;
 
         #endregion
 
@@ -22,6 +24,7 @@ namespace DarkUI.Collections
         public event EventHandler<ObservableListModified<T>> ItemsAdded;
         public event EventHandler<ObservableListModified<T>> ItemsRemoved;
         public event EventHandler<ObservableListModified<T>> ItemsModified;
+        public event EventHandler<ObservableListMoved<T>> ItemsMoved;
         public event EventHandler<EventArgs> CollectionChanged;
 
         #endregion
@@ -88,7 +91,6 @@ namespace DarkUI.Collections
                 CheckReadOnly();
                 var items = collection.ToList();
                 if (items.Count == 0) return;
-                
                 _innerList.AddRange(items);
                 OnItemsAdded(items);
             }
@@ -106,7 +108,6 @@ namespace DarkUI.Collections
                 CheckReadOnly();
                 int index = _innerList.IndexOf(item);
                 if (index < 0) return false;
-
                 _innerList.RemoveAt(index);
                 OnItemsRemoved(new List<T> { item });
                 return true;
@@ -141,7 +142,6 @@ namespace DarkUI.Collections
             {
                 CheckReadOnly();
                 if (_innerList.Count == 0) return;
-                
                 var removedItems = new List<T>(_innerList);
                 _innerList.Clear();
                 OnItemsRemoved(removedItems);
@@ -161,6 +161,44 @@ namespace DarkUI.Collections
                 ValidateIndex(index, true);
                 _innerList.Insert(index, item);
                 OnItemsAdded(new List<T> { item });
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        #endregion
+
+        #region Batch Update Methods
+
+        public void BeginUpdate()
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                _updateCount++;
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public void EndUpdate()
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                if (_updateCount > 0)
+                {
+                    _updateCount--;
+                    if (_updateCount == 0 && _hasChanges)
+                    {
+                        OnCollectionChanged();
+                        _hasChanges = false;
+                    }
+                }
             }
             finally
             {
@@ -193,7 +231,6 @@ namespace DarkUI.Collections
                 CheckReadOnly();
                 int index = _innerList.IndexOf(oldItem);
                 if (index < 0) throw new ArgumentException("Item not found in collection");
-                
                 _innerList[index] = newItem;
                 OnItemsModified(new List<(T OldItem, T NewItem)> { (oldItem, newItem) });
             }
@@ -221,12 +258,230 @@ namespace DarkUI.Collections
             }
         }
 
+        public void Sort(Comparison<T> comparison)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                _innerList.Sort(comparison);
+                OnCollectionChanged();
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public void Sort(int index, int count, IComparer<T> comparer)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                _innerList.Sort(index, count, comparer);
+                OnCollectionChanged();
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public void Reverse()
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                _innerList.Reverse();
+                OnCollectionChanged();
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public void Reverse(int index, int count)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                _innerList.Reverse(index, count);
+                OnCollectionChanged();
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
         public IEnumerable<T> FindAll(Predicate<T> match)
         {
             _lock.EnterReadLock();
             try
             {
                 return _innerList.FindAll(match).AsReadOnly();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        public T Find(Predicate<T> match)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.Find(match);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        public int FindIndex(Predicate<T> match)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.FindIndex(match);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        public void RemoveRange(int index, int count)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                if (index < 0 || count < 0 || index + count > _innerList.Count)
+                    throw new ArgumentOutOfRangeException();
+                if (count == 0) return;
+                var removedItems = _innerList.GetRange(index, count);
+                _innerList.RemoveRange(index, count);
+                OnItemsRemoved(removedItems);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public void InsertRange(int index, IEnumerable<T> collection)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                ValidateIndex(index, true);
+                var items = collection.ToList();
+                if (items.Count == 0) return;
+                _innerList.InsertRange(index, items);
+                OnItemsAdded(items);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public void Move(int oldIndex, int newIndex)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                ValidateIndex(oldIndex);
+                ValidateIndex(newIndex, true);
+                if (oldIndex == newIndex) return;
+                T item = _innerList[oldIndex];
+                _innerList.RemoveAt(oldIndex);
+                _innerList.Insert(newIndex, item);
+                OnItemsMoved(item, oldIndex, newIndex);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public void ReplaceRange(int index, int count, IEnumerable<T> newItems)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                if (index < 0 || count < 0 || index + count > _innerList.Count)
+                    throw new ArgumentOutOfRangeException();
+                var newList = newItems.ToList();
+                if (count == newList.Count)
+                {
+                    var changes = new List<(T, T)>();
+                    for (int i = 0; i < count; i++)
+                    {
+                        var oldItem = _innerList[index + i];
+                        var newItem = newList[i];
+                        _innerList[index + i] = newItem;
+                        changes.Add((oldItem, newItem));
+                    }
+                    OnItemsModified(changes);
+                }
+                else
+                {
+                    var removedItems = _innerList.GetRange(index, count);
+                    _innerList.RemoveRange(index, count);
+                    _innerList.InsertRange(index, newList);
+                    OnItemsRemoved(removedItems);
+                    OnItemsAdded(newList);
+                }
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public T[] ToArray()
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.ToArray();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        public List<T> GetRange(int index, int count)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.GetRange(index, count);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        public int BinarySearch(T item)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.BinarySearch(item);
             }
             finally
             {
@@ -288,34 +543,107 @@ namespace DarkUI.Collections
 
         protected virtual void OnItemsAdded(IList<T> items)
         {
-            ItemsAdded?.Invoke(this, new ObservableListModified<T>(items));
-            OnCollectionChanged();
+            if (_updateCount == 0)
+            {
+                ItemsAdded?.Invoke(this, new ObservableListModified<T>(items));
+                OnCollectionChanged();
+            }
+            else
+            {
+                _hasChanges = true;
+            }
         }
 
         protected virtual void OnItemsRemoved(IList<T> items)
         {
-            ItemsRemoved?.Invoke(this, new ObservableListModified<T>(items));
-            OnCollectionChanged();
+            if (_updateCount == 0)
+            {
+                ItemsRemoved?.Invoke(this, new ObservableListModified<T>(items));
+                OnCollectionChanged();
+            }
+            else
+            {
+                _hasChanges = true;
+            }
         }
 
         protected virtual void OnItemsModified(IList<(T OldItem, T NewItem)> changes)
         {
-            ItemsModified?.Invoke(this, new ObservableListModified<T>(changes));
-            OnCollectionChanged();
+            if (_updateCount == 0)
+            {
+                ItemsModified?.Invoke(this, new ObservableListModified<T>(changes));
+                OnCollectionChanged();
+            }
+            else
+            {
+                _hasChanges = true;
+            }
+        }
+
+        protected virtual void OnItemsMoved(T item, int oldIndex, int newIndex)
+        {
+            if (_updateCount == 0)
+            {
+                ItemsMoved?.Invoke(this, new ObservableListMoved<T>(item, oldIndex, newIndex));
+                OnCollectionChanged();
+            }
+            else
+            {
+                _hasChanges = true;
+            }
         }
 
         protected virtual void OnCollectionChanged()
         {
-            CollectionChanged?.Invoke(this, EventArgs.Empty);
+            if (_updateCount == 0)
+            {
+                CollectionChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         #endregion
 
         #region Interface Implementations
 
-        public int IndexOf(T item) => _innerList.IndexOf(item);
-        public bool Contains(T item) => _innerList.Contains(item);
-        public void CopyTo(T[] array, int arrayIndex) => _innerList.CopyTo(array, arrayIndex);
+        public int IndexOf(T item)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.IndexOf(item);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        public bool Contains(T item)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.Contains(item);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                _innerList.CopyTo(array, arrayIndex);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
         public IEnumerator<T> GetEnumerator() => _innerList.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -337,7 +665,6 @@ namespace DarkUI.Collections
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
-
             if (disposing)
             {
                 _lock.EnterWriteLock();
@@ -347,15 +674,15 @@ namespace DarkUI.Collections
                     ItemsAdded = null;
                     ItemsRemoved = null;
                     ItemsModified = null;
+                    ItemsMoved = null;
                     CollectionChanged = null;
-                    _lock.Dispose();
                 }
                 finally
                 {
                     _lock.ExitWriteLock();
                 }
+                _lock.Dispose();
             }
-
             _disposed = true;
         }
 
@@ -377,6 +704,20 @@ namespace DarkUI.Collections
         {
             Items = Array.Empty<T>();
             Changes = changes.AsReadOnly();
+        }
+    }
+
+    public class ObservableListMoved<T> : EventArgs
+    {
+        public T Item { get; }
+        public int OldIndex { get; }
+        public int NewIndex { get; }
+
+        public ObservableListMoved(T item, int oldIndex, int newIndex)
+        {
+            Item = item;
+            OldIndex = oldIndex;
+            NewIndex = newIndex;
         }
     }
 }
