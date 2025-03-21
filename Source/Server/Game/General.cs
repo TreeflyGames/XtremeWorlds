@@ -585,7 +585,7 @@ namespace Server
             {
                 string backupDir = Core.Path.Database;
                 Directory.CreateDirectory(backupDir);
-                string backupPath = Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
+                string backupPath = System.IO.Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
                 await Database.BackupAsync(backupPath, Cts.Token);
                 Logger.LogInformation($"Database backup created: {backupPath}");
 

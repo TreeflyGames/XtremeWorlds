@@ -44,6 +44,8 @@ namespace Core
         public double TimeSpeed { get; set; }
         public bool Autotile { get; set; } = true;
 
+        public int MaxBackups { get; set; } = 5;
+
         // Methods to load and save settings
         public static void Load()
         {
