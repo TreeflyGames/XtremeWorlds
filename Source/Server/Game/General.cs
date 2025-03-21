@@ -323,8 +323,8 @@ namespace Server
         {
             await Task.WhenAll(
                 Item.SpawnAllMapsItemsAsync(),
-                NPC.SpawnAllMapNPCsAsync(),
-                EventLogic.SpawnAllMapGlobalEventsAsync()
+                NPC.SpawnAllMapNPCs(),
+                EventLogic.SpawnAllMapGlobalEvents()
             );
             Logger.LogInformation("Game objects spawned.");
         }
@@ -433,7 +433,7 @@ namespace Server
             {
                 case "/teleport":
                     if (parts.Length == 3 && int.TryParse(parts[1], out int x) && int.TryParse(parts[2], out int y))
-                        await TeleportPlayerAsync(playerIndex, x, y);
+                        await TeleportPlayerAsync(playerIndex, (byte)x, (byte)y);
                     else
                         NetworkSend.PlayerMsg(playerIndex, "Usage: /teleport <x> <y>", (int)Core.Enum.ColorType.BrightRed);
                     break;
@@ -462,12 +462,11 @@ namespace Server
             }
         }
 
-        private static async Task TeleportPlayerAsync(int playerIndex, int x, int y)
+        private static async Task TeleportPlayerAsync(int playerIndex, byte x, byte y)
         {
             try
             {
-                var player = await Database.GetPlayerAsync(playerIndex, Cts.Token); // Hypothetical method
-                if (player == null) return;
+                ref var player = ref Core.Type.Player[playerIndex]; // Hypothetical method
 
                 // Validate coordinates (assuming a map size of 100x100 as an example)
                 if (x < 0 || x >= 100 || y < 0 || y >= 100)
@@ -478,8 +477,7 @@ namespace Server
 
                 player.X = x;
                 player.Y = y;
-                await Database.UpdatePlayerPositionAsync(playerIndex, x, y, Cts.Token);
-                await NetworkSend.SendPlayerPositionAsync(playerIndex);
+                NetworkSend.SendPlayerXYToMap(playerIndex);
                 Logger.LogInformation($"Player {playerIndex} teleported to ({x}, {y})");
             }
             catch (Exception ex)
@@ -502,7 +500,7 @@ namespace Server
 
                 if (NetworkConfig.IsPlaying(targetIndex))
                 {
-                    await NetworkSend.SendLeftGameAsync(targetIndex);
+                    NetworkSend.SendLeftGame(targetIndex);
                     Player.LeftGame(targetIndex);
                     Logger.LogInformation($"Player {targetIndex} kicked by {playerIndex}");
                     NetworkSend.PlayerMsg(playerIndex, $"Player {targetIndex} has been kicked.", (int)Core.Enum.ColorType.BrightGreen);
@@ -586,7 +584,7 @@ namespace Server
                 string backupDir = Core.Path.Database;
                 Directory.CreateDirectory(backupDir);
                 string backupPath = System.IO.Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
-                await Database.BackupAsync(backupPath, Cts.Token);
+                await General.BackupDatabaseAsync();
                 Logger.LogInformation($"Database backup created: {backupPath}");
 
                 var backups = Directory.GetFiles(backupDir, "backup_*.bak")

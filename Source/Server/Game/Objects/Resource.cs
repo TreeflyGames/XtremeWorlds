@@ -36,17 +36,17 @@ namespace Server
 
             for (int i = 0; i < Core.Constant.MAX_RESOURCES; i++)
             {
-                tasks.Add(Task.Run(() => LoadResource(i)));
+                tasks.Add(Task.Run(() => LoadResourceAsync(i)));
             }
 
             await Task.WhenAll(tasks);
         }
 
-        public static void LoadResource(int resourceNum)
+        public static async Task LoadResourceAsync(int resourceNum)
         {
             JObject data;
 
-            data = Database.SelectRow(resourceNum, "resource", "data");
+            data = await Database.SelectRowAsync(resourceNum, "resource", "data");
 
             if (data is null)
             {

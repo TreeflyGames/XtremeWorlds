@@ -73,7 +73,8 @@ namespace Server
         public static async Task LoadSwitchesAsync()
         {
             var json = new JsonSerializer<string[]>();
-            Switches = await json.ReadAsync(System.IO.Path.Combine(Path.Database, "Switches.json"));
+
+            Switches = json.Read(System.IO.Path.Combine(Path.Database, "Switches.json"));
 
             if (Switches is null)
                 CreateSwitches();
@@ -82,7 +83,8 @@ namespace Server
         public static async Task LoadVariablesAsync()
         {
             var json = new JsonSerializer<string[]>();
-            Variables = await json.ReadAsync(System.IO.Path.Combine(Path.Database, "Variables.json"));
+
+            Variables = json.Read(System.IO.Path.Combine(Path.Database, "Variables.json"));
 
             if (Variables is null)
                 CreateVariables();

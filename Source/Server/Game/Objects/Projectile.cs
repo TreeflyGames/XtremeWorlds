@@ -32,18 +32,14 @@ namespace Server
 
         public static async Task LoadProjectilesAsync()
         {
-            var tasks = new List<Task>();
+            int i;
 
-            for (int i = 0; i < Core.Constant.MAX_PROJECTILES; i++)
-            {
-                int index = i;
-                tasks.Add(Task.Run(() => LoadProjectileAsync(index)));
-            }
-
-            await Task.WhenAll(tasks);
+            var loopTo = Core.Constant.MAX_PROJECTILES;
+            for (i = 0; i < loopTo; i++)
+                await LoadProjectile(i);
         }
 
-        public static async Task LoadProjectileAsync(int projectileNum)
+        public static async Task LoadProjectile(int projectileNum)
         {
             JObject data;
 

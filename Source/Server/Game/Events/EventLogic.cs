@@ -3706,17 +3706,16 @@ namespace Server
 
         }
 
-        public static async Task SpawnAllMapGlobalEventsAsync()
+        public static async Task SpawnAllMapGlobalEvents()
         {
             int i;
+
             var loopTo = Core.Constant.MAX_MAPS;
             for (i = 0; i < loopTo; i++)
-            {
-                await Task.Run(() => SpawnGlobalEvents(i));
-            }
+                await SpawnGlobalEvents(i);
         }
 
-        public static void SpawnGlobalEvents(int mapNum)
+        public static async Task SpawnGlobalEvents(int mapNum)
         {
             int i;
             int z;
@@ -3724,7 +3723,6 @@ namespace Server
             if (Map[mapNum].EventCount > 0)
             {
                 Event.TempEventMap[mapNum].EventCount = 0;
-                ;
                 Array.Resize(ref Event.TempEventMap[mapNum].Event, 1);
 
                 var loopTo = Map[mapNum].EventCount;
@@ -3810,7 +3808,6 @@ namespace Server
                     }
                 }
             }
-
         }
 
         public static void SpawnMapEventsFor(int index, int mapNum)

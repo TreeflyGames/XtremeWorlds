@@ -17,32 +17,27 @@ namespace Server
     static class NPC
     {
 
-        #region Spawning
-
-        public static async Task SpawnAllMapNPCsAsync()
+        public static async Task SpawnAllMapNPCs()
         {
             int i;
 
             var loopTo = Core.Constant.MAX_MAPS;
-            var tasks = new List<Task>();
             for (i = 0; i < loopTo; i++)
-            {
-                tasks.Add(Task.Run(() => SpawnMapNPCs(i)));
-            }
-            await Task.WhenAll(tasks);
+                await SpawnMapNPCs(i);
+
         }
 
-        public static void SpawnMapNPCs(int mapNum)
+        public static async Task SpawnMapNPCs(int mapNum)
         {
             int i;
 
             var loopTo = Core.Constant.MAX_MAP_NPCS;
             for (i = 0; i < loopTo; i++)
-                SpawnNPC(i, mapNum);
+                await SpawnNPC(i, mapNum);
 
         }
 
-        internal static void SpawnNPC(int MapNPCNum, int mapNum)
+        internal static async Task SpawnNPC(int MapNPCNum, int mapNum)
         {
             var buffer = new ByteStream(4);
             int NPCNum;
@@ -146,14 +141,14 @@ namespace Server
                 // If we suceeded in spawning then send it to everyone
                 if (spawned)
                 {
-                    buffer.WriteInt32((int) ServerPackets.SSpawnNPC);
+                    buffer.WriteInt32((int)ServerPackets.SSpawnNPC);
                     buffer.WriteInt32((int)MapNPCNum);
                     buffer.WriteInt32((int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y);
                     buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Dir);
 
-                    var loopTo5 = (int) VitalType.Count;
+                    var loopTo5 = (int)VitalType.Count;
                     for (i = 0; i < loopTo5; i++)
                         buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[i]);
 
@@ -165,8 +160,6 @@ namespace Server
 
             buffer.Dispose();
         }
-
-        #endregion
 
         #region Movement
 

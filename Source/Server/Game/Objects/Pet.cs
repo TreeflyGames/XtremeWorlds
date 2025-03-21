@@ -61,20 +61,13 @@ namespace Server
         {
             int i;
             var loopTo = Core.Constant.MAX_PETS;
-            var tasks = new List<Task>();
-
             for (i = 0; i < loopTo; i++)
-            {
-                tasks.Add(Task.Run(() => LoadPetAsync(i)));
-            }
-
-            await Task.WhenAll(tasks);
+                await LoadPetAsync(i);
         }
 
         public static async Task LoadPetAsync(int petNum)
         {
             JObject data;
-
             data = await Database.SelectRowAsync(petNum, "pet", "data");
 
             if (data is null)
