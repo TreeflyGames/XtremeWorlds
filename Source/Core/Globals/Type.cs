@@ -33,7 +33,8 @@ namespace Core
         public static MapProjectileStruct[,] MapProjectile = new MapProjectileStruct[Constant.MAX_MAPS, Constant.MAX_PROJECTILES];
         public static PlayerInvStruct[] TradeYourOffer = new PlayerInvStruct[Constant.MAX_INV];
         public static PlayerInvStruct[] TradeTheirOffer = new PlayerInvStruct[Constant.MAX_INV];
-        public static PartyStruct Party;
+        public static PartyStruct[] Party;
+        public static PartyStruct MyParty;
         public static ResourceStruct[] Resource;
         public static CharList Char;
         public static PetStruct[] Pet;

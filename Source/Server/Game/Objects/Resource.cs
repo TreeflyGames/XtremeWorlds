@@ -65,20 +65,6 @@ namespace Server
             Core.Type.Resource[index].SuccessMessage = "";
         }
 
-        public static void ClearResources()
-        {
-            Core.Type.Resource = new Core.Type.ResourceStruct[Core.Constant.MAX_RESOURCES];
-            Core.Type.MapResource = new Core.Type.MapResourceStruct[Core.Constant.MAX_MAPS];
-
-            for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
-            {
-                Core.Type.MapResource[i].ResourceData = new Core.Type.MapResourceCacheStruct[Core.Constant.MAX_RESOURCES];
-            }
-
-            for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES; i < loopTo; i++)
-                ClearResource(i);
-        }
-
         public static void CacheResources(int mapNum)
         {
             int x;

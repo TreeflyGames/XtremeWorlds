@@ -88,18 +88,6 @@ namespace Server
             Core.Type.Pet[petNum].Skill = new int[5];
         }
 
-        public static void ClearPets()
-        {
-            int i;
-
-            Core.Type.Pet = new Core.Type.PetStruct[Core.Constant.MAX_PETS + 1];
-
-            var loopTo = Core.Constant.MAX_PETS;
-            for (i = 0; i < loopTo; i++)
-                ClearPet(i);
-
-        }
-
         #endregion
 
         #region Outgoing Packets

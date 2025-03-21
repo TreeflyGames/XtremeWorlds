@@ -488,17 +488,6 @@ namespace Server
 
         #region Job
 
-        public static void ClearJobs()
-        {
-            int i;
-
-            Core.Type.Job = new Core.Type.JobStruct[Core.Constant.MAX_JOBS];
-
-            var loopTo = Core.Constant.MAX_JOBS;
-            for (i = 0; i < loopTo; i++)
-                ClearJob(i);
-        }
-
         public static void ClearJob(int jobNum)
         {
             Core.Type.Job[jobNum].Stat = new int[(int)StatType.Count];
@@ -555,25 +544,6 @@ namespace Server
             var loopTo = Core.Constant.MAX_JOBS;
             for (i = 0; i < loopTo; i++)
                 SaveJob(i);
-        }
-
-        public static void ClearMaps()
-        {
-            Core.Type.Map = new Core.Type.MapStruct[Core.Constant.MAX_MAPS];
-
-            for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
-            {
-                Core.Type.Map[i].NPC = new int[Core.Constant.MAX_MAP_NPCS];
-            }
-
-            Event.Switches = new string[Core.Constant.MAX_SWITCHES];
-            Event.Variables = new string[Core.Constant.NAX_VARIABLES];
-            Event.TempEventMap = new GlobalEventsStruct[Core.Constant.MAX_MAPS]; // Assuming GlobalEventsStruct is defined somewhere
-
-            for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
-            {
-                ClearMap(i);
-            }
         }
 
         public static void ClearMap(int mapNum)
@@ -779,21 +749,6 @@ namespace Server
         {
             Core.Type.MapItem[mapNum, index].PlayerName = "";
             Core.Type.MapItem[mapNum, index].Num = - 1;
-        }
-
-        public static void ClearMapItems()
-        {
-            int x;
-            int y;
-
-            var loopTo = Core.Constant.MAX_MAPS;
-            for (y = 0; y < loopTo; y++)
-            {
-                var loopTo1 = Core.Constant.MAX_MAP_ITEMS;
-                for (x = 0; x < loopTo1; x++)
-                    ClearMapItem(x, y);
-            }
-
         }
 
         public static XWMapStruct LoadXWMap(string fileName)
@@ -1168,28 +1123,6 @@ namespace Server
             Core.Type.MapNPC[mapNum].NPC[index].Num = -1;
         }
 
-        public static void ClearAllMapNPCs()
-        {
-            Core.Type.MapNPC = new MapDataStruct[Core.Constant.MAX_MAPS];
-
-            var loopTo = Core.Constant.MAX_MAPS;
-            for (int i = 0; i < loopTo; i++)
-            {            
-                ClearMapNPCs(i);
-            }
-        }
-
-        public static void ClearMapNPCs(int mapNum)
-        {
-            Core.Type.MapNPC[mapNum].NPC = new MapNPCStruct[Core.Constant.MAX_MAP_NPCS];
-
-            var loopTo = Core.Constant.MAX_MAP_NPCS;
-            for (int x = 0; x < loopTo; x++)
-            {        
-                ClearMapNPC(x, mapNum);
-            }
-        }
-
         public static void ClearNPC(int index)
         {
             Core.Type.NPC[index].Name = "";
@@ -1203,15 +1136,6 @@ namespace Server
                 Core.Type.NPC[index].DropItemValue = new int[Core.Constant.MAX_DROP_ITEMS];
                 Core.Type.NPC[index].Skill = new byte[Core.Constant.MAX_NPC_SKILLS];
             }
-        }
-
-        public static void ClearNPCs()
-        {
-            Core.Type.NPC = new NPCStruct[Core.Constant.MAX_NPCS];
-
-            for (int i = 0, loopTo = Core.Constant.MAX_NPCS; i < loopTo; i++)
-                ClearNPC(i);
-
         }
 
         #endregion
@@ -1236,7 +1160,7 @@ namespace Server
         {
             int i;
 
-            var loopTo = Core.Constant.MAX_SHOPS - 1;
+            var loopTo = Core.Constant.MAX_SHOPS;
             for (i = 0; i < loopTo; i++)
                 LoadShopAsync(i);
 
@@ -1269,12 +1193,6 @@ namespace Server
                 Core.Type.Shop[index].TradeItem[i].Item = -1;
                 Core.Type.Shop[index].TradeItem[i].CostItem = -1;
             }
-        }
-
-        public static void ClearShops()
-        {
-            for (int i = 0, loopTo = Core.Constant.MAX_SHOPS; i < loopTo; i++)
-                ClearShop(i);
         }
 
         #endregion
@@ -1315,16 +1233,6 @@ namespace Server
         {
             Core.Type.Skill[index].Name = "";
             Core.Type.Skill[index].LevelReq = 0;
-        }
-
-        public static void ClearSkills()
-        {
-            int i;
-
-            var loopTo = Core.Constant.MAX_SKILLS;
-            for (i = 0; i < loopTo; i++)
-                ClearSkill(i);
-
         }
 
         #endregion

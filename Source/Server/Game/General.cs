@@ -2,6 +2,7 @@ using Core;
 using Core.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Xna.Framework.Content;
 using Newtonsoft.Json.Linq;
 using Reoria.Engine.Base.Container;
 using Reoria.Engine.Base.Container.Interfaces;
@@ -123,9 +124,35 @@ namespace Server
             await InitializeDatabaseWithRetryAsync();
         }
 
+        public static void InitalizeCoreData()
+        {
+            Core.Type.Job = new Core.Type.JobStruct[Core.Constant.MAX_JOBS];
+            Core.Type.Moral = new Core.Type.MoralStruct[Core.Constant.MAX_MORALS];
+            Core.Type.Map = new Core.Type.MapStruct[Core.Constant.MAX_MAPS];
+            Core.Type.Item = new Core.Type.ItemStruct[Core.Constant.MAX_ITEMS];
+            Core.Type.NPC = new Core.Type.NPCStruct[Core.Constant.MAX_NPCS];
+            Core.Type.Resource = new Core.Type.ResourceStruct[Core.Constant.MAX_RESOURCES];
+            Core.Type.Projectile = new Core.Type.ProjectileStruct[Core.Constant.MAX_PROJECTILES];
+            Core.Type.Animation = new Core.Type.AnimationStruct[Core.Constant.MAX_ANIMATIONS];
+            Core.Type.Pet = new Core.Type.PetStruct[Core.Constant.MAX_PETS];
+            Core.Type.Shop = new Core.Type.ShopStruct[Core.Constant.MAX_SHOPS];
+            Core.Type.Player = new Core.Type.PlayerStruct[Core.Constant.MAX_PLAYERS];
+            Core.Type.Party = new Core.Type.PartyStruct[Core.Constant.MAX_PARTY];
+            Core.Type.MapItem = new Core.Type.MapItemStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_MAP_ITEMS];
+            Core.Type.NPC = new NPCStruct[Core.Constant.MAX_NPCS];
+            Core.Type.MapNPC = new MapDataStruct[Core.Constant.MAX_MAPS];
+            Core.Type.Shop = new ShopStruct[Core.Constant.MAX_SHOPS];
+            Core.Type.Skill = new SkillStruct[Core.Constant.MAX_SKILLS];
+            Core.Type.MapResource = new Core.Type.MapResourceStruct[Core.Constant.MAX_MAPS];
+            Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS];
+            Core.Type.Account = new Core.Type.AccountStruct[Core.Constant.MAX_PLAYERS];
+            Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
+        }
+
         private static async Task LoadGameDataAsync()
         {
             var stopwatch = Stopwatch.StartNew();
+            InitalizeCoreData();
             await LoadGameContentAsync();
             await SpawnGameObjectsAsync();
             Time.InitTime();

@@ -55,24 +55,6 @@ namespace Server
             Core.Type.Projectile[projectileNum] = projectileData;
         }
 
-        public static void ClearMapProjectile()
-        {
-            int x;
-            int y;
-            ;
-
-            Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
-
-            var loopTo = Core.Constant.MAX_MAPS;
-            for (x = 0; x < (int)loopTo; x++)
-            {
-                var loopTo1 = Core.Constant.MAX_PROJECTILES;
-                for (y = 0; y < (int)loopTo1; y++)
-                    ClearMapProjectile(x, y);
-            }
-
-        }
-
         public static void ClearMapProjectile(int mapNum, int index)
         {
 
@@ -94,18 +76,6 @@ namespace Server
             Core.Type.Projectile[index].Range = 0;
             Core.Type.Projectile[index].Speed = 0;
             Core.Type.Projectile[index].Damage = 0;
-
-        }
-
-        public static void ClearProjectile()
-        {
-            int i;
-
-            Core.Type.Projectile = new Core.Type.ProjectileStruct[Core.Constant.MAX_PROJECTILES];
-
-            var loopTo = Core.Constant.MAX_PROJECTILES;
-            for (i = 0; i < loopTo; i++)
-                ClearProjectile(i);
 
         }
 

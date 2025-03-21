@@ -79,12 +79,6 @@ namespace Server
             }
         }
 
-        public static void ClearItems()
-        {
-            for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < loopTo; i++)
-                ClearItem(i);
-        }
-
         public static byte[] ItemData(int itemNum)
         {
             var buffer = new ByteStream(4);

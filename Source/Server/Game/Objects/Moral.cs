@@ -15,17 +15,6 @@ namespace Server
     {
 
         #region Database
-        public static void ClearMorals()
-        {
-            int i;
-
-            Core.Type.Moral = new Core.Type.MoralStruct[Core.Constant.MAX_MORALS];
-
-            var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i < loopTo; i++)
-                ClearMoral(i);
-        }
-
         public static void ClearMoral(int moralNum)
         {
             Core.Type.Moral[moralNum].Name = "";
