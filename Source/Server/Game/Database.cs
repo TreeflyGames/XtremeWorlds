@@ -29,58 +29,6 @@ namespace Server
     {
         private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(5, 5);
 
-        public static async Task ExecuteSqlAsync(string connectionString, string sql)
-        {
-            await connectionSemaphore.WaitAsync();
-            try
-            {
-                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-                {
-                    await connection.OpenAsync();
-
-                    using (var command = new NpgsqlCommand(sql, connection))
-                    {
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            finally
-            {
-                connectionSemaphore.Release();
-            }
-        }
-
-        public static async Task<bool> DatabaseExistsAsync(string databaseName)
-        {
-            await connectionSemaphore.WaitAsync();
-            try
-            {
-                string sql = "SELECT 1 FROM pg_database WHERE datname = @databaseName;";
-
-                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-                {
-                    await connection.OpenAsync();
-                    using (var command = new NpgsqlCommand(sql, connection))
-                    {
-                        command.Parameters.AddWithValue("@databaseName", databaseName);
-
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            return await reader.ReadAsync();
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            finally
-            {
-                connectionSemaphore.Release();
-            }
-        }
-
         public static async Task CreateDatabaseAsync(string databaseName)
         {
             await connectionSemaphore.WaitAsync();
@@ -494,19 +442,6 @@ namespace Server
             finally
             {
                 connectionSemaphore.Release();
-            }
-        }
-
-        public static void ExecuteSql(string connectionString, string sql)
-        {
-            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-            {
-                connection?.Open();
-
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
             }
         }
 
