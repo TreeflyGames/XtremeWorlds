@@ -37,11 +37,11 @@ namespace Server
                         if (Core.Type.TempPlayer[i].EventMap.EventPages.Length < x)
                             break;
 
-                        id = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID;
+                        id = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId;
                         if (id > Core.Type.TempPlayer[i].EventMap.CurrentEvents)
                             break;
 
-                        page = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID;
+                        page = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageId;
 
                         if (x < id)
                             continue;
@@ -176,7 +176,7 @@ namespace Server
                                     buffer.WriteInt32(id);
                                     {
                                         var withBlock = Core.Type.TempPlayer[i].EventMap.EventPages[x];
-                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock.EventID].Name);
+                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock.EventId].Name);
                                         buffer.WriteInt32(withBlock.Dir);
                                         buffer.WriteByte(withBlock.GraphicType);
                                         buffer.WriteInt32(withBlock.Graphic);
@@ -208,7 +208,7 @@ namespace Server
 
         public static void SpawnNewEvents()
         {
-            int PageID;
+            int PageId;
             int id;
             int compare;
             int i;
@@ -235,14 +235,14 @@ namespace Server
                             if (x >= TempPlayer[i].EventMap.EventPages.Length)
                                 break;
 
-                            id = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID;
+                            id = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId;
 
                             if (id >= 0 & id < Core.Type.TempPlayer[i].EventMap.CurrentEvents)
                             {
-                                PageID = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID;
+                                PageId = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageId;
 
                                 if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == false)
-                                    PageID = 0;
+                                    PageId = 0;
 
                                 if (x < id)
                                     continue;
@@ -375,7 +375,7 @@ namespace Server
                                 {
                                     if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == true)
                                     {
-                                        if (z <= PageID)
+                                        if (z <= PageId)
                                         {
                                             spawnevent = Conversions.ToBoolean(0);
                                         }
@@ -392,9 +392,9 @@ namespace Server
                                     var loopTo2 = Information.UBound(Core.Type.TempPlayer[i].EventProcessing);
                                     for (n = 0; n < (int)loopTo2; n++)
                                     {
-                                        if (Core.Type.TempPlayer[i].EventProcessing[n].EventID == id)
+                                        if (Core.Type.TempPlayer[i].EventProcessing[n].EventId == id)
                                         {
-                                            Core.Type.TempPlayer[i].EventProcessing[n].EventID = -1;
+                                            Core.Type.TempPlayer[i].EventProcessing[n].EventId = -1;
                                             Core.Type.TempPlayer[i].EventProcessing[n].Active = 0;
                                         }
                                     }
@@ -472,8 +472,8 @@ namespace Server
                                             }
                                     }
                                     withBlock.Position = Map[mapNum].Event[id].Pages[z].Position;
-                                    withBlock.EventID = x;
-                                    withBlock.PageID = z;
+                                    withBlock.EventId = x;
+                                    withBlock.PageId = z;
                                     withBlock.Visible = true;
 
                                     withBlock.MoveType = Map[mapNum].Event[id].Pages[z].MoveType;
@@ -538,7 +538,7 @@ namespace Server
                                 buffer.WriteInt32(id);
                                 {
                                     ref var withBlock1 = ref Core.Type.TempPlayer[i].EventMap.EventPages[x];
-                                    buffer.WriteString(Map[mapNum].Event[withBlock1.EventID].Name);
+                                    buffer.WriteString(Map[mapNum].Event[withBlock1.EventId].Name);
                                     buffer.WriteInt32(withBlock1.Dir);
                                     buffer.WriteByte(withBlock1.GraphicType);
                                     buffer.WriteInt32(withBlock1.Graphic);
@@ -576,7 +576,7 @@ namespace Server
             int x;
             int i;
             int playerID;
-            int EventID;
+            int EventId;
             int WalkThrough;
             bool IsGlobal;
             int mapNum;
@@ -665,7 +665,7 @@ namespace Server
                                                     IsGlobal = Conversions.ToBoolean(1);
                                                     mapNum = i;
                                                     playerID = 0;
-                                                    EventID = x;
+                                                    EventId = x;
                                                     WalkThrough = Event.TempEventMap[i].Event[x].WalkThrough;
                                                     if (withBlock.MoveRouteCount > 0)
                                                     {
@@ -723,9 +723,9 @@ namespace Server
                                                             {
                                                                 case 1:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)DirectionType.Up, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)DirectionType.Up, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, (int)DirectionType.Up, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, (int)DirectionType.Up, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -736,9 +736,9 @@ namespace Server
                                                                     }
                                                                 case 2:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)DirectionType.Down, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)DirectionType.Down, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, (int)DirectionType.Down, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, (int)DirectionType.Down, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -749,9 +749,9 @@ namespace Server
                                                                     }
                                                                 case 3:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)DirectionType.Left, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)DirectionType.Left, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, (int)DirectionType.Left, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, (int)DirectionType.Left, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -762,9 +762,9 @@ namespace Server
                                                                     }
                                                                 case 4:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)DirectionType.Right, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)DirectionType.Right, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, (int)DirectionType.Right, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, (int)DirectionType.Right, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -776,9 +776,9 @@ namespace Server
                                                                 case 5:
                                                                     {
                                                                         z = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)z, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, z, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -793,7 +793,7 @@ namespace Server
                                                                         {
                                                                             if (Conversions.ToInteger(Event.IsOneBlockAway(withBlock.X, withBlock.Y, GetPlayerX(playerID), GetPlayerY(playerID))) == 1)
                                                                             {
-                                                                                Event.EventDir(playerID, GetPlayerMap(playerID), EventID, Event.GetDirToPlayer(playerID, GetPlayerMap(playerID), EventID), false);
+                                                                                Event.EventDir(playerID, GetPlayerMap(playerID), EventId, Event.GetDirToPlayer(playerID, GetPlayerMap(playerID), EventId), false);
                                                                                 if (withBlock.IgnoreIfCannotMove == 0)
                                                                                 {
                                                                                     withBlock.MoveRouteStep = withBlock.MoveRouteStep - 1;
@@ -801,7 +801,7 @@ namespace Server
                                                                             }
                                                                             else
                                                                             {
-                                                                                z = Event.CanEventMoveTowardsPlayer(playerID, mapNum, EventID);
+                                                                                z = Event.CanEventMoveTowardsPlayer(playerID, mapNum, EventId);
                                                                                 if (z >= 4)
                                                                                 {
                                                                                     // No
@@ -811,9 +811,9 @@ namespace Server
                                                                                     }
                                                                                 }
                                                                                 // i is the direct, lets go...
-                                                                                else if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
+                                                                                else if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)z, IsGlobal))
                                                                                 {
-                                                                                    Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
+                                                                                    Event.EventMove(playerID, mapNum, EventId, z, actualmovespeed, IsGlobal);
                                                                                 }
                                                                                 else if (withBlock.IgnoreIfCannotMove == 0)
                                                                                 {
@@ -828,15 +828,15 @@ namespace Server
                                                                     {
                                                                         if (Conversions.ToInteger(IsGlobal) == 0)
                                                                         {
-                                                                            z = Event.CanEventMoveAwayFromPlayer(playerID, mapNum, EventID);
+                                                                            z = Event.CanEventMoveAwayFromPlayer(playerID, mapNum, EventId);
                                                                             if (z >= 5)
                                                                             {
                                                                             }
                                                                             // No
                                                                             // i is the direct, lets go...
-                                                                            else if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
+                                                                            else if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)z, IsGlobal))
                                                                             {
-                                                                                Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
+                                                                                Event.EventMove(playerID, mapNum, EventId, z, actualmovespeed, IsGlobal);
                                                                             }
                                                                             else if (withBlock.IgnoreIfCannotMove == 0)
                                                                             {
@@ -848,9 +848,9 @@ namespace Server
                                                                     }
                                                                 case 8:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)withBlock.Dir, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)withBlock.Dir, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, withBlock.Dir, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, withBlock.Dir, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -884,9 +884,9 @@ namespace Server
                                                                                     break;
                                                                                 }
                                                                         }
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)z, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, z, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -912,22 +912,22 @@ namespace Server
                                                                     }
                                                                 case 13:
                                                                     {
-                                                                        Event.EventDir(playerID, mapNum, EventID, (byte)DirectionType.Up, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, (byte)DirectionType.Up, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 14:
                                                                     {
-                                                                        Event.EventDir(playerID, mapNum, EventID, (byte)DirectionType.Down, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, (byte)DirectionType.Down, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 15:
                                                                     {
-                                                                        Event.EventDir(playerID, mapNum, EventID, (byte)DirectionType.Left, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, (byte)DirectionType.Left, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 16:
                                                                     {
-                                                                        Event.EventDir(playerID, mapNum, EventID, (byte)DirectionType.Right, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, (byte)DirectionType.Right, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 17:
@@ -955,7 +955,7 @@ namespace Server
                                                                                     break;
                                                                                 }
                                                                         }
-                                                                        Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 18:
@@ -983,7 +983,7 @@ namespace Server
                                                                                     break;
                                                                                 }
                                                                         }
-                                                                        Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 19:
@@ -1011,21 +1011,21 @@ namespace Server
                                                                                     break;
                                                                                 }
                                                                         }
-                                                                        Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 20:
                                                                     {
                                                                         z = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
-                                                                        Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 21:
                                                                     {
                                                                         if (Conversions.ToInteger(IsGlobal) == 0)
                                                                         {
-                                                                            z = Event.GetDirToPlayer(playerID, mapNum, EventID);
-                                                                            Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                            z = Event.GetDirToPlayer(playerID, mapNum, EventId);
+                                                                            Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         }
 
                                                                         break;
@@ -1034,8 +1034,8 @@ namespace Server
                                                                     {
                                                                         if (Conversions.ToInteger(IsGlobal) == 0)
                                                                         {
-                                                                            z = Event.GetDirAwayFromPlayer(playerID, mapNum, EventID);
-                                                                            Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                            z = Event.GetDirAwayFromPlayer(playerID, mapNum, EventId);
+                                                                            Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         }
 
                                                                         break;
@@ -1198,7 +1198,7 @@ namespace Server
                                                             {
                                                                 buffer = new ByteStream(4);
                                                                 buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
-                                                                buffer.WriteInt32(EventID);
+                                                                buffer.WriteInt32(EventId);
                                                                 {
                                                                     var withBlock1 = Event.TempEventMap[i].Event[x];
                                                                     buffer.WriteString(Map[i].Event[x].Name);
@@ -1274,7 +1274,7 @@ namespace Server
             int x;
             int i;
             int playerID;
-            int EventID;
+            int EventId;
             int WalkThrough;
             bool IsGlobal;
             int mapNum;
@@ -1293,10 +1293,10 @@ namespace Server
                     var loopTo1 = Core.Type.TempPlayer[i].EventMap.CurrentEvents;
                     for (x = 0; x < (int)loopTo1; x++)
                     {
-                        if (Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID > Information.UBound(Map[GetPlayerMap(i)].Event))
+                        if (Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId > Information.UBound(Map[GetPlayerMap(i)].Event))
                             break;
 
-                        if ((int)Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Globals == 0)
+                        if ((int)Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId].Globals == 0)
                         {
                             if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == true)
                             {
@@ -1366,7 +1366,7 @@ namespace Server
                                                     sendupdate = Conversions.ToBoolean(0);
                                                     mapNum = GetPlayerMap(i);
                                                     playerID = i;
-                                                    EventID = x;
+                                                    EventId = x;
                                                     WalkThrough = withBlock.WalkThrough;
                                                     if (Core.Type.TempPlayer[i].EventMap.EventPages[x].MoveRouteCount > 0)
                                                     {
@@ -1425,9 +1425,9 @@ namespace Server
                                                             {
                                                                 case 1:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)DirectionType.Up, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)DirectionType.Up, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, (int)DirectionType.Up, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, (int)DirectionType.Up, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (Core.Type.TempPlayer[i].EventMap.EventPages[x].IgnoreIfCannotMove == 0)
                                                                         {
@@ -1438,9 +1438,9 @@ namespace Server
                                                                     }
                                                                 case 2:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)DirectionType.Down, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)DirectionType.Down, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, (int)DirectionType.Down, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, (int)DirectionType.Down, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -1451,9 +1451,9 @@ namespace Server
                                                                     }
                                                                 case 3:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)DirectionType.Left, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)DirectionType.Left, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, (int)DirectionType.Left, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, (int)DirectionType.Left, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -1464,9 +1464,9 @@ namespace Server
                                                                     }
                                                                 case 4:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)DirectionType.Right, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)DirectionType.Right, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, (int)DirectionType.Right, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, (int)DirectionType.Right, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -1478,9 +1478,9 @@ namespace Server
                                                                 case 5:
                                                                     {
                                                                         z = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)z, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, z, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -1495,20 +1495,20 @@ namespace Server
                                                                         {
                                                                             if (Conversions.ToInteger(Event.IsOneBlockAway(withBlock.X, withBlock.Y, GetPlayerX(playerID), GetPlayerY(playerID))) == 1)
                                                                             {
-                                                                                Event.EventDir(playerID, GetPlayerMap(playerID), EventID, Event.GetDirToPlayer(playerID, GetPlayerMap(playerID), EventID), false);
+                                                                                Event.EventDir(playerID, GetPlayerMap(playerID), EventId, Event.GetDirToPlayer(playerID, GetPlayerMap(playerID), EventId), false);
 
                                                                                 // Lets do cool stuff!
-                                                                                if ((int)Map[GetPlayerMap(playerID)].Event[EventID].Pages[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].PageID].Trigger == 1)
+                                                                                if ((int)Map[GetPlayerMap(playerID)].Event[EventId].Pages[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventId].PageId].Trigger == 1)
                                                                                 {
-                                                                                    if (Map[mapNum].Event[EventID].Pages[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].PageID].CommandListCount > 0)
+                                                                                    if (Map[mapNum].Event[EventId].Pages[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventId].PageId].CommandListCount > 0)
                                                                                     {
-                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventID].Active = 1;
-                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventID].ActionTimer = General.GetTimeMs();
-                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventID].CurList = 0;
-                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventID].CurSlot = 0;
-                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventID].EventID = EventID;
-                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventID].PageID = Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].PageID;
-                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventID].WaitingForResponse = 0;
+                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventId].Active = 1;
+                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventId].ActionTimer = General.GetTimeMs();
+                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventId].CurList = 0;
+                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventId].CurSlot = 0;
+                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventId].EventId = EventId;
+                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventId].PageId = Core.Type.TempPlayer[playerID].EventMap.EventPages[EventId].PageId;
+                                                                                        Core.Type.TempPlayer[playerID].EventProcessing[EventId].WaitingForResponse = 0;
 
                                                                                     }
                                                                                 }
@@ -1519,7 +1519,7 @@ namespace Server
                                                                             }
                                                                             else
                                                                             {
-                                                                                z = Event.CanEventMoveTowardsPlayer(playerID, mapNum, EventID);
+                                                                                z = Event.CanEventMoveTowardsPlayer(playerID, mapNum, EventId);
                                                                                 if (z >= 4)
                                                                                 {
                                                                                     // No
@@ -1529,9 +1529,9 @@ namespace Server
                                                                                     }
                                                                                 }
                                                                                 // i is the direct, lets go...
-                                                                                else if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
+                                                                                else if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)z, IsGlobal))
                                                                                 {
-                                                                                    Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
+                                                                                    Event.EventMove(playerID, mapNum, EventId, z, actualmovespeed, IsGlobal);
                                                                                 }
                                                                                 else if (withBlock.IgnoreIfCannotMove == 0)
                                                                                 {
@@ -1546,15 +1546,15 @@ namespace Server
                                                                     {
                                                                         if (Conversions.ToInteger(IsGlobal) == 0)
                                                                         {
-                                                                            z = Event.CanEventMoveAwayFromPlayer(playerID, mapNum, EventID);
+                                                                            z = Event.CanEventMoveAwayFromPlayer(playerID, mapNum, EventId);
                                                                             if (z >= 5)
                                                                             {
                                                                             }
                                                                             // No
                                                                             // i is the direct, lets go...
-                                                                            else if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
+                                                                            else if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)z, IsGlobal))
                                                                             {
-                                                                                Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
+                                                                                Event.EventMove(playerID, mapNum, EventId, z, actualmovespeed, IsGlobal);
                                                                             }
                                                                             else if (withBlock.IgnoreIfCannotMove == 0)
                                                                             {
@@ -1566,9 +1566,9 @@ namespace Server
                                                                     }
                                                                 case 8:
                                                                     {
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)withBlock.Dir, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)withBlock.Dir, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, withBlock.Dir, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, withBlock.Dir, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -1602,9 +1602,9 @@ namespace Server
                                                                                     break;
                                                                                 }
                                                                         }
-                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
+                                                                        if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventId, WalkThrough, (byte)z, IsGlobal))
                                                                         {
-                                                                            Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
+                                                                            Event.EventMove(playerID, mapNum, EventId, z, actualmovespeed, IsGlobal);
                                                                         }
                                                                         else if (withBlock.IgnoreIfCannotMove == 0)
                                                                         {
@@ -1630,22 +1630,22 @@ namespace Server
                                                                     }
                                                                 case 13:
                                                                     {
-                                                                        Event.EventDir(playerID, mapNum, EventID, (byte)DirectionType.Up, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, (byte)DirectionType.Up, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 14:
                                                                     {
-                                                                        Event.EventDir(playerID, mapNum, EventID, (byte)DirectionType.Down, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, (byte)DirectionType.Down, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 15:
                                                                     {
-                                                                        Event.EventDir(playerID, mapNum, EventID, (byte)DirectionType.Left, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, (byte)DirectionType.Left, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 16:
                                                                     {
-                                                                        Event.EventDir(playerID, mapNum, EventID, (byte)DirectionType.Right, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, (byte)DirectionType.Right, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 17:
@@ -1673,7 +1673,7 @@ namespace Server
                                                                                     break;
                                                                                 }
                                                                         }
-                                                                        Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 18:
@@ -1701,7 +1701,7 @@ namespace Server
                                                                                     break;
                                                                                 }
                                                                         }
-                                                                        Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 19:
@@ -1729,21 +1729,21 @@ namespace Server
                                                                                     break;
                                                                                 }
                                                                         }
-                                                                        Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 20:
                                                                     {
                                                                         z = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
-                                                                        Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                        Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         break;
                                                                     }
                                                                 case 21:
                                                                     {
                                                                         if (Conversions.ToInteger(IsGlobal) == 0)
                                                                         {
-                                                                            z = Event.GetDirToPlayer(playerID, mapNum, EventID);
-                                                                            Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                            z = Event.GetDirToPlayer(playerID, mapNum, EventId);
+                                                                            Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         }
 
                                                                         break;
@@ -1752,8 +1752,8 @@ namespace Server
                                                                     {
                                                                         if (Conversions.ToInteger(IsGlobal) == 0)
                                                                         {
-                                                                            z = Event.GetDirAwayFromPlayer(playerID, mapNum, EventID);
-                                                                            Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
+                                                                            z = Event.GetDirAwayFromPlayer(playerID, mapNum, EventId);
+                                                                            Event.EventDir(playerID, mapNum, EventId, z, IsGlobal);
                                                                         }
 
                                                                         break;
@@ -1911,14 +1911,14 @@ namespace Server
                                                                     }
                                                             }
 
-                                                            if (sendupdate & Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID >= 0)
+                                                            if (sendupdate & Core.Type.TempPlayer[playerID].EventMap.EventPages[EventId].EventId >= 0)
                                                             {
                                                                 buffer = new ByteStream(4);
                                                                 buffer.WriteInt32((int) ServerPackets.SSpawnEvent);
-                                                                buffer.WriteInt32(Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID);
+                                                                buffer.WriteInt32(Core.Type.TempPlayer[playerID].EventMap.EventPages[EventId].EventId);
                                                                 {
-                                                                    ref var withBlock1 = ref Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID];
-                                                                    buffer.WriteString(Map[GetPlayerMap(playerID)].Event[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventID].EventID].Name);
+                                                                    ref var withBlock1 = ref Core.Type.TempPlayer[playerID].EventMap.EventPages[EventId];
+                                                                    buffer.WriteString(Map[GetPlayerMap(playerID)].Event[Core.Type.TempPlayer[playerID].EventMap.EventPages[EventId].EventId].Name);
                                                                     buffer.WriteInt32(withBlock1.Dir);
                                                                     buffer.WriteByte(withBlock1.GraphicType);
                                                                     buffer.WriteInt32(withBlock1.Graphic);
@@ -2014,28 +2014,28 @@ namespace Server
                                 {
                                     if (Core.Type.TempPlayer[i].EventMap.EventPages[x].Visible == true)
                                     {
-                                        if (x < Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID)
+                                        if (x < Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId)
                                             continue;
 
-                                        if (Map[Core.Type.Player[i].Map].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Pages == null)
+                                        if (Map[Core.Type.Player[i].Map].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId].Pages == null)
                                             continue;
       
-                                        if (Map[Core.Type.Player[i].Map].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID].Trigger == 2) // Parallel Process baby!
+                                        if (Map[Core.Type.Player[i].Map].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageId].Trigger == 2) // Parallel Process baby!
                                         {
 
                                             if (Core.Type.TempPlayer[i].EventProcessing[x].Active == 0)
                                             {
-                                                if (Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID].CommandListCount > 0)
+                                                if (Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageId].CommandListCount > 0)
                                                 {                                                   
-                                                    ref var withBlock = ref Core.Type.TempPlayer[i].EventProcessing[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID];
+                                                    ref var withBlock = ref Core.Type.TempPlayer[i].EventProcessing[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId];
                                                     withBlock.Active = 1;
                                                     withBlock.ActionTimer = General.GetTimeMs();
                                                     withBlock.CurList = 0;
                                                     withBlock.CurSlot = 0;
-                                                    withBlock.EventID = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID;
-                                                    withBlock.PageID = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID;
+                                                    withBlock.EventId = Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId;
+                                                    withBlock.PageId = Core.Type.TempPlayer[i].EventMap.EventPages[x].PageId;
                                                     withBlock.WaitingForResponse = 0;
-                                                    withBlock.ListLeftOff = new int[Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventID].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageID].CommandListCount];
+                                                    withBlock.ListLeftOff = new int[Map[GetPlayerMap(i)].Event[Core.Type.TempPlayer[i].EventMap.EventPages[x].EventId].Pages[Core.Type.TempPlayer[i].EventMap.EventPages[x].PageId].CommandListCount];
                                                 }
                                             }
                                         }
@@ -2071,7 +2071,7 @@ namespace Server
                                             if (Core.Type.TempPlayer[i].EventProcessingCount == 0)
                                                 return;
 
-                                            if (withBlock1.EventID < 0 || withBlock1.EventID >= Map[Core.Type.Player[i].Map].Event.Length)
+                                            if (withBlock1.EventId < 0 || withBlock1.EventId >= Map[Core.Type.Player[i].Map].Event.Length)
                                                 continue;
 
                                             removeEventProcess = Conversions.ToBoolean(0);
@@ -2120,9 +2120,9 @@ namespace Server
                                                         if (withBlock1.ListLeftOff == null)
                                                             continue;
 
-                                                        if (Information.UBound(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands) < withBlock1.CurSlot)
+                                                        if (Information.UBound(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands) < withBlock1.CurSlot)
                                                         {
-                                                            if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].ParentList == withBlock1.CurList)
+                                                            if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].ParentList == withBlock1.CurList)
                                                             {
                                                                 // Get rid of this event, it is bad
                                                                 removeEventProcess = Conversions.ToBoolean(1);
@@ -2136,14 +2136,14 @@ namespace Server
                                                             withBlock1.ListLeftOff[withBlock1.CurList] = 0;
                                                         }                                                    
                                                         
-                                                        if (withBlock1.CurList > Map[Core.Type.Player[i].Map].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandListCount)
+                                                        if (withBlock1.CurList > Map[Core.Type.Player[i].Map].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandListCount)
                                                         {
                                                             // Get rid of this event, it is bad
                                                             removeEventProcess = Conversions.ToBoolean(1);
                                                             endprocess = Conversions.ToBoolean(1);
                                                         }
 
-                                                        if (withBlock1.CurSlot > Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].CommandCount)
+                                                        if (withBlock1.CurSlot > Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].CommandCount)
                                                         {
                                                             if (withBlock1.CurList == 1)
                                                             {
@@ -2153,7 +2153,7 @@ namespace Server
                                                             }
                                                             else
                                                             {
-                                                                withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].ParentList;
+                                                                withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].ParentList;
                                                                 withBlock1.CurSlot = 0;
                                                                 restartlist = Conversions.ToBoolean(1);
                                                             }
@@ -2162,25 +2162,25 @@ namespace Server
                                                         if (!restartlist & !endprocess)
                                                         {
                                                             // If we are still here, then we are good to process shit :D
-                                                            switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Index)
+                                                            switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Index)
                                                             {
                                                                 case (byte)EventType.AddText:
                                                                     {
-                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2)
+                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2)
                                                                         {
                                                                             case 0:
                                                                                 {
-                                                                                    NetworkSend.PlayerMsg(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                                    NetworkSend.PlayerMsg(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                                     break;
                                                                                 }
                                                                             case 1:
                                                                                 {
-                                                                                    NetworkSend.MapMsg(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, (byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                                    NetworkSend.MapMsg(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, (byte)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                                     break;
                                                                                 }
                                                                             case 2:
                                                                                 {
-                                                                                    NetworkSend.GlobalMsg(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1); // Type.Map(GetPlayerMap(i)).Events(.EventID].Pages(.PageID).CommandList(.CurList].Commands(.CurSlot).Data1)
+                                                                                    NetworkSend.GlobalMsg(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1); // Type.Map(GetPlayerMap(i)).Events(.EventId].Pages(.PageId).CommandList(.CurList].Commands(.CurSlot).Data1)
                                                                                     break;
                                                                                 }
                                                                         }
@@ -2191,19 +2191,19 @@ namespace Server
                                                                     {
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SEventChat);
-                                                                        buffer.WriteInt32(withBlock1.EventID);
-                                                                        buffer.WriteInt32(withBlock1.PageID);
-                                                                        buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
-                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1));
+                                                                        buffer.WriteInt32(withBlock1.EventId);
+                                                                        buffer.WriteInt32(withBlock1.PageId);
+                                                                        buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1));
                                                                         buffer.WriteInt32(0);
 
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].CommandCount > withBlock1.CurSlot)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].CommandCount > withBlock1.CurSlot)
                                                                         {
-                                                                            if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.ShowText | Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.ShowChoices)
+                                                                            if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.ShowText | Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.ShowChoices)
                                                                             {
                                                                                 buffer.WriteInt32(1);
                                                                             }
-                                                                            else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.Condition)
+                                                                            else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.Condition)
                                                                             {
                                                                                 buffer.WriteInt32(2);
                                                                             }
@@ -2225,21 +2225,21 @@ namespace Server
                                                                     {
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SEventChat);
-                                                                        buffer.WriteInt32(withBlock1.EventID);
-                                                                        buffer.WriteInt32(withBlock1.PageID);
-                                                                        buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data5);
-                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1));
+                                                                        buffer.WriteInt32(withBlock1.EventId);
+                                                                        buffer.WriteInt32(withBlock1.PageId);
+                                                                        buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data5);
+                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1));
 
-                                                                        if ((Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text2.Length) > 0)
+                                                                        if ((Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text2.Length) > 0)
                                                                         {
                                                                             w = 0;
-                                                                            if ((Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text3.Length) > 0)
+                                                                            if ((Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text3.Length) > 0)
                                                                             {
                                                                                 w = 2;
-                                                                                if ((Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text4.Length) > 0)
+                                                                                if ((Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text4.Length) > 0)
                                                                                 {
                                                                                     w = 3;
-                                                                                    if ((Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text5.Length) > 0)
+                                                                                    if ((Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text5.Length) > 0)
                                                                                     {
                                                                                         w = 4;
                                                                                     }
@@ -2254,33 +2254,33 @@ namespace Server
                                                                             {
                                                                                 case 1:
                                                                                     {
-                                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text2));
+                                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text2));
                                                                                         break;
                                                                                     }
                                                                                 case 2:
                                                                                     {
-                                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text3));
+                                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text3));
                                                                                         break;
                                                                                     }
                                                                                 case 3:
                                                                                     {
-                                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text4));
+                                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text4));
                                                                                         break;
                                                                                     }
                                                                                 case 4:
                                                                                     {
-                                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text5));
+                                                                                        buffer.WriteString(ParseEventText(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text5));
                                                                                         break;
                                                                                     }
                                                                             }
                                                                         }
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].CommandCount > withBlock1.CurSlot)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].CommandCount > withBlock1.CurSlot)
                                                                         {
-                                                                            if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.ShowText | Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.ShowChoices)
+                                                                            if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.ShowText | Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.ShowChoices)
                                                                             {
                                                                                 buffer.WriteInt32(1);
                                                                             }
-                                                                            else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.Condition)
+                                                                            else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot + 1].Index == (byte)EventType.Condition)
                                                                             {
                                                                                 buffer.WriteInt32(2);
                                                                             }
@@ -2300,26 +2300,26 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.PlayerVar:
                                                                     {
-                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2)
+                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2)
                                                                         {
                                                                             case 0:
                                                                                 {
-                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
+                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
                                                                                     break;
                                                                                 }
                                                                             case 1:
                                                                                 {
-                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] + Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
+                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] + Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
                                                                                     break;
                                                                                 }
                                                                             case 2:
                                                                                 {
-                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] - Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
+                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] - Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
                                                                                     break;
                                                                                 }
                                                                             case 3:
                                                                                 {
-                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = (int)General.GetRandom.NextDouble(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
+                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = (int)General.GetRandom.NextDouble(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
                                                                                     break;
                                                                                 }
                                                                         }
@@ -2328,61 +2328,61 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.PlayerSwitch:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
                                                                         {
-                                                                            Core.Type.Player[i].Switches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = 0;
+                                                                            Core.Type.Player[i].Switches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = 0;
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
                                                                         {
-                                                                            Core.Type.Player[i].Switches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = 0;
+                                                                            Core.Type.Player[i].Switches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = 0;
                                                                         }
 
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.SelfSwitch:
                                                                     {
-                                                                        if ((int)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Globals == 1)
+                                                                        if ((int)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Globals == 1)
                                                                         {
-                                                                            if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
+                                                                            if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
                                                                             {
-                                                                                Map[GetPlayerMap(i)].Event[withBlock1.EventID].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 + 1] = 0;
+                                                                                Map[GetPlayerMap(i)].Event[withBlock1.EventId].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 + 1] = 0;
                                                                             }
-                                                                            else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
+                                                                            else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
                                                                             {
-                                                                                Map[GetPlayerMap(i)].Event[withBlock1.EventID].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 + 1] = 0;
+                                                                                Map[GetPlayerMap(i)].Event[withBlock1.EventId].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 + 1] = 0;
                                                                             }
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
                                                                         {
-                                                                            Core.Type.TempPlayer[i].EventMap.EventPages[withBlock1.EventID].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 + 1] = 0;
+                                                                            Core.Type.TempPlayer[i].EventMap.EventPages[withBlock1.EventId].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 + 1] = 0;
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
                                                                         {
-                                                                            Core.Type.TempPlayer[i].EventMap.EventPages[withBlock1.EventID].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 + 1] = 0;
+                                                                            Core.Type.TempPlayer[i].EventMap.EventPages[withBlock1.EventId].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 + 1] = 0;
                                                                         }
 
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.Condition:
                                                                     {
-                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Condition)
+                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Condition)
                                                                         {
                                                                             case 0:
                                                                                 {
-                                                                                    switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
+                                                                                    switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
                                                                                     {
                                                                                         case 0:
                                                                                             {
-                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] == Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
+                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] == Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2390,16 +2390,16 @@ namespace Server
                                                                                             }
                                                                                         case 1:
                                                                                             {
-                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] >= Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
+                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] >= Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2407,16 +2407,16 @@ namespace Server
                                                                                             }
                                                                                         case 2:
                                                                                             {
-                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] <= Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
+                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] <= Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2424,16 +2424,16 @@ namespace Server
                                                                                             }
                                                                                         case 3:
                                                                                             {
-                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] > Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
+                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] > Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2441,16 +2441,16 @@ namespace Server
                                                                                             }
                                                                                         case 4:
                                                                                             {
-                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] < Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
+                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] < Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2458,16 +2458,16 @@ namespace Server
                                                                                             }
                                                                                         case 5:
                                                                                             {
-                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] != Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
+                                                                                                if (Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] != Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data3)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2479,20 +2479,20 @@ namespace Server
                                                                                 }
                                                                             case 1:
                                                                                 {
-                                                                                    switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
+                                                                                    switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
                                                                                     {
                                                                                         case 0:
                                                                                             {
-                                                                                                if ((int)Core.Type.Player[i].Switches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] == 1)
+                                                                                                if ((int)Core.Type.Player[i].Switches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] == 1)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2500,16 +2500,16 @@ namespace Server
                                                                                             }
                                                                                         case 1:
                                                                                             {
-                                                                                                if ((int)Core.Type.Player[i].Switches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] == 0)
+                                                                                                if ((int)Core.Type.Player[i].Switches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1] == 0)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2521,16 +2521,16 @@ namespace Server
                                                                                 }
                                                                             case 2:
                                                                                 {
-                                                                                    if (Player.HasItem(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1) >= Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
+                                                                                    if (Player.HasItem(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1) >= Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
                                                                                     else
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
 
@@ -2538,16 +2538,16 @@ namespace Server
                                                                                 }
                                                                             case 3:
                                                                                 {
-                                                                                    if ((int)Core.Type.Player[i].Job == Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                    if ((int)Core.Type.Player[i].Job == Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
                                                                                     else
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
 
@@ -2555,16 +2555,16 @@ namespace Server
                                                                                 }
                                                                             case 4:
                                                                                 {
-                                                                                    if (HasSkill(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1) == true)
+                                                                                    if (HasSkill(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1) == true)
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
                                                                                     else
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
 
@@ -2572,20 +2572,20 @@ namespace Server
                                                                                 }
                                                                             case 5:
                                                                                 {
-                                                                                    switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
+                                                                                    switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
                                                                                     {
                                                                                         case 0:
                                                                                             {
-                                                                                                if (GetPlayerLevel(i) == Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                                if (GetPlayerLevel(i) == Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2593,16 +2593,16 @@ namespace Server
                                                                                             }
                                                                                         case 1:
                                                                                             {
-                                                                                                if (GetPlayerLevel(i) >= Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                                if (GetPlayerLevel(i) >= Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2610,16 +2610,16 @@ namespace Server
                                                                                             }
                                                                                         case 2:
                                                                                             {
-                                                                                                if (GetPlayerLevel(i) <= Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                                if (GetPlayerLevel(i) <= Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2627,16 +2627,16 @@ namespace Server
                                                                                             }
                                                                                         case 3:
                                                                                             {
-                                                                                                if (GetPlayerLevel(i) > Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                                if (GetPlayerLevel(i) > Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2644,16 +2644,16 @@ namespace Server
                                                                                             }
                                                                                         case 4:
                                                                                             {
-                                                                                                if (GetPlayerLevel(i) < Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                                if (GetPlayerLevel(i) < Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2661,16 +2661,16 @@ namespace Server
                                                                                             }
                                                                                         case 5:
                                                                                             {
-                                                                                                if (GetPlayerLevel(i) != Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                                if (GetPlayerLevel(i) != Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
                                                                                                 else
                                                                                                 {
                                                                                                     withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                    withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                     withBlock1.CurSlot = 0;
                                                                                                 }
 
@@ -2682,22 +2682,22 @@ namespace Server
                                                                                 }
                                                                             case 6:
                                                                                 {
-                                                                                    if ((int)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Globals == 1)
+                                                                                    if ((int)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Globals == 1)
                                                                                     {
-                                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
+                                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
                                                                                         {
                                                                                             case 0: // Self Switch is true
                                                                                                 {
-                                                                                                    if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1 + 1] == 1)
+                                                                                                    if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1 + 1] == 1)
                                                                                                     {
                                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                         withBlock1.CurSlot = 0;
                                                                                                     }
                                                                                                     else
                                                                                                     {
                                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                         withBlock1.CurSlot = 0;
                                                                                                     }
 
@@ -2705,16 +2705,16 @@ namespace Server
                                                                                                 }
                                                                                             case 1:  // self switch is false
                                                                                                 {
-                                                                                                    if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1 + 1] == 0)
+                                                                                                    if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1 + 1] == 0)
                                                                                                     {
                                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                         withBlock1.CurSlot = 0;
                                                                                                     }
                                                                                                     else
                                                                                                     {
                                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                         withBlock1.CurSlot = 0;
                                                                                                     }
 
@@ -2724,20 +2724,20 @@ namespace Server
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
+                                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data2)
                                                                                         {
                                                                                             case 0: // Self Switch is true
                                                                                                 {
-                                                                                                    if (Core.Type.TempPlayer[i].EventMap.EventPages[withBlock1.EventID].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1 + 1] == 1)
+                                                                                                    if (Core.Type.TempPlayer[i].EventMap.EventPages[withBlock1.EventId].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1 + 1] == 1)
                                                                                                     {
                                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                         withBlock1.CurSlot = 0;
                                                                                                     }
                                                                                                     else
                                                                                                     {
                                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                         withBlock1.CurSlot = 0;
                                                                                                     }
 
@@ -2745,16 +2745,16 @@ namespace Server
                                                                                                 }
                                                                                             case 1:  // self switch is false
                                                                                                 {
-                                                                                                    if (Core.Type.TempPlayer[i].EventMap.EventPages[withBlock1.EventID].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1 + 1] == 0)
+                                                                                                    if (Core.Type.TempPlayer[i].EventMap.EventPages[withBlock1.EventId].SelfSwitches[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1 + 1] == 0)
                                                                                                     {
                                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                                         withBlock1.CurSlot = 0;
                                                                                                     }
                                                                                                     else
                                                                                                     {
                                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                                         withBlock1.CurSlot = 0;
                                                                                                     }
 
@@ -2772,16 +2772,16 @@ namespace Server
 
                                                                             case 8:
                                                                                 {
-                                                                                    if ((int)Core.Type.Player[i].Sex == Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                    if ((int)Core.Type.Player[i].Sex == Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
                                                                                     else
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
 
@@ -2789,16 +2789,16 @@ namespace Server
                                                                                 }
                                                                             case 9:
                                                                                 {
-                                                                                    if (Clock.Instance.TimeOfDay == (TimeOfDay)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
+                                                                                    if (Clock.Instance.TimeOfDay == (TimeOfDay)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.Data1)
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.CommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
                                                                                     else
                                                                                     {
                                                                                         withBlock1.ListLeftOff[withBlock1.CurList] = withBlock1.CurSlot;
-                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
+                                                                                        withBlock1.CurList = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].ConditionalBranch.ElseCommandList;
                                                                                         withBlock1.CurSlot = 0;
                                                                                     }
 
@@ -2816,25 +2816,25 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.ChangeItems:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
                                                                         {
-                                                                            if (Player.HasItem(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1) > 0)
+                                                                            if (Player.HasItem(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1) > 0)
                                                                             {
-                                                                                SetPlayerInvValue(i, Player.FindItemSlot(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1), Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
+                                                                                SetPlayerInvValue(i, Player.FindItemSlot(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1), Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
                                                                             }
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
                                                                         {
-                                                                            Player.GiveInv(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, true);
+                                                                            Player.GiveInv(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, true);
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 2)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 2)
                                                                         {
                                                                             int itemAmount;
-                                                                            itemAmount = Player.HasItem(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                            itemAmount = Player.HasItem(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                             // Check Amount
-                                                                            if (itemAmount >= Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3)
+                                                                            if (itemAmount >= Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3)
                                                                             {
-                                                                                Player.TakeInv(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
+                                                                                Player.TakeInv(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
                                                                             }
                                                                         }
                                                                         NetworkSend.SendInventory(i);
@@ -2862,7 +2862,7 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.ChangeLevel:
                                                                     {
-                                                                        SetPlayerLevel(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                        SetPlayerLevel(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                         SetPlayerExp(i, 0);
                                                                         NetworkSend.SendExp(i);
                                                                         NetworkSend.SendPlayerData(i);
@@ -2870,13 +2870,13 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.ChangeSkills:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
                                                                         {
                                                                             if (FindOpenSkill(i) >= 0)
                                                                             {
-                                                                                if (HasSkill(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1) == false)
+                                                                                if (HasSkill(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1) == false)
                                                                                 {
-                                                                                    SetPlayerSkill(i, FindOpenSkill(i), Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                                    SetPlayerSkill(i, FindOpenSkill(i), Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                                 }
                                                                                 else
                                                                                 {
@@ -2888,14 +2888,14 @@ namespace Server
                                                                                 // Error, no room for skills
                                                                             }
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
                                                                         {
-                                                                            if (HasSkill(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1) == true)
+                                                                            if (HasSkill(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1) == true)
                                                                             {
                                                                                 var loopTo5 = Core.Constant.MAX_PLAYER_SKILLS;
                                                                                 for (p = 0; p < (int)loopTo5; p++)
                                                                                 {
-                                                                                    if (Core.Type.Player[i].Skill[p].Num == Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1)
+                                                                                    if (Core.Type.Player[i].Skill[p].Num == Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1)
                                                                                     {
                                                                                         SetPlayerSkill(i, p, 0);
                                                                                     }
@@ -2907,23 +2907,23 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.ChangeJob:
                                                                     {
-                                                                        Core.Type.Player[i].Job = (byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1;
+                                                                        Core.Type.Player[i].Job = (byte)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1;
                                                                         NetworkSend.SendPlayerData(i);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.ChangeSprite:
                                                                     {
-                                                                        SetPlayerSprite(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                        SetPlayerSprite(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                         NetworkSend.SendPlayerData(i);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.ChangeSex:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 == 0)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 == 0)
                                                                         {
                                                                             Core.Type.Player[i].Sex = (byte)SexType.Male;
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 == 1)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 == 1)
                                                                         {
                                                                             Core.Type.Player[i].Sex = (byte)SexType.Female;
                                                                         }
@@ -2932,11 +2932,11 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.ChangePk:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 == 0)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 == 0)
                                                                         {
                                                                             Core.Type.Player[i].Pk = 0;
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 == 1)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 == 1)
                                                                         {
                                                                             Core.Type.Player[i].Pk = 0;
                                                                         }
@@ -2945,41 +2945,41 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.WarpPlayer:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4 == 0)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4 == 0)
                                                                         {
-                                                                            Player.PlayerWarp(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
+                                                                            Player.PlayerWarp(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
                                                                         }
                                                                         else
                                                                         {
-                                                                            Core.Type.Player[i].Dir = (byte)(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4 - 1);
-                                                                            Player.PlayerWarp(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
+                                                                            Core.Type.Player[i].Dir = (byte)(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4 - 1);
+                                                                            Player.PlayerWarp(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
                                                                         }
 
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.SetMoveRoute:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 <= Map[GetPlayerMap(i)].EventCount)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 <= Map[GetPlayerMap(i)].EventCount)
                                                                         {
-                                                                            if ((int)Map[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].Globals == 1)
+                                                                            if ((int)Map[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].Globals == 1)
                                                                             {
-                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveType = 2;
-                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].IgnoreIfCannotMove = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2;
-                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].RepeatMoveRoute = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
-                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteCount = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].MoveRouteCount;
-                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRoute = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].MoveRoute;
-                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteStep = 0;
-                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteComplete = 0;
+                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveType = 2;
+                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].IgnoreIfCannotMove = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2;
+                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].RepeatMoveRoute = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
+                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteCount = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].MoveRouteCount;
+                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRoute = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].MoveRoute;
+                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteStep = 0;
+                                                                                Event.TempEventMap[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteComplete = 0;
                                                                             }
                                                                             else
                                                                             {
-                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveType = 2;
-                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].IgnoreIfCannotMove = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2;
-                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].RepeatMoveRoute = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
-                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteCount = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].MoveRouteCount;
-                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRoute = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].MoveRoute;
-                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteStep = 0;
-                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteComplete = 0;
+                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveType = 2;
+                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].IgnoreIfCannotMove = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2;
+                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].RepeatMoveRoute = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3;
+                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteCount = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].MoveRouteCount;
+                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRoute = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].MoveRoute;
+                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteStep = 0;
+                                                                                Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].MoveRouteComplete = 0;
                                                                             }
                                                                         }
 
@@ -2987,24 +2987,24 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.PlayAnimation:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 0)
                                                                         {
-                                                                            Animation.SendAnimation(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, GetPlayerX(i), GetPlayerY(i), (byte)TargetType.Player, i);
+                                                                            Animation.SendAnimation(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, GetPlayerX(i), GetPlayerY(i), (byte)TargetType.Player, i);
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 1)
                                                                         {
-                                                                            if ((int)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Globals == 1)
+                                                                            if ((int)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Globals == 1)
                                                                             {
-                                                                                Animation.SendAnimation(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].X, Map[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3].Y);
+                                                                                Animation.SendAnimation(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].X, Map[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3].Y);
                                                                             }
                                                                             else
                                                                             {
-                                                                                Animation.SendAnimation(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3].X, Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3].Y, 0, 0);
+                                                                                Animation.SendAnimation(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3].X, Core.Type.TempPlayer[i].EventMap.EventPages[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3].Y, 0, 0);
                                                                             }
                                                                         }
-                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 2)
+                                                                        else if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2 == 2)
                                                                         {
-                                                                            Animation.SendAnimation(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4, 0, 0);
+                                                                            Animation.SendAnimation(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4, 0, 0);
                                                                         }
 
                                                                         break;
@@ -3012,14 +3012,14 @@ namespace Server
                                                                 case (byte)EventType.CustomScript:
                                                                     {
                                                                         // Runs Through Cases for a script
-                                                                        Event.CustomScript(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, GetPlayerMap(i), withBlock1.EventID);
+                                                                        Event.CustomScript(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, GetPlayerMap(i), withBlock1.EventId);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.PlayBgm:
                                                                     {
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SPlayBGM);
-                                                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1);
+                                                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
                                                                         buffer.Dispose();
                                                                         break;
@@ -3036,9 +3036,9 @@ namespace Server
                                                                     {
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SPlaySound);
-                                                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1);
-                                                                        buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].X);
-                                                                        buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].Y);
+                                                                        buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1);
+                                                                        buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].X);
+                                                                        buffer.WriteInt32(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].Y);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
                                                                         buffer.Dispose();
                                                                         break;
@@ -3053,18 +3053,18 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.SetAccess:
                                                                     {
-                                                                        SetPlayerAccess(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                        SetPlayerAccess(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                         NetworkSend.SendPlayerData(i);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.OpenShop:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 > 0) // shop exists?
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 > 0) // shop exists?
                                                                         {
-                                                                            if ((Shop[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].Name.Length) > 0) // name exists?
+                                                                            if ((Shop[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].Name.Length) > 0) // name exists?
                                                                             {
-                                                                                NetworkSend.SendOpenShop(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
-                                                                                Core.Type.TempPlayer[i].InShop = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1; // stops movement and the like
+                                                                                NetworkSend.SendOpenShop(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                                Core.Type.TempPlayer[i].InShop = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1; // stops movement and the like
                                                                                 withBlock1.WaitingForResponse = 2;
                                                                             }
                                                                         }
@@ -3080,26 +3080,26 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.GiveExp:
                                                                     {
-                                                                        Event.GivePlayerExp(i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                        Event.GivePlayerExp(i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.ShowChatBubble:
                                                                     {
-                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1)
+                                                                        switch (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1)
                                                                         {
                                                                             case (byte)TargetType.Player:
                                                                                 {
-                                                                                    NetworkSend.SendChatBubble(GetPlayerMap(i), i, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, (int) ColorType.Blue);
+                                                                                    NetworkSend.SendChatBubble(GetPlayerMap(i), i, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, (int) ColorType.Blue);
                                                                                     break;
                                                                                 }
                                                                             case (byte)TargetType.NPC:
                                                                                 {
-                                                                                    NetworkSend.SendChatBubble(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, (int) ColorType.Blue);
+                                                                                    NetworkSend.SendChatBubble(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, (int) ColorType.Blue);
                                                                                     break;
                                                                                 }
                                                                             case (byte)TargetType.Event:
                                                                                 {
-                                                                                    NetworkSend.SendChatBubble(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, (int) ColorType.Blue);
+                                                                                    NetworkSend.SendChatBubble(GetPlayerMap(i), Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, (int) ColorType.Blue);
                                                                                     break;
                                                                                 }
                                                                         }
@@ -3114,14 +3114,14 @@ namespace Server
                                                                 case (byte)EventType.GoToLabel:
                                                                     {
                                                                         // Find the label's list of commands and slot
-                                                                        FindEventLabel(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, GetPlayerMap(i), withBlock1.EventID, withBlock1.PageID, ref withBlock1.CurSlot, ref withBlock1.CurList, ref withBlock1.ListLeftOff);
+                                                                        FindEventLabel(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Text1, GetPlayerMap(i), withBlock1.EventId, withBlock1.PageId, ref withBlock1.CurSlot, ref withBlock1.CurList, ref withBlock1.ListLeftOff);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.SpawnNPC:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].NPC[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] > 0)
+                                                                        if (Map[GetPlayerMap(i)].NPC[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] > 0)
                                                                         {
-                                                                            NPC.SpawnNPC(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, GetPlayerMap(i));
+                                                                            NPC.SpawnNPC(Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, GetPlayerMap(i));
                                                                         }
 
                                                                         break;
@@ -3143,33 +3143,33 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.SetFog:
                                                                     {
-                                                                        Event.SendSpecialEffect(i, Event.EffectTypeFog, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
+                                                                        Event.SendSpecialEffect(i, Event.EffectTypeFog, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.SetWeather:
                                                                     {
-                                                                        Event.SendSpecialEffect(i, Event.EffectTypeWeather, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2);
+                                                                        Event.SendSpecialEffect(i, Event.EffectTypeWeather, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.SetTint:
                                                                     {
-                                                                        Event.SendSpecialEffect(i, Event.EffectTypeTint, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
+                                                                        Event.SendSpecialEffect(i, Event.EffectTypeTint, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.Wait:
                                                                     {
-                                                                        withBlock1.ActionTimer = General.GetTimeMs() + Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1;
+                                                                        withBlock1.ActionTimer = General.GetTimeMs() + Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1;
                                                                         break;
                                                                     }
                                                                 case (byte)EventType.ShowPicture:
                                                                     {
                                                                         buffer = new ByteStream(4);
                                                                         buffer.WriteInt32((int) ServerPackets.SPic);
-                                                                        buffer.WriteInt32(withBlock1.EventID);
-                                                                        buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
-                                                                        buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2);
-                                                                        buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
-                                                                        buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
+                                                                        buffer.WriteInt32(withBlock1.EventId);
+                                                                        buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1);
+                                                                        buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data2);
+                                                                        buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3);
+                                                                        buffer.WriteByte((byte)Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
                                                                         NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
 
                                                                         buffer.Dispose();
@@ -3187,18 +3187,18 @@ namespace Server
                                                                     }
                                                                 case (byte)EventType.WaitMovement:
                                                                     {
-                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 <= Map[GetPlayerMap(i)].EventCount)
+                                                                        if (Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1 <= Map[GetPlayerMap(i)].EventCount)
                                                                         {
-                                                                            if ((int)Map[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].Globals == 1)
+                                                                            if ((int)Map[GetPlayerMap(i)].Event[Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1].Globals == 1)
                                                                             {
                                                                                 withBlock1.WaitingForResponse = 4;
-                                                                                withBlock1.EventMovingId = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1;
+                                                                                withBlock1.EventMovingId = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1;
                                                                                 withBlock1.EventMovingType = 0;
                                                                             }
                                                                             else
                                                                             {
                                                                                 withBlock1.WaitingForResponse = 4;
-                                                                                withBlock1.EventMovingId = Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1;
+                                                                                withBlock1.EventMovingId = Map[GetPlayerMap(i)].Event[withBlock1.EventId].Pages[withBlock1.PageId].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1;
                                                                                 withBlock1.EventMovingType = 0;
                                                                             }
                                                                         }
@@ -3296,7 +3296,7 @@ namespace Server
 
         }
 
-        public static void FindEventLabel(string Label, int mapNum, int EventID, int PageID, ref int CurSlot, ref int CurList, ref int[] ListLeftOff)
+        public static void FindEventLabel(string Label, int mapNum, int EventId, int PageId, ref int CurSlot, ref int CurList, ref int[] ListLeftOff)
         {
             int tmpCurSlot;
             int tmpCurList;
@@ -3312,8 +3312,8 @@ namespace Server
             tmpCurList = CurList;
             tmpListLeftOff = ListLeftOff;
 
-            ListLeftOff = new int[Map[mapNum].Event[EventID].Pages[PageID].CommandListCount];
-            CurrentListOption = new int[Map[mapNum].Event[EventID].Pages[PageID].CommandListCount];
+            ListLeftOff = new int[Map[mapNum].Event[EventId].Pages[PageId].CommandListCount];
+            CurrentListOption = new int[Map[mapNum].Event[EventId].Pages[PageId].CommandListCount];
             CurList = 0;
             CurSlot = 0;
 
@@ -3324,13 +3324,13 @@ namespace Server
                     CurSlot = ListLeftOff[CurList];
                     ListLeftOff[CurList] = 0;
                 }
-                if (CurList > Map[mapNum].Event[EventID].Pages[PageID].CommandListCount)
+                if (CurList > Map[mapNum].Event[EventId].Pages[PageId].CommandListCount)
                 {
                     // Get rid of this event, it is bad
                     removeEventProcess = Conversions.ToBoolean(1);
                 }
 
-                if (CurSlot > Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].CommandCount)
+                if (CurSlot > Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].CommandCount)
                 {
                     if (CurList == 1)
                     {
@@ -3338,7 +3338,7 @@ namespace Server
                     }
                     else
                     {
-                        CurList = Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].ParentList;
+                        CurList = Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].ParentList;
                         CurSlot = 0;
                         restartlist = Conversions.ToBoolean(1);
                     }
@@ -3349,20 +3349,20 @@ namespace Server
                     if (Conversions.ToInteger(removeEventProcess) == 0)
                     {
                         // If we are still here, then we are good to process shit :D
-                        switch (Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Index)
+                        switch (Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Index)
                         {
                             case (byte)EventType.ShowChoices:
                                 {
-                                    if (Strings.Len(Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Text2) > 0)
+                                    if (Strings.Len(Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Text2) > 0)
                                     {
                                         w = 0;
-                                        if (Strings.Len(Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Text3) > 0)
+                                        if (Strings.Len(Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Text3) > 0)
                                         {
                                             w = 2;
-                                            if (Strings.Len(Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Text4) > 0)
+                                            if (Strings.Len(Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Text4) > 0)
                                             {
                                                 w = 3;
-                                                if (Strings.Len(Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Text5) > 0)
+                                                if (Strings.Len(Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Text5) > 0)
                                                 {
                                                     w = 4;
                                                 }
@@ -3380,22 +3380,22 @@ namespace Server
                                             {
                                                 case 1:
                                                     {
-                                                        CurList = Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Data1;
+                                                        CurList = Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Data1;
                                                         break;
                                                     }
                                                 case 2:
                                                     {
-                                                        CurList = Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Data2;
+                                                        CurList = Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Data2;
                                                         break;
                                                     }
                                                 case 3:
                                                     {
-                                                        CurList = Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Data3;
+                                                        CurList = Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Data3;
                                                         break;
                                                     }
                                                 case 4:
                                                     {
-                                                        CurList = Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Data4;
+                                                        CurList = Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Data4;
                                                         break;
                                                     }
                                             }
@@ -3416,14 +3416,14 @@ namespace Server
                                     {
                                         CurrentListOption[CurList] = 0;
                                         ListLeftOff[CurList] = CurSlot;
-                                        CurList = Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].ConditionalBranch.CommandList;
+                                        CurList = Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].ConditionalBranch.CommandList;
                                         CurSlot = 0;
                                     }
                                     else if (CurrentListOption[CurList] == 1)
                                     {
                                         CurrentListOption[CurList] = 2;
                                         ListLeftOff[CurList] = CurSlot;
-                                        CurList = Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].ConditionalBranch.ElseCommandList;
+                                        CurList = Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].ConditionalBranch.ElseCommandList;
                                         CurSlot = 0;
                                     }
                                     else if (CurrentListOption[CurList] == 2)
@@ -3436,7 +3436,7 @@ namespace Server
                             case (byte)EventType.Label:
                                 {
                                     // Do nothing, just a label
-                                    if ((Map[mapNum].Event[EventID].Pages[PageID].CommandList[CurList].Commands[CurSlot].Text1 ?? "") == (Label ?? ""))
+                                    if ((Map[mapNum].Event[EventId].Pages[PageId].CommandList[CurList].Commands[CurSlot].Text1 ?? "") == (Label ?? ""))
                                     {
                                         return;
                                     }
@@ -4059,8 +4059,8 @@ namespace Server
                         withBlock1.MoveRouteStep = 0;
                     }
                     withBlock1.Position = Map[mapNum].Event[i].Pages[z].Position;
-                    withBlock1.EventID = i;
-                    withBlock1.PageID = z;
+                    withBlock1.EventId = i;
+                    withBlock1.PageId = z;
                     if (spawncurrentevent)
                     {
                         withBlock1.Visible = true;
@@ -4121,14 +4121,14 @@ namespace Server
                 var loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents;
                 for (i = 0; i < loopTo2; i++)
                 {
-                    if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID >= 0)
+                    if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
                     {
                         buffer = new ByteStream(4);
                         buffer.WriteInt32((int)(int) ServerPackets.SSpawnEvent);
-                        buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID);
+                        buffer.WriteInt32(Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId);
                         {
                             ref var withBlock2 = ref Core.Type.TempPlayer[index].EventMap.EventPages[i];
-                            buffer.WriteString(Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Name);
+                            buffer.WriteString(Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Name);
                             buffer.WriteInt32(withBlock2.Dir);
                             buffer.WriteByte(withBlock2.GraphicType);
                             buffer.WriteInt32(withBlock2.Graphic);
@@ -4141,10 +4141,10 @@ namespace Server
                             buffer.WriteInt32(withBlock2.Y);
                             buffer.WriteByte(withBlock2.Position);
                             buffer.WriteBoolean(withBlock2.Visible);
-                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].WalkAnim);
-                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].DirFix);
-                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].WalkThrough);
-                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventID].Pages[withBlock2.PageID].ShowName);
+                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventId].Pages[withBlock2.PageId].WalkAnim);
+                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventId].Pages[withBlock2.PageId].DirFix);
+                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventId].Pages[withBlock2.PageId].WalkThrough);
+                            buffer.WriteInt32(Map[mapNum].Event[withBlock2.EventId].Pages[withBlock2.PageId].ShowName);
                         }
                         NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
 
@@ -4167,7 +4167,7 @@ namespace Server
             {
                 for (int z = 0; z < Core.Type.TempPlayer[index].EventMap.CurrentEvents; z++)
                 {
-                    if (Core.Type.TempPlayer[index].EventMap.EventPages[z].EventID == i)
+                    if (Core.Type.TempPlayer[index].EventMap.EventPages[z].EventId == i)
                     {
                         i = z;
                         break;
@@ -4175,8 +4175,8 @@ namespace Server
                 }
             }
 
-            if (Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
-                .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].Trigger != triggerType)
+            if (Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId]
+                .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger != triggerType)
             {
                 return TriggerEventRet;
             }
@@ -4240,23 +4240,23 @@ namespace Server
             }
 
             // Check if there are any commands to process
-            if (Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
-                .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].CommandListCount > 0)
+            if (Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId]
+                .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].CommandListCount > 0)
             {
-                if (Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Active == 0)
+                if (Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Active == 0)
                 {
-                    ref var eventProcessing = ref Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID];
+                    ref var eventProcessing = ref Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId];
                     eventProcessing.Active = 1;
                     eventProcessing.ActionTimer = General.GetTimeMs();
                     eventProcessing.CurList = 0;
                     eventProcessing.CurSlot = 0;
-                    eventProcessing.EventID = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID;
-                    eventProcessing.PageID = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID;
+                    eventProcessing.EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
+                    eventProcessing.PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
                     eventProcessing.WaitingForResponse = 0;
 
                     // Handle ReDim (resize array)
-                    int commandListCount = Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID]
-                        .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].CommandListCount;
+                    int commandListCount = Map[mapNum].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId]
+                        .Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].CommandListCount;
 
                     eventProcessing.ListLeftOff = new int[commandListCount];
                     return TriggerEventRet;

@@ -678,8 +678,8 @@ namespace Core
             public int MovementSpeed;
             public byte Position;
             public bool Visible;
-            public int EventID;
-            public int PageID;
+            public int EventId;
+            public int PageId;
             public byte MoveType;
             public byte MoveSpeed;
             public byte MoveFreq;
@@ -710,8 +710,8 @@ namespace Core
             public int Active;
             public int CurList;
             public int CurSlot;
-            public int EventID;
-            public int PageID;
+            public int EventId;
+            public int PageId;
             public int WaitingForResponse;
             public int EventMovingId;
             public int EventMovingType;

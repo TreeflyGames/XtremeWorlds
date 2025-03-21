@@ -145,7 +145,7 @@ namespace Server
             {
                 if (NetworkConfig.IsPlaying(i) && GetPlayerMap(i) == mapNum && GetPlayerX(i) == x && GetPlayerY(i) == y)
                 {
-                    if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageID].Trigger == 1)
+                    if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageId].Trigger == 1)
                     {
                         StartEventProcessing(index, eventId, mapNum);
                     }
@@ -157,18 +157,18 @@ namespace Server
 
         private static void StartEventProcessing(int index, int eventId, int mapNum)
         {
-            var pageId = Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageID;
-            if (Core.Type.Map[mapNum].Event[eventId].Pages[pageId].CommandListCount <= 0) return;
+            var PageId = Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageId;
+            if (Core.Type.Map[mapNum].Event[eventId].Pages[PageId].CommandListCount <= 0) return;
 
             var processing = Core.Type.TempPlayer[index].EventProcessing[eventId];
             processing.Active = 0;
             processing.ActionTimer = General.GetTimeMs();
             processing.CurList = 0;
             processing.CurSlot = 0;
-            processing.EventID = eventId;
-            processing.PageID = pageId;
+            processing.EventId = eventId;
+            processing.PageId = PageId;
             processing.WaitingForResponse = 0;
-            processing.ListLeftOff = new int[Core.Type.Map[mapNum].Event[eventId].Pages[pageId].CommandListCount];
+            processing.ListLeftOff = new int[Core.Type.Map[mapNum].Event[eventId].Pages[PageId].CommandListCount];
         }
 
         private static bool IsNPCBlocking(int mapNum, int x, int y)
@@ -224,7 +224,7 @@ namespace Server
                     if (Core.Type.Map[mapNum].Event[eventId].Pages[0].DirFix == 0)
                         TempEventMap[mapNum].Event[eventId].Dir = dir;
                 }
-                else if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].PageID].DirFix == 0)
+                else if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].PageId].DirFix == 0)
                     Core.Type.TempPlayer[playerIndex].EventMap.EventPages[eventIndex].Dir = dir;
             }
 
@@ -282,7 +282,7 @@ namespace Server
                 else
                 {
                     var eventData = Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex];
-                    if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex].PageID].DirFix == 0)
+                    if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex].PageId].DirFix == 0)
                         eventData.Dir = dir;
 
                     switch (dir)
@@ -360,7 +360,7 @@ namespace Server
             int px = GetPlayerX(playerId), py = GetPlayerY(playerId);
             var eventPage = Core.Type.TempPlayer[playerId].EventMap.EventPages[eventId];
             return (px, py, eventPage.X, eventPage.Y,
-                Core.Type.Map[mapNum].Event[eventPage.EventID].Pages[eventPage.PageID].WalkThrough);
+                Core.Type.Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough);
         }
 
         private static int RandomMoveTowardsPlayer(int playerId, int mapNum, int eventId, int ex, int ey, int px, int py, int walkThrough)
@@ -546,21 +546,21 @@ namespace Server
         public static void Packet_EventChatReply(int index, ref byte[] data)
         {
             var buffer = new ByteStream(data);
-            int eventId = buffer.ReadInt32(), pageId = buffer.ReadInt32(), reply = buffer.ReadInt32();
+            int eventId = buffer.ReadInt32(), PageId = buffer.ReadInt32(), reply = buffer.ReadInt32();
             buffer.Dispose();
 
             General.Logger.LogInformation($"Player {index} responded to event {eventId} with reply {reply}");
-            ProcessEventReply(index, eventId, pageId, reply);
+            ProcessEventReply(index, eventId, PageId, reply);
         }
 
-        private static void ProcessEventReply(int index, int eventId, int pageId, int reply)
+        private static void ProcessEventReply(int index, int eventId, int PageId, int reply)
         {
             for (int i = 0; i < Core.Type.TempPlayer[index].EventProcessingCount; i++)
             {
                 var proc = Core.Type.TempPlayer[index].EventProcessing[i];
-                if (proc.EventID != eventId || proc.PageID != pageId || proc.WaitingForResponse != 1) continue;
+                if (proc.EventId != eventId || proc.PageId != PageId || proc.WaitingForResponse != 1) continue;
 
-                var cmd = Core.Type.Map[GetPlayerMap(index)].Event[eventId].Pages[pageId].CommandList[proc.CurList].Commands[proc.CurSlot - 1];
+                var cmd = Core.Type.Map[GetPlayerMap(index)].Event[eventId].Pages[PageId].CommandList[proc.CurList].Commands[proc.CurSlot - 1];
                 if (reply == 0 && cmd.Index == (byte)EventType.ShowText)
                     proc.WaitingForResponse = 0;
                 else if (reply > 0 && cmd.Index == (byte)EventType.ShowChoices)
@@ -917,7 +917,7 @@ namespace Server
             int mapNum = GetPlayerMap(index);
             for (int i = 0; i < Core.Type.Map[mapNum].EventCount; i++)
             {
-                var page = Core.Type.Map[mapNum].Event[i].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID];
+                var page = Core.Type.Map[mapNum].Event[i].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId];
                 if (page.ChkVariable == 1 && page.VariableIndex == GetActionVariableIndex(actionType) && page.VariableCompare == value)
                     EventLogic.TriggerEvent(index, i, 0, GetPlayerX(index), GetPlayerY(index));
             }

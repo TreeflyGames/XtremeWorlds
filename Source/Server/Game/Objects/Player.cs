@@ -576,7 +576,7 @@ namespace Server
             // Check for any mobs on the map with the Guard behaviour so they can come after our player.
             if (Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num].Behaviour == (byte)NPCBehavior.Guard)
             {
-                // Find all NPCs with the same ID as the current NPC in the group
+                // Find all NPCs with the same Id as the current NPC in the group
                 var guards = Core.Type.MapNPC[mapNum].NPC.Where(npc => Operators.ConditionalCompareObjectEqual(npc.Num, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num, false)).Select((npc, index) => index);
 
                 // Set the target for each guard NPC
@@ -1642,35 +1642,35 @@ namespace Server
                 {
                     for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
-                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID >= 0)
+                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
                         {
-                            if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Globals == 1)
+                            if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Globals == 1)
                             {
-                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].X == x & Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
+                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].X == x & Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
                                     begineventprocessing = Conversions.ToBoolean(1);
                             }
-                            else if (Core.Type.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Type.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
+                            else if (Core.Type.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Type.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
                                 begineventprocessing = Conversions.ToBoolean(1);
                             begineventprocessing = Conversions.ToBoolean(0);
                             if (Conversions.ToInteger(begineventprocessing) == 1)
                             {
                                 // Process this event, it is on-touch and everything checks out.
-                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].CommandListCount > 0)
+                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].CommandListCount > 0)
                                 {
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Active = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].ActionTimer = General.GetTimeMs();
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].CurList = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].CurSlot = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].EventID = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].PageID = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].WaitingForResponse = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Active = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].ActionTimer = General.GetTimeMs();
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].CurList = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].CurSlot = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].WaitingForResponse = 0;
                                     ;
 
-                                    int EventID = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID;
-                                    int pageID = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID;
-                                    int commandListCount = Core.Type.Map[GetPlayerMap(index)].Event[EventID].Pages[pageID].CommandListCount;
+                                    int EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
+                                    int PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
+                                    int commandListCount = Core.Type.Map[GetPlayerMap(index)].Event[EventId].Pages[PageId].CommandListCount;
 
-                                    Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing[EventID].ListLeftOff, commandListCount);
+                                    Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing[EventId].ListLeftOff, commandListCount);
 
                                 }
                                 begineventprocessing = Conversions.ToBoolean(0);
