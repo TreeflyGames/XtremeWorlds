@@ -23,7 +23,7 @@ namespace Core
         public static bool[] PlayersOnMap = new bool[Constant.MAX_MAPS];
         public static MapItemStruct[,] MapItem = new MapItemStruct[Constant.MAX_MAPS, Constant.MAX_MAP_ITEMS];
         public static MapItemStruct[] MyMapItem = new MapItemStruct[Constant.MAX_MAP_ITEMS];
-        public static MapDataStruct[] MapNPC = new MapDataStruct[Constant.MAX_MAP_NPCS];
+        public static MapDataStruct[] MapNPC = new MapDataStruct[Constant.MAX_MAPS];
         public static MapNPCStruct[] MyMapNPC = new MapNPCStruct[Constant.MAX_MAP_NPCS];
         public static BankStruct[] Bank = new BankStruct[Constant.MAX_PLAYERS];
         public static TempPlayerStruct[] TempPlayer = new TempPlayerStruct[Constant.MAX_PLAYERS];

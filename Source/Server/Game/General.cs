@@ -141,6 +141,12 @@ namespace Server
             Core.Type.MapItem = new Core.Type.MapItemStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_MAP_ITEMS];
             Core.Type.NPC = new NPCStruct[Core.Constant.MAX_NPCS];
             Core.Type.MapNPC = new MapDataStruct[Core.Constant.MAX_MAPS];
+            
+            for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
+            {
+                Core.Type.MapNPC[i].NPC = new MapNPCStruct[Core.Constant.MAX_MAP_NPCS];
+            }
+
             Core.Type.Shop = new ShopStruct[Core.Constant.MAX_SHOPS];
             Core.Type.Skill = new SkillStruct[Core.Constant.MAX_SKILLS];
             Core.Type.MapResource = new Core.Type.MapResourceStruct[Core.Constant.MAX_MAPS];
@@ -617,9 +623,6 @@ namespace Server
         /// </summary>
         public static async Task BackupDatabaseAsync()
         {
-            // disable for now
-            return;
-
             try
             {
                 string backupDir = Core.Path.Database;
