@@ -21,9 +21,478 @@ using System.Reflection;
 
 namespace Server
 {
-
     static class Database
     {
+        private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(1, 1);
+
+        public static async Task ExecuteSqlAsync(string connectionString, string sql)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task<bool> DatabaseExistsAsync(string databaseName)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string sql = "SELECT 1 FROM pg_database WHERE datname = @databaseName;";
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@databaseName", databaseName);
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            return await reader.ReadAsync();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task CreateDatabaseAsync(string databaseName)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string checkDbExistsSql = $"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'";
+                string createDbSql = $"CREATE DATABASE {databaseName}";
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value.Replace("Database=mirage", "Database=postgres")))
+                {
+                    await connection.OpenAsync();
+
+                    using (var checkCommand = new NpgsqlCommand(checkDbExistsSql, connection))
+                    {
+                        bool dbExists = await checkCommand.ExecuteScalarAsync() is not null;
+
+                        if (!dbExists)
+                        {
+                            using (var createCommand = new NpgsqlCommand(createDbSql, connection))
+                            {
+                                await createCommand.ExecuteNonQueryAsync();
+
+                                using (var dbConnection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                                {
+                                    await dbConnection.CloseAsync();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task<bool> RowExistsByColumnAsync(string columnName, long value, string tableName)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string sql = $"SELECT EXISTS (SELECT 1 FROM {tableName} WHERE {columnName} = @value);";
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@value", value);
+
+                        bool exists = (bool)await command.ExecuteScalarAsync();
+                        return exists;
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task UpdateRowAsync(long id, string data, string table, string columnName)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string sqlCheck = $"SELECT column_name FROM information_schema.columns WHERE table_name='{table}' AND column_name='{columnName}';";
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+
+                    // Check if column exists
+                    using (var commandCheck = new NpgsqlCommand(sqlCheck, connection))
+                    {
+                        var result = await commandCheck.ExecuteScalarAsync();
+
+                        // If column exists, then proceed with update
+                        if (result is not null)
+                        {
+                            string sqlUpdate = $"UPDATE {table} SET {columnName} = @data WHERE id = @id;";
+
+                            using (var commandUpdate = new NpgsqlCommand(sqlUpdate, connection))
+                            {
+                                string jsonString = data.ToString();
+                                commandUpdate.Parameters.AddWithValue("@data", NpgsqlDbType.Jsonb, jsonString);
+                                commandUpdate.Parameters.AddWithValue("@id", id);
+
+                                await commandUpdate.ExecuteNonQueryAsync();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Column '{columnName}' does not exist in table {table}.");
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task UpdateRowByColumnAsync(string columnName, long value, string targetColumn, string newValue, string tableName)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string sql = $"UPDATE {tableName} SET {targetColumn} = @newValue::jsonb WHERE {columnName} = @value;";
+
+                newValue = newValue.Replace(@"\u0000", "");
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@value", value);
+                        command.Parameters.AddWithValue("@newValue", newValue);
+
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task CreateTablesAsync()
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string dataTable = "id SERIAL PRIMARY KEY, data jsonb";
+                string playerTable = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb";
+
+                for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= loopTo; i++)
+                    playerTable += $", character{i} jsonb";
+
+                string[] tableNames = new[] { "job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile", "moral" };
+
+                foreach (var tableName in tableNames)
+                    await CreateTableAsync(tableName, dataTable);
+
+                await CreateTableAsync("account", playerTable);
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task CreateTableAsync(string tableName, string layout)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await conn.OpenAsync();
+
+                    using (var cmd = new NpgsqlCommand($"CREATE TABLE IF NOT EXISTS {tableName} ({layout});", conn))
+                    {
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task<List<long>> GetDataAsync(string tableName)
+        {
+            var ids = new List<long>();
+
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await conn.OpenAsync();
+
+                    // Define a query
+                    var cmd = new NpgsqlCommand($"SELECT id FROM {tableName}", conn);
+
+                    // Execute a query
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        // Read all rows and output the first column in each row
+                        while (await reader.ReadAsync())
+                        {
+                            long id = await reader.GetFieldValueAsync<long>(0);
+                            ids.Add(id);
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+
+            return ids;
+        }
+
+        public static async Task<bool> RowExistsAsync(long id, string table)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string sql = $"SELECT EXISTS (SELECT 1 FROM {table} WHERE id = @id);";
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                return reader.GetBoolean(0);
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task InsertRowAsync(long id, string data, string tableName)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await conn.OpenAsync();
+
+                    using (var cmd = new NpgsqlCommand())
+                    {
+                        cmd.Connection = conn;
+                        cmd.CommandText = $"INSERT INTO {tableName} (id, data) VALUES (@id, @data::jsonb);";
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.Parameters.AddWithValue("@data", data); // Convert JObject back to string
+
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task InsertRowAsync(long id, string data, string tableName, string columnName)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await conn.OpenAsync();
+
+                    using (var cmd = new NpgsqlCommand())
+                    {
+                        cmd.Connection = conn;
+                        cmd.CommandText = $"INSERT INTO {tableName} (id, data) VALUES (@id, @data::jsonb);";
+                        cmd.Parameters.AddWithValue("@id", id);
+                        cmd.Parameters.AddWithValue("@" + columnName, data); // Convert JObject back to string
+
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task InsertRowByColumnAsync(long id, string data, string tableName, string dataColumn, string idColumn)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                // Sanitize the data string
+                data = data.Replace("\\u0000", "");
+
+                string sql = $@"
+                    INSERT INTO {tableName} ({idColumn}, {dataColumn}) 
+                    VALUES (@id, @data::jsonb)
+                    ON CONFLICT ({idColumn}) 
+                    DO UPDATE SET {dataColumn} = @data::jsonb;";
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+                        command.Parameters.AddWithValue("@data", data); // Ensure this is properly serialized JSON
+
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task<JObject> SelectRowAsync(long id, string tableName, string columnName)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string sql = $"SELECT {columnName} FROM {tableName} WHERE id = @id;";
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                string jsonbData = reader.GetString(0);
+                                var jsonObject = JObject.Parse(jsonbData);
+                                return jsonObject;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
+        public static async Task<JObject> SelectRowByColumnAsync(string columnName, long value, string tableName, string dataColumn)
+        {
+            await connectionSemaphore.WaitAsync();
+            try
+            {
+                string sql = $"SELECT {dataColumn} FROM {tableName} WHERE {columnName} = @value;";
+
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@value", Math.Abs(value));
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                // Check if the first column is not null
+                                if (!reader.IsDBNull(0))
+                                {
+                                    string jsonbData = reader.GetString(0);
+                                    var jsonObject = JObject.Parse(jsonbData);
+                                    return jsonObject;
+                                }
+                                else
+                                {
+                                    // Handle null value or return null JObject...
+                                    return null;
+                                }
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                connectionSemaphore.Release();
+            }
+        }
+
         public static void ExecuteSql(string connectionString, string sql)
         {
             using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
@@ -230,32 +699,6 @@ namespace Server
             }
         }
 
-        public async static Task<List<long>> GetDataAsync(string tableName)
-        {
-            var ids = new List<long>();
-
-            using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-            {
-                await conn.OpenAsync();
-
-                // Define a query
-                var cmd = new NpgsqlCommand($"SELECT id FROM {tableName}", conn);
-
-                // Execute a query
-                using (var reader = await cmd.ExecuteReaderAsync())
-                {
-                    // Read all rows and output the first column in each row
-                    while (await reader.ReadAsync())
-                    {
-                        long id = await reader.GetFieldValueAsync<long>(0);
-                        ids.Add(id);
-                    }
-                }
-            }
-
-            return ids;
-        }
-
         public static bool RowExists(long id, string table)
         {
             string sql = $"SELECT EXISTS (SELECT 1 FROM {table} WHERE id = @id);";
@@ -343,36 +786,6 @@ namespace Server
                 }
             }
         }
-
-        public static async Task<JObject> SelectRowAsync(long id, string tableName, string columnName)
-        {
-            string sql = $"SELECT {columnName} FROM {tableName} WHERE id = @id;";
-
-            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-            {
-                await connection.OpenAsync();
-
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    command.Parameters.AddWithValue("@id", id);
-
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            string jsonbData = reader.GetString(0);
-                            var jsonObject = JObject.Parse(jsonbData);
-                            return jsonObject;
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                }
-            }
-        }
-
         public static JObject SelectRowByColumn(string columnName, long value, string tableName, string dataColumn)
         {
             string sql = $"SELECT {dataColumn} FROM {tableName} WHERE {columnName} = @value;";
@@ -491,8 +904,8 @@ namespace Server
         public static void ClearJob(int jobNum)
         {
             Core.Type.Job[jobNum].Stat = new int[(int)StatType.Count];
-            Core.Type.Job[jobNum].StartItem = new int[6];
-            Core.Type.Job[jobNum].StartValue = new int[6];
+            Core.Type.Job[jobNum].StartItem = new int[Core.Constant.MAX_START_ITEMS];
+            Core.Type.Job[jobNum].StartValue = new int[Core.Constant.MAX_START_ITEMS];
 
             Core.Type.Job[jobNum].Name = "";
             Core.Type.Job[jobNum].Desc = "";
@@ -535,15 +948,6 @@ namespace Server
             {
                 InsertRow(jobNum, "data", "job");
             }
-        }
-
-        public static void SaveJobs()
-        {
-            int i;
-
-            var loopTo = Core.Constant.MAX_JOBS;
-            for (i = 0; i < loopTo; i++)
-                SaveJob(i);
         }
 
         public static void ClearMap(int mapNum)
@@ -1537,7 +1941,7 @@ namespace Server
                     SetPlayerVital(index, (VitalType)i, GetPlayerMaxVital(index, (VitalType)i));
 
                 // set starter equipment
-                for (n = 0; n <= 4; n++)
+                for (n = 0; n < Core.Constant.MAX_START_ITEMS; n++)
                 {
                     if (Core.Type.Job[jobNum].StartItem[n] > 0)
                     {
@@ -1688,7 +2092,7 @@ namespace Server
             for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[i]);
 
-            for (q = 0; q <= 4; q++)
+            for (q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
             {
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);
