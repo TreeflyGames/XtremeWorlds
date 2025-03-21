@@ -150,6 +150,12 @@ namespace Server
                 {
                     Core.Type.MapNPC[i].NPC[x].Vital = new int[(int)Core.Enum.VitalType.Count];
                     Core.Type.MapNPC[i].NPC[x].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
+                    Core.Type.MapNPC[i].NPC[x].Num = -1;
+                }
+
+                for (int x = 0; x < Core.Constant.MAX_MAP_ITEMS; x++)
+                {
+                    Core.Type.MapItem[i, x].Num = -1;
                 }
             }
 
@@ -162,6 +168,11 @@ namespace Server
             for (int i = 0; i < Core.Constant.MAX_PLAYERS; i++)
             {
                 Database.ClearPlayer(i);
+            }
+
+            for (int i = 0; i < Core.Constant.MAX_PARTY_MEMBERS; i++)
+            {
+                Party.ClearParty(i);
             }
 
             Event.TempEventMap = new Core.Type.GlobalEventsStruct[Core.Constant.MAX_MAPS];
