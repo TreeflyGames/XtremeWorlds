@@ -1091,15 +1091,6 @@ namespace Server
             }
         }
 
-        public static void LoadNPCs()
-        {
-            int i;
-
-            var loopTo = Core.Constant.MAX_NPCS;
-            for (i = 0; i < loopTo; i++)
-                LoadNPCAsync(i);
-        }
-
         public static async Task LoadNPCAsync(int NPCNum)
         {
             JObject data;
