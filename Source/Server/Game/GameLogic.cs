@@ -6,7 +6,7 @@ using static Core.Global.Command;
 namespace Server
 {
 
-    static class GameLogic
+    public class GameLogic
     {
         public static int GetTotalMapPlayers(int mapNum)
         {
@@ -73,7 +73,7 @@ namespace Server
             return FindPlayerRet;
         }
 
-        internal static string CheckGrammar(string Word, byte Caps = 0)
+        public static string CheckGrammar(string Word, byte Caps = 0)
         {
             string CheckGrammarRet = default;
             string FirstLetter;

@@ -22,7 +22,7 @@ using System.Reflection;
 namespace Server
 {
 
-    static class Database
+    public class Database
     {
         public static void ExecuteSql(string connectionString, string sql)
         {
@@ -1414,7 +1414,7 @@ namespace Server
         #endregion
 
         #region Bank
-        internal static void LoadBank(int index)
+        public static void LoadBank(int index)
         {
             JObject data;
             data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "bank");

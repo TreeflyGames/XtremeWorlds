@@ -3,7 +3,7 @@
 namespace Client
 {
 
-    static class Database
+    public class Database
     {
         #region Blood
 

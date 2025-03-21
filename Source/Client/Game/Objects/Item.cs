@@ -5,11 +5,11 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Item
+    public class Item
     {
 
         #region Database
-        internal static void ClearItem(int index)
+        public static void ClearItem(int index)
         {
             Core.Type.Item[index] = default;
             Array.Resize(ref Core.Type.Item[index].Add_Stat, (int)Core.Enum.StatType.Count);
@@ -31,7 +31,7 @@ namespace Client
 
         }
 
-        internal static void ClearChangedItem()
+        public static void ClearChangedItem()
         {
             GameState.Item_Changed = new bool[Core.Constant.MAX_ITEMS];
         }
@@ -49,7 +49,7 @@ namespace Client
 
         #region Incoming Packets
 
-        internal static void Packet_UpdateItem(ref byte[] data)
+        public static void Packet_UpdateItem(ref byte[] data)
         {
             int n;
             int i;

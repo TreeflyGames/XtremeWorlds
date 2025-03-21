@@ -3,7 +3,7 @@
 namespace Client
 {
 
-    static class Weather
+    public class Weather
     {
 
         #region Functions

@@ -4,7 +4,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Party
+    public class Party
     {
 
         #region Database
@@ -98,7 +98,7 @@ namespace Client
 
         #region Outgoing Packets
 
-        internal static void SendPartyRequest(string name)
+        public static void SendPartyRequest(string name)
         {
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestParty);
@@ -108,7 +108,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendAcceptParty()
+        public static void SendAcceptParty()
         {
             var buffer = new ByteStream(4);
 
@@ -118,7 +118,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendDeclineParty()
+        public static void SendDeclineParty()
         {
             var buffer = new ByteStream(4);
 
@@ -128,7 +128,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendLeaveParty()
+        public static void SendLeaveParty()
         {
             var buffer = new ByteStream(4);
 
@@ -138,7 +138,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendPartyChatMsg(string text)
+        public static void SendPartyChatMsg(string text)
         {
             var buffer = new ByteStream(4);
 

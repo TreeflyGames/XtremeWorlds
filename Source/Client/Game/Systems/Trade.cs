@@ -4,7 +4,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    public static class Trade
+    public class Trade
     {
         public static void CloseTrade()
         {
@@ -15,10 +15,10 @@ namespace Client
         #region Globals & Type
 
         public static int InTrade;
-        internal static int TradeX;
-        internal static int TradeY;
-        internal static string TheirWorth;
-        internal static string YourWorth;
+        public static int TradeX;
+        public static int TradeY;
+        public static string TheirWorth;
+        public static string YourWorth;
 
         #endregion
 
@@ -119,7 +119,7 @@ namespace Client
 
         #region Outgoing Packets
 
-        internal static void SendAcceptTrade()
+        public static void SendAcceptTrade()
         {
             var buffer = new ByteStream(4);
 
@@ -129,7 +129,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SendDeclineTrade()
+        public static void SendDeclineTrade()
         {
             var buffer = new ByteStream(4);
 
@@ -163,7 +163,7 @@ namespace Client
 
         }
 
-        internal static void TradeItem(int invslot, int amount)
+        public static void TradeItem(int invslot, int amount)
         {
             var buffer = new ByteStream(4);
 
@@ -175,7 +175,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void UntradeItem(int invslot)
+        public static void UntradeItem(int invslot)
         {
             var buffer = new ByteStream(4);
 

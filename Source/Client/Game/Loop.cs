@@ -7,7 +7,7 @@ using Path = Core.Path;
 namespace Client
 {
 
-    static class Loop
+    public class Loop
     {
         // Declare private fields
         private static int i;

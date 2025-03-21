@@ -14,7 +14,7 @@ using static Core.Type;
 namespace Server
 {
 
-    static class General
+    public class General
     {
         public static RandomUtility Random = new RandomUtility();
 
@@ -22,12 +22,12 @@ namespace Server
         public static IConfiguration? Configuration;
         public static ILogger<T> GetLogger<T>() where T : class => Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException();
 
-        internal static bool ServerDestroyed;
-        internal static string MyIPAddress = string.Empty;
-        internal static Stopwatch myStopWatch = new Stopwatch();
-        internal static Stopwatch shutDownTimer = new Stopwatch();
-        internal static int shutDownLastTimer;
-        internal static int shutDownDuration;
+        public static bool ServerDestroyed;
+        public static string MyIPAddress = string.Empty;
+        public static Stopwatch myStopWatch = new Stopwatch();
+        public static Stopwatch shutDownTimer = new Stopwatch();
+        public static int shutDownLastTimer;
+        public static int shutDownDuration;
 
         public static int GetTimeMs()
         {
@@ -179,7 +179,7 @@ namespace Server
             Environment.Exit(0);
         }
 
-        internal static void ClearGameData()
+        public static void ClearGameData()
         {
             int i;
 
@@ -272,7 +272,7 @@ namespace Server
         }
 
 
-        internal static void CheckDir(string path)
+        public static void CheckDir(string path)
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
@@ -294,7 +294,7 @@ namespace Server
             UpdateCaption();
         }
 
-        internal static string GetExceptionInfo(Exception ex)
+        public static string GetExceptionInfo(Exception ex)
         {
             string Result;
             int hr = System.Runtime.InteropServices.Marshal.GetHRForException(ex);
@@ -310,7 +310,7 @@ namespace Server
             return Result;
         }
 
-        internal static void AddDebug(string Msg)
+        public static void AddDebug(string Msg)
         {
             if (Conversions.ToInteger(Global.DebugTxt) == 1)
             {
@@ -319,7 +319,7 @@ namespace Server
             }
         }
 
-        internal static void CheckShutDownCountDown()
+        public static void CheckShutDownCountDown()
         {
             if (shutDownDuration > 0)
             {

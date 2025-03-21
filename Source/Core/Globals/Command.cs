@@ -4,7 +4,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace Core.Global
 {
-    public static class Command
+    public class Command
     {
         public static string GetPlayerLogin(int index)
         {

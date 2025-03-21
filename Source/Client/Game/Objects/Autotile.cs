@@ -3,7 +3,7 @@
 namespace Client
 {
 
-    public static class Autotile
+    public class Autotile
     {
         public static void ClearAutotiles()
         {

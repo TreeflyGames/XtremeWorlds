@@ -272,7 +272,7 @@ namespace Core
         }
     }
 
-    public static class Languages
+    public class Languages
     {
         public static LanguageDef Language = new LanguageDef();
 

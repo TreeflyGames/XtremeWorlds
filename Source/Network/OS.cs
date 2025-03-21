@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Mirage.Sharp.Asfw
 {
-  public static class OS
+  public class OS
   {
     private static bool _initialized;
     private static bool _isMobile;

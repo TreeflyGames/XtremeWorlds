@@ -12,7 +12,7 @@ using static Core.Global.Command;
 namespace Server
 {
 
-    internal static class Item
+    public class Item
     {
 
         #region Database

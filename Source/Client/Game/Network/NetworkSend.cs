@@ -9,7 +9,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class NetworkSend
+    public class NetworkSend
     {
         public static void SendAddChar(string name, int sexNum, int jobNum)
         {

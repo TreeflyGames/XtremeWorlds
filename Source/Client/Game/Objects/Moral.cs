@@ -4,11 +4,11 @@ using Microsoft.VisualBasic.CompilerServices;
 namespace Client
 {
 
-    internal static class Moral
+    public class Moral
     {
         #region Database
 
-        internal static void ClearMoral(int index)
+        public static void ClearMoral(int index)
         {
             Core.Type.Moral[index] = default;
 
@@ -26,7 +26,7 @@ namespace Client
                 ClearMoral(i);
         }
 
-        internal static void StreamMoral(int moralNum)
+        public static void StreamMoral(int moralNum)
         {
             if (Conversions.ToBoolean(Operators.OrObject(moralNum >= 0 & string.IsNullOrEmpty(Core.Type.Moral[moralNum].Name), Operators.ConditionalCompareObjectEqual(GameState.Moral_Loaded[moralNum], 0, false))))
             {

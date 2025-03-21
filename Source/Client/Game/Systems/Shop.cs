@@ -5,7 +5,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Shop
+    public class Shop
     {
         public static void CloseShop()
         {
@@ -57,7 +57,7 @@ namespace Client
 
         #region Incoming Packets
 
-        internal static void Packet_OpenShop(ref byte[] data)
+        public static void Packet_OpenShop(ref byte[] data)
         {
             int shopnum;
             var buffer = new ByteStream(data);
@@ -69,12 +69,12 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void Packet_ResetShopAction(ref byte[] data)
+        public static void Packet_ResetShopAction(ref byte[] data)
         {
             GameState.ShopAction = 0;
         }
 
-        internal static void Packet_UpdateShop(ref byte[] data)
+        public static void Packet_UpdateShop(ref byte[] data)
         {
             int shopnum;
             var buffer = new ByteStream(data);
@@ -101,7 +101,7 @@ namespace Client
 
         #region Outgoing Packets
 
-        internal static void SendRequestShop(int shopNum)
+        public static void SendRequestShop(int shopNum)
         {
             var buffer = new ByteStream(4);
 
@@ -112,7 +112,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void BuyItem(int shopSlot)
+        public static void BuyItem(int shopSlot)
         {
             var buffer = new ByteStream(4);
 
@@ -123,7 +123,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void SellItem(int invslot)
+        public static void SellItem(int invslot)
         {
             var buffer = new ByteStream(4);
 

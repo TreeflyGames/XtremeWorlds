@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Mirage.Sharp.Asfw.IO
 {
-  public static class Compression
+  public class Compression
   {
     public static byte[] CompressBytes(byte[] value)
     {

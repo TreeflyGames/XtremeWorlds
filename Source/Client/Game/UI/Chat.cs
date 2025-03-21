@@ -144,7 +144,7 @@ namespace Client
 
     }
 
-    static class ChatModule
+    public class ChatModule
     {
         static ChatData ToBoolean_ChatInput()
         {
@@ -152,6 +152,6 @@ namespace Client
             return (init.Active = Conversions.ToBoolean(0), init.HistoryLimit = 10, init.MessageLimit = 100, init.History = new List<string>(init.HistoryLimit + 1), init.CurrentMessage = "", init.Cursor = new ChatCursor() { X = 0, Y = 0 }, init).init;
         }
 
-        internal static ChatData ChatInput = ToBoolean_ChatInput();
+        public static ChatData ChatInput = ToBoolean_ChatInput();
     }
 }
