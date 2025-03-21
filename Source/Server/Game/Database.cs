@@ -1831,6 +1831,7 @@ namespace Server
             Core.Type.Player[index].Switches = new byte[Core.Constant.MAX_SWITCHES];
             for (int i = 0, loopTo6 = Core.Constant.MAX_SWITCHES; i < loopTo6; i++)
                 Core.Type.Player[index].Switches[i] = 0;
+
             Core.Type.Player[index].Variables = new int[Core.Constant.NAX_VARIABLES];
             for (int i = 0, loopTo7 = Core.Constant.NAX_VARIABLES; i < loopTo7; i++)
                 Core.Type.Player[index].Variables[i] = 0;
