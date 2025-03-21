@@ -105,8 +105,6 @@ namespace Server
         /// </summary>
         public static bool IsValidUsername(string username) =>
             !string.IsNullOrWhiteSpace(username) &&
-            username.Length >= 3 &&
-            username.Length <= 20 &&
             Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$");
 
         /// <summary>

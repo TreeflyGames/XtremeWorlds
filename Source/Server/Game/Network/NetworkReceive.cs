@@ -313,17 +313,10 @@ namespace Server
                     username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
                     password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
 
-                    var loopTo = Strings.Len(username);
-                    for (i = 0; i < loopTo; i++)
+                    if (!General.IsValidUsername(username))
                     {
-                        n = Strings.AscW(Strings.Mid(username, i + 1, 1));
-
-                        if (!General.IsValidUsername(n.ToString()))
-                        {
-                            NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.Register);
-                            return;
-                        }
-
+                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.Register);
+                        return;
                     }
 
                     // Get the current executing assembly
@@ -446,16 +439,10 @@ namespace Server
                     return;
                 }
 
-                var loopTo = Strings.Len(name);
-                for (i = 0; i < loopTo; i++)
+                if (!General.IsValidUsername(name))
                 {
-                    n = Strings.AscW(Strings.Mid(name, i + 1, 1));
-
-                    if (!General.IsValidUsername(n.ToString()))
-                    {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.NewChar);
-                        return;
-                    }
+                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.NewChar);
+                    return;
                 }
 
                 // Check if name is already in use
