@@ -187,13 +187,21 @@ namespace Server
             NetworkConfig.Socket.StopListening();
 
             Logger.LogInformation("Server shutdown initiated...");
+
             await Database.SaveAllPlayersOnlineAsync();
 
-            await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
+            try
             {
-                NetworkSend.SendLeftGame(i);
-                Player.LeftGame(i);
-            });
+                await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
+                {
+                    NetworkSend.SendLeftGame(i);
+                    Player.LeftGame(i);
+                });
+            }
+            catch (TaskCanceledException)
+            {
+                Logger.LogWarning("Server shutdown tasks were canceled.");
+            }
 
             NetworkConfig.DestroyNetwork();
             Logger.LogInformation("Server shutdown completed.");
@@ -609,6 +617,9 @@ namespace Server
         /// </summary>
         public static async Task BackupDatabaseAsync()
         {
+            // disable for now
+            return;
+
             try
             {
                 string backupDir = Core.Path.Database;
