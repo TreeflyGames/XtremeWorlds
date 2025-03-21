@@ -8,6 +8,7 @@ using Reoria.Engine.Base.Container;
 using Reoria.Engine.Base.Container.Interfaces;
 using Reoria.Engine.Base.Container.Logging;
 using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -32,33 +33,36 @@ namespace Server
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
         private static Timer? SaveTimer;
+        private static Timer? AnnouncementTimer;
         private static Stopwatch ShutDownTimer = new Stopwatch();
         private static int ShutDownLastTimer = 0;
+        private static readonly ConcurrentDictionary<int, PlayerStats> PlayerStatistics = new();
 
         static General()
         {
             InitializeSaveTimer();
+            InitializeAnnouncementTimer();
         }
 
         #region Utility Methods
 
         /// <summary>
-        /// Retrieves the shut down timer to destroy the server after a specified time.
+        /// Retrieves the shutdown timer for server destruction.
         /// </summary>
         public static Stopwatch? GetShutDownTimer => ShutDownTimer;
 
         /// <summary>
-        /// Retrives the current server destroy status.
+        /// Gets the current server destruction status.
         /// </summary>
         public static bool IsServerDestroyed => ServerDestroyed;
 
         /// <summary>
-        /// Retrieves the current random number generator.
+        /// Retrieves the random number generator utility.
         /// </summary>
         public static RandomUtility GetRandom => Random;
 
         /// <summary>
-        /// Retrieves a config isntance for the specified type.
+        /// Retrieves the server configuration instance.
         /// </summary>
         public static IConfiguration GetConfig => Configuration ?? throw new NullReferenceException("Configuration not initialized");
 
@@ -93,12 +97,22 @@ namespace Server
             username.Length <= 20 &&
             Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$");
 
+        /// <summary>
+        /// Gets the current server time synchronized across all operations.
+        /// </summary>
+        public static DateTime GetServerTime() => DateTime.UtcNow;
+
+        /// <summary>
+        /// Generates a unique identifier for server entities.
+        /// </summary>
+        public static long GenerateUniqueId() => Interlocked.Increment(ref Global.UniqueIdCounter);
+
         #endregion
 
         #region Server Lifecycle
 
         /// <summary>
-        /// Initializes the game server asynchronously.
+        /// Initializes the game server asynchronously with enhanced features.
         /// </summary>
         public static async Task InitServerAsync()
         {
@@ -121,7 +135,7 @@ namespace Server
         private static async Task InitializeCoreComponentsAsync()
         {
             await InitializeContainerAsync();
-            await Task.WhenAll(LoadConfigurationAsync(), InitializeNetworkAsync()); // Parallelize independent tasks
+            await Task.WhenAll(LoadConfigurationAsync(), InitializeNetworkAsync(), InitializeChatSystemAsync());
             await InitializeDatabaseWithRetryAsync();
         }
 
@@ -206,7 +220,7 @@ namespace Server
         }
 
         /// <summary>
-        /// Shuts down the server gracefully, saving player data and cleaning up resources.
+        /// Shuts down the server gracefully, cleaning up all resources.
         /// </summary>
         public static async Task DestroyServerAsync()
         {
@@ -214,6 +228,7 @@ namespace Server
             ServerDestroyed = true;
             Cts.Cancel();
             SaveTimer?.Dispose();
+            AnnouncementTimer?.Dispose();
             NetworkConfig.Socket.StopListening();
 
             Logger.LogInformation("Server shutdown initiated...");
@@ -264,6 +279,10 @@ namespace Server
         {
             await Task.Run(() =>
             {
+                var configBuilder = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddEnvironmentVariables();
+                Configuration = configBuilder.Build();
                 Settings.Load();
                 ValidateConfiguration();
                 Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
@@ -288,7 +307,8 @@ namespace Server
 
         private static async Task InitializeDatabaseWithRetryAsync()
         {
-            const int maxRetries = 3;
+            int maxRetries = Configuration.GetValue<int>("Database:MaxRetries", 3);
+            int retryDelayMs = Configuration.GetValue<int>("Database:RetryDelayMs", 1000);
             Logger.LogInformation("Initializing database...");
             for (int attempt = 1; attempt <= maxRetries; attempt++)
             {
@@ -308,7 +328,7 @@ namespace Server
                         throw;
                     }
                     Logger.LogWarning(ex, $"Database initialization failed, attempt {attempt} of {maxRetries}");
-                    await Task.Delay(1000 * attempt, Cts.Token); // Exponential backoff
+                    await Task.Delay(retryDelayMs * attempt, Cts.Token);
                 }
             }
         }
@@ -327,13 +347,13 @@ namespace Server
                 {
                     for (int i = 1; i <= Core.Constant.MAX_CHARS; i++)
                     {
-                        var data = Database.SelectRowByColumn("id", id, "account", $"character{i}");
-                        if (data != null)
+                        var data = Database.SelectRowByColumn("id", id, "account", $"character{i}", "name"); // Optimized to fetch only 'name'
+                        if (data != null && data.ContainsKey("name"))
                         {
-                            var player = JObject.FromObject(data).ToObject<PlayerStruct>();
-                            if (!string.IsNullOrWhiteSpace(player.Name))
+                            string name = data["name"].ToString();
+                            if (!string.IsNullOrWhiteSpace(name))
                             {
-                                Core.Type.Char.Add(player.Name);
+                                Core.Type.Char.Add(name);
                             }
                         }
                     }
@@ -355,19 +375,19 @@ namespace Server
 
             var tasks = new[]
             {
-                LoadWithSemaphoreAsync(semaphore, async () => Database.LoadJobsAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Moral.LoadMoralsAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Database.LoadMapsAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Item.LoadItemsAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Database.LoadNPCsAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Resource.LoadResourcesAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Database.LoadShopsAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Database.LoadSkillsAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Animation.LoadAnimationsAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Event.LoadSwitchesAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Event.LoadVariablesAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Projectile.LoadProjectilesAsync()),
-                LoadWithSemaphoreAsync(semaphore, async () => await Pet.LoadPetsAsync())
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading jobs..."); await Database.LoadJobsAsync(); Logger.LogInformation("Jobs loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading morals..."); await Moral.LoadMoralsAsync(); Logger.LogInformation("Morals loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading maps..."); await Database.LoadMapsAsync(); Logger.LogInformation("Maps loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading items..."); await Item.LoadItemsAsync(); Logger.LogInformation("Items loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading NPCs..."); await Database.LoadNPCsAsync(); Logger.LogInformation("NPCs loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading resources..."); await Resource.LoadResourcesAsync(); Logger.LogInformation("Resources loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading shops..."); await Database.LoadShopsAsync(); Logger.LogInformation("Shops loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading skills..."); await Database.LoadSkillsAsync(); Logger.LogInformation("Skills loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading animations..."); await Animation.LoadAnimationsAsync(); Logger.LogInformation("Animations loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading switches..."); await Event.LoadSwitchesAsync(); Logger.LogInformation("Switches loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading variables..."); await Event.LoadVariablesAsync(); Logger.LogInformation("Variables loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading projectiles..."); await Projectile.LoadProjectilesAsync(); Logger.LogInformation("Projectiles loaded."); }),
+                LoadWithSemaphoreAsync(semaphore, async () => { Logger.LogInformation("Loading pets..."); await Pet.LoadPetsAsync(); Logger.LogInformation("Pets loaded."); })
             };
 
             await Task.WhenAll(tasks);
@@ -476,6 +496,13 @@ namespace Server
                 TimeSpan.FromMinutes(intervalMinutes), TimeSpan.FromMinutes(intervalMinutes));
         }
 
+        private static void InitializeAnnouncementTimer()
+        {
+            int intervalMinutes = Configuration.GetValue<int>("Events:AnnouncementIntervalMinutes", 60);
+            AnnouncementTimer = new Timer(async _ => await SendServerAnnouncementAsync(), null,
+                TimeSpan.FromMinutes(intervalMinutes), TimeSpan.FromMinutes(intervalMinutes));
+        }
+
         private static async Task SavePlayersPeriodicallyAsync()
         {
             try
@@ -489,8 +516,25 @@ namespace Server
             }
         }
 
+        private static async Task SendServerAnnouncementAsync()
+        {
+            string message = "Server Announcement: Enjoy the game and report any bugs!";
+            await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
+            {
+                if (NetworkConfig.IsPlaying(i))
+                    NetworkSend.PlayerMsg(i, message, (int)Core.Enum.ColorType.BrightYellow);
+            });
+            Logger.LogInformation("Server announcement sent.");
+        }
+
+        private static async Task InitializeChatSystemAsync()
+        {
+            Logger.LogInformation("Chat system initialized.");
+            // Additional initialization logic can be added here if needed
+        }
+
         /// <summary>
-        /// Handles player commands asynchronously with enhanced functionality.
+        /// Handles player commands with expanded functionality.
         /// </summary>
         public static async Task HandlePlayerCommandAsync(int playerIndex, string command)
         {
@@ -524,6 +568,28 @@ namespace Server
                     await SendHelpMessageAsync(playerIndex);
                     break;
 
+                case "/whisper":
+                    if (parts.Length >= 3)
+                        await SendWhisperAsync(playerIndex, parts[1], string.Join(" ", parts[2..]));
+                    else
+                        NetworkSend.PlayerMsg(playerIndex, "Usage: /whisper <player> <message>", (int)Core.Enum.ColorType.BrightRed);
+                    break;
+
+                case "/party":
+                    if (parts.Length >= 2)
+                        await HandlePartyCommandAsync(playerIndex, parts[1], parts.Length > 2 ? parts[2] : null);
+                    else
+                        NetworkSend.PlayerMsg(playerIndex, "Usage: /party <create|invite|leave> [player]", (int)Core.Enum.ColorType.BrightRed);
+                    break;
+
+                case "/stats":
+                    await SendPlayerStatsAsync(playerIndex);
+                    break;
+
+                case "/save":
+                    await SavePlayerDataAsync(playerIndex);
+                    break;
+
                 default:
                     NetworkSend.PlayerMsg(playerIndex, "Unknown command. Use /help for assistance.", (int)Core.Enum.ColorType.BrightRed);
                     break;
@@ -534,9 +600,7 @@ namespace Server
         {
             try
             {
-                ref var player = ref Core.Type.Player[playerIndex]; // Hypothetical method
-
-                // Validate coordinates (assuming a map size of 100x100 as an example)
+                ref var player = ref Core.Type.Player[playerIndex];
                 if (x < 0 || x >= 100 || y < 0 || y >= 100)
                 {
                     NetworkSend.PlayerMsg(playerIndex, "Coordinates out of bounds.", (int)Core.Enum.ColorType.BrightRed);
@@ -559,7 +623,6 @@ namespace Server
         {
             try
             {
-                // Placeholder authorization check
                 if (!await IsAdminAsync(playerIndex))
                 {
                     NetworkSend.PlayerMsg(playerIndex, "You are not authorized to kick players.", (int)Core.Enum.ColorType.BrightRed);
@@ -595,11 +658,7 @@ namespace Server
                     return;
                 }
 
-                await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
-                {
-                    if (NetworkConfig.IsPlaying(i))
-                        NetworkSend.PlayerMsg(i, $"[Broadcast] {message}", (int)Core.Enum.ColorType.BrightGreen);
-                });
+                await SendChatMessageAsync(playerIndex, "global", $"[Broadcast] {message}", Core.Enum.ColorType.BrightGreen);
                 Logger.LogInformation($"Broadcast by {playerIndex}: {message}");
             }
             catch (Exception ex)
@@ -634,13 +693,207 @@ namespace Server
                           "/kick <playerId> - Kick a player (admin only)\n" +
                           "/broadcast <message> - Send a message to all players (admin only)\n" +
                           "/status - View server status\n" +
+                          "/whisper <player> <message> - Send a private message\n" +
+                          "/party <create|invite|leave> [player] - Manage parties\n" +
+                          "/stats - View your statistics\n" +
+                          "/save - Manually save your data\n" +
                           "/help - Show this message";
             NetworkSend.PlayerMsg(playerIndex, help, (int)Core.Enum.ColorType.BrightGreen);
         }
 
-        // Placeholder method for admin check
+        private static async Task SendWhisperAsync(int senderIndex, string targetName, string message)
+        {
+            try
+            {
+                int targetIndex = await FindPlayerByNameAsync(targetName);
+                if (targetIndex == -1)
+                {
+                    NetworkSend.PlayerMsg(senderIndex, $"Player '{targetName}' not found.", (int)Core.Enum.ColorType.BrightRed);
+                    return;
+                }
+
+                await SendChatMessageAsync(senderIndex, $"private:{targetIndex}", $"[Whisper] {message}", Core.Enum.ColorType.BrightCyan);
+                Logger.LogInformation($"Whisper from {senderIndex} to {targetIndex}: {message}");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Failed to send whisper from {senderIndex} to {targetName}");
+                NetworkSend.PlayerMsg(senderIndex, "Failed to send whisper.", (int)Core.Enum.ColorType.BrightRed);
+            }
+        }
+
+        private static async Task HandlePartyCommandAsync(int playerIndex, string subCommand, string targetName)
+        {
+            try
+            {
+                ref var player = ref Core.Type.Player[playerIndex];
+                switch (subCommand.ToLower())
+                {
+                    case "create":
+                        if (player.PartyId != 0)
+                        {
+                            NetworkSend.PlayerMsg(playerIndex, "You are already in a party.", (int)Core.Enum.ColorType.BrightRed);
+                            return;
+                        }
+                        player.PartyId = GenerateUniqueId();
+                        NetworkSend.PlayerMsg(playerIndex, "Party created.", (int)Core.Enum.ColorType.BrightGreen);
+                        break;
+
+                    case "invite":
+                        if (player.PartyId == 0)
+                        {
+                            NetworkSend.PlayerMsg(playerIndex, "You must create a party first.", (int)Core.Enum.ColorType.BrightRed);
+                            return;
+                        }
+                        int targetIndex = await FindPlayerByNameAsync(targetName);
+                        if (targetIndex == -1)
+                        {
+                            NetworkSend.PlayerMsg(playerIndex, $"Player '{targetName}' not found.", (int)Core.Enum.ColorType.BrightRed);
+                            return;
+                        }
+                        ref var targetPlayer = ref Core.Type.Player[targetIndex];
+                        if (targetPlayer.PartyId != 0)
+                        {
+                            NetworkSend.PlayerMsg(playerIndex, $"{targetName} is already in a party.", (int)Core.Enum.ColorType.BrightRed);
+                            return;
+                        }
+                        targetPlayer.PartyId = player.PartyId;
+                        NetworkSend.PlayerMsg(targetIndex, $"You have joined {player.Name}'s party.", (int)Core.Enum.ColorType.BrightGreen);
+                        NetworkSend.PlayerMsg(playerIndex, $"{targetName} has joined your party.", (int)Core.Enum.ColorType.BrightGreen);
+                        break;
+
+                    case "leave":
+                        if (player.PartyId == 0)
+                        {
+                            NetworkSend.PlayerMsg(playerIndex, "You are not in a party.", (int)Core.Enum.ColorType.BrightRed);
+                            return;
+                        }
+                        player.PartyId = 0;
+                        NetworkSend.PlayerMsg(playerIndex, "You have left the party.", (int)Core.Enum.ColorType.BrightGreen);
+                        break;
+
+                    default:
+                        NetworkSend.PlayerMsg(playerIndex, "Invalid party command. Use: create, invite, leave.", (int)Core.Enum.ColorType.BrightRed);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Failed to handle party command for player {playerIndex}");
+                NetworkSend.PlayerMsg(playerIndex, "Party command failed.", (int)Core.Enum.ColorType.BrightRed);
+            }
+        }
+
+        private static async Task SendPlayerStatsAsync(int playerIndex)
+        {
+            try
+            {
+                var stats = PlayerStatistics.GetOrAdd(playerIndex, new PlayerStats());
+                string statsMessage = $"Your Stats:\n" +
+                                      $"Kills: {stats.Kills}\n" +
+                                      $"Deaths: {stats.Deaths}\n" +
+                                      $"Playtime: {stats.PlayTime.TotalHours:F2} hours";
+                NetworkSend.PlayerMsg(playerIndex, statsMessage, (int)Core.Enum.ColorType.BrightGreen);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Failed to send stats for player {playerIndex}");
+                NetworkSend.PlayerMsg(playerIndex, "Failed to retrieve stats.", (int)Core.Enum.ColorType.BrightRed);
+            }
+        }
+
+        private static async Task SavePlayerDataAsync(int playerIndex)
+        {
+            try
+            {
+                await Database.SavePlayerAsync(playerIndex); // Assuming this method exists
+                NetworkSend.PlayerMsg(playerIndex, "Your data has been saved.", (int)Core.Enum.ColorType.BrightGreen);
+                Logger.LogInformation($"Player {playerIndex} data saved manually.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Failed to save data for player {playerIndex}");
+                NetworkSend.PlayerMsg(playerIndex, "Failed to save data.", (int)Core.Enum.ColorType.BrightRed);
+            }
+        }
+
+        private static async Task<int> FindPlayerByNameAsync(string name)
+        {
+            for (int i = 0; i < Core.Constant.MAX_PLAYERS; i++)
+            {
+                if (NetworkConfig.IsPlaying(i) && Core.Type.Player[i].Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private static async Task SendChatMessageAsync(int senderIndex, string channel, string message, Core.Enum.ColorType color)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(message) || message.Length > 200) // Basic filtering
+                {
+                    NetworkSend.PlayerMsg(senderIndex, "Invalid message.", (int)Core.Enum.ColorType.BrightRed);
+                    return;
+                }
+
+                if (channel.StartsWith("private:"))
+                {
+                    int targetIndex = int.Parse(channel.Split(':')[1]);
+                    NetworkSend.PlayerMsg(targetIndex, $"[From {Core.Type.Player[senderIndex].Name}] {message}", (int)color);
+                    NetworkSend.PlayerMsg(senderIndex, $"[To {Core.Type.Player[targetIndex].Name}] {message}", (int)color);
+                }
+                else if (channel == "party" && Core.Type.Player[senderIndex].PartyId != 0)
+                {
+                    await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
+                    {
+                        if (NetworkConfig.IsPlaying(i) && Core.Type.Player[i].PartyId == Core.Type.Player[senderIndex].PartyId)
+                            NetworkSend.PlayerMsg(i, $"[Party] {Core.Type.Player[senderIndex].Name}: {message}", (int)color);
+                    });
+                }
+                else if (channel == "global")
+                {
+                    await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
+                    {
+                        if (NetworkConfig.IsPlaying(i))
+                            NetworkSend.PlayerMsg(i, message, (int)color);
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Failed to send chat message from {senderIndex} to {channel}");
+                NetworkSend.PlayerMsg(senderIndex, "Failed to send message.", (int)Core.Enum.ColorType.BrightRed);
+            }
+        }
+
+        /// <summary>
+        /// Handles player login events.
+        /// </summary>
+        public static async Task OnPlayerLoginAsync(int playerIndex)
+        {
+            Logger.LogInformation($"Player {playerIndex} logged in.");
+            NetworkSend.PlayerMsg(playerIndex, "Welcome to the server!", (int)Core.Enum.ColorType.BrightGreen);
+            PlayerStatistics.GetOrAdd(playerIndex, new PlayerStats()).LoginTime = GetServerTime();
+        }
+
+        /// <summary>
+        /// Handles player logout events.
+        /// </summary>
+        public static async Task OnPlayerLogoutAsync(int playerIndex)
+        {
+            if (PlayerStatistics.TryGetValue(playerIndex, out var stats) && stats.LoginTime.HasValue)
+            {
+                stats.PlayTime += GetServerTime() - stats.LoginTime.Value;
+                stats.LoginTime = null;
+            }
+            Logger.LogInformation($"Player {playerIndex} logged out.");
+        }
+
         private static Task<bool> IsAdminAsync(int playerIndex) =>
-            Task.FromResult(playerIndex == 0); // Example: player 0 is admin
+            Task.FromResult(playerIndex == 0); // Example admin check
 
         /// <summary>
         /// Creates a backup of the database asynchronously.
@@ -649,11 +902,10 @@ namespace Server
         {
             try
             {
-                return; // Commented out to prevent backups during testing
                 string backupDir = Core.Path.Database;
                 Directory.CreateDirectory(backupDir);
                 string backupPath = System.IO.Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
-                await General.BackupDatabaseAsync();
+                await Database.BackupAsync(backupPath); // Assuming this method exists
                 Logger.LogInformation($"Database backup created: {backupPath}");
 
                 var backups = Directory.GetFiles(backupDir, "backup_*.bak")
@@ -680,6 +932,7 @@ namespace Server
         {
             await BackupDatabaseAsync();
             Logger.LogCritical(ex, "Critical error occurred. Initiating emergency shutdown");
+            await SendServerAnnouncementAsync("Server shutting down due to critical error.");
             await DestroyServerAsync();
         }
 
@@ -688,7 +941,7 @@ namespace Server
         /// </summary>
         public static async Task LogErrorAsync(Exception ex, string context = "")
         {
-            string errorInfo = ex.ToString(); // Simplified; replace with GetExceptionInfo if available
+            string errorInfo = $"{ex.Message}\nStackTrace: {ex.StackTrace}";
             string logPath = System.IO.Path.Combine(Core.Path.Logs, "Errors.log");
             Directory.CreateDirectory(Core.Path.Logs);
 
@@ -701,28 +954,36 @@ namespace Server
 
         public static async Task CheckShutDownCountDownAsync()
         {
-            if (General.ShutDownTimer.ElapsedTicks > 0)
+            if (ShutDownTimer.ElapsedTicks <= 0) return;
+
+            int time = ShutDownTimer.Elapsed.Seconds;
+            if (ShutDownLastTimer != time)
             {
-                int time = General.ShutDownTimer.Elapsed.Seconds;
-
-                if (General.ShutDownLastTimer != time)
+                if (Settings.Instance.ServerShutdown - time <= 10)
                 {
-                    if (General.ShutDownLastTimer - time <= 10)
+                    NetworkSend.GlobalMsg($"Server shutdown in {Settings.Instance.ServerShutdown - time} seconds!");
+                    Console.WriteLine($"Server shutdown in {Settings.Instance.ServerShutdown - time} seconds!");
+                    if (Settings.Instance.ServerShutdown - time <= 1)
                     {
-                        NetworkSend.GlobalMsg("Server shutdown in " + (-time) + " seconds!");
-                        Console.WriteLine("Server shutdown in " + (Settings.Instance.ServerShutdown - time) + " seconds!");
-
-                        if (Settings.Instance.ServerShutdown - time <= 1)
-                        {
-                            await General.DestroyServerAsync();
-                        }
+                        await DestroyServerAsync();
                     }
-
-                    General.ShutDownLastTimer = time;
                 }
+                ShutDownLastTimer = time;
             }
-
-            #endregion
         }
+
+        #endregion
+
+        #region Helper Classes
+
+        private class PlayerStats
+        {
+            public int Kills { get; set; }
+            public int Deaths { get; set; }
+            public TimeSpan PlayTime { get; set; }
+            public DateTime? LoginTime { get; set; }
+        }
+
+        #endregion
     }
 }
