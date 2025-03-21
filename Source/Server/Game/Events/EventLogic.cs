@@ -158,22 +158,23 @@ namespace Server
                    !Core.Type.TempPlayer[index].GettingMap;
         }
 
-        private static bool IsEventValid(EventMap eventMap, int index, int mapNum)
+        private static bool IsEventValid(Core.Type.EventMapStruct eventMap, int index, int mapNum)
         {
             return index < eventMap.EventPages.Length &&
                    eventMap.EventPages[index].EventID <= Map[mapNum].Event.Length;
         }
 
-        private static bool ShouldDespawnEvent(int playerIndex, int mapNum, int eventId, int pageId)
+        private static bool ShouldDespawnEvent(int playerIndex, int mapNum, int eventID, int pageID)
         {
-            var page = Map[mapNum].Event[eventId].Pages[pageId];
+            var eventData = Map[mapNum].Event[eventID];
+            var page = eventData.Pages[pageID];
             return (page.ChkHasItem == 1 && Player.HasItem(playerIndex, page.HasItemIndex) == 0) ||
-                   (page.ChkSelfSwitch == 1 && !CheckSelfSwitch(playerIndex, mapNum, eventId, page)) ||
+                   (page.ChkSelfSwitch == 1 && !CheckSelfSwitch(eventID, eventData, page)) ||
                    (page.ChkVariable == 1 && !CheckVariable(playerIndex, page)) ||
                    (page.ChkSwitch == 1 && !CheckSwitch(playerIndex, page));
         }
 
-        private static void UpdateEventVisibility(int playerIndex, int mapNum, int eventId, EventPages eventPage)
+        private static void UpdateEventVisibility(int playerIndex, int mapNum, int eventId, Core.Type.MapEventStruct eventPage)
         {
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
@@ -183,15 +184,16 @@ namespace Server
             buffer.Dispose();
         }
 
-        private static int DetermineSpawnPage(int playerIndex, int mapNum, int eventId)
+        private static int DetermineSpawnPage(int playerIndex, int mapNum, int eventID)
         {
-            for (int z = 0; z < Map[mapNum].Event[eventId].PageCount; z++)
+            for (int z = 0; z < Map[mapNum].Event[eventID].PageCount; z++)
             {
-                var page = Map[mapNum].Event[eventId].Pages[z];
+                var eventData = Map[mapNum].Event[eventID];
+                var page = Map[mapNum].Event[eventID].Pages[z];
                 bool shouldSpawn = true;
 
                 if (page.ChkHasItem == 1 && Player.HasItem(playerIndex, page.HasItemIndex) == 0) shouldSpawn = false;
-                if (page.ChkSelfSwitch == 1 && !CheckSelfSwitch(playerIndex, mapNum, eventId, page)) shouldSpawn = false;
+                if (page.ChkSelfSwitch == 1 && !CheckSelfSwitch(eventID, eventData, page)) shouldSpawn = false;
                 if (page.ChkVariable == 1 && !CheckVariable(playerIndex, page)) shouldSpawn = false;
                 if (page.ChkSwitch == 1 && !CheckSwitch(playerIndex, page)) shouldSpawn = false;
 
@@ -200,9 +202,9 @@ namespace Server
             return -1;
         }
 
-        private static void SpawnEvent(int playerIndex, int mapNum, int eventId, int pageId, ref EventPages eventPage)
+        private static void SpawnEvent(int playerIndex, int mapNum, int eventId, int pageId, ref Core.Type.MapEventStruct eventPage)
         {
-            eventPage = new EventPages
+            eventPage = new Core.Type.MapEventStruct
             {
                 EventID = eventId,
                 PageID = pageId,
@@ -384,8 +386,36 @@ namespace Server
             buffer.WriteInt32(Map[mapNum].Event[eventId].Pages[eventData.PageID].WalkThrough);
             buffer.WriteInt32(Map[mapNum].Event[eventId].Pages[eventData.PageID].ShowName);
         }
-        #endregion
 
-        // Other existing methods (ParseEventText, FindEventLabel, etc.) remain largely unchanged but can be refactored similarly.
+        private static bool CheckSwitch(int playerIndex, EventPageStruct page)
+        {
+            return Core.Type.Player[playerIndex].Switches[page.SwitchIndex] == page.SwitchCompare;
+        }
+
+        private static bool CheckSelfSwitch(int eventIndex, EventStruct eventData, EventPageStruct page)
+        {
+            return eventData.SelfSwitches[eventIndex] == page.SwitchCompare;
+        }
+
+        private static bool CheckVariable(int playerIndex, EventPageStruct page)
+        {
+            int playerVariable = Core.Type.Player[playerIndex].Variables[page.VariableIndex];
+            switch (page.VariableCondition)
+            {
+                case 0: // Equal to
+                    return playerVariable == page.VariableCompare;
+                case 1: // Greater than or equal to
+                    return playerVariable >= page.VariableCompare;
+                case 2: // Less than or equal to
+                    return playerVariable <= page.VariableCompare;
+                case 3: // Greater than
+                    return playerVariable > page.VariableCompare;
+                case 4: // Less than
+                    return playerVariable < page.VariableCompare;
+                default:
+                    return false;
+            }
+        }
+        #endregion
     }
 }
