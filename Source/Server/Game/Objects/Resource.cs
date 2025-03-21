@@ -32,13 +32,7 @@ namespace Server
 
         public static async Task LoadResourcesAsync()
         {
-            var tasks = new List<Task>();
-
-            for (int i = 0; i < Core.Constant.MAX_RESOURCES; i++)
-            {
-                tasks.Add(Task.Run(() => LoadResourceAsync(i)));
-            }
-
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_RESOURCES).Select(i => Task.Run(() => LoadResourceAsync(i)));
             await Task.WhenAll(tasks);
         }
 
