@@ -59,10 +59,7 @@ namespace Server
 
         public static async Task LoadPetsAsync()
         {
-            int i;
-            var loopTo = Core.Constant.MAX_PETS;
-            for (i = 0; i < loopTo; i++)
-                await LoadPetAsync(i);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_PETS).Select(i => Task.Run(() => LoadPetAsync(i)));
         }
 
         public static async Task LoadPetAsync(int petNum)
