@@ -26,7 +26,7 @@ namespace Server
         private static bool ServerDestroyed;
         private static string MyIPAddress = string.Empty;
         private static readonly Stopwatch MyStopwatch = new Stopwatch();
-        private static readonly ILogger<General> Logger;
+        private static ILogger Logger;
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
         private static Timer? SaveTimer;
@@ -35,7 +35,6 @@ namespace Server
 
         static General()
         {
-            Logger = GetLogger<General>();
             InitializeSaveTimer();
         }
 
@@ -191,6 +190,9 @@ namespace Server
 
             Configuration = Container?.RetrieveService<IConfiguration>() ??
                 throw new NullReferenceException("Failed to initialize configuration");
+
+            Logger = Container?.RetrieveService<ILogger<General>>() ??
+                throw new NullReferenceException("Failed to initialize logger");
         }
 
         private static async Task LoadConfigurationAsync()
