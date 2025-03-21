@@ -2820,7 +2820,7 @@ namespace Server
                 for (x = 0; x < loopTo; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
-                for (int q = 0; q <= 4; q++)
+                for (int q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
                 {
                     withBlock.StartItem[q] = buffer.ReadInt32();
                     withBlock.StartValue[q] = buffer.ReadInt32();
@@ -2834,7 +2834,7 @@ namespace Server
 
             buffer.Dispose();
 
-            Database.SaveJobs();
+            Database.SaveJob(jobNum);
             NetworkSend.SendJobToAll(index);
         }
 

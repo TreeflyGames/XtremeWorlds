@@ -803,7 +803,7 @@ namespace Client
             for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[i]);
 
-            for (q = 0; q <= 4; q++)
+            for (q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
             {
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);

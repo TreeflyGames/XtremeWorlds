@@ -34,6 +34,7 @@ namespace Core
         public const byte MAX_MAPY = 24;
         public const int MAX_PROJECTILES = 255;
         public const byte MAX_DROP_ITEMS = 5;
+        public const byte MAX_START_ITEMS = 5;
         public const int MAX_SWITCHES = 100;
         public const int NAX_VARIABLES = 100;
         public const byte MAX_POINTS = 255;

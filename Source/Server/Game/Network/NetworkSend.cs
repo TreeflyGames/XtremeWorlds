@@ -95,7 +95,7 @@ namespace Server
             for (int q = 0, loopTo = (int)(StatType.Count); q < loopTo; q++)
                 buffer.WriteInt32(Core.Type.Job[jobNum].Stat[Conversions.ToInteger(q)]);
 
-            for (int q = 0; q <= 4; q++)
+            for (int q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
             {
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartItem[q]);
                 buffer.WriteInt32(Core.Type.Job[jobNum].StartValue[q]);
