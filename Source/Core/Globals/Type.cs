@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Core.Database;
 
 namespace Core
 {
-
-    public class Type
+    public static class Type
     {
-        // Common data structure arrays
-        public static JobStruct[] Job = new JobStruct[(Constant.MAX_JOBS)];
-        public static MoralStruct[] Moral = new MoralStruct[(Constant.MAX_MORALS)];
+        // Common data structure arrays with improved initialization
+        public static JobStruct[] Job = new JobStruct[Constant.MAX_JOBS];
+        public static MoralStruct[] Moral = new MoralStruct[Constant.MAX_MORALS];
         public static ItemStruct[] Item = new ItemStruct[Constant.MAX_ITEMS];
         public static NPCStruct[] NPC = new NPCStruct[Constant.MAX_NPCS];
         public static ShopStruct[] Shop = new ShopStruct[Constant.MAX_SHOPS];
         public static SkillStruct[] Skill = new SkillStruct[Constant.MAX_SKILLS];
         public static MapResourceStruct[] MapResource = new MapResourceStruct[Constant.MAX_RESOURCES];
-        public static MapResourceCacheStruct[] MyMapResource;
+        public static MapResourceCacheStruct[] MyMapResource = new MapResourceCacheStruct[Constant.MAX_RESOURCES];
         public static AnimationStruct[] Animation = new AnimationStruct[Constant.MAX_ANIMATIONS];
         public static MapStruct[] Map = new MapStruct[Constant.MAX_MAPS];
         public static MapStruct MyMap;
@@ -33,12 +33,20 @@ namespace Core
         public static MapProjectileStruct[,] MapProjectile = new MapProjectileStruct[Constant.MAX_MAPS, Constant.MAX_PROJECTILES];
         public static PlayerInvStruct[] TradeYourOffer = new PlayerInvStruct[Constant.MAX_INV];
         public static PlayerInvStruct[] TradeTheirOffer = new PlayerInvStruct[Constant.MAX_INV];
-        public static PartyStruct[] Party;
+        public static PartyStruct[] Party = new PartyStruct[Constant.MAX_PARTIES];
         public static PartyStruct MyParty;
-        public static ResourceStruct[] Resource;
+        public static ResourceStruct[] Resource = new ResourceStruct[Constant.MAX_RESOURCES];
         public static CharList Char;
-        public static PetStruct[] Pet;
-        public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[(byte.MaxValue)];
+        public static PetStruct[] Pet = new PetStruct[Constant.MAX_PETS];
+        public static ChatBubbleStruct[] ChatBubble = new ChatBubbleStruct[byte.MaxValue];
+
+        // New feature arrays
+        public static QuestStruct[] Quests = new QuestStruct[Constant.MAX_QUESTS];
+        public static EventStruct[] Events = new EventStruct[Constant.MAX_EVENTS];
+        public static GuildStruct[] Guilds = new GuildStruct[Constant.MAX_GUILDS];
+        public static WeatherStruct Weather = new WeatherStruct();
+
+        #region Struct Definitions
 
         public struct ResourceTypetruct
         {
@@ -107,10 +115,8 @@ namespace Core
             public int CastAnim;
             public int SkillAnim;
             public int StunDuration;
-
             public int IsProjectile;
             public int Projectile;
-
             public byte KnockBack;
             public byte KnockBackTiles;
         }
@@ -172,7 +178,6 @@ namespace Core
             public string Name;
             public int Icon;
             public string Description;
-
             public byte Type;
             public byte SubType;
             public int Data1;
@@ -190,13 +195,10 @@ namespace Core
             public byte[] Stat_Req;
             public int Animation;
             public int Paperdoll;
-
             public byte Stackable;
             public byte ItemLevel;
-
             public byte KnockBack;
             public byte KnockBackTiles;
-
             public int Projectile;
             public int Ammo;
         }
@@ -206,18 +208,10 @@ namespace Core
             public int Animation;
             public int X;
             public int Y;
-
-            // Used for locking to players/npcs
             public int LockIndex;
             public byte LockType;
-
-            // Timing
             public int[] Timer;
-
-            // Rendering check
             public bool[] Used;
-
-            // Counting the loop
             public int[] LoopIndex;
             public int[] FrameIndex;
         }
@@ -272,22 +266,15 @@ namespace Core
             public int Num;
             public string Name;
             public int Sprite;
-
             public int Range;
-
             public int Level;
-
             public int MaxLevel;
             public int ExpGain;
             public int LevelPnts;
-
-            public byte StatType; // 1 for set stats, 2 for relation to owner's stats
-            public byte LevelingType; // 0 for leveling on own, 1 for not leveling
-
+            public byte StatType;
+            public byte LevelingType;
             public byte[] Stat;
-
             public int[] Skill;
-
             public byte Evolvable;
             public int EvolveLevel;
             public int EvolveNum;
@@ -312,10 +299,7 @@ namespace Core
             public int AdoptiveStats;
             public int Exp;
             public int Tnl;
-
-            // Client Use Only
             public int XOffset;
-
             public int YOffset;
             public byte Moving;
             public byte Attacking;
@@ -334,53 +318,28 @@ namespace Core
         public struct PlayerStruct
         {
             public string Name;
-
             public byte Sex;
             public byte Job;
             public int Sprite;
             public byte Level;
             public int Exp;
-
             public byte Access;
-
             public byte Pk;
-
-            // Vitals
             public int[] Vital;
-
-            // Stats
             public byte[] Stat;
-
             public byte Points;
-
-            // Worn equipment
             public int[] Equipment;
-
-            // Inventory
             public PlayerInvStruct[] Inv;
-
             public PlayerSkillStruct[] Skill;
-
-            // Position
             public int Map;
-
             public byte X;
             public byte Y;
             public byte Dir;
-
-            // Hotbar
             public HotbarStruct[] Hotbar;
-
-            // Event
             public byte[] Switches;
-
             public int[] Variables;
-
-            // gather skills
             public ResourceTypetruct[] GatherSkills;
-
             public PlayerPetStruct Pet;
-
             public int XOffset;
             public int YOffset;
             public byte Moving;
@@ -388,16 +347,16 @@ namespace Core
             public int AttackTimer;
             public int MapGetTimer;
             public byte Steps;
-
             public int Emote;
             public int EmoteTimer;
             public int EventTimer;
+            public PlayerQuestStruct[] Quests; // New: Quest progress tracking
+            public int GuildId; // New: Guild affiliation
         }
 
         public struct TempPlayerStruct
         {
             public bool InGame;
-
             public int AttackTimer;
             public int DataTimer;
             public int DataBytes;
@@ -415,101 +374,75 @@ namespace Core
             public int StunTimer;
             public int StunDuration;
             public bool InBank;
-
             public int TradeRequest;
-
             public double InTrade;
             public PlayerInvStruct[] TradeOffer;
             public bool AcceptTrade;
-
             public EventMapStruct EventMap;
             public int EventProcessingCount;
             public EventProcessingStruct[] EventProcessing;
-
             public int StopRegenTimer;
             public byte StopRegen;
-
             public int TmpInstanceNum;
             public int TmpMap;
             public int TmpX;
             public int TmpY;
-
             public int PetTarget;
-
             public int PetTargetType;
             public int PetBehavior;
-
             public int GoToX;
             public int GoToY;
-
             public int PetStunTimer;
             public int PetStunDuration;
             public int PetAttackTimer;
-
             public int[] PetSkillCD;
             public SkillBufferRec PetSkillBuffer;
-
             public DoTRStruct[] PetDoT;
             public DoTRStruct[] PetHoT;
-
-            // regen
             public bool PetStopRegen;
-
             public int PetStopRegenTimer;
-
             public int Editor;
-
             public byte Slot;
-
         }
 
         public struct MapStruct
         {
             public string Name;
             public string Music;
-
             public int Revision;
             public byte Moral;
             public int Tileset;
-
             public int Up;
             public int Down;
             public int Left;
             public int Right;
-
             public int BootMap;
             public byte BootX;
             public byte BootY;
-
             public byte MaxX;
             public byte MaxY;
-
             public TileStruct[,] Tile;
-
             public int[] NPC;
-
             public int EventCount;
             public EventStruct[] Event;
-
             public byte Weather;
             public int Fog;
             public int WeatherIntensity;
             public byte FogOpacity;
             public byte FogSpeed;
-
             public bool MapTint;
             public byte MapTintR;
             public byte MapTintG;
             public byte MapTintB;
             public byte MapTintA;
-
             public byte Panorama;
             public byte Parallax;
             public byte Brightness;
-
             public int Shop;
             public bool NoRespawn;
             public bool Indoors;
+            public int[] SpawnPoints; // New: Multiple spawn points
+            public int[] BossNPCs; // New: Boss NPCs on map
         }
 
         public struct MapItemStruct
@@ -518,10 +451,7 @@ namespace Core
             public int Value;
             public byte X;
             public byte Y;
-
-            // ownership + despawn
             public string PlayerName;
-
             public long PlayerTimer;
             public bool CanDespawn;
             public long DespawnTimer;
@@ -537,10 +467,7 @@ namespace Core
             public byte Y;
             public int Dir;
             public int AttackTimer;
-
-            // For server use only
             public int SpawnWait;
-
             public int StunDuration;
             public int StunTimer;
             public int SkillBuffer;
@@ -548,10 +475,7 @@ namespace Core
             public int[] SkillCD;
             public byte StopRegen;
             public int StopRegenTimer;
-
-            // Client use only
             public int XOffset;
-
             public int YOffset;
             public byte Moving;
             public byte Attacking;
@@ -584,7 +508,7 @@ namespace Core
             public int Timer;
             public int Caster;
             public int StartTime;
-            public int AttackerType; // For Pets
+            public int AttackerType;
         }
 
         public struct InstancedMap
@@ -609,36 +533,27 @@ namespace Core
             public int Y;
             public int Dir;
             public int Active;
-
             public int WalkingAnim;
             public int FixedDir;
             public int WalkThrough;
             public int ShowName;
-
             public byte Position;
-
             public byte GraphicType;
             public int Graphic;
             public int GraphicX;
             public int GraphicX2;
             public int GraphicY;
             public int GraphicY2;
-
-            // Server Only Options
             public int MoveType;
-
             public byte MoveSpeed;
             public byte MoveFreq;
             public int MoveRouteCount;
             public MoveRouteStruct[] MoveRoute;
             public int MoveRouteStep;
-
             public int RepeatMoveRoute;
             public int IgnoreIfCannotMove;
-
             public int MoveTimer;
             public int MoveRouteComplete;
-
             public int PatrolStep;
         }
 
@@ -686,36 +601,25 @@ namespace Core
 
         public struct EventPageStruct
         {
-
-            // These are condition variables that decide if the event even appears to the player.
             public int ChkVariable;
-
             public int VariableIndex;
             public int VariableCondition;
             public int VariableCompare;
-
             public int ChkSwitch;
             public int SwitchIndex;
             public int SwitchCompare;
-
             public int ChkHasItem;
             public int HasItemIndex;
             public int HasItemAmount;
-
             public int ChkSelfSwitch;
             public int SelfSwitchIndex;
             public int SelfSwitchCompare;
-
-            // Handles the Event Sprite
             public byte GraphicType;
-
             public int Graphic;
             public int GraphicX;
             public int GraphicY;
             public int GraphicX2;
             public int GraphicY2;
-
-            // Handles Movement - Move Routes to come soon.
             public byte MoveType;
             public byte MoveSpeed;
             public byte MoveFreq;
@@ -723,27 +627,15 @@ namespace Core
             public MoveRouteStruct[] MoveRoute;
             public int IgnoreMoveRoute;
             public int RepeatMoveRoute;
-
-            // Guidelines for the event
             public int WalkAnim;
-
             public int DirFix;
             public int WalkThrough;
             public int ShowName;
-
-            // Trigger for the event
             public byte Trigger;
-
-            // Commands for the event
             public int CommandListCount;
-
             public CommandListStruct[] CommandList;
-
             public byte Position;
-
-            // For EventMap
             public int X;
-
             public int Y;
         }
 
@@ -755,10 +647,7 @@ namespace Core
             public EventPageStruct[] Pages;
             public int X;
             public int Y;
-
-            // Self Switches re-set on restart.
-            public int[] SelfSwitches; // 0 to 4
-
+            public int[] SelfSwitches;
         }
 
         public struct GlobalMapEventsStruct
@@ -776,39 +665,32 @@ namespace Core
             public int Dir;
             public int X;
             public int Y;
-
             public int WalkingAnim;
             public int FixedDir;
             public int WalkThrough;
             public int ShowName;
-
             public byte GraphicType;
             public int GraphicX;
             public int GraphicY;
             public int GraphicX2;
             public int GraphicY2;
             public int Graphic;
-
             public int MovementSpeed;
             public byte Position;
             public bool Visible;
             public int EventID;
             public int PageID;
-
             public byte MoveType;
             public byte MoveSpeed;
             public byte MoveFreq;
             public int MoveRouteCount;
             public MoveRouteStruct[] MoveRoute;
             public int MoveRouteStep;
-
             public int RepeatMoveRoute;
             public int IgnoreIfCannotMove;
-
             public int MoveTimer;
-            public int[] SelfSwitches; // 0 to 4
+            public int[] SelfSwitches;
             public int MoveRouteComplete;
-
             public int XOffset;
             public int YOffset;
             public int Moving;
@@ -839,9 +721,9 @@ namespace Core
 
         public struct PlayerQuestStruct
         {
-            public int Status; // 0=not started, 1=started, 2=completed, 3=completed but repeatable
+            public int Status; // 0=not started, 1=started, 2=completed, 3=repeatable
             public int ActualTask;
-            public int CurrentCount; // Used to handle the Amount property
+            public int CurrentCount;
         }
 
         public struct TaskStruct
@@ -935,7 +817,6 @@ namespace Core
         {
             public CSTileDataStruct[] Layer;
             public byte[] Autotile;
-
             public byte Type;
             public int Data1;
             public int Data2;
@@ -957,33 +838,25 @@ namespace Core
             public string Name;
             public string Music;
             public byte Moral;
-
             public int Up;
             public int Down;
             public int Left;
             public int Right;
-
             public int BootMap;
             public byte BootX;
             public byte BootY;
-
             public byte MaxX;
             public byte MaxY;
-
             public int Weather;
             public int WeatherIntensity;
-
             public int Fog;
             public int FogSpeed;
             public int FogOpacity;
-
             public int Red;
             public int Green;
             public int Blue;
             public int Alpha;
-
             public int BossNPC;
-
             public int[] NPC;
         }
 
@@ -1020,7 +893,6 @@ namespace Core
             public short FringeAnim;
             public short Roof;
             public short Fringe2Anim;
-
             public Enum.XWTileType Type;
             public Enum.XWTileType Type2;
             public short Data1;
@@ -1091,23 +963,53 @@ namespace Core
             public string Name;
             public string Music;
             public int Revision;
-
             public int Up;
             public int Down;
             public int Left;
             public int Right;
-
             public int Tileset;
             public int MaxX;
             public int MaxY;
-
             public SDWarpDataStruct Warp;
             public SDLayerStruct MapLayer;
         }
 
-        public static ActionMsgStruct[] ActionMsg = new ActionMsgStruct[(byte.MaxValue)];
-        public static BloodStruct[] Blood = new BloodStruct[(byte.MaxValue)];
-        public static ChatStruct[] Chat = new ChatStruct[(Constant.CHAT_LINES)];
+        // New Structs for Enhanced Features
+        public struct QuestStruct
+        {
+            public string Name;
+            public string Description;
+            public int RewardExp;
+            public int RewardItem;
+            public int RewardItemValue;
+            public TaskStruct[] Tasks;
+            public int TaskCount;
+        }
+
+        public struct GuildStruct
+        {
+            public string Name;
+            public int Leader;
+            public List<int> Members;
+            public int MaxMembers;
+            public int Level;
+            public int Exp;
+        }
+
+        public struct WeatherStruct
+        {
+            public int Type; // 0: None, 1: Rain, 2: Snow, etc.
+            public int Intensity;
+            public int Duration;
+        }
+
+        #endregion
+
+        #region Miscellaneous
+
+        public static ActionMsgStruct[] ActionMsg = new ActionMsgStruct[byte.MaxValue];
+        public static BloodStruct[] Blood = new BloodStruct[byte.MaxValue];
+        public static ChatStruct[] Chat = new ChatStruct[Constant.CHAT_LINES];
         public static TileStruct[,] MapTile;
         public static TileHistoryStruct[] TileHistory;
         public static AutotileStruct[,] Autotile;
@@ -1141,7 +1043,6 @@ namespace Core
             public QuarterTileStruct[] ExLayer;
         }
 
-        // autotiling
         public static PointStruct[] AutoIn = new PointStruct[5];
         public static PointStruct[] AutoNw = new PointStruct[5];
         public static PointStruct[] AutoNe = new PointStruct[5];
@@ -1209,5 +1110,6 @@ namespace Core
             public int InUse;
         }
 
+        #endregion
     }
 }
