@@ -649,6 +649,7 @@ namespace Server
         {
             try
             {
+                return; // Commented out to prevent backups during testing
                 string backupDir = Core.Path.Database;
                 Directory.CreateDirectory(backupDir);
                 string backupPath = System.IO.Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
