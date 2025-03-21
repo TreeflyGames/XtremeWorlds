@@ -206,6 +206,16 @@ namespace Mirage.Sharp.Asfw
             WriteBytes(Encoding.UTF8.GetBytes(value));
         }
 
+        /// <summary>
+        /// Resets the ByteStream to its initial state.
+        /// </summary>
+        public void Reset()
+        {
+            if (_disposed) throw new ObjectDisposedException(nameof(ByteStream));
+            _data = ArrayPool<byte>.Shared.Rent(_data.Length);
+            _head = 0;        
+        }
+
         public void WriteChar(char value) => WriteBlock(BitConverter.GetBytes(value));
         public void WriteByte(byte value) => WriteBlock(new[] { value });
         public void WriteBoolean(bool value) => WriteBlock(new[] { (byte)(value ? 1 : 0) });

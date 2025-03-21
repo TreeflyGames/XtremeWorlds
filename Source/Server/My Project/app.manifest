@@ -7,7 +7,7 @@
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
     <security>
       <applicationRequestMinimum>
-        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <PermissionSet Unrestricted="true" Id="Custom" SameSite="site" />
         <defaultAssemblyRequest permissionSetReference="Custom" />
       </applicationRequestMinimum>
     </security>

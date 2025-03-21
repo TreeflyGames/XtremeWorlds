@@ -7,6 +7,7 @@ namespace Server
     {
         public static bool DebugTxt;
         public static int ErrorCount;
+        public static int UniqueIdCounter;
 
         // Used for closing key doors again
         public static int KeyTimer;
