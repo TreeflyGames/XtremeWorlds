@@ -43,12 +43,8 @@ namespace Server
 
         public static async Task LoadItemsAsync()
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_ITEMS - 1;
-            for (i = 0; i < loopTo; i++)
-                await LoadItemAsync(i);
-
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_ITEMS).Select(i => Task.Run(() => LoadItemAsync(i)));
+            await Task.WhenAll(tasks);
         }
 
         public static async Task LoadItemAsync(int itemNum)
