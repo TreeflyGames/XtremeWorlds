@@ -183,7 +183,8 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
         public string EncryptString(string value)
         {
             CheckDisposed();
-            return _rsa != null ? Convert.ToBase64String(EncryptBytes(Encoding.UTF8.GetBytes(value))) : string.Empty;
+            var encryptedBytes = EncryptBytes(Encoding.UTF8.GetBytes(value));
+            return encryptedBytes != null ? Convert.ToBase64String(encryptedBytes) : string.Empty;
         }
 
         public async Task<string> EncryptStringAsync(string value)
