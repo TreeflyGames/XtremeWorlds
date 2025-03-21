@@ -15,7 +15,7 @@ namespace Server
 
         #region Type and Globals
 
-        internal static PartyRec[] PartyField = new PartyRec[Core.Constant.MAX_PARTIES + 1];
+        public static PartyRec[] PartyField = new PartyRec[Core.Constant.MAX_PARTIES + 1];
 
         public struct PartyRec
         {
@@ -129,7 +129,7 @@ namespace Server
 
         #region Incoming Packets
 
-        internal static void Packet_PartyRquest(int index, ref byte[] data)
+        public static void Packet_PartyRquest(int index, ref byte[] data)
         {
             // Prevent partying with self
             if (Core.Type.TempPlayer[index].Target == index)
@@ -147,22 +147,22 @@ namespace Server
             Invite(index, Core.Type.TempPlayer[index].Target);
         }
 
-        internal static void Packet_AcceptParty(int index, ref byte[] data)
+        public static void Packet_AcceptParty(int index, ref byte[] data)
         {
             InviteAccept(Core.Type.TempPlayer[index].PartyInvite, index);
         }
 
-        internal static void Packet_DeclineParty(int index, ref byte[] data)
+        public static void Packet_DeclineParty(int index, ref byte[] data)
         {
             InviteDecline(Core.Type.TempPlayer[index].PartyInvite, index);
         }
 
-        internal static void Packet_LeaveParty(int index, ref byte[] data)
+        public static void Packet_LeaveParty(int index, ref byte[] data)
         {
             PlayerLeave(index);
         }
 
-        internal static void Packet_PartyChatMsg(int index, ref byte[] data)
+        public static void Packet_PartyChatMsg(int index, ref byte[] data)
         {
             var buffer = new ByteStream(data);
 
@@ -190,7 +190,7 @@ namespace Server
             PartyField[partyNum].Member = new int[Core.Constant.MAX_PARTY_MEMBERS];
         }
 
-        internal static void PartyMsg(int partyNum, string msg)
+        public static void PartyMsg(int partyNum, string msg)
         {
             int i;
 
@@ -225,7 +225,7 @@ namespace Server
             SendPartyUpdateTo(index);
         }
 
-        internal static void PlayerLeave(int index)
+        public static void PlayerLeave(int index)
         {
             int partyNum;
             int i;
@@ -291,7 +291,7 @@ namespace Server
             }
         }
 
-        internal static void Invite(int index, int target)
+        public static void Invite(int index, int target)
         {
             int partyNum;
             int i;
@@ -361,7 +361,7 @@ namespace Server
             }
         }
 
-        internal static void InviteAccept(int index, int target)
+        public static void InviteAccept(int index, int target)
         {
             var partyNum = default(int);
             int i;
@@ -436,7 +436,7 @@ namespace Server
             }
         }
 
-        internal static void InviteDecline(int index, int target)
+        public static void InviteDecline(int index, int target)
         {
             NetworkSend.PlayerMsg(index, string.Format("{0} has declined to join your party.", GetPlayerName(target)), (int) ColorType.BrightRed);
             NetworkSend.PlayerMsg(target, "You declined to join the party.", (int) ColorType.Yellow);
@@ -445,7 +445,7 @@ namespace Server
             Core.Type.TempPlayer[target].PartyInvite = -1;
         }
 
-        internal static void CountMembers(int partyNum)
+        public static void CountMembers(int partyNum)
         {
             int i;
             var highindex = default(int);
@@ -502,7 +502,7 @@ namespace Server
             CountMembers(partyNum);
         }
 
-        internal static void ShareExp(int partyNum, int exp, int index, int mapNum)
+        public static void ShareExp(int partyNum, int exp, int index, int mapNum)
         {
             int expShare;
             int leftOver;
@@ -596,7 +596,7 @@ namespace Server
             return IsPlayerInPartyRet;
         }
 
-        internal static int GetPlayerParty(int index)
+        public static int GetPlayerParty(int index)
         {
             int GetPlayerPartyRet = default;
             if (index < 0 | index >= Core.Constant.MAX_PLAYERS | !Core.Type.TempPlayer[index].InGame)

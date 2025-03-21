@@ -39,7 +39,7 @@ namespace Server
 
         }
 
-        internal static void SpawnNPC(int MapNPCNum, int mapNum)
+        public static void SpawnNPC(int MapNPCNum, int mapNum)
         {
             var buffer = new ByteStream(4);
             int NPCNum;
@@ -167,7 +167,7 @@ namespace Server
 
         #region Movement
 
-        internal static bool NPCTileIsOpen(int mapNum, int x, int y)
+        public static bool NPCTileIsOpen(int mapNum, int x, int y)
         {
             bool NPCTileIsOpenRet = default;
             int i;
@@ -525,7 +525,7 @@ namespace Server
 
         #region NPCombat
 
-        internal static void TryNPCAttackPlayer(int MapNPCNum, int index)
+        public static void TryNPCAttackPlayer(int MapNPCNum, int index)
         {
 
             int mapNum;
@@ -763,7 +763,7 @@ namespace Server
 
         }
 
-        internal static void NPCAttackPlayer(int MapNPCNum, int victim, int Damage)
+        public static void NPCAttackPlayer(int MapNPCNum, int victim, int Damage)
         {
             string Name;
             int mapNum;
@@ -906,7 +906,7 @@ namespace Server
 
         }
 
-        internal static void KnockBackNPC(int index, int NPCNum, int IsSkill = 0)
+        public static void KnockBackNPC(int index, int NPCNum, int IsSkill = 0)
         {
             if (IsSkill > 0)
             {
@@ -934,7 +934,7 @@ namespace Server
             }
         }
 
-        internal static int RandomNPCAttack(int mapNum, int MapNPCNum)
+        public static int RandomNPCAttack(int mapNum, int MapNPCNum)
         {
             int RandomNPCAttackRet = default;
             int i;
@@ -967,14 +967,14 @@ namespace Server
 
         }
 
-        internal static int GetNPCSkill(int NPCNum, int SkillSlot)
+        public static int GetNPCSkill(int NPCNum, int SkillSlot)
         {
             int GetNPCSkillRet = default;
             GetNPCSkillRet = Core.Type.NPC[(int)NPCNum].Skill[SkillSlot];
             return GetNPCSkillRet;
         }
 
-        internal static void BufferNPCSkill(int mapNum, int MapNPCNum, int SkillSlot)
+        public static void BufferNPCSkill(int mapNum, int MapNPCNum, int SkillSlot)
         {
             int skillNum;
             int MPCost;
@@ -1096,7 +1096,7 @@ namespace Server
             }
         }
 
-        internal static bool CanNPCBlock(int NPCNum)
+        public static bool CanNPCBlock(int NPCNum)
         {
             bool CanNPCBlockRet = default;
             int rate;
@@ -1114,7 +1114,7 @@ namespace Server
             return CanNPCBlockRet;
         }
 
-        internal static bool CanNPCrit(int NPCNum)
+        public static bool CanNPCrit(int NPCNum)
         {
             bool CanNPCritRet = default;
             int rate;
@@ -1131,7 +1131,7 @@ namespace Server
 
         }
 
-        internal static bool CanNPCDodge(int NPCNum)
+        public static bool CanNPCDodge(int NPCNum)
         {
             bool CanNPCDodgeRet = default;
             int rate;
@@ -1148,7 +1148,7 @@ namespace Server
 
         }
 
-        internal static bool CanNPCParry(int NPCNum)
+        public static bool CanNPCParry(int NPCNum)
         {
             bool CanNPCParryRet = default;
             int rate;
@@ -1174,7 +1174,7 @@ namespace Server
 
         }
 
-        internal static bool IsNPCDead(int mapNum, int MapNPCNum)
+        public static bool IsNPCDead(int mapNum, int MapNPCNum)
         {
             bool IsNPCDeadRet = false;
             IsNPCDeadRet = false;
@@ -1185,7 +1185,7 @@ namespace Server
             return IsNPCDeadRet;
         }
 
-        internal static void DropNPCItems(int mapNum, int MapNPCNum)
+        public static void DropNPCItems(int mapNum, int MapNPCNum)
         {
             var NPCNum = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
             double tmpitem = General.Random.NextDouble(1d, 5d);

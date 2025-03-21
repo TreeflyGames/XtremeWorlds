@@ -12,7 +12,7 @@ using static Core.Packets;
 namespace Server
 {
 
-    internal static class Projectile
+    public static class Projectile
     {
 
         #region Database
@@ -360,7 +360,7 @@ namespace Server
 
         #region Functions
 
-        internal static void PlayerFireProjectile(int index, int IsSkill = 0)
+        public static void PlayerFireProjectile(int index, int IsSkill = 0)
         {
             var ProjectileSlot = default(int);
             int ProjectileNum;
@@ -408,7 +408,7 @@ namespace Server
 
         }
 
-        internal static float Engine_GetAngle(int CenterX, int CenterY, int targetX, int targetY)
+        public static float Engine_GetAngle(int CenterX, int CenterY, int targetX, int targetY)
         {
             float Engine_GetAngleRet = default;
             // ************************************************************

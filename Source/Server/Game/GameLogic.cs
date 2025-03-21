@@ -73,7 +73,7 @@ namespace Server
             return FindPlayerRet;
         }
 
-        internal static string CheckGrammar(string Word, byte Caps = 0)
+        public static string CheckGrammar(string Word, byte Caps = 0)
         {
             string CheckGrammarRet = default;
             string FirstLetter;

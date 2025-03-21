@@ -21,7 +21,7 @@ namespace Server
 
     static class NetworkReceive
     {
-        internal static void PacketRouter()
+        public static void PacketRouter()
         {
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CCheckPing] = Packet_Ping;
             NetworkConfig.Socket.PacketID[(int)ClientPackets.CLogin] = Packet_Login;
@@ -557,7 +557,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        internal static void Packet_PlayerMsg(int index, ref byte[] data)
+        public static void Packet_PlayerMsg(int index, ref byte[] data)
         {
             string OtherPlayer;
             string Msg;

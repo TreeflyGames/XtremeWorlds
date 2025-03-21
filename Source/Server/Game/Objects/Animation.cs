@@ -12,7 +12,7 @@ using static Core.Global.Command;
 namespace Server
 {
 
-    internal static class Animation
+    public static class Animation
     {
 
         #region Database

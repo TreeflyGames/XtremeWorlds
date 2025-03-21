@@ -747,7 +747,7 @@ namespace Server
 
         }
 
-        internal static bool HandlePetSkill(int index)
+        public static bool HandlePetSkill(int index)
         {
             bool HandlePetSkillRet = default;
             Pet.PetCastSkill(index, Core.Type.TempPlayer[index].PetSkillBuffer.Skill, Core.Type.TempPlayer[index].PetSkillBuffer.Target, Core.Type.TempPlayer[index].PetSkillBuffer.TargetType, true);
@@ -759,7 +759,7 @@ namespace Server
             return HandlePetSkillRet;
         }
 
-        internal static bool HandleClearStun(int index)
+        public static bool HandleClearStun(int index)
         {
             bool HandleClearStunRet = default;
             Core.Type.TempPlayer[index].StunDuration = 0;
@@ -769,7 +769,7 @@ namespace Server
             return HandleClearStunRet;
         }
 
-        internal static bool HandleClearPetStun(int index)
+        public static bool HandleClearPetStun(int index)
         {
             bool HandleClearPetStunRet = default;
             Core.Type.TempPlayer[index].PetStunDuration = 0;
@@ -778,7 +778,7 @@ namespace Server
             return HandleClearPetStunRet;
         }
 
-        internal static bool HandleStopPetRegen(int index)
+        public static bool HandleStopPetRegen(int index)
         {
             bool HandleStopPetRegenRet = default;
             Core.Type.TempPlayer[index].PetStopRegen = false;
@@ -787,7 +787,7 @@ namespace Server
             return HandleStopPetRegenRet;
         }
 
-        internal static bool HandleCastSkill(int index)
+        public static bool HandleCastSkill(int index)
         {
             bool HandleCastSkillRet = default;
 
@@ -801,7 +801,7 @@ namespace Server
             return HandleCastSkillRet;
         }
 
-        internal static void CastSkill(int index, int SkillSlot)
+        public static void CastSkill(int index, int SkillSlot)
         {
             if (GetPlayerSkill(index, SkillSlot) < 0)
                 return;
@@ -1214,7 +1214,7 @@ namespace Server
             return IsInSkillRangeRet;
         }
 
-        internal static void CastNPCSkill(int NPCNum, int mapNum, int SkillSlot)
+        public static void CastNPCSkill(int NPCNum, int mapNum, int SkillSlot)
         {
             int skillNum;
             int mpCost;
@@ -1551,7 +1551,7 @@ namespace Server
             }
         }
 
-        internal static void SkillPlayer_Effect(byte vital, bool increment, int index, int damage, int skillNum)
+        public static void SkillPlayer_Effect(byte vital, bool increment, int index, int damage, int skillNum)
         {
             string sSymbol;
             var Color = default(int);
@@ -1588,7 +1588,7 @@ namespace Server
             }
         }
 
-        internal static void SkillNPC_Effect(byte vital, bool increment, int index, int damage, int skillNum, int mapNum)
+        public static void SkillNPC_Effect(byte vital, bool increment, int index, int damage, int skillNum, int mapNum)
         {
             string sSymbol;
             var color = default(int);

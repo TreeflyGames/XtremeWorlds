@@ -1414,7 +1414,7 @@ namespace Server
         #endregion
 
         #region Bank
-        internal static void LoadBank(int index)
+        public static void LoadBank(int index)
         {
             JObject data;
             data = SelectRowByColumn("id", GetStringHash(GetPlayerLogin(index)), "account", "bank");

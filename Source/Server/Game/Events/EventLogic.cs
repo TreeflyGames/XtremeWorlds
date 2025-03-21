@@ -13,10 +13,10 @@ using static Core.Packets;
 namespace Server
 {
 
-    internal static class EventLogic
+    public static class EventLogic
     {
 
-        internal static void RemoveDeadEvents()
+        public static void RemoveDeadEvents()
         {
             int i;
             int mapNum;
@@ -570,7 +570,7 @@ namespace Server
             }
         }
 
-        internal static void ProcessEventMovement()
+        public static void ProcessEventMovement()
         {
             int rand;
             int x;
@@ -1268,7 +1268,7 @@ namespace Server
 
         }
 
-        internal static void ProcessLocalEventMovement()
+        public static void ProcessLocalEventMovement()
         {
             int rand;
             int x;
@@ -1984,7 +1984,7 @@ namespace Server
 
         }
 
-        internal static void ProcessEventCommands()
+        public static void ProcessEventCommands()
         {
             var buffer = new ByteStream(4);
             int i;
@@ -3253,7 +3253,7 @@ namespace Server
 
         }
 
-        internal static void UpdateEventLogic()
+        public static void UpdateEventLogic()
         {
             RemoveDeadEvents();
             SpawnNewEvents();

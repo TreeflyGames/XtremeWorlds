@@ -9,11 +9,11 @@ using static Core.Packets;
 namespace Server
 {
 
-    internal static class NetworkConfig
+    public static class NetworkConfig
     {
         private static NetworkServer _Socket;
 
-        internal static NetworkServer Socket
+        public static NetworkServer Socket
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
@@ -45,7 +45,7 @@ namespace Server
             }
         }
 
-        internal static void InitNetwork()
+        public static void InitNetwork()
         {
             if (Socket is not null)
                 return;
@@ -63,7 +63,7 @@ namespace Server
             NetworkReceive.PacketRouter(); // Need them packet ids boah!
         }
 
-        internal static void DestroyNetwork()
+        public static void DestroyNetwork()
         {
             Socket.Dispose();
         }
@@ -117,7 +117,7 @@ namespace Server
             }
         }
 
-        internal static void SendDataToAll(ReadOnlySpan<byte> data, int head)
+        public static void SendDataToAll(ReadOnlySpan<byte> data, int head)
         {
             for (int i = 0, loopTo = Socket.HighIndex; i <= loopTo; i++)
                 Socket.SendDataTo(i, data, head);
@@ -176,19 +176,19 @@ namespace Server
 
         #region Events
 
-        internal static void Socket_ConnectionReceived(int index)
+        public static void Socket_ConnectionReceived(int index)
         {
             Console.WriteLine("Connection received on index[" + index + "] - IP[" + Socket.ClientIP(index) + "]");
             NetworkSend.SendKeyPair(index);
         }
 
-        internal static void Socket_ConnectionLost(int index)
+        public static void Socket_ConnectionLost(int index)
         {
             Console.WriteLine("Connection lost on index [" + index + "] - IP[" + Socket.ClientIP(index) + "]");
             Player.LeftGame(index);
         }
 
-        internal static void Socket_CrashReport(int index, string err)
+        public static void Socket_CrashReport(int index, string err)
         {
             Console.WriteLine("There was a network error index [" + index + "]");
             Console.WriteLine("Report: " + err);

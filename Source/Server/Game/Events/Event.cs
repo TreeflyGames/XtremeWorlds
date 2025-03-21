@@ -17,9 +17,9 @@ namespace Server
 
         #region Globals
 
-        internal static GlobalEventsStruct[] TempEventMap;
-        internal static string[] Switches;
-        internal static string[] Variables;
+        public static GlobalEventsStruct[] TempEventMap;
+        public static string[] Switches;
+        public static string[] Variables;
 
         internal const int PathfindingType = 0;
 
