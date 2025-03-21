@@ -150,6 +150,12 @@ namespace Server
                 {
                     Core.Type.MapNPC[i].NPC[x].Vital = new int[(int)Core.Enum.VitalType.Count];
                     Core.Type.MapNPC[i].NPC[x].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
+                    Core.Type.MapNPC[i].NPC[x].Num = -1;
+                }
+
+                for (int x = 0; x < Core.Constant.MAX_MAP_ITEMS; x++)
+                {
+                    Core.Type.MapItem[i, x].Num = -1;
                 }
             }
 
