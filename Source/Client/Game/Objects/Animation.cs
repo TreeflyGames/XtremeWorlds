@@ -133,7 +133,7 @@ namespace Client
             return new Point(x, y);
         }
 
-        internal static void CheckAnimInstance(int index)
+        public static void CheckAnimInstance(int index)
         {
             int looptime;
             var layer = default(int);
@@ -286,8 +286,8 @@ namespace Client
 
         #region Globals
 
-        internal static byte AnimationIndex;
-        internal static Core.Type.AnimInstanceStruct[] AnimInstance;
+        public static byte AnimationIndex;
+        public static Core.Type.AnimInstanceStruct[] AnimInstance;
 
         #endregion
 

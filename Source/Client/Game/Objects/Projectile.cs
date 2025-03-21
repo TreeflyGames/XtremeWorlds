@@ -7,7 +7,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    internal static class Projectile
+    public static class Projectile
     {
 
         #region Sending
@@ -73,7 +73,7 @@ namespace Client
 
         #region Recieving
 
-        internal static void HandleUpdateProjectile(ref byte[] data)
+        public static void HandleUpdateProjectile(ref byte[] data)
         {
             int projectileNum;
             var buffer = new ByteStream(data);
@@ -89,7 +89,7 @@ namespace Client
 
         }
 
-        internal static void HandleMapProjectile(ref byte[] data)
+        public static void HandleMapProjectile(ref byte[] data)
         {
             int i;
             var buffer = new ByteStream(data);
@@ -158,7 +158,7 @@ namespace Client
         #endregion
 
         #region Drawing
-        internal static void DrawProjectile(int projectileNum)
+        public static void DrawProjectile(int projectileNum)
         {
             Core.Type.RectStruct rec;
             var canClearProjectile = default(bool);

@@ -1049,12 +1049,12 @@ namespace Client
             GameState.InitResourceEditor = true;
         }
 
-        internal static void Packet_PetEditor(ref byte[] data)
+        public static void Packet_PetEditor(ref byte[] data)
         {
             GameState.InitPetEditor = true;
         }
 
-        internal static void HandleProjectileEditor(ref byte[] data)
+        public static void HandleProjectileEditor(ref byte[] data)
         {
             GameState.InitProjectileEditor = true;
         }
@@ -1114,7 +1114,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void Packet_Hotbar(ref byte[] data)
+        public static void Packet_Hotbar(ref byte[] data)
         {
             int i;
             var buffer = new ByteStream(data);

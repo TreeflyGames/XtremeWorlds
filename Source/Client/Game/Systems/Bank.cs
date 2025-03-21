@@ -32,7 +32,7 @@ namespace Client
 
         #region Incoming Packets
 
-        internal static void Packet_OpenBank(ref byte[] data)
+        public static void Packet_OpenBank(ref byte[] data)
         {
             int i;
             int x;
@@ -58,7 +58,7 @@ namespace Client
 
         #region Outgoing Packets
 
-        internal static void DepositItem(int invslot, int amount)
+        public static void DepositItem(int invslot, int amount)
         {
             var buffer = new ByteStream(4);
 
@@ -70,7 +70,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void WithdrawItem(byte bankSlot, int amount)
+        public static void WithdrawItem(byte bankSlot, int amount)
         {
             var buffer = new ByteStream(4);
 
@@ -82,7 +82,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void ChangeBankSlots(int oldSlot, int newSlot)
+        public static void ChangeBankSlots(int oldSlot, int newSlot)
         {
             var buffer = new ByteStream(4);
 
@@ -94,7 +94,7 @@ namespace Client
             buffer.Dispose();
         }
 
-        internal static void CloseBank()
+        public static void CloseBank()
         {
             if (Gui.Windows[Gui.GetWindowIndex("winBank")].Visible == true)
             {

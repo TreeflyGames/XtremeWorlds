@@ -110,7 +110,7 @@ namespace Client
 
         #region Drawing
 
-        internal static void DrawResource(int resource, int dx, int dy, Rectangle rec)
+        public static void DrawResource(int resource, int dx, int dy, Rectangle rec)
         {
             int x;
             int y;
@@ -132,7 +132,7 @@ namespace Client
             GameClient.RenderTexture(ref argpath, x, y, rec.X, rec.Y, rec.Width, rec.Height, rec.Width, rec.Height);
         }
 
-        internal static void DrawMapResource(int resourceNum)
+        public static void DrawMapResource(int resourceNum)
         {
             int mapResourceNum;
             int resourceState;

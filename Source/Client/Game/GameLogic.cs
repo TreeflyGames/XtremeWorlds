@@ -86,7 +86,7 @@ namespace Client
             }
         }
 
-        internal static bool IsInBounds()
+        public static bool IsInBounds()
         {
             bool IsInBoundsRet = false;
 
@@ -116,7 +116,7 @@ namespace Client
             return GameStartedRet;
         }
 
-        internal static void CreateActionMsg(string message, int color, byte msgType, int x, int y)
+        public static void CreateActionMsg(string message, int color, byte msgType, int x, int y)
         {
 
             GameState.ActionMsgIndex = (byte)(GameState.ActionMsgIndex + 1);
@@ -142,7 +142,7 @@ namespace Client
 
         }
 
-        internal static int Rand(int maxNumber, int minNumber = 0)
+        public static int Rand(int maxNumber, int minNumber = 0)
         {
             if (minNumber > maxNumber)
             {
@@ -155,7 +155,7 @@ namespace Client
         }
 
         // BitWise Operators for directional blocking
-        internal static void SetDirBlock(ref byte blockvar, ref byte dir, bool block)
+        public static void SetDirBlock(ref byte blockvar, ref byte dir, bool block)
         {
             if (block)
             {
@@ -167,12 +167,12 @@ namespace Client
             }
         }
 
-        internal static bool IsDirBlocked(ref byte blockvar, ref byte dir)
+        public static bool IsDirBlocked(ref byte blockvar, ref byte dir)
         {
             return Conversions.ToBoolean(blockvar & (long)Math.Round(Math.Pow(2d, dir)));
         }
 
-        internal static string ConvertCurrency(int amount)
+        public static string ConvertCurrency(int amount)
         {
             string ConvertCurrencyRet = default;
 

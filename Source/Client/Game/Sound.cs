@@ -13,20 +13,20 @@ namespace Client
     {
 
         // Sound and Music handles for ManagedBass
-        internal static int MusicStream;
-        internal static int SoundStream;
-        internal static int WeatherStream;
-        internal static int ExtraSoundStream;
+        public static int MusicStream;
+        public static int SoundStream;
+        public static int WeatherStream;
+        public static int ExtraSoundStream;
 
-        internal static string[] MusicCache;
-        internal static string[] SoundCache;
+        public static string[] MusicCache;
+        public static string[] SoundCache;
 
-        internal static bool FadeInSwitch;
-        internal static bool FadeOutSwitch;
-        internal static string CurrentMusic;
-        internal static string CurrentWeatherMusic;
+        public static bool FadeInSwitch;
+        public static bool FadeOutSwitch;
+        public static string CurrentMusic;
+        public static string CurrentWeatherMusic;
 
-        internal static int SoundFontHandle;
+        public static int SoundFontHandle;
 
         public static void PlayMusic(string fileName)
         {

@@ -11,7 +11,7 @@ namespace Client
 
         #region Animation Editor
 
-        internal static void AnimationEditorInit()
+        public static void AnimationEditorInit()
         {
             GameState.EditorIndex = frmEditor_Animation.Instance.lstIndex.SelectedIndex;
             
@@ -58,7 +58,7 @@ namespace Client
             GameState.Animation_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void AnimationEditorOK()
+        public static void AnimationEditorOK()
         {
             int i;
 
@@ -75,7 +75,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void AnimationEditorCancel()
+        public static void AnimationEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_Animation();
@@ -83,7 +83,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ClearChanged_Animation()
+        public static void ClearChanged_Animation()
         {
             for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
                 GameState.Animation_Changed[i] = false;
@@ -93,7 +93,7 @@ namespace Client
 
         #region NPC Editor
 
-        internal static void NPCEditorInit()
+        public static void NPCEditorInit()
         {
             var withBlock = frmEditor_NPC.Instance;
             GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
@@ -139,7 +139,7 @@ namespace Client
             GameState.NPC_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void NPCEditorOK()
+        public static void NPCEditorOK()
         {
             for (int i = 0; i < Constant.MAX_NPCS; i++)
             {
@@ -154,7 +154,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void NPCEditorCancel()
+        public static void NPCEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_NPC();
@@ -162,7 +162,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ClearChanged_NPC()
+        public static void ClearChanged_NPC()
         {
             for (int i = 0; i < Constant.MAX_NPCS; i++)
                 GameState.NPC_Changed[i] = false;
@@ -171,12 +171,12 @@ namespace Client
         #endregion
 
         #region Resource Editor
-        internal static void ClearChanged_Resource()
+        public static void ClearChanged_Resource()
         {
             GameState.Resource_Changed = new bool[101];
         }
 
-        internal static void ResourceEditorInit()
+        public static void ResourceEditorInit()
         {
             int i;
 
@@ -202,7 +202,7 @@ namespace Client
             GameState.Resource_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void ResourceEditorOK()
+        public static void ResourceEditorOK()
         {
             int i;
 
@@ -219,7 +219,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ResourceEditorCancel()
+        public static void ResourceEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_Resource();
@@ -231,7 +231,7 @@ namespace Client
 
         #region Skill Editor
 
-        internal static void SkillEditorInit()
+        public static void SkillEditorInit()
         {
             var withBlock = frmEditor_Skill.Instance;
             GameState.EditorIndex = withBlock.lstIndex.SelectedIndex;
@@ -290,7 +290,7 @@ namespace Client
             GameState.Skill_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void SkillEditorOK()
+        public static void SkillEditorOK()
         {
             int i;
 
@@ -307,7 +307,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void SkillEditorCancel()
+        public static void SkillEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_Skill();
@@ -315,7 +315,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ClearChanged_Skill()
+        public static void ClearChanged_Skill()
         {
             for (int i = 0; i < Constant.MAX_SKILLS; i++)
                 GameState.Skill_Changed[i] = false;
@@ -324,7 +324,7 @@ namespace Client
         #endregion
 
         #region Shop editor
-        internal static void ShopEditorInit()
+        public static void ShopEditorInit()
         {
             GameState.EditorIndex = frmEditor_Shop.Instance.lstIndex.SelectedIndex;
             
@@ -347,7 +347,7 @@ namespace Client
             GameState.Shop_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void UpdateShopTrade()
+        public static void UpdateShopTrade()
         {
             int i;
 
@@ -372,7 +372,7 @@ namespace Client
             frmEditor_Shop.Instance.lstTradeItem.SelectedIndex = 0;
         }
 
-        internal static void ShopEditorOK()
+        public static void ShopEditorOK()
         {
             int i;
 
@@ -389,7 +389,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ShopEditorCancel()
+        public static void ShopEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_Shop();
@@ -397,7 +397,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ClearChanged_Shop()
+        public static void ClearChanged_Shop()
         {
             for (int i = 0; i < Constant.MAX_SHOPS; i++)
                 GameState.Shop_Changed[i] = false;
@@ -406,7 +406,7 @@ namespace Client
         #endregion
 
         #region Job Editor
-        internal static void JobEditorOK()
+        public static void JobEditorOK()
         {
             for (int i = 0; i < Constant.MAX_JOBS; i++)
             {
@@ -419,7 +419,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void JobEditorCancel()
+        public static void JobEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_Job();
@@ -427,7 +427,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void JobEditorInit()
+        public static void JobEditorInit()
         {
             int i;
             
@@ -469,7 +469,7 @@ namespace Client
             withBlock.DrawPreview();
         }
 
-        internal static void ClearChanged_Job()
+        public static void ClearChanged_Job()
         {
             for (int i = 0; i < Constant.MAX_JOBS; i++)
                 GameState.Job_Changed[i] = false;
@@ -480,7 +480,7 @@ namespace Client
 
         #region Item
 
-        internal static void ItemEditorInit()
+        public static void ItemEditorInit()
         {
             int i;
 
@@ -638,7 +638,7 @@ namespace Client
             GameState.Item_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void ItemEditorCancel()
+        public static void ItemEditorCancel()
         {
             GameState.MyEditorType = -1;
             Item.ClearChangedItem();
@@ -646,7 +646,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ItemEditorOK()
+        public static void ItemEditorOK()
         {
             int i;
 
@@ -666,7 +666,7 @@ namespace Client
         #endregion
 
         #region Moral Editor
-        internal static void MoralEditorOK()
+        public static void MoralEditorOK()
         {
             for (int i = 0; i < Constant.MAX_MORALS; i++)
             {
@@ -679,7 +679,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void MoralEditorCancel()
+        public static void MoralEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_Moral();
@@ -687,7 +687,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void MoralEditorInit()
+        public static void MoralEditorInit()
         {
             int i;
 
@@ -709,7 +709,7 @@ namespace Client
             GameState.Moral_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void ClearChanged_Moral()
+        public static void ClearChanged_Moral()
         {
             for (int i = 0; i < Constant.MAX_MORALS; i++)
                 GameState.Moral_Changed[i] = false;
@@ -717,7 +717,7 @@ namespace Client
         #endregion
 
         #region Projectile Editor
-        internal static void ProjectileEditorInit()
+        public static void ProjectileEditorInit()
         {
             GameState.EditorIndex = frmEditor_Projectile.Instance.lstIndex.SelectedIndex;
             
@@ -734,7 +734,7 @@ namespace Client
 
         }
 
-        internal static void ProjectileEditorOK()
+        public static void ProjectileEditorOK()
         {
             for (int i = 0; i < Constant.MAX_PROJECTILES;  i++)
             {
@@ -749,7 +749,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ProjectileEditorCancel()
+        public static void ProjectileEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_Projectile();
@@ -757,7 +757,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ClearChanged_Projectile()
+        public static void ClearChanged_Projectile()
         {
             for (int i = 0; i < Constant.MAX_PROJECTILES;  i++)
                 GameState.ProjectileChanged[i] = false;
@@ -768,7 +768,7 @@ namespace Client
 
 
         #region Pet Editor
-        internal static void PetEditorInit()
+        public static void PetEditorInit()
         {
             int i;
 
@@ -869,7 +869,7 @@ namespace Client
             GameState.Pet_Changed[GameState.EditorIndex] = true;
         }
 
-        internal static void PetEditorOK()
+        public static void PetEditorOK()
         {
             int i;
 
@@ -886,7 +886,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void PetEditorCancel()
+        public static void PetEditorCancel()
         {
             GameState.MyEditorType = -1;
             ClearChanged_Pet();
@@ -894,7 +894,7 @@ namespace Client
             NetworkSend.SendCloseEditor();
         }
 
-        internal static void ClearChanged_Pet()
+        public static void ClearChanged_Pet()
         {
             GameState.Pet_Changed = new bool[101];
         }

@@ -1050,7 +1050,7 @@ namespace Client
 
         }
 
-        internal static void PlayerCastSkill(int skillSlot)
+        public static void PlayerCastSkill(int skillSlot)
         {
             var buffer = new ByteStream(4);
 

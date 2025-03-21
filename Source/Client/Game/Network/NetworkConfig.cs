@@ -6,11 +6,11 @@ using Mirage.Sharp.Asfw.Network;
 namespace Client
 {
 
-    internal static class NetworkConfig
+    public static class NetworkConfig
     {
         private static NetworkClient _Socket;
 
-        internal static NetworkClient Socket
+        public static NetworkClient Socket
         {
             [MethodImpl(MethodImplOptions.Synchronized)]
             get
@@ -44,7 +44,7 @@ namespace Client
             }
         }
 
-        internal static void InitNetwork()
+        public static void InitNetwork()
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Client
             NetworkReceive.PacketRouter();
         }
 
-        internal static void DestroyNetwork()
+        public static void DestroyNetwork()
         {
             // Calling a disconnect is not necessary when using destroy network as
             // Dispose already calls it and cleans up the memory internally.
