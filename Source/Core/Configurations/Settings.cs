@@ -48,6 +48,8 @@ namespace Core
 
         public int ServerShutdown { get; set; } = 60;
 
+        public int SaveInterval { get; set; } = 5;
+
         // Methods to load and save settings
         public static void Load()
         {

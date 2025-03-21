@@ -30,7 +30,7 @@ namespace Server
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
         private static Timer? SaveTimer;
-        private static Stopwatch ShutDownTimer;
+        private static Stopwatch ShutDownTimer = new Stopwatch();
         private static int ShutDownLastTimer = 0;
 
         static General()
@@ -404,7 +404,7 @@ namespace Server
 
         private static void InitializeSaveTimer()
         {
-            int intervalMinutes = 5;
+            int intervalMinutes = Settings.Instance.SaveInterval;
             SaveTimer = new Timer(async _ => await SavePlayersPeriodicallyAsync(), null,
                 TimeSpan.FromMinutes(intervalMinutes), TimeSpan.FromMinutes(intervalMinutes));
         }
