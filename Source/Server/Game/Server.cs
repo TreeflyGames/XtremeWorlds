@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Core;
 using Microsoft.VisualBasic.CompilerServices;
 using static Core.Enum;
@@ -13,15 +14,15 @@ namespace Server
         private static bool consoleExit;
         private static Thread threadConsole;
 
-        public static void Main()
+        public static async Task Main()
         {
-            threadConsole = new Thread(new ThreadStart(ConsoleThread));
+            threadConsole = new Thread(new ThreadStart(() => ConsoleThreadAsync().GetAwaiter().GetResult()));
             threadConsole.Start();
 
             AppDomain.CurrentDomain.ProcessExit += ProcessExitHandler;
 
             // Spin up the server on the main thread
-            General.InitServer();
+            await General.InitServerAsync();
         }
 
         private static void ProcessExitHandler(object sender, EventArgs e)
@@ -31,7 +32,7 @@ namespace Server
             threadConsole.Join();
         }
 
-        private static void ConsoleThread()
+        private static async Task ConsoleThreadAsync()
         {
             string line;
             string[] parts;
@@ -64,7 +65,7 @@ namespace Server
                             Console.WriteLine("/access, sets player access level, use with '/access name level goes from 1 for Player, to 5 to Owner.");
                             Console.WriteLine("/kick, kicks user from server, use with '/kick name'");
                             Console.WriteLine("/ban, bans user from server, use with '/ban name'");
-                            Console.WriteLine("/shutdown, shuts down the server after 60 seconds or a value you specify in seconds");
+                            Console.WriteLine("/shutdown, shuts down the server");
                             break;
                         }
 
@@ -73,35 +74,24 @@ namespace Server
                     case "/shutdown":
                         {
                             #region Body
-                            if (parts.Length < 2)
+                            if (General.GetShutDownTimer.IsRunning)
                             {
-                                General.shutDownDuration = 60;
-                            }
-                            else
-                            {
-                                General.shutDownDuration = Conversions.ToInteger(parts[1]);
-                            }
-
-                            if (General.shutDownTimer.IsRunning)
-                            {
-                                General.shutDownTimer.Stop();
-                                General.shutDownDuration = 0;
+                                General.GetShutDownTimer.Stop();
                                 Console.WriteLine("Server shutdown has been cancelled!");
                                 NetworkSend.GlobalMsg("Server shutdown has been cancelled!");
                             }
                             else
                             {
-                                if (General.shutDownTimer.ElapsedTicks > 0L)
+                                if (General.GetShutDownTimer.ElapsedTicks > 0L)
                                 {
-                                    General.shutDownTimer.Restart();
+                                    General.GetShutDownTimer.Restart();
                                 }
                                 else
                                 {
-                                    General.shutDownTimer.Start();
+                                    General.GetShutDownTimer.Start();
                                 }
-
-                                Console.WriteLine("Server shutdown in " + General.shutDownDuration + " seconds!");
-                                NetworkSend.GlobalMsg("Server shutdown in " + General.shutDownDuration + " seconds!");
+                                Console.WriteLine("Server shutdown in " + Settings.Instance.ServerShutdown + " seconds!");
+                                NetworkSend.GlobalMsg("Server shutdown in " + Settings.Instance.ServerShutdown + " seconds!");
                             }
 
                             break;
@@ -113,7 +103,7 @@ namespace Server
 
                             #region  Body 
 
-                            General.DestroyServer();
+                            await General.DestroyServerAsync();
                             break;
                         }
 
@@ -142,39 +132,39 @@ namespace Server
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Player!", (int) ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Player!", (int)ColorType.BrightCyan);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
-                                    case (byte) AccessType.Moderator:
+                                    case (byte)AccessType.Moderator:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Moderator!", (int) ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Moderator!", (int)ColorType.BrightCyan);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
-                                    case (byte) AccessType.Mapper:
+                                    case (byte)AccessType.Mapper:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Mapper!", (int) ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Mapper!", (int)ColorType.BrightCyan);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
-                                    case (byte) AccessType.Developer:
+                                    case (byte)AccessType.Developer:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Developer!", (int) ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Developer!", (int)ColorType.BrightCyan);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }
-                                    case (byte) AccessType.Owner:
+                                    case (byte)AccessType.Owner:
                                         {
                                             SetPlayerAccess(Pindex, Access);
                                             NetworkSend.SendPlayerData(Pindex);
-                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Owner!", (int) ColorType.BrightCyan);
+                                            NetworkSend.PlayerMsg(Pindex, "Your access has been set to Owner!", (int)ColorType.BrightCyan);
                                             Console.WriteLine("Successfully set the access level to " + Access + " for player " + Name);
                                             break;
                                         }

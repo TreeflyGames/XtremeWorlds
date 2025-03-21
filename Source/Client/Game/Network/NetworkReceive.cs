@@ -317,7 +317,7 @@ namespace Client
                 for (int q = 0; q < (int)Core.Enum.StatType.Count; q++)
                     withBlock.Stat[q] = buffer.ReadInt32();
 
-                for (int q = 0; q <= 4; q++)
+                for (int q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
                 {
                     withBlock.StartItem[q] = buffer.ReadInt32();
                     withBlock.StartValue[q] = buffer.ReadInt32();
@@ -350,7 +350,7 @@ namespace Client
                 for (x = 0; x < (int)Core.Enum.StatType.Count; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
-                for (int q = 0; q <= 4; q++)
+                for (int q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
                 {
                     withBlock.StartItem[q] = buffer.ReadInt32();
                     withBlock.StartValue[q] = buffer.ReadInt32();

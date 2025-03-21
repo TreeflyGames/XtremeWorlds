@@ -15,17 +15,6 @@ namespace Server
     {
 
         #region Database
-        public static void ClearMorals()
-        {
-            int i;
-
-            Core.Type.Moral = new Core.Type.MoralStruct[Core.Constant.MAX_MORALS];
-
-            var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i < loopTo; i++)
-                ClearMoral(i);
-        }
-
         public static void ClearMoral(int moralNum)
         {
             Core.Type.Moral[moralNum].Name = "";
@@ -41,11 +30,11 @@ namespace Server
             Core.Type.Moral[moralNum].PlayerBlock = Conversions.ToBoolean(0);
         }
 
-        public static void LoadMoral(int moralNum)
+        public static async Task LoadMoralAsync(int moralNum)
         {
             JObject data;
 
-            data = Database.SelectRow(moralNum, "moral", "data");
+            data = await Database.SelectRowAsync(moralNum, "moral", "data");
 
             if (data is null)
             {
@@ -57,13 +46,13 @@ namespace Server
             Core.Type.Moral[moralNum] = moralData;
         }
 
-        public static void LoadMorals()
+        public static async Task LoadMoralsAsync()
         {
             int i;
 
             var loopTo = Core.Constant.MAX_MORALS;
             for (i = 0; i < loopTo; i++)
-                LoadMoral(i);
+                await Task.Run(() => LoadMoralAsync(i));
         }
 
         public static void SaveMoral(int moralNum)

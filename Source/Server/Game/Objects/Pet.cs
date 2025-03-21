@@ -57,20 +57,15 @@ namespace Server
             }
         }
 
-        public static void LoadPets()
+        public static async Task LoadPetsAsync()
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_PETS;
-            for (i = 0; i < loopTo; i++)
-                LoadPet(i);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_PETS).Select(i => Task.Run(() => LoadPetAsync(i)));
         }
 
-        public static void LoadPet(int petNum)
+        public static async Task LoadPetAsync(int petNum)
         {
             JObject data;
-
-            data = Database.SelectRow(petNum, "pet", "data");
+            data = await Database.SelectRowAsync(petNum, "pet", "data");
 
             if (data is null)
             {
@@ -88,18 +83,6 @@ namespace Server
 
             Core.Type.Pet[petNum].Stat = new byte[(byte)StatType.Count];
             Core.Type.Pet[petNum].Skill = new int[5];
-        }
-
-        public static void ClearPets()
-        {
-            int i;
-
-            Core.Type.Pet = new Core.Type.PetStruct[Core.Constant.MAX_PETS + 1];
-
-            var loopTo = Core.Constant.MAX_PETS;
-            for (i = 0; i < loopTo; i++)
-                ClearPet(i);
-
         }
 
         #endregion
@@ -2201,7 +2184,7 @@ namespace Server
                 return GetPetDamageRet;
             }
 
-            GetPetDamageRet = (int)Math.Round((double)((int)Core.Type.Player[index].Pet.Stat[(byte)StatType.Strength] * 2 + Core.Type.Player[index].Pet.Level * 3) + General.Random.NextDouble(0d, 20d));
+            GetPetDamageRet = (int)Math.Round((double)((int)Core.Type.Player[index].Pet.Stat[(byte)StatType.Strength] * 2 + Core.Type.Player[index].Pet.Level * 3) + General.GetRandom.NextDouble(0d, 20d));
             return GetPetDamageRet;
 
         }
@@ -2218,7 +2201,7 @@ namespace Server
             CanPetCritRet = Conversions.ToBoolean(0);
 
             rate = (int)Math.Round((double)Core.Type.Player[index].Pet.Stat[(byte)StatType.Luck] / 3d);
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
                 CanPetCritRet = Conversions.ToBoolean(1);
@@ -2421,10 +2404,10 @@ namespace Server
                 }
 
                 // take away armour
-                damage = (int)Math.Round(damage - General.Random.NextDouble(1, (int)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Luck] * 2));
+                damage = (int)Math.Round(damage - General.GetRandom.NextDouble(1, (int)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Luck] * 2));
 
                 // randomise from 1 to Core.Constant.MAX hit
-                damage = (int)Math.Round(General.Random.NextDouble(1d, damage));
+                damage = (int)Math.Round(General.GetRandom.NextDouble(1d, damage));
 
                 // * 1.5 if it's a crit!
                 if (CanPetCrit(index))
@@ -3202,10 +3185,10 @@ namespace Server
                 damage -= blockAmount;
 
                 // take away armour
-                damage = (int)Math.Round(damage - General.Random.NextDouble(1, GetPetStat(index, StatType.Luck) * 2));
+                damage = (int)Math.Round(damage - General.GetRandom.NextDouble(1, GetPetStat(index, StatType.Luck) * 2));
 
                 // randomise for up to 10% lower than Core.Constant.MAX hit
-                damage = (int)Math.Round(General.Random.NextDouble(1d, damage));
+                damage = (int)Math.Round(General.GetRandom.NextDouble(1d, damage));
 
                 // * 1.5 if crit hit
                 if (CanPetCrit(index))
@@ -3516,10 +3499,10 @@ namespace Server
                 damage -= blockAmount;
 
                 // take away armour
-                damage = (int)Math.Round(damage - General.Random.NextDouble(1, (int)Core.Type.Player[index].Pet.Stat[(byte)StatType.Luck] * 2));
+                damage = (int)Math.Round(damage - General.GetRandom.NextDouble(1, (int)Core.Type.Player[index].Pet.Stat[(byte)StatType.Luck] * 2));
 
                 // randomise for up to 10% lower than Core.Constant.MAX hit
-                damage = (int)Math.Round(General.Random.NextDouble(1d, damage));
+                damage = (int)Math.Round(General.GetRandom.NextDouble(1d, damage));
 
                 // * 1.5 if crit hit
                 if (CanPetCrit(index))
@@ -4421,7 +4404,7 @@ namespace Server
             CanPetDodgeRet = Conversions.ToBoolean(0);
 
             rate = (int)Math.Round((double)GetPetStat(index, StatType.Luck) / 4d);
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
             {
@@ -4444,7 +4427,7 @@ namespace Server
             CanPetParryRet = Conversions.ToBoolean(0);
 
             rate = (int)Math.Round((double)GetPetStat(index, StatType.Luck) / 6d);
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
             {
@@ -4752,10 +4735,10 @@ namespace Server
                 damage -= blockAmount;
 
                 // take away armour
-                damage = (int)Math.Round(damage - General.Random.NextDouble(1, GetPlayerStat(victim, StatType.Luck) * 2));
+                damage = (int)Math.Round(damage - General.GetRandom.NextDouble(1, GetPlayerStat(victim, StatType.Luck) * 2));
 
                 // randomise for up to 10% lower than Core.Constant.MAX hit
-                damage = (int)Math.Round(General.Random.NextDouble(1d, damage));
+                damage = (int)Math.Round(General.GetRandom.NextDouble(1d, damage));
 
                 // * 1.5 if can crit
                 if (Player.CanPlayerCriticalHit(attacker))

@@ -6206,7 +6206,7 @@ namespace Client
             long cIn;
 
             // unload it if we're not in a party
-            if (Core.Type.Party.Leader == 0)
+            if (Core.Type.MyParty.Leader == 0)
             {
                 HideWindow(GetWindowIndex("winParty"));
                 return;
@@ -6234,11 +6234,11 @@ namespace Client
                 // labels
                 cIn = 0L;
 
-                var loopTo = (long)Core.Type.Party.MemberCount;
+                var loopTo = (long)Core.Type.MyParty.MemberCount;
                 for (i = 0L; i < loopTo; i++)
                 {
                     // cache the index
-                    pIndex = Core.Type.Party.Member[(int)i];
+                    pIndex = Core.Type.MyParty.Member[(int)i];
                     if (pIndex > 0L)
                     {
                         if (pIndex != GameState.MyIndex)
@@ -6274,7 +6274,7 @@ namespace Client
                 GameLogic.UpdatePartyBars();
 
                 // set the window size
-                switch (Core.Type.Party.MemberCount)
+                switch (Core.Type.MyParty.MemberCount)
                 {
                     case 2:
                         {

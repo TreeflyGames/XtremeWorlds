@@ -70,7 +70,7 @@ namespace Server
             json.Write(System.IO.Path.Combine(Path.Database, "Variables.json"), Variables);
         }
 
-        public static void LoadSwitches()
+        public static async Task LoadSwitchesAsync()
         {
             var json = new JsonSerializer<string[]>();
 
@@ -80,7 +80,7 @@ namespace Server
                 CreateSwitches();
         }
 
-        public static void LoadVariables()
+        public static async Task LoadVariablesAsync()
         {
             var json = new JsonSerializer<string[]>();
 
@@ -922,7 +922,7 @@ namespace Server
                             break;
                         }
                 }
-                CanEventMoveTowardsPlayerRet = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+                CanEventMoveTowardsPlayerRet = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
             }
             else if (PathfindingType == 2)
             {
@@ -1394,7 +1394,7 @@ namespace Server
 
             }
 
-            CanEventMoveAwayFromPlayerRet = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+            CanEventMoveAwayFromPlayerRet = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
             return CanEventMoveAwayFromPlayerRet;
 
         }

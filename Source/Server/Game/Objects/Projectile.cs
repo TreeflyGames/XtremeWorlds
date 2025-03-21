@@ -30,20 +30,20 @@ namespace Server
             }
         }
 
-        public static void LoadProjectiles()
+        public static async Task LoadProjectilesAsync()
         {
             int i;
 
             var loopTo = Core.Constant.MAX_PROJECTILES;
             for (i = 0; i < loopTo; i++)
-                LoadProjectile(i);
+                await LoadProjectile(i);
         }
 
-        public static void LoadProjectile(int projectileNum)
+        public static async Task LoadProjectile(int projectileNum)
         {
             JObject data;
 
-            data = Database.SelectRow(projectileNum, "projectile", "data");
+            data = await Database.SelectRowAsync(projectileNum, "projectile", "data");
 
             if (data is null)
             {
@@ -53,24 +53,6 @@ namespace Server
 
             var projectileData = JObject.FromObject(data).ToObject<Core.Type.ProjectileStruct>();
             Core.Type.Projectile[projectileNum] = projectileData;
-        }
-
-        public static void ClearMapProjectile()
-        {
-            int x;
-            int y;
-            ;
-
-            Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
-
-            var loopTo = Core.Constant.MAX_MAPS;
-            for (x = 0; x < (int)loopTo; x++)
-            {
-                var loopTo1 = Core.Constant.MAX_PROJECTILES;
-                for (y = 0; y < (int)loopTo1; y++)
-                    ClearMapProjectile(x, y);
-            }
-
         }
 
         public static void ClearMapProjectile(int mapNum, int index)
@@ -94,18 +76,6 @@ namespace Server
             Core.Type.Projectile[index].Range = 0;
             Core.Type.Projectile[index].Speed = 0;
             Core.Type.Projectile[index].Damage = 0;
-
-        }
-
-        public static void ClearProjectile()
-        {
-            int i;
-
-            Core.Type.Projectile = new Core.Type.ProjectileStruct[Core.Constant.MAX_PROJECTILES];
-
-            var loopTo = Core.Constant.MAX_PROJECTILES;
-            for (i = 0; i < loopTo; i++)
-                ClearProjectile(i);
 
         }
 
@@ -231,7 +201,7 @@ namespace Server
                                                     Damage = Damage - armor;
 
                                                     // randomise for up to 10% lower than Core.Constant.MAX hit
-                                                    Damage = (int)Math.Round(General.Random.NextDouble(1d, Damage));
+                                                    Damage = (int)Math.Round(General.GetRandom.NextDouble(1d, Damage));
 
                                                     Player.AttackPlayer(index, Targetindex, Damage);
                                                 }
@@ -254,7 +224,7 @@ namespace Server
                                             Damage = Damage - armor;
 
                                             // randomise from 1 to Core.Constant.MAX hit
-                                            Damage = (int)Math.Round(General.Random.NextDouble(1d, Damage));
+                                            Damage = (int)Math.Round(General.GetRandom.NextDouble(1d, Damage));
 
                                             Player.PlayerAttackNPC(index, Targetindex, Damage);
                                         }

@@ -60,11 +60,11 @@ namespace Client
         public static void ClearJob(int index)
         {
             Core.Type.Job[index] = default;
-            Core.Type.Job[index].Stat = new int[6];
+            Core.Type.Job[index].Stat = new int[(int)Core.Enum.StatType.Count];
             Core.Type.Job[index].Name = "";
             Core.Type.Job[index].Desc = "";
-            Core.Type.Job[index].StartItem = new int[6];
-            Core.Type.Job[index].StartValue = new int[6];
+            Core.Type.Job[index].StartItem = new int[Constant.MAX_START_ITEMS];
+            Core.Type.Job[index].StartValue = new int[Constant.MAX_START_ITEMS];
             Core.Type.Job[index].MaleSprite = 1;
             Core.Type.Job[index].FemaleSprite = 1;
         }

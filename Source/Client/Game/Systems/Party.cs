@@ -11,12 +11,12 @@ namespace Client
 
         public static void ClearParty()
         {
-            Core.Type.Party = new Core.Type.PartyStruct()
+            Core.Type.MyParty = new Core.Type.PartyStruct()
             {
                 Leader = 0,
                 MemberCount = 0
             };
-            Core.Type.Party.Member = new int[5];
+            Core.Type.MyParty.Member = new int[5];
         }
 
         #endregion
@@ -53,10 +53,10 @@ namespace Client
             }
 
             // carry on otherwise
-            Core.Type.Party.Leader = buffer.ReadInt32();
+            Core.Type.MyParty.Leader = buffer.ReadInt32();
             for (i = 0; i < Constant.MAX_PARTY_MEMBERS; i++)
-                Core.Type.Party.Member[i] = buffer.ReadInt32();
-            Core.Type.Party.MemberCount = buffer.ReadInt32();
+                Core.Type.MyParty.Member[i] = buffer.ReadInt32();
+            Core.Type.MyParty.MemberCount = buffer.ReadInt32();
 
             Gui.UpdatePartyInterface();
 
@@ -75,7 +75,7 @@ namespace Client
             // find the party number
             for (int i = 0; i < Constant.MAX_PARTY_MEMBERS; i++)
             {
-                if (Core.Type.Party.Member[i] == playerNum)
+                if (Core.Type.MyParty.Member[i] == playerNum)
                 {
                     partyindex = i;
                 }
