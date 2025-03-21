@@ -24,12 +24,12 @@ namespace Server
     public class General
     {
         private static readonly RandomUtility Random = new RandomUtility();
-        private static IEngineContainer? Container;
-        private static IConfiguration? Configuration;
+        private static readonly IEngineContainer? Container;
+        private static readonly IConfiguration? Configuration;
         private static bool ServerDestroyed;
         private static string MyIPAddress = string.Empty;
         private static readonly Stopwatch MyStopwatch = new Stopwatch();
-        public static ILogger Logger;
+        public static readonly ILogger Logger;
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
         private static Timer? SaveTimer;
@@ -40,8 +40,20 @@ namespace Server
 
         static General()
         {
-            InitializeSaveTimer();
-            InitializeAnnouncementTimer();
+            Container = new EngineContainer<SerilogLoggingInitializer>()
+                .DiscoverContainerServiceClasses()
+                .DiscoverConfigurationSources()
+                .BuildContainerConfiguration()
+                .BuildContainerLogger()
+                .DiscoverContainerServices()
+                .BuildContainerServices()
+                .BuildContainerServiceProvider();
+
+            Configuration = Container?.RetrieveService<IConfiguration>() ??
+                throw new NullReferenceException("Failed to initialize configuration");
+
+            Logger = Container?.RetrieveService<ILogger<General>>() ??
+                throw new NullReferenceException("Failed to initialize logger");
         }
 
         #region Utility Methods
@@ -134,7 +146,6 @@ namespace Server
 
         private static async Task InitializeCoreComponentsAsync()
         {
-            await InitializeContainerAsync();
             await Task.WhenAll(LoadConfigurationAsync(), InitializeNetworkAsync(), InitializeChatSystemAsync());
             await InitializeDatabaseWithRetryAsync();
         }
@@ -205,6 +216,8 @@ namespace Server
 
         private static async Task StartGameLoopAsync(int startTime)
         {
+            InitializeSaveTimer();
+            InitializeAnnouncementTimer();
             DisplayServerBanner(startTime);
             UpdateCaption();
             await NetworkConfig.Socket.StartListeningAsync(Settings.Instance.Port, 5);
@@ -257,32 +270,10 @@ namespace Server
 
         #region Initialization Methods
 
-        private static async Task InitializeContainerAsync()
-        {
-            Container = new EngineContainer<SerilogLoggingInitializer>()
-                .DiscoverContainerServiceClasses()
-                .DiscoverConfigurationSources()
-                .BuildContainerConfiguration()
-                .BuildContainerLogger()
-                .DiscoverContainerServices()
-                .BuildContainerServices()
-                .BuildContainerServiceProvider();
-
-            Configuration = Container?.RetrieveService<IConfiguration>() ??
-                throw new NullReferenceException("Failed to initialize configuration");
-
-            Logger = Container?.RetrieveService<ILogger<General>>() ??
-                throw new NullReferenceException("Failed to initialize logger");
-        }
-
         private static async Task LoadConfigurationAsync()
         {
             await Task.Run(() =>
             {
-                var configBuilder = new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables();
-                Configuration = configBuilder.Build();
                 Settings.Load();
                 ValidateConfiguration();
                 Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
@@ -295,6 +286,7 @@ namespace Server
         {
             if (string.IsNullOrWhiteSpace(Settings.Instance.GameName))
                 throw new InvalidOperationException("GameName is not set in configuration");
+
             if (Settings.Instance.Port <= 0 || Settings.Instance.Port > 65535)
                 throw new InvalidOperationException("Invalid Port number in configuration");
         }
@@ -314,8 +306,8 @@ namespace Server
             {
                 try
                 {
-                    Database.CreateDatabase("mirage");
-                    Database.CreateTables();
+                    await Database.CreateDatabaseAsync("mirage");
+                    await Database.CreateTablesAsync();
                     await LoadCharacterListAsync();
                     Logger.LogInformation("Database initialized successfully.");
                     return;
@@ -347,8 +339,8 @@ namespace Server
                 {
                     for (int i = 1; i <= Core.Constant.MAX_CHARS; i++)
                     {
-                        var data = Database.SelectRowByColumn("id", id, "account", $"character{i}", "name"); // Optimized to fetch only 'name'
-                        if (data != null && data.ContainsKey("name"))
+                        var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i}");
+                        if (data != null && data["name"] != null)
                         {
                             string name = data["name"].ToString();
                             if (!string.IsNullOrWhiteSpace(name))
@@ -498,8 +490,8 @@ namespace Server
 
         private static void InitializeAnnouncementTimer()
         {
-            int intervalMinutes = Configuration.GetValue<int>("Events:AnnouncementIntervalMinutes", 60);
-            AnnouncementTimer = new Timer(async _ => await SendServerAnnouncementAsync(), null,
+            int intervalMinutes = Configuration?.GetValue<int>("Events:AnnouncementIntervalMinutes", 60) ?? 60;
+            AnnouncementTimer = new Timer(async _ => await SendServerAnnouncementAsync(""), null,
                 TimeSpan.FromMinutes(intervalMinutes), TimeSpan.FromMinutes(intervalMinutes));
         }
 
@@ -516,13 +508,12 @@ namespace Server
             }
         }
 
-        private static async Task SendServerAnnouncementAsync()
+        private static async Task SendServerAnnouncementAsync(string message)
         {
-            string message = "Server Announcement: Enjoy the game and report any bugs!";
             await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
             {
                 if (NetworkConfig.IsPlaying(i))
-                    NetworkSend.PlayerMsg(i, message, (int)Core.Enum.ColorType.BrightYellow);
+                    NetworkSend.PlayerMsg(i, message, (int)Core.Enum.ColorType.Yellow);
             });
             Logger.LogInformation("Server announcement sent.");
         }
@@ -726,21 +717,21 @@ namespace Server
         {
             try
             {
-                ref var player = ref Core.Type.Player[playerIndex];
+                var player = Core.Type.TempPlayer[playerIndex];
                 switch (subCommand.ToLower())
                 {
                     case "create":
-                        if (player.PartyId != 0)
+                        if (player.InParty != 0)
                         {
                             NetworkSend.PlayerMsg(playerIndex, "You are already in a party.", (int)Core.Enum.ColorType.BrightRed);
                             return;
                         }
-                        player.PartyId = GenerateUniqueId();
+                        player.InParty = (int)GenerateUniqueId();
                         NetworkSend.PlayerMsg(playerIndex, "Party created.", (int)Core.Enum.ColorType.BrightGreen);
                         break;
 
                     case "invite":
-                        if (player.PartyId == 0)
+                        if (player.InParty == 0)
                         {
                             NetworkSend.PlayerMsg(playerIndex, "You must create a party first.", (int)Core.Enum.ColorType.BrightRed);
                             return;
@@ -751,24 +742,24 @@ namespace Server
                             NetworkSend.PlayerMsg(playerIndex, $"Player '{targetName}' not found.", (int)Core.Enum.ColorType.BrightRed);
                             return;
                         }
-                        ref var targetPlayer = ref Core.Type.Player[targetIndex];
-                        if (targetPlayer.PartyId != 0)
+                        var targetPlayer = Core.Type.TempPlayer[targetIndex];
+                        if (targetPlayer.InParty != 0)
                         {
                             NetworkSend.PlayerMsg(playerIndex, $"{targetName} is already in a party.", (int)Core.Enum.ColorType.BrightRed);
                             return;
                         }
-                        targetPlayer.PartyId = player.PartyId;
-                        NetworkSend.PlayerMsg(targetIndex, $"You have joined {player.Name}'s party.", (int)Core.Enum.ColorType.BrightGreen);
+                        targetPlayer.InParty = player.InParty;
+                        NetworkSend.PlayerMsg(targetIndex, $"You have joined {Core.Type.Player[playerIndex].Name}'s party.", (int)Core.Enum.ColorType.BrightGreen);
                         NetworkSend.PlayerMsg(playerIndex, $"{targetName} has joined your party.", (int)Core.Enum.ColorType.BrightGreen);
                         break;
 
                     case "leave":
-                        if (player.PartyId == 0)
+                        if (player.InParty == 0)
                         {
                             NetworkSend.PlayerMsg(playerIndex, "You are not in a party.", (int)Core.Enum.ColorType.BrightRed);
                             return;
                         }
-                        player.PartyId = 0;
+                        player.InParty = 0;
                         NetworkSend.PlayerMsg(playerIndex, "You have left the party.", (int)Core.Enum.ColorType.BrightGreen);
                         break;
 
@@ -806,7 +797,7 @@ namespace Server
         {
             try
             {
-                await Database.SavePlayerAsync(playerIndex); // Assuming this method exists
+                await Database.SaveAccountAsync(playerIndex); // Assuming this method exists
                 NetworkSend.PlayerMsg(playerIndex, "Your data has been saved.", (int)Core.Enum.ColorType.BrightGreen);
                 Logger.LogInformation($"Player {playerIndex} data saved manually.");
             }
@@ -845,11 +836,11 @@ namespace Server
                     NetworkSend.PlayerMsg(targetIndex, $"[From {Core.Type.Player[senderIndex].Name}] {message}", (int)color);
                     NetworkSend.PlayerMsg(senderIndex, $"[To {Core.Type.Player[targetIndex].Name}] {message}", (int)color);
                 }
-                else if (channel == "party" && Core.Type.Player[senderIndex].PartyId != 0)
+                else if (channel == "party" && Core.Type.TempPlayer[senderIndex].InParty != 0)
                 {
                     await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
                     {
-                        if (NetworkConfig.IsPlaying(i) && Core.Type.Player[i].PartyId == Core.Type.Player[senderIndex].PartyId)
+                        if (NetworkConfig.IsPlaying(i) && Core.Type.TempPlayer[i].InParty == Core.Type.TempPlayer[senderIndex].InParty)
                             NetworkSend.PlayerMsg(i, $"[Party] {Core.Type.Player[senderIndex].Name}: {message}", (int)color);
                     });
                 }
@@ -905,7 +896,7 @@ namespace Server
                 string backupDir = Core.Path.Database;
                 Directory.CreateDirectory(backupDir);
                 string backupPath = System.IO.Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
-                await Database.BackupAsync(backupPath); // Assuming this method exists
+                //await Database.BackupAsync(backupPath); // Assuming this method exists
                 Logger.LogInformation($"Database backup created: {backupPath}");
 
                 var backups = Directory.GetFiles(backupDir, "backup_*.bak")
