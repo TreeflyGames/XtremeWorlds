@@ -19,21 +19,15 @@ namespace Server
 
         public static async Task SpawnAllMapNPCs()
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_MAPS;
-            for (i = 0; i < loopTo; i++)
-                await SpawnMapNPCs(i);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_MAP_NPCS).Select(i => Task.Run(() => SpawnMapNPCs(i)));
+            await Task.WhenAll(tasks);
 
         }
 
         public static async Task SpawnMapNPCs(int mapNum)
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_MAP_NPCS;
-            for (i = 0; i < loopTo; i++)
-                await SpawnNPC(i, mapNum);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_MAP_NPCS).Select(i => Task.Run(() => SpawnNPC(i, mapNum)));
+            await Task.WhenAll(tasks);
 
         }
 
