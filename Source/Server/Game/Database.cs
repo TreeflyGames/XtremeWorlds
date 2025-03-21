@@ -1202,7 +1202,7 @@ namespace Server
                     // OFFSET 38: Stored as a single byte, the boot Y
                     xwMap.BootY = reader.ReadByte();
 
-                    // OFFSET 39: Stored as two bytes, the Shop ID.
+                    // OFFSET 39: Stored as two bytes, the Shop Id.
                     xwMap.Shop = reader.ReadInt16();
 
                     // OFFSET 41: Stored as a single byte, is the map indoors?
@@ -1723,7 +1723,7 @@ namespace Server
             Core.Type.TempPlayer[index].InTrade = -1;
 
             for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventProcessingCount; i < loopTo; i++)
-                Core.Type.TempPlayer[index].EventProcessing[i].EventID = -1;
+                Core.Type.TempPlayer[index].EventProcessing[i].EventId = -1;
 
             ClearCharacter(index);
         }
