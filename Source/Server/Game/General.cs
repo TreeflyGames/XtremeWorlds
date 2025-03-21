@@ -30,7 +30,8 @@ namespace Server
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
         private static Timer? SaveTimer;
-        private static System.Timers.Timer? ShutDownTimer;
+        private static Stopwatch ShutDownTimer;
+        private static int ShutDownLastTimer = 0;
 
         static General()
         {
@@ -43,7 +44,7 @@ namespace Server
         /// <summary>
         /// Retrieves the shut down timer to destroy the server after a specified time.
         /// </summary>
-        public static System.Timers.Timer? GetShutDownTimer => ShutDownTimer;
+        public static Stopwatch? GetShutDownTimer => ShutDownTimer;
 
         /// <summary>
         /// Retrives the current server destroy status.
@@ -630,6 +631,30 @@ namespace Server
             UpdateCaption();
         }
 
-        #endregion
+        public static async Task CheckShutDownCountDownAsync()
+        {
+            if (General.ShutDownTimer.ElapsedTicks > 0)
+            {
+                int time = General.ShutDownTimer.Elapsed.Seconds;
+
+                if (General.ShutDownLastTimer != time)
+                {
+                    if (General.ShutDownLastTimer - time <= 10)
+                    {
+                        NetworkSend.GlobalMsg("Server shutdown in " + (-time) + " seconds!");
+                        Console.WriteLine("Server shutdown in " + (Settings.Instance.ServerShutdown - time) + " seconds!");
+
+                        if (Settings.Instance.ServerShutdown - time <= 1)
+                        {
+                            await General.DestroyServerAsync();
+                        }
+                    }
+
+                    General.ShutDownLastTimer = time;
+                }
+            }
+
+            #endregion
+        }
     }
 }

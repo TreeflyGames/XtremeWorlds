@@ -65,7 +65,7 @@ namespace Server
                             Console.WriteLine("/access, sets player access level, use with '/access name level goes from 1 for Player, to 5 to Owner.");
                             Console.WriteLine("/kick, kicks user from server, use with '/kick name'");
                             Console.WriteLine("/ban, bans user from server, use with '/ban name'");
-                            Console.WriteLine("/shutdown, shuts down the server after 60 seconds or a value you specify in seconds");
+                            Console.WriteLine("/shutdown, shuts down the server");
                             break;
                         }
 
@@ -74,17 +74,7 @@ namespace Server
                     case "/shutdown":
                         {
                             #region Body
-                            int GetShutDownTimer;
-                            if (parts.Length < 2)
-                            {
-                                GetShutDownTimer = 60;
-                            }
-                            else
-                            {
-                                GetShutDownTimer = Conversions.ToInteger(parts[1]);
-                            }
-
-                            if (General.GetShutDownTimer.Enabled)
+                            if (General.GetShutDownTimer.IsRunning)
                             {
                                 General.GetShutDownTimer.Stop();
                                 Console.WriteLine("Server shutdown has been cancelled!");
@@ -92,17 +82,16 @@ namespace Server
                             }
                             else
                             {
-                                if (General.GetShutDownTimer.Interval > 0L)
+                                if (General.GetShutDownTimer.ElapsedTicks > 0L)
                                 {
-                                    General.GetShutDownTimer.Start();
+                                    General.GetShutDownTimer.Restart();
                                 }
                                 else
                                 {
                                     General.GetShutDownTimer.Start();
                                 }
-
-                                Console.WriteLine("Server shutdown in " + GetShutDownTimer + " seconds!");
-                                NetworkSend.GlobalMsg("Server shutdown in " + GetShutDownTimer + " seconds!");
+                                Console.WriteLine("Server shutdown in " + Settings.Instance.ServerShutdown + " seconds!");
+                                NetworkSend.GlobalMsg("Server shutdown in " + Settings.Instance.ServerShutdown + " seconds!");
                             }
 
                             break;

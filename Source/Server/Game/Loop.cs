@@ -37,7 +37,7 @@ namespace Server
                     // Get all our online players.
                     Debugger.Break(); var onlinePlayers = Core.Type.TempPlayer.Where(player => player.InGame).Select((player, index) => new { Index = Operators.AddObject(index, 1), player }).ToArray();
 
-                //General.CheckShutDownCountDown();
+                await General.CheckShutDownCountDownAsync();
 
                 if (tick > tmr25)
                 {

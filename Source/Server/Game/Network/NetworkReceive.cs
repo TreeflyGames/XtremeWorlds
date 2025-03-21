@@ -191,7 +191,7 @@ namespace Server
 
                     IP = Strings.Mid(IP, 1, i);
 
-                    if (General.GetShutDownTimer.Enabled)
+                    if (General.GetShutDownTimer.IsRunning)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Login);
                         return;
@@ -303,7 +303,7 @@ namespace Server
                         return;
                     }
 
-                    if (General.GetShutDownTimer.Enabled)
+                    if (General.GetShutDownTimer.IsRunning)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Register);
                         return;

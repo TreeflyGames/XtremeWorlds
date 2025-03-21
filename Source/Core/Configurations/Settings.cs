@@ -46,6 +46,8 @@ namespace Core
 
         public int MaxBackups { get; set; } = 5;
 
+        public int ServerShutdown { get; set; } = 60;
+
         // Methods to load and save settings
         public static void Load()
         {
