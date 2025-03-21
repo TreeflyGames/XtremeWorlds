@@ -158,7 +158,7 @@ namespace Server
         private static void StartEventProcessing(int index, int eventId, int mapNum)
         {
             var pageId = Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageId;
-            if (Core.Type.Map[mapNum].Event[eventId].Pages[PageId].CommandListCount <= 0) return;
+            if (Core.Type.Map[mapNum].Event[eventId].Pages[pageId].CommandListCount <= 0) return;
 
             var processing = Core.Type.TempPlayer[index].EventProcessing[eventId];
             processing.Active = 0;
@@ -168,7 +168,7 @@ namespace Server
             processing.EventId = eventId;
             processing.PageId = pageId;
             processing.WaitingForResponse = 0;
-            processing.ListLeftOff = new int[Core.Type.Map[mapNum].Event[eventId].Pages[PageId].CommandListCount];
+            processing.ListLeftOff = new int[Core.Type.Map[mapNum].Event[eventId].Pages[pageId].CommandListCount];
         }
 
         private static bool IsNPCBlocking(int mapNum, int x, int y)
@@ -908,7 +908,7 @@ namespace Server
                 if (NetworkConfig.IsPlaying(i) && GetPlayerMap(i) == ev.MapNum)
                     EventLogic.TriggerEvent(i, ev.EventId, 0, TempEventMap[ev.MapNum].Event[ev.EventId].X, TempEventMap[ev.MapNum].Event[ev.EventId].Y);
             }
-           General.Logger.LogInformation($"Triggered scheduled event {ev.EventId} on map {ev.MapNum}");
+            General.Logger.LogInformation($"Triggered scheduled event {ev.EventId} on map {ev.MapNum}");
         }
 
         // Action-Based Triggers
