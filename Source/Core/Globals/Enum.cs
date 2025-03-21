@@ -1,7 +1,7 @@
 ﻿
 namespace Core
 {
-    public static class Enum
+    public class Enum
     {
 
         /// <Summary> Text Color Contstant </Summary>

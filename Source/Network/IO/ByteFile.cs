@@ -2,7 +2,7 @@
 
 namespace Mirage.Sharp.Asfw.IO
 {
-    public static class ByteFile
+    public class ByteFile
     {
         public static void Load(string src, out byte[] data)
         {

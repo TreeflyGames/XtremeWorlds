@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace Core.Network
 {
-    public static class Api
+    public class Api
     {
         private const string apiKey = "-5xPMTEPy3151vdLJKzaE04dGTnOu7vu";
         private const string apiUrl = "https://giamon.com/forums/index.php/api/auth";

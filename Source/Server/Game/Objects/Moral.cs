@@ -11,7 +11,7 @@ using static Core.Global.Command;
 namespace Server
 {
 
-    public static class Moral
+    public class Moral
     {
 
         #region Database

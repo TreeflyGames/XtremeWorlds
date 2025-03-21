@@ -11,7 +11,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Client
 {
-    public static class Animation
+    public class Animation
     {
 
         #region Drawing

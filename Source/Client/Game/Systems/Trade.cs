@@ -4,7 +4,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    public static class Trade
+    public class Trade
     {
         public static void CloseTrade()
         {

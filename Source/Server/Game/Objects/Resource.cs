@@ -11,7 +11,7 @@ using static Core.Packets;
 namespace Server
 {
 
-    public static class Resource
+    public class Resource
     {
 
         #region Database

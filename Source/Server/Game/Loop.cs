@@ -12,7 +12,7 @@ using static Core.Type;
 namespace Server
 {
 
-    static class Loop
+    public class Loop
     {
 
         public static void Server()

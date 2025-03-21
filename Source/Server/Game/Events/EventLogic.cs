@@ -13,7 +13,7 @@ using static Core.Packets;
 namespace Server
 {
 
-    public static class EventLogic
+    public class EventLogic
     {
 
         public static void RemoveDeadEvents()

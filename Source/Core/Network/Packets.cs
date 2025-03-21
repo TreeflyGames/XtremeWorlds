@@ -1,7 +1,7 @@
 ﻿
 namespace Core
 {
-    public static class Packets
+    public class Packets
     {
 
         // Packets sent by client to server

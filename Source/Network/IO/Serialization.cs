@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace Mirage.Sharp.Asfw.IO
 {
-  public static class Serialization
+  public class Serialization
   {
     public static void SaveXml<T>(string path, T obj)
     {

@@ -6,7 +6,7 @@ using Mirage.Sharp.Asfw.Network;
 namespace Client
 {
 
-    public static class NetworkConfig
+    public class NetworkConfig
     {
         private static NetworkClient _Socket;
 

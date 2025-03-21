@@ -12,7 +12,7 @@ using static Core.Packets;
 namespace Server
 {
 
-    public static class Projectile
+    public class Projectile
     {
 
         #region Database
