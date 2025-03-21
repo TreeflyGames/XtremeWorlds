@@ -165,6 +165,7 @@ namespace Server
                 Database.ClearPlayer(i);
             }
 
+            Event.TempEventMap = new Core.Type.GlobalEventsStruct[Core.Constant.MAX_MAPS];
             Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
         }
 
