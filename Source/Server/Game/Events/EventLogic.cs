@@ -9,6 +9,7 @@ using static Core.Type;
 using static Core.Global.Command;
 using static Core.Enum;
 using static Core.Packets;
+using Mirage.Sharp.Asfw;
 
 namespace Server
 {
@@ -59,45 +60,40 @@ namespace Server
         private const int DefaultMovementSpeed = 4; // Example default speed
 
         // Helper methods for better readability:
-        private static bool IsEventVisible(ref TempPlayerEventPage eventPage) => eventPage.Visible;
-        private static int GetEventId(ref TempPlayerEventPage eventPage) => eventPage.EventID;
-        private static MapEventPage GetEventPage(int mapNum, int eventId, int pageId) => Map[mapNum].Event[eventId].Pages[pageId];
-
-
+        private static bool IsEventVisible(ref MapEventStruct eventPage) => eventPage.Visible;
+        private static int GetEventId(ref EventMapStruct eventPage) => eventPage.CurrentEvents;
+        private static EventPageStruct GetEventPage(int mapNum, int eventId, int pageId) => Map[mapNum].Event[eventId].Pages[pageId];
 
         public static void RemoveDeadEvents()
         {
-            // Use LINQ to iterate through connected players
+            // Use LINQ to iterate through connected players  
             Parallel.ForEach(Enumerable.Range(0, NetworkConfig.Socket.HighIndex + 1), i =>
             {
                 if (TempPlayer[i].EventMap.CurrentEvents > 0 && !TempPlayer[i].GettingMap)
                 {
                     int mapNum = GetPlayerMap(i);
 
-                    // Use LINQ to filter and process relevant event pages
+                    // Use LINQ to filter and process relevant event pages  
                     var relevantPages = TempPlayer[i].EventMap.EventPages
                         .Where((page, x) => x < TempPlayer[i].EventMap.EventPages.Length)
-                        .Where(page => page.EventID < TempPlayer[i].EventMap.CurrentEvents)  //Boundary check
-                        .Where(page => page.EventID < Map[mapNum].Event.Length)             // Boundary check.
-                        .ToList(); // Materialize the query to avoid issues with modifying the collection.
-
+                        .Where(page => page.EventID < TempPlayer[i].EventMap.CurrentEvents)  //Boundary check  
+                        .Where(page => page.EventID < Map[mapNum].Event.Length)             // Boundary check.  
+                        .ToList(); // Materialize the query to avoid issues with modifying the collection.  
 
                     foreach (var eventPage in relevantPages)
                     {
                         int id = eventPage.EventID;
                         int page = eventPage.PageID;
 
-
-                        // Check if the event and page still exist
+                        // Check if the event and page still exist  
                         if (id >= 0 && id < Map[mapNum].Event.Length && page >= 0 && page < Map[mapNum].Event[id].Pages.Length)
                         {
-
-                            ref var playerEventPage = ref TempPlayer[i].EventMap.EventPages[Array.IndexOf(TempPlayer[i].EventMap.EventPages, eventPage)]; //find actual index of eventpage
+                            ref var playerEventPage = ref TempPlayer[i].EventMap.EventPages[Array.IndexOf(TempPlayer[i].EventMap.EventPages, eventPage)]; //find actual index of eventpage  
 
                             if (IsEventVisible(ref playerEventPage))
                             {
-                                // Check conditions to see if the event should be hidden
-                                MapEventPage mapEventPage = GetEventPage(mapNum, id, page);
+                                // Check conditions to see if the event should be hidden  
+                                EventPageStruct mapEventPage = GetEventPage(mapNum, id, page);
 
                                 if (mapEventPage.ChkHasItem == 1 && Player.HasItem(i, mapEventPage.HasItemIndex) == 0)
                                 {
@@ -126,7 +122,7 @@ namespace Server
 
                                 if (mapEventPage.ChkVariable == 1)
                                 {
-                                    int playerVar = Player[i].Variables[mapEventPage.VariableIndex];
+                                    int playerVar = TempPlayer[i].Variables[mapEventPage.VariableIndex];
                                     int condition = mapEventPage.VariableCondition;
                                     bool variableConditionMet = false;
 
@@ -148,13 +144,12 @@ namespace Server
 
                                 if (mapEventPage.ChkSwitch == 1)
                                 {
-                                    //Simplified with XOR
-                                    if ((mapEventPage.SwitchCompare == 1) ^ (Player[i].Switches[mapEventPage.SwitchIndex] == 1)) //we are expecting true
+                                    //Simplified with XOR  
+                                    if ((mapEventPage.SwitchCompare == 1) ^ (TempPlayer[i].Switches[mapEventPage.SwitchIndex] == 1)) //we are expecting true  
                                     {
                                         playerEventPage.Visible = false;
                                     }
                                 }
-
 
                                 if (Map[mapNum].Event[id].Globals == 1 && !IsEventVisible(ref playerEventPage))
                                 {
@@ -163,13 +158,13 @@ namespace Server
 
                                 if (!IsEventVisible(ref playerEventPage) && id >= 0)
                                 {
-                                    // Send packet to hide the event
+                                    // Send packet to hide the event  
                                     using (var buffer = new ByteStream(4))
                                     {
                                         buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
                                         buffer.WriteInt32(id);
 
-                                        ref var withBlock = ref TempPlayer[i].EventMap.EventPages[Array.IndexOf(TempPlayer[i].EventMap.EventPages, eventPage)]; //find actual index of eventpage
+                                        ref var withBlock = ref TempPlayer[i].EventMap.EventPages[Array.IndexOf(TempPlayer[i].EventMap.EventPages, eventPage)]; //find actual index of eventpage  
                                         buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock.EventID].Name);
                                         buffer.WriteInt32(withBlock.Dir);
                                         buffer.WriteByte(withBlock.GraphicType);
@@ -197,8 +192,6 @@ namespace Server
                 }
             });
         }
-
-
 
         public static void SpawnNewEvents()
         {
@@ -1854,7 +1847,7 @@ namespace Server
                                                         globalEvent.MoveRouteCount = command.MoveRouteCount;
                                                         if (command.MoveRouteCount > 0)
                                                         {
-                                                            globalEvent.MoveRoute = new EventMoveRoute[command.MoveRouteCount];
+                                                            globalEvent.MoveRoute = new  EventMoveRoute[command.MoveRouteCount];
                                                             Array.Copy(command.MoveRoute, globalEvent.MoveRoute, command.MoveRouteCount);
                                                         }
                                                         globalEvent.MoveRouteStep = 0;
@@ -2288,8 +2281,7 @@ namespace Server
                 if (!restartlist && !removeEventProcess)
                 {
                     // Get the current command.
-                    var
-                                           var command = commandList[CurList].Commands[CurSlot];
+                    var command = commandList[CurList].Commands[CurSlot];
 
                     switch (command.Index)
                     {
@@ -2762,7 +2754,7 @@ namespace Server
                     // Check conditions (Variable, Switch, Item, Self Switch).
                     if (page.ChkVariable == 1)
                     {
-                        int playerVar = Player[index].Variables[page.VariableIndex];
+                        int playerVar = Core.Type.Player[index].Variables[page.VariableIndex];
                         switch (page.VariableCompare)
                         {
                             case 0: spawncurrentevent = playerVar != page.VariableCondition; break;
@@ -2777,11 +2769,11 @@ namespace Server
                     if (page.ChkSwitch == 1)
                     {
                         // Using XOR for switch check, handles both expecting true and false efficiently
-                        if (!((page.SwitchCompare == 1) ^ (Player[index].Switches[page.SwitchIndex] == 0))) //we want true
+                        if (!((page.SwitchCompare == 1) ^ (Core.Type.Player[index].Switches[page.SwitchIndex] == 0))) //we want true
                             spawncurrentevent = false;
                     }
 
-                    if (page.ChkHasItem == 1 && Player.HasItem(index, page.HasItemIndex) == 0)
+                    if (page.ChkHasItem == 1 && Core.Type.Player.HasItem(index, page.HasItemIndex) == 0)
                     {
                         spawncurrentevent = false;
                     }
