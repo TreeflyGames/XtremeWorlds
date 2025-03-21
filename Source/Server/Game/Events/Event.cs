@@ -1,4 +1,5 @@
 using Core.Serialization;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Mirage.Sharp.Asfw;
 using System;
@@ -47,7 +48,7 @@ namespace Server
             Switches = new string[Core.Constant.MAX_SWITCHES];
             Array.Fill(Switches, string.Empty);
             SaveSwitches();
-            Logger.LogInformation("Switches initialized and saved.");
+            General.Logger.LogInformation("Switches initialized and saved.");
         }
 
         public static void CreateVariables()
@@ -55,7 +56,7 @@ namespace Server
             Variables = new string[Core.Constant.NAX_VARIABLES];
             Array.Fill(Variables, string.Empty);
             SaveVariables();
-            Logger.LogInformation("Variables initialized and saved.");
+            General.Logger.LogInformation("Variables initialized and saved.");
         }
 
         public static void SaveSwitches()
@@ -63,11 +64,11 @@ namespace Server
             try
             {
                 var json = new JsonSerializer<string[]>();
-                json.Write(Path.Combine(Path.Database, "Switches.json"), Switches);
+                json.Write(System.IO.Path.Combine(Path.Database, "Switches.json"), Switches);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to save Switches.");
+                General.Logger.LogError(ex, "Failed to save Switches.");
                 throw;
             }
         }
@@ -77,11 +78,11 @@ namespace Server
             try
             {
                 var json = new JsonSerializer<string[]>();
-                json.Write(Path.Combine(Path.Database, "Variables.json"), Variables);
+                json.Write(System.IO.Path.Combine(Path.Database, "Variables.json"), Variables);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to save Variables.");
+                General.Logger.LogError(ex, "Failed to save Variables.");
                 throw;
             }
         }
@@ -91,16 +92,16 @@ namespace Server
             var json = new JsonSerializer<string[]>();
             try
             {
-                Switches = await Task.Run(() => json.Read(Path.Combine(Path.Database, "Switches.json")));
+                Switches = await Task.Run(() => json.Read(System.IO.Path.Combine(Path.Database, "Switches.json")));
                 if (Switches == null || Switches.Length != Core.Constant.MAX_SWITCHES)
                 {
-                    Logger.LogWarning("Switches.json not found or invalid. Creating new switches.");
+                    General.Logger.LogWarning("Switches.json not found or invalid. Creating new switches.");
                     CreateSwitches();
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to load Switches.json. Creating new switches.");
+                General.Logger.LogError(ex, "Failed to load Switches.json. Creating new switches.");
                 CreateSwitches();
             }
         }
@@ -110,16 +111,16 @@ namespace Server
             var json = new JsonSerializer<string[]>();
             try
             {
-                Variables = await Task.Run(() => json.Read(Path.Combine(Path.Database, "Variables.json")));
+                Variables = await Task.Run(() => json.Read(System.IO.Path.Combine(Path.Database, "Variables.json")));
                 if (Variables == null || Variables.Length != Core.Constant.NAX_VARIABLES)
                 {
-                    Logger.LogWarning("Variables.json not found or invalid. Creating new variables.");
+                    General.Logger.LogWarning("Variables.json not found or invalid. Creating new variables.");
                     CreateVariables();
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Failed to load Variables.json. Creating new variables.");
+                General.Logger.LogError(ex, "Failed to load Variables.json. Creating new variables.");
                 CreateVariables();
             }
         }
@@ -262,20 +263,38 @@ namespace Server
 
             lock (TempEventLock)
             {
-                var eventData = globalEvent ? TempEventMap[mapNum].Event[eventIndex] : Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex];
-                if (globalEvent && Core.Type.Map[mapNum].Event[eventId].Pages[0].DirFix == 0 ||
-                    !globalEvent && Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex].PageID].DirFix == 0)
-                    eventData.Dir = dir;
-
-                switch (dir)
+                if (globalEvent)
                 {
-                    case (byte)DirectionType.Up: eventData.Y--; break;
-                    case (byte)DirectionType.Down: eventData.Y++; break;
-                    case (byte)DirectionType.Left: eventData.X--; break;
-                    case (byte)DirectionType.Right: eventData.X++; break;
-                }
+                    var eventData = TempEventMap[mapNum].Event[eventIndex];
+                    if (Core.Type.Map[mapNum].Event[eventId].Pages[0].DirFix == 0)
+                        eventData.Dir = dir;
 
-                SendEventMove(mapNum, eventId, eventData.X, eventData.Y, dir, eventData.Dir, movementSpeed, globalEvent ? 0 : index);
+                    switch (dir)
+                    {
+                        case (byte)DirectionType.Up: eventData.Y--; break;
+                        case (byte)DirectionType.Down: eventData.Y++; break;
+                        case (byte)DirectionType.Left: eventData.X--; break;
+                        case (byte)DirectionType.Right: eventData.X++; break;
+                    }
+
+                    SendEventMove(mapNum, eventId, eventData.X, eventData.Y, dir, eventData.Dir, movementSpeed, 0);
+                }
+                else
+                {
+                    var eventData = Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex];
+                    if (Core.Type.Map[mapNum].Event[eventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[eventIndex].PageID].DirFix == 0)
+                        eventData.Dir = dir;
+
+                    switch (dir)
+                    {
+                        case (byte)DirectionType.Up: eventData.Y--; break;
+                        case (byte)DirectionType.Down: eventData.Y++; break;
+                        case (byte)DirectionType.Left: eventData.X--; break;
+                        case (byte)DirectionType.Right: eventData.X++; break;
+                    }
+
+                    SendEventMove(mapNum, eventId, eventData.X, eventData.Y, dir, eventData.Dir, movementSpeed, index);
+                }
             }
         }
 
@@ -346,7 +365,7 @@ namespace Server
 
         private static int RandomMoveTowardsPlayer(int playerId, int mapNum, int eventId, int ex, int ey, int px, int py, int walkThrough)
         {
-            int i = General.GetRandom.Next(0, 4);
+            int i = General.GetRandom.NextInt(0, 4);
             foreach (var dir in GetDirectionOrder(i))
             {
                 if (ShouldMoveTowards(ex, ey, px, py, dir) && CanEventMove(playerId, mapNum, ex, ey, eventId, walkThrough, (byte)dir, false))
@@ -452,14 +471,14 @@ namespace Server
 
         private static int Heuristic(int x1, int y1, int x2, int y2) => Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
 
-        private static int RandomDirection() => General.GetRandom.Next(0, 4);
+        private static int RandomDirection() => General.GetRandom.NextInt(0, 4);
 
         public static int CanEventMoveAwayFromPlayer(int playerId, int mapNum, int eventId)
         {
             if (!IsValidPlayerEvent(playerId, mapNum, eventId)) return 5;
 
             var (px, py, ex, ey, walkThrough) = GetPlayerAndEventPositions(playerId, mapNum, eventId);
-            int i = General.GetRandom.Next(0, 4);
+            int i = General.GetRandom.NextInt(0, 4);
             foreach (var dir in GetDirectionOrder(i))
             {
                 if (ShouldMoveAway(ex, ey, px, py, dir) && CanEventMove(playerId, mapNum, ex, ey, eventId, walkThrough, (byte)dir, false))
@@ -530,7 +549,7 @@ namespace Server
             int eventId = buffer.ReadInt32(), pageId = buffer.ReadInt32(), reply = buffer.ReadInt32();
             buffer.Dispose();
 
-            Logger.LogInformation($"Player {index} responded to event {eventId} with reply {reply}");
+            General.Logger.LogInformation($"Player {index} responded to event {eventId} with reply {reply}");
             ProcessEventReply(index, eventId, pageId, reply);
         }
 
@@ -549,7 +568,7 @@ namespace Server
             }
         }
 
-        private static void UpdateEventProcessing(int index, int procIndex, int reply, CommandStruct cmd)
+        private static void UpdateEventProcessing(int index, int procIndex, int reply, Core.Type.EventCommandStruct cmd)
         {
             var proc = Core.Type.TempPlayer[index].EventProcessing[procIndex];
             proc.ListLeftOff[proc.CurList] = proc.CurSlot - 1;
@@ -623,7 +642,7 @@ namespace Server
                     buffer.WriteInt32(data2); // Duration
                     break;
                 default:
-                    Logger.LogWarning($"Unknown effect type {effectType} sent to player {index}");
+                    General.Logger.LogWarning($"Unknown effect type {effectType} sent to player {index}");
                     return;
             }
 
@@ -767,7 +786,7 @@ namespace Server
             }
         }
 
-        private static void SerializeCommand(ByteStream buffer, CommandStruct cmd)
+        private static void SerializeCommand(ByteStream buffer, Core.Type.EventCommandStruct cmd)
         {
             buffer.WriteInt32(cmd.Index);
             buffer.WriteString(cmd.Text1);
@@ -866,7 +885,7 @@ namespace Server
         public static void ScheduleEvent(int eventId, DateTime triggerTime, int mapNum)
         {
             ScheduledEvents.Add(new ScheduledEvent { EventId = eventId, TriggerTime = triggerTime, MapNum = mapNum });
-            Logger.LogInformation($"Scheduled event {eventId} on map {mapNum} for {triggerTime}");
+            General.Logger.LogInformation($"Scheduled event {eventId} on map {mapNum} for {triggerTime}");
         }
 
         public static void CheckScheduledEvents()
@@ -889,7 +908,7 @@ namespace Server
                 if (NetworkConfig.IsPlaying(i) && GetPlayerMap(i) == ev.MapNum)
                     EventLogic.TriggerEvent(i, ev.EventId, 0, TempEventMap[ev.MapNum].Event[ev.EventId].X, TempEventMap[ev.MapNum].Event[ev.EventId].Y);
             }
-            Logger.LogInformation($"Triggered scheduled event {ev.EventId} on map {ev.MapNum}");
+           General.Logger.LogInformation($"Triggered scheduled event {ev.EventId} on map {ev.MapNum}");
         }
 
         // Action-Based Triggers

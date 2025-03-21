@@ -28,7 +28,7 @@ namespace Server
         private static bool ServerDestroyed;
         private static string MyIPAddress = string.Empty;
         private static readonly Stopwatch MyStopwatch = new Stopwatch();
-        private static ILogger Logger;
+        public static ILogger Logger;
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
         private static Timer? SaveTimer;

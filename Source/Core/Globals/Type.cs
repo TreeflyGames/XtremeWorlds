@@ -638,6 +638,8 @@ namespace Core
 
             public int MoveTimer;
             public int MoveRouteComplete;
+
+            public int PatrolStep;
         }
 
         public struct GlobalEventsStruct
