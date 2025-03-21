@@ -15,7 +15,7 @@ namespace Server
     public class Loop
     {
 
-        public static void Server()
+        public static async Task ServerAsync()
         {
             int tick;
             var tmr25 = default(int);
@@ -32,12 +32,12 @@ namespace Server
                 tick = General.GetTimeMs();
 
                 // Don't process anything else if we're going down.
-                if (General.ServerDestroyed)
+                if (General.IsServerDestroyed)
 
                     // Get all our online players.
                     Debugger.Break(); var onlinePlayers = Core.Type.TempPlayer.Where(player => player.InGame).Select((player, index) => new { Index = Operators.AddObject(index, 1), player }).ToArray();
 
-                General.CheckShutDownCountDown();
+                await General.CheckShutDownCountDownAsync();
 
                 if (tick > tmr25)
                 {
@@ -121,7 +121,7 @@ namespace Server
                     lastUpdateSavePlayers = General.GetTimeMs() + 300000;
                 }
 
-                Thread.Sleep(1);
+                await Task.Delay(1);
             }
             while (true);
         }
@@ -220,7 +220,7 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAPS;
             for (mapNum = 0; mapNum < loopTo; mapNum++)
             {
-                if (General.ServerDestroyed)
+                if (General.IsServerDestroyed)
                     return;
 
                 // items appearing to everyone
@@ -279,7 +279,7 @@ namespace Server
                     }
                 }
 
-                if (General.ServerDestroyed)
+                if (General.IsServerDestroyed)
                 {
                     return;
 
@@ -517,10 +517,10 @@ namespace Server
                                                 }
                                                 else // No good path found. Move randomly
                                                 {
-                                                    i = (int)Math.Round(General.Random.NextDouble(1d, 4d));
+                                                    i = (int)Math.Round(General.GetRandom.NextDouble(1d, 4d));
                                                     if (i == 1)
                                                     {
-                                                        i = (int)Math.Round(General.Random.NextDouble(1d, 4d));
+                                                        i = (int)Math.Round(General.GetRandom.NextDouble(1d, 4d));
 
                                                         if (NPC.CanNPCMove(mapNum, x, (byte)i))
                                                         {
@@ -575,7 +575,7 @@ namespace Server
                                     {
                                         if (NetworkConfig.IsPlaying(target) & GetPlayerMap(target) == mapNum)
                                         {
-                                            if (General.Random.NextDouble(1d, 3d) == 1d)
+                                            if (General.GetRandom.NextDouble(1d, 3d) == 1d)
                                             {
                                                 int skillNum = NPC.RandomNPCAttack(mapNum, x);
                                                 if (skillNum >= 0)

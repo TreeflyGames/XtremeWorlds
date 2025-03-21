@@ -191,7 +191,7 @@ namespace Server
 
                     IP = Strings.Mid(IP, 1, i);
 
-                    if (General.shutDownDuration > 0)
+                    if (General.GetShutDownTimer.IsRunning)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Login);
                         return;
@@ -303,7 +303,7 @@ namespace Server
                         return;
                     }
 
-                    if (General.shutDownTimer.IsRunning)
+                    if (General.GetShutDownTimer.IsRunning)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Maintenance, (byte)MenuType.Register);
                         return;
@@ -318,7 +318,7 @@ namespace Server
                     {
                         n = Strings.AscW(Strings.Mid(username, i + 1, 1));
 
-                        if (!General.IsNameLegal(n.ToString()))
+                        if (!General.IsValidUsername(n.ToString()))
                         {
                             NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.Register);
                             return;
@@ -451,7 +451,7 @@ namespace Server
                 {
                     n = Strings.AscW(Strings.Mid(name, i + 1, 1));
 
-                    if (!General.IsNameLegal(n.ToString()))
+                    if (!General.IsValidUsername(n.ToString()))
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.NewChar);
                         return;
@@ -2820,7 +2820,7 @@ namespace Server
                 for (x = 0; x < loopTo; x++)
                     withBlock.Stat[x] = buffer.ReadInt32();
 
-                for (int q = 0; q <= 4; q++)
+                for (int q = 0; q < Core.Constant.MAX_START_ITEMS; q++)
                 {
                     withBlock.StartItem[q] = buffer.ReadInt32();
                     withBlock.StartValue[q] = buffer.ReadInt32();
@@ -2834,7 +2834,7 @@ namespace Server
 
             buffer.Dispose();
 
-            Database.SaveJobs();
+            Database.SaveJob(jobNum);
             NetworkSend.SendJobToAll(index);
         }
 

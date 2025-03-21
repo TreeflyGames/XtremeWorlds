@@ -2076,7 +2076,7 @@ namespace Client
             long Width;
 
             // unload it if we're not in a party
-            if (Core.Type.Party.Leader == 0)
+            if (Core.Type.MyParty.Leader == 0)
             {
                 return;
             }
