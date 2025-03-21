@@ -576,7 +576,7 @@ namespace Server
             // Check for any mobs on the map with the Guard behaviour so they can come after our player.
             if (Core.Type.NPC[(int)Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num].Behaviour == (byte)NPCBehavior.Guard)
             {
-                // Find all NPCs with the same ID as the current NPC in the group
+                // Find all NPCs with the same Id as the current NPC in the group
                 var guards = Core.Type.MapNPC[mapNum].NPC.Where(npc => Operators.ConditionalCompareObjectEqual(npc.Num, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num, false)).Select((npc, index) => index);
 
                 // Set the target for each guard NPC
@@ -1107,7 +1107,7 @@ namespace Server
         #endregion
 
         #region Movement
-        public static void PlayerWarp(int index, int mapNum, int x, int y, bool NoInstance = false)
+        public static void PlayerWarp(int index, int mapNum, int x, int y, int dir)
         {
             int OldMap;
             int i;
@@ -1146,6 +1146,7 @@ namespace Server
             SetPlayerMap(index, mapNum);
             SetPlayerX(index, x);
             SetPlayerY(index, y);
+            SetPlayerDir(index, dir);
 
             if (Pet.PetAlive(index))
             {
@@ -1268,7 +1269,7 @@ namespace Server
                             if (Core.Type.Map[GetPlayerMap(index)].Up > 0)
                             {
                                 NewMapY = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Up].MaxY;
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Up, GetPlayerX(index), NewMapY);
+                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Up, GetPlayerX(index), NewMapY, (int)DirectionType.Up);
                                 DidWarp = Conversions.ToBoolean(1);
                                 Moved = Conversions.ToBoolean(1);
                             }
@@ -1305,7 +1306,7 @@ namespace Server
                             // Check to see if we can move them to another map
                             if (Core.Type.Map[GetPlayerMap(index)].Down > 0)
                             {
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Down, GetPlayerX(index), 0);
+                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Down, GetPlayerX(index), 0, (byte)DirectionType.Down);
                                 DidWarp = Conversions.ToBoolean(1);
                                 Moved = Conversions.ToBoolean(1);
                             }
@@ -1343,7 +1344,7 @@ namespace Server
                             if (Core.Type.Map[GetPlayerMap(index)].Left > 0)
                             {
                                 NewMapX = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Left].MaxX;
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Left, NewMapX, GetPlayerY(index));
+                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Left, NewMapX, GetPlayerY(index), (byte)DirectionType.Left);
                                 DidWarp = Conversions.ToBoolean(1);
                                 Moved = Conversions.ToBoolean(1);
                             }
@@ -1380,7 +1381,7 @@ namespace Server
                             // Check to see if we can move them to another map
                             if (Core.Type.Map[GetPlayerMap(index)].Right > 0)
                             {
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Right, 0, GetPlayerY(index));
+                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Right, 0, GetPlayerY(index), (byte)DirectionType.Right);
                                 DidWarp = Conversions.ToBoolean(1);
                                 Moved = Conversions.ToBoolean(1);
                             }
@@ -1526,7 +1527,7 @@ namespace Server
 
                 if (mapNum >= 0)
                 {
-                    PlayerWarp(index, (int)mapNum, x, y);
+                    PlayerWarp(index, (int)mapNum, x, y, (int)DirectionType.Down);
 
                     DidWarp = Conversions.ToBoolean(1);
                     Moved = Conversions.ToBoolean(1);
@@ -1630,7 +1631,7 @@ namespace Server
             // They tried to hack
             if (Conversions.ToInteger(Moved) == 0 | ExpectingWarp & !DidWarp)
             {
-                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index));
+                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
             }
 
             x = GetPlayerX(index);
@@ -1642,35 +1643,35 @@ namespace Server
                 {
                     for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
-                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID >= 0)
+                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
                         {
-                            if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Globals == 1)
+                            if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Globals == 1)
                             {
-                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].X == x & Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
+                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].X == x & Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
                                     begineventprocessing = Conversions.ToBoolean(1);
                             }
-                            else if (Core.Type.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Type.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
+                            else if (Core.Type.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Type.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
                                 begineventprocessing = Conversions.ToBoolean(1);
                             begineventprocessing = Conversions.ToBoolean(0);
                             if (Conversions.ToInteger(begineventprocessing) == 1)
                             {
                                 // Process this event, it is on-touch and everything checks out.
-                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID].CommandListCount > 0)
+                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].CommandListCount > 0)
                                 {
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].Active = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].ActionTimer = General.GetTimeMs();
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].CurList = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].CurSlot = 0;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].EventID = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].PageID = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID;
-                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID].WaitingForResponse = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Active = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].ActionTimer = General.GetTimeMs();
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].CurList = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].CurSlot = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].WaitingForResponse = 0;
                                     ;
 
-                                    int EventID = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventID;
-                                    int pageID = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageID;
-                                    int commandListCount = Core.Type.Map[GetPlayerMap(index)].Event[EventID].Pages[pageID].CommandListCount;
+                                    int EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
+                                    int PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
+                                    int commandListCount = Core.Type.Map[GetPlayerMap(index)].Event[EventId].Pages[PageId].CommandListCount;
 
-                                    Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing[EventID].ListLeftOff, commandListCount);
+                                    Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing[EventId].ListLeftOff, commandListCount);
 
                                 }
                                 begineventprocessing = Conversions.ToBoolean(0);
@@ -2732,7 +2733,7 @@ namespace Server
             NetworkSend.GlobalMsg(string.Format("{0} has joined {1}!", GetPlayerName(index), Settings.Instance.GameName));
 
             // Warp the player to his saved location
-            PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index));
+            PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
 
             // Send all the required game data to the user.
             CheckEquippedItems(index);
@@ -2834,11 +2835,11 @@ namespace Server
                 // to the bootmap if it is set
                 if (withBlock.BootMap > 0)
                 {
-                    PlayerWarp(index, withBlock.BootMap, withBlock.BootX, withBlock.BootY);
+                    PlayerWarp(index, withBlock.BootMap, withBlock.BootX, withBlock.BootY, (int)DirectionType.Down);
                 }
                 else
                 {
-                    PlayerWarp(index, Core.Type.Job[GetPlayerJob(index)].StartMap, Core.Type.Job[GetPlayerJob(index)].StartX, Core.Type.Job[GetPlayerJob(index)].StartY);
+                    PlayerWarp(index, Core.Type.Job[GetPlayerJob(index)].StartMap, Core.Type.Job[GetPlayerJob(index)].StartX, Core.Type.Job[GetPlayerJob(index)].StartY, (int)DirectionType.Down);
                 }
             }
 

@@ -959,7 +959,7 @@ namespace Server
                 case (byte)SkillType.Warp:
                     {
                         Animation.SendAnimation(GetPlayerMap(index), Core.Type.Skill[skillID].SkillAnim, 0, 0, (byte)TargetType.Player, index);
-                        Player.PlayerWarp(index, Core.Type.Skill[skillID].Map, Core.Type.Skill[skillID].X, Core.Type.Skill[skillID].Y);
+                        Player.PlayerWarp(index, Core.Type.Skill[skillID].Map, Core.Type.Skill[skillID].X, Core.Type.Skill[skillID].Y, (int)Core.Enum.DirectionType.Down);
                         break;
                     }
             }

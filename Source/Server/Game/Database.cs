@@ -18,65 +18,16 @@ using static Core.Type;
 using static Core.Enum;
 using static Core.Global.Command;
 using System.Reflection;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.Options;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Server
 {
 
     public class Database
     {
-        private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(1, 1);
-
-        public static async Task ExecuteSqlAsync(string connectionString, string sql)
-        {
-            await connectionSemaphore.WaitAsync();
-            try
-            {
-                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-                {
-                    await connection.OpenAsync();
-
-                    using (var command = new NpgsqlCommand(sql, connection))
-                    {
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-            }
-            finally
-            {
-                connectionSemaphore.Release();
-            }
-        }
-
-        public static async Task<bool> DatabaseExistsAsync(string databaseName)
-        {
-            await connectionSemaphore.WaitAsync();
-            try
-            {
-                string sql = "SELECT 1 FROM pg_database WHERE datname = @databaseName;";
-
-                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-                {
-                    await connection.OpenAsync();
-                    using (var command = new NpgsqlCommand(sql, connection))
-                    {
-                        command.Parameters.AddWithValue("@databaseName", databaseName);
-
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            return await reader.ReadAsync();
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-            finally
-            {
-                connectionSemaphore.Release();
-            }
-        }
+        private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(5, 5);
 
         public static async Task CreateDatabaseAsync(string databaseName)
         {
@@ -225,8 +176,8 @@ namespace Server
 
                 string[] tableNames = new[] { "job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile", "moral" };
 
-                foreach (var tableName in tableNames)
-                    await CreateTableAsync(tableName, dataTable);
+                var tasks = tableNames.Select(tableName => CreateTableAsync(tableName, dataTable));
+                await Task.WhenAll(tasks);
 
                 await CreateTableAsync("account", playerTable);
             }
@@ -494,81 +445,6 @@ namespace Server
             }
         }
 
-        public static void ExecuteSql(string connectionString, string sql)
-        {
-            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-            {
-                connection?.Open();
-
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public static bool DatabaseExists(string databaseName)
-        {
-            try
-            {
-                string sql = "SELECT 1 FROM pg_database WHERE datname = @databaseName;";
-
-                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-                {
-                    connection.Open();
-                    using (var command = new NpgsqlCommand(sql, connection))
-                    {
-                        command.Parameters.AddWithValue("@databaseName", databaseName);
-
-                        using (var reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        public static void CreateDatabase(string databaseName)
-        {
-            string checkDbExistsSql = $"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'";
-            string createDbSql = $"CREATE DATABASE {databaseName}";
-
-            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value.Replace("Database=mirage", "Database=postgres")))
-            {
-                connection.Open();
-
-                using (var checkCommand = new NpgsqlCommand(checkDbExistsSql, connection))
-                {
-                    bool dbExists = checkCommand.ExecuteScalar() is not null;
-
-                    if (!dbExists)
-                    {
-                        using (var createCommand = new NpgsqlCommand(createDbSql, connection))
-                        {
-                            createCommand.ExecuteNonQuery();
-
-                            using (var dbConnection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-                            {
-                                dbConnection.Close();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         public static bool RowExistsByColumn(string columnName, long value, string tableName)
         {
             string sql = $"SELECT EXISTS (SELECT 1 FROM {tableName} WHERE {columnName} = @value);";
@@ -667,35 +543,6 @@ namespace Server
                     command.Parameters.AddWithValue("@newValue", newValue);
 
                     command.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public static void CreateTables()
-        {
-            string dataTable = "id SERIAL PRIMARY KEY, data jsonb";
-            string playerTable = "id BIGINT PRIMARY KEY, data jsonb, bank jsonb";
-
-            for (int i = 1, loopTo = Core.Constant.MAX_CHARS; i <= loopTo; i++)
-                playerTable += $", character{i} jsonb";
-
-            string[] tableNames = new[] { "job", "item", "map", "npc", "shop", "skill", "resource", "animation", "pet", "projectile", "moral" };
-
-            foreach (var tableName in tableNames)
-                CreateTable(tableName, dataTable);
-
-            CreateTable("account", playerTable);
-        }
-
-        public static void CreateTable(string tableName, string layout)
-        {
-            using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
-            {
-                conn.Open();
-
-                using (var cmd = new NpgsqlCommand($"CREATE TABLE IF NOT EXISTS {tableName} ({layout});", conn))
-                {
-                    cmd.ExecuteNonQuery();
                 }
             }
         }
@@ -1202,7 +1049,7 @@ namespace Server
                     // OFFSET 38: Stored as a single byte, the boot Y
                     xwMap.BootY = reader.ReadByte();
 
-                    // OFFSET 39: Stored as two bytes, the Shop ID.
+                    // OFFSET 39: Stored as two bytes, the Shop Id.
                     xwMap.Shop = reader.ReadInt16();
 
                     // OFFSET 41: Stored as a single byte, is the map indoors?
@@ -1657,19 +1504,19 @@ namespace Server
             await Task.Run(() => SaveBank(index));
         }
 
-        public static void SaveAccount(int index)
+        public static async Task SaveAccountAsync(int index)
         {
             string json = JsonConvert.SerializeObject(Core.Type.Account[index]).ToString();
             string username = GetPlayerLogin(index);
             long id = GetStringHash(username);
 
-            if (RowExists(id, "account"))
+            if (await RowExistsAsync(id, "account"))
             {
-                UpdateRowByColumn("id", id, "data", json, "account");
+                await UpdateRowByColumnAsync("id", id, "data", json, "account");
             }
             else
             {
-                InsertRowByColumn(id, json, "account", "data", "id");
+                await InsertRowByColumnAsync(id, json, "account", "data", "id");
             }
         }
 
@@ -1723,7 +1570,7 @@ namespace Server
             Core.Type.TempPlayer[index].InTrade = -1;
 
             for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventProcessingCount; i < loopTo; i++)
-                Core.Type.TempPlayer[index].EventProcessing[i].EventID = -1;
+                Core.Type.TempPlayer[index].EventProcessing[i].EventId = -1;
 
             ClearCharacter(index);
         }

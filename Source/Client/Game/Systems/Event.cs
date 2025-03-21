@@ -421,7 +421,7 @@ namespace Client
             if (picIndex == 0)
             {
                 Picture.Index = 0;
-                Picture.EventID = 0;
+                Picture.EventId = 0;
                 Picture.SpriteType = 0;
                 Picture.xOffset = 0;
                 Picture.yOffset = 0;
@@ -433,7 +433,7 @@ namespace Client
             yOffset = buffer.ReadByte();
 
             Picture.Index = (byte)picIndex;
-            Picture.EventID = eventid;
+            Picture.EventId = eventid;
             Picture.SpriteType = (byte)spriteType;
             Picture.xOffset = (byte)xOffset;
             Picture.yOffset = (byte)yOffset;
