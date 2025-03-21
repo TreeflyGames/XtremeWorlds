@@ -159,7 +159,6 @@ namespace Server
             Core.Type.TempPlayer = new Core.Type.TempPlayerStruct[Core.Constant.MAX_PLAYERS];
             Core.Type.Account = new Core.Type.AccountStruct[Core.Constant.MAX_PLAYERS];
 
-
             for (int i = 0; i < Core.Constant.MAX_PLAYERS; i++)
             {
                 Database.ClearPlayer(i);
