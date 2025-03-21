@@ -46,7 +46,7 @@ namespace Server
         {
             var buffer = new ByteStream(4);
 
-            buffer.WriteInt32((int) ServerPackets.SPlayerMsg);
+            buffer.WriteInt32((int)ServerPackets.SPlayerMsg);
             buffer.WriteString(msg);
             buffer.WriteInt32(color);
 

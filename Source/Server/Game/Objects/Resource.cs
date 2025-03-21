@@ -30,14 +30,16 @@ namespace Server
             }
         }
 
-        public static void LoadResources()
+        public static async Task LoadResourcesAsync()
         {
-            int i;
+            var tasks = new List<Task>();
 
-            var loopTo = Core.Constant.MAX_RESOURCES - 1;
-            for (i = 0; i < loopTo; i++)
-                LoadResource(i);
+            for (int i = 0; i < Core.Constant.MAX_RESOURCES; i++)
+            {
+                tasks.Add(Task.Run(() => LoadResource(i)));
+            }
 
+            await Task.WhenAll(tasks);
         }
 
         public static void LoadResource(int resourceNum)

@@ -41,21 +41,21 @@ namespace Server
             }
         }
 
-        public static void LoadItems()
+        public static async Task LoadItemsAsync()
         {
             int i;
 
             var loopTo = Core.Constant.MAX_ITEMS - 1;
             for (i = 0; i < loopTo; i++)
-                LoadItem(i);
+                await LoadItemAsync(i);
 
         }
 
-        public static void LoadItem(int itemNum)
+        public static async Task LoadItemAsync(int itemNum)
         {
             JObject data;
 
-            data = Database.SelectRow(itemNum, "item", "data");
+            data = await Database.SelectRowAsync(itemNum, "item", "data");
 
             if (data is null)
             {
@@ -248,14 +248,122 @@ namespace Server
 
         }
 
-        public static void SpawnAllMapsItems()
+        public static async Task SpawnAllMapsItemsAsync()
         {
             int i;
 
             var loopTo = Core.Constant.MAX_MAPS;
             for (i = 0; i < loopTo; i++)
-                SpawnMapItems(i);
+                await SpawnMapItemsAsync(i);
+        }
 
+        public static async Task SpawnMapItemsAsync(int mapNum)
+        {
+            int x;
+            int y;
+
+            // Check for subscript out of range  
+            if (mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
+                return;
+
+            if (Core.Type.Map[mapNum].NoRespawn)
+                return;
+
+            // Spawn what we have  
+            var loopTo = (int)Core.Type.Map[mapNum].MaxX;
+            for (x = 0; x < (int)loopTo; x++)
+            {
+                var loopTo1 = (int)Core.Type.Map[mapNum].MaxY;
+                for (y = 0; y < (int)loopTo1; y++)
+                {
+                    // Check if the tile type is an item or a saved tile incase someone drops something  
+                    if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Item)
+                    {
+                        // Check to see if its a currency and if they set the value to 0 set it to 1 automatically  
+                        if (Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1].Stackable == 1)
+                        {
+                            if (Core.Type.Map[mapNum].Tile[x, y].Data2 < 1)
+                            {
+                                await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1, 1, mapNum, x, y);
+                            }
+                            else
+                            {
+                                await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1, Core.Type.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
+                            }
+                        }
+                        else
+                        {
+                            await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1, Core.Type.Map[mapNum].Tile[x, y].Data2, mapNum, x, y);
+                        }
+                    }
+
+                    // Check if the tile type is an item or a saved tile incase someone drops something  
+                    if (Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Item)
+                    {
+                        // Check to see if its a currency and if they set the value to 0 set it to 1 automatically  
+                        if (Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1 | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Type == (byte)ItemType.Currency | Core.Type.Item[Core.Type.Map[mapNum].Tile[x, y].Data1_2].Stackable == 1)
+                        {
+                            if (Core.Type.Map[mapNum].Tile[x, y].Data2_2 < 1)
+                            {
+                                await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1_2, 1, mapNum, x, y);
+                            }
+                            else
+                            {
+                                await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1_2, Core.Type.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
+                            }
+                        }
+                        else
+                        {
+                            await SpawnItemAsync(Core.Type.Map[mapNum].Tile[x, y].Data1_2, Core.Type.Map[mapNum].Tile[x, y].Data2_2, mapNum, x, y);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static async Task SpawnItemAsync(int itemNum, int ItemVal, int mapNum, int x, int y)
+        {
+            int i;
+
+            // Check for subscript out of range  
+            if (itemNum < 0 | itemNum > Core.Constant.MAX_ITEMS | mapNum < 0 | mapNum > Core.Constant.MAX_MAPS)
+                return;
+
+            // Find open map item slot  
+            i = FindOpenMapItemSlot(mapNum);
+
+            if (i == -1)
+                return;
+
+            await SpawnItemSlotAsync(i, itemNum, ItemVal, mapNum, x, y);
+        }
+
+        public static async Task SpawnItemSlotAsync(int MapItemSlot, int itemNum, int ItemVal, int mapNum, int x, int y)
+        {
+            var buffer = new ByteStream(4);
+
+            // Check for subscript out of range  
+            if (MapItemSlot < 0 || MapItemSlot > Core.Constant.MAX_MAP_ITEMS || itemNum > Core.Constant.MAX_ITEMS || mapNum < 0 || mapNum > Core.Constant.MAX_MAPS)
+                return;
+
+            if (MapItemSlot != -1)
+            {
+                Core.Type.MapItem[mapNum, MapItemSlot].Num = itemNum;
+                Core.Type.MapItem[mapNum, MapItemSlot].Value = ItemVal;
+                Core.Type.MapItem[mapNum, MapItemSlot].X = (byte)x;
+                Core.Type.MapItem[mapNum, MapItemSlot].Y = (byte)y;
+
+                buffer.WriteInt32((int)ServerPackets.SSpawnItem);
+                buffer.WriteInt32(MapItemSlot);
+                buffer.WriteInt32(itemNum);
+                buffer.WriteInt32(ItemVal);
+                buffer.WriteInt32(x);
+                buffer.WriteInt32(y);
+
+                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            }
+
+            buffer.Dispose();
         }
 
         public static void SpawnMapItems(int mapNum)

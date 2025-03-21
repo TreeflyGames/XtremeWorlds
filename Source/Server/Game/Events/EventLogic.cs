@@ -614,7 +614,7 @@ namespace Server
                                         // Nothing, fixed position
                                         case 1: // Random, move randomly if possible...
                                             {
-                                                rand = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+                                                rand = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
                                                 if (Event.CanEventMove(0, i, Event.TempEventMap[i].Event[x].X, Event.TempEventMap[i].Event[x].Y, x, Event.TempEventMap[i].Event[x].WalkThrough, (byte)rand, true))
                                                 {
                                                     switch (Event.TempEventMap[i].Event[x].MoveSpeed)
@@ -775,7 +775,7 @@ namespace Server
                                                                     }
                                                                 case 5:
                                                                     {
-                                                                        z = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+                                                                        z = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
                                                                         if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
                                                                         {
                                                                             Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
@@ -1016,7 +1016,7 @@ namespace Server
                                                                     }
                                                                 case 20:
                                                                     {
-                                                                        z = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+                                                                        z = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
                                                                         Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
                                                                         break;
                                                                     }
@@ -1313,7 +1313,7 @@ namespace Server
                                         // Nothing, fixed position
                                         case 1: // Random, move randomly if possible...
                                             {
-                                                rand = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+                                                rand = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
                                                 playerID = i;
                                                 if (Event.CanEventMove(i, GetPlayerMap(i), Core.Type.TempPlayer[i].EventMap.EventPages[x].X, Core.Type.TempPlayer[i].EventMap.EventPages[x].Y, x, Core.Type.TempPlayer[i].EventMap.EventPages[x].WalkThrough, (byte)rand, false))
                                                 {
@@ -1477,7 +1477,7 @@ namespace Server
                                                                     }
                                                                 case 5:
                                                                     {
-                                                                        z = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+                                                                        z = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
                                                                         if (Event.CanEventMove(playerID, mapNum, withBlock.X, withBlock.Y, EventID, WalkThrough, (byte)z, IsGlobal))
                                                                         {
                                                                             Event.EventMove(playerID, mapNum, EventID, z, actualmovespeed, IsGlobal);
@@ -1734,7 +1734,7 @@ namespace Server
                                                                     }
                                                                 case 20:
                                                                     {
-                                                                        z = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+                                                                        z = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
                                                                         Event.EventDir(playerID, mapNum, EventID, z, IsGlobal);
                                                                         break;
                                                                     }
@@ -2319,7 +2319,7 @@ namespace Server
                                                                                 }
                                                                             case 3:
                                                                                 {
-                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = (int)General.Random.NextDouble(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
+                                                                                    Core.Type.Player[i].Variables[Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data1] = (int)General.GetRandom.NextDouble(Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data3, Map[GetPlayerMap(i)].Event[withBlock1.EventID].Pages[withBlock1.PageID].CommandList[withBlock1.CurList].Commands[withBlock1.CurSlot].Data4);
                                                                                     break;
                                                                                 }
                                                                         }
@@ -3706,14 +3706,14 @@ namespace Server
 
         }
 
-        public static void SpawnAllMapGlobalEvents()
+        public static async Task SpawnAllMapGlobalEventsAsync()
         {
             int i;
-
             var loopTo = Core.Constant.MAX_MAPS;
             for (i = 0; i < loopTo; i++)
-                SpawnGlobalEvents(i);
-
+            {
+                await Task.Run(() => SpawnGlobalEvents(i));
+            }
         }
 
         public static void SpawnGlobalEvents(int mapNum)

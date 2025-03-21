@@ -26,7 +26,7 @@ namespace Server
     {
         public static void ExecuteSql(string connectionString, string sql)
         {
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 connection?.Open();
 
@@ -43,7 +43,7 @@ namespace Server
             {
                 string sql = "SELECT 1 FROM pg_database WHERE datname = @databaseName;";
 
-                using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+                using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
                 {
                     connection.Open();
                     using (var command = new NpgsqlCommand(sql, connection))
@@ -75,7 +75,7 @@ namespace Server
             string checkDbExistsSql = $"SELECT 1 FROM pg_database WHERE datname = '{databaseName}'";
             string createDbSql = $"CREATE DATABASE {databaseName}";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value.Replace("Database=mirage", "Database=postgres")))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value.Replace("Database=mirage", "Database=postgres")))
             {
                 connection.Open();
 
@@ -89,7 +89,7 @@ namespace Server
                         {
                             createCommand.ExecuteNonQuery();
 
-                            using (var dbConnection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+                            using (var dbConnection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
                             {
                                 dbConnection.Close();
                             }
@@ -103,7 +103,7 @@ namespace Server
         {
             string sql = $"SELECT EXISTS (SELECT 1 FROM {tableName} WHERE {columnName} = @value);";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -121,7 +121,7 @@ namespace Server
         {
             string sqlCheck = $"SELECT column_name FROM information_schema.columns WHERE table_name='{table}' AND column_name='{columnName}';";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -187,7 +187,7 @@ namespace Server
 
             newValue = newValue.Replace(@"\u0000", "");
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -219,7 +219,7 @@ namespace Server
 
         public static void CreateTable(string tableName, string layout)
         {
-            using (var conn = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 conn.Open();
 
@@ -230,11 +230,11 @@ namespace Server
             }
         }
 
-        public async static Task<List<long>> GetData(string tableName)
+        public async static Task<List<long>> GetDataAsync(string tableName)
         {
             var ids = new List<long>();
 
-            using (var conn = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 await conn.OpenAsync();
 
@@ -260,7 +260,7 @@ namespace Server
         {
             string sql = $"SELECT EXISTS (SELECT 1 FROM {table} WHERE id = @id);";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -285,7 +285,7 @@ namespace Server
 
         public static void InsertRow(long id, string data, string tableName)
         {
-            using (var conn = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 conn.Open();
 
@@ -303,7 +303,7 @@ namespace Server
 
         public static void InsertRow(long id, string data, string tableName, string columnName)
         {
-            using (var conn = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var conn = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 conn.Open();
 
@@ -330,7 +330,7 @@ namespace Server
             ON CONFLICT ({idColumn}) 
             DO UPDATE SET {dataColumn} = @data::jsonb;";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -344,21 +344,21 @@ namespace Server
             }
         }
 
-        public static JObject SelectRow(long id, string tableName, string columnName)
+        public static async Task<JObject> SelectRowAsync(long id, string tableName, string columnName)
         {
             string sql = $"SELECT {columnName} FROM {tableName} WHERE id = @id;";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 using (var command = new NpgsqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@id", id);
 
-                    using (var reader = command.ExecuteReader())
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        if (reader.Read())
+                        if (await reader.ReadAsync())
                         {
                             string jsonbData = reader.GetString(0);
                             var jsonObject = JObject.Parse(jsonbData);
@@ -377,7 +377,7 @@ namespace Server
         {
             string sql = $"SELECT {dataColumn} FROM {tableName} WHERE {columnName} = @value;";
 
-            using (var connection = new NpgsqlConnection(General.Configuration.GetSection("Database:ConnectionString").Value))
+            using (var connection = new NpgsqlConnection(General.GetConfig.GetSection("Database:ConnectionString").Value))
             {
                 connection.Open();
 
@@ -512,11 +512,11 @@ namespace Server
             Core.Type.Job[jobNum].FemaleSprite = 0;
         }
 
-        public static void LoadJob(int jobNum)
+        public static async Task LoadJobAsync(int jobNum)
         {
             JObject data;
 
-            data = SelectRow(jobNum, "job", "data");
+            data = await SelectRowAsync(jobNum, "job", "data");
 
             if (data is null)
             {
@@ -528,13 +528,10 @@ namespace Server
             Core.Type.Job[jobNum] = jobData;
         }
 
-        public static void LoadJobs()
+        public static async Task LoadJobsAsync()
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_JOBS;
-            for (i = 0; i < loopTo; i++)
-                LoadJob(i);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_JOBS).Select(i => Task.Run(() => LoadJobAsync(i)));
+            await Task.WhenAll(tasks);
         }
 
         public static void SaveJob(int jobNum)
@@ -622,16 +619,31 @@ namespace Server
             }
         }
 
-        public static void LoadMaps()
+        public static async Task LoadMapsAsync()
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_MAPS;
-            for (i = 0; i < loopTo; i++)
-                LoadMap(i);
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_MAPS).Select(i => Task.Run(() => LoadMapAsync(i)));
+            await Task.WhenAll(tasks);
         }
 
-        public static void LoadMap(int mapNum)
+        public static async Task LoadNPCsAsync()
+        {
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_NPCS).Select(i => Task.Run(() => LoadNPCAsync(i)));
+            await Task.WhenAll(tasks);
+        }
+
+        public static async Task LoadShopsAsync()
+        {
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_SHOPS).Select(i => Task.Run(() => LoadShopAsync(i)));
+            await Task.WhenAll(tasks);
+        }
+
+        public static async Task LoadSkillsAsync()
+        {
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_SKILLS).Select(i => Task.Run(() => LoadSkillAsync(i)));
+            await Task.WhenAll(tasks);
+        }
+
+        public static async Task LoadMapAsync(int mapNum)
         {
             // Get the base directory of the application
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -663,7 +675,7 @@ namespace Server
 
             JObject data;
 
-            data = SelectRow(mapNum, "map", "data");
+            data = await SelectRowAsync(mapNum, "map", "data");
 
             if (data is null)
             {
@@ -1130,14 +1142,14 @@ namespace Server
 
             var loopTo = Core.Constant.MAX_NPCS;
             for (i = 0; i < loopTo; i++)
-                LoadNPC(i);
+                LoadNPCAsync(i);
         }
 
-        public static void LoadNPC(int NPCNum)
+        public static async Task LoadNPCAsync(int NPCNum)
         {
             JObject data;
 
-            data = SelectRow(NPCNum, "npc", "data");
+            data = await SelectRowAsync(NPCNum, "npc", "data");
 
             if (data is null)
             {
@@ -1226,15 +1238,15 @@ namespace Server
 
             var loopTo = Core.Constant.MAX_SHOPS - 1;
             for (i = 0; i < loopTo; i++)
-                LoadShop(i);
+                LoadShopAsync(i);
 
         }
 
-        public static void LoadShop(int shopNum)
+        public static async Task LoadShopAsync(int shopNum)
         {
             JObject data;
 
-            data = SelectRow(shopNum, "shop", "data");
+            data = await SelectRowAsync(shopNum, "shop", "data");
 
             if (data is null)
             {
@@ -1283,21 +1295,11 @@ namespace Server
             }
         }
 
-        public static void LoadSkills()
-        {
-            int i;
-
-            var loopTo = Core.Constant.MAX_SKILLS;
-            for (i = 0; i < loopTo; i++)
-                LoadSkill(i);
-
-        }
-
-        public static void LoadSkill(int skillNum)
+        public static async Task LoadSkillAsync(int skillNum)
         {
             JObject data;
 
-            data = SelectRow(skillNum, "skill", "data");
+            data = await SelectRowAsync(skillNum, "skill", "data");
 
             if (data is null)
             {
@@ -1329,15 +1331,26 @@ namespace Server
 
         #region Players
 
-        public static void SaveAllPlayersOnline()
+        public static async Task SaveAllPlayersOnlineAsync()
         {
             for (int i = 0, loopTo = NetworkConfig.Socket.HighIndex; i <= loopTo; i++)
             {
                 if (!NetworkConfig.IsPlaying(i))
                     continue;
-                SaveCharacter(i, Core.Type.TempPlayer[i].Slot);
-                SaveBank(i);
+
+                await SaveCharacterAsync(i, Core.Type.TempPlayer[i].Slot);
+                await SaveBankAsync(i);
             }
+        }
+
+        private static async Task SaveCharacterAsync(int index, int slot)
+        {
+            await Task.Run(() => SaveCharacter(index, slot));
+        }
+
+        private static async Task SaveBankAsync(int index)
+        {
+            await Task.Run(() => SaveBank(index));
         }
 
         public static void SaveAccount(int index)
@@ -1916,7 +1929,6 @@ namespace Server
             buffer.WriteInt32(Core.Type.Skill[skillNum].KnockBackTiles);
             return buffer.ToArray();
         }
-
 
         #endregion
 

@@ -9,7 +9,7 @@ using static Core.Packets;
 namespace Server
 {
 
-    internal static class NetworkConfig
+    public static class NetworkConfig
     {
         private static NetworkServer _Socket;
 

@@ -70,21 +70,19 @@ namespace Server
             json.Write(System.IO.Path.Combine(Path.Database, "Variables.json"), Variables);
         }
 
-        public static void LoadSwitches()
+        public static async Task LoadSwitchesAsync()
         {
             var json = new JsonSerializer<string[]>();
-
-            Switches = json.Read(System.IO.Path.Combine(Path.Database, "Switches.json"));
+            Switches = await json.ReadAsync(System.IO.Path.Combine(Path.Database, "Switches.json"));
 
             if (Switches is null)
                 CreateSwitches();
         }
 
-        public static void LoadVariables()
+        public static async Task LoadVariablesAsync()
         {
             var json = new JsonSerializer<string[]>();
-
-            Variables = json.Read(System.IO.Path.Combine(Path.Database, "Variables.json"));
+            Variables = await json.ReadAsync(System.IO.Path.Combine(Path.Database, "Variables.json"));
 
             if (Variables is null)
                 CreateVariables();
@@ -922,7 +920,7 @@ namespace Server
                             break;
                         }
                 }
-                CanEventMoveTowardsPlayerRet = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+                CanEventMoveTowardsPlayerRet = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
             }
             else if (PathfindingType == 2)
             {
@@ -1394,7 +1392,7 @@ namespace Server
 
             }
 
-            CanEventMoveAwayFromPlayerRet = (int)Math.Round(General.Random.NextDouble(0d, 3d));
+            CanEventMoveAwayFromPlayerRet = (int)Math.Round(General.GetRandom.NextDouble(0d, 3d));
             return CanEventMoveAwayFromPlayerRet;
 
         }

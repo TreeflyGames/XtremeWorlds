@@ -562,7 +562,7 @@ namespace Server
             // give the remainder to a random member
             if (!(leftOver == 0))
             {
-                tmpindex = PartyField[partyNum].Member[(int)Math.Round(General.Random.NextDouble(1d, PartyField[partyNum].MemberCount))];
+                tmpindex = PartyField[partyNum].Member[(int)Math.Round(General.GetRandom.NextDouble(1d, PartyField[partyNum].MemberCount))];
                 // give the exp
                 Event.GivePlayerExp(tmpindex, leftOver);
             }

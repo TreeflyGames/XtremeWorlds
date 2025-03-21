@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Mirage.Sharp.Asfw.Network
 {
@@ -205,7 +206,7 @@ namespace Mirage.Sharp.Asfw.Network
       return this.HighIndex;
     }
 
-    public void StartListening(int port, int backlog)
+    public async Task StartListeningAsync(int port, int backlog)
     {
         if (this._socket == null || this.IsListening || this._listener != null)
             return;

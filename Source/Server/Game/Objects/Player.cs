@@ -198,11 +198,11 @@ namespace Server
             if (GetPlayerEquipment(index, EquipmentType.Weapon) >= 0)
             {
                 weaponNum = GetPlayerEquipment(index, EquipmentType.Weapon);
-                GetPlayerDamageRet = (int)(GetPlayerStat(index, StatType.Strength) * 2 + Core.Type.Item[weaponNum].Data2 * 2 + GetPlayerLevel(index) * 3 + General.Random.NextDouble(0d, 20d));
+                GetPlayerDamageRet = (int)(GetPlayerStat(index, StatType.Strength) * 2 + Core.Type.Item[weaponNum].Data2 * 2 + GetPlayerLevel(index) * 3 + General.GetRandom.NextDouble(0d, 20d));
             }
             else
             {
-                GetPlayerDamageRet = (int)(GetPlayerStat(index, StatType.Strength) * 2 + GetPlayerLevel(index) * 3 + General.Random.NextDouble(0d, 20d));
+                GetPlayerDamageRet = (int)(GetPlayerStat(index, StatType.Strength) * 2 + GetPlayerLevel(index) * 3 + General.GetRandom.NextDouble(0d, 20d));
             }
 
             return GetPlayerDamageRet;
@@ -638,7 +638,7 @@ namespace Server
             CanPlayerDodgeRet = Conversions.ToBoolean(0);
 
             rate = GetPlayerStat(index, StatType.Luck) / 4;
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
             {
@@ -658,7 +658,7 @@ namespace Server
             CanPlayerParryRet = Conversions.ToBoolean(0);
 
             rate = GetPlayerStat(index, StatType.Luck) / 6;
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
             {
@@ -967,7 +967,7 @@ namespace Server
                                 eqcount += 0;
                             }
                         }
-                        z = (int)Math.Round(General.Random.NextDouble(1d, invcount + eqcount));
+                        z = (int)Math.Round(General.GetRandom.NextDouble(1d, invcount + eqcount));
 
                         if (z == 0)
                             z = 0;

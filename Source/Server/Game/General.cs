@@ -14,10 +14,11 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using static Core.Type;
 
 namespace Server
 {
-    public static class General
+    public class General
     {
         private static readonly RandomUtility Random = new RandomUtility();
         private static IEngineContainer? Container;
@@ -29,6 +30,7 @@ namespace Server
         private static readonly object SyncLock = new object();
         private static readonly CancellationTokenSource Cts = new CancellationTokenSource();
         private static Timer? SaveTimer;
+        private static System.Timers.Timer? ShutDownTimer;
 
         static General()
         {
@@ -37,6 +39,26 @@ namespace Server
         }
 
         #region Utility Methods
+
+        /// <summary>
+        /// Retrieves the shut down timer to destroy the server after a specified time.
+        /// </summary>
+        public static System.Timers.Timer? GetShutDownTimer => ShutDownTimer;
+
+        /// <summary>
+        /// Retrives the current server destroy status.
+        /// </summary>
+        public static bool IsServerDestroyed => ServerDestroyed;
+
+        /// <summary>
+        /// Retrieves the current random number generator.
+        /// </summary>
+        public static RandomUtility GetRandom => Random;
+
+        /// <summary>
+        /// Retrieves a config isntance for the specified type.
+        /// </summary>
+        public static IConfiguration GetConfig => Configuration ?? throw new NullReferenceException("Configuration not initialized");
 
         /// <summary>
         /// Retrieves a logger instance for the specified type.
@@ -138,16 +160,15 @@ namespace Server
             NetworkConfig.Socket.StopListening();
 
             Logger.LogInformation("Server shutdown initiated...");
-            await Database.SaveAllPlayersOnlineAsync(Cts.Token);
+            await Database.SaveAllPlayersOnlineAsync();
 
             await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
             {
-                await NetworkSend.SendLeftGameAsync(i);
+                NetworkSend.SendLeftGame(i);
                 Player.LeftGame(i);
             });
 
             NetworkConfig.DestroyNetwork();
-            ClearGameData();
             Logger.LogInformation("Server shutdown completed.");
             Environment.Exit(0);
         }
@@ -180,7 +201,6 @@ namespace Server
                 Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
                 Console.Title = "XtremeWorlds Server";
                 MyIPAddress = GetLocalIPAddress();
-                Database.ConnectionString = Configuration.GetConnectionString("Database");
             });
         }
 
@@ -195,7 +215,7 @@ namespace Server
         private static async Task InitializeNetworkAsync()
         {
             Global.EKeyPair.GenerateKeys();
-            await NetworkConfig.InitNetworkAsync();
+            NetworkConfig.InitNetwork();
         }
 
         private static async Task InitializeDatabaseWithRetryAsync()
@@ -206,9 +226,8 @@ namespace Server
             {
                 try
                 {
-                    await Database.CheckConnectionAsync(Cts.Token);
-                    await Database.CreateDatabaseAsync("mirage", Cts.Token);
-                    await Database.CreateTablesAsync(Cts.Token);
+                    Database.CreateDatabase("mirage");
+                    Database.CreateTables();
                     await LoadCharacterListAsync();
                     Logger.LogInformation("Database initialized successfully.");
                     return;
@@ -228,25 +247,25 @@ namespace Server
 
         private static async Task LoadCharacterListAsync()
         {
-            var ids = await Database.GetDataAsync("account", Cts.Token);
+            var ids = await Database.GetDataAsync("account");
             Core.Type.Char = new CharList();
             const int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
 
-            var tasks = ids.Result.Select(async id =>
+            var tasks = ids.Select(async id =>
             {
                 await semaphore.WaitAsync(Cts.Token);
                 try
                 {
                     for (int i = 1; i <= Core.Constant.MAX_CHARS; i++)
                     {
-                        var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i}", Cts.Token);
+                        var data = Database.SelectRowByColumn("id", id, "account", $"character{i}");
                         if (data != null)
                         {
                             var player = JObject.FromObject(data).ToObject<PlayerStruct>();
                             if (!string.IsNullOrWhiteSpace(player.Name))
                             {
-                                await Core.Type.Char.AddAsync(player.Name);
+                                Core.Type.Char.Add(player.Name);
                             }
                         }
                     }
@@ -263,25 +282,24 @@ namespace Server
 
         private static async Task LoadGameContentAsync()
         {
-            ClearGameData();
             const int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
 
             var tasks = new[]
             {
-                LoadWithSemaphoreAsync(semaphore, () => Database.LoadJobsAsync(Cts.Token)),
-                LoadWithSemaphoreAsync(semaphore, () => Moral.LoadMoralsAsync()),
-                LoadWithSemaphoreAsync(semaphore, () => Database.LoadMapsAsync(Cts.Token)),
-                LoadWithSemaphoreAsync(semaphore, () => Item.LoadItemsAsync()),
-                LoadWithSemaphoreAsync(semaphore, () => Database.LoadNPCsAsync(Cts.Token)),
-                LoadWithSemaphoreAsync(semaphore, () => Resource.LoadResourcesAsync()),
-                LoadWithSemaphoreAsync(semaphore, () => Database.LoadShopsAsync(Cts.Token)),
-                LoadWithSemaphoreAsync(semaphore, () => Database.LoadSkillsAsync(Cts.Token)),
-                LoadWithSemaphoreAsync(semaphore, () => Animation.LoadAnimationsAsync()),
-                LoadWithSemaphoreAsync(semaphore, () => Event.LoadSwitchesAsync()),
-                LoadWithSemaphoreAsync(semaphore, () => Event.LoadVariablesAsync()),
-                LoadWithSemaphoreAsync(semaphore, () => Projectile.LoadProjectilesAsync()),
-                LoadWithSemaphoreAsync(semaphore, () => Pet.LoadPetsAsync())
+                LoadWithSemaphoreAsync(semaphore, async () => Database.LoadJobsAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Moral.LoadMoralsAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Database.LoadMapsAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Item.LoadItemsAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Database.LoadNPCsAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Resource.LoadResourcesAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Database.LoadShopsAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Database.LoadSkillsAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Animation.LoadAnimationsAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Event.LoadSwitchesAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Event.LoadVariablesAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Projectile.LoadProjectilesAsync()),
+                LoadWithSemaphoreAsync(semaphore, async () => await Pet.LoadPetsAsync())
             };
 
             await Task.WhenAll(tasks);
@@ -368,8 +386,7 @@ namespace Server
         {
             try
             {
-                await Database.CheckConnectionAsync(Cts.Token);
-                bool networkActive = NetworkConfig.Socket.IsListening();
+                bool networkActive = NetworkConfig.Socket.IsListening;
                 if (!networkActive) Logger.LogWarning("Network socket is not listening.");
                 return networkActive && !Cts.IsCancellationRequested;
             }
@@ -386,7 +403,7 @@ namespace Server
 
         private static void InitializeSaveTimer()
         {
-            int intervalMinutes = Settings.Instance.PlayerSaveInterval > 0 ? Settings.Instance.PlayerSaveInterval : 5;
+            int intervalMinutes = 5;
             SaveTimer = new Timer(async _ => await SavePlayersPeriodicallyAsync(), null,
                 TimeSpan.FromMinutes(intervalMinutes), TimeSpan.FromMinutes(intervalMinutes));
         }
@@ -395,7 +412,7 @@ namespace Server
         {
             try
             {
-                await Database.SaveAllPlayersOnlineAsync(Cts.Token);
+                await Database.SaveAllPlayersOnlineAsync();
                 Logger.LogInformation("Periodic player save completed.");
             }
             catch (Exception ex)
@@ -418,7 +435,7 @@ namespace Server
                     if (parts.Length == 3 && int.TryParse(parts[1], out int x) && int.TryParse(parts[2], out int y))
                         await TeleportPlayerAsync(playerIndex, x, y);
                     else
-                        await NetworkSend.SendMessageAsync(playerIndex, "Usage: /teleport <x> <y>");
+                        NetworkSend.PlayerMsg(playerIndex, "Usage: /teleport <x> <y>", (int)Core.Enum.ColorType.BrightRed);
                     break;
 
                 case "/kick":
@@ -440,7 +457,7 @@ namespace Server
                     break;
 
                 default:
-                    await NetworkSend.SendMessageAsync(playerIndex, "Unknown command. Use /help for assistance.");
+                    NetworkSend.PlayerMsg(playerIndex, "Unknown command. Use /help for assistance.", (int)Core.Enum.ColorType.BrightRed);
                     break;
             }
         }
@@ -455,7 +472,7 @@ namespace Server
                 // Validate coordinates (assuming a map size of 100x100 as an example)
                 if (x < 0 || x >= 100 || y < 0 || y >= 100)
                 {
-                    await NetworkSend.SendMessageAsync(playerIndex, "Coordinates out of bounds.");
+                    NetworkSend.PlayerMsg(playerIndex, "Coordinates out of bounds.", (int)Core.Enum.ColorType.BrightRed);
                     return;
                 }
 
@@ -468,7 +485,7 @@ namespace Server
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to teleport player {playerIndex}");
-                await NetworkSend.SendMessageAsync(playerIndex, "Teleport failed.");
+                NetworkSend.PlayerMsg(playerIndex, "Teleport failed.", (int)Core.Enum.ColorType.BrightRed);
             }
         }
 
@@ -479,7 +496,7 @@ namespace Server
                 // Placeholder authorization check
                 if (!await IsAdminAsync(playerIndex))
                 {
-                    await NetworkSend.SendMessageAsync(playerIndex, "You are not authorized to kick players.");
+                    NetworkSend.PlayerMsg(playerIndex, "You are not authorized to kick players.", (int)Core.Enum.ColorType.BrightRed);
                     return;
                 }
 
@@ -488,17 +505,17 @@ namespace Server
                     await NetworkSend.SendLeftGameAsync(targetIndex);
                     Player.LeftGame(targetIndex);
                     Logger.LogInformation($"Player {targetIndex} kicked by {playerIndex}");
-                    await NetworkSend.SendMessageAsync(playerIndex, $"Player {targetIndex} has been kicked.");
+                    NetworkSend.PlayerMsg(playerIndex, $"Player {targetIndex} has been kicked.", (int)Core.Enum.ColorType.BrightGreen);
                 }
                 else
                 {
-                    await NetworkSend.SendMessageAsync(playerIndex, "Target player is not online.");
+                    NetworkSend.PlayerMsg(playerIndex, "Target player is not online.", (int)Core.Enum.ColorType.BrightRed);
                 }
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, $"Failed to kick player {targetIndex}");
-                await NetworkSend.SendMessageAsync(playerIndex, "Kick operation failed.");
+                NetworkSend.PlayerMsg(playerIndex, "Kick operation failed.", (int)Core.Enum.ColorType.BrightRed);
             }
         }
 
@@ -508,21 +525,21 @@ namespace Server
             {
                 if (!await IsAdminAsync(playerIndex))
                 {
-                    await NetworkSend.SendMessageAsync(playerIndex, "You are not authorized to broadcast.");
+                    NetworkSend.PlayerMsg(playerIndex, "You are not authorized to broadcast.", (int)Core.Enum.ColorType.BrightRed);
                     return;
                 }
 
                 await Parallel.ForEachAsync(Enumerable.Range(0, Core.Constant.MAX_PLAYERS), Cts.Token, async (i, ct) =>
                 {
                     if (NetworkConfig.IsPlaying(i))
-                        await NetworkSend.SendMessageAsync(i, $"[Broadcast] {message}");
+                        NetworkSend.PlayerMsg(i, $"[Broadcast] {message}", (int)Core.Enum.ColorType.BrightGreen);
                 });
                 Logger.LogInformation($"Broadcast by {playerIndex}: {message}");
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Broadcast failed");
-                await NetworkSend.SendMessageAsync(playerIndex, "Broadcast failed.");
+                NetworkSend.PlayerMsg(playerIndex, "Broadcast failed.", (int)Core.Enum.ColorType.BrightRed);
             }
         }
 
@@ -535,12 +552,12 @@ namespace Server
                                 $"Players Online: {CountPlayersOnline()}\n" +
                                 $"Uptime: {MyStopwatch.Elapsed}\n" +
                                 $"Errors: {Global.ErrorCount}";
-                await NetworkSend.SendMessageAsync(playerIndex, status);
+                NetworkSend.PlayerMsg(playerIndex, status, (int)Core.Enum.ColorType.BrightGreen);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Failed to send server status");
-                await NetworkSend.SendMessageAsync(playerIndex, "Unable to retrieve server status.");
+                NetworkSend.PlayerMsg(playerIndex, "Unable to retrieve server status.", (int)Core.Enum.ColorType.BrightRed);
             }
         }
 
@@ -552,7 +569,7 @@ namespace Server
                           "/broadcast <message> - Send a message to all players (admin only)\n" +
                           "/status - View server status\n" +
                           "/help - Show this message";
-            await NetworkSend.SendMessageAsync(playerIndex, help);
+            NetworkSend.PlayerMsg(playerIndex, help, (int)Core.Enum.ColorType.BrightGreen);
         }
 
         // Placeholder method for admin check
@@ -566,7 +583,7 @@ namespace Server
         {
             try
             {
-                string backupDir = Core.Path.Backups;
+                string backupDir = Core.Path.Database;
                 Directory.CreateDirectory(backupDir);
                 string backupPath = Path.Combine(backupDir, $"backup_{DateTime.Now:yyyyMMdd_HHmmss}.bak");
                 await Database.BackupAsync(backupPath, Cts.Token);
@@ -605,7 +622,7 @@ namespace Server
         public static async Task LogErrorAsync(Exception ex, string context = "")
         {
             string errorInfo = ex.ToString(); // Simplified; replace with GetExceptionInfo if available
-            string logPath = Path.Combine(Core.Path.Logs, "Errors.log");
+            string logPath = System.IO.Path.Combine(Core.Path.Logs, "Errors.log");
             Directory.CreateDirectory(Core.Path.Logs);
 
             await File.AppendAllTextAsync(logPath,

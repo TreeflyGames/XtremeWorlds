@@ -30,20 +30,24 @@ namespace Server
             }
         }
 
-        public static void LoadProjectiles()
+        public static async Task LoadProjectilesAsync()
         {
-            int i;
+            var tasks = new List<Task>();
 
-            var loopTo = Core.Constant.MAX_PROJECTILES;
-            for (i = 0; i < loopTo; i++)
-                LoadProjectile(i);
+            for (int i = 0; i < Core.Constant.MAX_PROJECTILES; i++)
+            {
+                int index = i;
+                tasks.Add(Task.Run(() => LoadProjectileAsync(index)));
+            }
+
+            await Task.WhenAll(tasks);
         }
 
-        public static void LoadProjectile(int projectileNum)
+        public static async Task LoadProjectileAsync(int projectileNum)
         {
             JObject data;
 
-            data = Database.SelectRow(projectileNum, "projectile", "data");
+            data = await Database.SelectRowAsync(projectileNum, "projectile", "data");
 
             if (data is null)
             {
@@ -231,7 +235,7 @@ namespace Server
                                                     Damage = Damage - armor;
 
                                                     // randomise for up to 10% lower than Core.Constant.MAX hit
-                                                    Damage = (int)Math.Round(General.Random.NextDouble(1d, Damage));
+                                                    Damage = (int)Math.Round(General.GetRandom.NextDouble(1d, Damage));
 
                                                     Player.AttackPlayer(index, Targetindex, Damage);
                                                 }
@@ -254,7 +258,7 @@ namespace Server
                                             Damage = Damage - armor;
 
                                             // randomise from 1 to Core.Constant.MAX hit
-                                            Damage = (int)Math.Round(General.Random.NextDouble(1d, Damage));
+                                            Damage = (int)Math.Round(General.GetRandom.NextDouble(1d, Damage));
 
                                             Player.PlayerAttackNPC(index, Targetindex, Damage);
                                         }

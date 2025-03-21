@@ -8,6 +8,7 @@ using static Core.Enum;
 using static Core.Packets;
 using static Core.Type;
 using static Core.Global.Command;
+using System.Threading.Tasks;
 
 namespace Server
 {
@@ -30,21 +31,19 @@ namespace Server
             }
         }
 
-        public static void LoadAnimations()
+        public static async Task LoadAnimationsAsync()
         {
             int i;
-
             var loopTo = Core.Constant.MAX_ANIMATIONS - 1;
             for (i = 0; i < loopTo; i++)
-                LoadAnimation(i);
-
+                await Task.Run(() => LoadAnimation(i));
         }
 
-        public static void LoadAnimation(int animationNum)
+        public static async Task LoadAnimation(int animationNum)
         {
             JObject data;
 
-            data = Database.SelectRow(animationNum, "animation", "data");
+            data = await Database.SelectRowAsync(animationNum, "animation", "data");
 
             if (data is null)
             {

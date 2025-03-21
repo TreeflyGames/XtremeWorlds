@@ -19,14 +19,17 @@ namespace Server
 
         #region Spawning
 
-        public static void SpawnAllMapNPCs()
+        public static async Task SpawnAllMapNPCsAsync()
         {
             int i;
 
             var loopTo = Core.Constant.MAX_MAPS;
+            var tasks = new List<Task>();
             for (i = 0; i < loopTo; i++)
-                SpawnMapNPCs(i);
-
+            {
+                tasks.Add(Task.Run(() => SpawnMapNPCs(i)));
+            }
+            await Task.WhenAll(tasks);
         }
 
         public static void SpawnMapNPCs(int mapNum)
@@ -101,8 +104,8 @@ namespace Server
                     // Well try 100 times to randomly place the sprite
                     while (i < 1000)
                     {
-                        x = (int)Math.Round(General.Random.NextDouble(0d, Core.Type.Map[mapNum].MaxX - 1));
-                        y = (int)Math.Round(General.Random.NextDouble(0d, Core.Type.Map[mapNum].MaxY - 1));
+                        x = (int)Math.Round(General.GetRandom.NextDouble(0d, Core.Type.Map[mapNum].MaxX - 1));
+                        y = (int)Math.Round(General.GetRandom.NextDouble(0d, Core.Type.Map[mapNum].MaxY - 1));
 
                         if (x > Core.Type.Map[mapNum].MaxX)
                             x = Core.Type.Map[mapNum].MaxX - 1;
@@ -876,7 +879,7 @@ namespace Server
                 Core.Type.MapNPC[mapNum].NPC[attacker].TargetType = 0;
 
                 // Drop the goods if they get it
-                double tmpitem = General.Random.NextDouble(1d, 5d);
+                double tmpitem = General.GetRandom.NextDouble(1d, 5d);
                 n = (int)Math.Round(Conversion.Int(VBMath.Rnd() * Core.Type.NPC[vNPCNum].DropChance[(int)Math.Round(tmpitem)]) + 1f);
                 if (n == 1)
                 {
@@ -956,7 +959,7 @@ namespace Server
 
             if (SkillList.Count > 1)
             {
-                RandomNPCAttackRet = SkillList[(int)Math.Round(General.Random.NextDouble(0d, SkillList.Count - 1))];
+                RandomNPCAttackRet = SkillList[(int)Math.Round(General.GetRandom.NextDouble(0d, SkillList.Count - 1))];
             }
             else
             {
@@ -1107,7 +1110,7 @@ namespace Server
 
             stat = (int)Math.Round((double)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Luck] / 5d);  // guessed shield agility
             rate = (int)Math.Round(stat / 12.08d);
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
                 CanNPCBlockRet = Conversions.ToBoolean(1);
@@ -1123,7 +1126,7 @@ namespace Server
             CanNPCritRet = Conversions.ToBoolean(0);
 
             rate = (int)Math.Round((double)Core.Type.NPC[(int)NPCNum].Stat[(byte)StatType.Luck] / 3d);
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
                 CanNPCritRet = Conversions.ToBoolean(1);
@@ -1140,7 +1143,7 @@ namespace Server
             CanNPCDodgeRet = Conversions.ToBoolean(0);
 
             rate = (int)Math.Round((double)Core.Type.NPC[(int)NPCNum].Stat[(int)StatType.Luck] / 4d);
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
                 CanNPCDodgeRet = Conversions.ToBoolean(1);
@@ -1157,7 +1160,7 @@ namespace Server
             CanNPCParryRet = Conversions.ToBoolean(0);
 
             rate = (int)Math.Round((double)Core.Type.NPC[(int)NPCNum].Stat[(int)StatType.Luck] / 6d);
-            rndNum = (int)Math.Round(General.Random.NextDouble(1d, 100d));
+            rndNum = (int)Math.Round(General.GetRandom.NextDouble(1d, 100d));
 
             if (rndNum <= rate)
                 CanNPCParryRet = Conversions.ToBoolean(1);
@@ -1169,7 +1172,7 @@ namespace Server
         {
             int GetNPCDamageRet = default;
 
-            GetNPCDamageRet = (int)Math.Round((double)((int)Core.Type.NPC[(int)NPCNum].Stat[(int)StatType.Strength] * 2 + Core.Type.NPC[(int)NPCNum].Damage * 2 + Core.Type.NPC[(int)NPCNum].Level * 3) + General.Random.NextDouble(1d, 20d));
+            GetNPCDamageRet = (int)Math.Round((double)((int)Core.Type.NPC[(int)NPCNum].Stat[(int)StatType.Strength] * 2 + Core.Type.NPC[(int)NPCNum].Damage * 2 + Core.Type.NPC[(int)NPCNum].Level * 3) + General.GetRandom.NextDouble(1d, 20d));
             return GetNPCDamageRet;
 
         }
@@ -1188,7 +1191,7 @@ namespace Server
         internal static void DropNPCItems(int mapNum, int MapNPCNum)
         {
             var NPCNum = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
-            double tmpitem = General.Random.NextDouble(1d, 5d);
+            double tmpitem = General.GetRandom.NextDouble(1d, 5d);
             var n = VBMath.Rnd() * (float)Core.Type.NPC[(int)NPCNum].DropChance[(int)Math.Round(tmpitem)] + 1;
 
             if (n == 1)
