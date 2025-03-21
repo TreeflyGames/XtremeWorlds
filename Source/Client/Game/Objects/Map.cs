@@ -11,7 +11,7 @@ using static Core.Enum;
 namespace Client
 {
 
-    static class Map
+    public class Map
     {
         #region Drawing
         public static void DrawThunderEffect()

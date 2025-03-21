@@ -7,7 +7,7 @@ using Path = Core.Path;
 namespace Client
 {
 
-    static class Pet
+    public class Pet
     {
 
         #region Globals etc

@@ -9,7 +9,7 @@ using static Core.Global.Command;
 namespace Client
 {
 
-    static class GameLogic
+    public class GameLogic
     {
         public static void ProcessNPCMovement(double MapNPCNum)
         {

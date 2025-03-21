@@ -14,7 +14,7 @@ using System.Buffers;
 namespace Server
 {
 
-    static class NetworkSend
+    public class NetworkSend
     {
 
         public static void AlertMsg(int index, byte menuNo, int menuReset = 0, bool kick = true)

@@ -9,7 +9,7 @@ using Microsoft.VisualBasic.CompilerServices;
 namespace Client
 {
 
-    static class Sound
+    public class Sound
     {
 
         // Sound and Music handles for ManagedBass

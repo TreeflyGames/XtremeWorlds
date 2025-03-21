@@ -5,7 +5,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Shop
+    public class Shop
     {
         public static void CloseShop()
         {

@@ -6,7 +6,7 @@ using static Core.Packets;
 namespace Server
 {
 
-    static class Time
+    public class Time
     {
 
         public static void InitTime()

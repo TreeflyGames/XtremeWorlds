@@ -4,7 +4,7 @@ using Microsoft.VisualBasic.CompilerServices;
 namespace Client
 {
 
-    public static class Moral
+    public class Moral
     {
         #region Database
 

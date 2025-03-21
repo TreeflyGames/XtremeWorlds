@@ -10,7 +10,7 @@ using Mirage.Sharp.Asfw.IO;
 namespace Client
 {
 
-    static class NetworkReceive
+    public class NetworkReceive
     {
 
         public static void PacketRouter()

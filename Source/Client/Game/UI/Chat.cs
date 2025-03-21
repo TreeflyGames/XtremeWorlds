@@ -144,7 +144,7 @@ namespace Client
 
     }
 
-    static class ChatModule
+    public class ChatModule
     {
         static ChatData ToBoolean_ChatInput()
         {

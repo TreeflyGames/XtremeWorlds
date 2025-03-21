@@ -5,7 +5,7 @@ using Timer = System.Windows.Forms.Timer;
 namespace Client
 {
 
-    static class Program
+    public class Program
     {
         private static Timer updateFormsTimer;
 

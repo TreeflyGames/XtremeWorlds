@@ -7,7 +7,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Event
+    public class Event
     {
 
         #region Globals

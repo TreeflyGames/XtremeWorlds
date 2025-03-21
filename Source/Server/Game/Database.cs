@@ -22,7 +22,7 @@ using System.Reflection;
 namespace Server
 {
 
-    static class Database
+    public class Database
     {
         public static void ExecuteSql(string connectionString, string sql)
         {

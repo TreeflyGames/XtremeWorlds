@@ -3,7 +3,7 @@
 namespace Server
 {
 
-    static class Global
+    public class Global
     {
         public static bool DebugTxt;
         public static int ErrorCount;

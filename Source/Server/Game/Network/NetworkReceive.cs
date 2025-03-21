@@ -19,7 +19,7 @@ using static Core.Type;
 namespace Server
 {
 
-    static class NetworkReceive
+    public class NetworkReceive
     {
         public static void PacketRouter()
         {

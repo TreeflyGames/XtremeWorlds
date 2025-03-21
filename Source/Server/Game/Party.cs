@@ -10,7 +10,7 @@ using static Core.Global.Command;
 namespace Server
 {
 
-    static class Party
+    public class Party
     {
 
         #region Type and Globals

@@ -6,7 +6,7 @@ using static Core.Global.Command;
 namespace Client
 {
 
-    static class Player
+    public class Player
     {
         #region Database
         public static void ClearPlayers()

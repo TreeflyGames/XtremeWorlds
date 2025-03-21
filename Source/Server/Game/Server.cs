@@ -8,7 +8,7 @@ using static Core.Global.Command;
 namespace Server
 {
 
-    static class Server
+    public class Server
     {
         private static bool consoleExit;
         private static Thread threadConsole;

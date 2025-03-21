@@ -6,7 +6,7 @@ using static Core.Global.Command;
 namespace Server
 {
 
-    static class GameLogic
+    public class GameLogic
     {
         public static int GetTotalMapPlayers(int mapNum)
         {

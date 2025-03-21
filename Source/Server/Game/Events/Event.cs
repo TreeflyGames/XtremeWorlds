@@ -12,7 +12,7 @@ using Path = Core.Path;
 namespace Server
 {
 
-    static class Event
+    public class Event
     {
 
         #region Globals

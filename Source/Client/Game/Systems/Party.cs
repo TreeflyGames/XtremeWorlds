@@ -4,7 +4,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Party
+    public class Party
     {
 
         #region Database

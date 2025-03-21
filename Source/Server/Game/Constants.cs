@@ -1,7 +1,7 @@
 ﻿
 namespace Server
 {
-    static class Constant
+    public class Constant
     {
 
         // Path constants

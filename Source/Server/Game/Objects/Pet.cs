@@ -15,7 +15,7 @@ namespace Server
 {
 
 
-    static class Pet
+    public class Pet
     {
 
         #region Declarations

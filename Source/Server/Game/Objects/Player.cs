@@ -10,7 +10,7 @@ using static Core.Type;
 namespace Server
 {
 
-    static class Player
+    public class Player
     {
 
         public static bool CanPlayerAttackPlayer(int attacker, int victim, bool IsSkill = false)

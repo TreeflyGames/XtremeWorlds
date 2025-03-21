@@ -5,7 +5,7 @@ using Mirage.Sharp.Asfw;
 namespace Client
 {
 
-    static class Item
+    public class Item
     {
 
         #region Database

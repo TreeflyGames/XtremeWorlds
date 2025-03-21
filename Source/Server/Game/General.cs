@@ -14,7 +14,7 @@ using static Core.Type;
 namespace Server
 {
 
-    static class General
+    public class General
     {
         public static RandomUtility Random = new RandomUtility();
 

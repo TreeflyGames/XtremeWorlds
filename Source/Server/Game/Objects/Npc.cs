@@ -14,7 +14,7 @@ using Core;
 namespace Server
 {
 
-    static class NPC
+    public class NPC
     {
 
         #region Spawning

@@ -12,7 +12,7 @@ using Path = Core.Path;
 namespace Client
 {
 
-    static class Text
+    public class Text
     {
         public static Dictionary<Core.Enum.FontType, SpriteFont> Fonts = new Dictionary<Core.Enum.FontType, SpriteFont>();
 
