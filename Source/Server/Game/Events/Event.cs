@@ -157,7 +157,7 @@ namespace Server
 
         private static void StartEventProcessing(int index, int eventId, int mapNum)
         {
-            var PageId = Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageId;
+            var pageId = Core.Type.TempPlayer[index].EventMap.EventPages[eventId].PageId;
             if (Core.Type.Map[mapNum].Event[eventId].Pages[PageId].CommandListCount <= 0) return;
 
             var processing = Core.Type.TempPlayer[index].EventProcessing[eventId];
@@ -166,7 +166,7 @@ namespace Server
             processing.CurList = 0;
             processing.CurSlot = 0;
             processing.EventId = eventId;
-            processing.PageId = PageId;
+            processing.PageId = pageId;
             processing.WaitingForResponse = 0;
             processing.ListLeftOff = new int[Core.Type.Map[mapNum].Event[eventId].Pages[PageId].CommandListCount];
         }
