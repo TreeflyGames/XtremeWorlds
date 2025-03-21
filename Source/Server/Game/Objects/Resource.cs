@@ -30,21 +30,17 @@ namespace Server
             }
         }
 
-        public static void LoadResources()
+        public static async Task LoadResourcesAsync()
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_RESOURCES - 1;
-            for (i = 0; i < loopTo; i++)
-                LoadResource(i);
-
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_RESOURCES).Select(i => Task.Run(() => LoadResourceAsync(i)));
+            await Task.WhenAll(tasks);
         }
 
-        public static void LoadResource(int resourceNum)
+        public static async Task LoadResourceAsync(int resourceNum)
         {
             JObject data;
 
-            data = Database.SelectRow(resourceNum, "resource", "data");
+            data = await Database.SelectRowAsync(resourceNum, "resource", "data");
 
             if (data is null)
             {
@@ -61,20 +57,6 @@ namespace Server
             Core.Type.Resource[index].Name = "";
             Core.Type.Resource[index].EmptyMessage = "";
             Core.Type.Resource[index].SuccessMessage = "";
-        }
-
-        public static void ClearResources()
-        {
-            Core.Type.Resource = new Core.Type.ResourceStruct[Core.Constant.MAX_RESOURCES];
-            Core.Type.MapResource = new Core.Type.MapResourceStruct[Core.Constant.MAX_MAPS];
-
-            for (int i = 0; i < Core.Constant.MAX_MAPS; i++)
-            {
-                Core.Type.MapResource[i].ResourceData = new Core.Type.MapResourceCacheStruct[Core.Constant.MAX_RESOURCES];
-            }
-
-            for (int i = 0, loopTo = Core.Constant.MAX_RESOURCES; i < loopTo; i++)
-                ClearResource(i);
         }
 
         public static void CacheResources(int mapNum)
