@@ -2483,17 +2483,27 @@ namespace Client
                     // Draw the target icon
                     if (GameState.MyTarget >= 0)
                     {
-                        if (GameState.MyTargetType == (int)TargetType.Player)
+                        switch (GameState.MyTargetType)
                         {
-                            DrawTarget(Core.Type.Player[GameState.MyTarget].X * 32 - 16 + Core.Type.Player[GameState.MyTarget].XOffset, Core.Type.Player[GameState.MyTarget].Y * 32 + Core.Type.Player[GameState.MyTarget].YOffset);
-                        }
-                        else if (GameState.MyTargetType == (int)TargetType.NPC)
-                        {
-                            DrawTarget(Core.Type.MyMapNPC[GameState.MyTarget].X * 32 - 16 + Core.Type.MyMapNPC[GameState.MyTarget].XOffset, Core.Type.MyMapNPC[GameState.MyTarget].Y * 32 + Core.Type.MyMapNPC[GameState.MyTarget].YOffset);
-                        }
-                        else if (GameState.MyTargetType == (int)TargetType.Pet)
-                        {
-                            DrawTarget(Core.Type.Player[GameState.MyTarget].Pet.X * 32 - 16 + Core.Type.Player[GameState.MyTarget].Pet.XOffset, Core.Type.Player[GameState.MyTarget].Pet.Y * 32 + Core.Type.Player[GameState.MyTarget].Pet.YOffset);
+                            case (int)TargetType.Player:
+                                if (IsPlaying(GameState.MyTarget))
+                                {
+                                    if (Core.Type.Player[GameState.MyTarget].Map == Core.Type.Player[GameState.MyIndex].Map)
+                                    {
+                                        // Draw the target icon for the player
+                                        DrawTarget(Core.Type.Player[GameState.MyTarget].X * 32 - 16 + Core.Type.Player[GameState.MyTarget].XOffset, Core.Type.Player[GameState.MyTarget].Y * 32 + Core.Type.Player[GameState.MyTarget].YOffset);
+                                    }
+                                }
+                                break;
+
+                            case (int)TargetType.NPC:
+                                DrawTarget(Core.Type.MyMapNPC[GameState.MyTarget].X * 32 - 16 + Core.Type.MyMapNPC[GameState.MyTarget].XOffset, Core.Type.MyMapNPC[GameState.MyTarget].Y * 32 + Core.Type.MyMapNPC[GameState.MyTarget].YOffset);
+                                break;
+
+                            case (int)TargetType.Pet:
+                                DrawTarget(Core.Type.Player[GameState.MyTarget].Pet.X * 32 - 16 + Core.Type.Player[GameState.MyTarget].Pet.XOffset, Core.Type.Player[GameState.MyTarget].Pet.Y * 32 + Core.Type.Player[GameState.MyTarget].Pet.YOffset);
+                                break;
+
                         }
                     }
 
@@ -2503,6 +2513,9 @@ namespace Client
                         {
                             if (Core.Type.Player[i].Map == Core.Type.Player[GameState.MyIndex].Map)
                             {
+                                if (Core.Type.Player[i].Sprite == 0)
+                                    continue;
+
                                 if (GameState.CurX == Core.Type.Player[i].X & GameState.CurY == Core.Type.Player[i].Y)
                                 {
                                     if (GameState.MyTargetType == (int)TargetType.Player & GameState.MyTarget == i)
