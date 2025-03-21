@@ -2490,8 +2490,11 @@ namespace Client
                                 {
                                     if (Core.Type.Player[GameState.MyTarget].Map == Core.Type.Player[GameState.MyIndex].Map)
                                     {
-                                        // Draw the target icon for the player
-                                        DrawTarget(Core.Type.Player[GameState.MyTarget].X * 32 - 16 + Core.Type.Player[GameState.MyTarget].XOffset, Core.Type.Player[GameState.MyTarget].Y * 32 + Core.Type.Player[GameState.MyTarget].YOffset);
+                                        if (Core.Type.Player[GameState.MyTarget].Sprite > 0)
+                                        {
+                                            // Draw the target icon for the player
+                                            DrawTarget(Core.Type.Player[GameState.MyTarget].X * 32 - 16 + Core.Type.Player[GameState.MyTarget].XOffset, Core.Type.Player[GameState.MyTarget].Y * 32 + Core.Type.Player[GameState.MyTarget].YOffset);
+                                        }
                                     }
                                 }
                                 break;
