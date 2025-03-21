@@ -307,7 +307,7 @@ namespace Server
             });
 
             await Task.WhenAll(tasks);
-            Logger.LogInformation($"Loaded {Core.Type.Char.Count} characters");
+            Logger.LogInformation($"Loaded {Core.Type.Char.Count} characters.");
         }
 
         private static async Task LoadGameContentAsync()
