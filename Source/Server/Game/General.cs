@@ -164,6 +164,11 @@ namespace Server
                 Database.ClearPlayer(i);
             }
 
+            for (int i = 0; i < Core.Constant.MAX_PARTY_MEMBERS; i++)
+            {
+                Party.ClearParty(i);
+            }
+
             Event.TempEventMap = new Core.Type.GlobalEventsStruct[Core.Constant.MAX_MAPS];
             Core.Type.MapProjectile = new Core.Type.MapProjectileStruct[Core.Constant.MAX_MAPS, Core.Constant.MAX_PROJECTILES];
         }
