@@ -129,7 +129,6 @@ namespace Core
                 new LocaleItem { Key = "Seconds", Value = "Seconds" },
                 new LocaleItem { Key = "Currency", Value = "Currency" },
                 new LocaleItem { Key = "CommonEvent", Value = "Event" },
-                new LocaleItem { Key = "Furniture", Value = "Furniture" },
                 new LocaleItem { Key = "Potion", Value = "Potion" },
                 new LocaleItem { Key = "Skill", Value = "Skill" },
                 new LocaleItem { Key = "Weapon", Value = "Weapon" },
