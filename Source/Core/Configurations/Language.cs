@@ -1,285 +1,233 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Core
 {
 
-    public class LanguageDef
+    public class Locales
     {
-
-        public LoadDef Load = new LoadDef();
-
-        public class LoadDef
+        public string GetValueByKey(List<KeyValuePair<string, string>> list, string key)
         {
-
-            public string Loading = "Loading...";
-            public string Graphics = "Initializing Graphics..";
-            public string Network = "Initializing Network...";
-            public string Starting = "Starting Game...";
-
+            var pair = list.FirstOrDefault(kvp => kvp.Key == key);
+            return pair.Equals(default(KeyValuePair<string, string>)) ? "Key not found" : pair.Value;
         }
 
-        public MainMenuDef MainMenu = new MainMenuDef();
-        public class MainMenuDef
+        public string GetValueByKey(string listName, string key)
         {
-
-            // Main Panel
-            public string ServerStatus = "Server Status:";
-            public string ServerOnline = "Online";
-            public string ServerReconnect = "Reconnecting...";
-            public string ServerOffline = "Offline";
-            public string ButtonPlay = "Play";
-            public string ButtonRegister = "Register";
-            public string ButtonCredits = "Credits";
-            public string ButtonExit = "Exit";
-            public string NewsHeader = "Latest News";
-            public string News = @"Welcome To the XtremeWorlds.
-                                 This is a free open source VB.Net game engine!
-                                 For help or support please visit our site at
-                                 https://xtremeworlds.com/.";
-
-            // Login Panel
-            public string Login = "Login";
-            public string LoginName = "Name: ";
-            public string LoginPass = "Password: ";
-            public string LoginCheckBox = "Save Password?";
-            public string LoginButton = "Submit";
-
-            // New Character Panel
-            public string NewCharacter = "Create Character";
-            public string NewCharacterName = "Name: ";
-            public string NewCharacterClass = "Class: ";
-            public string NewCharacterGender = "Gender: ";
-            public string NewCharacterMale = "Male";
-            public string NewCharacterFemale = "Female";
-            public string NewCharacterSprite = "Sprite";
-            public string NewCharacterButton = "Submit";
-
-            // Character Select
-            public string UseCharacter = "Character Selection";
-            public string UseCharacterNew = "New Character";
-            public string UseCharacterUse = "Use Character";
-            public string UseCharacterDel = "Delete Character";
-
-            // Register
-            public string Register = "Registration";
-            public string RegisterName = "Username: ";
-            public string RegisterPass1 = "Password: ";
-            public string RegisterPass2 = "Retype Password: ";
-
-            // Credits
-            public string Credits = "Credits";
-
-            // Misc
-            public string StringLegal = "You cannot use high ASCII characters In your name, please re-enter.";
-            public string SendLogin = "Connected, sending login information...";
-            public string SendNewCharacter = "Connected, sending character data...";
-            public string SendRegister = "Connected, sending registration information...";
-            public string ConnectToServer = "Connecting to Server...( {0} )";
+            var property = this.GetType().GetProperty(listName);
+            if (property == null)
+                return "List not found";
+            var list = (List<KeyValuePair<string, string>>)property.GetValue(this);
+            return GetValueByKey(list, key);
         }
 
-        public GameDef Game = new GameDef();
-        public class GameDef
-        {
-            public string MapName = "";
-            public string Time = "Time: ";
-            public string Fps = "Fps: ";
-            public string Lps = "Lps: ";
+        public List<KeyValuePair<string, string>> Load { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("Loading", "Loading..."),
+                new KeyValuePair<string, string>("Graphics", "Initializing Graphics.."),
+                new KeyValuePair<string, string>("Network", "Initializing Network..."),
+                new KeyValuePair<string, string>("Starting", "Starting Game...")
+            };
 
-            public string Ping = "Ping: ";
-            public string PingSync = "Sync";
-            public string PingLocal = "Local";
+        public List<KeyValuePair<string, string>> MainMenu { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("ServerStatus", "Server Status:"),
+                new KeyValuePair<string, string>("ServerOnline", "Online"),
+                new KeyValuePair<string, string>("ServerReconnect", "Reconnecting..."),
+                new KeyValuePair<string, string>("ServerOffline", "Offline"),
+                new KeyValuePair<string, string>("ButtonPlay", "Play"),
+                new KeyValuePair<string, string>("ButtonRegister", "Register"),
+                new KeyValuePair<string, string>("ButtonCredits", "Credits"),
+                new KeyValuePair<string, string>("ButtonExit", "Exit"),
+                new KeyValuePair<string, string>("NewsHeader", "Latest News"),
+                new KeyValuePair<string, string>("News", @"Welcome To the XtremeWorlds.
+                               This is a free open-source C# game engine!
+                               For help or support please visit our site at
+                               https://xtremeworlds.com/."),
+                new KeyValuePair<string, string>("Login", "Login"),
+                new KeyValuePair<string, string>("LoginName", "Name: "),
+                new KeyValuePair<string, string>("LoginPass", "Password: "),
+                new KeyValuePair<string, string>("LoginCheckBox", "Save Password?"),
+                new KeyValuePair<string, string>("LoginButton", "Submit"),
+                new KeyValuePair<string, string>("NewCharacter", "Create Character"),
+                new KeyValuePair<string, string>("NewCharacterName", "Name: "),
+                new KeyValuePair<string, string>("NewCharacterClass", "Class: "),
+                new KeyValuePair<string, string>("NewCharacterGender", "Gender: "),
+                new KeyValuePair<string, string>("NewCharacterMale", "Male"),
+                new KeyValuePair<string, string>("NewCharacterFemale", "Female"),
+                new KeyValuePair<string, string>("NewCharacterSprite", "Sprite"),
+                new KeyValuePair<string, string>("NewCharacterButton", "Submit"),
+                new KeyValuePair<string, string>("UseCharacter", "Character Selection"),
+                new KeyValuePair<string, string>("UseCharacterNew", "New Character"),
+                new KeyValuePair<string, string>("UseCharacterUse", "Use Character"),
+                new KeyValuePair<string, string>("UseCharacterDel", "Delete Character"),
+                new KeyValuePair<string, string>("Register", "Registration"),
+                new KeyValuePair<string, string>("RegisterName", "Username: "),
+                new KeyValuePair<string, string>("RegisterPass1", "Password: "),
+                new KeyValuePair<string, string>("RegisterPass2", "Retype Password: "),
+                new KeyValuePair<string, string>("Credits", "Credits"),
+                new KeyValuePair<string, string>("StringLegal", "You cannot use high ASCII characters In your name, please re-enter."),
+                new KeyValuePair<string, string>("SendLogin", "Connected, sending login information..."),
+                new KeyValuePair<string, string>("SendNewCharacter", "Connected, sending character data..."),
+                new KeyValuePair<string, string>("SendRegister", "Connected, sending registration information..."),
+                new KeyValuePair<string, string>("ConnectToServer", "Connecting to Server...( {0} )")
+            };
 
-            public string MapReceive = "Receiving MyMap...";
-            public string DataReceive = "Receiving game data...";
+        public List<KeyValuePair<string, string>> Game { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("Time", "Time: "),
+                new KeyValuePair<string, string>("Fps", "Fps: "),
+                new KeyValuePair<string, string>("Lps", "Lps: "),
+                new KeyValuePair<string, string>("Ping", "Ping: "),
+                new KeyValuePair<string, string>("PingSync", "Sync"),
+                new KeyValuePair<string, string>("PingLocal", "Local"),
+                new KeyValuePair<string, string>("MapReceive", "Receiving map..."),
+                new KeyValuePair<string, string>("DataReceive", "Receiving game data..."),
+                new KeyValuePair<string, string>("MapCurMap", "Map # {0}"),
+                new KeyValuePair<string, string>("MapCurLoc", "Loc() x: {0} y: {1}"),
+                new KeyValuePair<string, string>("MapLoc", "Cur Loc x: {0} y: {1}"),
+                new KeyValuePair<string, string>("Fullscreen", "Please restart the client for the changes to take effect."),
+                new KeyValuePair<string, string>("InvalidMap", "Invalid map index."),
+                new KeyValuePair<string, string>("AccessDenied", "Access Denied!")
+            };
 
-            public string MapCurMap = "Map # {0}";
-            public string MapCurLoc = "Loc() x: {0} y: {1}";
-            public string MapLoc = "Cur Loc x: {0} y: {1}";
+        public List<KeyValuePair<string, string>> Chat { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("Emote", "Usage : /emote [1-11]"),
+                new KeyValuePair<string, string>("Info", "Usage : /info [player]"),
+                new KeyValuePair<string, string>("Party", "Usage : /party [player]"),
+                new KeyValuePair<string, string>("Trade", "Usage : /trade [player]"),
+                new KeyValuePair<string, string>("PlayerMsg", "Usage : ![player] [message]"),
+                new KeyValuePair<string, string>("InvalidCmd", "Not a valid command!"),
+                new KeyValuePair<string, string>("Help1", "Social Commands : "),
+                new KeyValuePair<string, string>("Help2", "'[message] = Global Message"),
+                new KeyValuePair<string, string>("Help3", "-[message] = Party Message"),
+                new KeyValuePair<string, string>("Help4", "![player] [message] = Player Message"),
+                new KeyValuePair<string, string>("Help5", "@[message] = Admin Message"),
+                new KeyValuePair<string, string>("Help6", @"Available Commands: /help, /info, 
+                                /fps, /lps, /stats, /trade, 
+                                /party, /join, /leave"),
+                new KeyValuePair<string, string>("AdminGblMsg", "''msghere = Global Admin Message"),
+                new KeyValuePair<string, string>("AdminPvtMsg", "= msghere = Private Admin Message"),
+                new KeyValuePair<string, string>("Admin1", "Social Commands:"),
+                new KeyValuePair<string, string>("Admin2", @"Available Commands: /admin, /who, /access, /loc, 
+                                /warpmeto, /warptome, /warpto, 
+                                /sprite, /mapreport, /kick, 
+                                /ban, /respawn, /welcome,
+                                /editmap, /edititem, /editresource,
+                                /editskill, /editpet, /editshop
+                                /editprojectile, /editnpc, /editjob
+                                /editjob, /acp"),
+                new KeyValuePair<string, string>("Welcome", "Usage : /welcome [message]"),
+                new KeyValuePair<string, string>("Access", "Usage : /access [player] [access]"),
+                new KeyValuePair<string, string>("Sprite", "Usage : /sprite [index]"),
+                new KeyValuePair<string, string>("Kick", "Usage : /kick [player]"),
+                new KeyValuePair<string, string>("Ban", "Usage : /ban [player]"),
+                new KeyValuePair<string, string>("WarpMeTo", "Usage : /warpmeto [player]"),
+                new KeyValuePair<string, string>("WarpToMe", "Usage : /warptome [player]"),
+                new KeyValuePair<string, string>("WarpTo", "Usage : /warpto [map index]"),
+            };
 
-            public string Fullscreen = "Please restart the client for the changes to take effect.";
-        }
+        public List<KeyValuePair<string, string>> ItemDescription { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("NotAvailable", "Not Available"),
+                new KeyValuePair<string, string>("None", "None"),
+                new KeyValuePair<string, string>("Seconds", "Seconds"),
+                new KeyValuePair<string, string>("Currency", "Currency"),
+                new KeyValuePair<string, string>("CommonEvent", "Event"),
+                new KeyValuePair<string, string>("Furniture", "Furniture"),
+                new KeyValuePair<string, string>("Potion", "Potion"),
+                new KeyValuePair<string, string>("Skill", "Skill"),
+                new KeyValuePair<string, string>("Weapon", "Weapon"),
+                new KeyValuePair<string, string>("Armor", "Armor"),
+                new KeyValuePair<string, string>("Helmet", "Helmet"),
+                new KeyValuePair<string, string>("Shield", "Shield"),
+                new KeyValuePair<string, string>("Shoes", "Shoes"),
+                new KeyValuePair<string, string>("Gloves", "Gloves"),
+                new KeyValuePair<string, string>("Amount", "Amount : "),
+                new KeyValuePair<string, string>("Restore", "Restore Amount : "),
+                new KeyValuePair<string, string>("Damage", "Damage : "),
+                new KeyValuePair<string, string>("Defense", "Defense : ")
+            };
 
-        public ChatDef Chat = new ChatDef();
-        public class ChatDef
-        {
+        public List<KeyValuePair<string, string>> SkillDescription { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("No", "No"),
+                new KeyValuePair<string, string>("None", "None"),
+                new KeyValuePair<string, string>("Warp", "Warp"),
+                new KeyValuePair<string, string>("Tiles", "Tiles"),
+                new KeyValuePair<string, string>("SelfCast", "Self-Cast"),
+                new KeyValuePair<string, string>("Gain", "Regen : "),
+                new KeyValuePair<string, string>("GainHp", "Regen HP"),
+                new KeyValuePair<string, string>("GainMp", "Regen MP"),
+                new KeyValuePair<string, string>("Lose", "Syphon : "),
+                new KeyValuePair<string, string>("LoseHp", "Syphon HP"),
+                new KeyValuePair<string, string>("LoseMp", "Syphon MP")
+            };
 
-            // Universal
-            public string Emote = "Usage : /emote [1-11]";
-            public string Info = "Usage : /info [player]";
-            public string Party = "Usage : /party [player]";
-            public string Trade = "Usage : /trade [player]";
-            public string PlayerMsg = "Usage : ![player] [message]";
-            public string InvalidCmd = "Not a valid command!";
-            public string Help1 = "Social Commands : ";
-            public string Help2 = "'[message] = Global Message";
-            public string Help3 = "-[message] = Party Message";
-            public string Help4 = "![player] [message] = Player Message";
-            public string Help5 = "@[message] = Admin Message";
-            public string Help6 = @"Available Commands: /help, /info, 
-                                  /fps, /lps, /stats, /trade, 
-                                  /party, /join, /leave";
+        public List<KeyValuePair<string, string>> Crafting { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("NotEnough", "Not enough materials!"),
+                new KeyValuePair<string, string>("NotSelected", "Nothing selected")
+            };
 
+        public List<KeyValuePair<string, string>> Trade { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("Request", "{0} is requesting to trade."),
+                new KeyValuePair<string, string>("Timeout", "You took too long to decide. Please try again."),
+                new KeyValuePair<string, string>("Value", "Total Value : {0}g"),
+                new KeyValuePair<string, string>("StatusOther", "Other player confirmed offer."),
+                new KeyValuePair<string, string>("StatusSelf", "You confirmed the offer.")
+            };
 
-            // Admin-Only
-            public string AccessAlert = "You need a higher access to do this!";
-            public string AdminGblMsg = "''msghere = Global Admin Message";
-            public string AdminPvtMsg = "= msghere = Private Admin Message";
-            public string Admin1 = "Social Commands:";
-            public string Admin2 = @"Available Commands: /admin, /who, /access, /loc, 
-                                   /warpmeto, /warptome, /warpto, 
-                                   /sprite, /mapreport, /kick, 
-                                   /ban, /respawn, /welcome,
-                                   /editmap, /edititem, /editresource,
-                                   /editskill, /editpet, /editshop
-                                   /editprojectile, /editnpc, /editjob
-                                   /editjob, /acp";
+        public List<KeyValuePair<string, string>> Events { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("OptContinue", "- Continue -")
+            };
 
-            public string Welcome = "Usage : /welcome [message]";
-            public string Access = "Usage : /access [player] [access]";
-            public string Sprite = "Usage : /sprite [index]";
-            public string Kick = "Usage : /kick [player]";
-            public string Ban = "Usage : /ban [player]";
+        public List<KeyValuePair<string, string>> Quest { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("Cancel", "Cancel Started"),
+                new KeyValuePair<string, string>("Started", "Quest Started"),
+                new KeyValuePair<string, string>("Completed", "Quest Completed"),
+                new KeyValuePair<string, string>("Slay", "Defeat {0}/{1} {2}."),
+                new KeyValuePair<string, string>("Collect", "Collect {0}/{1} {2}."),
+                new KeyValuePair<string, string>("Talk", "Go talk To {0}."),
+                new KeyValuePair<string, string>("Reach", "Go To {0}."),
+                new KeyValuePair<string, string>("TurnIn", "Give {0} the {1} {2}/{3} they requested."),
+                new KeyValuePair<string, string>("Kill", "Defeat {0}/{1} Players In Battle."),
+                new KeyValuePair<string, string>("Gather", "Gather {0}/{1} {2}."),
+                new KeyValuePair<string, string>("Fetch", "Fetch {0} X {1} from {2}.")
+            };
 
-            public string WarpMeTo = "Usage : /warpmeto [player]";
-            public string WarpToMe = "Usage : /warptome [player]";
-            public string WarpTo = "Usage : /warpto [map index]";
-
-            public string InvalidMap = "Invalid map index.";
-            public string InvalidQuest = "Invalid quest index.";
-
-        }
-
-        public ItemDescriptionDef ItemDescription = new ItemDescriptionDef();
-
-        public class ItemDescriptionDef
-        {
-
-            public string NotAvailable = "Not Available";
-            public string None = "None";
-            public string Seconds = "Seconds";
-
-            public string Currency = "Currency";
-            public string CommonEvent = "Event";
-            public string Furniture = "Furniture";
-            public string Potion = "Potion";
-            public string Skill = "Skill";
-
-            public string Weapon = "Weapon";
-            public string Armor = "Armor";
-            public string Helmet = "Helmet";
-            public string Shield = "Shield";
-            public string Shoes = "Shoes";
-            public string Gloves = "Gloves";
-
-            public string Amount = "Amount : ";
-            public string Restore = "Restore Amount : ";
-            public string Damage = "Damage : ";
-            public string Defense = "Defense : ";
-
-        }
-
-        public SkillDescriptionDef SkillDescription = new SkillDescriptionDef();
-        public class SkillDescriptionDef
-        {
-
-            public string No = "No";
-            public string None = "None";
-            public string Warp = "Warp";
-            public string Tiles = "Tiles";
-            public string SelfCast = "Self-Cast";
-
-            public string Gain = "Regen : ";
-            public string GainHp = "Regen HP";
-            public string GainMp = "Regen MP";
-            public string Lose = "Syphon : ";
-            public string LoseHp = "Syphon HP";
-            public string LoseMp = "Syphon MP";
-
-        }
-
-        public CraftingDef Crafting = new CraftingDef();
-        public class CraftingDef
-        {
-
-            public string NotEnough = "Not enough materials!";
-            public string NotSelected = "Nothing selected";
-
-        }
-
-        public TradeDef Trade = new TradeDef();
-        public class TradeDef
-        {
-
-            public string Request = "{0} is requesting to trade.";
-            public string Timeout = "You took too long to decide. Please try again.";
-
-            public string Value = "Total Value : {0}g";
-
-            public string StatusOther = "Other player confirmed offer.";
-            public string StatusSelf = "You confirmed the offer.";
-
-        }
-
-        public EventDef Events = new EventDef();
-        public class EventDef
-        {
-
-            public object OptContinue = "- Continue -";
-
-        }
-
-        public QuestDef Quest = new QuestDef();
-        public class QuestDef
-        {
-
-            public string Cancel = "Cancel Started";
-            public string Started = "Quest Started";
-            public string Completed = "Quest Completed";
-
-            // Quest Type
-            public string Slay = "Defeat {0}/{1} {2}.";
-            public string Collect = "Collect {0}/{1} {2}.";
-            public string Talk = "Go talk To {0}.";
-            public string Reach = "Go To {0}.";
-            public string TurnIn = "Give {0} the {1} {2}/{3} they requested.";
-            public string Kill = "Defeat {0}/{1} Players In Battle.";
-            public string Gather = "Gather {0}/{1} {2}.";
-            public string Fetch = "Fetch {0} X {1} from {2}.";
-
-        }
-
-        public CharacterDef Character = new CharacterDef();
-        public class CharacterDef
-        {
-
-            public string PName = "Name: ";
-            public string JobType = "Job: ";
-            public string Level = "Lv: ";
-            public string Exp = "Exp: ";
-
-            public string StatsLabel = "Stats:";
-            public string Strength = "Strength: ";
-            public string Endurance = "Endurance: ";
-            public string Vitality = "Vitality: ";
-            public string Intelligence = "Intelligence: ";
-            public string Luck = "Luck: ";
-            public string Spirit = "Spirit: ";
-            public string Points = "Points Available: ";
-
-            public string SkillLabel = "Skills:";
-
-        }
+        public List<KeyValuePair<string, string>> Character { get; set; } = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("PName", "Name: "),
+                new KeyValuePair<string, string>("JobType", "Job: "),
+                new KeyValuePair<string, string>("Level", "Lv: "),
+                new KeyValuePair<string, string>("Exp", "Exp: "),
+                new KeyValuePair<string, string>("StatsLabel", "Stats:"),
+                new KeyValuePair<string, string>("Strength", "Strength: "),
+                new KeyValuePair<string, string>("Endurance", "Endurance: "),
+                new KeyValuePair<string, string>("Vitality", "Vitality: "),
+                new KeyValuePair<string, string>("Intelligence", "Intelligence: "),
+                new KeyValuePair<string, string>("Luck", "Luck: "),
+                new KeyValuePair<string, string>("Spirit", "Spirit: "),
+                new KeyValuePair<string, string>("Points", "Points Available: "),
+                new KeyValuePair<string, string>("SkillLabel", "Skills:")
+            };
     }
 
-    public class Languages
+    public class LocalesManager
     {
-        public static LanguageDef Language = new LanguageDef();
+        public static Locales Language = new Locales();
 
         public static void Load()
         {
             string cf = Path.Config;
-            var x = new XmlSerializer(typeof(LanguageDef), new XmlRootAttribute("Language"));
+            var x = new XmlSerializer(typeof(Locales), new XmlRootAttribute("Language"));
 
             Directory.CreateDirectory(cf);
             cf += "Language.xml";
@@ -293,7 +241,7 @@ namespace Core
             }
 
             var reader = new StreamReader(cf);
-            Language = (LanguageDef)x.Deserialize(reader);
+            Language = (Locales)x.Deserialize(reader);
             reader.Close();
         }
     }

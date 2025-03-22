@@ -46,7 +46,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -57,7 +57,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -68,7 +68,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -93,7 +93,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -125,7 +125,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -146,7 +146,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -163,7 +163,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -197,7 +197,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -214,7 +214,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -231,7 +231,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -248,7 +248,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -265,7 +265,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -282,7 +282,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -299,7 +299,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -311,15 +311,11 @@ namespace Client
             GameState.AdminPanel = false;
         }
 
-        #endregion
-
-        #region Map Report
-
         private void BtnMapReport_Click(object sender, EventArgs e)
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
             NetworkSend.SendRequestMapReport();
@@ -329,7 +325,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -346,7 +342,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -357,7 +353,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -368,7 +364,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -385,7 +381,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText("You need to be a high enough staff member to do this!", (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 

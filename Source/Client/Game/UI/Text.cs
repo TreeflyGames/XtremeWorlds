@@ -617,7 +617,7 @@ namespace Client
 
         public static void DrawMapName()
         {
-            RenderText(Languages.Language.Game.MapName + Core.Type.MyMap.Name, (int)Math.Round(GameState.ResolutionWidth / 2d - GetTextWidth(Core.Type.MyMap.Name)), 10, GameState.DrawMapNameColor, Color.Black);
+            RenderText(Core.Type.MyMap.Name, (int)Math.Round(GameState.ResolutionWidth / 2d - GetTextWidth(Core.Type.MyMap.Name)), 10, GameState.DrawMapNameColor, Color.Black);
         }
 
         public static void DrawPlayerName(int index)

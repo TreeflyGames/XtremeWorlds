@@ -64,7 +64,7 @@ namespace Client
         public static void LoadGame()
         {
             Settings.Load();
-            Languages.Load();
+            LocalesManager.Load();
             CheckAnimations();
             CheckCharacters();
             CheckEmotes();
