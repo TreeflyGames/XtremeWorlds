@@ -27,7 +27,7 @@ namespace Server
 
     public class Database
     {
-        private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(5, 5);
+        private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(Settings.Instance.MaxSQLClients, Settings.Instance.MaxSQLClients);
 
         public static async Task CreateDatabaseAsync(string databaseName)
         {

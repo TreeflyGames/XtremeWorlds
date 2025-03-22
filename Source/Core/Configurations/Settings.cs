@@ -50,6 +50,8 @@ namespace Core
 
         public int SaveInterval { get; set; } = 5;
 
+        public int MaxSQLClients { get; set; } = 10;
+
         // Methods to load and save settings
         public static void Load()
         {
