@@ -37,6 +37,7 @@ namespace Server
         private static Stopwatch ShutDownTimer = new Stopwatch();
         private static int ShutDownLastTimer = 0;
         private static readonly ConcurrentDictionary<int, PlayerStats> PlayerStatistics = new();
+        private static TimeManager? TimeManager;
 
         static General()
         {
@@ -134,6 +135,7 @@ namespace Server
                 await InitializeCoreComponentsAsync();
                 await LoadGameDataAsync();
                 await StartGameLoopAsync(startTime);
+                TimeManager = new TimeManager();
             }
             catch (Exception ex)
             {
@@ -207,8 +209,7 @@ namespace Server
             var stopwatch = Stopwatch.StartNew();
             InitalizeCoreData();
             await LoadGameContentAsync();
-            await SpawnGameObjectsAsync();
-            Time.InitTime();
+            await SpawnGameObjectsAsync();           
             Logger.LogInformation($"Game data loaded in {stopwatch.ElapsedMilliseconds}ms");
         }
 
