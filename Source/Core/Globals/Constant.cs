@@ -39,7 +39,7 @@ namespace Core
         public const int NAX_VARIABLES = 100;
         public const byte MAX_POINTS = 255;
         public const byte MAX_CHARS = 3;
-        public const int CHAT_LINES = 200;
+        public const int CHAT_LINES = 1000;
         public const byte MAX_STATS = 255;
         public const byte MAX_QUESTS = 100;
         public const int MAX_EVENTS = 500;
