@@ -3,6 +3,7 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text;
 using static Core.Global.Command;
@@ -529,11 +530,13 @@ namespace Client
             string[] tmpArray;
             int x;
             Color Color2;
+            int width;
 
             // set the position
             xO = 19L;
             xO += Gui.Windows[Gui.GetWindowIndex("winChat")].Left;
             yO = GameState.ResolutionHeight - 40;
+            width = (int)Gui.Windows[Gui.GetWindowIndex("winChat")].Width;
 
             // loop through chat
             rLines = 1;
@@ -557,7 +560,7 @@ namespace Client
                         isVisible = false;
                 }
 
-                if (Settings.Instance.ChannelState[Core.Type.Chat[i].Channel] == 0)
+                if (SettingsManager.Instance.ChannelState[Core.Type.Chat[i].Channel] == 0)
                     isVisible = false;
 
                 // make sure it's visible
@@ -568,29 +571,30 @@ namespace Client
                     Color2 = GameClient.QbColorToXnaColor(Color);
 
                     // check if we need to word wrap
-                    if (GetTextWidth(Core.Type.Chat[i].Text) > GameState.ChatWidth)
+                    if (GetTextWidth(Core.Type.Chat[i].Text) > width)
                     {
                         // word wrap
                         string[] wrappedLines = null;
-                        WordWrap(Core.Type.Chat[(int)i].Text, Core.Enum.FontType.Georgia, (int)GameState.ChatWidth, ref wrappedLines);
-                        tmpText = string.Join(Environment.NewLine, wrappedLines);
+                        WordWrap(Core.Type.Chat[(int)i].Text, Core.Enum.FontType.Georgia, width, ref wrappedLines);
 
                         // can't have it going offscreen.
-                        if (rLines + wrappedLines.Length > 9)
+                        if (rLines + wrappedLines.Length >= 9)
                             break;
 
                         // continue on
                         yOffset = yOffset - 14 * wrappedLines.Length;
-                        RenderText(tmpText, (int)xO, (int)(yO + yOffset), Color2, Color2);
+                        for (int j = 0; j < wrappedLines.Length; j++)
+                        {
+                            RenderText(wrappedLines[j], (int)xO, (int)(yO + yOffset + 14 * j), Color2, Color2);
+                        }
                         rLines += wrappedLines.Length;
 
                         // set the top width
-                        tmpArray = Strings.Split(tmpText, Environment.NewLine);
-                        var loopTo = Information.UBound(tmpArray);
+                        var loopTo = Information.UBound(wrappedLines);
                         for (x = 0; x < loopTo; x++)
                         {
-                            if (GetTextWidth(tmpArray[x]) > topWidth)
-                                topWidth = GetTextWidth(tmpArray[x]);
+                            if (GetTextWidth(wrappedLines[x]) > topWidth)
+                                topWidth = GetTextWidth(wrappedLines[x]);
                         }
                     }
                     else
@@ -617,7 +621,7 @@ namespace Client
 
         public static void DrawMapName()
         {
-            RenderText(Languages.Language.Game.MapName + Core.Type.MyMap.Name, (int)Math.Round(GameState.ResolutionWidth / 2d - GetTextWidth(Core.Type.MyMap.Name)), 10, GameState.DrawMapNameColor, Color.Black);
+            RenderText(Core.Type.MyMap.Name, (int)Math.Round(GameState.ResolutionWidth / 2d - GetTextWidth(Core.Type.MyMap.Name)), 10, GameState.DrawMapNameColor, Color.Black);
         }
 
         public static void DrawPlayerName(int index)

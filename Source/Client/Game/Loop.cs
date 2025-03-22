@@ -358,7 +358,7 @@ namespace Client
 
                 if (tmr25 < tick)
                 {
-                    Sound.PlayMusic(Settings.Instance.MenuMusic);
+                    Sound.PlayMusic(SettingsManager.Instance.MenuMusic);
                     tmr25 = tick + 25;
                 }
             }

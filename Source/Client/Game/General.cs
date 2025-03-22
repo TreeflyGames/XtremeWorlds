@@ -46,8 +46,8 @@ namespace Client
 
         public static void LoadGame()
         {
-            Settings.Load();
-            Languages.Load();
+            SettingsManager.Load();
+            LocalesManager.Load();
             CheckAnimations();
             CheckCharacters();
             CheckEmotes();
@@ -288,9 +288,9 @@ namespace Client
 
         public static void CacheMusic()
         {
-            Sound.MusicCache = new string[Directory.GetFiles(Core.Path.Music, "*" + Settings.Instance.MusicExt).Count() + 1];
-            string[] files = Directory.GetFiles(Core.Path.Music, "*" + Settings.Instance.MusicExt);
-            string maxNum = Directory.GetFiles(Core.Path.Music, "*" + Settings.Instance.MusicExt).Count().ToString();
+            Sound.MusicCache = new string[Directory.GetFiles(Core.Path.Music, "*" + SettingsManager.Instance.MusicExt).Count() + 1];
+            string[] files = Directory.GetFiles(Core.Path.Music, "*" + SettingsManager.Instance.MusicExt);
+            string maxNum = Directory.GetFiles(Core.Path.Music, "*" + SettingsManager.Instance.MusicExt).Count().ToString();
             int counter = 0;
 
             foreach (var FileName in files)
@@ -302,9 +302,9 @@ namespace Client
 
         public static void CacheSound()
         {
-            Sound.SoundCache = new string[Directory.GetFiles(Core.Path.Sounds, "*" + Settings.Instance.SoundExt).Count() + 1];
-            string[] files = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.Instance.SoundExt);
-            string maxNum = Directory.GetFiles(Core.Path.Sounds, "*" + Settings.Instance.SoundExt).Count().ToString();
+            Sound.SoundCache = new string[Directory.GetFiles(Core.Path.Sounds, "*" + SettingsManager.Instance.SoundExt).Count() + 1];
+            string[] files = Directory.GetFiles(Core.Path.Sounds, "*" + SettingsManager.Instance.SoundExt);
+            string maxNum = Directory.GetFiles(Core.Path.Sounds, "*" + SettingsManager.Instance.SoundExt).Count().ToString();
             int counter = 0;
 
             foreach (var FileName in files)
@@ -317,7 +317,7 @@ namespace Client
         public static void GameInit()
         {
             // Send a request to the server to open the admin menu if the user wants it.
-            if (Settings.Instance.OpenAdminPanelOnLogin == true)
+            if (SettingsManager.Instance.OpenAdminPanelOnLogin == true)
             {
                 if (GetPlayerAccess(GameState.MyIndex) > 0)
                 {
