@@ -104,9 +104,17 @@ namespace Server
         /// <summary>
         /// Validates a username based on length and allowed characters.
         /// </summary>
-        public static bool IsValidUsername(string username) =>
-            !string.IsNullOrWhiteSpace(username) &&
-            Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$");
+        public static int IsValidUsername(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                return -1;
+
+            if (username.Length < Core.Constant.MIN_NAME_LENGTH || username.Length > Core.Constant.NAME_LENGTH)
+                return 0;
+
+            return Regex.IsMatch(username, @"^[a-zA-Z0-9_ ]+$") ? 1 : -1;
+        }
+
 
         /// <summary>
         /// Gets the current server time synchronized across all operations.
