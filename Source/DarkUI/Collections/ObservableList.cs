@@ -1,17 +1,21 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections;
+using System.Runtime.Serialization;
 using System.Threading;
 
 namespace DarkUI.Collections
 {
-    public class ObservableList<T> : IList<T>, IDisposable, IReadOnlyList<T>
+    [Serializable]
+    public class ObservableList<T> : IList<T>, IDisposable, IReadOnlyList<T>, ISerializable
     {
         #region Fields
 
         private readonly List<T> _innerList;
         private readonly ReaderWriterLockSlim _lock;
+        private readonly Stack<Change> _undoStack;
+        private readonly Stack<Change> _redoStack;
         private bool _disposed;
         private bool _isReadOnly;
         private int _updateCount = 0;
@@ -25,7 +29,10 @@ namespace DarkUI.Collections
         public event EventHandler<ObservableListModified<T>> ItemsRemoved;
         public event EventHandler<ObservableListModified<T>> ItemsModified;
         public event EventHandler<ObservableListMoved<T>> ItemsMoved;
+        public event EventHandler<ItemInsertedEventArgs<T>> ItemInserted;
+        public event EventHandler<ItemReplacedEventArgs<T>> ItemReplaced;
         public event EventHandler<EventArgs> CollectionChanged;
+        public event EventHandler<EventArgs> CollectionReset;
 
         #endregion
 
@@ -35,6 +42,8 @@ namespace DarkUI.Collections
         {
             _innerList = new List<T>();
             _lock = new ReaderWriterLockSlim();
+            _undoStack = new Stack<Change>();
+            _redoStack = new Stack<Change>();
             _isReadOnly = false;
         }
 
@@ -42,6 +51,8 @@ namespace DarkUI.Collections
         {
             _innerList = new List<T>(capacity);
             _lock = new ReaderWriterLockSlim();
+            _undoStack = new Stack<Change>();
+            _redoStack = new Stack<Change>();
             _isReadOnly = false;
         }
 
@@ -49,7 +60,19 @@ namespace DarkUI.Collections
         {
             _innerList = new List<T>(collection);
             _lock = new ReaderWriterLockSlim();
+            _undoStack = new Stack<Change>();
+            _redoStack = new Stack<Change>();
             _isReadOnly = false;
+        }
+
+        // Serialization constructor
+        protected ObservableList(SerializationInfo info, StreamingContext context)
+        {
+            _innerList = (List<T>)info.GetValue("Items", typeof(List<T>));
+            _lock = new ReaderWriterLockSlim();
+            _undoStack = new Stack<Change>();
+            _redoStack = new Stack<Change>();
+            _isReadOnly = info.GetBoolean("IsReadOnly");
         }
 
         #endregion
@@ -74,8 +97,11 @@ namespace DarkUI.Collections
             try
             {
                 CheckReadOnly();
+                int index = _innerList.Count;
                 _innerList.Add(item);
+                RecordChange(ChangeType.Add, index, null, item);
                 OnItemsAdded(new List<T> { item });
+                OnItemInserted(index, item);
             }
             finally
             {
@@ -91,7 +117,9 @@ namespace DarkUI.Collections
                 CheckReadOnly();
                 var items = collection.ToList();
                 if (items.Count == 0) return;
+                int startIndex = _innerList.Count;
                 _innerList.AddRange(items);
+                RecordChange(ChangeType.AddRange, startIndex, null, items);
                 OnItemsAdded(items);
             }
             finally
@@ -109,6 +137,7 @@ namespace DarkUI.Collections
                 int index = _innerList.IndexOf(item);
                 if (index < 0) return false;
                 _innerList.RemoveAt(index);
+                RecordChange(ChangeType.Remove, index, item, null);
                 OnItemsRemoved(new List<T> { item });
                 return true;
             }
@@ -127,6 +156,7 @@ namespace DarkUI.Collections
                 ValidateIndex(index);
                 var item = _innerList[index];
                 _innerList.RemoveAt(index);
+                RecordChange(ChangeType.Remove, index, item, null);
                 OnItemsRemoved(new List<T> { item });
             }
             finally
@@ -144,7 +174,9 @@ namespace DarkUI.Collections
                 if (_innerList.Count == 0) return;
                 var removedItems = new List<T>(_innerList);
                 _innerList.Clear();
+                RecordChange(ChangeType.Clear, 0, removedItems, null);
                 OnItemsRemoved(removedItems);
+                OnCollectionReset();
             }
             finally
             {
@@ -160,7 +192,9 @@ namespace DarkUI.Collections
                 CheckReadOnly();
                 ValidateIndex(index, true);
                 _innerList.Insert(index, item);
+                RecordChange(ChangeType.Insert, index, null, item);
                 OnItemsAdded(new List<T> { item });
+                OnItemInserted(index, item);
             }
             finally
             {
@@ -208,6 +242,86 @@ namespace DarkUI.Collections
 
         #endregion
 
+        #region Undo/Redo Support
+
+        public void Undo()
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                if (_undoStack.Count == 0) return;
+                var change = _undoStack.Pop();
+                ApplyChange(change, reverse: true);
+                _redoStack.Push(change);
+                OnCollectionChanged();
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public void Redo()
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnly();
+                if (_redoStack.Count == 0) return;
+                var change = _redoStack.Pop();
+                ApplyChange(change, reverse: false);
+                _undoStack.Push(change);
+                OnCollectionChanged();
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        private void RecordChange(ChangeType type, int index, object oldValue, object newValue)
+        {
+            if (_updateCount > 0) return; // No history during batch updates
+            _undoStack.Push(new Change(type, index, oldValue, newValue));
+            _redoStack.Clear();
+        }
+
+        private void ApplyChange(Change change, bool reverse)
+        {
+            switch (change.Type)
+            {
+                case ChangeType.Add:
+                    if (reverse) _innerList.RemoveAt(change.Index);
+                    else _innerList.Insert(change.Index, (T)change.NewValue);
+                    break;
+                case ChangeType.Remove:
+                    if (reverse) _innerList.Insert(change.Index, (T)change.OldValue);
+                    else _innerList.RemoveAt(change.Index);
+                    break;
+                case ChangeType.Insert:
+                    if (reverse) _innerList.RemoveAt(change.Index);
+                    else _innerList.Insert(change.Index, (T)change.NewValue);
+                    break;
+                case ChangeType.Replace:
+                    var (oldItem, newItem) = ((T Old, T New))change.NewValue;
+                    _innerList[change.Index] = reverse ? oldItem : newItem;
+                    break;
+                case ChangeType.AddRange:
+                    var items = (IList<T>)change.NewValue;
+                    if (reverse) _innerList.RemoveRange(change.Index, items.Count);
+                    else _innerList.InsertRange(change.Index, items);
+                    break;
+                case ChangeType.Clear:
+                    var oldItems = (IList<T>)change.OldValue;
+                    if (reverse) _innerList.AddRange(oldItems);
+                    else _innerList.Clear();
+                    break;
+            }
+        }
+
+        #endregion
+
         #region Additional Features
 
         public void SetReadOnly(bool readOnly)
@@ -223,6 +337,8 @@ namespace DarkUI.Collections
             }
         }
 
+        public IReadOnlyList<T> AsReadOnly() => _innerList.AsReadOnly();
+
         public void Replace(T oldItem, T newItem)
         {
             _lock.EnterWriteLock();
@@ -232,7 +348,9 @@ namespace DarkUI.Collections
                 int index = _innerList.IndexOf(oldItem);
                 if (index < 0) throw new ArgumentException("Item not found in collection");
                 _innerList[index] = newItem;
+                RecordChange(ChangeType.Replace, index, null, (oldItem, newItem));
                 OnItemsModified(new List<(T OldItem, T NewItem)> { (oldItem, newItem) });
+                OnItemReplaced(oldItem, newItem);
             }
             finally
             {
@@ -246,10 +364,7 @@ namespace DarkUI.Collections
             try
             {
                 CheckReadOnly();
-                if (comparer == null)
-                    _innerList.Sort();
-                else
-                    _innerList.Sort(comparer);
+                _innerList.Sort(comparer ?? Comparer<T>.Default);
                 OnCollectionChanged();
             }
             finally
@@ -273,21 +388,6 @@ namespace DarkUI.Collections
             }
         }
 
-        public void Sort(int index, int count, IComparer<T> comparer)
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                CheckReadOnly();
-                _innerList.Sort(index, count, comparer);
-                OnCollectionChanged();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-
         public void Reverse()
         {
             _lock.EnterWriteLock();
@@ -295,21 +395,6 @@ namespace DarkUI.Collections
             {
                 CheckReadOnly();
                 _innerList.Reverse();
-                OnCollectionChanged();
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-
-        public void Reverse(int index, int count)
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                CheckReadOnly();
-                _innerList.Reverse(index, count);
                 OnCollectionChanged();
             }
             finally
@@ -344,6 +429,19 @@ namespace DarkUI.Collections
             }
         }
 
+        public T FindLast(Predicate<T> match)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.FindLast(match);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
         public int FindIndex(Predicate<T> match)
         {
             _lock.EnterReadLock();
@@ -357,17 +455,30 @@ namespace DarkUI.Collections
             }
         }
 
+        public int FindLastIndex(Predicate<T> match)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _innerList.FindLastIndex(match);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
         public void RemoveRange(int index, int count)
         {
             _lock.EnterWriteLock();
             try
             {
                 CheckReadOnly();
-                if (index < 0 || count < 0 || index + count > _innerList.Count)
-                    throw new ArgumentOutOfRangeException();
+                ValidateRange(index, count);
                 if (count == 0) return;
                 var removedItems = _innerList.GetRange(index, count);
                 _innerList.RemoveRange(index, count);
+                RecordChange(ChangeType.AddRange, index, removedItems, null); // For undo
                 OnItemsRemoved(removedItems);
             }
             finally
@@ -386,6 +497,7 @@ namespace DarkUI.Collections
                 var items = collection.ToList();
                 if (items.Count == 0) return;
                 _innerList.InsertRange(index, items);
+                RecordChange(ChangeType.AddRange, index, null, items);
                 OnItemsAdded(items);
             }
             finally
@@ -414,74 +526,12 @@ namespace DarkUI.Collections
             }
         }
 
-        public void ReplaceRange(int index, int count, IEnumerable<T> newItems)
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                CheckReadOnly();
-                if (index < 0 || count < 0 || index + count > _innerList.Count)
-                    throw new ArgumentOutOfRangeException();
-                var newList = newItems.ToList();
-                if (count == newList.Count)
-                {
-                    var changes = new List<(T, T)>();
-                    for (int i = 0; i < count; i++)
-                    {
-                        var oldItem = _innerList[index + i];
-                        var newItem = newList[i];
-                        _innerList[index + i] = newItem;
-                        changes.Add((oldItem, newItem));
-                    }
-                    OnItemsModified(changes);
-                }
-                else
-                {
-                    var removedItems = _innerList.GetRange(index, count);
-                    _innerList.RemoveRange(index, count);
-                    _innerList.InsertRange(index, newList);
-                    OnItemsRemoved(removedItems);
-                    OnItemsAdded(newList);
-                }
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-
         public T[] ToArray()
         {
             _lock.EnterReadLock();
             try
             {
                 return _innerList.ToArray();
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-        }
-
-        public List<T> GetRange(int index, int count)
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return _innerList.GetRange(index, count);
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-        }
-
-        public int BinarySearch(T item)
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return _innerList.BinarySearch(item);
             }
             finally
             {
@@ -516,7 +566,9 @@ namespace DarkUI.Collections
                 ValidateIndex(index);
                 var oldItem = _innerList[index];
                 _innerList[index] = value;
+                RecordChange(ChangeType.Replace, index, null, (oldItem, value));
                 OnItemsModified(new List<(T OldItem, T NewItem)> { (oldItem, value) });
+                OnItemReplaced(oldItem, value);
             }
             finally
             {
@@ -537,15 +589,21 @@ namespace DarkUI.Collections
                 throw new ArgumentOutOfRangeException(nameof(index));
         }
 
+        private void ValidateRange(int index, int count)
+        {
+            if (index < 0 || count < 0 || index + count > Count)
+                throw new ArgumentOutOfRangeException();
+        }
+
         #endregion
 
         #region Event Raising Methods
 
         protected virtual void OnItemsAdded(IList<T> items)
         {
-            if (_updateCount == 0)
+            if (_updateCount == 0 && ItemsAdded != null)
             {
-                ItemsAdded?.Invoke(this, new ObservableListModified<T>(items));
+                ItemsAdded(this, new ObservableListModified<T>(items));
                 OnCollectionChanged();
             }
             else
@@ -556,9 +614,9 @@ namespace DarkUI.Collections
 
         protected virtual void OnItemsRemoved(IList<T> items)
         {
-            if (_updateCount == 0)
+            if (_updateCount == 0 && ItemsRemoved != null)
             {
-                ItemsRemoved?.Invoke(this, new ObservableListModified<T>(items));
+                ItemsRemoved(this, new ObservableListModified<T>(items));
                 OnCollectionChanged();
             }
             else
@@ -569,9 +627,9 @@ namespace DarkUI.Collections
 
         protected virtual void OnItemsModified(IList<(T OldItem, T NewItem)> changes)
         {
-            if (_updateCount == 0)
+            if (_updateCount == 0 && ItemsModified != null)
             {
-                ItemsModified?.Invoke(this, new ObservableListModified<T>(changes));
+                ItemsModified(this, new ObservableListModified<T>(changes));
                 OnCollectionChanged();
             }
             else
@@ -582,9 +640,35 @@ namespace DarkUI.Collections
 
         protected virtual void OnItemsMoved(T item, int oldIndex, int newIndex)
         {
-            if (_updateCount == 0)
+            if (_updateCount == 0 && ItemsMoved != null)
             {
-                ItemsMoved?.Invoke(this, new ObservableListMoved<T>(item, oldIndex, newIndex));
+                ItemsMoved(this, new ObservableListMoved<T>(item, oldIndex, newIndex));
+                OnCollectionChanged();
+            }
+            else
+            {
+                _hasChanges = true;
+            }
+        }
+
+        protected virtual void OnItemInserted(int index, T item)
+        {
+            if (_updateCount == 0 && ItemInserted != null)
+            {
+                ItemInserted(this, new ItemInsertedEventArgs<T>(index, item));
+                OnCollectionChanged();
+            }
+            else
+            {
+                _hasChanges = true;
+            }
+        }
+
+        protected virtual void OnItemReplaced(T oldItem, T newItem)
+        {
+            if (_updateCount == 0 && ItemReplaced != null)
+            {
+                ItemReplaced(this, new ItemReplacedEventArgs<T>(oldItem, newItem));
                 OnCollectionChanged();
             }
             else
@@ -595,9 +679,22 @@ namespace DarkUI.Collections
 
         protected virtual void OnCollectionChanged()
         {
-            if (_updateCount == 0)
+            if (_updateCount == 0 && CollectionChanged != null)
             {
-                CollectionChanged?.Invoke(this, EventArgs.Empty);
+                CollectionChanged(this, EventArgs.Empty);
+            }
+        }
+
+        protected virtual void OnCollectionReset()
+        {
+            if (_updateCount == 0 && CollectionReset != null)
+            {
+                CollectionReset(this, EventArgs.Empty);
+                OnCollectionChanged();
+            }
+            else
+            {
+                _hasChanges = true;
             }
         }
 
@@ -647,6 +744,20 @@ namespace DarkUI.Collections
         public IEnumerator<T> GetEnumerator() => _innerList.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                info.AddValue("Items", _innerList);
+                info.AddValue("IsReadOnly", _isReadOnly);
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
         #endregion
 
         #region Dispose Pattern
@@ -671,11 +782,16 @@ namespace DarkUI.Collections
                 try
                 {
                     _innerList.Clear();
+                    _undoStack.Clear();
+                    _redoStack.Clear();
                     ItemsAdded = null;
                     ItemsRemoved = null;
                     ItemsModified = null;
                     ItemsMoved = null;
+                    ItemInserted = null;
+                    ItemReplaced = null;
                     CollectionChanged = null;
+                    CollectionReset = null;
                 }
                 finally
                 {
@@ -688,6 +804,8 @@ namespace DarkUI.Collections
 
         #endregion
     }
+
+    #region Supporting Classes
 
     public class ObservableListModified<T> : EventArgs
     {
@@ -720,4 +838,54 @@ namespace DarkUI.Collections
             NewIndex = newIndex;
         }
     }
+
+    public class ItemInsertedEventArgs<T> : EventArgs
+    {
+        public int Index { get; }
+        public T Item { get; }
+        public ItemInsertedEventArgs(int index, T item)
+        {
+            Index = index;
+            Item = item;
+        }
+    }
+
+    public class ItemReplacedEventArgs<T> : EventArgs
+    {
+        public T OldItem { get; }
+        public T NewItem { get; }
+        public ItemReplacedEventArgs(T oldItem, T newItem)
+        {
+            OldItem = oldItem;
+            NewItem = newItem;
+        }
+    }
+
+    internal enum ChangeType
+    {
+        Add,
+        Remove,
+        Insert,
+        Replace,
+        AddRange,
+        Clear
+    }
+
+    internal class Change
+    {
+        public ChangeType Type { get; }
+        public int Index { get; }
+        public object OldValue { get; }
+        public object NewValue { get; }
+
+        public Change(ChangeType type, int index, object oldValue, object newValue)
+        {
+            Type = type;
+            Index = index;
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
+
+    #endregion
 }
