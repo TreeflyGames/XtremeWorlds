@@ -313,12 +313,6 @@ namespace Server
                     username = Global.EKeyPair.DecryptString(buffer.ReadString()).ToLower().Replace("\0", "");
                     password = Global.EKeyPair.DecryptString(buffer.ReadString()).Replace("\0", "");
 
-                    if (!General.IsValidUsername(username))
-                    {
-                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.Register);
-                        return;
-                    }
-
                     // Get the current executing assembly
                     var @assembly = Assembly.GetExecutingAssembly();
 
@@ -332,7 +326,15 @@ namespace Server
                         return;
                     }
 
-                    if (username.Length > Core.Constant.NAME_LENGTH | username.Length < Core.Constant.MIN_NAME_LENGTH)
+                    int x = General.IsValidUsername(username);
+
+                    // Check if the username is valid
+                    if (x == -1)
+                    {
+                        NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.Register);
+                        return;
+                    }
+                    else if (x == 0)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.Register);
                         return;
@@ -433,15 +435,17 @@ namespace Server
                     return;
                 }
 
-                if (name.Length > Core.Constant.NAME_LENGTH | name.Length < Core.Constant.MIN_NAME_LENGTH)
+                int x = General.IsValidUsername(name);
+
+                // Check if the username is valid
+                if (x == -1)
                 {
-                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.NewChar);
+                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.Register);
                     return;
                 }
-
-                if (!General.IsValidUsername(name))
+                else if (x == 0)
                 {
-                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameIllegal, (byte)MenuType.NewChar);
+                    NetworkSend.AlertMsg(index, (byte)DialogueMsg.NameLength, (byte)MenuType.Register);
                     return;
                 }
 
