@@ -30,7 +30,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Configuration");
+                return System.IO.Path.Combine(Local, "Config");
             }
         }
 
