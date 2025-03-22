@@ -90,8 +90,8 @@ namespace Server
                                 {
                                     General.GetShutDownTimer.Start();
                                 }
-                                Console.WriteLine("Server shutdown in " + Settings.Instance.ServerShutdown + " seconds!");
-                                NetworkSend.GlobalMsg("Server shutdown in " + Settings.Instance.ServerShutdown + " seconds!");
+                                Console.WriteLine("Server shutdown in " + SettingsManager.Instance.ServerShutdown + " seconds!");
+                                NetworkSend.GlobalMsg("Server shutdown in " + SettingsManager.Instance.ServerShutdown + " seconds!");
                             }
 
                             break;
@@ -235,8 +235,8 @@ namespace Server
                             double speed;
                             double.TryParse(parts[1], out speed);
                             Clock.Instance.GameSpeed = speed;
-                            Settings.Instance.TimeSpeed = speed;
-                            Settings.Save();
+                            SettingsManager.Instance.TimeSpeed = speed;
+                            SettingsManager.Save();
                             Console.WriteLine("Set GameSpeed to " + Clock.Instance.GameSpeed + " secs per seconds");
                             break;
                         }

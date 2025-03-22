@@ -131,7 +131,7 @@ namespace Client
 
         public GameClient()
         {
-            General.GetResolutionSize(Settings.Instance.Resolution, ref GameState.ResolutionWidth, ref GameState.ResolutionHeight);
+            General.GetResolutionSize(SettingsManager.Instance.Resolution, ref GameState.ResolutionWidth, ref GameState.ResolutionHeight);
 
             Graphics = new GraphicsDeviceManager(this);
 
@@ -139,10 +139,10 @@ namespace Client
             {
                 ref var withBlock = ref Graphics;
                 withBlock.GraphicsProfile = GraphicsProfile.Reach;
-                withBlock.IsFullScreen = Settings.Instance.Fullscreen;
+                withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
                 withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
                 withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
-                withBlock.SynchronizeWithVerticalRetrace = Settings.Instance.Vsync;
+                withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
                 withBlock.PreferHalfPixelOffset = true;
                 withBlock.PreferMultiSampling = true;
             }
@@ -166,7 +166,7 @@ namespace Client
 
         protected override void Initialize()
         {
-            Window.Title = Settings.Instance.GameName;
+            Window.Title = SettingsManager.Instance.GameName;
 
             // Create the RenderTarget2D with the same size as the screen
             RenderTarget = new RenderTarget2D(Graphics.GraphicsDevice, Graphics.GraphicsDevice.PresentationParameters.BackBufferWidth, Graphics.GraphicsDevice.PresentationParameters.BackBufferHeight, false, Graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);

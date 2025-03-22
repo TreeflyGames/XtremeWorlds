@@ -37,7 +37,7 @@ namespace Client
                 return;
             }
 
-            if (Conversions.ToInteger(Settings.Instance.Music) == 0 | !File.Exists(path))
+            if (Conversions.ToInteger(SettingsManager.Instance.Music) == 0 | !File.Exists(path))
             {
                 StopMusic();
                 return;
@@ -64,7 +64,7 @@ namespace Client
                 if (MusicStream != 0)
                 {
                     Bass.ChannelPlay(MusicStream);
-                    Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, Settings.Instance.MusicVolume / 100.0f);
+                    Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, SettingsManager.Instance.MusicVolume / 100.0f);
                     CurrentMusic = fileName;
                     FadeInSwitch = Conversions.ToBoolean(1);
                 }
@@ -143,7 +143,7 @@ namespace Client
             if (MusicStream != 0)
             {
                 Bass.ChannelPlay(MusicStream);
-                Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, Settings.Instance.MusicVolume / 100.0f);
+                Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, SettingsManager.Instance.MusicVolume / 100.0f);
             }
             else
             {
@@ -166,7 +166,7 @@ namespace Client
 
         public static void PlaySound(string fileName, int x, int y, bool looped = false)
         {
-            if (Conversions.ToInteger(Settings.Instance.Sound) == 0 | !File.Exists(Core.Path.Sounds + fileName))
+            if (Conversions.ToInteger(SettingsManager.Instance.Sound) == 0 | !File.Exists(Core.Path.Sounds + fileName))
                 return;
 
             try
@@ -199,7 +199,7 @@ namespace Client
 
         public static void PlayExtraSound(string fileName, bool looped = false)
         {
-            if (Conversions.ToInteger(Settings.Instance.Sound) == 0 | !File.Exists(Core.Path.Sounds + fileName))
+            if (Conversions.ToInteger(SettingsManager.Instance.Sound) == 0 | !File.Exists(Core.Path.Sounds + fileName))
                 return;
 
             try
@@ -209,7 +209,7 @@ namespace Client
                 ExtraSoundStream = Bass.CreateStream(Core.Path.Sounds + fileName, 0L, 0L, looped ? BassFlags.Loop : BassFlags.Default);
                 if (ExtraSoundStream != 0)
                 {
-                    Bass.ChannelSetAttribute(ExtraSoundStream, ChannelAttribute.Volume, Settings.Instance.SoundVolume / 100.0f);
+                    Bass.ChannelSetAttribute(ExtraSoundStream, ChannelAttribute.Volume, SettingsManager.Instance.SoundVolume / 100.0f);
                     Bass.ChannelPlay(ExtraSoundStream);
                 }
             }
@@ -236,7 +236,7 @@ namespace Client
             {
                 float currentVolume;
                 Bass.ChannelGetAttribute(MusicStream, ChannelAttribute.Volume, out currentVolume);
-                if (currentVolume < Settings.Instance.MusicVolume / 100.0f)
+                if (currentVolume < SettingsManager.Instance.MusicVolume / 100.0f)
                 {
                     Bass.ChannelSetAttribute(MusicStream, ChannelAttribute.Volume, currentVolume + 0.03f);
                 }
@@ -280,7 +280,7 @@ namespace Client
             if (GameState.InGame && x == GetPlayerX(GameState.MyIndex) && y == GetPlayerY(GameState.MyIndex))
             {
                 CalculateSoundVolumeRet = 1d;
-                CalculateSoundVolumeRet *= Settings.Instance.SoundVolume;
+                CalculateSoundVolumeRet *= SettingsManager.Instance.SoundVolume;
                 return CalculateSoundVolumeRet;
             }
 
@@ -328,7 +328,7 @@ namespace Client
                 CalculateSoundVolumeRet = 1d;
             }
 
-            CalculateSoundVolumeRet *= Settings.Instance.SoundVolume;
+            CalculateSoundVolumeRet *= SettingsManager.Instance.SoundVolume;
 
             return CalculateSoundVolumeRet;
         }
@@ -345,7 +345,7 @@ namespace Client
         public static void PlayWeatherSound(string fileName, bool looped = false)
         {
             // Check if sound is enabled and the file exists
-            if (!(Conversions.ToInteger(Settings.Instance.Sound) == 1) | !File.Exists(Core.Path.Sounds + fileName))
+            if (!(Conversions.ToInteger(SettingsManager.Instance.Sound) == 1) | !File.Exists(Core.Path.Sounds + fileName))
                 return;
 
             // Avoid reloading the same sound if it's already playing
@@ -363,7 +363,7 @@ namespace Client
             if (WeatherStream != 0)
             {
                 // Play the sound
-                Bass.ChannelSetAttribute(WeatherStream, ChannelAttribute.Volume, Settings.Instance.SoundVolume / 100.0f);
+                Bass.ChannelSetAttribute(WeatherStream, ChannelAttribute.Volume, SettingsManager.Instance.SoundVolume / 100.0f);
                 Bass.ChannelPlay(WeatherStream, false);
                 CurrentWeatherMusic = fileName;
             }

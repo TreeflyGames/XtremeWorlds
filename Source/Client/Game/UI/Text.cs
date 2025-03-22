@@ -557,7 +557,7 @@ namespace Client
                         isVisible = false;
                 }
 
-                if (Settings.Instance.ChannelState[Core.Type.Chat[i].Channel] == 0)
+                if (SettingsManager.Instance.ChannelState[Core.Type.Chat[i].Channel] == 0)
                     isVisible = false;
 
                 // make sure it's visible

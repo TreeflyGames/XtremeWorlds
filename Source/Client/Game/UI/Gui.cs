@@ -693,7 +693,7 @@ namespace Client
             UpdateLabel(Windows.Count, "lblPassword", 72L, 75L, 142L, 10L, "Password", Core.Enum.FontType.Arial, Color.White, Core.Enum.AlignmentType.Center, callback_norm: ref argcallback_norm7, callback_hover: ref argcallback_hover7, callback_mousedown: ref argcallback_mousedown7, callback_mousemove: ref argcallback_mousemove7, callback_dblclick: ref argcallback_dblclick7, enabled: ref enabled);
 
             // Textboxes
-            if (Settings.Instance.SaveUsername == true)
+            if (SettingsManager.Instance.SaveUsername == true)
             {
                 Action argcallback_norm8 = null;
                 Action argcallback_hover8 = null;
@@ -701,7 +701,7 @@ namespace Client
                 Action argcallback_mousemove8 = null;
                 Action argcallback_dblclick8 = null;
                 Action argcallback_enter = null;
-                UpdateTextbox(Windows.Count, "txtUsername", 67L, 55L, 142L, 19L, Settings.Instance.Username, Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Left, xOffset: 5L, yOffset: 3L, design_norm: (long)Core.Enum.DesignType.TextWhite, design_hover: (long)Core.Enum.DesignType.TextWhite, design_mousedown: (long)Core.Enum.DesignType.TextWhite, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8, callback_enter: ref argcallback_enter);
+                UpdateTextbox(Windows.Count, "txtUsername", 67L, 55L, 142L, 19L, SettingsManager.Instance.Username, Core.Enum.FontType.Arial, Core.Enum.AlignmentType.Left, xOffset: 5L, yOffset: 3L, design_norm: (long)Core.Enum.DesignType.TextWhite, design_hover: (long)Core.Enum.DesignType.TextWhite, design_mousedown: (long)Core.Enum.DesignType.TextWhite, callback_norm: ref argcallback_norm8, callback_hover: ref argcallback_hover8, callback_mousedown: ref argcallback_mousedown8, callback_mousemove: ref argcallback_mousemove8, callback_dblclick: ref argcallback_dblclick8, callback_enter: ref argcallback_enter);
             }
             else
             {
@@ -727,7 +727,7 @@ namespace Client
             Action argcallback_dblclick11 = null;
             Action argcallback_norm11 = null;
             Action argcallback_hover11 = null;
-            Gui.UpdateCheckBox(Windows.Count, "chkSaveUsername", 67L, 114L, 142L, value: Conversions.ToLong(Settings.Instance.SaveUsername), text: "Save Username?", font: Core.Enum.FontType.Arial, theDesign: (long)Core.Enum.DesignType.ChkNorm, callback_norm: ref argcallback_norm11, callback_hover: ref argcallback_hover11, callback_mousedown: ref argcallback_mousedown11, callback_mousemove: ref argcallback_mousemove11, callback_dblclick: ref argcallback_dblclick11);
+            Gui.UpdateCheckBox(Windows.Count, "chkSaveUsername", 67L, 114L, 142L, value: Conversions.ToLong(SettingsManager.Instance.SaveUsername), text: "Save Username?", font: Core.Enum.FontType.Arial, theDesign: (long)Core.Enum.DesignType.ChkNorm, callback_norm: ref argcallback_norm11, callback_hover: ref argcallback_hover11, callback_mousedown: ref argcallback_mousedown11, callback_mousemove: ref argcallback_mousemove11, callback_dblclick: ref argcallback_dblclick11);
 
             // Register Button
             var argcallback_mousedown12 = new Action(btnRegister_Click);
@@ -2841,14 +2841,14 @@ namespace Client
                 var withBlock = Windows[GetWindowIndex("winLogin")].Controls[GetControlIndex("winLogin", "chkSaveUsername")];
                 if (withBlock.Value == 0L) // set as false
                 {
-                    Settings.Instance.SaveUsername = Conversions.ToBoolean(0);
-                    Settings.Instance.Username = "";
-                    Settings.Save();
+                    SettingsManager.Instance.SaveUsername = Conversions.ToBoolean(0);
+                    SettingsManager.Instance.Username = "";
+                    SettingsManager.Save();
                 }
                 else
                 {
-                    Settings.Instance.SaveUsername = Conversions.ToBoolean(1);
-                    Settings.Save();
+                    SettingsManager.Instance.SaveUsername = Conversions.ToBoolean(1);
+                    SettingsManager.Save();
                 }
             }
         }
@@ -3334,38 +3334,38 @@ namespace Client
 
         public static void chkChat_Game()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Game] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGame")].Value;
-            Settings.Save();
+            SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Game] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGame")].Value;
+            SettingsManager.Save();
         }
 
         public static void chkChat_Map()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Map] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkMap")].Value;
-            Settings.Save();
+            SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Map] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkMap")].Value;
+            SettingsManager.Save();
         }
 
         public static void chkChat_Global()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Broadcast] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGlobal")].Value;
-            Settings.Save();
+            SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Broadcast] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGlobal")].Value;
+            SettingsManager.Save();
         }
 
         public static void chkChat_Party()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Party] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkParty")].Value;
-            Settings.Save();
+            SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Party] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkParty")].Value;
+            SettingsManager.Save();
         }
 
         public static void chkChat_Guild()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Guild] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGuild")].Value;
-            Settings.Save();
+            SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Guild] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkGuild")].Value;
+            SettingsManager.Save();
         }
 
         public static void chkChat_Player()
         {
-            Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Player] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkPlayer")].Value;
-            Settings.Save();
+            SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Player] = (byte)Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "chkPlayer")].Value;
+            SettingsManager.Save();
         }
 
         public static void btnChat_Up()
@@ -4546,12 +4546,12 @@ namespace Client
             // sort out the tabs
             {
                 var withBlock = Windows[GetWindowIndex("winChat")];
-                withBlock.Controls[GetControlIndex("winChat", "chkGame")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Game];
-                withBlock.Controls[GetControlIndex("winChat", "chkMap")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Map];
-                withBlock.Controls[GetControlIndex("winChat", "chkGlobal")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Broadcast];
-                withBlock.Controls[GetControlIndex("winChat", "chkParty")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Party];
-                withBlock.Controls[GetControlIndex("winChat", "chkGuild")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Guild];
-                withBlock.Controls[GetControlIndex("winChat", "chkPlayer")].Value = Settings.Instance.ChannelState[(int)Core.Enum.ChatChannel.Player];
+                withBlock.Controls[GetControlIndex("winChat", "chkGame")].Value = SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Game];
+                withBlock.Controls[GetControlIndex("winChat", "chkMap")].Value = SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Map];
+                withBlock.Controls[GetControlIndex("winChat", "chkGlobal")].Value = SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Broadcast];
+                withBlock.Controls[GetControlIndex("winChat", "chkParty")].Value = SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Party];
+                withBlock.Controls[GetControlIndex("winChat", "chkGuild")].Value = SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Guild];
+                withBlock.Controls[GetControlIndex("winChat", "chkPlayer")].Value = SettingsManager.Instance.ChannelState[(int)Core.Enum.ChatChannel.Player];
             }
         }
 
@@ -5923,9 +5923,9 @@ namespace Client
 
             // music
             Value = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "chkMusic")].Value;
-            if (Conversions.ToLong(Settings.Instance.Music) != Value)
+            if (Conversions.ToLong(SettingsManager.Instance.Music) != Value)
             {
-                Settings.Instance.Music = Conversions.ToBoolean(Value);
+                SettingsManager.Instance.Music = Conversions.ToBoolean(Value);
 
                 // let them know
                 if (Value == 0L)
@@ -5940,7 +5940,7 @@ namespace Client
                     if (GameState.InGame)
                         musicFile = Core.Type.MyMap.Music;
                     else
-                        musicFile = Conversions.ToString(Settings.Instance.Music);
+                        musicFile = Conversions.ToString(SettingsManager.Instance.Music);
                     if (!(musicFile == "None."))
                     {
                         Sound.PlayMusic(musicFile);
@@ -5954,9 +5954,9 @@ namespace Client
 
             // sound
             Value = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "chkSound")].Value;
-            if (Conversions.ToLong(Settings.Instance.Sound) != Value)
+            if (Conversions.ToLong(SettingsManager.Instance.Sound) != Value)
             {
-                Settings.Instance.Sound = Conversions.ToBoolean(Value);
+                SettingsManager.Instance.Sound = Conversions.ToBoolean(Value);
                 // let them know
                 if (Value == 0L)
                 {
@@ -5970,9 +5970,9 @@ namespace Client
 
             // autotiles
             Value = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "chkAutotile")].Value;
-            if (Conversions.ToLong(Settings.Instance.Autotile) != Value)
+            if (Conversions.ToLong(SettingsManager.Instance.Autotile) != Value)
             {
-                Settings.Instance.Autotile = Conversions.ToBoolean(Value);
+                SettingsManager.Instance.Autotile = Conversions.ToBoolean(Value);
                 // let them know
                 if (Value == 0L)
                 {
@@ -5991,9 +5991,9 @@ namespace Client
 
             // fullscreen
             Value = Windows[GetWindowIndex("winOptions")].Controls[GetControlIndex("winOptions", "chkFullscreen")].Value;
-            if (Conversions.ToLong(Settings.Instance.Fullscreen) != Value)
+            if (Conversions.ToLong(SettingsManager.Instance.Fullscreen) != Value)
             {
-                Settings.Instance.Fullscreen = Conversions.ToBoolean(Value);
+                SettingsManager.Instance.Fullscreen = Conversions.ToBoolean(Value);
                 message = Conversions.ToBoolean(1);
             }
 
@@ -6007,7 +6007,7 @@ namespace Client
             }
 
             // save options
-            Settings.Save();
+            SettingsManager.Save();
 
             // let them know
             if (GameState.InGame)

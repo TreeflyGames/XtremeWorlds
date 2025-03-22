@@ -224,17 +224,17 @@ namespace Client
             if (!Information.IsNumeric(Instance.txtMaxX.Text))
                 Instance.txtMaxX.Text = Core.Type.MyMap.MaxX.ToString();
 
-            if (Conversion.Val(Instance.txtMaxX.Text) < Settings.Instance.CameraWidth)
+            if (Conversion.Val(Instance.txtMaxX.Text) < SettingsManager.Instance.CameraWidth)
 
-                Instance.txtMaxX.Text = Settings.Instance.CameraWidth.ToString();
+                Instance.txtMaxX.Text = SettingsManager.Instance.CameraWidth.ToString();
             if (Conversion.Val(Instance.txtMaxX.Text) > byte.MaxValue)
 
                 Instance.txtMaxX.Text = byte.MaxValue.ToString();
             if (!Information.IsNumeric(Instance.txtMaxY.Text))
                 Instance.txtMaxY.Text = Core.Type.MyMap.MaxY.ToString();
 
-            if (Conversion.Val(Instance.txtMaxY.Text) < Settings.Instance.CameraHeight)
-                Instance.txtMaxY.Text = Settings.Instance.CameraHeight.ToString();
+            if (Conversion.Val(Instance.txtMaxY.Text) < SettingsManager.Instance.CameraHeight)
+                Instance.txtMaxY.Text = SettingsManager.Instance.CameraHeight.ToString();
 
             if (Conversion.Val(Instance.txtMaxY.Text) > byte.MaxValue)
                 Instance.txtMaxY.Text = byte.MaxValue.ToString();
@@ -657,7 +657,7 @@ namespace Client
                 string selectedFile = lstMusic.Items[lstMusic.SelectedIndex].ToString();
 
                 // If the selected music file is a MIDI file
-                if (Settings.Instance.MusicExt == ".mid")
+                if (SettingsManager.Instance.MusicExt == ".mid")
                 {
                     Sound.PlayMidi(System.IO.Path.Combine(Core.Path.Music, selectedFile));
                 }

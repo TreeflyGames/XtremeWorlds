@@ -479,9 +479,9 @@ namespace Server
         public static void SendWelcome(int index)
         {
             // Send them welcome
-            if (Settings.Instance.Welcome.Length > 0)
+            if (SettingsManager.Instance.Welcome.Length > 0)
             {
-                PlayerMsg(index, Settings.Instance.Welcome, (int)(int) ColorType.BrightCyan);
+                PlayerMsg(index, SettingsManager.Instance.Welcome, (int)(int) ColorType.BrightCyan);
             }
 
             // Send whos online

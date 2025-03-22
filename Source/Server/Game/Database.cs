@@ -27,7 +27,7 @@ namespace Server
 
     public class Database
     {
-        private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(Settings.Instance.MaxSQLClients, Settings.Instance.MaxSQLClients);
+        private static readonly SemaphoreSlim connectionSemaphore = new SemaphoreSlim(SettingsManager.Instance.MaxSQLClients, SettingsManager.Instance.MaxSQLClients);
 
         public static async Task CreateDatabaseAsync(string databaseName)
         {
@@ -1849,7 +1849,7 @@ namespace Server
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
-            NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + Settings.Instance.GameName + " by " + "the Server" + "!");
+            NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + SettingsManager.Instance.GameName + " by " + "the Server" + "!");
             Core.Log.Add("The Server" + " has banned " + GetPlayerName(BanPlayerindex) + ".", Constant.ADMIN_LOG);
             NetworkSend.AlertMsg(BanPlayerindex, (int)DialogueMsg.Banned);
         }
@@ -1918,7 +1918,7 @@ namespace Server
 
             IP = Strings.Mid(IP, 1, i);
             Core.Log.AddTextToFile(IP, "banlist.txt");
-            NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + Settings.Instance.GameName + " by " + GetPlayerName(BannedByindex) + "!");
+            NetworkSend.GlobalMsg(GetPlayerName(BanPlayerindex) + " has been banned from " + SettingsManager.Instance.GameName + " by " + GetPlayerName(BannedByindex) + "!");
             Core.Log.Add(GetPlayerName(BannedByindex) + " has banned " + GetPlayerName(BanPlayerindex) + ".", Constant.ADMIN_LOG);
             NetworkSend.AlertMsg(BanPlayerindex, (int)DialogueMsg.Banned);
         }

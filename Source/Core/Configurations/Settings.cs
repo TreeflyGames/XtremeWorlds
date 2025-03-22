@@ -4,11 +4,11 @@ using System.Xml.Serialization;
 
 namespace Core
 {
-    public class Settings
+    public class SettingsManager
     {
         // Singleton instance
-        private static Settings _instance;
-        public static Settings Instance => _instance ??= new Settings();
+        private static SettingsManager _instance;
+        public static SettingsManager Instance => _instance ??= new SettingsManager();
 
         // Settings fields
         public string Language { get; set; } = "English";
@@ -63,13 +63,13 @@ namespace Core
                 try
                 {
                     using var reader = new StreamReader(configFile);
-                    var serializer = new XmlSerializer(typeof(Settings));
-                    _instance = (Settings)serializer.Deserialize(reader);
+                    var serializer = new XmlSerializer(typeof(SettingsManager));
+                    _instance = (SettingsManager)serializer.Deserialize(reader);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Failed to load settings: " + ex.Message);
-                    _instance = new Settings();
+                    _instance = new SettingsManager();
                 }
             }
             else
@@ -88,7 +88,7 @@ namespace Core
             try
             {
                 using var writer = new StreamWriter(configFile);
-                var serializer = new XmlSerializer(typeof(Settings));
+                var serializer = new XmlSerializer(typeof(SettingsManager));
                 serializer.Serialize(writer, Instance);
             }
             catch (Exception ex)
