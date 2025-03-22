@@ -32,7 +32,7 @@ namespace Core
         public byte CameraHeight { get; set; } = 24;
         public bool OpenAdminPanelOnLogin { get; set; } = true;
         public bool DynamicLightRendering { get; set; } = true;
-        public byte[] ChannelState { get; set; } = new byte[7];
+        public byte[] ChannelState { get; set; } = { 1, 1, 1, 1, 1, 1, 1 };
 
         public string IP { get; set; } = "127.0.0.1";
         public int Port { get; set; } = 7001;
