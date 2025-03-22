@@ -86,7 +86,8 @@ namespace Server
             }
             foreach (var server in servers)
             {
-                await server.SendTimeAsync(_clock.Time);
+                //TODO: Add server packet sending logic here
+                //await server.SendTimeAsync(_clock.Time);
             }
         }
 
@@ -114,7 +115,7 @@ namespace Server
             using (var buffer = new ByteStream(4))
             {
                 buffer.WriteInt32((int)ServerPackets.SClock);
-                buffer.WriteInt32(_clock.GameSpeed);
+                buffer.WriteInt32((int)_clock.GameSpeed);
                 buffer.WriteBytes(BitConverter.GetBytes(_clock.Time.Ticks));
                 NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
             }
