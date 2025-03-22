@@ -4528,7 +4528,7 @@ namespace Client
 
             // Chat Textbox
             Action argcallback_enter = null;
-            UpdateTextbox(Windows.Count, "txtChat", 12L, 127 + 16, 286L, 25L, font: Core.Enum.FontType.Georgia, visible: false, length: Constant.CHAT_LENGTH, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick, callback_enter: ref argcallback_enter);
+            UpdateTextbox(Windows.Count, "txtChat", 12L, 127 + 16, 296L, 25L, font: Core.Enum.FontType.Georgia, visible: false, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick, callback_enter: ref argcallback_enter);
 
             // Buttons
             argcallback_norm = new Action(btnChat_Up);
