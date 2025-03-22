@@ -298,7 +298,7 @@ namespace Client
                 }
                 else
                 {
-                    Text.AddText(Languages.Language.Chat.PlayerMsg, (int)Core.Enum.ColorType.Yellow);
+                    Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "PlayerMsg"), (int)Core.Enum.ColorType.Yellow);
                 }
 
                 goto Continue1;
@@ -315,7 +315,7 @@ namespace Client
                             // Checks to make sure we have more than one string in the array
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.Emote, (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "Emote"), (int)Core.Enum.ColorType.Yellow);
                                 goto Continue1;
                             }
 
@@ -325,12 +325,12 @@ namespace Client
 
                     case "/help":
                         {
-                            Text.AddText(Languages.Language.Chat.Help1, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help2, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help3, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help4, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help5, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Help6, (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "Help1"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help2"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help3"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help4"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help5"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Help6"), (int)Core.Enum.ColorType.Yellow);
                             break;
                         }
 
@@ -348,7 +348,7 @@ namespace Client
                             // Checks to make sure we have more than one string in the array
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.Info, (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Info"), (int)Core.Enum.ColorType.Yellow);
                                 goto Continue1;
                             }
 
@@ -407,7 +407,7 @@ namespace Client
                             // Make sure they are actually sending something
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.Party, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Party"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -444,7 +444,7 @@ namespace Client
                             // Make sure they are actually sending something
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.Trade, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Trade"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -458,14 +458,14 @@ namespace Client
                         {
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
-                            Text.AddText(Languages.Language.Chat.Admin1, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.Admin2, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.AdminGblMsg, (int)Core.Enum.ColorType.Yellow);
-                            Text.AddText(Languages.Language.Chat.AdminPvtMsg, (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Admin1"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Admin2"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "AdminGblMsg"), (int)Core.Enum.ColorType.Yellow);
+                            Text.AddText(Core.LocalesManager.Language.GetValueByKey("Chat", "AdminPvtMsg"), (int)Core.Enum.ColorType.Yellow);
                             break;
                         }
 
@@ -481,13 +481,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "AccessAlert"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.Kick, (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Kick"), (int)Core.Enum.ColorType.Yellow);
                                 goto Continue1;
                             }
 
@@ -502,7 +502,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -516,13 +516,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.WarpMeTo, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "WarpMeTo"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -536,13 +536,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.WarpToMe, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "WarpToMe"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -556,26 +556,26 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.WarpTo, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "WarpTo"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             n = Conversions.ToInteger(command[1]);
 
                             // Check to make sure its a valid map #
-                            if (n > 0 & n < Constant.MAX_MAPS)
+                            if (n >= 0 & n < Constant.MAX_MAPS)
                             {
                                 NetworkSend.WarpTo(n);
                             }
                             else
                             {
-                                Text.AddText(Languages.Language.Chat.InvalidMap, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Game", "InvalidMap"), (int)Core.Enum.ColorType.BrightRed);
                             }
 
                             break;
@@ -587,13 +587,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1 || !Information.IsNumeric(command[1]))
                             {
-                                Text.AddText(Languages.Language.Chat.Sprite, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Sprite"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -607,7 +607,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -621,7 +621,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -634,7 +634,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -649,13 +649,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1)
                             {
-                                Text.AddText(Languages.Language.Chat.Welcome, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Welcome"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -669,7 +669,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -683,13 +683,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Moderator)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if (Information.UBound(command) < 1)
                             {
-                                Text.AddText(Languages.Language.Chat.Ban, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Ban"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -704,7 +704,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -717,13 +717,13 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
                             if ((Information.UBound(command) < 2 || Information.IsNumeric(command[1])) | !Information.IsNumeric(command[2]))
                             {
-                                Text.AddText(Languages.Language.Chat.Access, (int)Core.Enum.ColorType.Yellow);
+                                Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "Access"), (int)Core.Enum.ColorType.Yellow);
                                 goto Continue1;
                             }
 
@@ -737,7 +737,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -750,7 +750,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -763,7 +763,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -776,7 +776,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -789,7 +789,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -802,7 +802,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -815,7 +815,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -828,7 +828,7 @@ namespace Client
 
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -840,7 +840,7 @@ namespace Client
                         {
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -852,7 +852,7 @@ namespace Client
                         {
                             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
                             {
-                                Text.AddText(Languages.Language.Chat.AccessAlert, (int)Core.Enum.ColorType.BrightRed);
+                                Text.AddText(Core.LocalesManager.Language.GetValueByKey("Game", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                                 goto Continue1;
                             }
 
@@ -860,14 +860,14 @@ namespace Client
                             break;
                         }
 
-                    case var @case when @case == "":
+                    case "":
                         {
                             break;
                         }
 
                     default:
                         {
-                            Text.AddText(Languages.Language.Chat.InvalidCmd, (int)Core.Enum.ColorType.BrightRed);
+                            Text.AddText(LocalesManager.Language.GetValueByKey("Chat", "InvalidCmd"), (int)Core.Enum.ColorType.BrightRed);
                             break;
                         }
                 }
@@ -2041,11 +2041,11 @@ namespace Client
             // fill the options screen
             {
                 var withBlock = Gui.Windows[Gui.GetWindowIndex("winOptions")];
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkMusic")].Value = Conversions.ToLong(Settings.Instance.Music);
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkSound")].Value = Conversions.ToLong(Settings.Instance.Sound);
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkAutotile")].Value = Conversions.ToLong(Settings.Instance.Autotile);
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkFullscreen")].Value = Conversions.ToLong(Settings.Instance.Fullscreen);
-                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "cmbRes")].Value = Settings.Instance.Resolution;
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkMusic")].Value = Conversions.ToLong(SettingsManager.Instance.Music);
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkSound")].Value = Conversions.ToLong(SettingsManager.Instance.Sound);
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkAutotile")].Value = Conversions.ToLong(SettingsManager.Instance.Autotile);
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "chkFullscreen")].Value = Conversions.ToLong(SettingsManager.Instance.Fullscreen);
+                withBlock.Controls[(int)Gui.GetControlIndex("winOptions", "cmbRes")].Value = SettingsManager.Instance.Resolution;
             }
         }
 

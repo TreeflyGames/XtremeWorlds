@@ -271,9 +271,6 @@ namespace Client
 
         public static string[] MapNames = new string[Constant.MAX_MAPS];
 
-        // Chat variables
-        public const long ChatWidth = 316L;
-
         // Bank constants
         public const long BankTop = 28L;
         public const long BankLeft = 9L;

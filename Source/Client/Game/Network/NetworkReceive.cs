@@ -233,8 +233,8 @@ namespace Client
             var isSlotEmpty = new bool[Constant.MAX_CHARS];
             long x;
 
-            Settings.Instance.Username = Gui.Windows[Gui.GetWindowIndex("winLogin")].Controls[(int)Gui.GetControlIndex("winLogin", "txtUsername")].Text;
-            Settings.Save();
+            SettingsManager.Instance.Username = Gui.Windows[Gui.GetWindowIndex("winLogin")].Controls[(int)Gui.GetControlIndex("winLogin", "txtUsername")].Text;
+            SettingsManager.Save();
 
             for (var i = 0L; i < Constant.MAX_CHARS; i++)
             {

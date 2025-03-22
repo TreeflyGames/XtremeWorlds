@@ -154,7 +154,7 @@ namespace Client
                         // Autotile rendering state
                         else if (Core.Type.Autotile[x, y].Layer[i].RenderState == GameState.RenderStateAutotile)
                         {
-                            if (Settings.Instance.Autotile)
+                            if (SettingsManager.Instance.Autotile)
                             {
                                 DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), 1, x, y, 0, false);
                                 DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY), 2, x, y, 0, false);
@@ -238,7 +238,7 @@ namespace Client
                         // Handle autotile rendering
                         else if (Core.Type.Autotile[x, y].Layer[i].RenderState == GameState.RenderStateAutotile)
                         {
-                            if (Settings.Instance.Autotile)
+                            if (SettingsManager.Instance.Autotile)
                             {
                                 // Render autotiles
                                 DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), 1, x, y, 0, false);

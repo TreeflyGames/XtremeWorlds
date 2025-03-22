@@ -128,7 +128,7 @@ namespace Client
 
         public GameClient()
         {
-            General.GetResolutionSize(Settings.Instance.Resolution, ref GameState.ResolutionWidth, ref GameState.ResolutionHeight);
+            General.GetResolutionSize(SettingsManager.Instance.Resolution, ref GameState.ResolutionWidth, ref GameState.ResolutionHeight);
 
             Graphics = new GraphicsDeviceManager(this);
 
@@ -136,10 +136,10 @@ namespace Client
             {
                 ref var withBlock = ref Graphics;
                 withBlock.GraphicsProfile = GraphicsProfile.Reach;
-                withBlock.IsFullScreen = Settings.Instance.Fullscreen;
+                withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
                 withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
                 withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
-                withBlock.SynchronizeWithVerticalRetrace = Settings.Instance.Vsync;
+                withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
                 withBlock.PreferHalfPixelOffset = true;
                 withBlock.PreferMultiSampling = true;
             }
@@ -163,7 +163,7 @@ namespace Client
 
         protected override void Initialize()
         {
-            Window.Title = Settings.Instance.GameName;
+            Window.Title = SettingsManager.Instance.GameName;
 
             // Create the RenderTarget2D with the same size as the screen
             RenderTarget = new RenderTarget2D(Graphics.GraphicsDevice, Graphics.GraphicsDevice.PresentationParameters.BackBufferWidth, Graphics.GraphicsDevice.PresentationParameters.BackBufferHeight, false, Graphics.GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
@@ -689,39 +689,43 @@ namespace Client
 
         private static void HandleTextInput()
         {
-            // Iterate over all pressed keys
+            // Iterate over all pressed keys  
             foreach (Keys key in CurrentKeyboardState.GetPressedKeys())
             {
                 if (IsKeyStateActive(key))
                 {
-                    // Handle Backspace key separately
+                    // Handle Backspace key separately  
                     if (key == Keys.Back)
                     {
                         var activeControl = Gui.GetActiveControl();
 
                         if (activeControl is not null && activeControl.Visible && activeControl.Text.Length > 0)
                         {
-                            // Modify the text and update it back in the window
+                            // Modify the text and update it back in the window  
                             activeControl.Text = activeControl.Text.Substring(0, activeControl.Text.Length - 1);
                             Gui.UpdateActiveControl(activeControl);
                         }
-                        continue; // Move to the next key
+                        continue; // Move to the next key  
                     }
 
-                    // Convert key to a character, considering Shift key
+                    // Convert key to a character, considering Shift key  
                     char? character = ConvertKeyToChar(key, CurrentKeyboardState.IsKeyDown(Keys.LeftShift));
 
-                    // If the character is valid, update the active control's text
+                    // If the character is valid, update the active control's text  
                     if (character.HasValue)
                     {
                         var activeControl = Gui.GetActiveControl();
 
-                        if (activeControl is not null && activeControl.Visible && activeControl.Enabled && activeControl.Text.Length < activeControl.Length)
+                        if (activeControl is not null && activeControl.Visible && activeControl.Enabled)
                         {
-                            // Append character to the control's text
-                            activeControl.Text += Conversions.ToString(character.Value);
-                            Gui.UpdateActiveControl(activeControl);
-                            continue; // Move to the next key
+                            string text = activeControl.Text + Conversions.ToString(character.Value);
+                            if (Text.GetTextWidth(text) < activeControl.Width)
+                            {
+                                // Append character to the control's text  
+                                activeControl.Text += Conversions.ToString(character.Value);
+                                Gui.UpdateActiveControl(activeControl);
+                                continue; // Move to the next key  
+                            }
                         }
                     }
 

@@ -1417,7 +1417,7 @@ namespace Server
                 {
                     if (GetPlayerAccess(n) < GetPlayerAccess(index))
                     {
-                        NetworkSend.GlobalMsg(GetPlayerName(n) + " has been kicked from " + Settings.Instance.GameName + " by " + GetPlayerName(index) + "!");
+                        NetworkSend.GlobalMsg(GetPlayerName(n) + " has been kicked from " + SettingsManager.Instance.GameName + " by " + GetPlayerName(index) + "!");
                         Log.Add(GetPlayerName(index) + " has kicked " + GetPlayerName(n) + ".", Constant.ADMIN_LOG);
                         NetworkSend.AlertMsg(n, (byte)DialogueMsg.Kicked, (byte)MenuType.Login);
                     }
@@ -1752,11 +1752,11 @@ namespace Server
             if (GetPlayerAccess(index) < (byte)AccessType.Mapper)
                 return;
 
-            Settings.Instance.Welcome = buffer.ReadString();
-            Settings.Save();
+            SettingsManager.Instance.Welcome = buffer.ReadString();
+            SettingsManager.Save();
 
-            NetworkSend.GlobalMsg("Welcome changed to: " + Settings.Instance.Welcome);
-            Log.Add(GetPlayerName(index) + " changed welcome to: " + Settings.Instance.Welcome, Constant.ADMIN_LOG);
+            NetworkSend.GlobalMsg("Welcome changed to: " + SettingsManager.Instance.Welcome);
+            Log.Add(GetPlayerName(index) + " changed welcome to: " + SettingsManager.Instance.Welcome, Constant.ADMIN_LOG);
 
             buffer.Dispose();
         }

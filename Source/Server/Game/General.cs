@@ -227,7 +227,7 @@ namespace Server
             InitializeAnnouncementTimer();
             DisplayServerBanner(startTime);
             UpdateCaption();
-            await NetworkConfig.Socket.StartListeningAsync(Settings.Instance.Port, 5);
+            await NetworkConfig.Socket.StartListeningAsync(SettingsManager.Instance.Port, 5);
             try
             {
                 await Loop.ServerAsync();
@@ -281,9 +281,9 @@ namespace Server
         {
             await Task.Run(() =>
             {
-                Settings.Load();
+                SettingsManager.Load();
                 ValidateConfiguration();
-                Clock.Instance.GameSpeed = Settings.Instance.TimeSpeed;
+                Clock.Instance.GameSpeed = SettingsManager.Instance.TimeSpeed;
                 Console.Title = "XtremeWorlds Server";
                 MyIPAddress = GetLocalIPAddress();
             });
@@ -291,10 +291,10 @@ namespace Server
 
         private static void ValidateConfiguration()
         {
-            if (string.IsNullOrWhiteSpace(Settings.Instance.GameName))
+            if (string.IsNullOrWhiteSpace(SettingsManager.Instance.GameName))
                 throw new InvalidOperationException("GameName is not set in configuration");
 
-            if (Settings.Instance.Port <= 0 || Settings.Instance.Port > 65535)
+            if (SettingsManager.Instance.Port <= 0 || SettingsManager.Instance.Port > 65535)
                 throw new InvalidOperationException("Invalid Port number in configuration");
         }
 
@@ -456,13 +456,13 @@ namespace Server
         {
             try
             {
-                Console.Title = $"{Settings.Instance.GameName} <IP {MyIPAddress}:{Settings.Instance.Port}> " +
+                Console.Title = $"{SettingsManager.Instance.GameName} <IP {MyIPAddress}:{SettingsManager.Instance.Port}> " +
                     $"({CountPlayersOnline()} Players Online) - Errors: {Global.ErrorCount} - Time: {Clock.Instance}";
             }
             catch (Exception ex)
             {
                 Logger.LogWarning(ex, "Failed to update console title");
-                Console.Title = Settings.Instance.GameName;
+                Console.Title = SettingsManager.Instance.GameName;
             }
         }
 
@@ -490,7 +490,7 @@ namespace Server
 
         private static void InitializeSaveTimer()
         {
-            int intervalMinutes = Settings.Instance.SaveInterval;
+            int intervalMinutes = SettingsManager.Instance.SaveInterval;
             SaveTimer = new Timer(async _ => await SavePlayersPeriodicallyAsync(), null,
                 TimeSpan.FromMinutes(intervalMinutes), TimeSpan.FromMinutes(intervalMinutes));
         }
@@ -908,7 +908,7 @@ namespace Server
 
                 var backups = Directory.GetFiles(backupDir, "backup_*.bak")
                     .OrderByDescending(f => f)
-                    .Skip(Settings.Instance.MaxBackups)
+                    .Skip(SettingsManager.Instance.MaxBackups)
                     .ToList();
                 foreach (var oldBackup in backups)
                 {
@@ -957,11 +957,11 @@ namespace Server
             int time = ShutDownTimer.Elapsed.Seconds;
             if (ShutDownLastTimer != time)
             {
-                if (Settings.Instance.ServerShutdown - time <= 10)
+                if (SettingsManager.Instance.ServerShutdown - time <= 10)
                 {
-                    NetworkSend.GlobalMsg($"Server shutdown in {Settings.Instance.ServerShutdown - time} seconds!");
-                    Console.WriteLine($"Server shutdown in {Settings.Instance.ServerShutdown - time} seconds!");
-                    if (Settings.Instance.ServerShutdown - time <= 1)
+                    NetworkSend.GlobalMsg($"Server shutdown in {SettingsManager.Instance.ServerShutdown - time} seconds!");
+                    Console.WriteLine($"Server shutdown in {SettingsManager.Instance.ServerShutdown - time} seconds!");
+                    if (SettingsManager.Instance.ServerShutdown - time <= 1)
                     {
                         await DestroyServerAsync();
                     }

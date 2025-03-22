@@ -54,7 +54,7 @@ namespace Client
                 // Start the connection attempt.
                 Socket.ConnectionSuccess += OnConnectionSuccess;
 
-                Socket.Connect(Settings.Instance.IP, Settings.Instance.Port); // Adjust IP and port as needed
+                Socket.Connect(SettingsManager.Instance.IP, SettingsManager.Instance.Port); // Adjust IP and port as needed
             }
             catch (Exception ex)
             {
