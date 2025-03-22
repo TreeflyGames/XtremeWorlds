@@ -1,0 +1,104 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
+using Core;
+using Mirage.Sharp.Asfw;
+using static Core.Packets;
+
+// Simulate a server factory for creating server instances
+public class ServerFactory
+{
+    public Server CreateServer(string name)
+    {
+        return new Server { Name = name }; // Simplified for demonstration
+    }
+}
+
+// Create an instance of TimeManager with configuration options
+var timeManager = new TimeManager(enableLogging: true);
+
+// Add multiple supported time zones with validation
+try
+{
+    var centralTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+    var pacificTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+    timeManager.AddTimeZone(centralTimeZone);
+    timeManager.AddTimeZone(pacificTimeZone);
+    Console.WriteLine("Time zones added successfully.");
+}
+catch (TimeZoneNotFoundException ex)
+{
+    Console.WriteLine($"Error adding time zone: {ex.Message}");
+}
+
+// Get the current time in a specific time zone with formatting
+try
+{
+    var timeInCentral = timeManager.GetTimeInZone(centralTimeZone, "hh:mm:ss tt");
+    Console.WriteLine($"Current time in Central Time: {timeInCentral}");
+}
+catch (InvalidOperationException ex)
+{
+    Console.WriteLine($"Error retrieving time: {ex.Message}");
+}
+
+// Set the game speed with validation and feedback
+try
+{
+    timeManager.SetGameSpeed(1.5f); // 1.5x normal speed
+    Console.WriteLine("Game speed set to 1.5x.");
+}
+catch (ArgumentOutOfRangeException ex)
+{
+    Console.WriteLine($"Invalid game speed: {ex.Message}");
+}
+
+// Adjust the clock with a custom time span
+timeManager.AdjustTime(TimeSpan.FromMinutes(45));
+Console.WriteLine("Clock adjusted forward by 45 minutes.");
+
+// Initialize and manage a list of server instances
+var serverFactory = new ServerFactory();
+var servers = new List<Server>
+{
+    serverFactory.CreateServer("Server1"),
+    serverFactory.CreateServer("Server2"),
+    serverFactory.CreateServer("Server3")
+};
+
+// Synchronize time across servers asynchronously with parallel processing
+try
+{
+    await timeManager.SynchronizeTimeAsync(servers, useParallelProcessing: true);
+    Console.WriteLine("Time synchronized across all servers.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Synchronization failed: {ex.Message}");
+}
+
+// Send the game clock to all connected clients with retry logic
+try
+{
+    timeManager.SendGameClockToAll(maxRetries: 3);
+    Console.WriteLine("Game clock sent to all clients.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Failed to send game clock: {ex.Message}");
+}
+
+// New Feature: Enable automatic daylight saving adjustments
+timeManager.EnableDaylightSavingAdjustments(true);
+Console.WriteLine("Daylight saving adjustments enabled.");
+
+// New Feature: Pause and resume time
+timeManager.PauseTime();
+Thread.Sleep(2000); // Simulate a 2-second pause
+timeManager.ResumeTime();
+Console.WriteLine("Time paused for 2 seconds and resumed.");
+
+// New Feature: Get elapsed game time since start
+var elapsedTime = timeManager.GetElapsedGameTime();
+Console.WriteLine($"Elapsed game time: {elapsedTime.TotalHours:F2} hours.");
