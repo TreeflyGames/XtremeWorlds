@@ -165,6 +165,12 @@ namespace Client
             int frameCount = rows * columns;
             var frameIndex = default(int);
 
+            if (AnimInstance[index].FrameIndex == null || AnimInstance[index].FrameIndex.Length <= layer)
+            {
+                // Handle the error or initialize the array
+                return;
+            }
+
             // Calculate the current frame index
             if (frameCount > 0)
             {
