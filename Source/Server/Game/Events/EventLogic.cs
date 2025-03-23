@@ -2955,7 +2955,7 @@ namespace Server
             {
                 if (TempPlayer[index].EventMap.EventPages[z].EventId == eventId)
                 {
-                    localEventIndex = z;
+                    localEventIndex = z + 1;
                     break;
                 }
             }
@@ -2971,41 +2971,50 @@ namespace Server
                 return false; // Incorrect trigger.
             }
 
-            // Adjust target coordinates based on player direction.
-            switch (GetPlayerDir(index))
+            if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough == 0)
             {
-                case (byte)DirectionType.Up:
-                    if (GetPlayerY(index) > 0) y = GetPlayerY(index) - 1;
-                    else return false;
-                    break;
-                case (byte)DirectionType.Down:
-                    if (GetPlayerY(index) < Map[mapNum].MaxY) y = GetPlayerY(index) + 1;
-                    else return false;
-                    break;
-                case (byte)DirectionType.Left:
-                    if (GetPlayerX(index) > 0) x = GetPlayerX(index) - 1;
-                    else return false;
-                    break;
-                case (byte)DirectionType.Right:
-                    if (GetPlayerX(index) < Map[mapNum].MaxX) x = GetPlayerX(index) + 1;
-                    else return false;
-                    break;
-                case (byte)DirectionType.UpRight:
-                    if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) > 0) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) - 1; }
-                    else return false;
-                    break;
-                case (byte)DirectionType.UpLeft:
-                    if (GetPlayerX(index) > 0 && GetPlayerY(index) > 0) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) - 1; }
-                    else return false;
-                    break;
-                case (byte)DirectionType.DownLeft:
-                    if (GetPlayerX(index) > 0 && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) + 1; }
-                    else return false;
-                    break;
-                case (byte)DirectionType.DownRight:
-                    if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) + 1; }
-                    else return false;
-                    break;
+                // Adjust target coordinates based on player direction.
+                switch (GetPlayerDir(index))
+                {
+                    case (byte)DirectionType.Up:
+                        if (GetPlayerY(index) > 0) y = GetPlayerY(index) - 1;
+                        else return false;
+                        break;
+                    case (byte)DirectionType.Down:
+                        if (GetPlayerY(index) < Map[mapNum].MaxY) y = GetPlayerY(index) + 1;
+                        else return false;
+                        break;
+                    case (byte)DirectionType.Left:
+                        if (GetPlayerX(index) > 0) x = GetPlayerX(index) - 1;
+                        else return false;
+                        break;
+                    case (byte)DirectionType.Right:
+                        if (GetPlayerX(index) < Map[mapNum].MaxX) x = GetPlayerX(index) + 1;
+                        else return false;
+                        break;
+                    case (byte)DirectionType.UpRight:
+                        if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) > 0) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) - 1; }
+                        else return false;
+                        break;
+                    case (byte)DirectionType.UpLeft:
+                        if (GetPlayerX(index) > 0 && GetPlayerY(index) > 0) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) - 1; }
+                        else return false;
+                        break;
+                    case (byte)DirectionType.DownLeft:
+                        if (GetPlayerX(index) > 0 && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) + 1; }
+                        else return false;
+                        break;
+                    case (byte)DirectionType.DownRight:
+                        if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) + 1; }
+                        else return false;
+                        break;
+                }
+            }
+
+            // Check if the player is on the event's tile.
+            if (x != eventPage.X || y != eventPage.Y)
+            {
+                return false; // Not on the event tile.
             }
 
             // Check for event commands and start event processing.
