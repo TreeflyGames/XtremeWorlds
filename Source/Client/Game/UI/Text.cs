@@ -74,6 +74,11 @@ namespace Client
             if (GameState.Chat_HighIndex > Constant.CHAT_LINES)
                 GameState.Chat_HighIndex = Constant.CHAT_LINES;
 
+            if (text == null)
+            {
+                return;
+            }
+
             // Move the rest of the chat lines up
             for (int i = (int)GameState.Chat_HighIndex - 1; i > 0; i--)
             {
@@ -535,7 +540,7 @@ namespace Client
             // set the position
             xO = 19L;
             xO += Gui.Windows[Gui.GetWindowIndex("winChat")].Left;
-            yO = GameState.ResolutionHeight - 40;
+            yO = GameState.ResolutionHeight - 50;
             width = (int)Gui.Windows[Gui.GetWindowIndex("winChat")].Width;
 
             // loop through chat
