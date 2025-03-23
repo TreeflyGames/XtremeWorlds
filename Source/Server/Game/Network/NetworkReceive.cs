@@ -1286,6 +1286,7 @@ namespace Server
             // Save the map
             Database.SaveMap(mapNum); 
             NPC.SpawnMapNPCs(mapNum);
+            EventLogic.SpawnGlobalEvents(mapNum);
             
             var loopTo10 = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= loopTo10; i++)
