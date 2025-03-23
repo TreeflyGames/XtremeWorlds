@@ -3,6 +3,7 @@ using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using static Core.Type;
 
 namespace Client
 {

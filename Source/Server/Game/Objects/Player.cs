@@ -1667,14 +1667,12 @@ namespace Server
                                     Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
                                     Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
                                     Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].WaitingForResponse = 0;
-                                    ;
 
                                     int EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
                                     int PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
                                     int commandListCount = Core.Type.Map[GetPlayerMap(index)].Event[EventId].Pages[PageId].CommandListCount;
 
                                     Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing[EventId].ListLeftOff, commandListCount);
-
                                 }
                                 begineventprocessing = Conversions.ToBoolean(0);
                             }

@@ -1325,8 +1325,7 @@ namespace Server
                     if (!eventPage.Visible) continue;
 
                     // Check event and page validity.
-                    if (eventPage.EventId >= Map[mapNum].Event.Length || eventPage.PageId >= Map[mapNum].Event[eventPage.EventId].Pages.Length) continue;
-
+                    if (eventPage.EventId >= Map[mapNum].Event.Length || Map[mapNum].Event == null || Map[mapNum].Event[eventPage.EventId].Pages == null || eventPage.PageId >= Map[mapNum].Event[eventPage.EventId].Pages.Length) continue;
 
                     // Handle parallel process events (Trigger == 2).
                     if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].Trigger == 2)
@@ -1369,12 +1368,10 @@ namespace Server
                     {
                         if (TempPlayer[i].EventProcessing[x].Active != 1) continue;
 
-
                         ref var withBlock1 = ref TempPlayer[i].EventProcessing[x];
 
                         // Basic validity checks
                         if (withBlock1.EventId < 0 || withBlock1.EventId >= Map[mapNum].Event.Length) continue;
-
 
                         bool removeEventProcess = false;
 
@@ -1426,7 +1423,6 @@ namespace Server
 
                         if (withBlock1.WaitingForResponse == 0 && withBlock1.ActionTimer <= General.GetTimeMs())
                         {
-
                             // Process event commands until a wait, branch, or end condition is encountered.
                             bool restartlist = true;
                             bool endprocess = false;
@@ -1485,13 +1481,12 @@ namespace Server
                                     }
                                     else
                                     {
-                                                                                withBlock1.CurList = commandList[withBlock1.CurList].ParentList;
+                                        withBlock1.CurList = commandList[withBlock1.CurList].ParentList;
                                         withBlock1.CurSlot = 0;
                                         restartlist = true;
                                     }
                                     continue;
                                 }
-
 
 
                                 if (!restartlist && !endprocess)
@@ -1632,11 +1627,17 @@ namespace Server
                                                         Core.Type.Player[i].Variables[command.Data1] = (int)General.GetRandom.NextDouble(command.Data3, command.Data4);
                                                         break;
                                                 }
+
+                                                // Check for new event pages
+                                                SpawnMapEventsFor(i, mapNum);
                                                 break;
                                             }
                                         case (byte)EventType.PlayerSwitch:
                                             {
                                                 Core.Type.Player[i].Switches[command.Data1] = (byte)(command.Data2 == 0 ? 0 : 1);
+
+                                                // Check for new event pages
+                                                SpawnMapEventsFor(i, mapNum);
                                                 break;
                                             }
 
@@ -1651,6 +1652,9 @@ namespace Server
                                                 {
                                                     TempPlayer[i].EventMap.EventPages[withBlock1.EventId].SelfSwitches[command.Data1 + 1] = (byte)(command.Data2 == 0 ? 0 : 1);
                                                 }
+
+                                                // Check for new event pages
+                                                SpawnMapEventsFor(i, mapNum);
                                                 break;
                                             }
                                         case (byte)EventType.Condition:
@@ -2125,13 +2129,12 @@ namespace Server
                                                 }
                                                 break;
                                             }
-
                                     }
                                 }
+
                                 // Increment to the next command, unless we've branched or ended.
                                 if (!endprocess)
                                     withBlock1.CurSlot++;
-
                             }
                         }
 
@@ -2148,8 +2151,6 @@ namespace Server
             });
 
         }
-
-
 
         public static void UpdateEventLogic()
         {
@@ -2219,8 +2220,6 @@ namespace Server
             return sb.ToString();
         }
 
-
-
         public static void FindEventLabel(string Label, int mapNum, int EventId, int PageId, ref int CurSlot, ref int CurList, ref int[] ListLeftOff)
         {
 
@@ -2231,7 +2230,6 @@ namespace Server
                 //invalid event, don't do anything.
                 return;
             }
-
 
             int tmpCurSlot = CurSlot;
             int tmpCurList = CurList;
@@ -2678,7 +2676,6 @@ namespace Server
                         tempEvent.Active = 0;
                         tempEvent.MoveType = Map[mapNum].Event[i].Pages[0].MoveType;
 
-
                         if (tempEvent.MoveType == 2) // Custom Move Route
                         {
                             int moveRouteCount = Map[mapNum].Event[i].Pages[0].MoveRouteCount;
@@ -2701,7 +2698,6 @@ namespace Server
                             tempEvent.MoveRouteComplete = 1; // Not a move route, so considered complete.
                         }
 
-
                         tempEvent.RepeatMoveRoute = Map[mapNum].Event[i].Pages[0].RepeatMoveRoute;
                         tempEvent.IgnoreIfCannotMove = Map[mapNum].Event[i].Pages[0].IgnoreMoveRoute;
                         tempEvent.MoveFreq = Map[mapNum].Event[i].Pages[0].MoveFreq;
@@ -2710,12 +2706,10 @@ namespace Server
                         tempEvent.FixedDir = Map[mapNum].Event[i].Pages[0].DirFix;
                         tempEvent.WalkingAnim = Map[mapNum].Event[i].Pages[0].WalkAnim;
                         tempEvent.ShowName = Map[mapNum].Event[i].Pages[0].ShowName;
-
                     }
                 }
             });
         }
-
 
         public static void SpawnMapEventsFor(int index, int mapNum)
         {
@@ -2724,6 +2718,7 @@ namespace Server
             {
                 return;
             }
+
             // Reset player's event data.
             Core.Type.TempPlayer[index].EventMap.CurrentEvents = 0;
             Array.Resize(ref Core.Type.TempPlayer[index].EventMap.EventPages, 1);
@@ -2933,7 +2928,6 @@ namespace Server
                 }
             }
         }
-
 
         public static bool TriggerEvent(int index, int eventId, byte triggerType, int x, int y)
         {
