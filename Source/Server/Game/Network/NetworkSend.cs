@@ -778,6 +778,7 @@ namespace Server
             int i;
             byte[] data;
             int dataSize;
+            int mapNum = GetPlayerMap(index);
 
             // Send all players on current map to index
             var loopTo = NetworkConfig.Socket.HighIndex + 1;
@@ -785,7 +786,7 @@ namespace Server
             {
                 if (IsPlaying(i))
                 {
-                    if (GetPlayerMap(i) == GetPlayerMap(index))
+                    if (GetPlayerMap(i) == mapNum)
                     {
                         data = PlayerData(i);
                         dataSize = data.Length;
@@ -796,9 +797,11 @@ namespace Server
                 }
             }
 
+            EventLogic.SpawnMapEventsFor(index, GetPlayerMap(index));
+
             // Send index's player data to everyone on the map including himself
             data = PlayerData(index);
-            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), data, data.Length);
+            NetworkConfig.SendDataToMapBut(index, mapNum, data, data.Length);
             SendPlayerXYToMap(index);
             NetworkSend.SendMapEquipment(index);
             NetworkSend.SendVitals(index);

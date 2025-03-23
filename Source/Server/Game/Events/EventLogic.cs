@@ -85,6 +85,9 @@ namespace Server
                         int id = eventPage.EventId;
                         int page = eventPage.PageId;
 
+                        if (page <= eventPage.PageId)
+                            break;
+
                         // Check if the event and page still exist  
                         if (id >= 0 && id < Map[mapNum].Event.Length && page >= 0 && page < Map[mapNum].Event[id].Pages.Length)
                         {
@@ -2626,7 +2629,6 @@ namespace Server
 
             return 4; //should never hit here, but just incase.
         }
-
 
         public static async Task SpawnAllMapGlobalEvents()
         {
