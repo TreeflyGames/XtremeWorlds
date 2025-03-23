@@ -62,14 +62,14 @@ namespace Client
             cmbCondition_LevelCompare.SelectedIndex = 0;
             nudCondition_LevelAmount.Enabled = false;
             nudCondition_LevelAmount.Value = 0m;
-            if (cmbCondition_SelfSwitch.Items.Count > 0)
+            if (cmbCondition_SelfSwitch.Items.Count > -1)
             {
                 cmbCondition_SelfSwitch.SelectedIndex = 0;
             }
 
             cmbCondition_SelfSwitch.Enabled = false;
 
-            if (cmbCondition_SelfSwitchCondition.Items.Count > 0)
+            if (cmbCondition_SelfSwitchCondition.Items.Count > -1)
             {
                 cmbCondition_SelfSwitchCondition.SelectedIndex = 0;
             }

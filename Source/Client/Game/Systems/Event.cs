@@ -3,6 +3,7 @@ using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
+using static Core.Type;
 
 namespace Client
 {
@@ -2727,7 +2728,7 @@ namespace Client
                         IsEdit = true;
                         frmEditor_Event.Instance.txtChatbubbleText.Text = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Text1;
                         frmEditor_Event.Instance.cmbChatBubbleTargetType.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
-                        if (frmEditor_Event.Instance.cmbChatBubbleTarget.Items.Count > 0)
+                        if (frmEditor_Event.Instance.cmbChatBubbleTarget.Items.Count > -1)
                             frmEditor_Event.Instance.cmbChatBubbleTarget.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data2;
 
                         frmEditor_Event.Instance.fraDialogue.Visible = true;
@@ -2876,25 +2877,34 @@ namespace Client
             if (curslot >= TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)
                 return;
 
-            TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount -= 1;
-            p = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
-            oldCommandList = TmpEvent.Pages[CurPageNum].CommandList[curlist];
-
-            if (p <= 0)
+            if (TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount != i + 1)
             {
-                TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[1];
+                TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount--;
+                p = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
+                oldCommandList = TmpEvent.Pages[CurPageNum].CommandList[curlist];
+
+                if (p <= 0)
+                {
+                    TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[1];
+                }
+                else
+                {
+                    TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[p];
+                    TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList = oldCommandList.ParentList;
+                    TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = p;
+
+                    // Move all commands down by 1  
+                    for (i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1; i <= p; i++)
+                    {
+                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i - 1] = oldCommandList.Commands[i];
+                    }
+                }
             }
             else
             {
-                TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[p];
-                TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList = oldCommandList.ParentList;
-                TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = p;
-
-                // Move all commands down by 1  
-                for (i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1; i <= p; i++)
-                {
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i - 1] = oldCommandList.Commands[i];
-                }
+                // If we are deleting the last command in the list, set only the last command  
+                TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount--;
+                Array.Resize(ref TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands, TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount);
             }
 
             EventListCommands();
@@ -2902,7 +2912,7 @@ namespace Client
 
         public static void ClearEventCommands()
         {
-            TmpEvent.Pages[CurPageNum].CommandList = new Core.Type.CommandListStruct[2];
+            TmpEvent.Pages[CurPageNum].CommandList = new Core.Type.CommandListStruct[1];
             TmpEvent.Pages[CurPageNum].CommandListCount = 0;
             EventListCommands();
         }
@@ -2913,7 +2923,7 @@ namespace Client
             int curlist;
             int curslot;
 
-            i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1;
+            i = frmEditor_Event.Instance.lstCommands.SelectedIndex;
             if (i == -1)
                 return;
 
