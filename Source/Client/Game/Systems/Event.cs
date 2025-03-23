@@ -1152,7 +1152,7 @@ namespace Client
                                     }
                                 case (byte)Core.Enum.EventType.SetAccess:
                                     {
-                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Access [" + frmEditor_Event.Instance.cmbSetAccess.Items[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1]);
+                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Access [" + frmEditor_Event.Instance.cmbSetAccess.Items[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 - 1]);
                                         break;
                                     }
                                 case (byte)Core.Enum.EventType.GiveExp:
@@ -1850,7 +1850,7 @@ namespace Client
                 case (int)Core.Enum.EventType.SetAccess:
                     {
                         TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Index = (byte)Index;
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = frmEditor_Event.Instance.cmbSetAccess.SelectedIndex;
+                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = frmEditor_Event.Instance.cmbSetAccess.SelectedIndex + 1;
                         break;
                     }
 
@@ -2707,7 +2707,7 @@ namespace Client
                 case (byte)Core.Enum.EventType.SetAccess:
                     {
                         IsEdit = true;
-                        frmEditor_Event.Instance.cmbSetAccess.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1;
+                        frmEditor_Event.Instance.cmbSetAccess.SelectedIndex = TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 - 1;
                         frmEditor_Event.Instance.fraDialogue.Visible = true;
                         frmEditor_Event.Instance.fraSetAccess.Visible = true;
                         frmEditor_Event.Instance.fraCommands.Visible = false;
@@ -3238,7 +3238,7 @@ namespace Client
                     }
                 case (byte)Core.Enum.EventType.SetAccess:
                     {
-                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = frmEditor_Event.Instance.cmbSetAccess.SelectedIndex;
+                        TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[curslot].Data1 = frmEditor_Event.Instance.cmbSetAccess.SelectedIndex + 1;
                         break;
                     }
                 case (byte)Core.Enum.EventType.GiveExp:

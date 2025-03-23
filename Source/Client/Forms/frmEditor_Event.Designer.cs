@@ -2926,7 +2926,7 @@ namespace Client
             // 
             cmbSetAccess.DrawMode = DrawMode.OwnerDrawFixed;
             cmbSetAccess.FormattingEnabled = true;
-            cmbSetAccess.Items.AddRange(new object[] { "0: Player", "1: Moderator", "2: Mapper", "3: Developer", "4: Owner" });
+            cmbSetAccess.Items.AddRange(new object[] { "1: Player", "2: Moderator", "3: Mapper", "4: Developer", "5: Owner" });
             cmbSetAccess.Location = new Point(38, 22);
             cmbSetAccess.Margin = new Padding(4, 3, 4, 3);
             cmbSetAccess.Name = "cmbSetAccess";
