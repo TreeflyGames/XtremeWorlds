@@ -25,7 +25,7 @@ namespace Core.Serialization
             serializerFormatting = serializerSettings.Formatting;
         }
 
-        ### Core Serialization Methods
+        // Core Serialization Methods
 
         public string Serialize(InputType rawObject)
         {
@@ -51,7 +51,7 @@ namespace Core.Serialization
             }
         }
 
-        ### Synchronous File Operations
+        // Synchronous File Operations
 
         public InputType Read(string filename)
         {
@@ -76,7 +76,7 @@ namespace Core.Serialization
         {
             try
             {
-                string directory = Path.GetDirectoryName(filename);
+                string directory = System.IO.Path.GetDirectoryName(filename);
                 if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
@@ -93,7 +93,7 @@ namespace Core.Serialization
             }
         }
 
-        ### Asynchronous File Operations
+        // Asynchronous File Operations
 
         public async Task<InputType> ReadAsync(string filename)
         {
@@ -118,7 +118,7 @@ namespace Core.Serialization
         {
             try
             {
-                string directory = Path.GetDirectoryName(filename);
+                string directory = System.IO.Path.GetDirectoryName(filename);
                 if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
@@ -135,7 +135,7 @@ namespace Core.Serialization
             }
         }
 
-        ### Byte Array Support
+        // Byte Array Support
 
         public byte[] SerializeToByteArray(InputType rawObject)
         {
@@ -149,7 +149,7 @@ namespace Core.Serialization
             return Deserialize(json);
         }
 
-        ### Custom Serialization Settings
+        // Custom Serialization Settings
 
         public string SerializeWithSettings(InputType rawObject, JsonSerializerSettings customSettings)
         {
@@ -175,7 +175,7 @@ namespace Core.Serialization
             }
         }
 
-        ### JSON Validation
+        // JSON Validation
 
         public bool IsValidJson(string json)
         {
@@ -190,7 +190,7 @@ namespace Core.Serialization
             }
         }
 
-        ### Data Compression
+        // Data Compression
 
         public byte[] CompressSerializedData(InputType rawObject)
         {
@@ -217,7 +217,7 @@ namespace Core.Serialization
         }
     }
 
-    ### Custom Exception
+    // Custom Exception
 
     public class SerializationException : Exception
     {
