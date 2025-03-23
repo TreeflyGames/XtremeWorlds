@@ -50,10 +50,6 @@ namespace Client
             if (Core.Type.Animation[GameState.EditorIndex].LoopTime[1] == 0)
                 Core.Type.Animation[GameState.EditorIndex].LoopTime[1] = 1;
             frmEditor_Animation.Instance.nudLoopTime1.Value = withBlock.LoopTime[1];
-            
-
-            frmEditor_Animation.Instance.DrawAnimationSprite0();
-            frmEditor_Animation.Instance.DrawAnimationSprite1();
 
             GameState.Animation_Changed[GameState.EditorIndex] = true;
         }

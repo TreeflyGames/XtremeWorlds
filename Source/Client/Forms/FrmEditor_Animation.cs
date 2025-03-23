@@ -241,7 +241,7 @@ namespace Client
         {
             if (!General.Client.IsActive)
             {
-                DrawAnimationSprite0();
+                DrawAnimationSprites();
             }
         }
 
@@ -249,31 +249,23 @@ namespace Client
         {
             if (!General.Client.IsActive)
             {
-                DrawAnimationSprite1();
+                DrawAnimationSprites();
             }
         }
 
-        public void DrawAnimationSprite0()
+        public void DrawAnimationSprites()
         {
             var withBlock = Instance;
             // Ensure spriteBatch is created and disposed properly
             using (var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice))
-            using (var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
             {
-                // Call ProcessAnimation for each animation panel
-                ProcessAnimation(ref withBlock.nudSprite0, ref withBlock.nudFrameCount0, ref withBlock.nudLoopTime0, 0, renderTarget, ref withBlock.picSprite0, spriteBatch);
-            }
-        }
-
-        public void DrawAnimationSprite1()
-        {
-            var withBlock = Instance;
-            // Ensure spriteBatch is created and disposed properly
-            using (var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice))
-            using (var renderTarget = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite1.Width, withBlock.picSprite1.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
-            {
-                // Call ProcessAnimation for each animation panel
-                ProcessAnimation(ref withBlock.nudSprite1, ref withBlock.nudFrameCount1, ref withBlock.nudLoopTime1, 1, renderTarget, ref withBlock.picSprite1, spriteBatch);
+                // Draw first animation sprite
+                using (var renderTarget0 = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
+                using (var renderTarget1 = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite1.Width, withBlock.picSprite1.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
+                {
+                    ProcessAnimation(ref withBlock.nudSprite0, ref withBlock.nudFrameCount0, ref withBlock.nudLoopTime0, 0, renderTarget0, ref withBlock.picSprite0, spriteBatch);
+                    ProcessAnimation(ref withBlock.nudSprite1, ref withBlock.nudFrameCount1, ref withBlock.nudLoopTime1, 1, renderTarget1, ref withBlock.picSprite1, spriteBatch);
+                }
             }
         }
     }
