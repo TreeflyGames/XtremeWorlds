@@ -249,6 +249,7 @@ namespace Client
                     case 0:
                         {
                             // None
+                            picGraphic.BackgroundImage = null;
                             picGraphicSel.BackgroundImage = null;
                             break;
                         }
@@ -1372,9 +1373,6 @@ namespace Client
 
         private void nudGraphic_ValueChanged(object sender, EventArgs e)
         {
-            if (nudGraphic.Value == 0)
-                return;
-
             DrawGraphic();
         }
 
