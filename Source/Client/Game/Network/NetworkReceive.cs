@@ -40,7 +40,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapData] = Map.MapData;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNPCData] = Map.Packet_MapNPCData;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNPCUpdate] = Map.Packet_MapNPCUpdate;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapDone] = Map.Packet_MapDone;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SGlobalMsg] = Packet_GlobalMsg;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAdminMsg] = Packet_AdminMsg;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SPlayerMsg] = Packet_PlayerMsg;

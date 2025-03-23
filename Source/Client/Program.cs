@@ -2419,16 +2419,13 @@ namespace Client
                             var loopTo4 = GameState.CurrentEvents;
                             for (i = 0; i < loopTo4; i++)
                             {
-                                if (i < Core.Type.MapEvents.Length)
-                                { 
-                                    if (Core.Type.MapEvents[i].Position == 1)
+                                if (Core.Type.MapEvents[i].Position == 1)
+                                {
+                                    if (y == Core.Type.MapEvents[i].Y)
                                     {
-                                        if (y == Core.Type.MapEvents[i].Y)
-                                        {
-                                            DrawEvent(i);
-                                        }
+                                        DrawEvent(i);
                                     }
-                                }   
+                                }                              
                             }
                         }
                     }
@@ -2537,13 +2534,10 @@ namespace Client
                 var loopTo6 = GameState.CurrentEvents;
                 for (i = 0; i < loopTo6; i++)
                 {
-                    if (i < Core.Type.MapEvents.Length)
+                    if (Core.Type.MapEvents[i].Position == 2)
                     {
-                        if (Core.Type.MapEvents[i].Position == 2)
-                        {
-                            DrawEvent(i);
-                        }
-                    }
+                        DrawEvent(i);
+                    }                  
                 }
             }
 
@@ -2592,14 +2586,11 @@ namespace Client
                     var loopTo9 = GameState.CurrentEvents;
                     for (i = 0; i < loopTo9; i++)
                     {
-                        if (i < Core.Type.MapEvents.Length)
+                        if (Core.Type.MapEvents[i].Visible == true)
                         {
-                            if (Core.Type.MapEvents[i].Visible == true)
+                            if (Core.Type.MapEvents[i].ShowName == 1)
                             {
-                                if (Core.Type.MapEvents[i].ShowName == 1)
-                                {
-                                    Text.DrawEventName(i);
-                                }
+                                Text.DrawEventName(i);
                             }
                         }
                     }

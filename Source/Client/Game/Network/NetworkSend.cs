@@ -623,7 +623,7 @@ namespace Client
             int i;
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveNPC);
-            buffer.WriteDouble(NPCNum);
+            buffer.WriteInt32(NPCNum);
 
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Animation);
             buffer.WriteString(Core.Type.NPC[(int)NPCNum].AttackSay);

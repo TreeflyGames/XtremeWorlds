@@ -1643,6 +1643,8 @@ namespace Server
                 {
                     for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
                     {
+                        begineventprocessing = Conversions.ToBoolean(0);
+
                         if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
                         {
                             if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Globals == 1)
@@ -1652,7 +1654,7 @@ namespace Server
                             }
                             else if (Core.Type.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Type.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
                                 begineventprocessing = Conversions.ToBoolean(1);
-                            begineventprocessing = Conversions.ToBoolean(0);
+                          
                             if (Conversions.ToInteger(begineventprocessing) == 1)
                             {
                                 // Process this event, it is on-touch and everything checks out.

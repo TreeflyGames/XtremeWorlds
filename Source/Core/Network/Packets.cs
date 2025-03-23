@@ -168,7 +168,6 @@ namespace Core
             SMapItemData,
             SMapNPCData,
             SMapNPCUpdate,
-            SMapDone,
             SGlobalMsg,
             SAdminMsg,
             SPlayerMsg,
