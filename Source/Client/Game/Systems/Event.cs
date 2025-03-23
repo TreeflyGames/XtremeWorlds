@@ -1102,15 +1102,15 @@ namespace Client
                                     {
                                         if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 0)
                                         {
-                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Player");
+                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Player");
                                         }
                                         else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 1)
                                         {
-                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Event " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + " [" + Strings.Trim(Core.Type.MyMap.Event[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3].Name) + "]");
+                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Event " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + " [" + Strings.Trim(Core.Type.MyMap.Event[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3].Name) + "]");
                                         }
                                         else if (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data2 == 2)
                                         {
-                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Tile (" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + "," + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data4 + ")");
+                                            frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Animation " + (TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1 + 1) + " [" + Core.Type.Animation[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1].Name + "]" + " On Tile (" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data3 + "," + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data4 + ")");
                                         }
 
                                         break;
@@ -1122,7 +1122,7 @@ namespace Client
                                     }
                                 case (byte)Core.Enum.EventType.PlayBgm:
                                     {
-                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play BGM [" + Strings.Trim(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1) + "]");
+                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play BGM [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1 + "]");
                                         break;
                                     }
                                 case (byte)Core.Enum.EventType.FadeoutBgm:
@@ -1132,7 +1132,7 @@ namespace Client
                                     }
                                 case (byte)Core.Enum.EventType.PlaySound:
                                     {
-                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Sound [" + Strings.Trim(TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1) + "]");
+                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Play Sound [" + TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Text1 + "]");
                                         break;
                                     }
                                 case (byte)Core.Enum.EventType.StopSound:
@@ -1152,7 +1152,7 @@ namespace Client
                                     }
                                 case (byte)Core.Enum.EventType.SetAccess:
                                     {
-                                        frmEditor_Event.Instance.lstCommands.Items.Add(Operators.ConcatenateObject(Operators.ConcatenateObject(indent + "@>" + "Set Player Access [", frmEditor_Event.Instance.cmbSetAccess.Items[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1]), "]"));
+                                        frmEditor_Event.Instance.lstCommands.Items.Add(indent + "@>" + "Set Player Access [" + frmEditor_Event.Instance.cmbSetAccess.Items[TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i].Data1]);
                                         break;
                                     }
                                 case (byte)Core.Enum.EventType.GiveExp:
@@ -2004,6 +2004,9 @@ namespace Client
             curslot = EventList[i].CommandNum;
 
             if (curlist > TmpEvent.Pages[CurPageNum].CommandListCount)
+                return;
+
+            if (TmpEvent.Pages[CurPageNum].CommandList == null)
                 return;
 
             if (curslot > TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)
@@ -2866,6 +2869,9 @@ namespace Client
             curslot = EventList[i].CommandNum;
 
             if (curlist > TmpEvent.Pages[CurPageNum].CommandListCount)
+                return;
+
+            if (TmpEvent.Pages[CurPageNum].CommandList == null)
                 return;
 
             if (curslot > TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)

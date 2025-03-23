@@ -93,7 +93,7 @@ namespace Client
             TreeNode treeNode32 = new TreeNode("Release Player");
             TreeNode treeNode33 = new TreeNode("Movement", new TreeNode[] { treeNode27, treeNode28, treeNode29, treeNode30, treeNode31, treeNode32 });
             TreeNode treeNode34 = new TreeNode("Animation");
-            TreeNode treeNode35 = new TreeNode("Animation", new TreeNode[] { treeNode34 });
+            TreeNode treeNode35 = new TreeNode("Play Animation", new TreeNode[] { treeNode34 });
             TreeNode treeNode36 = new TreeNode("Begin Quest");
             TreeNode treeNode37 = new TreeNode("Complete Task");
             TreeNode treeNode38 = new TreeNode("End Quest");
@@ -687,7 +687,7 @@ namespace Client
             treeNode33.Name = "NodeMovement";
             treeNode33.Text = "Movement";
             treeNode34.Name = "Node1";
-            treeNode34.Text = "Animation";
+            treeNode34.Text = "Play Animation";
             treeNode35.Name = "NodeAnimation";
             treeNode35.Text = "Animation";
             treeNode36.Name = "Node1";
