@@ -75,7 +75,7 @@ namespace Client
         public static Dictionary<Keys, DateTime> KeyRepeatTimers = new Dictionary<Keys, DateTime>();
 
         // Minimum interval (in milliseconds) between repeated key inputs
-        private const byte KeyRepeatInterval = 150;
+        private const byte KeyRepeatInterval = 125;
         private const byte MouseRepeatInterval = 75;
 
         // Lock object to ensure thread safety
