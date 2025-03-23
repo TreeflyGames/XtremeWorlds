@@ -11,6 +11,7 @@ using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace Client
 {
@@ -22,26 +23,39 @@ namespace Client
         private readonly ILogger<Shop> _logger;
         private readonly SemaphoreSlim _syncLock = new(1, 1);
         private readonly CancellationTokenSource _cts = new();
-        private static readonly ConcurrentDictionary<int, ShopMetrics> _shopMetrics = new();
+        private readonly ConcurrentDictionary<int, ShopMetrics> _shopMetrics = new();
+        private readonly ConcurrentDictionary<int, ShopReputation> _shopReputations = new();
+        private readonly IShopEventBus _eventBus;
 
         // Configuration
         private static readonly TimeSpan DefaultCacheExpiration = TimeSpan.FromMinutes(15);
         private const int DefaultBuyRate = 100;
         private const int ShopTimeoutSeconds = 300;
+        private const int MaxConcurrentOperations = 5;
+
+        // Enhanced Properties
+        public ShopStatus Status { get; private set; } = ShopStatus.Offline;
+        public IReadOnlyDictionary<int, ShopReputation> Reputations => _shopReputations;
+        public ShopConfiguration Config { get; private set; }
 
         // Events
         public event EventHandler<ShopUpdatedEventArgs> ShopUpdated;
         public event EventHandler<ShopMetricsUpdatedEventArgs> MetricsUpdated;
+        public event EventHandler<ShopStatusChangedEventArgs> StatusChanged;
+        public event EventHandler<ShopTransactionEventArgs> TransactionCompleted;
 
         #endregion
 
         #region Constructor and Disposal
 
-        public Shop(IMemoryCache cache, ILogger<Shop> logger)
+        public Shop(IMemoryCache cache, ILogger<Shop> logger, IShopEventBus eventBus)
         {
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+            Config = new ShopConfiguration();
             InitializeDefaultShops();
+            StartBackgroundTasks();
         }
 
         public void Dispose()
@@ -49,6 +63,7 @@ namespace Client
             _cts.Cancel();
             _cts.Dispose();
             _syncLock.Dispose();
+            CleanupBackgroundTasks();
         }
 
         #endregion
@@ -66,6 +81,7 @@ namespace Client
                 );
                 ResetShopSelection();
                 GameState.InShop = -1;
+                UpdateStatus(ShopStatus.Closed);
             }
             catch (Exception ex)
             {
@@ -74,12 +90,13 @@ namespace Client
             }
         }
 
-        private void ResetShopSelection()
+        public async Task OpenShopAsync(int shopNum)
         {
-            GameState.shopSelectedSlot = 0L;
-            GameState.shopSelectedItem = 0L;
-            GameState.shopIsSelling = false;
-            GameState.ShopAction = 0;
+            ValidateShopIndex(shopNum);
+            await StreamShopAsync(shopNum);
+            await Gui.ShowWindowAsync(Gui.GetWindowIndex("winShop"));
+            GameState.InShop = shopNum;
+            UpdateStatus(ShopStatus.Open);
         }
 
         #endregion
@@ -95,7 +112,9 @@ namespace Client
                 Core.Type.Shop[index] = CreateDefaultShopStruct();
                 GameState.Shop_Loaded[index] = 0;
                 _shopMetrics.TryRemove(index, out _);
+                _shopReputations.TryRemove(index, out _);
                 _cache.Remove(GetCacheKey(index));
+                await _eventBus.PublishAsync(new ShopClearedEvent(index));
             }
             finally
             {
@@ -103,37 +122,14 @@ namespace Client
             }
         }
 
-        public async Task ClearAllShopsAsync()
+        public async Task BackupShopsAsync(string backupPath)
         {
             await _syncLock.WaitAsync();
             try
             {
-                Core.Type.Shop = new Core.Type.ShopStruct[Constant.MAX_SHOPS];
-                _shopMetrics.Clear();
-                _cache.RemoveAll();
-                await Task.WhenAll(Enumerable.Range(0, Constant.MAX_SHOPS)
-                    .Select(i => ClearShopAsync(i)));
-            }
-            finally
-            {
-                _syncLock.Release();
-            }
-        }
-
-        public async Task StreamShopAsync(int shopNum)
-        {
-            ValidateShopIndex(shopNum);
-            if (!ShouldStreamShop(shopNum)) return;
-
-            await _syncLock.WaitAsync();
-            try
-            {
-                if (GameState.Shop_Loaded[shopNum] == 0)
-                {
-                    GameState.Shop_Loaded[shopNum] = 1;
-                    await SendRequestShopAsync(shopNum);
-                    UpdateShopMetrics(shopNum, DateTime.UtcNow);
-                }
+                string backupFile = Path.Combine(backupPath, $"shops_backup_{DateTime.UtcNow:yyyyMMddHHmmss}.json");
+                await SaveShopDataAsync(backupFile);
+                _logger.LogInformation($"Shop backup created at {backupFile}");
             }
             finally
             {
@@ -145,59 +141,40 @@ namespace Client
 
         #region Packet Handling
 
-        public async Task HandleOpenShopAsync(byte[] data)
+        public async Task HandleShopReputationUpdate(byte[] data)
         {
             using var buffer = new ByteStream(data);
             int shopNum = buffer.ReadInt32();
-            ValidateShopIndex(shopNum);
-            await GameLogic.OpenShopAsync(shopNum);
-            UpdateShopMetrics(shopNum);
-        }
-
-        public void HandleResetShopAction(byte[] data)
-        {
-            GameState.ShopAction = 0;
-        }
-
-        public async Task HandleUpdateShopAsync(byte[] data)
-        {
-            using var buffer = new ByteStream(data);
-            int shopNum = buffer.ReadInt32();
-            ValidateShopIndex(shopNum);
-
-            await _syncLock.WaitAsync();
-            try
-            {
-                var shop = await UpdateShopFromBufferAsync(shopNum, buffer);
-                _cache.Set(GetCacheKey(shopNum), shop, DefaultCacheExpiration);
-                ShopUpdated?.Invoke(this, new ShopUpdatedEventArgs(shopNum));
-            }
-            finally
-            {
-                _syncLock.Release();
-            }
+            float reputationScore = buffer.ReadSingle();
+            
+            var reputation = _shopReputations.GetOrAdd(shopNum, _ => new ShopReputation());
+            reputation.UpdateScore(reputationScore);
+            await _eventBus.PublishAsync(new ShopReputationUpdatedEvent(shopNum, reputationScore));
         }
 
         #endregion
 
         #region Outgoing Requests
 
-        public async Task BuyItemAsync(int shopSlot)
+        public async Task BulkBuyItemsAsync(Dictionary<int, int> shopSlotsWithQuantities)
         {
-            ValidateSlot(shopSlot);
-            if (!await CanBuyItemAsync(shopSlot)) return;
-
-            using var buffer = await CreateBuyItemBufferAsync(shopSlot);
-            await SendDataAsync(buffer);
-        }
-
-        public async Task SellItemAsync(int invSlot)
-        {
-            ValidateSlot(invSlot);
-            if (!await CanSellItemAsync(invSlot)) return;
-
-            using var buffer = await CreateSellItemBufferAsync(invSlot);
-            await SendDataAsync(buffer);
+            using var throttle = new SemaphoreSlim(MaxConcurrentOperations);
+            var tasks = shopSlotsWithQuantities.Select(async kvp =>
+            {
+                await throttle.WaitAsync(_cts.Token);
+                try
+                {
+                    for (int i = 0; i < kvp.Value; i++)
+                    {
+                        await BuyItemAsync(kvp.Key);
+                    }
+                }
+                finally
+                {
+                    throttle.Release();
+                }
+            });
+            await Task.WhenAll(tasks);
         }
 
         #endregion
@@ -206,39 +183,36 @@ namespace Client
 
         #region Inventory and Currency
 
-        public async Task<bool> CanBuyItemAsync(int shopSlot)
+        public async Task<TradePreview> PreviewTradeAsync(int shopSlot, TradeType tradeType)
         {
+            ValidateSlot(shopSlot);
             var shop = Core.Type.Shop[GameState.InShop];
             var item = shop.TradeItem[shopSlot];
-            return await GameState.Player.HasCurrencyAsync(item.CurrencyType, item.CostValue);
-        }
-
-        public async Task<bool> CanSellItemAsync(int invSlot)
-        {
-            return await GameState.Player.HasItemInInventoryAsync(invSlot);
-        }
-
-        public async Task<decimal> ConvertCurrencyAsync(int fromType, int toType, decimal amount)
-        {
-            var rates = await GetCurrencyExchangeRatesAsync();
-            if (!rates.TryGetValue((fromType, toType), out decimal rate))
-                throw new InvalidOperationException("Currency conversion not supported.");
-            return amount * rate;
+            
+            return new TradePreview
+            {
+                ItemId = item.Item,
+                Cost = item.CostValue,
+                CurrencyType = item.CurrencyType,
+                SuccessProbability = await CalculateTradeSuccessProbability(shopSlot, tradeType),
+                TaxAmount = CalculateTax(item.CostValue)
+            };
         }
 
         #endregion
 
         #region Shop Management
 
-        public async Task AddDynamicCategoryAsync(int shopNum, string categoryName, IEnumerable<int> items)
+        public async Task ConfigureShopScheduleAsync(int shopNum, ShopSchedule schedule)
         {
             ValidateShopIndex(shopNum);
             await _syncLock.WaitAsync();
             try
             {
                 var shop = Core.Type.Shop[shopNum];
-                shop.Categories[categoryName] = items.ToList();
+                shop.Schedule = schedule;
                 await UpdateCacheAsync(shopNum, shop);
+                await ScheduleShopOperations(shopNum, schedule);
             }
             finally
             {
@@ -246,24 +220,18 @@ namespace Client
             }
         }
 
-        public async Task ApplyBulkDiscountAsync(int shopNum, decimal discountPercentage, TimeSpan duration)
+        public async Task AddLimitedTimeOfferAsync(int shopNum, int itemId, decimal discount, TimeSpan duration)
         {
             ValidateShopIndex(shopNum);
-            if (discountPercentage < 0 || discountPercentage > 100)
-                throw new ArgumentException("Invalid discount percentage");
-
             await _syncLock.WaitAsync();
             try
             {
                 var shop = Core.Type.Shop[shopNum];
-                shop.BuyRate = (int)(shop.BuyRate * (1 - discountPercentage / 100));
+                var offer = new LimitedTimeOffer(itemId, discount, DateTime.UtcNow + duration);
+                shop.LimitedOffers.Add(offer);
                 await UpdateCacheAsync(shopNum, shop);
-
-                _ = Task.Run(async () =>
-                {
-                    await Task.Delay(duration, _cts.Token);
-                    await ResetBuyRateAsync(shopNum);
-                });
+                
+                _ = Task.Run(() => RemoveOfferAfterExpiration(shopNum, offer, duration));
             }
             finally
             {
@@ -273,79 +241,58 @@ namespace Client
 
         #endregion
 
-        #region Analytics
+        #region Security
 
-        public async Task<ShopAnalytics> GetShopAnalyticsAsync(int shopNum)
+        public async Task<string> GenerateShopAuthTokenAsync(int shopNum)
+        {
+            var shop = Core.Type.Shop[shopNum];
+            byte[] tokenBytes = RandomNumberGenerator.GetBytes(32);
+            string token = Convert.ToBase64String(tokenBytes);
+            await _cache.SetAsync(GetAuthTokenKey(shopNum), token, TimeSpan.FromHours(24));
+            return token;
+        }
+
+        public async Task<bool> ValidateShopAuthTokenAsync(int shopNum, string token)
+        {
+            string cachedToken = await _cache.GetAsync<string>(GetAuthTokenKey(shopNum));
+            return cachedToken == token;
+        }
+
+        #endregion
+
+        #region Social Features
+
+        public async Task ShareShopInventoryAsync(int shopNum, string platform)
+        {
+            var shop = Core.Type.Shop[shopNum];
+            var inventorySummary = await GenerateInventorySummaryAsync(shopNum);
+            await _eventBus.PublishAsync(new ShopSharedEvent(shopNum, platform, inventorySummary));
+        }
+
+        public async Task RateShopAsync(int shopNum, int playerId, float rating)
         {
             ValidateShopIndex(shopNum);
-            var metrics = _shopMetrics.GetOrAdd(shopNum, _ => new ShopMetrics());
-            return new ShopAnalytics
-            {
-                ShopId = shopNum,
-                TotalAccesses = metrics.AccessCount,
-                LastAccessed = metrics.LastAccess,
-                AverageTransactionValue = await CalculateAverageTransactionValueAsync(shopNum)
-            };
+            var reputation = _shopReputations.GetOrAdd(shopNum, _ => new ShopReputation());
+            reputation.AddRating(playerId, rating);
+            await NetworkSend.SendShopRatingAsync(shopNum, rating);
         }
 
         #endregion
 
-        #region Persistence
+        #region AI-Powered Features
 
-        public async Task SaveShopDataAsync(string filePath)
-        {
-            try
-            {
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-                await JsonSerializer.SerializeAsync(stream, Core.Type.Shop, options);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to save shop data");
-                throw;
-            }
-        }
-
-        public async Task LoadShopDataAsync(string filePath)
-        {
-            try
-            {
-                await using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                Core.Type.Shop = await JsonSerializer.DeserializeAsync<Core.Type.ShopStruct[]>(stream)
-                    ?? throw new InvalidDataException("Failed to deserialize shop data");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to load shop data");
-                throw;
-            }
-        }
-
-        #endregion
-
-        #region Advanced Features
-
-        public async Task RecommendItemsAsync(int shopNum, int playerId)
+        public async Task<List<int>> GetPersonalizedRecommendationsAsync(int shopNum, int playerId)
         {
             var playerHistory = await GameState.Player.GetPurchaseHistoryAsync(playerId);
             var shopItems = Core.Type.Shop[shopNum].TradeItem;
-            var recommendations = shopItems
+            var preferences = await AnalyzePlayerPreferencesAsync(playerId);
+            
+            return shopItems
                 .Where(ti => ti.Item >= 0 && !playerHistory.Contains(ti.Item))
-                .OrderBy(ti => ti.ItemValue)
-                .Take(3)
+                .OrderBy(ti => CalculatePreferenceScore(ti, preferences))
+                .Take(5)
                 .Select(ti => ti.Item)
                 .ToList();
-
-            return recommendations;
-        }
-
-        public async Task<bool> IsShopOverstockedAsync(int shopNum)
-        {
-            var shop = Core.Type.Shop[shopNum];
-            var activeItems = shop.TradeItem.Count(ti => ti.Item >= 0);
-            var avgValue = await CalculateAverageTransactionValueAsync(shopNum);
-            return activeItems > Constant.MAX_TRADES * 0.8 && avgValue < 100;
         }
 
         #endregion
@@ -354,74 +301,132 @@ namespace Client
 
         #region Helper Methods
 
-        private Core.Type.ShopStruct CreateDefaultShopStruct() => new()
+        private void StartBackgroundTasks()
         {
-            Name = string.Empty,
-            TradeItem = Enumerable.Range(0, Constant.MAX_TRADES)
-                .Select(_ => new Core.Type.TradeItemStruct { Item = -1, CostItem = -1 })
-                .ToArray(),
-            BuyRate = DefaultBuyRate,
-            Categories = new Dictionary<string, List<int>>()
-        };
-
-        private async Task UpdateCacheAsync(int shopNum, Core.Type.ShopStruct shop)
-        {
-            _cache.Set(GetCacheKey(shopNum), shop, DefaultCacheExpiration);
-            await Task.CompletedTask;
+            Task.Run(() => MonitorShopHealthAsync(_cts.Token));
+            Task.Run(() => ProcessPendingTransactionsAsync(_cts.Token));
         }
 
-        private string GetCacheKey(int shopNum) => $"Shop_{shopNum}";
-
-        private void UpdateShopMetrics(int shopNum, DateTime? time = null)
+        private async Task MonitorShopHealthAsync(CancellationToken token)
         {
-            var metrics = _shopMetrics.GetOrAdd(shopNum, _ => new ShopMetrics());
-            metrics.AccessCount++;
-            metrics.LastAccess = time ?? DateTime.UtcNow;
-            MetricsUpdated?.Invoke(this, new ShopMetricsUpdatedEventArgs(shopNum, metrics));
+            while (!token.IsCancellationRequested)
+            {
+                await Task.Delay(TimeSpan.FromMinutes(5), token);
+                foreach (var shopNum in Enumerable.Range(0, Constant.MAX_SHOPS))
+                {
+                    if (await IsShopOverstockedAsync(shopNum))
+                    {
+                        await TriggerOverstockClearanceAsync(shopNum);
+                    }
+                }
+            }
         }
 
-        private void ValidateShopIndex(int index)
+        private async Task UpdateStatus(ShopStatus newStatus)
         {
-            if (index < 0 || index >= Constant.MAX_SHOPS)
-                throw new ArgumentOutOfRangeException(nameof(index));
-        }
-
-        private void ValidateSlot(int slot)
-        {
-            if (slot < 0 || slot >= Constant.MAX_TRADES)
-                throw new ArgumentOutOfRangeException(nameof(slot));
+            if (Status != newStatus)
+            {
+                Status = newStatus;
+                StatusChanged?.Invoke(this, new ShopStatusChangedEventArgs(newStatus));
+                await _eventBus.PublishAsync(new ShopStatusChangedEvent(newStatus));
+            }
         }
 
         #endregion
 
-        #region Nested Classes
+        #region Nested Classes and Enums
 
-        private class ShopMetrics
+        public enum ShopStatus
         {
-            public int AccessCount { get; set; }
-            public DateTime LastAccess { get; set; }
+            Offline,
+            Open,
+            Closed,
+            Maintenance
         }
 
-        public class ShopAnalytics
+        public enum TradeType
         {
-            public int ShopId { get; set; }
-            public int TotalAccesses { get; set; }
-            public DateTime LastAccessed { get; set; }
-            public decimal AverageTransactionValue { get; set; }
+            Buy,
+            Sell
         }
 
-        public class ShopMetricsUpdatedEventArgs : EventArgs
+        public class ShopConfiguration
         {
-            public int ShopNumber { get; }
-            public ShopMetrics Metrics { get; }
+            public bool EnableDynamicPricing { get; set; } = true;
+            public int MaxItemsPerCategory { get; set; } = 50;
+            public TimeSpan InventoryRefreshInterval { get; set; } = TimeSpan.FromHours(1);
+        }
 
-            public ShopMetricsUpdatedEventArgs(int shopNumber, ShopMetrics metrics)
+        public class ShopReputation
+        {
+            private readonly ConcurrentDictionary<int, float> _playerRatings = new();
+            public float AverageRating => _playerRatings.Any() ? _playerRatings.Values.Average() : 0;
+            public int RatingCount => _playerRatings.Count;
+
+            public void AddRating(int playerId, float rating) => _playerRatings[playerId] = Math.Clamp(rating, 0, 5);
+            public void UpdateScore(float serverScore) => ServerScore = serverScore;
+            public float ServerScore { get; private set; }
+        }
+
+        public class TradePreview
+        {
+            public int ItemId { get; set; }
+            public decimal Cost { get; set; }
+            public int CurrencyType { get; set; }
+            public float SuccessProbability { get; set; }
+            public decimal TaxAmount { get; set; }
+        }
+
+        public class LimitedTimeOffer
+        {
+            public int ItemId { get; }
+            public decimal Discount { get; }
+            public DateTime Expiration { get; }
+
+            public LimitedTimeOffer(int itemId, decimal discount, DateTime expiration)
             {
-                ShopNumber = shopNumber;
-                Metrics = metrics;
+                ItemId = itemId;
+                Discount = discount;
+                Expiration = expiration;
             }
         }
 
         #endregion
     }
+
+    #region Event Classes
+
+    public class ShopStatusChangedEventArgs : EventArgs
+    {
+        public ShopStatus NewStatus { get; }
+        public ShopStatusChangedEventArgs(ShopStatus newStatus) => NewStatus = newStatus;
+    }
+
+    public class ShopTransactionEventArgs : EventArgs
+    {
+        public int ShopNumber { get; }
+        public int ItemId { get; }
+        public decimal Amount { get; }
+        public Shop.TransactionType Type { get; }
+
+        public ShopTransactionEventArgs(int shopNumber, int itemId, decimal amount, Shop.TransactionType type)
+        {
+            ShopNumber = shopNumber;
+            ItemId = itemId;
+            Amount = amount;
+            Type = type;
+        }
+    }
+
+    #endregion
+
+    #region Interfaces
+
+    public interface IShopEventBus
+    {
+        Task PublishAsync<T>(T @event);
+        Task SubscribeAsync<T>(Func<T, Task> handler);
+    }
+
+    #endregion
 }
