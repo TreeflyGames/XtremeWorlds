@@ -2,14 +2,17 @@
 using DarkUI.Controls;
 using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using RenderTargetUsage = Microsoft.Xna.Framework.Graphics.RenderTargetUsage;
 
 namespace Client
 {
-
     internal partial class frmEditor_Animation
     {
+        int selectedAnim = 0;
+
         protected override void WndProc(ref Message m)
         {
             const int WM_MOUSEACTIVATE = 0x0021;
@@ -34,11 +37,13 @@ namespace Client
         private void NudSprite0_ValueChanged(object sender, EventArgs e)
         {
             Core.Type.Animation[GameState.EditorIndex].Sprite[0] = (int)Math.Round(nudSprite0.Value);
+            selectedAnim = 0;
         }
 
         private void NudSprite1_ValueChanged(object sender, EventArgs e)
         {
             Core.Type.Animation[GameState.EditorIndex].Sprite[1] = (int)Math.Round(nudSprite1.Value);
+            selectedAnim = 1;
         }
 
         private void NudLoopCount0_ValueChanged(object sender, EventArgs e)
@@ -142,11 +147,11 @@ namespace Client
             Editors.AnimationEditorCancel();
         }
 
-        public void ProcessAnimation(ref DarkNumericUpDown animationControl, ref DarkNumericUpDown frameCountControl, ref DarkNumericUpDown loopCountControl, int animationTimerIndex, RenderTarget2D renderTarget, ref PictureBox backgroundColorControl,  SpriteBatch spriteBatch)
+        public void ProcessAnimation(ref DarkNumericUpDown animationControl, ref DarkNumericUpDown frameCountControl, ref DarkNumericUpDown loopCountControl, int animationTimerIndex, RenderTarget2D renderTarget, ref PictureBox backgroundColorControl, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             // Retrieve the animation number and check its validity
             int animationNum = (int)Math.Round(animationControl.Value);
-            if (animationNum <= 0 | animationNum > GameState.NumAnimations)
+            if (animationNum <= 0 || animationNum > GameState.NumAnimations)
             {
                 spriteBatch.GraphicsDevice.Clear(GameClient.ToMonoGameColor(backgroundColorControl.BackColor));
                 if (backgroundColorControl.Image != null)
@@ -239,34 +244,72 @@ namespace Client
 
         private void picSprite0_Paint(object sender, PaintEventArgs e)
         {
-            if (!General.Client.IsActive)
+            var withBlock = Instance;
+            if (!General.Client.IsActive && selectedAnim == 0)
+            {         
+                // Ensure spriteBatch is created and disposed properly  
+                using (var spriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice))
+                {
+                    using (var renderTarget0 = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
+                    {
+                        ProcessAnimation(ref withBlock.nudSprite0, ref withBlock.nudFrameCount0, ref withBlock.nudLoopTime0, 0, renderTarget0, ref withBlock.picSprite0, spriteBatch);
+                    }
+                }
+            }
+
+            picSpriteAnimations(); // Load the image if it quits animating
+        }
+
+        private void picSpriteAnimations()
+        {
+            var withBlock = Instance;
+
+            // Load the image without DirectX if it quits animating
+            if (withBlock.picSprite0.Image == null)
             {
-                DrawAnimationSprites();
+                var animationNum = (int)Math.Round(withBlock.nudSprite0.Value);
+                if (animationNum > 0 && animationNum <= GameState.NumAnimations)
+                {
+                    var imagePath = System.IO.Path.Combine(Core.Path.Animations, animationNum + GameState.GfxExt);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        withBlock.picSprite0.Image = System.Drawing.Image.FromFile(imagePath);
+                    }
+                }
+            }
+
+            // Load the image without DirectX if it quits animating
+            if (withBlock.picSprite1.Image == null)
+            {
+                var animationNum = (int)Math.Round(withBlock.nudSprite1.Value);
+                if (animationNum > 0 && animationNum <= GameState.NumAnimations)
+                {
+                    var imagePath = System.IO.Path.Combine(Core.Path.Animations, animationNum + GameState.GfxExt);
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        withBlock.picSprite1.Image = System.Drawing.Image.FromFile(imagePath);
+                    }
+                }
             }
         }
 
         private void picSprite1_Paint(object sender, PaintEventArgs e)
         {
-            if (!General.Client.IsActive)
+            if (!General.Client.IsActive && selectedAnim == 1)
             {
-                DrawAnimationSprites();
-            }
-        }
-
-        public void DrawAnimationSprites()
-        {
-            var withBlock = Instance;
-            // Ensure spriteBatch is created and disposed properly
-            using (var spriteBatch = new SpriteBatch(GameClient.Graphics.GraphicsDevice))
-            {
-                // Draw first animation sprite
-                using (var renderTarget0 = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite0.Width, withBlock.picSprite0.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
-                using (var renderTarget1 = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite1.Width, withBlock.picSprite1.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
-                {
-                    ProcessAnimation(ref withBlock.nudSprite0, ref withBlock.nudFrameCount0, ref withBlock.nudLoopTime0, 0, renderTarget0, ref withBlock.picSprite0, spriteBatch);
-                    ProcessAnimation(ref withBlock.nudSprite1, ref withBlock.nudFrameCount1, ref withBlock.nudLoopTime1, 1, renderTarget1, ref withBlock.picSprite1, spriteBatch);
+                var withBlock = Instance;
+                // Ensure spriteBatch is created and disposed properly  
+                using (var spriteBatch = new Microsoft.Xna.Framework.Graphics.SpriteBatch(GameClient.Graphics.GraphicsDevice))
+                { 
+                    using (var renderTarget1 = new RenderTarget2D(GameClient.Graphics.GraphicsDevice, withBlock.picSprite1.Width, withBlock.picSprite1.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.DiscardContents))
+                    {
+                        //withBlock.picSprite0.Image = null; // Reset image before drawing
+                        ProcessAnimation(ref withBlock.nudSprite1, ref withBlock.nudFrameCount1, ref withBlock.nudLoopTime1, 1, renderTarget1, ref withBlock.picSprite1, spriteBatch);
+                    }
                 }
             }
+
+            picSpriteAnimations(); // Load the image if it quits animating
         }
     }
 }
