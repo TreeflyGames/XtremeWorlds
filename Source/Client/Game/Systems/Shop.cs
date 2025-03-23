@@ -1,60 +1,80 @@
 using Core;
-using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Mirage.Sharp.Asfw;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Client
 {
-    public class Shop
+    public class Shop : IDisposable
     {
         #region Fields and Properties
 
-        // Shop-specific states
-        private static Dictionary<int, DateTime> ShopLastAccessed { get; set; } = new Dictionary<int, DateTime>();
-        private static Dictionary<int, int> ShopPopularity { get; set; } = new Dictionary<int, int>();
-        private static readonly object LockObject = new object();
+        private readonly IMemoryCache _cache;
+        private readonly ILogger<Shop> _logger;
+        private readonly SemaphoreSlim _syncLock = new(1, 1);
+        private readonly CancellationTokenSource _cts = new();
+        private static readonly ConcurrentDictionary<int, ShopMetrics> _shopMetrics = new();
 
         // Configuration
-        private const int DEFAULT_BUY_RATE = 100;
-        private const int SHOP_TIMEOUT_SECONDS = 300; // 5 minutes timeout for inactive shops
+        private static readonly TimeSpan DefaultCacheExpiration = TimeSpan.FromMinutes(15);
+        private const int DefaultBuyRate = 100;
+        private const int ShopTimeoutSeconds = 300;
 
-        // Event for shop updates
-        public static event EventHandler<ShopUpdatedEventArgs> OnShopUpdated;
+        // Events
+        public event EventHandler<ShopUpdatedEventArgs> ShopUpdated;
+        public event EventHandler<ShopMetricsUpdatedEventArgs> MetricsUpdated;
+
+        #endregion
+
+        #region Constructor and Disposal
+
+        public Shop(IMemoryCache cache, ILogger<Shop> logger)
+        {
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            InitializeDefaultShops();
+        }
+
+        public void Dispose()
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+            _syncLock.Dispose();
+        }
 
         #endregion
 
         #region Core Shop Operations
 
-        /// <summary>
-        /// Closes the shop interface and resets shop-related states.
-        /// </summary>
-        public static void CloseShop()
+        public async Task CloseShopAsync()
         {
             try
             {
-                NetworkSend.SendCloseShop();
-                Gui.HideWindow(Gui.GetWindowIndex("winShop"));
-                Gui.HideWindow(Gui.GetWindowIndex("winDescription"));
+                await NetworkSend.SendCloseShopAsync();
+                await Task.WhenAll(
+                    Gui.HideWindowAsync(Gui.GetWindowIndex("winShop")),
+                    Gui.HideWindowAsync(Gui.GetWindowIndex("winDescription"))
+                );
                 ResetShopSelection();
                 GameState.InShop = -1;
             }
             catch (Exception ex)
             {
-                LogError("Error closing shop", ex);
+                _logger.LogError(ex, "Error closing shop");
                 throw;
             }
         }
 
-        /// <summary>
-        /// Resets shop selection states to default values.
-        /// </summary>
-        private static void ResetShopSelection()
+        private void ResetShopSelection()
         {
             GameState.shopSelectedSlot = 0L;
             GameState.shopSelectedItem = 0L;
@@ -66,471 +86,342 @@ namespace Client
 
         #region Database Operations
 
-        /// <summary>
-        /// Clears data for a specific shop by index.
-        /// </summary>
-        /// <param name="index">The shop index to clear.</param>
-        public static void ClearShop(int index)
+        public async Task ClearShopAsync(int index)
         {
             ValidateShopIndex(index);
-            lock (LockObject)
+            await _syncLock.WaitAsync();
+            try
             {
-                Core.Type.Shop[index] = new Core.Type.ShopStruct
-                {
-                    Name = string.Empty,
-                    TradeItem = InitializeTradeItems(),
-                    BuyRate = DEFAULT_BUY_RATE,
-                    Categories = new Dictionary<string, List<int>>() // Initialize categories
-                };
+                Core.Type.Shop[index] = CreateDefaultShopStruct();
                 GameState.Shop_Loaded[index] = 0;
-                ShopPopularity[index] = 0;
+                _shopMetrics.TryRemove(index, out _);
+                _cache.Remove(GetCacheKey(index));
+            }
+            finally
+            {
+                _syncLock.Release();
             }
         }
 
-        /// <summary>
-        /// Clears all shops in the system.
-        /// </summary>
-        public static void ClearShops()
+        public async Task ClearAllShopsAsync()
         {
-            lock (LockObject)
+            await _syncLock.WaitAsync();
+            try
             {
                 Core.Type.Shop = new Core.Type.ShopStruct[Constant.MAX_SHOPS];
-                ShopPopularity.Clear();
-                ShopLastAccessed.Clear();
-                for (int i = 0; i < Constant.MAX_SHOPS; i++)
-                    ClearShop(i);
+                _shopMetrics.Clear();
+                _cache.RemoveAll();
+                await Task.WhenAll(Enumerable.Range(0, Constant.MAX_SHOPS)
+                    .Select(i => ClearShopAsync(i)));
+            }
+            finally
+            {
+                _syncLock.Release();
             }
         }
 
-        /// <summary>
-        /// Streams shop data if not already loaded.
-        /// </summary>
-        /// <param name="shopNum">The shop number to stream.</param>
-        public static void StreamShop(int shopNum)
+        public async Task StreamShopAsync(int shopNum)
         {
             ValidateShopIndex(shopNum);
-            if (ShouldStreamShop(shopNum))
+            if (!ShouldStreamShop(shopNum)) return;
+
+            await _syncLock.WaitAsync();
+            try
             {
-                lock (LockObject)
+                if (GameState.Shop_Loaded[shopNum] == 0)
                 {
                     GameState.Shop_Loaded[shopNum] = 1;
-                    SendRequestShop(shopNum);
-                    ShopLastAccessed[shopNum] = DateTime.Now;
+                    await SendRequestShopAsync(shopNum);
+                    UpdateShopMetrics(shopNum, DateTime.UtcNow);
                 }
             }
-        }
-
-        private static bool ShouldStreamShop(int shopNum)
-        {
-            return shopNum >= 0 &&
-                   string.IsNullOrEmpty(Core.Type.Shop[shopNum].Name) &&
-                   GameState.Shop_Loaded[shopNum] == 0;
-        }
-
-        private static Core.Type.TradeItemStruct[] InitializeTradeItems()
-        {
-            var tradeItems = new Core.Type.TradeItemStruct[Constant.MAX_TRADES];
-            for (int x = 0; x < Constant.MAX_TRADES; x++)
+            finally
             {
-                tradeItems[x] = new Core.Type.TradeItemStruct
-                {
-                    Item = -1,
-                    CostItem = -1,
-                    ItemValue = 0,
-                    CostValue = 0,
-                    CurrencyType = 0 // Default currency type
-                };
+                _syncLock.Release();
             }
-            return tradeItems;
         }
 
         #endregion
 
-        #region Incoming Packets
+        #region Packet Handling
 
-        /// <summary>
-        /// Handles the packet to open a shop.
-        /// </summary>
-        public static void Packet_OpenShop(ref byte[] data)
+        public async Task HandleOpenShopAsync(byte[] data)
         {
-            using (var buffer = new ByteStream(data))
-            {
-                int shopNum = buffer.ReadInt32();
-                ValidateShopIndex(shopNum);
-                GameLogic.OpenShop(shopNum);
-                TrackShopAccess(shopNum);
-            }
+            using var buffer = new ByteStream(data);
+            int shopNum = buffer.ReadInt32();
+            ValidateShopIndex(shopNum);
+            await GameLogic.OpenShopAsync(shopNum);
+            UpdateShopMetrics(shopNum);
         }
 
-        /// <summary>
-        /// Resets the shop action state.
-        /// </summary>
-        public static void Packet_ResetShopAction(ref byte[] data)
+        public void HandleResetShopAction(byte[] data)
         {
             GameState.ShopAction = 0;
         }
 
-        /// <summary>
-        /// Updates shop data from a network packet.
-        /// </summary>
-        public static void Packet_UpdateShop(ref byte[] data)
+        public async Task HandleUpdateShopAsync(byte[] data)
         {
-            using (var buffer = new ByteStream(data))
-            {
-                int shopNum = buffer.ReadInt32();
-                ValidateShopIndex(shopNum);
-                lock (LockObject)
-                {
-                    Core.Type.Shop[shopNum].BuyRate = buffer.ReadInt32();
-                    Core.Type.Shop[shopNum].Name = buffer.ReadString() ?? string.Empty;
-                    UpdateTradeItems(shopNum, buffer);
-                    OnShopUpdated?.Invoke(null, new ShopUpdatedEventArgs(shopNum));
-                }
-            }
-        }
+            using var buffer = new ByteStream(data);
+            int shopNum = buffer.ReadInt32();
+            ValidateShopIndex(shopNum);
 
-        private static void UpdateTradeItems(int shopNum, ByteStream buffer)
-        {
-            for (int i = 0; i < Constant.MAX_TRADES; i++)
+            await _syncLock.WaitAsync();
+            try
             {
-                Core.Type.Shop[shopNum].TradeItem[i].CostItem = buffer.ReadInt32();
-                Core.Type.Shop[shopNum].TradeItem[i].CostValue = buffer.ReadInt32();
-                Core.Type.Shop[shopNum].TradeItem[i].Item = buffer.ReadInt32();
-                Core.Type.Shop[shopNum].TradeItem[i].ItemValue = buffer.ReadInt32();
-                Core.Type.Shop[shopNum].TradeItem[i].CurrencyType = buffer.ReadInt32(); // Read currency type
+                var shop = await UpdateShopFromBufferAsync(shopNum, buffer);
+                _cache.Set(GetCacheKey(shopNum), shop, DefaultCacheExpiration);
+                ShopUpdated?.Invoke(this, new ShopUpdatedEventArgs(shopNum));
+            }
+            finally
+            {
+                _syncLock.Release();
             }
         }
 
         #endregion
 
-        #region Outgoing Packets
+        #region Outgoing Requests
 
-        /// <summary>
-        /// Sends a request to load shop data.
-        /// </summary>
-        public static void SendRequestShop(int shopNum)
-        {
-            using (var buffer = new ByteStream(4))
-            {
-                buffer.WriteInt32((int)Packets.ClientPackets.CRequestShop);
-                buffer.WriteInt32(shopNum);
-                SendData(buffer);
-            }
-        }
-
-        /// <summary>
-        /// Sends a request to buy an item from the shop.
-        /// </summary>
-        public static void BuyItem(int shopSlot)
+        public async Task BuyItemAsync(int shopSlot)
         {
             ValidateSlot(shopSlot);
-            if (!CanBuyItem(shopSlot)) return;
-            using (var buffer = new ByteStream(4))
-            {
-                buffer.WriteInt32((int)Packets.ClientPackets.CBuyItem);
-                buffer.WriteInt32(shopSlot);
-                SendData(buffer);
-            }
+            if (!await CanBuyItemAsync(shopSlot)) return;
+
+            using var buffer = await CreateBuyItemBufferAsync(shopSlot);
+            await SendDataAsync(buffer);
         }
 
-        /// <summary>
-        /// Sends a request to sell an item to the shop.
-        /// </summary>
-        public static void SellItem(int invSlot)
+        public async Task SellItemAsync(int invSlot)
         {
             ValidateSlot(invSlot);
-            if (!CanSellItem(invSlot)) return;
-            using (var buffer = new ByteStream(4))
-            {
-                buffer.WriteInt32((int)Packets.ClientPackets.CSellItem);
-                buffer.WriteInt32(invSlot);
-                SendData(buffer);
-            }
-        }
+            if (!await CanSellItemAsync(invSlot)) return;
 
-        private static void SendData(ByteStream buffer)
-        {
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            using var buffer = await CreateSellItemBufferAsync(invSlot);
+            await SendDataAsync(buffer);
         }
 
         #endregion
 
-        #region New Features
+        #region Enhanced Features
 
-        #region Inventory Integration
+        #region Inventory and Currency
 
-        /// <summary>
-        /// Checks if the player can buy the item (e.g., has enough currency).
-        /// </summary>
-        public static bool CanBuyItem(int shopSlot)
+        public async Task<bool> CanBuyItemAsync(int shopSlot)
         {
             var shop = Core.Type.Shop[GameState.InShop];
             var item = shop.TradeItem[shopSlot];
-            var currencyType = item.CurrencyType;
-            var cost = item.CostValue;
-
-            // Assuming GameState.Player has a method to check currency
-            return GameState.Player.HasCurrency(currencyType, cost);
+            return await GameState.Player.HasCurrencyAsync(item.CurrencyType, item.CostValue);
         }
 
-        /// <summary>
-        /// Checks if the player can sell the item (e.g., item is in inventory).
-        /// </summary>
-        public static bool CanSellItem(int invSlot)
+        public async Task<bool> CanSellItemAsync(int invSlot)
         {
-            // Assuming GameState.Player has a method to check inventory
-            return GameState.Player.HasItemInInventory(invSlot);
+            return await GameState.Player.HasItemInInventoryAsync(invSlot);
         }
 
-        #endregion
-
-        #region Currency System
-
-        /// <summary>
-        /// Gets the list of supported currency types.
-        /// </summary>
-        public static List<int> GetSupportedCurrencies()
+        public async Task<decimal> ConvertCurrencyAsync(int fromType, int toType, decimal amount)
         {
-            // Assuming currency types are defined in Core.Type
-            return Core.Type.CurrencyTypes.ToList();
-        }
-
-        /// <summary>
-        /// Sets the currency type for a trade item.
-        /// </summary>
-        public static void SetTradeItemCurrency(int shopNum, int slot, int currencyType)
-        {
-            ValidateShopIndex(shopNum);
-            ValidateSlot(slot);
-            if (!GetSupportedCurrencies().Contains(currencyType))
-                throw new ArgumentException("Invalid currency type.");
-
-            lock (LockObject)
-            {
-                Core.Type.Shop[shopNum].TradeItem[slot].CurrencyType = currencyType;
-            }
+            var rates = await GetCurrencyExchangeRatesAsync();
+            if (!rates.TryGetValue((fromType, toType), out decimal rate))
+                throw new InvalidOperationException("Currency conversion not supported.");
+            return amount * rate;
         }
 
         #endregion
 
-        #region Shop Categories
+        #region Shop Management
 
-        /// <summary>
-        /// Adds a category to the shop.
-        /// </summary>
-        public static void AddCategory(int shopNum, string categoryName)
+        public async Task AddDynamicCategoryAsync(int shopNum, string categoryName, IEnumerable<int> items)
         {
             ValidateShopIndex(shopNum);
-            lock (LockObject)
-            {
-                if (!Core.Type.Shop[shopNum].Categories.ContainsKey(categoryName))
-                {
-                    Core.Type.Shop[shopNum].Categories[categoryName] = new List<int>();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Assigns a trade item to a category.
-        /// </summary>
-        public static void AssignItemToCategory(int shopNum, int slot, string categoryName)
-        {
-            ValidateShopIndex(shopNum);
-            ValidateSlot(slot);
-            lock (LockObject)
-            {
-                if (Core.Type.Shop[shopNum].Categories.TryGetValue(categoryName, out var items))
-                {
-                    if (!items.Contains(slot))
-                        items.Add(slot);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Category does not exist.");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Retrieves items in a specific category.
-        /// </summary>
-        public static List<int> GetItemsInCategory(int shopNum, string categoryName)
-        {
-            ValidateShopIndex(shopNum);
-            lock (LockObject)
-            {
-                if (Core.Type.Shop[shopNum].Categories.TryGetValue(categoryName, out var items))
-                {
-                    return new List<int>(items);
-                }
-                return new List<int>();
-            }
-        }
-
-        #endregion
-
-        #region Serialization
-
-        /// <summary>
-        /// Saves shop data to a file.
-        /// </summary>
-        public static void SaveShopData(string filePath)
-        {
+            await _syncLock.WaitAsync();
             try
             {
-                IFormatter formatter = new BinaryFormatter();
-                using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    formatter.Serialize(stream, Core.Type.Shop);
-                }
+                var shop = Core.Type.Shop[shopNum];
+                shop.Categories[categoryName] = items.ToList();
+                await UpdateCacheAsync(shopNum, shop);
             }
-            catch (Exception ex)
+            finally
             {
-                LogError("Error saving shop data", ex);
-                throw;
+                _syncLock.Release();
             }
         }
 
-        /// <summary>
-        /// Loads shop data from a file.
-        /// </summary>
-        public static void LoadShopData(string filePath)
-        {
-            try
-            {
-                IFormatter formatter = new BinaryFormatter();
-                using (Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    Core.Type.Shop = (Core.Type.ShopStruct[])formatter.Deserialize(stream);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError("Error loading shop data", ex);
-                throw;
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Calculates the total value of items in a shop.
-        /// </summary>
-        public static long CalculateShopValue(int shopNum)
-        {
-            ValidateShopIndex(shopNum);
-            return Core.Type.Shop[shopNum].TradeItem
-                .Where(t => t.Item >= 0)
-                .Sum(t => t.ItemValue * t.CostValue);
-        }
-
-        /// <summary>
-        /// Checks if the shop has expired based on last access time.
-        /// </summary>
-        public static bool IsShopExpired(int shopNum)
-        {
-            if (!ShopLastAccessed.ContainsKey(shopNum)) return true;
-            return (DateTime.Now - ShopLastAccessed[shopNum]).TotalSeconds > SHOP_TIMEOUT_SECONDS;
-        }
-
-        /// <summary>
-        /// Applies a discount to the shop's buy rate asynchronously.
-        /// </summary>
-        public static async Task ApplyDiscountAsync(int shopNum, int discountPercentage)
+        public async Task ApplyBulkDiscountAsync(int shopNum, decimal discountPercentage, TimeSpan duration)
         {
             ValidateShopIndex(shopNum);
             if (discountPercentage < 0 || discountPercentage > 100)
-                throw new ArgumentException("Discount percentage must be between 0 and 100.");
+                throw new ArgumentException("Invalid discount percentage");
 
-            await Task.Run(() =>
+            await _syncLock.WaitAsync();
+            try
             {
-                lock (LockObject)
+                var shop = Core.Type.Shop[shopNum];
+                shop.BuyRate = (int)(shop.BuyRate * (1 - discountPercentage / 100));
+                await UpdateCacheAsync(shopNum, shop);
+
+                _ = Task.Run(async () =>
                 {
-                    int newRate = Core.Type.Shop[shopNum].BuyRate * (100 - discountPercentage) / 100;
-                    Core.Type.Shop[shopNum].BuyRate = Math.Max(1, newRate); // Ensure minimum rate
-                }
-            });
-        }
-
-        /// <summary>
-        /// Retrieves the most popular shop based on access frequency.
-        /// </summary>
-        public static int GetMostPopularShop()
-        {
-            lock (LockObject)
+                    await Task.Delay(duration, _cts.Token);
+                    await ResetBuyRateAsync(shopNum);
+                });
+            }
+            finally
             {
-                return ShopPopularity.Any() ? ShopPopularity.OrderByDescending(kv => kv.Value).First().Key : -1;
+                _syncLock.Release();
             }
         }
 
-        /// <summary>
-        /// Adds a new trade item to the shop.
-        /// </summary>
-        public static void AddTradeItem(int shopNum, int itemId, int costItemId, int itemValue, int costValue, int currencyType = 0)
+        #endregion
+
+        #region Analytics
+
+        public async Task<ShopAnalytics> GetShopAnalyticsAsync(int shopNum)
         {
             ValidateShopIndex(shopNum);
-            lock (LockObject)
+            var metrics = _shopMetrics.GetOrAdd(shopNum, _ => new ShopMetrics());
+            return new ShopAnalytics
             {
-                var tradeItems = Core.Type.Shop[shopNum].TradeItem;
-                int freeSlot = Array.FindIndex(tradeItems, t => t.Item == -1);
-                if (freeSlot == -1) throw new InvalidOperationException("No free trade slots available.");
+                ShopId = shopNum,
+                TotalAccesses = metrics.AccessCount,
+                LastAccessed = metrics.LastAccess,
+                AverageTransactionValue = await CalculateAverageTransactionValueAsync(shopNum)
+            };
+        }
 
-                tradeItems[freeSlot] = new Core.Type.TradeItemStruct
-                {
-                    Item = itemId,
-                    CostItem = costItemId,
-                    ItemValue = itemValue,
-                    CostValue = costValue,
-                    CurrencyType = currencyType
-                };
+        #endregion
+
+        #region Persistence
+
+        public async Task SaveShopDataAsync(string filePath)
+        {
+            try
+            {
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                await using var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+                await JsonSerializer.SerializeAsync(stream, Core.Type.Shop, options);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to save shop data");
+                throw;
             }
         }
+
+        public async Task LoadShopDataAsync(string filePath)
+        {
+            try
+            {
+                await using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                Core.Type.Shop = await JsonSerializer.DeserializeAsync<Core.Type.ShopStruct[]>(stream)
+                    ?? throw new InvalidDataException("Failed to deserialize shop data");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to load shop data");
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region Advanced Features
+
+        public async Task RecommendItemsAsync(int shopNum, int playerId)
+        {
+            var playerHistory = await GameState.Player.GetPurchaseHistoryAsync(playerId);
+            var shopItems = Core.Type.Shop[shopNum].TradeItem;
+            var recommendations = shopItems
+                .Where(ti => ti.Item >= 0 && !playerHistory.Contains(ti.Item))
+                .OrderBy(ti => ti.ItemValue)
+                .Take(3)
+                .Select(ti => ti.Item)
+                .ToList();
+
+            return recommendations;
+        }
+
+        public async Task<bool> IsShopOverstockedAsync(int shopNum)
+        {
+            var shop = Core.Type.Shop[shopNum];
+            var activeItems = shop.TradeItem.Count(ti => ti.Item >= 0);
+            var avgValue = await CalculateAverageTransactionValueAsync(shopNum);
+            return activeItems > Constant.MAX_TRADES * 0.8 && avgValue < 100;
+        }
+
+        #endregion
 
         #endregion
 
         #region Helper Methods
 
-        private static void ValidateShopIndex(int index)
+        private Core.Type.ShopStruct CreateDefaultShopStruct() => new()
+        {
+            Name = string.Empty,
+            TradeItem = Enumerable.Range(0, Constant.MAX_TRADES)
+                .Select(_ => new Core.Type.TradeItemStruct { Item = -1, CostItem = -1 })
+                .ToArray(),
+            BuyRate = DefaultBuyRate,
+            Categories = new Dictionary<string, List<int>>()
+        };
+
+        private async Task UpdateCacheAsync(int shopNum, Core.Type.ShopStruct shop)
+        {
+            _cache.Set(GetCacheKey(shopNum), shop, DefaultCacheExpiration);
+            await Task.CompletedTask;
+        }
+
+        private string GetCacheKey(int shopNum) => $"Shop_{shopNum}";
+
+        private void UpdateShopMetrics(int shopNum, DateTime? time = null)
+        {
+            var metrics = _shopMetrics.GetOrAdd(shopNum, _ => new ShopMetrics());
+            metrics.AccessCount++;
+            metrics.LastAccess = time ?? DateTime.UtcNow;
+            MetricsUpdated?.Invoke(this, new ShopMetricsUpdatedEventArgs(shopNum, metrics));
+        }
+
+        private void ValidateShopIndex(int index)
         {
             if (index < 0 || index >= Constant.MAX_SHOPS)
-                throw new ArgumentOutOfRangeException(nameof(index), $"Shop index must be between 0 and {Constant.MAX_SHOPS - 1}.");
+                throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        private static void ValidateSlot(int slot)
+        private void ValidateSlot(int slot)
         {
             if (slot < 0 || slot >= Constant.MAX_TRADES)
-                throw new ArgumentOutOfRangeException(nameof(slot), $"Slot must be between 0 and {Constant.MAX_TRADES - 1}.");
+                throw new ArgumentOutOfRangeException(nameof(slot));
         }
 
-        private static void TrackShopAccess(int shopNum)
+        #endregion
+
+        #region Nested Classes
+
+        private class ShopMetrics
         {
-            lock (LockObject)
+            public int AccessCount { get; set; }
+            public DateTime LastAccess { get; set; }
+        }
+
+        public class ShopAnalytics
+        {
+            public int ShopId { get; set; }
+            public int TotalAccesses { get; set; }
+            public DateTime LastAccessed { get; set; }
+            public decimal AverageTransactionValue { get; set; }
+        }
+
+        public class ShopMetricsUpdatedEventArgs : EventArgs
+        {
+            public int ShopNumber { get; }
+            public ShopMetrics Metrics { get; }
+
+            public ShopMetricsUpdatedEventArgs(int shopNumber, ShopMetrics metrics)
             {
-                ShopPopularity[shopNum] = ShopPopularity.GetValueOrDefault(shopNum) + 1;
-                ShopLastAccessed[shopNum] = DateTime.Now;
+                ShopNumber = shopNumber;
+                Metrics = metrics;
             }
-        }
-
-        private static void LogError(string message, Exception ex)
-        {
-            // Placeholder for actual logging implementation
-            Console.WriteLine($"{message}: {ex.Message}");
         }
 
         #endregion
     }
-
-    #region EventArgs
-
-    public class ShopUpdatedEventArgs : EventArgs
-    {
-        public int ShopNumber { get; }
-
-        public ShopUpdatedEventArgs(int shopNumber)
-        {
-            ShopNumber = shopNumber;
-        }
-    }
-
-    #endregion
 }
