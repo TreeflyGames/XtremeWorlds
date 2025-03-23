@@ -1,0 +1,93 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace Core
+{
+    public static class LocalesManager
+    {
+        private static Dictionary<string, Locales> _languages = new Dictionary<string, Locales>();
+        public static string CurrentLanguage { get; private set; } = "en";
+        public static string DefaultLanguage { get; set; } = "en";
+
+        /// <summary>
+        /// Gets the current language's Locales instance.
+        /// </summary>
+        public static Locales Language => _languages[CurrentLanguage];
+
+        /// <summary>
+        /// Loads a language from a JSON file.
+        /// </summary>
+        public static void LoadLanguage(string languageCode, string filePath)
+        {
+            var locales = Locales.LoadFromFile(filePath);
+            _languages[languageCode] = locales;
+        }
+
+        /// <summary>
+        /// Loads all JSON files from a directory as languages.
+        /// </summary>
+        public static void LoadAllLanguages(string directory)
+        {
+            foreach (var file in Directory.GetFiles(directory, "*.json"))
+            {
+                string languageCode = Path.GetFileNameWithoutExtension(file);
+                LoadLanguage(languageCode, file);
+            }
+        }
+
+        /// <summary>
+        /// Sets the current language, throwing an exception if not loaded.
+        /// </summary>
+        public static void SetLanguage(string languageCode)
+        {
+            if (_languages.ContainsKey(languageCode))
+            {
+                CurrentLanguage = languageCode;
+            }
+            else
+            {
+                throw new ArgumentException($"Language {languageCode} not loaded.");
+            }
+        }
+
+        /// <summary>
+        /// Gets a value for a section and key, falling back to the default language if needed.
+        /// </summary>
+        public static string Get(string section, string key)
+        {
+            string value = _languages[CurrentLanguage].GetValue(section, key);
+            if (value == null && CurrentLanguage != DefaultLanguage)
+            {
+                value = _languages[DefaultLanguage].GetValue(section, key);
+            }
+            return value ?? $"Key not found: {section}.{key}";
+        }
+
+        /// <summary>
+        /// Gets a formatted value for a section and key with arguments.
+        /// </summary>
+        public static string Get(string section, string key, params object[] args)
+        {
+            string value = Get(section, key);
+            if (value == null) return null;
+            try
+            {
+                return string.Format(value, args);
+            }
+            catch (FormatException)
+            {
+                return value;
+            }
+        }
+
+        /// <summary>
+        /// Reloads a language from a JSON file, updating the existing instance.
+        /// </summary>
+        public static void ReloadLanguage(string languageCode, string filePath)
+        {
+            var locales = Locales.LoadFromFile(filePath);
+            _languages[languageCode] = locales;
+        }
+    }
+}
