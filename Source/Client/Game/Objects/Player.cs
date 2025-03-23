@@ -1032,6 +1032,9 @@ namespace Client
                 {
                     for (int i = 0, loopTo = GameState.CurrentEvents; i < loopTo; i++)
                     {
+                        if (Core.Type.MapEvents.Length < GameState.CurrentEvents)
+                            break;
+
                         if (Core.Type.MapEvents[i].Visible == true)
                         {
                             if (Core.Type.MapEvents[i].X == x & Core.Type.MapEvents[i].Y == y)

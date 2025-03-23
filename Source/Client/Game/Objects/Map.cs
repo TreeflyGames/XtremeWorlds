@@ -1054,31 +1054,7 @@ namespace Client
             withBlock.Vital[(int)Core.Enum.VitalType.HP] = buffer.ReadInt32();
             withBlock.Vital[(int)Core.Enum.VitalType.SP] = buffer.ReadInt32();
 
-            buffer.Dispose();
-        }
-
-        public static void Packet_MapDone(ref byte[] data)
-        {
-            int i;
-
-            for (i = 0; i < byte.MaxValue; i++)
-                GameLogic.ClearActionMsg((byte)i);
-
-            GameState.CurrentWeather = Core.Type.MyMap.Weather;
-            GameState.CurrentWeatherIntensity = Core.Type.MyMap.WeatherIntensity;
-            GameState.CurrentFog = Core.Type.MyMap.Fog;
-            GameState.CurrentFogSpeed = Core.Type.MyMap.FogSpeed;
-            GameState.CurrentFogOpacity = Core.Type.MyMap.FogOpacity;
-            GameState.CurrentTintR = Core.Type.MyMap.MapTintR;
-            GameState.CurrentTintG = Core.Type.MyMap.MapTintG;
-            GameState.CurrentTintB = Core.Type.MyMap.MapTintB;
-            GameState.CurrentTintA = Core.Type.MyMap.MapTintA;
-
-            GameLogic.UpdateDrawMapName();
-
-            GameState.GettingMap = Conversions.ToBoolean(0);
-            GameState.CanMoveNow = true;
-
+            buffer.Dispose();  
         }
 
         #endregion

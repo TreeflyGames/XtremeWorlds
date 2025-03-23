@@ -3322,30 +3322,29 @@ namespace Client
             GameState.CurrentEvents = id + 1;
             Array.Resize(ref Core.Type.MapEvents, GameState.CurrentEvents);
 
-            {
-                ref var withBlock = ref Core.Type.MapEvents[id];
-                withBlock.Name = buffer.ReadString();
-                withBlock.Dir = buffer.ReadInt32();
-                withBlock.ShowDir = withBlock.Dir;
-                withBlock.GraphicType = buffer.ReadByte();
-                withBlock.Graphic = buffer.ReadInt32();
-                withBlock.GraphicX = buffer.ReadInt32();
-                withBlock.GraphicX2 = buffer.ReadInt32();
-                withBlock.GraphicY = buffer.ReadInt32();
-                withBlock.GraphicY2 = buffer.ReadInt32();
-                withBlock.MovementSpeed = buffer.ReadInt32();
-                withBlock.Moving = 0;
-                withBlock.X = buffer.ReadInt32();
-                withBlock.Y = buffer.ReadInt32();
-                withBlock.XOffset = 0;
-                withBlock.YOffset = 0;
-                withBlock.Position = buffer.ReadByte();
-                withBlock.Visible = buffer.ReadBoolean();
-                withBlock.WalkAnim = buffer.ReadInt32();
-                withBlock.DirFix = buffer.ReadInt32();
-                withBlock.WalkThrough = buffer.ReadInt32();
-                withBlock.ShowName = buffer.ReadInt32();
-            }
+            ref var withBlock = ref Core.Type.MapEvents[id];
+            withBlock.Name = buffer.ReadString();
+            withBlock.Dir = buffer.ReadInt32();
+            withBlock.ShowDir = withBlock.Dir;
+            withBlock.GraphicType = buffer.ReadByte();
+            withBlock.Graphic = buffer.ReadInt32();
+            withBlock.GraphicX = buffer.ReadInt32();
+            withBlock.GraphicX2 = buffer.ReadInt32();
+            withBlock.GraphicY = buffer.ReadInt32();
+            withBlock.GraphicY2 = buffer.ReadInt32();
+            withBlock.MovementSpeed = buffer.ReadInt32();
+            withBlock.Moving = 0;
+            withBlock.X = buffer.ReadInt32();
+            withBlock.Y = buffer.ReadInt32();
+            withBlock.XOffset = 0;
+            withBlock.YOffset = 0;
+            withBlock.Position = buffer.ReadByte();
+            withBlock.Visible = buffer.ReadBoolean();
+            withBlock.WalkAnim = buffer.ReadInt32();
+            withBlock.DirFix = buffer.ReadInt32();
+            withBlock.WalkThrough = buffer.ReadInt32();
+            withBlock.ShowName = buffer.ReadInt32();
+            
 
             buffer.Dispose();
 
@@ -3840,10 +3839,10 @@ namespace Client
             if (GameState.MyEditorType == (int)Core.Enum.EditorType.Map)
                 return;
 
-            if (id > Core.Type.MyMap.EventCount)
+            if (id >= Core.Type.MyMap.EventCount)
                 return;
 
-            if (id > Core.Type.MapEvents.Length)
+            if (id >= Core.Type.MapEvents.Length)
                 return;
 
             if (Core.Type.MapEvents[id].Moving == 1)
