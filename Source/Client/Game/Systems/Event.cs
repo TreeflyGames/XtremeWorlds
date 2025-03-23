@@ -138,6 +138,9 @@ namespace Client
             var loopTo = Core.Type.MyMap.EventCount;
             for (i = 0; i < loopTo; i++)
             {
+                if (Core.Type.MyMap.Event.Length <= i)
+                    break;
+
                 if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
                 {
                     // Clear the event
