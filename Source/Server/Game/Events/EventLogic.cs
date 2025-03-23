@@ -2942,6 +2942,7 @@ namespace Server
             {
                 return false;
             }
+
             int mapNum = GetPlayerMap(index);
             if (mapNum < 0 || mapNum >= Map.Length)
             {
@@ -3005,11 +3006,6 @@ namespace Server
                     if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) + 1; }
                     else return false;
                     break;
-            }
-            // Check if the player is on the event's tile.
-            if (x != eventPage.X || y != eventPage.Y)
-            {
-                return false; // Not on the event tile.
             }
 
             // Check for event commands and start event processing.
