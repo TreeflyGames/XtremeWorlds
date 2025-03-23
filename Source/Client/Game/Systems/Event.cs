@@ -2852,7 +2852,6 @@ namespace Client
         public static void DeleteEventCommand()
         {
             int i;
-            int X;
             int curlist;
             int curslot;
             int p;
@@ -2874,63 +2873,31 @@ namespace Client
             if (TmpEvent.Pages[CurPageNum].CommandList == null)
                 return;
 
-            if (curslot > TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)
+            if (curslot >= TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)
                 return;
 
-            if (curslot == TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount)
+            TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount -= 1;
+            p = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
+            oldCommandList = TmpEvent.Pages[CurPageNum].CommandList[curlist];
+
+            if (p <= 0)
             {
-                TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount -= 1;
-                p = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
-                if (p <= 0)
-                {
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[1];
-                }
-                else
-                {
-                    oldCommandList = TmpEvent.Pages[CurPageNum].CommandList[curlist];
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[p + 1];
-                    X = 1;
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList = oldCommandList.ParentList;
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = p;
-                    var loopTo = p + 1;
-                    for (i = 0; i < loopTo; i++)
-                    {
-                        if (i != curslot)
-                        {
-                            TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[X] = oldCommandList.Commands[i];
-                            X = X + 1;
-                        }
-                    }
-                }
+                TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[1];
             }
             else
             {
-                TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount -= 1;
-                p = TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount;
-                oldCommandList = TmpEvent.Pages[CurPageNum].CommandList[curlist];
-                X = 1;
-                if (p <= 0)
+                TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[p];
+                TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList = oldCommandList.ParentList;
+                TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = p;
+
+                // Move all commands down by 1  
+                for (i = frmEditor_Event.Instance.lstCommands.SelectedIndex + 1; i <= p; i++)
                 {
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[1];
-                }
-                else
-                {
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands = new Core.Type.EventCommandStruct[p + 1];
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].ParentList = oldCommandList.ParentList;
-                    TmpEvent.Pages[CurPageNum].CommandList[curlist].CommandCount = p;
-                    var loopTo1 = p + 1;
-                    for (i = 0; i < loopTo1; i++)
-                    {
-                        if (i != curslot)
-                        {
-                            TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[X] = oldCommandList.Commands[i];
-                            X = X + 1;
-                        }
-                    }
+                    TmpEvent.Pages[CurPageNum].CommandList[curlist].Commands[i - 1] = oldCommandList.Commands[i];
                 }
             }
-            EventListCommands();
 
+            EventListCommands();
         }
 
         public static void ClearEventCommands()
