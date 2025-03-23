@@ -1,8 +1,14 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
-using Mirage.Sharp.Asfw;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Mirage.Sharp.Asfw;
 using static Core.Enum;
 using static Core.Packets;
 using static Core.Type;
@@ -10,213 +16,346 @@ using static Core.Global.Command;
 
 namespace Server
 {
-
-    public class Moral
+    public class MoralService : IDisposable
     {
+        private readonly IMemoryCache _cache;
+        private readonly ILogger<MoralService> _logger;
+        private readonly IDatabaseProvider _database;
+        private readonly INetworkService _network;
+        private readonly ConcurrentDictionary<int, MoralStruct> _moralCache;
+        private readonly object _syncLock = new object();
+        private bool _disposed;
 
-        #region Database
-        public static void ClearMoral(int moralNum)
+        #region Nested Types
+        public class MoralStruct
         {
-            Core.Type.Moral[moralNum].Name = "";
-            Core.Type.Moral[moralNum].Color = 0;
-            Core.Type.Moral[moralNum].CanCast = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanDropItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanPK = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanPickupItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].CanUseItem = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].DropItems = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].LoseExp = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].NPCBlock = Conversions.ToBoolean(0);
-            Core.Type.Moral[moralNum].PlayerBlock = Conversions.ToBoolean(0);
+            public string Name { get; set; }
+            public byte Color { get; set; }
+            public bool CanCast { get; set; }
+            public bool CanDropItem { get; set; }
+            public bool CanPK { get; set; }
+            public bool CanPickupItem { get; set; }
+            public bool CanUseItem { get; set; }
+            public bool DropItems { get; set; }
+            public bool LoseExp { get; set; }
+            public bool NPCBlock { get; set; }
+            public bool PlayerBlock { get; set; }
+            public Dictionary<string, int> CustomAttributes { get; set; } = new();
+            public DateTime LastModified { get; set; }
+            public string Description { get; set; }
+            public List<MoralPermission> Permissions { get; set; } = new();
         }
 
-        public static async Task LoadMoralAsync(int moralNum)
+        public class MoralPermission
         {
-            JObject data;
+            public string PermissionType { get; set; }
+            public bool IsAllowed { get; set; }
+            public Dictionary<string, string> Conditions { get; set; } = new();
+        }
 
-            data = await Database.SelectRowAsync(moralNum, "moral", "data");
+        public class MoralValidationResult
+        {
+            public bool IsValid { get; set; }
+            public List<string> ValidationErrors { get; set; } = new();
+        }
+        #endregion
 
-            if (data is null)
+        #region Constructor and Initialization
+        public MoralService(
+            IMemoryCache cache,
+            ILogger<MoralService> logger,
+            IDatabaseProvider database,
+            INetworkService network)
+        {
+            _cache = cache;
+            _logger = logger;
+            _database = database;
+            _network = network;
+            _moralCache = new ConcurrentDictionary<int, MoralStruct>();
+        }
+
+        public async Task InitializeAsync()
+        {
+            try
             {
-                ClearMoral(moralNum);
+                await LoadAllMoralsAsync();
+                _logger.LogInformation("Moral Service initialized successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to initialize Moral Service");
+                throw;
+            }
+        }
+        #endregion
+
+        #region Database Operations
+        public void ClearMoral(int moralNum)
+        {
+            var defaultMoral = new MoralStruct
+            {
+                Name = string.Empty,
+                LastModified = DateTime.UtcNow
+            };
+            
+            _moralCache[moralNum] = defaultMoral;
+            _cache.Set($"moral_{moralNum}", defaultMoral, TimeSpan.FromHours(1));
+        }
+
+        public async Task<MoralStruct> LoadMoralAsync(int moralNum)
+        {
+            if (_moralCache.TryGetValue(moralNum, out var cachedMoral))
+            {
+                return cachedMoral;
+            }
+
+            try
+            {
+                var data = await _database.SelectRowAsync(moralNum, "moral", "data");
+                if (data == null)
+                {
+                    ClearMoral(moralNum);
+                    return _moralCache[moralNum];
+                }
+
+                var moralData = JsonConvert.DeserializeObject<MoralStruct>(data.ToString());
+                moralData.LastModified = DateTime.UtcNow;
+                
+                _moralCache[moralNum] = moralData;
+                _cache.Set($"moral_{moralNum}", moralData, GetCacheOptions());
+                
+                return moralData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to load moral {moralNum}");
+                throw;
+            }
+        }
+
+        public async Task LoadAllMoralsAsync()
+        {
+            var tasks = Enumerable.Range(0, Core.Constant.MAX_MORALS)
+                .Select(i => LoadMoralAsync(i));
+            await Task.WhenAll(tasks);
+        }
+
+        public async Task SaveMoralAsync(int moralNum)
+        {
+            if (!_moralCache.TryGetValue(moralNum, out var moral))
+            {
                 return;
             }
 
-            var moralData = JObject.FromObject(data).ToObject<MoralStruct>();
-            Core.Type.Moral[moralNum] = moralData;
-        }
-
-        public static async Task LoadMoralsAsync()
-        {
-            int i;
-
-            var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i < loopTo; i++)
-                await Task.Run(() => LoadMoralAsync(i));
-        }
-
-        public static void SaveMoral(int moralNum)
-        {
-            string json = JsonConvert.SerializeObject(Core.Type.Moral[moralNum]).ToString();
-
-            if (Database.RowExists(moralNum, "moral"))
+            try
             {
-                Database.UpdateRow(moralNum, json, "moral", "data");
+                moral.LastModified = DateTime.UtcNow;
+                string json = JsonConvert.SerializeObject(moral, Formatting.Indented);
+                
+                if (await _database.RowExistsAsync(moralNum, "moral"))
+                {
+                    await _database.UpdateRowAsync(moralNum, json, "moral", "data");
+                }
+                else
+                {
+                    await _database.InsertRowAsync(moralNum, json, "moral");
+                }
+
+                _cache.Set($"moral_{moralNum}", moral, GetCacheOptions());
             }
-            else
+            catch (Exception ex)
             {
-                Database.InsertRow(moralNum, json, "moral");
+                _logger.LogError(ex, $"Failed to save moral {moralNum}");
+                throw;
             }
         }
+        #endregion
 
-        public static void SaveMorals()
+        #region Packet Operations
+        public byte[] SerializeMoralData(int moralNum)
         {
-            int i;
+            if (!_moralCache.TryGetValue(moralNum, out var moral))
+            {
+                return Array.Empty<byte>();
+            }
 
-            var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i < loopTo; i++)
-                SaveMoral(i);
-        }
-
-        public static byte[] MoralData(int moralNum)
-        {
-            var buffer = new ByteStream(4);
-
+            using var buffer = new ByteStream();
             buffer.WriteInt32(moralNum);
-            buffer.WriteString(Core.Type.Moral[moralNum].Name);
-            buffer.WriteByte(Core.Type.Moral[moralNum].Color);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].NPCBlock);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].PlayerBlock);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].DropItems);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].CanCast);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].CanDropItem);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].CanPickupItem);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].CanPK);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].DropItems);
-            buffer.WriteBoolean(Core.Type.Moral[moralNum].LoseExp);
+            buffer.WriteString(moral.Name);
+            buffer.WriteByte(moral.Color);
+            buffer.WriteBoolean(moral.NPCBlock);
+            buffer.WriteBoolean(moral.PlayerBlock);
+            buffer.WriteBoolean(moral.DropItems);
+            buffer.WriteBoolean(moral.CanCast);
+            buffer.WriteBoolean(moral.CanDropItem);
+            buffer.WriteBoolean(moral.CanPickupItem);
+            buffer.WriteBoolean(moral.CanPK);
+            buffer.WriteBoolean(moral.LoseExp);
+            buffer.WriteString(moral.Description);
+            buffer.WriteInt32(moral.CustomAttributes.Count);
+            
+            foreach (var attr in moral.CustomAttributes)
+            {
+                buffer.WriteString(attr.Key);
+                buffer.WriteInt32(attr.Value);
+            }
 
             return buffer.ToArray();
         }
 
+        public async Task SendMoralsToPlayerAsync(int playerIndex)
+        {
+            var moralsToSend = _moralCache
+                .Where(m => !string.IsNullOrEmpty(m.Value.Name))
+                .Select(m => m.Key);
+
+            foreach (var moralNum in moralsToSend)
+            {
+                await SendUpdateMoralToAsync(playerIndex, moralNum);
+            }
+        }
+
+        public async Task SendUpdateMoralToAsync(int playerIndex, int moralNum)
+        {
+            var data = SerializeMoralData(moralNum);
+            await _network.SendDataToAsync(playerIndex, 
+                ServerPackets.SUpdateMoral, 
+                data);
+        }
+
+        public async Task BroadcastMoralUpdateAsync(int moralNum)
+        {
+            var data = SerializeMoralData(moralNum);
+            await _network.BroadcastAsync(
+                ServerPackets.SUpdateMoral,
+                data);
+        }
         #endregion
 
-        #region Outgoing Packets
-
-        public static void SendMorals(int index)
+        #region Packet Handlers
+        public async Task HandleEditMoralRequestAsync(int playerIndex, byte[] data)
         {
-            int i;
-
-            var loopTo = Core.Constant.MAX_MORALS;
-            for (i = 0; i < loopTo; i++)
+            if (!await ValidatePlayerAccessAsync(playerIndex, AccessType.Developer))
             {
-                if (Strings.Len(Core.Type.Moral[i].Name) > 0)
-                {
-                    SendUpdateMoralTo(index, i);
-                }
+                return;
             }
 
+            if (Core.Type.TempPlayer[playerIndex].Editor > 0)
+            {
+                await _network.SendPlayerMessageAsync(playerIndex,
+                    "Editor already in use",
+                    ColorType.BrightRed);
+                return;
+            }
+
+            var editorLock = await CheckEditorLockAsync(playerIndex, EditorType.Moral);
+            if (!string.IsNullOrEmpty(editorLock))
+            {
+                await _network.SendPlayerMessageAsync(playerIndex,
+                    $"Editor locked by {editorLock}",
+                    ColorType.BrightRed);
+                return;
+            }
+
+            await SendMoralsToPlayerAsync(playerIndex);
+            Core.Type.TempPlayer[playerIndex].Editor = (byte)EditorType.Moral;
+            
+            await _network.SendDataToAsync(playerIndex,
+                ServerPackets.SMoralEditor,
+                Array.Empty<byte>());
         }
 
-        public static void SendUpdateMoralTo(int index, int moralNum)
+        public async Task HandleSaveMoralAsync(int playerIndex, byte[] data)
         {
-            ByteStream buffer;
-            buffer = new ByteStream(4);
-            buffer.WriteInt32((int) ServerPackets.SUpdateMoral);
+            if (!await ValidatePlayerAccessAsync(playerIndex, AccessType.Developer))
+            {
+                return;
+            }
 
-            buffer.WriteBlock(MoralData(moralNum));
+            using var buffer = new ByteStream(data);
+            var moralNum = buffer.ReadInt32();
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
-            buffer.Dispose();
+            if (!IsValidMoralNumber(moralNum))
+            {
+                return;
+            }
+
+            var moral = DeserializeMoral(buffer);
+            var validation = ValidateMoral(moral);
+            
+            if (!validation.IsValid)
+            {
+                await SendValidationErrorsAsync(playerIndex, validation);
+                return;
+            }
+
+            _moralCache[moralNum] = moral;
+            await Task.WhenAll(
+                BroadcastMoralUpdateAsync(moralNum),
+                SaveMoralAsync(moralNum),
+                LogMoralUpdateAsync(playerIndex, moralNum)
+            );
+
+            await SendMoralsToPlayerAsync(playerIndex);
         }
-
-        public static void SendUpdateMoralToAll(int moralNum)
-        {
-            ByteStream buffer;
-            buffer = new ByteStream(4);
-            buffer.WriteInt32((int) ServerPackets.SUpdateMoral);
-
-            buffer.WriteBlock(MoralData(moralNum));
-
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
-            buffer.Dispose();
-        }
-
-
         #endregion
 
-        #region Incoming Packets
-        public static void Packet_RequestEditMoral(int index, ref byte[] data)
+        #region Validation and Utilities
+        private MoralValidationResult ValidateMoral(MoralStruct moral)
         {
-            var buffer = new ByteStream(4);
-
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            if (Core.Type.TempPlayer[index].Editor > 0)
-                return;
-
-            string user;
-
-            user = IsEditorLocked(index, (byte) EditorType.Moral);
-
-            if (!string.IsNullOrEmpty(user))
+            var result = new MoralValidationResult { IsValid = true };
+            
+            if (string.IsNullOrWhiteSpace(moral.Name))
             {
-                NetworkSend.PlayerMsg(index, "The game editor is locked and being used by " + user + ".", (int) ColorType.BrightRed);
-                return;
+                result.IsValid = false;
+                result.ValidationErrors.Add("Name cannot be empty");
             }
 
-            SendMorals(index);
-
-            Core.Type.TempPlayer[index].Editor = (byte) EditorType.Moral;
-
-            buffer.WriteInt32((int) ServerPackets.SMoralEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
-
-            buffer.Dispose();
-
-        }
-
-        public static void Packet_SaveMoral(int index, ref byte[] data)
-        {
-            int moralNum;
-            int i;
-            var buffer = new ByteStream(data);
-
-            // Prevent hacking
-            if (GetPlayerAccess(index) < (byte) AccessType.Developer)
-                return;
-
-            moralNum = buffer.ReadInt32();
-
-            // Prevent hacking
-            if (moralNum < 0 | moralNum > Core.Constant.MAX_MORALS)
-                return;
-
+            if (moral.Name?.Length > 50)
             {
-                ref var withBlock = ref Core.Type.Moral[moralNum];
-                withBlock.Name = buffer.ReadString();
-                withBlock.Color = buffer.ReadByte();
-                withBlock.CanCast = buffer.ReadBoolean();
-                withBlock.CanPK = buffer.ReadBoolean();
-                withBlock.CanDropItem = buffer.ReadBoolean();
-                withBlock.CanPickupItem = buffer.ReadBoolean();
-                withBlock.CanUseItem = buffer.ReadBoolean();
-                withBlock.DropItems = buffer.ReadBoolean();
-                withBlock.LoseExp = buffer.ReadBoolean();
-                withBlock.PlayerBlock = buffer.ReadBoolean();
-                withBlock.NPCBlock = buffer.ReadBoolean();
+                result.IsValid = false;
+                result.ValidationErrors.Add("Name too long (max 50 chars)");
             }
 
-            // Save it
-            SendUpdateMoralToAll(moralNum);
-            SaveMoral(moralNum);
-            Core.Log.Add(GetPlayerLogin(index) + " saved moral #" + moralNum + ".", Constant.ADMIN_LOG);
-            SendMorals(index);
+            return result;
         }
 
-        public static void Packet_RequestMoral(int index, ref byte[] data)
+        private bool IsValidMoralNumber(int moralNum) =>
+            moralNum >= 0 && moralNum <= Core.Constant.MAX_MORALS;
+
+        private MemoryCacheEntryOptions GetCacheOptions() =>
+            new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromHours(1))
+                .SetPriority(CacheItemPriority.High);
+
+        private MoralStruct DeserializeMoral(ByteStream buffer)
         {
-            SendMorals(index);
+            return new MoralStruct
+            {
+                Name = buffer.ReadString(),
+                Color = buffer.ReadByte(),
+                CanCast = buffer.ReadBoolean(),
+                CanPK = buffer.ReadBoolean(),
+                CanDropItem = buffer.ReadBoolean(),
+                CanPickupItem = buffer.ReadBoolean(),
+                CanUseItem = buffer.ReadBoolean(),
+                DropItems = buffer.ReadBoolean(),
+                LoseExp = buffer.ReadBoolean(),
+                PlayerBlock = buffer.ReadBoolean(),
+                NPCBlock = buffer.ReadBoolean(),
+                Description = buffer.ReadString()
+            };
+        }
+        #endregion
+
+        #region Cleanup
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _moralCache.Clear();
+                _disposed = true;
+            }
         }
         #endregion
     }
