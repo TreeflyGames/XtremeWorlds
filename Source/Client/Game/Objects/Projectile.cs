@@ -213,6 +213,7 @@ namespace Client
 
             if (x > Core.Type.MyMap.MaxX | x < 0)
                 canClearProjectile = Conversions.ToBoolean(1);
+
             if (y > Core.Type.MyMap.MaxY | y < 0)
                 canClearProjectile = Conversions.ToBoolean(1);
 
@@ -283,7 +284,12 @@ namespace Client
 
             // src rect
             rec.Top = 0d;
-            rec.Bottom = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Projectiles, sprite.ToString())).Height;
+            var gfxInfo = GameClient.GetGfxInfo(System.IO.Path.Combine(Core.Path.Projectiles, sprite.ToString()));
+            if (gfxInfo == null)
+            {
+                return;
+            }
+            rec.Bottom = gfxInfo.Height;
             rec.Left = Core.Type.MapProjectile[Core.Type.Player[GameState.MyIndex].Map, projectileNum].Dir * GameState.PicX;
             rec.Right = rec.Left + GameState.PicX;
 

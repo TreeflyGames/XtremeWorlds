@@ -10,6 +10,7 @@ using static Core.Global.Command;
 using static Core.Enum;
 using static Core.Packets;
 using Mirage.Sharp.Asfw;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Server
 {
@@ -86,7 +87,7 @@ namespace Server
                         int page = eventPage.PageId;
 
                         // Check if the event and page still exist  
-                        if (id >= 0 && id < Map[mapNum].Event.Length && page >= 0 && page < Map[mapNum].Event[id].Pages.Length)
+                        if (id >= 0 && id < Map[mapNum].Event.Length && Map[mapNum].Event[id].Pages != null && page >= 0 && page < Map[mapNum].Event[id].Pages.Length)
                         {
                             ref var playerEventPage = ref TempPlayer[i].EventMap.EventPages[Array.IndexOf(TempPlayer[i].EventMap.EventPages, eventPage)]; //find actual index of eventpage  
 
@@ -128,15 +129,15 @@ namespace Server
 
                                     switch (mapEventPage.VariableCompare)
                                     {
-                                        case 0: variableConditionMet = playerVar != condition; break;
-                                        case 1: variableConditionMet = playerVar < condition; break;
-                                        case 2: variableConditionMet = playerVar > condition; break;
-                                        case 3: variableConditionMet = playerVar <= condition; break;
-                                        case 4: variableConditionMet = playerVar >= condition; break;
-                                        case 5: variableConditionMet = playerVar == condition; break;
+                                        case 0: variableConditionMet = playerVar == mapEventPage.VariableCondition; break;
+                                        case 1: variableConditionMet = playerVar >= mapEventPage.VariableCondition; break;
+                                        case 2: variableConditionMet = playerVar <= mapEventPage.VariableCondition; break;
+                                        case 3: variableConditionMet = playerVar > mapEventPage.VariableCondition; break;
+                                        case 4: variableConditionMet = playerVar < mapEventPage.VariableCondition; break;
+                                        case 5: variableConditionMet = playerVar != mapEventPage.VariableCondition; break;
                                     }
 
-                                    if (variableConditionMet)
+                                    if (!variableConditionMet)
                                     {
                                         playerEventPage.Visible = false;
                                     }
@@ -158,13 +159,16 @@ namespace Server
 
                                 if (!IsEventVisible(ref playerEventPage) && id >= 0)
                                 {
+                                    int pageNum = Array.IndexOf(Map[mapNum].Event[id].Pages, mapEventPage);
+                                    if (pageNum < 0 || pageNum >= TempPlayer[i].EventMap.EventPages.Length)
+                                        return;
+
                                     // Send packet to hide the event  
                                     using (var buffer = new ByteStream(4))
                                     {
                                         buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
                                         buffer.WriteInt32(id);
-
-                                        ref var withBlock = ref TempPlayer[i].EventMap.EventPages[Array.IndexOf(TempPlayer[i].EventMap.EventPages, eventPage)]; //find actual index of eventpage  
+                                        ref var withBlock = ref TempPlayer[i].EventMap.EventPages[pageNum]; //find actual index of eventpage  
                                         buffer.WriteString(Map[GetPlayerMap(i)].Event[withBlock.EventId].Name);
                                         buffer.WriteInt32(withBlock.Dir);
                                         buffer.WriteByte(withBlock.GraphicType);
@@ -198,213 +202,211 @@ namespace Server
             // Use Parallel.For for potential performance gains on multi-core systems.
             Parallel.For(0, NetworkConfig.Socket.HighIndex + 1, i =>
             {
-                if (TempPlayer[i].EventMap.CurrentEvents <= 0) return;
-
                 int mapNum = GetPlayerMap(i);
 
-                // Iterate through the player's current events.  Use a List for easier manipulation.
-                var eventPagesList = TempPlayer[i].EventMap.EventPages.ToList();
-
-                for (int x = 0; x < eventPagesList.Count; x++)
+                if (TempPlayer[i].EventMap.EventPages != null)
                 {
-                    int p = -1;
-                    int id = eventPagesList[x].EventId;
+                    // Iterate through the player's current events.  Use a List for easier manipulation.
+                    var eventPagesList = TempPlayer[i].EventMap.EventPages.ToList();
 
-                    // Basic bounds check.
-                    if (id < 0 || id >= eventPagesList.Count) continue;
-
-                    int PageId = eventPagesList[x].PageId;
-
-                    if (!eventPagesList[x].Visible)
-                        PageId = 0;
-
-                    // Another bounds check.
-                    if (id >= Map[mapNum].Event.Length) continue;
-
-
-                    // Iterate through event pages to find the highest-priority page that meets conditions
-                    for (int z = 0; z < Map[mapNum].Event[id].PageCount; z++)
+                    for (int x = 0; x < eventPagesList.Count; x++)
                     {
-                        bool spawnevent = true;
-                        Core.Type.EventPageStruct page = Map[mapNum].Event[id].Pages[z];
+                        int p = -1;
+                        int id = eventPagesList[x].EventId;
 
-                        // Check conditions (Item, Self Switch, Variable, Switch).
-                        if (page.ChkHasItem == 1 && Player.HasItem(i, page.HasItemIndex) == 0)
+                        // Basic bounds check.
+                        if (id < 0 || id >= eventPagesList.Count) continue;
+
+                        int PageId = eventPagesList[x].PageId;
+
+                        if (!eventPagesList[x].Visible)
+                            PageId = 0;
+
+                        // Another bounds check.
+                        if (id >= Map[mapNum].Event.Length) continue;
+
+                        // Iterate through event pages to find the highest-priority page that meets conditions
+                        for (int z = 0; z < Map[mapNum].Event[id].PageCount; z++)
                         {
-                            spawnevent = false;
+                            bool spawnevent = true;
+                            Core.Type.EventPageStruct page = Map[mapNum].Event[id].Pages[z];
+
+                            // Check conditions (Item, Self Switch, Variable, Switch).
+                            if (page.ChkHasItem == 1 && Player.HasItem(i, page.HasItemIndex) == 0)
+                            {
+                                spawnevent = false;
+                            }
+
+                            if (page.ChkSelfSwitch == 1)
+                            {
+                                int compare = page.SelfSwitchCompare; // 0 or 1
+                                bool selfSwitchStatus;
+
+                                if (Map[mapNum].Event[id].Globals == 1)
+                                    selfSwitchStatus = Map[mapNum].Event[id].SelfSwitches[page.SelfSwitchIndex] == compare;
+                                else
+                                    selfSwitchStatus = TempPlayer[i].EventMap.EventPages[id].SelfSwitches[page.SelfSwitchIndex] == compare;
+
+                                if (!selfSwitchStatus)
+                                    spawnevent = false;
+                            }
+
+
+                            if (page.ChkVariable == 1)
+                            {
+                                int playerVar = Core.Type.Player[i].Variables[page.VariableIndex];
+                                bool conditionMet = false;
+                                switch (page.VariableCompare)
+                                {
+                                    case 0: conditionMet = playerVar == page.VariableCondition; break;
+                                    case 1: conditionMet = playerVar >= page.VariableCondition; break;
+                                    case 2: conditionMet = playerVar <= page.VariableCondition; break;
+                                    case 3: conditionMet = playerVar > page.VariableCondition; break;
+                                    case 4: conditionMet = playerVar < page.VariableCondition; break;
+                                    case 5: conditionMet = playerVar != page.VariableCondition; break;
+                                }
+                                if (!conditionMet)
+                                    spawnevent = false;
+                            }
+
+
+                            if (page.ChkSwitch == 1)
+                            {
+                                // Using XOR for concise switch check.
+                                if ((page.SwitchCompare == 0) ^ (Core.Type.Player[i].Switches[page.SwitchIndex] == 0)) //we want false
+                                {
+                                    spawnevent = false; //and switch is true, don't spawn.
+                                }
+                            }
+
+
+                            if (spawnevent)
+                            {
+                                p = z; // Store the highest-priority valid page index
+                            }
                         }
 
-                        if (page.ChkSelfSwitch == 1)
+                        // Determine if we should spawn a *new* event (p >= 0 and it wasn't already visible)
+                        if (p >= 0 && !eventPagesList[x].Visible)
                         {
-                            int compare = page.SelfSwitchCompare; // 0 or 1
-                            bool selfSwitchStatus;
+                            int z = p;
+
+                            // Reset any active event processing for this event ID.
+                            for (int n = 0; n < TempPlayer[i].EventProcessing.Length; n++)
+                            {
+                                if (TempPlayer[i].EventProcessing[n].EventId == id)
+                                {
+                                    TempPlayer[i].EventProcessing[n].EventId = -1;
+                                    TempPlayer[i].EventProcessing[n].Active = 0;
+                                }
+                            }
+
+
+                            // Set up the event page data.
+                            ref var withBlock = ref TempPlayer[i].EventMap.EventPages[x]; // Use x, as this is the correct index into *this player's* event list
+                            EventPageStruct newPage = Map[mapNum].Event[id].Pages[z];
+
+                            withBlock.Dir = newPage.GraphicType == 1 ? (newPage.GraphicY % 4) switch
+                            {
+                                0 => (int)DirectionType.Down,
+                                1 => (int)DirectionType.Left,
+                                2 => (int)DirectionType.Right,
+                                _ => (int)DirectionType.Up // 3
+                            } : 0;
+
+                            withBlock.Graphic = newPage.Graphic;
+                            withBlock.GraphicType = newPage.GraphicType;
+                            withBlock.GraphicX = newPage.GraphicX;
+                            withBlock.GraphicY = newPage.GraphicY;
+                            withBlock.GraphicX2 = newPage.GraphicX2;
+                            withBlock.GraphicY2 = newPage.GraphicY2;
+
+                            withBlock.MovementSpeed = newPage.MoveSpeed switch
+                            {
+                                0 => 2,
+                                1 => 3,
+                                2 => 4,
+                                3 => 6,
+                                4 => 12,
+                                5 => 24,
+                                _ => DefaultMovementSpeed // Handle unexpected values
+                            };
+
+
+                            withBlock.Position = newPage.Position;
+                            withBlock.EventId = id; // This should be the event ID, not the index in the player's event list.
+                            withBlock.PageId = z;
+                            withBlock.Visible = true;
+                            withBlock.MoveType = newPage.MoveType;
+
+                            if (withBlock.MoveType == 2) // Custom Move Route
+                            {
+                                withBlock.MoveRouteCount = newPage.MoveRouteCount;
+                                if (newPage.MoveRouteCount > 0)
+                                {
+                                    // Copy the move route.
+                                    withBlock.MoveRoute = new MoveRouteStruct[newPage.MoveRouteCount];
+                                    Array.Copy(newPage.MoveRoute, withBlock.MoveRoute, newPage.MoveRouteCount);
+                                    withBlock.MoveRouteComplete = 0; // Ensure it's reset.
+                                }
+                                else
+                                {
+                                    withBlock.MoveRouteComplete = 1; // No route = complete.
+                                }
+                            }
+                            else
+                            {
+                                withBlock.MoveRouteComplete = 1;
+                            }
+
+                            withBlock.RepeatMoveRoute = newPage.RepeatMoveRoute;
+                            withBlock.IgnoreIfCannotMove = newPage.IgnoreMoveRoute;
+                            withBlock.MoveFreq = newPage.MoveFreq;
+                            withBlock.MoveSpeed = newPage.MoveSpeed;  // Already handled above.
+                            withBlock.WalkThrough = newPage.WalkThrough;
+                            withBlock.ShowName = newPage.ShowName;
+                            withBlock.WalkingAnim = newPage.WalkAnim;
+                            withBlock.FixedDir = newPage.DirFix;
 
                             if (Map[mapNum].Event[id].Globals == 1)
-                                selfSwitchStatus = Map[mapNum].Event[id].SelfSwitches[page.SelfSwitchIndex] == compare;
-                            else
-                                selfSwitchStatus = TempPlayer[i].EventMap.EventPages[id].SelfSwitches[page.SelfSwitchIndex] == compare;
-
-                            if (!selfSwitchStatus)
-                                spawnevent = false;
-                        }
-
-
-                        if (page.ChkVariable == 1)
-                        {
-                            int playerVar = Core.Type.Player[i].Variables[page.VariableIndex];
-                            bool conditionMet = false;
-                            switch (page.VariableCompare)
                             {
-                                case 0: conditionMet = playerVar != page.VariableCondition; break;
-                                case 1: conditionMet = playerVar < page.VariableCondition; break;
-                                case 2: conditionMet = playerVar > page.VariableCondition; break;
-                                case 3: conditionMet = playerVar <= page.VariableCondition; break;
-                                case 4: conditionMet = playerVar >= page.VariableCondition; break;
-                                case 5: conditionMet = playerVar == page.VariableCondition; break;
+                                Event.TempEventMap[mapNum].Event[id].Active = z;
+                                Event.TempEventMap[mapNum].Event[id].Position = newPage.Position;
+
                             }
-                            if (conditionMet)
-                                spawnevent = false;
-                        }
 
-
-                        if (page.ChkSwitch == 1)
-                        {
-                            // Using XOR for concise switch check.
-                            if ((page.SwitchCompare == 0) ^ (Core.Type.Player[i].Switches[page.SwitchIndex] == 0)) //we want false
+                            // Send the spawn event packet.
+                            using (var buffer = new ByteStream(4))
                             {
-                                spawnevent = false; //and switch is true, don't spawn.
+                                buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
+                                buffer.WriteInt32(id); // Event ID
+
+                                ref var withBlock1 = ref TempPlayer[i].EventMap.EventPages[x];
+                                buffer.WriteString(Map[mapNum].Event[withBlock1.EventId].Name);
+                                buffer.WriteInt32(withBlock1.Dir);
+                                buffer.WriteByte(withBlock1.GraphicType);
+                                buffer.WriteInt32(withBlock1.Graphic);
+                                buffer.WriteInt32(withBlock1.GraphicX);
+                                buffer.WriteInt32(withBlock1.GraphicX2);
+                                buffer.WriteInt32(withBlock1.GraphicY);
+                                buffer.WriteInt32(withBlock1.GraphicY2);
+                                buffer.WriteInt32(withBlock1.MovementSpeed);
+                                buffer.WriteInt32(withBlock1.X);
+                                buffer.WriteInt32(withBlock1.Y);
+                                buffer.WriteByte(withBlock1.Position);
+                                buffer.WriteBoolean(withBlock1.Visible);
+                                buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkAnim);
+                                buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].DirFix);
+                                buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
+                                buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
+
+                                NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
                             }
-                        }
-
-
-                        if (spawnevent)
-                        {
-                            p = z; // Store the highest-priority valid page index
-                        }
-                    }
-
-                    // Determine if we should spawn a *new* event (p >= 0 and it wasn't already visible)
-                    if (p >= 0 && !eventPagesList[x].Visible)
-                    {
-                        int z = p;
-
-                        // Reset any active event processing for this event ID.
-                        for (int n = 0; n < TempPlayer[i].EventProcessing.Length; n++)
-                        {
-                            if (TempPlayer[i].EventProcessing[n].EventId == id)
-                            {
-                                TempPlayer[i].EventProcessing[n].EventId = -1;
-                                TempPlayer[i].EventProcessing[n].Active = 0;
-                            }
-                        }
-
-
-                        // Set up the event page data.
-                        ref var withBlock = ref TempPlayer[i].EventMap.EventPages[x]; // Use x, as this is the correct index into *this player's* event list
-                        EventPageStruct newPage = Map[mapNum].Event[id].Pages[z];
-
-                        withBlock.Dir = newPage.GraphicType == 1 ? (newPage.GraphicY % 4) switch
-                        {
-                            0 => (int)DirectionType.Down,
-                            1 => (int)DirectionType.Left,
-                            2 => (int)DirectionType.Right,
-                            _ => (int)DirectionType.Up // 3
-                        } : 0;
-
-                        withBlock.Graphic = newPage.Graphic;
-                        withBlock.GraphicType = newPage.GraphicType;
-                        withBlock.GraphicX = newPage.GraphicX;
-                        withBlock.GraphicY = newPage.GraphicY;
-                        withBlock.GraphicX2 = newPage.GraphicX2;
-                        withBlock.GraphicY2 = newPage.GraphicY2;
-
-                        withBlock.MovementSpeed = newPage.MoveSpeed switch
-                        {
-                            0 => 2,
-                            1 => 3,
-                            2 => 4,
-                            3 => 6,
-                            4 => 12,
-                            5 => 24,
-                            _ => DefaultMovementSpeed // Handle unexpected values
-                        };
-
-
-                        withBlock.Position = newPage.Position;
-                        withBlock.EventId = id; // This should be the event ID, not the index in the player's event list.
-                        withBlock.PageId = z;
-                        withBlock.Visible = true;
-                        withBlock.MoveType = newPage.MoveType;
-
-                        if (withBlock.MoveType == 2) // Custom Move Route
-                        {
-                            withBlock.MoveRouteCount = newPage.MoveRouteCount;
-                            if (newPage.MoveRouteCount > 0)
-                            {
-                                // Copy the move route.
-                                withBlock.MoveRoute = new MoveRouteStruct[newPage.MoveRouteCount];
-                                Array.Copy(newPage.MoveRoute, withBlock.MoveRoute, newPage.MoveRouteCount);
-                                withBlock.MoveRouteComplete = 0; // Ensure it's reset.
-                            }
-                            else
-                            {
-                                withBlock.MoveRouteComplete = 1; // No route = complete.
-                            }
-                        }
-                        else
-                        {
-                            withBlock.MoveRouteComplete = 1;
-                        }
-
-                        withBlock.RepeatMoveRoute = newPage.RepeatMoveRoute;
-                        withBlock.IgnoreIfCannotMove = newPage.IgnoreMoveRoute;
-                        withBlock.MoveFreq = newPage.MoveFreq;
-                        withBlock.MoveSpeed = newPage.MoveSpeed;  // Already handled above.
-                        withBlock.WalkThrough = newPage.WalkThrough;
-                        withBlock.ShowName = newPage.ShowName;
-                        withBlock.WalkingAnim = newPage.WalkAnim;
-                        withBlock.FixedDir = newPage.DirFix;
-
-                        if (Map[mapNum].Event[id].Globals == 1)
-                        {
-                            Event.TempEventMap[mapNum].Event[id].Active = z;
-                            Event.TempEventMap[mapNum].Event[id].Position = newPage.Position;
-
-                        }
-
-                        // Send the spawn event packet.
-                        using (var buffer = new ByteStream(4))
-                        {
-                            buffer.WriteInt32((int)ServerPackets.SSpawnEvent);
-                            buffer.WriteInt32(id); // Event ID
-
-                            ref var withBlock1 = ref TempPlayer[i].EventMap.EventPages[x];
-                            buffer.WriteString(Map[mapNum].Event[withBlock1.EventId].Name);
-                            buffer.WriteInt32(withBlock1.Dir);
-                            buffer.WriteByte(withBlock1.GraphicType);
-                            buffer.WriteInt32(withBlock1.Graphic);
-                            buffer.WriteInt32(withBlock1.GraphicX);
-                            buffer.WriteInt32(withBlock1.GraphicX2);
-                            buffer.WriteInt32(withBlock1.GraphicY);
-                            buffer.WriteInt32(withBlock1.GraphicY2);
-                            buffer.WriteInt32(withBlock1.MovementSpeed);
-                            buffer.WriteInt32(withBlock1.X);
-                            buffer.WriteInt32(withBlock1.Y);
-                            buffer.WriteByte(withBlock1.Position);
-                            buffer.WriteBoolean(withBlock1.Visible);
-                            buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkAnim);
-                            buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].DirFix);
-                            buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].WalkThrough);
-                            buffer.WriteInt32(Map[mapNum].Event[id].Pages[z].ShowName);
-
-                            NetworkConfig.Socket.SendDataTo(i, buffer.Data, buffer.Head);
                         }
                     }
                 }
             });
         }
-
-
 
         public static void ProcessEventMovement()
         {
@@ -2627,7 +2629,6 @@ namespace Server
             return 4; //should never hit here, but just incase.
         }
 
-
         public static async Task SpawnAllMapGlobalEvents()
         {
             // Use Task.Run to avoid blocking the main thread.
@@ -2741,7 +2742,6 @@ namespace Server
 
             if (Map[mapNum].EventCount <= 0) return;
 
-
             // Iterate through map events.
             for (int i = 0; i < Map[mapNum].EventCount; i++)
             {
@@ -2756,6 +2756,7 @@ namespace Server
                 {
                     bool spawncurrentevent = true;
                     ref var page = ref Map[mapNum].Event[i].Pages[z]; // Use ref for direct modification.
+                    bool variableConditionMet = false;
 
                     // Check conditions (Variable, Switch, Item, Self Switch).
                     if (page.ChkVariable == 1)
@@ -2763,13 +2764,16 @@ namespace Server
                         int playerVar = Core.Type.Player[index].Variables[page.VariableIndex];
                         switch (page.VariableCompare)
                         {
-                            case 0: spawncurrentevent = playerVar != page.VariableCondition; break;
-                            case 1: spawncurrentevent = playerVar < page.VariableCondition; break;
-                            case 2: spawncurrentevent = playerVar > page.VariableCondition; break;
-                            case 3: spawncurrentevent = playerVar <= page.VariableCondition; break;
-                            case 4: spawncurrentevent = playerVar >= page.VariableCondition; break;
-                            case 5: spawncurrentevent = playerVar == page.VariableCondition; break;
+                            case 0: variableConditionMet = playerVar == page.VariableCondition; break;
+                            case 1: variableConditionMet = playerVar >= page.VariableCondition; break;
+                            case 2: variableConditionMet = playerVar <= page.VariableCondition; break;
+                            case 3: variableConditionMet = playerVar > page.VariableCondition; break;
+                            case 4: variableConditionMet = playerVar < page.VariableCondition; break;
+                            case 5: variableConditionMet = playerVar != page.VariableCondition; break;
                         }
+
+                        if (!variableConditionMet)
+                            spawncurrentevent = false;
                     }
 
                     if (page.ChkSwitch == 1)
@@ -2938,6 +2942,7 @@ namespace Server
             {
                 return false;
             }
+
             int mapNum = GetPlayerMap(index);
             if (mapNum < 0 || mapNum >= Map.Length)
             {
@@ -2950,7 +2955,7 @@ namespace Server
             {
                 if (TempPlayer[index].EventMap.EventPages[z].EventId == eventId)
                 {
-                    localEventIndex = z;
+                    localEventIndex = z + 1;
                     break;
                 }
             }
@@ -2966,42 +2971,46 @@ namespace Server
                 return false; // Incorrect trigger.
             }
 
-            // Adjust target coordinates based on player direction.
-            switch (GetPlayerDir(index))
+            if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough == 0)
             {
-                case (byte)DirectionType.Up:
-                    if (GetPlayerY(index) > 0) y = GetPlayerY(index) - 1;
-                    else return false;
-                    break;
-                case (byte)DirectionType.Down:
-                    if (GetPlayerY(index) < Map[mapNum].MaxY) y = GetPlayerY(index) + 1;
-                    else return false;
-                    break;
-                case (byte)DirectionType.Left:
-                    if (GetPlayerX(index) > 0) x = GetPlayerX(index) - 1;
-                    else return false;
-                    break;
-                case (byte)DirectionType.Right:
-                    if (GetPlayerX(index) < Map[mapNum].MaxX) x = GetPlayerX(index) + 1;
-                    else return false;
-                    break;
-                case (byte)DirectionType.UpRight:
-                    if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) > 0) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) - 1; }
-                    else return false;
-                    break;
-                case (byte)DirectionType.UpLeft:
-                    if (GetPlayerX(index) > 0 && GetPlayerY(index) > 0) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) - 1; }
-                    else return false;
-                    break;
-                case (byte)DirectionType.DownLeft:
-                    if (GetPlayerX(index) > 0 && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) + 1; }
-                    else return false;
-                    break;
-                case (byte)DirectionType.DownRight:
-                    if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) + 1; }
-                    else return false;
-                    break;
+                // Adjust target coordinates based on player direction.
+                switch (GetPlayerDir(index))
+                {
+                    case (byte)DirectionType.Up:
+                        if (GetPlayerY(index) > 0) y = GetPlayerY(index) - 1;
+                        else return false;
+                        break;
+                    case (byte)DirectionType.Down:
+                        if (GetPlayerY(index) < Map[mapNum].MaxY) y = GetPlayerY(index) + 1;
+                        else return false;
+                        break;
+                    case (byte)DirectionType.Left:
+                        if (GetPlayerX(index) > 0) x = GetPlayerX(index) - 1;
+                        else return false;
+                        break;
+                    case (byte)DirectionType.Right:
+                        if (GetPlayerX(index) < Map[mapNum].MaxX) x = GetPlayerX(index) + 1;
+                        else return false;
+                        break;
+                    case (byte)DirectionType.UpRight:
+                        if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) > 0) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) - 1; }
+                        else return false;
+                        break;
+                    case (byte)DirectionType.UpLeft:
+                        if (GetPlayerX(index) > 0 && GetPlayerY(index) > 0) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) - 1; }
+                        else return false;
+                        break;
+                    case (byte)DirectionType.DownLeft:
+                        if (GetPlayerX(index) > 0 && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) + 1; }
+                        else return false;
+                        break;
+                    case (byte)DirectionType.DownRight:
+                        if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) + 1; }
+                        else return false;
+                        break;
+                }
             }
+
             // Check if the player is on the event's tile.
             if (x != eventPage.X || y != eventPage.Y)
             {

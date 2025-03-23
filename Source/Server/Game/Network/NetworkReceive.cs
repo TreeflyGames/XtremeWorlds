@@ -1284,11 +1284,10 @@ namespace Server
             }
 
             // Save the map
-            Database.SaveMap(mapNum);
-            NPC.SendMapNPCsToMap(mapNum);
+            Database.SaveMap(mapNum); 
             NPC.SpawnMapNPCs(mapNum);
             EventLogic.SpawnGlobalEvents(mapNum);
-
+            
             var loopTo10 = NetworkConfig.Socket.HighIndex;
             for (i = 0; i <= loopTo10; i++)
             {
@@ -1356,7 +1355,6 @@ namespace Server
                 }
             }
 
-            EventLogic.SpawnMapEventsFor(index, GetPlayerMap(index));
             NetworkSend.SendJoinMap(index);
             Core.Type.TempPlayer[index].GettingMap = false;
         }
@@ -1387,7 +1385,6 @@ namespace Server
                 NPC.SpawnNPC(i, GetPlayerMap(index));
 
             EventLogic.SpawnMapEventsFor(index, GetPlayerMap(index));
-            EventLogic.SpawnGlobalEvents(GetPlayerMap(index));
 
             Resource.CacheResources(GetPlayerMap(index));
             NetworkSend.PlayerMsg(index, "Map respawned.", (int) ColorType.BrightGreen);
