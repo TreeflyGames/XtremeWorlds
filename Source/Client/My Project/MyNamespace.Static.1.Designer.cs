@@ -1,123 +1,89 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
+' Licensed to the .NET Foundation under one or more agreements.
+' The .NET Foundation licenses this file to you under the MIT license.
+' See the LICENSE file in the project root for more information.
 
-
-/* TODO ERROR: Skipped IfDirectiveTrivia
 #If TARGET = "module" AndAlso _MYTYPE = "" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-#Const _MYTYPE="Empty"
-*//* TODO ERROR: Skipped EndIfDirectiveTrivia
+    #Const _MYTYPE = "Empty"
 #End If
-*/
-/* TODO ERROR: Skipped IfDirectiveTrivia
+
+' Define constants based on project type (_MYTYPE)
 #If _MYTYPE = "WindowsForms" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-
-#Const _MYFORMS = True
-#Const _MYWEBSERVICES = True
-#Const _MYUSERTYPE = "Windows"
-#Const _MYCOMPUTERTYPE = "Windows"
-#Const _MYAPPLICATIONTYPE = "WindowsForms"
-
-*//* TODO ERROR: Skipped ElifDirectiveTrivia
+    #Const _MYFORMS = True
+    #Const _MYWEBSERVICES = True
+    #Const _MYUSERTYPE = "Windows"
+    #Const _MYCOMPUTERTYPE = "Windows"
+    #Const _MYAPPLICATIONTYPE = "WindowsForms"
 #ElseIf _MYTYPE = "WindowsFormsWithCustomSubMain" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-
-#Const _MYFORMS = True
-#Const _MYWEBSERVICES = True
-#Const _MYUSERTYPE = "Windows"
-#Const _MYCOMPUTERTYPE = "Windows"
-#Const _MYAPPLICATIONTYPE = "Console"
-
-*//* TODO ERROR: Skipped ElifDirectiveTrivia
+    #Const _MYFORMS = True
+    #Const _MYWEBSERVICES = True
+    #Const _MYUSERTYPE = "Windows"
+    #Const _MYCOMPUTERTYPE = "Windows"
+    #Const _MYAPPLICATIONTYPE = "Console"
 #ElseIf _MYTYPE = "Windows" OrElse _MYTYPE = "" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-
-#Const _MYWEBSERVICES = True
-#Const _MYUSERTYPE = "Windows"
-#Const _MYCOMPUTERTYPE = "Windows"
-#Const _MYAPPLICATIONTYPE = "Windows"
-
-*//* TODO ERROR: Skipped ElifDirectiveTrivia
+    #Const _MYWEBSERVICES = True
+    #Const _MYUSERTYPE = "Windows"
+    #Const _MYCOMPUTERTYPE = "Windows"
+    #Const _MYAPPLICATIONTYPE = "Windows"
 #ElseIf _MYTYPE = "Console" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-
-#Const _MYWEBSERVICES = True
-#Const _MYUSERTYPE = "Windows"
-#Const _MYCOMPUTERTYPE = "Windows"
-#Const _MYAPPLICATIONTYPE = "Console"
-
-*//* TODO ERROR: Skipped ElifDirectiveTrivia
+    #Const _MYWEBSERVICES = True
+    #Const _MYUSERTYPE = "Windows"
+    #Const _MYCOMPUTERTYPE = "Windows"
+    #Const _MYAPPLICATIONTYPE = "Console"
 #ElseIf _MYTYPE = "Web" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-
-#Const _MYFORMS = False
-#Const _MYWEBSERVICES = False
-#Const _MYUSERTYPE = "Web"
-#Const _MYCOMPUTERTYPE = "Web"
-
-*//* TODO ERROR: Skipped ElifDirectiveTrivia
+    #Const _MYFORMS = False
+    #Const _MYWEBSERVICES = False
+    #Const _MYUSERTYPE = "Web"
+    #Const _MYCOMPUTERTYPE = "Web"
 #ElseIf _MYTYPE = "WebControl" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-
-#Const _MYFORMS = False
-#Const _MYWEBSERVICES = True
-#Const _MYUSERTYPE = "Web"
-#Const _MYCOMPUTERTYPE = "Web"
-
-*//* TODO ERROR: Skipped ElifDirectiveTrivia
+    #Const _MYFORMS = False
+    #Const _MYWEBSERVICES = True
+    #Const _MYUSERTYPE = "Web"
+    #Const _MYCOMPUTERTYPE = "Web"
 #ElseIf _MYTYPE = "Custom" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-
-*//* TODO ERROR: Skipped ElifDirectiveTrivia
+    ' Custom project types can define their own constants elsewhere
 #ElseIf _MYTYPE <> "Empty" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
-
-#Const _MYTYPE = "Empty"
-
-*//* TODO ERROR: Skipped EndIfDirectiveTrivia
+    ' Fallback: Treat unrecognized _MYTYPE values as "Empty"
+    #Const _MYTYPE = "Empty"
 #End If
-*/
-/* TODO ERROR: Skipped IfDirectiveTrivia
-#If _MYTYPE <> "Empty" Then
-*//* TODO ERROR: Skipped DisabledTextTrivia
 
+#If _MYTYPE <> "Empty" Then
 Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
 
+    ' Represents the application instance based on project type
 #If _MYAPPLICATIONTYPE = "WindowsForms" OrElse _MYAPPLICATIONTYPE = "Windows" OrElse _MYAPPLICATIONTYPE = "Console" Then
-
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("MyTemplate", "11.0.0.0")> _
-    <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> Partial Friend Class MyApplication
-
+    <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
+    Partial Friend Class MyApplication
 #If _MYAPPLICATIONTYPE = "WindowsForms" Then
         Inherits Global.Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase
 #If TARGET = "winexe" Then
+        ''' <summary>
+        ''' Entry point for Windows Forms applications.
+        ''' </summary>
         <Global.System.STAThread(), Global.System.Diagnostics.DebuggerHidden(), Global.System.ComponentModel.EditorBrowsable(Global.System.ComponentModel.EditorBrowsableState.Advanced)> _
         Friend Shared Sub Main(ByVal Args As String())
             Try
-               Global.System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(MyApplication.UseCompatibleTextRendering())
+                ' Enable high DPI support for modern displays
+                Global.System.Windows.Forms.Application.SetHighDpiMode(HighDpiMode.SystemAware)
+                Global.System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(MyApplication.UseCompatibleTextRendering())
             Finally
-            End Try               
-            My.Application.Run(Args)
+                My.Application.Run(Args)
+            End Try
         End Sub
 #End If
-
 #ElseIf _MYAPPLICATIONTYPE = "Windows" Then
         Inherits Global.Microsoft.VisualBasic.ApplicationServices.ApplicationBase
 #ElseIf _MYAPPLICATIONTYPE = "Console" Then
-        Inherits Global.Microsoft.VisualBasic.ApplicationServices.ConsoleApplicationBase	
-#End If '_MYAPPLICATIONTYPE = "WindowsForms"
-
+        Inherits Global.Microsoft.VisualBasic.ApplicationServices.ConsoleApplicationBase
+#End If
     End Class
+#End If
 
-#End If '#If _MYAPPLICATIONTYPE = "WindowsForms" Or _MYAPPLICATIONTYPE = "Windows" or _MYAPPLICATIONTYPE = "Console"
-
+    ' Provides access to computer-related functionality
 #If _MYCOMPUTERTYPE <> "" Then
-
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("MyTemplate", "11.0.0.0")> _
-    <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> Partial Friend Class MyComputer
-
+    <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
+    Partial Friend Class MyComputer
 #If _MYCOMPUTERTYPE = "Windows" Then
         Inherits Global.Microsoft.VisualBasic.Devices.Computer
 #ElseIf _MYCOMPUTERTYPE = "Web" Then
@@ -134,8 +100,10 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
     <Global.Microsoft.VisualBasic.HideModuleName()> _
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("MyTemplate", "11.0.0.0")> _
     Friend Module MyProject
-
 #If _MYCOMPUTERTYPE <> "" Then
+        ''' <summary>
+        ''' Gets the current computer instance.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.Computer")> _
         Friend ReadOnly Property Computer() As MyComputer
             <Global.System.Diagnostics.DebuggerHidden()> _
@@ -143,11 +111,13 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
                 Return m_ComputerObjectProvider.GetInstance()
             End Get
         End Property
-
         Private ReadOnly m_ComputerObjectProvider As New ThreadSafeObjectProvider(Of MyComputer)
 #End If
 
 #If _MYAPPLICATIONTYPE = "Windows" Or _MYAPPLICATIONTYPE = "WindowsForms" Or _MYAPPLICATIONTYPE = "Console" Then
+        ''' <summary>
+        ''' Gets the current application instance.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.Application")> _
         Friend ReadOnly Property Application() As MyApplication
             <Global.System.Diagnostics.DebuggerHidden()> _
@@ -159,6 +129,9 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
 #End If
 
 #If _MYUSERTYPE = "Windows" Then
+        ''' <summary>
+        ''' Gets the current Windows user instance.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.User")> _
         Friend ReadOnly Property User() As Global.Microsoft.VisualBasic.ApplicationServices.User
             <Global.System.Diagnostics.DebuggerHidden()> _
@@ -168,6 +141,9 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
         End Property
         Private ReadOnly m_UserObjectProvider As New ThreadSafeObjectProvider(Of Global.Microsoft.VisualBasic.ApplicationServices.User)
 #ElseIf _MYUSERTYPE = "Web" Then
+        ''' <summary>
+        ''' Gets the current web user instance.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.User")> _
         Friend ReadOnly Property User() As Global.Microsoft.VisualBasic.ApplicationServices.WebUser
             <Global.System.Diagnostics.DebuggerHidden()> _
@@ -179,9 +155,10 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
 #End If
 
 #If _MYFORMS = True Then
-
-#Const STARTUP_MY_FORM_FACTORY = "My.MyProject.Forms"
-
+    #Const STARTUP_MY_FORM_FACTORY = "My.MyProject.Forms"
+        ''' <summary>
+        ''' Gets the forms collection for the application.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.Forms")> _
         Friend ReadOnly Property Forms() As MyForms
             <Global.System.Diagnostics.DebuggerHidden()> _
@@ -196,19 +173,18 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
             <Global.System.Diagnostics.DebuggerHidden()> _
             Private Shared Function Create__Instance__(Of T As {New, Global.System.Windows.Forms.Form})(ByVal Instance As T) As T
                 If Instance Is Nothing OrElse Instance.IsDisposed Then
-                    If m_FormBeingCreated IsNot Nothing Then
-                        If m_FormBeingCreated.ContainsKey(GetType(T)) = True Then
-                            Throw New Global.System.InvalidOperationException(Global.Microsoft.VisualBasic.CompilerServices.Utils.GetResourceString("WinForms_RecursiveFormCreate"))
-                        End If
-                    Else
-                        m_FormBeingCreated = New Global.System.Collections.Hashtable()
+                    If m_FormBeingCreated?.ContainsKey(GetType(T)) = True Then
+                        Throw New Global.System.InvalidOperationException(Global.Microsoft.VisualBasic.CompilerServices.Utils.GetResourceString("WinForms_RecursiveFormCreate"))
                     End If
+                    m_FormBeingCreated = If(m_FormBeingCreated, New Global.System.Collections.Hashtable())
                     m_FormBeingCreated.Add(GetType(T), Nothing)
                     Try
                         Return New T()
-                    Catch ex As Global.System.Reflection.TargetInvocationException When ex.InnerException IsNot Nothing
-                        Dim BetterMessage As String = Global.Microsoft.VisualBasic.CompilerServices.Utils.GetResourceString("WinForms_SeeInnerException", ex.InnerException.Message)
-                        Throw New Global.System.InvalidOperationException(BetterMessage, ex.InnerException)
+                    Catch ex As Global.System.Reflection.TargetInvocationException
+                        ' Enhanced error handling: Provide a fallback message if InnerException is unexpectedly null
+                        Dim innerMessage As String = ex.InnerException?.Message ?? "An unknown error occurred during form creation."
+                        Dim betterMessage As String = Global.Microsoft.VisualBasic.CompilerServices.Utils.GetResourceString("WinForms_SeeInnerException", innerMessage)
+                        Throw New Global.System.InvalidOperationException(betterMessage, ex.InnerException)
                     Finally
                         m_FormBeingCreated.Remove(GetType(T))
                     End Try
@@ -226,7 +202,7 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
             <Global.System.Diagnostics.DebuggerHidden()> _
             <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
             Public Sub New()
-               MyBase.New()
+                MyBase.New()
             End Sub
 
             <Global.System.ThreadStatic()> Private Shared m_FormBeingCreated As Global.System.Collections.Hashtable
@@ -247,15 +223,16 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
         End Class
 
         Private m_MyFormsObjectProvider As New ThreadSafeObjectProvider(Of MyForms)
-
 #End If
 
 #If _MYWEBSERVICES = True Then
-
+        ''' <summary>
+        ''' Gets the web services collection for the application.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.WebServices")> _
         Friend ReadOnly Property WebServices() As MyWebServices
-             <Global.System.Diagnostics.DebuggerHidden()> _
-             Get
+            <Global.System.Diagnostics.DebuggerHidden()> _
+            Get
                 Return m_MyWebServicesObjectProvider.GetInstance()
             End Get
         End Property
@@ -263,7 +240,6 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
         <Global.Microsoft.VisualBasic.MyGroupCollection("System.Web.Services.Protocols.SoapHttpClientProtocol", "Create__Instance__", "Dispose__Instance__", "")> _
         Friend NotInheritable Class MyWebServices
-
             <Global.System.ComponentModel.EditorBrowsable(Global.System.ComponentModel.EditorBrowsableState.Never), Global.System.Diagnostics.DebuggerHidden()> _
             Public Overrides Function Equals(ByVal o As Object) As Boolean
                 Return MyBase.Equals(o)
@@ -281,13 +257,9 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
                 Return MyBase.ToString
             End Function
 
-           <Global.System.Diagnostics.DebuggerHidden()> _
-           Private Shared Function Create__Instance__(Of T As {New})(ByVal instance As T) As T
-                If instance Is Nothing Then
-                    Return New T()
-                Else
-                    Return instance
-                End If
+            <Global.System.Diagnostics.DebuggerHidden()> _
+            Private Shared Function Create__Instance__(Of T As {New})(ByVal instance As T) As T
+                Return If(instance, New T())
             End Function
 
             <Global.System.Diagnostics.DebuggerHidden()> _
@@ -298,7 +270,7 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
             <Global.System.Diagnostics.DebuggerHidden()> _
             <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
             Public Sub New()
-               MyBase.New()
+                MyBase.New()
             End Sub
         End Class
 
@@ -306,31 +278,31 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
 #End If
 
 #If _MYTYPE = "Web" Then
-
+        ''' <summary>
+        ''' Gets the current HTTP request, or Nothing if unavailable.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.Request")> _
         Friend ReadOnly Property Request() As Global.System.Web.HttpRequest
             <Global.System.Diagnostics.DebuggerHidden()> _
             Get
-                Dim CurrentContext As Global.System.Web.HttpContext = Global.System.Web.HttpContext.Current
-                If CurrentContext IsNot Nothing Then
-                    Return CurrentContext.Request
-                End If
-                Return Nothing
+                Return Global.System.Web.HttpContext.Current?.Request
             End Get
         End Property
 
+        ''' <summary>
+        ''' Gets the current HTTP response, or Nothing if unavailable.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.Response")> _
         Friend ReadOnly Property Response() As Global.System.Web.HttpResponse
             <Global.System.Diagnostics.DebuggerHidden()> _
             Get
-                Dim CurrentContext As Global.System.Web.HttpContext = Global.System.Web.HttpContext.Current
-                If CurrentContext IsNot Nothing Then
-                    Return CurrentContext.Response
-                End If
-                Return Nothing
+                Return Global.System.Web.HttpContext.Current?.Response
             End Get
         End Property
 
+        ''' <summary>
+        ''' Gets the logging instance for the web application.
+        ''' </summary>
         <Global.System.ComponentModel.Design.HelpKeyword("My.Application.Log")> _
         Friend ReadOnly Property Log() As Global.Microsoft.VisualBasic.Logging.AspLog
             <Global.System.Diagnostics.DebuggerHidden()> _
@@ -340,9 +312,9 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
         End Property
 
         Private ReadOnly m_LogObjectProvider As New ThreadSafeObjectProvider(Of Global.Microsoft.VisualBasic.Logging.AspLog)
+#End If
 
-#End If  '_MYTYPE="Web"
-
+        ' Provides thread-safe instances of type T
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Never)> _
         <Global.System.Runtime.InteropServices.ComVisible(False)> _
         Friend NotInheritable Class ThreadSafeObjectProvider(Of T As New)
@@ -350,17 +322,17 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
 #If TARGET = "library" Then
                 <Global.System.Diagnostics.DebuggerHidden()> _
                 Get
-                    Dim Value As T = m_Context.Value
-                    If Value Is Nothing Then
-                        Value = New T
-                        m_Context.Value() = Value
+                    Dim value As T = m_Context.Value
+                    If value Is Nothing Then
+                        value = New T()
+                        m_Context.Value = value
                     End If
-                    Return Value
+                    Return value
                 End Get
 #Else
                 <Global.System.Diagnostics.DebuggerHidden()> _
                 Get
-                    If m_ThreadStaticValue Is Nothing Then m_ThreadStaticValue = New T
+                    If m_ThreadStaticValue Is Nothing Then m_ThreadStaticValue = New T()
                     Return m_ThreadStaticValue
                 End Get
 #End If
@@ -380,6 +352,4 @@ Namespace MergedMyNamespace50E26D7D27174AAEABCA70DEBD52E2FA
         End Class
     End Module
 End Namespace
-*//* TODO ERROR: Skipped EndIfDirectiveTrivia
 #End If
-*/
