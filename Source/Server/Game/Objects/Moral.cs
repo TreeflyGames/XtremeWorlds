@@ -1,13 +1,10 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Mirage.Sharp.Asfw;
 using static Core.Enum;
 using static Core.Packets;
@@ -16,49 +13,48 @@ using static Core.Global.Command;
 
 namespace Server
 {
+    // Top-level class for moral data
+    public class MoralStruct
+    {
+        public string Name { get; set; }
+        public byte Color { get; set; }
+        public bool CanCast { get; set; }
+        public bool CanDropItem { get; set; }
+        public bool CanPK { get; set; }
+        public bool CanPickupItem { get; set; }
+        public bool CanUseItem { get; set; }
+        public bool DropItems { get; set; }
+        public bool LoseExp { get; set; }
+        public bool NPCBlock { get; set; }
+        public bool PlayerBlock { get; set; }
+        public Dictionary<string, int> CustomAttributes { get; set; } = new();
+        public DateTime LastModified { get; set; }
+        public string Description { get; set; }
+        public List<MoralPermission> Permissions { get; set; } = new();
+    }
+
+    // Top-level class for permissions
+    public class MoralPermission
+    {
+        public string PermissionType { get; set; }
+        public bool IsAllowed { get; set; }
+        public Dictionary<string, string> Conditions { get; set; } = new();
+    }
+
+    // Top-level class for validation results
+    public class MoralValidationResult
+    {
+        public bool IsValid { get; set; }
+        public List<string> ValidationErrors { get; set; } = new();
+    }
+
     public class MoralService : IDisposable
     {
         private readonly IMemoryCache _cache;
         private readonly ILogger<MoralService> _logger;
         private readonly IDatabaseProvider _database;
         private readonly INetworkService _network;
-        private readonly ConcurrentDictionary<int, MoralStruct> _moralCache;
-        private readonly object _syncLock = new object();
         private bool _disposed;
-
-        #region Nested Types
-        public class MoralStruct
-        {
-            public string Name { get; set; }
-            public byte Color { get; set; }
-            public bool CanCast { get; set; }
-            public bool CanDropItem { get; set; }
-            public bool CanPK { get; set; }
-            public bool CanPickupItem { get; set; }
-            public bool CanUseItem { get; set; }
-            public bool DropItems { get; set; }
-            public bool LoseExp { get; set; }
-            public bool NPCBlock { get; set; }
-            public bool PlayerBlock { get; set; }
-            public Dictionary<string, int> CustomAttributes { get; set; } = new();
-            public DateTime LastModified { get; set; }
-            public string Description { get; set; }
-            public List<MoralPermission> Permissions { get; set; } = new();
-        }
-
-        public class MoralPermission
-        {
-            public string PermissionType { get; set; }
-            public bool IsAllowed { get; set; }
-            public Dictionary<string, string> Conditions { get; set; } = new();
-        }
-
-        public class MoralValidationResult
-        {
-            public bool IsValid { get; set; }
-            public List<string> ValidationErrors { get; set; } = new();
-        }
-        #endregion
 
         #region Constructor and Initialization
         public MoralService(
@@ -67,18 +63,19 @@ namespace Server
             IDatabaseProvider database,
             INetworkService network)
         {
-            _cache = cache;
-            _logger = logger;
-            _database = database;
-            _network = network;
-            _moralCache = new ConcurrentDictionary<int, MoralStruct>();
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _database = database ?? throw new ArgumentNullException(nameof(database));
+            _network = network ?? throw new ArgumentNullException(nameof(network));
         }
 
         public async Task InitializeAsync()
         {
             try
             {
-                await LoadAllMoralsAsync();
+                var tasks = Enumerable.Range(0, Core.Constant.MAX_MORALS)
+                    .Select(i => LoadMoralAsync(i));
+                await Task.WhenAll(tasks);
                 _logger.LogInformation("Moral Service initialized successfully");
             }
             catch (Exception ex)
@@ -97,16 +94,14 @@ namespace Server
                 Name = string.Empty,
                 LastModified = DateTime.UtcNow
             };
-            
-            _moralCache[moralNum] = defaultMoral;
-            _cache.Set($"moral_{moralNum}", defaultMoral, TimeSpan.FromHours(1));
+            _cache.Set($"moral_{moralNum}", defaultMoral, GetCacheOptions());
         }
 
         public async Task<MoralStruct> LoadMoralAsync(int moralNum)
         {
-            if (_moralCache.TryGetValue(moralNum, out var cachedMoral))
+            if (_cache.TryGetValue($"moral_{moralNum}", out MoralStruct moral))
             {
-                return cachedMoral;
+                return moral;
             }
 
             try
@@ -114,17 +109,15 @@ namespace Server
                 var data = await _database.SelectRowAsync(moralNum, "moral", "data");
                 if (data == null)
                 {
-                    ClearMoral(moralNum);
-                    return _moralCache[moralNum];
+                    moral = new MoralStruct { Name = string.Empty, LastModified = DateTime.UtcNow };
+                }
+                else
+                {
+                    moral = JsonConvert.DeserializeObject<MoralStruct>(data.ToString());
                 }
 
-                var moralData = JsonConvert.DeserializeObject<MoralStruct>(data.ToString());
-                moralData.LastModified = DateTime.UtcNow;
-                
-                _moralCache[moralNum] = moralData;
-                _cache.Set($"moral_{moralNum}", moralData, GetCacheOptions());
-                
-                return moralData;
+                _cache.Set($"moral_{moralNum}", moral, GetCacheOptions());
+                return moral;
             }
             catch (Exception ex)
             {
@@ -133,16 +126,9 @@ namespace Server
             }
         }
 
-        public async Task LoadAllMoralsAsync()
-        {
-            var tasks = Enumerable.Range(0, Core.Constant.MAX_MORALS)
-                .Select(i => LoadMoralAsync(i));
-            await Task.WhenAll(tasks);
-        }
-
         public async Task SaveMoralAsync(int moralNum)
         {
-            if (!_moralCache.TryGetValue(moralNum, out var moral))
+            if (!_cache.TryGetValue($"moral_{moralNum}", out MoralStruct moral))
             {
                 return;
             }
@@ -151,7 +137,7 @@ namespace Server
             {
                 moral.LastModified = DateTime.UtcNow;
                 string json = JsonConvert.SerializeObject(moral, Formatting.Indented);
-                
+
                 if (await _database.RowExistsAsync(moralNum, "moral"))
                 {
                     await _database.UpdateRowAsync(moralNum, json, "moral", "data");
@@ -174,7 +160,7 @@ namespace Server
         #region Packet Operations
         public byte[] SerializeMoralData(int moralNum)
         {
-            if (!_moralCache.TryGetValue(moralNum, out var moral))
+            if (!_cache.TryGetValue($"moral_{moralNum}", out MoralStruct moral))
             {
                 return Array.Empty<byte>();
             }
@@ -193,7 +179,7 @@ namespace Server
             buffer.WriteBoolean(moral.LoseExp);
             buffer.WriteString(moral.Description);
             buffer.WriteInt32(moral.CustomAttributes.Count);
-            
+
             foreach (var attr in moral.CustomAttributes)
             {
                 buffer.WriteString(attr.Key);
@@ -205,9 +191,8 @@ namespace Server
 
         public async Task SendMoralsToPlayerAsync(int playerIndex)
         {
-            var moralsToSend = _moralCache
-                .Where(m => !string.IsNullOrEmpty(m.Value.Name))
-                .Select(m => m.Key);
+            var moralsToSend = Enumerable.Range(0, Core.Constant.MAX_MORALS)
+                .Where(i => _cache.TryGetValue($"moral_{i}", out MoralStruct m) && !string.IsNullOrEmpty(m.Name));
 
             foreach (var moralNum in moralsToSend)
             {
@@ -218,17 +203,13 @@ namespace Server
         public async Task SendUpdateMoralToAsync(int playerIndex, int moralNum)
         {
             var data = SerializeMoralData(moralNum);
-            await _network.SendDataToAsync(playerIndex, 
-                ServerPackets.SUpdateMoral, 
-                data);
+            await _network.SendDataToAsync(playerIndex, ServerPackets.SUpdateMoral, data);
         }
 
         public async Task BroadcastMoralUpdateAsync(int moralNum)
         {
             var data = SerializeMoralData(moralNum);
-            await _network.BroadcastAsync(
-                ServerPackets.SUpdateMoral,
-                data);
+            await _network.BroadcastAsync(ServerPackets.SUpdateMoral, data);
         }
         #endregion
 
@@ -242,27 +223,21 @@ namespace Server
 
             if (Core.Type.TempPlayer[playerIndex].Editor > 0)
             {
-                await _network.SendPlayerMessageAsync(playerIndex,
-                    "Editor already in use",
-                    ColorType.BrightRed);
+                await _network.SendPlayerMessageAsync(playerIndex, "Editor already in use", ColorType.BrightRed);
                 return;
             }
 
             var editorLock = await CheckEditorLockAsync(playerIndex, EditorType.Moral);
             if (!string.IsNullOrEmpty(editorLock))
             {
-                await _network.SendPlayerMessageAsync(playerIndex,
-                    $"Editor locked by {editorLock}",
-                    ColorType.BrightRed);
+                await _network.SendPlayerMessageAsync(playerIndex, $"Editor locked by {editorLock}", ColorType.BrightRed);
                 return;
             }
 
             await SendMoralsToPlayerAsync(playerIndex);
             Core.Type.TempPlayer[playerIndex].Editor = (byte)EditorType.Moral;
-            
-            await _network.SendDataToAsync(playerIndex,
-                ServerPackets.SMoralEditor,
-                Array.Empty<byte>());
+
+            await _network.SendDataToAsync(playerIndex, ServerPackets.SMoralEditor, Array.Empty<byte>());
         }
 
         public async Task HandleSaveMoralAsync(int playerIndex, byte[] data)
@@ -282,14 +257,15 @@ namespace Server
 
             var moral = DeserializeMoral(buffer);
             var validation = ValidateMoral(moral);
-            
+
             if (!validation.IsValid)
             {
                 await SendValidationErrorsAsync(playerIndex, validation);
                 return;
             }
 
-            _moralCache[moralNum] = moral;
+            _cache.Set($"moral_{moralNum}", moral, GetCacheOptions());
+
             await Task.WhenAll(
                 BroadcastMoralUpdateAsync(moralNum),
                 SaveMoralAsync(moralNum),
@@ -304,7 +280,7 @@ namespace Server
         private MoralValidationResult ValidateMoral(MoralStruct moral)
         {
             var result = new MoralValidationResult { IsValid = true };
-            
+
             if (string.IsNullOrWhiteSpace(moral.Name))
             {
                 result.IsValid = false;
@@ -353,7 +329,6 @@ namespace Server
         {
             if (!_disposed)
             {
-                _moralCache.Clear();
                 _disposed = true;
             }
         }
