@@ -78,6 +78,7 @@
   <PropertyGroup>
     <Type>Empty</Type>
     <OutputType>Exe</OutputType>
+    <UserSecretsId>a9b4e14a-d9b6-4b78-9584-b1c168aefeeb</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
