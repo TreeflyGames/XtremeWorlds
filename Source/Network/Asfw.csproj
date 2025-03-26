@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net8.0-android</TargetFramework>
+    <TargetFramework>net9.0-android</TargetFramework>
     <ApplicationVersion>0.10.0.0</ApplicationVersion>
     <RootNamespace>$(AssemblyFileVersion)</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -22,12 +22,14 @@
     <DebugSymbols>true</DebugSymbols>
     <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
     <LangVersion>default</LangVersion>
+    <TargetPlatformVersion>35</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <AndroidSupportedAbis>arm64-v8a</AndroidSupportedAbis>
     <LangVersion>default</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
 </Project>
