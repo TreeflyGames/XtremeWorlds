@@ -32,6 +32,12 @@
  <ItemGroup>
   <AndroidAsset Include="Assets\**\*.*" />
 </ItemGroup>
+<ItemGroup>
+    <Content Include="Assets\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
  <ItemGroup>
    <PackageReference Include="ManagedBass" />
    <PackageReference Include="ManagedBass.Midi" />
