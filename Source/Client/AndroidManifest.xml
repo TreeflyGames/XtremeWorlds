@@ -1,4 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="XtremeWorlds.Client.Android" android:versionCode="1" android:versionName="0.1.0">
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="XtremeWorlds.Client.Android"
+          android:versionCode="1"
+          android:versionName="1.0">
+
+    <!-- Specify minimum and target SDK versions -->
+    <uses-sdk
+            android:minSdkVersion="21"
+            android:targetSdkVersion="33" />
+
+    <!-- Required permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Require OpenGL ES 2.0 support -->
+    <uses-feature android:glEsVersion="0x00020000"
+                  android:required="true" />
+
+    <application
+            android:label="XtremeWorlds"
+            android:icon="@android:drawable/ic_dialog_alert"
+            android:allowBackup="true"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+
+        <!-- Main Activity (fully qualified name) -->
+        <activity
+                android:name="Client.Android.MainActivity"
+                android:label="XtremeWorlds"
+                android:screenOrientation="landscape"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
 </manifest>

@@ -30,6 +30,9 @@
    <PublishTrimmed>True</PublishTrimmed>
  </PropertyGroup>
  <ItemGroup>
+  <AndroidAsset Include="Assets\**\*.*" />
+</ItemGroup>
+ <ItemGroup>
    <PackageReference Include="ManagedBass" />
    <PackageReference Include="ManagedBass.Midi" />
    <PackageReference Include="Microsoft.NET.Runtime.MonoAOTCompiler.Task" />
@@ -56,9 +59,6 @@
    <ProjectReference Include="..\Network\Asfw.csproj" />
  </ItemGroup>
  <ItemGroup>
-   <Reference Include="Asfw">
-     <HintPath>..\Network\bin\Debug\Asfw.dll</HintPath>
-   </Reference>
    <Reference Include="Microsoft.Extensions.Configuration">
      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net9.0\Microsoft.Extensions.Configuration.dll</HintPath>
    </Reference>
@@ -66,6 +66,9 @@
    <Reference Include="MonoGame.Framework">
      <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.2.1105\lib\net8.0\MonoGame.Framework.dll</HintPath>
    </Reference>
+ </ItemGroup>
+ <ItemGroup>
+   <Folder Include="Game\Android\" />
  </ItemGroup>
  <PropertyGroup>
    <PackageLicenseFile>LICENSE</PackageLicenseFile>
