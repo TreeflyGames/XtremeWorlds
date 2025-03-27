@@ -20,7 +20,6 @@
     <FileVersion>$(AssemblyFileVersion)</FileVersion>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
     <LangVersion>default</LangVersion>
     <TargetPlatformVersion>35</TargetPlatformVersion>
   </PropertyGroup>
