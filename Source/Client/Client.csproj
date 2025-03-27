@@ -8,8 +8,8 @@
    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
    <GenerateManifests>false</GenerateManifests>
    <LangVersion>latest</LangVersion>
-   <TargetFramework>net9.0-android</TargetFramework>
-   <TargetPlatformVersion>35</TargetPlatformVersion>
+   <TargetFramework>net8.0-android</TargetFramework>
+   <TargetPlatformVersion>34</TargetPlatformVersion>
    <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidFastDeployment>false</AndroidFastDeployment>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
@@ -38,6 +38,21 @@
 <ItemGroup>
     <AndroidNativeLibrary Include="lib\**\*.so" />
   </ItemGroup>
+<ItemGroup>
+  <AndroidJavaSource Remove="Game\Android\**" />
+  <AndroidLibrary Remove="Game\Android\**" />
+  <AndroidNativeLibrary Remove="Game\Android\**" />
+  <Compile Remove="Game\Android\**" />
+  <EmbeddedResource Remove="Game\Android\**" />
+  <JavaSourceJar Remove="Game\Android\**" />
+  <None Remove="Game\Android\**" />
+  <ProguardConfiguration Remove="Game\Android\**" />
+  <TransformFile Remove="Game\Android\**" />
+</ItemGroup>
+<ItemGroup>
+  <Content Remove="C:\Users\hella\.nuget\packages\monogame.framework.content.pipeline\3.8.2.1105\contentFiles\any\net8.0\SharpDX.D3DCompiler.dll" />
+  <Content Remove="C:\Users\hella\.nuget\packages\monogame.framework.content.pipeline\3.8.2.1105\contentFiles\any\net8.0\SharpDX.dll" />
+</ItemGroup>
  <ItemGroup>
    <PackageReference Include="ManagedBass" />
    <PackageReference Include="ManagedBass.Midi" />
@@ -45,6 +60,7 @@
    <PackageReference Include="MonoGame.Framework.Android" />
    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
+   <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
    <PackageReference Include="Serilog" />
    <PackageReference Include="Serilog.Enrichers.Environment" />
    <PackageReference Include="Serilog.Enrichers.Thread" />
@@ -73,12 +89,10 @@
      <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.2.1105\lib\net8.0\MonoGame.Framework.dll</HintPath>
    </Reference>
  </ItemGroup>
- <ItemGroup>
-   <Folder Include="Game\Android\" />
- </ItemGroup>
  <PropertyGroup>
    <PackageLicenseFile>LICENSE</PackageLicenseFile>
    <ApplicationIcon>icon.ico</ApplicationIcon>
    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+   <UserSecretsId>5e0352c8-3252-489f-98e0-182aab5d0588</UserSecretsId>
  </PropertyGroup>
 </Project>

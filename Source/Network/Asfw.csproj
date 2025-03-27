@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net9.0-android</TargetFramework>
+    <TargetFramework>net8.0-android</TargetFramework>
     <ApplicationVersion>0.10.0.0</ApplicationVersion>
     <RootNamespace>Asfw</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -21,7 +21,7 @@
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>default</LangVersion>
-    <TargetPlatformVersion>35</TargetPlatformVersion>
+    <TargetPlatformVersion>34</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
   </PropertyGroup>
