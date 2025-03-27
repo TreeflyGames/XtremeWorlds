@@ -7,8 +7,8 @@
     <DebugSymbols>true</DebugSymbols>
     <TargetPlatformVersion>35</TargetPlatformVersion>
     <LangVersion>latest</LangVersion>
-    <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
-    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin\$(Configuration)\$(TargetFramework)\arm64\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

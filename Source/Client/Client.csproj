@@ -36,7 +36,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
     <TargetFramework>net9.0-android</TargetFramework>
-    <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
     <TargetPlatformVersion>35</TargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
@@ -81,9 +80,6 @@
   <ItemGroup>
     <Reference Include="Asfw">
       <HintPath>..\Network\bin\Debug\Asfw.dll</HintPath>
-    </Reference>
-    <Reference Include="Core">
-      <HintPath>..\Core\bin\Debug\Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Configuration">
       <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net9.0\Microsoft.Extensions.Configuration.dll</HintPath>
