@@ -3,6 +3,8 @@ using Android.Content.PM;
 using Android.OS;
 using Microsoft.Xna.Framework;
 using Android.Views;
+using Android.Content;
+using Android.Runtime;
 
 namespace Client.Android
 {
@@ -15,6 +17,8 @@ namespace Client.Android
         ScreenOrientation = ScreenOrientation.Landscape)]
     public class MainActivity : AndroidGameActivity
     {
+        public static MainActivity Instance { get; private set; }
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);

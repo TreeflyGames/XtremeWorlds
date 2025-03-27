@@ -7,7 +7,7 @@
     <!-- Specify minimum and target SDK versions -->
     <uses-sdk
             android:minSdkVersion="21"
-            android:targetSdkVersion="33" />
+            android:targetSdkVersion="35" />
 
     <!-- Required permissions -->
     <uses-permission android:name="android.permission.INTERNET" />

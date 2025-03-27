@@ -14,6 +14,11 @@ using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 
+#if ANDROID
+using Android.App;
+using Android.Content.Res;
+#endif
+
 namespace Client
 {
 
@@ -271,23 +276,25 @@ namespace Client
                 {
                     path += GameState.GfxExt;
                 }
+                
+#if ANDROID
+                var stream = Android.MainActivity.Instance.Assets.Open(path.TrimStart('/'));
+#else
+                var stream = new FileStream(path, FileMode.Open);
+#endif
+                var texture = Texture2D.FromStream(Graphics.GraphicsDevice, stream);
 
-                using (var stream = new FileStream(path, FileMode.Open))
+                // Cache graphics information
+                var gfxInfo = new GfxInfo()
                 {
-                    var texture = Texture2D.FromStream(Graphics.GraphicsDevice, stream);
+                    Width = texture.Width,
+                    Height = texture.Height
+                };
+                GfxInfoCache.TryAdd(path, gfxInfo);
 
-                    // Cache graphics information
-                    var gfxInfo = new GfxInfo()
-                    {
-                        Width = texture.Width,
-                        Height = texture.Height
-                    };
-                    GfxInfoCache.TryAdd(path, gfxInfo);
+                TextureCache[path] = texture;
 
-                    TextureCache[path] = texture;
-
-                    return texture;
-                }
+                return texture;
             }
             catch (Exception ex)
             {
