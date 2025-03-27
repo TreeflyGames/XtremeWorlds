@@ -17,11 +17,11 @@ namespace Core
         }
 
         /// <summary> Returns content directory </summary>
-        public static string Content
+        public static string Asset
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Content");
+                return System.IO.Path.Combine(Local, "Assets");
             }
         }
 
@@ -48,7 +48,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Content, "Graphics");
+                return System.IO.Path.Combine(Asset, "Graphics");
             }
         }
 
@@ -57,7 +57,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Content, "Fonts");
+                return System.IO.Path.Combine(Asset, "Fonts");
             }
         }
 
@@ -183,7 +183,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Content, "Music");
+                return System.IO.Path.Combine(Asset, "Music");
             }
         }
 
@@ -192,7 +192,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Content, "Sounds");
+                return System.IO.Path.Combine(Asset, "Sounds");
             }
         }
 

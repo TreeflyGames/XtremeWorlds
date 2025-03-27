@@ -83,9 +83,9 @@
     <PackageReference Include="Serilog.Sinks.File" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\**\*.*">
+    <Content Include="Assets\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
