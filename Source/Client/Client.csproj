@@ -33,10 +33,10 @@
    <AndroidEnableProfiledAot>True</AndroidEnableProfiledAot>
    <PublishTrimmed>True</PublishTrimmed>
  </PropertyGroup>
- <ItemGroup>
-  <AndroidAsset Include="Assets\**\*.*" />
-</ItemGroup>
-  <ItemGroup>
+    <ItemGroup>
+        <AndroidAsset Include="Assets/**/*" />
+    </ItemGroup>
+<ItemGroup>
     <AndroidNativeLibrary Include="lib\**\*.so" />
   </ItemGroup>
  <ItemGroup>
