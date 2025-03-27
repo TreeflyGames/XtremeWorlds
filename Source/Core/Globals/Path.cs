@@ -1,18 +1,26 @@
 ﻿using System.IO;
 using System.Reflection;
 
+#if ANDROID
+using Android.App;
+#endif
+
 namespace Core
 {
 
     public class Path
     {
-        /// <summary> Returns the application directory </summary>
         public static string Local
         {
             get
             {
+#if ANDROID
+                // Requires: using Android.App;
+                return Application.Context.FilesDir.AbsolutePath;
+#else
                 string assemblyPath = Assembly.GetEntryAssembly().Location;
                 return Directory.GetParent(assemblyPath).FullName;
+#endif
             }
         }
 
