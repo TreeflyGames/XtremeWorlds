@@ -11,6 +11,10 @@
    <TargetFramework>net9.0-android</TargetFramework>
    <TargetPlatformVersion>35</TargetPlatformVersion>
    <AndroidPackageFormat>apk</AndroidPackageFormat>
+   <AndroidSupportedAbis>x86_64;armeabi-v7a;arm64-v8a</AndroidSupportedAbis>
+    <AndroidFastDeployment>false</AndroidFastDeployment>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
  </PropertyGroup>
  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
    <OutputPath>..\..\Build\Client\</OutputPath>
@@ -32,11 +36,8 @@
  <ItemGroup>
   <AndroidAsset Include="Assets\**\*.*" />
 </ItemGroup>
-<ItemGroup>
-    <Content Include="Assets\**\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
+  <ItemGroup>
+    <AndroidNativeLibrary Include="lib\**\*.so" />
   </ItemGroup>
  <ItemGroup>
    <PackageReference Include="ManagedBass" />
