@@ -1,7 +1,7 @@
 XtremeWorlds Game Engine
 =================
 
-Simple 2D ORPG Game Engine written in VB.Net
+Simple 2D MMORPG Game Engine written in C#!
 Based on the Orion+ conversion and MirageBasic.
 
 What is it?
