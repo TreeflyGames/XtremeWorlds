@@ -38,6 +38,7 @@
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
+	<MonoGamePlatform>Windows</MonoGamePlatform>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
@@ -74,6 +75,8 @@
     <PackageReference Include="ManagedBass.Midi" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Enrichers.Environment" />
     <PackageReference Include="Serilog.Enrichers.Thread" />
