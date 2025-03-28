@@ -433,7 +433,7 @@ namespace DarkUI.Docking
             if (!force && IsDirty)
             {
                 // Prompt user to save changes
-                string promptMessage = $"Save changes to '{TabText.TrimEnd(DirtyIndicator[0])}'?"; // Use TabText without dirty marker
+                string promptMessage = $"Save changes to '{this.DockText.TrimEnd(DirtyIndicator[0])}'?"; // Use DockText without dirty marker
 
                 DialogResult result = MessageBox.Show(promptMessage, "Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
@@ -524,12 +524,12 @@ namespace DarkUI.Docking
         /// Gets the persistence string for saving the docking layout. Includes the file path.
         /// </summary>
         /// <returns>A string combining type information and the file path.</returns>
-        protected override string GetPersistString()
+        protected string GetPersistString()
         {
             // Include file path for potentially reloading the document when the layout is restored.
             // Format: "{BasePersistString}::{FilePath}"
             // BasePersistString usually contains type information.
-            string baseString = base.GetPersistString();
+            string baseString = GetType().ToString();
             return $"{baseString}::{FilePath ?? string.Empty}";
         }
 
@@ -570,8 +570,8 @@ namespace DarkUI.Docking
         /// </summary>
         protected virtual void UpdateToolTipText()
         {
-             // Use ToolTipText property from DarkDockContent
-             ToolTipText = FilePath ?? string.Empty;
+            // Use ToolTipText property from DarkDockContent
+            this.DockText = FilePath ?? string.Empty;
         }
 
         #endregion
