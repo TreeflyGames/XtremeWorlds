@@ -123,7 +123,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{07707c48-c41c-0620-2202-1de28844ceda}*SharedItemsImports = 5
-		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{e13fb217-705a-0b1c-129a-0e369cc6a402}*SharedItemsImports = 5
 		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{fef01654-46bb-4f6e-ab19-77950b369a0a}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
