@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0-android34.0</TargetFramework>
+    <TargetFramework>net9.0-android</TargetFramework>
+	<TargetPlatformVersion>35</TargetPlatformVersion>
     <RootNamespace>Core</RootNamespace>
     <AssemblyName>Core</AssemblyName>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TargetPlatformVersion>34</TargetPlatformVersion>
     <LangVersion>latest</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>bin\$(Configuration)\$(TargetFramework)\arm64\</OutputPath>

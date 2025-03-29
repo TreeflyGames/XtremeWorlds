@@ -8,8 +8,8 @@
    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
    <GenerateManifests>false</GenerateManifests>
    <LangVersion>latest</LangVersion>
-   <TargetFramework>net8.0-android</TargetFramework>
-   <TargetPlatformVersion>34</TargetPlatformVersion>
+   <TargetFramework>net9.0-android</TargetFramework>
+   <TargetPlatformVersion>35</TargetPlatformVersion>
    <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidFastDeployment>false</AndroidFastDeployment>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
