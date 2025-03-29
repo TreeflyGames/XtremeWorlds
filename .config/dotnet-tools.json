@@ -3,9 +3,31 @@
   "isRoot": true,
   "tools": {
     "dotnet-mgcb-editor-windows": {
-      "version": "3.8.2.1105",
+      "version": "3.9.0.0",
       "commands": [
-        "mgcb-editor-windows"
+        "mgcb-editor-windows",
+        "mgcb-build"
+      ],
+      "rollForward": false
+    },
+    "dotnet-mgcb-editor-linux": {
+      "version": "3.9.0.0",
+      "commands": [
+        "mgcb-editor-linux"
+      ],
+      "rollForward": false
+    },
+    "dotnet-mgcb-editor-macos": {
+      "version": "3.9.0.0",
+      "commands": [
+        "mgcb-editor-macos"
+      ],
+      "rollForward": false
+    },
+    "dotnet-asset-converter": {
+      "version": "1.0.0",
+      "commands": [
+        "asset-converter"
       ],
       "rollForward": false
     }
