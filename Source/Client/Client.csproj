@@ -50,6 +50,9 @@
   <TransformFile Remove="Game\Android\**" />
 </ItemGroup>
 <ItemGroup>
+	<MonoGameContentReference Include="Content\**\*.*" />
+</ItemGroup>
+<ItemGroup>
   <Content Remove="C:\Users\hella\.nuget\packages\monogame.framework.content.pipeline\3.8.2.1105\contentFiles\any\net8.0\SharpDX.D3DCompiler.dll" />
   <Content Remove="C:\Users\hella\.nuget\packages\monogame.framework.content.pipeline\3.8.2.1105\contentFiles\any\net8.0\SharpDX.dll" />
 </ItemGroup>
