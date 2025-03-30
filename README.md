@@ -17,7 +17,10 @@ https://dotnet.microsoft.com/en-us/download/dotnet/9.0
 Build
 ===========
 If you don't pull the repo with a proper Git client, you need to init the submodules by running the following command in the terminal.  
-``git submodule update --init && dotnet build``
+```
+git submodule update --init
+dotnet build
+```
 
 Game Features:
 ==============
