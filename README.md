@@ -10,9 +10,9 @@ This is a tile-based 2D MMORPG game engine. It features a client and server appl
 
 Setup
 ===========
-Install PostgreSQL and Dotnet, then use the database's password as mirage. You can change this in the source code or by modifying the server settings json.
-https://www.postgresql.org/
-https://dotnet.microsoft.com/en-us/download/dotnet/9.0
+Install PostgreSQL and Dotnet, then use the database's password as mirage. You can change this in the source code or by modifying the server settings JSON.<br/>
+[PostgreSQL](https://www.postgresql.org/download/)<br/>
+[.NET](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 
 Build
 ===========
