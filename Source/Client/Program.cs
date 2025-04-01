@@ -13,6 +13,8 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using Java.IO;
+
 
 #if ANDROID
 using Android.App;
@@ -276,9 +278,11 @@ namespace Client
                 {
                     path += GameState.GfxExt;
                 }
-                
+
 #if ANDROID
-                var stream = Android.MainActivity.Instance.Assets.Open(path.TrimStart('/'));
+                var context = Application.Context;
+                var assets = context.Assets;
+                var stream = assets.Open(path.TrimStart('/'));
 #else
                 var stream = new FileStream(path, FileMode.Open);
 #endif
@@ -298,7 +302,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading texture from {path}: {ex.Message}");
+                System.Console.WriteLine($"Error loading texture from {path}: {ex.Message}");
                 return null;
             }
         }
@@ -348,7 +352,7 @@ namespace Client
 
             if (elapsedTime.TotalSeconds >= 1d)
             {
-                Console.WriteLine("FPS: " + GetFps());
+                System.Console.WriteLine("FPS: " + GetFps());
                 SetFps(0);
                 elapsedTime = TimeSpan.Zero;
             }
@@ -918,7 +922,7 @@ namespace Client
 
         private static void OnDeviceReset()
         {
-            Console.WriteLine("Device Reset");
+            System.Console.WriteLine("Device Reset");
         }
 
         public static void TakeScreenshot()
@@ -2296,7 +2300,7 @@ namespace Client
             }
             catch(Exception e)
             {
-                Console.WriteLine(e.Message);
+                System.Console.WriteLine(e.Message);
             }
         }
 
