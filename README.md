@@ -1,7 +1,7 @@
 XtremeWorlds Game Engine
 =================
 
-Simple 2D MMORPG Game Engine written in C#!
+A simple 2D MMORPG game engine is written in C#!
 Based on the Orion+ conversion and MirageBasic.
 
 What is it?
@@ -10,13 +10,17 @@ This is a tile-based 2D MMORPG game engine. It features a client and server appl
 
 Setup
 ===========
-Install PostgreSQL and use the password for the database as mirage. You can change this in the source code.
-https://www.postgresql.org/
+Install PostgreSQL and Dotnet, then use the database's password as mirage. You can change this in the source code or by modifying the server settings JSON.<br/>
+[PostgreSQL](https://www.postgresql.org/download/)<br/>
+[.NET](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 
 Build
 ===========
 If you don't pull the repo with a proper Git client, you need to init the submodules by running the following command in the terminal.  
-``git submodule update --init``
+```
+git submodule update --init
+dotnet build
+```
 
 Game Features:
 ==============
@@ -32,15 +36,15 @@ The client has editors for the world (maps), items, spells, animations, NPCs, an
 
 How do I use this software?
 ===========================
-If you are a programmer then you will probably prefer to compile the most recent version from source. Download the engine here, open up the solution in Visual Studio compile both projects, and start the client and server application. They should connect automatically. IP and Port options are stored in the root/data (files)/config.ini files.
+If you are a programmer, then you will probably prefer to compile the most recent version from the source. Download the engine here, open up the solution in Visual Studio, compile both projects, and start the client and server application. They should connect automatically. IP and Port options are stored in the root/data (files)/config.ini files.
 
 How do I access the editors?
 ============================
-Log into the game with the client. On the server, type the command /access name 5 to promote yourself to owner. Now, go back to the client and tap Insert for each of the editor options.
+Log in to the game with the client. On the server, type the command /access name 5 to promote yourself to owner. Now, go back to the client and tap Insert for each of the editor options.
 
 Support & Updates:
 ==================
-Visit our website or go to our DIscord for support.
+Visit our website or go to our Discord for support.
 https://discord.gg/ARYaWbN6b2
 
 I'm working on updating it to a more usable base.
