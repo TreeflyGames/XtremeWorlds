@@ -16,7 +16,7 @@ namespace Core
             {
 #if ANDROID
                 // Requires: using Android.App;
-                return Application.Context.FilesDir.AbsolutePath;
+                return "";
 #else
                 string assemblyPath = Assembly.GetEntryAssembly().Location;
                 return Directory.GetParent(assemblyPath).FullName;

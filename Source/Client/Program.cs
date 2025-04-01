@@ -247,7 +247,7 @@ namespace Client
             color = color * alpha;
 
             path = Core.Path.EnsureFileExtension(path);
-
+            
             // Retrieve the texture
             var texture = GetTexture(path);
             if (texture is null)
@@ -280,9 +280,7 @@ namespace Client
                 }
 
 #if ANDROID
-                var context = Application.Context;
-                var assets = context.Assets;
-                var stream = assets.Open(path.TrimStart('/'));
+                var stream = TitleContainer.OpenStream(path);
 #else
                 var stream = new FileStream(path, FileMode.Open);
 #endif
