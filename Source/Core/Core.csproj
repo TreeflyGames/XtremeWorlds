@@ -1,26 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <TargetFramework>net9.0-android</TargetFramework>
+	<TargetPlatformVersion>35</TargetPlatformVersion>
     <RootNamespace>Core</RootNamespace>
-    <TargetFramework>net9.0</TargetFramework>
-    <Configurations>Release;Debug</Configurations>
-    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <AssemblyName>Core</AssemblyName>
     <DebugType>Full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin\$(Configuration)\$(TargetFramework)\arm64\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DefineConstants>CORE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <DefineConstants>CORE</DefineConstants>
-  </PropertyGroup>
+
   <ItemGroup>
-	<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
-	<PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
-	<PackageReference Include="Microsoft.Extensions.Logging.Console" />
-	<PackageReference Include="MonoGame.Framework.DesktopGL" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+    <PackageReference Include="MonoGame.Framework.Android" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="NLua" />
     <PackageReference Include="Npgsql" />

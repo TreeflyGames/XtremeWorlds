@@ -1,27 +1,26 @@
 ﻿using System.IO;
 using System.Reflection;
 
+#if ANDROID
+using Android.App;
+#endif
+
 namespace Core
 {
 
     public class Path
     {
-        /// <summary> Returns the application directory </summary>
         public static string Local
         {
             get
             {
+#if ANDROID
+                // Requires: using Android.App;
+                return "";
+#else
                 string assemblyPath = Assembly.GetEntryAssembly().Location;
                 return Directory.GetParent(assemblyPath).FullName;
-            }
-        }
-
-        /// <summary> Returns content directory </summary>
-        public static string Asset
-        {
-            get
-            {
-                return System.IO.Path.Combine(Local, "Assets");
+#endif
             }
         }
 
@@ -48,7 +47,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Asset, "Graphics");
+                return System.IO.Path.Combine(Local, "Graphics");
             }
         }
 
@@ -57,7 +56,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Asset, "Fonts");
+                return System.IO.Path.Combine(Local, "Fonts");
             }
         }
 
@@ -183,7 +182,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Asset, "Music");
+                return System.IO.Path.Combine(Local, "Music");
             }
         }
 
@@ -192,7 +191,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Asset, "Sounds");
+                return System.IO.Path.Combine(Local, "Sounds");
             }
         }
 

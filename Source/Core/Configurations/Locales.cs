@@ -251,13 +251,21 @@ namespace Core
             string languagePath = Core.Path.Config;
             string languageFile = System.IO.Path.Combine(languagePath, "Locales.xml");
 
-            Directory.CreateDirectory(languagePath);
+            #if ANDROID
+            #else
+                Directory.CreateDirectory(languagePath);
+            #endif
             if (!File.Exists(languageFile))
             {
+            #if ANDROID
+            #else  
                 using (var writer = new StreamWriter(languageFile))
                 {
-                    x.Serialize(writer, new Locales()); // Save with default values
+  
+                        x.Serialize(writer, new Locales()); // Save with default values
+                    
                 }
+            #endif
             }
             else
             {
