@@ -1,5 +1,6 @@
 ﻿using Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic.CompilerServices;
 using System.Runtime.InteropServices;
@@ -24,6 +25,12 @@ namespace Client
 
         public static void Startup()
         {
+            Container = new XWContainer()
+                .CreateConfiguration()
+                .CreateServiceCollection()
+                .CreateServiceProvider();
+            Configuration = Container?.Provider.GetRequiredService<IConfiguration>() ?? throw new NullReferenceException();
+
             GameState.InMenu = true;
             ClearGameData();
             LoadGame();

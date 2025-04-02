@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "dotnet-mgcb-editor-windows": {
+      "version": "3.8.2.1105",
+      "commands": [
+        "mgcb-editor-windows"
+      ],
+      "rollForward": false
+    }
+  }
+}

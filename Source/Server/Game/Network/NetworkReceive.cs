@@ -2682,11 +2682,16 @@ namespace Server
                 if (oldSlot < 0 | oldSlot > Core.Constant.MAX_HOTBAR)
                     return;
 
-                Core.Type.Player[index].Hotbar[newSlot].Slot = skill;
-                Core.Type.Player[index].Hotbar[newSlot].SlotType = Core.Type.Player[index].Hotbar[oldSlot].SlotType;
+                int oldItem = Core.Type.Player[index].Hotbar[oldSlot].Slot;
+                byte oldType = Core.Type.Player[index].Hotbar[oldSlot].SlotType;
+                int newItem = Core.Type.Player[index].Hotbar[newSlot].Slot;
+                byte newType = Core.Type.Player[index].Hotbar[newSlot].SlotType;
 
-                Core.Type.Player[index].Hotbar[oldSlot].Slot = 0;
-                Core.Type.Player[index].Hotbar[oldSlot].SlotType = 0;
+                Core.Type.Player[index].Hotbar[newSlot].Slot = oldItem;
+                Core.Type.Player[index].Hotbar[newSlot].SlotType = oldType;
+
+                Core.Type.Player[index].Hotbar[oldSlot].Slot = newItem;
+                Core.Type.Player[index].Hotbar[oldSlot].SlotType = newType;
             }
             else
             {
@@ -2709,7 +2714,7 @@ namespace Server
             if (slot < 0 | slot > Core.Constant.MAX_HOTBAR)
                 return;
 
-            Core.Type.Player[index].Hotbar[slot].Slot = 0;
+            Core.Type.Player[index].Hotbar[slot].Slot = -1;
             Core.Type.Player[index].Hotbar[slot].SlotType = 0;
 
             NetworkSend.SendHotbar(index);

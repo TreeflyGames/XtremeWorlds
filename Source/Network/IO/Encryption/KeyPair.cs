@@ -93,7 +93,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
                     try
                     {                    
                         // Encrypt AES key with RSA
-                        var encryptedKey = _rsa.Encrypt(rijndael.Key, RSAEncryptionPadding.OaepSHA1);
+                        var encryptedKey = _rsa.Encrypt(rijndael?.Key, RSAEncryptionPadding.OaepSHA1);
 
                         if (encryptedKey.Length != 256)
                             throw new CryptographicException("Invalid RSA-encrypted key length.");

@@ -7,7 +7,7 @@ using Reoria.Engine.Events.Interfaces;
 using Reoria.Engine.Security.Cryptography;
 using Reoria.Engine.Security.Cryptography.Interfaces;
 
-namespace Server;
+namespace Client;
 
 public class XWContainer : EngineContainer<SerilogLoggingInitializer>
 {
@@ -21,8 +21,8 @@ public class XWContainer : EngineContainer<SerilogLoggingInitializer>
     protected override void OnCreateConfiguration(IConfigurationBuilder builder)
     {
         _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-        _ = builder.AddJsonFile("appsettings.server.json", optional: true, reloadOnChange: true);
-        _ = builder.AddJsonFile("appsettings.server.secret.json", optional: true, reloadOnChange: true);
+        _ = builder.AddJsonFile("appsettings.client.json", optional: true, reloadOnChange: true);
+        _ = builder.AddJsonFile("appsettings.client.secret.json", optional: true, reloadOnChange: true);
 
         base.OnCreateConfiguration(builder);
     }

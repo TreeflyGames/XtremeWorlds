@@ -1,22 +1,13 @@
 using Core;
 using Core.Database;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Xna.Framework.Content;
-using Newtonsoft.Json.Linq;
-using Reoria.Engine.Base.Container;
-using Reoria.Engine.Base.Container.Interfaces;
-using Reoria.Engine.Base.Container.Logging;
-using System;
+using Reoria.Engine.Container.Interfaces;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using static Core.Type;
 
 namespace Server
@@ -41,19 +32,15 @@ namespace Server
 
         static General()
         {
-            Container = new EngineContainer<SerilogLoggingInitializer>()
-                .DiscoverContainerServiceClasses()
-                .DiscoverConfigurationSources()
-                .BuildContainerConfiguration()
-                .BuildContainerLogger()
-                .DiscoverContainerServices()
-                .BuildContainerServices()
-                .BuildContainerServiceProvider();
+            Container = new XWContainer()
+                .CreateConfiguration()
+                .CreateServiceCollection()
+                .CreateServiceProvider();
 
-            Configuration = Container?.RetrieveService<IConfiguration>() ??
-                throw new NullReferenceException("Failed to initialize configuration");
+            Configuration = Container?.Provider.GetRequiredService<IConfiguration>() 
+                ?? throw new NullReferenceException("Failed to initialize configuration");
 
-            Logger = Container?.RetrieveService<ILogger<General>>() ??
+            Logger = Container?.Provider.GetRequiredService<ILogger<General>>() ??
                 throw new NullReferenceException("Failed to initialize logger");
         }
 
@@ -83,7 +70,7 @@ namespace Server
         /// Retrieves a logger instance for the specified type.
         /// </summary>
         public static ILogger<T> GetLogger<T>() where T : class =>
-            Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException("Container not initialized");
+            Container?.Provider.GetRequiredService<Logger<T>>() ?? throw new NullReferenceException("Container not initialized");
 
         /// <summary>
         /// Gets the elapsed time in milliseconds since the server started.

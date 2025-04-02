@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration.UserSecrets;
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -19,6 +20,9 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the Id of the typelib if this project is exposed to COM
 [assembly: Guid("8e862991-4d16-4578-8517-3da845864356")]
+
+// The following GUID is for the Id of the user secrets file.
+[assembly: UserSecretsId("a9b4e14a-d9b6-4b78-9584-b1c168aefeeb")]
 
 // Version information for an assembly consists of the following four values:
 // 
