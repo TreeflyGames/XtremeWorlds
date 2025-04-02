@@ -59,6 +59,10 @@
     <Content Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
+	  <Content Include="Content\**\*.*">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+	  </Content>
     <EmbeddedResource Include="Icon.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -82,12 +86,6 @@
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="System.Resources.Extensions" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\**\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE">
