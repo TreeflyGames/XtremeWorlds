@@ -262,6 +262,9 @@ namespace Client
         {
             if (!TextureCache.ContainsKey(path))
             {
+                #if ANDROID
+                    path = System.IO.Path.Combine("Content", path);
+                #endif
                 var texture = LoadTexture(path);
                 return texture;
             }
