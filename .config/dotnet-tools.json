@@ -5,9 +5,54 @@
     "dotnet-mgcb-editor-windows": {
       "version": "3.8.2.1105",
       "commands": [
-        "mgcb-editor-windows"
+        {
+          "name": "mgcb-editor-windows",
+          "description": "Launches the MGCB Editor for Windows"
+        }
       ],
-      "rollForward": false
+      "rollForward": false,
+      "options": {
+        "verbose": true,
+        "timeout": 300
+      },
+      "dependencies": [
+        "dotnet-sdk-6.0",
+        "mono-complete"
+      ],
+      "source": "https://github.com/mono/mgcb-editor",
+      "license": "MIT",
+      "documentation": "https://docs.monogame.net/articles/tools/mgcb_editor.html",
+      "installScript": "dotnet tool install --global dotnet-mgcb-editor-windows --version 3.8.2.1105",
+      "compatibleWith": {
+        "dotnet": ">=6.0",
+        "monogame": ">=3.8"
+      }
+    },
+    "dotnet-mgcb-editor-linux": {
+      "version": "3.8.2.1105",
+      "commands": [
+        {
+          "name": "mgcb-editor-linux",
+          "description": "Launches the MGCB Editor for Linux"
+        }
+      ],
+      "rollForward": false,
+      "options": {
+        "verbose": true,
+        "timeout": 300
+      },
+      "dependencies": [
+        "dotnet-sdk-6.0",
+        "mono-complete"
+      ],
+      "source": "https://github.com/mono/mgcb-editor",
+      "license": "MIT",
+      "documentation": "https://docs.monogame.net/articles/tools/mgcb_editor.html",
+      "installScript": "dotnet tool install --global dotnet-mgcb-editor-linux --version 3.8.2.1105",
+      "compatibleWith": {
+        "dotnet": ">=6.0",
+        "monogame": ">=3.8"
+      }
     }
   }
 }
