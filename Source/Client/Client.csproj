@@ -63,62 +63,59 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-<ItemGroup>
-  <AndroidJavaSource Remove="Game\Android\**" />
-  <AndroidLibrary Remove="Game\Android\**" />
-  <AndroidNativeLibrary Remove="Game\Android\**" />
-  <Compile Remove="Game\Android\**" />
-  <EmbeddedResource Remove="Game\Android\**" />
-  <JavaSourceJar Remove="Game\Android\**" />
-  <None Remove="Game\Android\**" />
-  <ProguardConfiguration Remove="Game\Android\**" />
-  <TransformFile Remove="Game\Android\**" />
-</ItemGroup>
-<ItemGroup>
-    <AndroidAsset Include="Content\**\*.*">
-        <LogicalName>Content\%(RecursiveDir)%(Filename)%(Extension)</LogicalName>
-    </AndroidAsset>
-</ItemGroup>
- <ItemGroup>
-   <PackageReference Include="ManagedBass" />
-   <PackageReference Include="ManagedBass.Midi" />
-   <PackageReference Include="Microsoft.NET.Runtime.MonoAOTCompiler.Task" />
-   <PackageReference Include="MonoGame.Framework.Android" />
-   <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
-   <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
-   <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
-   <PackageReference Include="Serilog" />
-   <PackageReference Include="Serilog.Enrichers.Environment" />
-   <PackageReference Include="Serilog.Enrichers.Thread" />
-   <PackageReference Include="Serilog.Extensions.Logging" />
-   <PackageReference Include="Serilog.Settings.Configuration" />
-   <PackageReference Include="Serilog.Sinks.Console" />
-   <PackageReference Include="Serilog.Sinks.File" />
-   <PackageReference Include="System.Resources.Extensions" />
- </ItemGroup>
- <ItemGroup>
-   <None Include="..\..\LICENSE">
-     <Pack>True</Pack>
-     <PackagePath>\</PackagePath>
-   </None>
- </ItemGroup>
- <ItemGroup>
-   <ProjectReference Include="..\Core\Core.csproj" />
-   <ProjectReference Include="..\Network\Asfw.csproj" />
- </ItemGroup>
- <ItemGroup>
-   <Reference Include="Microsoft.Extensions.Configuration">
-     <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net9.0\Microsoft.Extensions.Configuration.dll</HintPath>
-   </Reference>
-   <Reference Include="Microsoft.Extensions.Logging.Configuration" />
-   <Reference Include="MonoGame.Framework">
-     <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.2.1105\lib\net8.0\MonoGame.Framework.dll</HintPath>
-   </Reference>
- </ItemGroup>
- <PropertyGroup>
-   <PackageLicenseFile>LICENSE</PackageLicenseFile>
-   <ApplicationIcon>icon.ico</ApplicationIcon>
-   <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-   <UserSecretsId>5e0352c8-3252-489f-98e0-182aab5d0588</UserSecretsId>
- </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Network\Asfw.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ManagedBass" />
+    <PackageReference Include="ManagedBass.Midi" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Enrichers.Environment" />
+    <PackageReference Include="Serilog.Enrichers.Thread" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Settings.Configuration" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="System.Resources.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Network\Asfw.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Configuration">
+      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net8.0\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Configuration" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.2.1105\lib\net8.0\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <PropertyGroup>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UserSecretsId>e1a83a62-5587-413f-8a1a-f277ec156c75</UserSecretsId>
+  </PropertyGroup>
+  <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
+    <MakeDir Directories="$(OutputPath)Content" />
+  </Target>
+  <Import Project="..\Modules\Reoria.Engine\Reoria.Engine.projitems" Label="Shared" />
 </Project>

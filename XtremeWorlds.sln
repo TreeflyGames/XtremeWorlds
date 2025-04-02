@@ -5,11 +5,15 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Source\Client\Client.csproj", "{E13FB217-705A-0B1C-129A-0E369CC6A402}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Source\Server\Server.csproj", "{07707C48-C41C-0620-2202-1DE28844CEDA}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Source\Core\Core.csproj", "{8A65A1A1-43C8-049F-31D6-E02C2A04749F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asfw", "Source\Network\Asfw.csproj", "{1919AC79-B888-4705-AF34-56FD9A26EC3C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{17067D41-98EF-470E-8A86-9C6587C3C69F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reoria.Engine", "Source\Modules\Reoria.Engine\Reoria.Engine.shproj", "{FEF01654-46BB-4F6E-AB19-77950B369A0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,7 +29,6 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E13FB217-705A-0B1C-129A-0E369CC6A402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E13FB217-705A-0B1C-129A-0E369CC6A402}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E13FB217-705A-0B1C-129A-0E369CC6A402}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{E13FB217-705A-0B1C-129A-0E369CC6A402}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{E13FB217-705A-0B1C-129A-0E369CC6A402}.Debug|x64.Build.0 = Debug|Any CPU
 		{E13FB217-705A-0B1C-129A-0E369CC6A402}.MinSizeRel|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,6 +43,22 @@ Global
 		{E13FB217-705A-0B1C-129A-0E369CC6A402}.RelWithDebInfo|Any CPU.Build.0 = Release|Any CPU
 		{E13FB217-705A-0B1C-129A-0E369CC6A402}.RelWithDebInfo|x64.ActiveCfg = Release|Any CPU
 		{E13FB217-705A-0B1C-129A-0E369CC6A402}.RelWithDebInfo|x64.Build.0 = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.Debug|x64.Build.0 = Debug|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.MinSizeRel|Any CPU.ActiveCfg = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.MinSizeRel|Any CPU.Build.0 = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.MinSizeRel|x64.ActiveCfg = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.MinSizeRel|x64.Build.0 = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.Release|x64.ActiveCfg = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.Release|x64.Build.0 = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.RelWithDebInfo|Any CPU.ActiveCfg = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.RelWithDebInfo|Any CPU.Build.0 = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.RelWithDebInfo|x64.ActiveCfg = Release|Any CPU
+		{07707C48-C41C-0620-2202-1DE28844CEDA}.RelWithDebInfo|x64.Build.0 = Release|Any CPU
 		{8A65A1A1-43C8-049F-31D6-E02C2A04749F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A65A1A1-43C8-049F-31D6-E02C2A04749F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A65A1A1-43C8-049F-31D6-E02C2A04749F}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -78,11 +97,14 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1919AC79-B888-4705-AF34-56FD9A26EC3C} = {17067D41-98EF-470E-8A86-9C6587C3C69F}
+		{FEF01654-46BB-4F6E-AB19-77950B369A0A} = {17067D41-98EF-470E-8A86-9C6587C3C69F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {34F4C6E4-D681-43B9-A894-4D9A534ABC40}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{07707c48-c41c-0620-2202-1de28844ceda}*SharedItemsImports = 5
 		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{e13fb217-705a-0b1c-129a-0e369cc6a402}*SharedItemsImports = 5
+		Source\Modules\Reoria.Engine\Reoria.Engine.projitems*{fef01654-46bb-4f6e-ab19-77950b369a0a}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

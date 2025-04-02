@@ -1,39 +1,30 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Reoria.Engine.Container;
-using Reoria.Engine.Container.Logging;
-using Reoria.Engine.Events;
-using Reoria.Engine.Events.Interfaces;
-using Reoria.Engine.Security.Cryptography;
-using Reoria.Engine.Security.Cryptography.Interfaces;
+﻿using Reoria.Engine.Base.Container.Attributes;
+using Reoria.Engine.Base.Container.Configuration;
+using Reoria.Engine.Base.Container.Services;
 
-namespace Server;
+namespace Server.Game;
 
-public class XWContainer : EngineContainer<SerilogLoggingInitializer>
+[Container]
+public class XWContainer
 {
-    protected override IConfigurationBuilder CreateEarlyConfigurationBuilder(IConfigurationBuilder builder)
-    {
-        _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-        return base.CreateEarlyConfigurationBuilder(builder);
+    #region XWContainer: Service Definitions
+    [ContainerAttribute.DiscoverConfigurationSources]
+    public static void DiscoverConfigurationSources(ContainerConfigurationSources sources) {
+        sources.Add("appsettings.json", optional: false, reloadOnChange: true);
+        sources.Add("appsettings.server.json", optional: true, reloadOnChange: true);
+        sources.Add("appsettings.server.secret.json", optional: true, reloadOnChange: true);
     }
 
-    protected override void OnCreateConfiguration(IConfigurationBuilder builder)
+    [ContainerAttribute.DiscoverSerivceDefinitions]
+    public static void DiscoverSerivceDefinitions(ContainerServiceDefinitions services)
     {
-        _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-        _ = builder.AddJsonFile("appsettings.server.json", optional: true, reloadOnChange: true);
-        _ = builder.AddJsonFile("appsettings.server.secret.json", optional: true, reloadOnChange: true);
 
-        base.OnCreateConfiguration(builder);
     }
 
-    protected override void OnCreateServiceCollection(IServiceCollection services)
+    [ContainerAttribute.BuildServiceProvider]
+    public static void BuildServiceProvider(IServiceProvider serviceProvider)
     {
-        _ = services.AddScoped<IHashGenerator, HashGenerator>();
-        _ = services.AddScoped<ISaltGenerator, SaltGenerator>();
 
-        _ = services.AddSingleton<IEventBus, EventBus>();
-
-        base.OnCreateServiceCollection(services);
     }
+    #endregion
 }

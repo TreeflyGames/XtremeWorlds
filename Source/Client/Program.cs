@@ -13,13 +13,6 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-using Java.IO;
-
-
-#if ANDROID
-using Android.App;
-using Android.Content.Res;
-#endif
 
 namespace Client
 {
@@ -247,7 +240,7 @@ namespace Client
             color = color * alpha;
 
             path = Core.Path.EnsureFileExtension(path);
-            
+
             // Retrieve the texture
             var texture = GetTexture(path);
             if (texture is null)
@@ -262,9 +255,6 @@ namespace Client
         {
             if (!TextureCache.ContainsKey(path))
             {
-                #if ANDROID
-                    path = System.IO.Path.Combine("Content", path);
-                #endif
                 var texture = LoadTexture(path);
                 return texture;
             }
@@ -282,28 +272,26 @@ namespace Client
                     path += GameState.GfxExt;
                 }
 
-#if ANDROID
-                var stream = TitleContainer.OpenStream(path);
-#else
-                var stream = new FileStream(path, FileMode.Open);
-#endif
-                var texture = Texture2D.FromStream(Graphics.GraphicsDevice, stream);
-
-                // Cache graphics information
-                var gfxInfo = new GfxInfo()
+                using (var stream = new FileStream(path, FileMode.Open))
                 {
-                    Width = texture.Width,
-                    Height = texture.Height
-                };
-                GfxInfoCache.TryAdd(path, gfxInfo);
+                    var texture = Texture2D.FromStream(Graphics.GraphicsDevice, stream);
 
-                TextureCache[path] = texture;
+                    // Cache graphics information
+                    var gfxInfo = new GfxInfo()
+                    {
+                        Width = texture.Width,
+                        Height = texture.Height
+                    };
+                    GfxInfoCache.TryAdd(path, gfxInfo);
 
-                return texture;
+                    TextureCache[path] = texture;
+
+                    return texture;
+                }
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine($"Error loading texture from {path}: {ex.Message}");
+                Console.WriteLine($"Error loading texture from {path}: {ex.Message}");
                 return null;
             }
         }
@@ -353,7 +341,7 @@ namespace Client
 
             if (elapsedTime.TotalSeconds >= 1d)
             {
-                System.Console.WriteLine("FPS: " + GetFps());
+                Console.WriteLine("FPS: " + GetFps());
                 SetFps(0);
                 elapsedTime = TimeSpan.Zero;
             }
@@ -923,7 +911,7 @@ namespace Client
 
         private static void OnDeviceReset()
         {
-            System.Console.WriteLine("Device Reset");
+            Console.WriteLine("Device Reset");
         }
 
         public static void TakeScreenshot()
@@ -2301,7 +2289,7 @@ namespace Client
             }
             catch(Exception e)
             {
-                System.Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
             }
         }
 
