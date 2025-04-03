@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Reoria.Engine.Container;
 using Reoria.Engine.Container.Logging;
@@ -11,29 +11,55 @@ namespace Client;
 
 public class XWContainer : EngineContainer<SerilogLoggingInitializer>
 {
+    private const string AppSettingsFile = "appsettings.json";
+    private const string ClientSettingsFile = "appsettings.client.json";
+    private const string ClientSecretSettingsFile = "appsettings.client.secret.json";
+
     protected override IConfigurationBuilder CreateEarlyConfigurationBuilder(IConfigurationBuilder builder)
     {
-        _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-        return base.CreateEarlyConfigurationBuilder(builder);
+        return builder.AddJsonFile(AppSettingsFile, optional: false, reloadOnChange: true);
     }
 
     protected override void OnCreateConfiguration(IConfigurationBuilder builder)
     {
-        _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-        _ = builder.AddJsonFile("appsettings.client.json", optional: true, reloadOnChange: true);
-        _ = builder.AddJsonFile("appsettings.client.secret.json", optional: true, reloadOnChange: true);
-
-        base.OnCreateConfiguration(builder);
+        builder.AddJsonFile(AppSettingsFile, optional: false, reloadOnChange: true)
+               .AddJsonFile(ClientSettingsFile, optional: true, reloadOnChange: true)
+               .AddJsonFile(ClientSecretSettingsFile, optional: true, reloadOnChange: true);
     }
 
     protected override void OnCreateServiceCollection(IServiceCollection services)
     {
-        _ = services.AddScoped<IHashGenerator, HashGenerator>();
-        _ = services.AddScoped<ISaltGenerator, SaltGenerator>();
-
-        _ = services.AddSingleton<IEventBus, EventBus>();
-
-        base.OnCreateServiceCollection(services);
+        services.AddScoped<IHashGenerator, HashGenerator>()
+                .AddScoped<ISaltGenerator, SaltGenerator>()
+                .AddSingleton<IEventBus, EventBus>();
     }
+}
+protected override void OnCreateConfiguration(IConfigurationBuilder builder)
+{
+    builder.AddJsonFile(AppSettingsFile, optional: false, reloadOnChange: true)
+           .AddJsonFile(ClientSettingsFile, optional: true, reloadOnChange: true)
+           .AddJsonFile(ClientSecretSettingsFile, optional: true, reloadOnChange: true);
+
+    var config = builder.Build();
+    if (string.IsNullOrEmpty(config.GetSection("RequiredSection")?.Value))
+    {
+        throw new InvalidOperationException("Required configuration section is missing");
+    }
+}
+protected override IConfigurationBuilder CreateEarlyConfigurationBuilder(IConfigurationBuilder builder)
+{
+    try
+    {
+        return builder.AddJsonFile(AppSettingsFile, optional: false, reloadOnChange: true);
+    }
+    catch (FileNotFoundException ex)
+    {
+        throw new InvalidOperationException($"Required configuration file '{AppSettingsFile}' not found", ex);
+    }
+}protected override void OnCreateServiceCollection(IServiceCollection services)
+{
+    services.AddScoped<IHashGenerator, HashGenerator>()
+            .AddScoped<ISaltGenerator, SaltGenerator>()
+            .AddSingleton<IEventBus>(sp => 
+                new EventBus(sp.GetRequiredService<ILogger<EventBus>>()));
 }
