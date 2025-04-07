@@ -21,7 +21,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Assets");
+                return System.IO.Path.Combine(Local, "Content");
             }
         }
 
