@@ -3,7 +3,10 @@ using Core.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Reoria.Engine.Container.Configuration.Interfaces;
 using Reoria.Engine.Container.Interfaces;
+using Reoria.Engine.Container.Logging;
+using Reoria.Engine.Container.Logging.Interfaces;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
@@ -32,7 +35,11 @@ namespace Server
 
         static General()
         {
-            Container = new XWContainer()
+            IServiceCollection services = new ServiceCollection()
+                .AddSingleton<IEngineConfigurationProvider, XWConfigurationProvider>()
+                .AddSingleton<ILoggingInitializer, SerilogLoggingInitializer>();
+
+            Container = new XWContainer(services)
                 .CreateConfiguration()
                 .CreateServiceCollection()
                 .CreateServiceProvider();
