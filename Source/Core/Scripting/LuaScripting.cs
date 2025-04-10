@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Core
 {
+    /// <summary>
+    /// A singleton class that manages Lua scripting within a .NET application using NLua.
+    /// </summary>
     public class LuaScripting : IDisposable
     {
         public static event EventHandler InstanceCreated;
@@ -17,24 +20,32 @@ namespace Core
         private readonly Lua _lua;
         private readonly ILogger<LuaScripting> _logger;
         private readonly ConcurrentDictionary<string, DateTime> _scriptLastModified;
-        private readonly ConcurrentDictionary<string, LuaFunction> _cachedFunctions; // Cache loaded Lua functions
+        private readonly ConcurrentDictionary<string, LuaFunction> _cachedFunctions;
         private bool _disposed = false;
         private readonly object _lock = new object();
 
-        // Configuration options
+        /// <summary>
+        /// Configuration options for the Lua scripting engine.
+        /// </summary>
         public class Config
         {
             public bool AutoReloadScripts { get; set; } = true;
             public int MaxExecutionTimeMs { get; set; } = 5000;
             public string ScriptsDirectory { get; set; } = Path.Scripts;
-            public bool EnableScriptCaching { get; set; } = true; // Option to enable/disable function caching
+            public bool EnableScriptCaching { get; set; } = true;
         }
 
         private readonly Config _config;
 
         #region Singleton Pattern
+        /// <summary>
+        /// Gets the singleton instance of the LuaScripting class.
+        /// </summary>
         public static LuaScripting Instance => _instance.Value;
 
+        /// <summary>
+        /// Resets the singleton instance by disposing the current one and creating a new one.
+        /// </summary>
         public static LuaScripting ResetInstance()
         {
             if (_instance.IsValueCreated)
@@ -51,7 +62,7 @@ namespace Core
             _logger = logger;
             _config = config ?? new Config();
             _scriptLastModified = new ConcurrentDictionary<string, DateTime>();
-            _cachedFunctions = new ConcurrentDictionary<string, LuaFunction>(); // Initialize function cache
+            _cachedFunctions = new ConcurrentDictionary<string, LuaFunction>();
 
             _lua = new Lua
             {
@@ -79,9 +90,9 @@ namespace Core
         {
             _lua.RegisterFunction("print", this, typeof(LuaScripting).GetMethod(nameof(LogMessage)));
             _lua.RegisterFunction("getTimestamp", this, typeof(LuaScripting).GetMethod(nameof(GetTimestamp)));
-            _lua.RegisterFunction("require", this, typeof(LuaScripting).GetMethod(nameof(RequireScript))); // Add require function
-            _lua.RegisterFunction("setGlobal", this, typeof(LuaScripting).GetMethod(nameof(SetGlobalVariable))); // Add setGlobal function
-            _lua.RegisterFunction("getGlobal", this, typeof(LuaScripting).GetMethod(nameof(GetGlobalVariable))); // Add getGlobal function
+            _lua.RegisterFunction("require", this, typeof(LuaScripting).GetMethod(nameof(RequireScript)));
+            _lua.RegisterFunction("setGlobal", this, typeof(LuaScripting).GetMethod(nameof(SetGlobalVariable)));
+            _lua.RegisterFunction("getGlobal", this, typeof(LuaScripting).GetMethod(nameof(GetGlobalVariable)));
         }
 
         private async Task LoadScriptsAsync()
@@ -93,7 +104,7 @@ namespace Core
             {
                 try
                 {
-                    await AddScriptFromFileAsync(file, false); // Don't clear cache on initial load
+                    await AddScriptFromFileAsync(file, false);
                     _scriptLastModified.TryAdd(file, File.GetLastWriteTime(file));
                     _logger?.LogInformation("Loaded Lua script: {File}", file);
                 }
@@ -106,6 +117,9 @@ namespace Core
             await Task.WhenAll(loadTasks);
         }
 
+        /// <summary>
+        /// Adds and executes a Lua script from a string.
+        /// </summary>
         public async Task<object[]> AddScriptAsync(string script, bool clearFunctionCache = true)
         {
             return await Task.Run(() =>
@@ -117,7 +131,7 @@ namespace Core
                         var results = _lua.DoString(script);
                         if (clearFunctionCache && _config.EnableScriptCaching)
                         {
-                            ClearFunctionCache(); // Clear cache after adding new script content
+                            ClearFunctionCache();
                         }
                         return results;
                     }
@@ -130,6 +144,9 @@ namespace Core
             });
         }
 
+        /// <summary>
+        /// Adds and executes a Lua script from a file.
+        /// </summary>
         public async Task<object[]> AddScriptFromFileAsync(string filepath, bool clearFunctionCache = true)
         {
             ValidateFilePath(filepath);
@@ -145,6 +162,9 @@ namespace Core
             }
         }
 
+        /// <summary>
+        /// Executes a Lua function with the specified arguments.
+        /// </summary>
         public async Task<object[]> ExecuteScriptAsync(string functionName, params object[] args)
         {
             CheckScriptTimeout();
@@ -165,12 +185,17 @@ namespace Core
                     }
                     if (_config.EnableScriptCaching)
                     {
-                        _cachedFunctions.TryAdd(functionName, function); // Cache the function
+                        _cachedFunctions.TryAdd(functionName, function);
                     }
                 }
 
                 return await Task.Run(() => function.Call(args))
                     .TimeoutAfter(_config.MaxExecutionTimeMs);
+            }
+            catch (LuaException lex)
+            {
+                string stackTrace = lex.StackTrace;
+                throw new LuaScriptException($"Error executing Lua function '{functionName}': {lex.Message}\nStack Trace:\n{stackTrace}", lex);
             }
             catch (TimeoutException)
             {
@@ -185,24 +210,9 @@ namespace Core
         #endregion
 
         #region New Lua Scripting Options and Features
-
-        /// <summary>
-        /// Allows Lua scripts to 'require' and execute other Lua scripts.
-        /// </summary>
-        /// <param name="scriptPath">The relative or absolute path to the script to require.</param>
-        /// <returns>The results of the required script execution.</returns>
         public object[] RequireScript(string scriptPath)
         {
-            string fullPath;
-            if (Path.IsPathRooted(scriptPath))
-            {
-                fullPath = scriptPath;
-            }
-            else
-            {
-                fullPath = Path.Combine(_config.ScriptsDirectory, scriptPath);
-            }
-
+            string fullPath = Path.IsPathRooted(scriptPath) ? scriptPath : Path.Combine(_config.ScriptsDirectory, scriptPath);
             ValidateFilePath(fullPath);
 
             try
@@ -218,22 +228,12 @@ namespace Core
             }
         }
 
-        /// <summary>
-        /// Sets a global variable in the Lua environment.
-        /// </summary>
-        /// <param name="name">The name of the global variable.</param>
-        /// <param name="value">The value to set.</param>
         public void SetGlobalVariable(string name, object value)
         {
             _lua[name] = value;
             _logger?.LogDebug("Set global Lua variable '{Name}' to '{Value}'", name, value);
         }
 
-        /// <summary>
-        /// Gets the value of a global variable from the Lua environment.
-        /// </summary>
-        /// <param name="name">The name of the global variable.</param>
-        /// <returns>The value of the global variable, or null if not found.</returns>
         public object GetGlobalVariable(string name)
         {
             var value = _lua[name];
@@ -241,47 +241,28 @@ namespace Core
             return value;
         }
 
-        /// <summary>
-        /// Clears the cached Lua functions. This is useful when scripts are reloaded.
-        /// </summary>
         public void ClearFunctionCache()
         {
             _cachedFunctions.Clear();
             _logger?.LogInformation("Cleared the Lua function cache.");
         }
 
-        /// <summary>
-        /// Executes a string of Lua code directly and returns the results.
-        /// </summary>
-        /// <param name="luaCode">The Lua code to execute.</param>
-        /// <returns>An array of objects representing the results of the execution.</returns>
         public async Task<object[]> ExecuteCodeAsync(string luaCode)
         {
             return await AddScriptAsync(luaCode);
         }
 
-        /// <summary>
-        /// Registers a .NET object for use within Lua scripts.
-        /// </summary>
-        /// <param name="name">The name under which the object will be accessible in Lua.</param>
-        /// <param name="obj">The .NET object to register.</param>
         public void RegisterObject(string name, object obj)
         {
             _lua[name] = obj;
             _logger?.LogInformation("Registered .NET object '{Type}' as '{Name}' in Lua.", obj.GetType().Name, name);
         }
 
-        /// <summary>
-        /// Registers a static .NET class for use within Lua scripts.
-        /// </summary>
-        /// <param name="name">The name under which the class will be accessible in Lua.</param>
-        /// <param name="type">The static .NET class type.</param>
         public void RegisterStaticClass(string name, Type type)
         {
-            _lua.RegisterFunction(name, type, null); // Register the type itself
+            _lua.RegisterFunction(name, type, null);
             _logger?.LogInformation("Registered static .NET class '{Type}' as '{Name}' in Lua.", type.Name, name);
         }
-
         #endregion
 
         #region Utility Methods
@@ -325,6 +306,50 @@ namespace Core
         }
         #endregion
 
+        #region Manual Script Reloading
+        /// <summary>
+        /// Manually reloads a specific Lua script from the given file path.
+        /// </summary>
+        public async Task ReloadScriptAsync(string filepath)
+        {
+            ValidateFilePath(filepath);
+            try
+            {
+                await AddScriptFromFileAsync(filepath, true);
+                _scriptLastModified[filepath] = File.GetLastWriteTime(filepath);
+                _logger?.LogInformation("Manually reloaded Lua script: {File}", filepath);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Failed to reload Lua script: {File}", filepath);
+                throw new LuaScriptException($"Error reloading Lua script '{filepath}': {ex.Message}", ex);
+            }
+        }
+
+        /// <summary>
+        /// Manually reloads all Lua scripts from the scripts directory.
+        /// </summary>
+        public async Task ReloadAllScriptsAsync()
+        {
+            var scriptFiles = Directory.GetFiles(_config.ScriptsDirectory, "*.lua", SearchOption.AllDirectories);
+            var reloadTasks = scriptFiles.Select(async file =>
+            {
+                try
+                {
+                    await AddScriptFromFileAsync(file, true);
+                    _scriptLastModified[file] = File.GetLastWriteTime(file);
+                    _logger?.LogInformation("Reloaded Lua script: {File}", file);
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogError(ex, "Failed to reload Lua script: {File}", file);
+                }
+            });
+
+            await Task.WhenAll(reloadTasks);
+        }
+        #endregion
+
         #region Resource Management
         public void Dispose()
         {
@@ -340,15 +365,12 @@ namespace Core
         #endregion
     }
 
-    #region Custom Exception
     public class LuaScriptException : Exception
     {
         public LuaScriptException(string message, Exception innerException = null)
             : base(message, innerException) { }
     }
-    #endregion
 
-    #region Extensions
     public static class TaskExtensions
     {
         public static async Task<T> TimeoutAfter<T>(this Task<T> task, int milliseconds)
@@ -363,5 +385,4 @@ namespace Core
             throw new TimeoutException("The operation has timed out.");
         }
     }
-    #endregion
 }
