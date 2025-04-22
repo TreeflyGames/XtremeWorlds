@@ -125,7 +125,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CAcceptTrade);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -135,7 +135,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CDeclineTrade);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -146,7 +146,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CTradeInvite);
             buffer.WriteString(name);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -158,7 +158,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CHandleTradeInvite);
             buffer.WriteInt32(answer);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -171,7 +171,7 @@ namespace Client
             buffer.WriteInt32(invslot);
             buffer.WriteInt32(amount);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -182,7 +182,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CUntradeItem);
             buffer.WriteInt32(invslot);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

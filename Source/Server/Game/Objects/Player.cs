@@ -272,7 +272,7 @@ namespace Server
                 buffer = new ByteStream(4);
                 buffer.WriteInt32((byte)ServerPackets.SAttack);
                 buffer.WriteInt32(attacker);
-                NetworkConfig.SendDataToMapBut(attacker, GetPlayerMap(attacker), buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMapBut(attacker, GetPlayerMap(attacker), buffer.UnreadData, buffer.WritePosition);
                 buffer.Dispose();
 
                 if (damage >= GetPlayerVital(victim, (VitalType)VitalType.HP))
@@ -371,7 +371,7 @@ namespace Server
                 buffer = new ByteStream(4);
                 buffer.WriteInt32((byte)ServerPackets.SNPCAttack);
                 buffer.WriteInt32(attacker);
-                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                 buffer.Dispose();
 
                 if (damage >= GetPlayerVital(victim, (VitalType)VitalType.HP))
@@ -1099,7 +1099,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SLeftMap);
             buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMapBut(index, mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMapBut(index, mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1203,7 +1203,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SCheckForMap);
             buffer.WriteInt32(mapNum);
             buffer.WriteInt32(Core.Type.Map[mapNum].Revision);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
 

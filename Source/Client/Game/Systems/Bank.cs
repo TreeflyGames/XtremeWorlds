@@ -66,7 +66,7 @@ namespace Client
             buffer.WriteInt32(invslot);
             buffer.WriteInt32(amount);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -78,7 +78,7 @@ namespace Client
             buffer.WriteByte(bankSlot);
             buffer.WriteInt32(amount);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -90,7 +90,7 @@ namespace Client
             buffer.WriteInt32(oldSlot);
             buffer.WriteInt32(newSlot);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -106,7 +106,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CCloseBank);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
             GameState.InBank = Conversions.ToBoolean(0);

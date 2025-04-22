@@ -455,7 +455,7 @@ namespace Client
 
             buffer.WriteInt32(animationNum);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

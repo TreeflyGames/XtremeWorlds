@@ -250,7 +250,7 @@ namespace Server
             buffer.WriteInt32((int)ServerPackets.SEventDir);
             buffer.WriteInt32(eventId);
             buffer.WriteInt32(currentDir);
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -309,9 +309,9 @@ namespace Server
             buffer.WriteInt32(currentDir);
             buffer.WriteInt32(speed);
             if (index == 0)
-                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             else
-                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -646,7 +646,7 @@ namespace Server
                     return;
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -658,9 +658,9 @@ namespace Server
             for (int i = 0; i < Core.Constant.NAX_VARIABLES; i++) buffer.WriteString(Variables[i]);
 
             if (everyone)
-                NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             else
-                NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -676,7 +676,7 @@ namespace Server
                 SerializeMapEvents(buffer, mapNum);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
             SendSwitchesAndVariables(index);
         }

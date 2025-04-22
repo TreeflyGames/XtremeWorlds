@@ -138,7 +138,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -160,7 +160,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.MapItem[mapNum, i].Y);
             }
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -207,7 +207,7 @@ namespace Server
                 buffer.WriteInt32(x);
                 buffer.WriteInt32(y);
 
-                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             }
 
             buffer.Dispose();
@@ -350,7 +350,7 @@ namespace Server
                 buffer.WriteInt32(x);
                 buffer.WriteInt32(y);
 
-                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             }
 
             buffer.Dispose();
@@ -466,7 +466,7 @@ namespace Server
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int) ServerPackets.SItemEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -592,7 +592,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SUpdateItem);
             buffer.WriteBlock(ItemData(itemNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -604,7 +604,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SUpdateItem);
             buffer.WriteBlock(ItemData(itemNum));
 
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

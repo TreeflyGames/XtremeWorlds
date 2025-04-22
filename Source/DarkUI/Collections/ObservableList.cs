@@ -31,6 +31,17 @@ namespace DarkUI.Collections
         #region Properties
 
         /// <summary>
+        /// Gets the lock
+        /// </summary>
+        /// 
+        public ReaderWriterLockSlim Lock => _lock;
+
+        /// <summary>
+        /// Gets the inner list.
+        /// </summary>
+        public List<T> InnerList => _innerList;
+
+        /// <summary>
         /// Gets the number of elements contained in the list.
         /// </summary>
         public int Count
@@ -925,7 +936,7 @@ namespace DarkUI.Collections
         {
             if (_updateCount == 0 && ItemInserted != null)
             {
-                ItemInserted(this, new ItemInsertedEventArgs<T>(index, Grange item));
+                ItemInserted(this, new ItemInsertedEventArgs<T>(index, item));
             }
             else
             {
@@ -1157,6 +1168,88 @@ namespace DarkUI.Collections
             _disposed = true;
         }
 
+        #region Getters for Fields
+
+        /// <summary>
+        /// Gets the inner list of the observable list.
+        /// </summary>
+        public List<T> GetInnerList()
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return new List<T>(_innerList); // Return a copy to ensure thread safety
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the list is disposed.
+        /// </summary>
+        public bool GetIsDisposed()
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _disposed;
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the list is read-only.
+        /// </summary>
+        public bool GetIsReadOnly()
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _isReadOnly;
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Gets the current update count.
+        /// </summary>
+        public int GetUpdateCount()
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _updateCount;
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the list has changes.
+        /// </summary>
+        public bool GetHasChanges()
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                return _hasChanges;
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
         #endregion
     }
 
@@ -1241,7 +1334,7 @@ namespace DarkUI.Collections
         {
             Item = item;
         }
-        }
+    }
 
     /// <summary>
     /// A thread-safe read-only wrapper around an <see cref="ObservableList{T}"/>.
@@ -1259,44 +1352,45 @@ namespace DarkUI.Collections
         {
             get
             {
-                _parent._lock.EnterReadLock();
+                _parent.Lock.EnterReadLock();
                 try
                 {
-                    return _parent._innerList[index];
+                    return _parent.InnerList[index];
                 }
                 finally
                 {
-                    _parent._lock.ExitReadLock();
+                    _parent.Lock.ExitReadLock();
                 }
             }
+            #endregion // Dispose Pattern
         }
 
         public int Count
         {
             get
             {
-                _parent._lock.EnterReadLock();
+                _parent.Lock.EnterReadLock();
                 try
                 {
-                    return _parent._innerList.Count;
+                    return _parent.InnerList.Count;
                 }
                 finally
                 {
-                    _parent._lock.ExitReadLock();
+                    _parent.Lock.ExitReadLock();
                 }
             }
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            _parent._lock.EnterReadLock();
+            _parent.Lock.EnterReadLock();
             try
             {
-                return _parent._innerList.ToList().GetEnumerator(); // Snapshot to avoid locking during enumeration
+                return _parent.InnerList.ToList().GetEnumerator(); // Snapshot to avoid locking during enumeration
             }
             finally
             {
-                _parent._lock.ExitReadLock();
+                _parent.Lock.ExitReadLock();
             }
         }
 

@@ -102,7 +102,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestResource);
 
             buffer.WriteInt32(resourceNum);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

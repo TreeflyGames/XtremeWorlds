@@ -146,7 +146,7 @@ namespace Server
                     for (i = 0; i < loopTo5; i++)
                         buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[i]);
 
-                    NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                    NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                 }
 
                 SendMapNPCVitals(mapNum, (byte)MapNPCNum);
@@ -440,7 +440,7 @@ namespace Server
                         buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Dir);
                         buffer.WriteInt32(Movement);
 
-                        NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                        NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                         break;
                     }
                 case var case1 when case1 == (byte) DirectionType.Down:
@@ -454,7 +454,7 @@ namespace Server
                         buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Dir);
                         buffer.WriteInt32(Movement);
 
-                        NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                        NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                         break;
                     }
                 case var case2 when case2 == (byte) DirectionType.Left:
@@ -468,7 +468,7 @@ namespace Server
                         buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Dir);
                         buffer.WriteInt32(Movement);
 
-                        NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                        NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                         break;
                     }
                 case var case3 when case3 == (byte) DirectionType.Right:
@@ -482,7 +482,7 @@ namespace Server
                         buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Dir);
                         buffer.WriteInt32(Movement);
 
-                        NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                        NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                         break;
                     }
             }
@@ -506,7 +506,7 @@ namespace Server
             buffer.WriteInt32((int)MapNPCNum);
             buffer.WriteInt32(Dir);
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -778,7 +778,7 @@ namespace Server
             // Send this packet so they can see the npc attacking
             buffer.WriteInt32((int) ServerPackets.SNPCAttack);
             buffer.WriteInt32((int)MapNPCNum);
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
             if (Damage < 0)
@@ -851,7 +851,7 @@ namespace Server
             // Send this packet so they can see the person attacking
             buffer.WriteInt32((int) ServerPackets.SNPCAttack);
             buffer.WriteInt32(attacker);
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
             if (Damage >= Core.Type.MapNPC[mapNum].NPC[victim].Vital[(byte) VitalType.HP])
@@ -882,7 +882,7 @@ namespace Server
                 buffer = new ByteStream(4);
                 buffer.WriteInt32((int) ServerPackets.SNPCDead);
                 buffer.WriteInt32(victim);
-                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                 buffer.Dispose();
             }
             else
@@ -1209,7 +1209,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(byte) VitalType.SP]);
             }
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1245,7 +1245,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SNPCEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1359,7 +1359,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Level);
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Damage);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -1404,7 +1404,7 @@ namespace Server
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Level);
             buffer.WriteInt32(Core.Type.NPC[(int)NPCNum].Damage);
 
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -1427,7 +1427,7 @@ namespace Server
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[i].Vital[(byte) VitalType.SP]);
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1449,7 +1449,7 @@ namespace Server
             buffer.WriteInt32(withBlock.Vital[(byte) VitalType.HP]);
             buffer.WriteInt32(withBlock.Vital[(byte) VitalType.SP]);
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1467,7 +1467,7 @@ namespace Server
             for (i = 0; i < (int)loopTo; i++)
                 buffer.WriteInt32(Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Vital[i]);
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1478,7 +1478,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SAttack);
 
             buffer.WriteInt32(NPCNum);
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -1488,7 +1488,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SNPCDead);
 
             buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

@@ -81,7 +81,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestPet);
 
             buffer.WriteInt32(petNum);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -93,7 +93,7 @@ namespace Client
 
             buffer.WriteInt32(index);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -106,7 +106,7 @@ namespace Client
 
             buffer.WriteInt32(statNum);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -117,7 +117,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestPets);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -129,7 +129,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CPetSkill);
             buffer.WriteInt32(skill);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
             PetSkillBuffer = skill;
@@ -142,7 +142,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CSummonPet);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -153,7 +153,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CReleasePet);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -165,7 +165,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditPet);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
 
@@ -202,7 +202,7 @@ namespace Client
             buffer.WriteInt32(withBlock.EvolveLevel);
             buffer.WriteInt32(withBlock.EvolveNum);
             
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
 
@@ -499,7 +499,7 @@ namespace Client
             buffer.WriteInt32(x);
             buffer.WriteInt32(y);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
