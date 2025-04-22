@@ -933,7 +933,7 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendActionMsg(int mapNum, string Message, int Color, int MsgType, int X, int Y, int PlayerOnlyNum = 0)
+        public static void SendActionMsg(int mapNum, string Message, int Color, int MsgType, int X, int Y, int PlayerOnlyNum = -1)
         {
             var buffer = new ByteStream(4);
 
