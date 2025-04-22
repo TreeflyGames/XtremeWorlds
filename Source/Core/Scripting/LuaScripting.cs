@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using NLua;
+using NLua.Exceptions;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -212,7 +213,7 @@ namespace Core
         #region New Lua Scripting Options and Features
         public object[] RequireScript(string scriptPath)
         {
-            string fullPath = Path.IsPathRooted(scriptPath) ? scriptPath : Path.Combine(_config.ScriptsDirectory, scriptPath);
+            string fullPath = System.IO.Path.IsPathRooted(scriptPath) ? scriptPath : System.IO.Path.Combine(_config.ScriptsDirectory, scriptPath);
             ValidateFilePath(fullPath);
 
             try
@@ -258,10 +259,10 @@ namespace Core
             _logger?.LogInformation("Registered .NET object '{Type}' as '{Name}' in Lua.", obj.GetType().Name, name);
         }
 
-        public void RegisterStaticClass(string name, Type type)
+        public void RegisterStaticClass(string name, object type)
         {
             _lua.RegisterFunction(name, type, null);
-            _logger?.LogInformation("Registered static .NET class '{Type}' as '{Name}' in Lua.", type.Name, name);
+            _logger?.LogInformation("Registered static .NET class '{Type}' as '{Name}' in Lua.", name, name);
         }
         #endregion
 
