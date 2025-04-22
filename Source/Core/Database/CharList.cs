@@ -238,6 +238,7 @@ namespace Core.Database
                             _characterData[name] = other._characterData[name];
                         }
                     }
+                    return true; // Explicitly specify the return type for ExecuteRead<T>
                 });
             });
             return this;
@@ -300,8 +301,9 @@ namespace Core.Database
         /// </summary>
         public bool TryGetCharacterData(string name, out CharacterData? data)
         {
-            var result = ExecuteRead(() => _characterData.TryGetValue(name, out data));
-            data ??= null;
+            CharacterData? localData = null;
+            var result = ExecuteRead(() => _characterData.TryGetValue(name, out localData));
+            data = localData;
             return result;
         }
 
