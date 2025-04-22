@@ -3,24 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 
 namespace Core.Database
 {
     /// <summary>
-    /// A thread-safe, case-insensitive collection of character names with associated data and advanced functionality.
-    /// Supports insertion order preservation, character data management, serialization, querying, and more.
+    /// A thread-safe, case-insensitive collection of character names with associated data.
+    /// Supports insertion order preservation, advanced querying, extensible character data,
+    /// bulk operations, indexing, and serialization.
     /// </summary>
     public class CharList : IEnumerable<string>
     {
         private readonly HashSet<string> _names;
         private readonly List<string> _orderedNames;
         private readonly Dictionary<string, CharacterData> _characterData;
-        private readonly object _lock = new object();
+        private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of <see cref="CharList"/> with default settings.
+        /// Initializes an empty CharList.
         /// </summary>
         public CharList()
         {
@@ -30,38 +32,21 @@ namespace Core.Database
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="CharList"/> with a collection of initial names.
-        /// Each name is added with default character data.
+        /// Initializes a CharList with a collection of names, each with default character data.
         /// </summary>
-        /// <param name="initialNames">Initial collection of names.</param>
         public CharList(IEnumerable<string> initialNames) : this()
         {
-            if (initialNames != null)
-            {
-                AddRange(initialNames);
-            }
+            ArgumentNullException.ThrowIfNull(initialNames, nameof(initialNames));
+            AddRange(initialNames);
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="CharList"/> with a collection of names and their associated data.
+        /// Initializes a CharList with a collection of name and character data pairs.
         /// </summary>
-        /// <param name="initialData">Collection of tuples containing names and their character data.</param>
         public CharList(IEnumerable<(string Name, CharacterData Data)> initialData) : this()
         {
-            if (initialData == null)
-                throw new ArgumentNullException(nameof(initialData), "Initial data collection cannot be null");
-
-            foreach (var (name, data) in initialData)
-            {
-                if (IsValidName(name))
-                {
-                    if (_names.Add(name))
-                    {
-                        _orderedNames.Add(name);
-                        _characterData[name] = data ?? new CharacterData();
-                    }
-                }
-            }
+            ArgumentNullException.ThrowIfNull(initialData, nameof(initialData));
+            AddRange(initialData);
         }
 
         #endregion
@@ -69,101 +54,45 @@ namespace Core.Database
         #region Properties
 
         /// <summary>
-        /// Gets the number of names in the collection.
+        /// Gets the number of characters in the list.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _names.Count;
-                }
-            }
-        }
+        public int Count => ExecuteRead(() => _names.Count);
 
         /// <summary>
-        /// Gets all names as a read-only collection in insertion order.
+        /// Gets the names in their insertion order.
         /// </summary>
-        public IReadOnlyList<string> OrderedNames
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _orderedNames.AsReadOnly();
-                }
-            }
-        }
+        public IReadOnlyList<string> OrderedNames => ExecuteRead(() => _orderedNames.AsReadOnly());
 
         /// <summary>
-        /// Gets all names as a read-only collection sorted alphabetically (case-insensitive).
+        /// Gets the names sorted alphabetically (case-insensitive).
         /// </summary>
-        public IReadOnlyList<string> SortedNames
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _names.OrderBy(n => n, StringComparer.OrdinalIgnoreCase).ToList().AsReadOnly();
-                }
-            }
-        }
+        public IReadOnlyList<string> SortedNames => ExecuteRead(() =>
+            _names.Order(StringComparer.OrdinalIgnoreCase).ToList().AsReadOnly());
 
         /// <summary>
-        /// Gets all names as a read-only collection (unordered, as stored in the set).
+        /// Gets a read-only collection of all names.
         /// </summary>
-        public IReadOnlyCollection<string> Names
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _names.ToArray();
-                }
-            }
-        }
+        public IReadOnlyCollection<string> Names => ExecuteRead(() => _names.ToArray());
 
         /// <summary>
-        /// Gets a value indicating whether the collection is empty.
+        /// Indicates whether the list is empty.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _names.Count == 0;
-                }
-            }
-        }
+        public bool IsEmpty => ExecuteRead(() => _names.Count == 0);
 
         /// <summary>
-        /// Gets or sets the character data for a specific name using indexer syntax.
+        /// Gets or sets the character data for a given name.
         /// </summary>
-        /// <param name="name">The name to access.</param>
-        /// <exception cref="KeyNotFoundException">Thrown if the name does not exist when setting data.</exception>
         public CharacterData this[string name]
         {
-            get
+            get => ExecuteRead(() => _names.Contains(name)
+                ? _characterData[name]
+                : throw new KeyNotFoundException($"Name '{name}' not found."));
+            set => ExecuteWrite(() =>
             {
-                lock (_lock)
-                {
-                    if (_names.Contains(name))
-                        return _characterData[name];
-                    throw new KeyNotFoundException($"Name '{name}' not found in the collection.");
-                }
-            }
-            set
-            {
-                lock (_lock)
-                {
-                    if (_names.Contains(name))
-                        _characterData[name] = value ?? throw new ArgumentNullException(nameof(value), "Character data cannot be null");
-                    else
-                        throw new KeyNotFoundException($"Name '{name}' not found in the collection.");
-                }
-            }
+                if (!_names.Contains(name))
+                    throw new KeyNotFoundException($"Name '{name}' not found.");
+                _characterData[name] = value ?? throw new ArgumentNullException(nameof(value));
+            });
         }
 
         #endregion
@@ -171,113 +100,78 @@ namespace Core.Database
         #region Core Methods
 
         /// <summary>
-        /// Checks if a name exists in the collection.
+        /// Checks if a name exists in the list.
         /// </summary>
-        /// <param name="name">The name to check.</param>
-        /// <returns><c>true</c> if the name exists; otherwise, <c>false</c>.</returns>
-        public bool Contains(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-                return false;
-
-            lock (_lock)
-            {
-                return _names.Contains(name);
-            }
-        }
+        public bool Contains(string name) => !string.IsNullOrWhiteSpace(name) && ExecuteRead(() => _names.Contains(name));
 
         /// <summary>
-        /// Adds a single name to the collection with default character data.
+        /// Adds a name with default character data.
         /// </summary>
-        /// <param name="name">The name to add.</param>
-        /// <returns>An <see cref="OperationResult"/> indicating the outcome.</returns>
-        public OperationResult Add(string name)
-        {
-            if (!IsValidName(name))
-                return new OperationResult { Success = false, Message = "Invalid name. Name must be 3-20 characters and not null or whitespace." };
-
-            lock (_lock)
-            {
-                if (_names.Add(name))
-                {
-                    _orderedNames.Add(name);
-                    _characterData[name] = new CharacterData();
-                    return new OperationResult { Success = true, Message = $"Added '{name}' successfully." };
-                }
-                return new OperationResult { Success = false, Message = $"Name '{name}' already exists." };
-            }
-        }
+        public OperationResult Add(string name) => Add(name, new CharacterData());
 
         /// <summary>
-        /// Adds a single name to the collection with specified character data.
+        /// Adds a name with specified character data.
         /// </summary>
-        /// <param name="name">The name to add.</param>
-        /// <param name="data">The character data to associate with the name.</param>
-        /// <returns>An <see cref="OperationResult"/> indicating the outcome.</returns>
         public OperationResult Add(string name, CharacterData data)
         {
             if (!IsValidName(name))
-                return new OperationResult { Success = false, Message = "Invalid name. Name must be 3-20 characters and not null or whitespace." };
-
+                return new OperationResult { Success = false, Message = "Invalid name: 3-20 characters, not null/whitespace." };
             if (data == null)
                 return new OperationResult { Success = false, Message = "Character data cannot be null." };
 
-            lock (_lock)
+            return ExecuteWrite(() =>
             {
                 if (_names.Add(name))
                 {
                     _orderedNames.Add(name);
                     _characterData[name] = data;
-                    return new OperationResult { Success = true, Message = $"Added '{name}' with data successfully." };
+                    return new OperationResult { Success = true, Message = $"Added '{name}' successfully." };
                 }
                 return new OperationResult { Success = false, Message = $"Name '{name}' already exists." };
-            }
+            });
         }
 
         /// <summary>
-        /// Adds multiple names to the collection with default character data.
+        /// Adds multiple names with default character data, returning failed additions.
         /// </summary>
-        /// <param name="names">The collection of names to add.</param>
-        /// <returns>A list of names that failed to be added (invalid or duplicates).</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="names"/> is null.</exception>
         public List<string> AddRange(IEnumerable<string> names)
         {
-            if (names == null)
-                throw new ArgumentNullException(nameof(names), "Names collection cannot be null.");
+            ArgumentNullException.ThrowIfNull(names, nameof(names));
+            return AddRange(names.Select(n => (n, new CharacterData())));
+        }
 
+        /// <summary>
+        /// Adds multiple name-data pairs, returning failed additions.
+        /// </summary>
+        public List<string> AddRange(IEnumerable<(string Name, CharacterData Data)> items)
+        {
+            ArgumentNullException.ThrowIfNull(items, nameof(items));
             var failed = new List<string>();
-            lock (_lock)
+            ExecuteWrite(() =>
             {
-                foreach (var name in names)
+                foreach (var (name, data) in items)
                 {
-                    if (!IsValidName(name))
-                    {
-                        failed.Add(name);
-                        continue;
-                    }
-                    if (!_names.Add(name))
+                    if (!IsValidName(name) || data == null || !_names.Add(name))
                     {
                         failed.Add(name);
                         continue;
                     }
                     _orderedNames.Add(name);
-                    _characterData[name] = new CharacterData();
+                    _characterData[name] = data;
                 }
-            }
+            });
             return failed;
         }
 
         /// <summary>
-        /// Removes a name and its associated data from the collection.
+        /// Removes a name and its associated data.
         /// </summary>
-        /// <param name="name">The name to remove.</param>
-        /// <returns>An <see cref="OperationResult"/> indicating the outcome.</returns>
         public OperationResult Remove(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return new OperationResult { Success = false, Message = "Name cannot be null or whitespace." };
 
-            lock (_lock)
+            return ExecuteWrite(() =>
             {
                 if (_names.Remove(name))
                 {
@@ -286,37 +180,51 @@ namespace Core.Database
                     return new OperationResult { Success = true, Message = $"Removed '{name}' successfully." };
                 }
                 return new OperationResult { Success = false, Message = $"Name '{name}' not found." };
-            }
+            });
         }
 
         /// <summary>
-        /// Clears all names and associated data from the collection.
+        /// Removes multiple names and returns the list of successfully removed names.
         /// </summary>
-        /// <returns>The current instance for method chaining.</returns>
-        public CharList Clear()
+        public List<string> RemoveRange(IEnumerable<string> names)
         {
-            lock (_lock)
+            ArgumentNullException.ThrowIfNull(names, nameof(names));
+            var removed = new List<string>();
+            ExecuteWrite(() =>
             {
-                _names.Clear();
-                _orderedNames.Clear();
-                _characterData.Clear();
-            }
+                foreach (var name in names)
+                {
+                    if (_names.Remove(name))
+                    {
+                        _orderedNames.Remove(name);
+                        _characterData.Remove(name);
+                        removed.Add(name);
+                    }
+                }
+            });
+            return removed;
+        }
+
+        /// <summary>
+        /// Clears all names and data from the list.
+        /// </summary>
+        public CharList Clear() => ExecuteWrite(() =>
+        {
+            _names.Clear();
+            _orderedNames.Clear();
+            _characterData.Clear();
             return this;
-        }
+        });
 
         /// <summary>
-        /// Merges another <see cref="CharList"/> into this one. Existing names retain their current data.
+        /// Merges another CharList into this one, optionally updating existing entries.
         /// </summary>
-        /// <param name="other">The <see cref="CharList"/> to merge from.</param>
-        /// <returns>The current instance for method chaining.</returns>
-        public CharList Merge(CharList other)
+        public CharList Merge(CharList other, bool updateExisting = false)
         {
-            if (other == null)
-                return this;
-
-            lock (_lock)
+            if (other == null) return this;
+            ExecuteWrite(() =>
             {
-                lock (other._lock)
+                other.ExecuteRead(() =>
                 {
                     foreach (var name in other._names)
                     {
@@ -325,9 +233,14 @@ namespace Core.Database
                             _orderedNames.Add(name);
                             _characterData[name] = other._characterData[name];
                         }
+                        else if (updateExisting)
+                        {
+                            _characterData[name] = other._characterData[name];
+                        }
                     }
-                }
-            }
+                    return true; // Explicitly specify the return type for ExecuteRead<T>
+                });
+            });
             return this;
         }
 
@@ -336,176 +249,181 @@ namespace Core.Database
         #region Character Data Management
 
         /// <summary>
-        /// Retrieves the character data associated with a name.
+        /// Retrieves the character data for a name, or null if not found.
         /// </summary>
-        /// <param name="name">The name to look up.</param>
-        /// <returns>The <see cref="CharacterData"/> if found; otherwise, <c>null</c>.</returns>
-        public CharacterData GetCharacterData(string name)
-        {
-            lock (_lock)
-            {
-                return _characterData.TryGetValue(name, out var data) ? data : null;
-            }
-        }
+        public CharacterData? GetCharacterData(string name) =>
+            ExecuteRead(() => _characterData.TryGetValue(name, out var data) ? data : null);
 
         /// <summary>
         /// Sets the character data for an existing name.
         /// </summary>
-        /// <param name="name">The name to update.</param>
-        /// <param name="data">The new character data.</param>
-        /// <returns>An <see cref="OperationResult"/> indicating the outcome.</returns>
         public OperationResult SetCharacterData(string name, CharacterData data)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return new OperationResult { Success = false, Message = "Name cannot be null or whitespace." };
-
             if (data == null)
                 return new OperationResult { Success = false, Message = "Character data cannot be null." };
 
-            lock (_lock)
+            return ExecuteWrite(() =>
             {
                 if (_names.Contains(name))
                 {
                     _characterData[name] = data;
-                    return new OperationResult { Success = true, Message = $"Updated data for '{name}' successfully." };
+                    return new OperationResult { Success = true, Message = $"Updated data for '{name}'." };
                 }
                 return new OperationResult { Success = false, Message = $"Name '{name}' not found." };
-            }
+            });
         }
 
         /// <summary>
-        /// Attempts to retrieve the character data for a name.
+        /// Updates specific fields of character data for a name.
         /// </summary>
-        /// <param name="name">The name to look up.</param>
-        /// <param name="data">The character data if found.</param>
-        /// <returns><c>true</c> if the name exists; otherwise, <c>false</c>.</returns>
-        public bool TryGetCharacterData(string name, out CharacterData data)
+        public OperationResult UpdateCharacterData(string name, Action<CharacterData> updateAction)
         {
-            lock (_lock)
+            if (string.IsNullOrWhiteSpace(name))
+                return new OperationResult { Success = false, Message = "Name cannot be null or whitespace." };
+            if (updateAction == null)
+                return new OperationResult { Success = false, Message = "Update action cannot be null." };
+
+            return ExecuteWrite(() =>
             {
-                return _characterData.TryGetValue(name, out data);
-            }
+                if (_characterData.TryGetValue(name, out var data))
+                {
+                    updateAction(data);
+                    return new OperationResult { Success = true, Message = $"Updated data for '{name}'." };
+                }
+                return new OperationResult { Success = false, Message = $"Name '{name}' not found." };
+            });
         }
 
         /// <summary>
-        /// Gets all character data as an enumerable collection of key-value pairs.
+        /// Tries to get the character data for a name, returning success status.
         /// </summary>
-        /// <returns>An enumerable of name and <see cref="CharacterData"/> pairs.</returns>
-        public IEnumerable<KeyValuePair<string, CharacterData>> GetAllCharacterData()
+        public bool TryGetCharacterData(string name, out CharacterData? data)
         {
-            lock (_lock)
-            {
-                return _characterData.ToList();
-            }
+            CharacterData? localData = null;
+            var result = ExecuteRead(() => _characterData.TryGetValue(name, out localData));
+            data = localData;
+            return result;
         }
+
+        /// <summary>
+        /// Gets all name-data pairs in the list.
+        /// </summary>
+        public IReadOnlyList<KeyValuePair<string, CharacterData>> GetAllCharacterData() =>
+            ExecuteRead(() => _characterData.ToList().AsReadOnly());
 
         #endregion
 
         #region Querying Methods
 
         /// <summary>
-        /// Finds all names that start with the specified prefix (case-insensitive).
+        /// Finds names based on a filter applied to character data, with optional sorting.
         /// </summary>
-        /// <param name="prefix">The prefix to search for.</param>
-        /// <returns>A read-only list of matching names.</returns>
-        public IReadOnlyList<string> FindNamesStartingWith(string prefix)
+        public IReadOnlyList<string> FindNames(Func<CharacterData, bool> filter, Func<CharacterData, object>? sortKeySelector = null)
         {
-            if (string.IsNullOrEmpty(prefix))
-                return Array.Empty<string>().AsReadOnly();
-
-            lock (_lock)
+            ArgumentNullException.ThrowIfNull(filter, nameof(filter));
+            return ExecuteRead(() =>
             {
-                return _orderedNames
+                var filtered = _characterData.Where(kvp => filter(kvp.Value));
+                if (sortKeySelector != null)
+                {
+                    filtered = filtered.OrderBy(kvp => sortKeySelector(kvp.Value));
+                }
+                return filtered.Select(kvp => kvp.Key).ToList().AsReadOnly();
+            });
+        }
+
+        /// <summary>
+        /// Finds names that start with a given prefix.
+        /// </summary>
+        public IReadOnlyList<string> FindNamesStartingWith(string prefix) =>
+            string.IsNullOrEmpty(prefix)
+                ? Array.Empty<string>().AsReadOnly()
+                : ExecuteRead(() => _orderedNames
                     .Where(n => n.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
                     .ToList()
-                    .AsReadOnly();
-            }
-        }
+                    .AsReadOnly());
 
         /// <summary>
-        /// Finds all names that contain the specified substring (case-insensitive).
+        /// Finds names that contain a given substring.
         /// </summary>
-        /// <param name="substring">The substring to search for.</param>
-        /// <returns>A read-only list of matching names.</returns>
-        public IReadOnlyList<string> FindNamesContaining(string substring)
-        {
-            if (string.IsNullOrEmpty(substring))
-                return Array.Empty<string>().AsReadOnly();
-
-            lock (_lock)
-            {
-                return _orderedNames
-                    .Where(n => n.IndexOf(substring, StringComparison.OrdinalIgnoreCase) >= 0)
+        public IReadOnlyList<string> FindNamesContaining(string substring) =>
+            string.IsNullOrEmpty(substring)
+                ? Array.Empty<string>().AsReadOnly()
+                : ExecuteRead(() => _orderedNames
+                    .Where(n => n.Contains(substring, StringComparison.OrdinalIgnoreCase))
                     .ToList()
-                    .AsReadOnly();
-            }
-        }
+                    .AsReadOnly());
+
+        #endregion
+
+        #region Indexing by Position
 
         /// <summary>
-        /// Finds all names whose character data satisfies the specified predicate.
+        /// Gets the name at the specified insertion order index.
         /// </summary>
-        /// <param name="predicate">The condition to filter character data.</param>
-        /// <returns>A read-only list of matching names.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="predicate"/> is null.</exception>
-        public IReadOnlyList<string> FindNames(Func<CharacterData, bool> predicate)
+        public string GetNameAt(int index) => ExecuteRead(() =>
         {
-            if (predicate == null)
-                throw new ArgumentNullException(nameof(predicate), "Predicate cannot be null.");
+            if (index < 0 || index >= _orderedNames.Count)
+                throw new IndexOutOfRangeException("Index is out of range.");
+            return _orderedNames[index];
+        });
 
-            lock (_lock)
-            {
-                return _characterData
-                    .Where(kvp => predicate(kvp.Value))
-                    .Select(kvp => kvp.Key)
-                    .ToList()
-                    .AsReadOnly();
-            }
-        }
+        /// <summary>
+        /// Gets the character data at the specified insertion order index.
+        /// </summary>
+        public CharacterData GetCharacterDataAt(int index) => ExecuteRead(() =>
+        {
+            if (index < 0 || index >= _orderedNames.Count)
+                throw new IndexOutOfRangeException("Index is out of range.");
+            return _characterData[_orderedNames[index]];
+        });
+
+        /// <summary>
+        /// Gets the name and character data at the specified insertion order index.
+        /// </summary>
+        public (string Name, CharacterData Data) GetAt(int index) => ExecuteRead(() =>
+        {
+            if (index < 0 || index >= _orderedNames.Count)
+                throw new IndexOutOfRangeException("Index is out of range.");
+            var name = _orderedNames[index];
+            return (name, _characterData[name]);
+        });
+
+        #endregion
+
+        #region Enumeration over Characters
+
+        /// <summary>
+        /// Gets an enumerable of name and character data pairs in insertion order.
+        /// </summary>
+        public IEnumerable<(string Name, CharacterData Data)> GetCharacters() => ExecuteRead(() =>
+            _orderedNames.Select(name => (name, _characterData[name]))
+        );
 
         #endregion
 
         #region Serialization
 
         /// <summary>
-        /// Serializes the <see cref="CharList"/> to a JSON string.
+        /// Serializes the CharList to a JSON string.
         /// </summary>
-        /// <returns>A JSON string representing the collection.</returns>
-        public string ToJson()
+        public string ToJson() => ExecuteRead(() => JsonSerializer.Serialize(new SerializableData
         {
-            lock (_lock)
-            {
-                var data = new SerializableData
-                {
-                    Names = _orderedNames.ToList(),
-                    CharacterData = _characterData.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
-                };
-                return JsonSerializer.Serialize(data);
-            }
-        }
+            Names = _orderedNames.ToList(),
+            CharacterData = _characterData.ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
+        }));
 
         /// <summary>
-        /// Deserializes a <see cref="CharList"/> from a JSON string.
+        /// Deserializes a CharList from a JSON string.
         /// </summary>
-        /// <param name="json">The JSON string to deserialize.</param>
-        /// <returns>A new <see cref="CharList"/> instance.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="json"/> is null.</exception>
-        /// <exception cref="JsonException">Thrown if deserialization fails.</exception>
         public static CharList FromJson(string json)
         {
-            if (json == null)
-                throw new ArgumentNullException(nameof(json), "JSON string cannot be null.");
-
-            var data = JsonSerializer.Deserialize<SerializableData>(json);
-            var charList = new CharList();
-            foreach (var name in data.Names)
-            {
-                if (charList.IsValidName(name) && charList._names.Add(name))
-                {
-                    charList._orderedNames.Add(name);
-                    charList._characterData[name] = data.CharacterData.TryGetValue(name, out var charData) ? charData : new CharacterData();
-                }
-            }
-            return charList;
+            ArgumentNullException.ThrowIfNull(json, nameof(json));
+            var data = JsonSerializer.Deserialize<SerializableData>(json)
+                ?? throw new JsonException("Deserialized data is null.");
+            return new CharList(data.Names.Select(n => (n, data.CharacterData.GetValueOrDefault(n, new CharacterData()))));
         }
 
         #endregion
@@ -513,34 +431,63 @@ namespace Core.Database
         #region Validation
 
         /// <summary>
-        /// Determines whether a name is valid. Can be overridden in derived classes.
+        /// Validates a name (3-20 characters, not null or whitespace).
         /// </summary>
-        /// <param name="name">The name to validate.</param>
-        /// <returns><c>true</c> if the name is valid; otherwise, <c>false</c>.</returns>
-        protected virtual bool IsValidName(string name)
-        {
-            return !string.IsNullOrWhiteSpace(name) && name.Length >= 3 && name.Length <= 20;
-        }
+        protected virtual bool IsValidName(string name) =>
+            !string.IsNullOrWhiteSpace(name) && name.Length >= 3 && name.Length <= 20;
 
         #endregion
 
         #region IEnumerable Implementation
 
         /// <summary>
-        /// Gets an enumerator for the names in insertion order.
+        /// Gets an enumerator over the names in insertion order.
         /// </summary>
-        /// <returns>An enumerator for the names.</returns>
-        public IEnumerator<string> GetEnumerator()
+        public IEnumerator<string> GetEnumerator() => ExecuteRead(() => _orderedNames.ToList().GetEnumerator());
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        #endregion
+
+        #region Synchronization Helpers
+
+        private T ExecuteRead<T>(Func<T> action)
         {
-            lock (_lock)
+            _lock.EnterReadLock();
+            try
             {
-                return _orderedNames.ToList().GetEnumerator(); // Return a copy to avoid enumeration issues during modification
+                return action();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        private T ExecuteWrite<T>(Func<T> action)
         {
-            return GetEnumerator();
+            _lock.EnterWriteLock();
+            try
+            {
+                return action();
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        private void ExecuteWrite(Action action)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                action();
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
         }
 
         #endregion
@@ -549,15 +496,15 @@ namespace Core.Database
 
         private class SerializableData
         {
-            public List<string> Names { get; set; }
-            public Dictionary<string, CharacterData> CharacterData { get; set; }
+            public List<string> Names { get; set; } = new();
+            public Dictionary<string, CharacterData> CharacterData { get; set; } = new(StringComparer.OrdinalIgnoreCase);
         }
 
         #endregion
     }
 
     /// <summary>
-    /// Represents data associated with a character, such as level and class.
+    /// Represents character data with extensible properties.
     /// </summary>
     public class CharacterData
     {
@@ -569,24 +516,27 @@ namespace Core.Database
         /// <summary>
         /// Gets or sets the character's class.
         /// </summary>
-        public string Class { get; set; }
+        public string? Class { get; set; }
 
-        // Additional properties can be added as needed
+        /// <summary>
+        /// Gets a dictionary for storing custom properties.
+        /// </summary>
+        public Dictionary<string, object> CustomProperties { get; } = new Dictionary<string, object>();
     }
 
     /// <summary>
-    /// Represents the result of an operation, including success status and a message.
+    /// Represents the result of an operation with success status and message.
     /// </summary>
     public class OperationResult
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the operation was successful.
+        /// Indicates whether the operation succeeded.
         /// </summary>
         public bool Success { get; set; }
 
         /// <summary>
-        /// Gets or sets a message describing the outcome of the operation.
+        /// Provides a message describing the operation's outcome.
         /// </summary>
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
     }
 }
