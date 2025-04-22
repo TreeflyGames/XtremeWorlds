@@ -5128,27 +5128,27 @@ namespace Client
 
         public static void Character_SpendPoint1()
         {
-            NetworkSend.SendTrainStat(1);
+            NetworkSend.SendTrainStat(0);
         }
 
         public static void Character_SpendPoint2()
         {
-            NetworkSend.SendTrainStat(2);
+            NetworkSend.SendTrainStat(1);
         }
 
         public static void Character_SpendPoint3()
         {
-            NetworkSend.SendTrainStat(3);
+            NetworkSend.SendTrainStat(2);
         }
 
         public static void Character_SpendPoint4()
         {
-            NetworkSend.SendTrainStat(4);
+            NetworkSend.SendTrainStat(3);
         }
 
         public static void Character_SpendPoint5()
         {
-            NetworkSend.SendTrainStat(5);
+            NetworkSend.SendTrainStat(4);
         }
 
         public static void DrawInventory()
