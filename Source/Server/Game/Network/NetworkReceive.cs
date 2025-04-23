@@ -479,6 +479,10 @@ namespace Server
                 // Everything went ok, add the character
                 Core.Type.Char.Add(name);
                 Database.AddChar(index, slot, name, (byte)sexNum, (byte)jobNum, sprite);
+
+                if (Core.Type.Char.Count == 1)
+                    SetPlayerAccess(index, (int)AccessType.Owner);
+
                 Log.Add("Character " + name + " added to " + GetPlayerLogin(index) + "'s account.", Constant.PLAYER_LOG);
                 Player.HandleUseChar(index);
 
