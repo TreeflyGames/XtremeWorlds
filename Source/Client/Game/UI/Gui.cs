@@ -1588,14 +1588,11 @@ namespace Client
                         }
 
                         // Handle window dragging only if dragging is enabled
-                        if (entState == Core.Enum.EntState.MouseMove && withBlock.CanDrag && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
+                        if (entState == Core.Enum.EntState.MouseMove && withBlock.CanDrag && canDrag && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
                         {
                             withBlock = Windows[ActiveWindow];
-                            if (withBlock.CanDrag && withBlock.Enabled && withBlock.Visible)
-                            {
-                                withBlock.Left = GameLogic.Clamp((int)(withBlock.Left + (GameState.CurMouseX - withBlock.Left - withBlock.MovedX)), 0, (int)(GameState.ResolutionWidth - withBlock.Width));
-                                withBlock.Top = GameLogic.Clamp((int)(withBlock.Top + (GameState.CurMouseY - withBlock.Top - withBlock.MovedY)), 0, (int)(GameState.ResolutionHeight - withBlock.Height));
-                            }
+                            withBlock.Left = GameLogic.Clamp((int)(withBlock.Left + (GameState.CurMouseX - withBlock.Left - withBlock.MovedX)), 0, (int)(GameState.ResolutionWidth - withBlock.Width));
+                            withBlock.Top = GameLogic.Clamp((int)(withBlock.Top + (GameState.CurMouseY - withBlock.Top - withBlock.MovedY)), 0, (int)(GameState.ResolutionHeight - withBlock.Height));
                         }
                     }
                 }
@@ -6920,36 +6917,208 @@ namespace Client
             GameState.ChatScroll = 0L;
         }
 
-        public static void HideChat()
-        {
-            ShowWindow(GetWindowIndex("winChatSmall"), resetPosition: false);
-            HideWindow(GetWindowIndex("winChat"));
+       using System; // Assuming standard system namespaces
+using System.Text;
+using System.Linq; // For LINQ alternative
+using System.Collections.Generic; // For HashSet
+using Microsoft.VisualBasic.CompilerServices; // Source of Conversions - Consider replacing if possible
 
-            // Set the active control
-            ActiveWindow = GetWindowIndex("winChat");
-            SetActiveControl(GetWindowIndex("winChat"), GetControlIndex("winChat", "txtChat"));
-            Windows[GetWindowIndex("winChat")].Controls[GetControlIndex("winChat", "txtChat")].Visible = false;
-
-            GameState.inSmallChat = Conversions.ToBoolean(1);
-            GameState.ChatScroll = 0L;
-        }
-
-        private static string FilterUnsupportedCharacters(string text, Core.Enum.FontType fontType)
-        {
-            if (text == null)
-            {
-                return string.Empty; // or handle it as appropriate
-            }
-
-            var supportedText = new StringBuilder();
-            foreach (char ch in text)
-            {
-                if (Text.Fonts[fontType].Characters.Contains(ch))
-                {
-                    supportedText.Append(ch);           
-                }
-            }
-            return supportedText.ToString();
-        }
+// Assuming these exist elsewhere:
+public static class UI // Placeholder for where these methods might live
+{
+    // Assume these constants are defined appropriately, perhaps in a dedicated class
+    public static class WindowNames
+    {
+        public const string Chat = "winChat";
+        public const string ChatSmall = "winChatSmall";
     }
+
+    public static class ControlNames
+    {
+        public const string ChatInput = "txtChat"; // Assuming "txtChat" is the input field
+    }
+
+    // Mock definitions for demonstration purposes
+    public static int GetWindowIndex(string name) => 0; // Replace with actual implementation
+    public static int GetControlIndex(string windowName, string controlName) => 0; // Replace with actual implementation
+    public static void ShowWindow(int index, bool resetPosition = true) { /* Actual implementation */ }
+    public static void HideWindow(int index) { /* Actual implementation */ }
+    public static void SetActiveControl(int windowIndex, int controlIndex) { /* Actual implementation */ }
+    public static int ActiveWindow { get; set; }
+    public static Window[] Windows { get; set; } // Replace with actual type
+    public static class Text { public static Font[] Fonts { get; set; } } // Replace Font with actual type
+    public static class GameState
+    {
+        public static bool inSmallChat { get; set; }
+        public static long ChatScroll { get; set; }
+    }
+
+    // Mock Window/Control structure
+    public class Window { public Control[] Controls { get; set; } }
+    public class Control { public bool Visible { get; set; } }
+
+    // Mock Font structure
+    public class Font
+    {
+        // *** CRITICAL: Ensure this is efficient, ideally HashSet<char> ***
+        // If it's string or List<char>, performance will be poor for FilterUnsupportedCharacters
+        public ICollection<char> Characters { get; set; } = new HashSet<char>(); // Example: using HashSet
+    }
+
+    public static class Core { public enum FontType { Default } } // Placeholder
+
+
+    // --- Improved HideChat ---
+    public static void HideChat()
+    {
+        // Get indices once
+        int smallChatIndex = GetWindowIndex(WindowNames.ChatSmall);
+        int mainChatIndex = GetWindowIndex(WindowNames.Chat);
+        int chatInputControlIndex = GetControlIndex(WindowNames.Chat, ControlNames.ChatInput);
+
+        // Ensure indices are valid (optional but good practice)
+        if (mainChatIndex < 0 || smallChatIndex < 0 || chatInputControlIndex < 0)
+        {
+            Console.Error.WriteLine("Error: Could not find chat windows or controls for HideChat.");
+            // Or throw an exception, depending on desired error handling
+            return;
+        }
+
+        // Show the small window, hide the main one
+        ShowWindow(smallChatIndex, resetPosition: false);
+        HideWindow(mainChatIndex);
+
+        // Update Game State (Consider decoupling this via events if appropriate)
+        GameState.inSmallChat = true; // Use boolean literal
+        GameState.ChatScroll = 0;     // 0L is fine, but 0 usually suffices unless strict typing needed here
+
+        // --- Managing Active Control ---
+        // Option 1: Make the *small* chat window active if it makes sense
+        // ActiveWindow = smallChatIndex;
+        // SetActiveControl(smallChatIndex, someDefaultControlInSmallChat); // If applicable
+
+        // Option 2: Set main chat window as 'active' conceptually, but hide its control.
+        // This seems less intuitive if the window itself is hidden.
+        // ActiveWindow = mainChatIndex;
+        // SetActiveControl(mainChatIndex, chatInputControlIndex); // Activate control conceptually
+        // Ensure the control is hidden (redundant if HideWindow hides controls, but explicit)
+        // if (mainChatIndex >= 0 && mainChatIndex < Windows.Length &&
+        //     chatInputControlIndex >= 0 && chatInputControlIndex < Windows[mainChatIndex].Controls.Length)
+        // {
+        //      Windows[mainChatIndex].Controls[chatInputControlIndex].Visible = false;
+        // }
+
+        // Option 3: Set no specific control active, or revert to a default active window/control.
+        // ActiveWindow = GetWindowIndex("DefaultWindow"); // Or similar logic
+        // SetActiveControl(...);
+
+        // The original code sets the hidden window/control active. Let's replicate that BUT
+        // question if this is the desired behavior. If the framework handles activation
+        // correctly even on hidden elements, it might be fine.
+        ActiveWindow = mainChatIndex;
+        SetActiveControl(mainChatIndex, chatInputControlIndex);
+
+        // Explicitly hiding the control might be redundant if HideWindow does this,
+        // but we keep it for consistency with the original code's intent.
+        try
+        {
+            Windows[mainChatIndex].Controls[chatInputControlIndex].Visible = false;
+        }
+        catch (IndexOutOfRangeException ex)
+        {
+             Console.Error.WriteLine($"Error accessing control for hiding in HideChat: {ex.Message}");
+             // Handle error: maybe the indices were invalid despite GetIndex calls?
+        }
+
+        // Consider replacing Microsoft.VisualBasic dependency if possible
+        // GameState.inSmallChat = Conversions.ToBoolean(1); // Old way
+    }
+
+
+    // --- Improved FilterUnsupportedCharacters ---
+
+    /// <summary>
+    /// Removes characters from the input text that are not supported by the specified font.
+    /// </summary>
+    /// <param name="text">The input string to filter.</param>
+    /// <param name="fontType">The type of font whose character set should be used for filtering.</param>
+    /// <returns>A new string containing only the characters supported by the font, or string.Empty if the input was null.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown if fontType is invalid or font data is missing.</exception>
+    public static string FilterUnsupportedCharacters(string text, Core.Enum.FontType fontType)
+    {
+        if (string.IsNullOrEmpty(text)) // Handles null and empty string efficiently
+        {
+            return string.Empty;
+        }
+
+        Font font;
+        try
+        {
+            // Assuming FontType is an enum used as index or key
+            font = Text.Fonts[(int)fontType]; // Adjust if Fonts is Dictionary or uses fontType differently
+            if (font == null || font.Characters == null)
+            {
+                 throw new InvalidOperationException($"Font data or character set for font type {fontType} is null.");
+            }
+        }
+        catch (Exception ex) // Catches IndexOutOfRangeException, KeyNotFoundException etc.
+        {
+            // Log the error details for diagnostics
+            Console.Error.WriteLine($"Error retrieving font data for type {fontType}: {ex.Message}");
+            // Option 1: Throw a more specific exception
+            throw new ArgumentOutOfRangeException(nameof(fontType), $"Font type {fontType} is invalid or font data is missing.", ex);
+            // Option 2: Return original text (if filtering failure shouldn't break things)
+            // return text;
+            // Option 3: Return empty string
+            // return string.Empty;
+        }
+
+
+        // Ensure Characters collection allows efficient lookup (HashSet is ideal)
+        // If font.Characters is NOT a HashSet, consider creating one temporarily for performance:
+        // var supportedCharSet = font.Characters as HashSet<char> ?? new HashSet<char>(font.Characters);
+        // The check below assumes font.Characters IS efficient (e.g., already a HashSet)
+
+        var supportedText = new StringBuilder(text.Length); // Pre-allocate capacity
+        foreach (char ch in text)
+        {
+            // Use the potentially efficient lookup (HashSet O(1) vs List/String O(N))
+            if (font.Characters.Contains(ch))
+            {
+                supportedText.Append(ch);
+            }
+            // Optional: Replace unsupported characters with a placeholder, e.g., '?'
+            // else { supportedText.Append('?'); }
+        }
+        return supportedText.ToString();
+    }
+
+    /*
+    // --- Alternative LINQ implementation for FilterUnsupportedCharacters ---
+    // This can be less performant than StringBuilder for very long strings due to overhead,
+    // but is more concise. Performance also depends on font.Characters.Contains efficiency.
+    public static string FilterUnsupportedCharactersLinq(string text, Core.Enum.FontType fontType)
+    {
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
+
+        Font font;
+        try {
+             font = Text.Fonts[(int)fontType];
+             if (font == null || font.Characters == null) {
+                 throw new InvalidOperationException($"Font data or character set for font type {fontType} is null.");
+             }
+        } catch (Exception ex) {
+             Console.Error.WriteLine($"Error retrieving font data for type {fontType}: {ex.Message}");
+             throw new ArgumentOutOfRangeException(nameof(fontType), $"Font type {fontType} is invalid or font data is missing.", ex);
+        }
+
+        // Ensure font.Characters allows efficient lookup (HashSet is ideal)
+        // var supportedCharSet = font.Characters as HashSet<char> ?? new HashSet<char>(font.Characters);
+
+        return new string(text.Where(ch => font.Characters.Contains(ch)).ToArray());
+    }
+    */
 }
