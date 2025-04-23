@@ -4449,7 +4449,7 @@ namespace Client
             Action argcallback_mousemove5 = null;
             Action argcallback_dblclick5 = null;
             Action argonDraw5 = null;
-            UpdatePictureBox(Windows.Count, "picHealth", 16L, 10L, 44L, 14L, image_norm: 20L, image_hover: 20L, image_mousedown: 20L, callback_norm: ref argcallback_norm5, callback_hover: ref argcallback_hover5, callback_mousedown: ref argcallback_mousedown5, callback_mousemove: ref argcallback_mousemove5, callback_dblclick: ref argcallback_dblclick5, onDraw: ref argonDraw5);
+            UpdatePictureBox(Windows.Count, "picHealth", 16L, 10L, 44L, 14L, image_norm: 21L, image_hover: 21L, image_mousedown: 21L, callback_norm: ref argcallback_norm5, callback_hover: ref argcallback_hover5, callback_mousedown: ref argcallback_mousedown5, callback_mousemove: ref argcallback_mousemove5, callback_dblclick: ref argcallback_dblclick5, onDraw: ref argonDraw5);
             Action argcallback_norm6 = null;
             Action argcallback_hover6 = null;
             Action argcallback_mousedown6 = null;
