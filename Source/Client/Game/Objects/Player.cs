@@ -1042,7 +1042,7 @@ namespace Client
                                 buffer = new ByteStream(4);
                                 buffer.WriteInt32((int)Packets.ClientPackets.CEvent);
                                 buffer.WriteInt32(i);
-                                NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+                                NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
                                 buffer.Dispose();
                                 Core.Type.Player[GameState.MyIndex].EventTimer = General.GetTickCount() + 200;
                             }

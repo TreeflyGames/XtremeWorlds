@@ -1587,12 +1587,27 @@ namespace Client
                             }
                         }
 
+                        if (ActiveWindow > 0)
+                        {
+                            if (!Windows[ActiveWindow].Visible || !Windows[ActiveWindow].Enabled || !Windows[ActiveWindow].CanDrag)
+                                ActiveWindow = curWindow;
+
+                        }
+                        else
+                        {
+                            ActiveWindow = curWindow;
+                        }
+
                         // Handle window dragging only if dragging is enabled
-                        if (entState == Core.Enum.EntState.MouseMove && withBlock.CanDrag && canDrag && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
+                        if (entState == Core.Enum.EntState.MouseMove && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
                         {
                             withBlock = Windows[ActiveWindow];
-                            withBlock.Left = GameLogic.Clamp((int)(withBlock.Left + (GameState.CurMouseX - withBlock.Left - withBlock.MovedX)), 0, (int)(GameState.ResolutionWidth - withBlock.Width));
-                            withBlock.Top = GameLogic.Clamp((int)(withBlock.Top + (GameState.CurMouseY - withBlock.Top - withBlock.MovedY)), 0, (int)(GameState.ResolutionHeight - withBlock.Height));
+                            if (withBlock.CanDrag && withBlock.Enabled && withBlock.Visible)
+                            {
+                                withBlock.Left = GameLogic.Clamp((int)(withBlock.Left + (GameState.CurMouseX - withBlock.Left - withBlock.MovedX)), 0, (int)(GameState.ResolutionWidth - withBlock.Width));
+                                withBlock.Top = GameLogic.Clamp((int)(withBlock.Top + (GameState.CurMouseY - withBlock.Top - withBlock.MovedY)), 0, (int)(GameState.ResolutionHeight - withBlock.Height));
+                                break;
+                            }
                         }
                     }
                 }
@@ -4449,7 +4464,7 @@ namespace Client
             Action argcallback_mousemove5 = null;
             Action argcallback_dblclick5 = null;
             Action argonDraw5 = null;
-            UpdatePictureBox(Windows.Count, "picHealth", 16L, 10L, 44L, 14L, image_norm: 20L, image_hover: 20L, image_mousedown: 20L, callback_norm: ref argcallback_norm5, callback_hover: ref argcallback_hover5, callback_mousedown: ref argcallback_mousedown5, callback_mousemove: ref argcallback_mousemove5, callback_dblclick: ref argcallback_dblclick5, onDraw: ref argonDraw5);
+            UpdatePictureBox(Windows.Count, "picHealth", 16L, 10L, 44L, 14L, image_norm: 21L, image_hover: 21L, image_mousedown: 21L, callback_norm: ref argcallback_norm5, callback_hover: ref argcallback_hover5, callback_mousedown: ref argcallback_mousedown5, callback_mousemove: ref argcallback_mousemove5, callback_dblclick: ref argcallback_dblclick5, onDraw: ref argonDraw5);
             Action argcallback_norm6 = null;
             Action argcallback_hover6 = null;
             Action argcallback_mousedown6 = null;
@@ -5128,27 +5143,27 @@ namespace Client
 
         public static void Character_SpendPoint1()
         {
-            NetworkSend.SendTrainStat(1);
+            NetworkSend.SendTrainStat(0);
         }
 
         public static void Character_SpendPoint2()
         {
-            NetworkSend.SendTrainStat(2);
+            NetworkSend.SendTrainStat(1);
         }
 
         public static void Character_SpendPoint3()
         {
-            NetworkSend.SendTrainStat(3);
+            NetworkSend.SendTrainStat(2);
         }
 
         public static void Character_SpendPoint4()
         {
-            NetworkSend.SendTrainStat(4);
+            NetworkSend.SendTrainStat(3);
         }
 
         public static void Character_SpendPoint5()
         {
-            NetworkSend.SendTrainStat(5);
+            NetworkSend.SendTrainStat(4);
         }
 
         public static void DrawInventory()

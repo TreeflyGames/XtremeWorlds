@@ -266,17 +266,18 @@ namespace Client
         {
             try
             {
-                // Check if the key does not end with ".gfxext" and append if needed
+                // Check if the key does not end with ".gfxext" and append if needed  
                 if (!path.EndsWith(GameState.GfxExt, StringComparison.OrdinalIgnoreCase))
                 {
                     path += GameState.GfxExt;
                 }
 
-                using (var stream = new FileStream(path, FileMode.Open))
+                // Open the file stream with FileShare.Read to allow other processes to read the file  
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     var texture = Texture2D.FromStream(Graphics.GraphicsDevice, stream);
 
-                    // Cache graphics information
+                    // Cache graphics information  
                     var gfxInfo = new GfxInfo()
                     {
                         Width = texture.Width,

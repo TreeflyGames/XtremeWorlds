@@ -85,6 +85,7 @@ namespace Client
         {
             Core.Type.Skill[index] = default;
             Core.Type.Skill[index].Name = "";
+            Core.Type.Skill[index].JobReq = -1;
             GameState.Skill_Loaded[index] = 0;
         }
 

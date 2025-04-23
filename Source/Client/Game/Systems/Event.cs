@@ -566,7 +566,7 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestSwitchesAndVariables);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -584,7 +584,7 @@ namespace Client
             for (i = 0; i < Constant.NAX_VARIABLES; i++)
                 buffer.WriteString(Variables[i]);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }

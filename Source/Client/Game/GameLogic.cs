@@ -388,7 +388,7 @@ namespace Client
                         {
                             buffer = new ByteStream(4);
                             buffer.WriteInt32((int)Packets.ClientPackets.CGetStats);
-                            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+                            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
                             buffer.Dispose();
                             break;
                         }
@@ -893,7 +893,7 @@ namespace Client
             {
                 Core.Type.Player[GameState.MyIndex].MapGetTimer = General.GetTickCount();
                 buffer.WriteInt32((int)Packets.ClientPackets.CMapGetItem);
-                NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+                NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             }
 
             buffer.Dispose();

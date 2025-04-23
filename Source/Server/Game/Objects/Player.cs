@@ -272,7 +272,7 @@ namespace Server
                 buffer = new ByteStream(4);
                 buffer.WriteInt32((byte)ServerPackets.SAttack);
                 buffer.WriteInt32(attacker);
-                NetworkConfig.SendDataToMapBut(attacker, GetPlayerMap(attacker), buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMapBut(attacker, GetPlayerMap(attacker), buffer.UnreadData, buffer.WritePosition);
                 buffer.Dispose();
 
                 if (damage >= GetPlayerVital(victim, (VitalType)VitalType.HP))
@@ -371,7 +371,7 @@ namespace Server
                 buffer = new ByteStream(4);
                 buffer.WriteInt32((byte)ServerPackets.SNPCAttack);
                 buffer.WriteInt32(attacker);
-                NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+                NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
                 buffer.Dispose();
 
                 if (damage >= GetPlayerVital(victim, (VitalType)VitalType.HP))
@@ -1060,8 +1060,6 @@ namespace Server
         public static int GetPlayerJob(int index)
         {
             int GetPlayerJobRet = default;
-            if (Core.Type.Player[index].Job == 0)
-                Core.Type.Player[index].Job = 0;
             GetPlayerJobRet = Core.Type.Player[index].Job;
             return GetPlayerJobRet;
         }
@@ -1099,7 +1097,7 @@ namespace Server
 
             buffer.WriteInt32((int) ServerPackets.SLeftMap);
             buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMapBut(index, mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMapBut(index, mapNum, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1203,7 +1201,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SCheckForMap);
             buffer.WriteInt32(mapNum);
             buffer.WriteInt32(Core.Type.Map[mapNum].Revision);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
 
@@ -2125,7 +2123,7 @@ namespace Server
             }
 
             // Make sure they are the right job
-            if (!(Core.Type.Item[itemNum].JobReq == GetPlayerJob(index)) & !(Core.Type.Item[itemNum].JobReq == 0))
+            if (!(Core.Type.Item[itemNum].JobReq == GetPlayerJob(index)) & !(Core.Type.Item[itemNum].JobReq == -1))
             {
                 NetworkSend.PlayerMsg(index, "You do not meet the class requirements to use this item.", (int) ColorType.BrightRed);
                 return CanPlayerUseItemRet;
@@ -2455,7 +2453,7 @@ namespace Server
             }
         }
 
-        public static void PlayerLearnSkill(int index, int itemNum, int skillNum = 0)
+        public static void PlayerLearnSkill(int index, int itemNum, int skillNum = -1)
         {
             int n;
             int i;
@@ -2474,7 +2472,7 @@ namespace Server
                 return;
 
             // Make sure they are the right class
-            if (Core.Type.Skill[n].JobReq == GetPlayerJob(index) | Core.Type.Skill[n].JobReq == 0)
+            if (Core.Type.Skill[n].JobReq == GetPlayerJob(index) | Core.Type.Skill[n].JobReq == -1)
             {
                 // Make sure they are the right level
                 i = Core.Type.Skill[n].LevelReq;
@@ -2490,8 +2488,11 @@ namespace Server
                         if (!HasSkill(index, n))
                         {
                             SetPlayerSkill(index, i, n);
-                            Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
-                            TakeInv(index, itemNum, 0);
+                            if (itemNum >= 0)
+                            {
+                                Animation.SendAnimation(GetPlayerMap(index), Core.Type.Item[itemNum].Animation, 0, 0, (byte)TargetType.Player, index);
+                                TakeInv(index, itemNum, 0);
+                            }
                             NetworkSend.PlayerMsg(index, "You study the skill carefully.", (int) ColorType.Yellow);
                             NetworkSend.PlayerMsg(index, "You have learned a new skill!", (int) ColorType.BrightGreen);
                             NetworkSend.SendPlayerSkills(index);

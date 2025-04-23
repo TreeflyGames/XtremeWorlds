@@ -1,32 +1,9 @@
-﻿using Reoria.Engine.Base.Container.Attributes;
-using Reoria.Engine.Base.Container.Configuration;
-using Reoria.Engine.Base.Container.Interfaces;
-using Reoria.Engine.Base.Container.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Reoria.Engine.Container;
 
 namespace Client;
 
-[Container]
-public class XWContainer
+public class XWContainer(IServiceCollection services) : EngineContainer(services)
 {
-    #region XWContainer: Service Definitions
-    [ContainerAttribute.DiscoverConfigurationSources]
-    public static void DiscoverConfigurationSources(ContainerConfigurationSources sources)
-    {
-        sources.Add("appsettings.json", optional: false, reloadOnChange: true);
-        sources.Add("appsettings.client.json", optional: true, reloadOnChange: true);
-        sources.Add("appsettings.client.secret.json", optional: true, reloadOnChange: true);
-    }
 
-    [ContainerAttribute.DiscoverSerivceDefinitions]
-    public static void DiscoverSerivceDefinitions(ContainerServiceDefinitions services)
-    {
-
-    }
-
-    [ContainerAttribute.BuildServiceProvider]
-    public static void BuildServiceProvider(IServiceProvider serviceProvider)
-    {
-
-    }
-    #endregion
 }

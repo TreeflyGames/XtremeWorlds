@@ -1,22 +1,16 @@
 using Core;
 using Core.Database;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Xna.Framework.Content;
-using Newtonsoft.Json.Linq;
-using Reoria.Engine.Base.Container;
-using Reoria.Engine.Base.Container.Interfaces;
-using Reoria.Engine.Base.Container.Logging;
-using System;
+using Reoria.Engine.Container.Configuration.Interfaces;
+using Reoria.Engine.Container.Interfaces;
+using Reoria.Engine.Container.Logging;
+using Reoria.Engine.Container.Logging.Interfaces;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using static Core.Type;
 
 namespace Server
@@ -41,19 +35,19 @@ namespace Server
 
         static General()
         {
-            Container = new EngineContainer<SerilogLoggingInitializer>()
-                .DiscoverContainerServiceClasses()
-                .DiscoverConfigurationSources()
-                .BuildContainerConfiguration()
-                .BuildContainerLogger()
-                .DiscoverContainerServices()
-                .BuildContainerServices()
-                .BuildContainerServiceProvider();
+            IServiceCollection services = new ServiceCollection()
+                .AddSingleton<IEngineConfigurationProvider, XWConfigurationProvider>()
+                .AddSingleton<ILoggingInitializer, SerilogLoggingInitializer>();
 
-            Configuration = Container?.RetrieveService<IConfiguration>() ??
-                throw new NullReferenceException("Failed to initialize configuration");
+            Container = new XWContainer(services)
+                .CreateConfiguration()
+                .CreateServiceCollection()
+                .CreateServiceProvider();
 
-            Logger = Container?.RetrieveService<ILogger<General>>() ??
+            Configuration = Container?.Provider.GetRequiredService<IConfiguration>() 
+                ?? throw new NullReferenceException("Failed to initialize configuration");
+
+            Logger = Container?.Provider.GetRequiredService<ILogger<General>>() ??
                 throw new NullReferenceException("Failed to initialize logger");
         }
 
@@ -83,7 +77,7 @@ namespace Server
         /// Retrieves a logger instance for the specified type.
         /// </summary>
         public static ILogger<T> GetLogger<T>() where T : class =>
-            Container?.RetrieveService<Logger<T>>() ?? throw new NullReferenceException("Container not initialized");
+            Container?.Provider.GetRequiredService<Logger<T>>() ?? throw new NullReferenceException("Container not initialized");
 
         /// <summary>
         /// Gets the elapsed time in milliseconds since the server started.
@@ -334,7 +328,7 @@ namespace Server
 
         private static async Task LoadCharacterListAsync()
         {
-            var ids = await Database.GetDataAsync("account");
+           var ids = await Database.GetDataAsync("account");
             Core.Type.Char = new CharList();
             const int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
@@ -344,12 +338,12 @@ namespace Server
                 await semaphore.WaitAsync(Cts.Token);
                 try
                 {
-                    for (int i = 1; i <= Core.Constant.MAX_CHARS; i++)
+                    for (int i = 0; i < Core.Constant.MAX_CHARS; i++)
                     {
-                        var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i}");
-                        if (data != null && data["name"] != null)
+                        var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i + 1}");
+                        if (data != null && data["Name"] != null)
                         {
-                            string name = data["name"].ToString();
+                            string name = data["Name"].ToString();
                             if (!string.IsNullOrWhiteSpace(name))
                             {
                                 Core.Type.Char.Add(name);
@@ -364,7 +358,7 @@ namespace Server
             });
 
             await Task.WhenAll(tasks);
-            Logger.LogInformation($"Loaded {Core.Type.Char.Count} characters.");
+            Logger.LogInformation($"Loaded {Core.Type.Char.Count} character(s).");
         }
 
         private static async Task LoadGameContentAsync()

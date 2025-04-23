@@ -190,7 +190,7 @@ namespace Server
             SendResources(index);
 
             buffer.WriteInt32((int) ServerPackets.SResourceEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -274,7 +274,7 @@ namespace Server
 
             }
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -299,7 +299,7 @@ namespace Server
 
             }
 
-            NetworkConfig.SendDataToMap(mapNum, buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -324,7 +324,7 @@ namespace Server
 
             buffer.WriteBlock(ResourceData(ResourceNum));
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -336,7 +336,7 @@ namespace Server
 
             buffer.WriteBlock(ResourceData(ResourceNum));
 
-            NetworkConfig.SendDataToAll(buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToAll(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 

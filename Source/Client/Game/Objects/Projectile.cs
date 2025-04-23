@@ -17,7 +17,7 @@ namespace Client
 
             buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditProjectile);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -37,7 +37,7 @@ namespace Client
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Speed);
             buffer.WriteInt32(Core.Type.Projectile[ProjectileNum].Damage);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -49,7 +49,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestProjectile);
             buffer.WriteInt32(projectileNum);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }
@@ -64,7 +64,7 @@ namespace Client
             buffer.WriteInt32(collisionType);
             buffer.WriteInt32(collisionZone);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
         }

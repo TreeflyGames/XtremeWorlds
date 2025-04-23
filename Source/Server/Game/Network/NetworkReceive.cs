@@ -479,6 +479,10 @@ namespace Server
                 // Everything went ok, add the character
                 Core.Type.Char.Add(name);
                 Database.AddChar(index, slot, name, (byte)sexNum, (byte)jobNum, sprite);
+
+                if (Core.Type.Char.Count == 1)
+                    SetPlayerAccess(index, (int)AccessType.Owner);
+
                 Log.Add("Character " + name + " added to " + GetPlayerLogin(index) + "'s account.", Constant.PLAYER_LOG);
                 Player.HandleUseChar(index);
 
@@ -680,7 +684,7 @@ namespace Server
             buffer.WriteInt32((int) ServerPackets.SPlayerDir);
             buffer.WriteInt32(index);
             buffer.WriteInt32(GetPlayerDir(index));
-            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMapBut(index, GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
 
@@ -717,7 +721,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SAttack);
             buffer.WriteInt32(index);
-            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.Data, buffer.Head);
+            NetworkConfig.SendDataToMap(GetPlayerMap(index), buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
             // Projectile check
@@ -1531,7 +1535,7 @@ namespace Server
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SEditMap);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -1561,7 +1565,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SShopEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1628,7 +1632,7 @@ namespace Server
 
             var buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SSkillEditor);
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1964,7 +1968,7 @@ namespace Server
             buffer = new ByteStream(4);
             buffer.WriteInt32((int) ServerPackets.SSendPing);
 
-            NetworkConfig.Socket.SendDataTo(index, buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -2755,7 +2759,7 @@ namespace Server
 
             skillNum = buffer.ReadInt32();
 
-            Player.PlayerLearnSkill(index, 0, skillNum);
+            Player.PlayerLearnSkill(index, -1, skillNum);
         }
 
         public static void Packet_RequestEditJob(int index, ref byte[] data)

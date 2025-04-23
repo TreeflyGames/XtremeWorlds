@@ -668,7 +668,7 @@ namespace Client
             buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CNeedMap);
             buffer.WriteInt32(needMap);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1049,7 +1049,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestNewMap);
             buffer.WriteInt32(GetPlayerDir(GameState.MyIndex));
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
 
             GameState.GettingMap = Conversions.ToBoolean(1);
@@ -1062,7 +1062,7 @@ namespace Client
             var buffer = new ByteStream(4);
 
             buffer.WriteInt32((int)Packets.ClientPackets.CRequestEditMap);
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
 
             buffer.Dispose();
         }
@@ -1270,7 +1270,7 @@ namespace Client
             buffer.WriteInt32((int)Packets.ClientPackets.CSaveMap);
             buffer.WriteBlock(Compression.CompressBytes(data));
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
@@ -1280,7 +1280,7 @@ namespace Client
 
             buffer.WriteInt32((int)Packets.ClientPackets.CMapRespawn);
 
-            NetworkConfig.Socket.SendData(buffer.Data, buffer.Head);
+            NetworkConfig.Socket.SendData(buffer.UnreadData, buffer.WritePosition);
             buffer.Dispose();
         }
 
