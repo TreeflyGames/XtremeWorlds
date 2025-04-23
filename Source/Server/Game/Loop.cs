@@ -829,7 +829,7 @@ namespace Server
                 NetworkSend.PlayerMsg(index, "You must be an administrator to use this skill.", (int) ColorType.BrightRed);
                 return;
             }
-            else if (!(Core.Type.Skill[skillID].JobReq == 0) & Player.GetPlayerJob(index) != Core.Type.Skill[skillID].JobReq)
+            else if (!(Core.Type.Skill[skillID].JobReq == -1) & Player.GetPlayerJob(index) != Core.Type.Skill[skillID].JobReq)
             {
                 NetworkSend.PlayerMsg(index, string.Format("Only {0} can use this skill.", GameLogic.CheckGrammar(Core.Type.Job[Core.Type.Skill[skillID].JobReq].Name, 1)), (int) ColorType.BrightRed);
                 return;

@@ -2755,7 +2755,7 @@ namespace Server
 
             skillNum = buffer.ReadInt32();
 
-            Player.PlayerLearnSkill(index, 0, skillNum);
+            Player.PlayerLearnSkill(index, -1, skillNum);
         }
 
         public static void Packet_RequestEditJob(int index, ref byte[] data)
