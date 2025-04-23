@@ -296,7 +296,7 @@ namespace Client
             string folderPath = System.IO.Path.Combine(Core.Path.Graphics, folderName);
             if (Directory.Exists(folderPath))
             {
-                return Directory.GetFiles(folderPath, "*.png").Length; // Adjust for other formats if needed
+                return Directory.GetFiles(folderPath, GameState.GfxExt).Length; // Adjust for other formats if needed
             }
             else
             {
