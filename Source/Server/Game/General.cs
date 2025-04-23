@@ -328,7 +328,7 @@ namespace Server
 
         private static async Task LoadCharacterListAsync()
         {
-            var ids = await Database.GetDataAsync("account");
+           var ids = await Database.GetDataAsync("account");
             Core.Type.Char = new CharList();
             const int maxConcurrency = 4;
             using var semaphore = new SemaphoreSlim(maxConcurrency);
@@ -338,12 +338,12 @@ namespace Server
                 await semaphore.WaitAsync(Cts.Token);
                 try
                 {
-                    for (int i = 1; i <= Core.Constant.MAX_CHARS; i++)
+                    for (int i = 0; i < Core.Constant.MAX_CHARS; i++)
                     {
-                        var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i}");
-                        if (data != null && data["name"] != null)
+                        var data = await Database.SelectRowByColumnAsync("id", id, "account", $"character{i + 1}");
+                        if (data != null && data["Name"] != null)
                         {
-                            string name = data["name"].ToString();
+                            string name = data["Name"].ToString();
                             if (!string.IsNullOrWhiteSpace(name))
                             {
                                 Core.Type.Char.Add(name);
@@ -358,7 +358,7 @@ namespace Server
             });
 
             await Task.WhenAll(tasks);
-            Logger.LogInformation($"Loaded {Core.Type.Char.Count} characters.");
+            Logger.LogInformation($"Loaded {Core.Type.Char.Count} character(s).");
         }
 
         private static async Task LoadGameContentAsync()
