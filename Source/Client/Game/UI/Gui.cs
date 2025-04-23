@@ -1587,14 +1587,26 @@ namespace Client
                             }
                         }
 
+                        if (ActiveWindow > 0)
+                        {
+                            if (!Windows[ActiveWindow].Visible || !Windows[ActiveWindow].Enabled || !Windows[ActiveWindow].CanDrag)
+                                ActiveWindow = curWindow;
+
+                        }
+                        else
+                        {
+                            ActiveWindow = curWindow;
+                        }
+
                         // Handle window dragging only if dragging is enabled
-                        if (entState == Core.Enum.EntState.MouseMove && withBlock.CanDrag && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
+                        if (entState == Core.Enum.EntState.MouseMove && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
                         {
                             withBlock = Windows[ActiveWindow];
                             if (withBlock.CanDrag && withBlock.Enabled && withBlock.Visible)
                             {
                                 withBlock.Left = GameLogic.Clamp((int)(withBlock.Left + (GameState.CurMouseX - withBlock.Left - withBlock.MovedX)), 0, (int)(GameState.ResolutionWidth - withBlock.Width));
                                 withBlock.Top = GameLogic.Clamp((int)(withBlock.Top + (GameState.CurMouseY - withBlock.Top - withBlock.MovedY)), 0, (int)(GameState.ResolutionHeight - withBlock.Height));
+                                break;
                             }
                         }
                     }
