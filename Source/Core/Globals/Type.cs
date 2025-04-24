@@ -203,6 +203,12 @@ namespace Core
             public int Ammo;
         }
 
+        public struct AnimationEvent
+        {
+            public int Frame;
+            public string Sound;
+        }
+
         public struct AnimInstanceStruct
         {
             public int Animation;
@@ -214,6 +220,10 @@ namespace Core
             public bool[] Used;
             public int[] LoopIndex;
             public int[] FrameIndex;
+            public List<AnimationEvent> Events;
+            public bool[] IsPaused;
+            public int[] Direction;
+            public float SpeedMultiplier;
         }
 
         public struct NPCStruct

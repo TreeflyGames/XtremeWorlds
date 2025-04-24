@@ -4,6 +4,7 @@ using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using SharpDX.Direct2D1;
 using static Core.Global.Command;
+using static Core.Type;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 using Path = Core.Path;
 using Point = Microsoft.Xna.Framework.Point;
@@ -13,13 +14,6 @@ namespace Client
 {
     public class Animation
     {
-        // Define AnimationEvent struct for frame-specific events
-        public struct AnimationEvent
-        {
-            public int Frame;
-            public string Sound;
-        }
-
         #region Drawing
         public static void DrawAnimation(int index, int layer)
         {
@@ -191,14 +185,11 @@ namespace Client
 
         private static void TriggerFrameEvent(int index, int layer, int frame)
         {
-            if (Core.Type.Animation[AnimInstance[index].Animation].Events != null && 
-                Core.Type.Animation[AnimInstance[index].Animation].Events[layer] != null)
+            if (Animation.AnimInstance[index].Events != null)
             {
-                foreach (var evt in Core.Type.Animation[AnimInstance[index].Animation].Events[layer])
-                {
-                    if (evt.Frame == frame)
-                        Sound.PlaySound(evt.Sound, AnimInstance[index].X, AnimInstance[index].Y);
-                }
+                if (AnimInstance[index].Events[layer].Frame == frame)
+                    Sound.PlaySound(AnimInstance[index].Events[layer].Sound, AnimInstance[index].X, AnimInstance[index].Y);
+                
             }
         }
 
@@ -280,24 +271,21 @@ namespace Client
             Core.Type.Animation[index].Frames = new int[2] { 5, 5 };
             Core.Type.Animation[index].LoopCount = new int[2] { 1, 1 };
             Core.Type.Animation[index].LoopTime = new int[2] { 1, 1 };
-            Core.Type.Animation[index].Events = new List<AnimationEvent>[2];
-            for (int i = 0; i <= 1; i++)
-                Core.Type.Animation[index].Events[i] = new List<AnimationEvent>();
             Core.Type.Animation[index].Name = "";
             GameState.Animation_Loaded[index] = 0;
         }
 
         public static void ClearAnimations()
         {
-            Core.Type.Animation = new Core.Type.AnimationStruct[101];
+            Core.Type.Animation = new Core.Type.AnimationStruct[Core.Constant.MAX_ANIMATIONS];
             for (int i = 0; i < Constant.MAX_ANIMATIONS; i++)
                 ClearAnimation(i);
         }
 
         public static void ClearAnimInstances()
         {
-            AnimInstance = new Core.Type.AnimInstanceStruct[byte.MaxValue + 1];
-            for (int i = 0; i <= byte.MaxValue; i++)
+            AnimInstance = new Core.Type.AnimInstanceStruct[byte.MaxValue];
+            for (int i = 0; i < byte.MaxValue; i++)
             {
                 AnimInstance[i].Timer = new int[2];
                 AnimInstance[i].Used = new bool[2];
@@ -357,13 +345,14 @@ namespace Client
             for (int layer = 0; layer <= 1; layer++)
             {
                 int eventCount = buffer.ReadInt32();
-                Core.Type.Animation[n].Events[layer] = new List<AnimationEvent>();
+                Animation.AnimInstance[n].Events = new List<Core.Type.AnimationEvent>();
+
                 for (int j = 0; j < eventCount; j++)
                 {
                     AnimationEvent evt;
                     evt.Frame = buffer.ReadInt32();
                     evt.Sound = buffer.ReadString();
-                    Core.Type.Animation[n].Events[layer].Add(evt);
+                    Animation.AnimInstance[n].Events[layer] = evt;
                 }
             }
             buffer.Dispose();
