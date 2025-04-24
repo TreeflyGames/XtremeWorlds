@@ -693,6 +693,12 @@ namespace Client
             // Iterate over all pressed keys  
             foreach (Keys key in CurrentKeyboardState.GetPressedKeys())
             {
+                // Check for special keys and skip processing
+                if (key == Keys.Tab || key == Keys.LeftShift || key == Keys.RightShift || key == Keys.LeftControl || key == Keys.RightControl || key == Keys.LeftAlt || key == Keys.RightAlt)
+                {
+                    continue;
+                }
+
                 if (IsKeyStateActive(key))
                 {
                     // Handle Backspace key separately  
