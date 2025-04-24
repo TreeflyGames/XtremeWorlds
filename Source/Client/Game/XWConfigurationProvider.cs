@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Security.Cryptography;
+using Microsoft.Extensions.Configuration;
 using Reoria.Engine.Container.Configuration;
 
 namespace Client;
@@ -13,6 +14,7 @@ public class XWConfigurationProvider : EngineConfigurationProvider
 
     protected override void OnCreateConfigurationBuilder(IConfigurationBuilder builder)
     {
+        builder.SetBasePath(AppContext.BaseDirectory);
         _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         _ = builder.AddJsonFile("appsettings.client.json", optional: true, reloadOnChange: true);
         _ = builder.AddJsonFile("appsettings.client.secret.json", optional: true, reloadOnChange: true);
