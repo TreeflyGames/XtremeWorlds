@@ -75,7 +75,7 @@ namespace Client
         public static Dictionary<Keys, DateTime> KeyRepeatTimers = new Dictionary<Keys, DateTime>();
 
         // Minimum interval (in milliseconds) between repeated key inputs
-        private const byte KeyRepeatInterval = 125;
+        private const byte KeyRepeatInterval = 150;
         private const byte MouseRepeatInterval = 75;
 
         // Lock object to ensure thread safety
@@ -745,7 +745,7 @@ namespace Client
             var now = DateTime.Now;
             if (CurrentKeyboardState.IsKeyDown(key))
             {
-                if (!KeyRepeatTimers.ContainsKey(key) || (now - KeyRepeatTimers[key]).TotalMilliseconds >= KeyRepeatInterval)
+                if (IsKeyPressedOnce(key) || !KeyRepeatTimers.ContainsKey(key) || (now - KeyRepeatTimers[key]).TotalMilliseconds >= KeyRepeatInterval)
                 {
                     // If the key is released, remove it from KeyStates and reset the timer
                     KeyStates.Remove(key);
@@ -755,6 +755,11 @@ namespace Client
                 }
             }
             return false;
+        }
+
+        private static bool IsKeyPressedOnce(Keys key)
+        {
+            return CurrentKeyboardState.IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key);
         }
 
         // Convert a key to a character (if possible)
