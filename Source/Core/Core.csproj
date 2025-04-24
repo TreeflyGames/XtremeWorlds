@@ -20,7 +20,6 @@
 	<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Console" />
-	<PackageReference Include="MonoGame.Framework.DesktopGL" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="NLua" />
     <PackageReference Include="Npgsql" />
