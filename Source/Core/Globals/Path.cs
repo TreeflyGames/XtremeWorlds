@@ -13,7 +13,8 @@ namespace Core
         {
             get
             {
-                return "";
+                string assemblyPath = Assembly.GetEntryAssembly().Location;
+                return Directory.GetParent(assemblyPath).FullName;
             }
         }
 
@@ -58,7 +59,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Local, "Fonts");
+                return System.IO.Path.Combine("", "Fonts");
             }
         }
 
