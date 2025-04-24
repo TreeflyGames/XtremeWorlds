@@ -4,6 +4,7 @@ using NLua;
 using NLua.Exceptions;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection; // Added for GetMethod
@@ -34,7 +35,7 @@ namespace Core
         /// Gets or sets the directory containing the Lua scripts.
         /// Defaults to a "Scripts" subdirectory relative to the application base directory.
         /// </summary>
-        public string ScriptsDirectory { get; set; } = Path.Combine(AppContext.BaseDirectory, "Scripts");
+        public string ScriptsDirectory { get; set; } = System.IO.Path.Combine(AppContext.BaseDirectory, "Scripts");
 
         /// <summary>
         /// Gets or sets a value indicating whether retrieved Lua functions should be cached for faster subsequent calls.
@@ -231,11 +232,11 @@ namespace Core
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
                 _logger.LogError(ex, "Failed to read Lua script file: {FilePath}", filePath);
-                throw new LuaScriptException($"Failed to read script file '{filePath}'.", Path.GetFileName(filePath), ex);
+                throw new LuaScriptException($"Failed to read script file '{filePath}'.", System.IO.Path.GetFileName(filePath), ex);
             }
 
             _logger.LogDebug("Executing script file: {FilePath}", filePath);
-            var result = await ExecuteCodeAsync(scriptContent, Path.GetFileName(filePath), cancellationToken);
+            var result = await ExecuteCodeAsync(scriptContent, System.IO.Path.GetFileName(filePath), cancellationToken);
 
             // Update last modified time and clear relevant caches
             _scriptLastModified[filePath] = File.GetLastWriteTimeUtc(filePath);
@@ -477,7 +478,7 @@ namespace Core
                  // Execute the script's content. Protect Lua state access.
                 lock (_luaStateLock)
                 {
-                    result = _lua.DoString(scriptContent, Path.GetFileName(fullPath));
+                    result = _lua.DoString(scriptContent, System.IO.Path.GetFileName(fullPath));
                 }
 
                 // Mark as required *after* successful execution
@@ -642,7 +643,7 @@ namespace Core
         {
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("File path cannot be null or whitespace.", nameof(filePath));
-            if (!Path.IsPathRooted(filePath))
+            if (!System.IO.Path.IsPathRooted(filePath))
                  throw new ArgumentException($"File path must be absolute: '{filePath}'", nameof(filePath));
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"Script file not found: {filePath}", filePath);
@@ -652,14 +653,14 @@ namespace Core
         {
             if (string.IsNullOrWhiteSpace(scriptPath)) return scriptPath;
             // If it's already rooted, use it directly. Otherwise, combine with ScriptsDirectory.
-            if (Path.IsPathRooted(scriptPath))
+            if (System.IO.Path.IsPathRooted(scriptPath))
             {
                 return scriptPath;
             }
             else
             {
                 // Normalize potential relative paths like '../' etc.
-                return Path.GetFullPath(Path.Combine(_config.ScriptsDirectory, scriptPath));
+                return System.IO.Path.GetFullPath(System.IO.Path.Combine(_config.ScriptsDirectory, scriptPath));
             }
         }
 
@@ -761,7 +762,7 @@ namespace Core
              // Potentially clear specific cached functions related to the old file if identifiable
 
              // Treat the new path as a changed/created file
-             OnScriptFileChanged(sender, new FileSystemEventArgs(WatcherChangeTypes.Changed, Path.GetDirectoryName(e.FullPath), Path.GetFileName(e.FullPath)));
+             OnScriptFileChanged(sender, new FileSystemEventArgs(WatcherChangeTypes.Changed, System.IO.Path.GetDirectoryName(e.FullPath), System.IO.Path.GetFileName(e.FullPath)));
         }
 
         private bool ShouldReload(string filePath)
