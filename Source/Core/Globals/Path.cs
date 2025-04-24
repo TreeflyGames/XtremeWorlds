@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.Diagnostics.SymbolStore;
+using System.IO;
 using System.Reflection;
 
 namespace Core
@@ -11,8 +13,7 @@ namespace Core
         {
             get
             {
-                string assemblyPath = Assembly.GetEntryAssembly().Location;
-                return Directory.GetParent(assemblyPath).FullName;
+                return "";
             }
         }
 
@@ -57,7 +58,7 @@ namespace Core
         {
             get
             {
-                return System.IO.Path.Combine(Asset, "Fonts");
+                return System.IO.Path.Combine(Local, "Fonts");
             }
         }
 
