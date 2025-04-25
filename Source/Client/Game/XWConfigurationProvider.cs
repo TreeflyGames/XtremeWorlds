@@ -8,6 +8,7 @@ public class XWConfigurationProvider : EngineConfigurationProvider
 {
     protected override void OnCreateEarlyConfigurationBuilder(IConfigurationBuilder builder)
     {
+        builder.SetBasePath(AppContext.BaseDirectory);
         _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         _ = builder.AddJsonFile($"appsettings.{this.Environment.ToLower()}.json", optional: true, reloadOnChange: true);
     }
