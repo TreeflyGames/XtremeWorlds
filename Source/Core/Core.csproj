@@ -23,6 +23,7 @@
 	<PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Console" />
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="NLua" />
     <PackageReference Include="Npgsql" />
   </ItemGroup>
   <ItemGroup>

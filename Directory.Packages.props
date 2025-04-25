@@ -18,6 +18,7 @@
     <PackageVersion Include="MonoGame.Framework.DesktopGL" Version="3.8.3" />
     <PackageVersion Include="MonoGame.Library.SDL" Version="2.32.2.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="NLua" Version="1.7.5" />
     <PackageVersion Include="Npgsql" Version="9.0.3" />
     <PackageVersion Include="Serilog" Version="4.2.0" />
     <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
