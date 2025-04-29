@@ -123,12 +123,12 @@ namespace Client
             withBlock.nudLuck.Value = Core.Type.NPC[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Luck];
             withBlock.nudVitality.Value = Core.Type.NPC[GameState.EditorIndex].Stat[(int)Core.Enum.StatType.Vitality];
 
-            withBlock.cmbSkill1.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[1];
-            withBlock.cmbSkill2.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[2];
-            withBlock.cmbSkill3.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[3];
-            withBlock.cmbSkill4.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[4];
-            withBlock.cmbSkill5.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[5];
-            withBlock.cmbSkill6.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[6];
+            withBlock.cmbSkill1.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[0];
+            withBlock.cmbSkill2.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[1];
+            withBlock.cmbSkill3.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[2];
+            withBlock.cmbSkill4.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[3];
+            withBlock.cmbSkill5.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[4];
+            withBlock.cmbSkill6.SelectedIndex = Core.Type.NPC[GameState.EditorIndex].Skill[5];
 
             frmEditor_NPC.Instance.DrawSprite();
 
@@ -818,13 +818,13 @@ namespace Client
             withBlock.nudMaxLevel.Value = Core.Type.Pet[GameState.EditorIndex].MaxLevel;
 
             // Set skills
-            withBlock.cmbSkill1.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[1];
+            withBlock.cmbSkill1.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[0];
 
-            withBlock.cmbSkill2.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[2];
+            withBlock.cmbSkill2.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[1];
 
-            withBlock.cmbSkill3.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[3];
+            withBlock.cmbSkill3.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[2];
 
-            withBlock.cmbSkill4.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[4];
+            withBlock.cmbSkill4.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].Skill[3];
 
             if (Core.Type.Pet[GameState.EditorIndex].LevelingType == 1)
             {
