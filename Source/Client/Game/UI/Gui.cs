@@ -28,8 +28,9 @@ namespace Client
 
         // Declare a timer to control when dragging can begin
         private static Stopwatch dragTimer = new Stopwatch();
-        private const double dragInterval = 50d; // Set the interval in milliseconds to start dragging
+        private const double dragInterval = 100d; // Set the interval in milliseconds to start dragging
         private static bool canDrag = false;  // Flag to control when dragging is allowed
+        private static bool isDragging = false;
 
         public class Window
         {
@@ -1072,39 +1073,39 @@ namespace Client
             var argcallback_mousedown10 = new Action(btnAcceptChar_1);
             Action argcallback_mousemove10 = null;
             Action argcallback_dblclick10 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_1", 22L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_1", 22L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown10, ref argcallback_mousemove10, ref argcallback_dblclick10, 0L, 0L, "", false);
             var argcallback_mousedown11 = new Action(btnCreateChar_1);
             Action argcallback_mousemove11 = null;
             Action argcallback_dblclick11 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_1", 22L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown11, ref argcallback_mousemove11, ref argcallback_dblclick11, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_1", 22L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown11, ref argcallback_mousemove11, ref argcallback_dblclick11, 0L, 0L, "", false);
             var argcallback_mousedown12 = new Action(btnDelChar_1);
             Action argcallback_mousemove12 = null;
             Action argcallback_dblclick12 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_1", 22L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_1", 22L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown12, ref argcallback_mousemove12, ref argcallback_dblclick12, 0L, 0L, "", false);
             var argcallback_mousedown13 = new Action(btnAcceptChar_2);
             Action argcallback_mousemove13 = null;
             Action argcallback_dblclick13 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_2", 132L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_2", 132L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown13, ref argcallback_mousemove13, ref argcallback_dblclick13, 0L, 0L, "", false);
             var argcallback_mousedown14 = new Action(btnCreateChar_2);
             Action argcallback_mousemove14 = null;
             Action argcallback_dblclick14 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_2", 132L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_2", 132L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown14, ref argcallback_mousemove14, ref argcallback_dblclick14, 0L, 0L, "", false);
             var argcallback_mousedown15 = new Action(btnDelChar_2);
             Action argcallback_mousemove15 = null;
             Action argcallback_dblclick15 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_2", 132L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown15, ref argcallback_mousemove15, ref argcallback_dblclick15, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_2", 132L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown15, ref argcallback_mousemove15, ref argcallback_dblclick15, 0L, 0L, "", false);
             var argcallback_mousedown16 = new Action(btnAcceptChar_3);
             Action argcallback_mousemove16 = null;
             Action argcallback_dblclick16 = null;
-            Gui.UpdateButton(Windows.Count, "btnSelectChar_3", 242L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown16, ref argcallback_mousemove16, ref argcallback_dblclick16, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnSelectChar_3", 242L, 155L, 98L, 24L, "Select", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown16, ref argcallback_mousemove16, ref argcallback_dblclick16, 0L, 0L, "", false);
             var argcallback_mousedown17 = new Action(btnCreateChar_3);
             Action argcallback_mousemove17 = null;
             Action argcallback_dblclick17 = null;
-            Gui.UpdateButton(Windows.Count, "btnCreateChar_3", 242L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown17, ref argcallback_mousemove17, ref argcallback_dblclick17, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnCreateChar_3", 242L, 155L, 98L, 24L, "Create", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Green, (long)Core.Enum.DesignType.Green_Hover, (long)Core.Enum.DesignType.Green_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown17, ref argcallback_mousemove17, ref argcallback_dblclick17, 0L, 0L, "", false);
             var argcallback_mousedown18 = new Action(btnDelChar_3);
             Action argcallback_mousemove18 = null;
             Action argcallback_dblclick18 = null;
-            Gui.UpdateButton(Windows.Count, "btnDelChar_3", 242L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, true, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown18, ref argcallback_mousemove18, ref argcallback_dblclick18, 0L, 0L, "", false);
+            Gui.UpdateButton(Windows.Count, "btnDelChar_3", 242L, 183L, 98L, 24L, "Delete", Core.Enum.FontType.Arial, 0L, 0L, 0L, 0L, false, 255L, (long)Core.Enum.DesignType.Red, (long)Core.Enum.DesignType.Red_Hover, (long)Core.Enum.DesignType.Red_Click, ref argcallback_norm, ref argcallback_hover, ref argcallback_mousedown18, ref argcallback_mousemove18, ref argcallback_dblclick18, 0L, 0L, "", false);
         }
 
         public static void UpdateWindow_Jobs()
@@ -1534,23 +1535,27 @@ namespace Client
             Action callBack;
 
             // Check for MouseDown to start the drag timer
-            if (GameClient.CurrentMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && GameClient.PreviousMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
+            if (GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left) && GameClient.PreviousMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
             {
                 dragTimer.Restart(); // Start the timer on initial mouse down
                 canDrag = false; // Reset drag flag to ensure it doesn't drag immediately
             }
 
             // Check for MouseUp to reset dragging
-            if (GameClient.CurrentMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
-            {
-                canDrag = false;
+            if (GameClient.IsMouseButtonUp(Core.Enum.MouseButton.Left))
+            {        
+                isDragging = false;
                 dragTimer.Reset(); // Stop the timer on mouse up
             }
 
             // Enable dragging if the mouse has been held down for the specified interval
-            if (!canDrag && dragTimer.ElapsedMilliseconds >= dragInterval)
+            if (dragTimer.ElapsedMilliseconds >= dragInterval)
             {
                 canDrag = true;
+            }
+            else
+            {
+                canDrag = false;
             }
 
             lock (GameClient.InputLock)
@@ -1584,27 +1589,28 @@ namespace Client
                             if (curWindow == 0L || withBlock.zOrder > Windows[curWindow].zOrder)
                             {
                                 curWindow = i;
+                                isDragging = true;
                             }
-                        }
 
-                        if (ActiveWindow > 0)
-                        {
-                            if (!Windows[ActiveWindow].Visible || !Windows[ActiveWindow].Enabled || !Windows[ActiveWindow].CanDrag)
+                            if (ActiveWindow > 0)
+                            {
+                                if (!Windows[ActiveWindow].Visible || !Windows[ActiveWindow].Enabled || !Windows[ActiveWindow].CanDrag)
+                                    ActiveWindow = curWindow;
+
+                            }
+                            else
+                            {
                                 ActiveWindow = curWindow;
-
-                        }
-                        else
-                        {
-                            ActiveWindow = curWindow;
+                            }
                         }
 
                         // Handle window dragging only if dragging is enabled
                         if (entState == Core.Enum.EntState.MouseMove && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
                         {
-                            if (ActiveWindow > 0)
+                            if (ActiveWindow > 0 && isDragging)
                             {
                                 withBlock = Windows[ActiveWindow];
-                                if (withBlock.CanDrag && withBlock.Enabled && withBlock.Visible)
+                                if (canDrag && withBlock.CanDrag && withBlock.Enabled && withBlock.Visible)
                                 {
                                     withBlock.Left = GameLogic.Clamp((int)(withBlock.Left + (GameState.CurMouseX - withBlock.Left - withBlock.MovedX)), 0, (int)(GameState.ResolutionWidth - withBlock.Width));
                                     withBlock.Top = GameLogic.Clamp((int)(withBlock.Top + (GameState.CurMouseY - withBlock.Top - withBlock.MovedY)), 0, (int)(GameState.ResolutionHeight - withBlock.Height));
@@ -1615,7 +1621,7 @@ namespace Client
                     }
                 }
 
-                if (curWindow > 0L)
+                if (curWindow > 0L && isDragging)
                 {
                     // Handle the active window's callback
                     callBack = Windows[curWindow].CallBack[(int)entState];
@@ -1630,7 +1636,6 @@ namespace Client
                         for (i = 0L; i <= loopTo1; i++)
                         {
                             var withBlock1 = Windows[curWindow].Controls[(int)i];
-                            if (withBlock1.Enabled && withBlock1.Visible)
                             {
                                 if (GameState.CurMouseX >= withBlock1.Left + Windows[curWindow].Left && GameState.CurMouseX <= withBlock1.Left + withBlock1.Width + Windows[curWindow].Left && GameState.CurMouseY >= withBlock1.Top + Windows[curWindow].Top && GameState.CurMouseY <= withBlock1.Top + withBlock1.Height + Windows[curWindow].Top)
                                 {
@@ -1727,8 +1732,8 @@ namespace Client
             long i;
             long x;
 
-            var loopTo = Windows.Count - 1;
-            for (i = 0L; i < loopTo; i++)
+            var loopTo = Windows.Count;
+            for (i = 1L; i < loopTo; i++)
             {
                 if (Windows[i].State != Core.Enum.EntState.MouseDown)
                     Windows[i].State = Core.Enum.EntState.Normal;
@@ -1753,38 +1758,37 @@ namespace Client
             {
                 var loopTo = Windows.Count;
                 for (i = 1L; i < loopTo; i++)
-                {
+                {                 
+                    var withBlock = Windows[i];
+                    // Only reset the state if it was in MouseDown
+                    if (withBlock.State == Core.Enum.EntState.MouseDown)
                     {
-                        var withBlock = Windows[i];
-                        // Only reset the state if it was in MouseDown
-                        if (withBlock.State == Core.Enum.EntState.MouseDown)
-                        {
-                            withBlock.State = Core.Enum.EntState.Normal;
-                            callBack = withBlock.CallBack[(int)Core.Enum.EntState.Normal];
-                            if (callBack is not null)
-                                callBack?.Invoke();
-                        }
+                        withBlock.State = Core.Enum.EntState.Normal;
+                        callBack = withBlock.CallBack[(int)Core.Enum.EntState.Normal];
+                        if (callBack is not null)
+                            callBack?.Invoke();
+                    }
 
-                        // Check if Controls is not Nothing and has at least one element
-                        if (withBlock.Controls is not null && withBlock.Controls.Count > 0)
+                    // Check if Controls is not Nothing and has at least one element
+                    if (withBlock.Controls is not null && withBlock.Controls.Count > 0)
+                    {
+                        var loopTo1 = (long)(withBlock.Controls.Count - 1);
+                        for (x = 0L; x <= loopTo1; x++)
                         {
-                            var loopTo1 = (long)(withBlock.Controls.Count - 1);
-                            for (x = 0L; x <= loopTo1; x++)
+                            var control = withBlock.Controls[(int)x];
+
+                            // Only reset the state if it was in MouseDown
+                            if (control.State == Core.Enum.EntState.MouseDown)
                             {
-                                var control = withBlock.Controls[(int)x];
+                                control.State = Core.Enum.EntState.Normal;
 
-                                // Only reset the state if it was in MouseDown
-                                if (control.State == Core.Enum.EntState.MouseDown)
-                                {
-                                    control.State = Core.Enum.EntState.Normal;
-
-                                    callBack = control.CallBack[(int)control.State];
-                                    if (callBack is not null)
-                                        callBack?.Invoke();
-                                }
+                                callBack = control.CallBack[(int)control.State];
+                                if (callBack is not null)
+                                    callBack?.Invoke();
                             }
                         }
                     }
+                    
                 }
             }
         }
