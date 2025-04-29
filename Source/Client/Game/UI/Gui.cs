@@ -1,6 +1,7 @@
 ﻿using Core;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -1529,7 +1530,7 @@ namespace Client
 
         public static bool HandleInterfaceEvents(Core.Enum.EntState entState)
         {
-            long i;
+            int i;
             var curWindow = default(long);
             var curControl = default(long);
             Action callBack;
@@ -1543,7 +1544,7 @@ namespace Client
 
             // Check for MouseUp to reset dragging
             if (GameClient.IsMouseButtonUp(Core.Enum.MouseButton.Left))
-            {        
+            {
                 isDragging = false;
                 dragTimer.Reset(); // Stop the timer on mouse up
             }
@@ -1562,7 +1563,7 @@ namespace Client
             {
                 // Find the container
                 var loopTo = Windows.Count;
-                for (i = 1L; i < loopTo; i++)
+                for (i = 1; i < loopTo; i++)
                 {
                     var withBlock = Windows[i];
                     if (withBlock.Enabled && withBlock.Visible)
@@ -1621,7 +1622,7 @@ namespace Client
                     }
                 }
 
-                if (curWindow > 0L && isDragging)
+                if (curWindow > 0L)
                 {
                     // Handle the active window's callback
                     callBack = Windows[curWindow].CallBack[(int)entState];
@@ -1633,9 +1634,11 @@ namespace Client
                     {
                         // Handle controls in the active window
                         var loopTo1 = (long)((Windows[curWindow].Controls?.Count) - 1);
-                        for (i = 0L; i <= loopTo1; i++)
+                        for (i = 0; i <= loopTo1; i++)
                         {
                             var withBlock1 = Windows[curWindow].Controls[(int)i];
+
+                            if (withBlock1.Enabled && withBlock1.Visible)
                             {
                                 if (GameState.CurMouseX >= withBlock1.Left + Windows[curWindow].Left && GameState.CurMouseX <= withBlock1.Left + withBlock1.Width + Windows[curWindow].Left && GameState.CurMouseY >= withBlock1.Top + Windows[curWindow].Top && GameState.CurMouseY <= withBlock1.Top + withBlock1.Height + Windows[curWindow].Top)
                                 {
@@ -1645,20 +1648,30 @@ namespace Client
                                     }
                                 }
 
-                                // Handle control dragging only if dragging is enabled
-                                if (entState == Core.Enum.EntState.MouseMove && withBlock1.CanDrag && canDrag && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
+                                if (isDragging)
                                 {
-                                    withBlock1.Left = GameLogic.Clamp((int)(withBlock1.Left + (GameState.CurMouseX - withBlock1.Left - withBlock1.MovedX)), 0, (int)(Windows[curWindow].Width - withBlock1.Width));
-                                    withBlock1.Top = GameLogic.Clamp((int)(withBlock1.Top + (GameState.CurMouseY - withBlock1.Top - withBlock1.MovedY)), 0, (int)(Windows[curWindow].Height - withBlock1.Height));
+                                    // Handle control dragging only if dragging is enabled
+                                    if (entState == Core.Enum.EntState.MouseMove && withBlock1.CanDrag && canDrag && GameClient.IsMouseButtonDown(Core.Enum.MouseButton.Left))
+                                    {
+                                        withBlock1.Left = GameLogic.Clamp((int)(withBlock1.Left + (GameState.CurMouseX - withBlock1.Left - withBlock1.MovedX)), 0, (int)(Windows[curWindow].Width - withBlock1.Width));
+                                        withBlock1.Top = GameLogic.Clamp((int)(withBlock1.Top + (GameState.CurMouseY - withBlock1.Top - withBlock1.MovedY)), 0, (int)(Windows[curWindow].Height - withBlock1.Height));
+                                    }
                                 }
                             }
                         }
                     }
 
-                    // Handle active control
                     if (curControl > 0L)
                     {
+                        // Reset all control states
+                        for (int j = 0; j < Windows[curWindow].Controls.Count; j++)
+                        {
+                            if (curControl != j)
+                                Windows[curWindow].Controls[j].State = Core.Enum.EntState.Normal;
+                        }
+
                         var withBlock2 = Windows[curWindow].Controls[(int)curControl];
+
                         // Handle hover state separately
                         if (entState == Core.Enum.EntState.MouseMove)
                         {
@@ -1682,12 +1695,12 @@ namespace Client
                                 {
                                     if (withBlock2.Group > 0L && withBlock2.Value == 0L)
                                     {
-                                        var loopTo2 = (long)(Windows[curWindow].Controls.Count - 1);
-                                        for (i = 0L; i <= loopTo2; i++)
+                                        for (i = 0; i < Windows[curWindow].Controls.Count; i++)
                                         {
-                                            if (Windows[curWindow].Controls[(int)i].Type == Core.Enum.ControlType.Checkbox && Windows[curWindow].Controls[(int)i].Group == withBlock2.Group)
+                                            if (Windows[curWindow].Controls[i].Type == Core.Enum.ControlType.Checkbox &&
+                                                Windows[curWindow].Controls[i].Group == withBlock2.Group)
                                             {
-                                                Windows[curWindow].Controls[(int)i].Value = 0L;
+                                                Windows[curWindow].Controls[i].Value = 0L;
                                             }
                                         }
                                         withBlock2.Value = 0L;
@@ -1720,7 +1733,7 @@ namespace Client
                 }
 
                 // Reset mouse state on MouseUp
-                if (GameClient.IsMouseButtonUp(Core.Enum.MouseButton.Left))
+                if (entState == Core.Enum.EntState.MouseUp)
                     ResetMouseDown();
             }
 
