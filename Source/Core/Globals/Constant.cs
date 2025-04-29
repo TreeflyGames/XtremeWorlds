@@ -44,6 +44,6 @@ namespace Core
         public const byte MAX_QUESTS = 100;
         public const int MAX_EVENTS = 500;
         public const byte MAX_GUILDS = 100;
-        public const byte MAX_EVENT_CHOICES= 4;
+        public const byte MAX_EVENT_CHOICES = 4;
     }
 }
