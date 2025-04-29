@@ -178,7 +178,7 @@ namespace Client
 
             buffer = new ByteStream(4);
             buffer.WriteInt32((int)Packets.ClientPackets.CSavePet);
-            buffer.WriteDouble(petNum);
+            buffer.WriteInt32(petNum);
 
             ref var withBlock = ref Core.Type.Pet[petNum];
             buffer.WriteInt32(withBlock.Num);
@@ -270,7 +270,7 @@ namespace Client
                 for (i = 0; i < (int)Core.Enum.StatType.Count; i++)
                     withBlock.Stat[i] = (byte)buffer.ReadInt32();
 
-                for (i = 0; i <= 4; i++)
+                for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
                     withBlock.Skill[i] = buffer.ReadInt32();
 
                 withBlock.Evolvable = (byte)buffer.ReadInt32();

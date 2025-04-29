@@ -228,22 +228,22 @@ namespace Client
 
         private void CmbSkill1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Skill[1] = cmbSkill1.SelectedIndex;
+            Core.Type.Pet[GameState.EditorIndex].Skill[0] = cmbSkill1.SelectedIndex;
         }
 
         private void CmbSkill2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Skill[2] = cmbSkill2.SelectedIndex;
+            Core.Type.Pet[GameState.EditorIndex].Skill[1] = cmbSkill2.SelectedIndex;
         }
 
         private void CmbSkill3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Skill[3] = cmbSkill3.SelectedIndex;
+            Core.Type.Pet[GameState.EditorIndex].Skill[2] = cmbSkill3.SelectedIndex;
         }
 
         private void CmbSkill4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Core.Type.Pet[GameState.EditorIndex].Skill[4] = cmbSkill4.SelectedIndex;
+            Core.Type.Pet[GameState.EditorIndex].Skill[3] = cmbSkill4.SelectedIndex;
         }
 
         #endregion

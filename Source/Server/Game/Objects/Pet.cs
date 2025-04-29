@@ -60,6 +60,7 @@ namespace Server
         public static async Task LoadPetsAsync()
         {
             var tasks = Enumerable.Range(0, Core.Constant.MAX_PETS).Select(i => Task.Run(() => LoadPetAsync(i)));
+            await Task.WhenAll(tasks);
         }
 
         public static async Task LoadPetAsync(int petNum)
@@ -82,7 +83,7 @@ namespace Server
             Core.Type.Pet[petNum].Name = "";
 
             Core.Type.Pet[petNum].Stat = new byte[(byte)StatType.Count];
-            Core.Type.Pet[petNum].Skill = new int[5];
+            Core.Type.Pet[petNum].Skill = new int[Core.Constant.MAX_PET_SKILLS];
         }
 
         #endregion
@@ -131,7 +132,7 @@ namespace Server
             for (int i = 0, loopTo = (int)(StatType.Count); i < loopTo; i++)
                 buffer.WriteInt32(withBlock.Stat[i]);
 
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
                 buffer.WriteInt32(withBlock.Skill[i]);
 
             buffer.WriteInt32(withBlock.Evolvable);
@@ -166,7 +167,7 @@ namespace Server
                 for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                     buffer.WriteInt32(withBlock.Stat[i]);
 
-                for (int i = 0; i <= 4; i++)
+                for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
                     buffer.WriteInt32(withBlock.Skill[i]);
 
                 buffer.WriteInt32(withBlock.Evolvable);
@@ -357,31 +358,30 @@ namespace Server
             // Prevent hacking
             if (petNum < 0 | petNum > Core.Constant.MAX_PETS)
                 return;
+           
+            ref var withBlock = ref Core.Type.Pet[petNum];
+            withBlock.Num = buffer.ReadInt32();
+            withBlock.Name = buffer.ReadString();
+            withBlock.Sprite = buffer.ReadInt32();
+            withBlock.Range = buffer.ReadInt32();
+            withBlock.Level = buffer.ReadInt32();
+            withBlock.MaxLevel = buffer.ReadInt32();
+            withBlock.ExpGain = buffer.ReadInt32();
+            withBlock.LevelPnts = buffer.ReadInt32();
+            withBlock.StatType = (byte)buffer.ReadInt32();
+            withBlock.LevelingType = (byte)buffer.ReadInt32();
 
-            {
-                ref var withBlock = ref Core.Type.Pet[petNum];
-                withBlock.Num = buffer.ReadInt32();
-                withBlock.Name = buffer.ReadString();
-                withBlock.Sprite = buffer.ReadInt32();
-                withBlock.Range = buffer.ReadInt32();
-                withBlock.Level = buffer.ReadInt32();
-                withBlock.MaxLevel = buffer.ReadInt32();
-                withBlock.ExpGain = buffer.ReadInt32();
-                withBlock.LevelPnts = buffer.ReadInt32();
-                withBlock.StatType = (byte)buffer.ReadInt32();
-                withBlock.LevelingType = (byte)buffer.ReadInt32();
+            var loopTo = (byte)StatType.Count;
+            for (i = 0; i < loopTo; i++)
+                withBlock.Stat[i] = (byte)buffer.ReadInt32();
 
-                var loopTo = (byte)StatType.Count;
-                for (i = 0; i < loopTo; i++)
-                    withBlock.Stat[i] = (byte)buffer.ReadInt32();
+            for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
+                withBlock.Skill[i] = buffer.ReadInt32();
 
-                for (i = 0; i <= 4; i++)
-                    withBlock.Skill[i] = buffer.ReadInt32();
-
-                withBlock.Evolvable = (byte)buffer.ReadInt32();
-                withBlock.EvolveLevel = buffer.ReadInt32();
-                withBlock.EvolveNum = buffer.ReadInt32();
-            }
+            withBlock.Evolvable = (byte)buffer.ReadInt32();
+            withBlock.EvolveLevel = buffer.ReadInt32();
+            withBlock.EvolveNum = buffer.ReadInt32();
+            
 
             // Save it
             SendUpdatePetToAll(petNum);

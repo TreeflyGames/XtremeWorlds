@@ -856,7 +856,10 @@ namespace Client
                 withBlock.chkEvolve.Checked = false;
             }
 
-            withBlock.nudEvolveLvl.Value = Core.Type.Pet[GameState.EditorIndex].EvolveLevel;
+            if (Core.Type.Pet[GameState.EditorIndex].EvolveLevel > 0)
+            {
+                withBlock.nudEvolveLvl.Value = Core.Type.Pet[GameState.EditorIndex].EvolveLevel;
+            }
             withBlock.cmbEvolve.SelectedIndex = Core.Type.Pet[GameState.EditorIndex].EvolveNum;
 
             withBlock.EditorPet_DrawPet();
