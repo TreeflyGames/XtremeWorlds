@@ -1853,7 +1853,7 @@ namespace Server
                         {
                             if ((int)Core.Type.MapItem[GetPlayerMap(index), i].Y == y)
                             {
-                                NetworkSend.PlayerMsg(index, "You see " + GameLogic.CheckGrammar(Core.Type.Item[(int)Core.Type.MapItem[GetPlayerMap(index), i].Num].Name) + ".", (int) ColorType.BrightGreen);
+                                NetworkSend.PlayerMsg(index, "You see " + Core.Type.MapItem[GetPlayerMap(index), i].Value + " " + Core.Type.Item[(int)Core.Type.MapItem[GetPlayerMap(index), i].Num].Name + ".", (int) ColorType.BrightGreen);
                                 return;
                             }
                         }

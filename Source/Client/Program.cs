@@ -899,7 +899,7 @@ namespace Client
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-                if (IsMouseButtonDown(MouseButton.Left))
+                if (IsMouseButtonUp(MouseButton.Left))
                 {
                     if (GameState.MyEditorType == (int)EditorType.Map)
                     {

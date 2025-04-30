@@ -452,7 +452,7 @@ namespace Client
 
         private void ScrlMapItemValue_ValueChanged(object sender, EventArgs e)
         {
-            lblMapItem.Text = Core.Type.Item[scrlMapItem.Value].Name + " x" + scrlMapItemValue.Value;
+            lblMapItem.Text = (scrlMapItem.Value + 1) + ". " + Core.Type.Item[scrlMapItem.Value].Name + " x" + scrlMapItemValue.Value;
         }
 
         private void BtnMapItem_Click(object sender, EventArgs e)
@@ -924,8 +924,9 @@ namespace Client
         public static void MapEditorInit()
         {
             // set the scrolly bars
-            if (Core.Type.MyMap.Tileset == 0)
+            if (Core.Type.MyMap.Tileset <= 0)
                 Core.Type.MyMap.Tileset = 1;
+
             if (Core.Type.MyMap.Tileset > GameState.NumTileSets)
                 Core.Type.MyMap.Tileset = 1;
 
@@ -949,6 +950,7 @@ namespace Client
             Instance.cmbTileSets.SelectedIndex = 0;
             Instance.cmbLayers.SelectedIndex = 0;
             Instance.cmbAutoTile.SelectedIndex = 0;
+            Instance.scrlMapItemValue.Value = 1;
 
             MapPropertiesInit();
 
