@@ -547,7 +547,7 @@ namespace Client
             rLines = 1;
             i = GameState.ChatScroll;
 
-            while (rLines <= 8)
+            while (rLines < 8)
             {
                 if (i >= Constant.CHAT_LINES)
                     break;
