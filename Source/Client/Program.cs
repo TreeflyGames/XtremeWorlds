@@ -2472,16 +2472,20 @@ namespace Client
             {
                 if (GameState.NumCharacters > 0)
                 {
+                    // NPCs
+                    for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
+                    {
+                        if (Core.Type.MyMapNPC[i].Y == y)
+                        {
+                            DrawNPC(i);
+                        }
+                    }
+
                     // Players
                     for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {
-                            if (Core.Type.Player[i].Y == y)
-                            {
-                                DrawPlayer(i);
-                            }
-
                             if (Pet.PetAlive(i))
                             {
                                 if (Core.Type.Player[i].Pet.Y == y)
@@ -2489,14 +2493,11 @@ namespace Client
                                     Pet.DrawPet(i);
                                 }
                             }
-                        }
-                    }
 
-                    for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
-                    {
-                        if (Core.Type.MyMapNPC[i].Y == y)
-                        {
-                            DrawNPC(i);
+                            if (Core.Type.Player[i].Y == y)
+                            {
+                                DrawPlayer(i);
+                            }
                         }
                     }
 
