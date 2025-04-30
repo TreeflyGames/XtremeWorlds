@@ -818,6 +818,12 @@ namespace Server
                     Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
             }
 
+            var loopTo2 = Core.Constant.MAX_MAP_NPCS;
+            for (x = 0; x < loopTo2; x++)
+            {
+                Core.Type.Map[mapNum].NPC[x] = -1;
+            }
+
             Core.Type.Map[mapNum].EventCount = 0;
             Core.Type.Map[mapNum].Event = new Core.Type.EventStruct[1];
 

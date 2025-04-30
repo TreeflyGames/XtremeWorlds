@@ -685,11 +685,14 @@ namespace Server
                         // // This is used for spawning an NPC //
                         // //////////////////////////////////////
                         // Check if we are supposed to spawn an npc or not
-                        if (Core.Type.MapNPC[mapNum].NPC[x].Num == -1 & Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.NPC[Core.Type.Map[mapNum].NPC[x]].SpawnSecs > 0)
+                        if (Core.Type.MapNPC[mapNum].NPC[x].Num == -1 && Core.Type.Map[mapNum].NPC[x] >= 0)
                         {
-                            if (tickCount > Core.Type.MapNPC[mapNum].NPC[x].SpawnWait + Core.Type.NPC[Core.Type.Map[mapNum].NPC[x]].SpawnSecs * 1000)
+                            if (Core.Type.NPC[Core.Type.Map[mapNum].NPC[x]].SpawnSecs > 0)
                             {
-                                NPC.SpawnNPC(x, mapNum);
+                                if (tickCount > Core.Type.MapNPC[mapNum].NPC[x].SpawnWait + Core.Type.NPC[Core.Type.Map[mapNum].NPC[x]].SpawnSecs * 1000)
+                                {
+                                    NPC.SpawnNPC(x, mapNum);
+                                }
                             }
                         }
                     }

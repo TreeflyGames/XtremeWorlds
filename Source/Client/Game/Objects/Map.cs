@@ -534,6 +534,12 @@ namespace Client
 
             // Initialize NPC and Tile arrays
             Core.Type.MyMap.NPC = new int[Constant.MAX_MAP_NPCS];
+
+            for (int i = 0; i < Constant.MAX_MAP_NPCS; i++)
+            {
+                Core.Type.MyMap.NPC[i] = -1;
+            }
+
             Core.Type.MyMap.Tile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
             Core.Type.TileHistory = new Core.Type.TileHistoryStruct[GameState.MaxTileHistory]; 
 
