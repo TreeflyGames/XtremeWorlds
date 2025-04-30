@@ -386,6 +386,8 @@ namespace Client
                 GameState.EditorTileWidth = 1;
                 GameState.EditorTileHeight = 1;
             }
+
+            MapEditorChooseTile((int)MouseButtons.Left, GameState.EditorTileX, GameState.EditorTileY);
         }
 
         #endregion
