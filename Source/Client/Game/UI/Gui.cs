@@ -4605,7 +4605,7 @@ namespace Client
             Action argcallback_mousemove = null;
             Action argcallback_dblclick = null;
             bool enabled = false;
-            UpdateLabel(Windows.Count, "lblMsg", 12L, 140L, 286L, 25L, "Press 'Enter' to open chat.", Core.Enum.FontType.Georgia, Color.White, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick, enabled: ref enabled);
+            UpdateLabel(Windows.Count, "lblMsg", 12L, 140L, 286L, 25L, "Press 'Enter' to open chat", Core.Enum.FontType.Georgia, Color.White, callback_norm: ref argcallback_norm, callback_hover: ref argcallback_hover, callback_mousedown: ref argcallback_mousedown, callback_mousemove: ref argcallback_mousemove, callback_dblclick: ref argcallback_dblclick, enabled: ref enabled);
         }
 
         public static void UpdateWindow_Hotbar()
