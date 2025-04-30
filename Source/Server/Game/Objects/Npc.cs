@@ -212,7 +212,7 @@ namespace Server
 
             switch (Dir)
             {
-                case var @case when @case == (byte) DirectionType.Up:
+                case (byte) DirectionType.Up:
                     {
                         // Check to make sure not outside of boundaries
                         if (y > 0)
@@ -260,7 +260,7 @@ namespace Server
                         break;
                     }
 
-                case var case1 when case1 == (byte) DirectionType.Down:
+                case (byte) DirectionType.Down:
                     {
                         // Check to make sure not outside of boundaries
                         if (y < Core.Type.Map[mapNum].MaxY)
@@ -308,7 +308,7 @@ namespace Server
                         break;
                     }
 
-                case var case2 when case2 == (byte) DirectionType.Left:
+                case (byte)DirectionType.Left:
                     {
                         // Check to make sure not outside of boundaries
                         if (x > 0)
@@ -356,7 +356,7 @@ namespace Server
                         break;
                     }
 
-                case var case3 when case3 == (byte) DirectionType.Right:
+                case (byte)DirectionType.Right:
                     {
                         // Check to make sure not outside of boundaries
                         if (x < Core.Type.Map[mapNum].MaxX)

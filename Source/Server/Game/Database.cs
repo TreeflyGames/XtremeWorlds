@@ -1370,6 +1370,7 @@ namespace Server
             Core.Type.MapNPC[mapNum].NPC[index].Vital = new int[(int)VitalType.Count];
             Core.Type.MapNPC[mapNum].NPC[index].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
             Core.Type.MapNPC[mapNum].NPC[index].Num = -1;
+            Core.Type.MapNPC[mapNum].NPC[index].SkillBuffer = -1;
         }
 
         public static void ClearNPC(int index)

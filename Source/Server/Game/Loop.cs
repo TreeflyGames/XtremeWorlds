@@ -417,7 +417,7 @@ namespace Server
                             // // This is used for NPC walking/targetting //
                             // /////////////////////////////////////////////
                             // Make sure theres a npc with the map
-                            if (Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
+                            if (Core.Type.Map[mapNum].NPC[x] >= 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
                             {
                                 if (Core.Type.MapNPC[mapNum].NPC[x].StunDuration > 0)
                                 {
