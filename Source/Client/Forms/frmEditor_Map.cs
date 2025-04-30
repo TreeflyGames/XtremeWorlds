@@ -953,6 +953,7 @@ namespace Client
             Instance.scrlMapItemValue.Value = 1;
 
             MapPropertiesInit();
+            DrawTileset();
 
             if (GameState.MapData == true)
                 GameState.GettingMap = false;
