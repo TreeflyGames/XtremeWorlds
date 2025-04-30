@@ -43,9 +43,6 @@ namespace Server
             if (Core.Type.Map[mapNum].NoRespawn)
                 return;
 
-            if (Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num < 0 || Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num > Core.Constant.MAX_NPCS)
-                return;
-
             NPCNum = Core.Type.Map[mapNum].NPC[(int)MapNPCNum];
 
             if (NPCNum >= 0)
@@ -215,7 +212,7 @@ namespace Server
 
             switch (Dir)
             {
-                case var @case when @case == (byte) DirectionType.Up:
+                case (byte) DirectionType.Up:
                     {
                         // Check to make sure not outside of boundaries
                         if (y > 0)
@@ -263,7 +260,7 @@ namespace Server
                         break;
                     }
 
-                case var case1 when case1 == (byte) DirectionType.Down:
+                case (byte) DirectionType.Down:
                     {
                         // Check to make sure not outside of boundaries
                         if (y < Core.Type.Map[mapNum].MaxY)
@@ -311,7 +308,7 @@ namespace Server
                         break;
                     }
 
-                case var case2 when case2 == (byte) DirectionType.Left:
+                case (byte)DirectionType.Left:
                     {
                         // Check to make sure not outside of boundaries
                         if (x > 0)
@@ -359,7 +356,7 @@ namespace Server
                         break;
                     }
 
-                case var case3 when case3 == (byte) DirectionType.Right:
+                case (byte)DirectionType.Right:
                     {
                         // Check to make sure not outside of boundaries
                         if (x < Core.Type.Map[mapNum].MaxX)
@@ -1178,12 +1175,12 @@ namespace Server
         public static void DropNPCItems(int mapNum, int MapNPCNum)
         {
             var NPCNum = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
-            double tmpitem = General.GetRandom.NextDouble(1d, 5d);
-            var n = VBMath.Rnd() * (float)Core.Type.NPC[(int)NPCNum].DropChance[(int)Math.Round(tmpitem)] + 1;
+            int tmpitem = General.GetRandom.NextInt(1, 5);
+            var n = VBMath.Rnd() * Core.Type.NPC[(int)NPCNum].DropChance[tmpitem] + 1;
 
             if (n == 1)
             {
-                Item.SpawnItem(Core.Type.NPC[(int)NPCNum].DropItem[(int)Math.Round(tmpitem)], Core.Type.NPC[(int)NPCNum].DropItemValue[(int)Math.Round(tmpitem)], mapNum, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y);
+                Item.SpawnItem(Core.Type.NPC[(int)NPCNum].DropItem[tmpitem], Core.Type.NPC[(int)NPCNum].DropItemValue[tmpitem], mapNum, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y); // Fixed: Removed Math.Round ambiguity
             }
         }
 

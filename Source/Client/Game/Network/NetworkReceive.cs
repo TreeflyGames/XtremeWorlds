@@ -243,7 +243,7 @@ namespace Client
                 GameState.CharJob[(int)i] = buffer.ReadInt32();
 
                 // set as empty or not
-                if (!(Strings.Len(GameState.CharName[(int)i]) > 0))
+                if (Strings.Len(GameState.CharName[i]) == 0)
                     isSlotEmpty[(int)i] = Conversions.ToBoolean(1);
             }
 

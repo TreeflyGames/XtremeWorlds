@@ -60,6 +60,7 @@ namespace Server
         public static async Task LoadPetsAsync()
         {
             var tasks = Enumerable.Range(0, Core.Constant.MAX_PETS).Select(i => Task.Run(() => LoadPetAsync(i)));
+            await Task.WhenAll(tasks);
         }
 
         public static async Task LoadPetAsync(int petNum)
@@ -82,7 +83,7 @@ namespace Server
             Core.Type.Pet[petNum].Name = "";
 
             Core.Type.Pet[petNum].Stat = new byte[(byte)StatType.Count];
-            Core.Type.Pet[petNum].Skill = new int[5];
+            Core.Type.Pet[petNum].Skill = new int[Core.Constant.MAX_PET_SKILLS];
         }
 
         #endregion
@@ -131,7 +132,7 @@ namespace Server
             for (int i = 0, loopTo = (int)(StatType.Count); i < loopTo; i++)
                 buffer.WriteInt32(withBlock.Stat[i]);
 
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
                 buffer.WriteInt32(withBlock.Skill[i]);
 
             buffer.WriteInt32(withBlock.Evolvable);
@@ -166,7 +167,7 @@ namespace Server
                 for (int i = 0, loopTo = (byte)StatType.Count; i < loopTo; i++)
                     buffer.WriteInt32(withBlock.Stat[i]);
 
-                for (int i = 0; i <= 4; i++)
+                for (int i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
                     buffer.WriteInt32(withBlock.Skill[i]);
 
                 buffer.WriteInt32(withBlock.Evolvable);
@@ -320,6 +321,7 @@ namespace Server
 
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
                 return;
+
             if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
@@ -334,6 +336,8 @@ namespace Server
             }
 
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Pet;
+
+            Pet.SendPets(index);
 
             buffer.WriteInt32((int) ServerPackets.SPetEditor);
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
@@ -357,31 +361,30 @@ namespace Server
             // Prevent hacking
             if (petNum < 0 | petNum > Core.Constant.MAX_PETS)
                 return;
+           
+            ref var withBlock = ref Core.Type.Pet[petNum];
+            withBlock.Num = buffer.ReadInt32();
+            withBlock.Name = buffer.ReadString();
+            withBlock.Sprite = buffer.ReadInt32();
+            withBlock.Range = buffer.ReadInt32();
+            withBlock.Level = buffer.ReadInt32();
+            withBlock.MaxLevel = buffer.ReadInt32();
+            withBlock.ExpGain = buffer.ReadInt32();
+            withBlock.LevelPnts = buffer.ReadInt32();
+            withBlock.StatType = (byte)buffer.ReadInt32();
+            withBlock.LevelingType = (byte)buffer.ReadInt32();
 
-            {
-                ref var withBlock = ref Core.Type.Pet[petNum];
-                withBlock.Num = buffer.ReadInt32();
-                withBlock.Name = buffer.ReadString();
-                withBlock.Sprite = buffer.ReadInt32();
-                withBlock.Range = buffer.ReadInt32();
-                withBlock.Level = buffer.ReadInt32();
-                withBlock.MaxLevel = buffer.ReadInt32();
-                withBlock.ExpGain = buffer.ReadInt32();
-                withBlock.LevelPnts = buffer.ReadInt32();
-                withBlock.StatType = (byte)buffer.ReadInt32();
-                withBlock.LevelingType = (byte)buffer.ReadInt32();
+            var loopTo = (byte)StatType.Count;
+            for (i = 0; i < loopTo; i++)
+                withBlock.Stat[i] = (byte)buffer.ReadInt32();
 
-                var loopTo = (byte)StatType.Count;
-                for (i = 0; i < loopTo; i++)
-                    withBlock.Stat[i] = (byte)buffer.ReadInt32();
+            for (i = 0; i < Core.Constant.MAX_PET_SKILLS; i++)
+                withBlock.Skill[i] = buffer.ReadInt32();
 
-                for (i = 0; i <= 4; i++)
-                    withBlock.Skill[i] = buffer.ReadInt32();
-
-                withBlock.Evolvable = (byte)buffer.ReadInt32();
-                withBlock.EvolveLevel = buffer.ReadInt32();
-                withBlock.EvolveNum = buffer.ReadInt32();
-            }
+            withBlock.Evolvable = (byte)buffer.ReadInt32();
+            withBlock.EvolveLevel = buffer.ReadInt32();
+            withBlock.EvolveNum = buffer.ReadInt32();
+            
 
             // Save it
             SendUpdatePetToAll(petNum);
@@ -4293,100 +4296,6 @@ namespace Server
                     Core.Type.TempPlayer[index].PetStunTimer = General.GetTimeMs();
                     // tell him he's stunned
                     NetworkSend.PlayerMsg(index, "Your " + GetPetName(index) + " has been stunned.", (int) ColorType.Yellow);
-                }
-            }
-
-        }
-
-        public static void HandleDoT_Pet(int index, int dotNum)
-        {
-
-            {
-                var withBlock = Core.Type.TempPlayer[index].PetDoT[dotNum];
-
-                if (withBlock.Used & withBlock.Skill > 0)
-                {
-                    // time to tick?
-                    if (General.GetTimeMs() > withBlock.Timer + Core.Type.Skill[withBlock.Skill].Interval * 1000)
-                    {
-                        if (withBlock.AttackerType == (byte)TargetType.Pet)
-                        {
-                            if (CanPetAttackPet(withBlock.Caster, index, withBlock.Skill))
-                            {
-                                PetAttackPet(withBlock.Caster, index, Core.Type.Skill[withBlock.Skill].Vital);
-                                SendPetVital(index, VitalType.HP);
-                                SendPetVital(index, VitalType.SP);
-                            }
-                        }
-                        else if (withBlock.AttackerType == (byte)TargetType.Player)
-                        {
-                            if (CanPlayerAttackPet(withBlock.Caster, index, Convert.ToBoolean(withBlock.Skill)))
-                            {
-                                PlayerAttackPet(withBlock.Caster, index, Core.Type.Skill[withBlock.Skill].Vital);
-                                SendPetVital(index, VitalType.HP);
-                                SendPetVital(index, VitalType.SP);
-                            }
-                        }
-
-                        withBlock.Timer = General.GetTimeMs();
-
-                        // check if DoT is still active - if player died it'll have been purged
-                        if (withBlock.Used & withBlock.Skill > 0)
-                        {
-                            // destroy DoT if finished
-                            if (General.GetTimeMs() - withBlock.StartTime >= Core.Type.Skill[withBlock.Skill].Duration * 1000)
-                            {
-                                withBlock.Used = false;
-                                withBlock.Skill = 0;
-                                withBlock.Timer = 0;
-                                withBlock.Caster = 0;
-                                withBlock.StartTime = 0;
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-
-        public static void HandleHoT_Pet(int index, int hotNum)
-        {
-
-            {
-                var withBlock = Core.Type.TempPlayer[index].PetHoT[hotNum];
-
-                if (withBlock.Used & withBlock.Skill > 0)
-                {
-                    // time to tick?
-                    if (General.GetTimeMs() > withBlock.Timer + Core.Type.Skill[withBlock.Skill].Interval * 1000)
-                    {
-                        NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + Core.Type.Skill[withBlock.Skill].Vital, (int) ColorType.BrightGreen, (byte) ActionMsgType.Scroll, Core.Type.Player[index].Pet.X * 32, Core.Type.Player[index].Pet.Y * 32);
-                        SetPetVital(index, VitalType.HP, GetPetVital(index, VitalType.HP) + Core.Type.Skill[withBlock.Skill].Vital);
-
-                        if (GetPetVital(index, VitalType.HP) > GetPetMaxVital(index, VitalType.HP))
-                            SetPetVital(index, VitalType.HP, GetPetMaxVital(index, VitalType.HP));
-
-                        if (GetPetVital(index, VitalType.SP) > GetPetMaxVital(index, VitalType.SP))
-                            SetPetVital(index, VitalType.SP, GetPetMaxVital(index, VitalType.SP));
-
-                        SendPetVital(index, VitalType.HP);
-                        SendPetVital(index, VitalType.SP);
-                        withBlock.Timer = General.GetTimeMs();
-
-                        // check if DoT is still active - if player died it'll have been purged
-                        if (withBlock.Used & withBlock.Skill > 0)
-                        {
-                            // destroy hoT if finished
-                            if (General.GetTimeMs() - withBlock.StartTime >= Core.Type.Skill[withBlock.Skill].Duration * 1000)
-                            {
-                                withBlock.Used = false;
-                                withBlock.Skill = 0;
-                                withBlock.Timer = 0;
-                                withBlock.Caster = 0;
-                                withBlock.StartTime = 0;
-                            }
-                        }
-                    }
                 }
             }
 

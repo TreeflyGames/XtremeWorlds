@@ -466,17 +466,15 @@ namespace Client
                 // Normal or animated - same difference
                 case GameState.AutotileNormal:
                 case GameState.AutotileAnim:
-                    {
-                        // North West Quarter
-                        CalculateNW_Normal(layerNum, x, y);
-                        // North East Quarter
-                        CalculateNE_Normal(layerNum, x, y);
-                        // South West Quarter
-                        CalculateSW_Normal(layerNum, x, y);
-                        // South East Quarter
-                        CalculateSE_Normal(layerNum, x, y);
-                        break;
-                    }
+                    // North West Quarter
+                    CalculateNW_Normal(layerNum, x, y);
+                    // North East Quarter
+                    CalculateNE_Normal(layerNum, x, y);
+                    // South West Quarter
+                    CalculateSW_Normal(layerNum, x, y);
+                    // South East Quarter
+                    CalculateSE_Normal(layerNum, x, y);
+                    break;
                 // Cliff
                 case GameState.AutotileCliff:
                     {

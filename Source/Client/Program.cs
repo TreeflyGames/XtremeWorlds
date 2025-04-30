@@ -96,6 +96,7 @@ namespace Client
         // Handle Escape key to toggle menus
         private static DateTime lastMouseClickTime = DateTime.MinValue;
         private const int mouseClickCooldown = 250;
+        private static DateTime lastSearchTime = DateTime.MinValue;
 
         // Ensure this class exists to store graphic info
         public class GfxInfo
@@ -615,6 +616,11 @@ namespace Client
             return (DateTime.Now - lastInputTime).TotalMilliseconds >= inputCooldown;
         }
 
+        private static bool IsSeartchCooldownElapsed()
+        {
+            return (DateTime.Now - lastSearchTime).TotalMilliseconds >= inputCooldown;
+        }
+
         private static void UpdateLastInputTime()
         {
             lastInputTime = DateTime.Now;
@@ -857,6 +863,24 @@ namespace Client
                 Gui.HandleInterfaceEvents(EntState.MouseUp);
             }
 
+            for (int i = 1; i < Gui.Windows.Count; i++)
+            {
+                // Check if active control is hovered
+                if (Gui.Windows[i].Controls != null)
+                {
+                    for (int j = 0; j < Gui.Windows[i].Controls.Count; j++)
+                    {
+                        if (GameState.CurMouseX >= Gui.Windows[i].Left && GameState.CurMouseX <= Gui.Windows[i].Width + Gui.Windows[i].Left && GameState.CurMouseY >= Gui.Windows[i].Top && GameState.CurMouseY <= Gui.Windows[i].Height + Gui.Windows[i].Top)
+                        {
+                            if (Gui.Windows[i].Controls[j].State != Core.Enum.EntState.Normal)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
@@ -870,6 +894,17 @@ namespace Client
                     NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
                 }
 
+                    if (IsSeartchCooldownElapsed())
+                    {
+                        if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
+                        {
+                            Pet.PetMove(GameState.CurX, GameState.CurY);
+                        }
+                        Player.CheckAttack(true);
+                        NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
+                        lastSearchTime = DateTime.Now;
+                    }
+                }
                 // Right-click interactions
                 if (IsMouseButtonDown(MouseButton.Right))
                 {
@@ -2396,16 +2431,20 @@ namespace Client
             {
                 if (GameState.NumCharacters > 0)
                 {
+                    // NPCs
+                    for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
+                    {
+                        if (Core.Type.MyMapNPC[i].Y == y)
+                        {
+                            DrawNPC(i);
+                        }
+                    }
+
                     // Players
                     for (i = 0; i < Constant.MAX_PLAYERS; i++)
                     {
                         if (IsPlaying(i) & GetPlayerMap(i) == GetPlayerMap(GameState.MyIndex))
                         {
-                            if (Core.Type.Player[i].Y == y)
-                            {
-                                DrawPlayer(i);
-                            }
-
                             if (Pet.PetAlive(i))
                             {
                                 if (Core.Type.Player[i].Pet.Y == y)
@@ -2413,14 +2452,11 @@ namespace Client
                                     Pet.DrawPet(i);
                                 }
                             }
-                        }
-                    }
 
-                    for (i = 0; i < Constant.MAX_MAP_NPCS; i++)
-                    {
-                        if (Core.Type.MyMapNPC[i].Y == y)
-                        {
-                            DrawNPC(i);
+                            if (Core.Type.Player[i].Y == y)
+                            {
+                                DrawPlayer(i);
+                            }
                         }
                     }
 

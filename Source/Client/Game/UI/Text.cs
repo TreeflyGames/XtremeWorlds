@@ -547,7 +547,7 @@ namespace Client
             rLines = 1;
             i = GameState.ChatScroll;
 
-            while (rLines <= 8)
+            while (rLines < 8)
             {
                 if (i >= Constant.CHAT_LINES)
                     break;
@@ -582,15 +582,11 @@ namespace Client
                         string[] wrappedLines = null;
                         WordWrap(Core.Type.Chat[(int)i].Text, Core.Enum.FontType.Georgia, width, ref wrappedLines);
 
-                        // can't have it going offscreen.
-                        if (rLines + wrappedLines.Length >= 9)
-                            break;
-
                         // continue on
-                        yOffset = yOffset - 14 * wrappedLines.Length;
+                        yOffset = yOffset - 10 * wrappedLines.Length;
                         for (int j = 0; j < wrappedLines.Length; j++)
                         {
-                            RenderText(wrappedLines[j], (int)xO, (int)(yO + yOffset + 14 * j), Color2, Color2);
+                            RenderText(wrappedLines[j], (int)xO, (int)(yO + yOffset + 10 * j), Color2, Color2);
                         }
                         rLines += wrappedLines.Length;
 
@@ -605,7 +601,7 @@ namespace Client
                     else
                     {
                         // normal
-                        yOffset = yOffset - 14L;
+                        yOffset = yOffset - 12L; // Adjusted spacing from 14 to 12
 
                         RenderText(Core.Type.Chat[(int)i].Text, (int)xO, (int)(yO + yOffset), Color2, Color2);
                         rLines = rLines + 1;
@@ -620,7 +616,7 @@ namespace Client
             }
 
             // get the height of the small chat box
-            GameLogic.SetChatHeight(rLines * 14);
+            GameLogic.SetChatHeight(rLines * 12); // Adjusted spacing from 14 to 12
             GameLogic.SetChatWidth(topWidth);
         }
 

@@ -85,7 +85,7 @@ namespace Client
                     }
                 }
 
-                for (i = 0; i <= byte.MaxValue; i++)
+                for (i = 0; i < byte.MaxValue; i++)
                     Animation.CheckAnimInstance(i);
 
                 if (tick > Event.EventChatTimer)

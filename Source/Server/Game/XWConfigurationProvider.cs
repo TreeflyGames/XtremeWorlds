@@ -5,15 +5,20 @@ namespace Server;
 
 public class XWConfigurationProvider : EngineConfigurationProvider
 {
+    protected override void OnSetEarlyConfigurationBuilderBasePath(IConfigurationBuilder builder)
+        => builder.SetBasePath(AppContext.BaseDirectory);
+
     protected override void OnCreateEarlyConfigurationBuilder(IConfigurationBuilder builder)
     {
         _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         _ = builder.AddJsonFile($"appsettings.{this.Environment.ToLower()}.json", optional: true, reloadOnChange: true);
     }
 
+    protected override void OnSetConfigurationBuilderBasePath(IConfigurationBuilder builder) 
+        => builder.SetBasePath(AppContext.BaseDirectory);
+
     protected override void OnCreateConfigurationBuilder(IConfigurationBuilder builder)
     {
-        builder.SetBasePath(AppContext.BaseDirectory);
         _ = builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
         _ = builder.AddJsonFile("appsettings.server.json", optional: true, reloadOnChange: true);
         _ = builder.AddJsonFile("appsettings.server.secret.json", optional: true, reloadOnChange: true);

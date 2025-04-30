@@ -66,12 +66,6 @@ namespace Server
                                     where p.player.PetStopRegen && p.player.PetStopRegenTimer + 5000 < General.GetTimeMs()
                                     select new { p.Index, Success = HandleStopPetRegen((int)p.Index) }).ToArray();
 
-                    // HoT and DoT logic
-                    // For x = 1 To Core.Constant.MAX_COTS
-                    // HandleDoT_Pet i, x
-                    // HandleHoT_Pet i, x
-                    // Next
-
                     // Update all our available events.
                     EventLogic.UpdateEventLogic();
 
@@ -156,11 +150,9 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAPS;
             for (y = 0; y < loopTo; y++)
             {
-
                 // Make sure no one is on the map when it respawns
                 if (!PlayersOnMap[y])
                 {
-
                     // Clear out unnecessary junk
                     var loopTo1 = Core.Constant.MAX_MAP_ITEMS;
                     for (x = 0; x < loopTo1; x++)
@@ -170,9 +162,7 @@ namespace Server
                     Item.SpawnMapItems(y);
                     Item.SendMapItemsToAll(y);
                 }
-
             }
-
         }
 
         private static void UpdatePlayerVitals()
@@ -309,8 +299,8 @@ namespace Server
                             // /////////////////////////////////////////
                             // // This is used for ATTACKING ON SIGHT //
                             // /////////////////////////////////////////
-                            // Make sure theres a npc with the map
-                            if (Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
+                            // Make sure there's a npc with the map
+                            if (Core.Type.Map[mapNum].NPC[x] >= 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
                             {
 
                                 // If the npc is a attack on sight, search for a player on the map
@@ -427,7 +417,7 @@ namespace Server
                             // // This is used for NPC walking/targetting //
                             // /////////////////////////////////////////////
                             // Make sure theres a npc with the map
-                            if (Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
+                            if (Core.Type.Map[mapNum].NPC[x] >= 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
                             {
                                 if (Core.Type.MapNPC[mapNum].NPC[x].StunDuration > 0)
                                 {
@@ -558,7 +548,7 @@ namespace Server
                         // // This is used for npcs to attack targets //
                         // /////////////////////////////////////////////
                         // Make sure theres a npc with the map
-                        if (Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
+                        if (Core.Type.Map[mapNum].NPC[x] >= 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
                         {
                             target = Core.Type.MapNPC[mapNum].NPC[x].Target;
                             targetType = Core.Type.MapNPC[mapNum].NPC[x].TargetType;
@@ -685,11 +675,14 @@ namespace Server
                         // // This is used for spawning an NPC //
                         // //////////////////////////////////////
                         // Check if we are supposed to spawn an npc or not
-                        if (Core.Type.MapNPC[mapNum].NPC[x].Num == -1 & Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.NPC[Core.Type.Map[mapNum].NPC[x]].SpawnSecs > 0)
+                        if (Core.Type.MapNPC[mapNum].NPC[x].Num == -1 && Core.Type.Map[mapNum].NPC[x] >= 0)
                         {
-                            if (tickCount > Core.Type.MapNPC[mapNum].NPC[x].SpawnWait + Core.Type.NPC[Core.Type.Map[mapNum].NPC[x]].SpawnSecs * 1000)
+                            if (Core.Type.NPC[Core.Type.Map[mapNum].NPC[x]].SpawnSecs > 0)
                             {
-                                NPC.SpawnNPC(x, mapNum);
+                                if (tickCount > Core.Type.MapNPC[mapNum].NPC[x].SpawnWait + Core.Type.NPC[Core.Type.Map[mapNum].NPC[x]].SpawnSecs * 1000)
+                                {
+                                    NPC.SpawnNPC(x, mapNum);
+                                }
                             }
                         }
                     }
@@ -1626,6 +1619,5 @@ namespace Server
                 NPC.SendMapNPCVitals(mapNum, (byte)index);
             }
         }
-
     }
 }

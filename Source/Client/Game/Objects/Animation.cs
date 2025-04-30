@@ -329,7 +329,7 @@ namespace Client
         {
             int i;
 
-            Core.Type.Animation = new Core.Type.AnimationStruct[101];
+            Core.Type.Animation = new Core.Type.AnimationStruct[Core.Constant.MAX_ANIMATIONS];
 
             for (i = 0; i < Constant.MAX_ANIMATIONS; i++)
                 ClearAnimation(i);
@@ -339,9 +339,9 @@ namespace Client
         {
             int i;
 
-            AnimInstance = new Core.Type.AnimInstanceStruct[(byte.MaxValue + 1)];
+            AnimInstance = new Core.Type.AnimInstanceStruct[(byte.MaxValue)];
 
-            for (i = 0; i <= byte.MaxValue; i++)
+            for (i = 0; i < byte.MaxValue; i++)
             {
                 for (int X = 0; X <= 1; X++)
                     AnimInstance[i].Timer = new int[X + 1];

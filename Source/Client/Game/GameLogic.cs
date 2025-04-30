@@ -2432,143 +2432,49 @@ namespace Client
 
         public static void UpdateCamera()
         {
-            long offsetX;
-            long offsetY;
-            long StartX;
-            long StartY;
-            long EndX;
-            long EndY;
-            long tileHeight;
-            long tileWidth;
-            long ScreenX;
-            long ScreenY;
+            float targetCameraX;
+            float targetCameraY;
 
-            tileWidth = (long)Math.Round(GameState.ResolutionWidth / 32d);
-            tileHeight = (long)Math.Round(GameState.ResolutionHeight / 32d);
+            int offsetX = Core.Type.Player[GameState.MyIndex].XOffset;
+            int offsetY = Core.Type.Player[GameState.MyIndex].YOffset;
 
-            ScreenX = (tileWidth + 1L) * GameState.PicX;
-            ScreenY = (tileHeight + 1L) * GameState.PicY;
+            // Calculate the target camera position based on the player's position  
+            targetCameraX = GetPlayerX(GameState.MyIndex) * GameState.PicX - (GameState.ResolutionWidth / 2) + offsetX;
+            targetCameraY = GetPlayerY(GameState.MyIndex) * GameState.PicY - (GameState.ResolutionHeight / 2) + offsetY;
 
-            offsetX = Core.Type.Player[GameState.MyIndex].XOffset + GameState.PicX;
-            offsetY = Core.Type.Player[GameState.MyIndex].YOffset + GameState.PicY;
-            StartX = GetPlayerX(GameState.MyIndex) - (tileWidth + 1L) / 2L - 1L;
-            StartY = GetPlayerY(GameState.MyIndex) - (tileHeight + 1L) / 2L - 1L;
+            // Directly set the camera position to match the player's position for better sync  
+            GameState.Camera.Left = (long)Math.Round(targetCameraX);
+            GameState.Camera.Top = (long)Math.Round(targetCameraY);
 
-            // Ensure StartX and StartY do not go below 0
-            if (StartX < 0)
-            {
-                StartX = 0;
-                offsetX = 0; // Prevent shifting beyond the first tile
-            }
-            if (StartY < 0)
-            {
-                StartY = 0;
-                offsetY = 0; // Prevent shifting beyond the first tile
-            }
+            // Clamp the camera position to the map edges  
+            long mapWidth = Core.Type.MyMap.MaxX * GameState.PicX;
+            long mapHeight = Core.Type.MyMap.MaxY * GameState.PicY;
 
-            if (tileWidth + 1L <= Core.Type.MyMap.MaxX)
-            {
-                if (StartX < 0L)
-                {
-                    offsetX = 0L;
+            GameState.Camera.Left = Math.Max(0, Math.Min(GameState.Camera.Left, mapWidth - GameState.ResolutionWidth));
+            GameState.Camera.Top = Math.Max(0, Math.Min(GameState.Camera.Top, mapHeight - GameState.ResolutionHeight));
 
-                    if (StartX == -1)
-                    {
-                        if (Core.Type.Player[GameState.MyIndex].XOffset > 0)
-                        {
-                            offsetX = Core.Type.Player[GameState.MyIndex].XOffset;
-                        }
-                    }
+            // Calculate the visible tile range  
+            long tileWidth = (long)Math.Round(GameState.ResolutionWidth / 32d);
+            long tileHeight = (long)Math.Round(GameState.ResolutionHeight / 32d);
 
-                    StartX = 0L;
-                }
+            long StartX = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Left / (double)GameState.PicX), Core.Type.MyMap.MaxX - 1) / 32);
+            long StartY = Math.Max(0, Math.Min((long)Math.Floor(GameState.Camera.Top / (double)GameState.PicY), Core.Type.MyMap.MaxY - 1) / 32);
+            long EndX = Core.Type.MyMap.MaxX;
+            long EndY = Core.Type.MyMap.MaxY;
 
-                EndX = StartX + tileWidth + 1L + 1L;
-
-                if (EndX > Core.Type.MyMap.MaxX)
-                {
-                    offsetX = 32L;
-
-                    if (EndX == Core.Type.MyMap.MaxX)
-                    {
-                        if (Core.Type.Player[GameState.MyIndex].XOffset < 0)
-                        {
-                            offsetX = Core.Type.Player[GameState.MyIndex].XOffset + GameState.PicX;
-                        }
-                    }
-
-                    EndX = Core.Type.MyMap.MaxX;
-                    StartX = EndX - tileWidth - 1L;
-                }
-            }
-            else
-            {
-                EndX = StartX + tileWidth + 1L + 1L;
-            }
-
-            if (tileHeight + 1L <= Core.Type.MyMap.MaxY)
-            {
-                if (StartY < 0L)
-                {
-                    offsetY = 0L;
-
-                    if (StartY == -1)
-                    {
-                        if (Core.Type.Player[GameState.MyIndex].YOffset > 0)
-                        {
-                            offsetY = Core.Type.Player[GameState.MyIndex].YOffset;
-                        }
-                    }
-
-                    StartY = 0L;
-                }
-
-                EndY = StartY + tileHeight + 1L + 1L;
-
-                if (EndY > Core.Type.MyMap.MaxY)
-                {
-                    offsetY = 32L;
-
-                    if (EndY == Core.Type.MyMap.MaxY)
-                    {
-                        if (Core.Type.Player[GameState.MyIndex].YOffset < 0)
-                        {
-                            offsetY = Core.Type.Player[GameState.MyIndex].YOffset + GameState.PicY;
-                        }
-                    }
-
-                    EndY = Core.Type.MyMap.MaxY;
-                    StartY = EndY - tileHeight - 1L;
-                }
-            }
-            else
-            {
-                EndY = StartY + tileHeight + 1L + 1L;
-            }
-
-            if (tileWidth + 1L == Core.Type.MyMap.MaxX)
-            {
-                offsetX = 0L;
-            }
-
-            if (tileHeight + 1L == Core.Type.MyMap.MaxY)
-            {
-                offsetY = 0L;
-            }
-
+            // Update the tile view  
             ref var withBlock = ref GameState.TileView;
             withBlock.Top = StartY;
             withBlock.Bottom = EndY;
             withBlock.Left = StartX;
             withBlock.Right = EndX;
 
+            // Update the camera bounds  
             ref var withBlock1 = ref GameState.Camera;
-            withBlock1.Top = offsetY;
-            withBlock1.Bottom = withBlock1.Top + ScreenY;
-            withBlock1.Left = offsetX;
-            withBlock1.Right = withBlock1.Left + ScreenX;
-            
-            // Optional: Update the map name display
+            withBlock1.Right = withBlock1.Left;
+            withBlock1.Bottom = withBlock1.Top;
+
+            // Optional: Update the map name display  
             UpdateDrawMapName();
         }
 

@@ -514,8 +514,17 @@ namespace Server
             }
 
             // find out the equal share
-            expShare = exp / (Core.Type.Party[partyNum].MemberCount - loseMemberCount);
-            leftOver = exp % (Core.Type.Party[partyNum].MemberCount - loseMemberCount);
+            if (Core.Type.Party[partyNum].MemberCount > 0)
+            {
+                expShare = exp / (Core.Type.Party[partyNum].MemberCount - loseMemberCount);
+                leftOver = exp % (Core.Type.Party[partyNum].MemberCount - loseMemberCount);
+
+            }
+            else
+            {
+                expShare = exp;
+                leftOver = 0;
+            }
 
             // loop through and give everyone exp
             var loopTo1 = Core.Constant.MAX_PARTY_MEMBERS;

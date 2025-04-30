@@ -47,8 +47,8 @@ namespace Client
         public static bool EventChat;
         public static string EventText;
         public static bool ShowEventLbl;
-        public static string[] EventChoices = new string[4];
-        public static bool[] EventChoiceVisible = new bool[4];
+        public static string[] EventChoices = new string[Core.Constant.MAX_EVENT_CHOICES];
+        public static bool[] EventChoiceVisible = new bool[Core.Constant.MAX_EVENT_CHOICES];
         public static int EventChatType;
         public static int AnotherChat;
 
@@ -371,7 +371,7 @@ namespace Client
             ShowEventLbl = Conversions.ToBoolean(1);
             choices = buffer.ReadInt32();
             InEvent = Conversions.ToBoolean(1);
-            for (i = 0; i <= 4; i++)
+            for (i = 0; i < Core.Constant.MAX_EVENT_CHOICES; i++)
             {
                 EventChoices[i] = "";
                 EventChoiceVisible[i] = Conversions.ToBoolean(0);
@@ -777,7 +777,7 @@ namespace Client
 
             if (AnotherChat == 1)
             {
-                for (i = 0; i <= 4; i++)
+                for (i = 0; i < Core.Constant.MAX_EVENT_CHOICES; i++)
                     EventChoiceVisible[i] = Conversions.ToBoolean(0);
                 EventText = "";
                 EventChatType = 1;
@@ -785,7 +785,7 @@ namespace Client
             }
             else if (AnotherChat == 2)
             {
-                for (i = 0; i <= 4; i++)
+                for (i = 0; i < Core.Constant.MAX_EVENT_CHOICES; i++)
                     EventChoiceVisible[i] = Conversions.ToBoolean(0);
                 EventText = "";
                 EventChatType = 1;

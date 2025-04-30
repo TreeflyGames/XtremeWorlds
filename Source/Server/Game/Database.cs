@@ -757,7 +757,7 @@ namespace Server
 
             Core.Type.Job[jobNum].Name = "";
             Core.Type.Job[jobNum].Desc = "";
-            Core.Type.Job[jobNum].StartMap = 0;
+            Core.Type.Job[jobNum].StartMap = 1;
             Core.Type.Job[jobNum].MaleSprite = 0;
             Core.Type.Job[jobNum].FemaleSprite = 0;
         }
@@ -816,6 +816,12 @@ namespace Server
                 var loopTo1 = Core.Type.Map[mapNum].MaxY;
                 for (y = 0; y < loopTo1; y++)
                     Core.Type.Map[mapNum].Tile[x, y].Layer = new Core.Type.TileDataStruct[(int)LayerType.Count];
+            }
+
+            var loopTo2 = Core.Constant.MAX_MAP_NPCS;
+            for (x = 0; x < loopTo2; x++)
+            {
+                Core.Type.Map[mapNum].NPC[x] = -1;
             }
 
             Core.Type.Map[mapNum].EventCount = 0;
@@ -1364,6 +1370,7 @@ namespace Server
             Core.Type.MapNPC[mapNum].NPC[index].Vital = new int[(int)VitalType.Count];
             Core.Type.MapNPC[mapNum].NPC[index].SkillCD = new int[Core.Constant.MAX_NPC_SKILLS];
             Core.Type.MapNPC[mapNum].NPC[index].Num = -1;
+            Core.Type.MapNPC[mapNum].NPC[index].SkillBuffer = -1;
         }
 
         public static void ClearNPC(int index)

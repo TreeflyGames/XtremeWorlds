@@ -222,6 +222,7 @@ namespace Server
             DisplayServerBanner(startTime);
             UpdateCaption();
             await NetworkConfig.Socket.StartListeningAsync(SettingsManager.Instance.Port, 5);
+
             try
             {
                 await Loop.ServerAsync();

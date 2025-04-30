@@ -67,6 +67,7 @@ namespace Server
         {
             Core.Type.Item[index].Name = "";
             Core.Type.Item[index].Description = "";
+            Core.Type.Item[index].Stackable = 1;
 
             for (int i = 0, loopTo = Core.Constant.MAX_ITEMS; i < loopTo; i++)
             {

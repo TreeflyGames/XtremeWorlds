@@ -353,7 +353,7 @@ namespace Client
         // Autotile Type
         public const byte AutotileNone = 0;
 
-        public const byte AutotileNormal = 0;
+        public const byte AutotileNormal = 1;
         public const byte AutotileFake = 2;
         public const byte AutotileAnim = 3;
         public const byte AutotileCliff = 4;

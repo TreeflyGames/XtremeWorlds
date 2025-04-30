@@ -298,7 +298,7 @@ namespace Server
             }
         }
 
-        private static void SendEventMove(int mapNum, int eventId, int x, int y, int dir, int currentDir, int speed, int index)
+        private static void SendEventMove(int mapNum, int eventId, int x, int y, int dir, int currentDir, int speed, int index = -1)
         {
             var buffer = new ByteStream(24);
             buffer.WriteInt32((int)ServerPackets.SEventMove);
@@ -308,7 +308,7 @@ namespace Server
             buffer.WriteInt32(dir);
             buffer.WriteInt32(currentDir);
             buffer.WriteInt32(speed);
-            if (index == 0)
+            if (index == -1)
                 NetworkConfig.SendDataToMap(mapNum, buffer.UnreadData, buffer.WritePosition);
             else
                 NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);

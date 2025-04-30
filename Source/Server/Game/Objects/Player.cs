@@ -1,4 +1,6 @@
-﻿using Core;
+﻿using System;
+using Core;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
@@ -593,7 +595,10 @@ namespace Server
             NetworkSend.SendPlayerAttack(attacker);
             if (Weapon >= 0)
             {
-                Animation.SendAnimation(mapNum, Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, (int)MapNPCNum);
+                if (GetPlayerEquipment(attacker, EquipmentType.Weapon) >= 0)
+                {
+                    Animation.SendAnimation(mapNum, Core.Type.Item[GetPlayerEquipment(attacker, EquipmentType.Weapon)].Animation, 0, 0, (byte)TargetType.NPC, (int)MapNPCNum);
+                }
             }
 
             // Reset our attack timer.
@@ -914,13 +919,19 @@ namespace Server
             // Notify all our clients that the NPC has died.
             NPC.SendNPCDead(mapNum, (int)MapNPCNum);
 
-            // Check if our dead NPC is targetted by another player and remove their targets.
-            foreach (var p in Core.Type.TempPlayer.Where((x, i) => x.InGame & GetPlayerMap((int)Operators.AddObject(i, 1)) == mapNum & Operators.ConditionalCompareObjectEqual(x.TargetType, TargetType.NPC, false) & Operators.ConditionalCompareObjectEqual(x.Target, MapNPCNum, false)).Select((x, i) => Operators.AddObject(i, 1)).ToArray())
+            // Check if our dead NPC is targeted by another player and remove their targets.
+            foreach (var p in Core.Type.TempPlayer
+                .Select((x, i) => new { Player = x, Index = i })
+                .Where(x => x.Player.InGame
+                            && GetPlayerMap(x.Index + 1) == mapNum
+                            && x.Player.TargetType == (byte)TargetType.NPC
+                            && x.Player.Target == MapNPCNum)
+                .Select(x => x.Index + 1))
             {
-                Core.Type.TempPlayer[(int)p].Target = 0;
-                Core.Type.TempPlayer[(int)p].TargetType = 0;
-                NetworkSend.SendTarget(Conversions.ToInteger(p), 0, 0);
+                Core.Type.TempPlayer[p].Target = 0;
+                Core.Type.TempPlayer[p].TargetType = 0;
             }
+
         }
 
         public static void HandlePlayerKilledPK(int attacker, int victim)
@@ -1160,8 +1171,8 @@ namespace Server
             // send equipment of all people on new map
             if (GameLogic.GetTotalMapPlayers(mapNum) > 0)
             {
-                var loopTo = NetworkConfig.Socket.HighIndex + 1;
-                for (i = 0; i < loopTo; i++)
+                var loopTo = NetworkConfig.Socket.HighIndex;
+                for (i = 0; i <= loopTo; i++)
                 {
                     if (NetworkConfig.IsPlaying(i))
                     {
@@ -1209,7 +1220,7 @@ namespace Server
 
         public static void PlayerMove(int index, int Dir, int Movement, bool ExpectingWarp)
         {
-            double mapNum;
+            int mapNum;
             int x;
             int y;
             bool begineventprocessing;
@@ -1222,283 +1233,244 @@ namespace Server
             var amount = default(int);
 
             // Check for subscript out of range
-            if (Dir < (byte) DirectionType.Up | Dir > (byte) DirectionType.DownRight | Movement < (byte) MovementType.Standing | Movement > (byte) MovementType.Running)
+            if (Dir < (int)DirectionType.Up || Dir > (int)DirectionType.DownRight || Movement < (int)MovementType.Standing || Movement > (int)MovementType.Running)
             {
                 return;
             }
 
-            if (Core.Type.TempPlayer[index].InShop >= 0 | Core.Type.TempPlayer[index].InBank)
+            // Prevent player from moving if they have casted a skill
+            if (Core.Type.TempPlayer[index].SkillBuffer >= 0)
+            {
+                NetworkSend.SendPlayerXY(index);
+                return;
+            }
+
+            // Cant move if in the bank
+            if (Core.Type.TempPlayer[index].InBank)
+            {
+                NetworkSend.SendPlayerXY(index);
+                return;
+            }
+
+            // if stunned, stop them moving
+            if (Core.Type.TempPlayer[index].StunDuration > 0)
+            {
+                NetworkSend.SendPlayerXY(index);
+                return;
+            }
+
+            if (Core.Type.TempPlayer[index].InShop >= 0 || Core.Type.TempPlayer[index].InBank)
             {
                 return;
             }
 
             SetPlayerDir(index, Dir);
-            Moved = Conversions.ToBoolean(0);
+            Moved = false;
             mapNum = GetPlayerMap(index);
 
-            switch (Dir)
+            switch ((DirectionType)Dir)
             {
-                case (byte) DirectionType.Up:
+                case DirectionType.Up:
+                    if (GetPlayerY(index) > 0)
                     {
-                        // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) > 0)
-                        {
-                            // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].DirBlock, (byte) DirectionType.Up))
-                            {
-                                if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type2 != TileType.Blocked)
-                                {
-                                    if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type != TileType.Resource & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type2 != TileType.Resource)
-                                    {
-                                        SetPlayerY(index, GetPlayerY(index) - 1);
-                                        NetworkSend.SendPlayerMove(index, Movement);
-                                        Moved = Conversions.ToBoolean(1);
+                        x = GetPlayerX(index);
+                        y = GetPlayerY(index) - 1;
 
-                                        // Check for event
-                                        for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo; i++)
-                                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
-                                    }
-                                }
-                            }
-                        }
-                        else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
+                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.Up))
                         {
-                            // Check to see if we can move them to another map
-                            if (Core.Type.Map[GetPlayerMap(index)].Up > 0)
-                            {
-                                NewMapY = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Up].MaxY;
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Up, GetPlayerX(index), NewMapY, (int)DirectionType.Up);
-                                DidWarp = Conversions.ToBoolean(1);
-                                Moved = Conversions.ToBoolean(1);
-                            }
+                            break;
                         }
 
-                        break;
+                        SetPlayerY(index, GetPlayerY(index) - 1);
+                        NetworkSend.SendPlayerMove(index, Movement);
+                        Moved = true;
+
+                        for (int i = 0, loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
+                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
-
-                case (byte) DirectionType.Down:
+                    else if (Core.Type.Map[mapNum].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing && Core.Type.Map[mapNum].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
                     {
-                        // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1)
+                        if (Core.Type.Map[GetPlayerMap(index)].Up > 0)
                         {
-                            // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) + 1].DirBlock, (byte) DirectionType.Down))
-                            {
-                                if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) + 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) + 1].Type2 != TileType.Blocked)
-                                {
-                                    if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) + 1].Type != TileType.Resource & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) + 1].Type2 != TileType.Resource)
-                                    {
-                                        SetPlayerY(index, GetPlayerY(index) + 1);
-                                        NetworkSend.SendPlayerMove(index, Movement);
-                                        Moved = Conversions.ToBoolean(1);
-
-                                        // Check for event
-                                        for (int i = 0, loopTo1 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo1; i++)
-                                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
-                                    }
-                                }
-                            }
+                            NewMapY = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Up].MaxY;
+                            PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Up, GetPlayerX(index), NewMapY, (int)DirectionType.Up);
+                            DidWarp = true;
+                            Moved = true;
                         }
-                        else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type != TileType.NoXing & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index) - 1].Type2 != TileType.NoXing)
-                        {
-                            // Check to see if we can move them to another map
-                            if (Core.Type.Map[GetPlayerMap(index)].Down > 0)
-                            {
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Down, GetPlayerX(index), 0, (byte)DirectionType.Down);
-                                DidWarp = Conversions.ToBoolean(1);
-                                Moved = Conversions.ToBoolean(1);
-                            }
-                        }
-
-                        break;
                     }
+                    break;
 
-                case (byte) DirectionType.Left:
+                case DirectionType.Down:
+                    if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY - 1)
                     {
-                        // Check to make sure not outside of boundaries
-                        if (GetPlayerX(index) > 0)
-                        {
-                            // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index)].DirBlock, (byte) DirectionType.Left))
-                            {
-                                if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index)].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index)].Type2 != TileType.Blocked)
-                                {
-                                    if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index)].Type != TileType.Resource & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index)].Type2 != TileType.Resource)
-                                    {
-                                        SetPlayerX(index, GetPlayerX(index) - 1);
-                                        NetworkSend.SendPlayerMove(index, Movement);
-                                        Moved = Conversions.ToBoolean(1);
+                        x = GetPlayerX(index);
+                        y = GetPlayerY(index) + 1;
 
-                                        // Check for event
-                                        for (int i = 0, loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
-                                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
-                                    }
-                                }
-                            }
-                        }
-                        else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
+                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.Down))
                         {
-                            // Check to see if we can move them to another map
-                            if (Core.Type.Map[GetPlayerMap(index)].Left > 0)
-                            {
-                                NewMapX = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Left].MaxX;
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Left, NewMapX, GetPlayerY(index), (byte)DirectionType.Left);
-                                DidWarp = Conversions.ToBoolean(1);
-                                Moved = Conversions.ToBoolean(1);
-                            }
+                            break;
                         }
 
-                        break;
+                        SetPlayerY(index, GetPlayerY(index) + 1);
+                        NetworkSend.SendPlayerMove(index, Movement);
+                        Moved = true;
+
+                        for (int i = 0, loopTo1 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo1; i++)
+                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
-
-                case (byte) DirectionType.Right:
+                    else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing && Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
                     {
-                        // Check to make sure not outside of boundaries
-                        if (GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
+                        if (Core.Type.Map[GetPlayerMap(index)].Down > 0)
                         {
-                            // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index)].DirBlock, (byte) DirectionType.Right))
-                            {
-                                if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index)].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index)].Type2 != TileType.Blocked)
-                                {
-                                    if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index)].Type != TileType.Resource & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index)].Type2 != TileType.Resource)
-                                    {
-                                        SetPlayerX(index, GetPlayerX(index) + 1);
-                                        NetworkSend.SendPlayerMove(index, Movement);
-                                        Moved = Conversions.ToBoolean(1);
-
-                                        // Check for event
-                                        for (int i = 0, loopTo3 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo3; i++)
-                                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
-                                    }
-                                }
-                            }
+                            PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Down, GetPlayerX(index), 0, (int)DirectionType.Down);
+                            DidWarp = true;
+                            Moved = true;
                         }
-                        else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
-                        {
-                            // Check to see if we can move them to another map
-                            if (Core.Type.Map[GetPlayerMap(index)].Right > 0)
-                            {
-                                PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Right, 0, GetPlayerY(index), (byte)DirectionType.Right);
-                                DidWarp = Conversions.ToBoolean(1);
-                                Moved = Conversions.ToBoolean(1);
-                            }
-                        }
-
-                        break;
                     }
+                    break;
 
-                case (byte) DirectionType.UpRight:
+                case DirectionType.Left:
+                    if (GetPlayerX(index) > 0)
                     {
-                        // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
-                        {
-                            // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) - 1].DirBlock, (byte) DirectionType.UpRight))
-                            {
-                                if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) - 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) - 1].Type2 != TileType.Blocked)
-                                {
-                                    if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) - 1].Type != TileType.Resource & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) - 1].Type2 != TileType.Resource)
-                                    {
-                                        SetPlayerX(index, GetPlayerX(index) + 1);
-                                        SetPlayerY(index, GetPlayerY(index) - 1);
-                                        NetworkSend.SendPlayerMove(index, Movement);
-                                        Moved = Conversions.ToBoolean(1);
+                        x = GetPlayerX(index) - 1;
+                        y = GetPlayerY(index);
 
-                                        // Check for event
-                                        for (int i = 0, loopTo4 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo4; i++)
-                                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
-                                    }
-                                }
-                            }
+                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.Left))
+                        {
+                            break;
                         }
 
-                        break;
-                    }
+                        SetPlayerX(index, GetPlayerX(index) - 1);
+                        NetworkSend.SendPlayerMove(index, Movement);
+                        Moved = true;
 
-                case (byte) DirectionType.UpLeft:
+                        for (int i = 0, loopTo2 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo2; i++)
+                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
+                    }
+                    else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing && Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
                     {
-                        // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) > 0 && GetPlayerX(index) > 0)
+                        if (Core.Type.Map[GetPlayerMap(index)].Left > 0)
                         {
-                            // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) - 1].DirBlock, (byte) DirectionType.UpLeft))
-                            {
-                                if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) - 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) - 1].Type2 != TileType.Blocked)
-                                {
-                                    if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) - 1].Type != TileType.Resource & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) - 1].Type2 != TileType.Resource)
-                                    {
-                                        SetPlayerX(index, GetPlayerX(index) - 1);
-                                        SetPlayerY(index, GetPlayerY(index) - 1);
-                                        NetworkSend.SendPlayerMove(index, Movement);
-                                        Moved = Conversions.ToBoolean(1);
-
-                                        // Check for event
-                                        for (int i = 0, loopTo5 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo5; i++)
-                                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
-                                    }
-                                }
-                            }
+                            NewMapX = Core.Type.Map[Core.Type.Map[GetPlayerMap(index)].Left].MaxX;
+                            PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Left, NewMapX, GetPlayerY(index), (int)DirectionType.Left);
+                            DidWarp = true;
+                            Moved = true;
                         }
-
-                        break;
                     }
+                    break;
 
-                case (byte) DirectionType.DownRight:
+                case DirectionType.Right:
+                    if (GetPlayerX(index) < Core.Type.Map[mapNum].MaxX - 1)
                     {
-                        // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1 && GetPlayerX(index) < Core.Type.Map[(int)mapNum].MaxX - 1)
-                        {
-                            // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) + 1].DirBlock, (byte) DirectionType.DownRight))
-                            {
-                                if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) + 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) + 1].Type2 != TileType.Blocked)
-                                {
-                                    if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) + 1].Type != TileType.Resource & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) + 1, GetPlayerY(index) + 1].Type2 != TileType.Resource)
-                                    {
-                                        SetPlayerX(index, GetPlayerX(index) + 1);
-                                        SetPlayerY(index, GetPlayerY(index) + 1);
-                                        NetworkSend.SendPlayerMove(index, Movement);
-                                        Moved = Conversions.ToBoolean(1);
+                        x = GetPlayerX(index) + 1;
+                        y = GetPlayerY(index);
 
-                                        // Check for event
-                                        for (int i = 0, loopTo6 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo6; i++)
-                                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
-                                    }
-                                }
-                            }
+                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.Right))
+                        {
+                            break;
                         }
 
-                        break;
-                    }
+                        SetPlayerX(index, GetPlayerX(index) + 1);
+                        NetworkSend.SendPlayerMove(index, Movement);
+                        Moved = true;
 
-                case (byte) DirectionType.DownLeft:
+                        for (int i = 0, loopTo3 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo3; i++)
+                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
+                    }
+                    else if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type != TileType.NoXing && Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)].Type2 != TileType.NoXing)
                     {
-                        // Check to make sure not outside of boundaries
-                        if (GetPlayerY(index) < Core.Type.Map[(int)mapNum].MaxY - 1 && GetPlayerX(index) > 0)
+                        if (Core.Type.Map[GetPlayerMap(index)].Right > 0)
                         {
-                            // Check to make sure that the tile is walkable
-                            if (!IsDirBlocked(ref Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) + 1].DirBlock, (byte) DirectionType.DownLeft))
-                            {
-                                if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) + 1].Type != TileType.Blocked & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) + 1].Type2 != TileType.Blocked)
-                                {
-                                    if (Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) + 1].Type != TileType.Resource & Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index) - 1, GetPlayerY(index) + 1].Type2 != TileType.Resource)
-                                    {
-                                        SetPlayerX(index, GetPlayerX(index) - 1);
-                                        SetPlayerY(index, GetPlayerY(index) + 1);
-                                        NetworkSend.SendPlayerMove(index, Movement);
-                                        Moved = Conversions.ToBoolean(1);
+                            PlayerWarp(index, Core.Type.Map[GetPlayerMap(index)].Right, 0, GetPlayerY(index), (int)DirectionType.Right);
+                            DidWarp = true;
+                            Moved = true;
+                        }
+                    }
+                    break;
 
-                                        // Check for event
-                                        for (int i = 0, loopTo7 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo7; i++)
-                                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
-                                    }
-                                }
-                            }
+                case DirectionType.UpRight:
+                    if (GetPlayerY(index) > 0 && GetPlayerX(index) < Core.Type.Map[mapNum].MaxX - 1)
+                    {
+                        x = GetPlayerX(index) + 1;
+                        y = GetPlayerY(index) - 1;
+
+                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.UpRight))
+                        {
+                            break;
                         }
 
-                        break;
+                        SetPlayerX(index, GetPlayerX(index) + 1);
+                        SetPlayerY(index, GetPlayerY(index) - 1);
+                        NetworkSend.SendPlayerMove(index, Movement);
+                        Moved = true;
+
+                        for (int i = 0, loopTo4 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo4; i++)
+                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
                     }
+                    break;
+
+                case DirectionType.UpLeft:
+                    if (GetPlayerY(index) > 0 && GetPlayerX(index) > 0)
+                    {
+                        x = GetPlayerX(index) - 1;
+                        y = GetPlayerY(index) - 1;
+
+                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.UpLeft))
+                        {
+                            break;
+                        }
+
+                        SetPlayerX(index, GetPlayerX(index) - 1);
+                        SetPlayerY(index, GetPlayerY(index) - 1);
+                        NetworkSend.SendPlayerMove(index, Movement);
+                        Moved = true;
+
+                        for (int i = 0, loopTo5 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo5; i++)
+                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
+                    }
+                    break;
+
+                case DirectionType.DownRight:
+                    if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY - 1 && GetPlayerX(index) < Core.Type.Map[mapNum].MaxX - 1)
+                    {
+                        x = GetPlayerX(index) + 1;
+                        y = GetPlayerY(index) + 1;
+
+                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.DownRight))
+                        {
+                            break;
+                        }
+
+                        SetPlayerX(index, GetPlayerX(index) + 1);
+                        SetPlayerY(index, GetPlayerY(index) + 1);
+                        NetworkSend.SendPlayerMove(index, Movement);
+                        Moved = true;
+
+                        for (int i = 0, loopTo6 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo6; i++)
+                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
+                    }
+                    break;
+
+                case DirectionType.DownLeft:
+                    if (GetPlayerY(index) < Core.Type.Map[mapNum].MaxY - 1 && GetPlayerX(index) > 0)
+                    {
+                        x = GetPlayerX(index) - 1;
+                        y = GetPlayerY(index) + 1;
+
+                        if (IsTileBlocked(index, mapNum, x, y, DirectionType.DownLeft))
+                        {
+                            break;
+                        }
+
+                        SetPlayerX(index, GetPlayerX(index) - 1);
+                        SetPlayerY(index, GetPlayerY(index) + 1);
+                        NetworkSend.SendPlayerMove(index, Movement);
+                        Moved = true;
+
+                        for (int i = 0, loopTo7 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo7; i++)
+                            EventLogic.TriggerEvent(index, i, 1, GetPlayerX(index), GetPlayerY(index));
+                    }
+                    break;
             }
 
             if (GetPlayerX(index) >= 0 && GetPlayerY(index) >= 0 && GetPlayerX(index) < Map[GetPlayerMap(index)].MaxX && GetPlayerY(index) < Map[GetPlayerMap(index)].MaxY)
@@ -1678,7 +1650,54 @@ namespace Server
                     }
                 }
             }
+        }
 
+
+        public static bool IsTileBlocked(int index, int mapNum, int x, int y, DirectionType dir)
+        {      
+            // Check for NPC and player blocking  
+            var loopTo = NetworkConfig.Socket.HighIndex;
+            for (int i = 0; i < loopTo; i++)
+            {
+                if (Core.Type.Moral[Map[mapNum].Moral].PlayerBlock)
+                {
+                    if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
+                    {
+                        if (GetPlayerX(i) == x && GetPlayerY(i) == y)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            var loopTo2 = Core.Constant.MAX_MAP_NPCS;
+            for (int i = 0; i < loopTo2; i++)
+            {
+                if (Core.Type.Moral[Core.Type.Map[mapNum].Moral].NPCBlock)
+                {
+                    if (Core.Type.MapNPC[mapNum].NPC[i].Num >= 0)
+                    {
+                        if (Core.Type.MapNPC[mapNum].NPC[i].X == x && Core.Type.MapNPC[mapNum].NPC[i].Y == y)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            // Check to make sure that the tile is walkable  
+            if (IsDirBlocked(ref Map[mapNum].Tile[x, y].DirBlock, (byte)dir))
+            {
+                return true;
+            }
+
+            if (Core.Type.Map[mapNum].Tile[x, y].Type == TileType.Blocked || Core.Type.Map[mapNum].Tile[x, y].Type2 == TileType.Blocked)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
@@ -2399,7 +2418,7 @@ namespace Server
                         break;
                     }
 
-                case (byte)ItemType.CommonEvent:
+                case (byte)ItemType.Event:
                     {
                         n = Core.Type.Item[itemNum].Data1;
 
