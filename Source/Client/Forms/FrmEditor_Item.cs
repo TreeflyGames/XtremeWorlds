@@ -220,7 +220,7 @@ namespace Client
                 fraPet.Visible = false;
             }
 
-            if (cmbType.SelectedIndex == (int)Core.Enum.ItemType.CommonEvent)
+            if (cmbType.SelectedIndex == (int)Core.Enum.ItemType.Event)
             {
                 fraEvents.Visible = true;
 

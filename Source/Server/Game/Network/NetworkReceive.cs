@@ -615,33 +615,6 @@ namespace Server
             tmpY = buffer.ReadInt32();
             buffer.Dispose();
 
-            // Prevent player from moving if they have casted a skill
-            if (Core.Type.TempPlayer[index].SkillBuffer >= 0)
-            {
-                NetworkSend.SendPlayerXY(index);
-                return;
-            }
-
-            // Cant move if in the bank!
-            if (Core.Type.TempPlayer[index].InBank)
-            {
-                NetworkSend.SendPlayerXY(index);
-                return;
-            }
-
-            // if stunned, stop them moving
-            if (Core.Type.TempPlayer[index].StunDuration > 0)
-            {
-                NetworkSend.SendPlayerXY(index);
-                return;
-            }
-
-            // Prevent player from moving if in shop
-            if (Core.Type.TempPlayer[index].InShop >= 0)
-            {
-                NetworkSend.SendPlayerXY(index);
-                return;
-            }
 
             // Desynced
             int x = GetPlayerX(index);

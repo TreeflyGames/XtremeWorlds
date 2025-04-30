@@ -54,7 +54,6 @@ namespace Core
             WalkThrough,
             Arena,
             Roof,
-
             Count
         }
 
@@ -85,7 +84,7 @@ namespace Core
         {
             Equipment,
             Consumable,
-            CommonEvent,
+            Event,
             Currency,
             Skill,
             Projectile,

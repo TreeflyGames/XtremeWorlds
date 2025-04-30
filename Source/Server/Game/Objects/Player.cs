@@ -1227,6 +1227,27 @@ namespace Server
                 return;
             }
 
+            // Prevent player from moving if they have casted a skill
+            if (Core.Type.TempPlayer[index].SkillBuffer >= 0)
+            {
+                NetworkSend.SendPlayerXY(index);
+                return;
+            }
+
+            // Cant move if in the bank
+            if (Core.Type.TempPlayer[index].InBank)
+            {
+                NetworkSend.SendPlayerXY(index);
+                return;
+            }
+
+            // if stunned, stop them moving
+            if (Core.Type.TempPlayer[index].StunDuration > 0)
+            {
+                NetworkSend.SendPlayerXY(index);
+                return;
+            }
+
             if (Core.Type.TempPlayer[index].InShop >= 0 | Core.Type.TempPlayer[index].InBank)
             {
                 return;
@@ -2399,7 +2420,7 @@ namespace Server
                         break;
                     }
 
-                case (byte)ItemType.CommonEvent:
+                case (byte)ItemType.Event:
                     {
                         n = Core.Type.Item[itemNum].Data1;
 

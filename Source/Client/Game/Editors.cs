@@ -574,7 +574,7 @@ namespace Client
                 frmEditor_Item.Instance.fraProjectile.Visible = false;
             }
 
-            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)Core.Enum.ItemType.CommonEvent)
+            if (frmEditor_Item.Instance.cmbType.SelectedIndex == (int)Core.Enum.ItemType.Event)
             {
                 frmEditor_Item.Instance.fraEvents.Visible = true;
                 frmEditor_Item.Instance.nudEvent.Value = withBlock.Data1;
