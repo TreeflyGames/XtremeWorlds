@@ -615,7 +615,6 @@ namespace Server
             tmpY = buffer.ReadInt32();
             buffer.Dispose();
 
-
             // Desynced
             int x = GetPlayerX(index);
             if (x != tmpX)
