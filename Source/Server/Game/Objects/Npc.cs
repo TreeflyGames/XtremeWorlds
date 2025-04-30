@@ -43,9 +43,6 @@ namespace Server
             if (Core.Type.Map[mapNum].NoRespawn)
                 return;
 
-            if (Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num < 0 || Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num > Core.Constant.MAX_NPCS)
-                return;
-
             NPCNum = Core.Type.Map[mapNum].NPC[(int)MapNPCNum];
 
             if (NPCNum >= 0)
