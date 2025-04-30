@@ -1473,7 +1473,183 @@ namespace Server
                     break;
             }
 
-            // Additional logic for handling events, warps, and other tile interactions remains unchanged.
+            if (GetPlayerX(index) >= 0 && GetPlayerY(index) >= 0 && GetPlayerX(index) < Map[GetPlayerMap(index)].MaxX && GetPlayerY(index) < Map[GetPlayerMap(index)].MaxY)
+            {
+                ref var withBlock = ref Core.Type.Map[GetPlayerMap(index)].Tile[GetPlayerX(index), GetPlayerY(index)];
+                mapNum = -1;
+                x = 0;
+                y = 0;
+
+                // Check to see if the tile is a warp tile, and if so warp them
+                if (withBlock.Type == TileType.Warp)
+                {
+                    mapNum = withBlock.Data1;
+                    x = withBlock.Data2;
+                    y = withBlock.Data3;
+                }
+
+                if (withBlock.Type2 == TileType.Warp)
+                {
+                    mapNum = withBlock.Data1_2;
+                    x = withBlock.Data2_2;
+                    y = withBlock.Data3_2;
+                }
+
+                if (mapNum >= 0)
+                {
+                    PlayerWarp(index, (int)mapNum, x, y, (int)DirectionType.Down);
+
+                    DidWarp = Conversions.ToBoolean(1);
+                    Moved = Conversions.ToBoolean(1);
+                }
+
+                x = -1;
+                y = 0;
+
+                // Check for a shop, and if so open it
+                if (withBlock.Type == TileType.Shop)
+                {
+                    x = withBlock.Data1;
+                }
+
+                if (withBlock.Type2 == TileType.Shop)
+                {
+                    x = withBlock.Data1_2;
+                }
+
+                if (x >= 0) // shop exists?
+                {
+                    if (Strings.Len(Core.Type.Shop[x].Name) > 0) // name exists?
+                    {
+                        NetworkSend.SendOpenShop(index, x);
+                        Core.Type.TempPlayer[index].InShop = x; // stops movement and the like
+                    }
+                }
+
+                // Check to see if the tile is a bank, and if so send bank
+                if (withBlock.Type == TileType.Bank | withBlock.Type2 == TileType.Bank)
+                {
+                    NetworkSend.SendBank(index);
+                    Core.Type.TempPlayer[index].InBank = true;
+                    Moved = Conversions.ToBoolean(1);
+                }
+
+                // Check if it's a heal tile
+                if (withBlock.Type == TileType.Heal)
+                {
+                    vital = withBlock.Data1;
+                    amount = withBlock.Data2;
+                }
+
+                if (withBlock.Type2 == TileType.Heal)
+                {
+                    vital = withBlock.Data1_2;
+                    amount += withBlock.Data2_2;
+                }
+
+                if (vital > 0)
+                {
+                    if (!(GetPlayerVital(index, (VitalType)vital) == GetPlayerMaxVital(index, (VitalType)vital)))
+                    {
+                        if (vital == (byte)VitalType.HP)
+                        {
+                            Color = (int) ColorType.BrightGreen;
+                        }
+                        else
+                        {
+                            Color = (int) ColorType.BrightBlue;
+                        }
+
+                        NetworkSend.SendActionMsg(GetPlayerMap(index), "+" + amount, Color, (byte)ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1);
+                        SetPlayerVital(index, (VitalType)vital, GetPlayerVital(index, (VitalType)vital) + amount);
+                        NetworkSend.PlayerMsg(index, "You feel rejuvenating forces coursing through your body.", (int) ColorType.BrightGreen);
+                        NetworkSend.SendVital(index, (VitalType)vital);
+                    }
+                    Moved = Conversions.ToBoolean(1);
+                }
+
+                // Check if it's a trap tile
+                if (withBlock.Type == TileType.Trap)
+                {
+                    amount = withBlock.Data1;
+                }
+
+                if (withBlock.Type2 == TileType.Trap)
+                {
+                    amount += withBlock.Data1_2;
+                }
+
+                if (amount > 0)
+                {
+                    NetworkSend.SendActionMsg(GetPlayerMap(index), "-" + amount, (int) ColorType.BrightRed, (byte)ActionMsgType.Scroll, GetPlayerX(index) * 32, GetPlayerY(index) * 32, 1);
+                    if (GetPlayerVital(index, (VitalType)VitalType.HP) - amount < 0)
+                    {
+                        KillPlayer(index);
+                        NetworkSend.PlayerMsg(index, "You've been killed by a trap.", (int) ColorType.BrightRed);
+                    }
+                    else
+                    {
+                        SetPlayerVital(index, (VitalType)VitalType.HP, GetPlayerVital(index, (VitalType)VitalType.HP) - amount);
+                        NetworkSend.PlayerMsg(index, "You've been injured by a trap.", (int) ColorType.BrightRed);
+                        NetworkSend.SendVital(index, (VitalType)VitalType.HP);
+                    }
+                    Moved = Conversions.ToBoolean(1);
+                }
+
+            }
+
+            // They tried to hack
+            if (Conversions.ToInteger(Moved) == 0 | ExpectingWarp & !DidWarp)
+            {
+                PlayerWarp(index, GetPlayerMap(index), GetPlayerX(index), GetPlayerY(index), (byte)Core.Enum.DirectionType.Down);
+            }
+
+            x = GetPlayerX(index);
+            y = GetPlayerY(index);
+
+            if (Conversions.ToInteger(Moved) == 1)
+            {
+                if (Core.Type.TempPlayer[index].EventMap.CurrentEvents > 0)
+                {
+                    for (int i = 0, loopTo8 = Core.Type.TempPlayer[index].EventMap.CurrentEvents; i < loopTo8; i++)
+                    {
+                        begineventprocessing = Conversions.ToBoolean(0);
+
+                        if (Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId >= 0)
+                        {
+                            if ((int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Globals == 1)
+                            {
+                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].X == x & Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
+                                    begineventprocessing = Conversions.ToBoolean(1);
+                            }
+                            else if (Core.Type.TempPlayer[index].EventMap.EventPages[i].X == x & Core.Type.TempPlayer[index].EventMap.EventPages[i].Y == y & (int)Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].Trigger == 1 & Core.Type.TempPlayer[index].EventMap.EventPages[i].Visible == true)
+                                begineventprocessing = Conversions.ToBoolean(1);
+                          
+                            if (Conversions.ToInteger(begineventprocessing) == 1)
+                            {
+                                // Process this event, it is on-touch and everything checks out.
+                                if (Core.Type.Map[GetPlayerMap(index)].Event[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Pages[Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId].CommandListCount > 0)
+                                {
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].Active = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].ActionTimer = General.GetTimeMs();
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].CurList = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].CurSlot = 0;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
+                                    Core.Type.TempPlayer[index].EventProcessing[Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId].WaitingForResponse = 0;
+
+                                    int EventId = Core.Type.TempPlayer[index].EventMap.EventPages[i].EventId;
+                                    int PageId = Core.Type.TempPlayer[index].EventMap.EventPages[i].PageId;
+                                    int commandListCount = Core.Type.Map[GetPlayerMap(index)].Event[EventId].Pages[PageId].CommandListCount;
+
+                                    Array.Resize(ref Core.Type.TempPlayer[index].EventProcessing[EventId].ListLeftOff, commandListCount);
+                                }
+                                begineventprocessing = Conversions.ToBoolean(0);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
 

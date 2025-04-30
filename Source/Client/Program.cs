@@ -923,21 +923,24 @@ namespace Client
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-                if (IsMouseButtonDown(MouseButton.Left) && IsSeartchCooldownElapsed())
+                if (IsMouseButtonDown(MouseButton.Left))
                 {
                     if (GameState.MyEditorType == (int)EditorType.Map)
                     {
                         frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
                     }
-                    if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
-                    {
-                        Pet.PetMove(GameState.CurX, GameState.CurY);
-                    }
-                    Player.CheckAttack(true);
-                    NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
-                    lastSearchTime = DateTime.Now;
-                }
 
+                    if (IsSeartchCooldownElapsed())
+                    {
+                        if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
+                        {
+                            Pet.PetMove(GameState.CurX, GameState.CurY);
+                        }
+                        Player.CheckAttack(true);
+                        NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
+                        lastSearchTime = DateTime.Now;
+                    }
+                }
                 // Right-click interactions
                 if (IsMouseButtonDown(MouseButton.Right))
                 {
