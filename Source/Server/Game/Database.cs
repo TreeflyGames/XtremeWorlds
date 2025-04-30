@@ -757,7 +757,7 @@ namespace Server
 
             Core.Type.Job[jobNum].Name = "";
             Core.Type.Job[jobNum].Desc = "";
-            Core.Type.Job[jobNum].StartMap = 0;
+            Core.Type.Job[jobNum].StartMap = 1;
             Core.Type.Job[jobNum].MaleSprite = 0;
             Core.Type.Job[jobNum].FemaleSprite = 0;
         }
