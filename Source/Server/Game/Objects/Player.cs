@@ -1483,11 +1483,14 @@ namespace Server
             var loopTo = NetworkConfig.Socket.HighIndex;
             for (int i = 0; i < loopTo; i++)
             {
-                if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
+                if (Core.Type.Moral[Map[mapNum].Moral].PlayerBlock)
                 {
-                    if (GetPlayerX(i) == x && GetPlayerY(i) == y)
+                    if (NetworkConfig.IsPlaying(i) & GetPlayerMap(i) == mapNum)
                     {
-                        return true;
+                        if (GetPlayerX(i) == x && GetPlayerY(i) == y)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
