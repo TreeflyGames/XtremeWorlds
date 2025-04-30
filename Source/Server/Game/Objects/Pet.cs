@@ -321,6 +321,7 @@ namespace Server
 
             if (GetPlayerAccess(index) < (byte) AccessType.Developer)
                 return;
+
             if (Core.Type.TempPlayer[index].Editor > 0)
                 return;
 
@@ -335,6 +336,8 @@ namespace Server
             }
 
             Core.Type.TempPlayer[index].Editor = (byte) EditorType.Pet;
+
+            Pet.SendPets(index);
 
             buffer.WriteInt32((int) ServerPackets.SPetEditor);
             NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
