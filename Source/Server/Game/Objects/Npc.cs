@@ -1175,12 +1175,12 @@ namespace Server
         public static void DropNPCItems(int mapNum, int MapNPCNum)
         {
             var NPCNum = Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Num;
-            double tmpitem = General.GetRandom.NextDouble(1d, 5d);
-            var n = VBMath.Rnd() * (float)Core.Type.NPC[(int)NPCNum].DropChance[(int)Math.Round(tmpitem)] + 1;
+            int tmpitem = General.GetRandom.NextInt(1, 5);
+            var n = VBMath.Rnd() * Core.Type.NPC[(int)NPCNum].DropChance[tmpitem] + 1;
 
             if (n == 1)
             {
-                Item.SpawnItem(Core.Type.NPC[(int)NPCNum].DropItem[(int)Math.Round(tmpitem)], Core.Type.NPC[(int)NPCNum].DropItemValue[(int)Math.Round(tmpitem)], mapNum, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y);
+                Item.SpawnItem(Core.Type.NPC[(int)NPCNum].DropItem[tmpitem], Core.Type.NPC[(int)NPCNum].DropItemValue[tmpitem], mapNum, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].X, Core.Type.MapNPC[mapNum].NPC[(int)MapNPCNum].Y); // Fixed: Removed Math.Round ambiguity
             }
         }
 

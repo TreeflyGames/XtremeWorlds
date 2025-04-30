@@ -299,8 +299,8 @@ namespace Server
                             // /////////////////////////////////////////
                             // // This is used for ATTACKING ON SIGHT //
                             // /////////////////////////////////////////
-                            // Make sure theres a npc with the map
-                            if (Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
+                            // Make sure there's a npc with the map
+                            if (Core.Type.Map[mapNum].NPC[x] >= 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
                             {
 
                                 // If the npc is a attack on sight, search for a player on the map
@@ -548,7 +548,7 @@ namespace Server
                         // // This is used for npcs to attack targets //
                         // /////////////////////////////////////////////
                         // Make sure theres a npc with the map
-                        if (Core.Type.Map[mapNum].NPC[x] > 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
+                        if (Core.Type.Map[mapNum].NPC[x] >= 0 & Core.Type.MapNPC[mapNum].NPC[x].Num >= 0)
                         {
                             target = Core.Type.MapNPC[mapNum].NPC[x].Target;
                             targetType = Core.Type.MapNPC[mapNum].NPC[x].TargetType;
