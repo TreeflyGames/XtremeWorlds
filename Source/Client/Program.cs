@@ -902,10 +902,27 @@ namespace Client
                 Gui.HandleInterfaceEvents(EntState.MouseUp);
             }
 
+            for (int i = 1; i < Gui.Windows.Count; i++)
+            {
+                // Check if active control is hovered
+                if (Gui.Windows[i].Controls != null)
+                {
+                    for (int j = 0; j < Gui.Windows[i].Controls.Count; j++)
+                    {
+                        if (GameState.CurMouseX >= Gui.Windows[i].Left && GameState.CurMouseX <= Gui.Windows[i].Width + Gui.Windows[i].Left && GameState.CurMouseY >= Gui.Windows[i].Top && GameState.CurMouseY <= Gui.Windows[i].Height + Gui.Windows[i].Top)
+                        {
+                            if (Gui.Windows[i].Controls[j].State != Core.Enum.EntState.Normal)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-
                 if (IsMouseButtonDown(MouseButton.Left) && IsSeartchCooldownElapsed())
                 {
                     if (GameState.MyEditorType == (int)EditorType.Map)
