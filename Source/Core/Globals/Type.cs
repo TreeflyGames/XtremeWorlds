@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using Core.Database;
 
 namespace Core
@@ -19,7 +20,7 @@ namespace Core
         public static AnimationStruct[] Animation = new AnimationStruct[Constant.MAX_ANIMATIONS];
         public static MapStruct[] Map = new MapStruct[Constant.MAX_MAPS];
         public static MapStruct MyMap;
-        public static TileStruct[,] TmpTile;
+        public static TileStruct[,] TempTile;
         public static bool[] PlayersOnMap = new bool[Constant.MAX_MAPS];
         public static MapItemStruct[,] MapItem = new MapItemStruct[Constant.MAX_MAPS, Constant.MAX_MAP_ITEMS];
         public static MapItemStruct[] MyMapItem = new MapItemStruct[Constant.MAX_MAP_ITEMS];
@@ -167,7 +168,6 @@ namespace Core
             public int Data3_2;
             public byte DirBlock;
         }
-
         public struct TileHistoryStruct
         {
             public TileStruct[,] Tile;
@@ -383,7 +383,6 @@ namespace Core
             public EventProcessingStruct[] EventProcessing;
             public int StopRegenTimer;
             public byte StopRegen;
-            public int TmpInstanceNum;
             public int TmpMap;
             public int TmpX;
             public int TmpY;
@@ -397,8 +396,8 @@ namespace Core
             public int PetAttackTimer;
             public int[] PetSkillCD;
             public SkillBufferRec PetSkillBuffer;
-            public DoTRStruct[] PetDoT;
-            public DoTRStruct[] PetHoT;
+            public DoTStruct[] PetDoT;
+            public DoTStruct[] PetHoT;
             public bool PetStopRegen;
             public int PetStopRegenTimer;
             public int Editor;
@@ -501,7 +500,7 @@ namespace Core
             public byte TargetType;
         }
 
-        public struct DoTRStruct
+        public struct DoTStruct
         {
             public bool Used;
             public int Skill;

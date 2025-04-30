@@ -1852,7 +1852,7 @@ namespace Client
 
             if (GameState.CopyMap == false)
             {
-                Core.Type.TmpTile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
+                Core.Type.TempTile = new Core.Type.TileStruct[Core.Type.MyMap.MaxX, Core.Type.MyMap.MaxY];
                 GameState.TmpMaxX = Core.Type.MyMap.MaxX;
                 GameState.TmpMaxY = Core.Type.MyMap.MaxY;
 
@@ -1863,24 +1863,24 @@ namespace Client
                     for (y = 0; y < loopTo1; y++)
                     {
                         ref var withBlock = ref Core.Type.MyMap.Tile[x, y];
-                        Core.Type.TmpTile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
+                        Core.Type.TempTile[x, y].Layer = new Core.Type.TileDataStruct[(int)Core.Enum.LayerType.Count];
 
-                        Core.Type.TmpTile[x, y].Data1 = withBlock.Data1;
-                        Core.Type.TmpTile[x, y].Data2 = withBlock.Data2;
-                        Core.Type.TmpTile[x, y].Data3 = withBlock.Data3;
-                        Core.Type.TmpTile[x, y].Type = withBlock.Type;
-                        Core.Type.TmpTile[x, y].Data1_2 = withBlock.Data1_2;
-                        Core.Type.TmpTile[x, y].Data2_2 = withBlock.Data2_2;
-                        Core.Type.TmpTile[x, y].Data3_2 = withBlock.Data3_2;
-                        Core.Type.TmpTile[x, y].Type2 = withBlock.Type2;
-                        Core.Type.TmpTile[x, y].DirBlock = withBlock.DirBlock;
+                        Core.Type.TempTile[x, y].Data1 = withBlock.Data1;
+                        Core.Type.TempTile[x, y].Data2 = withBlock.Data2;
+                        Core.Type.TempTile[x, y].Data3 = withBlock.Data3;
+                        Core.Type.TempTile[x, y].Type = withBlock.Type;
+                        Core.Type.TempTile[x, y].Data1_2 = withBlock.Data1_2;
+                        Core.Type.TempTile[x, y].Data2_2 = withBlock.Data2_2;
+                        Core.Type.TempTile[x, y].Data3_2 = withBlock.Data3_2;
+                        Core.Type.TempTile[x, y].Type2 = withBlock.Type2;
+                        Core.Type.TempTile[x, y].DirBlock = withBlock.DirBlock;
 
                         for (i = 0; i < (int)LayerType.Count; i++)
                         {
-                            Core.Type.TmpTile[x, y].Layer[i].X = withBlock.Layer[i].X;
-                            Core.Type.TmpTile[x, y].Layer[i].Y = withBlock.Layer[i].Y;
-                            Core.Type.TmpTile[x, y].Layer[i].Tileset = withBlock.Layer[i].Tileset;
-                            Core.Type.TmpTile[x, y].Layer[i].AutoTile = withBlock.Layer[i].AutoTile;
+                            Core.Type.TempTile[x, y].Layer[i].X = withBlock.Layer[i].X;
+                            Core.Type.TempTile[x, y].Layer[i].Y = withBlock.Layer[i].Y;
+                            Core.Type.TempTile[x, y].Layer[i].Tileset = withBlock.Layer[i].Tileset;
+                            Core.Type.TempTile[x, y].Layer[i].AutoTile = withBlock.Layer[i].AutoTile;
                         }
                     }
                 }
@@ -1903,22 +1903,22 @@ namespace Client
                         Array.Resize(ref Core.Type.MyMap.Tile[x, y].Layer, (int)Core.Enum.LayerType.Count);
                         Array.Resize(ref Core.Type.Autotile[x, y].Layer, (int)Core.Enum.LayerType.Count);
 
-                        withBlock1.Data1 = Core.Type.TmpTile[x, y].Data1;
-                        withBlock1.Data2 = Core.Type.TmpTile[x, y].Data2;
-                        withBlock1.Data3 = Core.Type.TmpTile[x, y].Data3;
-                        withBlock1.Type = Core.Type.TmpTile[x, y].Type;
-                        withBlock1.Data1_2 = Core.Type.TmpTile[x, y].Data1_2;
-                        withBlock1.Data2_2 = Core.Type.TmpTile[x, y].Data2_2;
-                        withBlock1.Data3_2 = Core.Type.TmpTile[x, y].Data3_2;
-                        withBlock1.Type2 = Core.Type.TmpTile[x, y].Type2;
-                        withBlock1.DirBlock = Core.Type.TmpTile[x, y].DirBlock;
+                        withBlock1.Data1 = Core.Type.TempTile[x, y].Data1;
+                        withBlock1.Data2 = Core.Type.TempTile[x, y].Data2;
+                        withBlock1.Data3 = Core.Type.TempTile[x, y].Data3;
+                        withBlock1.Type = Core.Type.TempTile[x, y].Type;
+                        withBlock1.Data1_2 = Core.Type.TempTile[x, y].Data1_2;
+                        withBlock1.Data2_2 = Core.Type.TempTile[x, y].Data2_2;
+                        withBlock1.Data3_2 = Core.Type.TempTile[x, y].Data3_2;
+                        withBlock1.Type2 = Core.Type.TempTile[x, y].Type2;
+                        withBlock1.DirBlock = Core.Type.TempTile[x, y].DirBlock;
 
                         for (i = 0; i < (int)LayerType.Count; i++)
                         {
-                            withBlock1.Layer[i].X = Core.Type.TmpTile[x, y].Layer[i].X;
-                            withBlock1.Layer[i].Y = Core.Type.TmpTile[x, y].Layer[i].Y;
-                            withBlock1.Layer[i].Tileset = Core.Type.TmpTile[x, y].Layer[i].Tileset;
-                            withBlock1.Layer[i].AutoTile = Core.Type.TmpTile[x, y].Layer[i].AutoTile;
+                            withBlock1.Layer[i].X = Core.Type.TempTile[x, y].Layer[i].X;
+                            withBlock1.Layer[i].Y = Core.Type.TempTile[x, y].Layer[i].Y;
+                            withBlock1.Layer[i].Tileset = Core.Type.TempTile[x, y].Layer[i].Tileset;
+                            withBlock1.Layer[i].AutoTile = Core.Type.TempTile[x, y].Layer[i].AutoTile;
                             Autotile.CacheRenderState(x, y, i);
                         }
                     }

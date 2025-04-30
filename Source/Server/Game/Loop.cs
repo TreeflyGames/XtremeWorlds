@@ -66,12 +66,6 @@ namespace Server
                                     where p.player.PetStopRegen && p.player.PetStopRegenTimer + 5000 < General.GetTimeMs()
                                     select new { p.Index, Success = HandleStopPetRegen((int)p.Index) }).ToArray();
 
-                    // HoT and DoT logic
-                    // For x = 1 To Core.Constant.MAX_COTS
-                    // HandleDoT_Pet i, x
-                    // HandleHoT_Pet i, x
-                    // Next
-
                     // Update all our available events.
                     EventLogic.UpdateEventLogic();
 
@@ -156,11 +150,9 @@ namespace Server
             var loopTo = Core.Constant.MAX_MAPS;
             for (y = 0; y < loopTo; y++)
             {
-
                 // Make sure no one is on the map when it respawns
                 if (!PlayersOnMap[y])
                 {
-
                     // Clear out unnecessary junk
                     var loopTo1 = Core.Constant.MAX_MAP_ITEMS;
                     for (x = 0; x < loopTo1; x++)
@@ -170,9 +162,7 @@ namespace Server
                     Item.SpawnMapItems(y);
                     Item.SendMapItemsToAll(y);
                 }
-
             }
-
         }
 
         private static void UpdatePlayerVitals()
@@ -1629,6 +1619,5 @@ namespace Server
                 NPC.SendMapNPCVitals(mapNum, (byte)index);
             }
         }
-
     }
 }
