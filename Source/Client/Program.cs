@@ -99,6 +99,7 @@ namespace Client
         // Handle Escape key to toggle menus
         private static DateTime lastMouseClickTime = DateTime.MinValue;
         private const int mouseClickCooldown = 250;
+        private static DateTime lastSearchTime = DateTime.MinValue;
 
         // Ensure this class exists to store graphic info
         public class GfxInfo
@@ -618,6 +619,11 @@ namespace Client
             return (DateTime.Now - lastInputTime).TotalMilliseconds >= inputCooldown;
         }
 
+        private static bool IsSeartchCooldownElapsed()
+        {
+            return (DateTime.Now - lastSearchTime).TotalMilliseconds >= inputCooldown;
+        }
+
         private static void UpdateLastInputTime()
         {
             lastInputTime = DateTime.Now;
@@ -899,7 +905,8 @@ namespace Client
             // In-game interactions for left click
             if (GameState.InGame == true)
             {
-                if (IsMouseButtonUp(MouseButton.Left))
+
+                if (IsMouseButtonDown(MouseButton.Left) && IsSeartchCooldownElapsed())
                 {
                     if (GameState.MyEditorType == (int)EditorType.Map)
                     {
@@ -911,6 +918,7 @@ namespace Client
                     }
                     Player.CheckAttack(true);
                     NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
+                    lastSearchTime = DateTime.Now;
                 }
 
                 // Right-click interactions
