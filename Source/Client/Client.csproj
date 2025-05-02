@@ -1,77 +1,31 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <TargetFramework>net9.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <RootNamespace>Client</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-    <MyType>Empty</MyType>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ManifestCertificateThumbprint>181BBD77C201FB969E61DF100063FD42A08B2BE6</ManifestCertificateThumbprint>
-    <ManifestKeyFile>XtremeWorlds.pfx</ManifestKeyFile>
-    <GenerateManifests>false</GenerateManifests>
-    <TargetZone>LocalIntranet</TargetZone>
-    <SignManifests>false</SignManifests>
-    <PublishUrl>\Publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>false</BootstrapperEnabled>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DebugType>Full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
-    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
-	<MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>CLIENT</DefineConstants>
+    <NoWarn>42016,41999,42017,...,CA1416</NoWarn>
   </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355,CA1416</NoWarn>
-    <DebugType>None</DebugType>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>CLIENT</DefineConstants>
+    <DebugType>None</DebugType>
+    <NoWarn>42016,41999,42017,...,CA1416</NoWarn>
   </PropertyGroup>
+
   <ItemGroup>
-    <Content Include="bass.dll" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="bassmidi.dll" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="libbass.dylib" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="libbassmidi.dylib" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
-	  <Content Include="Content\**\*.*">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
-	  </Content>
-    <EmbeddedResource Include="Icon.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Network\Asfw.csproj" />
-  </ItemGroup>
-  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
     <PackageReference Include="ManagedBass" />
     <PackageReference Include="ManagedBass.Midi" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
@@ -79,16 +33,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
-    <PackageReference Include="nkast.Xna.Framework" />
-    <PackageReference Include="nkast.Xna.Framework.Content" />
-    <PackageReference Include="nkast.Xna.Framework.Graphics" />
-    <PackageReference Include="nkast.Xna.Framework.Audio" />
-    <PackageReference Include="nkast.Xna.Framework.Media" />
-    <PackageReference Include="nkast.Xna.Framework.Game" />
-    <PackageReference Include="nkast.Xna.Framework.Devices" />
-    <PackageReference Include="nkast.Xna.Framework.Storage" />
-    <PackageReference Include="nkast.Xna.Framework.XR" />
-    <PackageReference Include="nkast.Kni.Platform.Blazor.GL" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Enrichers.Environment" />
     <PackageReference Include="Serilog.Enrichers.Thread" />
@@ -97,33 +41,50 @@
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="System.Resources.Extensions" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="nkast.Xna.Framework" />
+    <PackageReference Include="nkast.Xna.Framework.Audio" />
+    <PackageReference Include="nkast.Xna.Framework.Content" />
+    <PackageReference Include="nkast.Xna.Framework.Devices" />
+    <PackageReference Include="nkast.Xna.Framework.Game" />
+    <PackageReference Include="nkast.Xna.Framework.Graphics" />
+    <PackageReference Include="nkast.Xna.Framework.Input" />
+    <PackageReference Include="nkast.Xna.Framework.Media" />
+    <PackageReference Include="nkast.Xna.Framework.Storage" />
+    <PackageReference Include="nkast.Xna.Framework.XR" />
+    <PackageReference Include="nkast.Kni.Platform.Blazor.GL" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Network\Asfw.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Configuration">
-      <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net8.0\Microsoft.Extensions.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Configuration" />
+    <Content Include="bass.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="bassmidi.dll" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="libbass.dylib" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="libbassmidi.dylib" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="libbass.so" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="libbassmidi.so" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="GeneralUser.sf2" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Content\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+    <EmbeddedResource Include="Icon.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
+
   <PropertyGroup>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <UserSecretsId>e1a83a62-5587-413f-8a1a-f277ec156c75</UserSecretsId>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <UserSecretsId>e1a83a62-5587-413f-8a1a-f277ec156c75</UserSecretsId>
   </PropertyGroup>
+
   <Target Name="EnsureContentFolderExists" BeforeTargets="Build">
     <MakeDir Directories="$(OutputPath)Content" />
   </Target>
+
   <Import Project="..\Modules\Reoria.Engine\Reoria.Engine.projitems" Label="Shared" />
 </Project>
