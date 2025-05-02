@@ -79,9 +79,16 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" />
-    <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" />
+    <PackageReference Include="nkast.Xna.Framework" />
+    <PackageReference Include="nkast.Xna.Framework.Content" />
+    <PackageReference Include="nkast.Xna.Framework.Graphics" />
+    <PackageReference Include="nkast.Xna.Framework.Audio" />
+    <PackageReference Include="nkast.Xna.Framework.Media" />
+    <PackageReference Include="nkast.Xna.Framework.Game" />
+    <PackageReference Include="nkast.Xna.Framework.Devices" />
+    <PackageReference Include="nkast.Xna.Framework.Storage" />
+    <PackageReference Include="nkast.Xna.Framework.XR" />
+    <PackageReference Include="nkast.Kni.Platform.Blazor.GL" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Enrichers.Environment" />
     <PackageReference Include="Serilog.Enrichers.Thread" />
@@ -90,6 +97,8 @@
     <PackageReference Include="Serilog.Sinks.Console" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="System.Resources.Extensions" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\LICENSE">
@@ -106,9 +115,6 @@
       <HintPath>..\..\..\.nuget\packages\microsoft.extensions.configuration\9.0.0\lib\net8.0\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Configuration" />
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.3\lib\net8.0\MonoGame.Framework.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

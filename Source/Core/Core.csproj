@@ -23,15 +23,6 @@
 	<PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Console" />
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="NLua" />
     <PackageReference Include="Npgsql" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="KeraLua">
-      <HintPath>..\..\..\.nuget\packages\keralua\1.4.3\lib\net8.0\KeraLua.dll</HintPath>
-    </Reference>
-    <Reference Include="NLua">
-      <HintPath>..\..\..\.nuget\packages\nlua\1.7.4\lib\net8.0\NLua.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
