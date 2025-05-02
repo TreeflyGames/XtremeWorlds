@@ -1,19 +1,25 @@
-﻿using System.Reflection.Metadata;
-using static Core.Enum;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Client;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Client
+namespace WebGLxna
 {
-
-    public class Program
+    internal class Program
     {
-        public static void Main()
+        private static async Task Main(string[] args)
         {
-            RunGame();
-        }
-
-        public static void RunGame()
-        {
-            General.Client.Run();
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.RootComponents.Add<App>("#app");
+            builder.RootComponents.Add<HeadOutlet>("head::after");
+            builder.Services.AddScoped(sp => new HttpClient()
+            {
+                BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+            });
+            await builder.Build().RunAsync();
         }
     }
 }

@@ -76,6 +76,10 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <UserSecretsId>e1a83a62-5587-413f-8a1a-f277ec156c75</UserSecretsId>
     <ApplicationIcon>icon.ico</ApplicationIcon>

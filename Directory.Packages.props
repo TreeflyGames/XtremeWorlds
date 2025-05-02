@@ -46,5 +46,7 @@
     <PackageVersion Include="Serilog.Sinks.File" Version="6.0.0" />
     <!-- System -->
     <PackageVersion Include="System.Resources.Extensions" Version="9.0.0" />
+    <PackageVersion Include="nkast.Kni.Platform.Blazor.GL" Version="4.1.9001" />
+
   </ItemGroup>
 </Project>
