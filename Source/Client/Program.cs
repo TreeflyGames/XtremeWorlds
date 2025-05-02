@@ -914,11 +914,8 @@ namespace Client
                     {
                         Pet.PetMove(GameState.CurX, GameState.CurY);
                     }
-
-                    Player.CheckAttack(true);
-                    NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
                 }
-
+                
                 if (IsSeartchCooldownElapsed())
                 {
                     if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
