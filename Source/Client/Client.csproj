@@ -1,14 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <PropertyGroup>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <TargetFramework>net9.0</TargetFramework>
-    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
     <OutputType>Exe</OutputType>
+    <Nullable>disable</Nullable>
     <RootNamespace>Client</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <LangVersion>latest</LangVersion>
     <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+    <DefineConstants>$(DefineConstants);BLAZORGL</DefineConstants>
+    <KniPlatform>BlazorGL</KniPlatform>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+    <!--<InvariantGlobalization>true</InvariantGlobalization>-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
@@ -79,6 +86,40 @@
 
   <ItemGroup>
     <Folder Include="Pages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Game\Database.cs" />
+    <Compile Include="Game\GameLogic.cs" />
+    <Compile Include="Game\General.cs" />
+    <Compile Include="Game\Loop.cs" />
+    <Compile Include="Game\Main.cs" />
+    <Compile Include="Game\Network\NetworkConfig.cs" />
+    <Compile Include="Game\Network\NetworkReceive.cs" />
+    <Compile Include="Game\Network\NetworkSend.cs" />
+    <Compile Include="Game\Objects\Animation.cs" />
+    <Compile Include="Game\Objects\Autotile.cs" />
+    <Compile Include="Game\Objects\Item.cs" />
+    <Compile Include="Game\Objects\Map.cs" />
+    <Compile Include="Game\Objects\Moral.cs" />
+    <Compile Include="Game\Objects\Pet.cs" />
+    <Compile Include="Game\Objects\Player.cs" />
+    <Compile Include="Game\Objects\Projectile.cs" />
+    <Compile Include="Game\Objects\Resource.cs" />
+    <Compile Include="Game\Sound.cs" />
+    <Compile Include="Game\States\GameState.cs" />
+    <Compile Include="Game\Systems\Bank.cs" />
+    <Compile Include="Game\Systems\Event.cs" />
+    <Compile Include="Game\Systems\Party.cs" />
+    <Compile Include="Game\Systems\Shop.cs" />
+    <Compile Include="Game\Systems\Trade.cs" />
+    <Compile Include="Game\Systems\Weather.cs" />
+    <Compile Include="Game\UI\Chat.cs" />
+    <Compile Include="Game\UI\Gui.cs" />
+    <Compile Include="Game\UI\Text.cs" />
+    <Compile Include="Game\XWConfigurationProvider.cs" />
+    <Compile Include="Game\XWContainer.cs" />
+    <Compile Include="Program.cs" />
   </ItemGroup>
 
   <PropertyGroup>
