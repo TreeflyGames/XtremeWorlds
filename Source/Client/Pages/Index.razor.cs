@@ -9,11 +9,10 @@ namespace Client.Pages
     {
         protected override void OnAfterRender(bool firstRender)
         {
-            OnAfterRender(firstRender);
-
+            base.OnAfterRender(firstRender);
             if (firstRender)
             {
-                JSRuntime.InvokeAsync<object>("initRenderJS", DotNetObjectReference.Create(this));
+                JsRuntime.InvokeAsync<object>("initRenderJS", Array.Empty<object>(), DotNetObjectReference.Create(this));
             }
         }
         
@@ -26,6 +25,5 @@ namespace Client.Pages
                 General.Client.Run();
             }
         }
-
     }
 }
