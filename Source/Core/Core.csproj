@@ -22,9 +22,9 @@
 	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
 	<PackageReference Include="Microsoft.Extensions.Logging.Console" />
+	<PackageReference Include="MonoGame.Extended" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" />
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="NLua" />
     <PackageReference Include="Npgsql" />
   </ItemGroup>
 </Project>
