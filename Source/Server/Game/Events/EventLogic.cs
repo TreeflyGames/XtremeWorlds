@@ -223,6 +223,11 @@ namespace Server
                             PageId = 0;
 
                         // Another bounds check.
+                        if (Map[mapNum].Event == null)
+                        {
+                            break;
+                        }
+
                         if (id >= Map[mapNum].Event.Length) continue;
 
                         // Iterate through event pages to find the highest-priority page that meets conditions
