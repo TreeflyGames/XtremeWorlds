@@ -95,9 +95,9 @@ namespace Core.Global
             return GetPlayerYRet;
         }
 
-        public static int GetPlayerDir(int index)
+        public static byte GetPlayerDir(int index)
         {
-            int GetPlayerDirRet = default;
+            byte GetPlayerDirRet = default;
             GetPlayerDirRet = Type.Player[index].Dir;
             return GetPlayerDirRet;
         }

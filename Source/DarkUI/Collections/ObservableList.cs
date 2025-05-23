@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel; // Added for INotifyPropertyChanged
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
@@ -10,36 +11,38 @@ namespace DarkUI.Collections
 {
     /// <summary>
     /// A thread-safe observable list that supports undo/redo, batch updates, validation, and data-binding notifications.
+    /// Implements INotifyCollectionChanged and INotifyPropertyChanged.
     /// </summary>
     /// <typeparam name="T">The type of elements in the list.</typeparam>
     [Serializable]
-    public class ObservableList<T> : IList<T>, IDisposable, IReadOnlyList<T>, ISerializable, INotifyCollectionChanged
+    public class ObservableList<T> : IList<T>, IDisposable, IReadOnlyList<T>, ISerializable,
+                                      INotifyCollectionChanged, INotifyPropertyChanged // Added INotifyPropertyChanged
     {
         #region Fields
 
-        private readonly List<T> _innerList;
+        // Changed to internal to allow ReadOnlyObservableList to access it efficiently under parent's lock.
+        // Consumers should use public accessors like GetEnumerator(), ToArray(), or AsThreadSafeReadOnly().
+        internal readonly List<T> _innerList;
         private readonly ReaderWriterLockSlim _lock;
-        private readonly List<Change> _undoStack; // Changed to List for MaxUndoSteps support
+        private readonly List<Change> _undoStack;
         private readonly List<Change> _redoStack;
         private bool _disposed;
         private bool _isReadOnly;
         private int _updateCount = 0;
-        private bool _hasChanges = false;
+        private bool _hasChanges = false; // Tracks if changes occurred during a batch update
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the lock
+        /// Gets the lock used for synchronization. Use with caution.
         /// </summary>
-        /// 
         public ReaderWriterLockSlim Lock => _lock;
 
-        /// <summary>
-        /// Gets the inner list.
-        /// </summary>
-        public List<T> InnerList => _innerList;
+        // Removed direct public access to _innerList to enforce controlled access and thread safety.
+        // Use GetInnerListCopy(), ToArray(), AsReadOnly(), or AsThreadSafeReadOnly() instead.
+        // public List<T> InnerList => _innerList; // Removed
 
         /// <summary>
         /// Gets the number of elements contained in the list.
@@ -62,8 +65,27 @@ namespace DarkUI.Collections
 
         /// <summary>
         /// Gets a value indicating whether the list is read-only.
+        /// This property implements INotifyPropertyChanged.
         /// </summary>
-        public bool IsReadOnly => _isReadOnly;
+        public bool IsReadOnly
+        {
+            get
+            {
+                // _isReadOnly is typically read without lock in simple property getters if modification is locked.
+                // However, to be strictly safe with ReaderWriterLockSlim if reads need to be consistent with writes:
+                _lock.EnterReadLock();
+                try
+                {
+                    return _isReadOnly;
+                }
+                finally
+                {
+                    _lock.ExitReadLock();
+                }
+            }
+            // No public setter; use SetReadOnly method.
+        }
+
 
         /// <summary>
         /// Gets or sets the element at the specified index.
@@ -84,35 +106,22 @@ namespace DarkUI.Collections
 
         #region Events
 
-        /// <summary>
-        /// Occurs when items are added to the list.
-        /// </summary>
+        /// <summary>Occurs when items are added to the list.</summary>
         public event EventHandler<ObservableListModified<T>> ItemsAdded;
-
-        /// <summary>
-        /// Occurs when items are removed from the list.
-        /// </summary>
+        /// <summary>Occurs when items are removed from the list.</summary>
         public event EventHandler<ObservableListModified<T>> ItemsRemoved;
-
-        /// <summary>
-        /// Occurs when items in the list are modified.
-        /// </summary>
+        /// <summary>Occurs when items in the list are modified.</summary>
         public event EventHandler<ObservableListModified<T>> ItemsModified;
-
-        /// <summary>
-        /// Occurs when items are moved within the list.
-        /// </summary>
+        /// <summary>Occurs when items are moved within the list.</summary>
         public event EventHandler<ObservableListMoved<T>> ItemsMoved;
-
-        /// <summary>
-        /// Occurs when an item is inserted into the list.
-        /// </summary>
+        /// <summary>Occurs when an item is inserted into the list.</summary>
         public event EventHandler<ItemInsertedEventArgs<T>> ItemInserted;
-
-        /// <summary>
-        /// Occurs when an item is replaced in the list.
-        /// </summary>
+        /// <summary>Occurs when an item is replaced in the list.</summary>
         public event EventHandler<ItemReplacedEventArgs<T>> ItemReplaced;
+        /// <summary>Occurs when the collection is reset.</summary>
+        public event EventHandler<EventArgs> CollectionReset;
+        /// <summary>Occurs before an item is added or modified to allow validation.</summary>
+        public event EventHandler<ItemValidationEventArgs<T>> ItemValidating;
 
         /// <summary>
         /// Occurs when the collection changes, as defined by <see cref="INotifyCollectionChanged"/>.
@@ -120,88 +129,59 @@ namespace DarkUI.Collections
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         /// <summary>
-        /// Occurs when the collection is reset.
+        /// Occurs when a property value changes.
         /// </summary>
-        public event EventHandler<EventArgs> CollectionReset;
-
-        /// <summary>
-        /// Occurs before an item is added or modified to allow validation.
-        /// </summary>
-        public event EventHandler<ItemValidationEventArgs<T>> ItemValidating;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class that is empty.
-        /// </summary>
         public ObservableList()
         {
             _innerList = new List<T>();
-            _lock = new ReaderWriterLockSlim();
+            _lock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion); // Consider NoRecursion for performance/simplicity if applicable
             _undoStack = new List<Change>();
             _redoStack = new List<Change>();
-            _isReadOnly = false;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class with the specified capacity.
-        /// </summary>
-        /// <param name="capacity">The initial capacity of the list.</param>
-        public ObservableList(int capacity)
+        public ObservableList(int capacity) : this()
         {
             _innerList = new List<T>(capacity);
-            _lock = new ReaderWriterLockSlim();
-            _undoStack = new List<Change>();
-            _redoStack = new List<Change>();
-            _isReadOnly = false;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ObservableList{T}"/> class with the specified collection.
-        /// </summary>
-        /// <param name="collection">The collection whose elements are copied to the new list.</param>
-        public ObservableList(IEnumerable<T> collection)
+        public ObservableList(IEnumerable<T> collection) : this()
         {
-            _innerList = new List<T>(collection);
-            _lock = new ReaderWriterLockSlim();
-            _undoStack = new List<Change>();
-            _redoStack = new List<Change>();
-            _isReadOnly = false;
+            _innerList = new List<T>(collection ?? throw new ArgumentNullException(nameof(collection)));
         }
 
-        // Serialization constructor
-        protected ObservableList(SerializationInfo info, StreamingContext context)
+        protected ObservableList(SerializationInfo info, StreamingContext context) : this()
         {
-            _innerList = (List<T>)info.GetValue("Items", typeof(List<T>));
-            _lock = new ReaderWriterLockSlim();
-            _undoStack = new List<Change>();
-            _redoStack = new List<Change>();
+            // Note: _lock, _undoStack, _redoStack are not typically serialized.
+            // They are runtime states. Consider if they need custom serialization.
+            var items = (List<T>)info.GetValue("Items", typeof(List<T>));
+            if (items != null) _innerList = new List<T>(items); // Create new list from serialized items
             _isReadOnly = info.GetBoolean("IsReadOnly");
+            MaxUndoSteps = info.GetInt32("MaxUndoSteps");
         }
 
         #endregion
 
         #region Core Methods
 
-        /// <summary>
-        /// Adds an item to the end of the list.
-        /// </summary>
-        /// <param name="item">The item to add.</param>
         public void Add(T item)
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
+                CheckReadOnlyAndDisposed();
                 ValidateItem(item);
                 int index = _innerList.Count;
                 _innerList.Add(item);
-                RecordChange(ChangeType.Add, index, null, item);
+                RecordChange(ChangeType.Add, index, default(T), item); // OldValue for Add is conventionally null/default
                 OnItemsAdded(new List<T> { item });
                 OnItemInserted(index, item);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Add, item, index);
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Add, item, index);
             }
             finally
             {
@@ -209,27 +189,23 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Adds a range of items to the end of the list.
-        /// </summary>
-        /// <param name="collection">The collection of items to add.</param>
         public void AddRange(IEnumerable<T> collection)
         {
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
-                var items = collection.ToList();
-                foreach (var item in items)
-                {
-                    ValidateItem(item);
-                }
+                CheckReadOnlyAndDisposed();
+                var items = collection.ToList(); // Materialize to avoid issues with multiple enumeration & locking
                 if (items.Count == 0) return;
+
+                foreach (var item in items) ValidateItem(item);
+
                 int startIndex = _innerList.Count;
                 _innerList.AddRange(items);
-                RecordChange(ChangeType.AddRange, startIndex, null, items);
+                RecordChange(ChangeType.AddRange, startIndex, null, new List<T>(items)); // Store a copy for undo
                 OnItemsAdded(items);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Add, items, startIndex);
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Add, items, startIndex);
             }
             finally
             {
@@ -237,23 +213,22 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Removes the first occurrence of a specific item from the list.
-        /// </summary>
-        /// <param name="item">The item to remove.</param>
-        /// <returns><c>true</c> if the item was removed; otherwise, <c>false</c>.</returns>
         public bool Remove(T item)
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
+                CheckReadOnlyAndDisposed();
                 int index = _innerList.IndexOf(item);
                 if (index < 0) return false;
+
+                // Item to be removed is _innerList[index], which is 'item' if found by reference or value equality.
+                // For undo, we need the actual item removed.
+                T removedItem = _innerList[index];
                 _innerList.RemoveAt(index);
-                RecordChange(ChangeType.Remove, index, item, null);
-                OnItemsRemoved(new List<T> { item });
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
+                RecordChange(ChangeType.Remove, index, removedItem, default(T));
+                OnItemsRemoved(new List<T> { removedItem });
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Remove, removedItem, index);
                 return true;
             }
             finally
@@ -262,22 +237,18 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Removes the item at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index of the item to remove.</param>
         public void RemoveAt(int index)
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
+                CheckReadOnlyAndDisposed();
                 ValidateIndex(index);
                 var item = _innerList[index];
                 _innerList.RemoveAt(index);
-                RecordChange(ChangeType.Remove, index, item, null);
+                RecordChange(ChangeType.Remove, index, item, default(T));
                 OnItemsRemoved(new List<T> { item });
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Remove, item, index);
             }
             finally
             {
@@ -285,22 +256,19 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Removes all items from the list.
-        /// </summary>
         public void Clear()
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
+                CheckReadOnlyAndDisposed();
                 if (_innerList.Count == 0) return;
-                var removedItems = new List<T>(_innerList);
+                var removedItems = new List<T>(_innerList); // Copy for undo and event
                 _innerList.Clear();
                 RecordChange(ChangeType.Clear, 0, removedItems, null);
                 OnItemsRemoved(removedItems);
-                OnCollectionReset();
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Reset);
+                OnCollectionReset(); // Custom event
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Reset);
             }
             finally
             {
@@ -308,24 +276,19 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Inserts an item into the list at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index at which to insert the item.</param>
-        /// <param name="item">The item to insert.</param>
         public void Insert(int index, T item)
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
-                ValidateIndex(index, true);
+                CheckReadOnlyAndDisposed();
+                ValidateIndex(index, allowEnd: true); // Allow insert at Count
                 ValidateItem(item);
                 _innerList.Insert(index, item);
-                RecordChange(ChangeType.Insert, index, null, item);
-                OnItemsAdded(new List<T> { item });
+                RecordChange(ChangeType.Insert, index, default(T), item);
+                OnItemsAdded(new List<T> { item }); // Semantically similar to Add for single item
                 OnItemInserted(index, item);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Add, item, index);
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Add, item, index);
             }
             finally
             {
@@ -337,14 +300,12 @@ namespace DarkUI.Collections
 
         #region Batch Update Methods
 
-        /// <summary>
-        /// Begins a batch update, suppressing individual event notifications until <see cref="EndUpdate"/> is called.
-        /// </summary>
         public void BeginUpdate()
         {
             _lock.EnterWriteLock();
             try
             {
+                CheckDisposed();
                 _updateCount++;
             }
             finally
@@ -353,21 +314,19 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Ends a batch update, raising a reset event if changes occurred during the update.
-        /// </summary>
         public void EndUpdate()
         {
             _lock.EnterWriteLock();
             try
             {
+                CheckDisposed();
                 if (_updateCount > 0)
                 {
                     _updateCount--;
                     if (_updateCount == 0 && _hasChanges)
                     {
-                        OnCollectionReset();
-                        CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                        OnCollectionReset(); // Custom event
+                        NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Reset);
                         _hasChanges = false;
                     }
                 }
@@ -382,21 +341,22 @@ namespace DarkUI.Collections
 
         #region Undo/Redo Support
 
-        /// <summary>
-        /// Undoes the last change made to the list.
-        /// </summary>
+        /// <summary>Undoes the last change. Does nothing if the undo stack is empty.</summary>
         public void Undo()
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
+                CheckReadOnlyAndDisposed();
                 if (_undoStack.Count == 0) return;
+
                 var change = _undoStack[_undoStack.Count - 1];
                 _undoStack.RemoveAt(_undoStack.Count - 1);
+
                 ApplyChange(change, reverse: true);
-                _redoStack.Add(change);
-                NotifyCollectionChangedForChange(change, reverse: true);
+                _redoStack.Add(change); // Add to redo stack
+
+                NotifyCollectionChangedForUndoRedo(change, reverse: true);
             }
             finally
             {
@@ -404,21 +364,22 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Redoes the last undone change.
-        /// </summary>
+        /// <summary>Redoes the last undone change. Does nothing if the redo stack is empty.</summary>
         public void Redo()
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
+                CheckReadOnlyAndDisposed();
                 if (_redoStack.Count == 0) return;
+
                 var change = _redoStack[_redoStack.Count - 1];
                 _redoStack.RemoveAt(_redoStack.Count - 1);
+
                 ApplyChange(change, reverse: false);
-                _undoStack.Add(change);
-                NotifyCollectionChangedForChange(change, reverse: false);
+                _undoStack.Add(change); // Add back to undo stack (within MaxUndoSteps limit handled by RecordChange)
+
+                NotifyCollectionChangedForUndoRedo(change, reverse: false);
             }
             finally
             {
@@ -428,18 +389,21 @@ namespace DarkUI.Collections
 
         private void RecordChange(ChangeType type, int index, object oldValue, object newValue)
         {
+            CheckDisposed(); // Called internally, but good practice
             if (_updateCount > 0)
             {
-                _hasChanges = true;
-                return;
+                _hasChanges = true; // Mark that changes happened during batch update
+                return; // Don't record individual changes during batch update
             }
+
             var change = new Change(type, index, oldValue, newValue);
             _undoStack.Add(change);
-            if (_undoStack.Count > MaxUndoSteps)
+
+            if (_undoStack.Count > MaxUndoSteps && MaxUndoSteps >= 0) // Ensure MaxUndoSteps is not negative
             {
                 _undoStack.RemoveAt(0);
             }
-            _redoStack.Clear();
+            _redoStack.Clear(); // Any new action clears the redo stack
         }
 
         private void ApplyChange(Change change, bool reverse)
@@ -447,80 +411,125 @@ namespace DarkUI.Collections
             switch (change.Type)
             {
                 case ChangeType.Add:
-                    if (reverse) _innerList.RemoveAt(change.Index);
-                    else _innerList.Insert(change.Index, (T)change.NewValue);
+                case ChangeType.Insert: // Add and Insert are similar for undo/redo logic
+                    if (reverse) _innerList.RemoveAt(change.Index); // Undo Add/Insert
+                    else _innerList.Insert(change.Index, (T)change.NewValue); // Redo Add/Insert
                     break;
                 case ChangeType.Remove:
-                    if (reverse) _innerList.Insert(change.Index, (T)change.OldValue);
-                    else _innerList.RemoveAt(change.Index);
-                    break;
-                case ChangeType.Insert:
-                    if (reverse) _innerList.RemoveAt(change.Index);
-                    else _innerList.Insert(change.Index, (T)change.NewValue);
+                    if (reverse) _innerList.Insert(change.Index, (T)change.OldValue); // Undo Remove
+                    else _innerList.RemoveAt(change.Index); // Redo Remove
                     break;
                 case ChangeType.Replace:
-                    var (oldItem, newItem) = ((T Old, T New))change.NewValue;
-                    _innerList[change.Index] = reverse ? oldItem : newItem;
+                    _innerList[change.Index] = reverse ? (T)change.OldValue : (T)change.NewValue;
                     break;
-                case ChangeType.AddRange:
-                    var items = (IList<T>)change.NewValue;
-                    if (reverse) _innerList.RemoveRange(change.Index, items.Count);
-                    else _innerList.InsertRange(change.Index, items);
+                case ChangeType.Move:
+                    var movedItem = (T)change.NewValue; // Item that was moved
+                    int originalOldIndex = (int)change.OldValue;
+                    int originalNewIndex = change.Index;
+                    if (reverse) // Move item from originalNewIndex back to originalOldIndex
+                    {
+                        _innerList.RemoveAt(originalNewIndex);
+                        _innerList.Insert(originalOldIndex, movedItem);
+                    }
+                    else // Move item from originalOldIndex to originalNewIndex
+                    {
+                        _innerList.RemoveAt(originalOldIndex);
+                        _innerList.Insert(originalNewIndex, movedItem);
+                    }
+                    break;
+                case ChangeType.AddRange: // Used for AddRange, InsertRange operations
+                    var itemsAdded = (IList<T>)change.NewValue;
+                    if (reverse) _innerList.RemoveRange(change.Index, itemsAdded.Count);
+                    else _innerList.InsertRange(change.Index, itemsAdded);
+                    break;
+                case ChangeType.RemoveRange: // Specific type for RemoveRange
+                    var itemsRemoved = (IList<T>)change.OldValue;
+                    if (reverse) _innerList.InsertRange(change.Index, itemsRemoved);
+                    else _innerList.RemoveRange(change.Index, itemsRemoved.Count);
                     break;
                 case ChangeType.Clear:
-                    var oldItems = (IList<T>)change.OldValue;
-                    if (reverse) _innerList.AddRange(oldItems);
+                    var clearedItems = (IList<T>)change.OldValue;
+                    if (reverse) _innerList.AddRange(clearedItems);
                     else _innerList.Clear();
                     break;
             }
         }
 
-        private void NotifyCollectionChangedForChange(Change change, bool reverse)
+        private void NotifyCollectionChangedForUndoRedo(Change change, bool reverse)
         {
             if (_updateCount > 0)
             {
                 _hasChanges = true;
                 return;
             }
+
             switch (change.Type)
             {
                 case ChangeType.Add:
-                    NotifyCollectionChanged(reverse ? NotifyCollectionChangedAction.Remove : NotifyCollectionChangedAction.Add, (T)(reverse ? change.NewValue : change.NewValue), change.Index);
+                case ChangeType.Insert:
+                    NotifyCollectionAndPropertiesChanged(
+                        reverse ? NotifyCollectionChangedAction.Remove : NotifyCollectionChangedAction.Add,
+                        (T)change.NewValue, change.Index);
                     break;
                 case ChangeType.Remove:
-                    NotifyCollectionChanged(reverse ? NotifyCollectionChangedAction.Add : NotifyCollectionChangedAction.Remove, (T)(reverse ? change.OldValue : change.OldValue), change.Index);
-                    break;
-                case ChangeType.Insert:
-                    NotifyCollectionChanged(reverse ? NotifyCollectionChangedAction.Remove : NotifyCollectionChangedAction.Add, (T)change.NewValue, change.Index);
+                    NotifyCollectionAndPropertiesChanged(
+                        reverse ? NotifyCollectionChangedAction.Add : NotifyCollectionChangedAction.Remove,
+                        (T)change.OldValue, change.Index);
                     break;
                 case ChangeType.Replace:
-                    var (oldItem, newItem) = ((T Old, T New))change.NewValue;
-                    NotifyCollectionChanged(NotifyCollectionChangedAction.Replace, reverse ? oldItem : newItem, reverse ? newItem : oldItem, change.Index);
+                    NotifyCollectionAndPropertiesChanged(
+                        NotifyCollectionChangedAction.Replace,
+                        reverse ? (T)change.OldValue : (T)change.NewValue, // New item for notification
+                        reverse ? (T)change.NewValue : (T)change.OldValue, // Old item for notification
+                        change.Index);
                     break;
-                case ChangeType.AddRange:
-                    var items = (IList<T>)change.NewValue;
-                    NotifyCollectionChanged(reverse ? NotifyCollectionChangedAction.Remove : NotifyCollectionChangedAction.Add, items, change.Index);
+                case ChangeType.Move:
+                    NotifyCollectionAndPropertiesChanged(
+                        NotifyCollectionChangedAction.Move,
+                        (T)change.NewValue, // The item
+                        reverse ? (int)change.OldValue : change.Index, // Target index
+                        reverse ? change.Index : (int)change.OldValue  // Source index
+                    );
+                    break;
+                case ChangeType.AddRange: // AddRange or InsertRange
+                    var itemsAdded = (IList<T>)change.NewValue;
+                    NotifyCollectionAndPropertiesChanged(
+                        reverse ? NotifyCollectionChangedAction.Remove : NotifyCollectionChangedAction.Add,
+                        itemsAdded, change.Index);
+                    break;
+                case ChangeType.RemoveRange:
+                     var itemsRemoved = (IList<T>)change.OldValue;
+                    NotifyCollectionAndPropertiesChanged(
+                        reverse ? NotifyCollectionChangedAction.Add : NotifyCollectionChangedAction.Remove,
+                        itemsRemoved, change.Index);
                     break;
                 case ChangeType.Clear:
-                    NotifyCollectionChanged(NotifyCollectionChangedAction.Reset);
+                    NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Reset);
                     break;
             }
+        }
+
+        private void ClearUndoRedoStacks()
+        {
+            _undoStack.Clear();
+            _redoStack.Clear();
         }
 
         #endregion
 
         #region Additional Features
 
-        /// <summary>
-        /// Sets whether the list is read-only.
-        /// </summary>
-        /// <param name="readOnly">If <c>true</c>, the list becomes read-only; otherwise, it becomes modifiable.</param>
         public void SetReadOnly(bool readOnly)
         {
             _lock.EnterWriteLock();
             try
             {
-                _isReadOnly = readOnly;
+                CheckDisposed();
+                if (_isReadOnly != readOnly)
+                {
+                    _isReadOnly = readOnly;
+                    OnPropertyChanged(nameof(IsReadOnly));
+                }
             }
             finally
             {
@@ -529,110 +538,19 @@ namespace DarkUI.Collections
         }
 
         /// <summary>
-        /// Returns a non-thread-safe read-only view of the list.
+        /// Returns a read-only <see cref="System.Collections.ObjectModel.ReadOnlyCollection{T}"/> wrapper for the current list.
+        /// Note: This wrapper is NOT thread-safe if the underlying ObservableList is modified concurrently
+        /// by other threads without proper synchronization on the ObservableList's Lock.
+        /// For a thread-safe read-only view, use <see cref="AsThreadSafeReadOnly"/>.
         /// </summary>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> representing the list.</returns>
-        public IReadOnlyList<T> AsReadOnly() => _innerList.AsReadOnly();
-
-        /// <summary>
-        /// Returns a thread-safe read-only view of the list.
-        /// </summary>
-        /// <returns>An <see cref="IReadOnlyList{T}"/> that is safe to access concurrently.</returns>
-        public IReadOnlyList<T> AsThreadSafeReadOnly() => new ReadOnlyObservableList<T>(this);
-
-        /// <summary>
-        /// Replaces an existing item with a new item.
-        /// </summary>
-        /// <param name="oldItem">The item to replace.</param>
-        /// <param name="newItem">The new item to insert.</param>
-        public void Replace(T oldItem, T newItem)
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                CheckReadOnly();
-                ValidateItem(newItem);
-                int index = _innerList.IndexOf(oldItem);
-                if (index < 0) throw new ArgumentException("Item not found in collection", nameof(oldItem));
-                _innerList[index] = newItem;
-                RecordChange(ChangeType.Replace, index, null, (oldItem, newItem));
-                OnItemsModified(new List<(T OldItem, T NewItem)> { (oldItem, newItem) });
-                OnItemReplaced(oldItem, newItem);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Replace, newItem, oldItem, index);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-
-        /// <summary>
-        /// Sorts the list using the specified comparer.
-        /// </summary>
-        /// <param name="comparer">The comparer to use, or <c>null</c> to use the default comparer.</param>
-        public void Sort(IComparer<T> comparer = null)
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                CheckReadOnly();
-                _innerList.Sort(comparer ?? Comparer<T>.Default);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Reset);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-
-        /// <summary>
-        /// Sorts the list using the specified comparison.
-        /// </summary>
-        /// <param name="comparison">The comparison to use.</param>
-        public void Sort(Comparison<T> comparison)
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                CheckReadOnly();
-                _innerList.Sort(comparison);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Reset);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-
-        /// <summary>
-        /// Reverses the order of the items in the list.
-        /// </summary>
-        public void Reverse()
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                CheckReadOnly();
-                _innerList.Reverse();
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Reset);
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
-        }
-
-        /// <summary>
-        /// Finds all items that match the specified predicate.
-        /// </summary>
-        /// <param name="match">The predicate to match items against.</param>
-        /// <returns>A read-only list of matching items.</returns>
-        public IEnumerable<T> FindAll(Predicate<T> match)
+        public System.Collections.ObjectModel.ReadOnlyCollection<T> AsReadOnly()
         {
             _lock.EnterReadLock();
             try
             {
-                return _innerList.FindAll(match).AsReadOnly();
+                // It's conventional for AsReadOnly() to wrap the live list.
+                // User must understand thread-safety implications.
+                return new System.Collections.ObjectModel.ReadOnlyCollection<T>(_innerList);
             }
             finally
             {
@@ -640,16 +558,123 @@ namespace DarkUI.Collections
             }
         }
 
+
         /// <summary>
-        /// Finds the first item that matches the specified predicate.
+        /// Returns a thread-safe read-only view of the list.
         /// </summary>
-        /// <param name="match">The predicate to match items against.</param>
-        /// <returns>The first matching item, or the default value if none found.</returns>
-        public T Find(Predicate<T> match)
+        public IReadOnlyList<T> AsThreadSafeReadOnly() => new ReadOnlyObservableList<T>(this);
+
+        public void Replace(T oldItem, T newItem)
         {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnlyAndDisposed();
+                ValidateItem(newItem);
+                int index = _innerList.IndexOf(oldItem);
+                if (index < 0) throw new ArgumentException("Item to replace not found in collection.", nameof(oldItem));
+
+                T actualOldItem = _innerList[index]; // Get the exact instance from the list
+                _innerList[index] = newItem;
+
+                RecordChange(ChangeType.Replace, index, actualOldItem, newItem);
+                OnItemsModified(new List<(T OldItem, T NewItem)> { (actualOldItem, newItem) });
+                OnItemReplaced(actualOldItem, newItem); // Specific event
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Replace, newItem, actualOldItem, index);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// Sorts the elements in the entire list using the specified comparer.
+        /// This operation clears the undo/redo stack.
+        /// </summary>
+        public void Sort(IComparer<T> comparer = null)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnlyAndDisposed();
+                if (_innerList.Count <= 1) return;
+                _innerList.Sort(comparer ?? Comparer<T>.Default);
+                ClearUndoRedoStacks();
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Reset);
+                // Consider raising a specific "Sorted" event if needed
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// Sorts the elements in the entire list using the specified comparison.
+        /// This operation clears the undo/redo stack.
+        /// </summary>
+        public void Sort(Comparison<T> comparison)
+        {
+            if (comparison == null) throw new ArgumentNullException(nameof(comparison));
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnlyAndDisposed();
+                if (_innerList.Count <= 1) return;
+                _innerList.Sort(comparison);
+                ClearUndoRedoStacks();
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Reset);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        /// <summary>
+        /// Reverses the order of the elements in the entire list.
+        /// This operation clears the undo/redo stack.
+        /// </summary>
+        public void Reverse()
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                CheckReadOnlyAndDisposed();
+                if (_innerList.Count <= 1) return;
+                _innerList.Reverse();
+                ClearUndoRedoStacks();
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Reset);
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
+        }
+
+        public IEnumerable<T> FindAll(Predicate<T> match)
+        {
+            if (match == null) throw new ArgumentNullException(nameof(match));
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
+                return _innerList.FindAll(match).AsReadOnly(); // Returns a read-only copy
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        public T Find(Predicate<T> match)
+        {
+            if (match == null) throw new ArgumentNullException(nameof(match));
+            _lock.EnterReadLock();
+            try
+            {
+                CheckDisposed();
                 return _innerList.Find(match);
             }
             finally
@@ -658,16 +683,13 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Finds the last item that matches the specified predicate.
-        /// </summary>
-        /// <param name="match">The predicate to match items against.</param>
-        /// <returns>The last matching item, or the default value if none found.</returns>
         public T FindLast(Predicate<T> match)
         {
+            if (match == null) throw new ArgumentNullException(nameof(match));
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
                 return _innerList.FindLast(match);
             }
             finally
@@ -676,16 +698,13 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Finds the index of the first item that matches the specified predicate.
-        /// </summary>
-        /// <param name="match">The predicate to match items against.</param>
-        /// <returns>The index of the first matching item, or -1 if none found.</returns>
         public int FindIndex(Predicate<T> match)
         {
+            if (match == null) throw new ArgumentNullException(nameof(match));
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
                 return _innerList.FindIndex(match);
             }
             finally
@@ -693,17 +712,13 @@ namespace DarkUI.Collections
                 _lock.ExitReadLock();
             }
         }
-
-        /// <summary>
-        /// Finds the index of the last item that matches the specified predicate.
-        /// </summary>
-        /// <param name="match">The predicate to match items against.</param>
-        /// <returns>The index of the last matching item, or -1 if none found.</returns>
         public int FindLastIndex(Predicate<T> match)
         {
+            if (match == null) throw new ArgumentNullException(nameof(match));
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
                 return _innerList.FindLastIndex(match);
             }
             finally
@@ -712,24 +727,21 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Removes a range of items from the list.
-        /// </summary>
-        /// <param name="index">The starting index of the range to remove.</param>
-        /// <param name="count">The number of items to remove.</param>
         public void RemoveRange(int index, int count)
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
+                CheckReadOnlyAndDisposed();
                 ValidateRange(index, count);
                 if (count == 0) return;
-                var removedItems = _innerList.GetRange(index, count);
+
+                var removedItems = _innerList.GetRange(index, count); // Get copy before removal
                 _innerList.RemoveRange(index, count);
-                RecordChange(ChangeType.AddRange, index, removedItems, null);
+
+                RecordChange(ChangeType.RemoveRange, index, removedItems, null);
                 OnItemsRemoved(removedItems);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Remove, removedItems, index);
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Remove, removedItems, index);
             }
             finally
             {
@@ -737,28 +749,23 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Inserts a range of items into the list at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index at which to insert the items.</param>
-        /// <param name="collection">The collection of items to insert.</param>
         public void InsertRange(int index, IEnumerable<T> collection)
         {
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
-                ValidateIndex(index, true);
-                var items = collection.ToList();
-                foreach (var item in items)
-                {
-                    ValidateItem(item);
-                }
-                if (items.Count == 0) return;
-                _innerList.InsertRange(index, items);
-                RecordChange(ChangeType.AddRange, index, null, items);
-                OnItemsAdded(items);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Add, items, index);
+                CheckReadOnlyAndDisposed();
+                ValidateIndex(index, allowEnd: true);
+                var itemsToInsert = collection.ToList(); // Materialize
+                if (itemsToInsert.Count == 0) return;
+
+                foreach (var item in itemsToInsert) ValidateItem(item);
+
+                _innerList.InsertRange(index, itemsToInsert);
+                RecordChange(ChangeType.AddRange, index, null, new List<T>(itemsToInsert)); // Use AddRange type, store copy
+                OnItemsAdded(itemsToInsert);
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Add, itemsToInsert, index);
             }
             finally
             {
@@ -766,25 +773,26 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Moves an item from one index to another within the list.
-        /// </summary>
-        /// <param name="oldIndex">The current index of the item to move.</param>
-        /// <param name="newIndex">The new index for the item.</param>
         public void Move(int oldIndex, int newIndex)
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
-                ValidateIndex(oldIndex);
-                ValidateIndex(newIndex, true);
+                CheckReadOnlyAndDisposed();
+                int listCount = _innerList.Count;
+                if (oldIndex < 0 || oldIndex >= listCount) throw new ArgumentOutOfRangeException(nameof(oldIndex));
+                if (newIndex < 0 || newIndex >= listCount) throw new ArgumentOutOfRangeException(nameof(newIndex), "Target index for move must be within current list bounds."); // Standard ObservableCollection<T> requires newIndex to be within [0, Count-1]
+
                 if (oldIndex == newIndex) return;
+
                 T item = _innerList[oldIndex];
                 _innerList.RemoveAt(oldIndex);
-                _innerList.Insert(newIndex, item);
+                _innerList.Insert(newIndex, item); // newIndex is the target index in the list *after* removal from oldIndex
+
+                // For RecordChange, OldValue = original oldIndex, NewValue = item, Index = final newIndex
+                RecordChange(ChangeType.Move, newIndex, oldIndex, item);
                 OnItemsMoved(item, oldIndex, newIndex);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Move, item, newIndex, oldIndex);
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Move, item, newIndex, oldIndex);
             }
             finally
             {
@@ -792,16 +800,30 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Copies the elements of the list to an array.
-        /// </summary>
-        /// <returns>An array containing the list's elements.</returns>
         public T[] ToArray()
         {
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
                 return _innerList.ToArray();
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Gets a copy of the inner list. This is a snapshot and is thread-safe to iterate.
+        /// </summary>
+        public List<T> GetInnerListCopy()
+        {
+            _lock.EnterReadLock();
+            try
+            {
+                CheckDisposed();
+                return new List<T>(_innerList);
             }
             finally
             {
@@ -818,6 +840,7 @@ namespace DarkUI.Collections
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
                 ValidateIndex(index);
                 return _innerList[index];
             }
@@ -827,55 +850,71 @@ namespace DarkUI.Collections
             }
         }
 
-        private void SetItem(int index, T value)
+        private void SetItem(int index, T value) // This is for this[index] = value
         {
             _lock.EnterWriteLock();
             try
             {
-                CheckReadOnly();
+                CheckReadOnlyAndDisposed();
                 ValidateIndex(index);
                 ValidateItem(value);
+
                 var oldItem = _innerList[index];
+                if (EqualityComparer<T>.Default.Equals(oldItem, value)) return; // No change
+
                 _innerList[index] = value;
-                RecordChange(ChangeType.Replace, index, null, (oldItem, value));
+
+                RecordChange(ChangeType.Replace, index, oldItem, value);
                 OnItemsModified(new List<(T OldItem, T NewItem)> { (oldItem, value) });
-                OnItemReplaced(oldItem, value);
-                NotifyCollectionChanged(NotifyCollectionChangedAction.Replace, value, oldItem, index);
+                OnItemReplaced(oldItem, value); // Specific event
+                NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction.Replace, value, oldItem, index);
             }
             finally
             {
                 _lock.ExitWriteLock();
             }
         }
-
-        private void CheckReadOnly()
+        
+        private void CheckDisposed()
         {
-            if (_isReadOnly)
-                throw new InvalidOperationException("Collection is read-only");
+            if (_disposed) throw new ObjectDisposedException(GetType().Name);
+        }
+
+        private void CheckReadOnlyAndDisposed()
+        {
+            CheckDisposed();
+            if (_isReadOnly) throw new InvalidOperationException("Collection is read-only.");
         }
 
         private void ValidateIndex(int index, bool allowEnd = false)
         {
-            int max = allowEnd ? Count : Count - 1;
+            // Assumes read lock is held or not needed if called from write-locked context
+            int count = _innerList.Count;
+            int max = allowEnd ? count : count - 1;
+            if (count == 0 && allowEnd && index == 0) return; // Valid to insert at index 0 in empty list
             if (index < 0 || index > max)
-                throw new ArgumentOutOfRangeException(nameof(index));
+                throw new ArgumentOutOfRangeException(nameof(index), $"Index must be within the range [0, {max}].");
         }
 
         private void ValidateRange(int index, int count)
         {
-            if (index < 0 || count < 0 || index + count > Count)
-                throw new ArgumentOutOfRangeException();
+            // Assumes read lock is held or not needed
+            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+            if (index + count > _innerList.Count) throw new ArgumentException("Range exceeds the bounds of the list.");
         }
 
         private void ValidateItem(T item)
         {
-            if (ItemValidating != null)
+            // Assumes lock is held (typically write lock)
+            var handler = ItemValidating;
+            if (handler != null)
             {
                 var args = new ItemValidationEventArgs<T>(item);
-                ItemValidating(this, args);
+                handler(this, args);
                 if (!args.IsValid)
                 {
-                    throw new ArgumentException(args.ErrorMessage ?? "Item validation failed", nameof(item));
+                    throw new ArgumentException(args.ErrorMessage ?? "Item validation failed.", nameof(item));
                 }
             }
         }
@@ -884,164 +923,121 @@ namespace DarkUI.Collections
 
         #region Event Raising Methods
 
-        protected virtual void OnItemsAdded(IList<T> items)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (_updateCount == 0 && ItemsAdded != null)
-            {
-                ItemsAdded(this, new ObservableListModified<T>(items));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
+            // This method should be called when Count or IsReadOnly actually changes.
+            // Item[] (indexer) changes are also typically signalled.
+            // No _updateCount check here; PropertyChanged typically fires immediately.
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual void OnItemsRemoved(IList<T> items)
+        // Combined notification helper
+        private void NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction action)
         {
-            if (_updateCount == 0 && ItemsRemoved != null)
-            {
-                ItemsRemoved(this, new ObservableListModified<T>(items));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
+            OnPropertyChanged(nameof(Count));
+            OnPropertyChanged("Item[]"); // Indexer name for WPF binding
+            NotifyCollectionChanged(action);
+        }
+        private void NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction action, object changedItem, int index)
+        {
+            OnPropertyChanged(nameof(Count));
+            OnPropertyChanged("Item[]");
+            NotifyCollectionChanged(action, changedItem, index);
+        }
+        private void NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction action, IList changedItems, int startingIndex)
+        {
+            OnPropertyChanged(nameof(Count));
+            OnPropertyChanged("Item[]");
+            NotifyCollectionChanged(action, changedItems, startingIndex);
+        }
+        private void NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction action, object newItem, object oldItem, int index)
+        {
+            OnPropertyChanged(nameof(Count));
+            OnPropertyChanged("Item[]");
+            NotifyCollectionChanged(action, newItem, oldItem, index);
+        }
+        private void NotifyCollectionAndPropertiesChanged(NotifyCollectionChangedAction action, object item, int newIndex, int oldIndex)
+        {
+            OnPropertyChanged(nameof(Count));
+            OnPropertyChanged("Item[]");
+            NotifyCollectionChanged(action, item, newIndex, oldIndex);
         }
 
-        protected virtual void OnItemsModified(IList<(T OldItem, T NewItem)> changes)
-        {
-            if (_updateCount == 0 && ItemsModified != null)
-            {
-                ItemsModified(this, new ObservableListModified<T>(changes));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
-        }
 
-        protected virtual void OnItemsMoved(T item, int oldIndex, int newIndex)
-        {
-            if (_updateCount == 0 && ItemsMoved != null)
-            {
-                ItemsMoved(this, new ObservableListMoved<T>(item, oldIndex, newIndex));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
-        }
-
-        protected virtual void OnItemInserted(int index, T item)
-        {
-            if (_updateCount == 0 && ItemInserted != null)
-            {
-                ItemInserted(this, new ItemInsertedEventArgs<T>(index, item));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
-        }
-
-        protected virtual void OnItemReplaced(T oldItem, T newItem)
-        {
-            if (_updateCount == 0 && ItemReplaced != null)
-            {
-                ItemReplaced(this, new ItemReplacedEventArgs<T>(oldItem, newItem));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
-        }
-
-        protected virtual void OnCollectionReset()
-        {
-            if (_updateCount == 0 && CollectionReset != null)
-            {
-                CollectionReset(this, EventArgs.Empty);
-            }
-            else
-            {
-                _hasChanges = true;
-            }
-        }
-
+        // Original NotifyCollectionChanged methods (now private, called by combined helpers)
         private void NotifyCollectionChanged(NotifyCollectionChangedAction action)
         {
-            if (_updateCount == 0 && CollectionChanged != null)
-            {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(action));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
+            if (_updateCount == 0) CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action));
+            else _hasChanges = true;
+        }
+        private void NotifyCollectionChanged(NotifyCollectionChangedAction action, object changedItem, int index)
+        {
+            if (_updateCount == 0) CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, changedItem, index));
+            else _hasChanges = true;
+        }
+        private void NotifyCollectionChanged(NotifyCollectionChangedAction action, IList changedItems, int startingIndex)
+        {
+            if (_updateCount == 0) CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, changedItems, startingIndex));
+            else _hasChanges = true;
+        }
+        private void NotifyCollectionChanged(NotifyCollectionChangedAction action, object newItem, object oldItem, int index)
+        {
+            if (_updateCount == 0) CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, newItem, oldItem, index));
+            else _hasChanges = true;
+        }
+        private void NotifyCollectionChanged(NotifyCollectionChangedAction action, object item, int newIndex, int oldIndex)
+        {
+            if (_updateCount == 0) CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(action, item, newIndex, oldIndex));
+            else _hasChanges = true;
         }
 
-        private void NotifyCollectionChanged(NotifyCollectionChangedAction action, T changedItem, int index)
+        // Custom event raising methods
+        protected virtual void OnItemsAdded(IList<T> items)
         {
-            if (_updateCount == 0 && CollectionChanged != null)
-            {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, changedItem, index));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
+            if (_updateCount == 0) ItemsAdded?.Invoke(this, new ObservableListModified<T>(items));
+            else _hasChanges = true;
         }
-
-        private void NotifyCollectionChanged(NotifyCollectionChangedAction action, IList<T> changedItems, int startingIndex)
+        protected virtual void OnItemsRemoved(IList<T> items)
         {
-            if (_updateCount == 0 && CollectionChanged != null)
-            {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, changedItems, startingIndex));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
+            if (_updateCount == 0) ItemsRemoved?.Invoke(this, new ObservableListModified<T>(items));
+            else _hasChanges = true;
         }
-
-        private void NotifyCollectionChanged(NotifyCollectionChangedAction action, T newItem, T oldItem, int index)
+        protected virtual void OnItemsModified(IList<(T OldItem, T NewItem)> changes)
         {
-            if (_updateCount == 0 && CollectionChanged != null)
-            {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, newItem, oldItem, index));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
+            if (_updateCount == 0) ItemsModified?.Invoke(this, new ObservableListModified<T>(changes));
+            else _hasChanges = true;
         }
-
-        private void NotifyCollectionChanged(NotifyCollectionChangedAction action, T item, int newIndex, int oldIndex)
+        protected virtual void OnItemsMoved(T item, int oldIndex, int newIndex)
         {
-            if (_updateCount == 0 && CollectionChanged != null)
-            {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, item, newIndex, oldIndex));
-            }
-            else
-            {
-                _hasChanges = true;
-            }
+            if (_updateCount == 0) ItemsMoved?.Invoke(this, new ObservableListMoved<T>(item, oldIndex, newIndex));
+            else _hasChanges = true;
+        }
+        protected virtual void OnItemInserted(int index, T item)
+        {
+            if (_updateCount == 0) ItemInserted?.Invoke(this, new ItemInsertedEventArgs<T>(index, item));
+            else _hasChanges = true;
+        }
+        protected virtual void OnItemReplaced(T oldItem, T newItem)
+        {
+            if (_updateCount == 0) ItemReplaced?.Invoke(this, new ItemReplacedEventArgs<T>(oldItem, newItem));
+            else _hasChanges = true;
+        }
+        protected virtual void OnCollectionReset()
+        {
+            if (_updateCount == 0) CollectionReset?.Invoke(this, EventArgs.Empty);
+            else _hasChanges = true;
         }
 
         #endregion
 
         #region Interface Implementations
 
-        /// <summary>
-        /// Determines the index of a specific item in the list.
-        /// </summary>
-        /// <param name="item">The item to locate.</param>
-        /// <returns>The index of the item if found; otherwise, -1.</returns>
         public int IndexOf(T item)
         {
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
                 return _innerList.IndexOf(item);
             }
             finally
@@ -1050,16 +1046,12 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Determines whether the list contains a specific item.
-        /// </summary>
-        /// <param name="item">The item to locate.</param>
-        /// <returns><c>true</c> if the item is found; otherwise, <c>false</c>.</returns>
         public bool Contains(T item)
         {
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
                 return _innerList.Contains(item);
             }
             finally
@@ -1068,16 +1060,12 @@ namespace DarkUI.Collections
             }
         }
 
-        /// <summary>
-        /// Copies the elements of the list to an array, starting at a particular array index.
-        /// </summary>
-        /// <param name="array">The destination array.</param>
-        /// <param name="arrayIndex">The zero-based index in the array at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
                 _innerList.CopyTo(array, arrayIndex);
             }
             finally
@@ -1087,25 +1075,36 @@ namespace DarkUI.Collections
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through the list.
+        /// Returns an enumerator that iterates through a snapshot of the collection.
+        /// This is thread-safe, as it iterates over a copy taken while holding a read lock.
         /// </summary>
-        /// <returns>An enumerator for the list.</returns>
-        public IEnumerator<T> GetEnumerator() => _innerList.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        /// <summary>
-        /// Populates a <see cref="SerializationInfo"/> with the data needed to serialize the list.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public IEnumerator<T> GetEnumerator()
         {
             _lock.EnterReadLock();
             try
             {
+                CheckDisposed();
+                return new List<T>(_innerList).GetEnumerator(); // Snapshot
+            }
+            finally
+            {
+                _lock.ExitReadLock();
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null) throw new ArgumentNullException(nameof(info));
+            _lock.EnterReadLock(); // Ensure consistent state during serialization
+            try
+            {
+                CheckDisposed();
                 info.AddValue("Items", _innerList);
                 info.AddValue("IsReadOnly", _isReadOnly);
+                info.AddValue("MaxUndoSteps", MaxUndoSteps);
+                // Note: _undoStack, _redoStack, and event subscribers are not serialized.
             }
             finally
             {
@@ -1117,38 +1116,39 @@ namespace DarkUI.Collections
 
         #region Dispose Pattern
 
-        /// <summary>
-        /// Finalizer for the <see cref="ObservableList{T}"/> class.
-        /// </summary>
         ~ObservableList()
         {
             Dispose(false);
         }
 
-        /// <summary>
-        /// Releases all resources used by the <see cref="ObservableList{T}"/>.
-        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="ObservableList{T}"/> and optionally releases managed resources.
-        /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
+
             if (disposing)
             {
-                _lock.EnterWriteLock();
+                // Acquire write lock to ensure no other operations are in progress
+                // and to safely clear resources.
+                bool lockAcquired = false;
                 try
                 {
-                    // Do not clear _innerList to preserve data
-                    _undoStack.Clear();
-                    _redoStack.Clear();
+                    // TryEnterWriteLock to avoid deadlocks if Dispose is called from a finalizer
+                    // or in a situation where the lock might already be held contentiously.
+                    // However, for a typical Dispose pattern, a blocking EnterWriteLock is common.
+                    // If _lock itself is null (e.g. ctor failed), this would be an issue.
+                    if (_lock != null)
+                    {
+                        _lock.EnterWriteLock();
+                        lockAcquired = true;
+                    }
+
+                    // Clear event handlers to prevent memory leaks
                     ItemsAdded = null;
                     ItemsRemoved = null;
                     ItemsModified = null;
@@ -1156,108 +1156,35 @@ namespace DarkUI.Collections
                     ItemInserted = null;
                     ItemReplaced = null;
                     CollectionChanged = null;
+                    PropertyChanged = null;
                     CollectionReset = null;
                     ItemValidating = null;
+
+                    _undoStack?.Clear();
+                    _redoStack?.Clear();
+                    // _innerList?.Clear(); // Optional: whether to clear data on dispose. Current code preserves it.
+
+                    _lock?.Dispose(); // Dispose the lock itself
                 }
                 finally
                 {
-                    _lock.ExitWriteLock();
+                    if (lockAcquired)
+                    {
+                        _lock.ExitWriteLock();
+                    }
                 }
-                _lock.Dispose();
             }
             _disposed = true;
         }
 
-        #region Getters for Fields
-
-        /// <summary>
-        /// Gets the inner list of the observable list.
-        /// </summary>
-        public List<T> GetInnerList()
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return new List<T>(_innerList); // Return a copy to ensure thread safety
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-        }
-
-        /// <summary>
-        /// Gets whether the list is disposed.
-        /// </summary>
-        public bool GetIsDisposed()
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return _disposed;
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-        }
-
-        /// <summary>
-        /// Gets whether the list is read-only.
-        /// </summary>
-        public bool GetIsReadOnly()
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return _isReadOnly;
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-        }
-
-        /// <summary>
-        /// Gets the current update count.
-        /// </summary>
-        public int GetUpdateCount()
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return _updateCount;
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-        }
-
-        /// <summary>
-        /// Gets whether the list has changes.
-        /// </summary>
-        public bool GetHasChanges()
-        {
-            _lock.EnterReadLock();
-            try
-            {
-                return _hasChanges;
-            }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
-        }
-
         #endregion
+
+        // Removed Getters for Fields region as most are covered by public properties or methods like GetInnerListCopy()
+        // _updateCount and _hasChanges are internal implementation details.
     }
 
-    #region Supporting Classes
+    #region Supporting Classes & Enums
 
-    /// <summary>
-    /// Event arguments for modifications to an <see cref="ObservableList{T}"/>.
-    /// </summary>
     public class ObservableListModified<T> : EventArgs
     {
         public IReadOnlyList<T> Items { get; }
@@ -1265,161 +1192,98 @@ namespace DarkUI.Collections
 
         public ObservableListModified(IList<T> items)
         {
-            Items = items.AsReadOnly();
+            Items = new System.Collections.ObjectModel.ReadOnlyCollection<T>(items ?? Array.Empty<T>());
             Changes = Array.Empty<(T, T)>();
         }
 
         public ObservableListModified(IList<(T OldItem, T NewItem)> changes)
         {
             Items = Array.Empty<T>();
-            Changes = changes.AsReadOnly();
+            Changes = new System.Collections.ObjectModel.ReadOnlyCollection<(T OldItem, T NewItem)>(changes ?? Array.Empty<(T OldItem, T NewItem)>());
         }
     }
 
-    /// <summary>
-    /// Event arguments for when an item is moved within an <see cref="ObservableList{T}"/>.
-    /// </summary>
     public class ObservableListMoved<T> : EventArgs
     {
         public T Item { get; }
         public int OldIndex { get; }
         public int NewIndex { get; }
-
         public ObservableListMoved(T item, int oldIndex, int newIndex)
         {
-            Item = item;
-            OldIndex = oldIndex;
-            NewIndex = newIndex;
+            Item = item; OldIndex = oldIndex; NewIndex = newIndex;
         }
     }
 
-    /// <summary>
-    /// Event arguments for when an item is inserted into an <see cref="ObservableList{T}"/>.
-    /// </summary>
     public class ItemInsertedEventArgs<T> : EventArgs
     {
         public int Index { get; }
         public T Item { get; }
-        public ItemInsertedEventArgs(int index, T item)
-        {
-            Index = index;
-            Item = item;
-        }
+        public ItemInsertedEventArgs(int index, T item) { Index = index; Item = item; }
     }
 
-    /// <summary>
-    /// Event arguments for when an item is replaced in an <see cref="ObservableList{T}"/>.
-    /// </summary>
     public class ItemReplacedEventArgs<T> : EventArgs
     {
         public T OldItem { get; }
         public T NewItem { get; }
-        public ItemReplacedEventArgs(T oldItem, T newItem)
-        {
-            OldItem = oldItem;
-            NewItem = newItem;
-        }
+        public ItemReplacedEventArgs(T oldItem, T newItem) { OldItem = oldItem; NewItem = newItem; }
     }
 
-    /// <summary>
-    /// Event arguments for validating an item before it is added or modified in an <see cref="ObservableList{T}"/>.
-    /// </summary>
     public class ItemValidationEventArgs<T> : EventArgs
     {
         public T Item { get; }
         public bool IsValid { get; set; } = true;
         public string ErrorMessage { get; set; }
-
-        public ItemValidationEventArgs(T item)
-        {
-            Item = item;
-        }
+        public ItemValidationEventArgs(T item) { Item = item; }
     }
 
-    /// <summary>
-    /// A thread-safe read-only wrapper around an <see cref="ObservableList{T}"/>.
-    /// </summary>
+    /// <summary>A thread-safe read-only wrapper for an <see cref="ObservableList{T}"/>.</summary>
     public class ReadOnlyObservableList<T> : IReadOnlyList<T>
     {
-        private readonly ObservableList<T> _parent;
+        private readonly ObservableList<T> _source;
 
-        public ReadOnlyObservableList(ObservableList<T> parent)
+        public ReadOnlyObservableList(ObservableList<T> source)
         {
-            _parent = parent ?? throw new ArgumentNullException(nameof(parent));
+            _source = source ?? throw new ArgumentNullException(nameof(source));
         }
 
-        public T this[int index]
-        {
-            get
-            {
-                _parent.Lock.EnterReadLock();
-                try
-                {
-                    return _parent.InnerList[index];
-                }
-                finally
-                {
-                    _parent.Lock.ExitReadLock();
-                }
-            }
-            #endregion // Dispose Pattern
-        }
+        // Corrected: Indexer should use the source's public indexer which handles locking
+        public T this[int index] => _source[index];
 
-        public int Count
-        {
-            get
-            {
-                _parent.Lock.EnterReadLock();
-                try
-                {
-                    return _parent.InnerList.Count;
-                }
-                finally
-                {
-                    _parent.Lock.ExitReadLock();
-                }
-            }
-        }
+        // Corrected: Count should use the source's public Count which handles locking
+        public int Count => _source.Count;
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a snapshot of the source collection.
+        /// This is thread-safe.
+        /// </summary>
         public IEnumerator<T> GetEnumerator()
         {
-            _parent.Lock.EnterReadLock();
-            try
-            {
-                return _parent.InnerList.ToList().GetEnumerator(); // Snapshot to avoid locking during enumeration
-            }
-            finally
-            {
-                _parent.Lock.ExitReadLock();
-            }
+            // _source.GetEnumerator() is already snapshot-based and thread-safe
+            return _source.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        // Removed misplaced endregion here
     }
+
 
     internal enum ChangeType
     {
-        Add,
-        Remove,
-        Insert,
-        Replace,
-        AddRange,
+        Add, Remove, Insert, Replace, Move,
+        AddRange, RemoveRange, // Made RemoveRange distinct for clarity
         Clear
     }
 
     internal class Change
     {
         public ChangeType Type { get; }
-        public int Index { get; }
-        public object OldValue { get; }
-        public object NewValue { get; }
+        public int Index { get; } // For Add, Remove, Insert, Replace, Move: relevant index. For AddRange/RemoveRange: starting index. For Clear: 0.
+        public object OldValue { get; } // For Remove, Replace: old item. For Move: old index. For RemoveRange, Clear: list of removed items.
+        public object NewValue { get; } // For Add, Insert, Replace: new item. For Move: moved item. For AddRange: list of added items.
 
         public Change(ChangeType type, int index, object oldValue, object newValue)
         {
-            Type = type;
-            Index = index;
-            OldValue = oldValue;
-            NewValue = newValue;
+            Type = type; Index = index; OldValue = oldValue; NewValue = newValue;
         }
     }
 

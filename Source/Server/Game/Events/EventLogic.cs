@@ -1859,7 +1859,7 @@ namespace Server
                                                         globalEvent.MoveRouteCount = command.MoveRouteCount;
                                                         if (command.MoveRouteCount > 0)
                                                         {
-                                                            globalEvent.MoveRoute = new  MoveRouteStruct[command.MoveRouteCount];
+                                                            globalEvent.MoveRoute = new MoveRouteStruct[command.MoveRouteCount];
                                                             Array.Copy(command.MoveRoute, globalEvent.MoveRoute, command.MoveRouteCount);
                                                         }
                                                         globalEvent.MoveRouteStep = 0;
@@ -2929,110 +2929,106 @@ namespace Server
             }
         }
 
-        public static bool TriggerEvent(int index, int eventId, byte triggerType, int x, int y)
+        public static bool TriggerEvent(int playerIndex, int eventId, byte triggerType, int targetX, int targetY)
         {
-            // Check for valid player and map.
-            if (index < 0 || index > NetworkConfig.Socket.HighIndex)
-            {
+            // 1. Validate player and map
+            if (playerIndex < 0 || playerIndex > NetworkConfig.Socket.HighIndex)
                 return false;
-            }
 
-            int mapNum = GetPlayerMap(index);
+            int mapNum = GetPlayerMap(playerIndex);
             if (mapNum < 0 || mapNum >= Map.Length)
-            {
                 return false;
-            }
 
-            // Find the correct local event index.
+            // 2. Find the relevant event for the player
+            var eventMap = TempPlayer[playerIndex].EventMap;
             int localEventIndex = -1;
-            for (int z = 0; z < TempPlayer[index].EventMap.CurrentEvents; z++)
+            for (int i = 0; i < eventMap.CurrentEvents; i++)
             {
-                if (TempPlayer[index].EventMap.EventPages[z].EventId == eventId)
+                if (eventMap.EventPages[i].EventId == eventId)
                 {
-                    localEventIndex = z + 1;
+                    localEventIndex = i;
                     break;
                 }
             }
+            if (localEventIndex == -1)
+                return false; // Event not found
 
-            if (localEventIndex == -1) return false; // Event not found for this player.
+            ref var eventPage = ref eventMap.EventPages[localEventIndex];
+            var mapEvent = Map[mapNum].Event[eventPage.EventId];
+            var page = mapEvent.Pages[eventPage.PageId];
 
-            // Get the event page data.
-            ref var eventPage = ref TempPlayer[index].EventMap.EventPages[localEventIndex];
+            // 3. Check trigger type
+            if (page.Trigger != triggerType)
+                return false;
 
-            // Check trigger type.
-            if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].Trigger != triggerType)
+            // 4. Calculate intended tile based on player direction (if not walk-through)
+            if (page.WalkThrough == 0)
             {
-                return false; // Incorrect trigger.
+                (int x, int y)? offset = GetOffsetByDirection(GetPlayerDir(playerIndex), GetPlayerX(playerIndex), GetPlayerY(playerIndex), Map[mapNum]);
+                if (offset == null)
+                    return false;
+                (targetX, targetY) = offset.Value;
             }
 
-            if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].WalkThrough == 0)
+            // 5. Validate player is at the event's coordinates
+            if (targetX != eventPage.X || targetY != eventPage.Y)
+                return false;
+
+            // 6. Begin event processing if applicable
+            if (page.CommandListCount > 0)
             {
-                // Adjust target coordinates based on player direction.
-                switch (GetPlayerDir(index))
+                var eventProcessing = TempPlayer[playerIndex].EventProcessing[eventPage.EventId];
+                if (eventProcessing.Active == 0)
                 {
-                    case (byte)DirectionType.Up:
-                        if (GetPlayerY(index) > 0) y = GetPlayerY(index) - 1;
-                        else return false;
-                        break;
-                    case (byte)DirectionType.Down:
-                        if (GetPlayerY(index) < Map[mapNum].MaxY) y = GetPlayerY(index) + 1;
-                        else return false;
-                        break;
-                    case (byte)DirectionType.Left:
-                        if (GetPlayerX(index) > 0) x = GetPlayerX(index) - 1;
-                        else return false;
-                        break;
-                    case (byte)DirectionType.Right:
-                        if (GetPlayerX(index) < Map[mapNum].MaxX) x = GetPlayerX(index) + 1;
-                        else return false;
-                        break;
-                    case (byte)DirectionType.UpRight:
-                        if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) > 0) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) - 1; }
-                        else return false;
-                        break;
-                    case (byte)DirectionType.UpLeft:
-                        if (GetPlayerX(index) > 0 && GetPlayerY(index) > 0) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) - 1; }
-                        else return false;
-                        break;
-                    case (byte)DirectionType.DownLeft:
-                        if (GetPlayerX(index) > 0 && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) - 1; y = GetPlayerY(index) + 1; }
-                        else return false;
-                        break;
-                    case (byte)DirectionType.DownRight:
-                        if (GetPlayerX(index) < Map[mapNum].MaxX && GetPlayerY(index) < Map[mapNum].MaxY) { x = GetPlayerX(index) + 1; y = GetPlayerY(index) + 1; }
-                        else return false;
-                        break;
-                }
-            }
-
-            // Check if the player is on the event's tile.
-            if (x != eventPage.X || y != eventPage.Y)
-            {
-                return false; // Not on the event tile.
-            }
-
-            // Check for event commands and start event processing.
-            if (Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].CommandListCount > 0)
-            {
-                // Use map event ID for indexing.
-                if (TempPlayer[index].EventProcessing[eventPage.EventId].Active == 0)
-                {
-                    ref var eventProcessing = ref TempPlayer[index].EventProcessing[eventPage.EventId]; //And here.
                     eventProcessing.Active = 1;
                     eventProcessing.ActionTimer = General.GetTimeMs();
                     eventProcessing.CurList = 0;
                     eventProcessing.CurSlot = 0;
-                    eventProcessing.EventId = eventPage.EventId; // This should be map event ID.
+                    eventProcessing.EventId = eventPage.EventId;
                     eventProcessing.PageId = eventPage.PageId;
                     eventProcessing.WaitingForResponse = 0;
-
-                    // Allocate ListLeftOff array.
-                    eventProcessing.ListLeftOff = new int[Map[mapNum].Event[eventPage.EventId].Pages[eventPage.PageId].CommandListCount];
+                    eventProcessing.ListLeftOff = new int[page.CommandListCount];
+                    // Event successfully triggered and processing started.
+                    return true;
                 }
             }
-
-            return false; // Event triggered (or not), but return false as per the original function's signature.
+            return false;
         }
 
-    } // class EventLogic
-} // namespace Server 
+        // Helper to calculate tile offsets based on player direction and map bounds
+        private static (int, int)? GetOffsetByDirection(byte direction, int x, int y, MapStruct map)
+        {
+            int newX = x, newY = y;
+            switch ((DirectionType)direction)
+            {
+                case DirectionType.Up:
+                    if (y > 0) newY = y - 1; else return null;
+                    break;
+                case DirectionType.Down:
+                    if (y < map.MaxY) newY = y + 1; else return null;
+                    break;
+                case DirectionType.Left:
+                    if (x > 0) newX = x - 1; else return null;
+                    break;
+                case DirectionType.Right:
+                    if (x < map.MaxX) newX = x + 1; else return null;
+                    break;
+                case DirectionType.UpRight:
+                    if (x < map.MaxX && y > 0) { newX = x + 1; newY = y - 1; } else return null;
+                    break;
+                case DirectionType.UpLeft:
+                    if (x > 0 && y > 0) { newX = x - 1; newY = y - 1; } else return null;
+                    break;
+                case DirectionType.DownLeft:
+                    if (x > 0 && y < map.MaxY) { newX = x - 1; newY = y + 1; } else return null;
+                    break;
+                case DirectionType.DownRight:
+                    if (x < map.MaxX && y < map.MaxY) { newX = x + 1; newY = y + 1; } else return null;
+                    break;
+                default:
+                    return null;
+            }
+            return (newX, newY);
+        }
+    }
+}
