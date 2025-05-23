@@ -47,7 +47,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -80,7 +80,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -94,7 +94,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -110,7 +110,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Owner)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -126,7 +126,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -147,7 +147,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -164,7 +164,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -181,7 +181,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -198,7 +198,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -215,7 +215,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -232,7 +232,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -249,7 +249,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -266,7 +266,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -283,7 +283,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -300,7 +300,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -316,7 +316,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
             NetworkSend.SendRequestMapReport();
@@ -326,7 +326,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -343,7 +343,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -354,7 +354,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -365,7 +365,7 @@ namespace Client
         {
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Mapper)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 
@@ -382,7 +382,7 @@ namespace Client
 
             if (GetPlayerAccess(GameState.MyIndex) < (int)Core.Enum.AccessType.Developer)
             {
-                Client.Text.AddText(LocalesManager.Get("Chat", "AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
+                Client.Text.AddText(LocalesManager.Get("AccessDenied"), (int)Core.Enum.ColorType.BrightRed);
                 return;
             }
 

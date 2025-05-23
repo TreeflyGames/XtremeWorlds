@@ -110,31 +110,130 @@ namespace Core.Localization
                 {
                     new LocaleItem("ServerStatus", "Server Status:"),
                     new LocaleItem("ServerOnline", "Online"),
-                    // ... (add all other default MainMenu items)
+                    new LocaleItem("ServerReconnect", "Reconnecting..."),
+                    new LocaleItem("ServerOffline", "Offline"),
+                    new LocaleItem("ButtonPlay", "Play"),
+                    new LocaleItem("ButtonRegister", "Register"),
+                    new LocaleItem("ButtonCredits", "Credits"),
+                    new LocaleItem("ButtonExit", "Exit"),
+                    new LocaleItem("NewsHeader", "Latest News"),
+                    new LocaleItem("News", @"Welcome To the XtremeWorlds.
+                                           This is a free open-source C# game engine!
+                                           For help or support please visit our site at
+                                           https://xtremeworlds.com/."),
+                    new LocaleItem("Login", "Login"),
+                    new LocaleItem("LoginName", "Name: "),
+                    new LocaleItem("LoginPass", "Password: "),
+                    new LocaleItem("LoginCheckBox", "Save Password?"),
+                    new LocaleItem("LoginButton", "Submit"),
+                    new LocaleItem("NewCharacter", "Create Character"),
+                    new LocaleItem("NewCharacterName", "Name: "),
+                    new LocaleItem("NewCharacterClass", "Class: "),
+                    new LocaleItem("NewCharacterGender", "Gender: "),
+                    new LocaleItem("NewCharacterMale", "Male"),
+                    new LocaleItem("NewCharacterFemale", "Female"),
+                    new LocaleItem("NewCharacterSprite", "Sprite"),
+                    new LocaleItem("NewCharacterButton", "Submit"),
+                    new LocaleItem("UseCharacter", "Character Selection"),
+                    new LocaleItem("UseCharacterNew", "New Character"),
+                    new LocaleItem("UseCharacterUse", "Use Character"),
+                    new LocaleItem("UseCharacterDel", "Delete Character"),
+                    new LocaleItem("Register", "Registration"),
+                    new LocaleItem("RegisterName", "Username: "),
+                    new LocaleItem("RegisterPass1", "Password: "),
+                    new LocaleItem("RegisterPass2", "Retype Password: "),
+                    new LocaleItem("Credits", "Credits"),
+                    new LocaleItem("StringLegal", "You cannot use high ASCII characters In your name, please re-enter."),
+                    new LocaleItem("SendLogin", "Connected, sending login information..."),
+                    new LocaleItem("SendNewCharacter", "Connected, sending character data..."),
+                    new LocaleItem("SendRegister", "Connected, sending registration information..."),
                     new LocaleItem("ConnectToServer", "Connecting to Server...( {0} )")
                 },
                 Game = new List<LocaleItem>
                 {
                     new LocaleItem("Time", "Time: "),
-                    // ... (add all other default Game items)
+                    new LocaleItem("Fps", "Fps: "),
+                    new LocaleItem("Lps", "Lps: "),
+                    new LocaleItem("Ping", "Ping: "),
+                    new LocaleItem("PingSync", "Sync"),
+                    new LocaleItem("PingLocal", "Local"),
+                    new LocaleItem("MapReceive", "Receiving map..."),
+                    new LocaleItem("DataReceive", "Receiving game data..."),
+                    new LocaleItem("MapCurMap", "Map # {0}"),
+                    new LocaleItem("MapCurLoc", "Loc() x: {0} y: {1}"),
+                    new LocaleItem("MapLoc", "Cur Loc x: {0} y: {1}"),
+                    new LocaleItem("Fullscreen", "Please restart the client for the changes to take effect."),
+                    new LocaleItem("InvalidMap", "Invalid map index."),
                     new LocaleItem("AccessDenied", "Access Denied!")
                 },
                 Chat = new List<LocaleItem>
                 {
                     new LocaleItem("Emote", "Usage : /emote [1-11]"),
-                    // ... (add all other default Chat items)
+                    new LocaleItem("Info", "Usage : /info [player]"),
+                    new LocaleItem("Party", "Usage : /party [player]"),
+                    new LocaleItem("Trade", "Usage : /trade [player]"),
+                    new LocaleItem("PlayerMsg", "Usage : ![player] [message]"),
+                    new LocaleItem("InvalidCmd", "Not a valid command!"),
+                    new LocaleItem("Help1", "Social Commands : "),
+                    new LocaleItem("Help2", "'[message] = Global Message"),
+                    new LocaleItem("Help3", "-[message] = Party Message"),
+                    new LocaleItem("Help4", "![player] [message] = Player Message"),
+                    new LocaleItem("Help5", "@[message] = Admin Message"),
+                    new LocaleItem("Help6", @"Available Commands: /help, /info, 
+                                            /fps, /lps, /stats, /trade, 
+                                            /party, /join, /leave"),
+                    new LocaleItem("AdminGblMsg", "''msghere = Global Admin Message"),
+                    new LocaleItem("AdminPvtMsg", "= msghere = Private Admin Message"),
+                    new LocaleItem("Admin1", "Social Commands:"),
+                    new LocaleItem("Admin2", @"Available Commands: /admin, /who, /access, /loc, 
+                                            /warpmeto, /warptome, /warpto, 
+                                            /sprite, /mapreport, /kick, 
+                                            /ban, /respawn, /welcome,
+                                            /editmap, /edititem, /editresource,
+                                            /editskill, /editpet, /editshop
+                                            /editprojectile, /editnpc, /editjob
+                                            /editjob, /acp"),
+                    new LocaleItem("Welcome", "Usage : /welcome [message]"),
+                    new LocaleItem("Access", "Usage : /access [player] [access]"),
+                    new LocaleItem("Sprite", "Usage : /sprite [index]"),
+                    new LocaleItem("Kick", "Usage : /kick [player]"),
+                    new LocaleItem("Ban", "Usage : /ban [player]"),
+                    new LocaleItem("WarpMeTo", "Usage : /warpmeto [player]"),
+                    new LocaleItem("WarpToMe", "Usage : /warptome [player]"),
                     new LocaleItem("WarpTo", "Usage : /warpto [map index]")
                 },
                 ItemDescription = new List<LocaleItem>
                 {
                     new LocaleItem("NotAvailable", "Not Available"),
-                    // ... (add all other default ItemDescription items)
+                    new LocaleItem("None", "None"),
+                    new LocaleItem("Seconds", "Seconds"),
+                    new LocaleItem("Currency", "Currency"),
+                    new LocaleItem("CommonEvent", "Event"),
+                    new LocaleItem("Potion", "Potion"),
+                    new LocaleItem("Skill", "Skill"),
+                    new LocaleItem("Weapon", "Weapon"),
+                    new LocaleItem("Armor", "Armor"),
+                    new LocaleItem("Helmet", "Helmet"),
+                    new LocaleItem("Shield", "Shield"),
+                    new LocaleItem("Shoes", "Shoes"),
+                    new LocaleItem("Gloves", "Gloves"),
+                    new LocaleItem("Amount", "Amount : "),
+                    new LocaleItem("Restore", "Restore Amount : "),
+                    new LocaleItem("Damage", "Damage : "),
                     new LocaleItem("Defense", "Defense : ")
                 },
                 SkillDescription = new List<LocaleItem>
                 {
                     new LocaleItem("No", "No"),
-                    // ... (add all other default SkillDescription items)
+                    new LocaleItem("None", "None"),
+                    new LocaleItem("Warp", "Warp"),
+                    new LocaleItem("Tiles", "Tiles"),
+                    new LocaleItem("SelfCast", "Self-Cast"),
+                    new LocaleItem("Gain", "Regen : "),
+                    new LocaleItem("GainHp", "Regen HP"),
+                    new LocaleItem("GainMp", "Regen MP"),
+                    new LocaleItem("Lose", "Syphon : "),
+                    new LocaleItem("LoseHp", "Syphon HP"),
                     new LocaleItem("LoseMp", "Syphon MP")
                 },
                 Crafting = new List<LocaleItem>
@@ -157,16 +256,33 @@ namespace Core.Localization
                 Quest = new List<LocaleItem>
                 {
                     new LocaleItem("Cancel", "Cancel Started"),
-                    // ... (add all other default Quest items)
+                    new LocaleItem("Started", "Quest Started"),
+                    new LocaleItem("Completed", "Quest Completed"),
+                    new LocaleItem("Slay", "Defeat {0}/{1} {2}."),
+                    new LocaleItem("Collect", "Collect {0}/{1} {2}."),
+                    new LocaleItem("Talk", "Go talk To {0}."),
+                    new LocaleItem("Reach", "Go To {0}."),
+                    new LocaleItem("TurnIn", "Give {0} the {1} {2}/{3} they requested."),
+                    new LocaleItem("Kill", "Defeat {0}/{1} Players In Battle."),
+                    new LocaleItem("Gather", "Gather {0}/{1} {2}."),
                     new LocaleItem("Fetch", "Fetch {0} X {1} from {2}.")
                 },
                 Character = new List<LocaleItem>
                 {
                     new LocaleItem("PName", "Name: "),
-                    // ... (add all other default Character items)
+                    new LocaleItem("JobType", "Job: "),
+                    new LocaleItem("Level", "Lv: "),
+                    new LocaleItem("Exp", "Exp: "),
+                    new LocaleItem("StatsLabel", "Stats:"),
+                    new LocaleItem("Strength", "Strength: "),
+                    new LocaleItem("Endurance", "Endurance: "),
+                    new LocaleItem("Vitality", "Vitality: "),
+                    new LocaleItem("Intelligence", "Intelligence: "),
+                    new LocaleItem("Luck", "Luck: "),
+                    new LocaleItem("Spirit", "Spirit: "),
+                    new LocaleItem("Points", "Points Available: "),
                     new LocaleItem("SkillLabel", "Skills:")
                 }
-                // ... Initialize all other lists similarly
             };
         }
     }
@@ -269,18 +385,25 @@ namespace Core.Localization
         }
 
         /// <summary>
-        /// Gets the localized string for the given key.
+        /// Gets the localized string for the given key from the currently loaded LocaleData.
         /// </summary>
         /// <param name="key">The localization key.</param>
         /// <returns>The localized string, or a placeholder if the key is not found.</returns>
         public static string Get(string key)
         {
-            if (_localizedStrings.TryGetValue(key, out var value))
+            if (_loadedLocaleData == null)
+            {
+                Debug.WriteLine("LocaleData is null.");
+                return string.Format(MissingKeyFormat, key);
+            }
+
+            var value = _localizedStrings.TryGetValue(key, out var result) ? result : null;
+            if (value != null)
             {
                 return value;
             }
             Debug.WriteLine($"Missing localization key: {key}");
-            return string.Format(MissingKeyFormat, key); // Return a placeholder
+            return string.Format(MissingKeyFormat, key);
         }
 
         /// <summary>

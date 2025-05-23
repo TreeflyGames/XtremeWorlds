@@ -30,7 +30,7 @@ namespace Client
             var buffer = new ByteStream(data);
 
             requester = buffer.ReadInt32();
-            GameLogic.Dialogue("Trade Invite", string.Format(LocalesManager.Get("Chat", "Request"), Core.Type.Player[requester].Name), "", (byte)Core.Enum.DialogueType.Trade, (byte)Core.Enum.DialogueStyle.YesNo);
+            GameLogic.Dialogue("Trade Invite", string.Format(LocalesManager.Get("Request"), Core.Type.Player[requester].Name), "", (byte)Core.Enum.DialogueType.Trade, (byte)Core.Enum.DialogueStyle.YesNo);
 
             buffer.Dispose();
         }
