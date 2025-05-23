@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -66,7 +67,7 @@ namespace Client
         public static void LoadGame()
         {
             SettingsManager.Load();
-            LocalesManager.Load();
+            LocalesManager.Initialize();
             CheckAnimations();
             CheckCharacters();
             CheckEmotes();

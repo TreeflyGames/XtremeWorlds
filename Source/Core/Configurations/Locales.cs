@@ -3,18 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using System.ComponentModel; // For DefaultValue attribute (optional, more for schema)
-using System.Diagnostics; // For Debug.WriteLine
-
-// Assuming Core.Path.Config exists and provides the configuration directory path.
-// For example:
-namespace Core
-{
-    public static class Path // Mockup for Core.Path
-    {
-        public static string Config { get; } = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config");
-    }
-}
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Core.Localization
 {
