@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Path = System.IO.Path;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using Core;
+﻿using Core;
+using Microsoft.Extensions.Configuration.Json;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
@@ -14,13 +8,20 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Npgsql;
 using NpgsqlTypes;
-using static Core.Type;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 using static Core.Enum;
 using static Core.Global.Command;
-using System.Reflection;
-using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.Options;
+using static Core.Type;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Net.WebRequestMethods;
+using Path = System.IO.Path;
 
 namespace Server
 {
@@ -678,7 +679,7 @@ namespace Server
         {
             bool isInSection = false;
 
-            foreach (string line in File.ReadAllLines(filePath))
+            foreach (string line in System.IO.File.ReadAllLines(filePath))
             {
                 if (line.Equals("[" + section + "]", StringComparison.OrdinalIgnoreCase))
                 {
@@ -704,7 +705,7 @@ namespace Server
 
         public static void PutVar(string filePath, string section, string key, string value)
         {
-            var lines = new List<string>(File.ReadAllLines(filePath));
+            var lines = new List<string>(System.IO.File.ReadAllLines(filePath));
             bool updated = false;
             bool isInSection = false;
             int i = 0;
@@ -741,7 +742,7 @@ namespace Server
                 lines.Add(key + "=" + value);
             }
 
-            File.WriteAllLines(filePath, lines);
+            System.IO.File.WriteAllLines(filePath, lines);
         }
 
 
@@ -878,28 +879,35 @@ namespace Server
 
             // Construct the path to the "maps" directory
             string mapsDir = Path.Combine(baseDir, "maps");
-            Directory.CreateDirectory(mapsDir);        
+            Directory.CreateDirectory(mapsDir);
 
-            if (File.Exists(mapsDir + @"\cs\map" + mapNum + ".ini"))
+            //if (File.Exists(mapsDir + @"\cs\map" + mapNum + ".ini"))
+            //{
+            //var csMap = LoadCSMap(mapNum);
+            //Core.Type.Map[mapNum] = MapFromCSMap(csMap);
+            //    return;
+            //}
+
+            try
             {
-                var csMap = LoadCSMap(mapNum);
-                Core.Type.Map[mapNum] = MapFromCSMap(csMap);
-                return;
+                if (System.IO.File.Exists(mapsDir + @"\map" + mapNum + ".dat"))
+                {
+                    var xwMap = LoadXWMap(mapsDir + @"\map" + mapNum.ToString() + ".dat");
+                    Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
+                    return;
+                }
+            }
+            catch { Exception e; }
+            {
+                Console.WriteLine(mapNum + " failed to load!");
             }
 
-            if (File.Exists(mapsDir + @"\xw\map" + mapNum + ".dat"))
-            {
-                var xwMap = LoadXWMap(mapsDir + @"\xw\map" + mapNum.ToString() + ".dat");
-                Core.Type.Map[mapNum] = MapFromXWMap(xwMap);
-                return;
-            }
-
-            if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
-            {
+            //if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
+            //{
                 // Dim sdMap As SDMapStruct = loadsdmap(Type.MapsDir & "\sd\map" & mapNum.ToString() & ".dat")
                 // Type.Map(mapNum) = MapFromSDMap(sdMap)
-                return;
-            }
+            //    return;
+            //}
 
             JObject data;
 
@@ -1015,7 +1023,7 @@ namespace Server
             var xwMap = new XWMapStruct
             {
                 Tile = new XWTileStruct[16, 12],
-                NPC = new long[15]
+                NPC = new long[Core.Constant.MAX_MAP_NPCS]
             };
 
             using (var fs = new FileStream(fileName, FileMode.Open))
@@ -1211,47 +1219,45 @@ namespace Server
 
         public static MapStruct MapFromXWMap(XWMapStruct xwMap)
         {
-            var mwMap = new MapStruct
-            {
-                Tile = new TileStruct[16, 12],
-                NPC = new int[Core.Constant.MAX_MAP_NPCS]
-            };
+            var map = new MapStruct();
 
-            mwMap.Name = xwMap.Name;
-            mwMap.Music = "Music" + xwMap.Music.ToString() + ".mid";
-            mwMap.Revision = (int)xwMap.Revision;
-            mwMap.Moral = xwMap.Moral;
-            mwMap.Up = xwMap.Up;
-            mwMap.Down = xwMap.Down;
-            mwMap.Left = xwMap.Left;
-            mwMap.Right = xwMap.Right;
-            mwMap.BootMap = xwMap.BootMap;
-            mwMap.BootX = xwMap.BootX;
-            mwMap.BootY = xwMap.BootY;
-            mwMap.Shop = xwMap.Shop;
+            map.Tile = new TileStruct[16, 12];
+            map.NPC = new int[Core.Constant.MAX_MAP_NPCS];
+            map.Name = xwMap.Name;
+            map.Music = "Music" + xwMap.Music.ToString() + ".mid";
+            map.Revision = (int)xwMap.Revision;
+            map.Moral = xwMap.Moral;
+            map.Up = xwMap.Up;
+            map.Down = xwMap.Down;
+            map.Left = xwMap.Left;
+            map.Right = xwMap.Right;
+            map.BootMap = xwMap.BootMap;
+            map.BootX = xwMap.BootX;
+            map.BootY = xwMap.BootY;
+            map.Shop = xwMap.Shop;
 
             // Convert Byte to Boolean (False if 0, True otherwise)
-            mwMap.Indoors = xwMap.Indoors != 0;
+            map.Indoors = xwMap.Indoors != 0;
 
             // Loop through each tile in xwMap and copy the data to map
             for (int y = 0; y < 11; y++)
             {
                 for (int x = 0; x < 15; x++)
-                    mwMap.Tile[x, y] = ConvertXWTileToTile(xwMap.Tile[x, y]);
+                    map.Tile[x, y] = ConvertXWTileToTile(xwMap.Tile[x, y]);
             }
 
             // NPC array conversion (Long to Integer), if necessary
             if (xwMap.NPC is not null)
             {
-                mwMap.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
+                map.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
             }
 
-            mwMap.Weather = xwMap.Weather;
-            mwMap.NoRespawn = xwMap.Respawn == 0;
-            mwMap.MaxX = 15;
-            mwMap.MaxY = 11;
+            map.Weather = xwMap.Weather;
+            map.NoRespawn = xwMap.Respawn == 0;
+            map.MaxX = 15;
+            map.MaxY = 11;
 
-            return mwMap;
+            return map;
         }
 
         public static MapStruct MapFromCSMap(CSMapStruct csMap)
@@ -1834,7 +1840,7 @@ namespace Server
             filename = Path.Combine(Core.Path.Database, "banlist.txt");
 
             // Make sure the file exists
-            if (!File.Exists(filename))
+            if (!System.IO.File.Exists(filename))
             {
                 F = FileSystem.FreeFile();
             }
@@ -1870,7 +1876,7 @@ namespace Server
             filename = Path.Combine(Core.Path.Database, "banlist.txt");
 
             // Check if file exists
-            if (!File.Exists(filename))
+            if (!System.IO.File.Exists(filename))
             {
                 return false;
             }
@@ -1905,8 +1911,8 @@ namespace Server
             int i;
 
             // Make sure the file exists
-            if (!File.Exists(filename))
-                File.Create(filename).Dispose();
+            if (!System.IO.File.Exists(filename))
+                System.IO.File.Create(filename).Dispose();
 
             // Cut off last portion of ip
             IP = NetworkConfig.Socket.ClientIP(BanPlayerindex);
