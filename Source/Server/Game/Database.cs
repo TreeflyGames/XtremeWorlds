@@ -899,7 +899,7 @@ namespace Server
             }
             catch { Exception e; }
             {
-                Console.WriteLine(mapNum + " failed to load!");
+                Console.WriteLine(mapNum + " failed to load map!");
             }
 
             //if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
@@ -1247,9 +1247,14 @@ namespace Server
             }
 
             // NPC array conversion (Long to Integer), if necessary
-            if (xwMap.NPC is not null)
+            //if (xwMap.NPC is not null)
+            //{
+            //    map.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
+            //}
+
+            for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i ++)
             {
-                map.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
+                map.NPC[i] = -1;
             }
 
             map.Weather = xwMap.Weather;
