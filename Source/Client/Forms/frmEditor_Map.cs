@@ -868,7 +868,7 @@ namespace Client
 
             for (x = 0; x < Constant.MAX_MAP_NPCS; x++)
             {
-                if (Core.Type.MyMap.NPC[x] >= 0)
+                if (Core.Type.MyMap.NPC[x] >= 0 && Core.Type.MyMap.NPC[x] <= Core.Constant.MAX_NPCS)
                 {
                     Instance.lstMapNPC.Items.Add(x + 1 + ": " + Strings.Trim(Core.Type.NPC[Core.Type.MyMap.NPC[x]].Name));
                 }
