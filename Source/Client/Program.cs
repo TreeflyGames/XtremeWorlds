@@ -954,9 +954,13 @@ namespace Client
                         Pet.PetMove(GameState.CurX, GameState.CurY);
                     }
 
-                    Player.CheckAttack(true);
-                    NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
-                    lastSearchTime = DateTime.Now;
+
+                    if (IsMouseButtonDown(MouseButton.Left))
+                    {
+                        Player.CheckAttack(true);
+                        NetworkSend.PlayerSearch(GameState.CurX, GameState.CurY, 0);
+                        lastSearchTime = DateTime.Now;
+                    }
                 }
 
                 // Right-click interactions
