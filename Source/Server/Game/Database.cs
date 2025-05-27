@@ -1247,10 +1247,10 @@ namespace Server
             }
 
             // NPC array conversion (Long to Integer), if necessary
-            if (xwMap.NPC is not null)
-            {
-                map.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
-            }
+            //if (xwMap.NPC is not null)
+            //{
+            //    map.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
+            //}
 
             map.Weather = xwMap.Weather;
             map.NoRespawn = xwMap.Respawn == 0;
