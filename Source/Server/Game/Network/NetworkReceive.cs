@@ -1798,11 +1798,15 @@ namespace Server
                             }
                             else
                             {
-                                Core.Type.TempPlayer[index].Target = 0;
+                                Core.Type.TempPlayer[index].Target = -1;
                                 Core.Type.TempPlayer[index].TargetType = 0;
                             }
 
-                            NetworkSend.PlayerMsg(index, "Your target is now " + GetPlayerName(i) + ".", (int) ColorType.Yellow);
+                            if (Core.Type.TempPlayer[index].Target >= 0)
+                            {
+                                NetworkSend.PlayerMsg(index, "Your target is now " + GetPlayerName(i) + ".", (int)ColorType.Yellow);
+                            }
+
                             NetworkSend.SendTarget(index, Core.Type.TempPlayer[index].Target, Core.Type.TempPlayer[index].TargetType);
                             if (rclick == 1)
                                 NetworkSend.SendRightClick(index);
@@ -1851,10 +1855,14 @@ namespace Server
                             }
                             else
                             {
-                                Core.Type.TempPlayer[index].Target = 0;
+                                Core.Type.TempPlayer[index].Target = -1;
                                 Core.Type.TempPlayer[index].TargetType = 0;
                             }
-                            NetworkSend.PlayerMsg(index, "Your target is now " + GameLogic.CheckGrammar(Core.Type.NPC[(int)Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num].Name) + ".", (int) ColorType.Yellow);
+
+                            if (Core.Type.TempPlayer[index].Target >= 0)
+                            {
+                                NetworkSend.PlayerMsg(index, "Your target is now " + GameLogic.CheckGrammar(Core.Type.NPC[(int)Core.Type.MapNPC[GetPlayerMap(index)].NPC[i].Num].Name) + ".", (int)ColorType.Yellow);
+                            }
                             NetworkSend.SendTarget(index, Core.Type.TempPlayer[index].Target, Core.Type.TempPlayer[index].TargetType);
                             return;
                         }
