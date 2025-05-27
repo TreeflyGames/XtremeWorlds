@@ -1369,7 +1369,7 @@ namespace Server
                 do
                 {
                     restartloop = false;
-                    for (int x = 0; x < TempPlayer[i].EventProcessingCount; x++)
+                    for (int x = 0; x <= TempPlayer[i].EventProcessingCount; x++)
                     {
                         if (TempPlayer[i].EventProcessing[x].Active != 1) continue;
 
@@ -2982,7 +2982,7 @@ namespace Server
             // 6. Begin event processing if applicable
             if (page.CommandListCount > 0)
             {
-                var eventProcessing = TempPlayer[playerIndex].EventProcessing[eventPage.EventId];
+                ref var eventProcessing = ref TempPlayer[playerIndex].EventProcessing[localEventIndex];
                 if (eventProcessing.Active == 0)
                 {
                     eventProcessing.Active = 1;
