@@ -899,7 +899,7 @@ namespace Server
             }
             catch { Exception e; }
             {
-                Console.WriteLine(mapNum + " failed to load!");
+                Console.WriteLine(mapNum + " failed to load map!");
             }
 
             //if (File.Exists(mapsDir + @"\sd\map" + mapNum + ".dat"))
