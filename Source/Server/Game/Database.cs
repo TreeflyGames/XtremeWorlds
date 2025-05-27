@@ -1252,6 +1252,11 @@ namespace Server
             //    map.NPC = Array.ConvertAll(xwMap.NPC, i => (int)i);
             //}
 
+            for (int i = 0; i < Core.Constant.MAX_MAP_NPCS; i ++)
+            {
+                map.NPC[i] = -1;
+            }
+
             map.Weather = xwMap.Weather;
             map.NoRespawn = xwMap.Respawn == 0;
             map.MaxX = 15;
