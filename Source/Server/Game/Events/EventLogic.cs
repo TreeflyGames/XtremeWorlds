@@ -2951,7 +2951,7 @@ namespace Server
             {
                 if (eventMap.EventPages[i].EventId == eventId)
                 {
-                    localEventIndex = i;
+                    localEventIndex = i + 1;
                     break;
                 }
             }
