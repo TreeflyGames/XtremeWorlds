@@ -978,8 +978,7 @@ namespace Client
 
         private static void Packet_Admin(ref byte[] data)
         {
-            App.ShowWindowByName("AdminWindow");
-
+            App.ShowWindowByName("Admin Panel");
         }
 
         private static void Packet_MapNames(ref byte[] data)

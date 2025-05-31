@@ -29,74 +29,92 @@ public partial class App : Avalonia.Application
 
     public static void ShowWindowByName(string windowName)
     {
-        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            foreach (var window in desktop.Windows)
+            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (window.Title == windowName)
+                foreach (var window in desktop.Windows)
                 {
-                    window.Show();
-                    window.Activate();
-                    return;
+                    if (window != null)
+                    {
+                        if (window.Title == windowName)
+                        {
+                            window.Show();
+                            window.Activate();
+                            return;
+                        }
+                    }
                 }
             }
-        }
+        });
     }
 
     public static void HideWindowByName(string windowName)
     {
-        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            foreach (var window in desktop.Windows)
+            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (window.Title == windowName)
+                foreach (var window in desktop.Windows)
                 {
-                    window.Hide();
-                    return;
+                    if (window.Title == windowName)
+                    {
+                        window.Hide();
+                        return;
+                    }
                 }
             }
-        }
+        });
     }
 
     public static void CloseWindowByName(string windowName)
     {
-        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            foreach (var window in desktop.Windows)
+            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (window.Title == windowName)
+                foreach (var window in desktop.Windows)
                 {
-                    window.Close();
-                    return;
+                    if (window.Title == windowName)
+                    {
+                        window.Close();
+                        return;
+                    }
                 }
             }
-        }
+        });
     }
 
     public static Window? GetWindowByName(string windowName)
     {
-        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        Window? result = null;
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            foreach (var window in desktop.Windows)
+            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                if (window.Title == windowName)
+                foreach (var window in desktop.Windows)
                 {
-                    return window;
+                    if (window.Title == windowName)
+                    {
+                        result = window;
+                        break;
+                    }
                 }
             }
-        }
-        return null;
+        });
+        return result;
     }
 
     public static Avalonia.Controls.Control? GetControlByName(Avalonia.Controls.Window window, string controlName)
     {
-        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        Avalonia.Controls.Control? result = null;
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
         {
-            if (window != null)
+            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                return window.FindControl<Avalonia.Controls.Control>(controlName);
+                result = window.FindControl<Avalonia.Controls.Control>(controlName);             
             }
-        }
-        return null;
+        });
+        return result;
     }
 }
