@@ -1378,85 +1378,85 @@ namespace Client
                                 for (y = 0; y < loopTo7; y++)
                                 {
                                     // blocked tile
-                                    if (frmEditor_Map.Instance.optBlocked.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optBlocked.Checked == true)
+                                    //{
                                         type = TileType.Blocked;
-                                    }
+                                    //}
 
                                     // warp tile
-                                    if (frmEditor_Map.Instance.optWarp.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optWarp.Checked == true)
+                                    //{
                                         type = TileType.Warp;
-                                    }
+                                    //}
 
                                     // item spawn
-                                    if (frmEditor_Map.Instance.optItem.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optItem.Checked == true)
+                                    //{
                                         type = TileType.Item;
-                                    }
+                                    //}
 
                                     // NPC avoid
-                                    if (frmEditor_Map.Instance.optNPCAvoid.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optNPCAvoid.Checked == true)
+                                    //{
                                         type = TileType.NPCAvoid;
-                                    }
+                                    //}
 
                                     // resource
-                                    if (frmEditor_Map.Instance.optResource.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optResource.Checked == true)
+                                    //{
                                         type = TileType.Resource;
-                                    }
+                                    //}
 
                                     // NPC spawn
-                                    if (frmEditor_Map.Instance.optNPCSpawn.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optNPCSpawn.Checked == true)
+                                    //{
                                         type = TileType.NPCSpawn;
-                                    }
+                                    //}
 
                                     // shop
-                                    if (frmEditor_Map.Instance.optShop.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optShop.Checked == true)
+                                    //{
                                         type = TileType.Shop;
-                                    }
+                                    //}
 
                                     // bank
-                                    if (frmEditor_Map.Instance.optBank.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optBank.Checked == true)
+                                    //{
                                         type = TileType.Bank;
-                                    }
+                                    //}
 
                                     // heal
-                                    if (frmEditor_Map.Instance.optHeal.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optHeal.Checked == true)
+                                    //{
                                         type = TileType.Heal;
-                                    }
+                                    //}
 
                                     // trap
-                                    if (frmEditor_Map.Instance.optTrap.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optTrap.Checked == true)
+                                    //{
                                         type = TileType.Trap;
-                                    }
+                                    //}
 
                                     // Animation
-                                    if (frmEditor_Map.Instance.optAnimation.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optAnimation.Checked == true)
+                                    //{
                                         type = TileType.Animation;
-                                    }
+                                    //}
 
                                     // No Xing
-                                    if (frmEditor_Map.Instance.optNoXing.Checked == true)
-                                    {
+                                    //if (frmEditor_Map.Instance.optNoXing.Checked == true)
+                                    //{
                                         type = TileType.NoXing;
-                                    }
+                                    //}
 
-                                    if (frmEditor_Map.Instance.cmbAttribute.SelectedIndex == 1)
-                                    {
+                                    //if (frmEditor_Map.Instance.cmbAttribute.SelectedIndex == 1)
+                                    //{
                                         Core.Type.MyMap.Tile[x, y].Type = type;
-                                    }
-                                    else
-                                    {
+                                    //}
+                                    //else
+                                    //{
                                         Core.Type.MyMap.Tile[x, y].Type2 = type;
-                                    }
+                                    //}
                                 }
                             }
 
@@ -2115,149 +2115,6 @@ namespace Client
         {
             GameState.InMenu = true;
             GameState.InGame = false;
-
-            switch (GameState.MyEditorType)
-            {
-                case (int)Core.Enum.EditorType.Item:
-                    {
-                        if (frmEditor_Item.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Item.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Item.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Job:
-                    {
-                        if (frmEditor_Job.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Job.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Job.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Map:
-                    {
-                        if (frmEditor_Map.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Map.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Map.Instance.Dispose();
-                            });
-                        }
-                        if (frmEditor_Event.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Event.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Event.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.NPC:
-                    {
-                        if (frmEditor_NPC.Instance.IsHandleCreated)
-                        {
-                            frmEditor_NPC.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_NPC.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Pet:
-                    {
-                        if (frmEditor_Pet.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Pet.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Pet.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Projectile:
-                    {
-                        if (frmEditor_Projectile.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Projectile.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Projectile.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Resource:
-                    {
-                        if (frmEditor_Resource.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Resource.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Resource.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Shop:
-                    {
-                        if (frmEditor_Shop.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Shop.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Shop.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Skill:
-                    {
-                        if (frmEditor_Skill.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Skill.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Skill.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Animation:
-                    {
-                        if (frmEditor_Animation.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Animation.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Animation.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-                case (int)Core.Enum.EditorType.Moral:
-                    {
-                        if (frmEditor_Moral.Instance.IsHandleCreated)
-                        {
-                            frmEditor_Moral.Instance.Invoke((MethodInvoker)delegate
-                            {
-                                frmEditor_Moral.Instance.Dispose();
-                            });
-                        }
-                        break;
-                    }
-            }
-
-            if (GameState.AdminPanel)
-            {
-                if (FrmAdmin.Instance.IsHandleCreated)
-                    {
-                        FrmAdmin.Instance.Invoke((MethodInvoker)delegate
-                    {
-                        FrmAdmin.Instance.Dispose();
-                    });
-                }
-            }
 
             NetworkConfig.DestroyNetwork();
             NetworkConfig.InitNetwork();

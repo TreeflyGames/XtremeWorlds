@@ -16,13 +16,13 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using System;
 using System.Reflection;
 using static Client.GameClient;
+using Avalonia;
 
 namespace Client
 {
 
     public class GameClient : Game
     {
-
         public static GraphicsDeviceManager Graphics;
         public static Microsoft.Xna.Framework.Graphics.SpriteBatch SpriteBatch;
 
@@ -143,17 +143,15 @@ namespace Client
             Graphics = new GraphicsDeviceManager(this);
 
             // Set basic properties for GraphicsDeviceManager
-            {
-                ref var withBlock = ref Graphics;
-                withBlock.GraphicsProfile = GraphicsProfile.Reach;
-                withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
-                withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
-                withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
-                withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
-                withBlock.PreferHalfPixelOffset = true;
-                withBlock.PreferMultiSampling = true;
-            }
-
+            ref var withBlock = ref Graphics;
+            withBlock.GraphicsProfile = GraphicsProfile.Reach;
+            withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
+            withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
+            withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
+            withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
+            withBlock.PreferHalfPixelOffset = true;
+            withBlock.PreferMultiSampling = true;
+            
             // Add handler for PreparingDeviceSettings
             Graphics.PreparingDeviceSettings += (sender, args) =>
             {
@@ -844,16 +842,16 @@ namespace Client
                 {
                     if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
                     {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count)
-                        {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex;
-                        }
+                        //if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count)
+                        //{
+                        //    frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex;
+                        //}
                     }
 
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0)
-                    {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
-                    }
+                    //else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0)
+                    //{
+                    //    frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                    //}
 
                 }
             }
@@ -865,14 +863,14 @@ namespace Client
                 {
                     if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
                     {
-                        if (frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0)
-                        {
-                            frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1;
-                        }
-                    }
-                    else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
-                    {
-                        frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                        //if (frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0)
+                        //{
+                        //    frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1;
+                        //}
+                    //}
+                    //else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
+                    //{
+                    //    frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
                     }
                 }
 
@@ -951,7 +949,7 @@ namespace Client
                 {
                     if (GameState.MyEditorType == (int)EditorType.Map)
                     {
-                        frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                        //frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
                     }
                 }
                 
@@ -986,7 +984,7 @@ namespace Client
                     {
                         if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= GameClient.MouseRepeatInterval)
                         {
-                            frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                            //frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
                         }
                     }
 
@@ -2887,8 +2885,8 @@ namespace Client
 
             if (GameState.MyEditorType == (int)EditorType.Map)
             {
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpDirBlock))
-                {
+                //if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpDirBlock))
+                //{
                     var loopTo10 = (int)Math.Round(GameState.TileView.Right + 1d);
                     for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo10; x++)
                     {
@@ -2900,11 +2898,11 @@ namespace Client
                                 DrawDirections(x, y);
                             }
                         }
-                    }
+                //    }
                 }
 
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpAttributes))
-                    Text.DrawMapAttributes();
+                //if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpAttributes))
+                //    Text.DrawMapAttributes();
             }
 
             for (i = 0; i < byte.MaxValue; i++)
@@ -2941,10 +2939,10 @@ namespace Client
 
             if (GameState.MyEditorType == (int)EditorType.Map)
             {
-                if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpEvents))
-                {
+                //if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpEvents))
+                //{
                     DrawEvents();
-                }
+                //}
             }
 
             DrawBars();

@@ -150,10 +150,10 @@ namespace Client
                             {
                                 if (GameState.HideLayers)
                                 {
-                                    if (i == frmEditor_Map.Instance.cmbLayers.SelectedIndex)
-                                    {
+                                    //if (i == frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    //{
                                         alpha = 0.5f;
-                                    }
+                                    //}
                                 }
                             }
 
@@ -245,10 +245,10 @@ namespace Client
                             {
                                 if (GameState.HideLayers)
                                 {
-                                    if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
-                                    {
+                                    //if (i != frmEditor_Map.Instance.cmbLayers.SelectedIndex)
+                                    //{
                                         alpha = 0.5f;
-                                    }
+                                    //}
                                 }
                             }
 
