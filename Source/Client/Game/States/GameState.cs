@@ -371,7 +371,6 @@ namespace Client
         public static int AutoTileFrame;
 
         public static int NumProjectiles;
-        public static bool InitProjectileEditor;
         public const byte EditorProjectile = 10;
         public static bool[] ProjectileChanged = new bool[256];
 
@@ -397,22 +396,6 @@ namespace Client
 
         public static int InShop; // is the player in a shop?
         public static byte ShopAction; // stores the current shop action
-
-        // Editors
-        public static bool InitEditor;
-        public static bool InitMapEditor;
-        public static bool InitPetEditor;
-        public static bool InitItemEditor;
-        public static bool InitResourceEditor;
-        public static bool InitNPCEditor;
-        public static bool InitSkillEditor;
-        public static bool InitShopEditor;
-        public static bool InitAnimationEditor;
-        public static bool InitJobEditor;
-        public static bool InitMoralEditor;
-        public static bool InitAdminForm;
-        public static bool InitMapReport;
-        public static bool InitEventEditorForm;
 
         // Editor edited items array
         public static bool[] Item_Changed = new bool[Constant.MAX_ITEMS];

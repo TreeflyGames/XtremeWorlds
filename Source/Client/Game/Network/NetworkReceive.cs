@@ -6,6 +6,8 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
+using AvaloniaAppTemplate;
+using Avalonia.Controls;
 
 namespace Client
 {
@@ -948,14 +950,36 @@ namespace Client
             for (i = 0; i < Constant.MAX_MAPS; i++)
                 GameState.MapNames[i] = buffer.ReadString();
 
-            GameState.InitMapReport = true;
+            // Add map names to the admin window's map list if the window exists
+            var adminWindow = App.GetWindowByName("AdminWindow");
+            if (adminWindow != null)
+            {
+                var mapList = App.GetControlByName(adminWindow, "lstMaps");
+                // Avoid dynamic: check for known interface or methods
+                if (mapList != null)
+                {
+                    // Try to call Clear and AddItem via reflection if available
+                    var clearMethod = mapList.GetType().GetMethod("Clear");
+                    var addItemMethod = mapList.GetType().GetMethod("AddItem", new[] { typeof(string) });
+                    if (clearMethod != null && addItemMethod != null)
+                    {
+                        clearMethod.Invoke(mapList, null);
+                        for (i = 0; i < Constant.MAX_MAPS; i++)
+                        {
+                            if (!string.IsNullOrEmpty(GameState.MapNames[i]))
+                                addItemMethod.Invoke(mapList, new object[] { GameState.MapNames[i] });
+                        }
+                    }
+                }
+            }
 
             buffer.Dispose();
         }
 
         private static void Packet_Admin(ref byte[] data)
         {
-            GameState.InitAdminForm = true;
+            App.ShowWindowByName("AdminWindow");
+
         }
 
         private static void Packet_MapNames(ref byte[] data)
@@ -1025,47 +1049,47 @@ namespace Client
         // *****************
         private static void Packet_EditAnimation(ref byte[] data)
         {
-            GameState.InitAnimationEditor = true;
+            //GameState.InitAnimationEditor = true;
         }
 
         private static void Packet_JobEditor(ref byte[] data)
         {
-            GameState.InitJobEditor = true;
+            //GameState.InitJobEditor = true;
         }
 
         public static void Packet_EditItem(ref byte[] data)
         {
-            GameState.InitItemEditor = true;
+            //GameState.InitItemEditor = true;
         }
 
         private static void Packet_NPCEditor(ref byte[] data)
         {
-            GameState.InitNPCEditor = true;
+            //GameState.InitNPCEditor = true;
         }
 
         private static void Packet_ResourceEditor(ref byte[] data)
         {
-            GameState.InitResourceEditor = true;
+            //GameState.InitResourceEditor = true;
         }
 
         public static void Packet_PetEditor(ref byte[] data)
         {
-            GameState.InitPetEditor = true;
+            //GameState.InitPetEditor = true;
         }
 
         public static void HandleProjectileEditor(ref byte[] data)
         {
-            GameState.InitProjectileEditor = true;
+            //GameState.InitProjectileEditor = true;
         }
 
         private static void Packet_EditShop(ref byte[] data)
         {
-            GameState.InitShopEditor = true;
+            //GameState.InitShopEditor = true;
         }
 
         private static void Packet_EditSkill(ref byte[] data)
         {
-            GameState.InitSkillEditor = true;
+            //GameState.InitSkillEditor = true;
         }
 
         private static void Packet_Clock(ref byte[] data)
@@ -1129,7 +1153,7 @@ namespace Client
 
         public static void Packet_EditMoral(ref byte[] data)
         {
-            GameState.InitMoralEditor = true;
+            //GameState.InitMoralEditor = true;
         }
 
         public static void Packet_UpdateMoral(ref byte[] data)

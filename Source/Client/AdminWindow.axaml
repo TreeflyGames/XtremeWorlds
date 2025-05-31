@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="340"
-        x:Class="AvaloniaAppTemplate.MainWindow"
+        x:Class="AvaloniaAppTemplate.AdminWindow"
         Title="Admin Panel"
         SizeToContent="WidthAndHeight"
         CanResize="False"

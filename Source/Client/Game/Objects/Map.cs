@@ -646,7 +646,7 @@ namespace Client
         {
             var buffer = new ByteStream(data);
 
-            GameState.InitMapEditor = true;
+            //GameState.InitMapEditor = true;
             Gui.HideWindows();
 
             buffer.Dispose();

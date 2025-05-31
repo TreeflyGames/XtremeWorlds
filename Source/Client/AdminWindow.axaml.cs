@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace AvaloniaAppTemplate;
 
-public partial class MainWindow : Window
+public partial class AdminWindow : Window
 {
-    public MainWindow()
+    public AdminWindow()
     {
         InitializeComponent();
     }
