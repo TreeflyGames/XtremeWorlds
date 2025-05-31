@@ -951,7 +951,7 @@ namespace Client
                 GameState.MapNames[i] = buffer.ReadString();
 
             // Add map names to the admin window's map list if the window exists
-            var adminWindow = App.GetWindowByName("AdminWindow");
+            var adminWindow = App.GetWindowByName("Admin Panel");
             if (adminWindow != null)
             {
                 var mapList = App.GetControlByName(adminWindow, "lstMaps");

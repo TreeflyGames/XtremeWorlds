@@ -2079,6 +2079,7 @@ namespace Client
         {
             if (itemNum < 0L | itemNum > Constant.MAX_ITEMS)
                 return;
+
             // show
             ShowItemDesc(x, y, itemNum);
         }
