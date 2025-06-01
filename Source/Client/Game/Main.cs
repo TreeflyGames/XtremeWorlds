@@ -9,21 +9,26 @@ namespace Client
 
     public class Program
     {
+        public partial class App : Application
+        {
+            public override void OnFrameworkInitializationCompleted()
+            {
+                Client.Program.StartGameThread();
+                base.OnFrameworkInitializationCompleted();
+            }
+        }
+        
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
         [STAThread]
         public static void Main(string[] args)
         {
-            StartGameThread();
-
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
 
-        // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
+        public static AppBuilder BuildAvaloniaApp() =>
+            AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .WithInterFont()
                 .LogToTrace();
