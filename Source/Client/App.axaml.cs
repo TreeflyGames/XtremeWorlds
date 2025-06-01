@@ -29,6 +29,7 @@ public partial class App : Avalonia.Application
             };
         }
 
+        Client.Program.StartGameThread();
         base.OnFrameworkInitializationCompleted();
     }
 

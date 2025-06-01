@@ -6,18 +6,8 @@ using static Core.Enum;
 
 namespace Client
 {
-
     public class Program
     {
-        public partial class App : Application
-        {
-            public override void OnFrameworkInitializationCompleted()
-            {
-                Client.Program.StartGameThread();
-                base.OnFrameworkInitializationCompleted();
-            }
-        }
-        
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
