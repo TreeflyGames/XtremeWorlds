@@ -13,13 +13,16 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using System;
+using System.Reflection;
+using static Client.GameClient;
+using Avalonia;
 
 namespace Client
 {
 
     public class GameClient : Game
     {
-
         public static GraphicsDeviceManager Graphics;
         public static Microsoft.Xna.Framework.Graphics.SpriteBatch SpriteBatch;
 
@@ -32,10 +35,6 @@ namespace Client
         public static int TextureCounter;
 
         public readonly BlendState MultiplyBlendState = new BlendState();
-
-        // Queue to maintain FIFO order of batches
-        public static ConcurrentDictionary<int, RenderBatch> Batches = new ConcurrentDictionary<int, RenderBatch>();
-        public static readonly object BatchLock = new object();
 
         private static int _gameFps;
         private static readonly object FpsLock = new object();
@@ -52,14 +51,6 @@ namespace Client
         {
             lock (FpsLock)
                 return _gameFps;
-        }
-
-        public class RenderBatch
-        {
-            public Texture2D Texture { get; set; }
-            public int TextureCounter { get; set; }
-            public SpriteFont Font { get; set; }
-            public List<RenderCommand> Commands { get; set; } = new List<RenderCommand>();
         }
 
         // State tracking variables
@@ -140,17 +131,15 @@ namespace Client
             Graphics = new GraphicsDeviceManager(this);
 
             // Set basic properties for GraphicsDeviceManager
-            {
-                ref var withBlock = ref Graphics;
-                withBlock.GraphicsProfile = GraphicsProfile.Reach;
-                withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
-                withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
-                withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
-                withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
-                withBlock.PreferHalfPixelOffset = true;
-                withBlock.PreferMultiSampling = true;
-            }
-
+            ref var withBlock = ref Graphics;
+            withBlock.GraphicsProfile = GraphicsProfile.Reach;
+            withBlock.IsFullScreen = SettingsManager.Instance.Fullscreen;
+            withBlock.PreferredBackBufferWidth = GameState.ResolutionWidth;
+            withBlock.PreferredBackBufferHeight = GameState.ResolutionHeight;
+            withBlock.SynchronizeWithVerticalRetrace = SettingsManager.Instance.Vsync;
+            withBlock.PreferHalfPixelOffset = true;
+            withBlock.PreferMultiSampling = true;
+            
             // Add handler for PreparingDeviceSettings
             Graphics.PreparingDeviceSettings += (sender, args) =>
             {
@@ -837,6 +826,42 @@ namespace Client
             {
                 GameLogic.ScrollChatBox(0); // Scroll up
 
+                if (GameState.MyEditorType == (int)EditorType.Map)
+                {
+                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
+                    {
+                        //if (frmEditor_Map.Instance.cmbLayers.SelectedIndex < (int)LayerType.Count)
+                        //{
+                        //    frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex;
+                        //}
+                    }
+
+                    //else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex > 0)
+                    //{
+                    //    frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                    //}
+
+                }
+            }
+            else if (scrollValue < 0)
+            {
+                GameLogic.ScrollChatBox(1); // Scroll down
+
+                if (GameState.MyEditorType == (int)EditorType.Map)
+                {
+                    if (Conversions.ToInteger(GameState.VbKeyShift) == (int)Keys.LeftShift)
+                    {
+                        //if (frmEditor_Map.Instance.cmbLayers.SelectedIndex > 0)
+                        //{
+                        //    frmEditor_Map.Instance.cmbLayers.SelectedIndex = frmEditor_Map.Instance.cmbLayers.SelectedIndex - 1;
+                        //}
+                    //}
+                    //else if (frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1 < GameState.NumTileSets)
+                    //{
+                    //    frmEditor_Map.Instance.cmbTileSets.SelectedIndex = frmEditor_Map.Instance.cmbTileSets.SelectedIndex + 1;
+                    }
+                }
+
                 if (scrollValue != 0)
                 {
                     Gui.HandleInterfaceEvents(EntState.MouseScroll);
@@ -912,7 +937,7 @@ namespace Client
                 {
                     if (Conversions.ToBoolean(Pet.PetAlive(GameState.MyIndex) && GameLogic.IsInBounds()))
                     {
-                        Pet.PetMove(GameState.CurX, GameState.CurY);
+                        //frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
                     }
                 }
                 
@@ -941,6 +966,14 @@ namespace Client
                     if (slotNum >= 0L)
                     {
                         NetworkSend.SendDeleteHotbar(slotNum);
+                    }
+
+                    if (GameState.MyEditorType == (int)EditorType.Map)
+                    {
+                        if ((DateTime.Now - lastMouseClickTime).TotalMilliseconds >= GameClient.MouseRepeatInterval)
+                        {
+                            //frmEditor_Map.MapEditorMouseDown(GameState.CurX, GameState.CurY, false);
+                        }
                     }
 
                     if (GameState.VbKeyShift == true)
@@ -2838,6 +2871,28 @@ namespace Client
             for (i = 0; i < byte.MaxValue; i++)
                 Text.DrawActionMsg(i);
 
+            if (GameState.MyEditorType == (int)EditorType.Map)
+            {
+                //if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpDirBlock))
+                //{
+                    var loopTo10 = (int)Math.Round(GameState.TileView.Right + 1d);
+                    for (x = (int)Math.Round(GameState.TileView.Left - 1d); x < loopTo10; x++)
+                    {
+                        var loopTo11 = (int)Math.Round(GameState.TileView.Bottom + 1d);
+                        for (y = (int)Math.Round(GameState.TileView.Top - 1d); y < loopTo11; y++)
+                        {
+                            if (GameLogic.IsValidMapPoint(x, y))
+                            {
+                                DrawDirections(x, y);
+                            }
+                        }
+                //    }
+                }
+
+                //if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpAttributes))
+                //    Text.DrawMapAttributes();
+            }
+
             for (i = 0; i < byte.MaxValue; i++)
             {
                 if (Core.Type.ChatBubble[i].Active)
@@ -2869,6 +2924,14 @@ namespace Client
             }
 
             Text.DrawMapName();
+
+            if (GameState.MyEditorType == (int)EditorType.Map)
+            {
+                //if (ReferenceEquals(frmEditor_Map.Instance.tabpages.SelectedTab, frmEditor_Map.Instance.tpEvents))
+                //{
+                    DrawEvents();
+                //}
+            }
 
             DrawBars();
             Map.DrawMapFade();

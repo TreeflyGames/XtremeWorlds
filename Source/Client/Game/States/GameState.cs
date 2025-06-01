@@ -1,5 +1,6 @@
 ﻿using Core;
 using Mirage.Sharp.Asfw.IO.Encryption;
+using static Core.Enum;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 
@@ -269,8 +270,6 @@ namespace Client
         public const int EffectTypeWeather = 5;
         public const int EffectTypeTint = 6;
 
-        public static string[] MapNames = new string[Constant.MAX_MAPS];
-
         // Bank constants
         public const long BankTop = 28L;
         public const long BankLeft = 9L;
@@ -371,7 +370,6 @@ namespace Client
         public static int AutoTileFrame;
 
         public static int NumProjectiles;
-        public static bool InitProjectileEditor;
         public const byte EditorProjectile = 10;
         public static bool[] ProjectileChanged = new bool[256];
 
@@ -398,22 +396,6 @@ namespace Client
         public static int InShop; // is the player in a shop?
         public static byte ShopAction; // stores the current shop action
 
-        // Editors
-        public static bool InitEditor;
-        public static bool InitMapEditor;
-        public static bool InitPetEditor;
-        public static bool InitItemEditor;
-        public static bool InitResourceEditor;
-        public static bool InitNPCEditor;
-        public static bool InitSkillEditor;
-        public static bool InitShopEditor;
-        public static bool InitAnimationEditor;
-        public static bool InitJobEditor;
-        public static bool InitMoralEditor;
-        public static bool InitAdminForm;
-        public static bool InitMapReport;
-        public static bool InitEventEditorForm;
-
         // Editor edited items array
         public static bool[] Item_Changed = new bool[Constant.MAX_ITEMS];
         public static bool[] NPC_Changed = new bool[Constant.MAX_NPCS];
@@ -424,6 +406,5 @@ namespace Client
         public static bool[] Pet_Changed = new bool[Constant.MAX_PETS];
         public static bool[] Job_Changed = new bool[(Constant.MAX_JOBS)];
         public static bool[] Moral_Changed = new bool[(Constant.MAX_MORALS)];
-
     }
 }

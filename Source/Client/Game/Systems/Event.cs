@@ -68,7 +68,198 @@ namespace Client
         public static Core.Type.PictureStruct Picture;
 
         #endregion
-        
+
+        #region EventEditor
+        public static void CopyEvent_Map(int X, int Y)
+        {
+            int count;
+            int i;
+
+            count = Core.Type.MyMap.EventCount;
+            if (count == 0)
+                return;
+
+            var loopTo = count;
+            for (i = 0; i < loopTo; i++)
+            {
+                if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
+                {
+                    CopyEvent = Core.Type.MyMap.Event[i];
+                    return;
+                }
+            }
+
+        }
+
+        public static void PasteEvent_Map(int x, int y)
+        {
+            int count;
+            int i;
+            var EventNum = default(int);
+
+            count = Core.Type.MyMap.EventCount;
+
+            if (count > 0)
+            {
+                var loopTo = count;
+                for (i = 0; i < loopTo; i++)
+                {
+                    if (Core.Type.MyMap.Event[i].X == x & Core.Type.MyMap.Event[i].Y == y)
+                    {
+                        EventNum = i;
+                    }
+                }
+            }
+
+            // couldn't find one - create one
+            if (EventNum == 0)
+            {
+                AddEvent(x, y, true);
+                EventNum = count;
+            }
+
+            // copy it
+            Core.Type.MyMap.Event[EventNum] = CopyEvent;
+
+            // set position
+            Core.Type.MyMap.Event[EventNum].X = x;
+            Core.Type.MyMap.Event[EventNum].Y = y;
+        }
+
+        public static void DeleteEvent(int X, int Y)
+        {
+            int i;
+            int lowIndex = -1;
+            bool shifted = false;
+
+            if (GameState.MyEditorType != (int)Core.Enum.EditorType.Map)
+                return;
+
+            // First pass: find all events to delete and shift others down
+            var loopTo = Core.Type.MyMap.EventCount;
+            for (i = 0; i < loopTo; i++)
+            {
+                if (Core.Type.MyMap.Event.Length <= i)
+                    break;
+
+                if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
+                {
+                    // Clear the event
+                    ClearEvent(i);
+                    lowIndex = i;
+                    shifted = true;
+                }
+                else if (shifted)
+                {
+                    // Shift this event down to fill the gap
+                    Core.Type.MyMap.Event[lowIndex] = Core.Type.MyMap.Event[i];
+                    lowIndex = lowIndex + 1;
+                }
+            }
+
+            // Adjust the event count if anything was deleted
+            if (lowIndex != -1)
+            {
+                // Set the new count
+                Core.Type.MyMap.EventCount = lowIndex;
+
+                var newEvents = new Core.Type.EventStruct[Core.Type.MyMap.EventCount];
+                for (i = 0; i < Core.Type.MyMap.EventCount; i++)
+                {
+                    newEvents[i] = Core.Type.MyMap.Event[i];
+                }
+                Core.Type.MyMap.Event = newEvents;
+
+                var newMapEvents = new Core.Type.MapEventStruct[Core.Type.MyMap.EventCount];
+                for (i = 0; i < Core.Type.MyMap.EventCount; i++)
+                {
+                    newMapEvents[i] = Core.Type.MapEvents[i];
+                }
+                Core.Type.MapEvents = newMapEvents;
+
+                TmpEvent = default;
+            }
+        }
+
+
+        public static void AddEvent(int X, int Y, bool cancelLoad = false)
+        {
+            int count;
+            int pageCount;
+            int i;
+
+            count = Core.Type.MyMap.EventCount;
+
+            // make sure there's not already an event
+            if (count > 0)
+            {
+                var loopTo = count;
+                for (i = 0; i < loopTo; i++)
+                {
+                    if (Core.Type.MyMap.Event[i].X == X & Core.Type.MyMap.Event[i].Y == Y)
+                    {
+                        // already an event - edit it
+                        if (!cancelLoad)
+                            EventEditorInit(i);
+                        return;
+                    }
+                }
+            }
+
+            // increment count
+            if (count == 0)
+            {
+                count = 1;
+            }
+            else
+            {
+                count += 1;
+            }
+
+            ClearEvent(count);
+            Core.Type.MyMap.EventCount = count;
+            Array.Resize(ref Core.Type.MyMap.Event, count);
+            // set the new event
+            Core.Type.MyMap.Event[count - 1].X = X;
+            Core.Type.MyMap.Event[count - 1].Y = Y;
+            // give it a new page
+            pageCount = Core.Type.MyMap.Event[count - 1].PageCount + 1;
+            Core.Type.MyMap.Event[count - 1].PageCount = pageCount;
+            Array.Resize(ref Core.Type.MyMap.Event[count - 1].Pages, pageCount);
+            // load the editor
+            if (!cancelLoad)
+                EventEditorInit(count - 1);
+        }
+
+        public static void ClearEvent(int EventNum)
+        {
+            Array.Resize(ref Core.Type.MyMap.Event, EventNum + 1);
+            Array.Resize(ref Core.Type.MapEvents, EventNum + 1);
+            ref var withBlock = ref Core.Type.MyMap.Event[EventNum];
+            withBlock.Name = "";
+            withBlock.PageCount = 1;
+            withBlock.Pages = new Core.Type.EventPageStruct[1];
+            Array.Resize(ref withBlock.Pages[0].CommandList, 1);
+            Array.Resize(ref withBlock.Pages[0].CommandList[0].Commands, 1);
+            withBlock.Pages[0].CommandList[0].Commands[0].Index = -1;
+            withBlock.Globals = 0;
+            withBlock.X = 0;
+            withBlock.Y = 0;
+        }
+
+        public static void EventEditorInit(int EventNum)
+        {
+            EditorEvent = EventNum;
+            TmpEvent = Core.Type.MyMap.Event[EventNum];
+            if (TmpEvent.Pages[0].CommandListCount == 0)
+            {
+                Array.Resize(ref TmpEvent.Pages[0].CommandList, 1);
+                TmpEvent.Pages[0].CommandListCount = 0;
+                TmpEvent.Pages[0].CommandList[0].CommandCount = 0;
+                Array.Resize(ref TmpEvent.Pages[0].CommandList[0].Commands, TmpEvent.Pages[0].CommandList[0].CommandCount);
+            }
+        }
+
         #region Incoming Packets
 
         public static void Packet_SpawnEvent(ref byte[] data)
@@ -800,4 +991,6 @@ namespace Client
         #endregion
 
     }
+
+    #endregion
 }

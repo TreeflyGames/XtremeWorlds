@@ -214,7 +214,6 @@ namespace Core
             SMapReport,
             STarget,
             SAdmin,
-            SMapNames,
             SCritical,
             SrClick,
             SHotbar,

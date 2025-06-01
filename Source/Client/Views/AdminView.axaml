@@ -1,0 +1,105 @@
+<Window xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="340"
+    x:Class="AvaloniaAppTemplate.AdminWindow"
+    Title="Admin Panel"
+    SizeToContent="WidthAndHeight"
+    CanResize="False"
+    Background="Black"		
+    xmlns:vm="clr-namespace:Client.Models"
+    x:DataType="vm:AdminViewModel">
+
+    <Window.DataContext>
+        <vm:AdminViewModel/>
+    </Window.DataContext>
+
+    <TabControl Margin="6">
+        <TabItem Header="Moderation">
+            <Border BorderBrush="#FFB0B0B0" BorderThickness="1" Padding="6" Background="#FF181818">
+                <StackPanel Spacing="8">
+                    <Border BorderBrush="#FFB0B0B0" BorderThickness="1" Padding="4" Background="#FF222222">
+                        <StackPanel>
+                            <TextBlock Text="Player Name:" FontWeight="Bold" Margin="0,0,0,4" Foreground="#FFF8F8F8"/>
+                            <TextBox Name="txtAdminName" Background="#FF222222" Foreground="#FFF8F8F8"/>
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Left">
+                        <Button Name="btnAdminKick" Content="Kick Player" Width="90" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                        <Button Name="btnAdminBan" Content="Ban Player" Width="90" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                        <Button Name="btnAdminWarp2Me" Content="Warp Player To Me" Width="120" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                        <Button Name="btnAdminWarpMe2" Content="Warp Me To Player" Width="150" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                        <Button Name="btnLevelUp" Content="Level Up" HorizontalAlignment="Left" Width="80" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                    </StackPanel>
+
+                    <Border BorderBrush="#FFB0B0B0" BorderThickness="1" Padding="4" Background="#FF222222">
+                        <StackPanel>
+                            <TextBlock Text="Access:" FontWeight="Bold" Margin="0,0,0,4" Foreground="#FFF8F8F8"/>
+                            <ComboBox Name="cmbAccess" Background="#FF222222" Foreground="#FFF8F8F8">
+                                <ComboBoxItem Content="Normal Player"/>
+                                <ComboBoxItem Content="Moderator (GM)"/>
+                                <ComboBoxItem Content="Mapper"/>
+                                <ComboBoxItem Content="Developer"/>
+                                <ComboBoxItem Content="Owner"/>								
+                            </ComboBox>
+
+                            <Button Name="btnAdminSetAccess" Content="Set Access" HorizontalAlignment="Left" Width="100" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="#FFB0B0B0" BorderThickness="1" Padding="4" Background="#FF222222">
+                        <StackPanel>
+                            <TextBlock Text="Map Number:" FontWeight="Bold" Margin="0,0,0,4" Foreground="#FFF8F8F8"/>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBox Name="nudAdminMap" Width="60" Background="#FF222222" Foreground="#FFF8F8F8"/>
+                                <Button Name="btnAdminWarpTo" Content="Warp To Map" Width="110" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border BorderBrush="#FFB0B0B0" BorderThickness="1" Padding="4" Background="#FF222222">
+                        <StackPanel>
+                            <TextBlock Text="Sprite:" FontWeight="Bold" Margin="0,0,0,4" Foreground="#FFF8F8F8"/>
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBox Name="nudAdminSprite" Width="60" Background="#FF222222" Foreground="#FFF8F8F8"/>
+                                <Button Name="btnAdminSetSprite" Content="Set Player Sprite" Width="130" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </TabItem>
+		
+        <TabItem Header="Map List">
+            <StackPanel Margin="10" Spacing="6" Orientation="Horizontal">
+                <ListBox Name="lstMaps" ItemsSource="{Binding Items}" Height="227" Width="278" Background="#FF222222" Foreground="#FFF8F8F8" VerticalAlignment="Top"/>
+                <Button Name="btnMapReport" Content="Refresh List" Width="100" Background="#FF333333" Foreground="#FFF8F8F8" Margin="10,0,0,0" VerticalAlignment="Top"/>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="Map Tools">
+            <StackPanel Margin="10" Spacing="6" Orientation="Horizontal">
+                <Button Name="btnALoc" Content="Location" Width="80" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnRespawn" Content="Respawn Map" Width="110" Background="#FF333333" Foreground="#FFF8F8F8"/>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="Editors">
+            <UniformGrid Margin="10" Columns="2" Rows="6" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Button Name="btnAnimationEditor" Content="Animation Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnPetEditor" Content="Pet Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnJobEditor" Content="Job Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnProjectiles" Content="Projectile Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnMapEditor" Content="Map Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnItemEditor" Content="Item Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnResourceEditor" Content="Resource Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnNPCEditor" Content="NPC Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnSkillEditor" Content="Skill Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnShopEditor" Content="Shop Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+                <Button Name="btnMoralEditor" Content="Moral Editor" Margin="2" Background="#FF333333" Foreground="#FFF8F8F8"/>
+            </UniformGrid>
+        </TabItem>
+    </TabControl>
+</Window>

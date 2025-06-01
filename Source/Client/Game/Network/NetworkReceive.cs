@@ -6,6 +6,9 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
+using AvaloniaAppTemplate;
+using Avalonia.Controls;
+using Client.Models;
 
 namespace Client
 {
@@ -83,7 +86,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STarget] = Packet_Target;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAdmin] = Packet_Admin;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNames] = Packet_MapNames;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SCritical] = Packet_Critical;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SrClick] = Packet_RClick;
@@ -944,28 +946,31 @@ namespace Client
         {
             int i;
             var buffer = new ByteStream(data);
+            string[] mapNames = new string[Constant.MAX_MAPS];
 
             for (i = 0; i < Constant.MAX_MAPS; i++)
-                GameState.MapNames[i] = buffer.ReadString();
+                mapNames[i] = buffer.ReadString();
 
-            GameState.InitMapReport = true;
+            // If using an AdminViewModel, update its Items property here
+            if (App.Current is App currentApp)
+            {
+                // Example: If you have an AdminViewModel singleton or static instance
+                if (currentApp.DataContext is AdminViewModel adminViewModel && adminViewModel.Items != null)
+                {
+                    adminViewModel.Items.Clear();
+                    foreach (var name in mapNames)
+                    {
+                        adminViewModel.Items.Add(name);
+                    }
+                }
+            }
 
             buffer.Dispose();
         }
 
         private static void Packet_Admin(ref byte[] data)
         {
-            GameState.InitAdminForm = true;
-        }
-
-        private static void Packet_MapNames(ref byte[] data)
-        {
-            int i;
-            var buffer = new ByteStream(data);
-            for (i = 0; i < Constant.MAX_MAPS; i++)
-                GameState.MapNames[i] = buffer.ReadString();
-
-            buffer.Dispose();
+            App.ShowWindowByName("Admin Panel");
         }
 
         private static void Packet_Critical(ref byte[] data)
@@ -1025,47 +1030,47 @@ namespace Client
         // *****************
         private static void Packet_EditAnimation(ref byte[] data)
         {
-            GameState.InitAnimationEditor = true;
+            //GameState.InitAnimationEditor = true;
         }
 
         private static void Packet_JobEditor(ref byte[] data)
         {
-            GameState.InitJobEditor = true;
+            //GameState.InitJobEditor = true;
         }
 
         public static void Packet_EditItem(ref byte[] data)
         {
-            GameState.InitItemEditor = true;
+            //GameState.InitItemEditor = true;
         }
 
         private static void Packet_NPCEditor(ref byte[] data)
         {
-            GameState.InitNPCEditor = true;
+            //GameState.InitNPCEditor = true;
         }
 
         private static void Packet_ResourceEditor(ref byte[] data)
         {
-            GameState.InitResourceEditor = true;
+            //GameState.InitResourceEditor = true;
         }
 
         public static void Packet_PetEditor(ref byte[] data)
         {
-            GameState.InitPetEditor = true;
+            //GameState.InitPetEditor = true;
         }
 
         public static void HandleProjectileEditor(ref byte[] data)
         {
-            GameState.InitProjectileEditor = true;
+            //GameState.InitProjectileEditor = true;
         }
 
         private static void Packet_EditShop(ref byte[] data)
         {
-            GameState.InitShopEditor = true;
+            //GameState.InitShopEditor = true;
         }
 
         private static void Packet_EditSkill(ref byte[] data)
         {
-            GameState.InitSkillEditor = true;
+            //GameState.InitSkillEditor = true;
         }
 
         private static void Packet_Clock(ref byte[] data)
@@ -1129,7 +1134,7 @@ namespace Client
 
         public static void Packet_EditMoral(ref byte[] data)
         {
-            GameState.InitMoralEditor = true;
+            //GameState.InitMoralEditor = true;
         }
 
         public static void Packet_UpdateMoral(ref byte[] data)
