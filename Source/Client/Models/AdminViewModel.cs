@@ -7,7 +7,7 @@ namespace Client.Models;
 public partial class AdminViewModel : ViewModelBase
 {
     [ObservableProperty]
-    public ObservableCollection<string> Items = new();
+    public ObservableCollection<string> items = new();
 
     public AdminViewModel()
     {
