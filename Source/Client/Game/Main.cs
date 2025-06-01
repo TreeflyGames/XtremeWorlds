@@ -16,7 +16,7 @@ namespace Client
             Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
 
             var gameThread = new System.Threading.Thread(RunGame);
-            gameThread.IsBackground = true;
+            gameThread.IsBackground = false;
             gameThread.Start();
 
             // Initialize and start the timer for updating forms
