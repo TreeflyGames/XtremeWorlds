@@ -19,7 +19,7 @@ namespace Mirage.Sharp.Asfw.IO.Encryption
 
         private void CheckDisposed()
         {
-            if (_rsa == null || _rsa.CspKeyContainerInfo == null)
+            if (_rsa == null)
                 GenerateKeys();
         }
 
