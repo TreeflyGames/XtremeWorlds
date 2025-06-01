@@ -214,8 +214,9 @@ namespace Client
                                     Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.FringeAnim].Tileset > 0)
                                     layerIndex = (int)Core.Enum.LayerType.FringeAnim;
                                 break;
+
                             case (int)Core.Enum.LayerType.Roof:
-                                if (Core.Type.MyMap.Tile[x, y].Layer.Length > (int)Core.Enum.LayerType.RoofAnim &&
+                                if (Core.Type.MyMap.Tile[x, y].Layer?.Length > (int)Core.Enum.LayerType.RoofAnim &&
                                     Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.RoofAnim].Tileset > 0)
                                     layerIndex = (int)Core.Enum.LayerType.RoofAnim;
                                 break;

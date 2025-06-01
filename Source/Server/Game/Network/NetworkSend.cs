@@ -1277,22 +1277,6 @@ namespace Server
             buffer.Dispose();
         }
 
-        public static void SendMapNames(int index)
-        {
-            var buffer = new ByteStream(4);
-            int I;
-
-            buffer.WriteInt32((int) ServerPackets.SMapNames);
-
-            var loopTo = Core.Constant.MAX_MAPS;
-            for (var i = 0; i < loopTo; i++)
-                buffer.WriteString(Core.Type.Map[i].Name);
-
-            NetworkConfig.Socket.SendDataTo(index, buffer.UnreadData, buffer.WritePosition);
-
-            buffer.Dispose();
-        }
-
         public static void SendHotbar(int index)
         {
             var buffer = new ByteStream(4);

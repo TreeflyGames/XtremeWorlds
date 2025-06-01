@@ -80,6 +80,7 @@
     <PackageReference Include="Avalonia.Diagnostics" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="ManagedBass" />
     <PackageReference Include="ManagedBass.Midi" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" />
@@ -118,8 +119,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="AdminWindow.axaml.cs">
-      <DependentUpon>AdminWindow.axaml</DependentUpon>
+    <Compile Update="Views\AdminView.axaml.cs">
+      <DependentUpon>AdminView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <PropertyGroup>

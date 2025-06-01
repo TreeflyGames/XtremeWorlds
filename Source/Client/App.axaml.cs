@@ -4,11 +4,14 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Client;
 using Core;
+using System.Collections.ObjectModel;
 
 namespace AvaloniaAppTemplate;
 
 public partial class App : Avalonia.Application
 {
+    public ObservableCollection<string> Items { get; set; } = new ObservableCollection<string>();
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -114,7 +117,7 @@ public partial class App : Avalonia.Application
 
         if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            result = window.FindControl<Avalonia.Controls.Control>(controlName);             
+            result = window.FindControl<Avalonia.Controls.Control>(controlName);
         }
         return result;
     }

@@ -1,13 +1,19 @@
 <Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="340"
-        x:Class="AvaloniaAppTemplate.AdminWindow"
-        Title="Admin Panel"
-        SizeToContent="WidthAndHeight"
-        CanResize="False"
-        Background="Black">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="340"
+    x:Class="AvaloniaAppTemplate.AdminWindow"
+    Title="Admin Panel"
+    SizeToContent="WidthAndHeight"
+    CanResize="False"
+    Background="Black"		
+    xmlns:vm="clr-namespace:Client.Models"
+    x:DataType="vm:AdminViewModel">
+
+    <Window.DataContext>
+        <vm:AdminViewModel/>
+    </Window.DataContext>
 
     <TabControl Margin="6">
         <TabItem Header="Moderation">
@@ -66,12 +72,12 @@
             </Border>
         </TabItem>
 		
-		<TabItem Header="Map List">
-			<StackPanel Margin="10" Spacing="6" Orientation="Horizontal">
-				<ListBox Name="lstMaps" Height="227" Width="278" Background="#FF222222" Foreground="#FFF8F8F8" VerticalAlignment="Top"/>
-				<Button Name="btnMapReport" Content="Refresh List" Width="100" Background="#FF333333" Foreground="#FFF8F8F8" Margin="10,0,0,0" VerticalAlignment="Top"/>
-			</StackPanel>
-		</TabItem>
+        <TabItem Header="Map List">
+            <StackPanel Margin="10" Spacing="6" Orientation="Horizontal">
+                <ListBox Name="lstMaps" ItemsSource="{Binding Items}" Height="227" Width="278" Background="#FF222222" Foreground="#FFF8F8F8" VerticalAlignment="Top"/>
+                <Button Name="btnMapReport" Content="Refresh List" Width="100" Background="#FF333333" Foreground="#FFF8F8F8" Margin="10,0,0,0" VerticalAlignment="Top"/>
+            </StackPanel>
+        </TabItem>
 
         <TabItem Header="Map Tools">
             <StackPanel Margin="10" Spacing="6" Orientation="Horizontal">
