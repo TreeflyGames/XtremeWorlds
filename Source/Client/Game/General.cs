@@ -25,26 +25,9 @@ namespace Client
         public static IConfiguration? Configuration;
         public static ILogger<T> GetLogger<T>() where T : class => Container?.Provider.GetRequiredService<Logger<T>>() ?? throw new NullReferenceException();
 
-		[DllImport("user32.dll")]
-		public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-		public const int SW_RESTORE = 9;
-
-		[DllImport("user32.dll")]
-        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
 		public static int GetTickCount()
         {
             return Environment.TickCount;
-        }
-
-        public static void SetWindowFocus(IntPtr hWnd)
-        {
-            // Restore window if minimized
-            General.ShowWindow(hWnd, General.SW_RESTORE);
-
-            // Bring the window to front
-            General.SetForegroundWindow(hWnd);
         }
 
         public static void Startup()
