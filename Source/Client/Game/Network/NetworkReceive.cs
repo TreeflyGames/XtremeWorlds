@@ -83,7 +83,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STarget] = Packet_Target;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAdmin] = Packet_Admin;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNames] = Packet_MapNames;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SCritical] = Packet_Critical;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SrClick] = Packet_RClick;
@@ -944,9 +943,10 @@ namespace Client
         {
             int i;
             var buffer = new ByteStream(data);
+            string[] mapNames = new string[Constant.MAX_MAPS];
 
             for (i = 0; i < Constant.MAX_MAPS; i++)
-                GameState.MapNames[i] = buffer.ReadString();
+                mapNames[i] = buffer.ReadString();
 
             GameState.InitMapReport = true;
 
@@ -956,16 +956,6 @@ namespace Client
         private static void Packet_Admin(ref byte[] data)
         {
             GameState.InitAdminForm = true;
-        }
-
-        private static void Packet_MapNames(ref byte[] data)
-        {
-            int i;
-            var buffer = new ByteStream(data);
-            for (i = 0; i < Constant.MAX_MAPS; i++)
-                GameState.MapNames[i] = buffer.ReadString();
-
-            buffer.Dispose();
         }
 
         private static void Packet_Critical(ref byte[] data)

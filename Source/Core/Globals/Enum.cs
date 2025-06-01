@@ -659,6 +659,5 @@ namespace Core
             Texture,
             Font
         }
-
     }
 }

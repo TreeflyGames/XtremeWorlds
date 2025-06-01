@@ -1,5 +1,6 @@
 ﻿using Core;
 using Mirage.Sharp.Asfw.IO.Encryption;
+using static Core.Enum;
 using Color = Microsoft.Xna.Framework.Color;
 using Point = Microsoft.Xna.Framework.Point;
 
@@ -269,8 +270,6 @@ namespace Client
         public const int EffectTypeWeather = 5;
         public const int EffectTypeTint = 6;
 
-        public static string[] MapNames = new string[Constant.MAX_MAPS];
-
         // Bank constants
         public const long BankTop = 28L;
         public const long BankLeft = 9L;
@@ -424,6 +423,5 @@ namespace Client
         public static bool[] Pet_Changed = new bool[Constant.MAX_PETS];
         public static bool[] Job_Changed = new bool[(Constant.MAX_JOBS)];
         public static bool[] Moral_Changed = new bool[(Constant.MAX_MORALS)];
-
     }
 }
