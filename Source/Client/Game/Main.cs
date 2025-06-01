@@ -1,6 +1,5 @@
 ﻿using System.Reflection.Metadata;
 using static Core.Enum;
-using Timer = System.Windows.Forms.Timer;
 
 namespace Client
 {

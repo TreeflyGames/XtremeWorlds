@@ -2,9 +2,7 @@
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
-using SharpDX.Direct2D1;
 using static Core.Global.Command;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 using Path = Core.Path;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
