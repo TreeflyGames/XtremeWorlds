@@ -189,7 +189,7 @@ namespace Client
             float alpha;
             var rect = default(Rectangle);
 
-            // Exit earlyIf Type.Map is still loading or tile data is not available
+            // Exit early if map is still loading or tile data is not available
             if (GameState.GettingMap || !GameState.MapData)
                 return;
 
@@ -202,23 +202,23 @@ namespace Client
                 // Loop through the layers from Fringe to RoofAnim
                 for (i = (int)Core.Enum.LayerType.Fringe; i <= (int)Core.Enum.LayerType.RoofAnim; i++)
                 {
+                    int layerIndex = i;
+
                     // Handle animated layers
                     if (GameState.MapAnim)
                     {
                         switch (i)
                         {
                             case (int)Core.Enum.LayerType.Fringe:
-                                {
-                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.FringeAnim].Tileset > 0)
-                                        i = (int)Core.Enum.LayerType.FringeAnim;                                  
-                                    break;
-                                }
+                                if (Core.Type.MyMap.Tile[x, y].Layer?.Length > (int)Core.Enum.LayerType.FringeAnim &&
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.FringeAnim].Tileset > 0)
+                                    layerIndex = (int)Core.Enum.LayerType.FringeAnim;
+                                break;
                             case (int)Core.Enum.LayerType.Roof:
-                                {
-                                    if (Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.RoofAnim].Tileset > 0)
-                                        i = (int)Core.Enum.LayerType.RoofAnim;
-                                    break;
-                                }
+                                if (Core.Type.MyMap.Tile[x, y].Layer.Length > (int)Core.Enum.LayerType.RoofAnim &&
+                                    Core.Type.MyMap.Tile[x, y].Layer[(int)Core.Enum.LayerType.RoofAnim].Tileset > 0)
+                                    layerIndex = (int)Core.Enum.LayerType.RoofAnim;
+                                break;
                         }
                     }
                     else
@@ -229,13 +229,15 @@ namespace Client
                     }
 
                     // Ensure the tileset is valid before proceeding
-                    if (Core.Type.MyMap.Tile[x, y].Layer[i].Tileset > 0 && Core.Type.MyMap.Tile[x, y].Layer[i].Tileset <= GameState.NumTileSets)
+                    if (Core.Type.MyMap.Tile[x, y].Layer?.Length > layerIndex &&
+                        Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset > 0 &&
+                        Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset <= GameState.NumTileSets)
                     {
                         // Check if the render state is normal and render the tile
-                        if (Core.Type.Autotile[x, y].Layer[i].RenderState == GameState.RenderStateNormal)
+                        if (Core.Type.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateNormal)
                         {
-                            rect.X = Core.Type.MyMap.Tile[x, y].Layer[i].X * GameState.PicX;
-                            rect.Y = Core.Type.MyMap.Tile[x, y].Layer[i].Y * GameState.PicY;
+                            rect.X = Core.Type.MyMap.Tile[x, y].Layer[layerIndex].X * GameState.PicX;
+                            rect.Y = Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Y * GameState.PicY;
                             rect.Width = GameState.PicX;
                             rect.Height = GameState.PicY;
 
@@ -253,20 +255,19 @@ namespace Client
                             }
 
                             // Render the tile with the calculated rectangle and transparency
-                            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[i].Tileset.ToString());
+                            string argpath = System.IO.Path.Combine(Core.Path.Tilesets, Core.Type.MyMap.Tile[x, y].Layer[layerIndex].Tileset.ToString());
                             GameClient.RenderTexture(ref argpath, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), rect.X, rect.Y, rect.Width, rect.Height, rect.Width, rect.Height, alpha);
                         }
-
                         // Handle autotile rendering
-                        else if (Core.Type.Autotile[x, y].Layer[i].RenderState == GameState.RenderStateAutotile)
+                        else if (Core.Type.Autotile[x, y].Layer[layerIndex].RenderState == GameState.RenderStateAutotile)
                         {
                             if (SettingsManager.Instance.Autotile)
                             {
                                 // Render autotiles
-                                DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), 1, x, y, 0, false);
-                                DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY), 2, x, y, 0, false);
-                                DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY) + 16, 3, x, y, 0, false);
-                                DrawAutoTile(i, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY) + 16, 4, x, y, 0, false);
+                                DrawAutoTile(layerIndex, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY), 1, x, y, 0, false);
+                                DrawAutoTile(layerIndex, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY), 2, x, y, 0, false);
+                                DrawAutoTile(layerIndex, GameLogic.ConvertMapX(x * GameState.PicX), GameLogic.ConvertMapY(y * GameState.PicY) + 16, 3, x, y, 0, false);
+                                DrawAutoTile(layerIndex, GameLogic.ConvertMapX(x * GameState.PicX) + 16, GameLogic.ConvertMapY(y * GameState.PicY) + 16, 4, x, y, 0, false);
                             }
                         }
                     }
@@ -276,7 +277,6 @@ namespace Client
             {
                 Console.WriteLine(e.Message);
             }
-
         }
 
         public static void DrawAutoTile(int layerNum, int dX, int dY, int quarterNum, int x, int y, int forceFrame = 0, bool strict = true)
