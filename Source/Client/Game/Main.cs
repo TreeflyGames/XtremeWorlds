@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using AvaloniaAppTemplate;
 using System.Reflection.Metadata;
+using Avalonia.Threading;
 using static Core.Enum;
 
 namespace Client
@@ -31,7 +32,7 @@ namespace Client
         public static void StartGameThread()
         {
             var gameThread = new System.Threading.Thread(RunGame);
-            gameThread.IsBackground = true;
+            gameThread.IsBackground = false;
             gameThread.Start();
         }
 

@@ -36,10 +36,6 @@ namespace Client
 
         public readonly BlendState MultiplyBlendState = new BlendState();
 
-        // Queue to maintain FIFO order of batches
-        public static ConcurrentDictionary<int, RenderBatch> Batches = new ConcurrentDictionary<int, RenderBatch>();
-        public static readonly object BatchLock = new object();
-
         private static int _gameFps;
         private static readonly object FpsLock = new object();
 
@@ -55,14 +51,6 @@ namespace Client
         {
             lock (FpsLock)
                 return _gameFps;
-        }
-
-        public class RenderBatch
-        {
-            public Texture2D Texture { get; set; }
-            public int TextureCounter { get; set; }
-            public SpriteFont Font { get; set; }
-            public List<RenderCommand> Commands { get; set; } = new List<RenderCommand>();
         }
 
         // State tracking variables
