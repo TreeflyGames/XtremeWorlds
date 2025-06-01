@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Client;
 
 namespace AvaloniaAppTemplate;
 
