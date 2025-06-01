@@ -34,7 +34,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.csproj</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>
-	<MonoGamePlatform>OpenGL</MonoGamePlatform>
+	<MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>..\..\Build\Client\</OutputPath>
@@ -110,7 +110,7 @@
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Configuration" />
     <Reference Include="MonoGame.Framework">
-      <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.2.1105\lib\net8.0\MonoGame.Framework.dll</HintPath>
+      <HintPath>..\..\..\.nuget\packages\monogame.framework.desktopgl\3.8.3\lib\net8.0\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -121,7 +121,6 @@
   <PropertyGroup>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UserSecretsId>e1a83a62-5587-413f-8a1a-f277ec156c75</UserSecretsId>
   </PropertyGroup>
