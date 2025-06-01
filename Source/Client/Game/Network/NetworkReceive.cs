@@ -8,6 +8,7 @@ using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
 using AvaloniaAppTemplate;
 using Avalonia.Controls;
+using Client.Models;
 
 namespace Client
 {
@@ -85,7 +86,6 @@ namespace Client
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.STarget] = Packet_Target;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SAdmin] = Packet_Admin;
-            NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SMapNames] = Packet_MapNames;
 
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SCritical] = Packet_Critical;
             NetworkConfig.Socket.PacketID[(int)Packets.ServerPackets.SrClick] = Packet_RClick;
@@ -946,29 +946,21 @@ namespace Client
         {
             int i;
             var buffer = new ByteStream(data);
+            string[] mapNames = new string[Constant.MAX_MAPS];
 
             for (i = 0; i < Constant.MAX_MAPS; i++)
-                GameState.MapNames[i] = buffer.ReadString();
+                mapNames[i] = buffer.ReadString();
 
-            // Add map names to the admin window's map list if the window exists
-            var adminWindow = App.GetWindowByName("Admin Panel");
-            if (adminWindow != null)
+            // If using an AdminViewModel, update its Items property here
+            if (App.Current is App currentApp)
             {
-                var mapList = App.GetControlByName(adminWindow, "lstMaps");
-                // Avoid dynamic: check for known interface or methods
-                if (mapList != null)
+                // Example: If you have an AdminViewModel singleton or static instance
+                if (currentApp.DataContext is AdminViewModel adminViewModel && adminViewModel.Items != null)
                 {
-                    // Try to call Clear and AddItem via reflection if available
-                    var clearMethod = mapList.GetType().GetMethod("Clear");
-                    var addItemMethod = mapList.GetType().GetMethod("AddItem", new[] { typeof(string) });
-                    if (clearMethod != null && addItemMethod != null)
+                    adminViewModel.Items.Clear();
+                    foreach (var name in mapNames)
                     {
-                        clearMethod.Invoke(mapList, null);
-                        for (i = 0; i < Constant.MAX_MAPS; i++)
-                        {
-                            if (!string.IsNullOrEmpty(GameState.MapNames[i]))
-                                addItemMethod.Invoke(mapList, new object[] { GameState.MapNames[i] });
-                        }
+                        adminViewModel.Items.Add(name);
                     }
                 }
             }
@@ -979,16 +971,6 @@ namespace Client
         private static void Packet_Admin(ref byte[] data)
         {
             App.ShowWindowByName("Admin Panel");
-        }
-
-        private static void Packet_MapNames(ref byte[] data)
-        {
-            int i;
-            var buffer = new ByteStream(data);
-            for (i = 0; i < Constant.MAX_MAPS; i++)
-                GameState.MapNames[i] = buffer.ReadString();
-
-            buffer.Dispose();
         }
 
         private static void Packet_Critical(ref byte[] data)
