@@ -14,7 +14,8 @@ namespace Client
         [STAThread]
         public static void Main(string[] args)
         {
-            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            Thread thread = new Thread(new ThreadStart(() => BuildAvaloniaApp().StartWithClassicDesktopLifetime(args)));
+            RunGame();
         }
 
         public static AppBuilder BuildAvaloniaApp() =>
