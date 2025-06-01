@@ -2,6 +2,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Client;
+using Core;
 
 namespace AvaloniaAppTemplate;
 
@@ -88,11 +90,12 @@ public partial class App : Avalonia.Application
     public static Window? GetWindowByName(string windowName)
     {
         Window? result = null;
-        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+
+        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            foreach (var window in desktop.Windows)
             {
-                foreach (var window in desktop.Windows)
+                if (window != null)
                 {
                     if (window.Title == windowName)
                     {
@@ -101,20 +104,18 @@ public partial class App : Avalonia.Application
                     }
                 }
             }
-        });
+        }
         return result;
     }
 
     public static Avalonia.Controls.Control? GetControlByName(Avalonia.Controls.Window window, string controlName)
     {
         Avalonia.Controls.Control? result = null;
-        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+
+        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                result = window.FindControl<Avalonia.Controls.Control>(controlName);             
-            }
-        });
+            result = window.FindControl<Avalonia.Controls.Control>(controlName);             
+        }
         return result;
     }
 }
