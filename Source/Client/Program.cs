@@ -181,22 +181,7 @@ namespace Client
 
             base.Initialize();
         }
-
-        public class RenderCommand
-        {
-            public byte Type { get; set; }
-            public string Path { get; set; }
-            public string Text { get; set; }
-            public Rectangle sRect { get; set; }
-            public Rectangle dRect { get; set; }
-            public int X { get; set; }
-            public int Y { get; set; }
-            public Color Color { get; set; }
-            public Color Color2 { get; set; }
-            public int EntityID { get; set; }
-            public int TextureID { get; set; }
-        }
-
+        
         private static void LoadFonts()
         {
             for (int i = 1; i < (int)FontType.Count; i++)
