@@ -205,11 +205,11 @@ namespace Server
                     var @assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
-                    var version = assembly.GetName().Version.ToString() ?? "";
+                    var serverVersion = assembly.GetName().Version.ToString() ?? "";
                     var clientVersion = Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "";
                     
                     // Check versions
-                    if (clientVersion != version)
+                    if (clientVersion != serverVersion)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Outdated, (byte)MenuType.Login);
                         return;
@@ -318,11 +318,11 @@ namespace Server
                     var @assembly = Assembly.GetExecutingAssembly();
 
                     // Retrieve the version information
-                    var version = assembly.GetName().Version.ToString() ?? "";
+                    var serverVersion = assembly.GetName().Version.ToString() ?? "";
                     var clientVersion = Global.EKeyPair.DecryptString(buffer.ReadString()) ?? "";
 
                     // Check versions
-                    if (clientVersion != version)
+                    if (clientVersion != serverVersion)
                     {
                         NetworkSend.AlertMsg(index, (byte)DialogueMsg.Outdated, (byte)MenuType.Register);
                         return;
