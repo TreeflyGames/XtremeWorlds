@@ -6,7 +6,7 @@ using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using Mirage.Sharp.Asfw.IO;
-using AvaloniaAppTemplate;
+using AvaloniaApp;
 using Avalonia.Controls;
 using Client.Models;
 

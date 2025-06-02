@@ -1,4 +1,4 @@
-﻿using AvaloniaAppTemplate;
+﻿using AvaloniaApp;
 using Core;
 using Core.Localization;
 using Microsoft.VisualBasic;

@@ -1,5 +1,5 @@
 ﻿using Avalonia;
-using AvaloniaAppTemplate;
+using AvaloniaApp;
 using System.Reflection.Metadata;
 using Avalonia.Threading;
 using static Core.Enum;

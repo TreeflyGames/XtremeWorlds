@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Client;
 
-namespace AvaloniaAppTemplate;
+namespace AvaloniaApp;
 
 public partial class AdminWindow : Window
 {

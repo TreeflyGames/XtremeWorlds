@@ -6,7 +6,7 @@ using Client;
 using Core;
 using System.Collections.ObjectModel;
 
-namespace AvaloniaAppTemplate;
+namespace AvaloniaApp;
 
 public partial class App : Avalonia.Application
 {
