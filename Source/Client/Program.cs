@@ -83,8 +83,6 @@ namespace Client
         public static Texture2D TransparentTexture;
         public static Texture2D PixelTexture;
 
-        public static bool IsLoaded;
-
         // Add a timer to prevent spam
         private static DateTime lastInputTime = DateTime.MinValue;
         private const int inputCooldown = 250;
@@ -199,7 +197,6 @@ namespace Client
 
             LoadFonts();
             General.Startup();
-            IsLoaded = true;
         }
 
         public static SpriteFont LoadFont(string path, FontType font)
