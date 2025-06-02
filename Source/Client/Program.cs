@@ -310,13 +310,8 @@ namespace Client
                 return;
             }
 
-            lock (InputLock)
-            {
-                UpdateMouseCache();
-                UpdateKeyCache();
-                ProcessInputs();
-            }
-
+            ProcessInputs();
+        
             if (IsKeyStateActive(Keys.F12))
             {
                 TakeScreenshot();
@@ -334,6 +329,9 @@ namespace Client
 
             Loop.Game();
 
+            UpdateKeyCache();
+            UpdateMouseCache();
+            
             base.Update(gameTime);
         }
 
@@ -360,8 +358,7 @@ namespace Client
         {
             // Get the current mouse state
             var mouseState = Mouse.GetState();
-
-            // Update the previous and current states
+            
             PreviousMouseState = CurrentMouseState;
             CurrentMouseState = mouseState;
         }
