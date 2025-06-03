@@ -69,28 +69,30 @@ namespace Client
 
         public static void AddText(string text, int color, long alpha = 255L, byte channel = 0)
         {
-            GameState.Chat_HighIndex += 1;
+            // wordwrap
+            string[] wrappedLines = null;
+            WordWrap(text, Core.Enum.FontType.Georgia, Gui.Windows[Gui.GetWindowIndex("winChat")].Width, ref wrappedLines);
+
+            GameState.Chat_HighIndex += wrappedLines.Length;
 
             if (GameState.Chat_HighIndex > Constant.CHAT_LINES)
                 GameState.Chat_HighIndex = Constant.CHAT_LINES;
-
-            if (text == null)
-            {
-                return;
-            }
-
+            
             // Move the rest of the chat lines up
-            for (int i = (int)GameState.Chat_HighIndex - 1; i > 0; i--)
+            for (int i = (int)GameState.Chat_HighIndex - wrappedLines.Length; i > 0; i--)
             {
                 Core.Type.Chat[i] = Core.Type.Chat[i - 1];
             }
-
-            // Add the new text
-            Core.Type.Chat[0].Text = text;
-            Core.Type.Chat[0].Color = color;
-            Core.Type.Chat[0].Visible = true;
-            Core.Type.Chat[0].Timer = General.GetTickCount();
-            Core.Type.Chat[0].Channel = (byte)(channel);
+            
+            for (int i = (int)wrappedLines.Length - 1, chatIndex = 0; i >= 0; i--, chatIndex++)
+            {
+                // Add the wrapped line to the chat
+                Core.Type.Chat[chatIndex].Text = wrappedLines[i];
+                Core.Type.Chat[chatIndex].Color = color;
+                Core.Type.Chat[chatIndex].Visible = true;
+                Core.Type.Chat[chatIndex].Timer = General.GetTickCount();
+                Core.Type.Chat[chatIndex].Channel = channel;
+            }
         }
 
         public static void WordWrap(string text, Core.Enum.FontType font, long MaxLineLen, ref string[] theArray)
@@ -140,7 +142,7 @@ namespace Client
                     {
                         // Too far away to the last space, so break at the last character
                         lineCount = lineCount + 1L;
-                        Array.Resize(ref theArray, (int)(lineCount + 1));
+                        Array.Resize(ref theArray, (int)(lineCount));
                         theArray[(int)lineCount - 1] = Strings.Mid(text, (int)b, (int)(i - 1L - b));
                         b = i - 1L;
                         size = 0L;
@@ -149,7 +151,7 @@ namespace Client
                     {
                         // Break at the last space to preserve the word
                         lineCount = lineCount + 1L;
-                        Array.Resize(ref theArray, (int)(lineCount + 1));
+                        Array.Resize(ref theArray, (int)(lineCount));
 
                         // Ensure b is within valid range
                         if (b < 0L)
@@ -178,7 +180,7 @@ namespace Client
                     if (b != i)
                     {
                         lineCount = lineCount + 1L;
-                        Array.Resize(ref theArray, (int)(lineCount + 1));
+                        Array.Resize(ref theArray, (int)(lineCount));
                         theArray[(int)lineCount - 1] = Strings.Mid(text, (int)b, (int)i);
                     }
                 }
