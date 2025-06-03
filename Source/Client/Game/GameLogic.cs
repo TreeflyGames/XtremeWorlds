@@ -2404,7 +2404,7 @@ namespace Client
             if (MaxWidth <  Width)
             {
                 // find out the amount to increase per loop
-                barDifference = (long)(Width - MaxWidth) / 100L * 10L;
+                barDifference = (long)Math.Round((double)(Width - MaxWidth) / 100L) * 10L;
 
                 // if it's less than 1 then default to 1
                 if (barDifference < 0L)
@@ -2421,7 +2421,7 @@ namespace Client
             else if (MaxWidth > Width)
             {
                 // find out the amount to increase per loop
-                barDifference = (long)(MaxWidth - Width) / 100L * 10L;
+                barDifference = (long)Math.Round((double)(MaxWidth - Width) / 100) * 10L;
 
                 // if it's less than 1 then default to 1
                 if (barDifference < 0L)
