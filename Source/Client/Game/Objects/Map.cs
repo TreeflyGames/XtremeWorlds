@@ -557,11 +557,6 @@ namespace Client
                 for (int y = 0; y < Core.Type.MyMap.MaxY; y++)
                 {
                     ResetTile(ref Core.Type.MyMap.Tile[x, y], (int)(Core.Enum.LayerType.Count));
-
-                    for (int i = 0; i < GameState.MaxTileHistory; i++)
-                    {
-                        ResetTile(ref Core.Type.TileHistory[i].Tile[x, y], (int)(Core.Enum.LayerType.Count));
-                    }
                 }
             }
 
