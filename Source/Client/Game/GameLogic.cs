@@ -2401,27 +2401,39 @@ namespace Client
         {
             long barDifference;
 
-            if (MaxWidth < Width)
+            if (MaxWidth <  Width)
             {
                 // find out the amount to increase per loop
-                barDifference = (long)Math.Round((Width - MaxWidth) / 100d * 10d);
+                barDifference = (long)(Width - MaxWidth) / 100L * 10L;
 
                 // if it's less than 1 then default to 1
                 if (barDifference < 0L)
                     barDifference = 0L;
+                
+                if (Width != MaxWidth && barDifference == 0L)
+                {
+                    barDifference = Math.Clamp(Width - MaxWidth, 1, Width);
+                }
+                
                 // set the width
-                Width = Width - barDifference;
+                Width -= barDifference;
             }
             else if (MaxWidth > Width)
             {
                 // find out the amount to increase per loop
-                barDifference = (long)Math.Round((MaxWidth - Width) / 100d * 10d);
+                barDifference = (long)(MaxWidth - Width) / 100L * 10L;
 
                 // if it's less than 1 then default to 1
                 if (barDifference < 0L)
                     barDifference = 0L;
+
+                if (MaxWidth != Width && barDifference == 0L)
+                {
+                    barDifference = Math.Clamp(MaxWidth - Width, 1, MaxWidth);
+                }
+
                 // set the width
-                Width = Width + barDifference;
+                Width += barDifference;
             }
         }
 
