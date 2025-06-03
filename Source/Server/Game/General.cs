@@ -723,7 +723,7 @@ namespace Server
                 switch (subCommand.ToLower())
                 {
                     case "create":
-                        if (player.InParty != 0)
+                        if (player.InParty != -1)
                         {
                             NetworkSend.PlayerMsg(playerIndex, "You are already in a party.", (int)Core.Enum.ColorType.BrightRed);
                             return;
@@ -733,7 +733,7 @@ namespace Server
                         break;
 
                     case "invite":
-                        if (player.InParty == 0)
+                        if (player.InParty == -1)
                         {
                             NetworkSend.PlayerMsg(playerIndex, "You must create a party first.", (int)Core.Enum.ColorType.BrightRed);
                             return;
@@ -745,7 +745,7 @@ namespace Server
                             return;
                         }
                         var targetPlayer = Core.Type.TempPlayer[targetIndex];
-                        if (targetPlayer.InParty != 0)
+                        if (targetPlayer.InParty != -1)
                         {
                             NetworkSend.PlayerMsg(playerIndex, $"{targetName} is already in a party.", (int)Core.Enum.ColorType.BrightRed);
                             return;
@@ -756,12 +756,12 @@ namespace Server
                         break;
 
                     case "leave":
-                        if (player.InParty == 0)
+                        if (player.InParty == -1)
                         {
                             NetworkSend.PlayerMsg(playerIndex, "You are not in a party.", (int)Core.Enum.ColorType.BrightRed);
                             return;
                         }
-                        player.InParty = 0;
+                        player.InParty = -1;
                         NetworkSend.PlayerMsg(playerIndex, "You have left the party.", (int)Core.Enum.ColorType.BrightGreen);
                         break;
 
