@@ -1581,6 +1581,7 @@ namespace Server
             Core.Type.TempPlayer[index].SkillBuffer = -1;
             Core.Type.TempPlayer[index].InShop = -1;
             Core.Type.TempPlayer[index].InTrade = -1;
+            Core.Type.TempPlayer[index].InParty = -1;
 
             for (int i = 0, loopTo = Core.Type.TempPlayer[index].EventProcessingCount; i < loopTo; i++)
                 Core.Type.TempPlayer[index].EventProcessing[i].EventId = -1;
