@@ -27,7 +27,7 @@ namespace Client
         public static void StartGameThread()
         {
             var gameThread = new System.Threading.Thread(RunGame);
-            gameThread.IsBackground = false;
+            gameThread.IsBackground = true;
             gameThread.Start();
         }
 
