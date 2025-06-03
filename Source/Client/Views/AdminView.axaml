@@ -5,6 +5,7 @@
     mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="340"
     x:Class="AvaloniaApp.AdminWindow"
     Title="Admin Panel"
+    IsVisible="False"
     SizeToContent="WidthAndHeight"
     CanResize="False"
     Background="Black"		
