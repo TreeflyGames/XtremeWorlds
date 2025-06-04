@@ -86,6 +86,7 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" />
     <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" />
+    <PackageReference Include="MonoGame.Library.SDL" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Enrichers.Environment" />
     <PackageReference Include="Serilog.Enrichers.Thread" />
