@@ -13,10 +13,6 @@ using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
-using System;
-using System.Reflection;
-using static Client.GameClient;
-using Avalonia;
 
 namespace Client
 {
@@ -332,10 +328,10 @@ namespace Client
             }
 
             Loop.Game();
-
+            
             UpdateKeyCache();
             UpdateMouseCache();
-            
+    
             base.Update(gameTime);
         }
 

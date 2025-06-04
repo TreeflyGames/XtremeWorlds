@@ -1,14 +1,8 @@
-﻿using System;
-using Core;
-using Core;
+﻿using Core;
 using static Core.Global.Command;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
-using Mirage.Sharp.Asfw.IO;
-using AvaloniaAppTemplate;
-using Avalonia.Controls;
-using Client.Models;
 
 namespace Client
 {
@@ -951,26 +945,12 @@ namespace Client
             for (i = 0; i < Constant.MAX_MAPS; i++)
                 mapNames[i] = buffer.ReadString();
 
-            // If using an AdminViewModel, update its Items property here
-            if (App.Current is App currentApp)
-            {
-                // Example: If you have an AdminViewModel singleton or static instance
-                if (currentApp.DataContext is AdminViewModel adminViewModel && adminViewModel.Items != null)
-                {
-                    adminViewModel.Items.Clear();
-                    foreach (var name in mapNames)
-                    {
-                        adminViewModel.Items.Add(name);
-                    }
-                }
-            }
-
             buffer.Dispose();
         }
 
         private static void Packet_Admin(ref byte[] data)
         {
-            App.ShowWindowByName("Admin Panel");
+
         }
 
         private static void Packet_Critical(ref byte[] data)

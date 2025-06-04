@@ -1,11 +1,9 @@
-﻿using AvaloniaAppTemplate;
-using Core;
+﻿using Core;
 using Core.Localization;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using Mirage.Sharp.Asfw;
 using System.Data.Common;
-using Avalonia.Controls;
 using static Core.Enum;
 using static Core.Global.Command;
 
@@ -2112,9 +2110,7 @@ namespace Client
 
             NetworkConfig.DestroyNetwork();
             NetworkConfig.InitNetwork();
-            General.ClearGameData();
-
-            App.HideWindowByName("Admin Panel");
+            General.ClearGameData(); ;
         }
 
         public static void SetOptionsScreen()
