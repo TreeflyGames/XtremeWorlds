@@ -10,7 +10,10 @@
 
     <ItemGroup>
         <Folder Include="Models\"/>
-        <AvaloniaResource Include="Assets\**"/>
+        <Content Include="Content\**\*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
