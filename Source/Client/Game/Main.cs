@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using AvaloniaAppTemplate;
 using System.Reflection.Metadata;
 using Avalonia.Threading;
 using static Core.Enum;
@@ -14,22 +13,7 @@ namespace Client
         [STAThread]
         public static void Main(string[] args)
         {
-            Thread thread = new Thread(new ThreadStart(() => BuildAvaloniaApp().StartWithClassicDesktopLifetime(args)));
             RunGame();
-        }
-
-        public static AppBuilder BuildAvaloniaApp() =>
-            AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .WithInterFont()
-                .LogToTrace();
-
-        // If you want to run the game in a separate thread, call this from somewhere else in your app.
-        public static void StartGameThread()
-        {
-            var gameThread = new System.Threading.Thread(RunGame);
-            gameThread.IsBackground = true;
-            gameThread.Start();
         }
 
         public static void RunGame()

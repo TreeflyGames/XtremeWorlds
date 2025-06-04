@@ -1,5 +1,4 @@
-﻿using AvaloniaAppTemplate;
-using Core;
+﻿using Core;
 using Core.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,7 +45,6 @@ namespace Client
             GameState.InMenu = true;
             ClearGameData();
             LoadGame();
-            App.HideWindowByName("Admin Panel");
         }
 
         public static void LoadGame()
