@@ -1759,8 +1759,8 @@ namespace Client
                 if (Windows[i].Controls is null || Windows[i].Controls.Count == 0)
                     continue;
 
-                var loopTo1 = (long)(Windows[i].Controls.Count - 1);
-                for (x = 0L; x <= loopTo1; x++)
+                var loopTo1 = (long)(Windows[i].Controls.Count);
+                for (x = 0L; x < loopTo1; x++)
                 {
                     if (Windows[i].Controls[(int)x].State != Core.Enum.EntState.MouseDown)
                         Windows[i].Controls[(int)x].State = Core.Enum.EntState.Normal;
