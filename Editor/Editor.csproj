@@ -1,15 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <OutputType>WinExe</OutputType>
+        <OutputType>Exe</OutputType>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <LangVersion>default</LangVersion>
+        <PackageIcon>icon.ico</PackageIcon>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
         <Folder Include="Models\"/>
+        <Content Include="icon.ico">
+          <Link>icon.ico</Link>
+        </Content>
         <Content Include="Content\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
@@ -24,5 +30,9 @@
       <PackageReference Include="Avalonia.Fonts.Inter" />
       <PackageReference Include="Avalonia.Themes.Fluent" />
       <PackageReference Include="CommunityToolkit.Mvvm" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaResource Include="Assets\logo.ico" />
     </ItemGroup>
 </Project>
