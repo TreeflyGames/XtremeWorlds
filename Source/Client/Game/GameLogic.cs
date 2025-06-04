@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using AvaloniaAppTemplate;
+using Core;
 using Core.Localization;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
@@ -2112,6 +2113,8 @@ namespace Client
             NetworkConfig.DestroyNetwork();
             NetworkConfig.InitNetwork();
             General.ClearGameData();
+
+            App.HideWindowByName("Admin Panel");
         }
 
         public static void SetOptionsScreen()
