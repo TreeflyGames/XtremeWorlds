@@ -6,12 +6,13 @@
         x:Class="Editor.Views.MainWindow"
         xmlns:controls="using:RectPainter.Controls"
         xmlns:viewModels1="clr-namespace:RectPainter.ViewModels"
+        xmlns:viewModels="clr-namespace:Editor.ViewModels"
         Icon="/Assets/logo.ico"
         Title="XtremeWorlds Editor"
-        x:DataType="viewModels1:MainWindowViewModel">
+        x:DataType="viewModels:MainWindowViewModel">
     
     <Design.DataContext>
-        <viewModels1:MainWindowViewModel/>
+        <viewModels:MainWindowViewModel/>
     </Design.DataContext>
     
     <DockPanel>
@@ -105,12 +106,16 @@
                 <Grid Grid.Row="1">
                     <controls:PaintControl DataContext="{Binding Vm}" />
                     <Border BorderBrush="Black" BorderThickness="2" CornerRadius="2" Margin="0,10,0,0">
-                    <Image Source="/Content/Graphics/Tilesets/1.png"
-                           Stretch="Uniform"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"/>
-                    </Border>
+                        <Image Source="{Binding SelectedTilesetImage}"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"/>
+                    </Border>                                
                 </Grid>
+            <StackPanel Grid.Row="2" Margin="20">
+              <ComboBox x:Name="tilesetComboBox" SelectedIndex="{Binding SelectedTilesetIndex, Mode=TwoWay}">
+              </ComboBox>
+            </StackPanel>
             </Grid>
             <Grid Grid.Column="1" Margin="10">
                 <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Background="#FFF">

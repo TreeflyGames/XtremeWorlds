@@ -38,4 +38,9 @@
     <ItemGroup>
       <AvaloniaResource Include="Assets\logo.ico" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Source\Core\Core.csproj" />
+      <ProjectReference Include="..\Source\Network\Asfw.csproj" />
+    </ItemGroup>
 </Project>

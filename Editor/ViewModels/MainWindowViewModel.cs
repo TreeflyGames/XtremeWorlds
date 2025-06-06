@@ -1,6 +1,10 @@
 ﻿using System.ComponentModel;
+using Avalonia.Media.Imaging;
+using RectPainter.ViewModels;
+using System;
+using Avalonia.Platform;
 
-namespace RectPainter.ViewModels
+namespace Editor.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
@@ -102,5 +106,31 @@ namespace RectPainter.ViewModels
                 Rect = string.Empty;
             }
         }
+        
+        private static int _selectedTilesetIndex;
+        
+        public int SelectedTilesetIndex
+        {
+            get => _selectedTilesetIndex;
+            set
+            {
+                if (_selectedTilesetIndex != value)
+                {
+                    _selectedTilesetIndex = value;
+                    OnPropertyChanged(nameof(SelectedTilesetIndex));
+                    OnPropertyChanged(nameof(SelectedTilesetImage));
+                }
+            }
+        }
+        
+        public Bitmap SelectedTilesetImage
+        {
+            get
+            {
+                using var stream = AssetLoader.Open(new Uri($"avares://Editor/Content/Graphics/Tilesets/{_selectedTilesetIndex + 1}.png"));
+                return new Bitmap(stream);
+            }
+        }
+        
     }
 }
