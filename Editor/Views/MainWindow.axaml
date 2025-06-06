@@ -3,18 +3,94 @@
         xmlns:vm="using:Editor.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="768" WindowState="Maximized"
         x:Class="Editor.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        
         Icon="/Assets/logo.ico"
-        Title="Editor">
+        Title="XtremeWorlds Editor">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="New Map"/>
+                <MenuItem Header="Open Map..."/>
+                <MenuItem Header="Save Map"/>
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="Animation Editor"/>
+                <MenuItem Header="Job Editor"/>
+                <MenuItem Header="Item Editor"/>
+                <MenuItem Header="NPC Editor"/>
+                <MenuItem Header="Resource Editor"/>
+                <MenuItem Header="Pet Editor"/>
+                <MenuItem Header="Projectile Editor"/>
+                <MenuItem Header="Shop Editor"/>
+                <MenuItem Header="Skill Editor"/>
+                <MenuItem Header="Moral Editor"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="About"/>
+            </MenuItem>
+        </Menu>
+        <Menu DockPanel.Dock="Top" Background="White" Foreground="Black" Padding="-16,0">
+        <DockPanel Grid.Row="1" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0" Spacing="4" DockPanel.Dock="Left" HorizontalAlignment="Left">
+                <Button Padding="0, 0,0,0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Pencil.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Clear" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="-8, 0,0,0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Clear.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Clear" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Fill.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Fill" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Wand.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Wand" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Play.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Play" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </DockPanel>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="256"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Grid.Column="1" Margin="10">
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Background="#FFF">
+                <Canvas x:Name="MapEditorCanvas"
+                        Width="800"
+                        Height="600"
+                        Background="#FFEFEFEF"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"/>
+            </Border>
+        </Grid>
+    </DockPanel>
 </Window>

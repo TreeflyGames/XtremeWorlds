@@ -20,6 +20,10 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
         </Content>
+        <AvaloniaResource Include="Assets\**\*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </AvaloniaResource>
     </ItemGroup>
 
     <ItemGroup>
