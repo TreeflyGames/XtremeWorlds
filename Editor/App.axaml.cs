@@ -3,7 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using RectPainter.ViewModels;
 
-namespace RectPainter;
+namespace Editor;
 
 public partial class App : Application
 {
