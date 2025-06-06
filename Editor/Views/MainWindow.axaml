@@ -65,12 +65,6 @@
                 </Button>
                 <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel>
-                        <Image Source="/Assets/Wand.png" Width="16" Height="16" Margin="0"/>
-                        <TextBlock Text="Eye Dropper" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                </Button>
-                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
-                    <StackPanel>
                         <Image Source="/Assets/Undo.png" Width="16" Height="16" Margin="0"/>
                         <TextBlock Text="Undo" HorizontalAlignment="Left"/>
                     </StackPanel>
@@ -91,12 +85,6 @@
                     <StackPanel>
                         <Image Source="/Assets/Opacity.png" Width="16" Height="16" Margin="0"/>
                         <TextBlock Text="Opacity" HorizontalAlignment="Left"/>
-                    </StackPanel>
-                </Button>
-                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
-                    <StackPanel>
-                        <Image Source="/Assets/Screenshot.png" Width="16" Height="16" Margin="0"/>
-                        <TextBlock Text="Screenshot" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Button>
                 <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
