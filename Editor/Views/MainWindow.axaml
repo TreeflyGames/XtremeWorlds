@@ -17,9 +17,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="New Map"/>
-                <MenuItem Header="Open Map..."/>
-                <MenuItem Header="Save Map"/>
+                <MenuItem Header="Open..."/>
                 <MenuItem Header="Exit"/>
             </MenuItem>
             <MenuItem Header="_Edit">
@@ -38,19 +36,25 @@
                 <MenuItem Header="About"/>
             </MenuItem>
         </Menu>
-        <Menu DockPanel.Dock="Top" Background="White" Foreground="Black" Padding="-16,0">
+        <Menu DockPanel.Dock="Top" Background="White" Foreground="Black">
         <DockPanel Grid.Row="1" Margin="0,10,0,0">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,0" Spacing="4" DockPanel.Dock="Left" HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0" Spacing="0" DockPanel.Dock="Left" HorizontalAlignment="Left">
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Save.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Save" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
                 <Button Padding="0, 0,0,0" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel>
                         <Image Source="/Assets/Pencil.png" Width="16" Height="16" Margin="0"/>
-                        <TextBlock Text="Clear" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Draw" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Button>
-                <Button Padding="-8, 0,0,0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                <Button Padding="0, 0,0,0" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel>
                         <Image Source="/Assets/Clear.png" Width="16" Height="16" Margin="0"/>
-                        <TextBlock Text="Clear" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Erase" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Button>
                 <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
@@ -62,7 +66,37 @@
                 <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
                     <StackPanel>
                         <Image Source="/Assets/Wand.png" Width="16" Height="16" Margin="0"/>
-                        <TextBlock Text="Wand" HorizontalAlignment="Left"/>
+                        <TextBlock Text="Eye Dropper" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Undo.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Undo" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Redo.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Redo" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Grid.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Grid" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Opacity.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Opacity" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <StackPanel>
+                        <Image Source="/Assets/Screenshot.png" Width="16" Height="16" Margin="0"/>
+                        <TextBlock Text="Screenshot" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Button>
                 <Button Padding="0" Background="Transparent" BorderThickness="0" Cursor="Hand">
