@@ -104,10 +104,12 @@
             <Grid RowDefinitions="auto, *, auto">
                 <Grid Grid.Row="1">
                     <controls:PaintControl DataContext="{Binding Vm}" />
+                    <Border BorderBrush="Black" BorderThickness="2" CornerRadius="2" Margin="0,10,0,0">
                     <Image Source="/Content/Graphics/Tilesets/1.png"
                            Stretch="Uniform"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"/>
+                    </Border>
                 </Grid>
             </Grid>
             <Grid Grid.Column="1" Margin="10">
