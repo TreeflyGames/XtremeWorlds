@@ -79,10 +79,7 @@
                 <ColumnDefinition Width="256"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-        </Grid>
         <Grid RowDefinitions="auto, *, auto">
-            <TextBlock Grid.Row="0" Text="Use mouse with Shift/Alt/Ctrl key modifiers pressed."/>
-
             <Grid Grid.Row="1">
                 <controls:PaintControl DataContext="{Binding Vm}" />
             </Grid>
@@ -97,12 +94,13 @@
         <Grid Grid.Column="1" Margin="10">
             <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Background="#FFF">
                 <Canvas x:Name="MapEditorCanvas"
-                        Width="800"
-                        Height="600"
+                        Width="1024"
+                        Height="768"
                         Background="#FFEFEFEF"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"/>
             </Border>
+        </Grid>
         </Grid>
     </DockPanel>
 </Window>
