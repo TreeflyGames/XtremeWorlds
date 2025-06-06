@@ -1,19 +1,17 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Editor.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="768" WindowState="Maximized"
         x:Class="Editor.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        
+        xmlns:controls="using:RectPainter.Controls"
+        xmlns:viewModels1="clr-namespace:RectPainter.ViewModels"
         Icon="/Assets/logo.ico"
-        Title="XtremeWorlds Editor">
-
+        Title="XtremeWorlds Editor"
+        x:DataType="viewModels1:MainWindowViewModel">
+    
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <viewModels1:MainWindowViewModel/>
     </Design.DataContext>
     
     <DockPanel>
@@ -81,6 +79,20 @@
                 <ColumnDefinition Width="256"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid RowDefinitions="auto, *, auto">
+            <TextBlock Grid.Row="0" Text="Use mouse with Shift/Alt/Ctrl key modifiers pressed."/>
+
+            <Grid Grid.Row="1">
+                <controls:PaintControl DataContext="{Binding Vm}" />
+            </Grid>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Width="50" Text="Cursor:"/>
+                <TextBlock Width="120" Text="{Binding MousePosition}"/>
+                <TextBlock Width="70" Text="Rectangle:"/>
+                <TextBlock Width="100" Text="{Binding Rect}"/>
+            </StackPanel>
         </Grid>
         <Grid Grid.Column="1" Margin="10">
             <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="4" Background="#FFF">

@@ -12,7 +12,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\"/>
         <Content Include="icon.ico">
           <Link>icon.ico</Link>
         </Content>

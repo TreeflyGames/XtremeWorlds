@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using System;
+using RectPainter;
 
 namespace Editor;
 
