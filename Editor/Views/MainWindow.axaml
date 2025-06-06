@@ -98,12 +98,16 @@
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="256"/>
+                <ColumnDefinition Width="512"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid RowDefinitions="auto, *, auto">
                 <Grid Grid.Row="1">
                     <controls:PaintControl DataContext="{Binding Vm}" />
+                    <Image Source="/Content/Graphics/Tilesets/1.png"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"/>
                 </Grid>
             </Grid>
             <Grid Grid.Column="1" Margin="10">

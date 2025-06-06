@@ -15,10 +15,10 @@
         <Content Include="icon.ico">
           <Link>icon.ico</Link>
         </Content>
-        <Content Include="Content\**\*.*">
+        <AvaloniaResource Include="Content\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
-        </Content>
+        </AvaloniaResource>
         <AvaloniaResource Include="Assets\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <Link>Assets\%(RecursiveDir)%(Filename)%(Extension)</Link>
